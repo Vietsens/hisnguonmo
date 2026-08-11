@@ -6097,6 +6097,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                     //DXMenuItem menuItemXuatXmlTT12Excel = new DXMenuItem("Xuất XML TT12 dưới dạng excel", new EventHandler(this.btnExportXmlTT12ToExcel_Click));
                     //e.Menu.Items.Add(menuItemXuatXmlTT12Excel);
+
+                    // PTTK 3142: kiem tra pham vi chuyen mon + validate xuat XML, khong tao file
+                    DXMenuItem menuItemKiemTraHoSo = new DXMenuItem("Kiểm tra hồ sơ", new EventHandler(this.MenuItemClick_KiemTraHoSo));
+                    e.Menu.Items.Add(menuItemKiemTraHoSo);
                 }
             }
             catch (Exception ex)

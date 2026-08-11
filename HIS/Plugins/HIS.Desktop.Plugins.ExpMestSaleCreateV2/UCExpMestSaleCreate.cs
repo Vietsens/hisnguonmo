@@ -2599,6 +2599,15 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreateV2
                         }
                     }
                 }
+
+                // Viec 3082: config bat -> thanh toan/xuat hoa don thuc hien tai form Xuat hoa don (checkbox "In" + Luu ky).
+                // Bo tick va khoa "Xuat bien lai/hoa don" de luu KHONG tao bill truoc, form hoa don moi co phieu de xu ly.
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport") == "1")
+                {
+                    chkExp.Checked = false;
+                    chkExp.Enabled = false;
+                    chkExp.ToolTip = "Đã bật cấu hình tự động thực xuất + in hóa đơn điện tử — thanh toán/xuất hóa đơn thực hiện tại form Xuất hóa đơn (F10)";
+                }
             }
             catch (Exception ex)
             {

@@ -7,7 +7,7 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *  
- * This program is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful, 
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
  * GNU General Public License for more details.
@@ -71,6 +71,12 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
         CPA.WCFClient.CallPatientClient.CallPatientClientManager clienttManager = null;
         private int positionHandle;
         private bool IsPrintNow = false;
+
+        //So id dot dieu tri toi da cho moi lan goi api tra cuu ma benh nhan
+        private const int MAX_TREATMENT_ID_PER_CALL = 500;
+
+        //Lan quet gan nhat khop theo ma benh nhan hay ma dieu tri, de LoadTab3 focus lai dung o
+        private bool isScanByPatientCode = false;
 
         #region OddEvenFilter
         internal const string ODD_EVEN_FILTER__ALL = "ALL";
@@ -189,6 +195,54 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                 if (dteStt.EditValue != null && dteStt.DateTime != DateTime.MinValue)
                     filter.CREATE_DATE__EQUAL = Int64.Parse(dteStt.DateTime.ToString("yyyyMMdd000000"));
                 lstAll = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, filter, param);
+                FillMissingPatientCode();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bo sung ma benh nhan cho cac phieu khong co TDL_PATIENT_CODE, lay theo dot dieu tri. 
+        /// Chi goi api khi thuc su co phieu thieu ma.
+        /// </summary>
+        private void FillMissingPatientCode()
+        {
+            try
+            {
+                if (lstAll == null || lstAll.Count == 0) return;
+
+                List<long> treatmentIds = lstAll
+                    .Where(o => string.IsNullOrEmpty(o.TDL_PATIENT_CODE) && o.TDL_TREATMENT_ID.HasValue)
+                    .Select(o => o.TDL_TREATMENT_ID.Value)
+                    .Distinct()
+                    .ToList();
+                if (treatmentIds.Count == 0) return;
+
+                Dictionary<long, string> dicPatientCode = new Dictionary<long, string>();
+                for (int i = 0; i < treatmentIds.Count; i += MAX_TREATMENT_ID_PER_CALL)
+                {
+                    CommonParam param = new CommonParam();
+                    HisTreatmentFilter filter = new HisTreatmentFilter();
+                    filter.IDs = treatmentIds.Skip(i).Take(MAX_TREATMENT_ID_PER_CALL).ToList();
+                    var treatments = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (treatments == null) continue;
+                    foreach (var treatment in treatments)
+                    {
+                        if (!dicPatientCode.ContainsKey(treatment.ID))
+                            dicPatientCode.Add(treatment.ID, treatment.TDL_PATIENT_CODE);
+                    }
+                }
+
+                foreach (var expMest in lstAll)
+                {
+                    if (!string.IsNullOrEmpty(expMest.TDL_PATIENT_CODE) || !expMest.TDL_TREATMENT_ID.HasValue) continue;
+                    string patientCode;
+                    if (dicPatientCode.TryGetValue(expMest.TDL_TREATMENT_ID.Value, out patientCode))
+                        expMest.TDL_PATIENT_CODE = patientCode;
+                }
+                Inventec.Common.Logging.LogSystem.Debug("BO SUNG MA BENH NHAN ___ so dot dieu tri phai tra cuu: " + treatmentIds.Count);
             }
             catch (Exception ex)
             {
@@ -823,13 +877,22 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 
                 if (gvPrepareMedicine.FocusedRowHandle != DevExpress.XtraGrid.GridControl.AutoFilterRowHandle) return;
 
-                if (gvPrepareMedicine.FocusedColumn != gridColumn26) return;
+                if (gvPrepareMedicine.FocusedColumn != gridColumn26 && gvPrepareMedicine.FocusedColumn != colPatientCode) return;
+
+                //Quet vao o nay khong ra dong nao thi thu lai o ma con lai 
+                if (gvPrepareMedicine.RowCount == 0)
+                {
+                    SwapScanCodeToOtherColumn();
+                }
 
                 if (gvPrepareMedicine.RowCount != 1) return;
 
                 int rowHandle = gvPrepareMedicine.GetVisibleRowHandle(0);
                 var one = gvPrepareMedicine.GetRow(rowHandle) as HIS_EXP_MEST;
                 if (one == null) return;
+
+                //Nho o vua quet khop de sau khi phat thuoc LoadTab3 focus lai dung o do
+                isScanByPatientCode = gvPrepareMedicine.FocusedColumn == colPatientCode;
                 if (currentCall != null && currentCall.ID != one.ID)
                 {
                     return;
@@ -837,6 +900,13 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 
                 CallSpecific(one);
                 //btnCall_Click(null, null);
+
+                //Quet xong phat thuoc luon, khong phai bam nut.
+                //CallSpecific khong set currentCall khi chua cau hinh quay hoac phieu thuoc quay khac, khi do khong phat.
+                if (currentCall != null && currentCall.ID == one.ID)
+                {
+                    btnGaveMedicine_Click(null, null);
+                }
 
                 e.Handled = true;
                 e.SuppressKeyPress = true;
@@ -846,6 +916,32 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// Chuyen chuoi vua quet sang o loc ma con lai (ma dieu tri &lt;-&gt; ma benh nhan).
+        /// Chay 2 chieu vi con tro co the dang o o nao trong hai o.
+        /// </summary>
+        private void SwapScanCodeToOtherColumn()
+        {
+            try
+            {
+                DevExpress.XtraGrid.Columns.GridColumn fromColumn = gvPrepareMedicine.FocusedColumn;
+                DevExpress.XtraGrid.Columns.GridColumn toColumn = (fromColumn == gridColumn26) ? colPatientCode : gridColumn26;
+
+                string scanCode = (gvPrepareMedicine.GetRowCellValue(DevExpress.XtraGrid.GridControl.AutoFilterRowHandle, fromColumn) ?? "").ToString().Trim();
+                Inventec.Common.Logging.LogSystem.Debug("QUET MA ___ khong khop o " + fromColumn.Caption + ", thu sang o " + toColumn.Caption + ": " + scanCode);
+                if (string.IsNullOrEmpty(scanCode)) return;
+
+                gvPrepareMedicine.HideEditor();
+                gvPrepareMedicine.SetRowCellValue(DevExpress.XtraGrid.GridControl.AutoFilterRowHandle, fromColumn, null);
+                gvPrepareMedicine.SetRowCellValue(DevExpress.XtraGrid.GridControl.AutoFilterRowHandle, toColumn, scanCode);
+                gvPrepareMedicine.FocusedColumn = toColumn;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void CallSpecific(HIS_EXP_MEST one)
         {
             bool rs;

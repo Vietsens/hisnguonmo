@@ -45,5 +45,18 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             }
         }
 
+        private const string SaveSignPrintAutoExportKey = "HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport";
+
+        /// <summary>
+        /// = 1: hien checkbox "In" — tick thi nut Luu ky tu dong duyet/thuc xuat phieu va in thang hoa don (viec 3082)
+        /// </summary>
+        internal static bool IsSaveSignPrintAutoExport
+        {
+            get
+            {
+                return (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SaveSignPrintAutoExportKey) == "1");
+            }
+        }
+
     }
 }

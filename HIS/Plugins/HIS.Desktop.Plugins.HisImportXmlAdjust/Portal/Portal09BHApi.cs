@@ -1,6 +1,7 @@
 using Inventec.Common.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,7 +11,50 @@ using System.Text;
 namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
 {
     /// <summary>
-    /// Kết quả đẩy hồ sơ điều chỉnh mẫu 09/BH lên cổng tiếp nhận BHXH.
+    /// Token phiên làm việc do dịch vụ lấy token cấp (tài liệu mục I).
+    /// Token dùng cho các lời gọi nghiệp vụ tiếp theo, thời hạn theo cấu hình phiên (mặc định 10 phút).
+    /// </summary>
+    public class Portal09BHToken
+    {
+        /// <summary>access_token - gửi ở header accessToken.</summary>
+        public string AccessToken { get; set; }
+
+        /// <summary>id_token - gửi ở header tokenId.</summary>
+        public string IdToken { get; set; }
+
+        /// <summary>token_type (Bearer).</summary>
+        public string TokenType { get; set; }
+
+        public string Username { get; set; }
+
+        /// <summary>expires_in - thời điểm hết hạn (giờ UTC theo cổng trả về).</summary>
+        public DateTime? ExpiresInUtc { get; set; }
+
+        /// <summary>Mã kết quả của dịch vụ lấy token (tài liệu mục I.4).</summary>
+        public string MaKetQua { get; set; }
+
+        public string ErrorMessage { get; set; }
+
+        /// <summary>Token có đủ dữ liệu để gọi dịch vụ nghiệp vụ hay không.</summary>
+        public bool HasToken()
+        {
+            return !string.IsNullOrEmpty(this.AccessToken);
+        }
+
+        /// <summary>
+        /// Còn hạn dùng hay không. Trừ hao 30 giây để không gửi hồ sơ bằng token sắp hết hạn giữa chừng.
+        /// Cổng không trả expires_in thì coi như còn hạn, hết hạn thật sẽ bị bắt bằng HTTP 401 rồi lấy token mới.
+        /// </summary>
+        public bool IsAlive()
+        {
+            if (!HasToken()) return false;
+            if (!this.ExpiresInUtc.HasValue) return true;
+            return this.ExpiresInUtc.Value.AddSeconds(-30) > DateTime.UtcNow;
+        }
+    }
+
+    /// <summary>
+    /// Kết quả đẩy hồ sơ điều chỉnh mẫu 09/BH lên cổng tiếp nhận BHXH (tài liệu mục II.3).
     /// </summary>
     public class Portal09BHResult
     {
@@ -24,14 +68,24 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
 
     /// <summary>
     /// Client đẩy hồ sơ điều chỉnh mẫu 09/BH (loại hồ sơ 73) lên cổng tiếp nhận BHXH.
-    /// Theo tài liệu MoTaAPI_GuiHoSoDieuChinh09BH: body JSON, mỗi lần gửi 01 hồ sơ.
-    /// Luồng: api/token/take (JSON) → api/HSDCTT12/GuiHoSoDieuChinh09BH (JSON).
+    /// Theo tài liệu MoTaAPI_GuiHoSoDieuChinh09BH - quy trình 2 bước:
+    ///   (1) POST api/token/take                        -> lấy token phiên làm việc
+    ///   (2) POST api/HSDCTT12/GuiHoSoDieuChinh09BH     -> gửi 01 hồ sơ điều chỉnh kèm token
+    /// Cả hai đều là POST, body JSON utf-8, trả về JSON.
+    ///
+    /// Token được giữ lại trong instance và dùng lại cho cả lô hồ sơ (token có hạn ~10 phút), chỉ lấy mới khi
+    /// hết hạn hoặc khi cổng trả HTTP 401 - tránh đăng nhập lại cho từng hồ sơ.
     /// </summary>
     public class Portal09BHApi
     {
+        /// <summary>Loại hồ sơ cố định = 73 (hồ sơ điều chỉnh 09/BH) - tài liệu mục II.2.</summary>
         private const int LOAI_HO_SO = 73;
         private const string TOKEN_URI = "api/token/take";
         private const string SEND_URI = "api/HSDCTT12/GuiHoSoDieuChinh09BH";
+        private const string MA_KET_QUA_THANH_CONG = "200";
+
+        /// <summary>Token đang dùng cho cả lô. Chỉ lấy lại khi hết hạn hoặc cổng trả 401.</summary>
+        private Portal09BHToken currentToken;
 
         private class TokenInfo
         {
@@ -57,11 +111,105 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
         }
 
         /// <summary>
-        /// Đăng nhập cổng và gửi 01 hồ sơ điều chỉnh 09/BH.
+        /// BƯỚC 1 - Lấy token phiên làm việc (tài liệu mục I).
+        /// Luôn gọi cổng để lấy token mới, dùng khi bắt đầu lô hoặc khi token cũ hết hạn.
+        /// </summary>
+        /// <param name="address">Địa chỉ cổng (VD: https://daotaogdbhyt.baohiemxahoi.gov.vn)</param>
+        /// <param name="username">Tên đăng nhập của CSKCB (kết thúc bằng "BV")</param>
+        /// <param name="password">Mật khẩu</param>
+        /// <param name="maCsKCB">Mã cơ sở khám chữa bệnh</param>
+        public Portal09BHToken TakeToken(string address, string username, string password, string maCsKCB)
+        {
+            Portal09BHToken token = new Portal09BHToken();
+            try
+            {
+                EnsureTls();
+
+                if (string.IsNullOrEmpty(address) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                {
+                    token.ErrorMessage = "Chưa cấu hình thông tin kết nối cổng BHXH.";
+                    return token;
+                }
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(address);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    var bodyObj = new { username = username, password = password, maCSKCB = maCsKCB ?? "" };
+                    var content = new StringContent(JsonConvert.SerializeObject(bodyObj), Encoding.UTF8, "application/json");
+
+                    LogSystem.Info(string.Format("[DAY_CONG_09BH] TOKEN REQUEST -> URL={0}{1} | username={2} | maCSKCB={3}",
+                        address.TrimEnd('/') + "/", TOKEN_URI, username, maCsKCB ?? ""));
+
+                    HttpResponseMessage response = client.PostAsync(TOKEN_URI, content).ConfigureAwait(false).GetAwaiter().GetResult();
+                    string body = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+                    LogSystem.Info(string.Format("[DAY_CONG_09BH] TOKEN RESPONSE <- HTTP {0} ({1})",
+                        (int)response.StatusCode, response.StatusCode));
+
+                    LoginResult plv = null;
+                    try { plv = JsonConvert.DeserializeObject<LoginResult>(body); }
+                    catch (Exception exParse) { LogSystem.Warn(exParse); }
+
+                    if (plv != null) token.MaKetQua = plv.maKetQua;
+
+                    if (plv != null && plv.APIKey != null && !string.IsNullOrEmpty(plv.APIKey.access_token))
+                    {
+                        token.AccessToken = plv.APIKey.access_token;
+                        token.IdToken = plv.APIKey.id_token;
+                        token.TokenType = plv.APIKey.token_type;
+                        token.Username = plv.APIKey.username;
+                        token.ExpiresInUtc = ParseExpires(plv.APIKey.expires_in);
+                    }
+                    else
+                    {
+                        // Cổng trả mã lỗi trong maKetQua (401/402/403/500), HTTP có thể vẫn là 200
+                        token.ErrorMessage = !string.IsNullOrEmpty(token.MaKetQua)
+                            ? MapTokenErrorCode(token.MaKetQua)
+                            : "Không đăng nhập được cổng BHXH (HTTP " + (int)response.StatusCode + "). Kiểm tra tài khoản/mật khẩu/mã CSKCB cấu hình.";
+                    }
+
+                    LogSystem.Info(string.Format(
+                        "[DAY_CONG_09BH] TOKEN KẾT QUẢ: maKetQua={0} | hasAccessToken={1} | hasTokenId={2} | expires_in={3}",
+                        token.MaKetQua ?? "(null)", token.HasToken(), !string.IsNullOrEmpty(token.IdToken),
+                        plv != null && plv.APIKey != null ? plv.APIKey.expires_in : ""));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                token.ErrorMessage = "Lỗi khi lấy token cổng BHXH: " + ex.Message;
+            }
+            return token;
+        }
+
+        /// <summary>
+        /// Lấy token dùng cho lô: còn hạn thì dùng lại, hết hạn/chưa có thì lấy mới.
+        /// </summary>
+        public Portal09BHToken EnsureToken(string address, string username, string password, string maCsKCB)
+        {
+            if (this.currentToken != null && this.currentToken.IsAlive())
+                return this.currentToken;
+
+            this.currentToken = TakeToken(address, username, password, maCsKCB);
+            return this.currentToken;
+        }
+
+        /// <summary>Bỏ token đang giữ, lần gửi sau sẽ đăng nhập lại.</summary>
+        public void ResetToken()
+        {
+            this.currentToken = null;
+        }
+
+        /// <summary>
+        /// BƯỚC 2 - Gửi 01 hồ sơ điều chỉnh 09/BH (tài liệu mục II).
+        /// Tự lấy token nếu chưa có/hết hạn; cổng trả HTTP 401 thì lấy token mới và gửi lại đúng 1 lần.
         /// </summary>
         /// <param name="address">Địa chỉ cổng (VD: https://daotaogdbhyt.baohiemxahoi.gov.vn)</param>
         /// <param name="username">Tài khoản đăng nhập CSKCB (kết thúc bằng "BV")</param>
-        /// <param name="password">Mật khẩu (gửi thô trong body, băm MD5 ở header passwordHash)</param>
+        /// <param name="password">Mật khẩu (gửi trong body, băm MD5 ở header passwordHash)</param>
         /// <param name="maCsKCB">Mã cơ sở KCB (phải trùng MA_CSKCB trong XML)</param>
         /// <param name="kyQT">Kỳ quyết toán yyyyMM</param>
         /// <param name="maTinh">Mã tỉnh/thành phố của CSKCB</param>
@@ -72,7 +220,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
             try
             {
                 LogSystem.Info(string.Format(
-                    "[DAY_CONG_09BH] BẮT ĐẦU đẩy cổng. address={0}, username={1}, maCsKCB={2}, kyQT={3}, maTinh={4}",
+                    "[DAY_CONG_09BH] BẮT ĐẦU gửi hồ sơ. address={0}, username={1}, maCsKCB={2}, kyQT={3}, maTinh={4}",
                     address, username, maCsKCB ?? "", kyQT ?? "", maTinh ?? ""));
                 EnsureTls();
 
@@ -81,61 +229,47 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
                     result.ErrorMessage = "Chưa cấu hình thông tin kết nối cổng BHXH.";
                     return result;
                 }
-
-                LoginResult plv = RegisToken(username, password, maCsKCB, address);
-                LogSystem.Info(string.Format(
-                    "[DAY_CONG_09BH] Token result: maKetQua={0}, hasAccessToken={1}, hasTokenId={2}",
-                    plv != null ? plv.maKetQua : "(null)",
-                    plv != null && plv.APIKey != null && !string.IsNullOrEmpty(plv.APIKey.access_token),
-                    plv != null && plv.APIKey != null && !string.IsNullOrEmpty(plv.APIKey.id_token)));
-                if (plv == null || plv.APIKey == null || string.IsNullOrEmpty(plv.APIKey.access_token))
+                if (string.IsNullOrEmpty(fileHsBase64))
                 {
-                    result.ErrorMessage = "Không đăng nhập được cổng BHXH. Kiểm tra tài khoản/mật khẩu cấu hình.";
+                    result.ErrorMessage = "Nội dung hồ sơ rỗng, không gửi được.";
                     return result;
                 }
 
-                using (var client = new HttpClient())
+                Portal09BHToken token = EnsureToken(address, username, password, maCsKCB);
+                if (token == null || !token.HasToken())
                 {
-                    client.BaseAddress = new Uri(address);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    client.DefaultRequestHeaders.Add("accessToken", plv.APIKey.access_token);
-                    client.DefaultRequestHeaders.Add("tokenId", plv.APIKey.id_token);
-                    client.DefaultRequestHeaders.Add("passwordHash", ConvertStringToMD5(password));
+                    result.ErrorMessage = (token != null && !string.IsNullOrEmpty(token.ErrorMessage))
+                        ? token.ErrorMessage
+                        : "Không đăng nhập được cổng BHXH.";
+                    return result;
+                }
 
-                    var bodyObj = new
+                bool tokenRefreshed = false;
+                while (true)
+                {
+                    HttpStatusCode statusCode;
+                    string body = PostHoSo(address, username, password, maCsKCB, kyQT, maTinh, fileHsBase64, token, out statusCode);
+
+                    // Token hết hạn giữa lô -> lấy token mới và gửi lại đúng 1 lần
+                    if (statusCode == HttpStatusCode.Unauthorized && !tokenRefreshed)
                     {
-                        username = username,
-                        password = password,
-                        maCskcb = maCsKCB ?? "",
-                        loaiHs = LOAI_HO_SO,
-                        kyQT = kyQT ?? "",
-                        maTinh = maTinh ?? "",
-                        fileHsBase64 = fileHsBase64 ?? ""
-                    };
-                    string json = JsonConvert.SerializeObject(bodyObj);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                        LogSystem.Warn("[DAY_CONG_09BH] Cổng trả HTTP 401 -> lấy token mới rồi gửi lại hồ sơ.");
+                        tokenRefreshed = true;
+                        ResetToken();
+                        token = EnsureToken(address, username, password, maCsKCB);
+                        if (token == null || !token.HasToken())
+                        {
+                            result.ErrorMessage = (token != null && !string.IsNullOrEmpty(token.ErrorMessage))
+                                ? token.ErrorMessage
+                                : "Không đăng nhập lại được cổng BHXH.";
+                            return result;
+                        }
+                        continue;
+                    }
 
-                    // Log INPUT (không log token/passwordHash và không log full base64 ở mức Info)
-                    LogSystem.Info(string.Format(
-                        "[DAY_CONG_09BH] REQUEST -> URL={0}{1} | username={2} | loaiHs={3} | maCskcb={4} | kyQT={5} | maTinh={6} | fileHsBase64.Length={7}",
-                        address.TrimEnd('/') + "/", SEND_URI, username, LOAI_HO_SO, maCsKCB ?? "", kyQT ?? "", maTinh ?? "",
-                        (fileHsBase64 ?? "").Length));
-                    LogSystem.Debug("[DAY_CONG_09BH] REQUEST fileHsBase64=" + (fileHsBase64 ?? ""));
-
-                    HttpResponseMessage resp = client.PostAsync(SEND_URI, content).ConfigureAwait(false).GetAwaiter().GetResult();
-                    string body = resp.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-                    LogSystem.Info(string.Format(
-                        "[DAY_CONG_09BH] RESPONSE <- HTTP {0} ({1}) | body={2}",
-                        (int)resp.StatusCode, resp.StatusCode, body));
-
-                    if (!resp.IsSuccessStatusCode)
+                    if (body == null)
                     {
-                        if ((int)resp.StatusCode == 401)
-                            result.ErrorMessage = "Không đăng nhập được cổng (HTTP 401).";
-                        else
-                            result.ErrorMessage = "Lỗi gọi API gửi hồ sơ. Mã HTTP: " + (int)resp.StatusCode;
+                        result.ErrorMessage = "Lỗi gọi API gửi hồ sơ. Mã HTTP: " + (int)statusCode;
                         return result;
                     }
 
@@ -143,7 +277,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
                     try { sr = JsonConvert.DeserializeObject<SendResponse>(body); }
                     catch (Exception exParse) { LogSystem.Warn(exParse); }
 
-                    if (sr == null)
+                    if (sr == null || string.IsNullOrEmpty(sr.maKetQua))
                     {
                         result.ErrorMessage = "Không đọc được phản hồi từ cổng. Response: " + body;
                         return result;
@@ -153,13 +287,20 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
                     result.MaGiaoDich = sr.maGiaoDich;
                     result.ThongDiep = sr.thongDiep;
                     result.ThoiGianTiepNhan = sr.thoiGianTiepNhan;
-                    result.Success = sr.maKetQua == "200";
+                    result.Success = sr.maKetQua == MA_KET_QUA_THANH_CONG;
                     if (!result.Success)
-                        result.ErrorMessage = !string.IsNullOrEmpty(sr.thongDiep) ? sr.thongDiep : MapErrorCode(sr.maKetQua);
+                    {
+                        // Ghép cả mô tả mã lỗi theo tài liệu và thông điệp cổng trả về để người dùng biết đường sửa
+                        string moTaMa = MapErrorCode(sr.maKetQua);
+                        result.ErrorMessage = string.IsNullOrEmpty(sr.thongDiep)
+                            ? moTaMa
+                            : string.Format("{0} ({1})", sr.thongDiep, moTaMa);
+                    }
 
                     LogSystem.Info(string.Format(
                         "[DAY_CONG_09BH] KẾT QUẢ: Success={0} | maKetQua={1} | maGiaoDich={2} | thoiGianTiepNhan={3} | thongDiep={4}",
                         result.Success, result.MaKetQua, result.MaGiaoDich, result.ThoiGianTiepNhan, result.ThongDiep));
+                    return result;
                 }
             }
             catch (Exception ex)
@@ -170,44 +311,91 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
             return result;
         }
 
-        private LoginResult RegisToken(string username, string password, string maCSKCB, string address)
+        /// <summary>
+        /// Gọi API gửi hồ sơ. Trả về body JSON; null khi HTTP lỗi (statusCode trả ra để caller xử lý 401).
+        /// Header: accessToken / tokenId / passwordHash (tài liệu mục II.2.a).
+        /// </summary>
+        private string PostHoSo(string address, string username, string password, string maCsKCB, string kyQT,
+            string maTinh, string fileHsBase64, Portal09BHToken token, out HttpStatusCode statusCode)
         {
-            LoginResult plv = null;
+            statusCode = 0;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(address);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Add("accessToken", token.AccessToken);
+                client.DefaultRequestHeaders.Add("tokenId", token.IdToken ?? "");
+                client.DefaultRequestHeaders.Add("passwordHash", ConvertStringToMD5(password));
+
+                var bodyObj = new
+                {
+                    username = username,
+                    password = password,
+                    maCskcb = maCsKCB ?? "",
+                    loaiHs = LOAI_HO_SO,
+                    kyQT = kyQT ?? "",
+                    maTinh = maTinh ?? "",
+                    fileHsBase64 = fileHsBase64 ?? ""
+                };
+                string json = JsonConvert.SerializeObject(bodyObj);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // Log INPUT (không log token/passwordHash và không log full base64 ở mức Info)
+                LogSystem.Info(string.Format(
+                    "[DAY_CONG_09BH] REQUEST -> URL={0}{1} | username={2} | loaiHs={3} | maCskcb={4} | kyQT={5} | maTinh={6} | fileHsBase64.Length={7}",
+                    address.TrimEnd('/') + "/", SEND_URI, username, LOAI_HO_SO, maCsKCB ?? "", kyQT ?? "", maTinh ?? "",
+                    (fileHsBase64 ?? "").Length));
+                LogSystem.Debug("[DAY_CONG_09BH] REQUEST fileHsBase64=" + (fileHsBase64 ?? ""));
+
+                HttpResponseMessage resp = client.PostAsync(SEND_URI, content).ConfigureAwait(false).GetAwaiter().GetResult();
+                statusCode = resp.StatusCode;
+                string body = resp.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+                LogSystem.Info(string.Format(
+                    "[DAY_CONG_09BH] RESPONSE <- HTTP {0} ({1}) | body={2}",
+                    (int)resp.StatusCode, resp.StatusCode, body));
+
+                // Cổng có thể trả mã nghiệp vụ kèm HTTP 4xx nhưng vẫn có body JSON -> vẫn đọc để lấy thongDiep
+                if (!resp.IsSuccessStatusCode && string.IsNullOrEmpty(body))
+                    return null;
+                return body;
+            }
+        }
+
+        /// <summary>Đọc expires_in (VD "2026-07-27T01:37:07.9726Z") thành DateTime UTC.</summary>
+        private static DateTime? ParseExpires(string expiresIn)
+        {
+            if (string.IsNullOrEmpty(expiresIn)) return null;
             try
             {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(address);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    var bodyObj = new { username = username, password = password, maCSKCB = maCSKCB ?? "" };
-                    var content = new StringContent(JsonConvert.SerializeObject(bodyObj), Encoding.UTF8, "application/json");
-
-                    LogSystem.Info(string.Format("[DAY_CONG_09BH] TOKEN REQUEST -> URL={0}{1} | username={2}",
-                        address.TrimEnd('/') + "/", TOKEN_URI, username));
-                    HttpResponseMessage response = client.PostAsync(TOKEN_URI, content).ConfigureAwait(false).GetAwaiter().GetResult();
-                    LogSystem.Info(string.Format("[DAY_CONG_09BH] TOKEN RESPONSE <- HTTP {0} ({1})",
-                        (int)response.StatusCode, response.StatusCode));
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string body = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                        plv = JsonConvert.DeserializeObject<LoginResult>(body);
-                    }
-                    else
-                    {
-                        LogSystem.Error("[DAY_CONG_09BH] Đăng nhập cổng BHXH thất bại. Mã HTTP: " + (int)response.StatusCode);
-                    }
-                }
+                DateTime value;
+                if (DateTime.TryParse(expiresIn, CultureInfo.InvariantCulture,
+                        DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out value))
+                    return value;
             }
             catch (Exception ex)
             {
-                LogSystem.Error(ex);
+                LogSystem.Warn(ex);
             }
-            return plv;
+            return null;
         }
 
-        /// <summary>Chuyển mã kết quả cổng trả về thành thông điệp tiếng Việt (theo tài liệu mục 4).</summary>
+        /// <summary>Mã kết quả dịch vụ lấy token (tài liệu mục I.4).</summary>
+        private static string MapTokenErrorCode(string ma)
+        {
+            switch (ma)
+            {
+                case "200": return "Lấy token thành công";
+                case "401": return "Tài khoản không tồn tại hoặc sai thông tin đăng nhập";
+                case "402": return "Mã cơ sở KCB không đúng";
+                case "403": return "Tài khoản đã bị khóa";
+                case "500": return "Lỗi hệ thống cổng BHXH";
+                default: return "Cổng trả về mã kết quả khi lấy token: " + ma;
+            }
+        }
+
+        /// <summary>Mã kết quả dịch vụ gửi hồ sơ điều chỉnh (tài liệu mục II.4).</summary>
         private static string MapErrorCode(string ma)
         {
             switch (ma)

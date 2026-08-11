@@ -150,4 +150,7 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Required field</value>
   </data>
+  <data name="TheBHYTDaHetHanSuDungBanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>The health insurance card has expired. Do you want to continue?</value>
+  </data>
 </root>

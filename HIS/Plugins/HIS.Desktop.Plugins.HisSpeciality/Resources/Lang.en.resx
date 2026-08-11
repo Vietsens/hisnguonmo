@@ -154,7 +154,7 @@
     <comment>Làm lại (Ctrl R)</comment>
   </data>
   <data name="frmHisSpeciality.btnSearch.Text" xml:space="preserve">
-    <value>Find (Ctrl F)</value>
+    <value>Search (Ctrl F)</value>
     <comment>Tìm (Ctrl F)</comment>
   </data>
   <data name="frmHisSpeciality.chkPause.Properties.Caption" xml:space="preserve">
@@ -165,7 +165,7 @@
     <comment>dataNavigator1</comment>
   </data>
   <data name="frmHisSpeciality.grdColCashierRoomCode.Caption" xml:space="preserve">
-    <value>Room code</value>
+    <value>Code</value>
     <comment>Mã phòng</comment>
   </data>
   <data name="frmHisSpeciality.grdColCashierRoomCode.ToolTip" xml:space="preserve">
@@ -173,7 +173,7 @@
     <comment>Mã phòng</comment>
   </data>
   <data name="frmHisSpeciality.grdColCashierRoomName.Caption" xml:space="preserve">
-    <value>Room name</value>
+    <value>Name</value>
     <comment>Tên phòng</comment>
   </data>
   <data name="frmHisSpeciality.grdColCashierRoomName.ToolTip" xml:space="preserve">
@@ -269,11 +269,11 @@
     <comment>layoutControl5</comment>
   </data>
   <data name="frmHisSpeciality.lciCashierRoomCode.Text" xml:space="preserve">
-    <value>Cashier room code:</value>
+    <value>Code:</value>
     <comment>Mã phòng TN:</comment>
   </data>
   <data name="frmHisSpeciality.lciCashierRoomName.Text" xml:space="preserve">
-    <value>Cashier room name:</value>
+    <value>Name:</value>
     <comment>Tên phòng TN:</comment>
   </data>
   <data name="frmHisSpeciality.lciRoomId.Text" xml:space="preserve">
@@ -291,7 +291,7 @@
     <comment>STT</comment>
   </data>
   <data name="frmHisSpeciality.Text" xml:space="preserve">
-    <value>Category</value>
+    <value>Speciality</value>
     <comment>Danh mục</comment>
   </data>
   <data name="frmHisSpeciality.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">

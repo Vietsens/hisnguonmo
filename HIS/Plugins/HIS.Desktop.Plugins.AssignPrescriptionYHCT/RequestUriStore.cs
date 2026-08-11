@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT
+namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT 
 {
     class RequestUriStore
     {
@@ -31,6 +31,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT
         public const string HIS_SERVICE_REQ_MATY__GET = "api/HisServiceReqMaty/Get";
         public const string HIS_SERVICE_REQ_METY__GETVIEW = "api/HisServiceReqMety/GetView";
         public const string HIS_SERVICE_REQ_MATY__GETVIEW = "api/HisServiceReqMaty/GetView";
+
+        public const string HIS_SERVICE_REQ__CHECK_PHARMACOLOGY = "api/HisServiceReq/CheckPharmacology";
 
         public const string HIS_SERVICE_REQ__IN_PATIENT_PRES_CREATE = "api/HisServiceReq/InPatientPresCreate";
         public const string HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE = "api/HisServiceReq/OutPatientPresCreate";

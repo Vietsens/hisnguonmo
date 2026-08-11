@@ -58,6 +58,10 @@
     <Reference Include="HIS.Desktop.Common">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Common.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.MIMS.Integration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.MIMS.Integration\HIS.Desktop.MIMS.Integration.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
@@ -266,6 +270,9 @@
       <DependentUpon>frmPatientUpdate.cs</DependentUpon>
     </Compile>
     <Compile Include="frmPatientUpdate__Event.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPatientUpdate__Mims.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmPatientUpdate__LoadCombo.cs">

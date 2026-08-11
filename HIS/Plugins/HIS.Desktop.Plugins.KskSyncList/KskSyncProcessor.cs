@@ -41,10 +41,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private readonly string hsskConnectionInfo;     // cong HSSK (MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO)
         private readonly string hocConnectionInfo;      // cong HOC->TTYTQG (MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO)
         private readonly string hccConnectionInfo;      // cong HCC (MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO)
+        private readonly string vlgConnectionInfo;      // cong KDLYT Vinh Long (MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO)
         private readonly bool pushByt;                  // co day cong BYT
         private readonly bool pushHssk;                 // co day cong HSSK
         private readonly bool pushHoc;                  // co day cong HOC
         private readonly bool pushHcc;                  // co day cong HCC
+        private readonly bool pushVlg;                  // co day cong KDLYT Vinh Long
         private readonly bool sign;
         private readonly SettingSignADO signSetting;
 
@@ -73,25 +75,38 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
         }
 
-        /// <summary>
-        /// Ctor day da cong: chon day BYT (pushByt), HSSK (pushHssk), HOC->TTYTQG (pushHoc) va/hoac
-        /// HCC (pushHcc). BYT/HSSK/HOC dung CHUNG 1 base64 (thu vien CreateQd1551Main.PushListMulti xu ly),
-        /// chi khac API dang nhap + endpoint day + cach dong goi body.
-        /// HCC dung base64 RIENG (mac dinh json/base64 theo tai lieu HCC) nen dung payload rieng roi day
-        /// bang KskHccPusher — xem KskHccPusher de biet giao thuc.
-        /// </summary>
+        /// <summary>Ctor 4 cong (BYT + HSSK + HOC + HCC) — giu tuong thich cho cac loi goi cu.</summary>
         internal KskSyncProcessor(string connectionInfo, string hsskConnectionInfo, string hocConnectionInfo,
             string hccConnectionInfo, bool pushByt, bool pushHssk, bool pushHoc, bool pushHcc,
             bool sign, SettingSignADO signSetting)
+            : this(connectionInfo, hsskConnectionInfo, hocConnectionInfo, hccConnectionInfo, null,
+                   pushByt, pushHssk, pushHoc, pushHcc, false, sign, signSetting)
+        {
+        }
+
+        /// <summary>
+        /// Ctor day da cong: chon day BYT (pushByt), HSSK (pushHssk), HOC->TTYTQG (pushHoc), HCC (pushHcc)
+        /// va/hoac KDLYT Vinh Long (pushVlg). BYT/HSSK/HOC dung CHUNG 1 base64 (thu vien
+        /// CreateQd1551Main.PushListMulti xu ly), chi khac API dang nhap + endpoint day + cach dong goi body.
+        /// HCC dung base64 RIENG (mac dinh json/base64 theo tai lieu HCC) nen dung payload rieng roi day
+        /// bang KskHccPusher — xem KskHccPusher de biet giao thuc.
+        /// VLG (Cong tiep nhan Vinh Long) dung giao thuc RIENG hoan toan: token /api/xac-thuc/token +
+        /// POST XML KHAMSUCKHOE truc tiep (khong base64) — xem KskVlgPusher de biet giao thuc.
+        /// </summary>
+        internal KskSyncProcessor(string connectionInfo, string hsskConnectionInfo, string hocConnectionInfo,
+            string hccConnectionInfo, string vlgConnectionInfo, bool pushByt, bool pushHssk, bool pushHoc,
+            bool pushHcc, bool pushVlg, bool sign, SettingSignADO signSetting)
         {
             this.connectionInfo = connectionInfo;
             this.hsskConnectionInfo = hsskConnectionInfo;
             this.hocConnectionInfo = hocConnectionInfo;
             this.hccConnectionInfo = hccConnectionInfo;
+            this.vlgConnectionInfo = vlgConnectionInfo;
             this.pushByt = pushByt;
             this.pushHssk = pushHssk;
             this.pushHoc = pushHoc;
             this.pushHcc = pushHcc;
+            this.pushVlg = pushVlg;
             this.sign = sign;
             this.signSetting = signSetting;
         }
@@ -146,6 +161,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 bool exportAsJson = exportConfig != null && exportConfig.IsJson();
                 List<Qd1551KskInput> inputs = BuildInputs(rowList);   // 1 lan nap batch (1:1 voi rowList)
                 bool doSign = this.sign && this.signSetting != null;
+                // Tich ky so nhung KHONG co cau hinh chung thu -> DUNG. Neu xuat tiep se ra file CKS_ trong
+                // ma nguoi dung van tuong da ky (truoc day im lang di nhanh khong ky).
+                if (this.sign && this.signSetting == null)
+                {
+                    error = "Bạn đã bật Ký số nhưng chưa cấu hình chứng thư/chữ ký số. "
+                          + "Vui lòng cấu hình (bỏ tích rồi tích lại nút Ký số) trước khi xuất XML.";
+                    return 0;
+                }
                 var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
                 // === KY SO BAT: gom ho so theo NGUOI KET LUAN, moi nhom -> 1 file (nhieu ho so cung nguoi),
@@ -165,6 +188,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                     KskSyncSigner signer = new KskSyncSigner(this.signSetting);
                     var concSigners = FetchConcluderSigners(rowList);
+                    LogSignScope(rowList, concSigners, "Xuat XML KSK");
 
                     // Gom CHI SO dong theo concluder_loginname (giu thu tu).
                     var groups = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
@@ -310,6 +334,20 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 string hccMacskcb = (hccConfig != null) ? (hccConfig.SenderId ?? "") : "";
                 KskHccPusher hccPusher = (hccConfig != null) ? new KskHccPusher(hccConfig) : null;
 
+                // Cổng KDLYT Vĩnh Long: giao thức riêng (token /api/xac-thuc/token + JSON wrapper chứa XML),
+                // KHÔNG dùng lại Qd1551Consumer; token cache trong 1 KskVlgPusher dùng chung cả lô.
+                // metadata định tuyến (sender_id/receiver_id/msg_type/txn_type) lấy theo cấu hình cổng BYT
+                // (MOS.HIS_KSK_SYNC.CONNECTION_INFO — bytConfig); viện không cấu hình BYT thì bỏ qua các trường đó.
+                KskVlgConfig vlgConfig = BuildVlgConfig();
+                string vlgMacskcb = (vlgConfig != null) ? (vlgConfig.MaDonVi ?? "") : "";
+                KskVlgPusher vlgPusher = (vlgConfig != null)
+                    ? new KskVlgPusher(vlgConfig,
+                        (bytConfig != null) ? bytConfig.SenderId : null,
+                        (bytConfig != null) ? bytConfig.ReceiverId : null,
+                        (bytConfig != null) ? bytConfig.MsgType : null,
+                        (bytConfig != null) ? bytConfig.TxnType : null)
+                    : null;
+
                 // Các cổng do THƯ VIỆN đẩy (BYT/HSSK/HOC). Không có cổng nào -> KHÔNG gọi PushListMulti
                 // (gọi rỗng sẽ trả về "thành công" giả vì không cổng nào đánh dấu thất bại).
                 bool pushViaLibrary = this.pushByt || hsskConfig != null || hocConfig != null;
@@ -319,7 +357,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     : null;
 
                 // Ghi log giá trị cấu hình TỪNG CỔNG vừa lấy được (mật khẩu / khóa bí mật đã mask).
-                LogGatewayConfigs(bytConfig, hsskConfig, hocConfig, hccConfig);
+                LogGatewayConfigs(bytConfig, hsskConfig, hocConfig, hccConfig, vlgConfig);
 
                 // Cổng ĐÃ CHỌN + CÓ chuỗi cấu hình nhưng PARSE LỖI (sai định dạng) -> KHÔNG bỏ qua âm thầm:
                 // ghi nhận để đánh dấu hồ sơ thất bại kèm lý do (nếu không, hồ sơ vẫn "thành công" nhờ cổng khác).
@@ -330,16 +368,28 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     configErrorList.Add("HOC: chuỗi cấu hình sai định dạng (MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO)");
                 if (this.pushHcc && !string.IsNullOrWhiteSpace(this.hccConnectionInfo) && hccConfig == null)
                     configErrorList.Add("HCC: chuỗi cấu hình sai định dạng (MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO)");
+                if (this.pushVlg && !string.IsNullOrWhiteSpace(this.vlgConnectionInfo) && vlgConfig == null)
+                    configErrorList.Add("VLG: chuỗi cấu hình sai định dạng (MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO)");
                 string configError = (configErrorList.Count > 0) ? string.Join(" | ", configErrorList.ToArray()) : null;
 
-                // KÝ SỐ (CKS_NGUOI_KET_LUAN + CKS_BENH_VIEN) chỉ áp dụng cho bản tin XML: cổng BYT, hoặc cổng
-                // HCC khi cấu hình dùng xml/base64. HSSK/HOC dùng chung base64 với BYT nên chỉ được ký khi có BYT.
-                bool hccIsJson = hccConfig != null && hccConfig.IsJson();     // mac dinh json/base64 theo tai lieu HCC 
+                // KÝ SỐ (CKS_NGUOI_KET_LUAN + CKS_BENH_VIEN): TÍCH ký số là ký, KHÔNG phụ thuộc cổng nào được
+                // chọn. Bản tin XML base64 dùng CHUNG cho BYT/HSSK/HOC nên ký 1 lần là cả 3 cổng đều có CKS_
+                // (trước đây chỉ ký khi có BYT -> đẩy riêng HSSK/HOC ra bản tin KHÔNG chữ ký).
+                // Ngoại lệ duy nhất: cổng HCC cấu hình json/base64 — chữ ký chèn theo THẺ XML nên không ký được.
+                bool hccIsJson = hccConfig != null && hccConfig.IsJson();     // mac dinh json/base64 theo tai lieu HCC
                 bool signXmlForHcc = hccConfig != null && !hccIsJson;
-                bool doSign = this.sign && this.signSetting != null && (this.pushByt || signXmlForHcc);
+                bool doSign = this.sign && this.signSetting != null;
                 KskSyncSigner signer = doSign ? new KskSyncSigner(this.signSetting) : null;
                 Dictionary<string, EMR.EFMODEL.DataModels.EMR_SIGNER> concSigners =
                     doSign ? FetchConcluderSigners(rowList) : null;
+                if (doSign)
+                {
+                    LogSignScope(rowList, concSigners, "Dong bo KSK");
+                    if (hccIsJson)
+                        Inventec.Common.Logging.LogSystem.Warn("Dong bo KSK: cong HCC cau hinh json/base64 -> KHONG ky duoc"
+                            + " CKS_ (chu ky chen theo the XML). Ban tin day sang HCC se de trong CHUKYDONVI."
+                            + " Doi cau hinh HCC sang xml/base64 neu can chu ky.");
+                }
 
                 // Ghi log CHỐT danh sách cổng thực sự đẩy của lần bấm này (để đối soát khi có nhiều cổng).
                 var gateways = new List<string>();
@@ -347,6 +397,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (hsskConfig != null) gateways.Add("HSSK");
                 if (hocConfig != null) gateways.Add("HOC");
                 if (hccConfig != null) gateways.Add("HCC" + (hccIsJson ? "(json)" : "(xml)"));
+                if (vlgConfig != null) gateways.Add("VLG(xml)");
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                     "Dong bo KSK: {0} ho so -> cong: {1}; ky so: {2}{3}",
                     rowList.Count,
@@ -381,8 +432,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             ResultADO r0 = null;
                             if (pushViaLibrary)
                             {
+                                // dataSigner ap cho CHUOI XML DUNG CHUNG cua BYT/HSSK/HOC -> tich ky so la
+                                // cong nao cung nhan ban tin da ky (khong con phu thuoc co tich BYT hay khong).
                                 List<ResultADO> pr = main.PushListMulti(new List<Qd1551KskInput> { inp }, certificate,
-                                    this.pushByt ? dataSigner : null, this.pushByt, hsskConfig, hocConfig);
+                                    dataSigner, this.pushByt, hsskConfig, hocConfig);
                                 r0 = (pr != null && pr.Count > 0) ? pr[0] : null;
                             }
                             // Cổng HCC (nếu chọn) — payload riêng theo data_type của cấu hình HCC.
@@ -391,7 +444,22 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 hccResult = hccPusher.Push(BuildHccPayload(hccMacskcb, inp, hccIsJson,
                                     signXmlForHcc ? dataSigner : null));
 
-                            ado = BuildResultAdo(rowList[i], r0, hccResult, syncTime, libSingleLabel, configError);
+                            // Cổng KDLYT Vĩnh Long (nếu chọn) — XML KHAMSUCKHOE bọc JSON wrapper kèm metadata
+                            // (ma_yeu_cau = mã điều trị + hash nội dung; treatment_code để tỉnh đối soát).
+                            // Bản tin là XML nên luôn ký được CKS_ (không có hạn chế json như HCC). Đã tích ký số
+                            // mà ký thất bại -> KHÔNG đẩy bản chưa ký, đánh dấu thất bại rõ lý do.
+                            KskVlgPushResult vlgResult = null;
+                            if (vlgPusher != null)
+                            {
+                                bool vlgSignFailed;
+                                string vlgPayload = BuildVlgPayload(vlgMacskcb, inp, dataSigner, out vlgSignFailed);
+                                vlgResult = vlgSignFailed
+                                    ? KskVlgPushResult.Failure("VLG: ký số thất bại (CKS_BENH_VIEN/CKS_NGUOI_KET_LUAN)"
+                                        + " — không đẩy bản tin chưa ký. Kiểm tra cấu hình chứng thư / HSM / USB token.")
+                                    : vlgPusher.Push(vlgPayload, SafeString(GetProp(rowList[i], "TDL_TREATMENT_CODE")));
+                            }
+
+                            ado = BuildResultAdo(rowList[i], r0, hccResult, vlgResult, syncTime, libSingleLabel, configError);
                         }
                     }
                     catch (Exception exRow)
@@ -508,6 +576,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             List<V_HIS_SERE_SERV_SUIN> clsSuins = null;
             List<HIS_SERE_SERV_EXT> clsExts = null;
             List<V_HIS_PATIENT_TYPE_ALTER> patientTypeAlters = null;
+            List<HIS_SERVICE_REQ> serviceReqs = null;
 
             var tasks = new List<System.Threading.Tasks.Task>();
             if (serviceReqIds.Count > 0 || treatmentIds.Count > 0)
@@ -518,6 +587,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         TREATMENT_IDs = treatmentIds,
                         IS_ACTIVE = 1
                     })));
+            // Y lenh KSK (HIS_SERVICE_REQ): nguon cua LY_DO_VV (XML1) — o "Ly do kham" tren man nhap KSK
+            // duoc luu tai HIS_SERVICE_REQ.HOSPITALIZATION_REASON (khong phai HIS_TREATMENT).
+            if (serviceReqIds.Count > 0)
+                tasks.Add(System.Threading.Tasks.Task.Factory.StartNew(() =>
+                    serviceReqs = GetList<HIS_SERVICE_REQ>("api/HisServiceReq/Get", new HisServiceReqFilter { IDs = serviceReqIds })));
 
             if (treatmentIds.Count > 0)
             {
@@ -609,6 +683,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             var dhstById = IndexBy(dhsts, d => d.ID);            // DHST theo ID (chinh xac tung ban ghi KSK)
             var dhstByTr = GroupByKey(dhsts, d => d.TREATMENT_ID); // fallback theo dot dieu tri
             var treaById = IndexBy(treatments, t => t.ID);
+            var sreqById = IndexBy(serviceReqs, s => s.ID);       // y lenh KSK theo SERVICE_REQ_ID (LY_DO_VV)
             var patById = IndexBy(patients, p => p.ID);
             var vatyByU18 = GroupByKey(vatys, v => v.KSK_UNDER_EIGHTEEN_ID);
             var dityByO18 = GroupByKey(ditys, d => d.KSK_OVER_EIGHTEEN_ID ?? 0);
@@ -617,8 +692,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             Dictionary<long, HIS_BRANCH> branchById = null;
             try { branchById = IndexBy(BackendDataWorker.Get<HIS_BRANCH>(), b => b.ID); }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
-            // Ma GTIN/GLN co so — SenderId trong CONNECTION_INFO (BYT); neu rong -> fallback SenderId cong
-            // HSSK, roi cong HCC (deu la ma don vi 13 so).
+            // Ma GTIN/GLN co so — SenderId trong CONNECTION_INFO (BYT); neu rong -> fallback MaCsyt cong HOC
+            // (trong BuildConfig), roi SenderId cong HSSK, roi cong HCC (deu la ma don vi 13 so).
             string maGtinCskcb = "";
             try
             {
@@ -633,6 +708,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 {
                     var c = KskHccConfigParser.Parse(this.hccConnectionInfo);   // MaCsyt = ma don vi 13 so
                     if (c != null && !string.IsNullOrWhiteSpace(c.SenderId)) sid = c.SenderId;
+                }
+                if (string.IsNullOrWhiteSpace(sid) && !string.IsNullOrWhiteSpace(this.vlgConnectionInfo))
+                {
+                    var v = KskVlgConfigParser.Parse(this.vlgConnectionInfo);   // MaDonVi do tinh cap
+                    if (v != null && !string.IsNullOrWhiteSpace(v.MaDonVi)) sid = v.MaDonVi;
                 }
                 maGtinCskcb = sid ?? "";
             }
@@ -685,6 +765,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     OverEighteen = over18,
                     Dhst = dhstForInput,
                     Treatment = trea,
+                    // LY_DO_VV (XML1) lay tu y lenh KSK; rong -> thu vien fallback ve Treatment (ho so cu).
+                    ServiceReq = ValOrNull(sreqById, sr),
                     HealthExamRanks = ranks,
                     // Tiem chung 6-18 + danh muc vac-xin (mapper quy doi VACCINE_TYPE_CODE KSK01-07 -> the TIEM_CHUNG_*)
                     Vaccinations = (under18 != null) ? ListOrNull(vatyByU18, under18.ID) : null,
@@ -1240,6 +1322,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// ngoai kham/don (KH/DONDT/DONTT/DONK) =08 nguoc lai =05; mac dinh =10.
         /// Rieng KSK: neu MA_LOAI_KCB=01 va doi tuong hien tai la KSK (PATIENT_TYPE_CODE = config
         /// MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK, khop TDL_PATIENT_TYPE_ID) -> "100".
+        /// Cac MA LOAI KCB MOI theo QD 1804/QD-BYT: KHONG hardcode ID nhu XML130/TT12 — lay theo danh muc
+        /// HIS_TREATMENT_TYPE.TREATMENT_TYPE_CODE (VARCHAR2(2) = dung ma BYT), vi HIS_TREATMENT_TYPE_SEQ
+        /// bat dau tu 21 nen ID cac loai them moi khac nhau giua cac co so. CHI nhan ma trong 11..16
+        /// (pham vi da duoc bo sung); ma ngoai khoang nay -> giu mac dinh "10" nhu cu.
         /// </summary>
         private static string ResolveMaLoaiKcb(HIS_TREATMENT t, List<HIS_SERE_SERV> allSereServs,
             List<V_HIS_PATIENT_TYPE_ALTER> alters, string keyKsk)
@@ -1289,6 +1375,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         maLoaiKcb = "05";
                 }
             }
+            else
+            {
+                // Loai dieu tri NGOAI 6 loai goc -> ma loai KCB moi theo QD 1804/QD-BYT: lay tu danh muc
+                // (TREATMENT_TYPE_CODE), khong so ID. CHI nhan 11..16; ma khac hoac danh muc trong
+                // -> giu mac dinh "10" (khong tin ma tu do trong danh muc).
+                string typeCode = ResolveTreatmentTypeCode(type);
+                if (NEW_MA_LOAI_KCB_CODES.Contains(typeCode)) maLoaiKcb = typeCode;
+            }
             // Kham suc khoe: dien dieu tri kham + doi tuong benh nhan la KSK -> 100 (nhu XML130).
             if (maLoaiKcb == "01" && !string.IsNullOrEmpty(keyKsk)
                 && alters != null && alters.Count > 0
@@ -1297,6 +1391,30 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 maLoaiKcb = "100";
             }
             return maLoaiKcb;
+        }
+
+        /// <summary>
+        /// Cac ma loai KCB moi duoc bo sung theo QD 1804/QD-BYT — CHI cac ma nay duoc lay tu danh muc
+        /// loai dieu tri. Ma ngoai danh sach -> khong dung (giu mac dinh nhu logic cu).
+        /// </summary>
+        private static readonly string[] NEW_MA_LOAI_KCB_CODES = new string[] { "11", "12", "13", "14", "15", "16" };
+
+        /// <summary>
+        /// Ma loai KCB theo danh muc loai dieu tri: HIS_TREATMENT_TYPE.TREATMENT_TYPE_CODE (2 ky tu,
+        /// dung ma BYT) theo TDL_TREATMENT_TYPE_ID. Doc tu cache RAM (BackendDataWorker) nen khong ton
+        /// them call API. Khong tim thay / danh muc de trong -> "" (caller giu mac dinh).
+        /// </summary>
+        private static string ResolveTreatmentTypeCode(long treatmentTypeId)
+        {
+            try
+            {
+                if (treatmentTypeId <= 0) return "";
+                var treatmentType = BackendDataWorker.Get<HIS_TREATMENT_TYPE>()
+                    .FirstOrDefault(o => o != null && o.ID == treatmentTypeId);
+                if (treatmentType == null || string.IsNullOrWhiteSpace(treatmentType.TREATMENT_TYPE_CODE)) return "";
+                return treatmentType.TREATMENT_TYPE_CODE.Trim();
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return ""; }
         }
 
         /// <summary>Goi API danh sach (Get) — MosConsumer. Loi -> null (khong chan cac call khac).</summary>
@@ -1351,10 +1469,52 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 if (s == null || string.IsNullOrEmpty(s.LOGINNAME)) continue;
                 if (s.SIGN_IMAGE == null || s.SIGN_IMAGE.Length == 0) continue;
+                // Nen anh neu base64 vuot 65000 ky tu (gioi han 1 the CKDT_ cua cong tiep nhan).
+                // Nen 1 lan/bac si tai day — 1 bac si co the ky nhieu the CKDT_ (VD 8 the noi khoa).
                 if (!map.ContainsKey(s.LOGINNAME))
-                    map[s.LOGINNAME] = Convert.ToBase64String(s.SIGN_IMAGE);
+                    map[s.LOGINNAME] = KskSignImageCompressor.ToBase64(s.SIGN_IMAGE, s.LOGINNAME);
             }
             return map.Count > 0 ? map : null;
+        }
+
+        /// <summary>
+        /// Ghi log PHAM VI ky so cua lan bam nay — de doi soat khi mo file XML thay the CKS_ trong:
+        ///   - CKS_BENH_VIEN: luon ky khi tich ky so (HSM hoac USB token).
+        ///   - CKS_NGUOI_KET_LUAN: CHI ky duoc bang HSM cua nguoi ket luan (EMR_SIGNER co PCA_SERIAL).
+        ///     Cau hinh ky so khong phai HSM, hoac nguoi ket luan chua khai chung thu HSM -> the do DE TRONG
+        ///     (khong chan viec ky/xuat) => log ro ly do + liet ke loginname thieu chung thu.
+        /// </summary>
+        private void LogSignScope(List<V_HIS_KSK_SYNC> rowList,
+            Dictionary<string, EMR.EFMODEL.DataModels.EMR_SIGNER> concSigners, string prefix)
+        {
+            try
+            {
+                if (this.signSetting == null) return;
+                if (!this.signSetting.IsHsm)
+                {
+                    Inventec.Common.Logging.LogSystem.Info(prefix + ": ky so bang USB token -> chi ky CKS_BENH_VIEN;"
+                        + " CKS_NGUOI_KET_LUAN DE TRONG (chi ky duoc bang HSM cua nguoi ket luan).");
+                    return;
+                }
+                var missCert = new List<string>();
+                if (rowList != null)
+                    foreach (var row in rowList)
+                    {
+                        string cl = SafeString(GetProp(row, "CONCLUDER_LOGINNAME"));
+                        if (string.IsNullOrEmpty(cl) || missCert.Contains(cl)) continue;
+                        if (concSigners == null || !concSigners.ContainsKey(cl)) missCert.Add(cl);
+                    }
+                if (missCert.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Info(prefix + ": ky CKS_BENH_VIEN + CKS_NGUOI_KET_LUAN (HSM)"
+                        + " cho toan bo nguoi ket luan.");
+                    return;
+                }
+                Inventec.Common.Logging.LogSystem.Warn(prefix + ": " + missCert.Count + " nguoi ket luan CHUA KHAI"
+                    + " CHUNG THU HSM (EMR_SIGNER.PCA_SERIAL) -> CKS_NGUOI_KET_LUAN cua cac ho so do DE TRONG"
+                    + " (van ky CKS_BENH_VIEN). Loginname: " + string.Join(", ", missCert.Take(30).ToArray()));
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
         /// <summary>
@@ -1574,7 +1734,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary> 
         private Qd1551Config BuildConfig()
         {
-            return Qd1551ConfigParser.Parse(this.connectionInfo, null) ?? new Qd1551Config();
+            var cfg = Qd1551ConfigParser.Parse(this.connectionInfo, null) ?? new Qd1551Config();
+            // MACSKCB (envelope) + MA_GTIN_CSKCB: nếu KHÔNG có SenderId cổng BYT (vd chỉ cấu hình HOC),
+            // dùng MaCsyt trong cấu hình HOC làm SenderId -> THONGTINDONVI/MACSKCB = MaCsyt (HOC).
+            if (string.IsNullOrWhiteSpace(cfg.SenderId) && !string.IsNullOrWhiteSpace(this.hocConnectionInfo))
+            {
+                var hoc = HocConfigParser.Parse(this.hocConnectionInfo);
+                if (hoc != null && !string.IsNullOrWhiteSpace(hoc.MaCsyt)) cfg.SenderId = hoc.MaCsyt;
+            }
+            return cfg;
         }
 
         /// <summary>
@@ -1587,6 +1755,101 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             if (!this.pushHcc || string.IsNullOrWhiteSpace(this.hccConnectionInfo)) return null;
             return KskHccConfigParser.Parse(this.hccConnectionInfo);
+        }
+
+        /// <summary>
+        /// Cau hinh cong KDLYT Vinh Long tu MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO. Dinh dang RIENG
+        /// (cac truong cach '|') — xem KskVlgConfigParser:
+        ///   MaDonVi|Username|Password|TokenUrl|PushUrl
+        /// Tra null khi khong day cong VLG / chua cau hinh / chuoi sai dinh dang.
+        /// </summary>
+        private KskVlgConfig BuildVlgConfig()
+        {
+            if (!this.pushVlg || string.IsNullOrWhiteSpace(this.vlgConnectionInfo)) return null;
+            return KskVlgConfigParser.Parse(this.vlgConnectionInfo);
+        }
+
+        /// <summary>
+        /// Cat gia tri ngay 12 so (yyyyMMddHHmm) / 14 so (yyyyMMddHHmmss) cua cac the &lt;NGAY*&gt; ve
+        /// 8 so yyyyMMdd theo catalog QD 2062 cua cong VLG (NGAY_SINH, NGAY_VAO, NGAY_KET_LUAN...).
+        /// Gia tri da 8 so / khong phai so -> giu nguyen. CHI dung cho ban tin VLG.
+        /// </summary>
+        private static string NormalizeVlgDates(string xml)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(xml)) return xml;
+                return System.Text.RegularExpressions.Regex.Replace(xml,
+                    @"(<(NGAY[A-Z_0-9]*)>)(\d{12}|\d{14})(</\2>)",
+                    m => m.Groups[1].Value + m.Groups[3].Value.Substring(0, 8) + m.Groups[4].Value);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return xml; }
+        }
+
+        /// <summary>
+        /// Sua declaration XML ve encoding="utf-8" (thu vien serialize StringWriter -> khai utf-16).
+        /// Khong co declaration / khong khai encoding -> giu nguyen.
+        /// </summary>
+        private static string FixXmlDeclarationUtf8(string xml)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(xml) || !xml.StartsWith("<?xml", StringComparison.OrdinalIgnoreCase))
+                    return xml;
+                int end = xml.IndexOf("?>", StringComparison.Ordinal);
+                if (end < 0) return xml;
+                string decl = xml.Substring(0, end + 2);
+                string fixedDecl = System.Text.RegularExpressions.Regex.Replace(
+                    decl, "encoding\\s*=\\s*([\"'])[^\"']*\\1", "encoding=\"utf-8\"",
+                    System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                return (fixedDecl == decl) ? xml : fixedDecl + xml.Substring(end + 2);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return xml; }
+        }
+
+        /// <summary>
+        /// Dung payload cho cong KDLYT Vinh Long: XML KHAMSUCKHOE cua DUNG 1 ho so (SOLUONGHOSO = 1) —
+        /// chuoi XML nay se duoc KskVlgPusher boc JSON wrapper {data_type:"xml", data, metadata} khi gui
+        /// (tai lieu Cong tiep nhan V1.3 muc 5.1 dang b; KHONG base64). Ky CKS_ (neu bat ky so) nhu cong
+        /// BYT — ban tin la XML nen luon ky duoc, khong co han che nhu HCC json/base64.
+        /// signFailed = true khi user DA TICH ky so nhung ky that bai (dataSigner tra rong — HSM loi,
+        /// USB token khong ky duoc...) -> caller PHAI danh dau ho so that bai, KHONG duoc day ban tin
+        /// CHUA KY len cong roi bao "thanh cong" (nhat quan voi ExportXmlFiles coi ky-null la failed).
+        /// Tra "" khi khong dung duoc (KskVlgPusher se bao that bai cho ho so do).
+        /// </summary>
+        private static string BuildVlgPayload(string macskcb, Qd1551KskInput input,
+            Func<string, string> dataSigner, out bool signFailed)
+        {
+            signFailed = false;
+            try
+            {
+                if (input == null) return "";
+                // Dung envelope co DU 12 khoi (khoi thieu du lieu -> khoi trong) — xem KskEnvelopeBuilder.
+                string content = KskEnvelopeBuilder.Build(new List<Qd1551KskInput> { input }, macskcb, false);
+                if (string.IsNullOrEmpty(content)) return "";
+                // Thu vien serialize bang StringWriter -> declaration ghi encoding="utf-16", nhung VLG gui
+                // bytes UTF-8 (Content-Type charset=utf-8) — parser chuan phia cong chieu theo declaration
+                // se loi INVALID_XML. Chuan hoa ve utf-8 TRUOC khi ky (sau khi ky khong duoc sua noi dung).
+                content = FixXmlDeclarationUtf8(content);
+                // Cong VLG doc ngay 8 so yyyyMMdd; thu vien sinh 12 so yyyyMMddHHmm (chuan truc BYT) ->
+                // cong khong parse duoc NGAY_SINH/NGAY_VAO => FORM_CLASSIFICATION_FAILED (kiem chung tren
+                // cong dev 09/08/2026: 12 so fail, 8 so phan loai duoc DU_18_TUOI_TRO_LEN). CHI ap cho VLG.
+                content = NormalizeVlgDates(content);
+                if (dataSigner != null)
+                {
+                    string signed = dataSigner(content);
+                    if (string.IsNullOrEmpty(signed)) { signFailed = true; return ""; }
+                    content = signed;
+                }
+                // Dump NGUYEN VAN ban tin gui di (DEBUG) — VLG gui XML tho nen khong can giai base64.
+                DumpDebug("BanTin_VLG_xml", content);
+                return content;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return "";
+            }
         }
 
         /// <summary>
@@ -1633,6 +1896,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private const string CFG_KEY_HSSK = "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO";
         private const string CFG_KEY_HOC = "MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO";
         private const string CFG_KEY_HCC = "MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO";
+        private const string CFG_KEY_VLG = "MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO";
 
         /// <summary>
         /// Ghi log gia tri cau hinh CUA TUNG CONG vua lay duoc (1 dong/cong) de doi soat khi bam Dong bo:
@@ -1641,7 +1905,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// co/khong + do dai — KHONG bao gio ghi gia tri thuc ra file log.
         /// </summary>
         private void LogGatewayConfigs(Qd1551Config bytConfig, Qd1551Config hsskConfig,
-            HocConfig hocConfig, Qd1551Config hccConfig)
+            HocConfig hocConfig, Qd1551Config hccConfig, KskVlgConfig vlgConfig)
         {
             try
             {
@@ -1649,6 +1913,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 LogQd1551Config("HSSK", CFG_KEY_HSSK, this.hsskConnectionInfo, this.pushHssk, hsskConfig);
                 LogHocConfig(this.hocConnectionInfo, this.pushHoc, hocConfig);
                 LogQd1551Config("HCC", CFG_KEY_HCC, this.hccConnectionInfo, this.pushHcc, hccConfig);
+                LogVlgConfig(this.vlgConnectionInfo, this.pushVlg, vlgConfig);
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -1666,6 +1931,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 Show(cfg.BaseUrl), Show(cfg.LoginUri), Show(cfg.PushUri), Show(cfg.DataType),
                 Show(cfg.ReceiverId), Show(cfg.Version), Show(cfg.TxnType), Show(cfg.MsgType),
                 Mask(cfg.ChecksumPrivateKeyPem)));
+        }
+
+        /// <summary>Log 1 dong cau hinh cong KDLYT Vinh Long (KskVlgConfig — cau truc rieng).</summary>
+        private static void LogVlgConfig(string rawValue, bool selected, KskVlgConfig cfg)
+        {
+            if (!LogConfigState("VLG", CFG_KEY_VLG, rawValue, selected, cfg == null)) return;
+            Inventec.Common.Logging.LogSystem.Info(string.Format(
+                "Cau hinh VLG ({0}): MaDonVi={1}; Username={2}; Password={3}; TokenUrl={4}; PushUrl={5}",
+                CFG_KEY_VLG, Show(cfg.MaDonVi), Show(cfg.Username), Mask(cfg.Password),
+                Show(cfg.TokenUrl), Show(cfg.PushUrl)));
         }
 
         /// <summary>Log 1 dong cau hinh cong HOC (HocConfig — cau truc rieng, co URL hieu luc).</summary>
@@ -1768,22 +2043,28 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>
-        /// Gop ket qua cua cac cong THU VIEN day (BYT/HSSK/HOC — pushResult) va cong HCC (hccResult) thanh
-        /// 1 dong trang thai cua ho so. Thanh cong = TAT CA cong da day deu thanh cong (giong PushListMulti).
-        /// Ma giao dich / trang thai ghep dang "BYT:xxx;HSSK:yyy;HCC:zzz" (chi them tien to khi >1 cong).
+        /// Gop ket qua cua cac cong THU VIEN day (BYT/HSSK/HOC — pushResult), cong HCC (hccResult) va cong
+        /// KDLYT Vinh Long (vlgResult) thanh 1 dong trang thai cua ho so. Thanh cong = TAT CA cong da day
+        /// deu thanh cong (giong PushListMulti). LUU Y VLG: thanh cong = cong DA TIEP NHAN (status QUEUED,
+        /// xu ly bat dong bo) — ket qua xu ly thuc te tra cuu sau bang tracking_id.
+        /// Ma giao dich / trang thai ghep dang "BYT:xxx;HCC:yyy;VLG:zzz" (chi them tien to khi >1 cong).
         /// libSingleLabel = ten cong duy nhat do thu vien day (null neu thu vien day >1 cong -> da co tien to).
         /// configError != null: co cong da chon nhung chuoi cau hinh sai dinh dang -> ho so LUON that bai.
         /// </summary>
         private KskSyncResultADO BuildResultAdo(V_HIS_KSK_SYNC row, ResultADO pushResult,
-            KskHccPushResult hccResult, long syncTime, string libSingleLabel, string configError)
+            KskHccPushResult hccResult, KskVlgPushResult vlgResult, long syncTime,
+            string libSingleLabel, string configError)
         {
             KskSyncResultADO ado = NewResult(row, syncTime);
             PushResponse resp = ExtractResponse(pushResult);
             bool hasLib = pushResult != null;
             bool hasHcc = hccResult != null;
+            bool hasVlg = vlgResult != null;
             bool libOk = hasLib && pushResult.Success;
             bool hccOk = hasHcc && hccResult.Success;
-            bool success = (hasLib || hasHcc) && (!hasLib || libOk) && (!hasHcc || hccOk)
+            bool vlgOk = hasVlg && vlgResult.Success;
+            bool success = (hasLib || hasHcc || hasVlg)
+                        && (!hasLib || libOk) && (!hasHcc || hccOk) && (!hasVlg || vlgOk)
                         && string.IsNullOrEmpty(configError);
 
             ado.SYNC_RESULT_TYPE = success ? RESULT_SUCCESS : RESULT_FAILED;
@@ -1796,8 +2077,23 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (string.IsNullOrEmpty(txn) && pushResult.Data.Length > 2) txn = pushResult.Data[2] as string;
                 if (string.IsNullOrEmpty(regState) && pushResult.Data.Length > 3) regState = pushResult.Data[3] as string;
             }
-            ado.TRANSACTION_CODE = JoinGatewayValue(txn, hasHcc ? hccResult.TxnCode : null, libSingleLabel);
-            ado.REGISTRATION_NO = JoinGatewayValue(regState, hasHcc ? hccResult.State : null, libSingleLabel);
+            // VLG: tracking_id -> ma giao dich (kha tra cuu GET .../ho-so/trang-thai); status (QUEUED) -> trang thai.
+            ado.TRANSACTION_CODE = JoinGatewayValue(txn, hasHcc ? hccResult.TxnCode : null,
+                hasVlg ? vlgResult.TrackingId : null, libSingleLabel);
+            ado.REGISTRATION_NO = JoinGatewayValue(regState, hasHcc ? hccResult.State : null,
+                hasVlg ? vlgResult.Status : null, libSingleLabel);
+            // Ghi chu tren dialog ket qua khi VLG tiep nhan OK: (1) QUEUED = cong xu ly BAT DONG BO —
+            // "da tiep nhan" chu chua phai "da xu ly xong", tra cuu bang ma giao dich; (2) canh bao
+            // ACCEPTED_WITH_WARNING / warnings[] cua cong. Vien khong day VLG -> SuccessNote null, hien thi nhu cu.
+            if (success && hasVlg && vlgOk)
+            {
+                var notes = new List<string>();
+                if (string.Equals(vlgResult.Status, "QUEUED", StringComparison.OrdinalIgnoreCase))
+                    notes.Add("VLG: đã tiếp nhận (QUEUED — cổng xử lý sau, tra cứu bằng mã giao dịch)");
+                if (!string.IsNullOrEmpty(vlgResult.Warning))
+                    notes.Add("VLG lưu ý: " + vlgResult.Warning);
+                if (notes.Count > 0) ado.SuccessNote = string.Join("; ", notes.ToArray());
+            }
             if (!success)
             {
                 var reasons = new List<string>();
@@ -1805,8 +2101,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     reasons.Add(!string.IsNullOrEmpty(pushResult.Message) ? pushResult.Message : "Đồng bộ thất bại");
                 if (hasHcc && !hccOk)
                     reasons.Add(!string.IsNullOrEmpty(hccResult.Message) ? hccResult.Message : "HCC: đồng bộ thất bại");
+                if (hasVlg && !vlgOk)
+                    reasons.Add(!string.IsNullOrEmpty(vlgResult.Message) ? vlgResult.Message : "VLG: đồng bộ thất bại");
                 if (!string.IsNullOrEmpty(configError)) reasons.Add(configError);
-                if (!hasLib && !hasHcc && string.IsNullOrEmpty(configError))
+                if (!hasLib && !hasHcc && !hasVlg && string.IsNullOrEmpty(configError))
                     reasons.Add("Chưa chọn cổng liên thông để đẩy");
                 ado.SYNC_FAILD_REASON = string.Join(" | ", reasons);
             }
@@ -1815,18 +2113,23 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
         /// <summary>
         /// Ghep gia tri cua cac cong: giu nguyen chuoi cua thu vien (da co tien to khi >1 cong), them
-        /// "HCC:" khi co ca 2 nguon. Chi 1 nguon -> tra gia tri tran (khong tien to) nhu truoc day.
+        /// "HCC:" / "VLG:" khi co tu 2 nguon tro len. Chi 1 nguon -> tra gia tri tran (khong tien to)
+        /// nhu truoc day.
         /// </summary>
-        private static string JoinGatewayValue(string libValue, string hccValue, string libSingleLabel)
+        private static string JoinGatewayValue(string libValue, string hccValue, string vlgValue, string libSingleLabel)
         {
-            bool hasLib = !string.IsNullOrEmpty(libValue);
-            bool hasHcc = !string.IsNullOrEmpty(hccValue);
-            if (!hasLib && !hasHcc) return null;
-            if (hasLib && !hasHcc) return libValue;
-            if (!hasLib && hasHcc) return hccValue;
-            // Ca 2 nguon: cong thu vien duy nhat thi bo sung tien to ten cong cho de doi soat.
-            string left = string.IsNullOrEmpty(libSingleLabel) ? libValue : libSingleLabel + ":" + libValue;
-            return left + ";HCC:" + hccValue;
+            var parts = new List<string>();       // gia tri da ghep tien to (khi >1 nguon)
+            var rawValues = new List<string>();   // gia tri tran (khi chi 1 nguon)
+            if (!string.IsNullOrEmpty(libValue))
+            {
+                parts.Add(string.IsNullOrEmpty(libSingleLabel) ? libValue : libSingleLabel + ":" + libValue);
+                rawValues.Add(libValue);
+            }
+            if (!string.IsNullOrEmpty(hccValue)) { parts.Add("HCC:" + hccValue); rawValues.Add(hccValue); }
+            if (!string.IsNullOrEmpty(vlgValue)) { parts.Add("VLG:" + vlgValue); rawValues.Add(vlgValue); }
+            if (parts.Count == 0) return null;
+            if (parts.Count == 1) return rawValues[0];
+            return string.Join(";", parts.ToArray());
         }
 
         private KskSyncResultADO BuildFailedResult(V_HIS_KSK_SYNC row, long syncTime, string reason)

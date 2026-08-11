@@ -57,6 +57,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucPatientRaw1.SetDelegateShowOrtherPaySource(this.ucOtherServiceReqInfo1.ShowOrtherPay);
 				this.ucPatientRaw1.SetDelegateSendTypeFind(ChangeFindTypeInPatientRaw);
 				this.ucPatientRaw1.SetDelegateCheckboxExamOnline(this.ucOtherServiceReqInfo1.CheckExamOnline);
+				// PTTK_XXXXX: tiep don benh nhan MOI bang QR CCCD / VNeID.
+				// Cau hinh BAT => quet CCCD la goi API cong BHXH ngay (khong phu thuoc doi tuong dang chon),
+				// co the thi nap du lieu the vao vung BHYT + tu dong chuyen doi tuong sang BHYT.
+				// Cau hinh TAT (mac dinh) => giu nguyen luong cu: chi tra cong khi doi tuong dang chon la BHYT.
+				// Chi man hinh Tiep don 2 gan co nay => cac man hinh khac dung chung UC giu nguyen hanh vi cu.
+				this.ucPatientRaw1.IsCheckHeinByCccdWithoutPatientType = Config.HisConfigCFG.IsCheckHeinByCccdWithoutPatientType();
                 this.ucOtherServiceReqInfo1.SetDelegateHeinRightRouteType(this.SetRightRouteEmergencyWhenRegisterOutTime);
 				this.ucOtherServiceReqInfo1.SetDelegatePriorityNumberChanged(this.SetServuceRoomAddButtonWhenRegisterHasPriorityNumber);
 				this.ucOtherServiceReqInfo1.FillDataOweTypeDefault();

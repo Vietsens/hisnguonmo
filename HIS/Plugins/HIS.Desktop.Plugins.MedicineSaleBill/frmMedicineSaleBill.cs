@@ -203,6 +203,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     lcibtnSaveAndSign.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
 
+                // Checkbox "In" (viec 3082): chi hien khi config bat va nut Luu ky dang hien
+                if (!Config.IsSaveSignPrintAutoExport
+                    || lcibtnSaveAndSign.Visibility != DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                {
+                    lciAutoExportPrint.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -2484,9 +2491,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     return;
                 if (this.SaveProcess())
                 {
-                    if (Config.PrintNowMps == "Mps000339")
+                    // Viec 3082: chi nut "Luu ky" duoc phep lam viec voi hoa don dien tu.
+                    // Config bat -> "Luu In" chi in phieu xuat ban: bill luu bang nut nay KHONG phat hanh HDDT
+                    // (SaveProcess chi phat hanh khi isLuuKy = true) nen goi GET_INVOICE_LINK se bao loi.
+                    if (Config.PrintNowMps == "Mps000339" && !Config.IsSaveSignPrintAutoExport)
                     {
-
                         this.onClickInHoaDonDienTu(null, null);
                     }
                     else
@@ -2797,9 +2806,27 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     }
                 }
 
+                // Viec 3082: tick checkbox "In" -> sau khi luu ky, IN THANG hoa don dien tu ra may in.
+                // KHONG tu duyet/thuc xuat phieu: phan mem da tu thuc xuat khi luu phieu xuat ban.
+                bool autoPrintInvoice = (lciAutoExportPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoExportPrint.Checked);
+
                 if (this.SaveProcess(true))
                 {
-                    if (!chkHideHddt.Checked)
+                    bool isQrPayForm = (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8);
+                    if (autoPrintInvoice && !isQrPayForm)
+                    {
+                        if (this.transactionBillResult != null && !String.IsNullOrEmpty(this.transactionBillResult.INVOICE_CODE))
+                        {
+                            PrintInvoiceNow();
+                        }
+                        else
+                        {
+                            // Phat hanh HDDT that bai (message da hien trong SaveProcess) -> khong in
+                            Inventec.Common.Logging.LogSystem.Warn("BtnSaveSign(tick In): HDDT chua phat hanh, khong in. "
+                                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => transactionBillResult), transactionBillResult));
+                        }
+                    }
+                    else if (!chkHideHddt.Checked)
                     {
                         if (Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
                         {
@@ -2824,7 +2851,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         {
             try
             {
-                if (this.transactionBillResult == null && String.IsNullOrEmpty(this.transactionBillResult.INVOICE_CODE))
+                // Bill chua phat hanh HDDT (INVOICE_CODE rong) -> khong goi GET_INVOICE_LINK,
+                // neu goi nha cung cap se tra ve loi "khong tim thay hoa don tuong ung chuoi dua vao".
+                if (this.transactionBillResult == null || String.IsNullOrEmpty(this.transactionBillResult.INVOICE_CODE))
                 {
                     //MessageBox.Show("Hóa đơn chưa thanh toán hoặc chưa cấu hình hóa đơn điện tử.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => transactionBillResult), transactionBillResult));
@@ -2899,6 +2928,87 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             }
         }
 
+        /// <summary>
+        /// Viec 3082: in thang hoa don dien tu ra may in (khong mo man xem):
+        /// lay link HDDT (retry toi da 3 lan thay Sleep 2000 cung) roi goi DocumentViewerManager.Print.
+        /// </summary>
+        private void PrintInvoiceNow()
+        {
+            try
+            {
+                if (this.transactionBillResult == null || String.IsNullOrEmpty(this.transactionBillResult.INVOICE_CODE))
+                {
+                    Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => transactionBillResult), transactionBillResult));
+                    return;
+                }
+                ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
+                dataInput.PartnerInvoiceID = Inventec.Common.TypeConvert.Parse.ToInt64(this.transactionBillResult.INVOICE_CODE);
+                dataInput.InvoiceCode = transactionBillResult.INVOICE_CODE;
+                dataInput.NumOrder = transactionBillResult.NUM_ORDER;
+                dataInput.SymbolCode = transactionBillResult.SYMBOL_CODE;
+                dataInput.TemplateCode = transactionBillResult.TEMPLATE_CODE;
+                dataInput.TransactionTime = transactionBillResult.EINVOICE_TIME ?? transactionBillResult.TRANSACTION_TIME;
+                dataInput.EinvoiceTypeId = transactionBillResult.EINVOICE_TYPE_ID;
+                dataInput.ENumOrder = transactionBillResult.EINVOICE_NUM_ORDER;
+
+                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                dataInput.Transaction = tran;
+
+                if (currentTreatment == null)
+                {
+                    this.currentTreatment = new V_HIS_TREATMENT_FEE();
+                    currentTreatment.TDL_PATIENT_ACCOUNT_NUMBER = ExpMests.FirstOrDefault().TDL_PATIENT_ACCOUNT_NUMBER;
+                    currentTreatment.TDL_PATIENT_ADDRESS = ExpMests.FirstOrDefault().TDL_PATIENT_ADDRESS;
+                    currentTreatment.TDL_PATIENT_PHONE = ExpMests.FirstOrDefault().TDL_PATIENT_PHONE;
+                    currentTreatment.TDL_PATIENT_TAX_CODE = ExpMests.FirstOrDefault().TDL_PATIENT_TAX_CODE;
+                    currentTreatment.TDL_PATIENT_WORK_PLACE = ExpMests.FirstOrDefault().TDL_PATIENT_WORK_PLACE;
+                    currentTreatment.TDL_PATIENT_NAME = ExpMests.FirstOrDefault().TDL_PATIENT_NAME;
+                }
+
+                dataInput.Treatment = this.currentTreatment;
+                dataInput.SereServs = new List<V_HIS_SERE_SERV_5>();
+                dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
+                ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput);
+                ElectronicBillResult electronicBillResult = null;
+
+                // Nha cung cap can thoi gian tra link -> retry toi da 3 lan thay cho Sleep(2000) cung
+                WaitingManager.Show();
+                for (int i = 0; i < 3; i++)
+                {
+                    electronicBillResult = electronicBillProcessor.Run(ElectronicBillType.ENUM.GET_INVOICE_LINK);
+                    if (electronicBillResult != null && !String.IsNullOrEmpty(electronicBillResult.InvoiceLink))
+                        break;
+                    System.Threading.Thread.Sleep(1000);
+                }
+                WaitingManager.Hide();
+
+                if (electronicBillResult == null || String.IsNullOrEmpty(electronicBillResult.InvoiceLink))
+                {
+                    string mes = "";
+                    if (electronicBillResult != null && electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                    {
+                        mes = " " + string.Join(". ", electronicBillResult.Messages);
+                    }
+                    XtraMessageBox.Show("Không lấy được link hóa đơn điện tử để in." + mes
+                        + Environment.NewLine + "Vui lòng in lại bằng nút In > In hóa đơn điện tử.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                Inventec.Common.DocumentViewer.InputADO ado = new InputADO();
+                ado.DeleteWhenClose = true;
+                ado.URL = electronicBillResult.InvoiceLink;
+                ado.NumberOfCopy = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("CONFIG_KEY__HIS_DESKTOP__ELECTRONIC_BILL__PRINT_NUM_COPY");
+                Inventec.Common.DocumentViewer.DocumentViewerManager viewManager = new Inventec.Common.DocumentViewer.DocumentViewerManager(ViewType.ENUM.Pdf);
+                viewManager.Print(ado, HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("Inventec.Common.DocumentViewer.PlatformOption") == 1 ? ViewType.Platform.Telerik : ViewType.Platform.Devexpress);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void chkHideHddt_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -2941,6 +3051,37 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             }
         }
 
+        private void chkAutoExportPrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkAutoExportPrint.Name && o.MODULE_LINK == module.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkAutoExportPrint.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkAutoExportPrint.Name;
+                    csAddOrUpdate.VALUE = (chkAutoExportPrint.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = module.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void InitControlState()
         {
             try
@@ -2955,6 +3096,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         if (item.KEY == chkHideHddt.Name)
                         {
                             chkHideHddt.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == chkAutoExportPrint.Name)
+                        {
+                            chkAutoExportPrint.Checked = item.VALUE == "1";
                         }
                     }
                 }

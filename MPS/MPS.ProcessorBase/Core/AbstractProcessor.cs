@@ -295,7 +295,14 @@ namespace MPS.ProcessorBase.Core
                         emrInputADO.BusinessCode = this.currentBussinessCode;
                         emrInputADO.PrintTypeBusinessCodes = this.printTypeBusinessCodes;
                         emrInputADO.IsAutoChooseBusiness = printType.IS_AUTO_CHOOSE_BUSINESS == 1;
-                        emrInputADO.HisCode = ProcessUniqueCodeData();
+                        //ghep them du lieu phieu kho de EMR tach ra 5 cot loc duoc.
+                        //KHONG doi dinh dang ProcessUniqueCodeData() - no la khoa dem so ban in
+                        //(GetNumOrderPrint) va khoa ghi log in (printLog.UniqueCode).
+                        string uniqueCodeData = ProcessUniqueCodeData();
+                        string emrStockData = ProcessEmrStockData();
+                        emrInputADO.HisCode = String.IsNullOrWhiteSpace(emrStockData)
+                            ? uniqueCodeData
+                            : uniqueCodeData + "|" + emrStockData;
 
                         //bên ngoài truyền vào thì dùng của bên ngoài. không có sẽ lấy theo mps
                         if (String.IsNullOrWhiteSpace(emrInputADO.DocumentGroupCode))
@@ -1755,6 +1762,70 @@ namespace MPS.ProcessorBase.Core
         public virtual string ProcessUniqueCodeData()
         {
             return null;
+        }
+
+        /// <summary>
+        /// du lieu phieu kho ghep them vao EMR_DOCUMENT.HIS_CODE de EMR tach ra
+        /// 5 cot thuc (ma phieu xuat/nhap, kho xuat, kho nhap, khoa yeu cau) va loc duoc
+        /// tren man Danh sach van ban cua kho.
+        ///
+        /// Dinh dang: "KEY:VALUE|KEY:VALUE|..." voi cac key
+        ///   EXP_MEST_CODE | IMP_MEST_CODE | EXP_STOCK | IMP_STOCK | REQ_DEPT
+        /// Bo qua cap khong co gia tri. Tra null = mau in nay khong phai phieu kho,
+        /// HIS_CODE giu nguyen chuoi cu, hanh vi khong doi.
+        ///
+        /// CHI cac mau in phieu kho override. Khong dat vao ProcessUniqueCodeData()
+        /// vi chuoi do la khoa dem so ban in va khoa ghi log in.
+        /// </summary>
+        public virtual string ProcessEmrStockData()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// tra ma kho tu ID. Dung cho kho DOI UNG tren phieu (kho nhap cua phieu xuat,
+        /// kho xuat cua phieu nhap) vi view HIS chi co ID, KHONG co ma.
+        /// Doc tu danh muc da cache o may tram, khong goi API.
+        /// </summary>
+        protected string GetMediStockCodeById(long? mediStockId)
+        {
+            try
+            {
+                if (!mediStockId.HasValue || mediStockId.Value <= 0) return null;
+                var stock = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>()
+                    .FirstOrDefault(o => o.ID == mediStockId.Value);
+                return stock == null ? null : stock.MEDI_STOCK_CODE;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// ghep cac cap KEY:VALUE cho ProcessEmrStockData, tu bo cap khong co gia tri.
+        /// </summary>
+        protected string BuildEmrStockData(
+            string expMestCode, string impMestCode,
+            string expStockCode, string impStockCode, string reqDepartmentCode)
+        {
+            try
+            {
+                List<string> parts = new List<string>();
+                if (!String.IsNullOrWhiteSpace(expMestCode)) parts.Add("EXP_MEST_CODE:" + expMestCode.Trim());
+                if (!String.IsNullOrWhiteSpace(impMestCode)) parts.Add("IMP_MEST_CODE:" + impMestCode.Trim());
+                if (!String.IsNullOrWhiteSpace(expStockCode)) parts.Add("EXP_STOCK:" + expStockCode.Trim());
+                if (!String.IsNullOrWhiteSpace(impStockCode)) parts.Add("IMP_STOCK:" + impStockCode.Trim());
+                if (!String.IsNullOrWhiteSpace(reqDepartmentCode)) parts.Add("REQ_DEPT:" + reqDepartmentCode.Trim());
+                return parts.Count == 0 ? null : String.Join("|", parts);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
         }
 
         private void ShowPrintLog()

@@ -135,6 +135,9 @@
   <data name="CanhBaoNgayHenLaNgayLe" xml:space="preserve">
     <value>လက်ရှိချိန်းဆိုထားသည့်ရက်သည် ရုံးပိတ်ရက်ဖြစ်သည်၊ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
   </data>
+  <data name="BenhNhanDaHetThoiGianHenKhamTrongNam" xml:space="preserve">
+    <value>The patient's in-year appointment period has expired; further appointments are not allowed</value>
+  </data>
   <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
     <value>ခန့်အပ်ချိန်သည် ကုသမှုပြီးဆုံးချိန်ထက် ပိုနေရပါမည်။</value>
   </data>

@@ -206,7 +206,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
             {
                 if (!string.IsNullOrEmpty(this.transactionPrint.TRANSACTION_CODE))
                 {
-                    HuyBienLaiHoaDon(this.transactionPrint.TRANSACTION_CODE);
+                    HuyBienLaiHoaDon(this.transactionPrint.TRANSACTION_CODE, this.transactionPrint);
                 }
                 else
                 {
@@ -981,7 +981,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
                 departLastFilter.BEFORE_LOG_TIME = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                 var departmentTran = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<V_HIS_DEPARTMENT_TRAN>("api/HisDepartmentTran/GetLastByTreatmentId", ApiConsumers.MosConsumer, departLastFilter, null);
 
-                HIS_PATIENT patient = new HIS_PATIENT();
+                V_HIS_PATIENT patient = new V_HIS_PATIENT();
                 if (transaction.TDL_PATIENT_ID != null)
                 {
                     HisPatientFilter patientFilter = new HisPatientFilter();
@@ -990,7 +990,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
 
                     if (patients != null && patients.Count > 0)
                     {
-                        patient = patients.FirstOrDefault();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_PATIENT>(patient, patients.FirstOrDefault());
                     }
                 }
 

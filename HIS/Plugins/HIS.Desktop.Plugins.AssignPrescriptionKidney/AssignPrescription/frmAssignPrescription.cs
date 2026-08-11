@@ -430,6 +430,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 this.SetEnableButtonControl(this.actionType);
                 this.LoadDataTracking();
                 this.LoadAllergenic(currentTreatmentWithPatientType.PATIENT_ID);
+                this.PrefetchMimsPatientProfile();
                 this.LoadDataDhstToControl();
                 LogSystem.Debug("Loaded end");
                 WaitingManager.Hide();

@@ -65,7 +65,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                         gvPrepareMedicine.Focus();
                         gvPrepareMedicine.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle;
 
-                        gvPrepareMedicine.FocusedColumn = gridColumn26;
+                        gvPrepareMedicine.FocusedColumn = isScanByPatientCode ? colPatientCode : gridColumn26;
 
                         gvPrepareMedicine.ShowEditor(); 
                         var ed = gvPrepareMedicine.ActiveEditor as DevExpress.XtraEditors.BaseEdit;
@@ -171,6 +171,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                             gvPrepareMedicine.ActiveFilterString = "";
                             gvPrepareMedicine.ClearColumnsFilter();
                             gvPrepareMedicine.SetRowCellValue(DevExpress.XtraGrid.GridControl.AutoFilterRowHandle, gridColumn26, null);
+                            gvPrepareMedicine.SetRowCellValue(DevExpress.XtraGrid.GridControl.AutoFilterRowHandle, colPatientCode, null);
                         }
                         catch { }
                         LoadTab3();
@@ -237,6 +238,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                             gvPrepareMedicine.ActiveFilterString = "";
                             gvPrepareMedicine.ClearColumnsFilter();
                             gvPrepareMedicine.SetRowCellValue(DevExpress.XtraGrid.GridControl.AutoFilterRowHandle, gridColumn26, null);
+                            gvPrepareMedicine.SetRowCellValue(DevExpress.XtraGrid.GridControl.AutoFilterRowHandle, colPatientCode, null);
                         }
                         catch { }
                         LoadTab3();

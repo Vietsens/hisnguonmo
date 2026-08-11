@@ -10,6 +10,36 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment.Resources
     {
         public static System.Resources.ResourceManager languageMessage = new System.Resources.ResourceManager("HIS.Desktop.Plugins.TreatmentAppointment.Resources.Message.Lang", System.Reflection.Assembly.GetExecutingAssembly());
 
+        internal static string ChiBacSiTaoLichHenDuocSua
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChiBacSiTaoLichHenDuocSua", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string ThongBao
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThongBao", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
         internal static string DaTaiKham
         {
             get

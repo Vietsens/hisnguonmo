@@ -156,6 +156,67 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             }
         }
 
+        /// <summary>
+        /// Kiểm tra dược lý các thuốc được kê trong đơn (api/HisServiceReq/CheckPharmacology).
+        /// API trả về true: cho lưu tiếp. Trả về false: hiển thị thông báo do API trả về (CommonParam.Messages),
+        /// người dùng chọn Có thì tiếp tục lưu, chọn Không thì dừng không lưu đơn.
+        /// </summary>
+        /// <param name="serviceCheckeds__Send">Danh sách dòng trong lưới đơn (thuốc + vật tư + máu...)</param>
+        private bool CheckPharmacology(List<MediMatyTypeADO> serviceCheckeds__Send)
+        {
+            bool result = true;
+            try
+            {
+                if (serviceCheckeds__Send == null || serviceCheckeds__Send.Count == 0)
+                    return result;
+
+                //Chỉ lấy thuốc được kê, không lấy vật tư/máu và các loại dịch vụ khác
+                List<long> medicineTypeIds = serviceCheckeds__Send
+                    .Where(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && o.ID > 0)
+                    .Select(o => o.ID)
+                    .Distinct()
+                    .ToList();
+
+                if (medicineTypeIds.Count == 0)
+                    return result;
+
+                HisServiceReqCheckPharmacologySDO sdo = new HisServiceReqCheckPharmacologySDO();
+                sdo.TreatmentId = this.treatmentId;
+                sdo.MedicineTypeIdS = medicineTypeIds;
+
+                CommonParam param = new CommonParam();
+                bool isPass = new BackendAdapter(param).Post<bool>(RequestUriStore.HIS_SERVICE_REQ__CHECK_PHARMACOLOGY, ApiConsumers.MosConsumer, sdo, param);
+                Inventec.Common.Logging.LogSystem.Debug("CheckPharmacology____"
+                    + Inventec.Common.Logging.LogUtil.TraceData("sdo", sdo)
+                    + Inventec.Common.Logging.LogUtil.TraceData("isPass", isPass));
+
+                if (!isPass)
+                {
+                    string message = param.GetMessage();
+                    message = string.IsNullOrWhiteSpace(message)
+                        ? "Bạn có muốn tiếp tục không?"
+                        : message + "." + Environment.NewLine + "Bạn có muốn tiếp tục không?";
+
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                            message,
+                            HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            System.Windows.Forms.MessageBoxButtons.YesNo,
+                            System.Windows.Forms.MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+                    {
+                        result = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //Lỗi khi gọi api kiểm tra dược lý: không chặn lưu đơn (đây là cảnh báo, người dùng vẫn được phép bỏ qua)
+                result = true;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+
         private void ProcessSaveData(bool isSaveAndPrint)
         {
             try
@@ -185,6 +246,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("frmAssignPrescription.valid", valid));
                 if (!valid) return;
+
+                //Kiểm tra dược lý thuốc được kê trước khi lưu đơn
+                if (HisConfigCFG.IsCheckPharmacology == "1" && !this.CheckPharmacology(this.mediMatyTypeADOs))
+                    return;
 
                 //Tạm khóa các button lưu && lưu in lại khi đang xử lý
                 this.ChangeLockButtonWhileProcess(false);
@@ -457,7 +522,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
 
                     this.mimsInteractionLog = new HIS_MIMS_INTERACTION_LOG();
 
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.mimsInteractionLog);
+                    // PN mang thai / cho con bú: null khi không tick -> request MIMS giữ nguyên như cũ
+                    var mimsProfile = BuildMimsPatientProfile();
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.mimsInteractionLog, patientProfile: mimsProfile);
                 }
 
                 return check;

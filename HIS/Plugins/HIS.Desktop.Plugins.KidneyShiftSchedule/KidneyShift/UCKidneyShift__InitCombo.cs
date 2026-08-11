@@ -60,22 +60,27 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 ControlEditorADO controlEditorADO = new ControlEditorADO("USERNAME", "LOGINNAME", columnInfos, false, 400);
                 ControlEditorLoader.Load(this.cboUser, datas, controlEditorADO);
 
-                // R8 (2891): Người chỉ định luôn là BS trực = tài khoản đang đăng nhập
-                // (áp dụng cho cả BN đột xuất vùng trái lẫn BN theo lịch vùng phải).
-                // Auto-fill theo user đăng nhập và khóa không cho sửa.
-                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                var currentUser = datas != null
-                    ? datas.FirstOrDefault(o => !String.IsNullOrEmpty(o.LOGINNAME) && o.LOGINNAME.ToUpper().Equals((loginName ?? "").ToUpper()))
-                    : null;
-                if (currentUser != null)
+                if (this.currentHisTreatment != null && !String.IsNullOrEmpty(this.currentHisTreatment.PREVIOUS_END_LOGINNAME))
                 {
-                    this.cboUser.EditValue = currentUser.LOGINNAME;
-                    this.txtLoginName.Text = currentUser.LOGINNAME;
+                    this.cboUser.EditValue = this.currentHisTreatment.PREVIOUS_END_LOGINNAME;
+                    this.txtLoginName.Text = this.currentHisTreatment.PREVIOUS_END_LOGINNAME;
+                }
+                else
+                {
+                    string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    var data = datas.Where(o => o.LOGINNAME.ToUpper().Equals(loginName.ToUpper())).FirstOrDefault();
+                    if (data != null)
+                    {
+                        this.cboUser.EditValue = data.LOGINNAME;
+                        this.txtLoginName.Text = data.LOGINNAME;
+                    }
                 }
 
-                // R8: khóa trường người chỉ định — luôn là BS trực đăng nhập, không cho chọn tay
-                this.cboUser.Enabled = false;
-                this.txtLoginName.Enabled = false;
+                //- Cấu hình để ẩn/hiện trường người chỉ định tai form chỉ định, kê đơn
+                //- Giá trị mặc định (hoặc ko có cấu hình này) sẽ ẩn       
+                //- Nếu có cấu hình, đặt là 1 thì sẽ hiển thị
+                this.cboUser.Enabled = (HisConfigCFG.ShowRequestUser == GlobalVariables.CommonStringTrue);
+                this.txtLoginName.Enabled = (HisConfigCFG.ShowRequestUser == GlobalVariables.CommonStringTrue);
                 Inventec.Common.Logging.LogSystem.Debug("InitComboUser. 2");
             }
             catch (Exception ex)

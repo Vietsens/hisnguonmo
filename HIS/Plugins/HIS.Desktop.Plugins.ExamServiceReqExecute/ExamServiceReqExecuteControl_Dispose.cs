@@ -119,6 +119,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 datas = null;
                 dataNextTreatmentInstructions = null;
                 TreatmentHistorys = null;
+                treatmentIdHasTestResults = null;
+                btn_TestResults_Disable = null;
                 SereServ8s = null;
                 ClsSereServ = null;
                 SereServsCurrentTreatment = null;
@@ -194,8 +196,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.gvIcdSubCode.KeyDown -= new System.Windows.Forms.KeyEventHandler(this.gvIcdSubCode_KeyDown);
                 this.gridViewDiUng.CustomUnboundColumnData -= new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewDiUng_CustomUnboundColumnData);
                 this.gridViewTreatmentHistory.CustomUnboundColumnData -= new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewTreatmentHistory_CustomUnboundColumnData);
+                this.gridViewTreatmentHistory.CustomRowCellEdit -= new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewTreatmentHistory_CustomRowCellEdit);
                 this.Btn_History.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_History_ButtonClick);
                 this.Btn_Bordereau.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Bordereau_ButtonClick);
+                this.btn_TestResults.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btn_TestResults_ButtonClick);
                 this.chkTreatmentFinish.CheckedChanged -= new System.EventHandler(this.chkTreatmentFinish_CheckedChanged);
                 this.chkExamFinish.CheckedChanged -= new System.EventHandler(this.chkExamFinish_CheckedChanged);
                 this.chkExamServiceAdd.CheckedChanged -= new System.EventHandler(this.chkExamServiceAdd_CheckedChanged);
@@ -446,6 +450,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 cboContraindication = null;
                 layoutControl16 = null;
                 xtraTabPageContraindication = null;
+                xtraTabPageWomanClassify = null;
+                chkMimsPregnant = null;
+                lblMimsPregnantMonth = null;
+                spinMimsPregnantMonth = null;
+                lblMimsPregnantMonthUnit = null;
+                chkMimsLactating = null;
+                lblMimsLactatingMonth = null;
+                spinMimsLactatingMonth = null;
+                lblMimsLactatingMonthUnit = null;
+                mimsPatientProfileRecord = null;
                 imageCollection1 = null;
                 barManager1 = null;
                 barDockControlTop = null;
@@ -634,8 +648,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 layoutControl10 = null;
                 Btn_Bordereau = null;
                 Btn_History = null;
+                btn_TestResults = null;
                 gridColumn9 = null;
                 gridColumn10 = null;
+                gridColumn21 = null;
                 layoutControlItem19 = null;
                 btnKeDonYHCT = null;
                 layoutControlItem18 = null;

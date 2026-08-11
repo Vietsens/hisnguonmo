@@ -45,29 +45,23 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucMediaStockSummaryByMedicine));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboBrach = new HIS.Desktop.Utilities.Extensions.CustomGridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.customGridLookUpEdit1View = new HIS.Desktop.Utilities.Extensions.CustomGridView();
             this.btnSerach = new DevExpress.XtraEditors.SimpleButton();
             this.btnXuatExcel = new DevExpress.XtraEditors.SimpleButton();
             this.txtKeyword = new DevExpress.XtraEditors.TextEdit();
-            this.gridControlMediMateStockSum = new DevExpress.XtraGrid.GridControl();
-            this.gridViewMediMateStockSum = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.trvMediMateStockSum = new DevExpress.XtraTreeList.TreeList();
             this.chkMaterial = new DevExpress.XtraEditors.CheckEdit();
             this.chkMedicine = new DevExpress.XtraEditors.CheckEdit();
+            this.chkChiTiet = new DevExpress.XtraEditors.CheckEdit();
+            this.chkThuGon = new DevExpress.XtraEditors.CheckEdit();
             this.gridControlSum = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -77,11 +71,13 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.customGridLookUpEdit1View = new HIS.Desktop.Utilities.Extensions.CustomGridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -110,14 +106,13 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cboBrach.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlMediMateStockSum)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewMediMateStockSum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trvMediMateStockSum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMaterial.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMedicine.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChiTiet.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkThuGon.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlSum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
@@ -127,11 +122,13 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ucPaging)).BeginInit();
             this.SuspendLayout();
             // 
@@ -141,9 +138,11 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             this.layoutControl1.Controls.Add(this.btnSerach);
             this.layoutControl1.Controls.Add(this.btnXuatExcel);
             this.layoutControl1.Controls.Add(this.txtKeyword);
-            this.layoutControl1.Controls.Add(this.gridControlMediMateStockSum);
+            this.layoutControl1.Controls.Add(this.trvMediMateStockSum);
             this.layoutControl1.Controls.Add(this.chkMaterial);
             this.layoutControl1.Controls.Add(this.chkMedicine);
+            this.layoutControl1.Controls.Add(this.chkChiTiet);
+            this.layoutControl1.Controls.Add(this.chkThuGon);
             this.layoutControl1.Controls.Add(this.gridControlSum);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.HiddenItems.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
@@ -158,17 +157,10 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             // cboBrach
             // 
             this.cboBrach.EditValue = "";
-            this.cboBrach.Location = new System.Drawing.Point(598, 12);
+            this.cboBrach.Location = new System.Drawing.Point(442, 12);
             this.cboBrach.MenuManager = this.barManager1;
             this.cboBrach.Name = "cboBrach";
-            this.cboBrach.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboBrach.Properties.AutoComplete = false;
-            this.cboBrach.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("cboBrach.Properties.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
-            this.cboBrach.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboBrach.Properties.View = this.customGridLookUpEdit1View;
-            this.cboBrach.Size = new System.Drawing.Size(172, 20);
+            this.cboBrach.Size = new System.Drawing.Size(166, 20);
             this.cboBrach.StyleController = this.layoutControl1;
             this.cboBrach.TabIndex = 14;
             this.cboBrach.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboBrach_ButtonClick);
@@ -233,18 +225,11 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 739);
             // 
-            // customGridLookUpEdit1View
-            // 
-            this.customGridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.customGridLookUpEdit1View.Name = "customGridLookUpEdit1View";
-            this.customGridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.customGridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
-            // 
             // btnSerach
             // 
-            this.btnSerach.Location = new System.Drawing.Point(1016, 12);
+            this.btnSerach.Location = new System.Drawing.Point(1041, 12);
             this.btnSerach.Name = "btnSerach";
-            this.btnSerach.Size = new System.Drawing.Size(115, 22);
+            this.btnSerach.Size = new System.Drawing.Size(139, 22);
             this.btnSerach.StyleController = this.layoutControl1;
             this.btnSerach.TabIndex = 13;
             this.btnSerach.Text = "Tìm (Ctrl F)";
@@ -252,9 +237,9 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             // 
             // btnXuatExcel
             // 
-            this.btnXuatExcel.Location = new System.Drawing.Point(1135, 12);
+            this.btnXuatExcel.Location = new System.Drawing.Point(1184, 12);
             this.btnXuatExcel.Name = "btnXuatExcel";
-            this.btnXuatExcel.Size = new System.Drawing.Size(110, 22);
+            this.btnXuatExcel.Size = new System.Drawing.Size(124, 22);
             this.btnXuatExcel.StyleController = this.layoutControl1;
             this.btnXuatExcel.TabIndex = 11;
             this.btnXuatExcel.Text = "Xuất Excel";
@@ -266,47 +251,40 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeyword.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtKeyword.Size = new System.Drawing.Size(444, 20);
+            this.txtKeyword.Size = new System.Drawing.Size(316, 20);
             this.txtKeyword.StyleController = this.layoutControl1;
             this.txtKeyword.TabIndex = 10;
             this.txtKeyword.EditValueChanged += new System.EventHandler(this.txtKeyword_EditValueChanged);
             this.txtKeyword.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtKeyword_PreviewKeyDown);
             // 
-            // gridControlMediMateStockSum
+            // trvMediMateStockSum
             // 
-            this.gridControlMediMateStockSum.Location = new System.Drawing.Point(12, 38);
-            this.gridControlMediMateStockSum.MainView = this.gridViewMediMateStockSum;
-            this.gridControlMediMateStockSum.Name = "gridControlMediMateStockSum";
-            this.gridControlMediMateStockSum.Size = new System.Drawing.Size(1296, 689);
-            this.gridControlMediMateStockSum.TabIndex = 8;
-            this.gridControlMediMateStockSum.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewMediMateStockSum});
-            // 
-            // gridViewMediMateStockSum
-            // 
-            this.gridViewMediMateStockSum.Appearance.GroupRow.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            this.gridViewMediMateStockSum.Appearance.GroupRow.ForeColor = System.Drawing.Color.Black;
-            this.gridViewMediMateStockSum.Appearance.GroupRow.Options.UseFont = true;
-            this.gridViewMediMateStockSum.Appearance.GroupRow.Options.UseForeColor = true;
-            this.gridViewMediMateStockSum.GridControl = this.gridControlMediMateStockSum;
-            this.gridViewMediMateStockSum.Name = "gridViewMediMateStockSum";
-            this.gridViewMediMateStockSum.OptionsBehavior.AutoExpandAllGroups = true;
-            this.gridViewMediMateStockSum.OptionsView.ColumnAutoWidth = false;
-            this.gridViewMediMateStockSum.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
-            this.gridViewMediMateStockSum.OptionsView.ShowGroupPanel = false;
-            this.gridViewMediMateStockSum.OptionsView.ShowIndicator = false;
-            this.gridViewMediMateStockSum.CustomDrawGroupRow += new DevExpress.XtraGrid.Views.Base.RowObjectCustomDrawEventHandler(this.gridViewMediMateStockSum_CustomDrawGroupRow);
-            this.gridViewMediMateStockSum.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewMediMateStockSum_RowCellStyle);
-            this.gridViewMediMateStockSum.ColumnWidthChanged += new DevExpress.XtraGrid.Views.Base.ColumnEventHandler(this.gridViewMediMateStockSum_ColumnWidthChanged);
-            this.gridViewMediMateStockSum.ColumnPositionChanged += new System.EventHandler(this.gridViewMediMateStockSum_ColumnPositionChanged);
+            this.trvMediMateStockSum.Cursor = System.Windows.Forms.Cursors.Default;
+            this.trvMediMateStockSum.Location = new System.Drawing.Point(12, 38);
+            this.trvMediMateStockSum.Name = "trvMediMateStockSum";
+            this.trvMediMateStockSum.OptionsBehavior.AutoPopulateColumns = false;
+            this.trvMediMateStockSum.OptionsBehavior.Editable = false;
+            this.trvMediMateStockSum.OptionsBehavior.EnableFiltering = true;
+            this.trvMediMateStockSum.OptionsFilter.FilterMode = DevExpress.XtraTreeList.FilterMode.Smart;
+            this.trvMediMateStockSum.OptionsView.AutoWidth = false;
+            this.trvMediMateStockSum.OptionsView.FocusRectStyle = DevExpress.XtraTreeList.DrawFocusRectStyle.RowFullFocus;
+            this.trvMediMateStockSum.OptionsView.ShowHorzLines = false;
+            this.trvMediMateStockSum.OptionsView.ShowIndicator = false;
+            this.trvMediMateStockSum.OptionsView.ShowVertLines = false;
+            this.trvMediMateStockSum.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
+            this.trvMediMateStockSum.Size = new System.Drawing.Size(1296, 689);
+            this.trvMediMateStockSum.TabIndex = 8;
+            this.trvMediMateStockSum.ColumnWidthChanged += new DevExpress.XtraTreeList.ColumnWidthChangedEventHandler(this.trvMediMateStockSum_ColumnWidthChanged);
+            this.trvMediMateStockSum.NodeCellStyle += new DevExpress.XtraTreeList.GetCustomNodeCellStyleEventHandler(this.trvMediMateStockSum_NodeCellStyle);
+            this.trvMediMateStockSum.ColumnPositionChanged += new System.EventHandler(this.trvMediMateStockSum_ColumnPositionChanged);
             // 
             // chkMaterial
             // 
-            this.chkMaterial.Location = new System.Drawing.Point(910, 12);
+            this.chkMaterial.Location = new System.Drawing.Point(751, 12);
             this.chkMaterial.Name = "chkMaterial";
             this.chkMaterial.Properties.Caption = "Vật tư";
             this.chkMaterial.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkMaterial.Size = new System.Drawing.Size(102, 19);
+            this.chkMaterial.Size = new System.Drawing.Size(81, 19);
             this.chkMaterial.StyleController = this.layoutControl1;
             this.chkMaterial.TabIndex = 7;
             this.chkMaterial.CheckedChanged += new System.EventHandler(this.chkMaterial_CheckedChanged);
@@ -314,14 +292,37 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             // chkMedicine
             // 
             this.chkMedicine.EditValue = true;
-            this.chkMedicine.Location = new System.Drawing.Point(806, 12);
+            this.chkMedicine.Location = new System.Drawing.Point(659, 12);
             this.chkMedicine.Name = "chkMedicine";
             this.chkMedicine.Properties.Caption = "Thuốc";
             this.chkMedicine.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkMedicine.Size = new System.Drawing.Size(100, 19);
+            this.chkMedicine.Size = new System.Drawing.Size(88, 19);
             this.chkMedicine.StyleController = this.layoutControl1;
             this.chkMedicine.TabIndex = 6;
             this.chkMedicine.CheckedChanged += new System.EventHandler(this.chkMedicine_CheckedChanged);
+            // 
+            // chkChiTiet
+            // 
+            this.chkChiTiet.EditValue = true;
+            this.chkChiTiet.Location = new System.Drawing.Point(836, 12);
+            this.chkChiTiet.Name = "chkChiTiet";
+            this.chkChiTiet.Properties.Caption = "Chi tiết";
+            this.chkChiTiet.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkChiTiet.Size = new System.Drawing.Size(97, 19);
+            this.chkChiTiet.StyleController = this.layoutControl1;
+            this.chkChiTiet.TabIndex = 15;
+            this.chkChiTiet.CheckedChanged += new System.EventHandler(this.chkChiTiet_CheckedChanged);
+            // 
+            // chkThuGon
+            // 
+            this.chkThuGon.Location = new System.Drawing.Point(937, 12);
+            this.chkThuGon.Name = "chkThuGon";
+            this.chkThuGon.Properties.Caption = "Thu gọn";
+            this.chkThuGon.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkThuGon.Size = new System.Drawing.Size(100, 19);
+            this.chkThuGon.StyleController = this.layoutControl1;
+            this.chkThuGon.TabIndex = 16;
+            this.chkThuGon.CheckedChanged += new System.EventHandler(this.chkThuGon_CheckedChanged);
             // 
             // gridControlSum
             // 
@@ -392,11 +393,12 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             this.emptySpaceItem3,
             this.layoutControlItem1,
             this.layoutControlItem2,
-            this.emptySpaceItem2,
-            this.layoutControlItem4,
-            this.layoutControlItem7,
+            this.layoutControlItem9,
+            this.layoutControlItem10,
             this.layoutControlItem8,
-            this.emptySpaceItem1});
+            this.emptySpaceItem1,
+            this.layoutControlItem4,
+            this.layoutControlItem7});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(1320, 739);
@@ -404,7 +406,7 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             // 
             // layoutControlItem3
             // 
-            this.layoutControlItem3.Control = this.gridControlMediMateStockSum;
+            this.layoutControlItem3.Control = this.trvMediMateStockSum;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(1300, 693);
@@ -416,70 +418,62 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             this.layoutControlItem5.Control = this.txtKeyword;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(448, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(320, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(448, 0);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(320, 0);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(63, 26);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(35, 26);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.chkMedicine;
-            this.layoutControlItem1.Location = new System.Drawing.Point(794, 0);
+            this.layoutControlItem1.Location = new System.Drawing.Point(647, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(104, 26);
+            this.layoutControlItem1.Size = new System.Drawing.Size(92, 26);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.chkMaterial;
-            this.layoutControlItem2.Location = new System.Drawing.Point(898, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(739, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(106, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(85, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
-            // emptySpaceItem2
+            // layoutControlItem9
             // 
-            this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(1237, 0);
-            this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(63, 26);
-            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem9.Control = this.chkChiTiet;
+            this.layoutControlItem9.Location = new System.Drawing.Point(824, 0);
+            this.layoutControlItem9.Name = "layoutControlItem9";
+            this.layoutControlItem9.Size = new System.Drawing.Size(101, 26);
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem9.TextVisible = false;
             // 
-            // layoutControlItem4
+            // layoutControlItem10
             // 
-            this.layoutControlItem4.Control = this.btnXuatExcel;
-            this.layoutControlItem4.Location = new System.Drawing.Point(1123, 0);
-            this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(114, 26);
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem4.TextVisible = false;
-            // 
-            // layoutControlItem7
-            // 
-            this.layoutControlItem7.Control = this.btnSerach;
-            this.layoutControlItem7.Location = new System.Drawing.Point(1004, 0);
-            this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(119, 26);
-            this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem7.TextVisible = false;
+            this.layoutControlItem10.Control = this.chkThuGon;
+            this.layoutControlItem10.Location = new System.Drawing.Point(925, 0);
+            this.layoutControlItem10.Name = "layoutControlItem10";
+            this.layoutControlItem10.Size = new System.Drawing.Size(104, 26);
+            this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem10.TextVisible = false;
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem8.Control = this.cboBrach;
-            this.layoutControlItem8.Location = new System.Drawing.Point(511, 0);
+            this.layoutControlItem8.Location = new System.Drawing.Point(355, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(251, 26);
+            this.layoutControlItem8.Size = new System.Drawing.Size(245, 26);
             this.layoutControlItem8.Text = "Chi nhánh:";
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(70, 20);
@@ -488,10 +482,35 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(762, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(600, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(32, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(47, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem4
+            // 
+            this.layoutControlItem4.Control = this.btnXuatExcel;
+            this.layoutControlItem4.Location = new System.Drawing.Point(1172, 0);
+            this.layoutControlItem4.Name = "layoutControlItem4";
+            this.layoutControlItem4.Size = new System.Drawing.Size(128, 26);
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem4.TextVisible = false;
+            // 
+            // layoutControlItem7
+            // 
+            this.layoutControlItem7.Control = this.btnSerach;
+            this.layoutControlItem7.Location = new System.Drawing.Point(1029, 0);
+            this.layoutControlItem7.Name = "layoutControlItem7";
+            this.layoutControlItem7.Size = new System.Drawing.Size(143, 26);
+            this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem7.TextVisible = false;
+            // 
+            // customGridLookUpEdit1View
+            // 
+            this.customGridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEdit1View.Name = "customGridLookUpEdit1View";
+            this.customGridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
             // 
             // gridColumn1
             // 
@@ -720,14 +739,13 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             this.Load += new System.EventHandler(this.ucMediaStockSummaryByMedicine_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cboBrach.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlMediMateStockSum)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewMediMateStockSum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trvMediMateStockSum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMaterial.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMedicine.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChiTiet.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkThuGon.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlSum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
@@ -737,11 +755,13 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ucPaging)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -754,6 +774,10 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraEditors.CheckEdit chkMaterial;
         private DevExpress.XtraEditors.CheckEdit chkMedicine;
+        private DevExpress.XtraEditors.CheckEdit chkChiTiet;
+        private DevExpress.XtraEditors.CheckEdit chkThuGon;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
@@ -777,11 +801,9 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn21;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn22;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn23;
-        private DevExpress.XtraGrid.GridControl gridControlMediMateStockSum;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridViewMediMateStockSum;
+        private DevExpress.XtraTreeList.TreeList trvMediMateStockSum;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private Inventec.UC.Paging.UcPaging ucPaging1;
         private DevExpress.XtraLayout.LayoutControlItem ucPaging;

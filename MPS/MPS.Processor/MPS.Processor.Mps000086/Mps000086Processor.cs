@@ -1102,6 +1102,27 @@ namespace MPS.Processor.Mps000086
             }
             return result;
         }
+
+        //Phieu xuat chuyen kho -> kho xuat = kho cua phieu, kho nhap = kho dich
+        public override string ProcessEmrStockData()
+        {
+            try
+            {
+                if (rdo == null || rdo._ChmsExpMest == null) return null;
+                var expMest = rdo._ChmsExpMest;
+                return BuildEmrStockData(
+                    expMest.EXP_MEST_CODE,
+                    null,
+                    expMest.MEDI_STOCK_CODE,
+                    GetMediStockCodeById(expMest.IMP_MEDI_STOCK_ID),
+                    expMest.REQ_DEPARTMENT_CODE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
     }
 
     class CalculateMergerData : TFlexCelUserFunction

@@ -1954,6 +1954,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.CheckAppoinmentEarly();//Hien thi thong bao den som thoi gian hen kham
                 this.LoadDataTracking(false);
                 this.LoadAllergenic(this.currentTreatmentWithPatientType.PATIENT_ID);
+                this.PrefetchMimsPatientProfile();
                 this.InitDataServiceReqAllInDay();
                 this.ThreadLoadDonThuocCu(serviceReqAllInDays);
                 this.FillDataToComboPriviousExpMest(this.currentTreatmentWithPatientType);
@@ -2534,7 +2535,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        private void btnSaveTemplate__MedicinePage_Click(object sender, EventArgs e)
+        private void btnSaveTemplate__MedicinePage_Click(object sender, EventArgs e) 
         {
             CommonParam param = new CommonParam();
             try
@@ -2549,12 +2550,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        private void ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE sType)
+        private void ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE sType) 
         {
             try
             {
-                string guaranteeMessage = ""; 
-                if (!ValidateGuaranteeAmount(ref guaranteeMessage))
+                string guaranteeMessage = "";  
+                if (!ValidateGuaranteeAmount(ref guaranteeMessage)) 
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(
                         guaranteeMessage,
@@ -14189,7 +14190,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                     mimsInteractionLog = new HIS_MIMS_INTERACTION_LOG();
 
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog);
+                    // PN mang thai / cho con bú: null khi không tick -> request MIMS giữ nguyên như cũ
+                    var mimsProfile = BuildMimsPatientProfile();
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog, patientProfile: mimsProfile);
                 }
 
                 return check;

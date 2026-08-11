@@ -76,8 +76,10 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
         {
             try
             {
-                FillDataTogrilControl();
+                // Nap danh sach dang duoc chon TRUOC khi do du lieu len luoi
+                // -> luoi moi biet dong nao can tich san va day len dau danh sach
                 LoadDataChecked();
+                FillDataTogrilControl();
             }
             catch (Exception ex)
             {
@@ -90,10 +92,14 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
         {
             try
             {
+                this.lstAtcChecked = new List<HIS_ATC>();
                 if (this.listAtcChecks != null && this.listAtcChecks.Count > 0)
                 {
                     foreach (var item in this.listAtcChecks)
                     {
+                        // Bo qua ban ghi null (ma phan biet da bi xoa khoi danh muc) va ban ghi trung
+                        if (item == null) continue;
+                        if (this.lstAtcChecked.Any(o => o.ID == item.ID)) continue;
                         this.lstAtcChecked.Add(item);
                     }
                 }
@@ -154,34 +160,30 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
                     hisAtcFilter,
                     param);
 
-                if (this.listAtcChecks != null && atc.Data.Count > 0)
+                int pageRowCount = 0;
+                if (atc != null && atc.Data != null && atc.Data.Count > 0)
                 {
+                    pageRowCount = atc.Data.Count;
                     foreach (var item in atc.Data)
                     {
-                        var CheckATC = (this.listAtcChecks != null && listAtcChecks.Count > 0) ? listAtcChecks.FirstOrDefault(o => o.ID == item.ID) : null;
-                        if (CheckATC != null)
-                        {
-                            item.check = true;
-                        }
-                        else
-                            item.check = false;
-                        this.listAtcChecked.Add(item);
+                        // Danh dau theo danh sach dang chon hien tai (lstAtcChecked) chu khong theo
+                        // danh sach truyen vao ban dau -> giu nguyen tich chon khi tim kiem / chuyen trang
+                        item.check = IsAtcChecked(item.ID);
+                        this.lsAtcADO.Add(item);
                     }
                 }
-                else if (atc.Data.Count > 0)
-                {
-                    foreach (var item in atc.Data)
-                    {
-                        item.check = false;
-                        this.listAtcChecked.Add(item);
-                    }
-                }
+
+                // Bo sung cac ma dang chon nhung khong nam trong trang du lieu hien tai
+                AppendCheckedNotInPage(this.lsAtcADO, start1);
+
+                // Day cac dong da chon len dau danh sach (OrderByDescending on dinh -> giu thu tu tra ve tu server)
+                this.listAtcChecked = this.lsAtcADO.OrderByDescending(o => o.check).ToList();
 
                 gridViewATC.BeginUpdate();
                 gridControlATC.DataSource = this.listAtcChecked;
                 gridViewATC.EndUpdate();
-                rowCount1 = (data == null ? 0 : listAtcChecked.Count);
-                dataTotal1 = (atc.Param == null ? 0 : atc.Param.Count ?? 0);
+                rowCount1 = (data == null ? 0 : pageRowCount);
+                dataTotal1 = (atc == null || atc.Param == null ? 0 : atc.Param.Count ?? 0);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -189,6 +191,53 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool IsAtcChecked(long id)
+        {
+            return this.lstAtcChecked != null && this.lstAtcChecked.Any(o => o != null && o.ID == id);
+        }
+
+        private void AppendCheckedNotInPage(List<ATCSetUpADO> lsData, int start)
+        {
+            try
+            {
+                // Chi chen o trang dau tien de khong lam sai lech so dong cua cac trang sau
+                if (start > 0 || lsData == null || this.lstAtcChecked == null || this.lstAtcChecked.Count == 0) return;
+
+                string keyWord = (txtSearch.Text ?? "").Trim();
+                List<ATCSetUpADO> lsInsert = new List<ATCSetUpADO>();
+                foreach (var item in this.lstAtcChecked)
+                {
+                    if (item == null) continue;
+                    if (lsData.Any(o => o.ID == item.ID)) continue;
+                    if (!MatchKeyWord(item, keyWord)) continue;
+
+                    ATCSetUpADO ado = new ATCSetUpADO();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<ATCSetUpADO>(ado, item);
+                    ado.check = true;
+                    lsInsert.Add(ado);
+                }
+                if (lsInsert.Count > 0)
+                {
+                    lsData.InsertRange(0, lsInsert);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private bool MatchKeyWord(HIS_ATC atc, string keyWord)
+        {
+            if (atc == null) return false;
+            if (String.IsNullOrEmpty(keyWord)) return true;
+
+            string key = keyWord.ToUpper();
+            return (!String.IsNullOrEmpty(atc.ATC_CODE) && atc.ATC_CODE.ToUpper().Contains(key))
+                || (!String.IsNullOrEmpty(atc.ATC_NAME) && atc.ATC_NAME.ToUpper().Contains(key))
+                || (!String.IsNullOrEmpty(atc.BHYT_CODE) && atc.BHYT_CODE.ToUpper().Contains(key));
         }
         #endregion
         #region ---Even---
@@ -211,40 +260,34 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
         {
             try
             {
-                var datarow = (ATCSetUpADO)gridViewATC.GetFocusedRow();
-                if (datarow != null)
+                var datarow = gridViewATC.GetFocusedRow() as ATCSetUpADO;
+                if (datarow == null) return;
+
+                // EditValueChanged phat sinh TRUOC khi gia tri duoc post xuong dong du lieu
+                // -> lay gia tri moi truc tiep tu editor, khong doc datarow.check (van con gia tri cu)
+                var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
+                bool isChecked = (checkEdit != null && checkEdit.EditValue != null)
+                    ? Convert.ToBoolean(checkEdit.EditValue)
+                    : !datarow.check;
+                datarow.check = isChecked;
+
+                if (this.lstAtcChecked == null)
                 {
-                    if (this.lstAtcChecked != null && this.lstAtcChecked.Count > 0)
+                    this.lstAtcChecked = new List<HIS_ATC>();
+                }
+
+                if (isChecked)
+                {
+                    if (!this.lstAtcChecked.Any(o => o != null && o.ID == datarow.ID))
                     {
-                        if (datarow.check == false)
-                        {
-                            bool check = this.lstAtcChecked.Any(o => o.ID == datarow.ID);
-                            if (!check)
-                            {
-                                HIS_ATC data = new HIS_ATC();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_ATC>(data, datarow);
-                                this.lstAtcChecked.Add(data);
-                            }
-                        }
-                        else
-                        {
-                            var remove = this.lstAtcChecked.FirstOrDefault(o => o.ID == datarow.ID);
-                            if (remove != null)
-                            {
-                                this.lstAtcChecked.RemoveAll(o => o.ID == datarow.ID);
-                            }
-                        }
+                        HIS_ATC data = new HIS_ATC();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_ATC>(data, datarow);
+                        this.lstAtcChecked.Add(data);
                     }
-                    else
-                    {
-                        this.lstAtcChecked = new List<HIS_ATC>();
-                        if (datarow.check == false)
-                        {
-                            HIS_ATC data = new HIS_ATC();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_ATC>(data, datarow);
-                            this.lstAtcChecked.Add(data);
-                        }
-                    }
+                }
+                else
+                {
+                    this.lstAtcChecked.RemoveAll(o => o != null && o.ID == datarow.ID);
                 }
             }
             catch (Exception ex)

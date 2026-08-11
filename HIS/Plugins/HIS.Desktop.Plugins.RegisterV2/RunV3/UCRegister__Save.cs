@@ -695,6 +695,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         return valid;
                     }
                 }
+
+                // The BHYT het han khi cau hinh IsBlockingInvalidBhyt KHAC 1/2: khong hien icon canh bao
+                // tai o Han den nua, thay bang hop thoai xac nhan Co/Khong tai buoc luu.
+                if (!ucHeinInfo1.ConfirmExpiredHeinCardBeforeSave())
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {

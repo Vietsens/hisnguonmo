@@ -78,8 +78,25 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup7 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupControlContainer6 = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
+            this.layoutControl9 = new DevExpress.XtraLayout.LayoutControl();
+            this.txtExpMestCode = new DevExpress.XtraEditors.TextEdit();
+            this.txtImpMestCode = new DevExpress.XtraEditors.TextEdit();
+            this.cboExpMediStock = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewExpMediStock = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboImpMediStock = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewImpMediStock = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboReqDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewReqDepartment = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.layoutControlGroup8 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.lciExpMestCode = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciImpMestCode = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExpMediStock = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciImpMediStock = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciReqDepartment = new DevExpress.XtraLayout.LayoutControlItem();
             this.navBarGroupCreateDate = new DevExpress.XtraNavBar.NavBarGroup();
             this.navBarGroupDocumentType = new DevExpress.XtraNavBar.NavBarGroup();
+            this.navBarGroupWarehouse = new DevExpress.XtraNavBar.NavBarGroup();
             this.cboDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtKeyWord = new DevExpress.XtraEditors.TextEdit();
@@ -103,6 +120,11 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.GcDispenseCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcDocumentName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GcExpMestCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GcImpMestCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GcExpMediStockName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GcImpMediStockName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GcReqDepartmentName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcTreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcPatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcPatientName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -157,6 +179,23 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
+            this.navBarGroupControlContainer6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl9)).BeginInit();
+            this.layoutControl9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtExpMestCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtImpMestCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExpMediStock.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewExpMediStock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboImpMediStock.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewImpMediStock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboReqDepartment.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewReqDepartment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExpMestCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciImpMestCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExpMediStock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciImpMediStock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciReqDepartment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).BeginInit();
@@ -270,10 +309,12 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer1);
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer4);
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer5);
+            this.navBarControl1.Controls.Add(this.navBarGroupControlContainer6);
             this.navBarControl1.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] {
             this.navBarGroupStatus,
             this.navBarGroupCreateDate,
-            this.navBarGroupDocumentType});
+            this.navBarGroupDocumentType,
+            this.navBarGroupWarehouse});
             this.navBarControl1.Location = new System.Drawing.Point(2, 97);
             this.navBarControl1.Margin = new System.Windows.Forms.Padding(0);
             this.navBarControl1.Name = "navBarControl1";
@@ -522,9 +563,191 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.navBarGroupDocumentType.GroupClientHeight = 40;
             this.navBarGroupDocumentType.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.navBarGroupDocumentType.Name = "navBarGroupDocumentType";
-            // 
+            //
+            // navBarGroupControlContainer6
+            //
+            this.navBarGroupControlContainer6.Appearance.BackColor = System.Drawing.SystemColors.Control;
+            this.navBarGroupControlContainer6.Appearance.Options.UseBackColor = true;
+            this.navBarGroupControlContainer6.Controls.Add(this.layoutControl9);
+            this.navBarGroupControlContainer6.Name = "navBarGroupControlContainer6";
+            this.navBarGroupControlContainer6.Size = new System.Drawing.Size(185, 145);
+            this.navBarGroupControlContainer6.TabIndex = 3;
+            //
+            // layoutControl9
+            //
+            this.layoutControl9.Controls.Add(this.txtExpMestCode);
+            this.layoutControl9.Controls.Add(this.txtImpMestCode);
+            this.layoutControl9.Controls.Add(this.cboExpMediStock);
+            this.layoutControl9.Controls.Add(this.cboImpMediStock);
+            this.layoutControl9.Controls.Add(this.cboReqDepartment);
+            this.layoutControl9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl9.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl9.Name = "layoutControl9";
+            this.layoutControl9.Root = this.layoutControlGroup8;
+            this.layoutControl9.Size = new System.Drawing.Size(185, 145);
+            this.layoutControl9.TabIndex = 0;
+            this.layoutControl9.Text = "layoutControl9";
+            //
+            // txtExpMestCode
+            //
+            this.txtExpMestCode.Location = new System.Drawing.Point(77, 2);
+            this.txtExpMestCode.Name = "txtExpMestCode";
+            this.txtExpMestCode.Size = new System.Drawing.Size(106, 20);
+            this.txtExpMestCode.StyleController = this.layoutControl9;
+            this.txtExpMestCode.TabIndex = 0;
+            this.txtExpMestCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtExpMestCode_KeyPress);
+            this.txtExpMestCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExpMestCode_PreviewKeyDown);
+            //
+            // txtImpMestCode
+            //
+            this.txtImpMestCode.Location = new System.Drawing.Point(77, 31);
+            this.txtImpMestCode.Name = "txtImpMestCode";
+            this.txtImpMestCode.Size = new System.Drawing.Size(106, 20);
+            this.txtImpMestCode.StyleController = this.layoutControl9;
+            this.txtImpMestCode.TabIndex = 1;
+            this.txtImpMestCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtImpMestCode_KeyPress);
+            this.txtImpMestCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtImpMestCode_PreviewKeyDown);
+            //
+            // cboExpMediStock
+            //
+            this.cboExpMediStock.Location = new System.Drawing.Point(77, 60);
+            this.cboExpMediStock.Name = "cboExpMediStock";
+            this.cboExpMediStock.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExpMediStock.Properties.NullText = "";
+            this.cboExpMediStock.Properties.View = this.gridViewExpMediStock;
+            this.cboExpMediStock.Size = new System.Drawing.Size(106, 20);
+            this.cboExpMediStock.StyleController = this.layoutControl9;
+            this.cboExpMediStock.TabIndex = 2;
+            this.cboExpMediStock.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboExpMediStock_CustomDisplayText);
+            this.cboExpMediStock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboExpMediStock_ButtonClick);
+            //
+            // gridViewExpMediStock
+            //
+            this.gridViewExpMediStock.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewExpMediStock.Name = "gridViewExpMediStock";
+            this.gridViewExpMediStock.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewExpMediStock.OptionsView.ShowGroupPanel = false;
+            //
+            // cboImpMediStock
+            //
+            this.cboImpMediStock.Location = new System.Drawing.Point(77, 89);
+            this.cboImpMediStock.Name = "cboImpMediStock";
+            this.cboImpMediStock.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboImpMediStock.Properties.NullText = "";
+            this.cboImpMediStock.Properties.View = this.gridViewImpMediStock;
+            this.cboImpMediStock.Size = new System.Drawing.Size(106, 20);
+            this.cboImpMediStock.StyleController = this.layoutControl9;
+            this.cboImpMediStock.TabIndex = 3;
+            this.cboImpMediStock.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboImpMediStock_CustomDisplayText);
+            this.cboImpMediStock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboImpMediStock_ButtonClick);
+            //
+            // gridViewImpMediStock
+            //
+            this.gridViewImpMediStock.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewImpMediStock.Name = "gridViewImpMediStock";
+            this.gridViewImpMediStock.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewImpMediStock.OptionsView.ShowGroupPanel = false;
+            //
+            // cboReqDepartment
+            //
+            this.cboReqDepartment.Location = new System.Drawing.Point(77, 118);
+            this.cboReqDepartment.Name = "cboReqDepartment";
+            this.cboReqDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboReqDepartment.Properties.NullText = "";
+            this.cboReqDepartment.Properties.View = this.gridViewReqDepartment;
+            this.cboReqDepartment.Size = new System.Drawing.Size(106, 20);
+            this.cboReqDepartment.StyleController = this.layoutControl9;
+            this.cboReqDepartment.TabIndex = 4;
+            this.cboReqDepartment.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboReqDepartment_CustomDisplayText);
+            this.cboReqDepartment.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboReqDepartment_ButtonClick);
+            //
+            // gridViewReqDepartment
+            //
+            this.gridViewReqDepartment.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewReqDepartment.Name = "gridViewReqDepartment";
+            this.gridViewReqDepartment.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewReqDepartment.OptionsView.ShowGroupPanel = false;
+            //
+            // layoutControlGroup8
+            //
+            this.layoutControlGroup8.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroup8.GroupBordersVisible = false;
+            this.layoutControlGroup8.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciExpMestCode,
+            this.lciImpMestCode,
+            this.lciExpMediStock,
+            this.lciImpMediStock,
+            this.lciReqDepartment});
+            this.layoutControlGroup8.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup8.Name = "layoutControlGroup8";
+            this.layoutControlGroup8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlGroup8.Size = new System.Drawing.Size(185, 145);
+            this.layoutControlGroup8.TextVisible = false;
+            //
+            // lciExpMestCode
+            //
+            this.lciExpMestCode.Control = this.txtExpMestCode;
+            this.lciExpMestCode.Location = new System.Drawing.Point(0, 0);
+            this.lciExpMestCode.Name = "lciExpMestCode";
+            this.lciExpMestCode.Size = new System.Drawing.Size(185, 29);
+            this.lciExpMestCode.Text = "Mã phiếu xuất:";
+            this.lciExpMestCode.TextSize = new System.Drawing.Size(72, 13);
+            //
+            // lciImpMestCode
+            //
+            this.lciImpMestCode.Control = this.txtImpMestCode;
+            this.lciImpMestCode.Location = new System.Drawing.Point(0, 29);
+            this.lciImpMestCode.Name = "lciImpMestCode";
+            this.lciImpMestCode.Size = new System.Drawing.Size(185, 29);
+            this.lciImpMestCode.Text = "Mã phiếu nhập:";
+            this.lciImpMestCode.TextSize = new System.Drawing.Size(72, 13);
+            //
+            // lciExpMediStock
+            //
+            this.lciExpMediStock.Control = this.cboExpMediStock;
+            this.lciExpMediStock.Location = new System.Drawing.Point(0, 58);
+            this.lciExpMediStock.Name = "lciExpMediStock";
+            this.lciExpMediStock.Size = new System.Drawing.Size(185, 29);
+            this.lciExpMediStock.Text = "Kho xuất:";
+            this.lciExpMediStock.TextSize = new System.Drawing.Size(72, 13);
+            //
+            // lciImpMediStock
+            //
+            this.lciImpMediStock.Control = this.cboImpMediStock;
+            this.lciImpMediStock.Location = new System.Drawing.Point(0, 87);
+            this.lciImpMediStock.Name = "lciImpMediStock";
+            this.lciImpMediStock.Size = new System.Drawing.Size(185, 29);
+            this.lciImpMediStock.Text = "Kho nhập:";
+            this.lciImpMediStock.TextSize = new System.Drawing.Size(72, 13);
+            //
+            // lciReqDepartment
+            //
+            this.lciReqDepartment.Control = this.cboReqDepartment;
+            this.lciReqDepartment.Location = new System.Drawing.Point(0, 116);
+            this.lciReqDepartment.Name = "lciReqDepartment";
+            this.lciReqDepartment.Size = new System.Drawing.Size(185, 29);
+            this.lciReqDepartment.Text = "Khoa yêu cầu:";
+            this.lciReqDepartment.TextSize = new System.Drawing.Size(72, 13);
+            //
+            // navBarGroupWarehouse
+            //
+            this.navBarGroupWarehouse.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.navBarGroupWarehouse.Appearance.Options.UseFont = true;
+            this.navBarGroupWarehouse.Caption = "Phiếu kho";
+            this.navBarGroupWarehouse.ControlContainer = this.navBarGroupControlContainer6;
+            this.navBarGroupWarehouse.Expanded = true;
+            this.navBarGroupWarehouse.GroupClientHeight = 149;
+            this.navBarGroupWarehouse.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
+            this.navBarGroupWarehouse.Name = "navBarGroupWarehouse";
+            //
             // cboDepartment
-            // 
+            //
             this.cboDepartment.Location = new System.Drawing.Point(33, 50);
             this.cboDepartment.Name = "cboDepartment";
             this.cboDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -655,8 +878,8 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(197, 24);
-            this.layoutControlItem4.Text = "Khoa:";
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(28, 13);
+            this.layoutControlItem4.Text = "Khoa (hồ sơ):";
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(66, 13);
             // 
             // layoutControlItem5
             // 
@@ -713,6 +936,11 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.gridColumn1,
             this.GcDispenseCode,
             this.GcDocumentName,
+            this.GcExpMestCode,
+            this.GcImpMestCode,
+            this.GcExpMediStockName,
+            this.GcImpMediStockName,
+            this.GcReqDepartmentName,
             this.GcTreatmentCode,
             this.GcPatientCode,
             this.GcPatientName,
@@ -795,6 +1023,59 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcDocumentName.Visible = true;
             this.GcDocumentName.VisibleIndex = 3;
             this.GcDocumentName.Width = 100;
+            //
+            // GcExpMestCode
+            //
+            this.GcExpMestCode.Caption = "Mã phiếu xuất";
+            this.GcExpMestCode.FieldName = "EXP_MEST_CODE";
+            this.GcExpMestCode.Name = "GcExpMestCode";
+            this.GcExpMestCode.OptionsColumn.AllowEdit = false;
+            this.GcExpMestCode.Visible = true;
+            this.GcExpMestCode.VisibleIndex = 4;
+            this.GcExpMestCode.Width = 100;
+            //
+            // GcImpMestCode
+            //
+            this.GcImpMestCode.Caption = "Mã phiếu nhập";
+            this.GcImpMestCode.FieldName = "IMP_MEST_CODE";
+            this.GcImpMestCode.Name = "GcImpMestCode";
+            this.GcImpMestCode.OptionsColumn.AllowEdit = false;
+            this.GcImpMestCode.Visible = true;
+            this.GcImpMestCode.VisibleIndex = 5;
+            this.GcImpMestCode.Width = 100;
+            //
+            // GcExpMediStockName
+            //
+            this.GcExpMediStockName.Caption = "Kho xuất";
+            this.GcExpMediStockName.FieldName = "EXP_MEDI_STOCK_NAME";
+            this.GcExpMediStockName.Name = "GcExpMediStockName";
+            this.GcExpMediStockName.OptionsColumn.AllowEdit = false;
+            this.GcExpMediStockName.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.GcExpMediStockName.Visible = true;
+            this.GcExpMediStockName.VisibleIndex = 6;
+            this.GcExpMediStockName.Width = 130;
+            //
+            // GcImpMediStockName
+            //
+            this.GcImpMediStockName.Caption = "Kho nhập";
+            this.GcImpMediStockName.FieldName = "IMP_MEDI_STOCK_NAME";
+            this.GcImpMediStockName.Name = "GcImpMediStockName";
+            this.GcImpMediStockName.OptionsColumn.AllowEdit = false;
+            this.GcImpMediStockName.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.GcImpMediStockName.Visible = true;
+            this.GcImpMediStockName.VisibleIndex = 7;
+            this.GcImpMediStockName.Width = 130;
+            //
+            // GcReqDepartmentName
+            //
+            this.GcReqDepartmentName.Caption = "Khoa yêu cầu";
+            this.GcReqDepartmentName.FieldName = "REQ_DEPARTMENT_NAME";
+            this.GcReqDepartmentName.Name = "GcReqDepartmentName";
+            this.GcReqDepartmentName.OptionsColumn.AllowEdit = false;
+            this.GcReqDepartmentName.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.GcReqDepartmentName.Visible = true;
+            this.GcReqDepartmentName.VisibleIndex = 8;
+            this.GcReqDepartmentName.Width = 130;
             // 
             // GcTreatmentCode
             // 
@@ -803,7 +1084,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcTreatmentCode.Name = "GcTreatmentCode";
             this.GcTreatmentCode.OptionsColumn.ReadOnly = true;
             this.GcTreatmentCode.Visible = true;
-            this.GcTreatmentCode.VisibleIndex = 4;
+            this.GcTreatmentCode.VisibleIndex = 9;
             this.GcTreatmentCode.Width = 90;
             // 
             // GcPatientCode
@@ -813,7 +1094,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcPatientCode.Name = "GcPatientCode";
             this.GcPatientCode.OptionsColumn.ReadOnly = true;
             this.GcPatientCode.Visible = true;
-            this.GcPatientCode.VisibleIndex = 5;
+            this.GcPatientCode.VisibleIndex = 10;
             this.GcPatientCode.Width = 90;
             // 
             // GcPatientName
@@ -823,7 +1104,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcPatientName.Name = "GcPatientName";
             this.GcPatientName.OptionsColumn.AllowEdit = false;
             this.GcPatientName.Visible = true;
-            this.GcPatientName.VisibleIndex = 6;
+            this.GcPatientName.VisibleIndex = 11;
             this.GcPatientName.Width = 120;
             // 
             // GcDob
@@ -834,7 +1115,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcDob.OptionsColumn.AllowEdit = false;
             this.GcDob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcDob.Visible = true;
-            this.GcDob.VisibleIndex = 7;
+            this.GcDob.VisibleIndex = 12;
             this.GcDob.Width = 120;
             // 
             // GcGenderName
@@ -844,7 +1125,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcGenderName.Name = "GcGenderName";
             this.GcGenderName.OptionsColumn.AllowEdit = false;
             this.GcGenderName.Visible = true;
-            this.GcGenderName.VisibleIndex = 8;
+            this.GcGenderName.VisibleIndex = 13;
             this.GcGenderName.Width = 80;
             // 
             // GcRejecter
@@ -854,7 +1135,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcRejecter.Name = "GcRejecter";
             this.GcRejecter.OptionsColumn.AllowEdit = false;
             this.GcRejecter.Visible = true;
-            this.GcRejecter.VisibleIndex = 9;
+            this.GcRejecter.VisibleIndex = 14;
             this.GcRejecter.Width = 92;
             // 
             // GcRejectReason
@@ -864,7 +1145,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcRejectReason.Name = "GcRejectReason";
             this.GcRejectReason.OptionsColumn.AllowEdit = false;
             this.GcRejectReason.Visible = true;
-            this.GcRejectReason.VisibleIndex = 10;
+            this.GcRejectReason.VisibleIndex = 15;
             this.GcRejectReason.Width = 93;
             // 
             // GcNextSigner
@@ -875,7 +1156,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcNextSigner.OptionsColumn.AllowEdit = false;
             this.GcNextSigner.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcNextSigner.Visible = true;
-            this.GcNextSigner.VisibleIndex = 11;
+            this.GcNextSigner.VisibleIndex = 16;
             this.GcNextSigner.Width = 120;
             // 
             // GcDocumentTypeName
@@ -885,7 +1166,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcDocumentTypeName.Name = "GcDocumentTypeName";
             this.GcDocumentTypeName.OptionsColumn.AllowEdit = false;
             this.GcDocumentTypeName.Visible = true;
-            this.GcDocumentTypeName.VisibleIndex = 12;
+            this.GcDocumentTypeName.VisibleIndex = 17;
             this.GcDocumentTypeName.Width = 120;
             // 
             // GcCreateTime
@@ -900,7 +1181,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcCreateTime.OptionsColumn.AllowEdit = false;
             this.GcCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcCreateTime.Visible = true;
-            this.GcCreateTime.VisibleIndex = 13;
+            this.GcCreateTime.VisibleIndex = 18;
             this.GcCreateTime.Width = 120;
             // 
             // GcCreator
@@ -910,7 +1191,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcCreator.Name = "GcCreator";
             this.GcCreator.OptionsColumn.AllowEdit = false;
             this.GcCreator.Visible = true;
-            this.GcCreator.VisibleIndex = 14;
+            this.GcCreator.VisibleIndex = 19;
             this.GcCreator.Width = 110;
             // 
             // GcModifyTime
@@ -925,7 +1206,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcModifyTime.OptionsColumn.AllowEdit = false;
             this.GcModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcModifyTime.Visible = true;
-            this.GcModifyTime.VisibleIndex = 15;
+            this.GcModifyTime.VisibleIndex = 20;
             this.GcModifyTime.Width = 120;
             // 
             // GcModifier
@@ -935,7 +1216,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.GcModifier.Name = "GcModifier";
             this.GcModifier.OptionsColumn.AllowEdit = false;
             this.GcModifier.Visible = true;
-            this.GcModifier.VisibleIndex = 16;
+            this.GcModifier.VisibleIndex = 21;
             this.GcModifier.Width = 110;
             // 
             // GcURL
@@ -1060,6 +1341,23 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
+            this.navBarGroupControlContainer6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl9)).EndInit();
+            this.layoutControl9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtExpMestCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtImpMestCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExpMediStock.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewExpMediStock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboImpMediStock.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewImpMediStock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboReqDepartment.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewReqDepartment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExpMestCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciImpMestCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExpMediStock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciImpMediStock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciReqDepartment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).EndInit();
@@ -1161,6 +1459,28 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
         private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup7;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
+        private DevExpress.XtraNavBar.NavBarGroup navBarGroupWarehouse;
+        private DevExpress.XtraNavBar.NavBarGroupControlContainer navBarGroupControlContainer6;
+        private DevExpress.XtraLayout.LayoutControl layoutControl9;
+        private DevExpress.XtraEditors.TextEdit txtExpMestCode;
+        private DevExpress.XtraEditors.TextEdit txtImpMestCode;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExpMediStock;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewExpMediStock;
+        private DevExpress.XtraEditors.GridLookUpEdit cboImpMediStock;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewImpMediStock;
+        private DevExpress.XtraEditors.GridLookUpEdit cboReqDepartment;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewReqDepartment;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup8;
+        private DevExpress.XtraLayout.LayoutControlItem lciExpMestCode;
+        private DevExpress.XtraLayout.LayoutControlItem lciImpMestCode;
+        private DevExpress.XtraLayout.LayoutControlItem lciExpMediStock;
+        private DevExpress.XtraLayout.LayoutControlItem lciImpMediStock;
+        private DevExpress.XtraLayout.LayoutControlItem lciReqDepartment;
+        private DevExpress.XtraGrid.Columns.GridColumn GcExpMestCode;
+        private DevExpress.XtraGrid.Columns.GridColumn GcImpMestCode;
+        private DevExpress.XtraGrid.Columns.GridColumn GcExpMediStockName;
+        private DevExpress.XtraGrid.Columns.GridColumn GcImpMediStockName;
+        private DevExpress.XtraGrid.Columns.GridColumn GcReqDepartmentName;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit1;
         private DevExpress.XtraEditors.CheckEdit chkOtherDocuments;

@@ -43,6 +43,30 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
 {
     public partial class frmAggrExpMestDetail : HIS.Desktop.Utility.FormBase
     {
+        /// <summary>
+        /// Thực thi in giống khi bấm nút "In ấn" (cboPrint): phiếu tổng hợp phòng khám -> in gộp đơn thuốc,
+        /// các loại còn lại -> hiển thị menu chọn loại phiếu.
+        /// Tái sử dụng chung cho nút "In ấn" và tự động in sau khi Duyệt (ô "In:" đang tích).
+        /// </summary>
+        internal void ExecutePrintByPrintButton()
+        {
+            try
+            {
+                if (this.AggExpMest != null && this.AggExpMest.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK)
+                {
+                    clickItemInGopDonThuoc(this.AggExpMest);
+                }
+                else
+                {
+                    PrintAggregateExpMest(this.AggExpMest);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         internal void PrintAggregateExpMest()
         {
             try

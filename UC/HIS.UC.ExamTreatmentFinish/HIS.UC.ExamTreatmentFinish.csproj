@@ -234,6 +234,7 @@
     <Compile Include="ADO\MediOrgADO.cs" />
     <Compile Include="ADO\ProgramADO.cs" />
     <Compile Include="ADO\RoomExamADO.cs" />
+    <Compile Include="ADO\SetChronicADO.cs" />
     <Compile Include="ADO\ShowICDInformationADO.cs" />
     <Compile Include="ADO\TimeADO.cs" />
     <Compile Include="ADO\TreatmentFinishInitADO.cs" />
@@ -241,6 +242,7 @@
     <Compile Include="Base\Block.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Base\AppointmentMediRecordExpiryWorker.cs" />
     <Compile Include="Base\GlobalVariablesProcess.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="BussinessBase.cs" />

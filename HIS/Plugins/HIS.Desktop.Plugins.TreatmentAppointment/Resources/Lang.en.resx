@@ -246,4 +246,22 @@
   <data name="frmSendZaloResult.btnClose.Text" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="frmTreatmentAppointment.bbtnEditAppointment.Caption" xml:space="preserve">
+    <value>Edit appointment</value>
+  </data>
+  <data name="frmTreatmentAppointment.bbtnPrintAppointment.Caption" xml:space="preserve">
+    <value>Print appointment paper</value>
+  </data>
+  <data name="frmTreatmentAppointment.gridColumnAppointmentExamRoom.Caption" xml:space="preserve">
+    <value>Appointment room</value>
+  </data>
+  <data name="frmTreatmentAppointment.gridColumnAppointmentCreator.Caption" xml:space="preserve">
+    <value>Appointment doctor</value>
+  </data>
+  <data name="frmTreatmentAppointment.gridColumnModifyTime.Caption" xml:space="preserve">
+    <value>Modify time</value>
+  </data>
+  <data name="frmTreatmentAppointment.gridColumnModifier.Caption" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
 </root>

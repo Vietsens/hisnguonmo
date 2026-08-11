@@ -52,6 +52,13 @@ namespace MPS.Processor.Mps000001.PDO
         public string TRANSFER_IN_REASON_NAME { get; set; }
         public string PARENT_NAME { get; set; }
         public long? CURRENT_EXECUTE_ROOM_NUM_ORDER { get; set; }
+
+        /// <summary>
+        /// Thoi gian du kien den luot kham (phut)
+        /// = Thoi gian du kien cua dich vu kham x So y lenh kham chua xu ly dung truoc benh nhan.
+        /// Null khi den luot ngay hoac dich vu chua cau hinh thoi gian du kien -> khoa in rong.
+        /// </summary>
+        public long? ESTIMATE_WAITING_MINUTE { get; set; }
     }
 
     public class Mps000001_ListSereServs : V_HIS_SERE_SERV

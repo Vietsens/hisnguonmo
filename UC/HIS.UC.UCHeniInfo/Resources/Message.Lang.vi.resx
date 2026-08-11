@@ -166,4 +166,7 @@
   <data name="TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
     <value>Thông báo</value>
   </data>
+  <data name="TheBHYTDaHetHanSuDungBanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>Thẻ BHYT đã hết hạn sử dụng. Bạn có muốn tiếp tục không?</value>
+  </data>
 </root>

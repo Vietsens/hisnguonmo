@@ -38,7 +38,8 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
             Dictionary<long, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV>> dicSereServData,
             bool printNow, ref bool result, long? roomId, MPS.ProcessorBase.PrintConfig.PreviewType? PreviewType,
             List<HisServiceReqMaxNumOrderSDO> ReqMaxNumOrderSDO, Action<int, Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> savedData,
-            Action<string> cancelPrint,List<HIS_TRANS_REQ> TransReq,List<HIS_CONFIG> Configs, Action<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned)
+            Action<string> cancelPrint,List<HIS_TRANS_REQ> TransReq,List<HIS_CONFIG> Configs, Action<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned,
+            List<HisServiceReqEstimateWaitingSDO> ReqEstimateWaitingSDO)
         {
             try
             {
@@ -70,6 +71,19 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             ado.CURRENT_EXECUTE_ROOM_NUM_ORDER = roomSdo.MAX_NUM_ORDER;
                         }
                     }
+
+                    //Thoi gian du kien den luot kham (phut). BE da tinh san va tra null khi
+                    //den luot ngay (khong con y lenh chua xu ly dung truoc) hoac dich vu chua cau hinh thoi gian du kien
+                    long? estimateWaitingMinute = null;
+                    if (ReqEstimateWaitingSDO != null && ReqEstimateWaitingSDO.Count > 0)
+                    {
+                        var waitingSdo = ReqEstimateWaitingSDO.FirstOrDefault(o => o.SERVICE_REQ_ID == serviceReq.ID);
+                        if (waitingSdo != null)
+                        {
+                            estimateWaitingMinute = waitingSdo.ESTIMATE_WAITING_MINUTE;
+                        }
+                    }
+                    ado.ESTIMATE_WAITING_MINUTE = estimateWaitingMinute;
 
                     List<V_HIS_SERE_SERV> sereServ = new List<V_HIS_SERE_SERV>();
                     if (dicSereServData != null && dicSereServData.ContainsKey(serviceReq.ID))
@@ -151,5 +165,6 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
     }
 }

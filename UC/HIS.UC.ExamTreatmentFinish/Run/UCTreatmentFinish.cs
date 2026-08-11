@@ -103,6 +103,24 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         bool IsVisibleHosTransfer = false;
         bool sttTempHosTransfer = false;
 
+        #region Chronic (man tinh)
+        /// <summary>
+        /// Gia tri HIS_TREATMENT.IS_CHRONIC khi dot dieu tri duoc danh dau man tinh.
+        /// IMSys.DbConfig khong co hang rieng cho cot nay nen khai bao tai day.
+        /// Kieu short de so sanh truc tiep voi HIS_TREATMENT.IS_CHRONIC (short?).
+        /// </summary>
+        private const short IS_CHRONIC__TRUE = 1;
+
+        /// <summary>
+        /// Chan chkChronic_CheckedChanged goi API khi dang gan Checked bang code
+        /// (luc mo man hinh, luc revert sau khi API loi).
+        /// </summary>
+        private bool isNotProcessChronicChanged = false;
+
+        /// <summary>URI API danh dau / bo danh dau dot dieu tri man tinh</summary>
+        private const string URI__HIS_TREATMENT_SET_CHRONIC = "api/HisTreatment/SetChronic";
+        #endregion
+
         HisTreatmentFinishSDO sickSdoResult { get; set; }
         SurgAppointmentADO surSdoResult { get; set; }
 
@@ -234,6 +252,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 if (this.layoutControlItem31.AppearanceItemCaption.ForeColor == Color.Brown) ValidateSignDirect();
                 if (this.layoutControlItem30.AppearanceItemCaption.ForeColor == Color.Brown) ValidateSignHead();
                 ProcessCloseBaVisibility();
+                ProcessChronicVisibility();
             }
             catch (Exception ex)
             {
@@ -457,6 +476,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 this.layoutControlItem28.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.layoutControlItem28.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsExpXml4210Collinear.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.lciIsExpXml4210Collinear.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciCareer.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.lciCareer.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciChronic.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.lciChronic.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciChronic.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.lciChronic.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -1283,6 +1304,142 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             }
         }
 
+        // Checkbox "Man tinh" nam sau khoa cau hinh
+        // MOS.HIS_TREATMENT.FINISH.CHRONIC_CHANGE_TREATMENT_TYPE_OPTION (mac dinh TAT).
+        //   config tat → an item, bo tick, KHONG bao gio goi API
+        //   config bat → hien item, tu tick san neu dot dieu tri da la man tinh (VAN cho bo tick)
+        // IS_CHRONIC = 1 nghia la dong tren dong thoi gian DA duoc sinh → hien thi tick san
+        // cho dung trang thai thuc te duoi DB.
+        // Toan bo phan gan Checked duoc boc bang isNotProcessChronicChanged
+        // de mo man hinh KHONG kich hoat API SetChronic (tranh sinh/xoa dong ngoai y muon).
+        private void ProcessChronicVisibility()
+        {
+            try
+            {
+                isNotProcessChronicChanged = true;
+
+                HIS_TREATMENT treatment = this.ExamTreatmentFinishInitADO != null
+                    ? this.ExamTreatmentFinishInitADO.Treatment
+                    : null;
+
+                if (!HisConfig.IsChronicChangeTreatmentType)
+                {
+                    this.lciChronic.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.chkChronic.Checked = false;
+                    isNotProcessChronicChanged = false;
+                    return;
+                }
+
+                this.lciChronic.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                this.chkChronic.Checked = treatment != null && treatment.IS_CHRONIC == IS_CHRONIC__TRUE;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CHRONIC_TRACE] ProcessChronicVisibility:"
+                    + " TreatmentId=" + (treatment != null ? treatment.ID.ToString() : "null")
+                    + ", IS_CHRONIC=" + (treatment != null && treatment.IS_CHRONIC.HasValue ? treatment.IS_CHRONIC.Value.ToString() : "null")
+                    + ", TDL_TREATMENT_TYPE_ID=" + (treatment != null && treatment.TDL_TREATMENT_TYPE_ID.HasValue ? treatment.TDL_TREATMENT_TYPE_ID.Value.ToString() : "null")
+                    + ", chkChronic.Checked=" + this.chkChronic.Checked);
+
+                isNotProcessChronicChanged = false;
+            }
+            catch (Exception ex)
+            {
+                isNotProcessChronicChanged = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // Tick / bo tick "Man tinh" → goi API NGAY, khong doi bam Ket thuc dieu tri.
+        // Semantic phia backend (thiet ke moi):
+        //   tick    → API SINH ngay dong tuong ung tren dong thoi gian
+        //   bo tick → API tu XOA dong da sinh
+        // FE khong hien thi dong do (nam o module khac) → khong reload gi them tai day.
+        // API loi → REVERT lai trang thai checkbox de UI khop voi DB.
+        private void chkChronic_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isNotProcessChronicChanged) return;
+
+            bool newChecked = this.chkChronic.Checked;
+            Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+            try
+            {
+                HIS_TREATMENT treatment = this.ExamTreatmentFinishInitADO != null
+                    ? this.ExamTreatmentFinishInitADO.Treatment
+                    : null;
+                if (treatment == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("[CHRONIC_TRACE] chkChronic_CheckedChanged: Treatment null, bo qua.");
+                    RevertChronicChecked(!newChecked);
+                    return;
+                }
+
+                ADO.SetChronicADO sdo = new ADO.SetChronicADO();
+                sdo.TreatmentId = treatment.ID;
+                sdo.IsChronic = newChecked;
+                sdo.RequestRoomId = this.moduleData != null ? this.moduleData.RoomId : this.RoomId;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CHRONIC_TRACE] chkChronic_CheckedChanged: goi " + URI__HIS_TREATMENT_SET_CHRONIC
+                    + " (" + (newChecked ? "SINH dong tren dong thoi gian" : "XOA dong da sinh") + ")"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+
+                WaitingManager.Show();
+                HIS_TREATMENT resultData = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Post<HIS_TREATMENT>(
+                        URI__HIS_TREATMENT_SET_CHRONIC,
+                        HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                        sdo,
+                        param);
+                WaitingManager.Hide();
+
+                bool success = resultData != null;
+                if (success)
+                {
+                    // Gan lai Treatment de IS_CHRONIC / TDL_TREATMENT_TYPE_ID khong bi cu
+                    this.ExamTreatmentFinishInitADO.Treatment = resultData;
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "[CHRONIC_TRACE] SetChronic thanh cong ("
+                        + (newChecked ? "da SINH dong" : "da XOA dong") + "):"
+                        + " TreatmentId=" + resultData.ID
+                        + ", IS_CHRONIC=" + (resultData.IS_CHRONIC.HasValue ? resultData.IS_CHRONIC.Value.ToString() : "null")
+                        + ", TDL_TREATMENT_TYPE_ID=" + (resultData.TDL_TREATMENT_TYPE_ID.HasValue ? resultData.TDL_TREATMENT_TYPE_ID.Value.ToString() : "null"));
+                }
+                else
+                {
+                    RevertChronicChecked(!newChecked);
+                }
+
+                // Overload KHONG co owner — day la UserControl chu khong phai Form
+                MessageManager.Show(param, success);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                RevertChronicChecked(!newChecked);
+                Inventec.Common.Logging.LogSystem.Error(
+                    "[CHRONIC_TRACE] chkChronic_CheckedChanged that bai. newChecked=" + newChecked, ex);
+            }
+        }
+
+        /// <summary>
+        /// Dat lai trang thai chkChronic ma KHONG kich hoat lai CheckedChanged (tranh de quy goi API).
+        /// </summary>
+        private void RevertChronicChecked(bool value)
+        {
+            try
+            {
+                isNotProcessChronicChanged = true;
+                this.chkChronic.Checked = value;
+                isNotProcessChronicChanged = false;
+            }
+            catch (Exception ex)
+            {
+                isNotProcessChronicChanged = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void gridViewProgram_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
         {
             try
@@ -1614,6 +1771,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                             treatment.OUT_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dtEndTime.DateTime.ToString("yyyyMMddHHmmss"));
 
                             EndTypeForm.FormAppointment form = new EndTypeForm.FormAppointment(treatment, UpdateExamTreatmentFinish, ExamTreatmentFinishInitADO.IsBlockNumOrder);
+                            // PT-53438: benh an cua luot kham da co san khi mo man hinh xu tri -> khong goi API
+                            form.CurrentMediRecord = ExamTreatmentFinishInitADO.MediRecord;
                             form.ShowDialog();
                         }
                         else

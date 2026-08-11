@@ -37,6 +37,21 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.Key
                 return ptBHYT;
             }
         }
+        /// <summary>
+        /// Mac dinh co ghi Dien bien/PP xu ly vao to dieu tri khi duyet hoi chan hay khong.
+        /// Config khong khai bao => true (giu hanh vi cu truoc viec 45333).
+        /// </summary>
+        internal static bool GhiToDieuTriKhiDuyetHoiChan
+        {
+            get
+            {
+                var value = HisConfigs.Get<string>(Key.HisConfigKeys.HIS_CONFIG_KEY__GhiToDieuTriKhiDuyetHoiChan);
+                if (string.IsNullOrWhiteSpace(value))
+                    return true;
+                return value.Trim() != "0";
+            }
+        }
+
         internal static long PatientTypeId__BHYT
         {
             get

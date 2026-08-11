@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
         private const string CONFIG_KEY__IS_USE_HID_SYNC = "CONFIG_KEY__IS_USE_HID_SYNC";
         private const string CONFIG_KEY__WarningOverExamBhyt = "HIS.Desktop.WarningOverExamBhyt";
         private const string CONFIG_KEY__PRINT_MERGED_EXAM_SERVICE = "HIS.REGISTERV2.PRINT_MERGED_EXAM_SERVICE";
+        private const string CONFIG_KEY__CHECK_HEIN_BY_CCCD_WITHOUT_PATIENT_TYPE = "HIS.Desktop.Plugins.RegisterV2.IsCheckHeinByCccdWithoutPatientType";
         //qtcode
         private const string CONFIG_KEY__WarningHeinPatientTypeCode = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode";
 
@@ -234,6 +235,38 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
         internal static bool IsEnablePrintMergedExamService()
         {
             return GetValue(CONFIG_KEY__PRINT_MERGED_EXAM_SERVICE) == valueString__true;
+        }
+
+        /// <summary>
+        /// Khoa DUY NHAT bat/tat luong tiep don moi tren man hinh Tiep don 2. Gom 2 phan:
+        ///  (1) TU DONG CHUYEN DOI TUONG sang BHYT khi benh nhan tim duoc co so the BHYT that.
+        ///  (2) Tra cuu thong tin BHYT tren cong BHXH theo so CCCD MA KHONG phu thuoc doi tuong dang chon
+        ///      (phuc vu tiep don benh nhan MOI bang QR CCCD / VNeID).
+        ///
+        /// = 1 (BAT):
+        ///   - Tim duoc benh nhan co so the BHYT that => tu dong chuyen doi tuong sang BHYT, nap vung BHYT
+        ///     va kiem tra the tren cong theo cau hinh kiem tra the san co.
+        ///   - Quet CCCD / VNeID => goi API cong BHXH ngay, ke ca khi doi tuong dang chon la Vien phi.
+        ///     Co the => nap the + chuyen doi tuong. Khong co the / cong loi => giu nguyen doi tuong.
+        ///   - Doi lai: moi lan quet CCCD phat sinh them 1 luot goi cong BHXH.
+        /// Khac 1 hoac chua khai bao (MAC DINH): GIU NGUYEN TOAN BO luong cu - khong tu chuyen doi tuong,
+        ///   chi tra cong khi doi tuong dang chon la BHYT.
+        ///
+        /// Xac nhan nguoi yeu cau 2026-08-07: khoa tat phai giu y het ban cu, ke ca co che tu chuyen doi tuong.
+        /// Tham chieu: PTTK_XXXXX_Tu_Dong_Chuyen_Doi_Tuong_BHYT_Khi_Co_The.md
+        /// </summary>
+        internal static bool IsCheckHeinByCccdWithoutPatientType()
+        {
+            return GetValue(CONFIG_KEY__CHECK_HEIN_BY_CCCD_WITHOUT_PATIENT_TYPE) == valueString__true;
+        }
+
+        /// <summary>
+        /// Co bat co che tu dong chuyen doi tuong sang BHYT hay khong.
+        /// Dung CHUNG khoa voi <see cref="IsCheckHeinByCccdWithoutPatientType"/> - xem giai thich o tren.
+        /// </summary>
+        internal static bool IsAutoSetPatientTypeBhytByHeinCard()
+        {
+            return GetValue(CONFIG_KEY__CHECK_HEIN_BY_CCCD_WITHOUT_PATIENT_TYPE) == valueString__true;
         }
 
         private static string GetValue(string key)

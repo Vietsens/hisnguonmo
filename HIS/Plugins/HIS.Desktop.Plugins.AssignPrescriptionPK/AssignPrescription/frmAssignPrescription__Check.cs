@@ -1395,7 +1395,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 if (this.currentMedicineTypeADOForEdit != null && this.currentMedicineTypeADOForEdit.MEDICINE_GROUP_ID != null)
                 {
-                    var medicineGroup = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_GROUP>().FirstOrDefault(o => o.ID == this.currentMedicineTypeADOForEdit.MEDICINE_GROUP_ID);
+                    // Cache danh muc nhom thuoc co the null/rong (moi truong chua co du lieu HIS_MEDICINE_GROUP)
+                    // -> khong co gi de canh bao, bo qua; tranh ArgumentNullException lam fail viec bo sung thuoc
+                    var allMedicineGroups = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_GROUP>();
+                    if (allMedicineGroups == null || allMedicineGroups.Count == 0)
+                        return result;
+                    var medicineGroup = allMedicineGroups.FirstOrDefault(o => o.ID == this.currentMedicineTypeADOForEdit.MEDICINE_GROUP_ID);
 
                     if (medicineGroup != null && medicineGroup.IS_WARNING == 1 && medicineGroup.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     {

@@ -271,6 +271,7 @@
     <Compile Include="FocusControl\FocusControlFactory.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="AppointmentMediRecordExpiryWorker.cs" />
     <Compile Include="ConfigKeyCFG.cs" />
     <Compile Include="TreatmentFinishProcessor.cs" />
     <Compile Include="GetData\GetDataBehavior.cs" />

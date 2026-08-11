@@ -38,6 +38,16 @@ namespace HIS.UC.UCPatientRaw
     {
         public bool TD3;
 
+        /// <summary>
+        /// Cho phep tra cuu thong tin BHYT tren cong BHXH theo so CCCD MA KHONG phu thuoc doi tuong dang chon.
+        ///
+        /// Mac dinh false = giu nguyen luong cu: chi tra cong khi doi tuong dang chon la BHYT.
+        /// Chi man hinh Tiep don 2 gan co nay (va chi khi cau hinh toan vien duoc bat) => cac man hinh khac
+        /// dung chung UC nay KHONG phat sinh them luot goi cong BHXH.
+        /// Tham chieu: PTTK_XXXXX_Tu_Dong_Chuyen_Doi_Tuong_BHYT_Khi_Co_The.md
+        /// </summary>
+        public bool IsCheckHeinByCccdWithoutPatientType { get; set; }
+
         public void SetTD3(bool td3)
         {
             try

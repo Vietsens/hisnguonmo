@@ -42,14 +42,6 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
         {
             try
             {
-                // R9 (2891): điều dưỡng đăng nhập không được chỉ định
-                if (this.isNurseLoginBlocked)
-                {
-                    MessageManager.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(
-                        HIS.Desktop.LibraryMessage.Message.Enum.TaiKhoanKhongCoQuyenThucHienChucNang));
-                    return;
-                }
-
                 WaitingManager.Show();
                 bool valid = true;
                 this.positionHandleControl = -1;
@@ -68,20 +60,12 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                     if (cboExpMestTemplateForAdd.EditValue != null)
                         serviceReqKidneyScheduleSDO.ExpMestTemplateId = (long)cboExpMestTemplateForAdd.EditValue;
                     serviceReqKidneyScheduleSDO.KidneyShift = (long)cboCaForAdd.EditValue;
-                    // R7 (2891): Máy không bắt buộc — chỉ gán khi người dùng có chọn (backend đã nới constraint CHK34)
-                    if (cboMarchineForAdd.EditValue != null)
-                        serviceReqKidneyScheduleSDO.MachineId = (long)cboMarchineForAdd.EditValue;
+                    serviceReqKidneyScheduleSDO.MachineId = (long)cboMarchineForAdd.EditValue;
                     serviceReqKidneyScheduleSDO.Note = txtNoteForAdd.Text;
                     serviceReqKidneyScheduleSDO.PatientTypeId = (long)cboPatientType.EditValue;
                     serviceReqKidneyScheduleSDO.WorkingRoomId = requestRoom.ID;
-                    // Phòng chạy theo grid ĐANG CHỌN: grid phải (BN theo lịch) -> bộ lọc riêng cboExecuteRoomHemo;
-                    // grid trái (đột xuất) -> bộ lọc trên cùng cboExecuteRoom.
-                    if (this.currentHemoSchedule != null && cboExecuteRoomHemo.EditValue != null)
-                        serviceReqKidneyScheduleSDO.RoomId = Inventec.Common.TypeConvert.Parse.ToInt64(cboExecuteRoomHemo.EditValue.ToString());
-                    else
-                        serviceReqKidneyScheduleSDO.RoomId = (long)cboExecuteRoom.EditValue;
+                    serviceReqKidneyScheduleSDO.RoomId = (long)cboExecuteRoom.EditValue;
                     serviceReqKidneyScheduleSDO.ServiceId = (long)cboServiceForAdd.EditValue;
-                    // TreatmentId = BN của grid đang chọn (trái: currentTreatmentBedRoomADO; phải: currentHemoSchedule) — set trong click handler
                     serviceReqKidneyScheduleSDO.TreatmentId = this.treatmentId;
                     serviceReqKidneyScheduleSDO.RequestUsername = cboUser.Text;
                     serviceReqKidneyScheduleSDO.RequestLoginname = txtLoginName.Text;
@@ -126,8 +110,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
         {
             try
             {
-                // R9 (2891): điều dưỡng đăng nhập -> luôn khóa nút, không cho thao tác
-                this.btnAddIntoSchedule.Enabled = !this.isNurseLoginBlocked && (this.actionType == GlobalVariables.ActionAdd);
+                this.btnAddIntoSchedule.Enabled = (this.actionType == GlobalVariables.ActionAdd);
             }
             catch (Exception ex)
             {

@@ -141,7 +141,7 @@
     </Reference>
     <Reference Include="HIS.UC.UCHeniInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCHeniInfo\HIS.UC.UCHeniInfo.dll</HintPath>
+      <HintPath>..\..\..\UC\HIS.UC.UCHeniInfo\bin\Debug\HIS.UC.UCHeniInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCImageInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCImageInfo\HIS.UC.UCImageInfo.dll</HintPath>
@@ -152,15 +152,13 @@
     </Reference>
     <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
+      <HintPath>..\..\..\UC\HIS.UC.UCPatientRaw\bin\Debug\HIS.UC.UCPatientRaw.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCRelativeInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCRelativeInfo.dll</HintPath>
+    <Reference Include="HIS.UC.UCRelativeInfo">
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCRelativeInfo.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCServiceRoomInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCServiceRoomInfo.dll</HintPath>
+    <Reference Include="HIS.UC.UCServiceRoomInfo">
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCServiceRoomInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCTransPati">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCTransPati\HIS.UC.UCTransPati.dll</HintPath>
@@ -524,6 +522,9 @@
     <Compile Include="RunV3\ShareMethod\IShareMethod.cs" />
     <Compile Include="RunV3\ShareMethod\ShareMethod.cs" />
     <Compile Include="RunV3\UCRegister__AddressCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunV3\UCRegister__AutoPatientTypeBhyt.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="RunV3\UCRegister__CheckHeinGOV.cs">

@@ -78,13 +78,14 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             {
                 this.ValidationSingleControl(this.dateDateForAdd, this.dxValidationProviderControl);
                 this.ValidationSingleControl(this.cboCaForAdd, this.dxValidationProviderControl);
-                // R7 (2891): bỏ bắt buộc Máy + Gói vật tư (Máy chỉ nhập ở Xử lý PTTT; Gói không bắt buộc).
-                // KHÔNG đăng ký required cho cboMarchineForAdd và cboExpMestTemplateForAdd.
+                this.ValidationSingleControl(this.cboMarchineForAdd, this.dxValidationProviderControl);
                 this.ValidateGridLookupWithTextEdit(this.cboServiceForAdd, this.txtServiceForAdd, this.dxValidationProviderControl);
+                this.ValidationSingleControl(this.cboExpMestTemplateForAdd, this.dxValidationProviderControl);
                 this.ValidationSingleControl(this.cboPatientType, this.dxValidationProviderControl);
                 this.ValidationSingleControl(this.txtLoginName, this.dxValidationProviderControl, GetMessageForValidUser(), ValidUser);
-                // R7/2891: cboDepartment + dteInTimeFrom + dteInTimeTo là BỘ LỌC grid trái (Khoa, Ngày vào),
-                // KHÔNG thuộc vùng dưới "Đưa vào lịch" -> KHÔNG validate khi lưu.
+                this.ValidationSingleControl(this.cboDepartment, this.dxValidationProviderControl);
+                this.ValidationSingleControl(this.dteInTimeFrom, this.dxValidationProviderControl);
+                this.ValidationSingleControl(this.dteInTimeTo, this.dxValidationProviderControl);
             }
             catch (Exception ex)
             {

@@ -20,17 +20,58 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         string xmlRequest;
 
         /// <summary>
-        /// Kiểm tra Drug-Health Alert (Prescribing + HealthIssueCodes ICD10).
+        /// PatientProfile của lần Check gần nhất — phục vụ ghi log audit (IS_PREGNANT/IS_LACTATING...).
         /// </summary>
+        MimsPatientProfile lastPatientProfile;
+
+        #region Overload tương thích ngược (binary compat với plugin build TRƯỚC khi có PatientProfile)
+        // Các plugin cũ compile với chữ ký KHÔNG có tham số patientProfile — nếu bỏ các overload này,
+        // môi trường dán lệch bộ DLL (plugin cũ + thư viện mới) sẽ nổ MissingMethodException khi lưu đơn.
         public MimsResult Check(List<DrugItem> drugs, List<string> icd10Codes)
         {
-            return this.Check(drugs, null, icd10Codes);
+            return this.Check(drugs, null, icd10Codes, null);
+        }
+
+        public MimsResult Check(List<DrugItem> drugs, List<AllergyItem> allergies, List<string> icd10Codes)
+        {
+            return this.Check(drugs, allergies, icd10Codes, null);
+        }
+
+        public bool CheckAndAlert(List<DrugItem> drugs, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog, long? treatmentId, long? serviceReqId, long? patientId)
+        {
+            return this.CheckAndAlert(drugs, null, icd10Codes, interactionLog, treatmentId, serviceReqId, patientId, null);
+        }
+
+        public bool CheckAndAlert(List<DrugItem> drugs, List<AllergyItem> allergies, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog, long? treatmentId, long? serviceReqId, long? patientId)
+        {
+            return this.CheckAndAlert(drugs, allergies, icd10Codes, interactionLog, treatmentId, serviceReqId, patientId, null);
+        }
+
+        public void ShowResultAsync(List<DrugItem> drugs, List<string> icd10Codes)
+        {
+            this.ShowResultAsync(drugs, icd10Codes, null);
+        }
+
+        public bool ShowDialog(List<DrugItem> drugs, List<string> icd10Codes)
+        {
+            return this.ShowDialog(drugs, icd10Codes, null);
+        }
+        #endregion
+
+        /// <summary>
+        /// Kiểm tra Drug-Health Alert (Prescribing + HealthIssueCodes ICD10).
+        /// patientProfile != null (BN nữ có tick mang thai/cho con bú) → gửi kèm khối PatientProfile
+        /// để MIMS trả thêm cảnh báo Drug Pregnancy / Drug Lactation trong CÙNG request.
+        /// </summary>
+        public MimsResult Check(List<DrugItem> drugs, List<string> icd10Codes, MimsPatientProfile patientProfile)
+        {
+            return this.Check(drugs, null, icd10Codes, patientProfile);
         }
 
         /// <summary>
         /// Kiểm tra Drug-Health Alert (Prescribing + HealthIssueCodes ICD10).
         /// </summary>
-        public MimsResult Check(List<DrugItem> drugs,List<AllergyItem> allergies, List<string> icd10Codes)
+        public MimsResult Check(List<DrugItem> drugs,List<AllergyItem> allergies, List<string> icd10Codes, MimsPatientProfile patientProfile = null)
         {
             Inventec.Common.Logging.LogSystem.Debug(
                 "DrugHealthService.Check - start"
@@ -52,7 +93,8 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                 result.Html = BuildSimpleHtml(result.Message);
                 return result;
             }
-            xmlRequest = MimsRequestBuilder.BuildDrugHealthAlertRequest(drugs, allergies, icd10Codes, true,true);
+            this.lastPatientProfile = patientProfile;
+            xmlRequest = MimsRequestBuilder.BuildDrugHealthAlertRequest(drugs, allergies, icd10Codes, true, true, patientProfile);
             Inventec.Common.Logging.LogSystem.Debug(string.Format(
                 "DrugHealthService.Check - requestLength={0}", xmlRequest == null ? 0 : xmlRequest.Length));
 
@@ -108,12 +150,17 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             result.DrugHealthAlertDetails = MimsResultDetailParser.ParseDrugHealthAlerts(xmlResponse);
             // Parse chi tiết CDS Drug–Drug Alert
             result.DrugDrugAlertDetails = MimsResultDetailParser.ParseDrugDrugAlerts(xmlResponse);
+            // Parse chi tiết Drug-Pregnancy / Drug-Lactation Alert (chỉ có node khi request kèm PatientProfile)
+            result.PregnancyAlertDetails = MimsResultDetailParser.ParsePregnancyAlerts(xmlResponse);
+            result.LactationAlertDetails = MimsResultDetailParser.ParseLactationAlerts(xmlResponse);
 
             Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                "DrugHealthService.Check - Success={0}, DrugHealthAlertDetails.Count={1}, DrugDrugAlertDetails.Count={2}",
+                "DrugHealthService.Check - Success={0}, DrugHealthAlertDetails.Count={1}, DrugDrugAlertDetails.Count={2}, PregnancyAlertDetails.Count={3}, LactationAlertDetails.Count={4}",
                 result.Success,
                 result.DrugHealthAlertDetails == null ? 0 : result.DrugHealthAlertDetails.Count,
-                result.DrugDrugAlertDetails == null ? 0 : result.DrugDrugAlertDetails.Count));
+                result.DrugDrugAlertDetails == null ? 0 : result.DrugDrugAlertDetails.Count,
+                result.PregnancyAlertDetails == null ? 0 : result.PregnancyAlertDetails.Count,
+                result.LactationAlertDetails == null ? 0 : result.LactationAlertDetails.Count));
 
             return result;
         }
@@ -121,15 +168,16 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         /// <summary>
         /// Kiểm tra Tương tác thuốc, bệnh lý. Hiển thị cảnh báo (nếu có) và ghi log.
         /// </summary>
-        public bool CheckAndAlert(List<DrugItem> drugs, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog = null, long? treatmentId = null, long? serviceReqId = null, long? patientId = null)
+        public bool CheckAndAlert(List<DrugItem> drugs, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog = null, long? treatmentId = null, long? serviceReqId = null, long? patientId = null, MimsPatientProfile patientProfile = null)
         {
-            return this.CheckAndAlert(drugs, null, icd10Codes, interactionLog, treatmentId , serviceReqId, patientId);
+            return this.CheckAndAlert(drugs, null, icd10Codes, interactionLog, treatmentId , serviceReqId, patientId, patientProfile);
         }
 
         /// <summary>
         /// Kiểm tra Tương tác thuốc, bệnh lý. Hiển thị cảnh báo (nếu có) và ghi log.
+        /// patientProfile != null → request kèm PatientProfile, MIMS trả thêm cảnh báo thai kỳ / cho con bú.
         /// </summary>
-        public bool CheckAndAlert(List<DrugItem> drugs, List<AllergyItem> allergies, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog = null, long? treatmentId = null, long? serviceReqId = null, long? patientId = null)
+        public bool CheckAndAlert(List<DrugItem> drugs, List<AllergyItem> allergies, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog = null, long? treatmentId = null, long? serviceReqId = null, long? patientId = null, MimsPatientProfile patientProfile = null)
         {
             try
             {
@@ -144,15 +192,24 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                 // (RỖNG nếu thuốc không map được MimsGuid) -> mất HisDrugCode -> VN Contraindication
                 // (ExtractAtcCodes dò theo HisDrugCode) không còn dữ liệu để kiểm tra.
                 // Check tự map nội bộ (giống luồng chuột phải CheckWithVnFallback); VN fallback dùng drugs GỐC.
-                MimsResult result = Check(drugs, allergies, icd10Codes);
+                MimsResult result = Check(drugs, allergies, icd10Codes, patientProfile);
 
                 if (result.DrugHealthAlertDetails == null) result.DrugHealthAlertDetails = new List<DrugHealthAlertDetail>();
                 if (result.DrugDrugAlertDetails == null) result.DrugDrugAlertDetails = new List<DrugDrugAlertDetail>();
+                if (result.PregnancyAlertDetails == null) result.PregnancyAlertDetails = new List<DrugPregnancyAlertDetail>();
+                if (result.LactationAlertDetails == null) result.LactationAlertDetails = new List<DrugLactationAlertDetail>();
 
+                // Thai kỳ: popup từ mức C/D/X/+ (theo bộ lọc khuyến nghị MIMS DP:C/D/X — Category A/B không popup riêng,
+                // nhưng nếu popup mở vì cảnh báo khác thì tab "Thai kỳ" vẫn hiển thị đủ A/B).
+                // Cho con bú: popup mọi mức (Caution / Avoid if possible / Contraindicated).
                 bool hasCdsAlert = (result.DrugHealthAlertDetails.Count > 0
                         && result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel != DrugHealthSeverity.Unknown))
                     || (result.DrugDrugAlertDetails.Count > 0
-                        && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown));
+                        && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown))
+                    || (result.PregnancyAlertDetails.Count > 0
+                        && result.PregnancyAlertDetails.Exists(o => o.CategoryLevel >= PregnancyCategory.Plus))
+                    || (result.LactationAlertDetails.Count > 0
+                        && result.LactationAlertDetails.Exists(o => o.SeverityLevel != LactationSeverity.Unknown));
 
                 Inventec.Common.Logging.LogSystem.Debug(string.Format(
                     "DrugHealthService.CheckAndAlert - hasCdsAlert={0}", hasCdsAlert));
@@ -225,15 +282,36 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                 interactionLog.RESPONSE_TYPE = "xml";
                 interactionLog.HAS_ALERT = 1;
                 interactionLog.ALERT_COUNT = 1;
+                // Thông tin PatientProfile + số cảnh báo thai kỳ / cho con bú (cột có sẵn trong bảng log)
+                interactionLog.PREGNANCY_COUNT = (short)result.PregnancyAlertDetails.Count;
+                interactionLog.LACTATION_COUNT = (short)result.LactationAlertDetails.Count;
+                if (this.lastPatientProfile != null)
+                {
+                    interactionLog.IS_PREGNANT = this.lastPatientProfile.IsPregnant ? (short?)1 : (short?)0;
+                    interactionLog.IS_LACTATING = this.lastPatientProfile.IsNursing ? (short?)1 : (short?)0;
+                    interactionLog.PATIENT_AGE = this.lastPatientProfile.AgeYear.HasValue ? (short?)this.lastPatientProfile.AgeYear.Value : null;
+                    interactionLog.PATIENT_GENDER = this.lastPatientProfile.GenderCode;
+                }
+                // Mức nghiêm trọng theo XPath guide MIMS: Pregnancy D/X/+ và Lactation Contraindicated/Avoid if possible
+                bool pregnancySevere = result.PregnancyAlertDetails.Exists(o =>
+                    o.CategoryLevel == PregnancyCategory.D
+                    || o.CategoryLevel == PregnancyCategory.X
+                    || o.CategoryLevel == PregnancyCategory.Plus);
+                bool lactationSevere = result.LactationAlertDetails.Exists(o =>
+                    o.SeverityLevel == LactationSeverity.Contraindicated
+                    || o.SeverityLevel == LactationSeverity.AvoidIfPossible);
                 interactionLog.HAS_SEVERE_ALERT = (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Severe)
-                                        || result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.Contraindicated))
+                                        || result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.Contraindicated)
+                                        || pregnancySevere || lactationSevere)
                                         ? (short?)1 : null;
                 string highestSeverity = null;
                 if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Severe))
                 {
                     highestSeverity = "SEVERE";
                 }
-                else if (result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.Contraindicated))
+                else if (result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.Contraindicated)
+                    || result.PregnancyAlertDetails.Exists(o => o.CategoryLevel == PregnancyCategory.X)
+                    || result.LactationAlertDetails.Exists(o => o.SeverityLevel == LactationSeverity.Contraindicated))
                 {
                     highestSeverity = "CONTRAINDICATED";
                 }
@@ -241,7 +319,9 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                 {
                     highestSeverity = "MODERATE";
                 }
-                else if (result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.ExtremeCaution))
+                else if (result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.ExtremeCaution)
+                    || result.PregnancyAlertDetails.Exists(o => o.CategoryLevel == PregnancyCategory.D || o.CategoryLevel == PregnancyCategory.Plus)
+                    || result.LactationAlertDetails.Exists(o => o.SeverityLevel == LactationSeverity.AvoidIfPossible))
                 {
                     highestSeverity = "EXTREMECAUTION";
                 }
@@ -249,7 +329,9 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                 {
                     highestSeverity = "MINOR";
                 }
-                else if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Caution))
+                else if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Caution)
+                    || result.PregnancyAlertDetails.Exists(o => o.CategoryLevel == PregnancyCategory.C)
+                    || result.LactationAlertDetails.Exists(o => o.SeverityLevel == LactationSeverity.Caution))
                 {
                     highestSeverity = "CAUTION";
                 }
@@ -269,17 +351,21 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             }
         }
 
-        public bool ShowDialog(List<DrugItem> drugs, List<string> icd10Codes)
+        public bool ShowDialog(List<DrugItem> drugs, List<string> icd10Codes, MimsPatientProfile patientProfile = null)
         {
             try
             {
-                MimsResult result = Check(drugs, icd10Codes);
+                MimsResult result = Check(drugs, icd10Codes, patientProfile);
 
                 bool hasCdsAlert = result != null && result.Success
                     && ((result.DrugHealthAlertDetails != null
                             && result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel != DrugHealthSeverity.Unknown))
                         || (result.DrugDrugAlertDetails != null
-                            && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown)));
+                            && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown))
+                        || (result.PregnancyAlertDetails != null
+                            && result.PregnancyAlertDetails.Exists(o => o.CategoryLevel >= PregnancyCategory.Plus))
+                        || (result.LactationAlertDetails != null
+                            && result.LactationAlertDetails.Exists(o => o.SeverityLevel != LactationSeverity.Unknown)));
 
                 if (hasCdsAlert && !string.IsNullOrEmpty(result.Html))
                 {
@@ -301,24 +387,28 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         /// Logic: CDS trước; nếu CDS không có alert thì check VN Contraindication.
         /// Trả về HTML phù hợp (CDS hoặc VN) để WebViewHelper hiển thị async.
         /// </summary>
-        public void ShowResultAsync(List<DrugItem> drugs, List<string> icd10Codes)
+        public void ShowResultAsync(List<DrugItem> drugs, List<string> icd10Codes, MimsPatientProfile patientProfile = null)
         {
-            WebViewHelper.ShowResultAsync(() => CheckWithVnFallback(drugs, icd10Codes), NameText);
+            WebViewHelper.ShowResultAsync(() => CheckWithVnFallback(drugs, icd10Codes, patientProfile), NameText);
         }
 
         /// <summary>
         /// Helper cho ShowResultAsync: CDS check trước, fallback VN nếu CDS không có alert thực sự.
         /// Không show dialog, chỉ trả về MimsResult cho WebViewHelper hiển thị.
         /// </summary>
-        private MimsResult CheckWithVnFallback(List<DrugItem> drugs, List<string> icd10Codes)
+        private MimsResult CheckWithVnFallback(List<DrugItem> drugs, List<string> icd10Codes, MimsPatientProfile patientProfile = null)
         {
-            MimsResult cdsResult = Check(drugs, null, icd10Codes);
+            MimsResult cdsResult = Check(drugs, null, icd10Codes, patientProfile);
 
             bool hasCdsAlert = cdsResult != null && cdsResult.Success
                 && ((cdsResult.DrugHealthAlertDetails != null
                         && cdsResult.DrugHealthAlertDetails.Exists(o => o.SeverityLevel != DrugHealthSeverity.Unknown))
                     || (cdsResult.DrugDrugAlertDetails != null
-                        && cdsResult.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown)));
+                        && cdsResult.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown))
+                    || (cdsResult.PregnancyAlertDetails != null
+                        && cdsResult.PregnancyAlertDetails.Exists(o => o.CategoryLevel >= PregnancyCategory.Plus))
+                    || (cdsResult.LactationAlertDetails != null
+                        && cdsResult.LactationAlertDetails.Exists(o => o.SeverityLevel != LactationSeverity.Unknown)));
 
             Inventec.Common.Logging.LogSystem.Debug(string.Format(
                 "DrugHealthService.CheckWithVnFallback - hasCdsAlert={0}", hasCdsAlert));

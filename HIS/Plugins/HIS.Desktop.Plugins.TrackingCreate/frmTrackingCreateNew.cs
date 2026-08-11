@@ -638,7 +638,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 var IsMine = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_IS_MINE_CHECKED_BY_DEFAULT));
 
-                
+
                 if (IsMine == 1)
                 {
                     chkIsMineNew.CheckState = CheckState.Checked;
@@ -754,7 +754,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     foreach (var node in checkedNodes)
                     {
                         var data = treeListServiceReq.GetDataRecordByNode(node) as TreeSereServADO;
-                        if (data != null && data.SERVICE_REQ_ID != null) 
+                        if (data != null && data.SERVICE_REQ_ID != null)
                         {
                             var validTypes = new List<long>
                     {
@@ -1867,7 +1867,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     HIS.Desktop.ADO.AssignPrescriptionADO assignServiceADO = new HIS.Desktop.ADO.AssignPrescriptionADO(treatmentId, 0, 0);
                     // Tracking sheet prescription must be a treatment (in-patient) prescription, never out-patient.
                     // IsExecutePTTT is the existing flag that forces treatment mode in AssignPrescriptionPK (frmAssignPrescription.cs:408).
-                    assignServiceADO.IsExecutePTTT = true;
+                    if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.ENABLE_TREATMENT_PRESCRIPTION) == "1")
+                        assignServiceADO.IsExecutePTTT = true;
 
                     assignServiceADO.PatientDob = this._Treatment.TDL_PATIENT_DOB;
                     assignServiceADO.PatientName = this._Treatment.TDL_PATIENT_NAME;
@@ -3582,7 +3583,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             {
                 var icdValue = this.SubUcIcdGetValue();
                 if (icdValue != null && icdValue is UC.SecondaryIcd.ADO.SecondaryIcdDataADO)
-                    {
+                {
                     subCode = ((UC.SecondaryIcd.ADO.SecondaryIcdDataADO)icdValue).ICD_SUB_CODE;
                 }
             }
@@ -3936,7 +3937,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                                 else
                                 {
                                     if (XtraMessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.No)
-                                    { 
+                                    {
                                         dtTrackingTime.Focus();
                                         return false;
                                     }

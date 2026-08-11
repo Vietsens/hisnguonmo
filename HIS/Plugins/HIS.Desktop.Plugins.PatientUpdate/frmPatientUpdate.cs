@@ -207,6 +207,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 }
 
                 FillDataPatientToControl(this.currentVHisPatientDTO);//2
+                // Checklist PN mang thai / cho con bú (MIMS) — chỉ tạo khi config bật
+                InitMimsWomanClassify();
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT.MUST_HAVE_NCS_INFO_FOR_CHILD") == "1" && MOS.LibraryHein.Bhyt.BhytPatientTypeData.IsChild(dtPatientDob.DateTime))
                 {
                     isGKS = true;

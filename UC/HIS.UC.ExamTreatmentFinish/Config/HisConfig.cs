@@ -47,11 +47,24 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         private const string MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.MAX_OF_APPOINTMENT_DAYS";
         private const string WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS";
 
+        /// <summary>
+        /// PT-53438: Chặn hẹn khám khi bệnh án ngoại trú của bệnh nhân đã quá 1 năm. 1 = chặn, khác 1 = không chặn
+        /// </summary>
+        private const string IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR = "MOS.HIS_TREATMENT.IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR";
+
         private const string MUST_CHOOSE_SERVICE = "HIS.Desktop.Plugins.TreatmentFinish.MustChooseSeviceInCaseOfAppointment";
 
         private const string EXPORT_XML_COLLINEAR= "HIS.Desktop.Plugins.TreatmentFinish.AutoCheckAndDisable.ExportXmlCollinear";
         private const string CONFIG__USING_EXAM_SUB_ICD_WHEN_FINISH = "MOS.HIS_TREATMENT.IS_USING_EXAM_SUB_ICD_WHEN_FINISH";
         private const string CHECK_ICD_WHEN_SAVE = "HIS.Desktop.Plugins.CheckIcdWhenSave";
+
+        /// <summary>
+        /// Khoa cau hinh bat/tat checkbox "Man tinh" tai man Ket thuc dieu tri.
+        /// Dung CHUNG khoa voi backend (bang HIS_CONFIG dung chung) — backend doc cung khoa nay
+        /// de quyet dinh co tu chuyen dien dieu tri sang Dieu tri ngoai tru hay khong.
+        /// Mac dinh TAT (khong co ban ghi / khac "1" → tat).
+        /// </summary>
+        private const string CHRONIC_CHANGE_TREATMENT_TYPE_OPTION = "MOS.HIS_TREATMENT.FINISH.CHRONIC_CHANGE_TREATMENT_TYPE_OPTION";
         internal static string CheckIcdWhenSave;
         internal static string OptionSubIcdWhenFinish;
         internal static long treatmentEndAppointmentTimeDefault;
@@ -60,6 +73,7 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         internal static bool IsEnableCheckboxIssueOutPatientStoreCode;
         internal static long? MaxOfAppointmentDays;
         internal static long? WarningOptionWhenExceedingMaxOfAppointmentDays;
+        internal static bool IsBlockAppointmentWhenOutPatientMediRecordOverOneYear;
 
         internal static string MustChooseSeviceInCaseOfAppointment;
         internal static string NumOrderIssueOption;
@@ -73,6 +87,12 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         internal static bool IsRequiredPathologicalProcessTransferPatientBHYT;
         internal static int PathologicalProcessOption;
         internal static string WarningHeinPatientTypeCode;
+
+        /// <summary>
+        /// true → hien checkbox "Man tinh" tai man Ket thuc dieu tri.
+        /// false (mac dinh) → an hoan toan, khong goi API SetChronic.
+        /// </summary>
+        internal static bool IsChronicChangeTreatmentType;
 
         internal static void GetConfig()
         {
@@ -114,6 +134,8 @@ namespace HIS.UC.ExamTreatmentFinish.Config
                     WarningOptionWhenExceedingMaxOfAppointmentDays = null;
                 }
                 WarningHeinPatientTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_WARNING_HEIN_PATIENT_TYPE_CODE);
+                IsBlockAppointmentWhenOutPatientMediRecordOverOneYear = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR) == IS__TRUE;
+                IsChronicChangeTreatmentType = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CHRONIC_CHANGE_TREATMENT_TYPE_OPTION) == IS__TRUE;
             }
             catch (Exception ex)
             {

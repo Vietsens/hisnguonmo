@@ -63,8 +63,9 @@
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.MIMS.Integration">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.MIMS.Integration.dll</HintPath>
+    <Reference Include="HIS.Desktop.MIMS.Integration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.MIMS.Integration.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
@@ -346,6 +347,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AssignPrescription\frmAssignPrescription__InitMenuMouseRight.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssignPrescription\frmAssignPrescription__MimsPatientProfile.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AssignPrescription\frmAssignPrescription__SearchHightLight.cs">
