@@ -87,7 +87,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 {
                     Inventec.Common.Logging.LogSystem.Warn("KskHccJsonConverter: khong thay " + PATH_DANHSACHHOSO
                         + " -> chi ha chu thuong ten khoa.");
-                    return LowercaseKeys(root).ToString(Newtonsoft.Json.Formatting.None);
+                    return FinalizeHccJson(root);
                 }
 
                 // Thu vien xuat HOSO la MANG ([{FILEHOSO:[...]}]); tai lieu HCC yeu cau hoso la DOI TUONG.   
@@ -100,7 +100,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         + PATH_DANHSACHHOSO + "." + NODE_HOSO + "." + NODE_FILEHOSO
                         + " -> chi ha chu thuong ten khoa.");
 
-                return LowercaseKeys(root).ToString(Newtonsoft.Json.Formatting.None);
+                return FinalizeHccJson(root);
             }
             catch (Exception ex)
             {
@@ -191,6 +191,52 @@ namespace HIS.Desktop.Plugins.KskSyncList
             if (obj != null && obj.Count == 1 && obj.Property(block) != null) return content;
 
             return new JObject(new JProperty(block, content));
+        }
+
+        /// <summary>
+        /// Hoàn tất JSON HCC: (1) hạ chữ thường mọi khoá; (2) quy đổi gioi_tinh về DOMAIN HCC (0=Nữ, 1=Nam)
+        /// — KHÁC chuẩn QĐ2062 (1=Nam, 2=Nữ). Chạy trên cây ĐÃ hạ chữ thường nên khoá chắc chắn là "gioi_tinh".
+        /// </summary>
+        private static string FinalizeHccJson(JObject root)
+        {
+            JToken lowered = LowercaseKeys(root);
+            RemapGioiTinhHcc(lowered);
+            return lowered.ToString(Newtonsoft.Json.Formatting.None);
+        }
+
+        private const string FIELD_GIOI_TINH_LOWER = "gioi_tinh";
+
+        /// <summary>
+        /// Tìm ĐỆ QUY khoá "gioi_tinh" (đã hạ chữ thường) ở mọi cấp và quy đổi cho HCC:
+        /// QĐ2062 2 (Nữ) → HCC 0; QĐ2062 1 (Nam) → HCC 1; giá trị khác giữ nguyên.
+        /// </summary>
+        private static void RemapGioiTinhHcc(JToken node)
+        {
+            JObject obj = node as JObject;
+            if (obj != null)
+            {
+                JProperty p = obj.Property(FIELD_GIOI_TINH_LOWER);
+                if (p != null && p.Value != null)
+                {
+                    int v;
+                    if (int.TryParse(p.Value.ToString().Trim(), out v))
+                    {
+                        if (v == 2)
+                        {
+                            p.Value = 0;   // Nữ (QĐ2062 2 -> HCC 0)
+                            Inventec.Common.Logging.LogSystem.Info("KskHccJsonConverter: gioi_tinh 2 (Nữ QĐ2062) -> 0 (HCC).");
+                        }
+                        else if (v == 1)
+                        {
+                            p.Value = 1;   // Nam (giữ)
+                        }
+                    }
+                }
+                foreach (JProperty child in obj.Properties()) RemapGioiTinhHcc(child.Value);
+                return;
+            }
+            JArray arr = node as JArray;
+            if (arr != null) foreach (JToken item in arr) RemapGioiTinhHcc(item);
         }
 
         /// <summary>Ha chu thuong MOI ten khoa (de quy). Gia tri giu nguyen (chuoi/so/bool/null).</summary>
