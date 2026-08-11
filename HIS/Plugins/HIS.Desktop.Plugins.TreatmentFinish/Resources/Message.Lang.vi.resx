@@ -325,4 +325,34 @@
   <data name="BenhLaNguyenNhanTuVongKhongDuocSuDung" xml:space="preserve">
     <value>Bệnh {0} là nguyên nhân tử vong không được sử dụng cho các trường hợp không phải tử vong.</value>
   </data>
+  <data name="TienGiamDinhTieuDeCanhBao" xml:space="preserve">
+    <value>Cảnh báo tiền giám định</value>
+  </data>
+  <data name="TienGiamDinhChanKetThuc" xml:space="preserve">
+    <value>Hồ sơ còn lỗi trên hệ thống tiền giám định nên không thể kết thúc điều trị. Vui lòng sửa hồ sơ rồi kiểm tra lại.</value>
+  </data>
+  <data name="TienGiamDinhNhomSaiSotYLenh" xml:space="preserve">
+    <value>Tiền giám định - Sai sót y lệnh</value>
+  </data>
+  <data name="TienGiamDinhNhomLoiTraThe" xml:space="preserve">
+    <value>Tiền giám định - Lỗi thẻ</value>
+  </data>
+  <data name="TienGiamDinhNhomLoiHoSoXml" xml:space="preserve">
+    <value>Tiền giám định - Lỗi hồ sơ XML</value>
+  </data>
+  <data name="TienGiamDinhConNLoiKhac" xml:space="preserve">
+    <value>Tiền giám định: còn {0} lỗi khác chưa hiển thị.</value>
+  </data>
+  <data name="TienGiamDinhDanhSachLoiBiCatBot" xml:space="preserve">
+    <value>Danh sách lỗi bị cắt bớt do vượt ngưỡng, có thể còn lỗi chưa hiển thị.</value>
+  </data>
+  <data name="TienGiamDinhKhongKiemTraDuoc" xml:space="preserve">
+    <value>Tiền giám định: không kiểm tra được hồ sơ. Hệ thống tiền giám định không phản hồi hoặc quá thời gian chờ.</value>
+  </data>
+  <data name="TienGiamDinhSaiThongTinXacThuc" xml:space="preserve">
+    <value>Tiền giám định: thông tin xác thực không hợp lệ. Vui lòng liên hệ quản trị hệ thống.</value>
+  </data>
+  <data name="TienGiamDinhChuaPhatHienLoi" xml:space="preserve">
+    <value>Tiền giám định: chưa phát hiện sai sót y lệnh và lỗi thẻ. Phần hồ sơ XML sẽ được kiểm khi kết xuất.</value>
+  </data>
 </root>

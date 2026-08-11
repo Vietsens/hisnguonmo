@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -61,9 +61,6 @@
     <Reference Include="HIS.Common.Treatment">
       <HintPath>..\..\..\..\lib\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.ADO">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Common">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
     </Reference>
@@ -87,9 +84,6 @@
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.EmrToolkitImport">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrToolkitImport.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
     </Reference>
@@ -108,9 +102,6 @@
     <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.ServiceRoom\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.TreatmentEndTypeExt">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
     </Reference>
@@ -122,10 +113,6 @@
     </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.UC.SecondaryIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SurgeryAppointment">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SurgeryAppointment\HIS.UC.SurgeryAppointment.dll</HintPath>
@@ -314,6 +301,7 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Security" />
@@ -336,6 +324,7 @@
     <Compile Include="ADO\ProgramADO.cs" />
     <Compile Include="ADO\RoomExamADO.cs" />
     <Compile Include="ADO\TimeADO.cs" />
+    <Compile Include="ADO\TienGiamDinhADO.cs" />
     <Compile Include="ADO\WarningADO.cs" />
     <Compile Include="Base\Block.cs">
       <SubType>Component</SubType>
@@ -404,6 +393,9 @@
     <Compile Include="FormTreatmentFinish_Print.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormTreatmentFinish__TienGiamDinh.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormTreatmentFinish_Warning.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -425,6 +417,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="EnumTienGiamDinh.cs" />
+    <Compile Include="Base\TienGiamDinhWorker.cs" />
     <Compile Include="ResourceMessage.cs" />
     <Compile Include="Save\Appointment\SaveAppointmentBehavior.cs" />
     <Compile Include="Save\Sick\SaveSickBehavior.cs" />
@@ -577,6 +571,22 @@
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
+      <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
+      <Name>HIS.Desktop.ADO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrToolkitImport\HIS.Desktop.Plugins.Library.EmrToolkitImport.csproj">
+      <Project>{7e9c2a14-3b6d-4f8a-9c1e-2d5b8a0f3c71}</Project>
+      <Name>HIS.Desktop.Plugins.Library.EmrToolkitImport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.csproj">
+      <Project>{26acffc8-d1a4-4a74-9425-24f32d32bcdc}</Project>
+      <Name>HIS.UC.SecondaryIcd</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.csproj">
+      <Project>{1b07baeb-f145-400d-b3c6-94957934a3a9}</Project>
+      <Name>HIS.Desktop.Plugins.Library.TreatmentEndTypeExt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
