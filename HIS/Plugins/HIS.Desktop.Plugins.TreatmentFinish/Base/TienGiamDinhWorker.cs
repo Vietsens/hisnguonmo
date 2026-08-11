@@ -54,6 +54,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Base
         /// <summary>So giay cho truoc khi thu lai khi he ngoai bao qua tai tam thoi</summary>
         private const int RATE_LIMIT_RETRY_DELAY_SECOND = 3;
 
+        /// <summary>
+        /// So ky tu toi da cua phan hoi duoc ghi vao nhat ky.
+        /// Mot ho so co the mang toi 500 dong loi moi nhom nen phai cat bot, tranh phinh tep log.
+        /// </summary>
+        private const int LOG_BODY_MAX_LENGTH = 4000;
+
         private readonly string baseUrl;
         private readonly string token;
         private readonly int timeoutSecond;
@@ -221,6 +227,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Base
 
                     httpResult.StatusCode = (int)response.StatusCode;
                     httpResult.Body = await response.Content.ReadAsStringAsync();
+
+                    //Ghi nguyen van phan hoi de doi chieu voi he ngoai khi hai ben khong thong nhat ket qua,
+                    //va de biet cong co that su tra du lieu cua vien hay tra rong moi ho so.
+                    //Phan hoi khong chua thong tin dinh danh benh nhan - ma the BHYT da duoc he ngoai che,
+                    //chi con bon so cuoi (dac ta API muc 5).
+                    LogSystem.Debug("TienGiamDinhWorker - Phan hoi tho. Ma dieu tri: " + treatmentCode
+                        + ". HttpStatus: " + httpResult.StatusCode
+                        + ". Body: " + CutForLog(httpResult.Body));
+
                     return httpResult;
                 }
             }
@@ -292,7 +307,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Base
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.SystemError;
                 LogSystem.Warn("TienGiamDinhWorker - He ngoai tra ve HttpStatus " + httpResult.StatusCode
-                    + ". Ma dieu tri: " + result.TreatmentCode);
+                    + ". Ma dieu tri: " + result.TreatmentCode
+                    + ". Body: " + CutForLog(httpResult.Body));
                 return result;
             }
 
@@ -313,8 +329,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Base
                     result.Status = EnumTienGiamDinhStatus.CheckFailed;
                     result.FailReason = EnumTienGiamDinhFailReason.SystemError;
                     JObject error = json["error"] as JObject;
-                    LogSystem.Warn("TienGiamDinhWorker - He ngoai tra ve that bai. Ma loi: "
-                        + (error == null ? "" : error.Value<string>("code"))
+                    LogSystem.Warn("TienGiamDinhWorker - He ngoai tra ve that bai. Ma dieu tri: "
+                        + result.TreatmentCode
+                        + ". Ma loi: " + (error == null ? "" : error.Value<string>("code"))
+                        + ". Mo ta: " + (error == null ? "" : error.Value<string>("message"))
+                        + ". Chi tiet: " + (error == null ? "" : error.Value<string>("details"))
                         + ". RequestId: " + result.RequestId);
                     return result;
                 }
@@ -347,16 +366,74 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Base
                     result.Status = EnumTienGiamDinhStatus.NoError;
                 }
 
+                LogResponseSummary(result, summary);
                 return result;
             }
             catch (Exception ex)
             {
                 LogSystem.Error("TienGiamDinhWorker - Khong doc duoc phan hoi cua he ngoai. Ma dieu tri: "
-                    + result.TreatmentCode, ex);
+                    + result.TreatmentCode
+                    + ". Body: " + CutForLog(httpResult.Body), ex);
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.SystemError;
                 return result;
             }
+        }
+
+        /// <summary>
+        /// Ghi lai bang tong hop do he ngoai tra ve, dat canh so lieu HIS tu dem duoc.
+        /// Hai con so lech nhau la dau hieu doc sai phan hoi - tim ra ngay tu nhat ky,
+        /// khong phai dung lai hien truong.
+        /// </summary>
+        private void LogResponseSummary(TienGiamDinhResultADO result, JObject summary)
+        {
+            try
+            {
+                LogSystem.Info("TienGiamDinhWorker - Ket qua. Ma dieu tri: " + result.TreatmentCode
+                    + ". Trang thai: " + result.Status
+                    + ". He ngoai bao: tong=" + GetSummaryValue(summary, "total")
+                    + ", y lenh=" + GetSummaryValue(summary, "order_check")
+                    + ", tra the=" + GetSummaryValue(summary, "hein_card")
+                    + ", ho so XML=" + GetSummaryValue(summary, "xml3176")
+                    + ", nghiem trong=" + GetSummaryValue(summary, "critical")
+                    + ", co loi=" + GetSummaryValue(summary, "has_error")
+                    + ", cat bot=" + GetSummaryValue(summary, "truncated")
+                    + ". HIS doc duoc: " + result.TotalErrorCount + " dong, trong do "
+                    + result.CriticalErrorCount + " nghiem trong"
+                    + ". RequestId: " + result.RequestId);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doc mot o cua bang tong hop. Khong co thi tra dau gach de phan biet
+        /// "he ngoai khong gui truong nay" voi "he ngoai gui so khong".
+        /// </summary>
+        private static string GetSummaryValue(JObject summary, string key)
+        {
+            if (summary == null)
+            {
+                return "-";
+            }
+
+            JToken token = summary[key];
+            return token == null ? "-" : token.ToString();
+        }
+
+        /// <summary>Cat bot phan hoi truoc khi ghi nhat ky, van noi ro do dai that de biet da cat bao nhieu</summary>
+        private static string CutForLog(string body)
+        {
+            if (string.IsNullOrEmpty(body))
+            {
+                return "(rong)";
+            }
+
+            return body.Length <= LOG_BODY_MAX_LENGTH
+                ? body
+                : body.Substring(0, LOG_BODY_MAX_LENGTH) + "... (da cat, tong " + body.Length + " ky tu)";
         }
 
         /// <summary>Nhom sai sot y lenh - muc do lay tu truong severity</summary>

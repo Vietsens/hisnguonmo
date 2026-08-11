@@ -314,6 +314,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\AcsUserADO.cs" />
+    <Compile Include="ADO\ExecuteRoomConfirmADO.cs" />
     <Compile Include="ADO\PatientPackageDtADO.cs" />
     <Compile Include="ADO\HisPatientPackageFilter.cs" />
     <Compile Include="ADO\ChiDinhDichVuADO.cs" />
@@ -369,6 +370,15 @@
     </Compile>
     <Compile Include="AssignService\frmAssignService__ReloadModuleByInputData .cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssignService\frmAssignService__ConfirmExecuteRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssignService\frmConfirmExecuteRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssignService\frmConfirmExecuteRoom.Designer.cs">
+      <DependentUpon>frmConfirmExecuteRoom.cs</DependentUpon>
     </Compile>
     <Compile Include="AssignService\frmMissingIcd.cs">
       <SubType>Form</SubType>
@@ -584,6 +594,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AssignService\frmDetail.resx">
       <DependentUpon>frmDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AssignService\frmConfirmExecuteRoom.resx">
+      <DependentUpon>frmConfirmExecuteRoom.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AssignService\frmMissingIcd.resx">
       <DependentUpon>frmMissingIcd.cs</DependentUpon>

@@ -236,6 +236,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceCheckeds__Send), serviceCheckeds__Send));
                 if (isValid)
                 {
+                    // Xac nhan danh sach phong xu ly truoc khi luu (chi chay khi cau hinh bat)
+                    if (!ConfirmExecuteRoomBeforeSave(serviceCheckeds__Send)) return;
+
                     ChangeLockButtonWhileProcess(false);
                     AssignServiceSDO serviceReqSDO = new AssignServiceSDO();
                     serviceReqSDO.ServiceReqDetails = new List<ServiceReqDetailSDO>();
