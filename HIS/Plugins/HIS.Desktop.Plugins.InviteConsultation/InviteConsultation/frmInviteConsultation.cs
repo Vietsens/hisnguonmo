@@ -232,6 +232,12 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 }
                 else if (serviceReq != null)
                 {
+                    // Mo tu man kham/cap cuu: benh nhan khong nam giuong nen bedRoom = null, dong tren khong gan duoc
+                    // "Khoa phong dieu tri" -> lay theo khoa cua phong dang thuc hien yeu cau kham.
+                    // Bat buoc phai co: backend HisSpecialistExamCreate.ProcessTracking loc danh muc khoa theo
+                    // INVITE_DEPARMENT_ID, de trong se tra ve that bai va khong tao duoc phieu moi lan to dieu tri.
+                    cboDepartment.EditValue = serviceReq.EXECUTE_DEPARTMENT_ID;
+
                     ProcessSelectPhongKham(serviceReq.EXECUTE_DEPARTMENT_ID);
 
                     HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
@@ -765,6 +771,20 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                         ErrorType.Warning);
                     return;
                 }
+                // Khoa phong dieu tri (INVITE_DEPARMENT_ID) la truong bat buoc cua backend.
+                // Chan ngay tai day thay vi de request roi xuong backend va bao "Xu ly that bai" chung chung.
+                if (cboDepartment.EditValue == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SaveProcess: cboDepartment (INVITE_DEPARMENT_ID) dang trong."
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReq), serviceReq));
+                    dxErrorProvider1.SetError(cboDepartment,
+                        MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc),
+                        ErrorType.Warning);
+                    return;
+                }
+                dxErrorProvider1.SetError(cboDepartment, string.Empty);
                 WaitingManager.Show();
                 saveData();
             }
@@ -979,7 +999,20 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 MOS.SDO.WorkPlaceSDO workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace((moduleData));
 
                 dteNgayMoi.DateTime = DateTime.Now;
-                cboDepartment.EditValue = bedRoom != null ? bedRoom.LAST_DEPARTMENT_ID : (long?)null;
+                // Giu dong bo voi LoadData: nhanh kham/cap cuu lay khoa cua phong dang thuc hien,
+                // neu de trong thi bam "Lam lai" roi luu se that bai o backend.
+                if (bedRoom != null)
+                {
+                    cboDepartment.EditValue = bedRoom.LAST_DEPARTMENT_ID;
+                }
+                else if (serviceReq != null)
+                {
+                    cboDepartment.EditValue = serviceReq.EXECUTE_DEPARTMENT_ID;
+                }
+                else
+                {
+                    cboDepartment.EditValue = (long?)null;
+                }
                 ClearPhongKhamSelection();
                 ProcessSelectPhongKham(serviceReq != null ? serviceReq.EXECUTE_DEPARTMENT_ID : workPlace.DepartmentId);
                 cboBacSiKham.EditValue = null;

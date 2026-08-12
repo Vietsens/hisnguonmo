@@ -414,6 +414,14 @@
   <data name="UCExecuteRoom.Gc_MedisoftHistory.Caption" xml:space="preserve">
     <value>Medisoft treatment history</value>
   </data>
+  <data name="UCExecuteRoom.colEmergencyClassify.Caption" xml:space="preserve">
+    <value>Level</value>
+  </data>
+
+  <data name="UCExecuteRoom.colEmergencyClassify.ToolTip" xml:space="preserve">
+    <value>Emergency classify level</value>
+  </data>
+
   <data name="UCExecuteRoom.gc_PatientClassify.Caption" xml:space="preserve">
     <value>Classification of BN</value>
   </data>

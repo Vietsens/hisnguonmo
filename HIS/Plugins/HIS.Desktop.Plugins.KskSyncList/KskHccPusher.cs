@@ -238,7 +238,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             string head = (!string.IsNullOrEmpty(response.ResCode) || !string.IsNullOrEmpty(response.ResMsg))
                 ? string.Format("HCC: {0} {1}", response.ResCode, response.ResMsg).Trim()
                 : "HCC: đồng bộ thất bại";
-            var errors = (response.Data != null) ? response.Data.Errors : null;
+            var errors = GetDataErrors(response);
             if (errors != null && errors.Count > 0)
             {
                 var clean = new List<string>();
@@ -247,6 +247,27 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (clean.Count > 0) head += " | Chi tiết: " + string.Join("; ", clean);
             }
             return head;
+        }
+
+        /// <summary>
+        /// Doc data.errors qua REFLECTION: property Errors chi co o ban His.Ksk.QD2062.dll MOI —
+        /// may build dung DLL cu (chua co property) van compile/chay duoc, chi khong co chi tiet loi.
+        /// </summary>
+        private static List<string> GetDataErrors(PushResponse response)
+        {
+            try
+            {
+                if (response == null || response.Data == null) return null;
+                var prop = response.Data.GetType().GetProperty("Errors");
+                if (prop == null) return null;
+                var value = prop.GetValue(response.Data, null) as System.Collections.IEnumerable;
+                if (value == null) return null;
+                var list = new List<string>();
+                foreach (var item in value)
+                    if (item != null) list.Add(item.ToString());
+                return list;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
         /// <summary>

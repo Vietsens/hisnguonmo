@@ -60,6 +60,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string HIS_MODEL = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
         private const string KEY__FilterByParentService = "HIS.Desktop.Plugins.ExecuteRoom.FilterByParentService";
         private const string CONFIG_KEY__EMERGENCY_CLASSIFY = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY";
+        // "1" = hien thi muc phan loai cap cuu thanh COT TRANG THAI rieng (khong to mau chu ca dong nua).
+        // Khac "1" hoac khong khai bao = giu nguyen cach cu (to mau chu ca dong theo muc phan loai).
+        private const string CONFIG_KEY__EMERGENCY_CLASSIFY_COLUMN = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY_COLUMN";
         // Cho phep kham som voi benh nhan dat lich hen qua APP. "1" = bat; khac "1" = tat (mac dinh).
         private const string CONFIG_KEY__ALLOW_EARLY_EXAM_FOR_APP_APPOINTMENT = "HIS.Desktop.Plugins.ExecuteRoom.AllowEarlyExamForAppAppointment";
         internal static bool IsCheckHeinCard;
@@ -95,6 +98,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal static bool isRestoreLayout;
         internal static string FilterByParentService;
         internal static bool IsEmergencyClassifyEnabled;
+        /// <summary>Bat cot trang thai "Muc CC" thay cho to mau chu ca dong (MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY_COLUMN = 1)</summary>
+        internal static bool IsEmergencyClassifyColumnEnabled;
         internal static bool IsKeepCameraConnectionOnSwitchPatient;
 
         // Doc truc tiep tu cache HisConfigs moi lan goi (khong cache vao static field) de khong phai mo lai man hinh
@@ -155,6 +160,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         StringComparer.OrdinalIgnoreCase
                     ).Contains("HIS.Desktop.Plugins.ExecuteRoom");
                 IsEmergencyClassifyEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY) == "1";
+                IsEmergencyClassifyColumnEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY_COLUMN) == "1";
                 IsKeepCameraConnectionOnSwitchPatient = GetValue(KEY__IsKeepCameraConnectionOnSwitchPatient) == GlobalVariables.CommonStringTrue;
                 LogSystem.Debug("LoadConfig => 2");
             }

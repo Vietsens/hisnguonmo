@@ -290,10 +290,22 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     .FirstOrDefault();
                 if (moduleData == null)
                 {
+                    // Truoc day thoat im lang -> nguoi dung tuong chuc nang hong. Bao ro nhu man buong benh.
                     Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.InviteConsultation");
+                    MessageBox.Show(Resources.ResourceMessage.ChucNangDangPhatTrienLienHeQuanTri,
+                        Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "moduleLink = HIS.Desktop.Plugins.InviteConsultation khong phai plugin hoac thieu ExtensionInfo."
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => moduleData), moduleData));
+                    MessageBox.Show(Resources.ResourceMessage.ChucNangDangPhatTrienLienHeQuanTri,
+                        Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
                 {
                     var moduleWithRoom = PluginInstance.GetModuleWithWorkingRoom(
                         moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId);
@@ -1225,7 +1237,15 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 if (serviceReqInput != null)
                 {
                     Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.Debate").FirstOrDefault();
-                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.Debate");
+                    if (moduleData == null)
+                    {
+                        // Thieu return o day gay NullReferenceException ngay dong duoi, exception lai bi nuot trong catch
+                        // -> nguoi dung bam menu khong thay gi xay ra. Bao ro nhu man buong benh.
+                        Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.Debate");
+                        MessageBox.Show(Resources.ResourceMessage.ChucNangDangPhatTrienLienHeQuanTri,
+                            Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     {
                         List<object> listArgs = new List<object>();

@@ -901,6 +901,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (!hocConfigAvailable) syncTarget.SyncHoc = false;
                 if (!hccConfigAvailable) syncTarget.SyncHcc = false;
                 if (!vlgConfigAvailable) syncTarget.SyncVlg = false;
+                // Nut "Cap nhat KQ cong VLg" chi hien voi vien co cau hinh cong Vinh Long.
+                // SWAP CAP voi EmptySpaceItem cung vi tri: item Never bi LOAI khoi layout (cac o loc se
+                // gian ra lap cho) — nen vien KHONG config VLG phai giu EmptySpace de giao dien Y HET cu.
+                lciBtnVlgStatus.Visibility = vlgConfigAvailable
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                emptyFilterTop.Visibility = vlgConfigAvailable
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -1142,6 +1151,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 btnPreview.Enabled = !busy;
                 btnSearch.Enabled = !busy;
                 btnRefresh.Enabled = !busy;
+                btnVlgStatus.Enabled = !busy;
                 chkSign.Enabled = !busy;
                 gridControl1.Enabled = !busy;
 
@@ -1162,6 +1172,97 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
         // (Đã bỏ PersistSyncResult: việc LƯU trạng thái do KskSyncProcessor.PushList thực hiện batch 1 lần
         //  qua List<HIS_KSK_SYNC> — không còn lưu từ UC bằng List<KskSyncResultADO>.)
+
+        /// <summary>
+        /// Nút "Cập nhật KQ cổng VLg": tra cứu kết quả xử lý THẬT trên Cổng tiếp nhận Vĩnh Long
+        /// (cổng tiếp nhận bất đồng bộ — "Đã đồng bộ" mới là "đã tiếp nhận") và cập nhật trạng thái hồ sơ:
+        /// ĐẠT (VALID) giữ Đã đồng bộ + ghi chú; KHÔNG ĐẠT (INVALID) chuyển Thất bại + lý do lỗi của cổng.
+        /// Hồ sơ tra cứu = dòng TÍCH; không tích thì toàn bộ hồ sơ ĐÃ TỪNG ĐẨY trên trang hiện tại.
+        /// </summary>
+        private void btnVlgStatus_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!vlgConfigAvailable) return;
+
+                // Chi tra cuu ho so DA TUNG DAY (GetSyncType != 1) — ke ca o nhanh TICK, tranh dong
+                // "Chua dong bo" bi bao "That bai: chua co tren cong" gay hieu nham + request thua.
+                var rows = gridView1.GetSelectedRows().Where(rh => rh >= 0)
+                    .Select(rh => gridView1.GetRow(rh) as V_HIS_KSK_SYNC)
+                    .Where(r => r != null && GetSyncType(r) != 1).ToList();
+                if (rows.Count == 0)
+                {
+                    var ds = gridControl1.DataSource as List<V_HIS_KSK_SYNC>;
+                    if (ds != null)
+                        rows = ds.Where(r => r != null && GetSyncType(r) != 1).ToList();
+                }
+                if (rows.Count == 0)
+                {
+                    XtraMessageBox.Show(
+                        "Không có hồ sơ đã đẩy để tra cứu (hồ sơ 'Chưa đồng bộ' được bỏ qua)." + Environment.NewLine +
+                        "Tích chọn hồ sơ đã đẩy cần tra, hoặc để trống để tra toàn bộ hồ sơ đã đẩy trên trang hiện tại.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // Chup input tren UI thread.
+                string vlgConnectionInfo = GetVlgConnectionInfo();
+                List<V_HIS_KSK_SYNC> rowsLocal = rows;
+
+                WaitingManager.Show();
+                SetSyncUiBusy(true);
+
+                var worker = new System.ComponentModel.BackgroundWorker();
+                worker.DoWork += (s, ev) =>
+                {
+                    // Processor chi can cau hinh VLG — cac cong khac khong tham gia tra cuu.
+                    KskSyncProcessor processor = new KskSyncProcessor(null, null, null, null, vlgConnectionInfo,
+                        false, false, false, false, true, false, null);
+                    List<KskSyncResultADO> results = processor.UpdateVlgStatuses(rowsLocal);
+                    ev.Result = new SyncOutcome { Results = results, SaveOk = processor.SaveAllOk, SaveError = processor.SaveError };
+                };
+                worker.RunWorkerCompleted += (s, ev) =>
+                {
+                    try
+                    {
+                        WaitingManager.Hide();
+                        if (ev.Error != null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ev.Error);
+                            XtraMessageBox.Show("Lỗi khi tra cứu kết quả trên cổng." + Environment.NewLine + ev.Error.Message,
+                                "Tra cứu thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        SyncOutcome outcome = ev.Result as SyncOutcome;
+                        if (outcome == null) return;
+                        if (!outcome.SaveOk)
+                        {
+                            XtraMessageBox.Show(
+                                "Không lưu được trạng thái cập nhật vào hệ thống." + Environment.NewLine + (outcome.SaveError ?? ""),
+                                "Lưu trạng thái thất bại", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        SyncResult.frmKskSyncResult frm = new SyncResult.frmKskSyncResult(outcome.Results);
+                        frm.ShowDialog();
+                        FillDataToGrid();
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                    finally
+                    {
+                        SetSyncUiBusy(false);
+                    }
+                };
+                worker.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                SetSyncUiBusy(false);
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         #endregion
 
         #region Refresh dictionary
