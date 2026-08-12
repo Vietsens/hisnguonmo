@@ -203,7 +203,17 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 {
                     if (node.Checked)
                     {
-                        result.Add((TreeSereServADO)treeListPreventive.GetDataRecordByNode(node));
+                        //Node khong con gan voi dong du lieu nao (vd: cay vua bi bind lai bang danh sach rong)
+                        //=> GetDataRecordByNode tra ve null, khong duoc dua vao ket qua
+                        var nodeData = treeListPreventive.GetDataRecordByNode(node) as TreeSereServADO;
+                        if (nodeData != null)
+                        {
+                            result.Add(nodeData);
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("GetListNodeCheckTab2: bo qua node khong co du lieu (GetDataRecordByNode = null), nodeId=" + node.Id);
+                        }
                     }
                 }
                 else
@@ -228,7 +238,16 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 {
                     if (node.Checked)
                     {
-                        result.Add((TreeSereServADO)treeListServiceReq.GetDataRecordByNode(node));
+                        //Node khong con gan voi dong du lieu nao => bo qua, tranh null lot vao list gay NRE khi GroupBy
+                        var nodeData = treeListServiceReq.GetDataRecordByNode(node) as TreeSereServADO;
+                        if (nodeData != null)
+                        {
+                            result.Add(nodeData);
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("GetListNodeCheck: bo qua node khong co du lieu (GetDataRecordByNode = null), nodeId=" + node.Id);
+                        }
                     }
                 }
                 else
