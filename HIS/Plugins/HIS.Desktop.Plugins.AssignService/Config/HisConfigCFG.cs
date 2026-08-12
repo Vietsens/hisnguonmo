@@ -114,6 +114,14 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         /// </summary>
         private const string CONFIG_KEY__IsSeparateSignAndPrint = "HIS.Desktop.Plugins.AssignService.IsSeparateSignAndPrint";
 
+        /// <summary>
+        /// Hien thi thong bao xac nhan phong xu ly khi luu chi dinh dich vu ky thuat.
+        /// 1: bat — truoc khi luu hien man hinh liet ke cac phong xu ly dang duoc chon de bac si xac nhan.
+        /// Khac 1 (hoac khong khai bao): tat — giu nguyen hanh vi luu hien tai.
+        /// </summary>
+        private const string CONFIG_KEY__ConfirmExecuteRoomWhenSave = "HIS.Desktop.Plugins.AssignService.ConfirmExecuteRoomWhenSave";
+        internal static bool IsConfirmExecuteRoomWhenSave;
+
         private const string CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
         private const string CONFIG_KEY__ICD_SUB_MAX_COUNT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
         internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
@@ -340,6 +348,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 AllowAssignOxygen = GetValue(CONFIG_KEY_ALLOW_ASSIGN_OXYGEN) == GlobalVariables.CommonStringTrue;
                 SuggestAssignServicesInfo = GetValue(CONFIG_KEY__SuggestAssignServicesInfo);
                 IsSeparateSignAndPrint = GetValue(CONFIG_KEY__IsSeparateSignAndPrint) == GlobalVariables.CommonStringTrue;
+                IsConfirmExecuteRoomWhenSave = GetValue(CONFIG_KEY__ConfirmExecuteRoomWhenSave) == GlobalVariables.CommonStringTrue;
 
                 IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
                 string icdSubMaxCountStr = GetValue(CONFIG_KEY__ICD_SUB_MAX_COUNT);

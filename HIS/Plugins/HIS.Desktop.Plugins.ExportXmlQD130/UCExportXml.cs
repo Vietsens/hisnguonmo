@@ -1526,6 +1526,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 var totalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                 var totalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                var totalHeinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
                 var totalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                 var totalIcdData = BackendDataWorker.Get<HIS_ICD>();
                 var totalServiceData = BackendDataWorker.Get<V_HIS_SERVICE>();
@@ -1618,6 +1619,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     ado.TotalMaterialTypeData = totalMaterialTypeData;
                     ado.TotalHeinMediOrgData = totalHeinMediOrgData;
+                    ado.TotalHeinPatientTypeData = totalHeinPatientTypeData;
                     ado.TotalConfigData = NewConfig;
                     ado.TotalPatientTypeData = totalPatientTypeData;
                     ado.TotalIcdData = totalIcdData;
@@ -2008,6 +2010,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 ado.ListTuberculosisTreat = ListTuberculosisTreat;
                 ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                 ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                ado.TotalHeinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
                 ado.TotalConfigData = NewConfig;
                 ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                 ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
@@ -4726,6 +4729,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                             ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                             ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                            ado.TotalHeinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
                             ado.TotalConfigData = NewConfig;
                             ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                             ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();

@@ -153,4 +153,16 @@
   <data name="frmHisHeinPatientType.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
     <value />
   </data>
+  <data name="frmHisHeinPatientType.lciMediOrgCodes.Text" xml:space="preserve">
+    <value>Initial medi org codes:</value>
+  </data>
+  <data name="frmHisHeinPatientType.lciAllMediOrg.Text" xml:space="preserve">
+    <value>All:</value>
+  </data>
+  <data name="frmHisHeinPatientType.gridColumnMediOrgCodes.Caption" xml:space="preserve">
+    <value>Initial medical org codes</value>
+  </data>
+  <data name="frmHisHeinPatientType.cboMediOrgCodes.FindNullPrompt" xml:space="preserve">
+    <value>Type code or name of medical org to search...</value>
+  </data>
 </root>

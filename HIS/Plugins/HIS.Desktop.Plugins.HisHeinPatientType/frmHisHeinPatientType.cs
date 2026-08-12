@@ -7,6 +7,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisHeinPatientType.Validtion;
@@ -43,6 +44,10 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
         MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE currentData;     
         Inventec.Desktop.Common.Modules.Module moduleData;
         List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE> lstTreatmentType;
+        List<MOS.EFMODEL.DataModels.HIS_MEDI_ORG> lstMediOrgAll;
+        List<MOS.EFMODEL.DataModels.HIS_MEDI_ORG> lstMediOrgSelected;
+        /// <summary>Cot tich do GridCheckMarksSelection sinh ra tren popup chon co so KCB ban dau</summary>
+        DevExpress.XtraGrid.Columns.GridColumn mediOrgCheckMarkColumn;
         public frmHisHeinPatientType(Inventec.Desktop.Common.Modules.Module moduleData) : base(moduleData)
         {
             try
@@ -73,7 +78,7 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
         {
             try
             {
-                FillDataToControl();      
+                FillDataToControl();
                 SetSpinEditDefaultNull(sprinNumOrder);
                 LoadRightRouteType(cboRightRouteTypeCode);
                 InitCheck(cboTreatmentType, SelectionGrid__Status);
@@ -81,6 +86,11 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                 FillTreatmentType();
 
                 InitCombo(cboTreatmentType, lstTreatmentType, "TREATMENT_TYPE_NAME", "ID");
+
+                InitCheck(cboMediOrgCodes, SelectionGrid__MediOrg);
+                FillMediOrg();
+                InitComboMediOrg(cboMediOrgCodes, lstMediOrgAll);
+
                 ValidateForm();
                 SetCaptionByLanguagekey();
             }
@@ -107,7 +117,11 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
             this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             this.chkTT.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.chkTT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             this.chkDT.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.chkDT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-            
+            this.lciMediOrgCodes.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.lciMediOrgCodes.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.lciAllMediOrg.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.lciAllMediOrg.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.gridColumnMediOrgCodes.Caption = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.gridColumnMediOrgCodes.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.cboMediOrgCodes.Properties.View.OptionsFind.FindNullPrompt = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.cboMediOrgCodes.FindNullPrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
         }
         private void ValidateForm()
         {
@@ -251,8 +265,11 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                 {
                     gridCheckMark.ClearSelection(cboTreatmentType.Properties.View);
                 }
-                cboTreatmentType.EditValue = "";    
+                cboTreatmentType.EditValue = "";
                 cboTreatmentType.RefreshEditValue();
+                chkAllMediOrg.Checked = false;
+                cboMediOrgCodes.Enabled = true;
+                ClearMediOrgSelection();
                 positionHandle = -1;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError
                 (dxValidationProvider1, dxErrorProvider1);               
@@ -407,6 +424,28 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                     updateDTO.NUM_ORDER = Convert.ToInt64(sprinNumOrder.EditValue);
                 }
 
+                // Ma co so KCB ban dau: tich "Tat ca" -> luu gia tri dai dien "*" (ap dung moi co so);
+                // nguoc lai luu danh sach ma phan tach ";"; khong cau hinh -> NULL (hanh vi cu)
+                if (chkAllMediOrg.Checked)
+                {
+                    updateDTO.HEIN_MEDI_ORG_CODES = "*";
+                }
+                else
+                {
+                    GridCheckMarksSelection gridCheckMarkMediOrg = cboMediOrgCodes.Properties.Tag as GridCheckMarksSelection;
+                    var selectedMediOrgs = gridCheckMarkMediOrg != null
+                        ? gridCheckMarkMediOrg.Selection.OfType<MOS.EFMODEL.DataModels.HIS_MEDI_ORG>().ToList()
+                        : new List<MOS.EFMODEL.DataModels.HIS_MEDI_ORG>();
+                    if (selectedMediOrgs.Any())
+                    {
+                        updateDTO.HEIN_MEDI_ORG_CODES = string.Join(";", selectedMediOrgs.Select(x => x.MEDI_ORG_CODE).Distinct());
+                    }
+                    else
+                    {
+                        updateDTO.HEIN_MEDI_ORG_CODES = null;
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -500,6 +539,30 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
 
                             cboTreatmentType.EditValue = "";
                             cboTreatmentType.RefreshEditValue();
+                        }
+                    }
+
+                    // Ma co so KCB ban dau ("*" = Chon tat ca)
+                    chkAllMediOrg.Checked = ((data.HEIN_MEDI_ORG_CODES ?? "").Trim() == "*");
+                    ClearMediOrgSelection();
+                    cboMediOrgCodes.Enabled = !chkAllMediOrg.Checked;
+                    if (!chkAllMediOrg.Checked && !string.IsNullOrEmpty(data.HEIN_MEDI_ORG_CODES))
+                    {
+                        var codes = data.HEIN_MEDI_ORG_CODES
+                            .Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => x.Trim())
+                            .Where(x => !string.IsNullOrEmpty(x))
+                            .Distinct()
+                            .ToList();
+                        GridCheckMarksSelection gridCheckMarkMediOrg = cboMediOrgCodes.Properties.Tag as GridCheckMarksSelection;
+                        if (gridCheckMarkMediOrg != null && lstMediOrgAll != null)
+                        {
+                            foreach (var item in lstMediOrgAll.Where(x => codes.Contains(x.MEDI_ORG_CODE)))
+                            {
+                                gridCheckMarkMediOrg.Selection.Add(item);
+                            }
+                            cboMediOrgCodes.EditValue = "";
+                            cboMediOrgCodes.RefreshEditValue();
                         }
                     }
                 }
@@ -602,6 +665,17 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                     else if (e.Column.FieldName == "RIGHT_ROUTE_CODE_TT" && pData.RIGHT_ROUTE_CODE == "TT")
                     {
                         e.Value = true; 
+                    }
+                    else if (e.Column.FieldName == "HEIN_MEDI_ORG_CODES_STR")
+                    {
+                        if ((pData.HEIN_MEDI_ORG_CODES ?? "").Trim() == "*")
+                        {
+                            e.Value = "Tất cả";
+                        }
+                        else
+                        {
+                            e.Value = pData.HEIN_MEDI_ORG_CODES ?? "";
+                        }
                     }
                     else if (e.Column.FieldName == "RIGHT_ROUTE_TYPE_CODE_NAME")
                     {
@@ -1013,6 +1087,235 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                     if (rv != null)
                         lstTreatmentType.Add(rv);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void FillMediOrg()
+        {
+            try
+            {
+                lstMediOrgAll = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDI_ORG>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .OrderBy(o => o.MEDI_ORG_CODE)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboMediOrg(GridLookUpEdit cbo, List<MOS.EFMODEL.DataModels.HIS_MEDI_ORG> data)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = "MEDI_ORG_CODE";
+                cbo.Properties.ValueMember = "MEDI_ORG_CODE";
+
+                DevExpress.XtraGrid.Columns.GridColumn colCode = cbo.Properties.View.Columns.AddField("MEDI_ORG_CODE");
+                colCode.VisibleIndex = 1;
+                colCode.Width = 80;
+                colCode.Caption = "Mã";
+                DevExpress.XtraGrid.Columns.GridColumn colName = cbo.Properties.View.Columns.AddField("MEDI_ORG_NAME");
+                colName.VisibleIndex = 2;
+                colName.Width = 300;
+                colName.Caption = "Tên cơ sở KCB";
+                cbo.Properties.PopupFormWidth = 420;
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(420, 320);
+                cbo.Properties.ImmediatePopup = true;
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+
+                // Tim kiem trong danh sach: o tim kiem tong (Find panel) + dong loc theo tung cot
+                cbo.Properties.View.OptionsFind.AlwaysVisible = true;
+                cbo.Properties.View.OptionsFind.ShowCloseButton = false;
+                cbo.Properties.View.OptionsFind.ShowFindButton = false;
+                cbo.Properties.View.OptionsFind.ShowClearButton = true;
+                cbo.Properties.View.OptionsFind.ClearFindOnClose = true;
+                cbo.Properties.View.OptionsFind.FindDelay = 300;
+                cbo.Properties.View.OptionsFind.FindNullPrompt = "Nhập mã hoặc tên cơ sở KCB để tìm...";
+                cbo.Properties.View.OptionsView.ShowAutoFilterRow = true;
+
+                // Cot tich do GridCheckMarksSelection sinh ra: la cot unbound kieu Boolean duy nhat
+                // (xac dinh theo dac diem, khong phu thuoc ten cot noi bo cua thu vien)
+                mediOrgCheckMarkColumn = cbo.Properties.View.Columns
+                    .Cast<DevExpress.XtraGrid.Columns.GridColumn>()
+                    .FirstOrDefault(o => o.UnboundType == DevExpress.Data.UnboundColumnType.Boolean);
+                if (mediOrgCheckMarkColumn != null)
+                {
+                    // Bo o loc tren dong auto filter => tranh o checkbox mau vang o dau dong tim kiem
+                    mediOrgCheckMarkColumn.OptionsFilter.AllowAutoFilter = false;
+                    mediOrgCheckMarkColumn.OptionsFilter.AllowFilter = false;
+                    mediOrgCheckMarkColumn.OptionsColumn.AllowMove = false;
+                }
+
+                // Bo o tich "chon tat ca" tren header cot tich (viec chon moi co so da co o tich "Tất cả" rieng)
+                cbo.Properties.View.CustomDrawColumnHeader -= gridViewMediOrgCodes_CustomDrawColumnHeader;
+                cbo.Properties.View.CustomDrawColumnHeader += gridViewMediOrgCodes_CustomDrawColumnHeader;
+                cbo.Properties.View.Click -= gridViewMediOrgCodes_Click;
+                cbo.Properties.View.Click += gridViewMediOrgCodes_Click;
+
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lay cot tich cua popup chon co so KCB ban dau — cot unbound kieu Boolean do
+        /// GridCheckMarksSelection sinh ra. Tim lai neu thu vien tao cot muon (luc mo popup).
+        /// </summary>
+        private DevExpress.XtraGrid.Columns.GridColumn GetMediOrgCheckMarkColumn(DevExpress.XtraGrid.Views.Grid.GridView view)
+        {
+            try
+            {
+                if (mediOrgCheckMarkColumn != null) return mediOrgCheckMarkColumn;
+                if (view == null) return null;
+                mediOrgCheckMarkColumn = view.Columns
+                    .Cast<DevExpress.XtraGrid.Columns.GridColumn>()
+                    .FirstOrDefault(o => o.UnboundType == DevExpress.Data.UnboundColumnType.Boolean);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return mediOrgCheckMarkColumn;
+        }
+
+        /// <summary>
+        /// Ve lai header cot tich => an o tich "chon tat ca" ma GridCheckMarksSelection tu ve.
+        /// Handler nay chay sau handler cua class dung chung nen ve de len.
+        /// </summary>
+        private void gridViewMediOrgCodes_CustomDrawColumnHeader(object sender, DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                var checkColumn = GetMediOrgCheckMarkColumn(sender as DevExpress.XtraGrid.Views.Grid.GridView);
+                if (checkColumn != null && e.Column == checkColumn)
+                {
+                    e.Info.InnerElements.Clear();
+                    e.Painter.DrawObject(e.Info);
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chan hanh vi "chon tat ca" khi bam vao header cot tich.
+        /// Khong cho liet ke toan bo ma co so KCB (vuot do dai cot va sai nghiep vu —
+        /// truong hop ap dung moi co so da co o tich "Tất cả" rieng).
+        /// </summary>
+        private void gridViewMediOrgCodes_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (view == null || view.GridControl == null) return;
+
+                var checkColumn = GetMediOrgCheckMarkColumn(view);
+                if (checkColumn == null) return;
+                var hit = view.CalcHitInfo(view.GridControl.PointToClient(Control.MousePosition));
+                if (hit.Column != checkColumn || !hit.InColumn) return;
+
+                GridCheckMarksSelection gridCheckMark = cboMediOrgCodes.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null && gridCheckMark.SelectedCount > 0)
+                {
+                    gridCheckMark.ClearSelection(view);
+                    cboMediOrgCodes.RefreshEditValue();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SelectionGrid__MediOrg(object sender, EventArgs e)
+        {
+            try
+            {
+                cboMediOrgCodes.RefreshEditValue();
+                lstMediOrgSelected = new List<MOS.EFMODEL.DataModels.HIS_MEDI_ORG>();
+                foreach (MOS.EFMODEL.DataModels.HIS_MEDI_ORG rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        lstMediOrgSelected.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboMediOrgCodes_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                GridLookUpEdit cbo = sender as GridLookUpEdit;
+                if (cbo == null) return;
+
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark == null) return;
+
+                var selectedItems = gridCheckMark.Selection.OfType<MOS.EFMODEL.DataModels.HIS_MEDI_ORG>().ToList();
+
+                if (selectedItems.Count > 0)
+                {
+                    e.DisplayText = string.Join(";", selectedItems.Select(x => x.MEDI_ORG_CODE));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkAllMediOrg_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Tich "Tat ca" = ap dung moi co so KCB ban dau -> khong chon danh sach ma cu the
+                cboMediOrgCodes.Enabled = !chkAllMediOrg.Checked;
+                if (chkAllMediOrg.Checked)
+                {
+                    ClearMediOrgSelection();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ClearMediOrgSelection()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheckMark = cboMediOrgCodes.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboMediOrgCodes.Properties.View);
+                }
+                lstMediOrgSelected = new List<MOS.EFMODEL.DataModels.HIS_MEDI_ORG>();
+                cboMediOrgCodes.EditValue = "";
+                cboMediOrgCodes.RefreshEditValue();
             }
             catch (Exception ex)
             {
