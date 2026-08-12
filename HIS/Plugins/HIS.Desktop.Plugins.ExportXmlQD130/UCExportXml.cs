@@ -275,6 +275,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.SetDefaultSearchFilter();
                 this.FillDataToGridTreatment();
                 this.InitCheckUSBToken();
+                //vCong53286 - Nút Kiểm tra lỗi tiền giám định. Chỉ hiện khi viện đã đấu nối.
+                this.InitTienGiamDinhButton();
             }
             catch (Exception ex)
             {
@@ -627,6 +629,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                //vCong53286 - Tải lại danh sách thì bỏ kết quả kiểm tra đã nhớ trong phiên.
+                //Hồ sơ có thể vừa được sửa nên kết quả cũ không còn đúng.
+                this.ClearTienGiamDinhSessionResult();
+
                 FillDataToGridTreatment(new CommonParam(0, (int)ConfigApplications.NumPageSize));
 
                 CommonParam param = new CommonParam();
@@ -1064,11 +1070,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        private void btnExportXml_Click(object sender, EventArgs e)
+        private async void btnExportXml_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!btnExportXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
+                if (!await EnsureTienGiamDinhPassedAsync()) return;
                 CommonParam param = new CommonParam();
                 MemoryStream memoryStream = new MemoryStream();
                 bool success = false;
@@ -1517,6 +1526,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 var totalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                 var totalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                var totalHeinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
                 var totalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                 var totalIcdData = BackendDataWorker.Get<HIS_ICD>();
                 var totalServiceData = BackendDataWorker.Get<V_HIS_SERVICE>();
@@ -1609,6 +1619,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     ado.TotalMaterialTypeData = totalMaterialTypeData;
                     ado.TotalHeinMediOrgData = totalHeinMediOrgData;
+                    ado.TotalHeinPatientTypeData = totalHeinPatientTypeData;
                     ado.TotalConfigData = NewConfig;
                     ado.TotalPatientTypeData = totalPatientTypeData;
                     ado.TotalIcdData = totalIcdData;
@@ -1999,6 +2010,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 ado.ListTuberculosisTreat = ListTuberculosisTreat;
                 ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                 ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                ado.TotalHeinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
                 ado.TotalConfigData = NewConfig;
                 ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                 ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
@@ -4717,6 +4729,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                             ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                             ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                            ado.TotalHeinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
                             ado.TotalConfigData = NewConfig;
                             ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                             ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
@@ -6449,11 +6462,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        private void btnExportCollinearXml_Click(object sender, EventArgs e)
+        private async void btnExportCollinearXml_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!btnExportCollinearXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
+                if (!await EnsureTienGiamDinhPassedAsync()) return;
                 CommonParam param = new CommonParam();
                 MemoryStream memoryStream = new MemoryStream();
                 bool success = false;
@@ -6623,11 +6639,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        private void btnExportGroupXml_Click(object sender, EventArgs e)
+        private async void btnExportGroupXml_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!btnExportGroupXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
+                if (!await EnsureTienGiamDinhPassedAsync()) return;
                 CommonParam param = new CommonParam();
                 MemoryStream memoryStream = new MemoryStream();
                 bool success = false;
@@ -6846,6 +6865,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnXML3176.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
+                if (!await EnsureTienGiamDinhPassedAsync()) return;
                 CommonParam param = new CommonParam();
                 MemoryStream memoryStream = new MemoryStream();
                 bool success = false;
@@ -6985,11 +7007,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        private void btnExportXml12_Click(object sender, EventArgs e)
+        private async void btnExportXml12_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!btnExportXml12.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
+                if (!await EnsureTienGiamDinhPassedAsync()) return;
                 CommonParam param = new CommonParam();
                 bool success = false;
 

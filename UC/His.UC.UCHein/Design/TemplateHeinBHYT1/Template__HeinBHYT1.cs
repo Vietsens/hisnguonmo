@@ -212,6 +212,57 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        /// <summary>
+        /// Chon ban ghi doi tuong KCB theo uu tien ma co so KCB ban dau (nơi ĐKKCB ban đầu trên thẻ):
+        /// 1. Ban ghi co danh sach HEIN_MEDI_ORG_CODES chua ma DKKCB cua the
+        /// 2. Ban ghi "Chon tat ca" (HEIN_MEDI_ORG_CODES = "*")
+        /// 3. Ban ghi khong cau hinh (hanh vi cu)
+        /// Cung muc uu tien -> NUM_ORDER nho nhat (null xep cuoi) -> ID lon nhat.
+        /// </summary>
+        private HIS_HEIN_PATIENT_TYPE GetHeinPatientTypeByMediOrgPriority(List<HIS_HEIN_PATIENT_TYPE> heinList, string dkbdCode)
+        {
+            try
+            {
+                List<HIS_HEIN_PATIENT_TYPE> matchedList = null;
+                if (!string.IsNullOrEmpty(dkbdCode))
+                {
+                    var specific = heinList.Where(o => !string.IsNullOrWhiteSpace(o.HEIN_MEDI_ORG_CODES)
+                        && o.HEIN_MEDI_ORG_CODES.Trim() != "*"
+                        && o.HEIN_MEDI_ORG_CODES.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Any(c => c.Trim() == dkbdCode)).ToList();
+                    var applyAll = heinList.Where(o => !string.IsNullOrWhiteSpace(o.HEIN_MEDI_ORG_CODES)
+                        && o.HEIN_MEDI_ORG_CODES.Trim() == "*").ToList();
+                    if (specific.Count > 0)
+                        matchedList = specific;
+                    else if (applyAll.Count > 0)
+                        matchedList = applyAll;
+                }
+                if (matchedList == null)
+                {
+                    // Hanh vi cu: chi xet ban ghi khong cau hinh tieu chi co so KCB ban dau
+                    matchedList = heinList.Where(o => string.IsNullOrWhiteSpace(o.HEIN_MEDI_ORG_CODES)).ToList();
+                }
+                if (matchedList.Count == 0)
+                {
+                    // Du phong: khong con ung vien nao (vien cau hinh thieu ban ghi "Tat ca")
+                    // -> quay ve dung luat cu tren toan bo danh sach, tranh de trong o Doi tuong KCB
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "GetHeinPatientTypeByMediOrgPriority: khong khop ban ghi nao theo ma CSKCB ban dau="
+                        + dkbdCode + " -> dung luat cu theo NUM_ORDER");
+                    matchedList = heinList;
+                }
+                return matchedList.OrderBy(o => o.NUM_ORDER == null ? 1 : 0)
+                                  .ThenBy(o => o.NUM_ORDER)
+                                  .ThenByDescending(o => o.ID)
+                                  .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
         private void InitComboPatientCode()
         {
             try
@@ -249,17 +300,14 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
 
                     if (heinList.Count > 0 && this.HeinPatientCode == null)
                     {
-                        var minItem = heinList.OrderBy(o => o.NUM_ORDER == null ? 1 : 0)
-                                                                    .ThenBy(o => o.NUM_ORDER)
-                                                                    .ThenByDescending(o => o.ID)
-                                                                    .FirstOrDefault(); ;
-                        cboPatientCode.EditValue = minItem.HEIN_PATIENT_TYPE_CODE; 
+                        var minItem = GetHeinPatientTypeByMediOrgPriority(heinList, (txtMaDKKCBBD.Text ?? "").Trim());
+                        cboPatientCode.EditValue = minItem != null ? minItem.HEIN_PATIENT_TYPE_CODE : null;
                     }
                     else
                     {
                         cboPatientCode.EditValue = this.HeinPatientCode;
-                    } 
-                        
+                    }
+
                 }
 
                 cboPatientCode.Properties.DataSource = heinData;

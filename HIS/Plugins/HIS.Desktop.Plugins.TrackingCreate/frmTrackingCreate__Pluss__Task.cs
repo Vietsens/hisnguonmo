@@ -244,8 +244,15 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         {
             try
             {
-                List<HIS_DHST> rsDhst = null;
-                List<HIS_DHST> rsDhstTracking = null;
+                List<HIS_DHST> rsDhst = null;            //DHST cua ca dot dieu tri
+                List<HIS_DHST> rsDhstTracking = null;    //DHST dang gan voi to dieu tri hien tai
+                HIS_DHST dhstByPatient = null;           //DHST gan nhat cua benh nhan
+
+                //Mo form (buttonDHSTCheck == null) ma trang thai nut da luu trong ControlState dang bat
+                //=> coi nhu nguoi dung da tich san "Lay DHST gan nhat cua BN"
+                bool isAutoBySavedState = !buttonDHSTCheck.HasValue && this.IsCheckedGetLastDHSTByPatient;
+                bool isLoadDhstByPatient = (buttonDHSTCheck.HasValue && buttonDHSTCheck.Value) || isAutoBySavedState;
+
                 Action myaction = () =>
                 {
                     if (currentTracking != null)
@@ -254,25 +261,36 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         dhstFilter.TRACKING_ID = currentTracking.ID;
                         rsDhstTracking = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter, new CommonParam());
                     }
-                    if (buttonDHSTCheck.HasValue)
+
+                    //Sua to dieu tri da co san DHST gan theo => uu tien hien thi du lieu cu, khong lay theo BN nua
+                    if (isAutoBySavedState && rsDhstTracking != null && rsDhstTracking.Count > 0)
                     {
-                        if (buttonDHSTCheck.Value)
+                        isLoadDhstByPatient = false;
+                    }
+
+                    if (isLoadDhstByPatient)
+                    {
+                        //Lay DHST gan nhat cua BN - dong bo cach lam voi HIS.Desktop.Plugins.ExamServiceReqExecute
+                        //(khac: dung Get dong bo thay cho GetAsync). Server tra ve dung 1 ban ghi moi nhat.
+                        if (this._Treatment != null && this._Treatment.PATIENT_ID > 0)
                         {
                             CommonParam param = new CommonParam();
-                            MOS.Filter.HisDhstView1Filter dhstFilter1 = new MOS.Filter.HisDhstView1Filter();
-                            dhstFilter1.PATIENT_ID = this._Treatment.PATIENT_ID;
-                            var lastDHSTview1 = new BackendAdapter(param).Get<List<V_HIS_DHST_1>>
-                                ("api/HisDhst/GetView1", ApiConsumers.MosConsumer, dhstFilter1, param);
-                            if (lastDHSTview1 != null)
+                            var lastDhst = new BackendAdapter(param).Get<V_HIS_DHST_1>
+                                ("api/HisDhst/GetLastByPatient", ApiConsumers.MosConsumer, this._Treatment.PATIENT_ID, param);
+                            if (lastDhst != null)
                             {
-                                AutoMapper.Mapper.CreateMap<V_HIS_DHST_1, HIS_DHST>();
-                                rsDhst = AutoMapper.Mapper.Map<List<HIS_DHST>>(lastDHSTview1);
+                                dhstByPatient = new HIS_DHST();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_DHST>(dhstByPatient, lastDhst);
                             }
                         }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("InitDhst: bo qua lay DHST gan nhat cua BN vi _Treatment null hoac PATIENT_ID <= 0");
+                        }
                     }
-                    else
+
+                    if (!buttonDHSTCheck.HasValue)
                     {
-                        HIS_DHST rs = new HIS_DHST();
                         MOS.Filter.HisDhstFilter dhstFilter1 = new MOS.Filter.HisDhstFilter();
                         dhstFilter1.TREATMENT_ID = treatmentId;
                         rsDhst = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter1, new CommonParam());
@@ -282,20 +300,32 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 task.Start();
                 await task;
 
+                //To dieu tri da co san DHST => bo tich tren giao dien,
+                //nhung KHONG ghi de trang thai da luu trong ControlState (chi bam nut moi duoc ghi de)
+                if (isAutoBySavedState && !isLoadDhstByPatient)
+                {
+                    this.IsCheckedGetLastDHSTByPatient = false;
+                    this.SetImageDHST();
+                    Inventec.Common.Logging.LogSystem.Info("InitDhst: to dieu tri da co DHST gan theo => hien thi du lieu cu, bo tich nut lay DHST gan nhat cua BN (khong ghi de ControlState)");
+                }
+
                 bool isLastestDhst = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_SHOWLASTEST_DHST)) == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 isLastestDhst = isLastestDhst && (!buttonDHSTCheck.HasValue && action == GlobalVariables.ActionAdd && treatmentId > 0);
-                bool isButtonDhstCheck = buttonDHSTCheck.HasValue && buttonDHSTCheck.Value;
-                if ((isLastestDhst || isButtonDhstCheck) && (rsDhst != null && rsDhst.Count > 0))
+
+                if (isLoadDhstByPatient && dhstByPatient != null)
+                {
+                    FillDataDhstToControl(dhstByPatient);
+                    if (isAutoBySavedState)
+                    {
+                        //Nhanh tu dong luc mo form: giu dung y do cua o "Cap nhat thoi gian DHST"
+                        SetExecuteTimeByTrackingTime();
+                    }
+                }
+                else if (isLastestDhst && rsDhst != null && rsDhst.Count > 0)
                 {
                     var dhst = rsDhst.OrderByDescending(o => o.EXECUTE_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
                     FillDataDhstToControl(dhst);
-                    if (isLastestDhst)
-                    {
-                        if (chkUpdateTimeDHST.Checked && dtTrackingTime != null && dtTrackingTime.DateTime != DateTime.MinValue)
-                        {
-                            dhstProcessor.SetExecuteTime(ucControlDHST, Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTrackingTime.DateTime));
-                        }
-                    }
+                    SetExecuteTimeByTrackingTime();
                 }
                 else
                 {

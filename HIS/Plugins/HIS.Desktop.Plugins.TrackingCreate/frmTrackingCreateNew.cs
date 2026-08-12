@@ -912,11 +912,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         {
                             chkLockInfor.Checked = item.VALUE == "1";
                         }
-                        //else if(item.KEY == ControlStateConstan.chkLastDHSTByPatient)
-                        //{
-                        //    IsCheckedGetLastDHSTByPatient = item.VALUE == "1" ? true : false;
-                        //    this.SetImageDHST();
-                        //}
+                        else if (item.KEY == ControlStateConstan.chkLastDHSTByPatient)
+                        {
+                            IsCheckedGetLastDHSTByPatient = item.VALUE == "1";
+                            this.SetImageDHST();
+                        }
                     }
                     chkPrintDocumentSigned.Enabled = chkSign.Checked;
                     if (chkSign.Checked == false)
@@ -2761,12 +2761,20 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void GetDataToSave()
+        /// <summary>
+        /// Dung du lieu gui len server.
+        /// Tra ve false neu co bat ky khoi du lieu nao dung khong thanh cong
+        /// => caller BAT BUOC khong duoc goi api luu (tranh luu tro dieu tri trang don thuoc/DHST).
+        /// </summary>
+        private bool GetDataToSave()
         {
+            bool result = true;
+            trackingSDOs = new MOS.SDO.HisTrackingSDO();
+            trackingSDOs.ServiceReqs = new List<TrackingServiceReq>();
+
+            //Khoi 1: thong tin chung cua to dieu tri
             try
             {
-                trackingSDOs = new MOS.SDO.HisTrackingSDO();
-                trackingSDOs.ServiceReqs = new List<TrackingServiceReq>();
                 HIS_TRACKING trackingSave = new HIS_TRACKING();
                 var work = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId);
                 if (this.currentModule != null && this.currentModule.RoomId > 0)
@@ -2901,10 +2909,20 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 trackingSave.DISEASE_STAGE = txtDiseaseStage.Text.Trim();
 
                 trackingSDOs.Tracking = trackingSave;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
 
-                //List ServiceReq
-                List<TreeSereServADO> dataCheckTree = GetListCheck();
-                List<TreeSereServADO> dataCheckTreeTab2 = GetListCheckTab2();
+            //List ServiceReq
+            List<TreeSereServADO> dataCheckTree = GetListCheck();
+            List<TreeSereServADO> dataCheckTreeTab2 = GetListCheckTab2();
+
+            //Khoi 2: don du tru (tab 2)
+            try
+            {
                 if (dataCheckTreeTab2 != null && dataCheckTreeTab2.Count > 0)
                 {
 
@@ -2916,6 +2934,16 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         trackingSDOs.UsedForServiceReqIds.Add(item.First().SERVICE_REQ_ID ?? 0);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+
+            //Khoi 3: y lenh / don thuoc (tab 1)
+            try
+            {
                 if (dataCheckTree != null && dataCheckTree.Count > 0)
                 {
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataCheckTree), dataCheckTree));
@@ -2958,13 +2986,32 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 }
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => trackingSDOs.ServiceReqs), trackingSDOs.ServiceReqs));
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => trackingSDOs.UsedForServiceReqIds), trackingSDOs.UsedForServiceReqIds));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+
+            //Khoi 4: cham soc
+            try
+            {
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => careIdsIncludeByTrackingCreated), careIdsIncludeByTrackingCreated));
                 if (careIdsIncludeByTrackingCreated != null && careIdsIncludeByTrackingCreated.Count > 0)
                 {
                     trackingSDOs.CareIds = careIdsIncludeByTrackingCreated;
                 }
-                //Dhst
-                //không nhập thông tin dhst sẽ không truyền vào
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+
+            //Khoi 5: dau hieu sinh ton
+            //không nhập thông tin dhst sẽ không truyền vào
+            try
+            {
                 if (dhstProcessor != null)
                 {
                     var ado = dhstProcessor.GetValue(ucControlDHST);
@@ -3012,7 +3059,14 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
             }
+
+            Inventec.Common.Logging.LogSystem.Info("TrackingCreate.GetDataToSave___result=" + result
+                + "; ServiceReqs=" + (trackingSDOs.ServiceReqs != null ? trackingSDOs.ServiceReqs.Count : -1)
+                + "; UsedForServiceReqIds=" + (trackingSDOs.UsedForServiceReqIds != null ? trackingSDOs.UsedForServiceReqIds.Count : -1)
+                + "; Dhst null? = " + (trackingSDOs.Dhst == null));
+            return result;
         }
         private void ProcessPrint()
         {
@@ -3210,7 +3264,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 bool success = false;
                 if (this.action == GlobalVariables.ActionAdd)
                 {
-                    GetDataToSave();
+                    if (!GetDataToSave())
+                    {
+                        ShowMessageGetDataToSaveFailed();
+                        return;
+                    }
 
                     if (!CheckBeforeCallApiUpdate())
                         return;
@@ -3254,7 +3312,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 }
                 else if (this.action == GlobalVariables.ActionEdit)
                 {
-                    GetDataToSave();
+                    if (!GetDataToSave())
+                    {
+                        ShowMessageGetDataToSaveFailed();
+                        return;
+                    }
                     if (!CheckBeforeCallApiUpdate())
                         return;
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("api/HisTracking/Update this.trackingSDOs: ", this.trackingSDOs));
@@ -3755,7 +3817,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 bool success = false;
                 if (this.action == GlobalVariables.ActionAdd)
                 {
-                    GetDataToSave();
+                    if (!GetDataToSave())
+                    {
+                        ShowMessageGetDataToSaveFailed();
+                        return;
+                    }
 
                     if (!CheckBeforeCallApiUpdate())
                         return;
@@ -3792,7 +3858,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 }
                 else if (this.action == GlobalVariables.ActionEdit)
                 {
-                    GetDataToSave();
+                    if (!GetDataToSave())
+                    {
+                        ShowMessageGetDataToSaveFailed();
+                        return;
+                    }
                     if (!CheckBeforeCallApiUpdate())
                         return;
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("api/HisTracking/Update this.trackingSDOs: ", this.trackingSDOs));
@@ -3827,6 +3897,26 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// Bao loi khi dung du lieu that bai. BAT BUOC dung luu, neu khong to dieu tri se duoc tao
+        /// nhung khong gan duoc don thuoc / y lenh / dau hieu sinh ton ma nguoi dung khong biet.
+        /// </summary>
+        private void ShowMessageGetDataToSaveFailed()
+        {
+            try
+            {
+                WaitingManager.Hide();
+                DevExpress.XtraEditors.XtraMessageBox.Show(this,
+                    "Không lấy được đầy đủ dữ liệu của tờ điều trị (y lệnh/đơn thuốc/dấu hiệu sinh tồn). Hệ thống đã dừng lưu để tránh lưu thiếu dữ liệu."
+                    + Environment.NewLine + "Vui lòng bấm Tìm để nạp lại danh sách y lệnh rồi lưu lại.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private bool CheckBeforeCallApiUpdate()
         {
             bool result = true;
@@ -5120,15 +5210,31 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             }
         }
 
+        /// <summary>
+        /// Dat thoi gian do DHST theo thoi gian to dieu tri khi o "Cap nhat thoi gian DHST" dang tich.
+        /// Chi ap dung khi tao moi to dieu tri (dung nhu mo ta cua o tich).
+        /// </summary>
+        private void SetExecuteTimeByTrackingTime()
+        {
+            try
+            {
+                if (this.action == GlobalVariables.ActionAdd && chkUpdateTimeDHST.Checked
+                    && dhstProcessor != null && dtTrackingTime != null && dtTrackingTime.DateTime != DateTime.MinValue)
+                {
+                    dhstProcessor.SetExecuteTime(ucControlDHST, Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTrackingTime.DateTime));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void chkUpdateTimeDHST_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
-                if (this.action == GlobalVariables.ActionAdd && chkUpdateTimeDHST.Checked)
-                {
-                    if (dtTrackingTime != null && dtTrackingTime.DateTime != DateTime.MinValue)
-                        dhstProcessor.SetExecuteTime(ucControlDHST, Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTrackingTime.DateTime));
-                }
+                SetExecuteTimeByTrackingTime();
             }
             catch (Exception ex)
             {
@@ -5226,30 +5332,59 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         bool IsCheckedGetLastDHSTByPatient = false;
         private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)
         {
-            if (e.ActivePage == xtraTabPageDhst)
+            try
             {
-                if (e.Button == this.xtraTabControl1.CustomHeaderButtons[0])
+                if (e.ActivePage == xtraTabPageDhst)
                 {
-                    this.IsCheckedGetLastDHSTByPatient = !IsCheckedGetLastDHSTByPatient;
-                    this.SetImageDHST();
-                    this.InitDhst(this.IsCheckedGetLastDHSTByPatient);
-                    //HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = this.currentControlStateRDO != null ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstan.chkLastDHSTByPatient).FirstOrDefault() : null;
-                    //if (csAddOrUpdate != null)
-                    //{
-                    //    csAddOrUpdate.VALUE = IsCheckedGetLastDHSTByPatient ? "1" : "0";
-                    //}
-                    //else
-                    //{
-                    //    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-                    //    csAddOrUpdate.KEY = ControlStateConstan.chkLastDHSTByPatient;
-                    //    csAddOrUpdate.VALUE = IsCheckedGetLastDHSTByPatient ? "1" : "0";
-                    //    csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
-                    //    if (this.currentControlStateRDO == null)
-                    //        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-                    //    this.currentControlStateRDO.Add(csAddOrUpdate);
-                    //}
-                    //this.controlStateWorker.SetData(this.currentControlStateRDO);
+                    if (e.Button == this.xtraTabControl1.CustomHeaderButtons[0])
+                    {
+                        this.IsCheckedGetLastDHSTByPatient = !IsCheckedGetLastDHSTByPatient;
+                        this.SetImageDHST();
+                        this.InitDhst(this.IsCheckedGetLastDHSTByPatient);
+                        //Chi ghi ControlState khi nguoi dung CHU DONG bam nut.
+                        //Truong hop he thong tu bo tich (sua to dieu tri da co san DHST) khong duoc ghi de trang thai da luu.
+                        SaveControlStateLastDhstByPatient();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Luu trang thai nut "Lay DHST gan nhat cua BN" vao ControlState (local theo may).
+        /// Chi goi tu thao tac bam nut cua nguoi dung.
+        /// </summary>
+        private void SaveControlStateLastDhstByPatient()
+        {
+            try
+            {
+                if (this.controlStateWorker == null)
+                    return;
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstan.chkLastDHSTByPatient && o.MODULE_LINK == moduleLink).FirstOrDefault()
+                    : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (IsCheckedGetLastDHSTByPatient ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstan.chkLastDHSTByPatient;
+                    csAddOrUpdate.VALUE = (IsCheckedGetLastDHSTByPatient ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

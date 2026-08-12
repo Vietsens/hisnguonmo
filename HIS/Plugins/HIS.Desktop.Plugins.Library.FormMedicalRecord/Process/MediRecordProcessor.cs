@@ -604,12 +604,15 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 LogSystem.Debug("LoadDataEmr. 2.5");
                 if (_Treatment.TREATMENT_RESULT_ID > 0)
                     _ThongTinDieuTri.KetQuaDieuTri = _Treatment.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__CHET ? KetQuaDieuTri.TuVong : _Treatment.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__DO ? KetQuaDieuTri.GiamDo : _Treatment.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__KHOI ? KetQuaDieuTri.Khoi : _Treatment.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG ? KetQuaDieuTri.NangHon : KetQuaDieuTri.KhongThayDoi;
-                if (_Treatment.DEATH_TIME > 0 || _Treatment.DEATH_CAUSE_ID > 0 || _Treatment.DEATH_WITHIN_ID > 0)
+                //2608 - Benh nang xin ve: DEATH_TIME con duoc dung de luu thoi gian xin ve
+                //=> chi ep "Tu vong" khi ho so thuc su tu vong, khong suy ra tu DEATH_TIME
+                bool isRealDeath = IsRealDeath(_Treatment);
+                if (isRealDeath)
                 {
                     _ThongTinDieuTri.KetQuaDieuTri = KetQuaDieuTri.TuVong;
                 }
                 _ThongTinDieuTri.GiaiPhauBenh = 0;
-                if (_Treatment.DEATH_TIME > 0)
+                if (isRealDeath && _Treatment.DEATH_TIME > 0)
                     _ThongTinDieuTri.NgayTuVong = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(_Treatment.DEATH_TIME ?? 0);
                 if (_Treatment.DEATH_CAUSE_ID > 0)
                 {
@@ -734,7 +737,8 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 #region SoLuuTru, MaYTe
                 if (_Treatment != null)
                 {
-                    SoLuuTru = this.GenerateStorageNumber(_Treatment.END_CODE, _Treatment.DEATH_TIME, _Treatment.ICD_CAUSE_CODE);
+                    //2608 - Chi gan hau to "/TV" khi ho so thuc su tu vong (DEATH_TIME cua ca "benh nang xin ve" khong tinh)
+                    SoLuuTru = this.GenerateStorageNumber(_Treatment.END_CODE, isRealDeath ? _Treatment.DEATH_TIME : null, _Treatment.ICD_CAUSE_CODE);
 
                     if (HisBranch_WorkPlace != null)
                     {
@@ -2112,6 +2116,42 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
             catch (Exception)
             {
                 result = null;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 2608 - Xac dinh ho so co thuc su tu vong hay khong.
+        /// Chuc nang "Benh nang xin ve" (TreatmentFinish/SaveOtherBehavior) muon cot HIS_TREATMENT.DEATH_TIME
+        /// de luu thoi gian xin ve, nen KHONG duoc suy ra tu vong chi tu DEATH_TIME.
+        /// </summary>
+        private bool IsRealDeath(V_HIS_TREATMENT treatment)
+        {
+            bool result = false;
+            try
+            {
+                if (treatment == null) return false;
+
+                //Dau hieu tu vong tuong minh: loai ket thuc/ket qua dieu tri la tu vong,
+                //hoac da khai nguyen nhan tu vong (chi luong khai tu moi ghi 2 cot nay).
+                result = treatment.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
+                    || treatment.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__CHET
+                    || treatment.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__TVNV
+                    || treatment.DEATH_CAUSE_ID > 0
+                    || treatment.DEATH_WITHIN_ID > 0;
+
+                //Ho so cu chi co DEATH_TIME (chua nhap nguyen nhan) van coi la tu vong,
+                //tru dung nhom "benh nang xin ve": ket qua dieu tri "Nang hon" + loai ket thuc khac "Tu vong".
+                if (!result
+                    && treatment.DEATH_TIME > 0
+                    && treatment.TREATMENT_RESULT_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
         }

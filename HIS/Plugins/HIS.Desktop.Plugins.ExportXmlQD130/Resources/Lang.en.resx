@@ -459,4 +459,34 @@
   <data name="UCExportXml.vat" xml:space="preserve">
     <value>Vat %</value>
   </data>
+  <data name="frmTienGiamDinhResult.Text" xml:space="preserve">
+    <value>Pre-assessment check result</value>
+  </data>
+  <data name="frmTienGiamDinhResult.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColTreatmentCode.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColPatientName.Caption" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColErrorCount.Caption" xml:space="preserve">
+    <value>Errors</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColStatusName.Caption" xml:space="preserve">
+    <value>Severity</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColGroupName.Caption" xml:space="preserve">
+    <value>Error group</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColSeverityName.Caption" xml:space="preserve">
+    <value>Severity</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColErrorCode.Caption" xml:space="preserve">
+    <value>Error code</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColDescription.Caption" xml:space="preserve">
+    <value>Error description</value>
+  </data>
 </root>

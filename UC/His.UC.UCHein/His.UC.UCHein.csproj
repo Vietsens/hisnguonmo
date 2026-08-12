@@ -69,7 +69,7 @@
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Plugins.SecondaryIcd\HIS.Desktop.Common.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
-      <HintPath>..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.SecondaryIcd">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Plugins.SecondaryIcd\HIS.Desktop.Plugins.SecondaryIcd.dll</HintPath>
@@ -388,7 +388,6 @@
     <EmbeddedResource Include="Design\TemplateHeinBHYT1\Template__HeinBHYT1.resx">
       <DependentUpon>Template__HeinBHYT1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

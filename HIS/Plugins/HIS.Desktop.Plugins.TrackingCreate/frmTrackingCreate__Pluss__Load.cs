@@ -896,9 +896,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 }
                 else
                 {
+                    //Bind bang BindingList rong van de lai node cu (GetDataRecordByNode = null) => set null nhu tab 1
+                    SereServADOsFirstFormTab2 = new List<TreeSereServADO>();
                     treeListPreventive.BeginUpdate();
-                    BindingList<TreeSereServADO> records = new BindingList<TreeSereServADO>(SereServADOs);
-                    treeListPreventive.DataSource = records;
+                    treeListPreventive.DataSource = null;
                     treeListPreventive.EndUpdate();
                 }
                 WaitingManager.Hide();

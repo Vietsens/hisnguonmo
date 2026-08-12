@@ -223,4 +223,58 @@
     <value>လုပ်ဆောင်ခြင်း မအောင်မြင်ပါ။
 	</value>
   </data>
+  <data name="TienGiamDinhNutKiemTraLoi" xml:space="preserve">
+    <value>Kiểm tra lỗi</value>
+  </data>
+  <data name="TienGiamDinhNutHuy" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+  <data name="TienGiamDinhChuaChonHoSo" xml:space="preserve">
+    <value>Vui lòng tích chọn hồ sơ cần kiểm tra.</value>
+  </data>
+  <data name="TienGiamDinhXacNhanLoLon" xml:space="preserve">
+    <value>Bạn đã chọn {0} hồ sơ, dự kiến mất khoảng {1} phút để kiểm tra. Bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="TienGiamDinhTieuDeTienTrinh" xml:space="preserve">
+    <value>Đang kiểm tra tiền giám định</value>
+  </data>
+  <data name="TienGiamDinhDangKiemTra" xml:space="preserve">
+    <value>Đã kiểm tra {0}/{1} hồ sơ...</value>
+  </data>
+  <data name="TienGiamDinhTrangThaiKhongLoi" xml:space="preserve">
+    <value>Không có lỗi</value>
+  </data>
+  <data name="TienGiamDinhTrangThaiCanhBao" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="TienGiamDinhTrangThaiLoiNghiemTrong" xml:space="preserve">
+    <value>Lỗi nghiêm trọng</value>
+  </data>
+  <data name="TienGiamDinhTrangThaiKhongKiemTraDuoc" xml:space="preserve">
+    <value>Không kiểm tra được</value>
+  </data>
+  <data name="TienGiamDinhSaiThongTinXacThuc" xml:space="preserve">
+    <value>Sai thông tin xác thực</value>
+  </data>
+  <data name="TienGiamDinhNhomSaiSotYLenh" xml:space="preserve">
+    <value>Sai sót y lệnh</value>
+  </data>
+  <data name="TienGiamDinhNhomLoiTraThe" xml:space="preserve">
+    <value>Lỗi tra thẻ BHYT</value>
+  </data>
+  <data name="TienGiamDinhNhomLoiHoSoXml" xml:space="preserve">
+    <value>Lỗi hồ sơ XML</value>
+  </data>
+  <data name="TienGiamDinhHuyGiuaChungKhongXuat" xml:space="preserve">
+    <value>Đã hủy kiểm tra giữa chừng nên chưa kiểm hết hồ sơ. Không thực hiện kết xuất để tránh lọt hồ sơ chưa kiểm.</value>
+  </data>
+  <data name="TienGiamDinhChanXuat" xml:space="preserve">
+    <value>Có {0} hồ sơ mang lỗi nghiêm trọng trên hệ thống tiền giám định nên không thực hiện kết xuất. Vui lòng sửa hồ sơ rồi kiểm tra lại.</value>
+  </data>
+  <data name="TienGiamDinhCanhBaoTruocKhiXuat" xml:space="preserve">
+    <value>Có {0} hồ sơ có cảnh báo và {1} hồ sơ không kiểm tra được. Bạn có muốn tiếp tục kết xuất không?</value>
+  </data>
+  <data name="TienGiamDinhTongKetKetQua" xml:space="preserve">
+    <value>Đã kiểm {0} hồ sơ: {1} lỗi nghiêm trọng, {2} cảnh báo, {3} không kiểm tra được.</value>
+  </data>
 </root>

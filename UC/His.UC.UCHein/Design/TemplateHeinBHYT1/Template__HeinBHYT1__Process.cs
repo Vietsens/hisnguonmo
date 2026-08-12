@@ -300,6 +300,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                             this.AutoSelectEmergency(entity);
                         }
                     }
+                    // Tinh lai ma doi tuong KCB khi doi co so DKKCB ban dau
+                    InitComboPatientCode();
                 }
 
                 ValidateRightRouteType();
