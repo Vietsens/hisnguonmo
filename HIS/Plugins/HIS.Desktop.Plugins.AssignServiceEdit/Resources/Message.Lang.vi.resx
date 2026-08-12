@@ -162,4 +162,10 @@
   <data name="SuaChiDinhDichVu_KhongCoSoLuong" xml:space="preserve">
     <value>Chưa nhập số lượng</value>
   </data>
+  <data name="SuaChiDinhDichVu_DichVuDaThuTienKhongTheBoKhoiPhieu" xml:space="preserve">
+    <value>(Các) dịch vụ sau đã thu tiền/tạm ứng nên không thể bỏ khỏi phiếu chỉ định: {0}.
+
+Chọn "Yes" để giữ nguyên các dịch vụ đã thu và chỉ lưu những dịch vụ thêm mới.
+Chọn "No" để quay lại màn hình kiểm tra.</value>
+  </data>
 </root>

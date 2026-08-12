@@ -59,6 +59,11 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit.ADO
         public bool IsNotLoadDefaultPatientType { get; set; }
         public long? DEFAULT_PATIENT_TYPE_ID { get; set; }
         public long? AssignNumOrder { get; set; }
+
+        //Dich vu da co trong phieu chi dinh nhung KHONG thuoc danh muc dich vu cua phong dang chon.
+        //Truoc day cac dich vu nay khong duoc dua vao luoi nen luc Luu bi coi la "nguoi dung bo tick"
+        //va bi sinh lenh xoa ngoai y muon. Nay van hien tren luoi, tick san va khoa sua.
+        public bool IsOutOfRoomService { get; set; }
         public HisSereServADO()
         {
             this.IsChecked = false;
