@@ -43,6 +43,22 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
             }
         }
         
+        internal static string SuaChiDinhDichVu_DichVuDaThuTienKhongTheBoKhoiPhieu
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("SuaChiDinhDichVu_DichVuDaThuTienKhongTheBoKhoiPhieu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string SereServMinDurationAlert__BanCoMuonChuyenDoiDTTTSangVienPhi
         {
             get
