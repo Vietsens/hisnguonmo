@@ -89,6 +89,7 @@
     <Compile Include="ApiParam.cs" />
     <Compile Include="ApiConsumer.cs" />
     <Compile Include="IpAddressUtils.cs" />
+    <Compile Include="WebApiTls.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>

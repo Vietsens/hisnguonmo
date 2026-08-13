@@ -78,6 +78,11 @@ namespace Inventec.Common.WebApiClient
 
         private void Init(string baseUri, string tokenCode, string applicationCode)
         {
+            //BUG-002: bat TLS 1.2 va nap goc tin cay bo sung (CA noi bo) truoc khi co request dau tien.
+            //Ban than WebApiTls.Init() chi thuc su chay mot lan cho ca tien trinh, cac lan sau chi la
+            //mot phep kiem tra co, nen goi o day khong ton kem du ApiConsumer duoc tao lai lien tuc.
+            WebApiTls.Init();
+
             //Cau hinh JsonConvert
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
