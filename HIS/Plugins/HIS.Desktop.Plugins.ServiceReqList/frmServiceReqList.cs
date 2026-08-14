@@ -123,6 +123,10 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         /// Non-null when treatment has classify 1 but not classify 2.
         /// </summary>
         Color? emergencyClassifyColor = null;
+        /// <summary>Ten muc phan loai cap cuu - hien thi tren nhan trang thai (PTTK cap cuu)</summary>
+        string emergencyClassifyName = null;
+        /// <summary>Caption goc cua nhom thong tin chung - de khoi phuc khi benh nhan khong co muc phan loai</summary>
+        string groupControlInfoOriginText = null;
 
         internal List<MPS.Processor.Mps000014.PDO.SereServNumOder> _SereServNumOders;
         List<V_HIS_SERE_SERV_TEIN> lstSereServTein;
@@ -2063,6 +2067,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             try
             {
                 emergencyClassifyColor = null;
+                emergencyClassifyName = null;
 
                 if (!HisConfigCFG.IsEmergencyClassifyEnabled)
                     return;
@@ -2084,7 +2089,18 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     List<int> colorValues = GetColorValues(classify.DISPLAY_COLOR);
                     if (colorValues != null && colorValues.Count >= 3)
                     {
-                        emergencyClassifyColor = Color.FromArgb(colorValues[0], colorValues[1], colorValues[2]);
+                        if (HisConfigCFG.IsEmergencyClassifyColumnEnabled)
+                        {
+                            // Che do moi: kep gia tri ve 0-255 de danh muc cau hinh mau sai khong gay loi
+                            emergencyClassifyColor = Color.FromArgb(
+                                ClampColorValue(colorValues[0]), ClampColorValue(colorValues[1]), ClampColorValue(colorValues[2]));
+                            emergencyClassifyName = classify.PATIENT_CLASSIFY_NAME;
+                        }
+                        else
+                        {
+                            // Che do cu: giu nguyen hanh vi ban goc
+                            emergencyClassifyColor = Color.FromArgb(colorValues[0], colorValues[1], colorValues[2]);
+                        }
                     }
                 }
             }
@@ -2092,6 +2108,65 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            finally
+            {
+                ApplyEmergencyClassifyBadge();
+            }
+        }
+
+        /// <summary>Ep gia tri thanh phan mau ve khoang hop le 0-255 (Color.FromArgb nem loi neu vuot khoang)</summary>
+        private static int ClampColorValue(int value)
+        {
+            if (value < 0) return 0;
+            if (value > 255) return 255;
+            return value;
+        }
+
+        /// <summary>
+        /// PTTK cap cuu: hien thi muc phan loai bang NHAN TRANG THAI CO MAU tren tieu de nhom "Thong tin chung".
+        /// Form nay chi co 1 benh nhan nen khong dung cot rieng (moi dong se lap cung gia tri).
+        /// Thay cho viec to mau chu toan luoi truoc day (gay de mau don thuoc tam).
+        /// </summary>
+        private void ApplyEmergencyClassifyBadge()
+        {
+            try
+            {
+                if (groupControlInfo == null) return;
+                // Khong bat config -> giu nguyen giao dien cu, khong doi tieu de nhom
+                if (!HisConfigCFG.IsEmergencyClassifyColumnEnabled) return;
+                if (groupControlInfoOriginText == null)
+                    groupControlInfoOriginText = groupControlInfo.Text;
+
+                if (!emergencyClassifyColor.HasValue || string.IsNullOrWhiteSpace(emergencyClassifyName))
+                {
+                    groupControlInfo.Text = groupControlInfoOriginText;
+                    groupControlInfo.AppearanceCaption.Options.UseBackColor = false;
+                    groupControlInfo.AppearanceCaption.Options.UseForeColor = false;
+                    groupControlInfo.AppearanceCaption.Options.UseFont = false;
+                    return;
+                }
+
+                Color background = emergencyClassifyColor.Value;
+                groupControlInfo.Text = string.Format("{0} - {1}", groupControlInfoOriginText, emergencyClassifyName);
+                groupControlInfo.AppearanceCaption.BackColor = background;
+                groupControlInfo.AppearanceCaption.BackColor2 = background;
+                groupControlInfo.AppearanceCaption.ForeColor = GetContrastForeColor(background);
+                groupControlInfo.AppearanceCaption.Font = new Font(groupControlInfo.AppearanceCaption.Font, FontStyle.Bold);
+                groupControlInfo.AppearanceCaption.Options.UseBackColor = true;
+                groupControlInfo.AppearanceCaption.Options.UseForeColor = true;
+                groupControlInfo.AppearanceCaption.Options.UseFont = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Chon mau chu den/trang theo do sang cua nen de luon doc duoc</summary>
+        private static Color GetContrastForeColor(Color background)
+        {
+            double luminance = 0.299 * background.R + 0.587 * background.G + 0.114 * background.B;
+            return luminance > 150 ? Color.Black : Color.White;
         }
 
         /// <summary>
@@ -2138,10 +2213,16 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             e.Appearance.Font = new System.Drawing.Font(e.Appearance.Font, System.Drawing.FontStyle.Strikeout);
                         }
 
-                        // GP5 — PTTK_19083: Emergency classify color takes priority
-                        if (emergencyClassifyColor.HasValue)
+                        // PTTK cap cuu: khi bat config EMERGENCY_CLASSIFY_COLUMN thi muc phan loai
+                        // KHONG to mau chu toan luoi nua (het de mau don thuoc tam) — mau da chuyen sang
+                        // nhan co mau tren tieu de nhom "Thong tin chung" (xem ApplyEmergencyClassifyBadge).
+                        // Khi TAT config: giu nguyen hanh vi cu — mau cap cuu uu tien hon mau don thuoc tam.
+                        Color? emergencyColor = HisConfigCFG.IsEmergencyClassifyColumnEnabled
+                            ? (Color?)null
+                            : emergencyClassifyColor;
+                        if (emergencyColor.HasValue)
                         {
-                            e.Appearance.ForeColor = emergencyClassifyColor.Value;
+                            e.Appearance.ForeColor = emergencyColor.Value;
                         }
                         else if (data.IS_TEMPORARY_PRES == 1)
                         {

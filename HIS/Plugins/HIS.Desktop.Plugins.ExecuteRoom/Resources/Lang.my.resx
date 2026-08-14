@@ -414,6 +414,14 @@
   <data name="UCExecuteRoom.Gc_MedisoftHistory.Caption" xml:space="preserve">
     <value>Medisoft ကုသမှုမှတ်တမ်း</value>
   </data>
+  <data name="UCExecuteRoom.colEmergencyClassify.Caption" xml:space="preserve">
+    <value>Mức CC</value>
+  </data>
+
+  <data name="UCExecuteRoom.colEmergencyClassify.ToolTip" xml:space="preserve">
+    <value>Mức phân loại cấp cứu</value>
+  </data>
+
   <data name="UCExecuteRoom.gc_PatientClassify.Caption" xml:space="preserve">
     <value>BN အမျိုးအစားခွဲခြားခြင်း။</value>
   </data>

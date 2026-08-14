@@ -32,6 +32,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom.ADO
         public string REQUEST_USER_DISPLAY { get; set; }
         public string PATIENT_CLASSIFY_NAME { get; set; }
         public string DISPLAY_COLOR { get; set; }
+        /// <summary>Ten muc phan loai cap cuu - hien thi trong cot trang thai "Muc CC" (pre-compute truoc khi bind)</summary>
+        public string EMERGENCY_CLASSIFY_NAME { get; set; }
+        /// <summary>Mau nen o cot "Muc CC" - da parse san tu HIS_PATIENT_CLASSIFY.DISPLAY_COLOR</summary>
+        public System.Drawing.Color? EMERGENCY_CLASSIFY_COLOR { get; set; }
         public long? SAMPLE_TIME { get; set; }
         public long status { get; set; }
         public short? IS_MAIN_EXAM_SERVICE { get; set; }

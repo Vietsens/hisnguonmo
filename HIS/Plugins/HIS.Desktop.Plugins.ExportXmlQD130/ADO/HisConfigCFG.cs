@@ -54,6 +54,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         //PTTK 3142: BHYT_CODE nhóm y lệnh lấy người thực hiện theo kíp khi "Kiểm tra hồ sơ" (phân cách ',')
         internal static string QD_130_BYT__NGUOI_THUC_HIEN_OPTION;
 
+        //vCong53286: Thông tin kết nối hệ tiền giám định, dạng BaseURL | token [| timeout].
+        //Không khai báo = viện chưa đấu nối = ẩn nút Kiểm tra lỗi, không gác chức năng xuất nào.
+        internal const string HIS_TIEN_GIAM_DINH__CONNECTION_INFO = "HIS.TIEN_GIAM_DINH.CONNECTION_INFO";
+        internal static string TIEN_GIAM_DINH__CONNECTION_INFO;
+
         internal static void LoadConfig()
         {
             try
@@ -67,6 +72,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 CSDL_4750__PATIENT_TYPE_CODES = GetValue(MOS_CSDL_4750__PATIENT_TYPE_CODES);
                 CSDL_4750__MAX_PER_CYCLE = GetValue(MOS_CSDL_4750__MAX_PER_CYCLE);
                 QD_130_BYT__NGUOI_THUC_HIEN_OPTION = GetValue(HIS_QD_130_BYT__NGUOI_THUC_HIEN_OPTION);
+                //vCong53286 - Đấu nối hệ thống tiền giám định
+                TIEN_GIAM_DINH__CONNECTION_INFO = GetValue(HIS_TIEN_GIAM_DINH__CONNECTION_INFO);
             }
             catch (Exception ex)
             {

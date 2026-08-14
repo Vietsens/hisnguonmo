@@ -3429,6 +3429,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridViewServiceReq.OptionsView.ShowIndicator = false;
             this.gridViewServiceReq.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridViewServiceReq_RowCellClick);
             this.gridViewServiceReq.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewServiceReq_RowStyle);
+            this.gridViewServiceReq.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewServiceReq_RowCellStyle);
             this.gridViewServiceReq.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewServiceReq_CustomRowCellEdit);
             this.gridViewServiceReq.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.gridViewServiceReq_PopupMenuShowing);
             this.gridViewServiceReq.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewServiceReq_CustomUnboundColumnData);

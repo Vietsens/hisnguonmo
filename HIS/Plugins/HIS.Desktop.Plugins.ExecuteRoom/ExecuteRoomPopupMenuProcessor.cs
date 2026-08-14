@@ -96,23 +96,26 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
             this.emrMenuPopupProcessor = _emrMenuPopupProcessor;
         }
 
-        public void InitMenu()
+        /// <summary>
+        /// Dung nhom menu ho so benh an (EMR) cho benh nhan dang chon.
+        /// Tach rieng khoi InitMenu de mot loi khi lay cau hinh EMR khong lam mat toan bo menu chuot phai.
+        /// </summary>
+        private void InitEmrMenuGroup(HIS_TREATMENT treatment)
         {
             try
             {
-                if (menu == null)
-                    menu = new PopupMenu(barManager);
-                // Add item and show
-                menu.ItemLinks.Clear();
-                //Vỏ bệnh án
-                HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
-                treatmentFilter.ID = this.serviceReqRightClick.TREATMENT_ID;
-
-                HIS_TREATMENT treatment = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, treatmentFilter, new CommonParam()).FirstOrDefault();
-
                 HIS.Desktop.Plugins.Library.FormMedicalRecord.Base.EmrInputADO emrInputAdo = new HIS.Desktop.Plugins.Library.FormMedicalRecord.Base.EmrInputADO();
                 emrInputAdo.TreatmentId = treatment.ID;
                 emrInputAdo.PatientId = treatment.PATIENT_ID;
+
+                var workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == roomId);
+                long? workPlaceDepartmentId = workPlace != null ? (long?)workPlace.DepartmentId : null;
+                if (workPlace == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "InitEmrMenuGroup: khong tim thay WorkPlaceSDO theo roomId = " + roomId);
+                }
+
                 var EmrCoverConfig = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
                     && o.ROOM_ID == roomId && o.TREATMENT_TYPE_ID == treatment.TDL_TREATMENT_TYPE_ID).ToList();
                 if (treatment.EMR_COVER_TYPE_ID != null)
@@ -133,12 +136,10 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
                             emrInputAdo.lstEmrCoverTypeId = EmrCoverConfig.Select(o => o.EMR_COVER_TYPE_ID).ToList();
                         }
                     }
-                    else
+                    else if (workPlaceDepartmentId.HasValue)
                     {
-                        var DepartmentID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == roomId).DepartmentId;
-
                         var DataConfig = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                    && o.DEPARTMENT_ID == DepartmentID && o.TREATMENT_TYPE_ID == treatment.TDL_TREATMENT_TYPE_ID).ToList();
+                    && o.DEPARTMENT_ID == workPlaceDepartmentId.Value && o.TREATMENT_TYPE_ID == treatment.TDL_TREATMENT_TYPE_ID).ToList();
 
                         if (DataConfig != null && DataConfig.Count > 0)
                         {
@@ -156,10 +157,48 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
                 }
 
                 emrInputAdo.roomId = roomId;
-                emrInputAdo.DepartmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == roomId).DepartmentId;
+                if (workPlaceDepartmentId.HasValue)
+                {
+                    emrInputAdo.DepartmentId = workPlaceDepartmentId.Value;
+                }
                 emrInputAdo.TreatmentTypeId = serviceReqRightClick.TDL_TREATMENT_TYPE_ID;
                 emrInputAdo.Treatment = treatment;
                 emrMenuPopupProcessor.InitMenu(menu, barManager, emrInputAdo);
+            }
+            catch (Exception ex)
+            {
+                // Nuot loi tai day la co y: mat nhom menu EMR van hon mat toan bo menu chuot phai.
+                Inventec.Common.Logging.LogSystem.Error("InitEmrMenuGroup that bai, bo qua nhom menu ho so benh an.", ex);
+            }
+        }
+
+        public void InitMenu()
+        {
+            try
+            {
+                if (menu == null)
+                    menu = new PopupMenu(barManager);
+                // Add item and show
+                menu.ItemLinks.Clear();
+                //Vỏ bệnh án
+                HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                treatmentFilter.ID = this.serviceReqRightClick.TREATMENT_ID;
+
+                var treatmentResult = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, treatmentFilter, new CommonParam());
+                HIS_TREATMENT treatment = treatmentResult != null ? treatmentResult.FirstOrDefault() : null;
+                if (treatment == null)
+                {
+                    // Truoc day truy cap thang treatment.ID -> NullReferenceException, exception bi nuot o catch cuoi ham
+                    // khien menu.ShowPopup khong chay -> nguoi dung chuot phai khong ra menu.
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "InitMenu: khong lay duoc HIS_TREATMENT, bo qua nhom menu ho so benh an."
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => treatmentFilter), treatmentFilter));
+                }
+                else
+                {
+                    InitEmrMenuGroup(treatment);
+                }
 
                 BarButtonItem itemSummaryInforTreatmentRecords = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnSummaryInforTreatmentRecords.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture()), 1);
                 itemSummaryInforTreatmentRecords.Tag = ModuleType.SummaryInforTreatmentRecords;

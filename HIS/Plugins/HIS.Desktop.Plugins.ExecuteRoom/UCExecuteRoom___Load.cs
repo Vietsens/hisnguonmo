@@ -391,6 +391,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             try
             {
                 InitRestoreLayoutGridViewFromXml(gridViewServiceReq);
+                // Goi NGAY sau restore layout va NGOAI nhanh "co du lieu": restore co the dung lai cot
+                // "Muc CC" da luu trong file layout (file dung chung moi phong) nen phai go ca khi luoi rong.
+                EnsureEmergencyClassifyColumn();
                 //transitionManager1.StartTransition(layoutControl2);
                 WaitingManager.Show();
                 int start = ((CommonParam)param).Start ?? 0;

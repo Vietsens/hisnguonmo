@@ -101,6 +101,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES = "MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES";
         internal static List<string> MustInputSevereIllnessHomeCodes = new List<string>();
 
+        // vCong53286 - Đấu nối hệ thống tiền giám định
+        /// <summary>
+        /// Thông tin kết nối hệ tiền giám định, dạng: BaseURL | token [| timeout].
+        /// Không khai báo = viện chưa đấu nối = toàn bộ tính năng không hoạt động.
+        /// </summary>
+        internal const string TIEN_GIAM_DINH__CONNECTION_INFO = "HIS.TIEN_GIAM_DINH.CONNECTION_INFO";
+
+        /// <summary>
+        /// Công tắc bật kiểm tra tiền giám định tại màn Kết thúc điều trị. 1 = bật, khác 1 = tắt.
+        /// Mặc định tắt. Màn Xuất XML 130 không dùng công tắc này (bắt buộc khi đã đấu nối).
+        /// </summary>
+        internal const string TIEN_GIAM_DINH__TREATMENT_FINISH_ENABLE = "HIS.TIEN_GIAM_DINH.TREATMENT_FINISH_ENABLE";
+
+        internal static string TienGiamDinhConnectionInfo;
+        internal static bool IsTienGiamDinhTreatmentFinishEnable;
+
         internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string MustChooseSeviceExamOption;
         internal static string WarningUnfinishedServiceOption;
@@ -227,6 +243,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 CheckBedEnd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_BED_END);
                 CheckPrescriptionEnd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_PRESCRIPTION_END);
                 CheckUsedDrugQuantityMismatch = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_USED_DRUG_QUANTITY_MISMATCH);
+
+                // vCong53286 - Đấu nối hệ thống tiền giám định. Không khai báo = viện chưa dùng.
+                TienGiamDinhConnectionInfo = GetValue(TIEN_GIAM_DINH__CONNECTION_INFO);
+                IsTienGiamDinhTreatmentFinishEnable = GetValue(TIEN_GIAM_DINH__TREATMENT_FINISH_ENABLE) == IS__TRUE;
 
                 string rawSevereCodes = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES);
                 MustInputSevereIllnessHomeCodes = string.IsNullOrWhiteSpace(rawSevereCodes)

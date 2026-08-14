@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Cells">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Aspose.Cells.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Aspose.Cells.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -51,74 +51,71 @@
       <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
     </Reference>
     <Reference Include="EMR.WCF.DCO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR.WCF.DCO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\EMR.WCF.DCO.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml">
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml\His.Bhyt.ExportXml.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.ExportXml.XML130, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.dll</HintPath>
+    <Reference Include="His.Bhyt.ExportXml.XML130">
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML1">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML1.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML1\His.Bhyt.ExportXml.XML130.XML1.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML10">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML10.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML10\His.Bhyt.ExportXml.XML130.XML10.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML11">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML11.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML11\His.Bhyt.ExportXml.XML130.XML11.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML12">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML12.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML12\His.Bhyt.ExportXml.XML130.XML12.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML13">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML13.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130\His.Bhyt.ExportXml.XML130.XML13.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML14">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML14.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130\His.Bhyt.ExportXml.XML130.XML14.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML15">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML15.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130\His.Bhyt.ExportXml.XML130.XML15.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.ExportXml.XML130.XML2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML2.dll</HintPath>
+    <Reference Include="His.Bhyt.ExportXml.XML130.XML2">
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML2\His.Bhyt.ExportXml.XML130.XML2.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML3">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML3.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML3\His.Bhyt.ExportXml.XML130.XML3.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML4">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML4.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML4\His.Bhyt.ExportXml.XML130.XML4.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML5">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML5.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML5\His.Bhyt.ExportXml.XML130.XML5.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML6">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML6.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML6\His.Bhyt.ExportXml.XML130.XML6.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML7">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML7.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML7\His.Bhyt.ExportXml.XML130.XML7.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML8">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML8.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML8\His.Bhyt.ExportXml.XML130.XML8.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML9">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML9.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML9\His.Bhyt.ExportXml.XML130.XML9.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.ExportXml.XMLTT12.XML01BH, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XMLTT12.XML01BH.dll</HintPath>
+    <Reference Include="His.Bhyt.ExportXml.XMLTT12.XML01BH">
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XMLTT12.XML01BH.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ADO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LibraryMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.WorkPlace\HIS.Desktop.LibraryMessage.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -215,24 +212,23 @@
       <HintPath>..\..\..\..\lib\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
       <HintPath>..\..\..\..\lib\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
@@ -265,6 +261,8 @@
   <ItemGroup>
     <Compile Include="ADO\FilterTypeADO.cs" />
     <Compile Include="ADO\ConfigSyncADO.cs" />
+    <Compile Include="ADO\TienGiamDinhADO.cs" />
+    <Compile Include="Base\TienGiamDinhWorker.cs" />
     <Compile Include="ADO\HisConfigCFG.cs" />
     <Compile Include="ADO\HisServiceSpecialityFilter.cs" />
     <Compile Include="UCExportXml_KiemTraHoSo.cs">
@@ -278,6 +276,18 @@
     <Compile Include="Base\Csdl4750Worker.cs" />
     <Compile Include="Base\CustomProvider.cs" />
     <Compile Include="ExportXml\HSTH01BHModels.cs" />
+    <Compile Include="frmTienGiamDinhProgress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTienGiamDinhResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTienGiamDinhResult.Designer.cs">
+      <DependentUpon>frmTienGiamDinhResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCExportXml___TienGiamDinh.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="frmSettingSavePath.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -323,6 +333,7 @@
     <EmbeddedResource Include="frmSettingConfigSync.resx">
       <DependentUpon>frmSettingConfigSync.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

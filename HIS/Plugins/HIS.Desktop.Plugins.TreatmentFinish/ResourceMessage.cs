@@ -1104,5 +1104,83 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 return "";
             }
         }
+
+        #region vCong53286 - Đấu nối hệ thống tiền giám định
+
+        /// <summary>Cảnh báo tiền giám định</summary>
+        internal static string TienGiamDinhTieuDeCanhBao
+        {
+            get { return GetTienGiamDinhValue("TienGiamDinhTieuDeCanhBao"); }
+        }
+
+        /// <summary>Hồ sơ còn lỗi trên hệ thống tiền giám định, không thể kết thúc điều trị...</summary>
+        internal static string TienGiamDinhChanKetThuc
+        {
+            get { return GetTienGiamDinhValue("TienGiamDinhChanKetThuc"); }
+        }
+
+        /// <summary>Tiền giám định — Sai sót y lệnh</summary>
+        internal static string TienGiamDinhNhomSaiSotYLenh
+        {
+            get { return GetTienGiamDinhValue("TienGiamDinhNhomSaiSotYLenh"); }
+        }
+
+        /// <summary>Tiền giám định — Lỗi thẻ</summary>
+        internal static string TienGiamDinhNhomLoiTraThe
+        {
+            get { return GetTienGiamDinhValue("TienGiamDinhNhomLoiTraThe"); }
+        }
+
+        /// <summary>Tiền giám định — Lỗi hồ sơ XML</summary>
+        internal static string TienGiamDinhNhomLoiHoSoXml
+        {
+            get { return GetTienGiamDinhValue("TienGiamDinhNhomLoiHoSoXml"); }
+        }
+
+        /// <summary>Tiền giám định: còn {0} lỗi khác chưa hiển thị</summary>
+        internal static string TienGiamDinhConNLoiKhac
+        {
+            get { return GetTienGiamDinhValue("TienGiamDinhConNLoiKhac"); }
+        }
+
+        /// <summary>Danh sách lỗi bị cắt bớt do vượt ngưỡng...</summary>
+        internal static string TienGiamDinhDanhSachLoiBiCatBot
+        {
+            get { return GetTienGiamDinhValue("TienGiamDinhDanhSachLoiBiCatBot"); }
+        }
+
+        /// <summary>Không kiểm tra được hồ sơ trên hệ thống tiền giám định...</summary>
+        internal static string TienGiamDinhKhongKiemTraDuoc
+        {
+            get { return GetTienGiamDinhValue("TienGiamDinhKhongKiemTraDuoc"); }
+        }
+
+        /// <summary>Thông tin xác thực hệ tiền giám định không hợp lệ...</summary>
+        internal static string TienGiamDinhSaiThongTinXacThuc
+        {
+            get { return GetTienGiamDinhValue("TienGiamDinhSaiThongTinXacThuc"); }
+        }
+
+        /// <summary>Chưa phát hiện sai sót y lệnh và lỗi thẻ. Phần hồ sơ XML sẽ được kiểm khi kết xuất.</summary>
+        internal static string TienGiamDinhChuaPhatHienLoi
+        {
+            get { return GetTienGiamDinhValue("TienGiamDinhChuaPhatHienLoi"); }
+        }
+
+        /// <summary>Đọc chuỗi hiển thị theo ngôn ngữ đang dùng. Lỗi thì trả rỗng, không làm vỡ luồng nghiệp vụ.</summary>
+        private static string GetTienGiamDinhValue(string key)
+        {
+            try
+            {
+                return Inventec.Common.Resource.Get.Value(key, languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
+        }
+
+        #endregion
     }
 }

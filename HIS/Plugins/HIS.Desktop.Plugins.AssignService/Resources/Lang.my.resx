@@ -1086,4 +1086,28 @@
   <data name="frmPatientPackage.gColDtAmountThisTime.Caption" xml:space="preserve">
     <value>Lần này</value>
   </data>
+  <data name="frmConfirmExecuteRoom.Text" xml:space="preserve">
+    <value>Xác nhận phòng xử lý</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.lblQuestion.Text" xml:space="preserve">
+    <value>Có đồng ý chọn những phòng xử lý này không?</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.gridColumnExecuteRoomName.Caption" xml:space="preserve">
+    <value>Phòng xử lý</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.gridColumnServiceCount.Caption" xml:space="preserve">
+    <value>Số dịch vụ</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.gridColumnServiceCodes.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.lciServiceNoRoom.Text" xml:space="preserve">
+    <value>Dịch vụ chưa chọn phòng xử lý</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.btnAgree.Text" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.btnDisagree.Text" xml:space="preserve">
+    <value>Không đồng ý</value>
+  </data>
 </root>

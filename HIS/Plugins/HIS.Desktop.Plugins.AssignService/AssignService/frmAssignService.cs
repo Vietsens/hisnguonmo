@@ -6146,6 +6146,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                         if (isValid)
                         {
+                            // Xac nhan danh sach phong xu ly truoc khi luu (chi chay khi cau hinh bat)
+                            if (!ConfirmExecuteRoomBeforeSave(serviceCheckeds__Send)) return;
+
                             ChangeLockButtonWhileProcess(false);
 
                             foreach (var item in lstPatientSelect)

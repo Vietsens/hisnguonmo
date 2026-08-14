@@ -41,6 +41,11 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
     public partial class frmPublicMedicinesByDate : HIS.Desktop.Utility.FormBase
     {
         internal List<MPS.Processor.Mps000116.PDO.Mps000116ADO> _Mps000116ADOs { get; set; }
+        /// <summary>Chi tiet tung y lenh thuoc/vat tu trong ngay — khong gop theo loai thuoc.</summary>
+        internal List<MPS.Processor.Mps000116.PDO.Mps000116DetailADO> _Mps000116DetailADOs { get; set; }
+        /// <summary>Khoa dong bo — 4 thread nap du lieu cung ghi vao danh sach chi tiet.</summary>
+        readonly object _lockDetailADOs = new object();
+
         internal enum PrintType
         {
             PHIEU_CONG_KHAI_THUOC_THEO_NGAY,
@@ -95,6 +100,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
             try
             {
                 _Mps000116ADOs = new List<MPS.Processor.Mps000116.PDO.Mps000116ADO>();
+                _Mps000116DetailADOs = new List<MPS.Processor.Mps000116.PDO.Mps000116DetailADO>();
                 var _WorkPlace = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId);//dang lam viec
                 if (!GetAllSereServV2())
                 {
@@ -169,10 +175,16 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                 {
                     _Mps000116ADOs = _Mps000116ADOs.OrderBy(p => p.MEDI_MATY_TYPE_NAME).Where(p => p.AMOUNT > 0).ToList();
                 }
+                //Ap dung cung quy tac loc so luong = 0 nhu danh sach gop
+                if (_Mps000116DetailADOs != null && _Mps000116DetailADOs.Count > 0)
+                {
+                    _Mps000116DetailADOs = _Mps000116DetailADOs.Where(p => p.AMOUNT > 0).ToList();
+                }
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_Treatment != null ? _Treatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
                 MPS.Processor.Mps000116.PDO.Mps000116PDO mps000116RDO = new MPS.Processor.Mps000116.PDO.Mps000116PDO(
                     _Treatment,
                     _Mps000116ADOs,
+                    _Mps000116DetailADOs,
                     _WorkPlace,
                     vHisBedLog,
                     Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtDatePublic.DateTime) ?? 0,
@@ -267,6 +279,10 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                     {
                         var medicineGroups = currentExpMestMedi.GroupBy(p => new { p.MEDICINE_TYPE_ID, p.VAT_RATIO,p.MORNING_IS_USED,p.NOON_IS_USED,p.AFTERNOON_IS_USED,p.EVENING_IS_USED }).Select(p => p.ToList()).ToList();
                         this._Mps000116ADOs.AddRange((from r in medicineGroups select new MPS.Processor.Mps000116.PDO.Mps000116ADO(r, this._MedicalInstruction)).ToList());
+
+                        //Chi tiet: giu nguyen tung y lenh, khong gom nhom.
+                        //View xuat thuoc da co du don vi tinh, nong do/ham luong, thoi gian y lenh.
+                        AddDetailADOs((from r in currentExpMestMedi select new MPS.Processor.Mps000116.PDO.Mps000116DetailADO(r)).ToList());
                     }
                 }
             }
@@ -308,6 +324,22 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                         {
                             var materialGroups = data.GroupBy(p => new { p.MATERIAL_TYPE_ID, p.VAT_RATIO }).Select(p => p.ToList()).ToList();
                             this._Mps000116ADOs.AddRange((from r in materialGroups select new MPS.Processor.Mps000116.PDO.Mps000116ADO(r)).ToList());
+
+                            //Chi tiet: giu nguyen tung y lenh.
+                            //Nong do/ham luong lay tu danh muc vat tu vi view xuat vat tu khong tra ve.
+                            var materialTypes = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>();
+                            var dicMaterialType = (materialTypes != null && materialTypes.Count > 0)
+                                ? materialTypes.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First())
+                                : new Dictionary<long, V_HIS_MATERIAL_TYPE>();
+
+                            List<MPS.Processor.Mps000116.PDO.Mps000116DetailADO> details = new List<MPS.Processor.Mps000116.PDO.Mps000116DetailADO>();
+                            foreach (var item in data)
+                            {
+                                V_HIS_MATERIAL_TYPE materialType = null;
+                                dicMaterialType.TryGetValue(item.MATERIAL_TYPE_ID, out materialType);
+                                details.Add(new MPS.Processor.Mps000116.PDO.Mps000116DetailADO(item, materialType));
+                            }
+                            AddDetailADOs(details);
                         }
 
                     }
@@ -385,6 +417,27 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                         {
                             this._Mps000116ADOs.AddRange((from r in medicineGroups2 select new MPS.Processor.Mps000116.PDO.Mps000116ADO(r, BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>())).ToList());
                         }
+
+                        //Chi tiet: giu nguyen tung y lenh — gom ca thuoc co ma va thuoc tu tuc/thuoc khac.
+                        //Don vi tinh + nong do/ham luong lay tu danh muc; thuoc ngoai danh muc dung UNIT_NAME.
+                        //Thoi gian y lenh lay tu yeu cau dich vu tuong ung.
+                        var medicineTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
+                        var dicMedicineType = (medicineTypes != null && medicineTypes.Count > 0)
+                            ? medicineTypes.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First())
+                            : new Dictionary<long, V_HIS_MEDICINE_TYPE>();
+
+                        List<MPS.Processor.Mps000116.PDO.Mps000116DetailADO> details = new List<MPS.Processor.Mps000116.PDO.Mps000116DetailADO>();
+                        foreach (var item in currentServiceReqMety)
+                        {
+                            V_HIS_MEDICINE_TYPE medicineType = null;
+                            if (item.MEDICINE_TYPE_ID != null)
+                            {
+                                dicMedicineType.TryGetValue(item.MEDICINE_TYPE_ID ?? 0, out medicineType);
+                            }
+                            details.Add(new MPS.Processor.Mps000116.PDO.Mps000116DetailADO(
+                                item, medicineType, GetIntructionTimeByServiceReqId(item.SERVICE_REQ_ID)));
+                        }
+                        AddDetailADOs(details);
                     }
                 }
 
@@ -425,6 +478,27 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                     {
                         var materialGroups = currentServiceReqMaty.GroupBy(p => p.MATERIAL_TYPE_ID).Select(p => p.ToList()).ToList();
                         this._Mps000116ADOs.AddRange((from r in materialGroups select new MPS.Processor.Mps000116.PDO.Mps000116ADO(r, BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>())).ToList());
+
+                        //Chi tiet: giu nguyen tung y lenh.
+                        //Don vi tinh + nong do/ham luong lay tu danh muc vat tu, fallback UNIT_NAME.
+                        //Thoi gian y lenh lay tu yeu cau dich vu tuong ung.
+                        var materialTypes = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>();
+                        var dicMaterialType = (materialTypes != null && materialTypes.Count > 0)
+                            ? materialTypes.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First())
+                            : new Dictionary<long, V_HIS_MATERIAL_TYPE>();
+
+                        List<MPS.Processor.Mps000116.PDO.Mps000116DetailADO> details = new List<MPS.Processor.Mps000116.PDO.Mps000116DetailADO>();
+                        foreach (var item in currentServiceReqMaty)
+                        {
+                            V_HIS_MATERIAL_TYPE materialType = null;
+                            if (item.MATERIAL_TYPE_ID != null)
+                            {
+                                dicMaterialType.TryGetValue(item.MATERIAL_TYPE_ID ?? 0, out materialType);
+                            }
+                            details.Add(new MPS.Processor.Mps000116.PDO.Mps000116DetailADO(
+                                item, materialType, GetIntructionTimeByServiceReqId(item.SERVICE_REQ_ID)));
+                        }
+                        AddDetailADOs(details);
                     }
                 }
 
@@ -436,5 +510,52 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
             }
         }
 
+        /// <summary>
+        /// Ghi danh sach chi tiet y lenh vao _Mps000116DetailADOs.
+        /// Co khoa dong bo vi 4 thread nap du lieu (thuoc/vat tu, trong kho/ngoai kho) chay song song.
+        /// </summary>
+        private void AddDetailADOs(List<MPS.Processor.Mps000116.PDO.Mps000116DetailADO> details)
+        {
+            try
+            {
+                if (details == null || details.Count <= 0)
+                {
+                    return;
+                }
+                lock (this._lockDetailADOs)
+                {
+                    if (this._Mps000116DetailADOs == null)
+                    {
+                        this._Mps000116DetailADOs = new List<MPS.Processor.Mps000116.PDO.Mps000116DetailADO>();
+                    }
+                    this._Mps000116DetailADOs.AddRange(details);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lay thoi gian y lenh cua yeu cau dich vu — dung cho thuoc/vat tu tu mua
+        /// vi ban ghi HIS_SERVICE_REQ_METY/MATY khong luu thoi gian y lenh.
+        /// </summary>
+        private long? GetIntructionTimeByServiceReqId(long serviceReqId)
+        {
+            long? result = null;
+            try
+            {
+                if (this._IntructionTimeByServiceReqId != null)
+                {
+                    this._IntructionTimeByServiceReqId.TryGetValue(serviceReqId, out result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
     }
 }

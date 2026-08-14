@@ -3103,6 +3103,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
                 List<WarningADO> warningADONew = new List<WarningADO>();
                 if ((ConfigKey.MustChooseSeviceExamOption == "1" || ConfigKey.MustChooseSeviceExamOption == "2") && !this.CheckMustChooseSeviceExamOption()) return;
+
+                //vCong53286 - Đối chiếu hệ thống tiền giám định. Hồ sơ còn lỗi thì CHẶN kết thúc điều trị.
+                //Đặt trước các kiểm tra khác để người dùng biết ngay lý do bị chặn, không phải bấm qua nhiều thông báo.
+                if (!await this.CheckTienGiamDinh_ForSave(ValidationDataType.PopupMessage, warningADONew))
+                {
+                    return;
+                }
+
                 if (!this.CheckAssignServiceBed_ForSave(ValidationDataType.PopupMessage, ref warningADONew))
                 {
                     return;
@@ -5759,7 +5767,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(moduleData, listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("ModuleData is null");
-
+                     
                     WaitingManager.Hide();
                     ((Form)extenceInstance).ShowDialog();
                 }
@@ -5785,6 +5793,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 IsContinue = IsContinue && CheckBedLog(false);
                 bool rs = await ProcessValidateServerAsync(this.warningADOs);
                 if (!rs)
+                {
+                    return;
+                }
+
+                //vCong53286 - Đối chiếu hồ sơ với hệ thống tiền giám định.
+                //Đặt ở đây vì là lời gọi ra hệ thống bên ngoài, phải chạy bất đồng bộ để không treo giao diện.
+                if (!await this.CheckTienGiamDinh_ForSave(ValidationDataType.GetListMessage, this.warningADOs))
                 {
                     return;
                 }

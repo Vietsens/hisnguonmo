@@ -43,6 +43,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal const string HIS_CONFIG_KEY__MaxTimeFilter__Option = "HIS.Desktop.Plugins.MaxTimeFilter.Option";
         internal const string HIS_CONFIG_KEY__AssignBed__Option = "HIS.Desktop.Plugins.AssignBed.Option";
         private const string CONFIG_KEY__EMERGENCY_CLASSIFY = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY";
+        // "1" = hien muc phan loai cap cuu bang nhan co mau tren tieu de nhom (khong to mau chu toan luoi nua).
+        // Khac "1" hoac khong khai bao = giu nguyen cach cu (to mau chu toan luoi theo muc phan loai).
+        private const string CONFIG_KEY__EMERGENCY_CLASSIFY_COLUMN = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY_COLUMN";
         private const string CONFIG_KEY__DeleteServiceReqAndChild = "HIS.Desktop.Plugins.ServiceReqList.DeleteServiceReqAndChild";
 
 
@@ -58,6 +61,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal static string AssignBedOption;
         internal static string ServiceReqAndChild;
         internal static bool IsEmergencyClassifyEnabled;
+        /// <summary>Bat nhan trang thai co mau thay cho to mau chu toan luoi (MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY_COLUMN = 1)</summary>
+        internal static bool IsEmergencyClassifyColumnEnabled;
 
         internal static void LoadConfig()
         {
@@ -75,6 +80,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 ShowResultWhenReqComplete = GetValue(CONFIG_KEY__ShowResultWhenReqComplete);
                 AssignBedOption = GetValue(HIS_CONFIG_KEY__AssignBed__Option);
                 IsEmergencyClassifyEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY) == "1";
+                IsEmergencyClassifyColumnEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY_COLUMN) == "1";
                 ServiceReqAndChild = GetValue(CONFIG_KEY__DeleteServiceReqAndChild);
             }
             catch (Exception ex)

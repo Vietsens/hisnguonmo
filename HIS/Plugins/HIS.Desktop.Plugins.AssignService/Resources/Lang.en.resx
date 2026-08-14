@@ -1080,4 +1080,28 @@
   <data name="frmPatientPackage.gColDtAmountThisTime.Caption" xml:space="preserve">
     <value>This time</value>
   </data>
+  <data name="frmConfirmExecuteRoom.Text" xml:space="preserve">
+    <value>Confirm execution room</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.lblQuestion.Text" xml:space="preserve">
+    <value>Do you agree with these execution rooms?</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.gridColumnExecuteRoomName.Caption" xml:space="preserve">
+    <value>Execution room</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.gridColumnServiceCount.Caption" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.gridColumnServiceCodes.Caption" xml:space="preserve">
+    <value>Service codes</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.lciServiceNoRoom.Text" xml:space="preserve">
+    <value>Services without execution room</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.btnAgree.Text" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="frmConfirmExecuteRoom.btnDisagree.Text" xml:space="preserve">
+    <value>Disagree</value>
+  </data>
 </root>

@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnSettings = new DevExpress.XtraEditors.SimpleButton();
             this.btnExportPath = new DevExpress.XtraEditors.SimpleButton();
+            this.btnClsMap = new DevExpress.XtraEditors.SimpleButton();
             this.cboKskType = new DevExpress.XtraEditors.ComboBoxEdit();
             this.dtConclusionFrom = new DevExpress.XtraEditors.DateEdit();
             this.dtConclusionTo = new DevExpress.XtraEditors.DateEdit();
@@ -93,6 +94,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciConclusionFrom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciConclusionTo = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciSyncStatus = new DevExpress.XtraLayout.LayoutControlItem();
+            this.btnVlgStatus = new DevExpress.XtraEditors.SimpleButton();
+            this.lciBtnVlgStatus = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptyFilterTop = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciPatientCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTreatmentCode = new DevExpress.XtraLayout.LayoutControlItem();
@@ -104,6 +107,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciBtnSync = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnExportPath = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnClsMap = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciGrid = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPaging = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -129,6 +133,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSyncStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnVlgStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptyFilterTop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentCode)).BeginInit();
@@ -140,6 +145,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSync)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnExportPath)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnClsMap)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).BeginInit();
             this.SuspendLayout();
@@ -218,6 +224,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             this.layoutControl1.Controls.Add(this.btnSettings);
             this.layoutControl1.Controls.Add(this.btnExportPath);
+            this.layoutControl1.Controls.Add(this.btnClsMap);
             this.layoutControl1.Controls.Add(this.cboKskType);
             this.layoutControl1.Controls.Add(this.dtConclusionFrom);
             this.layoutControl1.Controls.Add(this.dtConclusionTo);
@@ -230,6 +237,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.layoutControl1.Controls.Add(this.chkSign);
             this.layoutControl1.Controls.Add(this.btnPreview);
             this.layoutControl1.Controls.Add(this.btnSync);
+            this.layoutControl1.Controls.Add(this.btnVlgStatus);
             this.layoutControl1.Controls.Add(this.gridControl1);
             this.layoutControl1.Controls.Add(this.ucPaging);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -407,7 +415,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click);
             // 
             // btnSync
-            // 
+            //
             this.btnSync.Enabled = false;
             this.btnSync.Location = new System.Drawing.Point(1058, 30);
             this.btnSync.Name = "btnSync";
@@ -417,6 +425,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.btnSync.Text = "Đồng bộ lên cổng  (0)";
             this.btnSync.ToolTip = "Đồng bộ các hồ sơ đã chọn lên Cổng dữ liệu BYT (QĐ 1551)";
             this.btnSync.Click += new System.EventHandler(this.btnSync_Click);
+            //
+            // btnVlgStatus
+            //
+            this.btnVlgStatus.Location = new System.Drawing.Point(1035, 4);
+            this.btnVlgStatus.Name = "btnVlgStatus";
+            this.btnVlgStatus.Size = new System.Drawing.Size(141, 22);
+            this.btnVlgStatus.StyleController = this.layoutControl1;
+            this.btnVlgStatus.TabIndex = 18;
+            this.btnVlgStatus.Text = "Cập nhật KQ cổng VLg";
+            this.btnVlgStatus.ToolTip = "Tra cứu kết quả xử lý thật trên Cổng tiếp nhận KDLYT Vĩnh Long và cập nhật trạng thái hồ sơ (hồ sơ tích chọn; không tích thì toàn bộ hồ sơ đã đẩy trên trang hiện tại)";
+            this.btnVlgStatus.Click += new System.EventHandler(this.btnVlgStatus_Click);
             // 
             // gridControl1
             // 
@@ -703,6 +722,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciConclusionFrom,
             this.lciConclusionTo,
             this.lciSyncStatus,
+            this.lciBtnVlgStatus,
             this.emptyFilterTop,
             this.lciPatientCode,
             this.lciTreatmentCode,
@@ -713,7 +733,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciBtnPreview,
             this.lciBtnSync,
             this.layoutControlItem1,
-            this.lciBtnExportPath});
+            this.lciBtnExportPath,
+            this.lciBtnClsMap});
             this.grpFilter.Location = new System.Drawing.Point(0, 0);
             this.grpFilter.Name = "grpFilter";
             this.grpFilter.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -772,13 +793,51 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciSyncStatus.TextSize = new System.Drawing.Size(74, 13);
             this.lciSyncStatus.TextToControlDistance = 5;
             // 
+            // lciBtnVlgStatus
+            //
+            // Mac dinh AN (Never) — chi vien co cau hinh cong VLG moi hien (LoadSyncTargetAvailability
+            // swap voi emptyFilterTop). De ca 2 item cung vi tri (1029,0,147,24): item Never khong tham
+            // gia layout nen khong overlap; vien KHONG config VLG giu EmptySpace -> giao dien Y HET cu.
+            this.lciBtnVlgStatus.Control = this.btnVlgStatus;
+            this.lciBtnVlgStatus.Location = new System.Drawing.Point(1029, 0);
+            this.lciBtnVlgStatus.Name = "lciBtnVlgStatus";
+            this.lciBtnVlgStatus.Size = new System.Drawing.Size(147, 24);
+            this.lciBtnVlgStatus.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnVlgStatus.TextVisible = false;
+            this.lciBtnVlgStatus.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //
             // emptyFilterTop
-            // 
+            //
             this.emptyFilterTop.AllowHotTrack = false;
             this.emptyFilterTop.Location = new System.Drawing.Point(1029, 0);
             this.emptyFilterTop.Name = "emptyFilterTop";
-            this.emptyFilterTop.Size = new System.Drawing.Size(147, 24);
+            this.emptyFilterTop.Size = new System.Drawing.Size(26, 24);
             this.emptyFilterTop.TextSize = new System.Drawing.Size(0, 0);
+            //
+            // btnClsMap
+            //
+            this.btnClsMap.Location = new System.Drawing.Point(1061, 6);
+            this.btnClsMap.Name = "btnClsMap";
+            this.btnClsMap.Size = new System.Drawing.Size(117, 20);
+            this.btnClsMap.StyleController = this.layoutControl1;
+            this.btnClsMap.TabIndex = 18;
+            this.btnClsMap.Text = "Nối chỉ số CLS...";
+            this.btnClsMap.ToolTip = "Nối chỉ số cận lâm sàng của HIS với chỉ tiêu mẫu M4 — Liên thông KSK Sở Y tế TP.HCM";
+            this.btnClsMap.Click += new System.EventHandler(this.btnClsMap_Click);
+            //
+            // lciBtnClsMap
+            //
+            this.lciBtnClsMap.Control = this.btnClsMap;
+            this.lciBtnClsMap.Location = new System.Drawing.Point(1055, 0);
+            this.lciBtnClsMap.MaxSize = new System.Drawing.Size(121, 24);
+            this.lciBtnClsMap.MinSize = new System.Drawing.Size(121, 24);
+            this.lciBtnClsMap.Name = "lciBtnClsMap";
+            this.lciBtnClsMap.Size = new System.Drawing.Size(121, 24);
+            this.lciBtnClsMap.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnClsMap.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBtnClsMap.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnClsMap.TextToControlDistance = 0;
+            this.lciBtnClsMap.TextVisible = false;
             // 
             // lciPatientCode
             // 
@@ -933,6 +992,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionFrom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionTo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSyncStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnVlgStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptyFilterTop)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentCode)).EndInit();
@@ -944,6 +1004,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSync)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnExportPath)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnClsMap)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).EndInit();
             this.ResumeLayout(false);
@@ -1002,6 +1063,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraLayout.LayoutControlItem lciConclusionFrom;
         private DevExpress.XtraLayout.LayoutControlItem lciConclusionTo;
         private DevExpress.XtraLayout.LayoutControlItem lciSyncStatus;
+        private DevExpress.XtraEditors.SimpleButton btnVlgStatus;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnVlgStatus;
         private DevExpress.XtraLayout.EmptySpaceItem emptyFilterTop;
         private DevExpress.XtraLayout.LayoutControlItem lciPatientCode;
         private DevExpress.XtraLayout.LayoutControlItem lciTreatmentCode;
@@ -1017,5 +1080,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraEditors.SimpleButton btnExportPath;
         private DevExpress.XtraLayout.LayoutControlItem lciBtnExportPath;
+        private DevExpress.XtraEditors.SimpleButton btnClsMap;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnClsMap;
     }
 }

@@ -190,6 +190,18 @@ namespace HIS.Desktop.Common.BankQrCode
                             {
                                 ProvinceType bankType = ProvinceType.BIDV;
                                 string key = GetTemplateKey(cfg.KEY, ref bankType);
+
+                                // GetTemplateKey returns null for a bank that has no template key mapping.
+                                // Writing result[null] throws and Task.WaitAll then aborts every other bank,
+                                // so the whole print loses its QR image and payment amount.
+                                // Skip the unsupported config instead and let the supported ones through.
+                                if (String.IsNullOrWhiteSpace(key))
+                                {
+                                    Inventec.Common.Logging.LogSystem.Warn(
+                                        "QrCodeProcessor.CreateQrImage: bo qua cau hinh ngan hang khong duoc ho tro. KEY=" + cfg.KEY);
+                                    return;
+                                }
+
                                 BankQrCodeInputADO inputData = new BankQrCodeInputADO();
                                 inputData.Amount = data.AMOUNT;
                                 inputData.TransactionCode = data.TRANS_REQ_CODE;

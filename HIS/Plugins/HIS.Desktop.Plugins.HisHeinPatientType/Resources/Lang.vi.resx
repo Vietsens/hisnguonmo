@@ -153,4 +153,16 @@
   <data name="frmHisHeinPatientType.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
     <value />
   </data>
+  <data name="frmHisHeinPatientType.lciMediOrgCodes.Text" xml:space="preserve">
+    <value>Mã cơ sở KCB BĐ:</value>
+  </data>
+  <data name="frmHisHeinPatientType.lciAllMediOrg.Text" xml:space="preserve">
+    <value>Tất cả:</value>
+  </data>
+  <data name="frmHisHeinPatientType.gridColumnMediOrgCodes.Caption" xml:space="preserve">
+    <value>Mã cơ sở KCB ban đầu</value>
+  </data>
+  <data name="frmHisHeinPatientType.cboMediOrgCodes.FindNullPrompt" xml:space="preserve">
+    <value>Nhập mã hoặc tên cơ sở KCB để tìm...</value>
+  </data>
 </root>
