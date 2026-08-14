@@ -12,14 +12,14 @@ using System.Collections.Generic;
 namespace HIS.Desktop.Plugins.KskSyncList.ADO
 {
     /// <summary>
-    /// Mot dong tren luoi "Noi chi so can lam sang": 1 chi tieu can lam sang cua mau M4
+    /// Mot dong tren luoi "Noi chi so can lam sang": 1 chi tieu can lam sang cua mau M3
     /// (co dinh theo dac ta cong SYT TP.HCM) va chi so xet nghiem cua HIS da noi vao chi tieu do.
     /// </summary>
     public class KskSytClsFieldADO
     {
         /// <summary>Nhom chi tieu (Cong thuc mau / Sinh hoa mau / Nuoc tieu / Tam soat nu) — chi de hien thi.</summary>
         public string GroupName { get; set; }
-        /// <summary>Ma chi tieu trong goi du lieu M4, vd xnm_slhc. La KHOA khi luu.</summary>
+        /// <summary>Ma chi tieu trong goi du lieu M3, vd xnm_slhc. La KHOA khi luu.</summary>
         public string FieldCode { get; set; }
         /// <summary>Ten chi tieu theo dac ta cong.</summary>
         public string FieldName { get; set; }
@@ -53,13 +53,13 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
         public KskSytClsMapFileADO()
         {
             this.Version = KskSytClsFieldStore.MAP_FILE_VERSION;
-            this.FormCode = KskSytClsFieldStore.FORM_CODE__M4;
+            this.FormCode = KskSytClsFieldStore.FORM_CODE__M3;
             this.Items = new List<KskSytClsMapItemADO>();
         }
     }
 
     /// <summary>
-    /// Danh sach 34 chi tieu can lam sang cua mau M4 — CO DINH theo dac ta cong SYT TP.HCM:
+    /// Danh sach 34 chi tieu can lam sang cua mau M3 — CO DINH theo dac ta cong SYT TP.HCM:
     /// 14 cong thuc mau + 5 sinh hoa mau + 11 nuoc tieu + 4 tam soat rieng cho nu.
     /// Nguoi dung khong them/bot dong.
     /// Chi tieu chuan_doan_hinh_anh (X-quang tim phoi thang) KHONG nam o day vi no la ket qua
@@ -68,6 +68,12 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
     public static class KskSytClsFieldStore
     {
         public const string MAP_FILE_VERSION = "1";
+        public const string FORM_CODE__M3 = "M3";
+
+        /// <summary>
+        /// Ten cu, GIU LAI de doc duoc tep khai bao da xuat truoc day. Ban khai bao luu tren may
+        /// khong ghi lai FormCode nen doi hang so nay khong lam mat khai bao cu.
+        /// </summary>
         public const string FORM_CODE__M4 = "M4";
 
         public const string GROUP__BLOOD = "Công thức máu";
@@ -118,7 +124,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
             Add(rs, GROUP__URINE, "xnnt_khac", "Chỉ số khác");
 
             // --- Tam soat rieng cho nu (4) ---
-            // Co trong goi du lieu mau M4 (ban moi hon file POSTMAN trong repo — file do chi co xquang_nhu).
+            // Co trong goi du lieu mau M3 (ban moi hon file POSTMAN trong repo — file do chi co xquang_nhu).
             // KIEU DU LIEU: van ban tu do. Trong goi mau, 2 truong mang chuoi go bua ("adasdsa", "qudad")
             // con 2 truong mang ma danh muc ("CDHA_XQuangNhu", "CDHA_SieuAm02TuyenVu") -> khong phai
             // truong tham chieu danh muc, ma la truong KET QUA dang chu.

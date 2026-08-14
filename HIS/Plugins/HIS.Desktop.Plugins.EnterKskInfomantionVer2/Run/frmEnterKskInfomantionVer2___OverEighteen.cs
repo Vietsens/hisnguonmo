@@ -116,7 +116,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
-                if (clinicalExamHcmRows == null || clinicalExamHcmRows.Count == 0) return false;
+                // Ô nhập của tab HCM CHƯA được dựng (người dùng chưa mở tab trong phiên này) ->
+                // đọc thẳng từ bản ghi đã lưu. Không có nhánh này thì mở hồ sơ rồi bấm Cập nhật mà
+                // không ghé tab HCM sẽ bị cảnh báo thiếu kết quả, dù dữ liệu đã có trong cơ sở dữ liệu.
+                if (clinicalExamHcmRows == null || clinicalExamHcmRows.Count == 0)
+                    return HasHcmResultInDb(sectionKey);
 
                 ClinicalExamHcmRow row = clinicalExamHcmRows
                     .FirstOrDefault(r => r != null && r.Key == sectionKey);
@@ -132,6 +136,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 GetHcmIcdValue(row.UcFinalIcd, out code, out name);
                 if (!string.IsNullOrWhiteSpace(code)) return true;
 
+                return false;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
+        }
+
+
+        /// <summary>
+        /// Mục khám của tab HCM đã có kết quả trong BẢN GHI ĐÃ LƯU chưa.
+        ///
+        /// Dùng khi ô nhập của tab chưa được dựng. Xét đúng ba thứ như khi đọc từ ô nhập: đã tích
+        /// "chưa phát hiện bất thường", hoặc đã có mã bệnh ở chẩn đoán sơ bộ, hoặc ở chẩn đoán kết luận.
+        /// </summary>
+        private bool HasHcmResultInDb(string sectionKey)
+        {
+            try
+            {
+                if (currentKskSytHcm == null) return false;
+
+                string prefix;
+                if (!SYT_HCM_SECTION_COLUMN.TryGetValue(sectionKey, out prefix)) return false;
+
+                if (GetSytHcmShort(currentKskSytHcm, prefix + SYT_HCM_SUFFIX__IS_NORMAL) == 1) return true;
+                if (!string.IsNullOrWhiteSpace(GetSytHcmStr(currentKskSytHcm, prefix + SYT_HCM_SUFFIX__PRE_CODE)))
+                    return true;
+                if (!string.IsNullOrWhiteSpace(GetSytHcmStr(currentKskSytHcm, prefix + SYT_HCM_SUFFIX__CODE)))
+                    return true;
                 return false;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
