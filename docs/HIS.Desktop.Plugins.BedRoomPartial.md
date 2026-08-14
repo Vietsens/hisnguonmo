@@ -77,6 +77,12 @@ Plugin reference `ACS.EFMODEL.dll`. Load quyền qua `GlobalVariables.AcsAuthori
 - `HIS.Desktop.Library.EmrGenerate` — ký số EMR
 - `HIS.Desktop.Library.CacheClient` — ControlState
 
+### Inter-Plugin
+| Plugin đích | Khi nào mở | Args truyền |
+|-------------|-----------|-------------|
+| HIS.Desktop.Plugins.ContentSubclinical | Nút "Kết quả CLS" (luôn hiện, không gate key config) | `long TREATMENT_ID` + `List<string> { "VIEW_ONLY" }` + `Module` — KHÔNG truyền `DelegateSelectData` (chế độ chỉ xem, không chèn kết quả) |
+| HIS.Desktop.Plugins.Debate, HisTrackingList, ServiceReqList, AggrHospitalFees, TreatmentHistory, BedHistory, ... | Các nút thanh chức năng còn lại | `TREATMENT_ID` + `Module` (pattern chung `__Pluss__EventBtn.cs`) |
+
 ## 7. Print
 
 Plugin tích hợp nhiều mẫu in qua RichEditorStore + MpsPrinter, phụ thuộc loại y lệnh (đơn thuốc, phiếu yêu cầu DV, phiếu xét nghiệm, ...).
@@ -87,8 +93,15 @@ Plugin tích hợp nhiều mẫu in qua RichEditorStore + MpsPrinter, phụ thu�
 |------|-----------|-----------------|
 | 22/05/2026 | dangth2 | Việc 44693 (Tài liệu 2671): Bổ sung điều kiện enable nút "Xóa y lệnh giường" trong `Run/UCBedRoomPartial.cs` (2 vị trí thiết lập `ssRootSety.IsEnableDelete`) — nếu loại y lệnh là Giường (`SERVICE_REQ_TYPE.ID__G`) VÀ tài khoản có quyền HIS000053 thì enable. Các trường hợp khác giữ nguyên. Thêm `Base/ControlCode.cs`, field `hasDeleteBedPermission`, method `LoadDeleteBedPermission()`. Reference `ACS.EFMODEL.dll`. |
 | 06/07/2026 | phuongnm | Tài liệu 1223: Sửa hiển thị nhóm máu ở vùng thông tin hành chính (`Run/UCBedRoomPartial.cs`, `lblBloodType`). Trước đây điều kiện `abo && rh` khiến chỉ có 1 trong 2 giá trị thì không hiển thị. Sửa thành 4 trường hợp: có cả ABO+RH (`O; RH(-)`), chỉ ABO (`A`), chỉ RH (`RH(-)`), không có (trống). |
+| 13/08/2026 | nampp | Việc 3170 (BV Điện Biên): Thêm nút "Kết quả CLS" trên thanh chức năng — mở màn xem kết quả cận lâm sàng (plugin `ContentSubclinical` chế độ CHỈ XEM) không cần vào tờ điều trị. Nút tạo RUNTIME trong `InitSubclinicalResultButton()` (`Run/UCBedRoomPartial.cs`, đặt sau nút "Danh sách y lệnh" qua `LayoutControlItem.Move`) — không sửa Designer vì dãy nút dùng toạ độ pixel cố định. **Luôn hiện, không gate key config** (bản đầu có key `ShowSubclinicalResultButton`, đã bỏ cùng ngày theo yêu cầu). Enable/disable theo bệnh nhân trong `SetEnableButton`. Handler `btnKetQuaCLS_Click` (`__Pluss__EventBtn.cs`), gỡ event trong `__Pluss__Dispose.cs`. Resource 3 ngôn ngữ `UCBedRoomPartial.btnKetQuaCLS.Text/ToolTip`. |
 
 ## 9. Test Cases
+
+### Nút "Kết quả CLS" — việc 3170
+- [ ] Nút "Kết quả CLS" hiện ngay sau "Danh sách y lệnh"; chưa chọn BN thì disable, chọn BN thì enable
+- [ ] Nhấn nút → mở màn kết quả CLS đúng BN đang chọn, KHÔNG có ô tích/nút "Chọn (Ctrl S)"/6 tuỳ chọn chèn, có nút "Đóng"
+- [ ] BN chưa có kết quả CLS → màn mở với cây rỗng, không popup lỗi
+- [ ] Hồi quy: màn "Chọn kết quả CLS" mở từ tờ điều trị vẫn đủ ô tích + nút Chọn + chèn kết quả như cũ
 
 ### Xóa y lệnh giường — phân quyền HIS000053
 - [ ] User KHÔNG có quyền HIS000053, KHÔNG là người chỉ định/admin → nút Xóa **disable** trên y lệnh giường

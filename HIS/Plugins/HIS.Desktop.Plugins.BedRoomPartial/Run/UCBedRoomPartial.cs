@@ -124,6 +124,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         UCTreeListService ucAll, ucCLS, ucMediMate, ucOrther;
         bool IsExpandList = true;
         bool hasDeleteBedPermission = false;
+        /// <summary>
+        /// Nút "Kết quả CLS" — mở màn xem kết quả cận lâm sàng (ContentSubclinical chế độ chỉ xem)
+        /// không cần vào tờ điều trị. Tạo runtime trong Load.
+        /// </summary>
+        DevExpress.XtraEditors.SimpleButton btnKetQuaCLS;
         public UCBedRoomPartial()
             : base(null)
         {
@@ -202,10 +207,58 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 LoadKey();
                 assignBedOption = HisConfigCFG.AssignBedOption;
                 InitUiByConfig();
+                InitSubclinicalResultButton();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tạo nút "Kết quả CLS" trên thanh chức năng, đặt ngay sau nút "Danh sách y lệnh".
+        /// Tạo runtime thay vì sửa Designer vì dãy nút dùng toạ độ pixel cố định, chèn tĩnh phải dịch cả dãy.
+        /// </summary>
+        private void InitSubclinicalResultButton()
+        {
+            try
+            {
+                if (this.btnKetQuaCLS != null) return;
+
+                this.btnKetQuaCLS = new DevExpress.XtraEditors.SimpleButton();
+                this.btnKetQuaCLS.Name = "btnKetQuaCLS";
+                this.btnKetQuaCLS.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.btnKetQuaCLS.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnKetQuaCLS.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.btnKetQuaCLS.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnKetQuaCLS.Enabled = false; // sáng khi chọn bệnh nhân (SetEnableButton)
+                this.btnKetQuaCLS.Click += new System.EventHandler(this.btnKetQuaCLS_Click);
+
+                this.layoutControl1.BeginUpdate();
+                try
+                {
+                    DevExpress.XtraLayout.LayoutControlItem lciKetQuaCLS = new DevExpress.XtraLayout.LayoutControlItem(this.layoutControl1, this.btnKetQuaCLS);
+                    lciKetQuaCLS.Name = "lciKetQuaCLS";
+                    lciKetQuaCLS.TextVisible = false;
+                    lciKetQuaCLS.TextSize = new System.Drawing.Size(0, 0);
+                    lciKetQuaCLS.Padding = this.layoutControlItem8.Padding;
+                    lciKetQuaCLS.Spacing = this.layoutControlItem8.Spacing;
+                    // KHÔNG ép chiều cao (Min/MaxSize height = 0 = không ràng buộc) — item căng theo
+                    // chiều cao hàng nút y hệt các nút Designer, tránh lệch hàng khi máy scale DPI khác.
+                    lciKetQuaCLS.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                    lciKetQuaCLS.MinSize = new System.Drawing.Size(115, 0);
+                    lciKetQuaCLS.MaxSize = new System.Drawing.Size(115, 0);
+                    // Đặt ngay sau nút "Danh sách y lệnh" (layoutControlItem8)
+                    lciKetQuaCLS.Move(this.layoutControlItem8, DevExpress.XtraLayout.Utils.InsertType.Right);
+                    // Đồng bộ kích thước theo đúng item nút bên cạnh sau khi đã vào hàng
+                    lciKetQuaCLS.Size = new System.Drawing.Size(115, this.layoutControlItem8.Size.Height);
+                }
+                finally
+                {
+                    this.layoutControl1.EndUpdate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         private void InitUiByConfig()
@@ -2565,6 +2618,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 btnInToDieuTri.Enabled = isKey;
                 btnHoiChan.Enabled = isKey;
                 btnKeDonYHCT.Enabled = isKey;
+                if (btnKetQuaCLS != null)
+                {
+                    btnKetQuaCLS.Enabled = isKey;
+                }
             }
             catch (Exception ex)
             {

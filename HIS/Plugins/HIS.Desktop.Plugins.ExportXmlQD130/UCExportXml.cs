@@ -405,8 +405,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     SendXml130Collinear();
                 })));
 
-                //Chỉ hiển thị menu đồng bộ KCB 4750 khi bật config MOS.CSDL_4750.IS_AUTO_SYNC
-                if (HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1")
+                //Hiển thị menu đồng bộ KCB khi bật liên thông CSDL 4750 (MOS.CSDL_4750.IS_AUTO_SYNC)
+                //HOẶC viện có khóa Cổng tiếp nhận KDLYT Vĩnh Long (đẩy hoan-tat).
+                if (HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1"
+                    || !string.IsNullOrWhiteSpace(HisConfigCFG.VLG_2062__CONNECTION_INFO))
                 {
                     menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Đồng bộ Khám chữa bệnh (Kết thúc khám/Xuất viện)", new EventHandler(btnSyncKcb4750_Click)));
                 }
@@ -425,13 +427,34 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
-                if (HisConfigCFG.CSDL_4750__IS_AUTO_SYNC != "1")
+                //Không chạy chồng lên lượt tự động đang chạy: 2 lượt dùng chung state theo lô
+                //(HisTreatments, List*, isNotFileSign...) — chồng nhau sẽ trộn/hỏng dữ liệu của nhau.
+                if (backgroundWorker1 != null && backgroundWorker1.IsBusy)
                 {
+                    XtraMessageBox.Show("Đang chạy Đồng bộ tự động — chờ lượt hiện tại xong rồi bấm lại.",
+                        Resources.ResourceMessageLang.ThongBao);
                     return;
                 }
-                if (string.IsNullOrWhiteSpace(HisConfigCFG.CSDL_4750__CONNECTION_INFO))
+                //2 đích đẩy KCB: CSDL 4750 (bật IS_AUTO_SYNC + có key) và Cổng tiếp nhận VLG (có key + tích chọn ở Cài đặt).
+                bool has4750 = HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1"
+                    && !string.IsNullOrWhiteSpace(HisConfigCFG.CSDL_4750__CONNECTION_INFO);
+                bool hasVlg = !string.IsNullOrWhiteSpace(HisConfigCFG.VLG_2062__CONNECTION_INFO)
+                    && this.configSync != null && this.configSync.isSyncKcbVlg;
+                //Bật 4750 nhưng thiếu key: chỉ CHẶN khi không còn đích VLG — có VLG thì vẫn cho đẩy VLG
+                //(ProcessSyncTreatment tự bỏ qua worker 4750 không hợp lệ).
+                if (HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1"
+                    && string.IsNullOrWhiteSpace(HisConfigCFG.CSDL_4750__CONNECTION_INFO)
+                    && !hasVlg)
                 {
                     XtraMessageBox.Show("Chưa cấu hình kết nối CSDL 4750 (HIS.CSDL_4750.CONNECTION_INFO)", Resources.ResourceMessageLang.ThongBao);
+                    return;
+                }
+                if (!has4750 && !hasVlg)
+                {
+                    XtraMessageBox.Show("Chưa bật đích đồng bộ KCB nào." + Environment.NewLine
+                        + "- CSDL 4750: bật MOS.CSDL_4750.IS_AUTO_SYNC + khóa HIS.CSDL_4750.CONNECTION_INFO." + Environment.NewLine
+                        + "- Cổng tiếp nhận VLG: có khóa MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO + tích chọn trong nút Cài đặt.",
+                        Resources.ResourceMessageLang.ThongBao);
                     return;
                 }
                 if (listSelection == null || listSelection.Count == 0)
@@ -457,7 +480,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     int okCount = this.kcb4750ResultLines.Count(o => o.Contains(": Thành công"));
                     int failCount = this.kcb4750ResultLines.Count - okCount;
                     StringBuilder sbMsg = new StringBuilder();
-                    sbMsg.AppendLine(string.Format("Kết quả đồng bộ Khám chữa bệnh lên CSDL 4750: {0} thành công, {1} thất bại.", okCount, failCount));
+                    //Mỗi hồ sơ có 1 dòng cho MỖI đích (4750 + VLG) -> đếm theo LƯỢT GỬI, không phải theo hồ sơ.
+                    sbMsg.AppendLine(string.Format("Kết quả đồng bộ Khám chữa bệnh (CSDL 4750 / Cổng tiếp nhận VLG): {0} lượt gửi thành công, {1} lượt gửi thất bại.", okCount, failCount));
                     sbMsg.AppendLine();
                     foreach (var line in this.kcb4750ResultLines)
                     {
@@ -1619,7 +1643,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     ado.TotalMaterialTypeData = totalMaterialTypeData;
                     ado.TotalHeinMediOrgData = totalHeinMediOrgData;
-                    ado.TotalHeinPatientTypeData = totalHeinPatientTypeData;
+                    //DLL His.Bhyt.ExportXml.XML130 tren may nay CHUA co property TotalHeinPatientTypeData
+                    //(ban moi hon o may dev) -> gan bang reflection de build duoc voi ca DLL cu lan moi.
+                    SetAdoPropIfExists(ado, "TotalHeinPatientTypeData", totalHeinPatientTypeData);
                     ado.TotalConfigData = NewConfig;
                     ado.TotalPatientTypeData = totalPatientTypeData;
                     ado.TotalIcdData = totalIcdData;
@@ -2010,7 +2036,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 ado.ListTuberculosisTreat = ListTuberculosisTreat;
                 ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                 ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
-                ado.TotalHeinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
+                //DLL cu chua co property -> reflection (xem chu thich o SetAdoPropIfExists).
+                SetAdoPropIfExists(ado, "TotalHeinPatientTypeData", BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>());
                 ado.TotalConfigData = NewConfig;
                 ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                 ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
@@ -4098,6 +4125,22 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
+        /// <summary>
+        /// Gán property của InputADO bằng reflection: DLL His.Bhyt.ExportXml.XML130 trên máy build này
+        /// CHƯA có một số property mới (vd TotalHeinPatientTypeData — bản mới hơn ở máy dev). DLL cũ thì
+        /// bỏ qua (giữ hành vi cũ), DLL mới thì gán bình thường — build được với cả hai.
+        /// </summary>
+        private static void SetAdoPropIfExists(object ado, string propName, object value)
+        {
+            try
+            {
+                if (ado == null) return;
+                var p = ado.GetType().GetProperty(propName);
+                if (p != null && p.CanWrite) p.SetValue(ado, value, null);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
         private async void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             try
@@ -4129,8 +4172,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     HisConfigCFG.CSDL_4750__IS_AUTO_SYNC,
                     kcbInFlight));
                 if (!this.cancelAutoSyncRequested
-                    && this.configSync != null && this.configSync.isSyncKcb
-                    && HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1"
+                    && this.configSync != null
+                    && ((this.configSync.isSyncKcb && HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1")
+                        || (this.configSync.isSyncKcbVlg && !string.IsNullOrWhiteSpace(HisConfigCFG.VLG_2062__CONNECTION_INFO)))
                     && kcbInFlight < 1000)
                 {
                     try
@@ -4404,17 +4448,36 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         kcb4750Worker = null;
                     }
                 }
-                //Danh sách trạng thái finish CSDL 4750 để gửi lên api/HisTreatment/UpdateCsdl4750FinishInfo (gộp cả lô)
-                List<HisTreatmentCsdl4750FinishSDO> kcb4750FinishList = kcb4750Worker != null ? new List<HisTreatmentCsdl4750FinishSDO>() : null;
-                //Danh sách dòng kết quả để thông báo rõ từng hồ sơ ra màn hình (dùng cho gửi thủ công qua menu)
-                this.kcb4750ResultLines = new List<string>();
-                //Các Task đẩy 4750 chạy nền (song song với gửi cổng BHYT). Chờ hoàn tất trước khi lưu trạng thái finish.
-                List<Task> kcb4750Tasks = kcb4750Worker != null ? new List<Task>() : null;
+                //Cổng tiếp nhận KDLYT Vĩnh Long (hoan-tat): cùng luồng kcb4750Only, gate = khóa VLG + tích chọn ở Cài đặt.
+                VlgKcbHoanTatWorker vlgKcbWorker = null;
+                bool enableKcbVlg = kcb4750Only
+                    && this.configSync != null && this.configSync.isSyncKcbVlg
+                    && !string.IsNullOrWhiteSpace(HisConfigCFG.VLG_2062__CONNECTION_INFO);
+                if (enableKcbVlg)
+                {
+                    vlgKcbWorker = new VlgKcbHoanTatWorker(HisConfigCFG.VLG_2062__CONNECTION_INFO);
+                    if (!vlgKcbWorker.IsValidConfig)
+                    {
+                        LogSystem.Warn("ProcessSyncTreatment - Bat dong bo KCB VLG nhung khoa MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO khong hop le. Bo qua.");
+                        vlgKcbWorker = null;
+                    }
+                }
+                //Danh sách trạng thái finish để gửi lên api/HisTreatment/UpdateCsdl4750FinishInfo (gộp cả lô).
+                //Khi CHỈ đẩy VLG (không có 4750): finish lấy theo kết quả VLG để chu kỳ tự động không chọn lại hồ sơ đã đẩy.
+                List<HisTreatmentCsdl4750FinishSDO> kcb4750FinishList = (kcb4750Worker != null || vlgKcbWorker != null) ? new List<HisTreatmentCsdl4750FinishSDO>() : null;
+                //Danh sách dòng kết quả để thông báo rõ từng hồ sơ ra màn hình (dùng cho gửi thủ công qua menu).
+                //BẮT BUỘC dùng biến LOCAL trong các Task nền: field this.kcb4750ResultLines bị gán lại mỗi lượt chạy,
+                //task fire-and-forget của lượt TRƯỚC còn chạy dở sẽ Add vào list của lượt SAU dưới lock khác -> hỏng list.
+                List<string> kcbResultLines = new List<string>();
+                this.kcb4750ResultLines = kcbResultLines;
+                //Các Task đẩy chạy nền (song song với gửi cổng BHYT). Chờ hoàn tất trước khi lưu trạng thái finish.
+                List<Task> kcb4750Tasks = (kcb4750Worker != null || vlgKcbWorker != null) ? new List<Task>() : null;
                 //Khoá đồng bộ khi các Task 4750 ghi vào list dùng chung (finish + result lines).
                 object kcb4750Lock = new object();
                 //Lượt chạy tự động (cho phép hủy giữa chừng khi tắt Đồng bộ tự động) - áp dụng cả Luồng 1 (KCB) lẫn Luồng 2 (BHYT).
                 //Menu/gửi tay (isAutoSync=false) không bị ảnh hưởng.
-                bool thisRunIsAuto = this.isAutoSync;
+                //Lượt gửi tay qua menu KHÔNG phải lượt tự động dù chế độ auto đang bật — không bị hủy giữa chừng khi tắt auto.
+                bool thisRunIsAuto = this.isAutoSync && !this.manualSyncKcb4750;
 
                 Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
                 if (listTreatmentSync != null && listTreatmentSync.Count > 0)
@@ -4427,7 +4490,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         //Hủy giữa chừng khi: tắt Đồng bộ tự động, HOẶC (lượt KCB tự động) người dùng đã bỏ tích "Đồng bộ KCB".
                         if (thisRunIsAuto && (this.cancelAutoSyncRequested
-                            || (kcb4750Only && this.configSync != null && !this.configSync.isSyncKcb)))
+                            || (kcb4750Only && this.configSync != null && !this.configSync.isSyncKcb && !this.configSync.isSyncKcbVlg)))
                         {
                             LogSystem.Info("ProcessSyncTreatment - Dung xu ly (tat Dong bo tu dong hoac bo tich Dong bo KCB) -> bo cac lo con lai.");
                             break;
@@ -4651,7 +4714,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             //Hủy giữa chừng khi: tắt Đồng bộ tự động, HOẶC (lượt KCB tự động) đã bỏ tích "Đồng bộ KCB" (dừng ở ranh giới hồ sơ).
                             if (thisRunIsAuto && (this.cancelAutoSyncRequested
-                                || (kcb4750Only && this.configSync != null && !this.configSync.isSyncKcb)))
+                                || (kcb4750Only && this.configSync != null && !this.configSync.isSyncKcb && !this.configSync.isSyncKcbVlg)))
                             {
                                 LogSystem.Info("ProcessSyncTreatment - Dung xu ly (tat Dong bo tu dong hoac bo tich Dong bo KCB) -> bo cac ho so con lai.");
                                 break;
@@ -4729,7 +4792,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                             ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                             ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
-                            ado.TotalHeinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
+                            //DLL cu chua co property -> reflection (xem chu thich o SetAdoPropIfExists).
+                            SetAdoPropIfExists(ado, "TotalHeinPatientTypeData", BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>());
                             ado.TotalConfigData = NewConfig;
                             ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                             ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
@@ -5118,8 +5182,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 }
                             }
 
-                            #region Đồng bộ Khám chữa bệnh lên CSDL 4750 (mục 6) - đẩy nền song song với gửi cổng BHYT
-                            if (kcb4750Worker != null)
+                            #region Đồng bộ Khám chữa bệnh lên CSDL 4750 (mục 6) + Cổng tiếp nhận VLG (hoan-tat) - đẩy nền song song với gửi cổng BHYT
+                            if (kcb4750Worker != null || vlgKcbWorker != null)
                             {
                                 //Lấy bytes XML NGAY (đồng bộ) rồi ĐẨY 4750 ở Task nền -> chạy song song với việc gửi cổng BHYT
                                 //của các hồ sơ kế tiếp. Lỗi đẩy 4750 được cô lập trong Task, không ảnh hưởng luồng gửi 130 và ngược lại.
@@ -5158,6 +5222,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     {
                                         try
                                         {
+                                            //1) CSDL 4750 (nếu bật) — trạng thái finish lưu theo kết quả 4750 như cũ.
+                                            if (kcb4750Worker != null)
+                                            {
                                             Csdl4750ImportResult kcbResult = await kcb4750Worker.ImportXmlAsync(kcbBytesLocal, kcbTreatmentCode);
                                             bool kcbSuccess = kcbResult != null && kcbResult.Success;
                                             string kcbMessage = kcbResult != null ? kcbResult.Message : "Không có phản hồi từ API";
@@ -5173,10 +5240,47 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                         FinishUrl = kcbFileUrl
                                                     });
                                                 }
-                                                this.kcb4750ResultLines.Add(string.Format("{0}: {1}{2}",
+                                                kcbResultLines.Add(string.Format("{0}: {1}{2}",
                                                     kcbTreatmentCode,
                                                     kcbSuccess ? "Thành công" : "Thất bại",
                                                     string.IsNullOrEmpty(kcbMessage) ? "" : " - " + kcbMessage));
+                                            }
+                                            }
+                                            //2) Cổng tiếp nhận KDLYT Vĩnh Long (nếu bật) — lỗi VLG cô lập riêng, không ảnh hưởng 4750.
+                                            //Khi KHÔNG có 4750: finish lưu theo kết quả VLG để chu kỳ tự động không chọn lại hồ sơ.
+                                            if (vlgKcbWorker != null)
+                                            {
+                                                try
+                                                {
+                                                    Csdl4750ImportResult vlgResult = await vlgKcbWorker.ImportXmlAsync(kcbBytesLocal, kcbTreatmentCode);
+                                                    bool vlgSuccess = vlgResult != null && vlgResult.Success;
+                                                    string vlgMessage = vlgResult != null ? vlgResult.Message : "VLG: không có phản hồi từ cổng";
+                                                    lock (kcb4750Lock)
+                                                    {
+                                                        if (kcb4750Worker == null && kcb4750FinishList != null)
+                                                        {
+                                                            kcb4750FinishList.Add(new HisTreatmentCsdl4750FinishSDO()
+                                                            {
+                                                                TreatmentId = kcbTreatmentId,
+                                                                FinishResult = vlgSuccess ? 3 : 4,
+                                                                Description = vlgMessage,
+                                                                FinishUrl = kcbFileUrl
+                                                            });
+                                                        }
+                                                        kcbResultLines.Add(string.Format("{0}: {1}{2}",
+                                                            kcbTreatmentCode,
+                                                            vlgSuccess ? "Thành công" : "Thất bại",
+                                                            string.IsNullOrEmpty(vlgMessage) ? "" : " - " + vlgMessage));
+                                                    }
+                                                }
+                                                catch (Exception exVlg)
+                                                {
+                                                    Inventec.Common.Logging.LogSystem.Error(exVlg);
+                                                    lock (kcb4750Lock)
+                                                    {
+                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - VLG: " + exVlg.Message);
+                                                    }
+                                                }
                                             }
                                         }
                                         catch (Exception exKcb)
@@ -5194,7 +5298,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                         FinishUrl = null
                                                     });
                                                 }
-                                                this.kcb4750ResultLines.Add(kcbTreatmentCode + ": Thất bại - " + exKcb.Message);
+                                                kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + exKcb.Message);
                                             }
                                         }
                                         finally
@@ -5219,7 +5323,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                 FinishUrl = null
                                             });
                                         }
-                                        this.kcb4750ResultLines.Add(kcbTreatmentCode + ": Thất bại - Không tạo được file XML để gửi");
+                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - Không tạo được file XML để gửi");
                                     }
                                 }
                             }
@@ -5235,7 +5339,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     List<Task> kcbTasksLocal = kcb4750Tasks;
                     List<HisTreatmentCsdl4750FinishSDO> kcbFinishLocal = kcb4750FinishList;
-                    if (kcb4750Only && this.isAutoSync)
+                    //isAutoSync là cờ CHẾ ĐỘ (bật suốt phiên) — lượt GỬI TAY qua menu khi auto đang bật
+                    //vẫn phải CHỜ (nhánh else) để dialog tổng kết đọc đủ kết quả, không fire-and-forget.
+                    if (kcb4750Only && this.isAutoSync && !this.manualSyncKcb4750)
                     {
                         //LUỒNG 1 TỰ ĐỘNG: FIRE-AND-FORGET -> trả luồng NGAY, không chờ đẩy 4750.
                         //Các push 4750 (chậm/504) drain ở nền; lưu finish khi push xong. Nhờ vậy Luồng 2 (BHYT) chạy song song, KHÔNG chờ nhau.

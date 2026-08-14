@@ -38,5 +38,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         public bool isXML3176 { get; set; }
         //Đồng bộ Khám chữa bệnh (Kết thúc khám/Xuất viện) lên CSDL 4750
         public bool isSyncKcb { get; set; }
+        //Đồng bộ KCB (hoàn tất) lên Cổng tiếp nhận — Kho dữ liệu y tế tỉnh Vĩnh Long
+        public bool isSyncKcbVlg { get; set; }
     }
 }

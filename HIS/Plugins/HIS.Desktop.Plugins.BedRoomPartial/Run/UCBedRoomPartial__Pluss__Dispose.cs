@@ -112,6 +112,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.btnChiDinhMau.Click -= new System.EventHandler(this.btnChiDinhMau_Click);
                 this.btnKetThucDieuTri.Click -= new System.EventHandler(this.btnKetThucDieuTri_Click);
                 this.btnChuyenKhoa.Click -= new System.EventHandler(this.btnChuyenKhoa_Click);
+                if (this.btnKetQuaCLS != null)
+                {
+                    this.btnKetQuaCLS.Click -= new System.EventHandler(this.btnKetQuaCLS_Click);
+                    this.btnKetQuaCLS = null;
+                }
                 this.layoutControlTreeSereServ.GroupExpandChanged -= new DevExpress.XtraLayout.Utils.LayoutGroupEventHandler(this.layoutControlTreeSereServ_GroupExpandChanged);
                 this.btnThuGon.Click -= new System.EventHandler(this.btnThuGon_Click);
                 this.xtraTabDocument.SelectedPageChanged -= new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabDocument_SelectedPageChanged);
