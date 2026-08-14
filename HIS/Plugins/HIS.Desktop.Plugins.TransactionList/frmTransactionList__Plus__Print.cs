@@ -1035,7 +1035,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
                 else if (HisConfigCFG.TransactionBillSelect == "2")
                 {
+                    //Việc 54227: HCM_115_NQ399 dùng cùng mẫu với HCM_115 (BVND 115 giữ nguyên mẫu đang in)
                     if (HisConfigCFG.BILL_TWO_BOOK__OPTION == (int)HisConfigCFG.BILL_OPTION.HCM_115
+                        || HisConfigCFG.BILL_TWO_BOOK__OPTION == (int)HisConfigCFG.BILL_OPTION.HCM_115_NQ399
                         || HisConfigCFG.BILL_TWO_BOOK__OPTION == (int)HisConfigCFG.BILL_OPTION.QBH_CUBA)
                     {
                         if (this.transactionPrint != null && this.transactionPrint.BILL_TYPE_ID == 2)

@@ -29,7 +29,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking
 {
     [ExtensionOf(typeof(DesktopRootExtensionPoint),
        "HIS.Desktop.Plugins.HisTreatmentRecordChecking",
-       "Tra soát hố sơ bệnh án",
+       "Tra soát hồ sơ bệnh án",
        "Common",
        16,
        "",

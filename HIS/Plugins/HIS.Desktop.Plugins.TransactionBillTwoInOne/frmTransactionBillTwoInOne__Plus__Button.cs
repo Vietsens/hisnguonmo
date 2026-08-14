@@ -1452,7 +1452,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 if (this.resultRecieptBill == null)
                     return;
+                //Việc 54227: HCM_115_NQ399 dùng cùng mẫu biên lai với HCM_115 (BVND 115 giữ nguyên mẫu đang in)
                 if (HisConfig.BILL_TWO_BOOK__OPTION == (int)HisConfig.BILL_OPTION.HCM_115
+                    || HisConfig.BILL_TWO_BOOK__OPTION == (int)HisConfig.BILL_OPTION.HCM_115_NQ399
                     || HisConfig.BILL_TWO_BOOK__OPTION == (int)HisConfig.BILL_OPTION.QBH_CUBA)
                 {
                     Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
@@ -1476,7 +1478,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 if (this.resultInvoiceBill == null)
                     return;
+                //Việc 54227: HCM_115_NQ399 dùng cùng mẫu hóa đơn với HCM_115 (BVND 115 giữ nguyên mẫu đang in)
                 if (HisConfig.BILL_TWO_BOOK__OPTION == (int)HisConfig.BILL_OPTION.HCM_115
+                    || HisConfig.BILL_TWO_BOOK__OPTION == (int)HisConfig.BILL_OPTION.HCM_115_NQ399
                     || HisConfig.BILL_TWO_BOOK__OPTION == (int)HisConfig.BILL_OPTION.QBH_CUBA)
                 {
                     Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);

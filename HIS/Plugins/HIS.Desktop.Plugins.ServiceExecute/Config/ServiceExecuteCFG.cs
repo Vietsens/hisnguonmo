@@ -29,6 +29,16 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         internal const string HideTimePrint = "HIS.Desktop.Plugins.ServiceExecute.PrintTimeOption";
         internal const string ConnectPacsByFss = "HIS.Desktop.Plugins.ServiceExecute.ConnectPacsByFss";
         internal const string ConnectImageOption = "HIS.Desktop.Plugins.ServiceExecute.OptionImage";
+
+        /// <summary>
+        /// Cac gia tri cua cau hinh OptionImage - cach lay hinh anh PACS.
+        /// 1: PACS Vietsens - HIS tai anh ve hien tren luoi
+        /// 2: PACS Sancy    - hien cot gui Sancy
+        /// 3: PACS Carestream - PACS chi tra ve link, HIS mo link xem anh
+        /// </summary>
+        internal const string ConnectImageOption__VIETSENS = "1";
+        internal const string ConnectImageOption__SANCY = "2";
+        internal const string ConnectImageOption__CARESTREAM = "3";
         internal const string CaptureType = "HIS.Desktop.Camera.CaptureType";
         internal const string OptionPrint = "HIS.Desktop.Plugins.ServiceExecute.PrintOption";
         internal const string NumberOfFilmCFG = "HIS.Desktop.Plugins.ServiceExecute.CĐHA.ValidNumberOfFilm";

@@ -441,6 +441,7 @@ namespace HIS.Desktop.Modules.Login
             try
             {
                 CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Error("11111111111111111");
                 HisBranchFilter branchFilter = new MOS.Filter.HisBranchFilter();
                 branchFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 results = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_BRANCH>>(HisRequestUriStore.HIS_BRANCH_GET, ApiConsumers.MosConsumer, branchFilter, param);

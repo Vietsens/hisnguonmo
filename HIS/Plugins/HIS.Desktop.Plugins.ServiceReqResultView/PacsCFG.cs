@@ -32,6 +32,18 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
         public string CloudInfo { get; set; }
     }
 
+    /// <summary>
+    /// Gia tri cau hinh MOS.PACS.INTEGRATE_OPTION - he thong PACS dang tich hop.
+    /// Khai bao tuong minh de khong rai so 3, 4 trong ma nguon.
+    /// </summary>
+    static class PacsIntegrateOptionCode
+    {
+        public const int VIETSENS = 1;
+        public const int SANCY = 2;
+        public const int BACH_KHOA = 3;
+        public const int CARESTREAM = 4;
+    }
+
     class PacsCFG
     {
         private const string PACS_ADDRESS_CFG = "MOS.PACS.ADDRESS";
