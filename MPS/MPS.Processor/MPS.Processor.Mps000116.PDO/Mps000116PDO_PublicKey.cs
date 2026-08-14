@@ -70,6 +70,8 @@ namespace MPS.Processor.Mps000116.PDO
         public short? NOON_IS_USED { get; set; }
         public short? AFTERNOON_IS_USED { get; set; }
         public short? EVENING_IS_USED { get; set; }
+        /// <summary>Cach dung (duong dung) cua y lenh — lay tu HTU_TEXT.</summary>
+        public string HTU_TEXT { get; set; }
 
         public Mps000116ADO() { }
 
@@ -106,6 +108,7 @@ namespace MPS.Processor.Mps000116.PDO
                     this.MEDICINE_GROUP_NUM_ORDER = datas[0].MEDICINE_GROUP_NUM_ORDER;
                     this.MEDICINE_USE_FORM_NUM_ORDER = datas[0].MEDICINE_USE_FORM_NUM_ORDER;
                     this.NUM_ORDER = datas[0].NUM_ORDER;
+                    this.HTU_TEXT = !String.IsNullOrEmpty(datas[0].HTU_TEXT) ? datas[0].HTU_TEXT : datas[0].HTU_NAME;
                     this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                 }
             }
@@ -135,6 +138,8 @@ namespace MPS.Processor.Mps000116.PDO
                     this.VIR_PRICE_STR = this.ConvertNumberToString(this.VIR_PRICE ?? 0);
                     this.VAT_RATIO = datas[0].VAT_RATIO;
                     this.NUM_ORDER = datas[0].NUM_ORDER;
+                    this.TUTORIAL = datas[0].TUTORIAL;
+                    this.HTU_TEXT = datas[0].HTU_TEXT;
                     this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT;
                 }
                 else
@@ -168,6 +173,8 @@ namespace MPS.Processor.Mps000116.PDO
                     this.TOTAL_PRICE_STR = this.ConvertNumberToString(this.TOTAL_PRICE ?? 0);
                     this.VIR_PRICE_STR = this.ConvertNumberToString(this.VIR_PRICE ?? 0);
                     this.NUM_ORDER = datas[0].NUM_ORDER;
+                    this.TUTORIAL = datas[0].TUTORIAL;
+                    this.HTU_TEXT = datas[0].HTU_TEXT;
                     this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT;
                 }
                 else
@@ -213,6 +220,7 @@ namespace MPS.Processor.Mps000116.PDO
                     this.AFTERNOON = datas[0].AFTERNOON;
                     this.EVENING = datas[0].EVENING;
                     this.NUM_ORDER = datas[0].NUM_ORDER;
+                    this.HTU_TEXT = datas[0].HTU_TEXT;
                     this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                 }
                 else
@@ -237,6 +245,223 @@ namespace MPS.Processor.Mps000116.PDO
                 result = "";
             }
             return result;
+        }
+    }
+
+    /// <summary>
+    /// Chi tiet TUNG y lenh thuoc/vat tu trong ngay — KHONG gop theo loai thuoc nhu Mps000116ADO.
+    /// 1 thuoc ke nhieu lan trong ngay se sinh nhieu ban ghi, moi ban ghi giu dung
+    /// so luong, lieu dung, cach dung, toc do truyen cua chinh y lenh do.
+    /// </summary>
+    public class Mps000116DetailADO
+    {
+        /// <summary>Ma loai thuoc (TypeId = 1) hoac ma loai vat tu (TypeId = 2)</summary>
+        public long MEDI_MATY_TYPE_ID { get; set; }
+        /// <summary>Ten thuoc / ten vat tu</summary>
+        public string MEDI_MATY_TYPE_NAME { get; set; }
+        /// <summary>Don vi tinh</summary>
+        public string SERVICE_UNIT_NAME { get; set; }
+        /// <summary>Nong do, ham luong</summary>
+        public string CONCENTRA { get; set; }
+        /// <summary>Toc do truyen dich, truyen mau. Vat tu luon null</summary>
+        public decimal? SPEED { get; set; }
+        /// <summary>So luong cua rieng y lenh nay (khong cong don)</summary>
+        public decimal AMOUNT { get; set; }
+        /// <summary>Lieu dung — huong dan su dung</summary>
+        public string TUTORIAL { get; set; }
+        /// <summary>Cach dung — duong dung cua rieng y lenh nay</summary>
+        public string HTU_TEXT { get; set; }
+        /// <summary>Lieu sang</summary>
+        public string MORNING { get; set; }
+        /// <summary>Lieu trua</summary>
+        public string NOON { get; set; }
+        /// <summary>Lieu chieu</summary>
+        public string AFTERNOON { get; set; }
+        /// <summary>Lieu toi</summary>
+        public string EVENING { get; set; }
+        /// <summary>Thoi gian y lenh dang so yyyyMMddHHmmss — dung de sap xep</summary>
+        public long? INTRUCTION_TIME { get; set; }
+        /// <summary>Thoi gian y lenh dang chuoi hien thi</summary>
+        public string INTRUCTION_TIME_STR { get; set; }
+        /// <summary>1: thuoc, 2: vat tu — noi quan he voi band Type tren mau in</summary>
+        public long TypeId { get; set; }
+        /// <summary>Nguon cap: Linh o kho / Tu mua</summary>
+        public string TYPE_NAME { get; set; }
+        /// <summary>Ghi chu cua y lenh. Thuoc/vat tu tu mua khong luu truong nay nen luon null.</summary>
+        public string DESCRIPTION { get; set; }
+        public long SERVICE_TYPE_ID { get; set; }
+        public decimal? NUM_ORDER { get; set; }
+        public decimal? MEDICINE_GROUP_NUM_ORDER { get; set; }
+        public decimal? MEDICINE_USE_FORM_NUM_ORDER { get; set; }
+
+        public Mps000116DetailADO() { }
+
+        /// <summary>Y lenh thuoc linh o kho</summary>
+        public Mps000116DetailADO(V_HIS_EXP_MEST_MEDICINE data)
+        {
+            try
+            {
+                if (data == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("DU LIEU RONG V_HIS_EXP_MEST_MEDICINE (Mps000116DetailADO)");
+                    return;
+                }
+                this.MEDI_MATY_TYPE_ID = data.MEDICINE_TYPE_ID;
+                this.MEDI_MATY_TYPE_NAME = data.MEDICINE_TYPE_NAME;
+                this.SERVICE_UNIT_NAME = data.SERVICE_UNIT_NAME;
+                this.CONCENTRA = data.CONCENTRA;
+                this.SPEED = data.SPEED;
+                this.AMOUNT = data.AMOUNT - (data.TH_AMOUNT ?? 0);
+                this.TUTORIAL = data.TUTORIAL;
+                this.HTU_TEXT = !String.IsNullOrEmpty(data.HTU_TEXT) ? data.HTU_TEXT : data.HTU_NAME;
+                this.MORNING = data.MORNING;
+                this.NOON = data.NOON;
+                this.AFTERNOON = data.AFTERNOON;
+                this.EVENING = data.EVENING;
+                this.NUM_ORDER = data.NUM_ORDER;
+                this.MEDICINE_GROUP_NUM_ORDER = data.MEDICINE_GROUP_NUM_ORDER;
+                this.MEDICINE_USE_FORM_NUM_ORDER = data.MEDICINE_USE_FORM_NUM_ORDER;
+                this.DESCRIPTION = data.DESCRIPTION;
+                this.TypeId = 1;
+                this.TYPE_NAME = "Lĩnh ở kho";
+                this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
+                this.SetIntructionTime(data.TDL_INTRUCTION_TIME);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Y lenh vat tu linh o kho.
+        /// Nong do/ham luong lay tu danh muc vat tu vi view xuat vat tu khong tra ve truong nay.
+        /// </summary>
+        public Mps000116DetailADO(V_HIS_EXP_MEST_MATERIAL data, V_HIS_MATERIAL_TYPE materialType)
+        {
+            try
+            {
+                if (data == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("DU LIEU RONG V_HIS_EXP_MEST_MATERIAL (Mps000116DetailADO)");
+                    return;
+                }
+                this.MEDI_MATY_TYPE_ID = data.MATERIAL_TYPE_ID;
+                this.MEDI_MATY_TYPE_NAME = data.MATERIAL_TYPE_NAME;
+                this.SERVICE_UNIT_NAME = data.SERVICE_UNIT_NAME;
+                this.CONCENTRA = materialType != null ? materialType.CONCENTRA : null;
+                this.SPEED = null;
+                this.AMOUNT = data.AMOUNT - (data.TH_AMOUNT ?? 0);
+                this.TUTORIAL = data.TUTORIAL;
+                this.HTU_TEXT = data.HTU_TEXT;
+                this.NUM_ORDER = data.NUM_ORDER;
+                this.DESCRIPTION = data.DESCRIPTION;
+                this.TypeId = 2;
+                this.TYPE_NAME = "Lĩnh ở kho";
+                this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT;
+                this.SetIntructionTime(data.TDL_INTRUCTION_TIME);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Y lenh thuoc tu mua (ngoai kho).
+        /// Don vi tinh + nong do/ham luong lay tu danh muc thuoc; thuoc ngoai danh muc
+        /// (khong co MEDICINE_TYPE_ID) dung UNIT_NAME nguoi ke da nhap.
+        /// Thoi gian y lenh lay tu yeu cau dich vu vi ban ghi chi tiet khong luu.
+        /// </summary>
+        public Mps000116DetailADO(HIS_SERVICE_REQ_METY data, V_HIS_MEDICINE_TYPE medicineType, long? intructionTime)
+        {
+            try
+            {
+                if (data == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("DU LIEU RONG HIS_SERVICE_REQ_METY (Mps000116DetailADO)");
+                    return;
+                }
+                this.MEDI_MATY_TYPE_ID = data.MEDICINE_TYPE_ID ?? 0;
+                this.MEDI_MATY_TYPE_NAME = data.MEDICINE_TYPE_NAME;
+                this.SERVICE_UNIT_NAME = (medicineType != null && !String.IsNullOrEmpty(medicineType.SERVICE_UNIT_NAME))
+                    ? medicineType.SERVICE_UNIT_NAME
+                    : data.UNIT_NAME;
+                this.CONCENTRA = medicineType != null ? medicineType.CONCENTRA : null;
+                this.SPEED = data.SPEED;
+                this.AMOUNT = data.AMOUNT;
+                this.TUTORIAL = data.TUTORIAL;
+                this.HTU_TEXT = data.HTU_TEXT;
+                this.MORNING = data.MORNING;
+                this.NOON = data.NOON;
+                this.AFTERNOON = data.AFTERNOON;
+                this.EVENING = data.EVENING;
+                this.NUM_ORDER = data.NUM_ORDER;
+                this.MEDICINE_GROUP_NUM_ORDER = medicineType != null ? medicineType.MEDICINE_GROUP_NUM_ORDER : null;
+                this.MEDICINE_USE_FORM_NUM_ORDER = medicineType != null ? medicineType.MEDICINE_USE_FORM_NUM_ORDER : null;
+                this.TypeId = 1;
+                this.TYPE_NAME = "Tự mua";
+                this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
+                this.SetIntructionTime(intructionTime);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Y lenh vat tu tu mua (ngoai kho).
+        /// Don vi tinh + nong do/ham luong lay tu danh muc vat tu, fallback UNIT_NAME nguoi ke da nhap.
+        /// Thoi gian y lenh lay tu yeu cau dich vu vi ban ghi chi tiet khong luu.
+        /// </summary>
+        public Mps000116DetailADO(HIS_SERVICE_REQ_MATY data, V_HIS_MATERIAL_TYPE materialType, long? intructionTime)
+        {
+            try
+            {
+                if (data == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("DU LIEU RONG HIS_SERVICE_REQ_MATY (Mps000116DetailADO)");
+                    return;
+                }
+                this.MEDI_MATY_TYPE_ID = data.MATERIAL_TYPE_ID ?? 0;
+                this.MEDI_MATY_TYPE_NAME = (materialType != null && !String.IsNullOrEmpty(materialType.MATERIAL_TYPE_NAME))
+                    ? materialType.MATERIAL_TYPE_NAME
+                    : data.MATERIAL_TYPE_NAME;
+                this.SERVICE_UNIT_NAME = (materialType != null && !String.IsNullOrEmpty(materialType.SERVICE_UNIT_NAME))
+                    ? materialType.SERVICE_UNIT_NAME
+                    : data.UNIT_NAME;
+                this.CONCENTRA = materialType != null ? materialType.CONCENTRA : null;
+                this.SPEED = null;
+                this.AMOUNT = data.AMOUNT;
+                this.TUTORIAL = data.TUTORIAL;
+                this.HTU_TEXT = data.HTU_TEXT;
+                this.NUM_ORDER = data.NUM_ORDER;
+                this.TypeId = 2;
+                this.TYPE_NAME = "Tự mua";
+                this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT;
+                this.SetIntructionTime(intructionTime);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        void SetIntructionTime(long? intructionTime)
+        {
+            try
+            {
+                this.INTRUCTION_TIME = intructionTime;
+                this.INTRUCTION_TIME_STR = (intructionTime ?? 0) > 0
+                    ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(intructionTime ?? 0)
+                    : "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                this.INTRUCTION_TIME_STR = "";
+            }
         }
     }
 

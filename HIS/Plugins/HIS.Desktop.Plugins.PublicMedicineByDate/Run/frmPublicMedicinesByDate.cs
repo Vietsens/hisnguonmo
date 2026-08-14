@@ -47,6 +47,11 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         internal string _MedicalInstruction = "";
+        /// <summary>
+        /// Thoi gian y lenh theo ma yeu cau dich vu — dung cho chi tiet y lenh thuoc/vat tu tu mua,
+        /// vi ban ghi HIS_SERVICE_REQ_METY/MATY khong luu thoi gian y lenh.
+        /// </summary>
+        internal Dictionary<long, long?> _IntructionTimeByServiceReqId = new Dictionary<long, long?>();
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.Desktop.Plugins.PublicMedicineByDate";
 
@@ -164,6 +169,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 this._MedicalInstruction = "";
+                this._IntructionTimeByServiceReqId = new Dictionary<long, long?>();
                 //1.Get ServiceReq là đơn nt và tt, theo khoa yc
                 MOS.Filter.HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                 serviceReqFilter.TREATMENT_ID = this._treatmentId;
@@ -212,6 +218,16 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                 {
                     //2.Get ExpMest có SERVICE_REQ_ID là đơn thuốc
                     _serviceReqIds = _currentServiceReqs.Select(p => p.ID).ToList();
+
+                    //Luu thoi gian y lenh theo yeu cau dich vu — dung cho chi tiet y lenh thuoc/vat tu tu mua.
+                    //Khong phat sinh luot goi API moi, tan dung ket qua da lay o tren.
+                    foreach (var itemSr in _currentServiceReqs)
+                    {
+                        if (!this._IntructionTimeByServiceReqId.ContainsKey(itemSr.ID))
+                        {
+                            this._IntructionTimeByServiceReqId.Add(itemSr.ID, itemSr.INTRUCTION_TIME);
+                        }
+                    }
 
                     //Lay thong tin to dieu tri
                     MOS.Filter.HisTrackingFilter trackingFilter = new HisTrackingFilter();
