@@ -228,4 +228,10 @@
   <data name="frmContentSubclinical.treeListColumnSRI.Caption" xml:space="preserve">
     <value>SRI</value>
   </data>
+  <data name="frmContentSubclinical.Text.ViewOnly" xml:space="preserve">
+    <value>Kết quả cận lâm sàng</value>
+  </data>
+  <data name="frmContentSubclinical.btnClose.Text" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
 </root>

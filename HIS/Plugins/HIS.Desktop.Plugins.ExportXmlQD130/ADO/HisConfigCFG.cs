@@ -59,6 +59,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal const string HIS_TIEN_GIAM_DINH__CONNECTION_INFO = "HIS.TIEN_GIAM_DINH.CONNECTION_INFO";
         internal static string TIEN_GIAM_DINH__CONNECTION_INFO;
 
+        //Cổng tiếp nhận — Kho dữ liệu y tế tỉnh Vĩnh Long (dùng chung khóa với liên thông KSK VLG):
+        //MaDonVi|Username|Password|TokenUrl|PushUrl (2 URL bỏ trống = cổng chính thức).
+        //Không khai báo = viện không dùng = ẩn checkbox, không đẩy.
+        internal const string MOS_HIS_KSK_SYNC__VLG_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO";
+        internal static string VLG_2062__CONNECTION_INFO;
+
         internal static void LoadConfig()
         {
             try
@@ -74,6 +80,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 QD_130_BYT__NGUOI_THUC_HIEN_OPTION = GetValue(HIS_QD_130_BYT__NGUOI_THUC_HIEN_OPTION);
                 //vCong53286 - Đấu nối hệ thống tiền giám định
                 TIEN_GIAM_DINH__CONNECTION_INFO = GetValue(HIS_TIEN_GIAM_DINH__CONNECTION_INFO);
+                //Cổng tiếp nhận KDLYT Vĩnh Long
+                VLG_2062__CONNECTION_INFO = GetValue(MOS_HIS_KSK_SYNC__VLG_2062_CONNECTION_INFO);
             }
             catch (Exception ex)
             {

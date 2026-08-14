@@ -63,10 +63,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
         // bao thanh cong). User tick tay lan dau la JSON moi co truong nay -> ton trong lua chon user.
         private bool vlgStateSaved;
 
+        /// <summary>Đã dời nút "Nối chỉ số" xuống hàng riêng chưa — chỉ dời một lần.</summary>
+        private bool clsMapButtonMoved;
+
         /// <summary>Trạng thái đã lưu CÓ trường SyncSytHcm chưa — để biết khi nào cần tự tích một lần.</summary>
         private bool sytStateSaved;
         private string exportXmlPath = ""; // duong dan xuat XML (luu local qua ControlState theo key btnExportPath)
-        // Khai bao noi chi so can lam sang voi chi tieu mau M4 (cong SYT TP.HCM) — luu local qua ControlState.
+        // Khai bao noi chi so can lam sang voi chi tieu mau M3 (cong SYT TP.HCM) — luu local qua ControlState.
         private string sytClsMapJson = "";
         private const string CONTROL_STATE_KEY__SYT_CLS_MAP = "KskSytClsMap";
         private const string CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO";
@@ -592,6 +595,18 @@ namespace HIS.Desktop.Plugins.KskSyncList
             LoadSyncTargetAvailability();
             // AN TOAN DA VIEN: nut "Noi chi so CLS" chi phuc vu cong SYT TP.HCM nen chi hien voi
             // vien da khai bao cau hinh cong do; vien khac khong thay nut nay.
+            // Nút "Nối chỉ số" nằm CÙNG VÙNG NGANG với nút "Cập nhật KQ cổng VLG" (cả hai đều
+            // 1055-1176) nên đè lên nhau. Hai hàng của khung lọc đã kín, không còn khe nào, nên cho
+            // nút này xuống MỘT HÀNG RIÊNG.
+            //
+            // Viện không khai cấu hình cổng Sở Y tế thì mục bị đặt Never -> DevExpress loại hẳn khỏi
+            // bố cục, hàng đó biến mất, giao diện của viện khác không đổi một chút nào.
+            if (!clsMapButtonMoved && lciBtnClsMap != null && lciBtnSync != null)
+            {
+                clsMapButtonMoved = true;
+                try { lciBtnClsMap.Move(lciBtnSync, DevExpress.XtraLayout.Utils.InsertType.Bottom); }
+                catch (Exception exMove) { Inventec.Common.Logging.LogSystem.Warn(exMove); }
+            }
             lciBtnClsMap.Visibility = sytConfigAvailable
                 ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                 : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;

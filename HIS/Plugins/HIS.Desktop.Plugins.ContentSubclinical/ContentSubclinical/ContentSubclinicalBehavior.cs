@@ -34,10 +34,17 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
 {
     public sealed class ContentSubclinicalBehavior : Tool<IDesktopToolContext>, IContentSubclinical
     {
+        /// <summary>
+        /// Cờ truyền qua args (List&lt;string&gt;) từ plugin gọi: mở form ở chế độ CHỈ XEM kết quả CLS
+        /// (ẩn tích chọn/chèn vào tờ điều trị), không yêu cầu DelegateSelectData.
+        /// </summary>
+        public const string ARG__VIEW_ONLY = "VIEW_ONLY";
+
         object[] entity;
         Inventec.Desktop.Common.Modules.Module currentModule;
         long treatmentId = 0;
         bool returnObject = false;
+        bool isViewOnly = false;
         public ContentSubclinicalBehavior()
             : base()
         {
@@ -87,6 +94,16 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                         {
                             returnObject = (bool)item;
                         }
+                        else if (item is List<string>)
+                        {
+                            // Cờ chế độ từ plugin gọi (không dùng string/bool đơn vì đã bị chiếm bởi
+                            // serviceIds/returnObject — truyền nhầm sẽ kích chế độ headless).
+                            List<string> flags = (List<string>)item;
+                            if (flags.Contains(ARG__VIEW_ONLY))
+                            {
+                                isViewOnly = true;
+                            }
+                        }
 
                     }
 
@@ -112,6 +129,12 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                     else if (currentModule != null && treatmentId > 0 && _DelegateSelectData != null)
                     {
                         result = new frmContentSubclinical(currentModule, treatmentId, _DelegateSelectData, returnObject);
+                    }
+                    else if (isViewOnly && currentModule != null && treatmentId > 0)
+                    {
+                        // Chế độ CHỈ XEM (mở từ ngoài tờ điều trị, vd nút "Kết quả CLS" màn Buồng bệnh):
+                        // không cần DelegateSelectData vì không trả dữ liệu về plugin gọi.
+                        result = new frmContentSubclinical(currentModule, treatmentId, true);
                     }
 
                 }
