@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnSettings = new DevExpress.XtraEditors.SimpleButton();
             this.btnExportPath = new DevExpress.XtraEditors.SimpleButton();
+            this.btnClsMap = new DevExpress.XtraEditors.SimpleButton();
             this.cboKskType = new DevExpress.XtraEditors.ComboBoxEdit();
             this.dtConclusionFrom = new DevExpress.XtraEditors.DateEdit();
             this.dtConclusionTo = new DevExpress.XtraEditors.DateEdit();
@@ -106,6 +107,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciBtnSync = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnExportPath = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnClsMap = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciGrid = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPaging = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -143,6 +145,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSync)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnExportPath)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnClsMap)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).BeginInit();
             this.SuspendLayout();
@@ -221,6 +224,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             this.layoutControl1.Controls.Add(this.btnSettings);
             this.layoutControl1.Controls.Add(this.btnExportPath);
+            this.layoutControl1.Controls.Add(this.btnClsMap);
             this.layoutControl1.Controls.Add(this.cboKskType);
             this.layoutControl1.Controls.Add(this.dtConclusionFrom);
             this.layoutControl1.Controls.Add(this.dtConclusionTo);
@@ -729,7 +733,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciBtnPreview,
             this.lciBtnSync,
             this.layoutControlItem1,
-            this.lciBtnExportPath});
+            this.lciBtnExportPath,
+            this.lciBtnClsMap});
             this.grpFilter.Location = new System.Drawing.Point(0, 0);
             this.grpFilter.Name = "grpFilter";
             this.grpFilter.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -806,8 +811,33 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.emptyFilterTop.AllowHotTrack = false;
             this.emptyFilterTop.Location = new System.Drawing.Point(1029, 0);
             this.emptyFilterTop.Name = "emptyFilterTop";
-            this.emptyFilterTop.Size = new System.Drawing.Size(147, 24);
+            this.emptyFilterTop.Size = new System.Drawing.Size(26, 24);
             this.emptyFilterTop.TextSize = new System.Drawing.Size(0, 0);
+            //
+            // btnClsMap
+            //
+            this.btnClsMap.Location = new System.Drawing.Point(1061, 6);
+            this.btnClsMap.Name = "btnClsMap";
+            this.btnClsMap.Size = new System.Drawing.Size(117, 20);
+            this.btnClsMap.StyleController = this.layoutControl1;
+            this.btnClsMap.TabIndex = 18;
+            this.btnClsMap.Text = "Nối chỉ số CLS...";
+            this.btnClsMap.ToolTip = "Nối chỉ số cận lâm sàng của HIS với chỉ tiêu mẫu M4 — Liên thông KSK Sở Y tế TP.HCM";
+            this.btnClsMap.Click += new System.EventHandler(this.btnClsMap_Click);
+            //
+            // lciBtnClsMap
+            //
+            this.lciBtnClsMap.Control = this.btnClsMap;
+            this.lciBtnClsMap.Location = new System.Drawing.Point(1055, 0);
+            this.lciBtnClsMap.MaxSize = new System.Drawing.Size(121, 24);
+            this.lciBtnClsMap.MinSize = new System.Drawing.Size(121, 24);
+            this.lciBtnClsMap.Name = "lciBtnClsMap";
+            this.lciBtnClsMap.Size = new System.Drawing.Size(121, 24);
+            this.lciBtnClsMap.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnClsMap.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBtnClsMap.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnClsMap.TextToControlDistance = 0;
+            this.lciBtnClsMap.TextVisible = false;
             // 
             // lciPatientCode
             // 
@@ -974,6 +1004,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSync)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnExportPath)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnClsMap)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).EndInit();
             this.ResumeLayout(false);
@@ -1049,5 +1080,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraEditors.SimpleButton btnExportPath;
         private DevExpress.XtraLayout.LayoutControlItem lciBtnExportPath;
+        private DevExpress.XtraEditors.SimpleButton btnClsMap;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnClsMap;
     }
 }

@@ -47,6 +47,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private readonly bool pushHoc;                  // co day cong HOC
         private readonly bool pushHcc;                  // co day cong HCC
         private readonly bool pushVlg;                  // co day cong KDLYT Vinh Long
+
+        /// <summary>
+        /// Dữ liệu nguồn để dựng bản tin cổng Sở Y tế TP.HCM, khóa = mã y lệnh KSK.
+        /// Dựng cùng lúc với dữ liệu của 4 cổng cũ để không phải tải lại lần hai.
+        /// </summary>
+        private readonly Dictionary<long, KskSytHcmSource> sytSourceBySr
+            = new Dictionary<long, KskSytHcmSource>();
         private readonly bool sign;
         private readonly SettingSignADO signSetting;
 
@@ -393,6 +400,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 // Ghi log CHỐT danh sách cổng thực sự đẩy của lần bấm này (để đối soát khi có nhiều cổng).
                 var gateways = new List<string>();
+                if (this.PushSytHcm) gateways.Add("SYT-HCM");
                 if (this.pushByt) gateways.Add("BYT");
                 if (hsskConfig != null) gateways.Add("HSSK");
                 if (hocConfig != null) gateways.Add("HOC");
@@ -469,7 +477,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 }
                             }
 
-                            ado = BuildResultAdo(rowList[i], r0, hccResult, vlgResult, syncTime, libSingleLabel, configError);
+                            // Cổng Sở Y tế TP.HCM (mẫu M3) — hàm này tự bọc try/catch nên lỗi ở
+                            // cổng này KHÔNG làm hỏng kết quả của các cổng trên.
+                            KskSytHcmPushResult sytResult = PushSytHcmOneRow(rowList[i]);
+
+                            ado = BuildResultAdo(rowList[i], r0, hccResult, vlgResult, syncTime,
+                                libSingleLabel, configError, sytResult);
                         }
                     }
                     catch (Exception exRow)
@@ -507,6 +520,187 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Ánh xạ V_HIS_KSK_SYNC (view lưới) + kết quả đẩy -> HIS_KSK_SYNC (entity lưu). Backend upsert theo
         /// (KSK_TYPE_ID, KSK_RECORD_ID). Điền đủ trường: khóa + FK điều trị/y lệnh + kết quả đồng bộ.
         /// </summary>
+        #region ===== Cổng thứ năm — Sở Y tế TP.HCM (mẫu M3) =====
+
+        private const string CFG_KEY_SYT_HCM = "MOS.HIS_KSK_SYNC.SYT_HCM_CONNECTION_INFO";
+
+        /// <summary>
+        /// Có đẩy sang cổng Sở Y tế TP.HCM hay không — theo ô tích trong bảng Cài đặt.
+        /// Đặt qua thuộc tính thay vì thêm tham số hàm khởi tạo, để không phải sửa 4 cổng cũ.
+        /// </summary>
+        internal bool PushSytHcm { get; set; }
+
+        /// <summary>
+        /// Bảng khai báo nối chỉ số cận lâm sàng, do màn hình đồng bộ truyền vào (lưu tại máy qua
+        /// ControlState). Rỗng = chưa khai báo -> khối cận lâm sàng gửi rỗng.
+        /// </summary>
+        internal string SytClsMapJson { get; set; }
+
+        private string sytHcmConnectionInfoCache;
+        private bool sytHcmConfigRead = false;
+
+        /// <summary>
+        /// Cấu hình cổng đã tách sẵn, dùng cho CẢ đợt đẩy. Bản ghi cấu hình giống nhau ở mọi hồ sơ
+        /// nên tách lại cho từng hồ sơ là làm không. Giữ luôn danh sách trường còn thiếu để câu
+        /// thông báo cũng không phải dựng lại.
+        /// </summary>
+        private KskSytHcmConfig sytHcmCfgParsed;
+        private string sytHcmCfgParsedFrom;
+        private string sytHcmCfgMissing;
+
+        private KskSytHcmConfig GetSytHcmConfigOnce(string raw)
+        {
+            if (sytHcmCfgParsedFrom == raw) return sytHcmCfgParsed;
+            sytHcmCfgParsed = KskSytHcmConfig.Parse(raw);
+            sytHcmCfgMissing = (sytHcmCfgParsed != null)
+                ? sytHcmCfgParsed.DescribeMissing() : "khong doc duoc";
+            sytHcmCfgParsedFrom = raw;
+            return sytHcmCfgParsed;
+        }
+
+        /// <summary>
+        /// Chuỗi cấu hình cổng Sở Y tế TP.HCM. Đọc thẳng từ nguồn để sửa cấu hình là ăn ngay,
+        /// không phải khởi động lại chương trình.
+        /// </summary>
+        private string sytHcmConnectionInfo
+        {
+            get
+            {
+                if (sytHcmConfigRead) return sytHcmConnectionInfoCache;
+                sytHcmConfigRead = true;
+                try
+                {
+                    var list = BackendDataWorker.Get<HIS_CONFIG>(false, true, false, false);
+                    if (list == null || list.Count == 0) list = BackendDataWorker.Get<HIS_CONFIG>();
+                    if (list != null)
+                        foreach (var c in list)
+                            if (c != null && c.KEY == CFG_KEY_SYT_HCM) { sytHcmConnectionInfoCache = c.VALUE; break; }
+                }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                return sytHcmConnectionInfoCache;
+            }
+        }
+
+        /// <summary>
+        /// Đẩy MỘT hồ sơ sang cổng Sở Y tế TP.HCM.
+        ///
+        /// Dữ liệu THẬT lấy từ cơ sở dữ liệu; RIÊNG khối cận lâm sàng đang dùng dữ liệu giả theo
+        /// mẫu của Sở vì phần đọc theo bảng nối 34 chỉ số chưa xong — xem KskSytHcmFakeData.
+        ///
+        /// Chưa khai báo cấu hình -> không làm gì. Lỗi ở đây KHÔNG ảnh hưởng 4 cổng còn lại.
+        /// </summary>
+        private KskSytHcmPushResult PushSytHcmOneRow(V_HIS_KSK_SYNC row)
+        {
+            try
+            {
+                if (!this.PushSytHcm) return null;   // khong tich cong nay -> khong lam gi
+                string raw = this.sytHcmConnectionInfo;
+                if (string.IsNullOrWhiteSpace(raw)) return null;
+
+                long sr = ToLong(GetProp(row, "SERVICE_REQ_ID"));
+                KskSytHcmSource src = ValOrNull(sytSourceBySr, sr);
+                if (src == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: y lenh " + sr
+                        + " khong co du lieu ho so KSK tren 18 tuoi -> bo qua cong SYT TP.HCM");
+                    return new KskSytHcmPushResult
+                    {
+                        Message = "Hồ sơ không phải Khám sức khỏe người từ 18 tuổi trở lên"
+                    };
+                }
+
+                KskSytHcmConfig cfg = GetSytHcmConfigOnce(raw);
+                if (cfg == null || !cfg.CanPush)
+                {
+                    string missingCfgFields = sytHcmCfgMissing;
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: cau hinh thieu truong ["
+                        + missingCfgFields + "] -> khong day");
+                    return new KskSytHcmPushResult
+                    {
+                        Message = "Cấu hình cổng Sở Y tế TP.HCM còn thiếu: " + missingCfgFields
+                    };
+                }
+
+                // false = KHONG dung du lieu gia nua. Chua khai bao noi chi so can lam sang thi
+                // khoi do gui RONG — dung voi thuc te, thay vi gui so lieu bia.
+                object body = KskSytHcmBodyBuilder.Build(src, false);
+
+                // Kiem TRUOC khi goi cong: liet ke MOT LUOT moi truong bat buoc con trong.
+                // Cong chi che tung truong mot moi lan gui nen khong kiem truoc thi phai day rat nhieu lan.
+                List<string> missing = KskSytHcmBodyBuilder.DescribeMissingRequired(body);
+                if (missing != null && missing.Count > 0)
+                {
+                    string msg = "Hồ sơ còn thiếu " + missing.Count + " thông tin bắt buộc: "
+                        + string.Join("; ", missing.ToArray());
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: y lenh " + sr + " -> " + msg);
+                    return new KskSytHcmPushResult { Message = msg };
+                }
+
+                KskSytHcmPushResult r = KskSytHcmPusher.Push(cfg, body);
+                Inventec.Common.Logging.LogSystem.Info("SytHcm: y lenh " + sr + " -> "
+                    + (r != null ? r.ToString() : "khong co ket qua"));
+                return r;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return new KskSytHcmPushResult { Message = "Lỗi khi đẩy cổng Sở Y tế TP.HCM" };
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Kết quả chỉ số xét nghiệm của MỘT đợt điều trị.
+        ///
+        /// Kết quả được lấy một lượt cho cả lô hồ sơ nên phải lọc lại theo đợt điều trị, nếu không
+        /// hồ sơ này sẽ mang kết quả của bệnh nhân khác trong cùng lượt đẩy. Đường liên kết:
+        /// kết quả -> dịch vụ (SERE_SERV_ID) -> đợt điều trị (TDL_TREATMENT_ID).
+        /// </summary>
+        private static List<V_HIS_SERE_SERV_TEIN> TeinsOfTreatment(
+            List<V_HIS_SERE_SERV_2> sereServs, List<V_HIS_SERE_SERV_TEIN> teins, long treatmentId)
+        {
+            var rs = new List<V_HIS_SERE_SERV_TEIN>();
+            try
+            {
+                if (teins == null || teins.Count == 0 || treatmentId <= 0) return rs;
+
+                var ssOfTrea = new HashSet<long>();
+                if (sereServs != null)
+                {
+                    foreach (var ss in sereServs)
+                    {
+                        if (ss == null) continue;
+                        if ((ss.TDL_TREATMENT_ID ?? 0) == treatmentId) ssOfTrea.Add(ss.ID);
+                    }
+                }
+                if (ssOfTrea.Count == 0) return rs;
+
+                foreach (var t in teins)
+                {
+                    if (t != null && ssOfTrea.Contains(t.SERE_SERV_ID)) rs.Add(t);
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return rs;
+        }
+
+        /// <summary>
+        /// Bản ghi sinh hiệu đầu tiên của đợt điều trị — dùng khi hồ sơ KSK không gắn bản ghi nào.
+        /// Sinh hiệu có thể được nhập ở màn hình khác của cùng đợt, bỏ qua thì cổng báo thiếu
+        /// huyết áp / nhịp thở dù dữ liệu đã có trong cơ sở dữ liệu.
+        /// </summary>
+        private static HIS_DHST FirstDhstOfTreatment(List<HIS_DHST> list)
+        {
+            try
+            {
+                if (list == null || list.Count == 0) return null;
+                foreach (var d in list) if (d != null) return d;
+                return null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
         private static HIS_KSK_SYNC BuildSyncEntity(V_HIS_KSK_SYNC row, KskSyncResultADO ado)
         {
             var ent = new HIS_KSK_SYNC
@@ -828,6 +1022,26 @@ namespace HIS.Desktop.Plugins.KskSyncList
             var vatyByU18 = GroupByKey(vatys, v => v.KSK_UNDER_EIGHTEEN_ID);
             var dityByO18 = GroupByKey(ditys, d => d.KSK_OVER_EIGHTEEN_ID ?? 0);
 
+            // Bang du lieu rieng cua mau M3 (cong So Y te TP.HCM). Chi goi khi vien DA KHAI BAO
+            // cau hinh cong do -> vien khac khong phat sinh them truy van nao.
+            var sytHcmByO18 = new Dictionary<long, HIS_KSK_SYT_HCM>();
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(this.sytHcmConnectionInfo) && over18s != null && over18s.Count > 0)
+                {
+                    List<long> o18Ids = over18s.Where(x => x != null).Select(x => x.ID).Distinct().ToList();
+                    var sytList = GetList<HIS_KSK_SYT_HCM>("api/HisKskSytHcm/Get",
+                        new MOS.Filter.HisKskSytHcmFilter { KSK_OVER_EIGHTEEN_IDs = o18Ids });
+                    if (sytList != null)
+                        foreach (var x in sytList)
+                            if (x != null && !sytHcmByO18.ContainsKey(x.KSK_OVER_EIGHTEEN_ID))
+                                sytHcmByO18[x.KSK_OVER_EIGHTEEN_ID] = x;
+                    Inventec.Common.Logging.LogSystem.Info("SytHcm: nap bang du lieu mau M3 cho "
+                        + sytHcmByO18.Count + "/" + o18Ids.Count + " ho so KSK tren 18 tuoi");
+                }
+            }
+            catch (Exception exSyt) { Inventec.Common.Logging.LogSystem.Warn(exSyt); }
+
             // Danh muc chi nhanh (cache local) — MA_CSKCB = HEIN_MEDI_ORG_CODE theo BRANCH_ID.
             Dictionary<long, HIS_BRANCH> branchById = null;
             try { branchById = IndexBy(BackendDataWorker.Get<HIS_BRANCH>(), b => b.ID); }
@@ -919,6 +1133,34 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     ClsList = ListOrNull(clsByTr, tr)
                 };
                 inputs.Add(input);
+
+                // Nguon du lieu cho cong So Y te TP.HCM — dung tu chinh nhung gi vua lay o tren.
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(this.sytHcmConnectionInfo) && over18 != null)
+                    {
+                        sytSourceBySr[sr] = new KskSytHcmSource
+                        {
+                            Patient = (trea != null) ? ValOrNull(patById, trea.PATIENT_ID) : null,
+                            Treatment = trea,
+                            ServiceReq = ValOrNull(sreqById, sr),
+                            Over18 = over18,
+                            General = general,
+                            // Ho so KSK khong gan ban ghi sinh hieu -> lay ban ghi sinh hieu khac
+                            // cua CUNG dot dieu tri, thay vi bo trong ca khoi kham the luc.
+                            Dhst = dhstOne ?? FirstDhstOfTreatment(dhstForInput),
+                            SytHcm = ValOrNull(sytHcmByO18, over18.ID),
+                            HisRanks = ranks,
+                            Ditys = ListOrNull(dityByO18, over18.ID),
+                            DiseaseTypes = diseaseTypes,
+                            // Kết quả xét nghiệm của ĐÚNG đợt điều trị này — nguồn của khối cận lâm sàng.
+                            ClsTeins = TeinsOfTreatment(clsSereServs, clsTeins,
+                                (trea != null) ? trea.ID : 0),
+                            ClsMapJson = this.SytClsMapJson
+                        };
+                    }
+                }
+                catch (Exception exSytSrc) { Inventec.Common.Logging.LogSystem.Warn(exSytSrc); }
                 LogInputData(row, input);   // log nguon du lieu nap duoc -> biet khoi XML nao se sinh ra
             }
             return inputs;
@@ -2272,18 +2514,25 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         private KskSyncResultADO BuildResultAdo(V_HIS_KSK_SYNC row, ResultADO pushResult,
             KskHccPushResult hccResult, KskVlgPushResult vlgResult, long syncTime,
-            string libSingleLabel, string configError)
+            string libSingleLabel, string configError, KskSytHcmPushResult sytResult)
         {
             KskSyncResultADO ado = NewResult(row, syncTime);
             PushResponse resp = ExtractResponse(pushResult);
             bool hasLib = pushResult != null;
             bool hasHcc = hccResult != null;
             bool hasVlg = vlgResult != null;
+            // Cổng Sở Y tế TP.HCM cũng tính vào kết quả chung, nếu không thì lượt CHỈ tích riêng cổng
+            // này sẽ bị ghi nhầm là "chưa chọn cổng nào để đẩy".
+            bool hasSyt = sytResult != null;
+
             bool libOk = hasLib && pushResult.Success;
             bool hccOk = hasHcc && hccResult.Success;
             bool vlgOk = hasVlg && vlgResult.Success;
-            bool success = (hasLib || hasHcc || hasVlg)
-                        && (!hasLib || libOk) && (!hasHcc || hccOk) && (!hasVlg || vlgOk)
+            bool sytOk = hasSyt && sytResult.Success;
+
+            bool success = (hasLib || hasHcc || hasVlg || hasSyt)
+                        && (!hasLib || libOk) && (!hasHcc || hccOk)
+                        && (!hasVlg || vlgOk) && (!hasSyt || sytOk)
                         && string.IsNullOrEmpty(configError);
 
             ado.SYNC_RESULT_TYPE = success ? RESULT_SUCCESS : RESULT_FAILED;
@@ -2331,6 +2580,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     reasons.Add(!string.IsNullOrEmpty(vlgResult.Message) ? vlgResult.Message : "VLG: đồng bộ thất bại");
                 if (!string.IsNullOrEmpty(configError)) reasons.Add(configError);
                 if (!hasLib && !hasHcc && !hasVlg && string.IsNullOrEmpty(configError))
+                if (hasSyt && !sytOk)
+                    reasons.Add("SYT TP.HCM: " + (!string.IsNullOrEmpty(sytResult.Message)
+                        ? sytResult.Message : "đồng bộ thất bại"));
+                if (!string.IsNullOrEmpty(configError)) reasons.Add(configError);
+                if (!hasLib && !hasHcc && !hasSyt && string.IsNullOrEmpty(configError))
                     reasons.Add("Chưa chọn cổng liên thông để đẩy");
                 ado.SYNC_FAILD_REASON = string.Join(" | ", reasons);
             }
