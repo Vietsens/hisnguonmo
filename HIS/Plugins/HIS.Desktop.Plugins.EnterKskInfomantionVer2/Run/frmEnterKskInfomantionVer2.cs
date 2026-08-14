@@ -172,6 +172,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 lap("Init");
                 // Nạp trước dữ liệu (1 call gộp api/HisKskSync/GetKskData -> HisKskDataSDO).
                 PrefetchFormData();
+                // Tai danh muc cong SYT TP.HCM tren luong rieng — vien chua khai bao cau hinh thi tu bo qua.
+                try { StartLoadSytCatalogs(); }
+                catch (Exception exSyt) { Inventec.Common.Logging.LogSystem.Error(exSyt); }
                 lap("PrefetchFormData");
                 ShowInformationPatient();
                 lap("ShowInformationPatient");
@@ -188,6 +191,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 InitKskHistoryIcdForTabs();
                 LoadKskHistoryIcdToUc();
                 lap("KskHistoryIcd");
+                // Tab "Khám lâm sàng HCM" (tab con của Ksk trên 18 tuổi) — chọn ICD theo chuyên khoa,
+                // cấu trúc Mẫu 03 mục II. Hiện chỉ dựng giao diện, chưa nạp/lưu dữ liệu.
+                // Bọc riêng: hỏng phần này thì ghi nhật ký rồi chạy tiếp, KHÔNG kéo đổ cả màn hình.
+                try { InitClinicalExamHcmTab(); }
+                catch (Exception exHcm) { Inventec.Common.Logging.LogSystem.Error(exHcm); }
+                lap("ClinicalExamHcm");
                 // Nhúng combo "Người khám" kết luận vào panel host (tab trên/dưới 18 tuổi).
                 InitConcluderComboForTabs();
                 LoadConcluderComboExt();
@@ -1359,6 +1368,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     currentKskDriverCar = result.HisKskDriverCar;
                     currentKskGeneral = result.HisKskGeneral;
                     currentKskOverEight = result.HisKskOverEighteen;
+                    // Lưu tiếp bảng dữ liệu riêng của mẫu M4 — cần mã bản ghi KSK vừa trả về
+                    // làm khóa liên kết nên phải chạy sau, không gộp vào cùng lệnh lưu trên.
+                    SaveKskSytHcm(result.HisKskOverEighteen);
                     currentKskPeriodDriver = result.HisKskPeriodDriver;
                     currentKskUnderEight = result.HisKskUnderEighteen;
                     currentKskOther = result.HisKskOther;
@@ -2072,6 +2084,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 UpdateAutoTestIndexEnableByTab();
+                // Tab "Khám lâm sàng HCM": khởi tạo cụm ICD-10 lần đầu mở tab (lazy).
+                if (this.tabClinicalExamHcm != null && this.xtraTabControl2 != null
+                    && this.xtraTabControl2.SelectedTabPage == this.tabClinicalExamHcm)
+                {
+                    try { EnsureClinicalExamHcmInited(); }
+                    catch (Exception exHcm2) { Inventec.Common.Logging.LogSystem.Error(exHcm2); }
+                }
             }
             catch (Exception ex)
             {

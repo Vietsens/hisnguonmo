@@ -26370,8 +26370,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgSinhTon8.AppearanceGroup.Options.UseFont = true;
             this.lcgSinhTon8.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lciTemperature8,
-            this.lciRespEval8,
             this.lciTemperatureEval8,
+            this.lciRespEval8,
             this.lciPulseEval8,
             this.lciPulse8,
             this.lciRespRate8});
@@ -26395,7 +26395,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciRespEval8
             // 
             this.lciRespEval8.Control = this.rdoRespiratoryEval8;
-            this.lciRespEval8.Location = new System.Drawing.Point(196, 0);
+            this.lciRespEval8.Location = new System.Drawing.Point(196, 58);
             this.lciRespEval8.Name = "lciRespEval8";
             this.lciRespEval8.Size = new System.Drawing.Size(233, 29);
             this.lciRespEval8.Text = "Đánh giá nhịp thở";
@@ -26407,7 +26407,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciTemperatureEval8
             // 
             this.lciTemperatureEval8.Control = this.rdoTemperatureEval8;
-            this.lciTemperatureEval8.Location = new System.Drawing.Point(196, 58);
+            this.lciTemperatureEval8.Location = new System.Drawing.Point(196, 0);
             this.lciTemperatureEval8.Name = "lciTemperatureEval8";
             this.lciTemperatureEval8.Size = new System.Drawing.Size(233, 29);
             this.lciTemperatureEval8.Text = "Đánh giá nhiệt độ";
