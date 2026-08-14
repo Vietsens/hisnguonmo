@@ -20,8 +20,8 @@ using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
 {
     /// <summary>
-    /// Bang khai bao noi chi so can lam sang cua HIS voi chi tieu cua mau M4 (cong SYT TP.HCM).
-    /// Ben trai: danh muc chi so xet nghiem cua HIS. Ben phai: 34 chi tieu co dinh cua mau M4.
+    /// Bang khai bao noi chi so can lam sang cua HIS voi chi tieu cua mau M3 (cong SYT TP.HCM).
+    /// Ben trai: danh muc chi so xet nghiem cua HIS. Ben phai: 34 chi tieu co dinh cua mau M3.
     ///
     /// Form KHONG tu ghi ControlState: tra chuoi JSON ve cho UCKskSyncList qua onSave, vi
     /// ControlStateWorker.SetData XOA moi key khong nam trong danh sach truyen vao -> phai ghi
@@ -399,7 +399,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
                 if (item == null || string.IsNullOrWhiteSpace(item.FieldCode)) { skipped++; continue; }
 
                 var field = this.fields.FirstOrDefault(o => o.FieldCode == item.FieldCode);
-                if (field == null) { skipped++; continue; }   // ma chi tieu khong thuoc mau M4
+                if (field == null) { skipped++; continue; }   // ma chi tieu khong thuoc mau M3
 
                 field.Note = item.Note;
                 if (string.IsNullOrWhiteSpace(item.TestIndexCode)) { ClearMapKeepNote(field); continue; }
@@ -660,7 +660,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
                 using (SaveFileDialog dlg = new SaveFileDialog())
                 {
                     dlg.Filter = "Tệp JSON (*.json)|*.json";
-                    dlg.FileName = "NoiChiSoCanLamSang_SYT_HCM_M4.json";
+                    dlg.FileName = "NoiChiSoCanLamSang_SYT_HCM_M3.json";
                     if (dlg.ShowDialog() != DialogResult.OK) return;
 
                     string json = Newtonsoft.Json.JsonConvert.SerializeObject(file, Newtonsoft.Json.Formatting.Indented);
@@ -726,7 +726,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
                 if (skipped > 0)
                 {
                     msg += Environment.NewLine + string.Format(
-                        "Bỏ qua {0} cặp vì mã chỉ tiêu không thuộc mẫu M4 hoặc mã chỉ số không có trong danh mục của viện.",
+                        "Bỏ qua {0} cặp vì mã chỉ tiêu không thuộc mẫu M3 hoặc mã chỉ số không có trong danh mục của viện.",
                         skipped);
                 }
                 msg += Environment.NewLine + "Bấm Lưu để ghi khai báo cho máy trạm này.";
