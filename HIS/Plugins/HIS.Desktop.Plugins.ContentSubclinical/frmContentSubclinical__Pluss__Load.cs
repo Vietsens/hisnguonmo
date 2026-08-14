@@ -66,7 +66,11 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
 
                 if (this.treatmentIdSearch <= 0)
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show("Bắt buộc chọn Hồ sơ điều trị", "Thông báo", MessageBoxButtons.OK);
+                    // Chế độ chỉ xem: không popup lỗi — mở màn với cây rỗng (bệnh nhân chưa có kết quả CLS).
+                    if (!this.isViewOnly)
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bắt buộc chọn Hồ sơ điều trị", "Thông báo", MessageBoxButtons.OK);
+                    }
                     return;
                 }
                 WaitingManager.Show();

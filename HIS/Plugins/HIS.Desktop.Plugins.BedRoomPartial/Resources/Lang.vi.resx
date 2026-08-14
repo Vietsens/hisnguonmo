@@ -1026,4 +1026,10 @@
   <data name="UCTreeListService.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
     <value>Nhập chuỗi tìm kiếm ...</value>
   </data>
+  <data name="UCBedRoomPartial.btnKetQuaCLS.Text" xml:space="preserve">
+    <value>Kết quả CLS</value>
+  </data>
+  <data name="UCBedRoomPartial.btnKetQuaCLS.ToolTip" xml:space="preserve">
+    <value>Xem kết quả cận lâm sàng</value>
+  </data>
 </root>
