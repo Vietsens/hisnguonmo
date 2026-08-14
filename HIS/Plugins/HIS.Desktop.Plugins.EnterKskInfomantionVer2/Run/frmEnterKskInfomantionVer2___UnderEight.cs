@@ -108,6 +108,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
+                // O Phan loai cua muc V. KET LUAN — dung khi mo tab, roi dong bo gia tri
+                // vua nap tu co so du lieu (o duoc lam bang ma nen khong co san luc nap).
+                BuildKskRank3();
+
                 if (currentServiceReq != null)
                 {
                     CommonParam param = new CommonParam();
@@ -117,6 +121,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     if (data != null && data.Count > 0)
                     {
                         currentKskUnderEight = data.First();
+                        FillKskRank3();   // Phân loại ở mục V. KẾT LUẬN
                         txtPathologicalHistoryFamily3.Text = currentKskUnderEight.PATHOLOGICAL_HISTORY_FAMILY;
                         txtPathologicalHistory3.Text = currentKskUnderEight.PATHOLOGICAL_HISTORY;
                         txtMedicineUsing3.Text = currentKskUnderEight.MEDICINE_USING;
@@ -511,6 +516,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (currentKskUnderEight != null)
                     obj.ID = currentKskUnderEight.ID;
+                obj.HEALTH_EXAM_RANK_ID = GetKskRank3Value();   // Phân loại ở mục V. KẾT LUẬN
                 obj.PATHOLOGICAL_HISTORY_FAMILY = txtPathologicalHistoryFamily3.Text;
                 obj.PATHOLOGICAL_HISTORY = txtPathologicalHistory3.Text;
                 obj.MEDICINE_USING = txtMedicineUsing3.Text;

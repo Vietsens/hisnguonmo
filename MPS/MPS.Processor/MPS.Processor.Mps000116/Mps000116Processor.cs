@@ -56,7 +56,9 @@ namespace MPS.Processor.Mps000116
 
                 objectTag.AddObjectData(store, "Type", _Types);
                 objectTag.AddObjectData(store, "MedicinesADO", rdo._Mps000116ADOs);
+                objectTag.AddObjectData(store, "MedicineDetailADO", rdo._Mps000116DetailADOs);
                 objectTag.AddRelationship(store, "Type", "MedicinesADO", "ID", "TypeId");
+                objectTag.AddRelationship(store, "Type", "MedicineDetailADO", "ID", "TypeId");
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
 
                 result = true;
@@ -135,6 +137,35 @@ namespace MPS.Processor.Mps000116
                     .ThenBy(o => o.NUM_ORDER)
                     .ThenBy(o => o.MEDI_MATY_TYPE_NAME)
                     .ToList();
+                }
+
+                //Chi tiet tung y lenh trong ngay: sap xep cung tieu chi voi danh sach gop,
+                //them thoi gian y lenh lam tieu chi cuoi de nhieu y lenh cua cung 1 thuoc
+                //hien theo dung thu tu thoi gian.
+                if (rdo._Mps000116DetailADOs == null)
+                {
+                    rdo._Mps000116DetailADOs = new List<Mps000116DetailADO>();
+                }
+                else if (rdo._Mps000116DetailADOs.Count > 0)
+                {
+                    if (rdo._SingleKeys != null && rdo._SingleKeys.IsOderMedicine == 1)
+                    {
+                        rdo._Mps000116DetailADOs = rdo._Mps000116DetailADOs
+                            .OrderBy(o => o.SERVICE_TYPE_ID)
+                            .ThenByDescending(o => o.MEDICINE_GROUP_NUM_ORDER)
+                            .ThenByDescending(o => o.MEDICINE_USE_FORM_NUM_ORDER)
+                            .ThenBy(o => o.NUM_ORDER)
+                            .ThenBy(o => o.MEDI_MATY_TYPE_NAME)
+                            .ThenBy(o => o.INTRUCTION_TIME)
+                            .ToList();
+                    }
+                    else
+                    {
+                        rdo._Mps000116DetailADOs = rdo._Mps000116DetailADOs
+                            .OrderBy(o => o.MEDI_MATY_TYPE_NAME)
+                            .ThenBy(o => o.INTRUCTION_TIME)
+                            .ToList();
+                    }
                 }
                 Inventec.Common.Logging.LogSystem.Debug("_mps000116ADOs______________" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdo._Mps000116ADOs), rdo._Mps000116ADOs));
 
