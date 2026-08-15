@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2026 INVENTEC
  *
@@ -62,9 +62,6 @@ namespace HIS.Desktop.Plugins.KskSyncList
         // key VLG (khong thi vien Vinh Long deploy xong bam Dong bo ngay se day THIEU cong tinh ma van
         // bao thanh cong). User tick tay lan dau la JSON moi co truong nay -> ton trong lua chon user.
         private bool vlgStateSaved;
-
-        /// <summary>Đã dời nút "Nối chỉ số" xuống hàng riêng chưa — chỉ dời một lần.</summary>
-        private bool clsMapButtonMoved;
 
         /// <summary>Trạng thái đã lưu CÓ trường SyncSytHcm chưa — để biết khi nào cần tự tích một lần.</summary>
         private bool sytStateSaved;
@@ -595,18 +592,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             LoadSyncTargetAvailability();
             // AN TOAN DA VIEN: nut "Noi chi so CLS" chi phuc vu cong SYT TP.HCM nen chi hien voi
             // vien da khai bao cau hinh cong do; vien khac khong thay nut nay.
-            // Nút "Nối chỉ số" nằm CÙNG VÙNG NGANG với nút "Cập nhật KQ cổng VLG" (cả hai đều
-            // 1055-1176) nên đè lên nhau. Hai hàng của khung lọc đã kín, không còn khe nào, nên cho
-            // nút này xuống MỘT HÀNG RIÊNG.
-            //
-            // Viện không khai cấu hình cổng Sở Y tế thì mục bị đặt Never -> DevExpress loại hẳn khỏi
-            // bố cục, hàng đó biến mất, giao diện của viện khác không đổi một chút nào.
-            if (!clsMapButtonMoved && lciBtnClsMap != null && lciBtnSync != null)
-            {
-                clsMapButtonMoved = true;
-                try { lciBtnClsMap.Move(lciBtnSync, DevExpress.XtraLayout.Utils.InsertType.Bottom); }
-                catch (Exception exMove) { Inventec.Common.Logging.LogSystem.Warn(exMove); }
-            }
+            // KHÔNG dời nút bằng mã. Vị trí các nút đã đặt sẵn trong tệp bố cục (Designer): nút
+            // "Nối chỉ số" ở cuối hàng 1, nút "Đồng bộ lên cổng" ở cuối hàng 2. Gọi Move lúc chạy sẽ
+            // sắp lại cây bố cục và kéo theo hai hậu quả đã gặp: nút Đồng bộ bị đẩy lên hàng 1 tách
+            // khỏi nút Xuất XML, và phần lưới bên dưới không còn giãn hết chiều cao.
             lciBtnClsMap.Visibility = sytConfigAvailable
                 ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                 : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
