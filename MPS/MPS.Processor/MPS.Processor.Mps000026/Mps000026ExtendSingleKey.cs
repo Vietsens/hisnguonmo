@@ -114,6 +114,9 @@ namespace MPS.Processor.Mps000026
         internal const string IMG_AVATAR = "IMG_AVATAR";
         internal const string AVT_AND_BHYT_NULL = "AVT_AND_BHYT_NULL";
 
+        internal const string TEST_SAMPLE_TYPE_CODE = "TEST_SAMPLE_TYPE_CODE";
+        internal const string TEST_SAMPLE_TYPE_NAME = "TEST_SAMPLE_TYPE_NAME";
+
         internal const string PAY_FORM_CODE = "PAY_FORM_CODE";
         internal const string CARD_CODE = "CARD_CODE";
         internal const string BANK_CARD_CODE = "BANK_CARD_CODE";

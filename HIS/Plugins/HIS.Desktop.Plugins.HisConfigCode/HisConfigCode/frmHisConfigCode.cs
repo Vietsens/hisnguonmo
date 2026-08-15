@@ -288,6 +288,9 @@ namespace HIS.Desktop.Plugins.HisConfigCode
             columnInfos.Add(new ColumnInfo("BRANCH_NAME", "", 250, 2));
             ControlEditorADO controlEditorADO = new ControlEditorADO("BRANCH_NAME", "ID", columnInfos, false, 350);
             ControlEditorLoader.Load(cboBranch, data, controlEditorADO);
+
+            //Luon cho phep chon chi nhanh (Designer dat ReadOnly = true)
+            cboBranch.ReadOnly = false;
         }
 
         #endregion
@@ -557,7 +560,7 @@ namespace HIS.Desktop.Plugins.HisConfigCode
                     FillDataToEditorControl(data);
                     this.ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(this.ActionType);
-                    cboBranch.ReadOnly = !(data.KEY == "MOS.HIS_TREATMENT.AUTO_FINISH_SERVICE_REQ.SERVICE_CODE");
+                    cboBranch.ReadOnly = false;
 
                     //Disable nút sửa nếu dữ liệu đã bị khóa
                     btnEdit.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
@@ -1360,14 +1363,7 @@ namespace HIS.Desktop.Plugins.HisConfigCode
         {
             try
             {
-                if (!string.IsNullOrEmpty(txtKey.Text) && txtKey.Text == "MOS.HIS_TREATMENT.AUTO_FINISH_SERVICE_REQ.SERVICE_CODE")
-                {
-                    cboBranch.ReadOnly = false;
-                }
-                else
-                {
-                    cboBranch.ReadOnly = true;
-                }
+                cboBranch.ReadOnly = false;
             }
             catch (Exception ex)
             {
