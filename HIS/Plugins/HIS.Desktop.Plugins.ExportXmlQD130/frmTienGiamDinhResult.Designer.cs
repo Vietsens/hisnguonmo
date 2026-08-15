@@ -35,6 +35,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.panelBottom = new DevExpress.XtraEditors.PanelControl();
             this.lblSummary = new DevExpress.XtraEditors.LabelControl();
             this.btnClose = new DevExpress.XtraEditors.SimpleButton();
+            this.btnExportError = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
             this.splitContainerMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlSummary)).BeginInit();
@@ -193,6 +194,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // panelBottom
             //
             this.panelBottom.Controls.Add(this.lblSummary);
+            this.panelBottom.Controls.Add(this.btnExportError);
             this.panelBottom.Controls.Add(this.btnClose);
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelBottom.Location = new System.Drawing.Point(0, 486);
@@ -216,6 +218,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.btnClose.TabIndex = 1;
             this.btnClose.Text = "Đóng";
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            //
+            // btnExportError
+            //
+            this.btnExportError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportError.Location = new System.Drawing.Point(742, 6);
+            this.btnExportError.Name = "btnExportError";
+            this.btnExportError.Size = new System.Drawing.Size(134, 24);
+            this.btnExportError.TabIndex = 2;
+            this.btnExportError.Text = "Xuất danh sách lỗi";
+            this.btnExportError.Click += new System.EventHandler(this.btnExportError_Click);
             //
             // frmTienGiamDinhResult
             //
@@ -259,5 +271,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private DevExpress.XtraEditors.PanelControl panelBottom;
         private DevExpress.XtraEditors.LabelControl lblSummary;
         private DevExpress.XtraEditors.SimpleButton btnClose;
+        private DevExpress.XtraEditors.SimpleButton btnExportError;
     }
 }

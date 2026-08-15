@@ -253,6 +253,12 @@
   <data name="TienGiamDinhTrangThaiKhongKiemTraDuoc" xml:space="preserve">
     <value>Unable to check</value>
   </data>
+  <data name="TienGiamDinhTrangThaiCongQuaTai" xml:space="preserve">
+    <value>Gateway busy — not checked, please retry later</value>
+  </data>
+  <data name="TienGiamDinhTrangThaiQuaThoiGianCho" xml:space="preserve">
+    <value>Request timed out — not checked, please retry later</value>
+  </data>
   <data name="TienGiamDinhSaiThongTinXacThuc" xml:space="preserve">
     <value>Invalid credentials</value>
   </data>
@@ -269,12 +275,29 @@
     <value>The check was cancelled before finishing, so not all records were checked. Export is skipped to avoid unchecked records slipping through.</value>
   </data>
   <data name="TienGiamDinhChanXuat" xml:space="preserve">
-    <value>{0} records have critical errors on the pre-assessment system, so the export was not performed. Please correct the records and check again.</value>
+    <value>Export stopped: {0} record(s) have critical errors, {1} record(s) could not be checked on the pre-assessment system.
+Unchecked records are blocked as well because they cannot be confirmed error-free. Please correct the records or click "Check errors" again before exporting.</value>
   </data>
   <data name="TienGiamDinhCanhBaoTruocKhiXuat" xml:space="preserve">
-    <value>{0} records have warnings and {1} records could not be checked. Do you want to continue exporting?</value>
+    <value>{0} records have warnings on the pre-assessment system. Do you want to continue exporting?</value>
   </data>
   <data name="TienGiamDinhTongKetKetQua" xml:space="preserve">
     <value>Checked {0} records: {1} critical, {2} warning, {3} not checked.</value>
+  </data>
+  <data name="TienGiamDinhXuatKhongCoDuLieu" xml:space="preserve">
+    <value>There is no record with errors to export.</value>
+  </data>
+  <data name="TienGiamDinhXuatThanhCong" xml:space="preserve">
+    <value>Exported {0} error lines of {1} records to file:
+{2}</value>
+  </data>
+  <data name="TienGiamDinhXuatThatBai" xml:space="preserve">
+    <value>Could not write the error list file. Please check write permission on the selected folder, or close the file if it is open.</value>
+  </data>
+  <data name="TienGiamDinhXuatTenTepMacDinh" xml:space="preserve">
+    <value>DanhSachLoiTienGiamDinh_{0}.xlsx</value>
+  </data>
+  <data name="TienGiamDinhXuatGhiChuCatBot" xml:space="preserve">
+    <value>(The error list of this record was truncated — some errors may not be listed)</value>
   </data>
 </root>

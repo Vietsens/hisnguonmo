@@ -113,6 +113,9 @@ namespace HIS.UC.Hospitalize.Run
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtDepartmentCode = new DevExpress.XtraEditors.TextEdit();
             this.txtTreatmentTypeCode = new DevExpress.XtraEditors.TextEdit();
+            this.cboHeinPatientTypeCode = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewHeinPatientTypeCode = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.lciHeinPatientTypeCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lblNumHospitalize = new DevExpress.XtraEditors.LabelControl();
             this.chkGenerateNewInCode = new DevExpress.XtraEditors.CheckEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -223,6 +226,9 @@ namespace HIS.UC.Hospitalize.Run
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboHeinPatientTypeCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewHeinPatientTypeCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHeinPatientTypeCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDepartmentCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentTypeCode.Properties)).BeginInit();
@@ -324,6 +330,7 @@ namespace HIS.UC.Hospitalize.Run
             this.layoutControl2.Controls.Add(this.lblGiuongKeHoach);
             this.layoutControl2.Controls.Add(this.cboDepartment);
             this.layoutControl2.Controls.Add(this.cboTreatmentType);
+            this.layoutControl2.Controls.Add(this.cboHeinPatientTypeCode);
             this.layoutControl2.Controls.Add(this.txtDepartmentCode);
             this.layoutControl2.Controls.Add(this.txtTreatmentTypeCode);
             this.layoutControl2.Controls.Add(this.lblNumHospitalize);
@@ -1059,6 +1066,7 @@ namespace HIS.UC.Hospitalize.Run
             this.layoutControlItem3,
             this.layoutControlItem4,
             this.layoutControlItem5,
+            this.lciHeinPatientTypeCode,
             this.layoutControlItem6,
             this.layoutControlItem7,
             this.layoutControlItemBedRoom,
@@ -1153,9 +1161,39 @@ namespace HIS.UC.Hospitalize.Run
             this.layoutControlItem5.Location = new System.Drawing.Point(195, 168);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem5.Size = new System.Drawing.Size(284, 24);
+            this.layoutControlItem5.Size = new System.Drawing.Size(124, 24);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
+            //
+            // lciHeinPatientTypeCode
+            //
+            this.lciHeinPatientTypeCode.Control = this.cboHeinPatientTypeCode;
+            this.lciHeinPatientTypeCode.Location = new System.Drawing.Point(319, 168);
+            this.lciHeinPatientTypeCode.Name = "lciHeinPatientTypeCode";
+            this.lciHeinPatientTypeCode.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
+            this.lciHeinPatientTypeCode.Size = new System.Drawing.Size(160, 24);
+            this.lciHeinPatientTypeCode.Text = "Mã ĐT KCB:";
+            this.lciHeinPatientTypeCode.TextSize = new System.Drawing.Size(66, 20);
+            //
+            // cboHeinPatientTypeCode
+            //
+            this.cboHeinPatientTypeCode.Location = new System.Drawing.Point(387, 170);
+            this.cboHeinPatientTypeCode.Name = "cboHeinPatientTypeCode";
+            this.cboHeinPatientTypeCode.Properties.AutoComplete = false;
+            this.cboHeinPatientTypeCode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboHeinPatientTypeCode.Properties.NullText = "";
+            this.cboHeinPatientTypeCode.Properties.View = this.gridViewHeinPatientTypeCode;
+            this.cboHeinPatientTypeCode.Size = new System.Drawing.Size(90, 20);
+            this.cboHeinPatientTypeCode.StyleController = this.layoutControl2;
+            this.cboHeinPatientTypeCode.EditValueChanged += new System.EventHandler(this.cboHeinPatientTypeCode_EditValueChanged);
+            //
+            // gridViewHeinPatientTypeCode
+            //
+            this.gridViewHeinPatientTypeCode.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewHeinPatientTypeCode.Name = "gridViewHeinPatientTypeCode";
+            this.gridViewHeinPatientTypeCode.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewHeinPatientTypeCode.OptionsView.ShowGroupPanel = false;
             // 
             // layoutControlItem6
             // 
@@ -1687,6 +1725,9 @@ namespace HIS.UC.Hospitalize.Run
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboHeinPatientTypeCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewHeinPatientTypeCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHeinPatientTypeCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDepartmentCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentTypeCode.Properties)).EndInit();
@@ -1763,6 +1804,9 @@ namespace HIS.UC.Hospitalize.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
+        private DevExpress.XtraEditors.GridLookUpEdit cboHeinPatientTypeCode;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewHeinPatientTypeCode;
+        private DevExpress.XtraLayout.LayoutControlItem lciHeinPatientTypeCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;

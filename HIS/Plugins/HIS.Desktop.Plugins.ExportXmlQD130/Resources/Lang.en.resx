@@ -489,4 +489,16 @@
   <data name="frmTienGiamDinhResult.gridColDescription.Caption" xml:space="preserve">
     <value>Error description</value>
   </data>
+  <data name="frmTienGiamDinhResult.btnExportError.Text" xml:space="preserve">
+    <value>Export error list</value>
+  </data>
+  <data name="frmTienGiamDinhResult.export.colStt" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmTienGiamDinhResult.export.colResultStatus" xml:space="preserve">
+    <value>Record result</value>
+  </data>
+  <data name="frmTienGiamDinhResult.export.colSeverity" xml:space="preserve">
+    <value>Error severity</value>
+  </data>
 </root>

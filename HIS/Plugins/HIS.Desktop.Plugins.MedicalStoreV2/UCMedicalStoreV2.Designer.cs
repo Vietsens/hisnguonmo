@@ -342,7 +342,14 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciJustShowTreatmentLatch = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciStoreCheckStatus = new DevExpress.XtraLayout.LayoutControlItem();
+            this.cboStoreCheckStatus = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridLookUpEditStoreCheckView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColStoreCheck = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColStoreCheckUser = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColStoreCheckTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckEdit_StoreCheck__Enable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemCheckEdit_StoreCheck__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.lciTreatmentType = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPatientType = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciAreaStored = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -423,6 +430,11 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTreatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit_StoreCheck__Enable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit_StoreCheck__Disable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboStoreCheckStatus.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEditStoreCheckView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciStoreCheckStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnViewTreatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditInventory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit7)).BeginInit();
@@ -479,7 +491,6 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciJustShowTreatmentLatch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAreaStored)).BeginInit();
@@ -541,6 +552,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.layoutControl1.Controls.Add(this.cboTreatmentType);
             this.layoutControl1.Controls.Add(this.dtStoreTime_To);
             this.layoutControl1.Controls.Add(this.cboStatusEnd);
+            this.layoutControl1.Controls.Add(this.cboStoreCheckStatus);
             this.layoutControl1.Controls.Add(this.txtStoreCodeMediRecord);
             this.layoutControl1.Controls.Add(this.dtOutTimeFrom);
             this.layoutControl1.Controls.Add(this.btnSearchTreatment);
@@ -1790,7 +1802,9 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.btnViewTreatment,
             this.repositoryItemButtonEdit_UnRejectStore,
             this.repositoryItemButtonEdit_RejectStore,
-            this.repositoryItemButtonEditInventory});
+            this.repositoryItemButtonEditInventory,
+            this.repositoryItemCheckEdit_StoreCheck__Enable,
+            this.repositoryItemCheckEdit_StoreCheck__Disable});
             this.gridControlTreatment.Size = new System.Drawing.Size(727, 643);
             this.gridControlTreatment.TabIndex = 28;
             this.gridControlTreatment.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1802,6 +1816,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn57,
             this.grdColView,
             this.gridColumn34,
+            this.gridColStoreCheck,
             this.gridColumn50,
             this.gridColumn58,
             this.gridColumn59,
@@ -1825,7 +1840,9 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn55,
             this.gridColumn54,
             this.gridColumn71,
-            this.gridColumn38});
+            this.gridColumn38,
+            this.gridColStoreCheckUser,
+            this.gridColStoreCheckTime});
             this.gridViewTreatment.GridControl = this.gridControlTreatment;
             this.gridViewTreatment.Name = "gridViewTreatment";
             this.gridViewTreatment.OptionsCustomization.AllowFilter = false;
@@ -2568,7 +2585,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.layoutControlItem7,
             this.lciJustShowTreatmentLatch,
             this.layoutControlItem8,
-            this.emptySpaceItem1,
+            this.lciStoreCheckStatus,
             this.lciTreatmentType,
             this.lciPatientType});
             this.lciAreaNotStore.Location = new System.Drawing.Point(0, 0);
@@ -2779,13 +2796,87 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.layoutControlItem8.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem8.TextToControlDistance = 5;
             // 
-            // emptySpaceItem1
-            // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(385, 27);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(348, 28);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // lciStoreCheckStatus
+            //
+            this.lciStoreCheckStatus.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciStoreCheckStatus.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciStoreCheckStatus.Control = this.cboStoreCheckStatus;
+            this.lciStoreCheckStatus.Location = new System.Drawing.Point(385, 27);
+            this.lciStoreCheckStatus.Name = "lciStoreCheckStatus";
+            this.lciStoreCheckStatus.Size = new System.Drawing.Size(348, 28);
+            this.lciStoreCheckStatus.Text = "Tình trạng kiểm tra:";
+            this.lciStoreCheckStatus.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciStoreCheckStatus.TextSize = new System.Drawing.Size(125, 20);
+            this.lciStoreCheckStatus.TextToControlDistance = 5;
+            //
+            // cboStoreCheckStatus
+            //
+            this.cboStoreCheckStatus.EditValue = "";
+            this.cboStoreCheckStatus.Location = new System.Drawing.Point(546, 33);
+            this.cboStoreCheckStatus.Margin = new System.Windows.Forms.Padding(4);
+            this.cboStoreCheckStatus.Name = "cboStoreCheckStatus";
+            this.cboStoreCheckStatus.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboStoreCheckStatus.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboStoreCheckStatus.Properties.NullText = "";
+            this.cboStoreCheckStatus.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboStoreCheckStatus.Properties.View = this.gridLookUpEditStoreCheckView;
+            this.cboStoreCheckStatus.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboStoreCheckStatus_Properties_ButtonClick);
+            this.cboStoreCheckStatus.Size = new System.Drawing.Size(212, 22);
+            this.cboStoreCheckStatus.StyleController = this.layoutControl1;
+            this.cboStoreCheckStatus.TabIndex = 13;
+            this.cboStoreCheckStatus.EditValueChanged += new System.EventHandler(this.cboStoreCheckStatus_EditValueChanged);
+            //
+            // gridLookUpEditStoreCheckView
+            //
+            this.gridLookUpEditStoreCheckView.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridLookUpEditStoreCheckView.Name = "gridLookUpEditStoreCheckView";
+            this.gridLookUpEditStoreCheckView.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridLookUpEditStoreCheckView.OptionsView.ShowGroupPanel = false;
+            //
+            // gridColStoreCheck
+            //
+            this.gridColStoreCheck.Caption = "Đã kiểm tra";
+            this.gridColStoreCheck.ColumnEdit = this.repositoryItemCheckEdit_StoreCheck__Enable;
+            this.gridColStoreCheck.FieldName = "IsStoreChecked";
+            this.gridColStoreCheck.Name = "gridColStoreCheck";
+            this.gridColStoreCheck.ToolTip = "Đánh dấu hồ sơ đã được kiểm tra đủ giấy tờ và chữ ký";
+            this.gridColStoreCheck.Visible = false;
+            this.gridColStoreCheck.Width = 80;
+            //
+            // gridColStoreCheckUser
+            //
+            this.gridColStoreCheckUser.Caption = "Người kiểm tra";
+            this.gridColStoreCheckUser.FieldName = "STORE_CHECK_USERNAME";
+            this.gridColStoreCheckUser.Name = "gridColStoreCheckUser";
+            this.gridColStoreCheckUser.OptionsColumn.AllowEdit = false;
+            this.gridColStoreCheckUser.Visible = false;
+            this.gridColStoreCheckUser.Width = 120;
+            //
+            // gridColStoreCheckTime
+            //
+            this.gridColStoreCheckTime.Caption = "Thời gian kiểm tra";
+            this.gridColStoreCheckTime.FieldName = "STORE_CHECK_TIME_STR";
+            this.gridColStoreCheckTime.Name = "gridColStoreCheckTime";
+            this.gridColStoreCheckTime.OptionsColumn.AllowEdit = false;
+            this.gridColStoreCheckTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColStoreCheckTime.Visible = false;
+            this.gridColStoreCheckTime.Width = 130;
+            //
+            // repositoryItemCheckEdit_StoreCheck__Enable
+            //
+            this.repositoryItemCheckEdit_StoreCheck__Enable.AutoHeight = false;
+            this.repositoryItemCheckEdit_StoreCheck__Enable.Name = "repositoryItemCheckEdit_StoreCheck__Enable";
+            this.repositoryItemCheckEdit_StoreCheck__Enable.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEdit_StoreCheck__Enable.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEdit_StoreCheck_CheckedChanged);
+            //
+            // repositoryItemCheckEdit_StoreCheck__Disable
+            //
+            this.repositoryItemCheckEdit_StoreCheck__Disable.AutoHeight = false;
+            this.repositoryItemCheckEdit_StoreCheck__Disable.Name = "repositoryItemCheckEdit_StoreCheck__Disable";
+            this.repositoryItemCheckEdit_StoreCheck__Disable.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEdit_StoreCheck__Disable.ReadOnly = true;
             // 
             // lciTreatmentType
             // 
@@ -3163,6 +3254,11 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTreatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit_StoreCheck__Enable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit_StoreCheck__Disable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboStoreCheckStatus.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEditStoreCheckView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciStoreCheckStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnViewTreatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditInventory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit7)).EndInit();
@@ -3219,7 +3315,6 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciJustShowTreatmentLatch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAreaStored)).EndInit();
@@ -3449,7 +3544,14 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
         private DevExpress.XtraEditors.GridLookUpEdit cboExecuteDepartment;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+        private DevExpress.XtraLayout.LayoutControlItem lciStoreCheckStatus;
+        private DevExpress.XtraEditors.GridLookUpEdit cboStoreCheckStatus;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEditStoreCheckView;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColStoreCheck;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColStoreCheckUser;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColStoreCheckTime;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit_StoreCheck__Enable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit_StoreCheck__Disable;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn39;
         private DevExpress.Utils.ImageCollection imageCollection1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn50;

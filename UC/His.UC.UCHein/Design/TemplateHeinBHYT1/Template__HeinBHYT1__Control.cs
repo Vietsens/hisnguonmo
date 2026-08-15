@@ -1467,6 +1467,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER, true);
                     this.txtInCode.Enabled = false;
                     firstCheck = false;
+                    // Doi tuyen => tinh lai ma doi tuong KCB theo thong tin the moi
+                    ResetHeinPatientCodeForRecalc();
                     InitComboPatientCode();
                     SetSize();
                     //}
@@ -1499,6 +1501,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 if (this.rdoRightRoute.Checked && !chkHasDobCertificate.Checked)
                 {
+                    // Doi tuyen => tinh lai ma doi tuong KCB theo thong tin the moi
+                    ResetHeinPatientCodeForRecalc();
                     InitComboPatientCode();
                     SetSize();
                     firstCheck = false;
@@ -1629,6 +1633,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     cboHeinRightRoute.EditValue = null;
                     txtHeinRightRouteCode.Text = "";
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER__CHOICE_RIGHT, true);
+                    // Xoa truong hop => tinh lai ma doi tuong KCB theo thong tin the moi
+                    ResetHeinPatientCodeForRecalc();
                     InitComboPatientCode();
                 }
             }
@@ -1744,6 +1750,9 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         this.cboNoiSong.SelectAll();
                         this.cboNoiSong.ShowPopup();
                     }
+                    // Chon truong hop (cap cuu / gioi thieu / hen kham / thong tuyen)
+                    // => tinh lai ma doi tuong KCB theo thong tin the moi
+                    ResetHeinPatientCodeForRecalc();
                     InitComboPatientCode();
                     //        this.ChangecboHeinRightRoute();
                     //    if (this.cboHeinRightRoute.EditValue == null)
