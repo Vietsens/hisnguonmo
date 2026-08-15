@@ -147,10 +147,22 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
         internal static int IcdSubMaxCount;
 
+        // Chan nhap vien khi con van ban chua hoan thanh: danh sach DEPARTMENT_CODE ap dung, phan tach boi "|".
+        // Khong khai bao/de trong -> khong kiem tra.
+        private const string KEY_CheckDepaDocumentHospitalization = "HIS.Desktop.Plugins.ExamServiceReqExecute.CheckDepaDocument.Hospitalization";
+        internal static List<string> CheckDepaDocumentHospitalizationCodes = new List<string>();
+
         internal static void LoadConfig()
         {
             try
             {
+                // Doc som: LoadConfig dung chung mot try/catch, neu mot key phia sau nem loi
+                // thi cac key con lai se khong duoc doc -> tinh nang chan nhap vien bi tat am tham.
+                string rawCheckDepaDocHospitalize = GetValue(KEY_CheckDepaDocumentHospitalization);
+                CheckDepaDocumentHospitalizationCodes = string.IsNullOrWhiteSpace(rawCheckDepaDocHospitalize)
+                    ? new List<string>()
+                    : rawCheckDepaDocHospitalize.Split('|').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).ToList();
+
                 IsCheckValueMaxlengthOption = GetValue(KEY_IsCheckValueMaxlengthOption);
                 IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY_IsCheckServiceFollowWhenOut) == GlobalVariables.CommonStringTrue;
                 AutoCreatePaymentTransactions = GetValue(KEY__AutoCreatePaymentTransactions);
