@@ -215,6 +215,9 @@
     <Compile Include="Run\UCHospitalize__Load.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Run\UCHospitalize__HeinPatientType.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Run\IRun.cs" />
     <Compile Include="Run\RunBehavior.cs" />
     <Compile Include="Run\RunFactory.cs" />
