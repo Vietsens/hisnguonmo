@@ -50,6 +50,19 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\DEVEXPRESS\DevExpress.Data.v15.2.dll</HintPath>
     </Reference>
+    <!-- Private=False: khong copy EMR.EFMODEL/EMR.Filter vao bin cua plugin.
+         Ban lib\EMR\EMR.EFMODEL.dll hien tai la ban rut gon (khong con cac kieu view V_*),
+         neu copy ra bin roi deploy se de len ban dung chung va lam hong cac plugin EMR khac. -->
+    <Reference Include="EMR.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\EMR\EMR.EFMODEL.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="EMR.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\EMR\EMR.Filter.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Images.v15.2.dll</HintPath>
@@ -633,6 +646,10 @@
     <Compile Include="ExamServiceReqExecuteControl__ValidateExam.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__CheckDocumentHospitalize.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ADO\MediRecordCheckingResultADO.cs" />
     <Compile Include="Sda\SdaEventLogCreate.cs" />
     <Compile Include="Validate\ValidateRule\BenhPhuValidationRule.cs" />
     <Compile Include="Validate\ValidateRule\PortComValidationRule.cs" />

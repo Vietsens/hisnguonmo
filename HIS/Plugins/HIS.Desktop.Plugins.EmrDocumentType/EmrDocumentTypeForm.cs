@@ -114,7 +114,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             try
             {
                 InitializeComponent();
-                //pagingGrid = new PagingGrid();
+                //pagingGrid = new PagingGrid();   9922061992
                 currentModule = module;
                 try
                 {
@@ -556,6 +556,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                 chkIsRequiredToComplete.Checked = false;
                 chkPatientMustSign.Checked = false;
                 chkIsAllowEditWhenStored.Checked = false;
+                chkIsHospitalization.Checked = false;
                 cboPatientSignatureDisplayType.SelectedIndex = -1;
                 numFixZoom.EditValue = null;
                 cboDocRoleTag.SelectedIndex = -1;
@@ -645,6 +646,11 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                     currentDTO.IS_ALLOW_EDIT_WHEN_STORED = (short)1;
                 else
                     currentDTO.IS_ALLOW_EDIT_WHEN_STORED = null;
+
+                if (chkIsHospitalization.Checked)
+                    currentDTO.IS_HOSPITALIZATION = (short)1;
+                else
+                    currentDTO.IS_HOSPITALIZATION = null;
 
                 currentDTO.DOCUMENT_TYPE_CODE = txtCode.Text.Trim();
                 currentDTO.DOCUMENT_TYPE_NAME = txtName.Text.Trim();
@@ -891,6 +897,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                     chkIsRequiredToComplete.Checked = data.IS_REQUIRED_TO_COMPLETE == 1 ? true : false;
                     chkPatientMustSign.Checked = data.PATIENT_MUST_SIGN == 1 ? true : false;
                     chkIsAllowEditWhenStored.Checked = data.IS_ALLOW_EDIT_WHEN_STORED == 1 ? true : false;
+                    chkIsHospitalization.Checked = data.IS_HOSPITALIZATION == 1 ? true : false;
                     cboPatientSignatureDisplayType.SelectedIndex = data.PATIENT_SIGNATURE_DISPLAY_TYPE.HasValue ? (int)data.PATIENT_SIGNATURE_DISPLAY_TYPE : -1;
 
                     string roleDisplay = "";
@@ -1358,6 +1365,21 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
         }
 
         private void chkIsAllowEditWhenStored_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkIsHospitalization.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkIsHospitalization_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
             {

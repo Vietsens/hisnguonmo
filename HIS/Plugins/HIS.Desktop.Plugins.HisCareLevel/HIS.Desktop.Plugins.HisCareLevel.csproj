@@ -1,19 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{94160226-191E-4A8C-AC35-A103EF471AD5}</ProjectGuid>
+    <ProjectGuid>{68ADBBD2-DCC9-49D0-A05D-7D5B2DF50748}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HIS.Desktop.Plugins.EmrDocumentType</RootNamespace>
-    <AssemblyName>HIS.Desktop.Plugins.EmrDocumentType</AssemblyName>
+    <RootNamespace>HIS.Desktop.Plugins.HisCareLevel</RootNamespace>
+    <AssemblyName>HIS.Desktop.Plugins.HisCareLevel</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,98 +29,28 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACS.EFMODEL">
-      <HintPath>..\..\..\..\lib\WCF\Sdc.Client\ACS.EFMODEL.dll</HintPath>
-    </Reference>
-    <Reference Include="ACS.Filter">
-      <HintPath>..\..\..\..\lib\WCF\Sdc.Client\ACS.Filter.dll</HintPath>
-    </Reference>
-    <Reference Include="ACS.SDO">
-      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.ListReportTypeGroup\ACS.SDO.dll</HintPath>
-    </Reference>
-    <Reference Include="ACS.UC.User">
-      <HintPath>..\..\..\..\lib\HIS\ACS.UC.User\ACS.UC.User.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="EMR.EFMODEL">
-      <HintPath>..\..\..\..\LIB\EMR\EMR.EFMODEL.dll</HintPath>
-    </Reference>
-    <Reference Include="EMR.Filter">
-      <HintPath>..\..\..\..\LIB\EMR\EMR.Filter.dll</HintPath>
-    </Reference>
-    <Reference Include="EMR.SDO">
-      <HintPath>..\..\..\..\LIB\EMR\EMR.SDO.dll</HintPath>
-    </Reference>
-    <Reference Include="EMR.URI">
-      <HintPath>..\..\..\..\LIB\EMR\EMR.URI.dll</HintPath>
-    </Reference>
-    <Reference Include="HID.EFMODEL">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.PlusInfo\HID.EFMODEL.dll</HintPath>
-    </Reference>
-    <Reference Include="HID.Filter">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.PlusInfo\HID.Filter.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.IsAdmin\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.SdaConfigKey">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.TreeSereServ7V2\HIS.Desktop.LocalStorage.SdaConfigKey.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
-    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
-    </Reference>
-    <Reference Include="IMSys.DbConfig.SDA_RS">
-      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.SDA_RS\IMSys.DbConfig.SDA_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.Controls.EditorLoader">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Controls.PopupLoader">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.PopupLoader\Inventec.Common.Controls.PopupLoader.dll</HintPath>
-    </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.FlexCelExport">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.FlexCelPrint">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelPrint.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.Mapper">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.RegistryUtil, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.RegistryUtil\Inventec.Common.RegistryUtil.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.String">
-      <HintPath>..\..\..\..\lib\WCF\HIS.WCF\HIS.WCF.Service.ConnectEMRService\Inventec.Common.String.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
@@ -139,17 +67,9 @@
     <Reference Include="Inventec.Desktop.Common.Controls.ValidationRule">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Desktop.Common.Core">
-      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Core\Inventec.Desktop.Common.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Desktop.Common.LanguageManager">
+    <Reference Include="Inventec.Desktop.Common.LanguageManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Desktop.Common.LibraryMessage">
-      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LibraryMessage\Inventec.Desktop.Common.LibraryMessage.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Desktop.Common.LocalStorage.Location">
-      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LocalStorage.Location\Inventec.Desktop.Common.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
@@ -157,47 +77,21 @@
     <Reference Include="Inventec.Desktop.Common.Modules">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Desktop.Common.Token">
-      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Token\Inventec.Desktop.Common.Token.dll</HintPath>
-    </Reference>
     <Reference Include="Inventec.Desktop.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\..\lib\WCF\EMR.WCF\EMR.SignProcessor\Inventec.Token.ClientSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.UC.Login">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="SAR.Desktop.Plugins.SarPrintType">
-      <HintPath>..\..\..\..\histest\x64\Plugins\Module\SAR.Desktop.Plugins.SarPrintType.dll</HintPath>
-    </Reference>
-    <Reference Include="SDA.EFMODEL">
-      <HintPath>..\..\..\..\LIB\SDA\SDA.EFMODEL.dll</HintPath>
-    </Reference>
-    <Reference Include="SDA.Filter">
-      <HintPath>..\..\..\..\LIB\SDA\SDA.Filter.dll</HintPath>
-    </Reference>
-    <Reference Include="SDA.SDO">
-      <HintPath>..\..\..\..\LIB\SDA\SDA.SDO.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -207,17 +101,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcsUserADO.cs" />
-    <Compile Include="AcsUserUtil.cs" />
-    <Compile Include="EmrDocumentTypeProcesser.cs" />
-    <Compile Include="EmrRequestUriStore.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="frmAcsUser.cs">
+    <Compile Include="HisCareLevel\HisCareLevelBehavior.cs" />
+    <Compile Include="HisCareLevel\HisCareLevelFactory.cs" />
+    <Compile Include="HisCareLevel\IHisCareLevel.cs" />
+    <Compile Include="HisCareLevelProcessor.cs" />
+    <Compile Include="HisRequestUriStore.cs" />
+    <Compile Include="frmCareLevel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAcsUser.Designer.cs">
-      <DependentUpon>frmAcsUser.cs</DependentUpon>
+    <Compile Include="frmCareLevel.Designer.cs">
+      <DependentUpon>frmCareLevel.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -225,14 +118,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resource\ResourceLanguageManager.cs" />
-    <Compile Include="EmrDocumentTypeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EmrDocumentTypeForm.Designer.cs">
-      <DependentUpon>EmrDocumentTypeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ValidateSprin1.cs" />
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Resources\ResourceMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
@@ -247,13 +134,13 @@
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.EventLog\HIS.Desktop.EventLog.csproj">
-      <Project>{306cbc95-d95a-48e1-941e-f3ecc0cbee34}</Project>
-      <Name>HIS.Desktop.EventLog</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
       <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
       <Name>HIS.Desktop.LibraryMessage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
+      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
+      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
@@ -267,29 +154,28 @@
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{7b13b1cd-d8cb-44df-a6fb-27644c6cdb00}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmAcsUser.resx">
-      <DependentUpon>frmAcsUser.cs</DependentUpon>
+    <EmbeddedResource Include="frmCareLevel.resx">
+      <DependentUpon>frmCareLevel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource\Lang.en.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resource\Lang.vi.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EmrDocumentTypeForm.resx">
-      <DependentUpon>EmrDocumentTypeForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\delete_16x16.png" />
+    <None Include="Resources\hmenu-lock.png" />
+    <None Include="Resources\Lock-Unlock-icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -309,8 +195,6 @@ xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionNam
 
 if errorlevel 1 goto BuildEventFailed
 
-if errorlevel 1 goto BuildEventFailed
-
 REM Exit properly because the build will not fail
 REM unless the final step exits with an error code
 
@@ -321,11 +205,4 @@ exit 1
 :BuildEventOK
 echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

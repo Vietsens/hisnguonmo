@@ -117,66 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>456, 17</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>82</value>
-  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnLock.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        R0lGODlhEAAQAIcAAE9SW2hZQGxubmdpcGpsc29wdHN1end3fG5xgIduF7iIDL6NCb+NCKiPUMGPC8KQ
-        C8aUC8uXAc6ZAMycCsmaF9OfAcieMM2hB86mDN2qAN6rAN+sANqqCt61Gdi1N965N+KuAOm1AOm2AOy4
-        AOCzFOO3GuG/I+G/JuC6KM+mRNiwSdKwV+fCF+vGH+/LGvbDAPnEAP/TAP/VAP/ZAOTBI+XEIuvIMuvK
-        O+vYN//nAP/rAP/uAP/8AP//AP/mOv/nPufTUf/nSv/vRf/sW///Q///Rv//TIGBhIaIjIqLjpCQk5eX
-        l5iYmJmZmbKmhKenp6qqqrq5qbm4tb6+vry9wujRjP//q9bW1tnZ2dvb297f5v//w///xf//xv//yuPj
-        4+zs7P/+5PPz8/b29v379P/99/j4+P/9+P/++Pz8/P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        ACH/C05FVFNDQVBFMi4wAwEBAAAh+QQBAABqACwAAAAAEAAQAAAImADVCBxIsKBBNVmmQHmC5eDAL0kM
-        HDjC5IpDNUqQCASzpMlFAgSpFHCoBQFBKQMObokiAMcNGy2cAFBh8EeDAECGBPGBIoECgyyEuOhQggSH
-        ChIgGKzhpUgPHTJgjNDwwCANLkR45IjxQkQGBwZNYNXK1esCgye6ZN3adQMDgx+sGOmxY0YIEBFSHKzi
-        AcOFCRQsrLhIWE1AADs=
-</value>
-  </data>
-  <data name="btnDeleteEnable.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="repositoryItemDelete.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAApdEVYdFRpdGxlAFJlbW92ZTtEZWxldGU7QmFycztS
-        aWJib247U3RhbmRhcmQ7Y1ZIMAAAAMJJREFUOE+Nk0sKAjEQRHM4YVZ6CS8gfhBGHK/pSRRXbRWkJOlO
-        q4sHSf0YBlLMrNy3qzWYef4HZC/s8KzyCxi4+rAHmVvNsrOhcKqCSEfgqSz2Ms7OCCPQfPlIvQ2kIzgP
-        y+QzUIN+ZAFpmXQDBAE/0tKVSXcRCI5GQpkEgSDsP5sso2wQEByVRRjpLgj48gGEH9t2vpYbLx35WRbQ
-        hiM0+DBaI5QFPD8yU5zAowppWSCjkSeYJHJk58MZyPIBTmZW3tJAnMwmSptiAAAAAElFTkSuQmCC
+        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAjdEVYdFRpdGxlAENhbmNlbDtTdG9wO0V4aXQ7QmFy
+        cztSaWJib247TJaWsgAAAMJJREFUOE+Nk0sKAjEQRHM4YVZ6CS8gfhBGHK/pSRRXbRWkJOlOq4sHSf0Y
+        BlLMrNy3qzWYef4HZC/s8KzyCxi4+rAHmVvNsrOhcKqCSEfgqSz2Ms7OCCPQfPlIvQ2kIzgPy+QzUIN+
+        ZAFpmXQDBAE/0tKVSXcRCI5GQpkEgSDsP5sso2wQEByVRRjpLgj48gGEH9t2vpYbLx35WRbQhiM0+DBa
+        I5QFPD8yU5zAowppWSCjkSeYJHJk58MZyPIBTmZW3tJAnMwmSptiAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="btnUnLock.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        R0lGODlhEAAQAIcAAHZ0aXFxcXNzc3R0dLZ5AJSEP5CIdMqVAM+fF9WmBdijAd6rAN+sANqrC9ShGtWk
-        G9alHNimHNimHd22A9KlI9mnINerNd+6LuGtAOe0AOi0AOi1AOu3APC9AM+rT+DEDfTAAPXCAPrJAPzJ
-        AP/LCfLHHv/RAP/SAP/XAPrbAPvVEP/YGuvNPPLXKPHXLvPYJ/ffK//XJvbSM/bTNPnXN//kAP/mAP/r
-        APzwAP/8AP/+AP//AP/yOP/+N///Of//OuPJQvrbRf/eRebLef/rTf/vU///Q///U//uYv//ZoODg4SE
-        hIaGhoeHh4iIiI2NjY+QkpGRkZSUlJmZmZubm56enp+fn4mRr5yepaCgoKGhoaSkpKSkpaampqenp6io
-        qLCwsLGxsb+/v+rauv//kP//vcvLy8zMzNzd5vnr0P//x///yP//yf//zeLi4uPj5vv15/Ly8vPz8/b2
-        9vf39///8Pn5+f7+/v///v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        ACH/C05FVFNDQVBFMi4wAwEBAAAh+QQBAAB5ACwAAAAAEAAQAAAIqADzCBxIsKBBgmKmSPlykOAZKk+Y
-        ZGnSUCAYJwLDRPHS8A2XJQO3KGmIBguUgV0GDCST5AiPGBeuGEgj0EoAgUUQEKCBhMgMAAUqCKwiQKCK
-        FSSEBJFRIsEBCQLNaBEIo00PHClEgOCAIYLBF2t+6LBxIoSGBRAMtlDjI0cNEyEyMHhg0AWbH27hbsDg
-        wCCLMkZ23EAxooMCCweHAPkwoQEFD2MqSh4YEAA7
-</value>
-  </data>
-  <data name="btnDeleteDisable.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="repositoryItemDisDelete.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABR0RVh0VGl0
         bGUARGVsZXRlO1JlbW92ZTs7PnOFAAAAsklEQVQ4T42TzQrCMBCE83Y96bOIPwgV9ZJnrnjSGcnIZrNN
@@ -185,19 +137,16 @@
         ZjiBpQQ9WajkBSaFLDmU9Qh8gHBy+gKrKvC1lTjrQQAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="resource.ToolTip" xml:space="preserve">
-    <value>Nếu văn bản không ký đủ thì không cho phép kết thúc điều trị, trừ các tài khoản được khai báo tại đây (thông thường là các tài khoản ký số của của giám đốc bệnh viện ở mục hành chính của vỏ bệnh án và phần người nhận hồ sơ ở mục người nhận bệnh án)</value>
-  </data>
-  <metadata name="dxValidationProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>534, 17</value>
+  </metadata>
+  <metadata name="dxValidationProviderEditorInfo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="dxErrorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>188, 17</value>
+  <metadata name="dxErrorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>232, 17</value>
   </metadata>
-  <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>581, 17</value>
-  </metadata>
-  <metadata name="toolTipController1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>736, 17</value>
+  <metadata name="toolTipControllerGrid.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>368, 17</value>
   </metadata>
 </root>
