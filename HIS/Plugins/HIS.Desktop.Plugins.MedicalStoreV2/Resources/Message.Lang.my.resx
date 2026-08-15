@@ -156,4 +156,19 @@
   <data name="XuLyThatBai" xml:space="preserve">
     <value>ကိုင်တွယ်မှု မအောင်မြင်</value>
   </data>
+  <data name="TatCa" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+  <data name="DaKiemTra" xml:space="preserve">
+    <value>စစ်ဆေးပြီး</value>
+  </data>
+  <data name="ChuaKiemTra" xml:space="preserve">
+    <value>မစစ်ဆေးရသေး</value>
+  </data>
+  <data name="XacNhanDanhDauDaKiemTra" xml:space="preserve">
+    <value>ဤမှတ်တမ်းကို စစ်ဆေးပြီးအဖြစ် မှတ်သားရန် သေချာပါသလား။ ဤလုပ်ဆောင်ချက်ကို ပြန်လည်ရုပ်သိမ်း၍ မရပါ။</value>
+  </data>
+  <data name="KhongDuQuyenDanhDauDaKiemTra" xml:space="preserve">
+    <value>မှတ်တမ်းကို စစ်ဆေးပြီးအဖြစ် မှတ်သားရန် သင့်တွင် ခွင့်ပြုချက် မရှိပါ။</value>
+  </data>
 </root>

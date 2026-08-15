@@ -51,12 +51,43 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
         private const int MIN_TIMEOUT_SECOND = 5;
         private const int MAX_TIMEOUT_SECOND = 180;
 
-        /// <summary>So giay cho truoc khi thu lai khi he ngoai bao qua tai tam thoi</summary>
-        private const int RATE_LIMIT_RETRY_DELAY_SECOND = 3;
+        /// <summary>
+        /// So giay cho truoc khi thu lai khi he ngoai bao qua tai tam thoi.
+        /// Chi dung khi cong khong gui header Retry-After.
+        /// De 15 giay vi cua so gioi han cua cong la mot phut: cho qua ngan thi thu lai gan nhu
+        /// chac chan van bi tu choi, vua mat thoi gian vua mat luon ket qua cua ho so do.
+        /// Da giai nhip nen 429 la truong hop hiem, cho lau mot chut khong anh huong toc do chung.
+        /// </summary>
+        private const int RATE_LIMIT_RETRY_DELAY_SECOND = 15;
+
+        /// <summary>Tran tren cho header Retry-After - cong khai bao vo ly thi khong treo man hinh ca phut</summary>
+        private const int MAX_RETRY_AFTER_SECOND = 60;
+
+        /// <summary>
+        /// Khoang cach toi thieu giua hai lan BAT DAU goi (mili giay).
+        /// Cong cho 60 luot moi phut, tuc mot luot moi giay; de 1100ms lay bien an toan
+        /// vi dac ta khong noi ro cong tinh theo cua so co dinh hay cua so truot.
+        /// </summary>
+        private const int MIN_REQUEST_INTERVAL_MILLISECOND = 1100;
+
+        /// <summary>
+        /// So ky tu toi da cua phan hoi duoc ghi vao nhat ky.
+        /// Man nay chay theo lo nen phai cat bot, tranh mot luot kiem tra sinh ra tep log qua lon.
+        /// </summary>
+        private const int LOG_BODY_MAX_LENGTH = 4000;
 
         private readonly string baseUrl;
         private readonly string token;
         private readonly int timeoutSecond;
+
+        /// <summary>
+        /// Dong ho do khoang cach giua cac luot goi.
+        /// Dung Stopwatch chu khong dung gio he thong de khong bi lech khi may dong bo lai dong ho.
+        /// </summary>
+        private readonly System.Diagnostics.Stopwatch clock = System.Diagnostics.Stopwatch.StartNew();
+
+        /// <summary>Moc bat dau cua luot goi gan nhat theo dong ho tren. So am = chua goi lan nao.</summary>
+        private long lastRequestStartMillisecond = -1;
 
         /// <summary>
         /// True khi config co du dia chi may chu va chuoi xac thuc.
@@ -163,13 +194,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
 
                 HttpResult httpResult = await SendAsync(treatmentCode, cancelToken);
 
-                //He ngoai bao qua tai tam thoi - cho roi thu lai mot lan
+                //He ngoai bao qua tai tam thoi - cho roi thu lai mot lan.
+                //Uu tien khoang cho do chinh cong chi dinh, khong co thi dung mac dinh.
                 if (httpResult.StatusCode == 429)
                 {
-                    LogSystem.Info("TienGiamDinhWorker - He ngoai bao qua tai tam thoi, cho "
-                        + RATE_LIMIT_RETRY_DELAY_SECOND + " giay roi thu lai. Ma dieu tri: " + treatmentCode);
+                    int retryDelaySecond = httpResult.RetryAfterSecond > 0
+                        ? httpResult.RetryAfterSecond
+                        : RATE_LIMIT_RETRY_DELAY_SECOND;
 
-                    await Task.Delay(TimeSpan.FromSeconds(RATE_LIMIT_RETRY_DELAY_SECOND), cancelToken);
+                    LogSystem.Info("TienGiamDinhWorker - He ngoai bao qua tai tam thoi, cho "
+                        + retryDelaySecond + " giay roi thu lai"
+                        + (httpResult.RetryAfterSecond > 0 ? " (theo header Retry-After)" : "")
+                        + ". Ma dieu tri: " + treatmentCode);
+
+                    await Task.Delay(TimeSpan.FromSeconds(retryDelaySecond), cancelToken);
                     httpResult = await SendAsync(treatmentCode, cancelToken);
                 }
 
@@ -196,6 +234,35 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             public string Body { get; set; }
             public bool IsTimeout { get; set; }
             public bool IsNetworkError { get; set; }
+
+            /// <summary>So giay cong yeu cau cho truoc khi goi lai (header Retry-After). 0 = cong khong chi dinh.</summary>
+            public int RetryAfterSecond { get; set; }
+        }
+
+        /// <summary>
+        /// Cho du khoang cach toi thieu roi moi bat dau luot goi tiep theo.
+        ///
+        /// Co y goi CHAM lai cho khop tran cua cong. Truoc day vong lap goi het toc do, vuot tran
+        /// thi bi tu choi (429), phai cho roi thu lai - vua lau hon vua lam ho so bi tra ve
+        /// "khong kiem tra duoc" trong khi ban than ho so khong co van de gi.
+        ///
+        /// Do theo moc BAT DAU cua luot truoc chu khong phai luc no ket thuc, nen thoi gian
+        /// ban than luot goi da nam trong khoang cho: cong tra loi cham thi gan nhu khong phai cho them.
+        /// </summary>
+        private async Task WaitForNextSlotAsync(CancellationToken cancelToken)
+        {
+            if (this.lastRequestStartMillisecond >= 0)
+            {
+                long elapsed = this.clock.ElapsedMilliseconds - this.lastRequestStartMillisecond;
+                long waitMillisecond = MIN_REQUEST_INTERVAL_MILLISECOND - elapsed;
+
+                if (waitMillisecond > 0)
+                {
+                    await Task.Delay(TimeSpan.FromMilliseconds(waitMillisecond), cancelToken);
+                }
+            }
+
+            this.lastRequestStartMillisecond = this.clock.ElapsedMilliseconds;
         }
 
         private async Task<HttpResult> SendAsync(string treatmentCode, CancellationToken cancelToken)
@@ -203,6 +270,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             HttpResult httpResult = new HttpResult();
             try
             {
+                await WaitForNextSlotAsync(cancelToken);
+
                 using (HttpClient client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(this.timeoutSecond);
@@ -215,6 +284,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
 
                     httpResult.StatusCode = (int)response.StatusCode;
                     httpResult.Body = await response.Content.ReadAsStringAsync();
+                    httpResult.RetryAfterSecond = ReadRetryAfterSecond(response);
+
+                    //Ghi nguyen van phan hoi de doi chieu voi he ngoai khi hai ben khong thong nhat ket qua,
+                    //va de biet cong co that su tra du lieu cua vien hay tra rong moi ho so.
+                    //Phan hoi khong chua thong tin dinh danh benh nhan - ma the BHYT da duoc he ngoai che,
+                    //chi con bon so cuoi (dac ta API muc 5).
+                    LogSystem.Debug("TienGiamDinhWorker - Phan hoi tho. Ma dieu tri: " + treatmentCode
+                        + ". HttpStatus: " + httpResult.StatusCode
+                        + ". Body: " + CutForLog(httpResult.Body));
+
                     return httpResult;
                 }
             }
@@ -237,6 +316,47 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     + treatmentCode + ". " + exHttp.Message);
                 return httpResult;
             }
+        }
+
+        /// <summary>
+        /// Doc header Retry-After neu cong co gui. Cong duoc phep gui so giay hoac moc thoi gian.
+        /// Khong co hoac khong doc duoc thi tra ve 0 de ben goi dung khoang cho mac dinh.
+        /// </summary>
+        private static int ReadRetryAfterSecond(HttpResponseMessage response)
+        {
+            try
+            {
+                if (response == null || response.Headers == null || response.Headers.RetryAfter == null)
+                {
+                    return 0;
+                }
+
+                RetryConditionHeaderValue retryAfter = response.Headers.RetryAfter;
+                double second = 0;
+
+                if (retryAfter.Delta.HasValue)
+                {
+                    second = retryAfter.Delta.Value.TotalSeconds;
+                }
+                else if (retryAfter.Date.HasValue)
+                {
+                    second = (retryAfter.Date.Value - DateTimeOffset.UtcNow).TotalSeconds;
+                }
+
+                if (second <= 0)
+                {
+                    return 0;
+                }
+
+                return second > MAX_RETRY_AFTER_SECOND
+                    ? MAX_RETRY_AFTER_SECOND
+                    : (int)Math.Ceiling(second);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+            return 0;
         }
 
         /// <summary>
@@ -275,6 +395,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.RateLimited;
+
+                //Phai ghi ro: ho so nay KHONG duoc kiem, khong phai la ho so sach.
+                //Truoc day nhanh nay im lang nen khong dem duoc bao nhieu ho so chet vi qua tai.
+                LogSystem.Warn("TienGiamDinhWorker - Van bi tu choi vi qua tai sau khi da thu lai, "
+                    + "ho so nay khong duoc kiem. Ma dieu tri: " + result.TreatmentCode);
                 return result;
             }
 
@@ -283,7 +408,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.SystemError;
                 LogSystem.Warn("TienGiamDinhWorker - He ngoai tra ve HttpStatus " + httpResult.StatusCode
-                    + ". Ma dieu tri: " + result.TreatmentCode);
+                    + ". Ma dieu tri: " + result.TreatmentCode
+                    + ". Body: " + CutForLog(httpResult.Body));
                 return result;
             }
 
@@ -303,8 +429,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     result.Status = EnumTienGiamDinhStatus.CheckFailed;
                     result.FailReason = EnumTienGiamDinhFailReason.SystemError;
                     JObject error = json["error"] as JObject;
-                    LogSystem.Warn("TienGiamDinhWorker - He ngoai tra ve that bai. Ma loi: "
-                        + (error == null ? "" : error.Value<string>("code"))
+                    LogSystem.Warn("TienGiamDinhWorker - He ngoai tra ve that bai. Ma dieu tri: "
+                        + result.TreatmentCode
+                        + ". Ma loi: " + (error == null ? "" : error.Value<string>("code"))
+                        + ". Mo ta: " + (error == null ? "" : error.Value<string>("message"))
+                        + ". Chi tiet: " + (error == null ? "" : error.Value<string>("details"))
                         + ". RequestId: " + result.RequestId);
                     return result;
                 }
@@ -336,16 +465,74 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     result.Status = EnumTienGiamDinhStatus.NoError;
                 }
 
+                LogResponseSummary(result, summary);
                 return result;
             }
             catch (Exception ex)
             {
                 LogSystem.Error("TienGiamDinhWorker - Khong doc duoc phan hoi cua he ngoai. Ma dieu tri: "
-                    + result.TreatmentCode, ex);
+                    + result.TreatmentCode
+                    + ". Body: " + CutForLog(httpResult.Body), ex);
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.SystemError;
                 return result;
             }
+        }
+
+        /// <summary>
+        /// Ghi lai bang tong hop do he ngoai tra ve, dat canh so lieu HIS tu dem duoc.
+        /// Hai con so lech nhau la dau hieu doc sai phan hoi - tim ra ngay tu nhat ky,
+        /// khong phai dung lai hien truong.
+        /// </summary>
+        private void LogResponseSummary(TienGiamDinhResultADO result, JObject summary)
+        {
+            try
+            {
+                LogSystem.Info("TienGiamDinhWorker - Ket qua. Ma dieu tri: " + result.TreatmentCode
+                    + ". Trang thai: " + result.Status
+                    + ". He ngoai bao: tong=" + GetSummaryValue(summary, "total")
+                    + ", y lenh=" + GetSummaryValue(summary, "order_check")
+                    + ", tra the=" + GetSummaryValue(summary, "hein_card")
+                    + ", ho so XML=" + GetSummaryValue(summary, "xml3176")
+                    + ", nghiem trong=" + GetSummaryValue(summary, "critical")
+                    + ", co loi=" + GetSummaryValue(summary, "has_error")
+                    + ", cat bot=" + GetSummaryValue(summary, "truncated")
+                    + ". HIS doc duoc: " + result.TotalErrorCount + " dong, trong do "
+                    + result.CriticalErrorCount + " nghiem trong"
+                    + ". RequestId: " + result.RequestId);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doc mot o cua bang tong hop. Khong co thi tra dau gach de phan biet
+        /// "he ngoai khong gui truong nay" voi "he ngoai gui so khong".
+        /// </summary>
+        private static string GetSummaryValue(JObject summary, string key)
+        {
+            if (summary == null)
+            {
+                return "-";
+            }
+
+            JToken token = summary[key];
+            return token == null ? "-" : token.ToString();
+        }
+
+        /// <summary>Cat bot phan hoi truoc khi ghi nhat ky, van noi ro do dai that de biet da cat bao nhieu</summary>
+        private static string CutForLog(string body)
+        {
+            if (string.IsNullOrEmpty(body))
+            {
+                return "(rong)";
+            }
+
+            return body.Length <= LOG_BODY_MAX_LENGTH
+                ? body
+                : body.Substring(0, LOG_BODY_MAX_LENGTH) + "... (da cat, tong " + body.Length + " ky tu)";
         }
 
         /// <summary>Nhom sai sot y lenh - muc do lay tu truong severity</summary>
