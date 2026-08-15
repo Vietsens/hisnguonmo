@@ -291,6 +291,12 @@
     </Compile>
     <Compile Include="Key\HisConfigCFG.cs" />
     <Compile Include="Key\HisConfigKeys.cs" />
+    <Compile Include="Popup\frmCareLevel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmCareLevel.Designer.cs">
+      <DependentUpon>frmCareLevel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Popup\frmConsultation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -360,6 +366,9 @@
     <EmbeddedResource Include="FrmFollow.resx">
       <DependentUpon>FrmFollow.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup\frmCareLevel.resx">
+      <DependentUpon>frmCareLevel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Popup\frmConsultation.resx">
       <DependentUpon>frmConsultation.cs</DependentUpon>

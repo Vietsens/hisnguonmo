@@ -199,6 +199,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 SetEnableControlTime();
                 this.SpNamGhep.EditValue = null;
                 LoadDataReasonNt();
+                LoadDataToCboCareLevel();
                 Validation();
                 loadDoctor();
 

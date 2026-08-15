@@ -119,7 +119,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             Consultation,
             BeneficiaryInfo,
             AnalyzeMedicalImage,
-            MedicalTreamentOut
+            MedicalTreamentOut,
+            CareLevel
         }
         internal ModuleType moduleType { get; set; }
 
@@ -508,6 +509,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 itemBacSiDt.Tag = ModuleType.BacSiDt;
                 itemBacSiDt.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
                 menu.AddItems(new BarItem[] { itemBacSiDt });
+
+                BarButtonItem itemCareLevel = new BarButtonItem(barManager, "Phân cấp chăm sóc", 7);
+                itemCareLevel.Tag = ModuleType.CareLevel;
+                itemCareLevel.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
+                menu.AddItems(new BarItem[] { itemCareLevel });
 
                 BarButtonItem itemDongThoiGian = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DONG_THOI_GIAN", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 7);
                 itemDongThoiGian.Tag = ModuleType.TreatmentLog;

@@ -3344,6 +3344,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     return;
                 }
 
+                // Chan nhap vien khi con van ban chua hoan thanh thuoc loai co IS_HOSPITALIZATION = 1   
+                if (!CheckEmrDocumentBeforeHospitalize())
+                {
+                    return;
+                }
+
                 if (!VerifyTreatmentFinish())
                     return;
 
