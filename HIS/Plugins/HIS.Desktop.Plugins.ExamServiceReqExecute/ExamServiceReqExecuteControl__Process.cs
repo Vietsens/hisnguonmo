@@ -543,8 +543,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                // Open the prescription form in treatment (in-patient) stock mode
-                btnAssignPre_Click_Action(null, null, true);
+                // Open the prescription form in treatment (in-patient) stock mode.
+                // Chỉ có tác dụng khi bật cấu hình ENABLE_TREATMENT_PRESCRIPTION (mục menu cũng chỉ hiện khi bật).
+                btnAssignPre_Click_Action(null, null, HisConfigCFG.EnableTreatmentPrescription);
             }
             catch (Exception ex)
             {

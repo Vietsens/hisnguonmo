@@ -152,6 +152,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string KEY_CheckDepaDocumentHospitalization = "HIS.Desktop.Plugins.ExamServiceReqExecute.CheckDepaDocument.Hospitalization";
         internal static List<string> CheckDepaDocumentHospitalizationCodes = new List<string>();
 
+        /// <summary>
+        /// Cấu hình: HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION
+        /// - BẬT (= 1): cho phép kê đơn điều trị -> hiển thị mục "Kê đơn điều trị" trong menu Khác
+        ///   và mở form kê đơn ở chế độ đơn điều trị (IsExecutePTTT = true).
+        /// - TẮT (= 0 / null — mặc định): ẩn mục "Kê đơn điều trị", luồng kê đơn giữ nguyên hoàn toàn.
+        /// </summary>
+        private const string CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
+        internal static bool EnableTreatmentPrescription;
+
         internal static void LoadConfig()
         {
             try
@@ -162,6 +171,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 CheckDepaDocumentHospitalizationCodes = string.IsNullOrWhiteSpace(rawCheckDepaDocHospitalize)
                     ? new List<string>()
                     : rawCheckDepaDocHospitalize.Split('|').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).ToList();
+
+                EnableTreatmentPrescription = GetValue(CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION) == GlobalVariables.CommonStringTrue;
 
                 IsCheckValueMaxlengthOption = GetValue(KEY_IsCheckValueMaxlengthOption);
                 IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY_IsCheckServiceFollowWhenOut) == GlobalVariables.CommonStringTrue;

@@ -4389,6 +4389,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecute.btnAssignPre_Click.1");
+                // Chế độ kê đơn điều trị chỉ áp dụng khi bật cấu hình
+                // HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION.
+                // Cấu hình TẮT (mặc định) -> giữ nguyên luồng kê đơn cũ.
+                bool isTreatmentPresApply = isTreatmentPres && HisConfigCFG.EnableTreatmentPrescription;
                 if ((HisConfigCFG.RequiredWeightHeight_Option == "1" || HisConfigCFG.RequiredWeightHeight_Option == "3") && !ValidDhstOption())
                     return;
                 ValiTemperatureOption();
@@ -4475,7 +4479,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         List<object> listArgs = new List<object>();
                         HIS.Desktop.ADO.AssignPrescriptionADO assignServiceADO = new HIS.Desktop.ADO.AssignPrescriptionADO(HisServiceReqView.TREATMENT_ID, 0, 0);
                         // Force treatment (in-patient) prescription mode via the existing IsExecutePTTT lever (frmAssignPrescription.cs:408)
-                        assignServiceADO.IsExecutePTTT = isTreatmentPres;
+                        assignServiceADO.IsExecutePTTT = isTreatmentPresApply;
                         if (serviceReqDons != null && serviceReqDons.Count == 1)
                         {
                             var pres = serviceReqDons[0];
@@ -4589,7 +4593,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         long intructionTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                         AssignPrescriptionADO assignPrescription = new AssignPrescriptionADO(HisServiceReqView.TREATMENT_ID, intructionTime, this.HisServiceReqView.ID);
                         // Force treatment (in-patient) prescription mode via the existing IsExecutePTTT lever (frmAssignPrescription.cs:408)
-                        assignPrescription.IsExecutePTTT = isTreatmentPres;
+                        assignPrescription.IsExecutePTTT = isTreatmentPresApply;
                         assignPrescription.TreatmentCode = HisServiceReqView.TDL_TREATMENT_CODE;
                         assignPrescription.TreatmentId = HisServiceReqView.TREATMENT_ID;
                         assignPrescription.HeinCardnumber = HisServiceReqView.TDL_HEIN_CARD_NUMBER;
