@@ -43,5 +43,20 @@ namespace HIS.Desktop.ADO
         public long RoomId { get; set; }
         public long Date { get; set; }
         public MOS.SDO.HisNumOrderBlockSDO NumOrderBlock { get; set; }
+
+        /// <summary>
+        /// Ma dong giu cho nhan tu API Hold, PHAI gui kem khi luu lich kham (viec 54282)
+        /// </summary>
+        public long? NumOrderIssueId { get; set; }
+
+        /// <summary>
+        /// Thoi diem het han giu cho, dang 14 so theo gio may chu
+        /// </summary>
+        public long? HoldExpireTime { get; set; }
+
+        /// <summary>
+        /// So thu tu duoc cap kem theo luot giu
+        /// </summary>
+        public long? NumOrder { get; set; }
     }
 }
