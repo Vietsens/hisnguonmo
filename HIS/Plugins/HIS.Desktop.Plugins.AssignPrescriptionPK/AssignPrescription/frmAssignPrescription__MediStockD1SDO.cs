@@ -43,6 +43,68 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
     public partial class frmAssignPrescription : HIS.Desktop.Utility.FormBase
     {
         List<DMediStock1ADO> dMediStock1s = new List<DMediStock1ADO>();
+
+        /// <summary>Be rong vung danh sach chon thuoc - noi vua phai de cac cot du rong, khong lan sang vung lam viec khac</summary>
+        const int POPUP_MEDIMATY_WIDTH = 1150;
+
+        /// <summary>
+        /// Noi nhe be rong vung danh sach chon thuoc; chieu cao giu nguyen nhu cu.
+        /// Khong vuot qua be rong man hinh, khong nho hon kich co cu.
+        /// </summary>
+        private void SetMediMatyPopupSize()
+        {
+            try
+            {
+                int width = Math.Min(POPUP_MEDIMATY_WIDTH, Screen.FromControl(this).WorkingArea.Width - 40);
+                if (width < theRequiredWidth) width = theRequiredWidth;
+
+                popupControlContainerMediMaty.Width = width;
+                popupControlContainerMediMaty.Height = theRequiredHeight;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                popupControlContainerMediMaty.Width = theRequiredWidth;
+                popupControlContainerMediMaty.Height = theRequiredHeight;
+            }
+        }
+
+        /// <summary>
+        /// Gan ten Nhom thuoc cho danh sach thuoc/vat tu truoc khi bind len luoi chon thuoc.
+        /// Du lieu ton kho chi mang MEDICINE_GROUP_ID nen phai tra ten tu danh muc HIS_MEDICINE_GROUP.
+        /// Tra 1 lan bang Dictionary truoc khi bind - KHONG tra theo tung o luoi.
+        /// </summary>
+        private void FillMedicineGroupName(List<DMediStock1ADO> data)
+        {
+            try
+            {
+                if (data == null || data.Count == 0) return;
+
+                List<HIS_MEDICINE_GROUP> medicineGroups = BackendDataWorker.Get<HIS_MEDICINE_GROUP>();
+                if (medicineGroups == null || medicineGroups.Count == 0) return;
+
+                Dictionary<long, string> dicMedicineGroupName = new Dictionary<long, string>();
+                foreach (var medicineGroup in medicineGroups)
+                {
+                    if (!dicMedicineGroupName.ContainsKey(medicineGroup.ID))
+                        dicMedicineGroupName.Add(medicineGroup.ID, medicineGroup.MEDICINE_GROUP_NAME);
+                }
+
+                foreach (var item in data)
+                {
+                    string medicineGroupName = null;
+                    if (item.MEDICINE_GROUP_ID.HasValue)
+                        dicMedicineGroupName.TryGetValue(item.MEDICINE_GROUP_ID.Value, out medicineGroupName);
+
+                    item.MEDICINE_GROUP_NAME = medicineGroupName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         internal async Task RebuildMediMatyWithInControlContainer(bool isTSD = false)
         {
             try
@@ -55,9 +117,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 dMediStock1s = dMediStock1s.OrderByDescending(o => o.IS_PRIORITY == 1).ThenBy(o => o.PARENT_NAME).ToList();
                 LogSystem.Info("dMediStock1s.Count: " + dMediStock1s.Where(o => o.IS_PRIORITY == 1).ToList().Count());
                 gridViewMediMaty.BeginUpdate();
-                gridViewMediMaty.Columns.Clear();   
-                popupControlContainerMediMaty.Width = theRequiredWidth;
-                popupControlContainerMediMaty.Height = theRequiredHeight;
+                gridViewMediMaty.Columns.Clear();
+                gridViewMediMaty.OptionsView.RowAutoHeight = true;//Cho dong tu gian chieu cao khi cot Ham luong wrap text
+                gridViewMediMaty.OptionsView.ColumnAutoWidth = false;//Nhieu cot (~18) - khong chia deu nua, moi cot giu dung do rong khai bao, cuon ngang khi can
+                SetMediMatyPopupSize();
 
                 DevExpress.XtraGrid.Columns.GridColumn col0 = new DevExpress.XtraGrid.Columns.GridColumn();
                 col0.FieldName = "IsAssignPresed";
@@ -67,6 +130,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 col0.MinWidth = 25;
                 col0.VisibleIndex = 0;
                 col0.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                col0.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;//Ghim trai de cuon ngang van thay
                 gridViewMediMaty.Columns.Add(col0);
 
                 DevExpress.XtraGrid.Columns.GridColumn col2 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -77,6 +141,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col2.Width = 250;
                 col2.VisibleIndex = 1;
+                col2.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;//Ghim trai - cuon ngang van thay ten thuoc
                 gridViewMediMaty.Columns.Add(col2);
 
 
@@ -122,8 +187,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_CONCENTRA",
                         Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                         Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                    col8.Width = 100;
+                    col8.Width = 150;//Noi rong cot Ham luong de hien thi du noi dung
                     col8.VisibleIndex = 3;
+                    col8.AppearanceCell.Options.UseTextOptions = true;
+                    col8.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;//Noi dung dai tu xuong dong, khong bi cat thanh '...'
                     gridViewMediMaty.Columns.Add(col8);
 
 
@@ -277,6 +344,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 colDes.VisibleIndex = 17;
                 gridViewMediMaty.Columns.Add(colDes);
 
+                if (!isTSD)
+                {
+                    DevExpress.XtraGrid.Columns.GridColumn colMedicineGroup = new DevExpress.XtraGrid.Columns.GridColumn();
+                    colMedicineGroup.FieldName = "MEDICINE_GROUP_NAME";
+                    colMedicineGroup.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDICINE_GROUP_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    colMedicineGroup.Width = 130;
+                    colMedicineGroup.VisibleIndex = 18;
+                    colMedicineGroup.OptionsColumn.AllowEdit = false;
+                    gridViewMediMaty.Columns.Add(colMedicineGroup);
+                }
+
 
 
                 if (HisConfigCFG.GroupOption)
@@ -350,6 +431,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 long index = 1;
                 dMediStock1s.ForEach(o => o.IdRow = index++);
+                FillMedicineGroupName(dMediStock1s);
                 gridViewMediMaty.GridControl.DataSource = dMediStock1s;
                 //TickIsAssignPres();
                 gridViewMediMaty.EndUpdate();
@@ -376,8 +458,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 gridViewMediMaty.BeginUpdate();
                 gridViewMediMaty.Columns.Clear();
-                popupControlContainerMediMaty.Width = theRequiredWidth;
-                popupControlContainerMediMaty.Height = theRequiredHeight;
+                gridViewMediMaty.OptionsView.RowAutoHeight = true;//Cho dong tu gian chieu cao khi cot Ham luong wrap text
+                gridViewMediMaty.OptionsView.ColumnAutoWidth = false;//Nhieu cot (~18) - khong chia deu nua, moi cot giu dung do rong khai bao, cuon ngang khi can
+                SetMediMatyPopupSize();
 
                 DevExpress.XtraGrid.Columns.GridColumn col0 = new DevExpress.XtraGrid.Columns.GridColumn();
                 col0.FieldName = "IsAssignPresed";
@@ -387,6 +470,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 col0.MinWidth = 25;
                 col0.VisibleIndex = 0;
                 col0.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                col0.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;//Ghim trai de cuon ngang van thay
                 gridViewMediMaty.Columns.Add(col0);
 
                 DevExpress.XtraGrid.Columns.GridColumn col2 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -397,6 +481,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col2.Width = 250;
                 col2.VisibleIndex = 1;
+                col2.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;//Ghim trai - cuon ngang van thay ten thuoc
                 gridViewMediMaty.Columns.Add(col2);
 
 
@@ -442,8 +527,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_CONCENTRA",
                         Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                         Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                    col8.Width = 100;
+                    col8.Width = 150;//Noi rong cot Ham luong de hien thi du noi dung
                     col8.VisibleIndex = 3;
+                    col8.AppearanceCell.Options.UseTextOptions = true;
+                    col8.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;//Noi dung dai tu xuong dong, khong bi cat thanh '...'
                     gridViewMediMaty.Columns.Add(col8);
 
 
@@ -596,6 +683,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 col15.VisibleIndex = 17;
                 gridViewMediMaty.Columns.Add(col15);
 
+                if (!isTSD)
+                {
+                    DevExpress.XtraGrid.Columns.GridColumn colMedicineGroup = new DevExpress.XtraGrid.Columns.GridColumn();
+                    colMedicineGroup.FieldName = "MEDICINE_GROUP_NAME";
+                    colMedicineGroup.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDICINE_GROUP_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    colMedicineGroup.Width = 130;
+                    colMedicineGroup.VisibleIndex = 18;
+                    colMedicineGroup.OptionsColumn.AllowEdit = false;
+                    gridViewMediMaty.Columns.Add(colMedicineGroup);
+                }
+
                 if (HisConfigCFG.GroupOption)
                 {
                     DevExpress.XtraGrid.Columns.GridColumn col18 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -667,6 +768,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 long index = 1;
                 dMediStock1s.ForEach(o => o.IdRow = index++);
+                FillMedicineGroupName(dMediStock1s);
                 gridViewMediMaty.GridControl.DataSource = dMediStock1s;
                 //TickIsAssignPres();
                 gridViewMediMaty.EndUpdate();

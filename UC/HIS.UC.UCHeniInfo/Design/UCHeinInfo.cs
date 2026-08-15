@@ -416,6 +416,79 @@ namespace HIS.UC.UCHeniInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        /// <summary>
+        /// Ban ghi CO liet ke ma co so KCB ban dau cu the (khac rong va khac "*")
+        /// => chi ap dung cho dung nhung ma da liet ke.
+        /// De trong (NULL) hoac "*" => ap dung MOI co so, giong quy uoc cua truong Dien dieu tri.
+        /// </summary>
+        private bool IsMediOrgCodeListSpecific(string codes)
+        {
+            return !string.IsNullOrWhiteSpace(codes) && codes.Trim() != "*";
+        }
+
+        /// <summary>
+        /// Chon ban ghi doi tuong KCB, co xet them tieu chi ma co so KCB ban dau (noi DKKCB tren the):
+        /// 1. Ban ghi liet ke ma co so cu the va chua ma DKKCB cua the  -> uu tien cao nhat
+        /// 2. Ban ghi de trong hoac "*" (ap dung moi co so)
+        /// Cung muc -> NUM_ORDER nho nhat (null xep cuoi) -> ID lon nhat.
+        ///
+        /// Ban ghi liet ke ma cu the ma KHONG chua ma cua the thi bi loai (VD 1.1 gan rieng ma 00000
+        /// thi benh nhan co ma DKBD khac tuyet doi khong duoc ra 1.1).
+        /// Vien chua cau hinh gi -> tat ca deu thuoc muc 2 -> giu nguyen hanh vi truoc nang cap.
+        /// </summary>
+        private HIS_HEIN_PATIENT_TYPE GetHeinPatientTypeByMediOrgPriority(List<HIS_HEIN_PATIENT_TYPE> heinList, string dkbdCode)
+        {
+            try
+            {
+                var specific = new List<HIS_HEIN_PATIENT_TYPE>();
+                if (!string.IsNullOrEmpty(dkbdCode))
+                {
+                    specific = heinList.Where(o => IsMediOrgCodeListSpecific(o.HEIN_MEDI_ORG_CODES)
+                        && o.HEIN_MEDI_ORG_CODES.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Any(c => c.Trim() == dkbdCode)).ToList();
+                }
+                var applyAll = heinList.Where(o => !IsMediOrgCodeListSpecific(o.HEIN_MEDI_ORG_CODES)).ToList();
+
+                var matchedList = specific.Count > 0 ? specific : applyAll;
+                if (matchedList.Count == 0)
+                {
+                    LogChonMaDoiTuongKcb(heinList, dkbdCode, null, "khong ban ghi nao ap dung -> de trong");
+                    return null;
+                }
+                var matched = matchedList.OrderBy(o => o.NUM_ORDER == null ? 1 : 0)
+                                         .ThenBy(o => o.NUM_ORDER)
+                                         .ThenByDescending(o => o.ID)
+                                         .FirstOrDefault();
+                LogChonMaDoiTuongKcb(heinList, dkbdCode, matched, specific.Count > 0 ? "khop ma co so cu the" : "ap dung moi co so (de trong hoac *)");
+                return matched;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Log chan doan viec chon ma doi tuong KCB — dung khi ho tro vien kiem tra vi sao ra ma do.
+        /// </summary>
+        private void LogChonMaDoiTuongKcb(List<HIS_HEIN_PATIENT_TYPE> heinList, string dkbdCode, HIS_HEIN_PATIENT_TYPE matched, string ghiChu)
+        {
+            try
+            {
+                int soDaCauHinh = heinList.Count(o => !string.IsNullOrWhiteSpace(o.HEIN_MEDI_ORG_CODES));
+                Inventec.Common.Logging.LogSystem.Debug("ChonMaDoiTuongKCB: maDKKCBBanDau=" + (string.IsNullOrEmpty(dkbdCode) ? "(trong)" : dkbdCode)
+                    + "___soBanGhiSauLoc=" + heinList.Count
+                    + "___soBanGhiDaCauHinhMaCoSo=" + soDaCauHinh
+                    + "___maChon=" + (matched != null ? matched.HEIN_PATIENT_TYPE_CODE : "(trong)")
+                    + "___ghiChu=" + ghiChu);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void InitializeComboHeinPatientType()
         {
             try
@@ -457,12 +530,12 @@ namespace HIS.UC.UCHeniInfo
                 }
                 if (heinPatientTypeDataFiltered.Count > 0)
                 {
-                    var minItem = heinPatientTypeDataFiltered.OrderBy(o => o.NUM_ORDER == null ? 1 : 0)
-                                                                .ThenBy(o => o.NUM_ORDER)
-                                                                .ThenByDescending(o => o.ID)
-                                                                .FirstOrDefault();
-                    if (!string.IsNullOrEmpty(minItem.HEIN_PATIENT_TYPE_CODE))
+                    // Xet them tieu chi "Ma co so KCB ban dau" tren tung ban ghi danh muc
+                    var minItem = GetHeinPatientTypeByMediOrgPriority(heinPatientTypeDataFiltered, (txtMaDKKCBBD.Text ?? "").Trim());
+                    if (minItem != null && !string.IsNullOrEmpty(minItem.HEIN_PATIENT_TYPE_CODE))
                         cboHeinPatientType.EditValue = minItem.HEIN_PATIENT_TYPE_CODE;
+                    else
+                        cboHeinPatientType.EditValue = null;
                     //this._previousHeinPatientTypeCode = minItem.HEIN_PATIENT_TYPE_CODE;
                 }
                 //else

@@ -856,6 +856,15 @@ namespace HIS.UC.UCHeniInfo
                     this.ChangeDefaultHeinRatio();
 
                     this.TuDongChonLoaiThongTuyen(mediorg);
+
+                    // Doi noi DKKCB ban dau => tinh lai ma doi tuong KCB theo thong tin the moi.
+                    // isFocus = true: nguoi dung CHU DONG chon co so (dong danh sach / nhan Enter);
+                    // isFocus = false: dang nap du lieu len form thi khong tinh lai.
+                    // Goi tuong minh vi neu gia tri o "Loai" khong doi thi su kien cua no khong ban ra.
+                    if (isFocus && !isChooseCboPatientType)
+                    {
+                        this.InitializeComboHeinPatientType();
+                    }
                 }
             }
             catch (Exception ex)

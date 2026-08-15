@@ -1550,7 +1550,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 var totalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                 var totalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
-                var totalHeinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
                 var totalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                 var totalIcdData = BackendDataWorker.Get<HIS_ICD>();
                 var totalServiceData = BackendDataWorker.Get<V_HIS_SERVICE>();
@@ -1643,9 +1642,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     ado.TotalMaterialTypeData = totalMaterialTypeData;
                     ado.TotalHeinMediOrgData = totalHeinMediOrgData;
-                    //DLL His.Bhyt.ExportXml.XML130 tren may nay CHUA co property TotalHeinPatientTypeData
-                    //(ban moi hon o may dev) -> gan bang reflection de build duoc voi ca DLL cu lan moi.
-                    SetAdoPropIfExists(ado, "TotalHeinPatientTypeData", totalHeinPatientTypeData);
                     ado.TotalConfigData = NewConfig;
                     ado.TotalPatientTypeData = totalPatientTypeData;
                     ado.TotalIcdData = totalIcdData;
@@ -2036,8 +2032,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 ado.ListTuberculosisTreat = ListTuberculosisTreat;
                 ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                 ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
-                //DLL cu chua co property -> reflection (xem chu thich o SetAdoPropIfExists).
-                SetAdoPropIfExists(ado, "TotalHeinPatientTypeData", BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>());
                 ado.TotalConfigData = NewConfig;
                 ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                 ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
@@ -4792,8 +4786,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                             ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                             ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
-                            //DLL cu chua co property -> reflection (xem chu thich o SetAdoPropIfExists).
-                            SetAdoPropIfExists(ado, "TotalHeinPatientTypeData", BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>());
                             ado.TotalConfigData = NewConfig;
                             ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                             ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();

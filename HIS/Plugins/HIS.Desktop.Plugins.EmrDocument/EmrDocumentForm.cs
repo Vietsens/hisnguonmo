@@ -414,6 +414,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         {
                             chkMerge.Checked = item.VALUE == "1";
                         }
+                        else if (item.KEY == ControlStateConstant.CHECK_MERGE_COLUMN)
+                        {
+                            chkMergeColumn.Checked = item.VALUE == "1";
+                        }
                         else if (item.KEY == chkDowloadGroup.Name)
                         {
                             chkDowloadGroup.Checked = item.VALUE == "1";
@@ -3362,6 +3366,65 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
             }
         }
+        /// <summary>
+        /// Kiem tra dieu kien in gop ngang. Loai cac phieu chua ky hoan tat/bi tu choi ky khoi
+        /// danh sach gop (co thong bao). Tra ve false neu khong the gop.
+        /// </summary>
+        private bool ValidMergeColumn(List<EmrDocumentADO> documents)
+        {
+            try
+            {
+                if (documents == null || documents.Count < 2)
+                    return false;
+
+                if (documents.Select(o => o.TREATMENT_ID).Distinct().Count() > 1)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Chỉ gộp ngang được các phiếu của cùng một hồ sơ điều trị. Vui lòng chọn lại.", Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                    return false;
+                }
+
+                if (documents.Select(o => (o.DOCUMENT_TYPE_CODE ?? "").ToUpper()).Distinct().Count() > 1)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Chỉ gộp ngang được các phiếu cùng một loại văn bản. Vui lòng chọn lại.", Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                    return false;
+                }
+
+                //Chi gop phieu da ky hoan tat: co nguoi da ky, khong con nguoi ky tiep, khong bi tu choi ky
+                List<EmrDocumentADO> unFinished = documents.Where(o => !String.IsNullOrWhiteSpace(o.REJECTER)
+                    || !String.IsNullOrWhiteSpace(o.NEXT_SIGNER)
+                    || String.IsNullOrWhiteSpace(o.SIGNERS)).ToList();
+
+                if (unFinished.Count > 0)
+                {
+                    foreach (var item in unFinished)
+                    {
+                        documents.Remove(item);
+                    }
+                    string names = String.Join(", ", unFinished.Select(o => String.Format("{0}({1})", o.DOCUMENT_NAME, o.DOCUMENT_CODE)));
+                    DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Các phiếu sau chưa ký hoàn tất hoặc bị từ chối ký nên không được gộp: {0}.", names), Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                }
+
+                if (documents.Count < 2)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không còn đủ 2 phiếu đã ký hoàn tất để gộp ngang.", Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                    return false;
+                }
+
+                if (documents.Count > Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Một phiếu chỉ có {0} cột nên mỗi lần in gộp ngang chọn tối đa {0} phiếu. Vui lòng chia thành nhiều lần in.", Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT), Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
         private void btnPrint_Click(object sender, EventArgs e)
         {
             try
@@ -3372,7 +3435,16 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Info("btnPrint_Click Begin");
                 WaitingManager.Show();
                 listDataTrueStatic = listDataTrue;
-                IsMergeDocument = chkMergeDoc.Checked || chkMerge.Checked;
+
+                //In gop ngang: chi ap dung khi chon tu 2 phieu tro len va cac phieu hop le
+                bool isMergeColumn = this.chkMergeColumn.Checked && this.listDataTrue != null && this.listDataTrue.Count > 1;
+                if (isMergeColumn && !ValidMergeColumn(this.listDataTrue))
+                {
+                    WaitingManager.Hide();
+                    return;
+                }
+
+                IsMergeDocument = (chkMergeDoc.Checked || chkMerge.Checked) && !isMergeColumn;
                 if (IsMergeDocument)
                 {
                     loadDictionary();
@@ -3549,31 +3621,73 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             }
                         }
 
-                        Stream currentStream = File.Open(output, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-
-                        var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
-
-                        var pages = new List<int>();
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
-
-                        foreach (var file in joinStreams)
+                        //In gop ngang: dan cot du lieu cua cac phieu sau vao cac cot con trong cua phieu dau
+                        bool isMergeColumnDone = false;
+                        if (isMergeColumn && joinStreams.Count > 1)
                         {
-                            iTextSharp.text.pdf.PdfReader pdfReader = null;
-                            pdfReader = new iTextSharp.text.pdf.PdfReader(file);
-                            pages = new List<int>();
-                            for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                            string mergeWarning = "";
+                            byte[] mergedData = Worker.EmrDocumentMergeColumnsWorker.Merge(joinStreams, out mergeWarning);
+                            if (mergedData != null && mergedData.Length > 0)
                             {
-                                pages.Add(i);
+                                Utils.ByteToFile(mergedData, output);
+                                isMergeColumnDone = true;
+                                if (!String.IsNullOrWhiteSpace(mergeWarning))
+                                {
+                                    WaitingManager.Hide();
+                                    DevExpress.XtraEditors.XtraMessageBox.Show(mergeWarning, Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                                    WaitingManager.Show();
+                                }
                             }
-                            pdfReader.SelectPages(pages);
-                            pdfConcat.AddPages(pdfReader);
-                            pdfReader.Close();
+                            else
+                            {
+                                foreach (var fileTmp in joinStreams)
+                                {
+                                    try
+                                    {
+                                        File.Delete(fileTmp);
+                                    }
+                                    catch { }
+                                }
+                                try
+                                {
+                                    if (File.Exists(output)) File.Delete(output);
+                                }
+                                catch { }
+                                Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end - khong gop ngang duoc");
+                                WaitingManager.Hide();
+                                DevExpress.XtraEditors.XtraMessageBox.Show(String.IsNullOrWhiteSpace(mergeWarning) ? "Không gộp ngang được các phiếu đã chọn. Vui lòng kiểm tra lại các phiếu có cùng mẫu không." : mergeWarning, Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                                return;
+                            }
                         }
-                        try
+
+                        if (!isMergeColumnDone)
                         {
-                            pdfConcat.Close();
+                            Stream currentStream = File.Open(output, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+                            var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
+
+                            var pages = new List<int>();
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
+
+                            foreach (var file in joinStreams)
+                            {
+                                iTextSharp.text.pdf.PdfReader pdfReader = null;
+                                pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                                pages = new List<int>();
+                                for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                                {
+                                    pages.Add(i);
+                                }
+                                pdfReader.SelectPages(pages);
+                                pdfConcat.AddPages(pdfReader);
+                                pdfReader.Close();
+                            }
+                            try
+                            {
+                                pdfConcat.Close();
+                            }
+                            catch { }
                         }
-                        catch { }
 
                         foreach (var file in joinStreams)
                         {
@@ -4993,6 +5107,33 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     }
                     FillDatagctFormList();
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkMergeColumn_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.CHECK_MERGE_COLUMN && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkMergeColumn.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.CHECK_MERGE_COLUMN;
+                    csAddOrUpdate.VALUE = (chkMergeColumn.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
             }
             catch (Exception ex)
             {
