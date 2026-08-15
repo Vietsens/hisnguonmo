@@ -300,7 +300,13 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                             this.AutoSelectEmergency(entity);
                         }
                     }
-                    // Tinh lai ma doi tuong KCB khi doi co so DKKCB ban dau
+                    // Doi co so KCB ban dau => tinh lai ma doi tuong KCB theo thong tin the moi.
+                    // isFocus = true => nguoi dung CHU DONG chon co so (dong popup / nhan Enter);
+                    // isFocus = false => dang nap du lieu len form, phai giu nguyen ma da luu.
+                    if (isFocus)
+                    {
+                        ResetHeinPatientCodeForRecalc();
+                    }
                     InitComboPatientCode();
                 }
 
