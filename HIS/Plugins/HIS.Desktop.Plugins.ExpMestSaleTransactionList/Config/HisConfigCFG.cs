@@ -35,11 +35,17 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList.Config
         private const string CFG_TRANSACTION_BILL_TWO_BOOK__OPTION = "MOS.HIS_TRANSACTION.BILL_TWO_BOOK.OPTION";
         private const string CFG__TRANSACTION__ALLOW_EDIT_NUM_ORDER = "MOS.HIS_TRANSACTION.NUM_ORDER.ALLOW_EDIT";
 
+        /// <summary>
+        /// Cách tính tách tiền 2 sổ - PHẢI khớp HisTransactionCFG.ENUM_BILL_OPTION bên MOS.
+        /// </summary>
         internal enum BILL_OPTION
         {
             CTO_TW = 1,
             HCM_115 = 2,
             QBH_CUBA = 3,
+            NTP = 4,
+            //BVND 115 - việc 54227: in cùng mẫu biên lai/hóa đơn với HCM_115 (Mps000317 / Mps000318)
+            HCM_115_NQ399 = 5,
         }
 
         internal static string IsEditTransactionTimeCFG;

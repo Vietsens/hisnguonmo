@@ -26,22 +26,6 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831.Sync
         internal string LoginUrl { get { return Combine(BaseUrl, LoginApi); } }
         internal string PushUrl { get { return Combine(BaseUrl, PushApi); } }
 
-        /// <summary>
-        /// TEMP (fake để test): cấu hình mặc định theo tài liệu HSSK 831 (base Development) + tài khoản test.
-        /// TODO: XÓA khi đã khai báo HIS_CONFIG MOS.HIS_KSK_SYNC.HSSK_AREA_831_CONNECTION_INFO thật.
-        /// </summary>
-        internal static Ksk831SyncConfig TempDefault()
-        {
-            return new Ksk831SyncConfig
-            {
-                Username = "86137_his",
-                Password = "Hoc@2026",
-                BaseUrl = "https://dev-api-csdl.kdlyt.vinhlong.vn/api/",
-                LoginApi = "get-token",
-                PushApi = "CSDLYTE831/import-csdlyte831-mobile"
-            };
-        }
-
         /// <summary>Parse chuỗi cấu hình. Thiếu trường / rỗng -&gt; null.</summary>
         internal static Ksk831SyncConfig Parse(string raw)
         {

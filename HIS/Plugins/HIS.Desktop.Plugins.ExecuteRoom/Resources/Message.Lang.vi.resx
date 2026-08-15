@@ -171,4 +171,7 @@
   <data name="Plugin_ExecuteRoom__BNDangCoPhieuHoiChanChuaHoanTat" xml:space="preserve">
     <value>Bệnh nhân đang có phiếu hội chẩn chưa hoàn tất với khoa {0}. Bạn có muốn tạo thêm phiếu mới không?</value>
   </data>
+  <data name="Plugin_ExecuteRoom__ChucNangDangPhatTrienLienHeQuanTri" xml:space="preserve">
+    <value>Chức năng đang phát triển. Vui lòng liên hệ quản trị.</value>
+  </data>
 </root>

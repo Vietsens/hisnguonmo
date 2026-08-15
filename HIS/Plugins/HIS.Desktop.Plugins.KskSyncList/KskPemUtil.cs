@@ -126,6 +126,88 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>SHA-256 cua chuoi (UTF-8) -> hex IN HOA (giong EnvelopeSigner cua thu vien).</summary>
+        /// <summary>
+        /// Băm SHA256 rồi đưa về hex VIẾT HOA — dùng cho chữ ký của cổng Sở Y tế TP.HCM.
+        /// Chỉ là lớp bọc ngoài hàm sẵn có, không đổi hàm gốc để 4 cổng đang chạy không bị ảnh hưởng.
+        /// </summary>
+        internal static string Sha256HexUpperForSyt(string value)
+        {
+            return Sha256HexUpper(value);
+        }
+
+        /// <summary>
+        /// Ký chuỗi bằng RSA-SHA256 (đệm PKCS#1 v1.5) rồi đưa kết quả về hex VIẾT HOA.
+        ///
+        /// Khác 4 cổng cũ ở ĐỊNH DẠNG ĐẦU RA: cổng Sở Y tế TP.HCM nhận hex viết hoa, không phải
+        /// base64. Trả chuỗi rỗng nếu khóa không đọc được — nơi gọi tự báo lỗi, không ném ra ngoài.
+        /// </summary>
+        internal static string SignRsaSha256HexUpper(string content, string privateKeyPem)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(content) || string.IsNullOrWhiteSpace(privateKeyPem)) return "";
+
+                // Chan doan truoc khi giai ma, de log noi ro nguyen nhan thay vi chi "khoa khong hop le".
+                string trimmed = privateKeyPem.Trim();
+                string bodyOnly = System.Text.RegularExpressions.Regex.Replace(trimmed, "-----[^-]+-----", "")
+                    .Replace("\r", "").Replace("\n", "").Replace("\t", "").Replace(" ", "");
+                if (bodyOnly.Length == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SytHcm: khoa rieng trong cau hinh CHI CO dong tieu de, KHONG co phan than. "
+                        + "Tep .pem co 28 dong; o nhap cau hinh thuong chi lay dong dau. "
+                        + "Hay GOP TOAN BO phan than thanh MOT DONG (bo 2 dong -----BEGIN/END-----) "
+                        + "roi dan vao truong thu 7. Do dai chuoi hien tai = " + trimmed.Length + " ky tu.");
+                    return "";
+                }
+                if (trimmed.IndexOf("PUBLIC KEY", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SytHcm: truong thu 7 dang la KHOA CONG KHAI (PUBLIC KEY). Khoa cong khai gui cho So, "
+                        + "con cau hinh phai dien KHOA RIENG (client_private_key.pem).");
+                    return "";
+                }
+
+                byte[] der = DecodePemBody(EnsurePkcs8(privateKeyPem));
+                if (der == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SytHcm: khong giai duoc base64 cua khoa rieng -> chuoi bi CAT BOT hoac lan ky tu la. "
+                        + "Do dai phan than = " + bodyOnly.Length + " ky tu; khoa RSA 2048 bit dang PKCS#8 "
+                        + "thuong dai khoang 1600-1640 ky tu.");
+                    return "";
+                }
+
+                object privateKey;
+                try
+                {
+                    privateKey = Org.BouncyCastle.Security.PrivateKeyFactory.CreateKey(der);
+                }
+                catch (Exception exKey)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SytHcm: doc duoc base64 nhung KHONG dung dinh dang khoa rieng ("
+                        + exKey.GetType().Name + "). Kiem tra lai dung tep client_private_key.pem, "
+                        + "sinh boi: openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048");
+                    return "";
+                }
+                var signer = Org.BouncyCastle.Security.SignerUtilities.GetSigner("SHA256WITHRSA");
+                signer.Init(true, (Org.BouncyCastle.Crypto.AsymmetricKeyParameter)privateKey);
+                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(content);
+                signer.BlockUpdate(bytes, 0, bytes.Length);
+                byte[] sig = signer.GenerateSignature();
+
+                System.Text.StringBuilder sb = new System.Text.StringBuilder(sig.Length * 2);
+                for (int i = 0; i < sig.Length; i++) sb.Append(sig[i].ToString("X2"));
+                return sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return "";
+            }
+        }
+
         private static string Sha256HexUpper(string value)
         {
             using (var sha = System.Security.Cryptography.SHA256.Create())

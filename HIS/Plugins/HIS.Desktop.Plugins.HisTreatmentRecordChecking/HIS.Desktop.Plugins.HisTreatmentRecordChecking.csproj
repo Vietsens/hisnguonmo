@@ -46,6 +46,7 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EMR.EFMODEL">
       <HintPath>..\..\..\..\LIB\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
@@ -89,6 +90,25 @@
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Paging">
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
+    </Reference>
+    <Reference Include="SAR.EFMODEL">
+      <HintPath>..\..\..\..\LIB\SAR\SAR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase">
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq">
+      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.EditorLoader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
@@ -160,6 +180,50 @@
     <Compile Include="RecordChecking\FormHisTreatmentRecordChecking.Designer.cs">
       <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
     </Compile>
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking__Process.cs">
+      <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking__FillGrid.cs">
+      <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking__Print.cs">
+      <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking__Display.cs">
+      <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking__Approve.cs">
+      <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking__Grid.cs">
+      <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking__Language.cs">
+      <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking__Filter.cs">
+      <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking__DoctorMode.cs">
+      <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordChecking\FormHisTreatmentRecordChecking__CreateDocument.cs">
+      <DependentUpon>FormHisTreatmentRecordChecking.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordCheckingUriStore.cs" />
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="EnumRecordDocumentStatus.cs" />
     <Compile Include="RecordChecking\frmContentFailed.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,7 +232,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

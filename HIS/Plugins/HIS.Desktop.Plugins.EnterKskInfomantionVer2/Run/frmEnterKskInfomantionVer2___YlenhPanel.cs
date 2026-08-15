@@ -376,6 +376,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 for (int i = 0; i < tabFilled.Length; i++) tabFilled[i] = false;
                 preKskGenerals = null; preKskOccupationals = null;
                 preKskOverEighteens = null; preKskUnderEighteens = null; preKskDriverCars = null;
+                // Bo ban ghi mau M4 cua ho so truoc, tranh luu de sang ho so vua chon.
+                currentKskSytHcm = null;
                 preKskPeriodDrivers = null; preKskOthers = null; preKskUnderSixes = null;
                 preTreatments = null; preBabies = null; preKskContracts = null;
                 preDhstById = null; preUneiVatys = null; preDitysOverE = null; preDitysPeriodDriver = null;

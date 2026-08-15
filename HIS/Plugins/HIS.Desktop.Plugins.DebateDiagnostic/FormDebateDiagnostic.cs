@@ -668,6 +668,41 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         #endregion
 
         #region Private method
+        /// <summary>
+        /// Lay ten khoa dang chon o combo "Khoa dieu tri".
+        /// Benh nhan ngoai tru/cap cuu chua co LAST_DEPARTMENT_ID nen combo de trong -> tra ve chuoi rong.
+        /// Truoc day parse thang Int64.Parse(EditValue ?? "") gay FormatException, keo theo mat toan bo
+        /// thong bao SDA_NOTIFY moi tham gia hoi chan.
+        /// </summary>
+        private string GetSelectedDepartmentName()
+        {
+            try
+            {
+                if (cboDepartment.EditValue == null || listDepartment == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "GetSelectedDepartmentName: cboDepartment dang trong (benh nhan chua co khoa dieu tri).");
+                    return "";
+                }
+
+                long departmentId = 0;
+                if (!Int64.TryParse(cboDepartment.EditValue.ToString(), out departmentId))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "GetSelectedDepartmentName: khong parse duoc cboDepartment.EditValue = " + cboDepartment.EditValue);
+                    return "";
+                }
+
+                var department = listDepartment.FirstOrDefault(o => o.ID == departmentId);
+                return department != null ? department.DEPARTMENT_NAME : "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
+        }
+
         private void SetIcon()
         {
             try
@@ -3088,7 +3123,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                         NameParticipation,
                         vHisTreatment.TREATMENT_CODE,
                         vHisTreatment.TDL_PATIENT_NAME,
-                        listDepartment.FirstOrDefault(o => o.ID == Int64.Parse((cboDepartment.EditValue ?? "").ToString())).DEPARTMENT_NAME);
+                        GetSelectedDepartmentName());
                     updateDTO.TITLE = "Xác nhận mời tham gia hội chẩn";
                     updateDTO.FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                     updateDTO.TO_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd") + "235959");

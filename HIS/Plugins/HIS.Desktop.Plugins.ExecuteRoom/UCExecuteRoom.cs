@@ -144,6 +144,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         EpaymentDepositResultSDO epaymentDepositResultSDO;
         V_HIS_TREATMENT_4 currentTreatment4;
         Dictionary<long, Color?> emergencyClassifyColorDict = new Dictionary<long, Color?>();
+        /// <summary>Ten muc phan loai cap cuu theo TREATMENT_ID - phuc vu cot trang thai "Muc CC"</summary>
+        Dictionary<long, string> emergencyClassifyNameDict = new Dictionary<long, string>();
+        /// <summary>Cot trang thai "Muc CC" - tao/go luc runtime theo phong va config</summary>
+        DevExpress.XtraGrid.Columns.GridColumn colEmergencyClassify;
         bool chkModule = false;
         #region IsClick
         bool isEventPopupMenuShowing = false;
@@ -2116,8 +2120,13 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     if (serviceReq.PRIORITY != null && serviceReq.PRIORITY == 1)
                         e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
 
-                    // GP5 — PTTK_19083: Emergency classify color takes priority over other row colors.
-                    Color? emergencyColor = GetEmergencyClassifyColorByTreatment(serviceReq.TREATMENT_ID);
+                    // PTTK cap cuu: khi bat config EMERGENCY_CLASSIFY_COLUMN thi muc phan loai cap cuu
+                    // KHONG to mau chu ca dong nua (het de mau BHYT/vien phi) — mau da chuyen sang
+                    // nen o cot trang thai "Muc CC" (xem gridViewServiceReq_RowCellStyle).
+                    // Khi TAT config: giu nguyen hanh vi cu — mau cap cuu uu tien de cac mau khac.
+                    Color? emergencyColor = HisConfigCFG.IsEmergencyClassifyColumnEnabled
+                        ? (Color?)null
+                        : GetEmergencyClassifyColorByTreatment(serviceReq.TREATMENT_ID);
                     if (emergencyColor.HasValue)
                     {
                         e.Appearance.ForeColor = emergencyColor.Value;
@@ -2211,6 +2220,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         /// <summary>
         /// GP5 — PTTK_19083: Batch load emergency classify color for visible service requests.
         /// Rule: apply color only when treatment has EMERGENCY_CLASSIFY_ID_1 and NOT EMERGENCY_CLASSIFY_ID_2.
+        /// PTTK cap cuu: lay them TEN muc va gan thang ten + mau vao tung dong ADO
+        /// de cot trang thai "Muc CC" hien thi ma khong phai tinh lai trong RowCellStyle.
         /// </summary>
         private void LoadEmergencyClassifyColorDict(List<ServiceReqADO> serviceReqs)
         {
@@ -2220,6 +2231,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     emergencyClassifyColorDict = new Dictionary<long, Color?>();
                 else
                     emergencyClassifyColorDict.Clear();
+
+                if (emergencyClassifyNameDict == null)
+                    emergencyClassifyNameDict = new Dictionary<long, string>();
+                else
+                    emergencyClassifyNameDict.Clear();
 
                 if (!HisConfigCFG.IsEmergencyClassifyEnabled) return;
                 if (serviceReqs == null || serviceReqs.Count == 0) return;
@@ -2243,19 +2259,62 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                 var classifyDict = BackendDataWorker.Get<HIS_PATIENT_CLASSIFY>().ToDictionary(o => o.ID);
 
+                bool isColumnMode = HisConfigCFG.IsEmergencyClassifyColumnEnabled;
+
                 foreach (var treatment in treatments)
                 {
-                    if (!treatment.EMERGENCY_CLASSIFY_ID_1.HasValue) continue;
-                    if (treatment.EMERGENCY_CLASSIFY_ID_2.HasValue) continue;
+                    try
+                    {
+                        if (!treatment.EMERGENCY_CLASSIFY_ID_1.HasValue) continue;
+                        if (treatment.EMERGENCY_CLASSIFY_ID_2.HasValue) continue;
 
-                    HIS_PATIENT_CLASSIFY classify;
-                    if (!classifyDict.TryGetValue(treatment.EMERGENCY_CLASSIFY_ID_1.Value, out classify)) continue;
-                    if (classify == null || string.IsNullOrWhiteSpace(classify.DISPLAY_COLOR)) continue;
+                        HIS_PATIENT_CLASSIFY classify;
+                        if (!classifyDict.TryGetValue(treatment.EMERGENCY_CLASSIFY_ID_1.Value, out classify)) continue;
+                        if (classify == null || string.IsNullOrWhiteSpace(classify.DISPLAY_COLOR)) continue;
 
-                    List<int> rgb = GetColorValues(classify.DISPLAY_COLOR);
-                    if (rgb == null || rgb.Count < 3) continue;
+                        List<int> rgb = GetColorValues(classify.DISPLAY_COLOR);
+                        if (rgb == null || rgb.Count < 3) continue;
 
-                    emergencyClassifyColorDict[treatment.ID] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
+                        if (isColumnMode)
+                        {
+                            // Che do moi: kep gia tri ve 0-255 de 1 danh muc cau hinh mau sai
+                            // khong lam mat mau ca trang luoi
+                            emergencyClassifyColorDict[treatment.ID] = Color.FromArgb(
+                                ClampColorValue(rgb[0]), ClampColorValue(rgb[1]), ClampColorValue(rgb[2]));
+                            emergencyClassifyNameDict[treatment.ID] = classify.PATIENT_CLASSIFY_NAME;
+                        }
+                        else
+                        {
+                            // Che do cu: giu nguyen hanh vi ban goc (khong kep gia tri)
+                            emergencyClassifyColorDict[treatment.ID] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
+                        }
+                    }
+                    catch (Exception exItem)
+                    {
+                        // Che do cu: nem tiep ra catch ngoai nhu ban goc (khong bat loi tung ban ghi)
+                        if (!isColumnMode) throw;
+                        Inventec.Common.Logging.LogSystem.Warn(exItem);
+                    }
+                }
+
+                if (!isColumnMode) return;
+
+                // Gan nguoc vao tung dong de cot "Muc CC" lay truc tiep (pre-compute, RowCellStyle chi doc)
+                foreach (var row in serviceReqs)
+                {
+                    Color? color;
+                    if (row.TREATMENT_ID > 0 && emergencyClassifyColorDict.TryGetValue(row.TREATMENT_ID, out color))
+                    {
+                        string classifyName;
+                        emergencyClassifyNameDict.TryGetValue(row.TREATMENT_ID, out classifyName);
+                        row.EMERGENCY_CLASSIFY_COLOR = color;
+                        row.EMERGENCY_CLASSIFY_NAME = classifyName;
+                    }
+                    else
+                    {
+                        row.EMERGENCY_CLASSIFY_COLOR = null;
+                        row.EMERGENCY_CLASSIFY_NAME = null;
+                    }
                 }
             }
             catch (Exception ex)
@@ -2263,6 +2322,114 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        /// <summary>Ep gia tri thanh phan mau ve khoang hop le 0-255 (Color.FromArgb nem loi neu vuot khoang)</summary>
+        private static int ClampColorValue(int value)
+        {
+            if (value < 0) return 0;
+            if (value > 255) return 255;
+            return value;
+        }
+
+        #region PTTK cap cuu: cot trang thai "Muc CC"
+
+        /// <summary>
+        /// Tao (hoac go) cot trang thai muc phan loai cap cuu luc runtime. Goi moi lan fill du lieu.
+        /// Chi hien khi bat config VA dang lam viec tai phong cap cuu (IS_EMERGENCY = 1).
+        /// BAT BUOC go cot khi khong thoa dieu kien: file layout luoi (ModuleDesign\...\gridViewServiceReq.xml)
+        /// dung chung cho MOI phong nen cot luu tu phong cap cuu se duoc dung lai o phong khac.
+        /// </summary>
+        private void EnsureEmergencyClassifyColumn()
+        {
+            try
+            {
+                // Hien o MOI PHONG khi bat config — bang dung pham vi cua cach to mau cu
+                // (cach cu khong gioi han phong nao), tranh mat dau hieu muc uu tien khi
+                // benh nhan da phan loai o cap cuu chuyen sang phong kham thuong.
+                bool isShow = HisConfigCFG.IsEmergencyClassifyColumnEnabled
+                    && HisConfigCFG.IsEmergencyClassifyEnabled;
+
+                DevExpress.XtraGrid.Columns.GridColumn col = gridViewServiceReq.Columns["EMERGENCY_CLASSIFY_NAME"];
+
+                if (!isShow)
+                {
+                    if (col != null)
+                    {
+                        gridViewServiceReq.Columns.Remove(col);
+                    }
+                    colEmergencyClassify = null;
+                    return;
+                }
+
+                if (col == null)
+                {
+                    col = gridViewServiceReq.Columns.AddField("EMERGENCY_CLASSIFY_NAME");
+                }
+
+                col.OptionsColumn.AllowEdit = false;
+                col.OptionsColumn.ReadOnly = true;
+                col.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+                col.AppearanceCell.Options.UseTextOptions = true;
+                col.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+                col.Width = 70;
+                col.Visible = true;
+                // Dat ngay sau cot "#" (grdColNUM_ORDER); neu da co cot SKSS thi day them 1 nac.
+                // Luon set lai vi restore layout co the lam troi vi tri sau moi lan fill.
+                int visibleIndex = (grdColNUM_ORDER != null ? grdColNUM_ORDER.VisibleIndex + 1 : 2);
+                if (gridViewServiceReq.Columns["MCH_IMG"] != null && gridViewServiceReq.Columns["MCH_IMG"].VisibleIndex == visibleIndex)
+                    visibleIndex = visibleIndex + 1;
+                col.VisibleIndex = visibleIndex;
+
+                // Caption/tooltip phai set tai day: InitLanguage() chay TRUOC khi luoi fill nen cot chua ton tai
+                col.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.colEmergencyClassify.Caption",
+                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                if (string.IsNullOrWhiteSpace(col.Caption)) col.Caption = "Mức CC";
+                col.ToolTip = Inventec.Common.Resource.Get.Value("UCExecuteRoom.colEmergencyClassify.ToolTip",
+                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                if (string.IsNullOrWhiteSpace(col.ToolTip)) col.ToolTip = "Mức phân loại cấp cứu";
+
+                colEmergencyClassify = col;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// To nen mau muc phan loai cap cuu cho DUNG 1 O tren cot "Muc CC".
+        /// Chi doc property da pre-compute -> nhe nhat co the (handler nay chay moi cell khi repaint).
+        /// </summary>
+        private void gridViewServiceReq_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
+        {
+            try
+            {
+                if (e.RowHandle < 0 || e.Column == null) return;
+                if (e.Column.FieldName != "EMERGENCY_CLASSIFY_NAME") return;
+
+                ServiceReqADO data = gridViewServiceReq.GetRow(e.RowHandle) as ServiceReqADO;
+                if (data == null || !data.EMERGENCY_CLASSIFY_COLOR.HasValue) return;   // chua phan loai -> de trong
+
+                Color background = data.EMERGENCY_CLASSIFY_COLOR.Value;
+                e.Appearance.BackColor = background;
+                e.Appearance.BackColor2 = background;                                  // tranh gradient loang
+                e.Appearance.ForeColor = GetContrastForeColor(background);
+                e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Chon mau chu den/trang theo do sang cua nen de luon doc duoc</summary>
+        private static Color GetContrastForeColor(Color background)
+        {
+            double luminance = 0.299 * background.R + 0.587 * background.G + 0.114 * background.B;
+            return luminance > 150 ? Color.Black : Color.White;
+        }
+
+        #endregion
 
         // ===== SKSS (2844/47156): danh dau ho so da khai bao / lien thong suc khoe sinh san (dich vu MCH) =====
         private Dictionary<string, short> mchStatusDict;

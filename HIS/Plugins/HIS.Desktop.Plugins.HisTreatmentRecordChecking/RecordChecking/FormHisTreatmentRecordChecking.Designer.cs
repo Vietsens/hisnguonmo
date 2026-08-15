@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -93,8 +93,13 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Gv_IR_Code = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_IR_Type = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_IR_CreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gv_IR_CreateTimeReal = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_IR_DepartmentName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_IR_Creator = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gv_IR_DocStatus = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gv_IR_PatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gv_IR_PatientName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gv_IR_TreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemTextEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.GcEmrDocumentType = new DevExpress.XtraGrid.GridControl();
             this.GvEmrDocumentType = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -146,6 +151,23 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.lciGC_Treatment = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.cboRequestDoctor = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gvRequestDoctor = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.dtFromDate = new DevExpress.XtraEditors.DateEdit();
+            this.dtToDate = new DevExpress.XtraEditors.DateEdit();
+            this.cboTreatmentStatus = new DevExpress.XtraEditors.LookUpEdit();
+            this.chkNoDocument = new DevExpress.XtraEditors.CheckEdit();
+            this.chkNotFullySigned = new DevExpress.XtraEditors.CheckEdit();
+            this.lciNoDocument = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciNotFullySigned = new DevExpress.XtraLayout.LayoutControlItem();
+            this.repositoryItemButtonCreateDoc = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.Gv_IR_CreateDoc = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.ucPaging = new Inventec.UC.Paging.UcPaging();
+            this.lciPaging = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciRequestDoctor = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciFromDate = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciToDate = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciTreatmentStatus = new DevExpress.XtraLayout.LayoutControlItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -160,6 +182,23 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             ((System.ComponentModel.ISupportInitialize)(this.Gc_Treatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gv_Treatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkUuTien.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboRequestDoctor.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvRequestDoctor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtFromDate.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtFromDate.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtToDate.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtToDate.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentStatus.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkNoDocument.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkNotFullySigned.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNoDocument)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNotFullySigned)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonCreateDoc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciRequestDoctor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciFromDate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciToDate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gc_EmrDocument)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gv_EmrDocument)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).BeginInit();
@@ -212,6 +251,13 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControl1.Controls.Add(this.chkToiTao);
             this.layoutControl1.Controls.Add(this.Gc_Treatment);
             this.layoutControl1.Controls.Add(this.chkUuTien);
+            this.layoutControl1.Controls.Add(this.cboRequestDoctor);
+            this.layoutControl1.Controls.Add(this.dtFromDate);
+            this.layoutControl1.Controls.Add(this.dtToDate);
+            this.layoutControl1.Controls.Add(this.cboTreatmentStatus);
+            this.layoutControl1.Controls.Add(this.chkNoDocument);
+            this.layoutControl1.Controls.Add(this.chkNotFullySigned);
+            this.layoutControl1.Controls.Add(this.ucPaging);
             this.layoutControl1.Controls.Add(this.lblStatus);
             this.layoutControl1.Controls.Add(this.btnHuyDuyet);
             this.layoutControl1.Controls.Add(this.btnDat);
@@ -639,7 +685,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Gc_InfoRecord.Name = "Gc_InfoRecord";
             this.Gc_InfoRecord.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemPictureEdit2,
-            this.repositoryItemTextEdit1});
+            this.repositoryItemTextEdit1,
+            this.repositoryItemButtonCreateDoc});
             this.Gc_InfoRecord.Size = new System.Drawing.Size(452, 313);
             this.Gc_InfoRecord.TabIndex = 20;
             this.Gc_InfoRecord.ToolTipController = this.toolTipController1;
@@ -653,8 +700,14 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Gv_IR_Code,
             this.Gv_IR_Type,
             this.Gv_IR_CreateTime,
+            this.Gv_IR_CreateTimeReal,
             this.Gv_IR_DepartmentName,
-            this.Gv_IR_Creator});
+            this.Gv_IR_Creator,
+            this.Gv_IR_DocStatus,
+            this.Gv_IR_PatientCode,
+            this.Gv_IR_PatientName,
+            this.Gv_IR_TreatmentCode,
+            this.Gv_IR_CreateDoc});
             this.Gv_InfoRecord.GridControl = this.Gc_InfoRecord;
             this.Gv_InfoRecord.Name = "Gv_InfoRecord";
             this.Gv_InfoRecord.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseUp;
@@ -665,6 +718,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Gv_InfoRecord.OptionsView.ShowIndicator = false;
             this.Gv_InfoRecord.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.Gv_InfoRecord_RowCellClick);
             this.Gv_InfoRecord.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.Gv_InfoRecord_CustomUnboundColumnData);
+            this.Gv_InfoRecord.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.Gv_InfoRecord_CustomRowCellEdit);
             this.Gv_InfoRecord.Click += new System.EventHandler(this.Gv_InfoRecord_Click);
             this.Gv_InfoRecord.DoubleClick += new System.EventHandler(this.Gv_InfoRecord_DoubleClick);
             // 
@@ -715,15 +769,25 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Gv_IR_CreateTime.Visible = true;
             this.Gv_IR_CreateTime.VisibleIndex = 3;
             this.Gv_IR_CreateTime.Width = 150;
-            // 
+            //
+            // Gv_IR_CreateTimeReal
+            //
+            this.Gv_IR_CreateTimeReal.Caption = "Thời gian tạo";
+            this.Gv_IR_CreateTimeReal.FieldName = "CREATE_TIME_REAL_STR";
+            this.Gv_IR_CreateTimeReal.Name = "Gv_IR_CreateTimeReal";
+            this.Gv_IR_CreateTimeReal.OptionsColumn.AllowEdit = false;
+            this.Gv_IR_CreateTimeReal.Visible = true;
+            this.Gv_IR_CreateTimeReal.VisibleIndex = 4;
+            this.Gv_IR_CreateTimeReal.Width = 150;
+            //
             // Gv_IR_DepartmentName
-            // 
+            //
             this.Gv_IR_DepartmentName.Caption = "Khoa";
             this.Gv_IR_DepartmentName.FieldName = "DEPARTMENT_NAME";
             this.Gv_IR_DepartmentName.Name = "Gv_IR_DepartmentName";
             this.Gv_IR_DepartmentName.OptionsColumn.AllowEdit = false;
             this.Gv_IR_DepartmentName.Visible = true;
-            this.Gv_IR_DepartmentName.VisibleIndex = 4;
+            this.Gv_IR_DepartmentName.VisibleIndex = 5;
             this.Gv_IR_DepartmentName.Width = 200;
             // 
             // Gv_IR_Creator
@@ -738,8 +802,48 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Gv_IR_Creator.OptionsColumn.AllowEdit = false;
             this.Gv_IR_Creator.ToolTip = "Click vào để xem thông tin chi tiết";
             this.Gv_IR_Creator.Visible = true;
-            this.Gv_IR_Creator.VisibleIndex = 5;
+            this.Gv_IR_Creator.VisibleIndex = 6;
             this.Gv_IR_Creator.Width = 150;
+            //
+            // Gv_IR_DocStatus
+            //
+            this.Gv_IR_DocStatus.Caption = "Trạng thái VB";
+            this.Gv_IR_DocStatus.FieldName = "DOC_STATUS_NAME";
+            this.Gv_IR_DocStatus.Name = "Gv_IR_DocStatus";
+            this.Gv_IR_DocStatus.OptionsColumn.AllowEdit = false;
+            this.Gv_IR_DocStatus.Visible = true;
+            this.Gv_IR_DocStatus.VisibleIndex = 7;
+            this.Gv_IR_DocStatus.Width = 120;
+            //
+            // Gv_IR_PatientCode
+            //
+            this.Gv_IR_PatientCode.Caption = "Mã BN";
+            this.Gv_IR_PatientCode.FieldName = "PATIENT_CODE";
+            this.Gv_IR_PatientCode.Name = "Gv_IR_PatientCode";
+            this.Gv_IR_PatientCode.OptionsColumn.AllowEdit = false;
+            this.Gv_IR_PatientCode.Visible = false;
+            this.Gv_IR_PatientCode.VisibleIndex = 8;
+            this.Gv_IR_PatientCode.Width = 100;
+            //
+            // Gv_IR_PatientName
+            //
+            this.Gv_IR_PatientName.Caption = "Tên BN";
+            this.Gv_IR_PatientName.FieldName = "PATIENT_NAME";
+            this.Gv_IR_PatientName.Name = "Gv_IR_PatientName";
+            this.Gv_IR_PatientName.OptionsColumn.AllowEdit = false;
+            this.Gv_IR_PatientName.Visible = false;
+            this.Gv_IR_PatientName.VisibleIndex = 9;
+            this.Gv_IR_PatientName.Width = 160;
+            //
+            // Gv_IR_TreatmentCode
+            //
+            this.Gv_IR_TreatmentCode.Caption = "Mã hồ sơ";
+            this.Gv_IR_TreatmentCode.FieldName = "TREATMENT_CODE";
+            this.Gv_IR_TreatmentCode.Name = "Gv_IR_TreatmentCode";
+            this.Gv_IR_TreatmentCode.OptionsColumn.AllowEdit = false;
+            this.Gv_IR_TreatmentCode.Visible = false;
+            this.Gv_IR_TreatmentCode.VisibleIndex = 10;
+            this.Gv_IR_TreatmentCode.Width = 120;
             // 
             // repositoryItemTextEdit1
             // 
@@ -892,7 +996,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.BtnSearch.Name = "BtnSearch";
             this.BtnSearch.Size = new System.Drawing.Size(139, 22);
             this.BtnSearch.StyleController = this.layoutControl1;
-            this.BtnSearch.TabIndex = 5;
+            this.BtnSearch.TabIndex = 44;
             this.BtnSearch.Text = "Tìm (Ctrl F)";
             this.BtnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
@@ -914,7 +1018,6 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem1,
-            this.layoutControlItem2,
             this.emptySpaceItem1,
             this.LcgPatientInfo,
             this.layoutControlItem3,
@@ -929,7 +1032,15 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.emptySpaceItem3,
             this.lciGC_Treatment,
             this.layoutControlItem11,
-            this.layoutControlItem10});
+            this.layoutControlItem10,
+            this.lciRequestDoctor,
+            this.lciFromDate,
+            this.lciToDate,
+            this.lciTreatmentStatus,
+            this.layoutControlItem2,
+            this.lciNoDocument,
+            this.lciNotFullySigned,
+            this.lciPaging});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -948,7 +1059,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.BtnSearch;
-            this.layoutControlItem2.Location = new System.Drawing.Point(285, 0);
+            // Nut Tim dat o CUOI hang loc: nguoi dung nhap ma ho so / chon bac si / thoi gian /
+            // trang thai roi bam Tim mot lan o cuoi, theo dung thu tu thao tac.
+            this.layoutControlItem2.Location = new System.Drawing.Point(1085, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(143, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -957,9 +1070,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(428, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(1228, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(836, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(36, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // LcgPatientInfo
@@ -1204,7 +1317,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.LciTotalInfo.Control = this.Gc_InfoRecord;
             this.LciTotalInfo.Location = new System.Drawing.Point(220, 289);
             this.LciTotalInfo.Name = "LciTotalInfo";
-            this.LciTotalInfo.Size = new System.Drawing.Size(456, 317);
+            this.LciTotalInfo.Size = new System.Drawing.Size(456, 292);
             this.LciTotalInfo.TextSize = new System.Drawing.Size(0, 0);
             this.LciTotalInfo.TextVisible = false;
             // 
@@ -1273,9 +1386,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(371, 266);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(661, 266);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(893, 23);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(603, 23);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciGC_Treatment
@@ -1304,6 +1417,200 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControlItem10.Size = new System.Drawing.Size(130, 23);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
+            //
+            // cboRequestDoctor
+            //
+            this.cboRequestDoctor.Location = new System.Drawing.Point(102, 291);
+            this.cboRequestDoctor.MenuManager = this.barManager1;
+            this.cboRequestDoctor.Name = "cboRequestDoctor";
+            this.cboRequestDoctor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboRequestDoctor.Properties.NullText = "";
+            this.cboRequestDoctor.Properties.View = this.gvRequestDoctor;
+            this.cboRequestDoctor.Size = new System.Drawing.Size(196, 20);
+            this.cboRequestDoctor.StyleController = this.layoutControl1;
+            this.cboRequestDoctor.TabIndex = 40;
+            this.cboRequestDoctor.EditValueChanged += new System.EventHandler(this.cboRequestDoctor_EditValueChanged);
+            this.cboRequestDoctor.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboRequestDoctor_ButtonClick);
+            //
+            // gvRequestDoctor
+            //
+            this.gvRequestDoctor.Name = "gvRequestDoctor";
+            this.gvRequestDoctor.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gvRequestDoctor.OptionsView.ShowGroupPanel = false;
+            this.gvRequestDoctor.OptionsView.ShowIndicator = false;
+            //
+            // dtFromDate
+            //
+            this.dtFromDate.EditValue = null;
+            this.dtFromDate.Location = new System.Drawing.Point(367, 291);
+            this.dtFromDate.MenuManager = this.barManager1;
+            this.dtFromDate.Name = "dtFromDate";
+            this.dtFromDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtFromDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtFromDate.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.dtFromDate.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dtFromDate.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            this.dtFromDate.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dtFromDate.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.dtFromDate.Size = new System.Drawing.Size(123, 20);
+            this.dtFromDate.StyleController = this.layoutControl1;
+            this.dtFromDate.TabIndex = 41;
+            //
+            // dtToDate
+            //
+            this.dtToDate.EditValue = null;
+            this.dtToDate.Location = new System.Drawing.Point(557, 291);
+            this.dtToDate.MenuManager = this.barManager1;
+            this.dtToDate.Name = "dtToDate";
+            this.dtToDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtToDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtToDate.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.dtToDate.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dtToDate.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            this.dtToDate.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dtToDate.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.dtToDate.Size = new System.Drawing.Size(123, 20);
+            this.dtToDate.StyleController = this.layoutControl1;
+            this.dtToDate.TabIndex = 42;
+            //
+            // cboTreatmentStatus
+            //
+            this.cboTreatmentStatus.Location = new System.Drawing.Point(772, 291);
+            this.cboTreatmentStatus.MenuManager = this.barManager1;
+            this.cboTreatmentStatus.Name = "cboTreatmentStatus";
+            this.cboTreatmentStatus.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboTreatmentStatus.Properties.NullText = "";
+            this.cboTreatmentStatus.Size = new System.Drawing.Size(136, 20);
+            this.cboTreatmentStatus.StyleController = this.layoutControl1;
+            this.cboTreatmentStatus.TabIndex = 43;
+            //
+            // lciRequestDoctor
+            //
+            this.lciRequestDoctor.Control = this.cboRequestDoctor;
+            this.lciRequestDoctor.Location = new System.Drawing.Point(285, 0);
+            this.lciRequestDoctor.Name = "lciRequestDoctor";
+            this.lciRequestDoctor.Size = new System.Drawing.Size(270, 26);
+            this.lciRequestDoctor.Text = "Bác sĩ chỉ định:";
+            this.lciRequestDoctor.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciRequestDoctor.TextSize = new System.Drawing.Size(95, 20);
+            //
+            // lciFromDate
+            //
+            this.lciFromDate.Control = this.dtFromDate;
+            this.lciFromDate.Location = new System.Drawing.Point(555, 0);
+            this.lciFromDate.Name = "lciFromDate";
+            this.lciFromDate.Size = new System.Drawing.Size(165, 26);
+            this.lciFromDate.Text = "Từ ngày:";
+            this.lciFromDate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciFromDate.TextSize = new System.Drawing.Size(60, 20);
+            //
+            // lciToDate
+            //
+            this.lciToDate.Control = this.dtToDate;
+            this.lciToDate.Location = new System.Drawing.Point(720, 0);
+            this.lciToDate.Name = "lciToDate";
+            this.lciToDate.Size = new System.Drawing.Size(165, 26);
+            this.lciToDate.Text = "Đến ngày:";
+            this.lciToDate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciToDate.TextSize = new System.Drawing.Size(60, 20);
+            //
+            // lciTreatmentStatus
+            //
+            this.lciTreatmentStatus.Control = this.cboTreatmentStatus;
+            this.lciTreatmentStatus.Location = new System.Drawing.Point(885, 0);
+            this.lciTreatmentStatus.Name = "lciTreatmentStatus";
+            this.lciTreatmentStatus.Size = new System.Drawing.Size(200, 26);
+            this.lciTreatmentStatus.Text = "Trạng thái hồ sơ:";
+            this.lciTreatmentStatus.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTreatmentStatus.TextSize = new System.Drawing.Size(90, 20);
+
+            //
+            // chkNoDocument
+            //
+            this.chkNoDocument.Location = new System.Drawing.Point(373, 268);
+            this.chkNoDocument.MenuManager = this.barManager1;
+            this.chkNoDocument.Name = "chkNoDocument";
+            this.chkNoDocument.Properties.Caption = "Chưa tạo văn bản";
+            this.chkNoDocument.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkNoDocument.Size = new System.Drawing.Size(146, 19);
+            this.chkNoDocument.StyleController = this.layoutControl1;
+            this.chkNoDocument.TabIndex = 44;
+            this.chkNoDocument.ToolTip = "Chỉ hiển thị y lệnh chưa tạo văn bản";
+            this.chkNoDocument.CheckedChanged += new System.EventHandler(this.chkNoDocument_CheckedChanged);
+            //
+            // chkNotFullySigned
+            //
+            this.chkNotFullySigned.Location = new System.Drawing.Point(523, 268);
+            this.chkNotFullySigned.MenuManager = this.barManager1;
+            this.chkNotFullySigned.Name = "chkNotFullySigned";
+            this.chkNotFullySigned.Properties.Caption = "Chưa ký hết";
+            this.chkNotFullySigned.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkNotFullySigned.Size = new System.Drawing.Size(136, 19);
+            this.chkNotFullySigned.StyleController = this.layoutControl1;
+            this.chkNotFullySigned.TabIndex = 45;
+            this.chkNotFullySigned.ToolTip = "Chỉ hiển thị y lệnh chưa hoàn thành ký";
+            this.chkNotFullySigned.CheckedChanged += new System.EventHandler(this.chkNotFullySigned_CheckedChanged);
+            //
+            // lciNoDocument
+            //
+            this.lciNoDocument.Control = this.chkNoDocument;
+            this.lciNoDocument.Location = new System.Drawing.Point(371, 266);
+            this.lciNoDocument.Name = "lciNoDocument";
+            this.lciNoDocument.Size = new System.Drawing.Size(150, 23);
+            this.lciNoDocument.TextSize = new System.Drawing.Size(0, 0);
+            this.lciNoDocument.TextVisible = false;
+            //
+            // lciNotFullySigned
+            //
+            this.lciNotFullySigned.Control = this.chkNotFullySigned;
+            this.lciNotFullySigned.Location = new System.Drawing.Point(521, 266);
+            this.lciNotFullySigned.Name = "lciNotFullySigned";
+            this.lciNotFullySigned.Size = new System.Drawing.Size(140, 23);
+            this.lciNotFullySigned.TextSize = new System.Drawing.Size(0, 0);
+            this.lciNotFullySigned.TextVisible = false;
+            //
+            // repositoryItemButtonCreateDoc
+            //
+            this.repositoryItemButtonCreateDoc.AutoHeight = false;
+            this.repositoryItemButtonCreateDoc.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Tạo", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null)});
+            this.repositoryItemButtonCreateDoc.Name = "repositoryItemButtonCreateDoc";
+            this.repositoryItemButtonCreateDoc.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonCreateDoc.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonCreateDoc_ButtonClick);
+            //
+            // Gv_IR_CreateDoc
+            //
+            this.Gv_IR_CreateDoc.Caption = "Tạo VB";
+            this.Gv_IR_CreateDoc.ColumnEdit = this.repositoryItemButtonCreateDoc;
+            this.Gv_IR_CreateDoc.Name = "Gv_IR_CreateDoc";
+            this.Gv_IR_CreateDoc.ToolTip = "Tạo văn bản cho y lệnh này";
+            this.Gv_IR_CreateDoc.Visible = true;
+            this.Gv_IR_CreateDoc.VisibleIndex = 1;
+            this.Gv_IR_CreateDoc.Width = 55;
+            //
+            // ucPaging
+            //
+            this.ucPaging.Location = new System.Drawing.Point(222, 583);
+            this.ucPaging.Margin = new System.Windows.Forms.Padding(4);
+            this.ucPaging.Name = "ucPaging";
+            this.ucPaging.Size = new System.Drawing.Size(452, 24);
+            this.ucPaging.TabIndex = 47;
+            //
+            // lciPaging
+            //
+            this.lciPaging.Control = this.ucPaging;
+            this.lciPaging.Location = new System.Drawing.Point(220, 581);
+            this.lciPaging.Name = "lciPaging";
+            this.lciPaging.Size = new System.Drawing.Size(456, 25);
+            this.lciPaging.TextSize = new System.Drawing.Size(0, 0);
+            this.lciPaging.TextVisible = false;
             // 
             // barDockControlTop
             // 
@@ -1384,6 +1691,23 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             ((System.ComponentModel.ISupportInitialize)(this.Gc_Treatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gv_Treatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkUuTien.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciToDate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciFromDate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciRequestDoctor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentStatus.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNotFullySigned)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonCreateDoc)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNoDocument)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkNotFullySigned.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkNoDocument.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtToDate.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtToDate.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtFromDate.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtFromDate.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvRequestDoctor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboRequestDoctor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gc_EmrDocument)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gv_EmrDocument)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).EndInit();
@@ -1484,6 +1808,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         private DevExpress.XtraGrid.Columns.GridColumn Gv_IR_Code;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_IR_Type;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_IR_CreateTime;
+        private DevExpress.XtraGrid.Columns.GridColumn Gv_IR_CreateTimeReal;
+        private DevExpress.XtraGrid.Columns.GridColumn Gv_IR_DocStatus;
+        private DevExpress.XtraGrid.Columns.GridColumn Gv_IR_PatientCode;
+        private DevExpress.XtraGrid.Columns.GridColumn Gv_IR_PatientName;
+        private DevExpress.XtraGrid.Columns.GridColumn Gv_IR_TreatmentCode;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_IR_DepartmentName;
         private DevExpress.XtraEditors.LabelControl LblSubIcdYhct;
         private DevExpress.XtraEditors.LabelControl LblIcdYhct;
@@ -1534,6 +1863,23 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         private DevExpress.XtraGrid.Columns.GridColumn Gv_ED_Gc_UnSigners;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_ED_Gc_CreateTime;
         private DevExpress.XtraEditors.CheckEdit chkIncludeCancelDoc;
+        private DevExpress.XtraEditors.GridLookUpEdit cboRequestDoctor;
+        private DevExpress.XtraGrid.Views.Grid.GridView gvRequestDoctor;
+        private DevExpress.XtraEditors.DateEdit dtFromDate;
+        private DevExpress.XtraEditors.DateEdit dtToDate;
+        private DevExpress.XtraEditors.LookUpEdit cboTreatmentStatus;
+        private DevExpress.XtraEditors.CheckEdit chkNoDocument;
+        private DevExpress.XtraEditors.CheckEdit chkNotFullySigned;
+        private DevExpress.XtraLayout.LayoutControlItem lciNoDocument;
+        private DevExpress.XtraLayout.LayoutControlItem lciNotFullySigned;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonCreateDoc;
+        private DevExpress.XtraGrid.Columns.GridColumn Gv_IR_CreateDoc;
+        private Inventec.UC.Paging.UcPaging ucPaging;
+        private DevExpress.XtraLayout.LayoutControlItem lciPaging;
+        private DevExpress.XtraLayout.LayoutControlItem lciRequestDoctor;
+        private DevExpress.XtraLayout.LayoutControlItem lciFromDate;
+        private DevExpress.XtraLayout.LayoutControlItem lciToDate;
+        private DevExpress.XtraLayout.LayoutControlItem lciTreatmentStatus;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit1;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_ED_Gc_DocumentTime;

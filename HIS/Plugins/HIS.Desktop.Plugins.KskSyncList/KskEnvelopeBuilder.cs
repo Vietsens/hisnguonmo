@@ -286,6 +286,21 @@ namespace HIS.Desktop.Plugins.KskSyncList
         #endregion
 
         /// <summary>
+        /// Dung cho cong So Y te TP.HCM: mo lai hai ham quy doi phan loai suc khoe da co san.
+        /// Bao ngoai chu KHONG doi muc truy cap cua ham goc, de 4 cong dang chay khong bi anh huong.
+        /// </summary>
+        internal static int ResolveRankCodeForSyt(long rankId, List<HIS_HEALTH_EXAM_RANK> ranks)
+        {
+            return ResolveRankCode(rankId, ranks);
+        }
+
+        /// <summary>Doc cap do phan loai 1..5 tu chuoi ("2" / "02" / "II" / "Loai 2" / "Loai III").</summary>
+        internal static int ParseRankForSyt(string raw)
+        {
+            return ParseRank(raw);
+        }
+
+        /// <summary>
         /// Quy doi HEALTH_EXAM_RANK_ID -> ma phan loai suc khoe 1..5 qua danh muc HIS_HEALTH_EXAM_RANK
         /// (giong cach thu vien lam). Khong nap duoc danh muc ma ID vo tinh nam 1..5 -> dung luon ID.
         /// Tra 0 khi khong quy doi duoc.

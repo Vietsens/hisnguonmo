@@ -233,5 +233,22 @@ namespace HIS.Desktop.Plugins.ExecuteRoom.Resources
                 return "";
             }
         }
+
+        /// <summary>Chức năng đang phát triển. Vui lòng liên hệ quản trị.</summary>
+        internal static string ChucNangDangPhatTrienLienHeQuanTri
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_ExecuteRoom__ChucNangDangPhatTrienLienHeQuanTri", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

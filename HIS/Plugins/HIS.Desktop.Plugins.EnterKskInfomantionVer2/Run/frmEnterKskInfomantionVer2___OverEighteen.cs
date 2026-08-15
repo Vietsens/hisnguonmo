@@ -49,6 +49,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 spnHeight2.EditValue = null;
                 spnPulse2.EditValue = null;
+                SetKskBreathRateValue(null);
                 spnWeight2.EditValue = null;
                 spnBloodPressureMax2.EditValue = null;
                 spnBloodPressureMin2.EditValue = null;
@@ -71,31 +72,99 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 const string ksk = "Khám sức khỏe trên 18 tuổi";
                 // 14 vùng khám lâm sàng: có Người khám + kết quả + phân loại.
-                AddExamCheck(errors, ksk, "Tuần hoàn", cboExamCirculationLoginName2, HasText(txtExamCirculation2), cboExamCirculationRank2);
-                AddExamCheck(errors, ksk, "Hô hấp", cboExamRespiratoryLoginName2, HasText(txtExamRespiratory2), cboExamRespiratoryRank2);
-                AddExamCheck(errors, ksk, "Tiêu hóa", cboExamDigestionLoginName2, HasText(txtExamDigestion2), cboExamDigestionRank2);
-                AddExamCheck(errors, ksk, "Thận - tiết niệu", cboExamKidneyUrologyLoginName2, HasText(txtExamKidneyUrology2), cboExamKidneyUrologyRank2);
-                AddExamCheck(errors, ksk, "Nội tiết", cboExamOendLoginName2, HasText(txtExamOend2), cboExamOend2);
-                AddExamCheck(errors, ksk, "Cơ - xương - khớp", cboExamMuscleBoneLoginName2, HasText(txtExamMuscleBone2), cboExamMuscleBoneRank2);
-                AddExamCheck(errors, ksk, "Thần kinh", cboExamNeurologicalLoginName2, HasText(txtExamNeurological2), cboExamNeurologicalRank2);
-                AddExamCheck(errors, ksk, "Tâm thần", cboExamMentalLoginName2, HasText(txtExamMental2), cboExamMentalRank2);
-                AddExamCheck(errors, ksk, "Ngoại khoa", cboExamSurgeryLoginName2, HasText(txtExamSurgery2), cboExamSurgeryRank2);
-                AddExamCheck(errors, ksk, "Sản phụ khoa", cboExamObstetricLoginName2, HasText(txtExamObstetric2), cboExamObstetricRank2);
-                AddExamCheck(errors, ksk, "Da liễu", cboExamDermatologyLoginName2, HasText(txtExamDernatology2), cboExamDernatologyRank2);
+                AddExamCheck(errors, ksk, "Tuần hoàn", cboExamCirculationLoginName2, HasText(txtExamCirculation2) || HasHcmResult("noikhoa"), cboExamCirculationRank2);
+                AddExamCheck(errors, ksk, "Hô hấp", cboExamRespiratoryLoginName2, HasText(txtExamRespiratory2) || HasHcmResult("hohap"), cboExamRespiratoryRank2);
+                AddExamCheck(errors, ksk, "Tiêu hóa", cboExamDigestionLoginName2, HasText(txtExamDigestion2) || HasHcmResult("tieuhoa"), cboExamDigestionRank2);
+                AddExamCheck(errors, ksk, "Thận - tiết niệu", cboExamKidneyUrologyLoginName2, HasText(txtExamKidneyUrology2) || HasHcmResult("thantietnieu"), cboExamKidneyUrologyRank2);
+                AddExamCheck(errors, ksk, "Nội tiết", cboExamOendLoginName2, HasText(txtExamOend2) || HasHcmResult("noitiet"), cboExamOend2);
+                AddExamCheck(errors, ksk, "Cơ - xương - khớp", cboExamMuscleBoneLoginName2, HasText(txtExamMuscleBone2) || HasHcmResult("coxuongkhop"), cboExamMuscleBoneRank2);
+                AddExamCheck(errors, ksk, "Thần kinh", cboExamNeurologicalLoginName2, HasText(txtExamNeurological2) || HasHcmResult("thankinh"), cboExamNeurologicalRank2);
+                AddExamCheck(errors, ksk, "Tâm thần", cboExamMentalLoginName2, HasText(txtExamMental2) || HasHcmResult("tamthan"), cboExamMentalRank2);
+                AddExamCheck(errors, ksk, "Ngoại khoa", cboExamSurgeryLoginName2, HasText(txtExamSurgery2) || HasHcmResult("ngoaikhoa"), cboExamSurgeryRank2);
+                AddExamCheck(errors, ksk, "Sản phụ khoa", cboExamObstetricLoginName2, HasText(txtExamObstetric2) || HasHcmResult("sankhoa") || HasHcmResult("phukhoa"), cboExamObstetricRank2);
+                AddExamCheck(errors, ksk, "Da liễu", cboExamDermatologyLoginName2, HasText(txtExamDernatology2) || HasHcmResult("dalieu"), cboExamDernatologyRank2);
                 AddExamCheck(errors, ksk, "Mắt", cboExamEyeLoginName2,
-                    HasAnyText(txtExamEyeSightRight2, txtExamEyeSightLeft2, txtExamEyeSightGlassRight2, txtExamEyeSightGlassLeft2, txtExamEyeDisease2),
+                    HasAnyText(txtExamEyeSightRight2, txtExamEyeSightLeft2, txtExamEyeSightGlassRight2, txtExamEyeSightGlassLeft2, txtExamEyeDisease2)
+                        || HasHcmResult("mat"),
                     cboExamEyeRank2);
                 AddExamCheck(errors, ksk, "Tai mũi họng", cboExamEntLoginName2,
-                    HasAnyText(txtExamEntLeftNormal2, txtExamEntRightNomal2, txtExamEntLeftWhisper2, txtExamEntRightWhisper2, txtExamEntDisease2),
+                    HasAnyText(txtExamEntLeftNormal2, txtExamEntRightNomal2, txtExamEntLeftWhisper2, txtExamEntRightWhisper2, txtExamEntDisease2)
+                        || HasHcmResult("tmh"),
                     cboExamEntDiseaseRank2);
                 AddExamCheck(errors, ksk, "Răng hàm mặt", cboExamStomatologyLoginName2,
-                    HasAnyText(txtExamStomatologyUpper2, txtExamStomatologyLower2, txtExamStomatologyDisease2),
+                    HasAnyText(txtExamStomatologyUpper2, txtExamStomatologyLower2, txtExamStomatologyDisease2)
+                        || HasHcmResult("rhm"),
                     cboExamStomatologyRank2);
                 // CHỈ kiểm tra phần KHÁM LÂM SÀNG (14 vùng trên). KHÔNG kiểm tra cận lâm sàng
                 // (máu/nước tiểu/CĐHA/CLS khác) theo yêu cầu.
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
             return errors;
+        }
+
+        /// <summary>
+        /// Vùng khám đã có KẾT QUẢ theo cách ghi của tab "Khám lâm sàng HCM" (mẫu M3) hay chưa.
+        ///
+        /// Tab cũ ghi kết quả bằng Ô CHỮ; tab HCM thay bằng ô tích "chưa phát hiện bất thường" +
+        /// mã bệnh. Người khám và phân loại đã nối hai chiều giữa hai tab, nên nếu chỉ đọc ô chữ
+        /// thì bác sĩ nhập đủ ở tab HCM vẫn bị báo thiếu kết quả.
+        ///
+        /// Viện KHÔNG bật cổng Sở Y tế TP.HCM thì không có tab này, hàm trả false và phần kiểm tra
+        /// giữ nguyên hành vi cũ.
+        /// </summary>
+        private bool HasHcmResult(string sectionKey)
+        {
+            try
+            {
+                // Ô nhập của tab HCM CHƯA được dựng (người dùng chưa mở tab trong phiên này) ->
+                // đọc thẳng từ bản ghi đã lưu. Không có nhánh này thì mở hồ sơ rồi bấm Cập nhật mà
+                // không ghé tab HCM sẽ bị cảnh báo thiếu kết quả, dù dữ liệu đã có trong cơ sở dữ liệu.
+                if (clinicalExamHcmRows == null || clinicalExamHcmRows.Count == 0)
+                    return HasHcmResultInDb(sectionKey);
+
+                ClinicalExamHcmRow row = clinicalExamHcmRows
+                    .FirstOrDefault(r => r != null && r.Key == sectionKey);
+                if (row == null) return false;
+
+                // Đã tích "chưa phát hiện bất thường" -> đó CHÍNH LÀ kết quả khám.
+                if (row.ChkNormal != null && row.ChkNormal.Checked) return true;
+
+                // Hoặc đã chọn mã bệnh ở một trong hai chẩn đoán.
+                string code, name;
+                GetHcmIcdValue(row.UcPreIcd, out code, out name);
+                if (!string.IsNullOrWhiteSpace(code)) return true;
+                GetHcmIcdValue(row.UcFinalIcd, out code, out name);
+                if (!string.IsNullOrWhiteSpace(code)) return true;
+
+                return false;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
+        }
+
+
+        /// <summary>
+        /// Mục khám của tab HCM đã có kết quả trong BẢN GHI ĐÃ LƯU chưa.
+        ///
+        /// Dùng khi ô nhập của tab chưa được dựng. Xét đúng ba thứ như khi đọc từ ô nhập: đã tích
+        /// "chưa phát hiện bất thường", hoặc đã có mã bệnh ở chẩn đoán sơ bộ, hoặc ở chẩn đoán kết luận.
+        /// </summary>
+        private bool HasHcmResultInDb(string sectionKey)
+        {
+            try
+            {
+                if (currentKskSytHcm == null) return false;
+
+                string prefix;
+                if (!SYT_HCM_SECTION_COLUMN.TryGetValue(sectionKey, out prefix)) return false;
+
+                if (GetSytHcmShort(currentKskSytHcm, prefix + SYT_HCM_SUFFIX__IS_NORMAL) == 1) return true;
+                if (!string.IsNullOrWhiteSpace(GetSytHcmStr(currentKskSytHcm, prefix + SYT_HCM_SUFFIX__PRE_CODE)))
+                    return true;
+                if (!string.IsNullOrWhiteSpace(GetSytHcmStr(currentKskSytHcm, prefix + SYT_HCM_SUFFIX__CODE)))
+                    return true;
+                return false;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
         }
 
         /// <summary>Thêm 1 dòng lỗi nếu vùng ĐÃ có người khám mà thiếu kết quả/phân loại.</summary>
@@ -329,6 +398,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 dhstOverEighteen = dataDhst.First();
                                 spnHeight2.EditValue = dhstOverEighteen.HEIGHT;
                                 spnPulse2.EditValue = dhstOverEighteen.PULSE;
+                                SetKskBreathRateValue(dhstOverEighteen.BREATH_RATE);
                                 spnWeight2.EditValue = dhstOverEighteen.WEIGHT;
                                 spnBloodPressureMax2.EditValue = dhstOverEighteen.BLOOD_PRESSURE_MAX;
                                 spnBloodPressureMin2.EditValue = dhstOverEighteen.BLOOD_PRESSURE_MIN;
@@ -446,6 +516,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 spnWeight2.EditValue = currentDhst.WEIGHT;
                                 spnBloodPressureMax2.EditValue = currentDhst.BLOOD_PRESSURE_MAX;
                                 spnBloodPressureMin2.EditValue = currentDhst.BLOOD_PRESSURE_MIN;
+                                SetKskBreathRateValue(currentDhst.BREATH_RATE);
                                 //txtVirBmi.Text = currentDhst.VIR_BMI!=null ? currentDhst.VIR_BMI.ToString() : "";
                                 FillNoteBMI(spnHeight2, spnWeight2, txtVirBmi2);
                             }
@@ -453,6 +524,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         SetDefaultGridOverE();
                     }
                 }
+
+                // ĐỔ DỮ LIỆU BẢNG MẪU M4 (HIS_KSK_SYT_HCM) — đặt ở CUỐI hàm này, không đặt ở hàm
+                // dựng ô nhập.
+                //
+                // Hàm dựng ô nhập có "đã dựng rồi thì thôi" nên chỉ chạy MỘT LẦN, lúc đó chưa có
+                // dữ liệu; và khi mở hồ sơ khác nó KHÔNG chạy lại. Đặt ở đây thì mỗi lần đổ dữ liệu
+                // hồ sơ là đổ lại, mở hồ sơ nào ra đúng dữ liệu hồ sơ đó.
+                //
+                // Đặt SAU khi đã gán Nguồn chi trả và Đối tượng ở trên, vì bước cập nhật khóa/mở
+                // của hai ô phụ thuộc Nguồn chi trả sẽ xóa giá trị ô đang khóa.
+                try { FillKskSytHcmAdminControls(); }
+                catch (Exception exSyt) { Inventec.Common.Logging.LogSystem.Error(exSyt); }
+
+                // Tab Khám lâm sàng HCM: chỉ đổ được khi tab đã dựng xong các ô chọn bệnh. Chưa mở
+                // tab lần nào thì bỏ qua — lúc mở tab sẽ tự đổ (xem EnsureClinicalExamHcmInited).
+                try { FillKskSytHcmClinicalControls(); }
+                catch (Exception exSytLs) { Inventec.Common.Logging.LogSystem.Error(exSytLs); }
             }
             catch (Exception ex)
             {
@@ -496,10 +584,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.MEDICINE_USING = txtMedicineUsing.Text;
                 obj.MATERNITY_HISTORY = txtMaternityHistory.Text;
                 // Đối tượng: các mã 1-16 phân cách ";" (đặc tả QĐ 1551) + Nguồn chi trả: 1 mã số
-                string kskPatientTypes = GetKskObjectValue();
-                obj.KSK_PATIENT_TYPES = !string.IsNullOrEmpty(kskPatientTypes) ? kskPatientTypes : null;
-                obj.KSK_PAY_SOURCE = cboPaymentSource.EditValue != null
-                    ? (short?)Convert.ToInt16(cboPaymentSource.EditValue) : null;
+                //
+                // BẬT CỔNG SYT TP.HCM: hai ô này đang giữ MÃ CỦA SỞ (3-4 chữ số), không phải mã HIS.
+                // Khi đó ĐỂ TRỐNG hai cột dùng chung — nếu ghi vào thì một cột mang hai hệ mã tùy
+                // viện, làm bản in, báo cáo và 4 cổng liên thông cũ hiểu sai giá trị.
+                // Mã của Sở lưu vào bảng riêng của mẫu M4 (xem TODO(BE) bên dưới).
+                if (IsSytCodeInObjectCombo())
+                {
+                    obj.KSK_PATIENT_TYPES = null;
+                    // TODO(BE): SYT_PATIENT_TYPES <- GetKskObjectValue() (chuỗi mã nối ";")
+                }
+                else
+                {
+                    string kskPatientTypes = GetKskObjectValue();
+                    obj.KSK_PATIENT_TYPES = !string.IsNullOrEmpty(kskPatientTypes) ? kskPatientTypes : null;
+                }
+
+                if (IsSytCodeInPaySourceCombo())
+                {
+                    obj.KSK_PAY_SOURCE = null;
+                    // TODO(BE): SYT_PAY_SOURCE_ID <- cboPaymentSource.EditValue (1 mã số)
+                }
+                else
+                {
+                    obj.KSK_PAY_SOURCE = cboPaymentSource.EditValue != null
+                        ? (short?)Convert.ToInt16(cboPaymentSource.EditValue) : null;
+                }
                 //DHST
                 obj.DHST_RANK = cboDhstRank2.EditValue != null ? (long?)Int64.Parse(cboDhstRank2.EditValue.ToString()) : null;
                 obj.EXAM_CIRCULATION = txtExamCirculation2.Text;
@@ -608,6 +718,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     obj.PULSE = Inventec.Common.TypeConvert.Parse.ToInt64(spnPulse2.Value.ToString());
                 if (spnWeight2.EditValue != null)
                     obj.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spnWeight2.Value, 2);
+                // Nhịp thở — ô thêm cho mẫu M3, lưu vào cột BREATH_RATE đã có sẵn.
+                obj.BREATH_RATE = GetKskBreathRateValue();
 
                 obj.EXECUTE_LOGINNAME = cboExecuteLoginName2.EditValue != null ? cboExecuteLoginName2.EditValue.ToString() : null;
                 obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME)?.TDL_USERNAME : null;
@@ -1913,6 +2025,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 InitObjectCheck();
                 InitObjectCombo();
                 InitPaymentSourceCombo();
+                // 2 o tich + combo Dia diem kham ngay duoi Nguon chi tra (mau M4 SYT TP.HCM).
+                try { InitPaySourceExtraControls(); }
+                catch (Exception exExtra) { Inventec.Common.Logging.LogSystem.Warn(exExtra); }
+                // Ô "Nhịp thở" ở phần Khám thể lực (mẫu M3 Sở Y tế TP.HCM bắt buộc chỉ tiêu này).
+                try { InitBreathRateControl(); }
+                catch (Exception exBr) { Inventec.Common.Logging.LogSystem.Warn(exBr); }
+                // Cụm "Đề nghị" ở tab Kết luận (mẫu M3 Sở Y tế TP.HCM).
+                try { InitConclusionSuggestControls(); }
+                catch (Exception exSug) { Inventec.Common.Logging.LogSystem.Warn(exSug); }
+                // KHÔNG đổ dữ liệu ở đây: hàm này chỉ DỰNG ô nhập và chạy đúng một lần.
+                // Việc đổ dữ liệu nằm ở cuối FillDataOverEighteen — xem chú thích ở đó.
                 // Nút cạnh Lý do khám: mở Thư viện văn bản (giống btnLyDoKham ExamServiceReqExecute).
                 btnLyDoKham.Click -= btnLyDoKham_Click;
                 btnLyDoKham.Click += btnLyDoKham_Click;

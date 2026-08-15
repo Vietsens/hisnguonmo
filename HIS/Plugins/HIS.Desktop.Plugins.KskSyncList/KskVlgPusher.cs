@@ -87,6 +87,36 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
     }
 
+    /// <summary>
+    /// Ket qua TRA CUU 1 ho so tren cong Vinh Long (GET /api/kham-suc-khoe/qd-2062/ho-so/trang-thai).
+    /// Ok = goi API thanh cong; Found = ho so ton tai tren cong; IsValid/IsInvalid theo
+    /// ho_so.validation_status (VALID = DAT kiem tra, INVALID = co loi — chi tiet o ErrorSummary;
+    /// trang thai khac, vd dang xu ly -> ca 2 deu false, KHONG cap nhat trang thai HIS).
+    /// </summary>
+    internal class KskVlgStatusResult
+    {
+        internal bool Ok { get; set; }
+        internal bool Found { get; set; }
+        internal string ValidationStatus { get; set; }
+        internal string Message { get; set; }
+        internal string ErrorSummary { get; set; }
+        internal string FailReason { get; set; }
+
+        internal bool IsValid
+        {
+            get { return Found && string.Equals(ValidationStatus, "VALID", StringComparison.OrdinalIgnoreCase); }
+        }
+        internal bool IsInvalid
+        {
+            get { return Found && string.Equals(ValidationStatus, "INVALID", StringComparison.OrdinalIgnoreCase); }
+        }
+
+        internal static KskVlgStatusResult Failure(string reason)
+        {
+            return new KskVlgStatusResult { Ok = false, FailReason = reason };
+        }
+    }
+
     /// <summary>Ket qua day 1 ho so len cong Vinh Long (chuan hoa de gop voi ket qua cac cong khac).</summary>
     internal class KskVlgPushResult
     {
@@ -271,8 +301,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     }
 
                     if (status == 0)
-                        return KskVlgPushResult.Failure(
-                            "VLG: không kết nối được cổng (kiểm tra mạng / URL đẩy dữ liệu: " + this.config.PushUrl + ").");
+                    {
+                        // Mat ket noi giua lo — token cache con han nen GetToken KHONG cham mang, khong co
+                        // cho nao khac latch fail-fast: latch tai day de cac ho so con lai khong treo N x 120s.
+                        this.batchAuthFatalError = "không kết nối được cổng (kiểm tra mạng / URL đẩy dữ liệu: "
+                            + this.config.PushUrl + ")";
+                        return KskVlgPushResult.Failure("VLG: " + this.batchAuthFatalError + ".");
+                    }
 
                     KskVlgApiResponse resp = ParseResponse(respBody);
                     if (resp == null)
@@ -472,6 +507,160 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 Inventec.Common.Logging.LogSystem.Warn("VLG: response khong phai JSON hop le: " + Cut(body, 500)
                     + " — " + ex.Message);
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// TRA CUU ket qua xu ly that cua 1 ho so theo ma lien ket (= ma dieu tri):
+        /// GET {base}/api/kham-suc-khoe/qd-2062/ho-so/trang-thai?ma_lk=... (Bearer token).
+        /// URL suy tu PushUrl (thay duoi /tiep-nhan bang /ho-so/trang-thai — cung nhanh qd-2062).
+        /// Tra ve validation_status cua HO SO + loi cua LAN GUI MOI NHAT. 404 -> Found=false
+        /// (ho so chua co tren cong — chua tung day / khac moi truong).
+        /// </summary>
+        internal KskVlgStatusResult GetStatus(string maLk)
+        {
+            try
+            {
+                string configError = ValidateConfig();
+                if (configError != null) return KskVlgStatusResult.Failure(configError);
+                if (this.batchAuthFatalError != null)
+                    return KskVlgStatusResult.Failure("VLG: " + this.batchAuthFatalError + " (bỏ qua tra cứu).");
+                if (string.IsNullOrWhiteSpace(maLk))
+                    return KskVlgStatusResult.Failure("VLG: hồ sơ không có mã điều trị để tra cứu.");
+
+                string statusUrl = BuildStatusUrl() + "?ma_lk=" + Uri.EscapeDataString(maLk.Trim());
+                for (int attempt = 0; attempt < MAX_ATTEMPT; attempt++)
+                {
+                    string token = GetToken();
+                    if (string.IsNullOrWhiteSpace(token))
+                        return KskVlgStatusResult.Failure("VLG: đăng nhập cổng thất bại"
+                            + (string.IsNullOrEmpty(this.lastAuthError) ? "." : (" — " + this.lastAuthError)));
+
+                    int status;
+                    string respBody = HttpGet(statusUrl, token, out status);
+                    if (status == HTTP_UNAUTHORIZED && attempt + 1 < MAX_ATTEMPT) { ResetToken(); continue; }
+                    if (status == 0)
+                    {
+                        // Mat ket noi giua lo tra cuu -> latch fail-fast nhu Push (token cache con han nen
+                        // GetToken khong cham mang — khong latch o day thi moi ho so sau treo toi 120s).
+                        this.batchAuthFatalError = "không kết nối được cổng (URL tra cứu: " + statusUrl + ")";
+                        return KskVlgStatusResult.Failure("VLG: " + this.batchAuthFatalError + ".");
+                    }
+                    if (status == 404)
+                        return new KskVlgStatusResult { Ok = true, Found = false, Message = "Chưa có hồ sơ trên cổng" };
+                    if (status != HTTP_OK || string.IsNullOrWhiteSpace(respBody))
+                        return KskVlgStatusResult.Failure("VLG: tra cứu thất bại (HTTP " + status + ").");
+
+                    return ParseStatusResponse(respBody);
+                }
+                return KskVlgStatusResult.Failure("VLG: xác thực thất bại khi tra cứu.");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return KskVlgStatusResult.Failure("VLG: " + ex.Message);
+            }
+        }
+
+        /// <summary>URL tra cuu = PushUrl thay duoi "/tiep-nhan" bang "/ho-so/trang-thai"; khac dang -> cong chinh thuc.</summary>
+        private string BuildStatusUrl()
+        {
+            string pushUrl = (this.config != null && this.config.PushUrl != null) ? this.config.PushUrl.TrimEnd('/') : "";
+            if (pushUrl.EndsWith("/tiep-nhan", StringComparison.OrdinalIgnoreCase))
+                return pushUrl.Substring(0, pushUrl.Length - "/tiep-nhan".Length) + "/ho-so/trang-thai";
+            return KskVlgConfigParser.DEFAULT_BASE_URL + "/api/kham-suc-khoe/qd-2062/ho-so/trang-thai";
+        }
+
+        /// <summary>
+        /// Parse response tra cuu (JObject vi cau truc long: data.ho_so + data.requests[].errors[]).
+        /// Loi lay tu LAN GUI MOI NHAT (received_at lon nhat), chi muc severity=ERROR, toi da 5 dong.
+        /// </summary>
+        private static KskVlgStatusResult ParseStatusResponse(string body)
+        {
+            try
+            {
+                var jo = Newtonsoft.Json.Linq.JObject.Parse(body);
+                var hoSo = jo["data"] != null ? jo["data"]["ho_so"] : null;
+                if (hoSo == null)
+                    return new KskVlgStatusResult { Ok = true, Found = false, Message = "Cổng không trả thông tin hồ sơ" };
+
+                var result = new KskVlgStatusResult
+                {
+                    Ok = true,
+                    Found = true,
+                    ValidationStatus = (string)hoSo["validation_status"],
+                    Message = (string)hoSo["message"]
+                };
+
+                // Lan gui moi nhat -> gom loi ERROR de hien thi ly do khong dat.
+                var requests = jo["data"]["requests"] as Newtonsoft.Json.Linq.JArray;
+                if (requests != null && requests.Count > 0)
+                {
+                    Newtonsoft.Json.Linq.JToken latest = null;
+                    string latestAt = null;
+                    foreach (var r in requests)
+                    {
+                        string at = (string)r["received_at"];
+                        if (latest == null || string.Compare(at, latestAt, StringComparison.Ordinal) > 0)
+                        {
+                            latest = r; latestAt = at;
+                        }
+                    }
+                    var errs = (latest != null) ? latest["errors"] as Newtonsoft.Json.Linq.JArray : null;
+                    if (errs != null && errs.Count > 0)
+                    {
+                        var parts = new List<string>();
+                        foreach (var e in errs)
+                        {
+                            if (!string.Equals((string)e["severity"], "ERROR", StringComparison.OrdinalIgnoreCase)) continue;
+                            if (parts.Count >= 5) { parts.Add("..."); break; }
+                            parts.Add(((string)e["code"] ?? "") + " (" + ((string)e["field_path"] ?? "") + "): "
+                                + ((string)e["message"] ?? ""));
+                        }
+                        if (parts.Count > 0) result.ErrorSummary = string.Join(" | ", parts.ToArray());
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("VLG: khong parse duoc response tra cuu: " + ex.Message);
+                return KskVlgStatusResult.Failure("VLG: không đọc được phản hồi tra cứu từ cổng.");
+            }
+        }
+
+        /// <summary>GET voi Bearer token — dung cho API tra cuu. Hanh vi doc body/loi nhu HttpPost.</summary>
+        private static string HttpGet(string url, string bearerToken, out int statusCode)
+        {
+            statusCode = 0;
+            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+            request.Method = "GET";
+            request.Accept = "application/json";
+            request.Timeout = HTTP_TIMEOUT_MS;
+            request.ReadWriteTimeout = HTTP_TIMEOUT_MS;
+            if (!string.IsNullOrEmpty(bearerToken))
+                request.Headers.Add("Authorization", "Bearer " + bearerToken);
+            try
+            {
+                using (var response = (System.Net.HttpWebResponse)request.GetResponse())
+                {
+                    statusCode = (int)response.StatusCode;
+                    return ReadBody(response);
+                }
+            }
+            catch (System.Net.WebException wex)
+            {
+                var errResponse = wex.Response as System.Net.HttpWebResponse;
+                if (errResponse == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("VLG: khong ket noi duoc " + url + " — " + wex.Message, wex);
+                    return null;
+                }
+                using (errResponse)
+                {
+                    statusCode = (int)errResponse.StatusCode;
+                    return ReadBody(errResponse);
+                }
             }
         }
 

@@ -1757,7 +1757,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     updateDTO.CONTENT = String.Format("Bạn có lời mời tham gia hội chẩn cho bệnh nhân {0} – {1}, {2}. Mời bạn vào chức năng “Biên bản hội chẩn” để xem chi tiết",
                         vHisTreatment.TREATMENT_CODE,
                         vHisTreatment.TDL_PATIENT_NAME,
-                        listDepartment.FirstOrDefault(o => o.ID == Int64.Parse((cboDepartment.EditValue ?? "").ToString())).DEPARTMENT_NAME);
+                        GetSelectedDepartmentName());
                     updateDTO.TITLE = "Thông báo mời tham gia hội chẩn";
                     updateDTO.FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                     updateDTO.TO_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtDebateTime.DateTime).ToString("yyyyMMdd") + "235959");

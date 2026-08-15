@@ -154,7 +154,14 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.Print
                             {
                                 Inventec.Common.Logging.LogSystem.Info("__IN__MPS000014__KQ_XET_NGHIEM:" + Inventec.Common.Logging.LogUtil.TraceData("currentServiceReqPrint: ", currentServiceReqPrint));
                                 Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
-                                richEditorMain.SetActionCancelChooseTemplate(CancelChooseTemplate);
+                                // DLL Inventec.Common.RichEditor trên máy build backup chưa có SetActionCancelChooseTemplate
+                                // (source đi trước DLL) -> gọi qua reflection: DLL mới gắn callback như bản gốc, DLL cũ bỏ qua.
+                                var miSetActionCancel = richEditorMain.GetType().GetMethod("SetActionCancelChooseTemplate");
+                                if (miSetActionCancel != null)
+                                {
+                                    var cancelDelType = miSetActionCancel.GetParameters()[0].ParameterType;
+                                    miSetActionCancel.Invoke(richEditorMain, new object[] { Delegate.CreateDelegate(cancelDelType, this, "CancelChooseTemplate") });
+                                }
                                 WaitingManager.Hide();
                                 richEditorMain.RunPrintTemplate(PrintTypeCodeStore.IN__MPS000014__KQ_XET_NGHIEM, DelegateRunPrinter);
                                 WaitingManager.Show();

@@ -27,6 +27,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
     {
         internal const string HIS_SERE_SERV_TEMP__GET = "api/HisSereServTemp/Get";
         internal const string HIS_SERE_SERV_EXT_GET = "api/HisSereServExt/Get";
+        internal const string HIS_SERE_SERV_EXT_GET_LINK_RESULT = "api/HisSereServExt/GetLinkResult";
         internal const string HIS_SERE_SERV_EXT_CREATE = "api/HisSereServExt/CreateWithFile";
         internal const string HIS_SERE_SERV_EXT_UPDATE = "api/HisSereServExt/UpdateWithFile";
         internal const string HIS_SERE_SERV_EXT_CREATE_SDO = "api/HisSereServExt/CreateSdo";

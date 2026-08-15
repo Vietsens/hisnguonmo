@@ -110,6 +110,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     // Tiền sử bệnh: SDO gộp chung 1 list -> tách theo khóa (≥18 / lái xe định kỳ).
                     var o18 = (preKskOverEighteens != null) ? preKskOverEighteens.FirstOrDefault() : null;
                     var driver = (preKskPeriodDrivers != null) ? preKskPeriodDrivers.FirstOrDefault() : null;
+
+                    // Bảng dữ liệu riêng của mẫu M4 (Sở Y tế TP.HCM) — chỉ gọi khi viện đã khai báo cấu hình.
+                    if (o18 != null) LoadKskSytHcm(o18.ID);
                     if (sdo.HisPeriodDriverDitys != null)
                     {
                         if (o18 != null)

@@ -125,6 +125,56 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         #region ===== Public API (map HIS_KSK_GENERAL) =====
 
+        /// <summary>
+        /// Đổi tiêu đề khung. Mặc định "Kết luận theo bệnh (ICD - 10)"; tab Khám lâm sàng HCM
+        /// dùng lại cụm này cho từng chuyên khoa nên đặt tiêu đề là tên chuyên khoa.
+        /// </summary>
+        public void SetCaption(string caption)
+        {
+            try
+            {
+                if (this.grpIcd != null && !string.IsNullOrEmpty(caption)) this.grpIcd.Text = caption;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Bỏ khung + tiêu đề của cụm và dồn nội dung lên trên — dùng khi cụm được đặt SẴN TRONG
+        /// khung của mục khác (tab Khám lâm sàng HCM), tránh khung lồng khung.
+        /// Sau khi gọi, chiều cao vừa đủ khoảng 62px.
+        /// </summary>
+        public void SetFrameless()
+        {
+            try
+            {
+                if (this.grpIcd != null)
+                {
+                    this.grpIcd.ShowCaption = false;
+                    this.grpIcd.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+                }
+                if (this.rdoIcdConclusion != null) this.rdoIcdConclusion.Top = 2;
+                RelayoutByWidth();
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Cố định bề rộng hàng 3 lựa chọn (bỏ neo phải) để khi cụm được kéo rộng thì CHỈ ô chọn mã ICD
+        /// dài ra, còn 3 lựa chọn vẫn nằm gần nhau. Gọi sau khi đã đặt Size cho cụm.
+        /// </summary>
+        public void SetCompactOptions(int optionsWidth)
+        {
+            try
+            {
+                if (this.rdoIcdConclusion == null) return;
+                this.rdoIcdConclusion.Anchor = System.Windows.Forms.AnchorStyles.Top
+                                             | System.Windows.Forms.AnchorStyles.Left;
+                if (optionsWidth > 0) this.rdoIcdConclusion.Width = optionsWidth;
+                RelayoutByWidth();
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
         /// <summary>1=Chưa phát hiện, 2=Sơ bộ, 3=Xác định (null nếu chưa chọn).</summary>
         public long? GetConclusionIcdType()
         {

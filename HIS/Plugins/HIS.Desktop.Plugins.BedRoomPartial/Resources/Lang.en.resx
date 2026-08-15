@@ -1026,4 +1026,10 @@
   <data name="UCTreeListService.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
     <value>Enter the search string...</value>
   </data>
+  <data name="UCBedRoomPartial.btnKetQuaCLS.Text" xml:space="preserve">
+    <value>Test results</value>
+  </data>
+  <data name="UCBedRoomPartial.btnKetQuaCLS.ToolTip" xml:space="preserve">
+    <value>View subclinical results</value>
+  </data>
 </root>

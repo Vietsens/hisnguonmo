@@ -28,6 +28,15 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.ADO
 	{
 		public bool IsHasDocument { get; set; }
 		public bool IsHasDocumentNoPatientSign { get; set; }
+
+		/// <summary>
+		/// Loai van ban co du lieu de hien o luoi giua: co VAN BAN, hoac co Y LENH thuoc loai nay.
+		/// Dung cho checkbox "Uu tien" (day dong co du lieu len dau).
+		/// KHONG dung IsHasDocument cho viec nay: 9 loai trong ListTypeId hien y lenh chu khong hien
+		/// van ban, nen y lenh chua tao van ban van phai duoc coi la co du lieu.
+		/// IsHasDocument giu nguyen y nghia "co van ban" vi con dung de to mau luoi trai.
+		/// </summary>
+		public bool IsHasData { get; set; }
 		public EmrDocumentTypeADO(EMR_DOCUMENT_TYPE data)
 		{
             try
