@@ -804,4 +804,22 @@
   <data name="UCMedicalStoreV2.gridColumn55.ToolTip" xml:space="preserve">
     <value>Chẩn đoán vào viện</value>
   </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheck.Caption" xml:space="preserve">
+    <value>Đã kiểm tra</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheck.ToolTip" xml:space="preserve">
+    <value>Đánh dấu hồ sơ đã được kiểm tra đủ giấy tờ và chữ ký</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheckUser.Caption" xml:space="preserve">
+    <value>Người kiểm tra</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheckTime.Caption" xml:space="preserve">
+    <value>Thời gian kiểm tra</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciStoreCheckStatus.Text" xml:space="preserve">
+    <value>Tình trạng kiểm tra:</value>
+  </data>
+  <data name="UCMedicalStoreV2.cboStoreCheckStatus.Properties.NullText" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
 </root>
