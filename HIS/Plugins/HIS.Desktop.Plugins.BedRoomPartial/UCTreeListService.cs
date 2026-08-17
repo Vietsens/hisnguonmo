@@ -103,6 +103,23 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             }
         }
 
+        /// <summary>
+        /// Bat/an 2 cot "Ngay ke" va "Ngay du tru" theo cau hinh (QT-07, QT-11).
+        /// Config tat -> an de don vi khong dung tinh nang khong thay 2 cot trong.
+        /// </summary>
+        public void SetAnticipateColumnsVisible(bool visible)
+        {
+            try
+            {
+                this.tc_InstructionDate.Visible = visible;
+                this.tc_UseDate.Visible = visible;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs, L_HIS_TREATMENT_BED_ROOM _RowCellClickBedRoom, Action<ADO.SereServADO> EditEnableButton_Click, Action<ADO.SereServADO> DeleteEnableButton_Click)
         {
             try
@@ -353,7 +370,17 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 var data = (SereServADO)treeSereServ.GetDataRecordByNode(e.Node);
                 if (data != null)
                 {
-                    if (e.Node.HasChildren)
+                    // QT-08 — đơn thuốc dự trù tô cam để phân biệt với đơn thường cùng ngày.
+                    // Đặt TRƯỚC nhánh HasChildren vì dòng đơn cha cũng cần tô.
+                    if (data.IS_ANTICIPATE)
+                    {
+                        e.Appearance.ForeColor = Color.DarkOrange;
+                        if (e.Node.HasChildren)
+                            e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
+                        else if (data.IS_NO_EXECUTE == 1)
+                            e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Strikeout);
+                    }
+                    else if (e.Node.HasChildren)
                     {
                         e.Appearance.ForeColor = Color.Black;
                         e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
@@ -829,6 +856,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 //qtcode
                 this.tc_TdlMedicineConcentra.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_TdlMedicineConcentra.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 //qtcode
+                this.tc_InstructionDate.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__COL__INSTRUCTION_DATE", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
+                this.tc_UseDate.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__COL__USE_DATE", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.repositoryItemButton__Send.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.repositoryItemButton__Send__Disable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.repositoryItemButtonEdit_TaoThuHoi.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__TAO_THU_HOI", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());

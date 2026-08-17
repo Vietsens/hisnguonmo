@@ -90,6 +90,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 dataTotal = 0;
                 rowCount = 0;
                 TreeClickData = null;
+                // Cache phục vụ hiển thị đơn dự trù theo ngày dự trù
+                ClearAnticipateCache();
                 emrMenuPopupProcessor = null;
                 bedRoomPopupMenuProcessor = null;
                 rowClickByDate = null;

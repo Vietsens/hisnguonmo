@@ -336,6 +336,9 @@
     <Compile Include="Run\UCBedRoomPartial__Pluss__Print.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Run\UCBedRoomPartial__Pluss__Anticipate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="Key\KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

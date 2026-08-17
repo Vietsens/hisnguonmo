@@ -513,6 +513,15 @@
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DANG_XU_LY" xml:space="preserve">
     <value>Đang xử lý</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__COL__INSTRUCTION_DATE" xml:space="preserve">
+    <value>Ngày kê</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__COL__USE_DATE" xml:space="preserve">
+    <value>Ngày dự trù</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__GROUP__ANTICIPATE" xml:space="preserve">
+    <value>Dự trù — kê ngày {0}</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM" xml:space="preserve">
     <value>Gửi lại yêu cầu xét nghiệm</value>
   </data>
