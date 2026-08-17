@@ -353,6 +353,14 @@
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___UnderEighteenTextLib.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___RequiredValidation.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___AccompanyUnderSix.cs">
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>
@@ -488,6 +496,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

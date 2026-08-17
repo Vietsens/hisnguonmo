@@ -218,6 +218,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 InitYlenhData();
                 // "Tự động kết thúc" + nút "Kết thúc y lệnh khám".
                 InitFinishFeature();
+                // Cảnh báo trường bắt buộc (Đối tượng/Nguồn chi trả các tab + Lý do khám) tại control.
+                InitRequiredValidation();
                 this.ResumeLayout(false);
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Debug("KskLoad.TOTAL(before deferred): " + swLoad.ElapsedMilliseconds + " ms");
@@ -852,6 +854,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     xtraTabControl1.SelectedTabPageIndex = 0;
                     isActive = true;
                 }
+                // Chưa có bản ghi KSK nào -> mở tab theo TUỔI bệnh nhân (trên 18 / dưới 18 / trẻ <6).
+                // Phải khớp ResolveDefaultTab để tab được lazy-load đúng là tab đang hiển thị.
+                if (!isActive)
+                {
+                    int tabByAge = ResolveDefaultTabByAge();
+                    if (tabByAge >= 0) xtraTabControl1.SelectedTabPageIndex = tabByAge;
+                }
                 btnPrint.Enabled = isActive;
             }
             catch (System.Exception ex)
@@ -1221,27 +1230,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
-                // Lý do khám tối đa 500 ký tự — chặn khi Lưu (pattern XtraMessageBox như các màn khác).
-                if (txtLyDoKham.Text != null && txtLyDoKham.Text.Length > 500)
-                {
-                    DevExpress.XtraEditors.XtraMessageBox.Show("Lý do khám nhập quá 500 ký tự.", "Thông báo",
-                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
-                    txtLyDoKham.Focus();
-                    return;
-                }
+                // Trường bắt buộc nhập (icon cảnh báo + nội dung lỗi tại control):
+                //  - Lý do khám: bắt buộc ở mức FORM (mọi tab) + giới hạn 500 ký tự.
+                //  - Đối tượng / Nguồn chi trả: bắt buộc ở tab trên 18, dưới 18 và trẻ em dưới 6 tuổi.
+                if (!ValidateRequiredBeforeSave()) return;
                 bool success = false;
                 // R: tab ≥18 — vùng nào ĐÃ nhập Người khám mà THIẾU kết quả/phân loại thì chặn Lưu (nêu rõ vùng + người khám).
                 if (xtraTabControl1.SelectedTabPageIndex == 1)
                 {
-                    // Bắt buộc chọn "Đối tượng" (KSK_PATIENT_TYPES) khi lưu tab KSK trên 18 tuổi.
-                    if (string.IsNullOrWhiteSpace(GetKskObjectValue()))
-                    {
-                        DevExpress.XtraEditors.XtraMessageBox.Show(
-                            "Vui lòng chọn Đối tượng.", "Thông báo",
-                            System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
-                        cboObject.Focus();
-                        return;
-                    }
+                    // ("Đối tượng"/"Nguồn chi trả" đã kiểm tra ở ValidateRequiredBeforeSave.)
                     var examErrors = ValidateExaminerHasResultOverEighteen();
                     if (examErrors != null && examErrors.Count > 0)
                     {
