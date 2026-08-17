@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FormHisTreatmentRecordChecking.BtnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.btnKhongDat.Text" xml:space="preserve">
+    <value>Không đạt (Ctrl D)</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.btnKhongDat.ToolTip" xml:space="preserve">
+    <value>Xác nhận hồ sơ chưa đạt điều kiện lưu tủ bệnh án</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.btnDat.Text" xml:space="preserve">
+    <value>Đạt (Ctrl S)</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.btnDat.ToolTip" xml:space="preserve">
+    <value>Xác nhận hồ sơ đạt điều kiện lưu tủ bệnh án</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.btnDuyet.Text" xml:space="preserve">
+    <value>Duyệt</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.btnDuyet.ToolTip" xml:space="preserve">
+    <value>Duyệt hồ sơ bệnh án (chuyển trạng thái Đạt sang Đã duyệt)</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.btnHuyDuyet.Text" xml:space="preserve">
+    <value>Hủy duyệt (Ctrl H)</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.barButtonItem1.Caption" xml:space="preserve">
+    <value>Tìm</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.bbtnKhongDat.Caption" xml:space="preserve">
+    <value>Không đạt (Ctrl D)</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.bbtnDat.Caption" xml:space="preserve">
+    <value>Đạt (Ctrl S)</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.bbtnHuyDuyet.Caption" xml:space="preserve">
+    <value>Hủy duyệt (Ctrl H)</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.chkUuTien.Text" xml:space="preserve">
+    <value>Ưu tiên có dữ liệu</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.chkUuTien.ToolTip" xml:space="preserve">
+    <value>Ưu tiên hiển thị các loại văn bản có dữ liệu lên đầu</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.chkToiTao.Text" xml:space="preserve">
+    <value>Tôi tạo</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.chkToiTao.ToolTip" xml:space="preserve">
+    <value>Chỉ hiển thị các dữ liệu mà tôi là người tạo</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.chkIncludeCancelDoc.Text" xml:space="preserve">
+    <value>Bao gồm văn bản hủy</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LcgPatientInfo.Text" xml:space="preserve">
+    <value>Thông tin bệnh nhân</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciPatientCode.Text" xml:space="preserve">
+    <value>Mã BN:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciPatientName.Text" xml:space="preserve">
+    <value>Tên BN:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciDob.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciGender.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciPatientType.Text" xml:space="preserve">
+    <value>Đối tượng:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciHeinNumber.Text" xml:space="preserve">
+    <value>Số thẻ BHYT:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciHeinTime.Text" xml:space="preserve">
+    <value>Hạn thẻ:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciMediOrg.Text" xml:space="preserve">
+    <value>KCBBĐ:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciAddress.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciMainIcd.Text" xml:space="preserve">
+    <value>Chẩn đoán chính:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciSubIcd.Text" xml:space="preserve">
+    <value>Chẩn đoán phụ:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciIcdYhct.Text" xml:space="preserve">
+    <value>CĐ YHCT:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciSubIcdYhct.Text" xml:space="preserve">
+    <value>CĐ YHCT phụ:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.LciNote.Text" xml:space="preserve">
+    <value>Ghi chú ra viện:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.layoutControlItem8.Text" xml:space="preserve">
+    <value>Trạng thái:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gr_Gc_Name.Caption" xml:space="preserve">
+    <value>Loại văn bản</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_Treatment_Gc_STT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_Treatment_Gc_PatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_Treatment_Gc_PatientDOB.Caption" xml:space="preserve">
+    <value>Năm sinh</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_Treatment_Gc_TreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_ED_Gc_STT.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_ED_Gc_View.Caption" xml:space="preserve">
+    <value>Xem</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_ED_Gc_Name.Caption" xml:space="preserve">
+    <value>Tên văn bản</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_ED_Gc_HisCode.Caption" xml:space="preserve">
+    <value>Mã HIS</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_ED_Gc_Creator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_ED_Gc_Signers.Caption" xml:space="preserve">
+    <value>Người ký</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_ED_Gc_UnSigners.Caption" xml:space="preserve">
+    <value>Người chưa ký</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_ED_Gc_CreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_ED_Gc_DocumentTime.Caption" xml:space="preserve">
+    <value>TG hồ sơ</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_IR_STT.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_IR_Creator.ToolTip" xml:space="preserve">
+    <value>Click vào để xem thông tin chi tiết</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.Code" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.Type" xml:space="preserve">
+    <value>Loại</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.Time" xml:space="preserve">
+    <value>Thời gian</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.Department" xml:space="preserve">
+    <value>Khoa tạo</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.Creator" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.ServiceReqCode" xml:space="preserve">
+    <value>Mã y lệnh</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.IntructionTime" xml:space="preserve">
+    <value>Thời gian chỉ định</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.RequestDepartment" xml:space="preserve">
+    <value>Khoa chỉ định</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.RequestUser" xml:space="preserve">
+    <value>Người chỉ định</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.InfusionTime" xml:space="preserve">
+    <value>Thời gian truyền</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.Solution" xml:space="preserve">
+    <value>Dung dịch</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.GridCaption.DebateTime" xml:space="preserve">
+    <value>Thời gian hội chẩn</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Status.NotClosed" xml:space="preserve">
+    <value>Chưa chốt</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Status.Approved" xml:space="preserve">
+    <value>Đã duyệt</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Status.Qualified" xml:space="preserve">
+    <value>Đạt</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Status.NotQualified" xml:space="preserve">
+    <value>Chưa đạt</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.DocStatus.NoDocument" xml:space="preserve">
+    <value>Chưa có văn bản</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.DocStatus.NotSigned" xml:space="preserve">
+    <value>Chưa ký</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.DocStatus.Signing" xml:space="preserve">
+    <value>Đang ký</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.DocStatus.FullySigned" xml:space="preserve">
+    <value>Hoàn thành</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.DocStatus.Cancelled" xml:space="preserve">
+    <value>Đã hủy</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Common.Undefined" xml:space="preserve">
+    <value>Chưa xác định</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Common.Other" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Common.PatientSign" xml:space="preserve">
+    <value>bệnh nhân ký</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_IR_CreateTimeReal.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_IR_DocStatus.Caption" xml:space="preserve">
+    <value>Trạng thái VB</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.lciRequestDoctor.Text" xml:space="preserve">
+    <value>Bác sĩ chỉ định:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.lciFromDate.Text" xml:space="preserve">
+    <value>Từ ngày:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.lciToDate.Text" xml:space="preserve">
+    <value>Đến ngày:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.lciTreatmentStatus.Text" xml:space="preserve">
+    <value>Trạng thái hồ sơ:</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.TreatmentStatus.NotFinished" xml:space="preserve">
+    <value>Chưa kết thúc</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.TreatmentStatus.Finished" xml:space="preserve">
+    <value>Đã kết thúc</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.ComboColumn.LoginName" xml:space="preserve">
+    <value>Tài khoản</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.ComboColumn.EmployeeName" xml:space="preserve">
+    <value>Họ tên</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.chkNoDocument.Text" xml:space="preserve">
+    <value>Chưa tạo văn bản</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.chkNoDocument.ToolTip" xml:space="preserve">
+    <value>Chỉ hiển thị y lệnh chưa tạo văn bản</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.chkNotFullySigned.Text" xml:space="preserve">
+    <value>Chưa ký hết</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.chkNotFullySigned.ToolTip" xml:space="preserve">
+    <value>Chỉ hiển thị y lệnh chưa hoàn thành ký</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_IR_PatientCode.Caption" xml:space="preserve">
+    <value>Mã BN</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_IR_PatientName.Caption" xml:space="preserve">
+    <value>Tên BN</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_IR_TreatmentCode.Caption" xml:space="preserve">
+    <value>Mã hồ sơ</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.btnCreateDocument.Text" xml:space="preserve">
+    <value>Tạo văn bản</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.btnCreateDocument.ToolTip" xml:space="preserve">
+    <value>Tạo văn bản cho y lệnh đang chọn</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_IR_CreateDoc.Caption" xml:space="preserve">
+    <value>Tạo VB</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.Gv_IR_CreateDoc.ToolTip" xml:space="preserve">
+    <value>Tạo văn bản cho y lệnh này</value>
+  </data>
+  <data name="FormHisTreatmentRecordChecking.repositoryItemButtonCreateDoc.Caption" xml:space="preserve">
+    <value>Tạo</value>
+  </data>
+</root>
