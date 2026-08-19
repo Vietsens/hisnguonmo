@@ -157,7 +157,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Popup
                 HisTreatmentUpdateCareLevelSDO sdo = new HisTreatmentUpdateCareLevelSDO();
 
                 sdo.Id = treatmentId;
-                sdo.CareLevelId = careLevelId.ToString();
+                sdo.CareLevelId = careLevelId;
 
                 Inventec.Common.Logging.LogSystem.Info("frmCareLevel.UpdateCareLevel"
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
