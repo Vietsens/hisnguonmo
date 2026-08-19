@@ -2739,6 +2739,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         //txtTreatmentInstruction.Text = uCExamTreatmentFinish.TreatmentInstruction;
                         uCExamTreatmentFinish.CapSoLuuTruBAChanged += UCExamTreatmentFinish_CapSoLuuTruBAChanged;
+                        // Tick "Man tinh" --> to do ngay 2 nhan bat buoc nhap ben panel trai
+                        uCExamTreatmentFinish.ChronicRequiredChanged += UCExamTreatmentFinish_ChronicRequiredChanged;
                         uCExamTreatmentFinish.SetDelegateSendTeatmentMethod(FillTreatmentMethod);
                         uCExamTreatmentFinish.PathologicalProcessRequired += UcExamTreatmentFinish_PathologicalProcessRequired;
                     }
@@ -2814,6 +2816,123 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private void FillTreatmentMethod(object data)
         {
             txtTreatmentInstruction.Text = data.ToString();
+        }
+
+        /// <summary>
+        /// Tick / bo tick "Man tinh" ben UC ket thuc dieu tri.
+        /// Tick    --> "Tom tat ket qua can lam sang" + "Phuong phap dieu tri" thanh bat buoc nhap:
+        ///             to nhan mau Maroon + gan validation rule (giong cac truong bat buoc khac).
+        /// Bo tick --> tra nhan ve mau den + bo validation rule, TRU khi dien dieu tri von da
+        ///             bat buoc 2 truong nay (noi tru / ngoai tru / ban ngay).
+        /// </summary>
+        private void UCExamTreatmentFinish_ChronicRequiredChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (IsChronicRequired())
+                {
+                    lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidateForm();
+                }
+                else if (!IsTreatmentTypeRequiredSubclinicalAndMethod())
+                {
+                    lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Black;
+                    lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
+                    ClearValidationSubclinicalAndMethod();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Checkbox "Man tinh" dang tick --> 2 truong tro thanh bat buoc nhap.
+        /// </summary>
+        private bool IsChronicRequired()
+        {
+            var uc = this.ucTreatmentFinish as UCExamTreatmentFinish;
+            return chkTreatmentFinish.Checked && uc != null && uc.IsChronicChecked;
+        }
+
+        /// <summary>
+        /// Dien dieu tri noi tru / ngoai tru / ban ngay --> 2 truong da bat buoc nhap san
+        /// theo logic co truoc.
+        /// </summary>
+        private bool IsTreatmentTypeRequiredSubclinicalAndMethod()
+        {
+            var treatmentTypeId = this.treatment != null ? this.treatment.TDL_TREATMENT_TYPE_ID : null;
+            return treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
+                || treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                || treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY;
+        }
+
+        private void ClearValidationSubclinicalAndMethod()
+        {
+            try
+            {
+                this.dxValidationProviderForLeftPanel.SetValidationRule(txtSubclinical, null);
+                this.dxValidationProviderForLeftPanel.SetValidationRule(txtTreatmentInstruction, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chan luu khi tick "Man tinh" ma chua nhap
+        /// "Tom tat ket qua can lam sang" hoac "Phuong phap dieu tri".
+        /// Tra false --> khong cho luu.
+        /// </summary>
+        private bool CheckChronicRequiredFields()
+        {
+            try
+            {
+                if (!IsChronicRequired())
+                {
+                    return true;
+                }
+
+                List<string> errors = new List<string>();
+                if (String.IsNullOrWhiteSpace(txtSubclinical.Text))
+                {
+                    errors.Add(lblCaptionDiagnostic.Text.TrimEnd(':', ' '));
+                }
+                if (String.IsNullOrWhiteSpace(txtTreatmentInstruction.Text))
+                {
+                    errors.Add(lblCaptionConclude.Text.TrimEnd(':', ' '));
+                }
+
+                if (errors.Count == 0)
+                {
+                    return true;
+                }
+
+                lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Maroon;
+                lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Maroon;
+                ValidateForm();
+
+                XtraMessageBox.Show(
+                    String.Format(ResourceMessage.TichManTinhPhaiNhapTruongBatBuoc, String.Join(", ", errors)),
+                    ResourceMessage.ThongBao,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                var focusControl = String.IsNullOrWhiteSpace(txtSubclinical.Text) ? txtSubclinical : txtTreatmentInstruction;
+                this.BeginInvoke(new Action(() =>
+                {
+                    focusControl.Focus();
+                    focusControl.SelectAll();
+                }));
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
         }
 
         private void UCExamTreatmentFinish_CapSoLuuTruBAChanged(object sender, EventArgs e)
@@ -3887,6 +4006,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (!ValidForSave()) return;
                 // Tick "Phụ nữ mang thai" thì bắt buộc nhập số tháng (1-9)
                 if (!ValidWomanClassify()) return;
+
+                // Tick "Mãn tính" thì bắt buộc nhập Tóm tắt KQ cận lâm sàng + Phương pháp điều trị
+                if (!CheckChronicRequiredFields())
+                {
+                    IsValidForSave = false;
+                    return;
+                }
 
                 if (!CheckExamServiceFinish())
                     return;

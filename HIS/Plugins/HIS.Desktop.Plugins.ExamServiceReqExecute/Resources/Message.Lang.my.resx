@@ -237,6 +237,9 @@
   <data name="ThongBao" xml:space="preserve">
     <value>အကြောင်းကြားပါ။</value>
   </data>
+  <data name="TichManTinhPhaiNhapTruongBatBuoc" xml:space="preserve">
+    <value>"Chronic" is checked, you must enter: {0}.</value>
+  </data>
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>လိုအပ်သောအကွက်များကို မထည့်ရသေးပါ။</value>
   </data>

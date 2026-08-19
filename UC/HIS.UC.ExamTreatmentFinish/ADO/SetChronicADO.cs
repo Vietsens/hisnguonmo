@@ -52,5 +52,18 @@ namespace HIS.UC.ExamTreatmentFinish.ADO
 
         /// <summary>ID phong thuc hien thao tac — BE dung de ghi nhan nguoi/noi thay doi</summary>
         public long RequestRoomId { get; set; }
+
+        /// <summary>
+        /// Thoi diem cua dong dien dieu tri "Dieu tri ngoai tru" (yyyyMMddHHmmss).
+        ///
+        /// PHAI gui gia tri o "Thoi gian ra" tren form, KHONG de BE lay gio may:
+        /// LOG_TIME cua dong nay tro thanh HIS_TREATMENT.CLINICAL_IN_TIME, ma BE chan khi
+        /// CLINICAL_IN_TIME > OUT_TIME ("Thoi gian ra vien khong duoc nho hon thoi gian nhap vien").
+        /// O "Thoi gian ra" nap luc mo man hinh nen luon nho hon gio may khi tich checkbox
+        /// --> lay gio may se lam khong luu duoc ket thuc dieu tri ngay.
+        ///
+        /// De trong --> BE tu lay thoi diem he thong.
+        /// </summary>
+        public long? LogTime { get; set; }
     }
 }
