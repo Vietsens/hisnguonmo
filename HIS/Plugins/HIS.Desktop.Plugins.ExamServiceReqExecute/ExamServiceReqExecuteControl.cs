@@ -3635,54 +3635,57 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 //treatment.ICD_CODE = txtIcdCode.Text;
                 //treatment.ICD_SUB_CODE = txtIcdSubCode.Text;
                 //checkIcdManager = new CheckIcdManager(DlgIcdSubCode, treatment);
-                if (!string.IsNullOrEmpty(txtIcdCode.Text))
-                {
-                    string[] stringArray = txtIcdCode.Text.Split(';');
-                    totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                }
-                if (!string.IsNullOrEmpty(txtIcdSubCode.Text))
-                {
-                    string[] stringArray = txtIcdSubCode.Text.Split(';');
-                    totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                }
-                if (!string.IsNullOrEmpty(IcdCodeYHCT))
-                {
-                    string[] stringArray = IcdCodeYHCT.Split(';');
-                    totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                }
-                if (!string.IsNullOrEmpty(IcdSubCodeYHCT))
-                {
-                    string[] stringArray = IcdSubCodeYHCT.Split(';');
-                    totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                }
+
+                // CD chinh/CD phu dang nhap tren man hinh kham (gia tri se duoc luu o lan bam luu nay)
+                List<string> icdMainExam = SplitIcdCodes(txtIcdCode.Text);
+                List<string> icdSubExam = SplitIcdCodes(txtIcdSubCode.Text);
+                // CD chinh/CD phu YHCT dang nhap tren man hinh
+                List<string> icdMainYhct = SplitIcdCodes(IcdCodeYHCT);
+                List<string> icdSubYhct = SplitIcdCodes(IcdSubCodeYHCT);
+                // CD chinh/CD phu da luu truoc do cua phieu kham (khong phai gia tri dang nhap) 
+                List<string> icdMainSaved = new List<string>();
+                List<string> icdSubSaved = new List<string>();
                 if (HisServiceReqView != null && ucHospitalize != null)
                 {
-                    if (!string.IsNullOrEmpty(HisServiceReqView.ICD_CODE))
-                    {
-                        string[] stringArray = HisServiceReqView.ICD_CODE.Split(';');
-                        totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                    }
-                    if (!string.IsNullOrEmpty(HisServiceReqView.ICD_SUB_CODE))
-                    {
-                        string[] stringArray = HisServiceReqView.ICD_SUB_CODE.Split(';');
-                        totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                    }
+                    icdMainSaved = SplitIcdCodes(HisServiceReqView.ICD_CODE);
+                    icdSubSaved = SplitIcdCodes(HisServiceReqView.ICD_SUB_CODE);
                 }
+                // CD chinh/CD phu tren UC ket thuc dieu tri
+                List<string> icdMainFinish = new List<string>();
+                List<string> icdSubFinish = new List<string>();
                 if (TreatmentFinishSDO != null && ucExamFinish != null)
                 {
-                    if (!string.IsNullOrEmpty(TreatmentFinishSDO.IcdCode))
-                    {
-                        string[] stringArray = TreatmentFinishSDO.IcdCode.Split(';');
-                        totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                    }
-
-                    if (!string.IsNullOrEmpty(TreatmentFinishSDO.IcdSubCode))
-                    {
-                        string[] stringArray = TreatmentFinishSDO.IcdSubCode.Split(';');
-                        totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                    }
+                    icdMainFinish = SplitIcdCodes(TreatmentFinishSDO.IcdCode);
+                    icdSubFinish = SplitIcdCodes(TreatmentFinishSDO.IcdSubCode);
                 }
-                var duplicateIcds = totalIcd.Intersect(totalSubIcd).ToList();
+
+                totalIcd.AddRange(icdMainExam);
+                totalSubIcd.AddRange(icdSubExam);
+                totalIcd.AddRange(icdMainYhct);
+                totalSubIcd.AddRange(icdSubYhct);
+                totalIcd.AddRange(icdMainSaved);
+                totalSubIcd.AddRange(icdSubSaved);
+                totalIcd.AddRange(icdMainFinish);
+                totalSubIcd.AddRange(icdSubFinish);
+
+                // Chi canh bao khi CD chinh va CD phu HIEN TAI cua cung mot nhom du lieu bi trung nhau
+                // (CD chinh khong sua ma CD phu sua trung CD chinh, hoac ca hai deu sua ma van trung nhau).
+                // Truoc day gop tat ca nguon (ke ca ICD cua lan luu truoc - HisServiceReqView) roi Intersect
+                // => nguoi dung chuyen CD chinh cu thanh CD phu moi cung bi canh bao sai, khong luu duoc.
+                List<string> duplicateIcds = GetDuplicateIcdCodes(icdMainExam, icdSubExam);
+                foreach (string icdCode in GetDuplicateIcdCodes(icdMainYhct, icdSubYhct))
+                {
+                    if (!duplicateIcds.Exists(o => o.Equals(icdCode, StringComparison.OrdinalIgnoreCase)))
+                        duplicateIcds.Add(icdCode);
+                }
+                foreach (string icdCode in GetDuplicateIcdCodes(icdMainFinish, icdSubFinish))
+                {
+                    if (!duplicateIcds.Exists(o => o.Equals(icdCode, StringComparison.OrdinalIgnoreCase)))
+                        duplicateIcds.Add(icdCode);
+                }
+                Inventec.Common.Logging.LogSystem.Debug("CheckIcd -> duplicateIcds: " + string.Join(", ", duplicateIcds)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => totalIcd), totalIcd)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => totalSubIcd), totalSubIcd));
                 if (duplicateIcds.Count > 0)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(
@@ -3757,6 +3760,58 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
             return valid;
         }
+
+        /// <summary>
+        /// Tach chuoi ma ICD (phan cach boi ';') thanh danh sach ma, bo qua cac phan tu rong.
+        /// </summary>
+        private List<string> SplitIcdCodes(string icdCodes)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                if (!string.IsNullOrEmpty(icdCodes))
+                {
+                    result.AddRange(icdCodes.Split(';').Where(x => !string.IsNullOrEmpty(x)));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Lay cac ma bi trung giua CD chinh va CD phu cua CUNG mot nhom du lieu (khong phan biet hoa/thuong).
+        /// Khong doi chieu cheo giua cac nhom (man hinh kham / YHCT / ket thuc dieu tri / ICD da luu truoc do)
+        /// vi cac nhom nay duoc lay o cac thoi diem khac nhau -> se canh bao sai khi nguoi dung sua lai CD.
+        /// </summary>
+        private List<string> GetDuplicateIcdCodes(List<string> icdMainCodes, List<string> icdSubCodes)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                if (icdMainCodes == null || icdMainCodes.Count <= 0 || icdSubCodes == null || icdSubCodes.Count <= 0)
+                    return result;
+                foreach (string icdSubCode in icdSubCodes)
+                {
+                    if (string.IsNullOrWhiteSpace(icdSubCode))
+                        continue;
+                    string subCode = icdSubCode.Trim();
+                    if (icdMainCodes.Exists(o => !string.IsNullOrWhiteSpace(o) && o.Trim().Equals(subCode, StringComparison.OrdinalIgnoreCase))
+                        && !result.Exists(o => o.Equals(subCode, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        result.Add(subCode);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
         private bool CheckMustChooseSeviceExamOption()
         {
             bool rs = true;
