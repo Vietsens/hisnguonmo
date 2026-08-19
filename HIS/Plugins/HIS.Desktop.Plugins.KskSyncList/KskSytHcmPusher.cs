@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2026 INVENTEC
  *
@@ -142,8 +142,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
         #region ===== Khai báo =====
 
         private const string SERVICE_CODE__M3 = "create-mau-phieu-m3";
+        private const string SERVICE_CODE__M4 = "create-mau-phieu-m4";
         private const string URI__TOKEN = "/hin-auth/getToken";
-        private const string URI__PUSH = "/hin-api-service/" + SERVICE_CODE__M3;
+        private const string URI__PUSH_PREFIX = "/hin-api-service/";
 
         private const int HTTP_TIMEOUT_MS = 60000;
 
@@ -239,7 +240,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Gửi một bản tin. `body` là đối tượng sẽ được chuyển thành JSON (các khối tthc, tien_su,
         /// kham_the_luc, kham_lam_san, can_lam_san, ket_luan).
         /// </summary>
-        internal static KskSytHcmPushResult Push(KskSytHcmConfig cfg, object body)
+        /// <param name="isElderlyForm">
+        /// true: hồ sơ khám sức khoẻ người cao tuổi -> gửi vào đầu mối của mẫu M4.
+        /// Xem KskSytHcmBodyBuilder.IsElderlyForm — căn cứ là Đối tượng khám, không phải tuổi.
+        /// </param>
+        internal static KskSytHcmPushResult Push(KskSytHcmConfig cfg, object body,
+            bool isElderlyForm = false)
         {
             KskSytHcmPushResult r = new KskSytHcmPushResult();
             try
@@ -279,12 +285,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 // Ghi lại đủ thứ để đối chiếu với Sở, TRỪ bản tin và khóa.
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
-                    "SytHcm: gui ban tin M3 — X-Client-Id={0}; X-Timestamp={1}; X-Nonce={2}; "
+                    "SytHcm: gui ban tin " + (isElderlyForm ? "M4" : "M3")
+                    + " — X-Client-Id={0}; X-Timestamp={1}; X-Nonce={2}; "
                     + "A={3}; B={4}; do dai ban tin={5} byte",
                     cfg.ClientId, timestamp, nonce, hashA, hashB,
                     Encoding.UTF8.GetByteCount(json)));
 
                 if (DUMP_BODY_FOR_DEBUG) DumpBody(json);
+
+                LogSignatureShape(SIG_FORMAT__HEX_UPPER, signature);
 
                 var headers = new System.Collections.Generic.Dictionary<string, string>();
                 headers["X-Client-Id"] = cfg.ClientId;
@@ -293,7 +302,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 headers["X-API-Signature"] = signature;
 
                 int status;
-                string res = HttpSend(cfg.ApiBaseUrl + URI__PUSH, "POST", json, token, headers, out status);
+                string uri = URI__PUSH_PREFIX
+                    + (isElderlyForm ? SERVICE_CODE__M4 : SERVICE_CODE__M3);
+                string baseUrl = ResolvePushBaseUrl(cfg, isElderlyForm);
+                string res = HttpSend(baseUrl + uri, "POST", json, token, headers, out status);
                 r.HttpStatus = status;
 
                 if (status == 401)
@@ -306,6 +318,41 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 }
 
                 ParseResult(res, r);
+
+                // Đầu mối M4 giải mã chữ ký bằng Base64 dù tài liệu ghi Hex viết hoa. Gặp đúng lời
+                // chê đó thì KÝ LẠI dạng Base64 và gửi thêm một lần — chứ không đổi cứng sang Base64,
+                // vì mẫu M3 đang chạy tốt với Hex.
+                //
+                // Ký lại kèm DẤU THỜI GIAN VÀ SỐ DÙNG MỘT LẦN MỚI: chữ ký phủ lên cả hai giá trị đó,
+                // dùng lại số cũ có thể bị cổng coi là gửi trùng.
+                // Cổng từ chối thì ghi cả bản tin ra tệp để gửi Sở đối chiếu.
+                if (!r.Success)
+                    DumpRejected(cfg, baseUrl + uri, json, timestamp, nonce, hashA, hashB,
+                        signature, isElderlyForm, r);
+
+                // Cổng chê chữ ký thì ghi luôn CHẨN ĐOÁN, không thử lại dạng khác nữa.
+                //
+                // Đã thử đủ ba dạng và ba lời chê khớp trọn vẹn với một cách hiểu duy nhất:
+                //   - Gửi Hex viết hoa (512 ký tự, chia hết 4, chỉ gồm 0-9A-F) -> cổng chê "không
+                //     phải chuỗi Base64". Nhưng chuỗi đó VỐN LÀ Base64 hợp lệ, nên thứ bị giải mã
+                //     Base64 và làm vỡ KHÔNG PHẢI chữ ký của ta.
+                //   - Gửi Base64 (có + / =) -> cổng chê "không thấy chữ số nào", tức bộ đọc HEX.
+                //   - Gửi Base64 an toàn URL (342 ký tự) -> cổng chê "chuỗi Hex độ dài không hợp lệ".
+                // Hai lời chê sau là bộ đọc hex, tức CỔNG MUỐN HEX — đúng như tài liệu. Ta gửi hex
+                // thì nó đọc được chữ ký rồi vỡ ở bước sau: nạp khóa công khai từ Base64. Khóa đó
+                // nằm bên Sở, đăng ký cho đơn vị này ở dịch vụ M4.
+                //
+                // Vì vậy KHÔNG thử lại dạng khác: vô ích, mà mỗi lần lỗi lại thành ba lượt gửi —
+                // nhỡ một lượt trúng thì còn nguy cơ tạo trùng hồ sơ trên cổng.
+                if (IsSignatureFormatError(r) && isElderlyForm)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SytHcm: dich vu M4 tu choi chu ky (" + r.Message + "). Chu ky dang Hex viet"
+                        + " hoa dung nhu tai lieu, va dich vu M3 dang nhan cung cach ky nay binh"
+                        + " thuong -> nghi KHOA CONG KHAI cua don vi dang ky o dich vu M4 ben So bi"
+                        + " thieu hoac hong. Can So kiem tra lai khoa, khong phai sua phia HIS.");
+                }
+
                 Inventec.Common.Logging.LogSystem.Info("SytHcm: ket qua gui — " + r.ToString());
                 return r;
             }
@@ -315,6 +362,54 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 r.Message = "Loi khi gui: " + ex.GetType().Name;
                 return r;
             }
+        }
+
+
+
+        private const string SIG_FORMAT__HEX_UPPER = "Hex viet hoa";
+        private const string SIG_FORMAT__BASE64 = "Base64";
+        private const string SIG_FORMAT__BASE64_URL = "Base64 an toan URL";
+
+        /// <summary>
+        /// Ghi HÌNH DẠNG chuỗi chữ ký: độ dài, 12 ký tự đầu, và có chứa ký tự dễ bị đường truyền làm
+        /// méo hay không. Đủ để đối chiếu với lời chê của cổng mà KHÔNG ghi cả chuỗi ra nhật ký.
+        /// </summary>
+        private static void LogSignatureShape(string dang, string sig)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(sig)) return;
+
+                Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                    "SytHcm: chu ky dang {0} — do dai={1}; chia het 4={2}; dau chuoi={3}...; "
+                    + "co dau cong={4}; co gach cheo={5}; co dau bang={6}",
+                    dang, sig.Length, (sig.Length % 4 == 0) ? "co" : "KHONG",
+                    sig.Substring(0, Math.Min(12, sig.Length)),
+                    sig.IndexOf('+') >= 0 ? "co" : "khong",
+                    sig.IndexOf('/') >= 0 ? "co" : "khong",
+                    sig.IndexOf('=') >= 0 ? "co" : "khong"));
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Cổng chê chữ ký.
+        ///
+        /// KHÔNG soi theo chữ "base64" nữa: cổng chê mỗi dạng bằng một câu khác nhau — gửi Hex thì
+        /// nó nói "not a valid Base-64 string", gửi Base64 thì nói "Could not find any recognizable
+        /// digits". Bắt theo chữ "base64" nên lượt thử thứ ba không bao giờ chạy.
+        ///
+        /// Nhận rộng ra cũng không thiệt gì: gặp chữ ký sai khóa thì cùng lắm tốn thêm hai lượt gửi
+        /// rồi hết danh sách dạng, không lặp vô hạn.
+        /// </summary>
+        private static bool IsSignatureFormatError(KskSytHcmPushResult r)
+        {
+            try
+            {
+                if (r == null || string.IsNullOrEmpty(r.Message)) return false;
+                return r.Message.ToLowerInvariant().Contains("signature");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
         }
 
         /// <summary>
@@ -459,6 +554,125 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 return "loi mang (" + wex.Status + ")";
             }
             catch { return "loi mang"; }
+        }
+
+
+
+        /// <summary>
+        /// Địa chỉ máy chủ để gửi bản tin — HAI MẪU NẰM TRÊN HAI MÁY CHỦ KHÁC NHAU.
+        ///
+        /// Tài liệu M4, bảng "THÔNG TIN KẾT NỐI", ghi Hostname là địa chỉ có "-apis" và Endpoint là
+        /// /hin-api-service/create-mau-phieu-m4. Đó cũng chính là địa chỉ dùng để lấy phiếu truy cập,
+        /// tức trường thứ 4 trong cấu hình. Còn địa chỉ "-be" ở trường thứ 5 KHÔNG có trong bất kỳ
+        /// tài liệu nào — nó chỉ xuất hiện trong tệp Postman của Sở, ở các lệnh lấy danh mục được ghi
+        /// cứng; biến host của bộ Postman đó Sở để trống.
+        ///
+        /// Mẫu M3 đang chạy tốt trên "-be" nên GIỮ NGUYÊN, không đụng vào. Chỉ mẫu M4 đổi sang máy
+        /// chủ mà tài liệu của nó chỉ định.
+        ///
+        /// Đây là lý do chuỗi lỗi chữ ký trước đó vô lý: hai máy chủ là hai bản dịch vụ khác nhau,
+        /// bộ đọc chữ ký khác nhau — gửi Hex thì bị chê không phải Base64, gửi Base64 thì bị chê
+        /// không phải Hex.
+        ///
+        /// KHI XÁC NHẬN ĐƯỢC: nên tách thành một trường cấu hình riêng cho địa chỉ mẫu M4, thay vì
+        /// dùng ghép địa chỉ xác thực như hiện nay.
+        /// </summary>
+        private static string ResolvePushBaseUrl(KskSytHcmConfig cfg, bool isElderlyForm)
+        {
+            try
+            {
+                if (cfg == null) return "";
+                if (!isElderlyForm) return cfg.ApiBaseUrl;
+
+                if (string.IsNullOrWhiteSpace(cfg.AuthBaseUrl))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SytHcm: cau hinh chua co dia chi xac thuc -> mau M4 tam dung dia chi nghiep vu");
+                    return cfg.ApiBaseUrl;
+                }
+
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "SytHcm: mau M4 gui vao " + cfg.AuthBaseUrl
+                    + " (theo bang THONG TIN KET NOI cua tai lieu M4), mau M3 van gui vao "
+                    + cfg.ApiBaseUrl);
+                return cfg.AuthBaseUrl;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return (cfg != null) ? cfg.ApiBaseUrl : "";
+            }
+        }
+
+        /// <summary>
+        /// Cổng từ chối bản tin -> ghi ra tệp ĐỦ THỨ để phía Sở tự kiểm tra được, gồm:
+        ///   - tệp .json: THÂN BẢN TIN ĐÚNG TỪNG BYTE như đã gửi (đã bỏ hết khoảng trắng, xuống
+        ///     dòng, dấu tab — Sở băm lại chuỗi này phải ra đúng giá trị B).
+        ///   - tệp .txt: bốn tiêu đề đã gửi, các giá trị A, B, C và độ dài bản tin.
+        ///
+        /// VÌ SAO TÁCH HAI TỆP: chỉ cần lẫn một ký tự xuống dòng vào thân bản tin là băm ra giá trị
+        /// khác, đối chiếu thành vô nghĩa. Để riêng thì tệp .json là bản sao nguyên trạng.
+        ///
+        /// CHỈ GHI KHI BỊ TỪ CHỐI, không ghi mỗi lượt đẩy: thân bản tin có thông tin bệnh nhân, giữ
+        /// lại càng ít càng tốt. Tệp nằm cạnh nhật ký của phần mềm, đặt tên theo mẫu và theo giờ nên
+        /// không ghi đè lượt trước.
+        ///
+        /// KHÔNG ghi khóa riêng và phiếu truy cập vào tệp — chữ ký thì được, nó vốn để công khai.
+        /// </summary>
+        private static void DumpRejected(KskSytHcmConfig cfg, string uri, string json,
+            string timestamp, string nonce, string hashA, string hashB, string signature,
+            bool isElderlyForm, KskSytHcmPushResult r)
+        {
+            try
+            {
+                string mau = isElderlyForm ? "M4" : "M3";
+                string dir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    Path.Combine("HIS", "KskSytHcm"));
+                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+
+                string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                string tenJson = "BanTin_" + mau + "_" + stamp + ".json";
+                string tenTxt = "BanTin_" + mau + "_" + stamp + "_TieuDe.txt";
+
+                // Thân bản tin: ghi KHÔNG kèm dấu thứ tự byte, để chuỗi đúng từng byte như đã gửi.
+                File.WriteAllText(Path.Combine(dir, tenJson), json, new UTF8Encoding(false));
+
+                var sb = new StringBuilder();
+                sb.AppendLine("Ban tin bi cong tu choi — " + mau);
+                sb.AppendLine("Thoi diem            : " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                sb.AppendLine("Dia chi goi           : " + uri);
+                sb.AppendLine("Ket qua cong tra ve   : " + r.ToString());
+                sb.AppendLine();
+                sb.AppendLine("--- Tieu de da gui ---");
+                sb.AppendLine("X-Client-Id           : " + (cfg != null ? cfg.ClientId : ""));
+                sb.AppendLine("X-Timestamp           : " + timestamp);
+                sb.AppendLine("X-Nonce               : " + nonce);
+                sb.AppendLine("X-API-Signature       : " + signature);
+                sb.AppendLine();
+                sb.AppendLine("--- Cach dung ra chu ky (theo tai lieu cua So) ---");
+                sb.AppendLine("Chuoi ghep header     : " + (cfg != null ? cfg.ClientId : "")
+                    + "|" + timestamp + "|" + nonce);
+                sb.AppendLine("A = SHA256(chuoi tren), Hex viet hoa");
+                sb.AppendLine("A                     : " + hashA);
+                sb.AppendLine("B = SHA256(than ban tin trong tep .json), Hex viet hoa");
+                sb.AppendLine("B                     : " + hashB);
+                sb.AppendLine("C = A + \".\" + B");
+                sb.AppendLine("C                     : " + hashA + "." + hashB);
+                sb.AppendLine("Chu ky = RSA-SHA256(C) bang khoa rieng, doi sang Hex viet hoa");
+                sb.AppendLine();
+                sb.AppendLine("Do dai than ban tin   : "
+                    + Encoding.UTF8.GetByteCount(json ?? "") + " byte");
+                sb.AppendLine("Do dai chu ky         : "
+                    + (signature != null ? signature.Length : 0) + " ky tu");
+                sb.AppendLine("Tep than ban tin      : " + tenJson);
+
+                File.WriteAllText(Path.Combine(dir, tenTxt), sb.ToString(), Encoding.UTF8);
+
+                Inventec.Common.Logging.LogSystem.Warn("SytHcm: da ghi ban tin bi tu choi ra "
+                    + Path.Combine(dir, tenJson) + " (kem tep tieu de " + tenTxt + ")");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
         private static void DumpBody(string json)

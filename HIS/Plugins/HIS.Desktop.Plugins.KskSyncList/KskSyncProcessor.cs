@@ -641,7 +641,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     return new KskSytHcmPushResult { Message = msg };
                 }
 
-                KskSytHcmPushResult r = KskSytHcmPusher.Push(cfg, body);
+                KskSytHcmPushResult r = KskSytHcmPusher.Push(cfg, body,
+                    KskSytHcmBodyBuilder.IsElderlyForm(src));
                 Inventec.Common.Logging.LogSystem.Info("SytHcm: y lenh " + sr + " -> "
                     + (r != null ? r.ToString() : "khong co ket qua"));
                 return r;

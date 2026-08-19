@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -194,7 +194,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Tab "Khám lâm sàng HCM" (tab con của Ksk trên 18 tuổi) — chọn ICD theo chuyên khoa,
                 // cấu trúc Mẫu 03 mục II. Hiện chỉ dựng giao diện, chưa nạp/lưu dữ liệu.
                 // Bọc riêng: hỏng phần này thì ghi nhật ký rồi chạy tiếp, KHÔNG kéo đổ cả màn hình.
-                try { InitClinicalExamHcmTab(); }
+                try { InitClinicalExamHcmTab();
+ // Tab "Hoi benh lam sang HCM" — dat ngay canh tab Kham lam sang HCM.
+ InitInterviewHcmTab(); }
                 catch (Exception exHcm) { Inventec.Common.Logging.LogSystem.Error(exHcm); }
                 lap("ClinicalExamHcm");
                 // Nhúng combo "Người khám" kết luận vào panel host (tab trên/dưới 18 tuổi).

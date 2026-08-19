@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Cells">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Aspose.Cells.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Aspose.Cells.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -51,13 +51,13 @@
       <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
     </Reference>
     <Reference Include="EMR.WCF.DCO">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\EMR.WCF.DCO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\EMR.WCF.DCO.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml">
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml\His.Bhyt.ExportXml.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML1">
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML1\His.Bhyt.ExportXml.XML130.XML1.dll</HintPath>
@@ -105,17 +105,17 @@
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML9\His.Bhyt.ExportXml.XML130.XML9.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XMLTT12.XML01BH">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XMLTT12.XML01BH.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XMLTT12.XML01BH.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ADO">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LibraryMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.WorkPlace\HIS.Desktop.LibraryMessage.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -212,16 +212,16 @@
       <HintPath>..\..\..\..\lib\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -274,6 +274,7 @@
     <Compile Include="ADO\TreatmentImportADO.cs" />
     <Compile Include="Base\ConfigStore.cs" />
     <Compile Include="Base\Csdl4750Worker.cs" />
+    <Compile Include="Base\Hoc3176KcbWorker.cs" />
     <Compile Include="Base\VlgKcbHoanTatWorker.cs" />
     <Compile Include="Base\CustomProvider.cs" />
     <Compile Include="ExportXml\HSTH01BHModels.cs" />
