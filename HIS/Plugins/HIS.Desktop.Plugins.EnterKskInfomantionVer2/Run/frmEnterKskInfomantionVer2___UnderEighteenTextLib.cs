@@ -13,7 +13,8 @@
  * ô đích là bộ control hậu tố "3" -> mở Thư viện văn bản bằng OpenModuleTextLibraryUnderEighteen
  * với delegate ProcessDataTextLibUnderEighteen, KHÔNG đụng vào ProcessDataTextLib của tab ≥18.
  *
- * Ảnh nút lấy lại từ nút tương ứng của tab ≥18 (cùng resx) — không nhân bản ảnh trong resource.
+ * Ảnh nút khai báo TRONG DESIGNER (btnTextLibXxx3.Image trong frmEnterKskInfomantionVer2.resx),
+ * KHÔNG gán lúc chạy. Hàm dưới đây chỉ còn gắn tooltip cú pháp mẫu (giống tab ≥18).
  */
 using System;
 using System.Collections.Generic;
@@ -27,28 +28,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
     {
         private bool underEighteenTextLibInited = false;
 
-        #region Khởi tạo nút
+        #region Tooltip nút
 
-        /// <summary>Gán ảnh + tooltip cho các nút Thư viện văn bản của tab dưới 18 tuổi. Idempotent.</summary>
+        /// <summary>Gắn tooltip cú pháp mẫu cho các nút Thư viện văn bản của tab dưới 18 tuổi. Idempotent.</summary>
         private void InitUnderEighteenTextLibButtons()
         {
             try
             {
                 if (underEighteenTextLibInited) return;
                 underEighteenTextLibInited = true;
-
-                // Ảnh nút: dùng chung ảnh đã có trong resx của nút cùng chức năng ở tab ≥18.
-                CopyButtonImage(btnTextLibInternal2, btnTextLibInternal3);
-                CopyButtonImage(btnTextLibCirculation2, btnTextLibCirculation3);
-                CopyButtonImage(btnTextLibRespiratory2, btnTextLibRespiratory3);
-                CopyButtonImage(btnTextLibDigestion2, btnTextLibDigestion3);
-                CopyButtonImage(btnTextLibKidneyUrology2, btnTextLibKidneyUrology3);
-                CopyButtonImage(btnTextLibNeurological2, btnTextLibNeuroMental3);
-                CopyButtonImage(btnTextLibMental2, btnTextLibMental3);
-                CopyButtonImage(btnTextLibDermatology2, btnTextLibClinicalOther3);
-                CopyButtonImage(btnTextLibEye2, btnTextLibEye3);
-                CopyButtonImage(btnTextLibEnt2, btnTextLibEnt3);
-                CopyButtonImage(btnTextLibStomatology2, btnTextLibStomatology3);
 
                 // Tab dưới 18 tuổi KHÔNG còn ô Phân loại -> cú pháp mẫu không có token "PL:Lx".
                 // (Mẫu cũ lỡ còn "PL:Lx" vẫn dùng được: token bị cắt bỏ, không lọt vào ô nội dung.)
@@ -74,12 +62,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     + " \"thanKinh\":\"KQ:...\",\"tamThan\":\"KQ:...\",\"lamSangKhac\":\"KQ:...\"}");
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
-        }
-
-        private void CopyButtonImage(SimpleButton source, SimpleButton target)
-        {
-            if (source == null || target == null) return;
-            target.Image = source.Image;
         }
 
         #endregion

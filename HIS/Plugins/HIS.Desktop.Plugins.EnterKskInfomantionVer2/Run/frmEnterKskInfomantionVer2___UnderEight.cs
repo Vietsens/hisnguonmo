@@ -499,6 +499,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         ado.VACCINE_TYPE_NAME = item.VACCINE_TYPE_NAME;
                         lstAdo.Add(ado);
                     }
+                    // Bản ghi MỚI: điền sẵn giá trị mặc định theo toggle "Mặc định:" (chkDefaultVaccine3).
+                    ApplyDefaultVaccine(lstAdo);
                     gridControl1.DataSource = new List<ADO.VaccineTypeADO>();
                     gridControl1.DataSource = lstAdo;
                 }

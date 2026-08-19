@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -814,52 +814,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             return result;
         }
 
+        /// <summary>
+        /// Chọn tab đang hiển thị khi mở màn hình / khi đổi y lệnh ở bảng danh sách.
+        ///
+        /// DÙNG CHUNG ResolveDefaultTab() với phần nạp dự liệu: trước đây hàm này tự xét lại theo
+        /// current* theo một thứ tự riêng, nên tab được nạp và tab được chọn có thể lệch nhau.
+        /// Mọi luật ưu tiên (bảng riêng trước, GENERAL sau, cuối cùng mới theo tuổi) nằm Ở
+        /// MỘT CHỖ duy nhất là ResolveDefaultTab().
+        /// </summary>
         private void SetTabDefault()
         {
             try
             {
-                bool isActive = false;
-                if (currentKskGeneral != null)
+                // Có bản ghi KSK nào đã lưu hay chưa -> quyết định bật nút In.
+                bool isActive = currentKskGeneral != null
+                    || currentKskOverEight != null
+                    || currentKskUnderEight != null
+                    || currentKskPeriodDriver != null
+                    || currentKskDriverCar != null
+                    || currentKskOther != null
+                    || currentKsKOccupational != null;
+
+                int tab = ResolveDefaultTab();
+                if (tab >= 0 && tab < xtraTabControl1.TabPages.Count
+                    && xtraTabControl1.SelectedTabPageIndex != tab)
                 {
-                    xtraTabControl1.SelectedTabPageIndex = 0;
-                    isActive = true;
-                }
-                else if (currentKskOverEight != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 1;
-                    isActive = true;
-                }
-                else if (currentKskUnderEight != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 2;
-                    isActive = true;
-                }
-                else if (currentKskPeriodDriver != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 3;
-                    isActive = true;
-                }
-                else if (currentKskDriverCar != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 4;
-                    isActive = true;
-                }
-                else if (currentKskOther != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 5;
-                    isActive = true;
-                }
-                if (currentKsKOccupational != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 0;
-                    isActive = true;
-                }
-                // Chưa có bản ghi KSK nào -> mở tab theo TUỔI bệnh nhân (trên 18 / dưới 18 / trẻ <6).
-                // Phải khớp ResolveDefaultTab để tab được lazy-load đúng là tab đang hiển thị.
-                if (!isActive)
-                {
-                    int tabByAge = ResolveDefaultTabByAge();
-                    if (tabByAge >= 0) xtraTabControl1.SelectedTabPageIndex = tabByAge;
+                    xtraTabControl1.SelectedTabPageIndex = tab;
                 }
                 btnPrint.Enabled = isActive;
             }
