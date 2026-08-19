@@ -62,6 +62,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
         private const string CONFIG_KEY__WarningHeinPatientTypeCode = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode";
 
         private const string CONFIG_KEY__WarningOverMonth = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
+        private const string CONFIG_KEY__PatientAdvance = "HIS.Desktop.Plugins.RegisterV2.PatientAdvance";
         const string valueString__true = "1";
         const int valueInt__true = 1;
 
@@ -89,6 +90,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
         internal static bool IsSetDefaultDepositPrice;
         internal static List<string> ExecuteRoomShow;
 
+        /// <summary>
+        /// Kiem tra trung so dien thoai voi benh nhan khac khi luu tiep don
+        /// 1 - Canh bao, nguoi dung chon co tiep tuc luu hay khong
+        /// 2 - Canh bao va khong cho luu
+        /// Gia tri khac - Khong kiem tra
+        /// </summary>
+        internal static string PatientAdvance;
+
         internal static long WarnOverMonthsTransfer;
         /// <summary>
         /// true - Bắt buộc nhập thông tin Người nhà, quan hệ, địa chỉ với trẻ em nhỏ hơn 6t
@@ -115,6 +124,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
             try
             {
                 LogSystem.Debug("LoadConfig => 1");
+                PatientAdvance = GetValue(CONFIG_KEY__PatientAdvance);
                 ExecuteRoomShow = GetListValue(HIS_DESKTOP_REGISER__EXECUTE_ROOM_SHOW);
                 IsSetDefaultDepositPrice = (Inventec.Common.TypeConvert.Parse.ToInt32(GetValue(CONFIG_KEY__HIS_DEPOSIT__DEFAULT_PRICE_FOR_BHYT_OUT_PATIENT)) == valueInt__true);
                 MustHaveNCSInfoForChild = (GetValue(CONFIG_KEY__MOS__HIS_PATIENT__MUST_HAVE_NCS_INFO_FOR_CHILD) == valueString__true);
