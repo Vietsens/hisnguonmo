@@ -1684,7 +1684,7 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
 
                 InitComboBranch(lstBranchAdo);
                 cboBranch.Refresh();
-                cboBranch.Invalidate();
+                cboBranch.Invalidate(); 
             }
             catch (Exception ex)
             {
