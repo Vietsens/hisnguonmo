@@ -80,6 +80,11 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
         private const long TREATMENT_TYPE_ALL_ID = -1;
         private bool _keepTreatmentTypePopupOpen = false;
         private bool _isTreatmentTypeUpdating = false;
+        private List<HIS_BRANCH> lstBranch;
+        private List<BranchADO> lstBranchAdo;
+        private const long BRANCH_ALL_ID = -1;
+        private bool _keepBranchPopupOpen = false;
+        private bool _isBranchUpdating = false;
 
         public FormEInvoiceCreate()
         {
@@ -279,6 +284,18 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
                 {
                     filter.TDL_TREATMENT_TYPE_IDs = treatmentTypeIds;
                 }
+
+                //Loc theo cac chi nhanh duoc chon, neu khong chon gi thi lay chi nhanh hien tai
+                var branchIds = GetSelectedBranchIds();
+                if (branchIds != null && branchIds.Count > 0)
+                {
+                    filter.BRANCH_IDs = branchIds;
+                }
+                else if (WorkPlace.GetBranchId() > 0)
+                {
+                    filter.BRANCH_ID = WorkPlace.GetBranchId();
+                }
+
                 filter.IS_NEED_INVOICE = true;
                 //filter.IS_ACTIVE
             }
@@ -420,6 +437,8 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
                 LoadCombo(cboEndType, datas, "ID", "", "NAME");
 
                 InitTreatmentType();
+
+                InitBranch();
             }
             catch (Exception ex)
             {
@@ -1630,7 +1649,250 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             }
         }
 
+        private void InitBranch()
+        {
+            try
+            {
+                lstBranch = BackendDataWorker.Get<HIS_BRANCH>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .OrderBy(o => o.BRANCH_NAME)
+                    .ToList();
 
+                //Mac dinh chi tich chi nhanh hien tai dang lam viec
+                long currentBranchId = WorkPlace.GetBranchId();
 
+                lstBranchAdo = new List<BranchADO>();
+
+                lstBranchAdo.Add(new BranchADO
+                {
+                    ID = BRANCH_ALL_ID,
+                    BRANCH_NAME = "Tất cả",
+                    IS_ALL = true,
+                    IS_SELECTED = false
+                });
+
+                lstBranchAdo.AddRange(lstBranch.Select(o => new BranchADO
+                {
+                    ID = o.ID,
+                    BRANCH_CODE = o.BRANCH_CODE,
+                    BRANCH_NAME = o.BRANCH_NAME,
+                    IS_ALL = false,
+                    IS_SELECTED = (o.ID == currentBranchId)
+                }).ToList());
+
+                RefreshBranchAllRow();
+
+                InitComboBranch(lstBranchAdo);
+                cboBranch.Refresh();
+                cboBranch.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitComboBranch(List<BranchADO> listADO)
+        {
+            try
+            {
+                cboBranch.Properties.DataSource = listADO;
+                cboBranch.Properties.DisplayMember = "BRANCH_NAME";
+                cboBranch.Properties.ValueMember = "ID";
+                cboBranch.Properties.NullText = "";
+                cboBranch.Properties.PopupFormSize = new Size(300, 250);
+                cboBranch.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+
+                cboBranch.CustomDisplayText -= cboBranch_CustomDisplayText;
+                cboBranch.CustomDisplayText += cboBranch_CustomDisplayText;
+
+                cboBranch.QueryCloseUp -= cboBranch_QueryCloseUp;
+                cboBranch.QueryCloseUp += cboBranch_QueryCloseUp;
+
+                var view = cboBranch.Properties.View;
+                view.Columns.Clear();
+                view.OptionsView.ShowColumnHeaders = false;
+                view.OptionsView.ShowIndicator = false;
+                view.OptionsView.ShowGroupPanel = false;
+                view.OptionsView.ShowAutoFilterRow = false;
+
+                //Khong edit truc tiep trong grid popup
+                view.OptionsBehavior.Editable = false;
+                view.OptionsSelection.EnableAppearanceFocusedCell = false;
+                view.FocusRectStyle = DrawFocusRectStyle.RowFocus;
+
+                RepositoryItemCheckEdit repoCheck = new RepositoryItemCheckEdit();
+                repoCheck.ValueChecked = true;
+                repoCheck.ValueUnchecked = false;
+                repoCheck.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+                repoCheck.ReadOnly = true;
+
+                if (view.GridControl != null)
+                {
+                    view.GridControl.RepositoryItems.Add(repoCheck);
+                }
+
+                var colCheck = view.Columns.AddField("IS_SELECTED");
+                colCheck.Visible = true;
+                colCheck.VisibleIndex = 0;
+                colCheck.Width = 35;
+                colCheck.ColumnEdit = repoCheck;
+                colCheck.OptionsColumn.AllowEdit = false;
+                colCheck.OptionsColumn.AllowFocus = false;
+
+                var colName = view.Columns.AddField("BRANCH_NAME");
+                colName.Visible = true;
+                colName.VisibleIndex = 1;
+                colName.Width = 230;
+                colName.OptionsColumn.AllowEdit = false;
+
+                view.RowCellClick -= viewBranch_RowCellClick;
+                view.RowCellClick += viewBranch_RowCellClick;
+
+                view.RefreshData();
+                cboBranch.Refresh();
+                cboBranch.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBranch_QueryCloseUp(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                if (_keepBranchPopupOpen)
+                {
+                    e.Cancel = true;
+                    _keepBranchPopupOpen = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void viewBranch_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            try
+            {
+                if (_isBranchUpdating) return;
+                if (e.RowHandle < 0) return;
+
+                //Cho phep click ca vao o tick hoac ten de toggle
+                if (e.Column.FieldName != "IS_SELECTED" && e.Column.FieldName != "BRANCH_NAME")
+                    return;
+
+                var view = sender as GridView;
+                if (view == null || lstBranchAdo == null || lstBranchAdo.Count == 0) return;
+
+                var row = view.GetRow(e.RowHandle) as BranchADO;
+                if (row == null) return;
+
+                _isBranchUpdating = true;
+
+                bool newValue = !row.IS_SELECTED;
+
+                if (row.IS_ALL)
+                {
+                    foreach (var item in lstBranchAdo)
+                    {
+                        item.IS_SELECTED = newValue;
+                    }
+                }
+                else
+                {
+                    row.IS_SELECTED = newValue;
+                    RefreshBranchAllRow();
+                }
+
+                view.RefreshData();
+                cboBranch.Refresh();
+                cboBranch.Invalidate();
+
+                //Giu popup mo sau khi click
+                _keepBranchPopupOpen = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                _isBranchUpdating = false;
+            }
+        }
+
+        private void RefreshBranchAllRow()
+        {
+            try
+            {
+                if (lstBranchAdo == null || lstBranchAdo.Count == 0) return;
+
+                var allRow = lstBranchAdo.FirstOrDefault(o => o.IS_ALL);
+                if (allRow != null)
+                {
+                    var normalItems = lstBranchAdo.Where(o => !o.IS_ALL).ToList();
+                    allRow.IS_SELECTED = normalItems.Count > 0 && normalItems.All(o => o.IS_SELECTED);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private List<long> GetSelectedBranchIds()
+        {
+            try
+            {
+                if (lstBranchAdo != null)
+                {
+                    return lstBranchAdo
+                        .Where(o => !o.IS_ALL && o.IS_SELECTED)
+                        .Select(o => o.ID)
+                        .Distinct()
+                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return new List<long>();
+        }
+
+        private void cboBranch_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (lstBranchAdo == null || lstBranchAdo.Count == 0)
+                {
+                    e.DisplayText = "";
+                    return;
+                }
+
+                var allRow = lstBranchAdo.FirstOrDefault(o => o.IS_ALL);
+                if (allRow != null && allRow.IS_SELECTED)
+                {
+                    e.DisplayText = "Tất cả";
+                    return;
+                }
+
+                var selectedNames = lstBranchAdo
+                    .Where(o => !o.IS_ALL && o.IS_SELECTED)
+                    .Select(o => o.BRANCH_NAME)
+                    .ToList();
+
+                e.DisplayText = selectedNames.Count > 0 ? string.Join(", ", selectedNames) : "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }
