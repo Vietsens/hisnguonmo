@@ -497,6 +497,32 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 string phoneNumber = ucAddressCombo1.GetValue().Phone;
                 if (!string.IsNullOrEmpty(phoneNumber))
                 {
+                    if (Config.HisConfigCFG.PatientAdvance == "1" || Config.HisConfigCFG.PatientAdvance == "2")
+                    {
+                        HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter(); 
+                        filter.PHONE__EXACT = phoneNumber;
+                        var data = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE,
+                            ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
+
+                        if (data != null && data.Count >= 1)
+                        {
+                            if (Config.HisConfigCFG.PatientAdvance == "1")
+                            {
+                                if (XtraMessageBox.Show("Số điện thoại bệnh nhân đang bị trùng. Bạn có muốn tiếp tục?",
+                                    ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
+                                {
+                                    validPhoneNumber = false;
+                                }
+                            }
+                            else
+                            {
+                                XtraMessageBox.Show("Số điện thoại bệnh nhân đang bị trùng.",
+                                    ResourceMessage.ThongBao, MessageBoxButtons.OK);
+                                validPhoneNumber = false;
+                            }
+                        }
+                    }
+
                     if (phoneNumber.Length < 10 || phoneNumber.Length > 10)
                     {
                         MessageBox.Show("Số điện thoại mới nhập " + phoneNumber.Length + " ký tự", ResourceMessage.TieuDeCuaSoThongBaoLaCanhBao, MessageBoxButtons.OK);

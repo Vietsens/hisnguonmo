@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -78,5 +78,23 @@
   </data>
   <data name="frmTreatmentBedRoom.gcRoomName.Caption" xml:space="preserve">
     <value>Tên phòng</value>
+  </data>
+  <data name="frmTreatmentBedRoom.toggleSwitch1.OffText" xml:space="preserve">
+    <value>Bật màn hình mở rộng</value>
+  </data>
+  <data name="frmTreatmentBedRoom.toggleSwitch1.OnText" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="frmTreatmentBedRoom.MsgNoRoomChecked" xml:space="preserve">
+    <value>Chưa chọn phòng nào. Hãy tích ít nhất một phòng trước khi bật màn hình mở rộng.</value>
+  </data>
+  <data name="frmDashboard.Text" xml:space="preserve">
+    <value>Bảng điện tử buồng bệnh</value>
+  </data>
+  <data name="frmDashboard.EscHint" xml:space="preserve">
+    <value>Nhấn ESC để đóng</value>
+  </data>
+  <data name="frmTreatmentBedRoom.lciColumnCount.Text" xml:space="preserve">
+    <value>Số cột hiển thị:</value>
   </data>
 </root>
