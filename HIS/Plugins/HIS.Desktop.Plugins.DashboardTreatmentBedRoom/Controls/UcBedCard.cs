@@ -60,6 +60,12 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
         private bool hasVitalSign;
         private Color? displayColor;
 
+        /// <summary>Be rong ung voi lan bo tri gan nhat. Bang be rong hien tai thi khoi bo tri lai.</summary>
+        private int lastLayoutWidth = -1;
+
+        /// <summary>Chan de quy: dang bo tri thi moi OnSizeChanged do chinh no gay ra deu bo qua.</summary>
+        private bool relayouting;
+
         public event EventHandler<TreatmentBedRoomDashboardBedSDO> BedClicked;
 
         public UcBedCard()
@@ -137,14 +143,17 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                 && string.Equals((sdo.Status ?? string.Empty).Trim(), STATUS_OCCUPIED, StringComparison.OrdinalIgnoreCase));
 
             SuspendLayout();
+            relayouting = true;
             try
             {
                 if (isEmpty) BindEmpty(sdo);
                 else BindOccupied(sdo);
                 ApplyDesiredHeight();
+                lastLayoutWidth = Width;
             }
             finally
             {
+                relayouting = false;
                 ResumeLayout(false);
             }
 
@@ -278,13 +287,30 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
-            if (data == null) return;
+            if (data == null || relayouting) return;
 
-            SetVitalVisible(!isEmpty && hasVitalSign);
-            if (isEmpty) LayoutEmptyRow();
-            else RelayoutOccupied();
+            // Bo cuc cua the CHI phu thuoc be rong. Nhung ApplyDesiredHeight lai doi Height,
+            // ma doi Height cung ban OnSizeChanged -> chay lai toan bo phep do va SetBounds
+            // mot cach vo ich. Voi 72 the giuong, luot thua nay ton gan mot giay.
+            if (Width == lastLayoutWidth) return;
 
-            ApplyDesiredHeight();
+            relayouting = true;
+            SuspendLayout();
+            try
+            {
+                lastLayoutWidth = Width;
+
+                SetVitalVisible(!isEmpty && hasVitalSign);
+                if (isEmpty) LayoutEmptyRow();
+                else RelayoutOccupied();
+
+                ApplyDesiredHeight();
+            }
+            finally
+            {
+                ResumeLayout(false);
+                relayouting = false;
+            }
         }
 
         /// <summary>

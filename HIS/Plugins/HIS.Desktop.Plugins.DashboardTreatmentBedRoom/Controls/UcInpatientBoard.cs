@@ -194,10 +194,20 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                     {
                         card = new UcRoomCard();
                         card.BedClicked += Card_BedClicked;
+
+                        // Dung the giuong TRUOC khi gan the buong vao pnlCanvas.
+                        // Control chua co cha thi chua tao handle cua so, moi thao tac gan nhu
+                        // mien phi; gan vao cha roi moi dung thi tung the giuong tao handle rieng
+                        // va bat cha sap xep lai - do la phan ton nhat cua ca qua trinh.
+                        card.SetData(room, careLevelOrder);
+
                         roomCards.Add(key, card);
                         pnlCanvas.Controls.Add(card);
                     }
-                    card.SetData(room, careLevelOrder);
+                    else
+                    {
+                        card.SetData(room, careLevelOrder);
+                    }
                     orderedCards.Add(card);
                 }
             }

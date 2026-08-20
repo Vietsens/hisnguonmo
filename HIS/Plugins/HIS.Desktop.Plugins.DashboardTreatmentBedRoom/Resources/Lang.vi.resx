@@ -86,7 +86,7 @@
     <value>On</value>
   </data>
   <data name="frmTreatmentBedRoom.MsgNoRoomChecked" xml:space="preserve">
-    <value>Chưa chọn phòng nào. Hãy tích ít nhất một phòng trước khi bật màn hình mở rộng.</value>
+    <value>Chưa chọn buồng hiển thị, số buồng phải &gt; 0</value>
   </data>
   <data name="frmDashboard.Text" xml:space="preserve">
     <value>Bảng điện tử buồng bệnh</value>
@@ -96,5 +96,14 @@
   </data>
   <data name="frmTreatmentBedRoom.lciColumnCount.Text" xml:space="preserve">
     <value>Số cột hiển thị:</value>
+  </data>
+  <data name="frmTreatmentBedRoom.MsgColumnCountInvalid" xml:space="preserve">
+    <value>Chưa nhập số cột hiển thị, số cột phải &gt; 0</value>
+  </data>
+  <data name="frmTreatmentBedRoom.MsgReloadTimeTooSmall" xml:space="preserve">
+    <value>Thời gian tải lại {0} giây hơi ngắn.&#13;&#10;&#13;&#10;Thời gian tải lại cần &gt;= {1} giây để quá trình cập nhật không bị liên tục.</value>
+  </data>
+  <data name="frmTreatmentBedRoom.MsgReloadTimeRequired" xml:space="preserve">
+    <value>Chưa nhập thời gian tải lại.&#13;&#10;&#13;&#10;Đây là khoảng thời gian bảng tự cập nhật số liệu một lần. Thời gian tải lại cần &gt;= {0} giây để quá trình cập nhật không bị liên tục.</value>
   </data>
 </root>

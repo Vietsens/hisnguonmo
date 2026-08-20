@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -40,12 +41,56 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         /// màn hình đang chứa toạ độ mặc định (màn chính), và bản thân việc gán Maximized ghi đè
         /// luôn Bounds vừa đặt — nên form vẫn nằm ở màn chính. Phải phóng SAU khi đã hiện đúng màn.
         /// </summary>
+        /// <summary>
+        /// Đóng các bảng điện tử đang mở trước khi mở bảng mới. Chỉ cho phép một bảng tại một thời điểm.
+        ///
+        /// PHẢI gom danh sách trước rồi mới đóng. Application.OpenForms là tập hợp sống — đóng form
+        /// ngay trong lúc duyệt nó sẽ ném InvalidOperationException, mà lỗi này bắn ra giữa vòng lặp
+        /// thông báo của WinForms nên không ai bắt được, hệ quả là văng cả HIS.
+        /// </summary>
+        private static void CloseOtherInstances(Form keep)
+        {
+            try
+            {
+                List<Form> opened = new List<Form>();
+                foreach (Form f in Application.OpenForms)
+                {
+                    if (f == null || ReferenceEquals(f, keep)) continue;
+                    if (f.GetType() == keep.GetType()) opened.Add(f);
+                }
+
+                for (int i = 0; i < opened.Count; i++)
+                {
+                    try
+                    {
+                        Inventec.Common.Logging.LogSystem.Info(
+                            "Dong bang dien tu dang mo truoc khi mo bang moi: " + opened[i].Name);
+
+                        // Close() se keo theo Dispose, nho vay ban to lam moi va ban to tu cuon
+                        // cua bang cu deu dung han. Bo qua buoc nay thi chung van chay ngam,
+                        // van goi API va van cham vao control da huy.
+                        opened[i].Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         internal static void ShowFullScreenOnSecondMonitor(Form form)
         {
             if (form == null) return;
 
             try
             {
+                CloseOtherInstances(form);
+
                 Screen[] screens = Screen.AllScreens.OrderBy(o => !o.Primary).ToArray();
                 Screen target = screens.Length > 1 ? screens[1] : Screen.PrimaryScreen;
 

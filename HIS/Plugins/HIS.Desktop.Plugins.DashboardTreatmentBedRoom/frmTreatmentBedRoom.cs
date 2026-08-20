@@ -81,11 +81,32 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             try
             {
                 SetCaptionByLanguageKey();
+                LoadSavedSettings();
                 LoadDataToGridRoom();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đổ lại số cột và thời gian tải lại của lần dùng trước.
+        /// Chưa lưu lần nào thì giữ nguyên giá trị mặc định đang có trên form.
+        /// </summary>
+        private void LoadSavedSettings()
+        {
+            try
+            {
+                int columnCount, reloadSecond;
+                DashboardSettings.Load(out columnCount, out reloadSecond);
+
+                if (columnCount > 0) this.spinColumnCount.EditValue = columnCount;
+                if (reloadSecond > 0) this.spinReloadTime.EditValue = reloadSecond;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -385,6 +406,59 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         /// màn thiết lập đóng. Không giữ tham chiếu, không bắt FormClosed của nó — giữ lại thì lúc
         /// bảng đóng sẽ gọi ngược về một form đã dispose.
         /// </summary>
+        /// <summary>Chu kỳ làm mới ngắn hơn mức này thì dội API liên tục mà không kịp đọc.</summary>
+        private const int MIN_RELOAD_SECOND = 60;
+
+        /// <summary>
+        /// Kiểm tra đầu vào trước khi mở bảng. Sai chỗ nào thì báo, đưa con trỏ về đúng ô đó
+        /// rồi gạt công tắc về tắt — người dùng sửa xong gạt lại.
+        /// </summary>
+        private bool ValidateInput()
+        {
+            // Tach hai truong hop: bo trong va nhap qua nho. Gop chung mot cau thi nguoi dung
+            // bo trong lai tuong minh da nhap sai so, khong biet la chua nhap gi.
+            if (this.spinReloadTime.EditValue == null
+                || string.IsNullOrEmpty((this.spinReloadTime.Text ?? string.Empty).Trim()))
+            {
+                ShowWarning(string.Format(
+                    GetLang("frmTreatmentBedRoom.MsgReloadTimeRequired",
+                        "Chưa nhập thời gian tải lại.\r\n\r\nĐây là khoảng thời gian bảng tự cập nhật số liệu một lần. Thời gian tải lại cần >= {0} giây để quá trình cập nhật không bị liên tục."),
+                    MIN_RELOAD_SECOND));
+                this.spinReloadTime.Focus();
+                this.spinReloadTime.SelectAll();
+                return false;
+            }
+
+            int reloadSecond = GetReloadSecond();
+            if (reloadSecond < MIN_RELOAD_SECOND)
+            {
+                ShowWarning(string.Format(
+                    GetLang("frmTreatmentBedRoom.MsgReloadTimeTooSmall",
+                        "Thời gian tải lại {0} giây hơi ngắn.\r\n\r\nThời gian tải lại cần >= {1} giây để quá trình cập nhật không bị liên tục."),
+                    reloadSecond, MIN_RELOAD_SECOND));
+                this.spinReloadTime.Focus();
+                this.spinReloadTime.SelectAll();
+                return false;
+            }
+
+            if (GetColumnCount() <= 0)
+            {
+                ShowWarning(GetLang("frmTreatmentBedRoom.MsgColumnCountInvalid",
+                    "Chưa nhập số cột hiển thị, số cột phải > 0"));
+                this.spinColumnCount.Focus();
+                this.spinColumnCount.SelectAll();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ShowWarning(string message)
+        {
+            DevExpress.XtraEditors.XtraMessageBox.Show(
+                this, message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
         private void OpenDashboard()
         {
             try
@@ -392,18 +466,26 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 List<long> roomIds = GetCheckedRoomIds();
                 if (roomIds == null || roomIds.Count == 0)
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        this,
-                        GetLang("frmTreatmentBedRoom.MsgNoRoomChecked", "Chua chon phong nao."),
-                        this.Text,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
+                    ShowWarning(GetLang("frmTreatmentBedRoom.MsgNoRoomChecked",
+                        "Chưa chọn buồng hiển thị, số buồng phải > 0"));
                     SetToggleWithoutEvent(false);
                     return;
                 }
 
+                if (!ValidateInput())
+                {
+                    SetToggleWithoutEvent(false);
+                    return;
+                }
+
+                int reloadSecond = GetReloadSecond();
+                int columnCount = GetColumnCount();
+
+                // Chi luu sau khi da qua ValidateInput, khong luu gia tri hong
+                DashboardSettings.Save(columnCount, reloadSecond);
+
                 frmDashboard board = new frmDashboard(
-                    this.departmentId, roomIds, GetReloadSecond(), GetColumnCount());
+                    this.departmentId, roomIds, reloadSecond, columnCount);
 
                 // Show() khong owner: cua so co chu luon nam de len chu, HIS se bi chan
                 ShowFormProcessor.ShowFullScreenOnSecondMonitor(board);

@@ -150,6 +150,7 @@
     <Compile Include="DashboardTreatmentBedRoom\DashboardTreatmentBedRoomBehavior.cs" />
     <Compile Include="DashboardTreatmentBedRoom\DashboardTreatmentBedRoomFactory.cs" />
     <Compile Include="DashboardTreatmentBedRoom\IDashboardTreatmentBedRoom.cs" />
+    <Compile Include="DashboardSettings.cs" />
     <Compile Include="DashboardTreatmentBedRoomProcessor.cs" />
     <Compile Include="ShowFormProcessor.cs" />
     <Compile Include="frmDashboard.cs">
@@ -168,6 +169,9 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmDashboard.resx">
+      <DependentUpon>frmDashboard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmTreatmentBedRoom.resx">
       <DependentUpon>frmTreatmentBedRoom.cs</DependentUpon>
     </EmbeddedResource>

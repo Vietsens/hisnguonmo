@@ -208,10 +208,20 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                 int w = flpBeds.ClientSize.Width;
                 if (w <= 0) return;
 
-                foreach (Control c in flpBeds.Controls)
+                // Treo layout quanh ca vong lap: khong treo thi FlowLayoutPanel sap xep lai
+                // sau MOI the giuong doi be rong, voi mot buong 6 giuong la 6 luot thua
+                flpBeds.SuspendLayout();
+                try
                 {
-                    int wanted = w - c.Margin.Horizontal;
-                    if (wanted > 0 && c.Width != wanted) c.Width = wanted;
+                    foreach (Control c in flpBeds.Controls)
+                    {
+                        int wanted = w - c.Margin.Horizontal;
+                        if (wanted > 0 && c.Width != wanted) c.Width = wanted;
+                    }
+                }
+                finally
+                {
+                    flpBeds.ResumeLayout(true);
                 }
             }
             finally
