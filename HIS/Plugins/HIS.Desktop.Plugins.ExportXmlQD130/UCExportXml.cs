@@ -418,12 +418,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Đồng bộ Khám chữa bệnh (Kết thúc khám/Xuất viện)", new EventHandler(btnSyncKcb4750_Click)));
                 }
 
-                //Gửi bản tin trạng thái KCB (check-in) lên Trung tâm điều hành y tế — chỉ hiện khi viện đã đấu nối cổng.
-                if (!string.IsNullOrWhiteSpace(HisConfigCFG.HSSK_HOC_2062__CONNECTION_INFO))
-                {
-                    menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Gửi trạng thái KCB lên Trung tâm điều hành y tế", new EventHandler(btnSyncCheckInHoc_Click)));
-                }
-
                 btnSend.DropDownControl = menu;
             }
             catch (Exception ex)
@@ -2937,100 +2931,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        /// <summary>
-        /// Gửi THỦ CÔNG bản tin trạng thái KCB (check-in) của các hồ sơ đang chọn lên Trung tâm điều hành y tế
-        /// (QĐ 3176 — dịch vụ hoc-130-ck/checkin). Dùng lại đúng tệp XML check-in đã được sinh sẵn
-        /// (cột XML_CHECKIN_URL trên hồ sơ điều trị); hồ sơ chưa có tệp thì báo để người dùng xuất lại
-        /// bằng mục "Xuất lại file XML check-in server" trên menu chuột phải của lưới.
-        /// Kết quả KHÔNG lưu xuống CSDL — chỉ hiện cửa sổ kết quả + ghi nhật ký (PTTK mục A.3.3).
-        /// </summary>
-        private async void btnSyncCheckInHoc_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(HisConfigCFG.HSSK_HOC_2062__CONNECTION_INFO))
-                {
-                    XtraMessageBox.Show("Chưa cấu hình kết nối Trung tâm điều hành y tế (MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO)",
-                        Resources.ResourceMessageLang.ThongBao);
-                    return;
-                }
-                if (listSelection == null || listSelection.Count == 0)
-                {
-                    XtraMessageBox.Show(Resources.ResourceMessageLang.BanChuaChonHoSoDeDongBo, Resources.ResourceMessageLang.ThongBao);
-                    return;
-                }
-
-                Hoc3176KcbWorker worker = new Hoc3176KcbWorker(HisConfigCFG.HSSK_HOC_2062__CONNECTION_INFO);
-                if (!worker.IsValidConfig)
-                {
-                    XtraMessageBox.Show("Khóa cấu hình Trung tâm điều hành y tế không hợp lệ. Cần đủ: MaCsyt|Username|Password|ClientId|MaTinh",
-                        Resources.ResourceMessageLang.ThongBao);
-                    return;
-                }
-
-                //Bỏ hồ sơ trùng mã điều trị trong danh sách đang chọn (mỗi đợt điều trị gửi 1 bản tin)
-                List<V_HIS_TREATMENT_1> treatments = listSelection
-                    .Where(o => o != null)
-                    .GroupBy(o => o.TREATMENT_CODE)
-                    .Select(g => g.First())
-                    .ToList();
-
-                List<string> resultLines = new List<string>();
-                int okCount = 0;
-                int failCount = 0;
-                try
-                {
-                    WaitingManager.Show();
-                    foreach (var treatment in treatments)
-                    {
-                        string treatmentCode = treatment.TREATMENT_CODE;
-                        byte[] xmlBytes = null;
-                        if (!string.IsNullOrWhiteSpace(treatment.XML_CHECKIN_URL))
-                        {
-                            using (MemoryStream stream = GetStreamByUrl(treatment.XML_CHECKIN_URL))
-                            {
-                                if (stream != null) xmlBytes = stream.ToArray();
-                            }
-                        }
-                        if (xmlBytes == null || xmlBytes.Length == 0)
-                        {
-                            failCount++;
-                            resultLines.Add(treatmentCode + ": Thất bại - Hồ sơ chưa có file XML check-in. Bấm chuột phải trên lưới, chọn \"Xuất lại file XML check-in server\" rồi gửi lại.");
-                            continue;
-                        }
-
-                        Hoc3176PushResult result = await worker.PushCheckInAsync(xmlBytes, treatmentCode);
-                        bool success = result != null && result.Success;
-                        string message = result != null ? result.Message : "HOC: không có phản hồi từ cổng";
-                        if (success) okCount++; else failCount++;
-                        resultLines.Add(string.Format("{0}: {1}{2}",
-                            treatmentCode,
-                            success ? "Thành công" : "Thất bại",
-                            string.IsNullOrEmpty(message) ? "" : " - " + message));
-                    }
-                }
-                finally
-                {
-                    WaitingManager.Hide();
-                }
-
-                StringBuilder sbMsg = new StringBuilder();
-                sbMsg.AppendLine(string.Format("Kết quả gửi trạng thái KCB lên Trung tâm điều hành y tế: {0} thành công, {1} thất bại.",
-                    okCount, failCount));
-                sbMsg.AppendLine();
-                foreach (var line in resultLines)
-                {
-                    sbMsg.AppendLine(line);
-                }
-                XtraMessageBox.Show(sbMsg.ToString().Trim(), Resources.ResourceMessageLang.ThongBao);
-            }
-            catch (Exception ex)
-            {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
+        /// <summary>Tải nội dung tệp từ FSS theo đường dẫn (dùng để xem lại tệp XML check-in trên lưới)</summary>
         private MemoryStream GetStreamByUrl(string url)
         {
             MemoryStream rs = null;
