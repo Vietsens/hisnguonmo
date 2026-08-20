@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2026 INVENTEC
  *
@@ -182,6 +182,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                     // Ô chọn bệnh của tab Khám lâm sàng HCM có thể đã dựng bằng danh mục ICD của HIS.
                     if (okIcd) RefreshHcmIcdFromSytCatalog();
+
+                    // Cụm tiền sử gia đình: đổi ô chữ thành danh sách ô tích, và ô mã ICD thành ô
+                    // chọn bệnh của cổng. Gọi ở đây vì lúc này danh mục CHẮC CHẮN đã có.
+                    BuildSytFamilyHistory();
+                    if (okIcd)
+                    {
+                        BuildSytFamilyIcd();
+                        // Ô vừa dựng là ô TRỐNG -> đổ lại mã bệnh đã lưu của hồ sơ. Không có bước này
+                        // thì hồ sơ cũ mở ra luôn trắng phần mã ICD tiền sử gia đình.
+                        if (currentKskGeneral != null)
+                            FillSytFamilyIcd(currentKskGeneral.FAMILY_HISTORY_ICD_CODE,
+                                currentKskGeneral.FAMILY_HISTORY_ICD_NAME);
+                    }
                 }
 
                 // CHI coi la xong khi TAT CA o nhap da nhan duoc danh muc. Neu con o nao truot

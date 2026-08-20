@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *
@@ -255,6 +255,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 LoadKskHistoryIcdFromGeneral(currentKskGeneral);
+                // O chon benh cua cong (nhom gia dinh) khong nam trong dicHistoryIcdUc nen phai do rieng.
+                string[] famVal;
+                if (dicHistoryIcdValue.TryGetValue(KskHistoryGroup.Family, out famVal)
+                    && famVal != null && famVal.Length == 2)
+                    FillSytFamilyIcd(famVal[0], famVal[1]);
+
                 foreach (var kv in dicHistoryIcdUc)
                 {
                     string codes = "", names = "";
@@ -300,6 +306,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 dicHistoryIcdValue[KskHistoryGroup.Family] =
                     new string[] { g.FAMILY_HISTORY_ICD_CODE ?? "", g.FAMILY_HISTORY_ICD_NAME ?? "" };
+                // Viện đã bật cổng -> ô mã ICD tiền sử gia đình là ô chọn bệnh riêng, đổ vào luôn.
+                FillSytFamilyIcd(g.FAMILY_HISTORY_ICD_CODE, g.FAMILY_HISTORY_ICD_NAME);
                 dicHistoryIcdValue[KskHistoryGroup.Personal] =
                     new string[] { g.PERSONAL_HISTORY_ICD_CODE ?? "", g.PERSONAL_HISTORY_ICD_NAME ?? "" };
                 dicHistoryIcdValue[KskHistoryGroup.Occupational] =
@@ -318,8 +326,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             if (g == null) return;
             try
             {
-                g.FAMILY_HISTORY_ICD_CODE = NullIfEmpty(GetHistoryIcdCode(KskHistoryGroup.Family));
-                g.FAMILY_HISTORY_ICD_NAME = NullIfEmpty(GetHistoryIcdName(KskHistoryGroup.Family));
+                // Ô chọn bệnh riêng của cổng (nếu đã dựng) là nguồn đúng; chưa dựng thì lấy như cũ.
+                string famIds, famNames;
+                if (GetSytFamilyIcdValue(out famIds, out famNames))
+                {
+                    g.FAMILY_HISTORY_ICD_CODE = NullIfEmpty(famIds);
+                    g.FAMILY_HISTORY_ICD_NAME = NullIfEmpty(famNames);
+                }
+                else
+                {
+                    // Ô chọn bệnh của cổng chưa dựng hoặc đang rỗng -> lấy theo cách cũ; cách cũ cũng
+                    // rỗng thì GIỮ NGUYÊN giá trị đang có trong bản ghi, KHÔNG ghi null.
+                    //
+                    // Không giữ thì mở hồ sơ rồi bấm Cập nhật là mất mã bệnh tiền sử gia đình — ô cũ
+                    // đã bị thay bằng ô của cổng nên nó luôn trả rỗng.
+                    string oldCode = NullIfEmpty(GetHistoryIcdCode(KskHistoryGroup.Family));
+                    string oldName = NullIfEmpty(GetHistoryIcdName(KskHistoryGroup.Family));
+
+                    g.FAMILY_HISTORY_ICD_CODE = !string.IsNullOrWhiteSpace(oldCode)
+                        ? oldCode
+                        : ((currentKskGeneral != null) ? currentKskGeneral.FAMILY_HISTORY_ICD_CODE : null);
+                    g.FAMILY_HISTORY_ICD_NAME = !string.IsNullOrWhiteSpace(oldName)
+                        ? oldName
+                        : ((currentKskGeneral != null) ? currentKskGeneral.FAMILY_HISTORY_ICD_NAME : null);
+                }
+                LogSystem.Warn("SytHcm/TSGD-ICD: gan vao ban ghi -> FAMILY_HISTORY_ICD_CODE=\""
+                    + (g.FAMILY_HISTORY_ICD_CODE ?? "") + "\", NAME=\""
+                    + (g.FAMILY_HISTORY_ICD_NAME ?? "") + "\"");
+
                 g.PERSONAL_HISTORY_ICD_CODE = NullIfEmpty(GetHistoryIcdCode(KskHistoryGroup.Personal));
                 g.PERSONAL_HISTORY_ICD_NAME = NullIfEmpty(GetHistoryIcdName(KskHistoryGroup.Personal));
                 g.OCCUPATIONAL_DISEASE_ICD_CODE = NullIfEmpty(GetHistoryIcdCode(KskHistoryGroup.Occupational));
@@ -411,7 +445,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     bool hasText = kv.Value != null
                         && kv.Value.Any(c => c != null && !string.IsNullOrWhiteSpace(c.Text));
                     if (!hasText) continue;
-                    if (string.IsNullOrWhiteSpace(GetHistoryIcdCode(kv.Key))) missing.Add(kv.Key);
+                    if (string.IsNullOrWhiteSpace(GetHistoryIcdCodeEffective(kv.Key))) missing.Add(kv.Key);
                 }
                 if (missing.Count == 0) return;
 
@@ -424,6 +458,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Mã ICD của một nhóm tiền sử, lấy từ ĐÚNG ô đang hiển thị.
+        ///
+        /// Nhóm gia đình ở viện đã bật cổng Sở Y tế dùng ô chọn bệnh RIÊNG; ô cũ đã bị thay nên đọc
+        /// ô cũ luôn ra rỗng, khiến cảnh báo "chưa chọn mã ICD" hiện dù người dùng đã chọn.
+        /// </summary>
+        private string GetHistoryIcdCodeEffective(KskHistoryGroup group)
+        {
+            if (group == KskHistoryGroup.Family)
+            {
+                string ids, names;
+                if (GetSytFamilyIcdValue(out ids, out names)) return ids;
+            }
+            return GetHistoryIcdCode(group);
         }
 
         private string GetGroupNameKey(KskHistoryGroup group)
