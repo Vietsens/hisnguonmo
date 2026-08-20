@@ -296,6 +296,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gc_ClassifyName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gc_CareLevelName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gc_MedisoftH = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -2834,6 +2835,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn1,
             this.gridColumn5,
             this.gc_ClassifyName,
+            this.gc_CareLevelName,
             this.gridColumn3,
             this.gridColumn8,
             this.gc_MedisoftH,
@@ -3055,16 +3057,28 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gc_ClassifyName.Visible = true;
             this.gc_ClassifyName.VisibleIndex = 18;
             this.gc_ClassifyName.Width = 80;
-            // 
+            //
+            // gc_CareLevelName
+            //
+            this.gc_CareLevelName.Caption = "Phân loại chăm sóc";
+            this.gc_CareLevelName.FieldName = "CARE_LEVEL_NAME";
+            this.gc_CareLevelName.Name = "gc_CareLevelName";
+            this.gc_CareLevelName.OptionsColumn.AllowEdit = false;
+            this.gc_CareLevelName.OptionsColumn.ReadOnly = true;
+            this.gc_CareLevelName.ToolTip = "Phân loại chăm sóc (phân cấp chăm sóc) của hồ sơ điều trị";
+            this.gc_CareLevelName.Visible = true;
+            this.gc_CareLevelName.VisibleIndex = 19;
+            this.gc_CareLevelName.Width = 120;
+            //
             // gridColumn3
-            // 
+            //
             this.gridColumn3.Caption = "Ngày nhập viện";
             this.gridColumn3.FieldName = "DayHospitalize";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 19;
+            this.gridColumn3.VisibleIndex = 20;
             this.gridColumn3.Width = 150;
             // 
             // gridColumn8
@@ -3075,7 +3089,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.ToolTip = "Số điện thoại của bệnh nhân";
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 20;
+            this.gridColumn8.VisibleIndex = 21;
             this.gridColumn8.Width = 100;
             // 
             // gc_MedisoftH
@@ -3987,6 +4001,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         private DevExpress.XtraEditors.LabelControl lblApprovalNote;
         private DevExpress.XtraLayout.LayoutControlItem lciApprovalNote;
         private DevExpress.XtraGrid.Columns.GridColumn gc_ClassifyName;
+        private DevExpress.XtraGrid.Columns.GridColumn gc_CareLevelName;
         private DevExpress.XtraGrid.Columns.GridColumn gc_MedisoftH;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnMedisoft;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
