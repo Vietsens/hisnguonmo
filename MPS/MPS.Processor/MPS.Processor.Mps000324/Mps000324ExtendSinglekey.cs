@@ -69,8 +69,15 @@ namespace MPS.Processor.Mps000324
         /// <summary>Prefix key ten vai tro lay tu danh muc HIS_EXECUTE_ROLE — mau in khong viet cung nhan</summary>
         public const string PREFIX_EXECUTE_ROLE_NAME = "EXECUTE_ROLE_NAME_";
 
-        /// <summary>Ten dataset vai tro kip mo dua vao FlexCel</summary>
+        /// <summary>Ten dataset TAT CA vai tro kip mo dua vao FlexCel</summary>
         public const string OBJECT_TAG_EKIP_ROLES = "EkipRoles";
+
+        /// <summary>Ten dataset chi cac vai tro CO nguoi dua vao FlexCel</summary>
+        public const string OBJECT_TAG_EKIP_ROLES_USED = "EkipRolesUsed";
+
+        /// <summary>Ten phau thuat vien chinh — xac dinh qua co HIS_EXECUTE_ROLE.IS_SURG_MAIN,
+        /// khong phu thuoc ma vai tro nen mau in khong can hardcode</summary>
+        public const string SURG_MAIN_USERNAME_STR = "SURG_MAIN_USERNAME_STR";
 
         /// <summary>Barcode Code128 cua so vao vien (HIS_TREATMENT.IN_CODE)</summary>
         public const string BARCODE_IN_CODE_STR = "BARCODE_IN_CODE_STR";

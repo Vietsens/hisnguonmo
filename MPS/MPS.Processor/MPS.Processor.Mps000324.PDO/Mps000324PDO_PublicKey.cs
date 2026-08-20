@@ -48,8 +48,11 @@ namespace MPS.Processor.Mps000324.PDO
     /// <summary>Danh muc vai tro kip mo (HIS_EXECUTE_ROLE) — nguon de sinh khoi ekip tren mau in</summary>
     public List<HIS_EXECUTE_ROLE> ExecuteRoles { get; set; }
 
-    /// <summary>Vai tro kip mo da gom nguoi. Processor tu dung trong BuildEkipRoleData()</summary>
+    /// <summary>TAT CA vai tro trong danh muc, ke ca vai khong co nguoi (USER_COUNT = 0)</summary>
     public List<Mps000324EkipRoleADO> EkipRoles { get; set; }
+
+    /// <summary>Chi cac vai tro CO nguoi trong kip — dung cho khoi ekip tren phieu</summary>
+    public List<Mps000324EkipRoleADO> EkipRolesUsed { get; set; }
 
     /// <summary>Danh sach nhom dich vu. Processor tu dung trong BuildDetailData()</summary>
     public List<Mps000324GroupADO> Groups { get; set; }

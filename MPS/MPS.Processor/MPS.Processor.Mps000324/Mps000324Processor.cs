@@ -120,6 +120,11 @@ namespace MPS.Processor.Mps000324
                     objectTag.AddObjectData(store, Mps000324ExtendSingleKey.OBJECT_TAG_EKIP_ROLES, rdo.EkipRoles);
                 }
 
+                if (rdo.EkipRolesUsed != null)
+                {
+                    objectTag.AddObjectData(store, Mps000324ExtendSingleKey.OBJECT_TAG_EKIP_ROLES_USED, rdo.EkipRolesUsed);
+                }
+
                 if (rdo.Groups != null && rdo.Items != null)
                 {
                     objectTag.AddObjectData(store, Mps000324ExtendSingleKey.OBJECT_TAG_GROUPS, rdo.Groups);
@@ -483,6 +488,28 @@ namespace MPS.Processor.Mps000324
                         }
                     }
                 }
+
+                // Chi cac vai CO nguoi — danh so lai lien tuc de STT tren phieu khong bi ngat quang
+                rdo.EkipRolesUsed = rdo.EkipRoles.Where(o => o.USER_COUNT > 0).ToList();
+                for (int i = 0; i < rdo.EkipRolesUsed.Count; i++)
+                {
+                    rdo.EkipRolesUsed[i] = new Mps000324EkipRoleADO
+                    {
+                        EXECUTE_ROLE_ID = rdo.EkipRolesUsed[i].EXECUTE_ROLE_ID,
+                        EXECUTE_ROLE_CODE = rdo.EkipRolesUsed[i].EXECUTE_ROLE_CODE,
+                        EXECUTE_ROLE_NAME = rdo.EkipRolesUsed[i].EXECUTE_ROLE_NAME,
+                        NUM_ORDER = i + 1,
+                        USER_COUNT = rdo.EkipRolesUsed[i].USER_COUNT,
+                        USERNAMES = rdo.EkipRolesUsed[i].USERNAMES,
+                        LOGINNAMES = rdo.EkipRolesUsed[i].LOGINNAMES,
+                        IS_SURG_MAIN = rdo.EkipRolesUsed[i].IS_SURG_MAIN
+                    };
+                }
+
+                // Phau thuat vien chinh — nhan dien qua co IS_SURG_MAIN cua danh muc
+                SetSingleKey(Mps000324ExtendSingleKey.SURG_MAIN_USERNAME_STR,
+                    JoinName(rdo.EkipRoles.Where(o => o.IS_SURG_MAIN == 1 && o.USER_COUNT > 0)
+                                          .Select(o => o.USERNAMES)));
 
                 // Key theo ma vai tro cho cac o co vi tri co dinh tren mau
                 foreach (var roleGroup in usersByRoleCode)

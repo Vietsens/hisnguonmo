@@ -116,6 +116,7 @@ Dataset master-detail mới (song song với `ServiceTypes` ↔ `SereServFollow`
 | `Groups` | `ID`, `NUM_ORDER`, `NUM_ORDER_ROMAN`, `SERVICE_TYPE_ROMAN`, `SERVICE_TYPE_CODE`, `SERVICE_TYPE_NAME`, `ITEM_COUNT`, `TOTAL_AMOUNT` | Nhóm theo `HIS_SERVICE_TYPE`, kèm số La Mã + tổng tiền nhóm |
 | `Items` | `GROUP_ID`, `NUM_ORDER`, `NUM_ORDER_IN_GROUP`, `SERE_SERV_ID`, `SERVICE_CODE`, `SERVICE_NAME`, `SERVICE_UNIT_NAME`, `AMOUNT`, `PRICE`, `INTO_MONEY`, `IS_EXPEND`, `NOTE` | Dòng chi tiết; `INTO_MONEY = AMOUNT × PRICE`, `NOTE` = "Hao Phí"/"Thu Phí" |
 | `EkipRoles` | `EXECUTE_ROLE_ID`, `EXECUTE_ROLE_CODE`, `EXECUTE_ROLE_NAME`, `NUM_ORDER`, `USER_COUNT`, `USERNAMES`, `LOGINNAMES`, `IS_SURG_MAIN` | **Vai trò kíp mổ lấy từ bảng `HIS_EXECUTE_ROLE`** — mẫu in KHÔNG hardcode mã vai |
+| `EkipRolesUsed` | (như `EkipRoles`) | Chỉ vai trò **có người**, `NUM_ORDER` đánh lại liên tục — dùng cho khối ekip trên phiếu |
 
 Quan hệ: `Groups.ID` ↔ `Items.GROUP_ID`. `PRICE`/`INTO_MONEY`/`TOTAL_AMOUNT` để `null` khi không có giá → ô trên mẫu để trống.
 
@@ -137,10 +138,42 @@ Single key mới:
 | `MAIN_SERVICE_NAME_STR` | `sereServ.TDL_SERVICE_NAME` (tên PT/TT chính) |
 | `REAL_PTTT_METHOD_STR` | `REAL_PTTT_METHOD_CODE + " " + REAL_PTTT_METHOD_NAME` |
 | `GRAND_TOTAL_AMOUNT` | Tổng chi phí các khoản |
+| `SURG_MAIN_USERNAME_STR` | Tên PTV chính — nhận diện qua cờ `HIS_EXECUTE_ROLE.IS_SURG_MAIN`, không cần mã vai |
 | `USERNAMES_EXECUTE_ROLE_{CODE}`, `LOGIN_NAMES_EXECUTE_ROLE_{CODE}` | Gộp **tất cả** thành viên cùng vai bằng `", "` (khác `USERNAME_EXECUTE_ROLE_{CODE}` cũ chỉ giữ 1 người) |
 | `EXECUTE_ROLE_NAME_{CODE}` | Tên vai trò lấy từ `HIS_EXECUTE_ROLE` — nhãn khối ekip không viết cứng trên mẫu |
 
 Key đã có sẵn nhưng mẫu cũ chưa dùng — không cần code thêm: `TDL_HEIN_CARD_NUMBER` (thẻ BHYT), `PATIENT_TYPE_NAME` (đối tượng), `SERVICE_REQ_CODE`, `TDL_SERVICE_NAME`, `REAL_PTTT_METHOD_CODE/NAME`, `OTHER`; và các key chung `CURRENT_DATE_SEPARATE_STR`, `CURRENT_TIME_STR`, `CURRENT_LOGINNAME`, `CURRENT_USERNAME`.
+
+### Mẫu in mới — `Mps000324_ThanhQuyetToan_MOI.xlsx`
+
+Dựng theo mẫu Word `Phiếu thanh quyết toán phẩu thuật.doc`. Đặt cạnh mẫu cũ trong `Tmp\Mps\Mps000324\`, **chưa thay thế** `Mps000324.xlsx`.
+
+Bố cục 7 cột (A=STT, B=Tên, C=Đơn vị, D=Số lượng, E=Đơn giá, F=Thành tiền, G=Ghi chú), A4 dọc, fit-to-width.
+
+| Vùng | Dòng | Nội dung |
+|---|---|---|
+| Đơn vị + barcode | 1–2 | `PARENT_ORGANIZATION_NAME`, `ORGANIZATION_NAME`, `BARCODE_IN_CODE_STR` |
+| Tiêu đề | 4 | PHIẾU THANH TOÁN PHẪU THUẬT - THỦ THUẬT |
+| Hành chính | 6–15 | Họ tên/tuổi/giới, khoa + phòng-giường, thẻ BHYT + đối tượng, CĐ trước/sau mổ, giờ PT, số phiếu + ghi chú, tên DV chính, PP thực tế, loại PT + PP vô cảm |
+| Kíp mổ | 17 | Band `EkipRolesUsed` — 1 dòng/1 vai, nhãn lấy từ danh mục |
+| Header bảng | 19 | Lặp mỗi trang qua **Print Titles** |
+| Band nhóm | 20 | `Groups.NUM_ORDER_ROMAN`, `SERVICE_TYPE_NAME`, `TOTAL_AMOUNT` |
+| Band chi tiết | 21 | `Items.*` |
+| Tổng cộng | 22 | `GRAND_TOTAL_AMOUNT` |
+| Ngày + chữ ký | 24–28 | `CURRENT_DATE_SEPARATE_STR`, 4 ô ký, PTV chính điền từ `SURG_MAIN_USERNAME_STR` |
+| Chân trang | footer | `Tờ : [&P - &N]` + `&T` (mã Excel gốc, không phụ thuộc FlexCel) |
+
+**Defined name BẮT BUỘC** — FlexCel chỉ lồng được master-detail khi vùng master bao trùm vùng detail:
+
+```
+__EkipRolesUsed__ = Sheet1!$A$17:$G$17
+__Groups__        = Sheet1!$A$20:$G$21   <- bao trùm detail
+__Items__         = Sheet1!$A$21:$G$21   <- lồng bên trong
+```
+
+Mẫu `Mps000324.xlsx` cũ chỉ khai báo `__SereServFollow__` mà **thiếu** `__ServiceTypes__` → nhóm không lồng được. Mẫu Mps000002 (đang chạy thật) dùng đúng cách trên.
+
+Template KHÔNG nằm trong git — lưu ở cấu hình print type backend, cache xuống `Tmp\Mps\`. Muốn dùng phải upload lên print type `Mps000324`.
 
 **Deploy**: sửa PDO → build `MPS.Processor.Mps000324.PDO` rồi copy DLL vào `lib/MPSv2/MPS.PDO/` (plugin tham chiếu qua HintPath này).
 
