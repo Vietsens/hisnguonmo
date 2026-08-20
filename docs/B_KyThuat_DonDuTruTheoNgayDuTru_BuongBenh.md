@@ -297,7 +297,7 @@ Thêm hằng vào `Key/HisConfigKeys.cs`, property `ShowAnticipatePresByUseDate`
 
 Cả hai `AllowEdit = false`, `Visible = false` mặc định; `UCTreeListService.ReLoad` bật `Visible` theo cờ config (QT-11).
 
-**Đánh dấu (QT-08)** — `treeSereServ.NodeCellStyle`, chỉ so sánh `data.IS_ANTICIPATE` rồi set `ForeColor = Color.Green`. Không LINQ, không gọi cache trong event này (`ui_rules` mục 8). Tooltip lấy từ `ResourceMessage`, truyền 2 tham số ngày.
+**Đánh dấu (QT-08)** — `treeSereServ.NodeCellStyle`, chỉ so sánh `data.IS_ANTICIPATE` rồi set `ForeColor = Color.DodgerBlue`. Không LINQ, không gọi cache trong event này (`ui_rules` mục 8). Tooltip lấy từ `ResourceMessage`, truyền 2 tham số ngày.
 
 **Đa ngôn ngữ** — 3 key caption vào `Lang.vi/en/my.resx` theo pattern `IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__COL__INSTRUCTION_DATE` / `__COL__USE_DATE` / `__GROUP__ANTICIPATE` (`Dự trù — kê ngày {0}`). Câu tooltip vào `Message.Lang.*.resx` + property trong `ResourceMessage.cs`.
 
