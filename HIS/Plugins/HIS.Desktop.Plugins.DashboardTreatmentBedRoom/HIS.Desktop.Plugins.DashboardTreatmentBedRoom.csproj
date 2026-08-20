@@ -151,6 +151,7 @@
     <Compile Include="DashboardTreatmentBedRoom\DashboardTreatmentBedRoomFactory.cs" />
     <Compile Include="DashboardTreatmentBedRoom\IDashboardTreatmentBedRoom.cs" />
     <Compile Include="DashboardTreatmentBedRoomProcessor.cs" />
+    <Compile Include="ShowFormProcessor.cs" />
     <Compile Include="frmDashboard.cs">
       <SubType>Form</SubType>
     </Compile>

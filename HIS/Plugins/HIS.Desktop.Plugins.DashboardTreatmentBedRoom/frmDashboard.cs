@@ -25,9 +25,11 @@ using MOS.EFMODEL.Decorator;
 using MOS.Filter;
 using MOS.SDO;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
@@ -46,6 +48,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
 
         /// <summary>Danh sach ID phong duoc tich ben man hinh thiet lap.</summary>
         private List<long> roomIds = new List<long>();
+
+        /// <summary>Chan chong lenh: 0 = ranh, 1 = dang co mot luot lay du lieu chay.</summary>
+        private int fetching;
 
         /// <summary>Buong benh cua cac phong tren, lay tu api/HisBedRoom/Get.</summary>
         private List<HIS_BED_ROOM> bedRooms = new List<HIS_BED_ROOM>();
@@ -107,7 +112,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             get { return this.departmentId; }
         }
 
-        /// <summary>ID cac buong benh dang hien thi tren bang.</summary>
+        /// <summary>ID cac buong benh dang hien thi tren bang.</summary>  
         public List<long> GetBedRoomIds()
         {
             if (this.bedRooms == null) return new List<long>();
@@ -120,14 +125,117 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             try
             {
                 SetCaptionByLanguageKey();
-                LoadBedRooms();
-                GetApiData();
+                this.ucBoard.DataRefreshRequested += UcBoard_DataRefreshRequested;
+
+                // Khong goi API o day. Load chay TRUOC khi cua so kip ve, goi dong bo hai lan
+                // round-trip len server la man hinh treo 1-2 giay moi hien ra.
+                BeginLoadData();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        /// <summary>
+        /// Ban to trong UcInpatientBoard ban ra moi RefreshIntervalSecond giay.
+        /// </summary>
+        private void UcBoard_DataRefreshRequested(object sender, EventArgs e)
+        {
+            BeginLoadData();
+        }
+
+        /// <summary>
+        /// Lay du lieu tren luong nen roi tra ket qua ve UI thread.
+        ///
+        /// Goi API tren UI thread thi ca bang dung hinh dung bang thoi gian cho server - luc mo
+        /// man hinh la cho trang, va moi nhip lam moi lai kho mot lan. Man hinh treo tuong chay
+        /// suot ngay nen cai nay rat lo.
+        ///
+        /// Danh sach buong chi lay mot lan; cac nhip sau chi goi lai api Dashboard.
+        /// </summary>
+        private void BeginLoadData()
+        {
+            // API cham hon chu ky lam moi thi cac lan goi se don dong nhau, vua ton ket noi  
+            // vua co nguy co du lieu cu ve sau de len du lieu moi
+            if (Interlocked.CompareExchange(ref fetching, 1, 0) != 0)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Lan goi truoc chua xong, bo qua nhip lam moi nay");
+                return;
+            }
+
+            ThreadPool.QueueUserWorkItem(delegate
+            {
+                HisTreatmentBedRoomDashboardSDO data = null;
+                int requestedBedRoomCount = 0;
+                long elapsedMs = 0;
+
+                try
+                {
+                    Stopwatch watch = Stopwatch.StartNew();
+
+                    if (this.bedRooms == null || this.bedRooms.Count == 0)
+                    {
+                        LoadBedRooms();
+                    }
+
+                    requestedBedRoomCount = GetBedRoomIds().Count;
+                    data = CallDashboardApi();
+
+                    watch.Stop();
+                    elapsedMs = watch.ElapsedMilliseconds;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+
+                try
+                {
+                    if (IsHandleCreated && !IsDisposed)
+                    {
+                        BeginInvoke(new Action<HisTreatmentBedRoomDashboardSDO, int, long>(ApplyDashboardData),
+                            data, requestedBedRoomCount, elapsedMs);
+                    }
+                    else
+                    {
+                        Interlocked.Exchange(ref fetching, 0);
+                    }
+                }
+                catch (ObjectDisposedException)
+                {
+                    Interlocked.Exchange(ref fetching, 0);
+                }
+            });
+        }
+
+        /// <summary>Chay tren UI thread sau khi luong nen lay xong du lieu.</summary>
+        private void ApplyDashboardData(HisTreatmentBedRoomDashboardSDO data, int requestedBedRoomCount, long elapsedMs)
+        {
+            try
+            {
+                if (data == null)
+                {
+                    // Giu nguyen du lieu dang hien thi - tot hon la xoa trang mot man hinh dang co nguoi nhin
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                        "api/HisTreatmentBedRoom/Dashboard khong co du lieu. DEPARTMENT_ID={0}, so buong gui len={1}",
+                        this.departmentId, requestedBedRoomCount));
+                    return;
+                }
+
+                LogDashboardData(requestedBedRoomCount, data, elapsedMs);
+                this.ucBoard.SetData(data);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                Interlocked.Exchange(ref fetching, 0);
+            }
+        }
+
 
         private void SetCaptionByLanguageKey()
         {
@@ -160,22 +268,94 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         #endregion
 
         #region Gọi api
-        private void GetApiData()
+        /// <summary>
+        /// CHAY TREN LUONG NEN. Chi goi API va tra ve du lieu, tuyet doi khong cham vao control nao. 
+        /// </summary>
+        private HisTreatmentBedRoomDashboardSDO CallDashboardApi()
+        {
+            HisTreatmentBedRoomDashboardFilterSDO sdo = new HisTreatmentBedRoomDashboardFilterSDO();
+            sdo.DEPARTMENT_ID = this.departmentId;
+            sdo.BED_ROOM_IDs = GetBedRoomIds();
+
+            return new BackendAdapter(new CommonParam())
+                .Post<HisTreatmentBedRoomDashboardSDO>("api/HisTreatmentBedRoom/Dashboard", ApiConsumers.MosConsumer, sdo, new CommonParam());
+        }
+
+        /// <summary>
+        /// Ghi lai API vua tra ve nhung gi: bao nhieu buong, bao nhieu giuong, bao nhieu benh nhan.
+        ///
+        /// Dem benh nhan theo TreatmentId KHONG TRUNG chu khong dem so giuong co nguoi: giuong nam ghep
+        /// la nhieu giuong cung mot ca dieu tri, dem theo giuong se ra nhieu hon so nguoi that.
+        /// Doi chieu so nay voi so tren dai thong ke la biet ngay lech nam o server hay o client.
+        /// </summary>
+        private void LogDashboardData(int requestedBedRoomCount, HisTreatmentBedRoomDashboardSDO data, long elapsedMs)
         {
             try
             {
-                List<long> BED_ROOM_IDs = GetBedRoomIds();
+                int roomCount = 0;
+                int bedTotal = 0;
+                int bedOccupied = 0;
+                int bedEmpty = 0;
+                HashSet<long> treatmentIds = new HashSet<long>();
+                List<string> roomDetails = new List<string>();
 
-                HisTreatmentBedRoomDashboardFilterSDO sdo = new HisTreatmentBedRoomDashboardFilterSDO();
-                sdo.DEPARTMENT_ID = this.departmentId;
-                sdo.BED_ROOM_IDs = BED_ROOM_IDs;
-
-                HisTreatmentBedRoomDashboardSDO data = new BackendAdapter(new CommonParam())
-                    .Post<HisTreatmentBedRoomDashboardSDO>("api/HisTreatmentBedRoom/Dashboard", ApiConsumers.MosConsumer, sdo, new CommonParam());
-
-                if (data != null)
+                if (data.Rooms != null)
                 {
-                    ucBoard.SetData(data);
+                    roomCount = data.Rooms.Count;
+
+                    foreach (TreatmentBedRoomDashboardRoomSDO room in data.Rooms)
+                    {
+                        if (room == null) continue;
+
+                        int roomBeds = 0;
+                        int roomPatients = 0;
+
+                        if (room.Beds != null)
+                        {
+                            foreach (TreatmentBedRoomDashboardBedSDO bed in room.Beds)
+                            {
+                                if (bed == null) continue;
+
+                                roomBeds++;
+                                bedTotal++;
+
+                                if (bed.Treatment != null)
+                                {
+                                    bedOccupied++;
+                                    roomPatients++;
+                                    treatmentIds.Add(bed.Treatment.TreatmentId);
+                                }
+                                else
+                                {
+                                    bedEmpty++;
+                                }
+                            }
+                        }
+
+                        roomDetails.Add(string.Format("{0}({1}/{2})",
+                            string.IsNullOrEmpty(room.BedRoomCode) ? room.BedRoomName : room.BedRoomCode,
+                            roomPatients, roomBeds));
+                    }
+                }
+
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "api/HisTreatmentBedRoom/Dashboard | {0}ms | DEPARTMENT_ID={1} | gui len {2} buong | tra ve {3} buong, {4} giuong ({5} co nguoi, {6} trong), {7} benh nhan",
+                    elapsedMs, this.departmentId, requestedBedRoomCount, roomCount, bedTotal, bedOccupied, bedEmpty, treatmentIds.Count));
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "Chi tiet buong (benh nhan/giuong): " + string.Join(", ", roomDetails));
+
+                // Con so tren dai thong ke do server tinh - lech voi so dem duoc o day la co van de
+                if (data.UsedBedTotal != bedOccupied)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                        "Lech so giuong dang dung: server bao {0}, dem tu Rooms duoc {1}",
+                        data.UsedBedTotal, bedOccupied));
+                }
+                if (requestedBedRoomCount > 0 && roomCount != requestedBedRoomCount)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                        "Gui len {0} buong nhung chi nhan ve {1}", requestedBedRoomCount, roomCount));
                 }
             }
             catch (Exception ex)
