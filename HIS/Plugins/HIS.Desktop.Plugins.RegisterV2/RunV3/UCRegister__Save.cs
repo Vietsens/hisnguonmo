@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
  * GNU General Public License for more details.
  *  
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
@@ -368,6 +368,76 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             return result;
         }
 
+        /// <summary>
+        /// Kiem tra so dien thoai dang nhap da duoc su dung boi benh nhan khac hay chua
+        /// Config HIS.Desktop.Plugins.RegisterV2.PatientAdvance
+        /// = 1: Chan. Nhan Dong y => tu dong tim kiem benh nhan cu theo so dien thoai de goi y chon benh nhan cu, khong cho tiep don moi
+        /// = 2: Canh bao. Nhan Co => bo qua, tiep tuc dien thong tin tiep don. Nhan Khong => tu dong tim kiem benh nhan cu theo so dien thoai, khong cho tiep don moi
+        /// Cac gia tri khac: khong xu ly
+        /// </summary>
+        private bool CheckDuplicatePhone(CommonParam param, string phoneNumber)
+        {
+            bool result = true;
+            try
+            {
+                if (string.IsNullOrEmpty(phoneNumber)) return true;
+                if (Config.HisConfigCFG.PatientAdvance != "1" && Config.HisConfigCFG.PatientAdvance != "2") return true;
+
+                HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
+                filter.PHONE__EXACT = phoneNumber;
+                var data = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE,
+                    ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
+                if (data == null || data.Count < 1) return true;
+
+                //Dang tiep don lai chinh benh nhan cu dang giu so dien thoai nay => khong phai trung
+                var currentPatient = ucPatientRaw1.patientTD3;
+                if (currentPatient != null
+                    && !string.IsNullOrEmpty(currentPatient.PATIENT_CODE)
+                    && data.Exists(o => o.PATIENT_CODE == currentPatient.PATIENT_CODE))
+                    return true;
+
+                //Trung tu 2 benh nhan tro len => lay benh nhan moi nhat
+                HisPatientSDO duplicatePatient = data.Count == 1 ? data[0] : data.OrderByDescending(o => o.ID).ToList()[0];
+                LogSystem.Debug("Tiep don: So dien thoai " + phoneNumber + " da duoc su dung boi " + data.Count
+                    + " benh nhan. PatientAdvance=" + Config.HisConfigCFG.PatientAdvance + ". "
+                    + LogUtil.TraceData("duplicatePatient", duplicatePatient));
+
+                bool isSearchOldPatient = false;
+                if (Config.HisConfigCFG.PatientAdvance == "1")
+                {
+                    //Chan: chi hien nut Dong y, sau do tim kiem benh nhan cu de goi y chon
+                    XtraMessageBox.Show(string.Format("Số điện thoại {0} đã được sử dụng bởi bệnh nhân có mã {1}. Vui lòng chọn bệnh nhân cũ để tiếp đón.",
+                        phoneNumber, duplicatePatient.PATIENT_CODE), ResourceMessage.ThongBao, MessageBoxButtons.OK);
+                    isSearchOldPatient = true;
+                    result = false;
+                }
+                else
+                {
+                    //Canh bao: Co => bo qua tiep tuc tiep don; Khong => tim kiem benh nhan cu de goi y chon
+                    if (XtraMessageBox.Show(string.Format("Số điện thoại {0} đã được sử dụng bởi bệnh nhân có mã {1}. Bạn có muốn tiếp tục?",
+                        phoneNumber, duplicatePatient.PATIENT_CODE), ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        isSearchOldPatient = true;
+                        result = false;
+                    }
+                }
+
+                if (isSearchOldPatient)
+                {
+                    if (data.Count > 1)
+                        ucPatientRaw1.SearchPatientByCodeOrQrCode(duplicatePatient.PATIENT_CODE, HIS.UC.UCPatientRaw.ResourceMessage.typeCodeFind__MaBN);
+                    else
+                        ucPatientRaw1.SearchPatientByCodeOrQrCode(phoneNumber, HIS.UC.UCPatientRaw.ResourceMessage.typeCodeFind__SoDT);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+
         private bool BlockingHeinLevelCode()
         {
             try
@@ -497,30 +567,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 string phoneNumber = ucAddressCombo1.GetValue().Phone;
                 if (!string.IsNullOrEmpty(phoneNumber))
                 {
-                    if (Config.HisConfigCFG.PatientAdvance == "1" || Config.HisConfigCFG.PatientAdvance == "2")
+                    if (!this.CheckDuplicatePhone(param, phoneNumber))
                     {
-                        HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter(); 
-                        filter.PHONE__EXACT = phoneNumber;
-                        var data = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE,
-                            ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
-
-                        if (data != null && data.Count >= 1)
-                        {
-                            if (Config.HisConfigCFG.PatientAdvance == "1")
-                            {
-                                if (XtraMessageBox.Show("Số điện thoại bệnh nhân đang bị trùng. Bạn có muốn tiếp tục?",
-                                    ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
-                                {
-                                    validPhoneNumber = false;
-                                }
-                            }
-                            else
-                            {
-                                XtraMessageBox.Show("Số điện thoại bệnh nhân đang bị trùng.",
-                                    ResourceMessage.ThongBao, MessageBoxButtons.OK);
-                                validPhoneNumber = false;
-                            }
-                        }
+                        validPhoneNumber = false;
                     }
 
                     if (phoneNumber.Length < 10 || phoneNumber.Length > 10)
