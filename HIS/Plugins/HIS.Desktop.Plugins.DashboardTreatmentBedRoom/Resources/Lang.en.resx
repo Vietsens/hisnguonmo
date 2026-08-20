@@ -86,7 +86,7 @@
     <value>On</value>
   </data>
   <data name="frmTreatmentBedRoom.MsgNoRoomChecked" xml:space="preserve">
-    <value>No room selected. Please check at least one room before turning on the extended screen.</value>
+    <value>No bed room selected, the number of bed rooms must be &gt; 0</value>
   </data>
   <data name="frmDashboard.Text" xml:space="preserve">
     <value>Inpatient bed room board</value>
@@ -96,5 +96,14 @@
   </data>
   <data name="frmTreatmentBedRoom.lciColumnCount.Text" xml:space="preserve">
     <value>Display columns:</value>
+  </data>
+  <data name="frmTreatmentBedRoom.MsgColumnCountInvalid" xml:space="preserve">
+    <value>Number of columns is empty, it must be &gt; 0</value>
+  </data>
+  <data name="frmTreatmentBedRoom.MsgReloadTimeTooSmall" xml:space="preserve">
+    <value>A reload time of {0} seconds is a little short.&#13;&#10;&#13;&#10;Reload time must be &gt;= {1} seconds so the refresh does not run back to back.</value>
+  </data>
+  <data name="frmTreatmentBedRoom.MsgReloadTimeRequired" xml:space="preserve">
+    <value>Reload time is empty.&#13;&#10;&#13;&#10;This is how often the board refreshes its data. Reload time must be &gt;= {0} seconds so the refresh does not run back to back.</value>
   </data>
 </root>

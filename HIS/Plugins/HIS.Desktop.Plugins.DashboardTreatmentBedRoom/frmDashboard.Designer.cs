@@ -28,30 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDashboard));
             this.ucBoard = new HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls.UcInpatientBoard();
             this.lblEscHint = new DevExpress.XtraEditors.LabelControl();
             this.SuspendLayout();
-            //
+            // 
             // ucBoard
-            //
-            this.ucBoard.BackColor = System.Drawing.Color.FromArgb(243, 244, 246);
+            // 
+            this.ucBoard.ColumnCount = 4;
             this.ucBoard.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ucBoard.Location = new System.Drawing.Point(0, 0);
             this.ucBoard.Name = "ucBoard";
             this.ucBoard.Padding = new System.Windows.Forms.Padding(12);
-            this.ucBoard.RefreshIntervalSecond = 0;
+            this.ucBoard.RefreshIntervalSecond = 30;
             this.ucBoard.Size = new System.Drawing.Size(1504, 838);
             this.ucBoard.TabIndex = 0;
-            //
+            // 
             // lblEscHint
-            //
-            this.lblEscHint.Appearance.BackColor = System.Drawing.Color.FromArgb(243, 244, 246);
+            // 
+            this.lblEscHint.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(244)))), ((int)(((byte)(246)))));
             this.lblEscHint.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.lblEscHint.Appearance.ForeColor = System.Drawing.Color.FromArgb(148, 156, 168);
-            this.lblEscHint.Appearance.Options.UseBackColor = true;
-            this.lblEscHint.Appearance.Options.UseFont = true;
-            this.lblEscHint.Appearance.Options.UseForeColor = true;
+            this.lblEscHint.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(156)))), ((int)(((byte)(168)))));
             this.lblEscHint.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lblEscHint.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.lblEscHint.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
@@ -62,30 +59,27 @@
             this.lblEscHint.Size = new System.Drawing.Size(1504, 22);
             this.lblEscHint.TabIndex = 1;
             this.lblEscHint.Text = "Nhấn ESC để đóng";
-            //
+            // 
             // frmDashboard
-            //
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(243, 244, 246);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(244)))), ((int)(((byte)(246)))));
             this.ClientSize = new System.Drawing.Size(1504, 860);
+            this.ControlBox = false;
             this.Controls.Add(this.ucBoard);
             this.Controls.Add(this.lblEscHint);
-            // Khong cho dong bang chuot: bo ca vien cua so lan nut dieu khien, chi thoat bang ESC
-            this.ControlBox = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmDashboard";
-            // Phai co mat tren taskbar: man hinh nay khong co nut dieu khien, neu an khoi taskbar
-            // thi khi chi co mot man hinh nguoi dung khong con duong nao quay lai HIS
-            this.ShowInTaskbar = true;
-            // De Normal o day. ShowFormProcessor dua form sang man hinh phu roi moi phong to -
-            // dat Maximized ngay tu day thi form phong ngay tren man chinh va khong doi duoc nua.
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.WindowState = System.Windows.Forms.FormWindowState.Normal;
+            this.Text = "Danh sách bệnh nhân điều trị";
             this.Load += new System.EventHandler(this.frmDashboard_Load);
             this.ResumeLayout(false);
+
         }
 
         #endregion

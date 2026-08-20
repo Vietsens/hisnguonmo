@@ -28,6 +28,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Base
     {
         public string ADD_TIME_STR { get; set; }
 
+        /// <summary>
+        /// Ten phan loai cham soc (HIS_CARE_LEVEL) cua ho so dieu tri.
+        /// View L_HIS_TREATMENT_BED_ROOM khong co truong nay nen duoc gan tu HIS_TREATMENT.CARE_LEVEL_ID sau khi nap luoi
+        /// </summary>
+        public string CARE_LEVEL_NAME { get; set; }
+
         public TreatmentBedRoomADO() { }
 
         public TreatmentBedRoomADO(MOS.EFMODEL.DataModels.L_HIS_TREATMENT_BED_ROOM data)

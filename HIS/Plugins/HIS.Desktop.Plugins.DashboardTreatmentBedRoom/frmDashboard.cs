@@ -204,6 +204,14 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 }
                 catch (ObjectDisposedException)
                 {
+                    // Bang bi dong ngay giua luc dang cho API tra ve - binh thuong, khong phai loi
+                    Interlocked.Exchange(ref fetching, 0);
+                }
+                catch (InvalidOperationException)
+                {
+                    // Handle cua so bi huy sau khi da qua kiem tra IsHandleCreated: BeginInvoke nem
+                    // InvalidOperationException chu khong phai ObjectDisposedException. Khong bat
+                    // thi loi nay bay len tu luong nen va lam sap ca HIS.
                     Interlocked.Exchange(ref fetching, 0);
                 }
             });

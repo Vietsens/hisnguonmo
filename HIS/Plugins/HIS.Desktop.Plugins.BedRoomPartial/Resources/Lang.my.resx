@@ -636,6 +636,12 @@
   <data name="UCBedRoomPartial.gc_ClassifyName.ToolTip" xml:space="preserve">
     <value>လူနာအမျိုးအစားခွဲခြားခြင်း။</value>
   </data>
+  <data name="UCBedRoomPartial.gc_CareLevelName.Caption" xml:space="preserve">
+    <value>ပြုစုစောင့်ရှောက်မှုအဆင့်</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_CareLevelName.ToolTip" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်း၏ ပြုစုစောင့်ရှောက်မှုအဆင့်</value>
+  </data>
   <data name="UCBedRoomPartial.gc_MedisoftH.Caption" xml:space="preserve">
     <value>Medisoft ကုသမှုမှတ်တမ်း</value>
   </data>
