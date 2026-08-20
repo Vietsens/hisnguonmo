@@ -292,7 +292,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// <summary>Đọc mã + tên ICD 5 nhóm tiền sử từ HIS_KSK_GENERAL vào store (dùng chung lượt khám).</summary>
         private void LoadKskHistoryIcdFromGeneral(HIS_KSK_GENERAL g)
         {
-            if (g == null) return;
+            // g == null (lượt khám CHƯA có bản ghi) → XÓA store, KHÔNG return: dicHistoryIcdValue là
+            // readonly Dictionary sống suốt đời form và không được reset ở ReloadForServiceReq, nên
+            // return sớm là LoadKskHistoryIcdToUc đọc lại đúng mã ICD tiền sử của bệnh nhân TRƯỚC.
+            if (g == null) { dicHistoryIcdValue.Clear(); return; }
             try
             {
                 dicHistoryIcdValue[KskHistoryGroup.Family] =

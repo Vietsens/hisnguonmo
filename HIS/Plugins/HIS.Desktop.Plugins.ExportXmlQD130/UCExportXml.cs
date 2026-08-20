@@ -2537,20 +2537,56 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                         try
                         {
-                            var usedFilter = new HisExpMedimateUsedFilter
+                            // Nap theo dung cac ho so trong batch (resultSS), KHONG theo currentTreatment:
+                            // currentTreatment chi duoc gan trong gridViewTreatment_Click nen no tro ve dong user
+                            // bam cuoi cung tren luoi (hoac null neu chua bam) → nap nham/thieu du lieu dung thuoc,
+                            // lam XML2 mat tach so luong theo tung lan dung va sai NGAY_TH_YL.
+                            // HisExpMedimateUsedFilter khong co TDL_TREATMENT_IDs nen loc theo id dong xuat kho
+                            // lay tu chinh sere_serv cua batch (EXP_MEST_MEDICINE_ID/EXP_MEST_MATERIAL_ID unique).
+                            Action<HisExpMedimateUsedFilter> loadUsed = (usedFilter) =>
                             {
-                                TDL_TREATMENT_ID = this.currentTreatment.ID,
+                                var usedRs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_EXP_MEDIMATE_USED>>("api/HisExpMedimateUsed/Get", ApiConsumers.MosConsumer, usedFilter, param);
+                                if (usedRs != null && usedRs.Count > 0)
+                                {
+                                    foreach (var u in usedRs)
+                                    {
+                                        if (u == null) continue;
+                                        usedById[u.ID] = u;
+                                    }
+                                }
                             };
 
-                            var usedRs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_EXP_MEDIMATE_USED>>("api/HisExpMedimateUsed/Get", ApiConsumers.MosConsumer, usedFilter, param);
+                            // 1) Thuoc — filter co san dang danh sach nen chunk theo MAX_REQUEST_LENGTH_PARAM.
+                            var expMestMedicineIds = resultSS
+                                .Where(o => o != null && o.EXP_MEST_MEDICINE_ID.HasValue)
+                                .Select(o => o.EXP_MEST_MEDICINE_ID.Value)
+                                .Distinct()
+                                .ToList();
 
-                            if (usedRs != null && usedRs.Count > 0)
+                            int skipUsed = 0;
+                            while (expMestMedicineIds.Count - skipUsed > 0)
                             {
-                                foreach (var u in usedRs)
-                                {
-                                    if (u == null) continue;
-                                    usedById[u.ID] = u;
-                                }
+                                var limitUsed = expMestMedicineIds.Skip(skipUsed).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
+                                skipUsed += GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
+
+                                loadUsed(new HisExpMedimateUsedFilter { EXP_MEST_MEDICINE_IDs = limitUsed });
+                            }
+
+                            // 2) Mau / che pham mau — XML2 co lay 2 nhom nay (xem Xml2Processor: thuocServiceTypes +
+                            // mauVatTuServiceTypes) nhung filter chi co EXP_MEST_MATERIAL_ID dang don le. Gioi han
+                            // dung 2 nhom nay de so luot goi khong phinh theo toan bo VTYT cua ho so.
+                            var expMestMaterialIds = resultSS
+                                .Where(o => o != null && o.EXP_MEST_MATERIAL_ID.HasValue
+                                    && o.TDL_HEIN_SERVICE_TYPE_ID.HasValue
+                                    && (o.TDL_HEIN_SERVICE_TYPE_ID.Value == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__MAU
+                                        || o.TDL_HEIN_SERVICE_TYPE_ID.Value == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__CPM))
+                                .Select(o => o.EXP_MEST_MATERIAL_ID.Value)
+                                .Distinct()
+                                .ToList();
+
+                            foreach (var materialId in expMestMaterialIds)
+                            {
+                                loadUsed(new HisExpMedimateUsedFilter { EXP_MEST_MATERIAL_ID = materialId });
                             }
                         }
                         catch (Exception exUsed)

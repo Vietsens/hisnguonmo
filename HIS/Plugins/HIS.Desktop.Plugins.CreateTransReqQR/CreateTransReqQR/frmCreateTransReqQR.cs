@@ -1743,7 +1743,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         lstTran,
                         listSeseDepoRepay
                         );
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                    pdo._ListTransactionPayform = GetTransactionPayformForPrint(item != null ? item.ID : 0);
+                    pdo._ListTransactionDiscount = GetTransactionDiscountForPrint(item != null ? item.ID : 0);
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode,fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
                     //if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                     //{
                     //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
@@ -1925,8 +1927,26 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     var treatmentList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null);
                     if (treatmentList != null && treatmentList.Count > 0)
                         treatment = treatmentList.First();
+
+                    //Danh sach dich vu: uu tien dich vu duoc tam ung boi chinh phieu nay,
+                    //neu phieu tam ung khong gan dich vu thi lay toan bo dich vu cua dot dieu tri
+                    HisSereServDepositFilter sereServDepositFilter = new HisSereServDepositFilter();
+                    sereServDepositFilter.DEPOSIT_ID = item.ID;
+                    sereServDepositFilter.IS_CANCEL = false;
+                    var sereServDeposits = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_DEPOSIT>>("api/HisSereServDeposit/Get", ApiConsumers.MosConsumer, sereServDepositFilter, null);
+
+                    HisSereServViewFilter sereServViewFilter = new HisSereServViewFilter();
+                    if (sereServDeposits != null && sereServDeposits.Count > 0)
+                        sereServViewFilter.IDs = sereServDeposits.Select(o => o.SERE_SERV_ID).Distinct().ToList();
+                    else
+                        sereServViewFilter.TREATMENT_ID = item.TREATMENT_ID;
+                    var sereServs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW, ApiConsumers.MosConsumer, sereServViewFilter, null) ?? new List<V_HIS_SERE_SERV>();
+
                     MPS.Processor.Mps000112.PDO.Mps000112PDO rdo =
-                        new MPS.Processor.Mps000112.PDO.Mps000112PDO(deposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>());
+                        new MPS.Processor.Mps000112.PDO.Mps000112PDO(deposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>(), sereServs, sereServDeposits, BackendDataWorker.Get<HIS_PAY_FORM>());
+                    rdo._Banks = BackendDataWorker.Get<HIS_BANK>();
+                    rdo._ListTransactionPayform = GetTransactionPayformForPrint(item != null ? item.ID : 0);
+                    rdo._ListTransactionDiscount = GetTransactionDiscountForPrint(item != null ? item.ID : 0);
                     MPS.ProcessorBase.Core.PrintData printData = null;
                     WaitingManager.Hide();
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
@@ -3644,6 +3664,48 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bang hinh thuc thanh toan cua giao dich (HIS_TRANSACTION_PAYFORM) - dung cho ban in Mps000111/Mps000112.
+        /// </summary>
+        private List<HIS_TRANSACTION_PAYFORM> GetTransactionPayformForPrint(long transactionId)
+        {
+            try
+            {
+                if (transactionId <= 0) return null;
+                CommonParam param = new CommonParam();
+                HisTransactionPayformFilter filter = new HisTransactionPayformFilter();
+                filter.TRANSACTION_ID = transactionId;
+                return new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_TRANSACTION_PAYFORM>>(
+                    "api/HisTransactionPayform/Get", ApiConsumers.MosConsumer, filter, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Bang chiet khau cua giao dich (HIS_TRANSACTION_DISCOUNT) - dung cho ban in Mps000111/Mps000112.
+        /// HisTransactionDiscountFilter chua co TRANSACTION_ID nen dung anonymous object nhu TransactionBill.
+        /// </summary>
+        private List<HIS_TRANSACTION_DISCOUNT> GetTransactionDiscountForPrint(long transactionId)
+        {
+            try
+            {
+                if (transactionId <= 0) return null;
+                CommonParam param = new CommonParam();
+                return new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_TRANSACTION_DISCOUNT>>(
+                    "api/HisTransactionDiscount/Get", ApiConsumers.MosConsumer,
+                    new { TRANSACTION_ID = transactionId, IS_ACTIVE = (short?)1 }, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
         }
     }

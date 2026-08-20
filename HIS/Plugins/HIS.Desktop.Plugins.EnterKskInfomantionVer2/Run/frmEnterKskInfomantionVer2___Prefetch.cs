@@ -87,6 +87,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (sdo != null)
                 {
                     preKskGenerals = sdo.HisKskGenerals;
+                    // Gán currentKskGeneral NGAY TẠI ĐÂY. Trước đây nó CHỈ được gán trong FillDataGenaral()
+                    // (fill tab 0), mà ResolveDefaultTab ưu tiên tab có bảng riêng (trẻ em → 7, ≥18 → 1…)
+                    // nên tab 0 thường không bao giờ fill → currentKskGeneral null → LoadIcdConclusionToUc
+                    // không nạp được ICD kết luận từ DB dù bản ghi có dữ liệu.
+                    currentKskGeneral = (preKskGenerals != null && preKskGenerals.Count > 0)
+                        ? preKskGenerals[0] : null;
                     preKskOccupationals = sdo.HisKskOccupationals;
                     preKskOverEighteens = sdo.HisKskOverEighteens;
                     preKskUnderEighteens = sdo.HisKskUnderEighteens;
