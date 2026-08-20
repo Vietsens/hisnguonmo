@@ -51,14 +51,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
 
-        /// <summary>Đổ người khám kết luận từ HIS_KSK_GENERAL vào combo (dùng chung lượt khám). Gọi ở Load sau Init.</summary>
+        /// <summary>
+        /// Đổ người khám kết luận từ HIS_KSK_GENERAL vào combo (dùng chung lượt khám). Gọi ở Load sau Init.
+        /// KHÔNG return sớm khi currentKskGeneral == null: ClearTabInputEditors đã xóa combo trước khi fill,
+        /// nên return là combo trống mãi; còn khi chuyển y lệnh thì giữ người kết luận của bệnh nhân TRƯỚC.
+        /// null → gán null (xóa), có bản ghi → gán CONCLUDER_LOGINNAME.
+        /// </summary>
         private void LoadConcluderComboExt()
         {
             try
             {
-                if (currentKskGeneral == null) return;
-                foreach (var cbo in dicConcluderCboExt.Values)
-                    if (cbo != null) cbo.EditValue = currentKskGeneral.CONCLUDER_LOGINNAME;
+                string login = currentKskGeneral != null ? currentKskGeneral.CONCLUDER_LOGINNAME : null;
+                foreach (var kv in dicConcluderCboExt)
+                {
+                    if (kv.Value == null) continue;
+                    kv.Value.EditValue = string.IsNullOrWhiteSpace(login) ? null : login;
+                }
+                LogSystem.Debug("KskConcluder: combo=" + dicConcluderCboExt.Count
+                    + "__general=" + (currentKskGeneral == null ? "null" : "co")
+                    + "__login=" + (login ?? "null")
+                    + "__dsCbo3=" + (this.cboConcluderLoginName3 != null && this.cboConcluderLoginName3.Properties.DataSource != null)
+                    + "__text3=[" + (this.cboConcluderLoginName3 != null ? this.cboConcluderLoginName3.Text : "") + "]");
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }

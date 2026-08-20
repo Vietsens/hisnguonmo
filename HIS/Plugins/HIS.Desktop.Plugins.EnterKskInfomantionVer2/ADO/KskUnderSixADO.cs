@@ -33,6 +33,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO
         public long? TDL_PATIENT_ID { get; set; }            // 3 - Liên kết bệnh nhân
         public long? DHST_ID { get; set; }                   // 4 - Liên kết chỉ số sinh tồn HIS_DHST
         public long? IS_PREMATURE_BIRTH { get; set; }        // 5 - Sinh non: 1=Có, 0=Không
+        public string GESTATIONAL_AGE_WEEK { get; set; }     // Tuần thai khi sinh (tuần) — cột String của HIS_KSK_UNDER_SIX
         public string ETHNIC { get; set; }                   // 6 - Dân tộc
         public string RESIDENCE { get; set; }                // 7 - Nơi ở
         public string ACCOMPANY_PERSON_NAME { get; set; }    // 8 - Họ tên người đi cùng trẻ

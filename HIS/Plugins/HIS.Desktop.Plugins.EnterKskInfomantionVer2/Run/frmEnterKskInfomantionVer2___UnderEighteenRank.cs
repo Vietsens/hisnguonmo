@@ -24,8 +24,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         /// <summary>
         /// Đổ danh mục cho ô Phân loại của mục V. KẾT LUẬN. Gọi được nhiều lần, chỉ chạy một lượt.
-        /// Cách hiển thị (cột nào hiện, cột giá trị, cột chữ) sao y ô Phân loại của tab Thông tin
-        /// chung để khỏi phải đoán lại tên cột của danh mục.
+        ///
+        /// Dùng ĐÚNG helper SetDataCboRank như ~78 ô Phân loại còn lại (tab Thông tin chung dòng 88,
+        /// tab trên 18 tuổi dòng 236…): tự dựng cột HEALTH_EXAM_RANK_CODE + HEALTH_EXAM_RANK_NAME,
+        /// DisplayMember = HEALTH_EXAM_RANK_NAME, ValueMember = ID.
+        ///
+        /// TRƯỚC ĐÂY dùng Properties.Assign(cboHealthExamRank.Properties) để clone cấu hình từ ô
+        /// Phân loại của tab Thông tin chung — SAI: ô đó chỉ được SetDataCboRank khi
+        /// FillDataPageGenaral() chạy (tức khi tab 0 được fill), mà ResolveDefaultTab ưu tiên tab có
+        /// bảng riêng nên tab 0 gần như không bao giờ fill → clone về một RepositoryItem CHƯA cấu
+        /// hình (không cột, không ValueMember) → ô Phân loại tab dưới 18 hỏng.
         /// </summary>
         private void BuildKskRank3()
         {
@@ -33,14 +41,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (rank3Inited) return;
                 if (this.cboHealthExamRank3 == null) return;
-                if (this.cboHealthExamRank == null) return;   // chưa có ô mẫu thì chưa đổ
                 rank3Inited = true;
 
-                this.cboHealthExamRank3.Properties.Assign(this.cboHealthExamRank.Properties);
-                this.cboHealthExamRank3.Properties.DataSource =
-                    HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>()
-                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                        .ToList();
+                SetDataCboRank(this.cboHealthExamRank3);
 
                 // Hồ sơ có thể đã nạp TRƯỚC khi danh mục được đổ -> đổ lại giá trị.
                 FillKskRank3();

@@ -1152,6 +1152,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.gvConcluder3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.cboHealthExamRank3 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gvHealthExamRank3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lcgU18Tab4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem251 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnChooseRs3 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -3318,6 +3319,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.cboConcluderLoginName3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvConcluder3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboHealthExamRank3.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvHealthExamRank3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcgU18Tab4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem251)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnChooseRs3)).BeginInit();
@@ -16811,10 +16813,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboHealthExamRank3.MenuManager = this.barManager1;
             this.cboHealthExamRank3.Name = "cboHealthExamRank3";
             this.cboHealthExamRank3.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboHealthExamRank3.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboHealthExamRank3.Properties.NullText = "";
+            this.cboHealthExamRank3.Properties.View = this.gvHealthExamRank3;
             this.cboHealthExamRank3.Size = new System.Drawing.Size(199, 20);
             this.cboHealthExamRank3.StyleController = this.layoutControl25;
             this.cboHealthExamRank3.TabIndex = 930;
+            // 
+            // gvHealthExamRank3
+            // 
+            this.gvHealthExamRank3.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gvHealthExamRank3.Name = "gvHealthExamRank3";
+            this.gvHealthExamRank3.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gvHealthExamRank3.OptionsView.ShowGroupPanel = false;
             // 
             // lcgU18Tab4
             // 
@@ -32635,6 +32648,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.dteConclusionTime3.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboConcluderLoginName3.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvConcluder3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvHealthExamRank3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboHealthExamRank3.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcgU18Tab4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem251)).EndInit();
@@ -34380,6 +34394,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem97;
         private DevExpress.XtraEditors.GridLookUpEdit cboHealthExamRank;
         private DevExpress.XtraEditors.GridLookUpEdit cboHealthExamRank3;
+        private DevExpress.XtraGrid.Views.Grid.GridView gvHealthExamRank3;
         private DevExpress.XtraLayout.LayoutControlItem lciHealthExamRank3;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit15View;
         private DevExpress.XtraEditors.TextEdit txtDiseases;
