@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
  * GNU General Public License for more details.
  *  
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors;
@@ -178,6 +178,291 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             return valid;
         }
 
+        /// <summary>
+        /// Tiền tố log của check "thời gian y lệnh lớn hơn thời gian ra khoa". 
+        /// </summary>
+        private const string LOG_PREFIX_CHECK_OUT_TIME = "[CheckYLenhVsThoiGianRaKhoa]";
+
+        /// <summary>
+        /// Danh sách điều trị kết hợp (khoa phối hợp điều trị) của bệnh án. Lazy load, chỉ dùng cho check thời gian ra khoa.
+        /// </summary>
+        private List<HIS_CO_TREATMENT> ListCoTreatmentCheckTime = null;
+
+        /// <summary>
+        /// Một khoảng thời gian bệnh nhân thuộc quản lý của 1 khoa (nằm khoa hoặc điều trị kết hợp).
+        /// </summary>
+        private class DepartmentTimeRangeADO
+        {
+            public long DepartmentId { get; set; }
+            public long FromTime { get; set; }
+            public long ToTime { get; set; }
+            public string Source { get; set; }
+        }
+
+        /// <summary> 000000376331
+        /// Load danh sách điều trị kết hợp của bệnh án. Khoa điều trị kết hợp KHÔNG sinh bản ghi chuyển khoa
+        /// nên nếu không lấy dữ liệu này thì mọi y lệnh của khoa phối hợp đều bị coi là "sau thời gian ra khoa". 
+        /// </summary>
+        private void LoadCoTreatmentForCheckOutTime()
+        {
+            try
+            {
+                if (this.ListCoTreatmentCheckTime != null)
+                {
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                HisCoTreatmentFilter filter = new HisCoTreatmentFilter();
+                filter.TDL_TREATMENT_ID = this.treatmentId;
+                this.ListCoTreatmentCheckTime = new BackendAdapter(param).Get<List<HIS_CO_TREATMENT>>("api/HisCoTreatment/Get", ApiConsumers.MosConsumer, filter, param);
+
+                if (this.ListCoTreatmentCheckTime == null)
+                {
+                    this.ListCoTreatmentCheckTime = new List<HIS_CO_TREATMENT>();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ListCoTreatmentCheckTime = new List<HIS_CO_TREATMENT>();
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tên khoa theo ID, dựng 1 lần để log không phải quét lại danh mục khoa trên từng dòng.
+        /// </summary>
+        private Dictionary<long, string> dicDepartmentNameForLog = null;
+
+        /// <summary>
+        /// Tên khoa (dùng cho log).
+        /// </summary>
+        private string GetDepartmentNameForLog(long departmentId)
+        {
+            try
+            {
+                if (this.dicDepartmentNameForLog == null)
+                {
+                    this.dicDepartmentNameForLog = new Dictionary<long, string>();
+                    foreach (var department in BackendDataWorker.Get<HIS_DEPARTMENT>())
+                    {
+                        this.dicDepartmentNameForLog[department.ID] = department.DEPARTMENT_NAME;
+                    }
+                }
+
+                string name = null;
+                return this.dicDepartmentNameForLog.TryGetValue(departmentId, out name) ? name : "?";
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return "?";
+            }
+        }
+
+        /// <summary>
+        /// Dựng danh sách khoảng thời gian bệnh nhân thuộc từng khoa.
+        /// - Mỗi bản ghi chuyển khoa là 1 khoảng: [thời gian vào khoa, thời gian vào khoa của bản ghi chuyển khoa tiếp theo].
+        ///   Nếu không có bản ghi tiếp theo (khoa cuối cùng / đứt chuỗi PREVIOUS_ID) thì lấy thời gian kết thúc điều trị.
+        /// - Mỗi bản ghi điều trị kết hợp là 1 khoảng bổ sung cho khoa phối hợp: [START_TIME, FINISH_TIME].
+        ///   Chỉ bổ sung cho khoa đã có bản ghi chuyển khoa để không mở rộng phạm vi kiểm tra so với logic cũ.
+        /// KHÔNG gom nhóm/không sửa đổi ListDepartmentTran: bệnh nhân ra khoa rồi vào lại thì mỗi lần nằm là 1 khoảng riêng.
+        /// </summary>
+        private List<DepartmentTimeRangeADO> BuildDepartmentTimeRangesForCheckOutTime(long treatmentEndTime)
+        {
+            List<DepartmentTimeRangeADO> ranges = new List<DepartmentTimeRangeADO>();
+            try
+            {
+                foreach (var tran in this.ListDepartmentTran)
+                {
+                    if (!tran.DEPARTMENT_IN_TIME.HasValue)
+                    {
+                        //bản ghi chuyển khoa mới yêu cầu, khoa nhận chưa tiếp nhận -> chưa xác định được khoảng thời gian
+                        LogSystem.Info(LOG_PREFIX_CHECK_OUT_TIME + " Bo qua ban ghi chuyen khoa chua co thoi gian vao khoa. TRAN_ID=" + tran.ID
+                            + "; DEPARTMENT_ID=" + tran.DEPARTMENT_ID + "; REQUEST_TIME=" + (tran.REQUEST_TIME.HasValue ? tran.REQUEST_TIME.Value.ToString() : "null"));
+                        continue;
+                    }
+
+                    long fromTime = tran.DEPARTMENT_IN_TIME.Value;
+                    long toTime = treatmentEndTime;
+                    string source = "TRAN_" + tran.ID + "_KET_THUC_DT";
+
+                    //bản ghi chuyển khoa tiếp theo: lấy thời gian vào khoa lớn nhất để khoảng thời gian nằm khoa rộng nhất
+                    var nextTrans = this.ListDepartmentTran.Where(o => o.PREVIOUS_ID.HasValue && o.PREVIOUS_ID.Value == tran.ID && o.DEPARTMENT_IN_TIME.HasValue).ToList();
+                    if (nextTrans.Count > 0)
+                    {
+                        toTime = nextTrans.Max(o => o.DEPARTMENT_IN_TIME.Value);
+                        source = "TRAN_" + tran.ID + "_NEXT_" + string.Join("|", nextTrans.Select(o => o.ID.ToString()).ToArray());
+                    }
+
+                    if (toTime < fromTime)
+                    {
+                        //dữ liệu chuỗi chuyển khoa bị lệch: bản ghi tiếp theo có thời gian vào khoa nhỏ hơn bản ghi hiện tại
+                        LogSystem.Warn(LOG_PREFIX_CHECK_OUT_TIME + " Thoi gian ra khoa nho hon thoi gian vao khoa, lay theo thoi gian ket thuc dieu tri."
+                            + " TRAN_ID=" + tran.ID + "; DEPARTMENT_ID=" + tran.DEPARTMENT_ID + "; VAO_KHOA=" + fromTime + "; RA_KHOA=" + toTime);
+                        toTime = treatmentEndTime > fromTime ? treatmentEndTime : fromTime;
+                        source = "TRAN_" + tran.ID + "_DU_LIEU_LECH";
+                    }
+
+                    DepartmentTimeRangeADO range = new DepartmentTimeRangeADO();
+                    range.DepartmentId = tran.DEPARTMENT_ID;
+                    range.FromTime = fromTime;
+                    range.ToTime = toTime;
+                    range.Source = source;
+                    ranges.Add(range);
+                }
+
+                //bổ sung khoảng thời gian điều trị kết hợp
+                if (this.ListCoTreatmentCheckTime != null && this.ListCoTreatmentCheckTime.Count > 0)
+                {
+                    List<long> departmentIdTrans = this.ListDepartmentTran.Select(o => o.DEPARTMENT_ID).Distinct().ToList();
+                    foreach (var co in this.ListCoTreatmentCheckTime)
+                    {
+                        if (!departmentIdTrans.Contains(co.DEPARTMENT_ID))
+                        {
+                            //khoa chỉ điều trị kết hợp, không có bản ghi chuyển khoa -> vốn không nằm trong phạm vi kiểm tra
+                            LogSystem.Info(LOG_PREFIX_CHECK_OUT_TIME + " Bo qua dieu tri ket hop cua khoa khong co ban ghi chuyen khoa. CO_TREATMENT_ID=" + co.ID
+                                + "; DEPARTMENT_ID=" + co.DEPARTMENT_ID);
+                            continue;
+                        }
+
+                        if (!co.START_TIME.HasValue)
+                        {
+                            LogSystem.Info(LOG_PREFIX_CHECK_OUT_TIME + " Bo qua dieu tri ket hop chua co thoi gian bat dau. CO_TREATMENT_ID=" + co.ID
+                                + "; DEPARTMENT_ID=" + co.DEPARTMENT_ID);
+                            continue;
+                        }
+
+                        DepartmentTimeRangeADO range = new DepartmentTimeRangeADO();
+                        range.DepartmentId = co.DEPARTMENT_ID;
+                        range.FromTime = co.START_TIME.Value;
+                        range.ToTime = co.FINISH_TIME.HasValue ? co.FINISH_TIME.Value : treatmentEndTime;
+                        range.Source = "CO_TREATMENT_" + co.ID;
+                        if (range.ToTime < range.FromTime)
+                        {
+                            range.ToTime = range.FromTime;
+                        }
+                        ranges.Add(range);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            return ranges;
+        }
+
+        /// <summary>
+        /// Ghi log toàn bộ dữ liệu đầu vào và kết quả của check thời gian y lệnh - thời gian ra khoa.
+        /// </summary>
+        private void LogDataCheckOutTime(long treatmentEndTime, List<DepartmentTimeRangeADO> ranges, Dictionary<long, long> dicLastOutTime,
+            List<HIS_SERE_SERV> lstSereServOutTime, List<HIS_SERE_SERV> lstSereServInGap)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(LOG_PREFIX_CHECK_OUT_TIME + " BEGIN. TREATMENT_ID=" + this.treatmentId
+                    + "; TREATMENT_CODE=" + (this.currentHisTreatment != null ? this.currentHisTreatment.TREATMENT_CODE : "null")
+                    + "; THOI_GIAN_KET_THUC=" + treatmentEndTime
+                    + "; SO_CHUYEN_KHOA=" + this.ListDepartmentTran.Count
+                    + "; SO_DIEU_TRI_KET_HOP=" + (this.ListCoTreatmentCheckTime == null ? 0 : this.ListCoTreatmentCheckTime.Count)
+                    + "; SO_DICH_VU_KIEM_TRA=" + this.SereServCheck.Count
+                    + "; SO_DICH_VU_CANH_BAO=" + lstSereServOutTime.Count
+                    + "; SO_DICH_VU_KHOANG_TRONG=" + lstSereServInGap.Count
+                    + " (so Y LENH tuong ung xem 2 dong log ben duoi, 1 y lenh gom nhieu dich vu)");
+
+                sb.AppendLine("--- DS chuyen khoa (TRAN_ID | DEPARTMENT_ID | TEN_KHOA | PREVIOUS_ID | VAO_KHOA) ---");
+                foreach (var tran in this.ListDepartmentTran.OrderBy(o => o.DEPARTMENT_IN_TIME ?? long.MaxValue).ThenBy(o => o.ID))
+                {
+                    sb.AppendLine(string.Format("{0} | {1} | {2} | {3} | {4}", tran.ID, tran.DEPARTMENT_ID, this.GetDepartmentNameForLog(tran.DEPARTMENT_ID),
+                        tran.PREVIOUS_ID.HasValue ? tran.PREVIOUS_ID.Value.ToString() : "null",
+                        tran.DEPARTMENT_IN_TIME.HasValue ? tran.DEPARTMENT_IN_TIME.Value.ToString() : "null"));
+                }
+
+                sb.AppendLine("--- DS dieu tri ket hop (CO_ID | DEPARTMENT_ID | TEN_KHOA | BAT_DAU | KET_THUC | IS_ACTIVE) ---");
+                if (this.ListCoTreatmentCheckTime != null)
+                {
+                    foreach (var co in this.ListCoTreatmentCheckTime.OrderBy(o => o.START_TIME ?? long.MaxValue).ThenBy(o => o.ID))
+                    {
+                        sb.AppendLine(string.Format("{0} | {1} | {2} | {3} | {4} | {5}", co.ID, co.DEPARTMENT_ID, this.GetDepartmentNameForLog(co.DEPARTMENT_ID),
+                            co.START_TIME.HasValue ? co.START_TIME.Value.ToString() : "null",
+                            co.FINISH_TIME.HasValue ? co.FINISH_TIME.Value.ToString() : "null",
+                            co.IS_ACTIVE.HasValue ? co.IS_ACTIVE.Value.ToString() : "null"));
+                    }
+                }
+
+                sb.AppendLine("--- Khoang thoi gian theo khoa (DEPARTMENT_ID | TEN_KHOA | TU | DEN | NGUON) ---");
+                foreach (var range in ranges.OrderBy(o => o.DepartmentId).ThenBy(o => o.FromTime))
+                {
+                    sb.AppendLine(string.Format("{0} | {1} | {2} | {3} | {4}", range.DepartmentId, this.GetDepartmentNameForLog(range.DepartmentId),
+                        range.FromTime, range.ToTime, range.Source));
+                }
+
+                sb.AppendLine("--- Thoi gian ra khoa cuoi cung theo khoa (DEPARTMENT_ID | TEN_KHOA | RA_KHOA_CUOI) ---");
+                foreach (var key in dicLastOutTime.Keys.OrderBy(o => o))
+                {
+                    sb.AppendLine(string.Format("{0} | {1} | {2}", key, this.GetDepartmentNameForLog(key), dicLastOutTime[key]));
+                }
+
+                LogSystem.Info(sb.ToString());
+
+                this.LogSereServCheckOutTime("Y lenh CANH BAO (sau thoi gian ra khoa cuoi cung cua khoa chi dinh)", lstSereServOutTime, dicLastOutTime);
+                this.LogSereServCheckOutTime("Y lenh nam ngoai khoang nam khoa nhung truoc thoi gian ra khoa cuoi cung (KHONG canh bao)", lstSereServInGap, dicLastOutTime);
+
+                LogSystem.Info(LOG_PREFIX_CHECK_OUT_TIME + " END. TREATMENT_ID=" + this.treatmentId);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ghi log chi tiết từng y lệnh, chia lô 100 dòng để tránh 1 bản ghi log quá lớn.
+        /// </summary>
+        private void LogSereServCheckOutTime(string title, List<HIS_SERE_SERV> datas, Dictionary<long, long> dicLastOutTime)
+        {
+            try
+            {
+                if (datas == null || datas.Count == 0)
+                {
+                    LogSystem.Info(LOG_PREFIX_CHECK_OUT_TIME + " " + title + ": 0 y lenh.");
+                    return;
+                }
+
+                var groups = datas.GroupBy(o => new { o.TDL_SERVICE_REQ_CODE, o.TDL_REQUEST_DEPARTMENT_ID, o.TDL_INTRUCTION_TIME })
+                    .Select(g => g.Key).OrderBy(o => o.TDL_INTRUCTION_TIME).ThenBy(o => o.TDL_SERVICE_REQ_CODE).ToList();
+
+                LogSystem.Info(LOG_PREFIX_CHECK_OUT_TIME + " " + title + ": " + groups.Count + " y lenh (MA_YL | KHOA_CHI_DINH | TEN_KHOA | TG_Y_LENH | RA_KHOA_CUOI | LECH).");
+
+                StringBuilder sb = new StringBuilder();
+                int index = 0;
+                foreach (var g in groups)
+                {
+                    long lastOutTime = 0;
+                    dicLastOutTime.TryGetValue(g.TDL_REQUEST_DEPARTMENT_ID, out lastOutTime);
+                    sb.AppendLine(string.Format("{0} | {1} | {2} | {3} | {4} | {5}", g.TDL_SERVICE_REQ_CODE, g.TDL_REQUEST_DEPARTMENT_ID,
+                        this.GetDepartmentNameForLog(g.TDL_REQUEST_DEPARTMENT_ID), g.TDL_INTRUCTION_TIME, lastOutTime,
+                        g.TDL_INTRUCTION_TIME > lastOutTime ? "SAU_RA_KHOA" : "TRONG_KHOANG_TRONG"));
+                    index++;
+                    if (index % 100 == 0)
+                    {
+                        LogSystem.Info(LOG_PREFIX_CHECK_OUT_TIME + " " + title + " (den dong " + index + "):" + Environment.NewLine + sb.ToString());
+                        sb.Clear();
+                    }
+                }
+                if (sb.Length > 0)
+                {
+                    LogSystem.Info(LOG_PREFIX_CHECK_OUT_TIME + " " + title + " (den dong " + index + "):" + Environment.NewLine + sb.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
         private bool Check_INTRUCTION_TIME_and_DEPARTMENT_IN_TIME_ForSave(ValidationDataType validationDataType, ref List<WarningADO> listWarningADO)
         {
             bool valid = true;
@@ -187,58 +472,92 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     return valid;
                 }
-                if (this.SereServCheck != null && this.SereServCheck.Count > 0 && this.ListDepartmentTran != null && this.ListDepartmentTran.Count > 0)
-                {
-                    //duyệt danh sách chuyển khoa theo thứ tự thời gian tăng dần
-                    //lấy danh sách dịch vụ có khoa chỉ định ứng với khoa đó và có thời gian chỉ định lớn hơn thời gian ra khoa.
-                    List<HIS_SERE_SERV> lstSereServOutTime = new List<HIS_SERE_SERV>();
-                    ListDepartmentTran = ListDepartmentTran.GroupBy(x => x.DEPARTMENT_ID).Select(g => g.First())   .OrderBy(o => o.DEPARTMENT_IN_TIME ?? 99999999999999).ThenBy(o => o.ID).ToList();
-                    foreach (var item in ListDepartmentTran)
-                    {
-                        long checkTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
-                        var nextDepa = ListDepartmentTran.Where(o => o.PREVIOUS_ID == item.ID).OrderByDescending(o => o.DEPARTMENT_IN_TIME).FirstOrDefault();
-                        if (nextDepa != null && nextDepa.DEPARTMENT_IN_TIME.HasValue)
-                        {
-                            checkTime = nextDepa.DEPARTMENT_IN_TIME.Value;
-                        }
-                        
-                        //lấy các dịch vụ có thời gian chỉ định lớn hơn thời gian ra khoa và có thời gian chỉ định trong khoa.  
-                        var ssOutTime = this.SereServCheck.Where(o => o.AMOUNT != 0 && o.TDL_REQUEST_DEPARTMENT_ID == item.DEPARTMENT_ID && o.TDL_INTRUCTION_TIME > checkTime).ToList();
-                        if (ssOutTime != null && ssOutTime.Count > 0)
-                        {
-                            lstSereServOutTime.AddRange(ssOutTime);
-                        }
 
-                        //bỏ các dịch vụ do khoa hiện tại chỉ định và có thời gian chỉ định lớn hơn thời gian vào khoa và nhỏ hơn thời gian ra khoa
-                        if (lstSereServOutTime.Count > 0)
-                        {
-                            var lstRemove = lstSereServOutTime.Where(o => o.TDL_REQUEST_DEPARTMENT_ID == item.DEPARTMENT_ID && o.TDL_INTRUCTION_TIME > (item.DEPARTMENT_IN_TIME ?? 0) && o.TDL_INTRUCTION_TIME < checkTime).ToList();
-                            if (lstRemove != null && lstRemove.Count > 0)
-                            {
-                                lstSereServOutTime = lstSereServOutTime.Except(lstRemove).ToList();
-                            }
-                        }
+                if (this.SereServCheck == null || this.SereServCheck.Count == 0 || this.ListDepartmentTran == null || this.ListDepartmentTran.Count == 0)
+                {
+                    LogSystem.Info(LOG_PREFIX_CHECK_OUT_TIME + " Bo qua check. TREATMENT_ID=" + this.treatmentId
+                        + "; SereServCheck=" + (this.SereServCheck == null ? "null" : this.SereServCheck.Count.ToString())
+                        + "; ListDepartmentTran=" + (this.ListDepartmentTran == null ? "null" : this.ListDepartmentTran.Count.ToString()));
+                    return valid;
+                }
+
+                long treatmentEndTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
+
+                //chưa nhập thời gian kết thúc điều trị thì không xác định được thời gian ra khoa của khoa cuối cùng -> mọi y lệnh sẽ bị cảnh báo sai
+                if (dtEndTime.EditValue == null || treatmentEndTime <= 0
+                    || (this.currentHisTreatment != null && treatmentEndTime < this.currentHisTreatment.IN_TIME))
+                {
+                    LogSystem.Warn(LOG_PREFIX_CHECK_OUT_TIME + " Bo qua check vi thoi gian ket thuc dieu tri khong hop le. TREATMENT_ID=" + this.treatmentId
+                        + "; THOI_GIAN_KET_THUC=" + treatmentEndTime
+                        + "; TREATMENT_IN_TIME=" + (this.currentHisTreatment != null ? this.currentHisTreatment.IN_TIME.ToString() : "null"));
+                    return valid;
+                }
+
+                this.LoadCoTreatmentForCheckOutTime();
+
+                //các khoảng thời gian bệnh nhân thuộc từng khoa (nhiều lần vào/ra cùng 1 khoa là nhiều khoảng riêng biệt)
+                List<DepartmentTimeRangeADO> ranges = this.BuildDepartmentTimeRangesForCheckOutTime(treatmentEndTime);
+
+                //thời gian ra khoa lần cuối của từng khoa
+                Dictionary<long, long> dicLastOutTime = new Dictionary<long, long>();
+                foreach (var range in ranges)
+                {
+                    if (!dicLastOutTime.ContainsKey(range.DepartmentId) || dicLastOutTime[range.DepartmentId] < range.ToTime)
+                    {
+                        dicLastOutTime[range.DepartmentId] = range.ToTime;
+                    }
+                }
+
+                //y lệnh có thời gian chỉ định lớn hơn thời gian ra khoa lần cuối của khoa chỉ định
+                List<HIS_SERE_SERV> lstSereServOutTime = new List<HIS_SERE_SERV>();
+                //y lệnh không nằm trong khoảng nào nhưng vẫn trước thời gian ra khoa lần cuối -> chỉ ghi log, không cảnh báo
+                List<HIS_SERE_SERV> lstSereServInGap = new List<HIS_SERE_SERV>();
+
+                foreach (var ss in this.SereServCheck)
+                {
+                    if (ss.AMOUNT == 0)
+                    {
+                        continue;
                     }
 
-                    //tồn tại dịch vụ có thời gian chỉ định lớn hơn thời gian ra khoa
-                    if (lstSereServOutTime.Count > 0)
+                    long lastOutTime = 0;
+                    if (!dicLastOutTime.TryGetValue(ss.TDL_REQUEST_DEPARTMENT_ID, out lastOutTime))
                     {
-                        string codes = string.Join(", ", lstSereServOutTime.Select(s => s.TDL_SERVICE_REQ_CODE).Distinct().OrderBy(o => o));
-                        
-                        if (validationDataType == ValidationDataType.PopupMessage)
+                        //khoa chỉ định không có bản ghi chuyển khoa nào -> giữ nguyên logic cũ là không kiểm tra
+                        continue;
+                    }
+
+                    if (ss.TDL_INTRUCTION_TIME > lastOutTime)
+                    {
+                        lstSereServOutTime.Add(ss);
+                    }
+                    else if (!ranges.Exists(o => o.DepartmentId == ss.TDL_REQUEST_DEPARTMENT_ID
+                        && o.FromTime <= ss.TDL_INTRUCTION_TIME && ss.TDL_INTRUCTION_TIME <= o.ToTime))
+                    {
+                        lstSereServInGap.Add(ss);
+                    }
+                }
+
+                this.LogDataCheckOutTime(treatmentEndTime, ranges, dicLastOutTime, lstSereServOutTime, lstSereServInGap);
+
+                //tồn tại dịch vụ có thời gian chỉ định lớn hơn thời gian ra khoa
+                if (lstSereServOutTime.Count > 0)
+                {
+                    string codes = string.Join(", ", lstSereServOutTime.Select(s => s.TDL_SERVICE_REQ_CODE).Distinct().OrderBy(o => o));
+
+                    if (validationDataType == ValidationDataType.PopupMessage)
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.YLenhCoThoiGianChiDinhLonHonThoiGianRaKhoa, codes) + " Bạn có muốn kết thúc điều trị không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.No)
                         {
-                            if (DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.YLenhCoThoiGianChiDinhLonHonThoiGianRaKhoa, codes) + " Bạn có muốn kết thúc điều trị không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.No)
-                            {
-                                return false;
-                            }
+                            return false;
                         }
-                        else if (validationDataType == ValidationDataType.GetListMessage && listWarningADO != null)
-                        {
-                            WarningADO warning = new WarningADO();
-                            warning.IsSkippable = true;
-                            warning.Description = String.Format(ResourceMessage.YLenhCoThoiGianChiDinhLonHonThoiGianRaKhoa, codes);
-                            listWarningADO.Add(warning);
-                        }
+                    }
+                    else if (validationDataType == ValidationDataType.GetListMessage && listWarningADO != null)
+                    {
+                        WarningADO warning = new WarningADO();
+                        warning.IsSkippable = true;
+                        warning.Description = String.Format(ResourceMessage.YLenhCoThoiGianChiDinhLonHonThoiGianRaKhoa, codes);
+                        listWarningADO.Add(warning);
                     }
                 }
             }
