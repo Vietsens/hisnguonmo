@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         bool isCheckedAll = false;
 
         /// <summary>Màn hình mở rộng đang mở, null khi chưa mở.</summary>
-        frmDashboard dashboard;
 
         /// <summary>
         /// Cờ chặn đệ quy: gán lại toggleSwitch1.IsOn trong chính handler Toggled sẽ bắn lại Toggled.
@@ -366,13 +365,11 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                     return;
                 }
 
+                // Chi xu ly chieu bat. Bat xong la man thiet lap dong luon nen khong con
+                // chieu tat de xu ly; bang dien tu thoat bang phim ESC cua chinh no.
                 if (this.toggleSwitch1.IsOn)
                 {
                     OpenDashboard();
-                }
-                else
-                {
-                    CloseDashboard();
                 }
             }
             catch (Exception ex)
@@ -381,16 +378,17 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             }
         }
 
+        /// <summary>
+        /// Mở bảng điện tử rồi đóng luôn màn thiết lập.
+        ///
+        /// Hai form KHÔNG dính vòng đời với nhau: bảng điện tử là cửa sổ độc lập, sống tiếp sau khi
+        /// màn thiết lập đóng. Không giữ tham chiếu, không bắt FormClosed của nó — giữ lại thì lúc
+        /// bảng đóng sẽ gọi ngược về một form đã dispose.
+        /// </summary>
         private void OpenDashboard()
         {
             try
             {
-                if (this.dashboard != null && !this.dashboard.IsDisposed)
-                {
-                    this.dashboard.Activate();
-                    return;
-                }
-
                 List<long> roomIds = GetCheckedRoomIds();
                 if (roomIds == null || roomIds.Count == 0)
                 {
@@ -404,53 +402,18 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                     return;
                 }
 
-                this.dashboard = new frmDashboard(this.departmentId, roomIds, GetReloadSecond(), GetColumnCount());
-                this.dashboard.FormClosed += Dashboard_FormClosed;
-                this.dashboard.Show(this);
+                frmDashboard board = new frmDashboard(
+                    this.departmentId, roomIds, GetReloadSecond(), GetColumnCount());
+
+                // Show() khong owner: cua so co chu luon nam de len chu, HIS se bi chan
+                ShowFormProcessor.ShowFullScreenOnSecondMonitor(board);
+
+                this.Close();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 SetToggleWithoutEvent(false);
-            }
-        }
-
-        private void CloseDashboard()
-        {
-            try
-            {
-                if (this.dashboard == null)
-                {
-                    return;
-                }
-
-                frmDashboard closing = this.dashboard;
-                this.dashboard = null;
-                closing.FormClosed -= Dashboard_FormClosed;
-                if (!closing.IsDisposed)
-                {
-                    closing.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Người dùng bấm ESC bên màn hình mở rộng → gạt công tắc về tắt cho khớp trạng thái.
-        /// </summary>
-        private void Dashboard_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            try
-            {
-                this.dashboard = null;
-                SetToggleWithoutEvent(false);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -547,9 +510,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         {
             try
             {
-                // Dong man hinh thiet lap thi phai dong luon man hinh mo rong dang treo theo no,
-                // khong thi cua so khong vien do se o lai tren desktop ma khong con duong dong
-                CloseDashboard();
+                // KHONG dong bang dien tu o day. No la cua so doc lap, phai song tiep sau khi
+                // man thiet lap dong - dong theo thi vua bat xong da tat ngay.
+                // Muon tat bang dien tu thi bam ESC ben do.
                 this.roomAdos = null;
                 this.currentModule = null;
             }

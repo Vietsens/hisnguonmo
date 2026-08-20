@@ -77,9 +77,13 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmDashboard";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            // Phai co mat tren taskbar: man hinh nay khong co nut dieu khien, neu an khoi taskbar
+            // thi khi chi co mot man hinh nguoi dung khong con duong nao quay lai HIS
+            this.ShowInTaskbar = true;
+            // De Normal o day. ShowFormProcessor dua form sang man hinh phu roi moi phong to -
+            // dat Maximized ngay tu day thi form phong ngay tren man chinh va khong doi duoc nua.
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.WindowState = System.Windows.Forms.FormWindowState.Normal;
             this.Load += new System.EventHandler(this.frmDashboard_Load);
             this.ResumeLayout(false);
         }

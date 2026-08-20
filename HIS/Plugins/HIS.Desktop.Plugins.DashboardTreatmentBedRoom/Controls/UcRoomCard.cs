@@ -17,6 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -38,11 +39,18 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
         private const int BODY_PAD = 10;
 
         // Buong nhieu giuong hon cho nhin thay thi ban to tu troi de lo dan phan con lai.
-        // 1px moi 40ms ~ 25px/giay: du cham de doc, du nhanh de khong phai cho lau.
-        // Toi dau va cuoi thi dung DWELL_TICK nhip cho nguoi xem kip doc truoc khi doi chieu.
-        private const int SCROLL_INTERVAL_MS = 40;
+        // Buoc da la 1px - nho nhat co the - nen muon cham hon chi con cach gian nhip.
+        // 1px moi 80ms ~ 12px/giay.
+        private const int SCROLL_INTERVAL_MS = 80;
         private const int SCROLL_STEP = 1;
-        private const int DWELL_TICK = 45;
+
+        /// <summary>
+        /// Thoi gian dung o dau va cuoi, tinh bang mili giay.
+        /// Ghi theo mili giay roi chia ra so nhip, khong ghi thang so nhip: doi SCROLL_INTERVAL_MS
+        /// ma so nhip de nguyen thi thoi gian dung am tham doi theo, rat de nham.
+        /// </summary>
+        private const int DWELL_MS = 2500;
+        private const int DWELL_TICK = DWELL_MS / SCROLL_INTERVAL_MS;
 
         private readonly Timer tmrAutoScroll = new Timer();
         private bool scrollingDown = true;
@@ -213,21 +221,110 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
         }
 
         /// <summary>
+        /// Sinh khoa doi chieu cho tung giuong, dam bao KHONG TRUNG NHAU.
+        ///
+        /// Vi sao phai lam: khoa uu tien BedId, thieu thi roi ve BedCode. API tra ve BedId rong
+        /// va BedCode trung nhau (hoac cung rong) thi nhieu giuong ra cung mot khoa. Luc do
+        /// bedCards.Add nem ArgumentException ngay giua vong lap, cac giuong con lai khong duoc
+        /// dung the nao ca - API bao 9 giuong ma tren man chi hien 2.
+        ///
+        /// Trung thi noi them so thu tu vao sau, va ghi log de con biet duong sua du lieu goc.
+        /// </summary>
+        private List<string> BuildUniqueBedKeys(
+            TreatmentBedRoomDashboardRoomSDO room, List<TreatmentBedRoomDashboardBedSDO> beds)
+        {
+            List<string> keys = new List<string>(beds.Count);
+            HashSet<string> used = new HashSet<string>();
+            int duplicated = 0;
+            int missing = 0;
+
+            for (int i = 0; i < beds.Count; i++)
+            {
+                string key = UcBedCard.GetBedKey(beds[i]);
+
+                if (string.IsNullOrEmpty(key))
+                {
+                    key = "idx" + i;
+                    missing++;
+                }
+                else if (used.Contains(key))
+                {
+                    key = key + "#" + i;
+                    duplicated++;
+                }
+
+                used.Add(key);
+                keys.Add(key);
+            }
+
+            if (missing > 0 || duplicated > 0)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                    "Buong {0}: {1} giuong khong co ca BedId lan BedCode, {2} giuong trung khoa. "
+                    + "Da tu sinh khoa de khong mat the, nhung nen sua du lieu goc.",
+                    room == null ? "?" : room.BedRoomCode, missing, duplicated));
+            }
+
+            return keys;
+        }
+
+        /// <summary>
+        /// Sap giuong theo thu tu hien thi: cap cham soc truoc, khong co cap thi xuong sau,
+        /// giuong trong xuong cuoi cung.
+        ///
+        /// Sap theo VI TRI cua cap trong danh muc chu khong theo CARE_LEVEL_ID: ID chi la so
+        /// dinh danh, sap theo no thi Cap I co the nam duoi Cap III. Vi tri do UcInpatientBoard
+        /// truyen xuong, dung chung nguon voi cum thong ke.
+        ///
+        /// Dung OrderBy chu khong List.Sort: OrderBy on dinh, cac giuong cung nhom giu nguyen
+        /// thu tu API tra ve nen khong bi xao tron vo co giua cac lan lam moi.
+        /// </summary>
+        private List<TreatmentBedRoomDashboardBedSDO> SortBeds(
+            List<TreatmentBedRoomDashboardBedSDO> beds, Dictionary<long, int> careLevelOrder)
+        {
+            if (beds == null) return new List<TreatmentBedRoomDashboardBedSDO>();
+
+            return beds.OrderBy(o => GetSortRank(o, careLevelOrder)).ToList();
+        }
+
+        private const int RANK_UNKNOWN_LEVEL = 1000000;
+        private const int RANK_NO_LEVEL = 2000000;
+        private const int RANK_EMPTY_BED = 3000000;
+
+        private int GetSortRank(TreatmentBedRoomDashboardBedSDO bed, Dictionary<long, int> careLevelOrder)
+        {
+            if (bed == null || bed.Treatment == null) return RANK_EMPTY_BED;
+            if (!bed.Treatment.CareLevel.HasValue) return RANK_NO_LEVEL;
+
+            int order;
+            if (careLevelOrder != null && careLevelOrder.TryGetValue(bed.Treatment.CareLevel.Value, out order))
+            {
+                return order;
+            }
+
+            // Co CARE_LEVEL_ID nhung khong tim thay trong danh muc (cap da ngung hoat dong chang han):
+            // van xep tren giuong khong co cap, duoi cac cap con hieu luc
+            return RANK_UNKNOWN_LEVEL;
+        }
+
+        /// <summary>
         /// Gan / cap nhat du lieu phong. Chi them - bo - sua tai cho, khong dung lai toan bo the giuong.
         /// </summary>
-        public void SetData(TreatmentBedRoomDashboardRoomSDO ado)
+        public void SetData(TreatmentBedRoomDashboardRoomSDO ado, Dictionary<long, int> careLevelOrder)
         {
             data = ado;
             if (ado == null) return;
 
             lblRoomName.Text = ado.BedRoomCode;
-            List<TreatmentBedRoomDashboardBedSDO> beds = ado.Beds ?? new List<TreatmentBedRoomDashboardBedSDO>();
+            List<TreatmentBedRoomDashboardBedSDO> beds = SortBeds(ado.Beds, careLevelOrder);
+
+            List<string> bedKeys = BuildUniqueBedKeys(ado, beds);
 
             flpBeds.SuspendLayout();
             try
             {
                 HashSet<string> keep = new HashSet<string>();
-                for (int i = 0; i < beds.Count; i++) keep.Add(UcBedCard.GetBedKey(beds[i]));
+                for (int i = 0; i < beds.Count; i++) keep.Add(bedKeys[i]);
 
                 List<string> removing = new List<string>();
                 foreach (KeyValuePair<string, UcBedCard> pair in bedCards)
@@ -246,7 +343,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                 for (int i = 0; i < beds.Count; i++)
                 {
                     TreatmentBedRoomDashboardBedSDO bed = beds[i];
-                    string key = UcBedCard.GetBedKey(bed);
+                    string key = bedKeys[i];
                     UcBedCard card;
                     if (!bedCards.TryGetValue(key, out card))
                     {
@@ -258,6 +355,13 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                     }
                     card.SetData(bed);
                     flpBeds.Controls.SetChildIndex(card, i);
+                }
+
+                if (bedCards.Count != beds.Count)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                        "Buong {0}: API tra {1} giuong nhung chi dung duoc {2} the",
+                        ado.BedRoomCode, beds.Count, bedCards.Count));
                 }
             }
             finally

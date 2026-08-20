@@ -104,19 +104,71 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
         /// Nap / cap nhat du lieu. Chi them - bo - sua the tai cho nen goi lai lien tuc van khong nhay
         /// va khong mat vi tri dang cuon.
         /// </summary>
+        /// <summary>
+        /// Sinh khoa doi chieu cho tung buong, dam bao KHONG TRUNG NHAU.
+        /// Cung ly do nhu ben UcRoomCard: BedRoomId bang 0 hoac trung nhau thi Dictionary.Add
+        /// nem loi giua vong lap, cac buong sau khong duoc dung the nao ca.
+        /// </summary>
+        private List<string> BuildUniqueRoomKeys(List<TreatmentBedRoomDashboardRoomSDO> rooms)
+        {
+            List<string> keys = new List<string>(rooms.Count);
+            HashSet<string> used = new HashSet<string>();
+            int fixedUp = 0;
+
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                TreatmentBedRoomDashboardRoomSDO room = rooms[i];
+                string key = (room != null && room.BedRoomId != 0)
+                    ? room.BedRoomId.ToString()
+                    : ((room == null ? null : room.BedRoomCode) ?? string.Empty);
+
+                if (string.IsNullOrEmpty(key) || used.Contains(key))
+                {
+                    key = key + "#" + i;
+                    fixedUp++;
+                }
+
+                used.Add(key);
+                keys.Add(key);
+            }
+
+            if (fixedUp > 0)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                    "{0} buong khong co BedRoomId hoac bi trung khoa. Da tu sinh khoa de khong mat the.",
+                    fixedUp));
+            }
+
+            return keys;
+        }
+
         public void SetData(HisTreatmentBedRoomDashboardSDO sdo)
         {
             if (sdo == null) return;
 
-            ucSummary.SetData(sdo, BuildCareLevels(sdo));
+            List<CareLevelSummaryADO> careLevels = BuildCareLevels(sdo);
+            ucSummary.SetData(sdo, careLevels);
+
+            // Thu tu sap giuong lay tu chinh danh sach vua dung cho cum thong ke.
+            // Dung chung mot nguon nen thu tu o cum "Che do cham soc" va thu tu giuong trong
+            // buong luon khop nhau; tach ra hai cho tinh rieng la som muon cung lech.
+            Dictionary<long, int> careLevelOrder = new Dictionary<long, int>();
+            for (int i = 0; i < careLevels.Count; i++)
+            {
+                if (!careLevelOrder.ContainsKey(careLevels[i].CARE_LEVEL_ID))
+                {
+                    careLevelOrder.Add(careLevels[i].CARE_LEVEL_ID, i);
+                }
+            }
 
             List<TreatmentBedRoomDashboardRoomSDO> rooms = sdo.Rooms ?? new List<TreatmentBedRoomDashboardRoomSDO>();
+            List<string> roomKeys = BuildUniqueRoomKeys(rooms);
 
             pnlCanvas.SuspendLayout();
             try
             {
                 HashSet<string> keep = new HashSet<string>();
-                for (int i = 0; i < rooms.Count; i++) keep.Add(rooms[i].BedRoomId.ToString());
+                for (int i = 0; i < rooms.Count; i++) keep.Add(roomKeys[i]);
 
                 List<string> removing = new List<string>();
                 foreach (KeyValuePair<string, UcRoomCard> pair in roomCards)
@@ -136,7 +188,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                 for (int i = 0; i < rooms.Count; i++)
                 {
                     TreatmentBedRoomDashboardRoomSDO room = rooms[i];
-                    string key = room.BedRoomId.ToString();
+                    string key = roomKeys[i];
                     UcRoomCard card;
                     if (!roomCards.TryGetValue(key, out card))
                     {
@@ -145,7 +197,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                         roomCards.Add(key, card);
                         pnlCanvas.Controls.Add(card);
                     }
-                    card.SetData(room);
+                    card.SetData(room, careLevelOrder);
                     orderedCards.Add(card);
                 }
             }
