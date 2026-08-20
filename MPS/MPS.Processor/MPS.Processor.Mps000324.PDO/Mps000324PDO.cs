@@ -62,5 +62,38 @@ namespace MPS.Processor.Mps000324.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        /// <summary>
+        /// Overload bo sung — them thong tin giuong benh cho mau in moi.
+        /// Constructor cu van giu nguyen de khong anh huong cac diem goi hien tai.
+        /// </summary>
+        public Mps000324PDO(
+            PatientADO patient,
+            V_HIS_DEPARTMENT_TRAN departmentTran,
+            V_HIS_SERVICE_REQ ServiceReqPrint,
+            V_HIS_SERE_SERV_5 sereServ,
+            HIS_SERE_SERV_EXT sereServExt,
+            V_HIS_SERE_SERV_PTTT sereServsPttt,
+            V_HIS_TREATMENT treatment,
+            List<V_HIS_EKIP_USER> ekipUsers,
+            List<HIS_SERVICE_TYPE> serviceTypes,
+            List<HIS_SERVICE_UNIT> serviceUnit,
+            List<V_HIS_SERE_SERV> sereServFollows,
+            V_HIS_BED_LOG bedLog,
+            List<HIS_EXECUTE_ROLE> executeRoles
+            )
+            : this(patient, departmentTran, ServiceReqPrint, sereServ, sereServExt, sereServsPttt,
+                   treatment, ekipUsers, serviceTypes, serviceUnit, sereServFollows)
+        {
+            try
+            {
+                this.bedLog = bedLog;
+                this.ExecuteRoles = executeRoles;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

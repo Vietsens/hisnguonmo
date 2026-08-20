@@ -103,6 +103,47 @@ Tập trung trong `RequestUriStore.cs`. Tất cả qua `ApiConsumers.MosConsumer
 
 Nhiều phiếu in PTTT — quản lý qua `SurgServiceReqExecuteControl__Print_Init.cs` + `Base/PrintTypeCodeWorker.cs`, dùng `MPS.MpsPrinter.Run` trực tiếp với PDO tương ứng.
 
+### Mps000324 — Phiếu thanh toán PT/TT
+
+Builder: `Mps000324(printTypeCode, fileName, ref result)`. PDO: `MPS.Processor.Mps000324.PDO.Mps000324PDO`.
+
+**Key/dataset bổ sung (2026-08-20)** — mẫu `Mps000324.xlsx` cũ không tham chiếu nên vẫn chạy y nguyên; mẫu mới muốn dùng thì thêm tag tương ứng.
+
+Dataset master-detail mới (song song với `ServiceTypes` ↔ `SereServFollow` cũ):
+
+| Dataset | Trường | Ý nghĩa |
+|---------|--------|---------|
+| `Groups` | `ID`, `NUM_ORDER`, `NUM_ORDER_ROMAN`, `SERVICE_TYPE_ROMAN`, `SERVICE_TYPE_CODE`, `SERVICE_TYPE_NAME`, `ITEM_COUNT`, `TOTAL_AMOUNT` | Nhóm theo `HIS_SERVICE_TYPE`, kèm số La Mã + tổng tiền nhóm |
+| `Items` | `GROUP_ID`, `NUM_ORDER`, `NUM_ORDER_IN_GROUP`, `SERE_SERV_ID`, `SERVICE_CODE`, `SERVICE_NAME`, `SERVICE_UNIT_NAME`, `AMOUNT`, `PRICE`, `INTO_MONEY`, `IS_EXPEND`, `NOTE` | Dòng chi tiết; `INTO_MONEY = AMOUNT × PRICE`, `NOTE` = "Hao Phí"/"Thu Phí" |
+| `EkipRoles` | `EXECUTE_ROLE_ID`, `EXECUTE_ROLE_CODE`, `EXECUTE_ROLE_NAME`, `NUM_ORDER`, `USER_COUNT`, `USERNAMES`, `LOGINNAMES`, `IS_SURG_MAIN` | **Vai trò kíp mổ lấy từ bảng `HIS_EXECUTE_ROLE`** — mẫu in KHÔNG hardcode mã vai |
+
+Quan hệ: `Groups.ID` ↔ `Items.GROUP_ID`. `PRICE`/`INTO_MONEY`/`TOTAL_AMOUNT` để `null` khi không có giá → ô trên mẫu để trống.
+
+**Khối kíp mổ — 2 cách dùng:**
+- Khối động (khuyến nghị): lặp `<#EkipRoles.EXECUTE_ROLE_NAME;>` + `<#EkipRoles.USERNAMES;>`. Nhãn vai trò lấy từ danh mục nên đổi danh mục là mẫu tự đổi theo. Vai trò không có người vẫn liệt kê với `USER_COUNT = 0` → lọc bằng FlexCel filter nếu chỉ muốn vai có người.
+- Ô chữ ký vị trí cố định: dùng key theo mã vai `USERNAMES_EXECUTE_ROLE_{CODE}` + nhãn `EXECUTE_ROLE_NAME_{CODE}` (nhãn cũng lấy từ danh mục).
+
+Danh mục lấy qua `BackendDataWorker.Get<HIS_EXECUTE_ROLE>()`, fallback `api/HisExecuteRole/Get` rồi nạp lại cache (`GetExecuteRolesForMps000324`). Mất danh mục → fallback dùng `EXECUTE_ROLE_NAME` sẵn có trên `V_HIS_EKIP_USER`, ghi `LogSystem.Warn`.
+
+Single key mới:
+
+| Key | Nguồn |
+|-----|-------|
+| `BARCODE_IN_CODE_STR`, `BARCODE_TREATMENT_CODE_STR` | Ảnh Code128 từ `HIS_TREATMENT.IN_CODE` / `TREATMENT_CODE` |
+| `BED_CODE_STR`, `BED_NAME_STR`, `BED_ROOM_NAME_STR`, `BED_ROOM_BED_STR` | `V_HIS_BED_LOG` mới nhất của lần điều trị |
+| `START_TIME_SEPARATE_STR`, `FINISH_TIME_SEPARATE_STR` | "08 giờ 00 phút, Ngày 27 tháng 05 năm 2026" |
+| `TICKET_NUMBER_STR` | `SERVICE_REQ_CODE + " - " + NUM_ORDER` |
+| `PTTT_NOTE_STR` | `V_HIS_SERE_SERV_PTTT.OTHER` |
+| `MAIN_SERVICE_NAME_STR` | `sereServ.TDL_SERVICE_NAME` (tên PT/TT chính) |
+| `REAL_PTTT_METHOD_STR` | `REAL_PTTT_METHOD_CODE + " " + REAL_PTTT_METHOD_NAME` |
+| `GRAND_TOTAL_AMOUNT` | Tổng chi phí các khoản |
+| `USERNAMES_EXECUTE_ROLE_{CODE}`, `LOGIN_NAMES_EXECUTE_ROLE_{CODE}` | Gộp **tất cả** thành viên cùng vai bằng `", "` (khác `USERNAME_EXECUTE_ROLE_{CODE}` cũ chỉ giữ 1 người) |
+| `EXECUTE_ROLE_NAME_{CODE}` | Tên vai trò lấy từ `HIS_EXECUTE_ROLE` — nhãn khối ekip không viết cứng trên mẫu |
+
+Key đã có sẵn nhưng mẫu cũ chưa dùng — không cần code thêm: `TDL_HEIN_CARD_NUMBER` (thẻ BHYT), `PATIENT_TYPE_NAME` (đối tượng), `SERVICE_REQ_CODE`, `TDL_SERVICE_NAME`, `REAL_PTTT_METHOD_CODE/NAME`, `OTHER`; và các key chung `CURRENT_DATE_SEPARATE_STR`, `CURRENT_TIME_STR`, `CURRENT_LOGINNAME`, `CURRENT_USERNAME`.
+
+**Deploy**: sửa PDO → build `MPS.Processor.Mps000324.PDO` rồi copy DLL vào `lib/MPSv2/MPS.PDO/` (plugin tham chiếu qua HintPath này).
+
 ## 8. Changelog
 
 | Ngày | Người sửa | Mô tả thay đổi |
@@ -113,7 +154,25 @@ Nhiều phiếu in PTTT — quản lý qua `SurgServiceReqExecuteControl__Print_
 | 23/06/2026 | huyvu20 | **Fix lỗi không load được lược đồ khi chọn Mẫu PTTT**: `cboPtttTemp_EditValueChanged` đổi từ `BackendDataWorker.Get<HIS_TEXT_LIB>()` (filter null, thiếu `CAN_VIEW` → `CONTENT` null) sang gọi `api/HisTextLib/Get` với `filter.IDs` + `filter.CAN_VIEW = true` + `LIB_TYPE_ID` để backend trả về `CONTENT` (bytes ảnh). Thêm guard bỏ qua bản ghi `CONTENT` rỗng trong `SelectListImageTemp` (cả 2 nhánh nhóm/đơn) để tránh 1 bản ghi lỗi làm hỏng cả lô. |
 | 02/07/2026 | dangth2 | **Việc 2891 - mục 4.1.6 (chạy thận)**: (1) **R18 - Pre-fill Máy thực hiện**: thêm helper `PrefillMachineFromServiceReq()` gợi ý `cboMachine` = `V_HIS_SERVICE_REQ.MACHINE_ID` (Máy chốt ở Chỉ định) khi mức dịch vụ `HIS_SERE_SERV_EXT.MACHINE_ID` chưa có Máy; gọi cuối `LoadSereServExt()` và `FillDataFromSereServLast()`; ĐD/BS được sửa; khi lưu vẫn ghi vào `HIS_SERE_SERV_EXT.MACHINE_ID` (logic sẵn có ở `___Process.cs`) → đồng bộ Máy 2 chiều. (2) **Delta 23169 - nút Tủ trực**: `btnTuTruc_Click` bổ sung truyền `assignPrescription.ExpMestTemplateId = serviceReq.EXP_MEST_TEMPLATE_ID` (Gói vật tư BS chốt) sang `AssignPrescriptionPK` → tự gọi `InitDataByExpMestTemplate()` fill grid kê đơn theo Gói. |
 
+| 20/08/2026 | khainq | **Mps000324 — bổ sung trường cho mẫu Phiếu thanh quyết toán PT/TT**: thêm ADO `Mps000324GroupADO` + `Mps000324ItemADO`; PDO thêm `bedLog`/`Groups`/`Items` và constructor overload 12 tham số (ctor cũ giữ nguyên); Processor thêm `BuildDetailData()` (gom nhóm, STT toàn phiếu + STT trong nhóm, thành tiền, tổng nhóm, tổng cuối), `SetSingleKeyExtend()` (barcode, giường, số phiếu, ghi chú, PP thực tế, ekip gộp nhiều người), hiện thực `SetBarcodeKey()` (Code128) + `barCodeTag.ProcessData`; `ProcessListSereServ` đổi `FirstOrDefault` trong loop → Dictionary; caller thêm `GetLastBedLogForMps000324` + `GetExecuteRolesForMps000324`. Khối kíp mổ sinh từ **danh mục `HIS_EXECUTE_ROLE`** (dataset `EkipRoles` + key `EXECUTE_ROLE_NAME_{CODE}`), mẫu in không hardcode mã vai `_01.._08` nữa. **Thuần bổ sung — key/dataset cũ không đổi nên mẫu `Mps000324.xlsx` hiện tại chạy y nguyên.** |
+
 ## 9. Test Cases
+
+### Mps000324 — bổ sung trường (20/08/2026)
+- [ ] In Mps000324 với mẫu `Mps000324.xlsx` **hiện tại** → kết quả giống hệt trước khi sửa (nhóm theo loại DV, 4 cột Tên/SL/ĐVT/Đơn giá, khối ekip `USERNAME_EXECUTE_ROLE_xx`).
+- [ ] Y lệnh không có dịch vụ con → `Groups`/`Items` rỗng, `GRAND_TOTAL_AMOUNT` = 0, không lỗi.
+- [ ] Y lệnh có thuốc + vật tư + dịch vụ khác → `Items` đủ dòng, `NUM_ORDER` chạy liên tục toàn phiếu, `NUM_ORDER_IN_GROUP` reset theo nhóm.
+- [ ] Dòng `IS_EXPEND = 1` → `NOTE` = "Hao Phí"; còn lại "Thu Phí".
+- [ ] Dòng `PRICE = 0` → `PRICE`/`INTO_MONEY` null → ô trên mẫu để trống; nhóm toàn dòng giá 0 → `TOTAL_AMOUNT` null.
+- [ ] `INTO_MONEY` = `AMOUNT × PRICE` với số lượng lẻ (0,02 × 121.800.000 = 2.436.000).
+- [ ] `GRAND_TOTAL_AMOUNT` = tổng các `Groups.TOTAL_AMOUNT`.
+- [ ] Một vai kíp mổ có 2 người → `USERNAMES_EXECUTE_ROLE_{CODE}` chứa cả 2 (ngăn `", "`), `USERNAME_EXECUTE_ROLE_{CODE}` cũ **không đổi hành vi**.
+- [ ] `EkipRoles` liệt kê đúng các vai trong `HIS_EXECUTE_ROLE` (IS_ACTIVE=1, IS_DELETE=0), sắp theo `EXECUTE_ROLE_CODE`.
+- [ ] Vai trò không có người trong kíp → vẫn có dòng trong `EkipRoles` với `USER_COUNT = 0`, `USERNAMES` rỗng.
+- [ ] Đổi tên vai trong danh mục `HIS_EXECUTE_ROLE` → nhãn trên phiếu đổi theo (không phải sửa mẫu).
+- [ ] Xoá cache `HIS_EXECUTE_ROLE` → `GetExecuteRolesForMps000324` gọi API và nạp lại cache, phiếu vẫn đủ vai.
+- [ ] Lần điều trị chưa có giường → `BED_*_STR` rỗng, không lỗi.
+- [ ] `IN_CODE` rỗng → không sinh barcode, không lỗi.
 
 ### Pre-fill Máy thực hiện + Tủ trực theo Gói (2891 - 4.1.6)
 - [ ] Mở y lệnh chạy thận có Máy ở Chỉ định, chưa từng lưu Máy mức dịch vụ → `cboMachine` + `txtMachineCode` tự điền Máy của y lệnh.

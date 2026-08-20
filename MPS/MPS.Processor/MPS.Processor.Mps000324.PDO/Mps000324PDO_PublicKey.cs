@@ -39,6 +39,25 @@ namespace MPS.Processor.Mps000324.PDO
     public List<HIS_SERVICE_TYPE> ServiceTypes { get; set; }
     public List<V_HIS_SERE_SERV> SereServFollows { get; set; }
     public List<HIS_SERVICE_UNIT> ServiceUnit { get; set; }
+
+    #region Bo sung — chi phuc vu mau in moi, mau cu khong dung den
+
+    /// <summary>Ban ghi giuong benh moi nhat cua lan dieu tri. Dung cho key Phong/Giuong</summary>
+    public V_HIS_BED_LOG bedLog { get; set; }
+
+    /// <summary>Danh muc vai tro kip mo (HIS_EXECUTE_ROLE) — nguon de sinh khoi ekip tren mau in</summary>
+    public List<HIS_EXECUTE_ROLE> ExecuteRoles { get; set; }
+
+    /// <summary>Vai tro kip mo da gom nguoi. Processor tu dung trong BuildEkipRoleData()</summary>
+    public List<Mps000324EkipRoleADO> EkipRoles { get; set; }
+
+    /// <summary>Danh sach nhom dich vu. Processor tu dung trong BuildDetailData()</summary>
+    public List<Mps000324GroupADO> Groups { get; set; }
+
+    /// <summary>Danh sach dong chi tiet. Processor tu dung trong BuildDetailData()</summary>
+    public List<Mps000324ItemADO> Items { get; set; }
+
+    #endregion
   }
 
   public class PatientADO : MOS.EFMODEL.DataModels.V_HIS_PATIENT

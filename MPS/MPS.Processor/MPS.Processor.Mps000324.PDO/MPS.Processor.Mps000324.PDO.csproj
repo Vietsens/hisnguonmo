@@ -58,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgeUtil.cs" />
+    <Compile Include="Mps000324EkipRoleADO.cs" />
+    <Compile Include="Mps000324GroupADO.cs" />
+    <Compile Include="Mps000324ItemADO.cs" />
     <Compile Include="Mps000324PDO.cs" />
     <Compile Include="Mps000324PDO_PublicKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
