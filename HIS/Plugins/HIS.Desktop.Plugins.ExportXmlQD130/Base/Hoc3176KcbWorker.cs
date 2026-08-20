@@ -21,8 +21,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
     /// <summary>
     /// Worker day du lieu Kham chua benh len TRUNG TAM DIEU HANH Y TE (cong du lieu y te - HOC)
     /// theo Quyet dinh 3176/QD-BYT. Hai diem gui:
-    ///   - Ban tin trang thai KCB (check-in): POST {base}/hoc-130-ck/checkin
-    ///   - Ho so KCB (XML1..XML15):           POST {base}/hoc-130/khamchuabenh130
+    ///   - Ho so KCB (XML1..XML15): POST {base}/hoc-130/khamchuabenh130
+    /// Ban tin trang thai KCB (check-in) KHONG con gui tu day: da chuyen ve MOS, gui tu dong luc
+    /// tiep don (xem MOS.MANAGER/HisTreatment/Hoc3176/Hoc3176SyncProcessor).
     /// Xac thuc Keycloak: POST {tokenUrl} dang application/x-www-form-urlencoded
     /// (client_id, username, password, grant_type) -> access_token + expires_in (giay).
     /// Moi lan gui kem header 'tinh' / 'csyt' theo quy uoc cua cong.
@@ -45,7 +46,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
         //Duong gui CO DINH trong ma nguon (KHONG lay tu truong PushUrl cua khoa cau hinh - PushUrl la
         //duong gui cua lien thong KSK, khong dung cho KCB). Doi moi truong thu/that -> sua o day.
         private const string RECEIVER_BASE = "https://mocapi.congdulieuyte.vn/hoc-receiver/api/receiver";
-        private const string PATH_CHECKIN = "hoc-130-ck/checkin";
         private const string PATH_KCB = "hoc-130/khamchuabenh130";
         private const string DEFAULT_GRANT_TYPE = "password";
 
@@ -147,16 +147,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 LogSystem.Error(ex);
                 this.IsValidConfig = false;
             }
-        }
-
-        /// <summary>
-        /// Gui ban tin trang thai KCB (check-in) cua MOT ho so.
-        /// </summary>
-        /// <param name="xmlBytes">Noi dung XML CHI_TIEU_TRANG_THAI_KCB nguyen ban.</param>
-        /// <param name="maLk">Ma dieu tri - dung de ghi nhat ky va hien ket qua.</param>
-        public async Task<Hoc3176PushResult> PushCheckInAsync(byte[] xmlBytes, string maLk)
-        {
-            return await PushAsync(PATH_CHECKIN, "Check-in", xmlBytes, maLk);
         }
 
         /// <summary>
