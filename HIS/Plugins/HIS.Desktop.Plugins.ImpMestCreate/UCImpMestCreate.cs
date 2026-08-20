@@ -2401,6 +2401,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 else
                     this.currrentServiceAdo.MANUFACTURER_ID = null;
 
+                NormalizeServicePatyPrice();
+
                 AutoMapper.Mapper.CreateMap<VHisServicePatyADO, VHisServicePatyADO>();
                 this.currrentServiceAdo.VHisServicePatys = AutoMapper.Mapper.Map<List<VHisServicePatyADO>>(listServicePatyAdo);
 
@@ -2549,7 +2551,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     }
                                     else
                                     {
-                                        mediPaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
+                                        mediPaty.EXP_PRICE = GetExpPriceForPaty(paty);
                                     }
                                     //mediPaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
@@ -2578,7 +2580,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     }
                                     else
                                     {
-                                        mediPaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
+                                        mediPaty.EXP_PRICE = GetExpPriceForPaty(paty);
                                     }
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                     if (tp == 1 || tp == 2 || tp == 3)
@@ -2589,6 +2591,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     this.currrentServiceAdo.HisMedicinePatys.Add(mediPaty);
                                 }
                             }
+
+                            var mediPatySaved = this.currrentServiceAdo.HisMedicinePatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
+                            LogPatyPrice("MedicinePaty", paty,
+                                mediPatySaved != null ? mediPatySaved.EXP_PRICE : (decimal?)null,
+                                mediPatySaved != null ? mediPatySaved.EXP_VAT_RATIO : (decimal?)null);
 
                             if (paty.PRICE != paty.PRE_PRICE_Str && paty.PRE_PRICE_Str > 0)
                             {
@@ -2756,7 +2763,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     }
                                     else
                                     {
-                                        matePaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
+                                        matePaty.EXP_PRICE = GetExpPriceForPaty(paty);
                                     }
                                     //matePaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
@@ -2787,7 +2794,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     }
                                     else
                                     {
-                                        matePaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
+                                        matePaty.EXP_PRICE = GetExpPriceForPaty(paty);
                                     }
                                     //matePaty.EXP_PRICE = (paty.IsReusable ? paty.PRICE : paty.ExpPrice) * (1 + (paty.PercentProfit / (decimal)100));
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
@@ -2799,6 +2806,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     this.currrentServiceAdo.HisMaterialPatys.Add(matePaty);
                                 }
                             }
+
+                            var matePatySaved = this.currrentServiceAdo.HisMaterialPatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
+                            LogPatyPrice("MaterialPaty", paty,
+                                matePatySaved != null ? matePatySaved.EXP_PRICE : (decimal?)null,
+                                matePatySaved != null ? matePatySaved.EXP_VAT_RATIO : (decimal?)null);
+
                             if (paty.PRICE != paty.PRE_PRICE_Str && paty.PRE_PRICE_Str > 0)
                             {
                                 message2.Add(string.Format("{0} {1} có giá bán lần trước = {2} của đối tượng {3} khác với giá bán hiện tại.",
@@ -3536,6 +3549,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     this.currrentServiceAdo.PACKAGE_NUMBER = null;
                 }
+
+                NormalizeServicePatyPrice();
+
                 AutoMapper.Mapper.CreateMap<VHisServicePatyADO, VHisServicePatyADO>();
                 this.currrentServiceAdo.VHisServicePatys = AutoMapper.Mapper.Map<List<VHisServicePatyADO>>(listServicePatyAdo);
 
