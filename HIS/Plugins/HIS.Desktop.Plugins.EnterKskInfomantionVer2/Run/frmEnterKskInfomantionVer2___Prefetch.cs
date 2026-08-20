@@ -86,13 +86,30 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // ===== Đổ pre* trực tiếp từ SDO (không tách đợt vì đã lấy 1 lần) =====
                 if (sdo != null)
                 {
+                    // Đếm từng list SDO trả về: thấy ngay list nào rỗng để biết vì sao tab đó phải
+                    // rơi vào fallback (đúng ra mọi thứ phải lấy được từ 1 call HisKskSync này).
+                    Inventec.Common.Logging.LogSystem.Debug("KskSync.SDO counts"
+                        + "__General=" + Cnt(sdo.HisKskGenerals)
+                        + "__Over18=" + Cnt(sdo.HisKskOverEighteens)
+                        + "__Under18=" + Cnt(sdo.HisKskUnderEighteens)
+                        + "__UnderSix=" + Cnt(sdo.HisKskUnderSixs)
+                        + "__PeriodDriver=" + Cnt(sdo.HisKskPeriodDrivers)
+                        + "__DriverCar=" + Cnt(sdo.HisKskDriverCars)
+                        + "__Other=" + Cnt(sdo.HisKskOthers)
+                        + "__Occupational=" + Cnt(sdo.HisKskOccupationals)
+                        + "__Dhst=" + Cnt(sdo.HisDhsts)
+                        + "__Treatment=" + Cnt(sdo.HisTreatments)
+                        + "__Contract=" + Cnt(sdo.HisKskContracts)
+                        + "__UneiVaty=" + Cnt(sdo.HisKskUneiVatys)
+                        + "__PeriodDity=" + Cnt(sdo.HisPeriodDriverDitys)
+                        + "__VaccineType=" + Cnt(sdo.HisVaccineTypes)
+                        + "__DiseaseType=" + Cnt(sdo.HisDiseaseTypes));
+
                     preKskGenerals = sdo.HisKskGenerals;
                     // Gán currentKskGeneral NGAY TẠI ĐÂY. Trước đây nó CHỈ được gán trong FillDataGenaral()
                     // (fill tab 0), mà ResolveDefaultTab ưu tiên tab có bảng riêng (trẻ em → 7, ≥18 → 1…)
                     // nên tab 0 thường không bao giờ fill → currentKskGeneral null → LoadIcdConclusionToUc
                     // không nạp được ICD kết luận từ DB dù bản ghi có dữ liệu.
-                    currentKskGeneral = (preKskGenerals != null && preKskGenerals.Count > 0)
-                        ? preKskGenerals[0] : null;
                     preKskOccupationals = sdo.HisKskOccupationals;
                     preKskOverEighteens = sdo.HisKskOverEighteens;
                     preKskUnderEighteens = sdo.HisKskUnderEighteens;
@@ -145,6 +162,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     }
                 }
 
+                // Gán currentKskGeneral NGAY TẠI ĐÂY (nguồn của "Kết luận theo bệnh ICD-10" + "Người
+                // kết luận" cho MỌI tab). Trước đây nó CHỈ được gán trong FillDataGenaral() (fill tab 0),
+                // mà ResolveDefaultTab ưu tiên tab có bảng riêng (trẻ em → 7, ≥18 → 1…) nên tab 0 thường
+                // không bao giờ fill → currentKskGeneral null → LoadIcdConclusionToUc /
+                // LoadConcluderComboExt không nạp được gì.
+                //
+                // KHÔNG gọi API lẻ dự phòng: đã kiểm chứng api/HisKskSync/GetKskData trả đủ
+                // (General/Under18/UnderSix), và khi nó trả rỗng thì API lẻ cùng SERVICE_REQ_ID cũng
+                // rỗng (thật sự chưa có bản ghi) → thêm round-trip vô ích lúc mở form.
+                currentKskGeneral = (preKskGenerals != null && preKskGenerals.Count > 0)
+                    ? preKskGenerals[0] : null;
+
                 sw.Stop();
                 Inventec.Common.Logging.LogSystem.Debug("EnterKskInfomantionVer2.PrefetchFormData: "
                     + sw.ElapsedMilliseconds + " ms (1 call GetKskData, sdo="
@@ -163,13 +192,45 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// </summary>
         private static MOS.SDO.HisKskDataSDO GetKskDataSdo(MOS.Filter.HisKskDataFilter filter)
         {
+            var param = new CommonParam();
             try
             {
-                var param = new CommonParam();
-                return new BackendAdapter(param).Get<MOS.SDO.HisKskDataSDO>(
+                var rs = new BackendAdapter(param).Get<MOS.SDO.HisKskDataSDO>(
                     "api/HisKskSync/GetKskData", ApiConsumers.MosConsumer, filter, param);
+
+                // Vì sao phải rơi vào fallback: ghi rõ filter GỬI LÊN + kết quả + thông báo lỗi
+                // của backend (CommonParam trước đây bị bỏ, lỗi phía server mất dấu hoàn toàn).
+                Inventec.Common.Logging.LogSystem.Debug("KskSync.GetKskData"
+                    + "__sreq=" + (filter != null && filter.SERVICE_REQ_ID != null ? filter.SERVICE_REQ_ID.ToString() : "null")
+                    + "__treatment=" + (filter != null && filter.TREATMENT_ID != null ? filter.TREATMENT_ID.ToString() : "null")
+                    + "__rs=" + (rs == null ? "NULL" : "co")
+                    + "__hasException=" + param.HasException
+                    + "__messages=" + DescribeParam(param));
+                return rs;
             }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Debug("KskSync.GetKskData__NEM LOI: " + ex.Message
+                    + "__messages=" + DescribeParam(param));
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Mô tả CommonParam sau khi gọi API để ghi log. Bản Inventec.Core này chỉ có
+        /// HasException/Count/ModuleCode (không có Messages/BugCodes) nên chỉ ghi được bấy nhiêu.
+        /// </summary>
+        private static string DescribeParam(CommonParam param)
+        {
+            try
+            {
+                if (param == null) return "(param null)";
+                return "hasException=" + param.HasException
+                    + " count=" + (param.Count != null ? param.Count.ToString() : "null")
+                    + " module=" + (param.ModuleCode ?? "null");
+            }
+            catch { return "(khong doc duoc)"; }
         }
 
         /// <summary>

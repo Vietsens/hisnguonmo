@@ -41,7 +41,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 if (dxErrorProviderRequired != null) return;
-                dxErrorProviderRequired = new DXErrorProvider(this.components);
+                // KHÔNG dùng new DXErrorProvider(this.components): Designer của form này khai
+                // `components = null` và KHÔNG bao giờ khởi tạo Container, nên ctor nhận IContainer
+                // ném NullReferenceException ngay (DXErrorProvider..ctor gọi container.Add) → cả cụm
+                // cảnh báo trường bắt buộc chết âm thầm (chỉ thấy 1 dòng WARN trong log).
+                dxErrorProviderRequired = new DXErrorProvider();
                 dxErrorProviderRequired.ContainerControl = this;
 
                 WireRequiredClearEvent(cboObject);

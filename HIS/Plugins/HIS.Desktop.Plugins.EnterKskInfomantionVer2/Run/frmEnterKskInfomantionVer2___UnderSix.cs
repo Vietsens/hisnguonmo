@@ -144,6 +144,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 k.TDL_PATIENT_ID = a.TDL_PATIENT_ID;
                 if (k.DHST_ID == null) k.DHST_ID = a.DHST_ID;
                 k.IS_PREMATURE_BIRTH = ToShort(a.IS_PREMATURE_BIRTH);
+                k.GESTATIONAL_AGE_WEEK = a.GESTATIONAL_AGE_WEEK;   // Tuần thai khi sinh
                 k.ETHNIC = a.ETHNIC; k.RESIDENCE = a.RESIDENCE;
                 k.ACCOMPANY_PERSON_NAME = a.ACCOMPANY_PERSON_NAME;
                 k.ACCOMPANY_RELATIONSHIP = ToShort(a.ACCOMPANY_RELATIONSHIP);
@@ -745,9 +746,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Load HIS_KSK_UNDER_SIX (mục A–O) từ backend theo SERVICE_REQ_ID; kết luận (mục P) lấy từ HIS_KSK_GENERAL
                 if (currentServiceReq != null)
                 {
-                    Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
-                    var filter = new  MOS.Filter.HisKskUnderSixFilter();
+                    var filter = new MOS.Filter.HisKskUnderSixFilter();
                     filter.SERVICE_REQ_ID = currentServiceReq.ID;
+                    // Nguồn duy nhất là call gộp api/HisKskSync/GetKskData (SDO.HisKskUnderSixs) — đã
+                    // kiểm chứng nó trả đủ. KHÔNG gọi api/HisKskUnderSix/Get dự phòng: khi SDO rỗng thì
+                    // API lẻ cùng SERVICE_REQ_ID cũng rỗng (thật sự chưa có bản ghi) → chỉ tốn round-trip.
                     var data = preKskUnderSixes;
                     if (data != null && data.Count > 0)
                     {
@@ -793,6 +796,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     // I. Hành chính
                     SetRadioValue(this.rdoIsPrematureBirth8, k.IS_PREMATURE_BIRTH);
+                    this.txtGestationWeek8.Text = k.GESTATIONAL_AGE_WEEK;   // Tuần thai khi sinh
                     this.txtEthnic8.Text = k.ETHNIC;
                     this.txtResidence8.Text = k.RESIDENCE;
                     this.txtAccompanyPersonName8.Text = k.ACCOMPANY_PERSON_NAME;
@@ -1101,6 +1105,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
                 // I. Hành chính
                 obj.IS_PREMATURE_BIRTH = GetRadioValue(this.rdoIsPrematureBirth8);
+                obj.GESTATIONAL_AGE_WEEK = this.txtGestationWeek8.Text;   // Tuần thai khi sinh
                 obj.ETHNIC = this.txtEthnic8.Text;
                 obj.RESIDENCE = this.txtResidence8.Text;
                 obj.ACCOMPANY_PERSON_NAME = this.txtAccompanyPersonName8.Text;

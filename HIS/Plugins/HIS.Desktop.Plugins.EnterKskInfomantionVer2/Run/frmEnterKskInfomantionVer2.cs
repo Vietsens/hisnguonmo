@@ -297,6 +297,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 foreach (var uc in dicIcdConclusionUc.Values)
                     if (uc != null) uc.LoadFromGeneral(currentKskGeneral);
+
+                Inventec.Common.Logging.LogSystem.Debug("KskIcdConclusion: uc=" + dicIcdConclusionUc.Count
+                    + "__general=" + (currentKskGeneral == null ? "null" : "co")
+                    + "__type=" + (currentKskGeneral == null || currentKskGeneral.CONCLUSION_ICD_TYPE == null
+                        ? "null" : currentKskGeneral.CONCLUSION_ICD_TYPE.ToString())
+                    + "__code=" + (currentKskGeneral == null ? "null" : (currentKskGeneral.CONCLUSION_ICD_CODE ?? "null")));
             }
             catch (System.Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
