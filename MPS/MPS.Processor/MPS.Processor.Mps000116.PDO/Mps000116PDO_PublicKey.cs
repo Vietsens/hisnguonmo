@@ -72,6 +72,19 @@ namespace MPS.Processor.Mps000116.PDO
         public short? EVENING_IS_USED { get; set; }
         /// <summary>Cach dung (duong dung) cua y lenh — lay tu HTU_TEXT.</summary>
         public string HTU_TEXT { get; set; }
+        /// <summary>
+        /// Toc do truyen da kem don vi, dung cho tag tren mau in. Rong khi y lenh khong nhap
+        /// (vat tu luon rong) de mau in khong tro lai chu don vi o dong trong.
+        /// </summary>
+        public string SPEED_STR
+        {
+            get
+            {
+                return (this.SPEED.HasValue && this.SPEED.Value > 0)
+                    ? this.SPEED.Value.ToString("0.##") + " giọt/phút"
+                    : "";
+            }
+        }
 
         public Mps000116ADO() { }
 
@@ -271,6 +284,19 @@ namespace MPS.Processor.Mps000116.PDO
         public string TUTORIAL { get; set; }
         /// <summary>Cach dung — duong dung cua rieng y lenh nay</summary>
         public string HTU_TEXT { get; set; }
+        /// <summary>
+        /// Toc do truyen da kem don vi, dung cho tag tren mau in. Rong khi y lenh khong nhap
+        /// (vat tu luon rong) de mau in khong tro lai chu don vi o dong trong.
+        /// </summary>
+        public string SPEED_STR
+        {
+            get
+            {
+                return (this.SPEED.HasValue && this.SPEED.Value > 0)
+                    ? this.SPEED.Value.ToString("0.##") + " giọt/phút"
+                    : "";
+            }
+        }
         /// <summary>Lieu sang</summary>
         public string MORNING { get; set; }
         /// <summary>Lieu trua</summary>

@@ -517,6 +517,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                                     bltyPrint.ABNORMAL_NOTE = bltyReqTable.ABNORMAL_NOTE;
                                     // TRANSFUSION_SPEED: yeu cau da them cot vao HIS_EXP_MEST_BLTY_REQ + Update Model EDMX
                                     bltyPrint.TRANSFUSION_SPEED = bltyReqTable.TRANSFUSION_SPEED;
+                                    // DOSAGE, TUTORIAL: yeu cau da them cot vao HIS_EXP_MEST_BLTY_REQ + Update Model EDMX
+                                    bltyPrint.DOSAGE = bltyReqTable.DOSAGE;
+                                    bltyPrint.TUTORIAL = bltyReqTable.TUTORIAL;
                                 }
                                 sdoEdit.Bloods.Add(bltyPrint);
 
@@ -532,6 +535,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                                 ado.TRANSFUSED_NUM = bltyReqTable != null ? bltyReqTable.TRANSFUSED_NUM : null;
                                 ado.ABNORMAL_NOTE = bltyReqTable != null ? bltyReqTable.ABNORMAL_NOTE : null;
                                 ado.TRANSFUSION_SPEED = bltyReqTable != null ? bltyReqTable.TRANSFUSION_SPEED : null;
+                                ado.DOSAGE = bltyReqTable != null ? bltyReqTable.DOSAGE : null;
+                                ado.TUTORIAL = bltyReqTable != null ? bltyReqTable.TUTORIAL : null;
 
                                 var bloodType = dataBloodType?.FirstOrDefault(o => o.ID == item.BLOOD_TYPE_ID);
                                 if (bloodType != null)
@@ -876,6 +881,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.grcExpend__TabBlood.Caption = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.grcExpend__TabBlood.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grcKHBHYT__TabBlood.Caption = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.grcKHBHYT__TabBlood.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grcTutorial__TabBlood.Caption = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.grcTutorial__TabBlood.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grcDosage__TabBlood.Caption = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.grcDosage__TabBlood.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grcUseTimeTo__TabBlood.Caption = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.grcUseTimeTo__TabBlood.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.repositoryItemcboPatientType_TabBlood.NullText = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.repositoryItemcboPatientType_TabBlood.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.repositoryItemcboPatientType_TabBlood_GridLookUp.NullText = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.repositoryItemcboPatientType_TabBlood_GridLookUp.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -888,6 +894,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.lciTransfusedNum.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciTransfusedNum.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTransferSpeed.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciTransferSpeed.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciAbnormalNote.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciAbnormalNote.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciBloodDosage.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciBloodDosage.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciBloodTutorial.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciBloodTutorial.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grcTransfusedNum__TabBlood.Caption = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.grcTransfusedNum__TabBlood.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grcTransferSpeed__TabBlood.Caption = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.grcTransferSpeed__TabBlood.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciPatientTypeName.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciPatientTypeName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1571,6 +1579,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.spinTransfusedNum.Value = 0;
                     this.spinTransferSpeed.EditValue = null;
                     this.memoAbnormalNote.Text = "";
+                    this.txtBloodDosage.Text = "";
+                    this.txtBloodTutorial.Text = "";
                     this.InitBloodADO__RH__FromPatientInfo();
                     this.spinAmount__BloodPage.SelectAll();
                     this.spinAmount__BloodPage.Focus();
@@ -1860,6 +1870,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.currentBloodTypeADO.TRANSFUSED_NUM = (int)this.spinTransfusedNum.Value;
                     this.currentBloodTypeADO.ABNORMAL_NOTE = (this.memoAbnormalNote.Text ?? "").Trim();
                     this.currentBloodTypeADO.TRANSFUSION_SPEED = (string.IsNullOrWhiteSpace(this.spinTransferSpeed.Text) || this.spinTransferSpeed.Value <= 0) ? (decimal?)null : Math.Round(this.spinTransferSpeed.Value, MidpointRounding.AwayFromZero);
+                    // DOSAGE, TUTORIAL: yeu cau da them cot vao HIS_EXP_MEST_BLTY_REQ + Update Model EDMX
+                    this.currentBloodTypeADO.DOSAGE = string.IsNullOrWhiteSpace(this.txtBloodDosage.Text) ? null : this.txtBloodDosage.Text.Trim();
+                    this.currentBloodTypeADO.TUTORIAL = string.IsNullOrWhiteSpace(this.txtBloodTutorial.Text) ? null : this.txtBloodTutorial.Text.Trim();
                     if (this.currentBloodType.SERVICE_ID > 0)
                     {
                         var dtService = lstSerivce.FirstOrDefault(o => o.ID == this.currentBloodType.SERVICE_ID);
@@ -1929,6 +1942,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                             this.ListBloodTypeADOProcess[i].TRANSFUSED_NUM = (int)this.spinTransfusedNum.Value;
                             this.ListBloodTypeADOProcess[i].ABNORMAL_NOTE = (this.memoAbnormalNote.Text ?? "").Trim();
                             this.ListBloodTypeADOProcess[i].TRANSFUSION_SPEED = (string.IsNullOrWhiteSpace(this.spinTransferSpeed.Text) || this.spinTransferSpeed.Value <= 0) ? (decimal?)null : Math.Round(this.spinTransferSpeed.Value, MidpointRounding.AwayFromZero);
+                            // DOSAGE, TUTORIAL: yeu cau da them cot vao HIS_EXP_MEST_BLTY_REQ + Update Model EDMX
+                            this.ListBloodTypeADOProcess[i].DOSAGE = string.IsNullOrWhiteSpace(this.txtBloodDosage.Text) ? null : this.txtBloodDosage.Text.Trim();
+                            this.ListBloodTypeADOProcess[i].TUTORIAL = string.IsNullOrWhiteSpace(this.txtBloodTutorial.Text) ? null : this.txtBloodTutorial.Text.Trim();
                         }
                     }
                     this.gridControlServiceProcess__TabBlood.DataSource = null;
@@ -2081,6 +2097,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.spinTransfusedNum.Value = this.currentBloodTypeADOForEdit.TRANSFUSED_NUM ?? 0;
                     this.spinTransferSpeed.EditValue = this.currentBloodTypeADOForEdit.TRANSFUSION_SPEED;
                     this.memoAbnormalNote.Text = this.currentBloodTypeADOForEdit.ABNORMAL_NOTE ?? "";
+                    this.txtBloodDosage.Text = this.currentBloodTypeADOForEdit.DOSAGE ?? "";
+                    this.txtBloodTutorial.Text = this.currentBloodTypeADOForEdit.TUTORIAL ?? "";
                     this.actionBosung = GlobalVariables.ActionEdit;
                     this.spinAmount__BloodPage.SelectAll();
                     this.spinAmount__BloodPage.Focus();
@@ -3201,6 +3219,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.spinTransfusedNum.Value = 0;
                 this.spinTransferSpeed.EditValue = null;
                 this.memoAbnormalNote.Text = "";
+                this.txtBloodDosage.Text = "";
+                this.txtBloodTutorial.Text = "";
                 this.SetEnableButtonControlBlood();
             }
             catch (Exception ex)
@@ -3220,6 +3240,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.spinTransfusedNum.Value = 0;
                     this.spinTransferSpeed.EditValue = null;
                     this.memoAbnormalNote.Text = "";
+                    this.txtBloodDosage.Text = "";
+                    this.txtBloodTutorial.Text = "";
                     this.InitBloodADO__RH__FromPatientInfo();
                     this.txtKeyword.Focus();
                     this.txtKeyword.SelectAll();
@@ -3287,6 +3309,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                             // TRANSFUSION_SPEED: yeu cau da them cot vao HIS_EXP_MEST_BLTY_REQ + Update Model EDMX
                             // Gop 1 loai mau = 1 dong -> lay toc do cua dong CO nhap (tranh dong dau null lam mat gia tri)
                             mety.TRANSFUSION_SPEED = itemGroup.FirstOrDefault(o => o.TRANSFUSION_SPEED.HasValue)?.TRANSFUSION_SPEED;
+                            // DOSAGE, TUTORIAL: gop 1 loai mau = 1 dong -> lay gia tri cua dong CO nhap (tranh dong dau rong lam mat gia tri)
+                            mety.DOSAGE = itemGroup.Select(o => o.DOSAGE).FirstOrDefault(v => !string.IsNullOrWhiteSpace(v));
+                            mety.TUTORIAL = itemGroup.Select(o => o.TUTORIAL).FirstOrDefault(v => !string.IsNullOrWhiteSpace(v));
                             if (this.currentSereServ != null)
                             {
                                 mety.SERE_SERV_PARENT_ID = this.currentSereServ.ID;
@@ -4405,6 +4430,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.spinTransfusedNum.Value = 0;
                 this.spinTransferSpeed.EditValue = null;
                 this.memoAbnormalNote.Text = "";
+                this.txtBloodDosage.Text = "";
+                this.txtBloodTutorial.Text = "";
 
                 this.cboBloodABO.Enabled = false;
                 this.cboBloodRH.Enabled = false;
