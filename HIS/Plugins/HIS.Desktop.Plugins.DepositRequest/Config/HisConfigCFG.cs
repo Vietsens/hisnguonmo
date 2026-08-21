@@ -32,12 +32,22 @@ namespace HIS.Desktop.Plugins.DepositRequest.Config
         private const string His_Desktop_plugins_transactionTime_IsEditTransactionTime = "HIS.Desktop.Plugins.TransactionBill_Depo_Repa.IsEditTransactionTime";
         internal static string IsEditTransactionTimeCFG;
 
+        //Viec 54923: cho sua so tien tam ung tren man "Tam ung theo yeu cau"
+        private const string His_Desktop_Plugins_DepositRequest_IsEditAmount = "HIS.Desktop.Plugins.DepositRequest.IsEditAmount";
+        internal static string IsEditAmountCFG;
+
+        internal static bool IsAllowEditAmount
+        {
+            get { return !string.IsNullOrEmpty(IsEditAmountCFG) && IsEditAmountCFG.Trim() == "1"; }
+        }
+
         internal static void LoadConfig()
         {
             try
             {
                 LogSystem.Debug("LoadConfig => 1");
                 IsEditTransactionTimeCFG = GetValue(His_Desktop_plugins_transactionTime_IsEditTransactionTime);
+                IsEditAmountCFG = GetValue(His_Desktop_Plugins_DepositRequest_IsEditAmount);
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

@@ -171,6 +171,12 @@
   <data name="UCDepositRequest.layoutControlItem18.Text" xml:space="preserve">
     <value>Amount of money</value>
   </data>
+  <data name="UCDepositRequest.lciTransferAmount.Text" xml:space="preserve">
+    <value>Transfer amount:</value>
+  </data>
+  <data name="UCDepositRequest.lciTransferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Transfer amount</value>
+  </data>
   <data name="UCDepositRequest.layoutControlItem23.Text" xml:space="preserve">
     <value>Code requirements:</value>
   </data>

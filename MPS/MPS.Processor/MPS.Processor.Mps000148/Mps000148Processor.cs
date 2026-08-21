@@ -59,6 +59,8 @@ namespace MPS.Processor.Mps000148
                 ProcessSingleKey();
                 ProcessListData();
                 SetBarcodeKey();
+                SetQrCodeKey();
+                SetServiceTypeAmountKey();
 
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
@@ -282,6 +284,182 @@ namespace MPS.Processor.Mps000148
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Sinh anh QR ma tra cuu hoa don dien tu.
+        /// Goi SAU ProcessSingleKey() (can singleValueDictionary da nap key tu V_HIS_TRANSACTION)
+        /// va TRUOC singleTag.ProcessData().
+        /// Truong nguon rong thi khong sinh anh -> o tren bieu mau de trong, khong loi.
+        /// </summary>
+        void SetQrCodeKey()
+        {
+            try
+            {
+                //QR chua So bao mat (dung de tra cuu tren cong hoa don dien tu)
+                SetQrCodeByKeyBase("INVOICE_LOOKUP_CODE", Mps000148ExtendSingleKey.INVOICE_LOOKUP_CODE_QR);
+                //QR chua duong dan tra cuu hoa don dien tu
+                SetQrCodeByKeyBase("EINVOICE_URL", Mps000148ExtendSingleKey.EINVOICE_URL_QR);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bieu BIEN LAI (so bien lai) chi thu phan VIEN PHI -> CHI lay _VP.
+        /// _BH la phan BHYT chi tra (benh nhan khong nop), _DV thuoc so hoa don (MPS000147).
+        /// Kiem chung du lieu that: tong _VP = RECIEPT_AMOUNT = so tien tren phieu bien lai.
+        /// </summary>
+        static readonly string[] AMOUNT_SUFFIXES = new string[] { "_VP" };
+
+        /// <summary>
+        /// Ma loai dich vu (HIS_SERVICE_TYPE.SERVICE_TYPE_CODE) co trong TransactionInfoSDO.
+        /// Moi ma tuong ung 3 truong tien: AMOUNT_&lt;MA&gt;_BH / _VP / _DV.
+        /// </summary>
+        static readonly string[] SERVICE_TYPE_CODES = new string[]
+        {
+            "AN", "CL", "CN", "GB", "GI", "HA", "KH", "MA",
+            "NS", "PH", "PT", "SA", "TH", "TT", "VT", "XN"
+        };
+
+        /// <summary>
+        /// Sinh key so tien da thu tach theo tung loai dich vu: "Ten loai(so tien); ...".
+        /// Nguon chinh: HIS_TRANSACTION.TRANSACTION_INFO (JSON cua MOS.SDO.TransactionInfoSDO).
+        /// Nguon du phong (rieng bieu nay - co san danh sach dich vu cua bill): gop _ListSereServBill theo loai dich vu.
+        /// Goi SAU ProcessSingleKey() va TRUOC singleTag.ProcessData().
+        /// Khong co du lieu -> khong set key, o tren bieu mau de trong, khong loi.
+        /// </summary>
+        void SetServiceTypeAmountKey()
+        {
+            try
+            {
+                //Danh muc loai dich vu: nap 1 lan, tra cuu O(1)
+                Dictionary<string, string> nameByCode = new Dictionary<string, string>();
+                Dictionary<long, string> nameById = new Dictionary<long, string>();
+                var serviceTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_TYPE>();
+                if (serviceTypes != null)
+                {
+                    foreach (var st in serviceTypes)
+                    {
+                        if (st == null) continue;
+                        if (!String.IsNullOrWhiteSpace(st.SERVICE_TYPE_CODE))
+                        {
+                            string code = st.SERVICE_TYPE_CODE.Trim().ToUpper();
+                            if (!nameByCode.ContainsKey(code)) nameByCode.Add(code, st.SERVICE_TYPE_NAME);
+                        }
+                        if (!nameById.ContainsKey(st.ID)) nameById.Add(st.ID, st.SERVICE_TYPE_NAME);
+                    }
+                }
+
+                List<string> amountPositives = new List<string>();
+                List<string> amountAlls = new List<string>();
+
+                MOS.SDO.TransactionInfoSDO info = null;
+                if (rdo._Transaction != null && !String.IsNullOrWhiteSpace(rdo._Transaction.TRANSACTION_INFO))
+                {
+                    try
+                    {
+                        info = Newtonsoft.Json.JsonConvert.DeserializeObject<MOS.SDO.TransactionInfoSDO>(rdo._Transaction.TRANSACTION_INFO);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }
+
+                if (info != null)
+                {
+                    //Nguon chinh: TRANSACTION_INFO
+                    Type infoType = typeof(MOS.SDO.TransactionInfoSDO);
+                    foreach (string code in SERVICE_TYPE_CODES)
+                    {
+                        string serviceTypeName = null;
+                        if (!nameByCode.TryGetValue(code, out serviceTypeName) || String.IsNullOrWhiteSpace(serviceTypeName))
+                            continue;
+
+                        bool hasValue = false;
+                        decimal total = GetAmountByServiceTypeCode(infoType, info, code, ref hasValue);
+                        if (!hasValue) continue;
+
+                        string display = String.Format("{0}({1})", serviceTypeName, Inventec.Common.Number.Convert.NumberToString(total));
+                        amountAlls.Add(display);
+                        if (total > 0) amountPositives.Add(display);
+                    }
+                }
+                else
+                {
+                    //Nguon du phong: gop tien theo loai dich vu tu danh sach dich vu cua bill
+                    if (rdo._ListSereServBill == null || rdo._ListSereServBill.Count == 0
+                        || rdo._ListSereServ == null || rdo._ListSereServ.Count == 0)
+                        return;
+
+                    Dictionary<long, long> serviceTypeIdBySereServId = new Dictionary<long, long>();
+                    foreach (var ss in rdo._ListSereServ)
+                    {
+                        if (ss == null || serviceTypeIdBySereServId.ContainsKey(ss.ID)) continue;
+                        serviceTypeIdBySereServId.Add(ss.ID, ss.TDL_SERVICE_TYPE_ID);
+                    }
+
+                    Dictionary<long, decimal> amountByServiceTypeId = new Dictionary<long, decimal>();
+                    foreach (var bill in rdo._ListSereServBill)
+                    {
+                        if (bill == null) continue;
+                        long serviceTypeId;
+                        if (!serviceTypeIdBySereServId.TryGetValue(bill.SERE_SERV_ID, out serviceTypeId)) continue;
+                        if (amountByServiceTypeId.ContainsKey(serviceTypeId))
+                            amountByServiceTypeId[serviceTypeId] += bill.PRICE;
+                        else
+                            amountByServiceTypeId.Add(serviceTypeId, bill.PRICE);
+                    }
+
+                    foreach (var pair in amountByServiceTypeId)
+                    {
+                        string serviceTypeName = null;
+                        if (!nameById.TryGetValue(pair.Key, out serviceTypeName) || String.IsNullOrWhiteSpace(serviceTypeName))
+                            continue;
+
+                        string display = String.Format("{0}({1})", serviceTypeName, Inventec.Common.Number.Convert.NumberToString(pair.Value));
+                        amountAlls.Add(display);
+                        if (pair.Value > 0) amountPositives.Add(display);
+                    }
+                }
+
+                SetSingleKey(new KeyValue(Mps000148ExtendSingleKey.SERVICE_TYPE_AMOUNTs, String.Join("; ", amountPositives)));
+                SetSingleKey(new KeyValue(Mps000148ExtendSingleKey.SERVICE_TYPE_AMOUNT_ALLs, String.Join("; ", amountAlls)));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tong tien 1 loai dich vu = AMOUNT_&lt;MA&gt;_BH + _VP + _DV.
+        /// hasValue = true khi it nhat 1 trong 3 truong co gia tri (loai co phat sinh trong giao dich).
+        /// </summary>
+        decimal GetAmountByServiceTypeCode(Type infoType, MOS.SDO.TransactionInfoSDO info, string code, ref bool hasValue)
+        {
+            decimal total = 0;
+            try
+            {
+                string[] suffixes = AMOUNT_SUFFIXES;
+                foreach (string suffix in suffixes)
+                {
+                    var pi = infoType.GetProperty("AMOUNT_" + code + suffix);
+                    if (pi == null) continue;
+                    object value = pi.GetValue(info, null);
+                    if (value == null) continue;
+                    hasValue = true;
+                    total += Convert.ToDecimal(value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return total;
         }
 
         Inventec.Common.BarcodeLib.Barcode CreateBarcode(string code)

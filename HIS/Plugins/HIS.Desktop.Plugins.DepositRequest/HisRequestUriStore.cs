@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
         internal const string HIS_TRANSACTION_CREATE = "api/HisTransaction/CreateDeposit";
         internal const string HIS_DERE_DETAIL_GETVIEW = "api/HisDereDetail/GetView";
         internal const string HIS_SERE_SERV_GETVIEW = "api/HisSereServ/GetView";
+        internal const string HIS_DEPOSIT_REQ_UPDATE = "api/HisDepositReq/Update";
         
     }
 }
