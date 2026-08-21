@@ -57,9 +57,10 @@ namespace MPS.Processor.Mps000324.PDO
         public decimal? INTO_MONEY { get; set; }
 
         /// <summary>
-        /// Cot Ghi chu tren phieu = TEN DOI TUONG THANH TOAN cua dong dich vu
-        /// (HIS_PATIENT_TYPE.PATIENT_TYPE_NAME: Thu phi / Dich vu / BHYT / Hao phi...).
-        /// KHONG phai co IS_EXPEND — doi doi tuong thanh toan la cot nay doi theo.
+        /// Cot Ghi chu tren phieu:
+        /// - Dong hao phi (IS_EXPEND = 1) -> "Hao Phi"
+        /// - Cac dong con lai -> TEN DOI TUONG THANH TOAN (HIS_PATIENT_TYPE.PATIENT_TYPE_NAME:
+        ///   Thu phi / Dich vu / BHYT...) nen doi doi tuong thanh toan la cot nay doi theo.
         /// </summary>
         public string NOTE { get; set; }
 
