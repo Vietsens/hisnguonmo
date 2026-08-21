@@ -497,6 +497,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 // Get data from tab hiện tại theo EXAM_SERVICE_TYPE_ID
                 GetDataFromCurrentTab(currentExamServiceTypeId);
 
+                // Chặn trước khi gọi API: thiếu trường NOT NULL của MCH_TREATMENT thì Oracle
+                // sẽ trả ORA-01400 và người dùng không biết vì sao lưu thất bại
+                if (!ValidateMchRequiredFields())
+                    return;
 
                 // ===== TH UPDATE: Gắn lại ExamServiceEdit sang ExamService và ràng buộc ID =====
                 if (isUpdate)
@@ -772,8 +776,17 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 }
                 var PatientId = _patient.ID;
                 Inventec.Common.Mapper.DataObjectMapper.Map<MCH_PATIENT>(_patient, Patient);
-                _patient.GENDER_CODE = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == Patient.GENDER_ID).GENDER_CODE;
-                _patient.GENDER_NAME = Treatment.TDL_PATIENT_GENDER_NAME;
+                // Tra danh muc gioi tinh null-safe: FirstOrDefault khong tim thay se lam vo ca ham map,
+                // keo theo cac truong bat buoc cua MCH_TREATMENT khong duoc gan (loi ORA-01400 khi luu)
+                var gender = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == Patient.GENDER_ID);
+                if (gender != null)
+                {
+                    _patient.GENDER_CODE = gender.GENDER_CODE;
+                }
+                if (Treatment != null)
+                {
+                    _patient.GENDER_NAME = Treatment.TDL_PATIENT_GENDER_NAME;
+                }
                 _patient.ID = PatientId;
                 // ============ Map MCH_TREATMENT ============
                 if (_treatment == null)
@@ -781,10 +794,16 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     _treatment = new MCH_TREATMENT();
                 }
                 var TreatmentId = _treatment.ID;
-                Inventec.Common.Mapper.DataObjectMapper.Map<MCH_TREATMENT>(_treatment, Treatment);
+                if (Treatment != null)
+                {
+                    Inventec.Common.Mapper.DataObjectMapper.Map<MCH_TREATMENT>(_treatment, Treatment);
+                }
                 _treatment.ID = TreatmentId;
                 _treatment.PATIENT_ID = PatientId;
-                LoadLatestPatientTypeAlter(Treatment.ID);
+                if (Treatment != null)
+                {
+                    LoadLatestPatientTypeAlter(Treatment.ID);
+                }
 
                 // ============ Map MCH_EXAM_SERVICE ============
                 if (_examService == null)
@@ -837,24 +856,122 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 // Ưu tiên 3: Treatment
                 else if (hasHisTreatment)
                 {
-                    var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == Treatment.BRANCH_ID);
-                    if (branch != null)
-                    {
-                        _examService.MEDI_ORG_CODE = branch.HEIN_MEDI_ORG_CODE;
-                        _examService.MEDI_ORG_NAME = BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(o => o.MEDI_ORG_CODE == branch.HEIN_MEDI_ORG_CODE).MEDI_ORG_NAME;
-                        _treatment.BRANCH_MEDI_ORG_CODE = branch.HEIN_MEDI_ORG_CODE;
-                        _treatment.BRANCH_MEDI_ORG_NAME = _examService.MEDI_ORG_NAME;
-                        _treatment.DIRECTOR_LOGINNAME = branch.DIRECTOR_LOGINNAME;
-                        _treatment.DIRECTOR_USERNAME = branch.DIRECTOR_USERNAME;
-                    }
-
                     Inventec.Common.Logging.LogSystem.Debug("MapMchExamService: Using HIS_TREATMENT data");
                 }
+
+                // Thông tin chi nhánh: gán cho MỌI nhánh ưu tiên vì MCH_TREATMENT bắt buộc
+                // BRANCH_MEDI_ORG_CODE/NAME + DIRECTOR_LOGINNAME/USERNAME (NOT NULL trên DB)
+                FillTreatmentBranchInfo();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Gán 4 trường bắt buộc (NOT NULL) của MCH_TREATMENT lấy từ chi nhánh:
+        /// BRANCH_MEDI_ORG_CODE, BRANCH_MEDI_ORG_NAME, DIRECTOR_LOGINNAME, DIRECTOR_USERNAME.
+        /// Chỉ điền khi đang trống để không ghi đè dữ liệu đã lưu của hồ sơ cũ.
+        /// </summary>
+        private void FillTreatmentBranchInfo()
+        {
+            try
+            {
+                if (_treatment == null) return;
+
+                long workingBranchId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId();
+                // Ưu tiên chi nhánh của hồ sơ điều trị, không tra được thì lấy chi nhánh đang làm việc
+                long branchId = (Treatment != null && Treatment.BRANCH_ID > 0) ? Treatment.BRANCH_ID : workingBranchId;
+
+                var branches = BackendDataWorker.Get<HIS_BRANCH>();
+                var branch = branches.FirstOrDefault(o => o.ID == branchId);
+                if (branch == null && branchId != workingBranchId)
+                {
+                    branch = branches.FirstOrDefault(o => o.ID == workingBranchId);
+                }
+                if (branch == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("FillTreatmentBranchInfo: khong tra duoc HIS_BRANCH."
+                        + Inventec.Common.Logging.LogUtil.TraceData("branchId", branchId)
+                        + Inventec.Common.Logging.LogUtil.TraceData("workingBranchId", workingBranchId));
+                    return;
+                }
+
+                // Tên cơ sở: ưu tiên danh mục HIS_MEDI_ORG, không có thì lấy tên chi nhánh
+                var mediOrg = BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(o => o.MEDI_ORG_CODE == branch.HEIN_MEDI_ORG_CODE);
+                string mediOrgName = mediOrg != null ? mediOrg.MEDI_ORG_NAME : branch.BRANCH_NAME;
+
+                if (_examService != null)
+                {
+                    if (string.IsNullOrWhiteSpace(_examService.MEDI_ORG_CODE))
+                        _examService.MEDI_ORG_CODE = branch.HEIN_MEDI_ORG_CODE;
+                    if (string.IsNullOrWhiteSpace(_examService.MEDI_ORG_NAME))
+                        _examService.MEDI_ORG_NAME = mediOrgName;
+                }
+
+                if (string.IsNullOrWhiteSpace(_treatment.BRANCH_MEDI_ORG_CODE))
+                    _treatment.BRANCH_MEDI_ORG_CODE = branch.HEIN_MEDI_ORG_CODE;
+                if (string.IsNullOrWhiteSpace(_treatment.BRANCH_MEDI_ORG_NAME))
+                    _treatment.BRANCH_MEDI_ORG_NAME = mediOrgName;
+                if (string.IsNullOrWhiteSpace(_treatment.DIRECTOR_LOGINNAME))
+                    _treatment.DIRECTOR_LOGINNAME = branch.DIRECTOR_LOGINNAME;
+                if (string.IsNullOrWhiteSpace(_treatment.DIRECTOR_USERNAME))
+                    _treatment.DIRECTOR_USERNAME = branch.DIRECTOR_USERNAME;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chặn gửi API khi thiếu trường bắt buộc của MCH_TREATMENT / MCH_EXAM_SERVICE.
+        /// Tránh để Oracle trả ORA-01400 mà người dùng không hiểu nguyên nhân.
+        /// </summary>
+        private bool ValidateMchRequiredFields()
+        {
+            bool result = true;
+            try
+            {
+                List<string> missing = new List<string>();
+                if (_treatment == null)
+                {
+                    missing.Add("Hồ sơ điều trị MCH");
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(_treatment.BRANCH_MEDI_ORG_CODE)) missing.Add("Mã cơ sở KCB của chi nhánh");
+                    if (string.IsNullOrWhiteSpace(_treatment.BRANCH_MEDI_ORG_NAME)) missing.Add("Tên cơ sở KCB của chi nhánh");
+                    if (string.IsNullOrWhiteSpace(_treatment.DIRECTOR_LOGINNAME)) missing.Add("Tài khoản giám đốc của chi nhánh");
+                    if (string.IsNullOrWhiteSpace(_treatment.DIRECTOR_USERNAME)) missing.Add("Tên giám đốc của chi nhánh");
+                }
+                if (_examService == null || string.IsNullOrWhiteSpace(_examService.MEDI_ORG_CODE))
+                {
+                    missing.Add("Mã cơ sở KCB của dịch vụ khám");
+                }
+
+                if (missing.Count > 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("ValidateMchRequiredFields: thieu thong tin bat buoc."
+                        + Inventec.Common.Logging.LogUtil.TraceData("missing", missing)
+                        + Inventec.Common.Logging.LogUtil.TraceData("_treatment", _treatment));
+
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Không thể lưu do thiếu thông tin bắt buộc:\n- " + string.Join("\n- ", missing)
+                        + "\n\nVui lòng kiểm tra khai báo chi nhánh (mã cơ sở KCB, giám đốc) trong danh mục Chi nhánh.",
+                        "Cảnh báo",
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
         }
 
         private void LoadLatestPatientTypeAlter(long treatmentId)

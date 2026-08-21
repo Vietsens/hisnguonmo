@@ -587,13 +587,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_NEURO_MENTAL_LOGINNAME = cboExamNeuroMentalLoginName3.EditValue != null ? cboExamNeuroMentalLoginName3.EditValue.ToString() : null;
                 obj.EXAM_MENTAL_LOGINNAME = cboExamMentalLoginName3.EditValue != null ? cboExamMentalLoginName3.EditValue.ToString() : null;
                 // Mục "Tâm thần" (Khám lâm sàng): khi TẠO MỚI bản ghi HIS_KSK_UNDER_EIGHTEEN mà chưa
-                // chọn người khám thì đóng dấu tài khoản đang đăng nhập, để bản ghi luôn truy được ai khám.
-                // Chỉ áp lúc tạo mới (currentKskUnderEight == null) và KHÔNG ghi đè nếu bác sĩ đã chọn người khác.
-                if (currentKskUnderEight == null && string.IsNullOrWhiteSpace(obj.EXAM_MENTAL_LOGINNAME))
+                // chọn người khám thì đóng dấu tài khoản đang đăng nhập, để bản ghi truy được ai khám.
+                //
+                // BẮT BUỘC có nội dung khám Tâm thần mới đóng dấu. Trước đây chỉ xét
+                // "tạo mới + ô người khám trống" nên MỌI lần lưu tab dưới 18 đều sinh ra người khám
+                // Tâm thần dù không ai khám mục này — và vì đó là tài khoản đăng nhập (thường cũng là
+                // người khám thể lực) nên trên form trông như tên Tâm thần "nhảy" theo người khám thể lực.
+                // Cách này khớp luôn quy ước của backend: gán/xóa EXAM_*_LOGINNAME theo nội dung mục khám.
+                bool hasMentalData = !string.IsNullOrWhiteSpace(obj.EXAM_MENTAL)
+                                     || obj.EXAM_MENTAL_RANK != null;
+                if (currentKskUnderEight == null && hasMentalData
+                    && string.IsNullOrWhiteSpace(obj.EXAM_MENTAL_LOGINNAME))
                 {
                     obj.EXAM_MENTAL_LOGINNAME = GetCurrentLoginNameForExam();
                     Inventec.Common.Logging.LogSystem.Debug(
-                        "KskUnderEighteen: tao moi -> dong dau EXAM_MENTAL_LOGINNAME=" + obj.EXAM_MENTAL_LOGINNAME);
+                        "KskUnderEighteen: tao moi + co noi dung Tam than -> dong dau EXAM_MENTAL_LOGINNAME="
+                        + obj.EXAM_MENTAL_LOGINNAME);
                 }
                 obj.EXAM_CLINICAL_OTHER_LOGINNAME = cboExamClinicalOtherLoginName3.EditValue != null ? cboExamClinicalOtherLoginName3.EditValue.ToString() : null;
                 obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName3.EditValue != null ? cboExamEyeLoginName3.EditValue.ToString() : null;
