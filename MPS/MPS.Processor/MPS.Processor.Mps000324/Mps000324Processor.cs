@@ -346,7 +346,8 @@ namespace MPS.Processor.Mps000324
                             PATIENT_TYPE_NAME = patyName,
                             IS_EXPEND = isExpend,
                             EXPEND_NOTE = isExpend == 1 ? "Hao Phí" : "Thu Phí",
-                            NOTE = patyName
+                            // Hao phi -> "Hao Phi"; con lai -> ten doi tuong thanh toan
+                            NOTE = isExpend == 1 ? "Hao Phí" : patyName
                         });
                     }
 

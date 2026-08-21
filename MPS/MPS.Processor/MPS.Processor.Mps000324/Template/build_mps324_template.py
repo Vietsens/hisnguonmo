@@ -159,7 +159,7 @@ headers = [
     ("D", "Số lượng"),
     ("E", "Đơn giá"),
     ("F", "Thành tiền"),
-    ("G", "Ghi chú"),   # = doi tuong thanh toan cua tung dong dich vu
+    ("G", "Ghi chú"),   # hao phi -> "Hao Phi"; con lai -> doi tuong thanh toan
 ]
 fill = PatternFill("solid", fgColor="F2F2F2")
 for col, text in headers:
@@ -185,7 +185,7 @@ put("C%d" % DET, "<#Items.SERVICE_UNIT_NAME;>", F(11), C, BOX)
 put("D%d" % DET, "<#Items.AMOUNT;>", F(11), R, BOX, "#,##0.00")
 put("E%d" % DET, "<#Items.PRICE;>", F(11), R, BOX, "#,##0")
 put("F%d" % DET, "<#Items.INTO_MONEY;>", F(11), R, BOX, "#,##0")
-put("G%d" % DET, "<#Items.PATIENT_TYPE_NAME;>", F(11), C, BOX)
+put("G%d" % DET, "<#Items.NOTE;>", F(11), C, BOX)
 ws.row_dimensions[DET].height = 17
 
 # --- Dong tong cong ---
