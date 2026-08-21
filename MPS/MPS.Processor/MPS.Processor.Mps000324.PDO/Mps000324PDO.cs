@@ -80,7 +80,8 @@ namespace MPS.Processor.Mps000324.PDO
             List<HIS_SERVICE_UNIT> serviceUnit,
             List<V_HIS_SERE_SERV> sereServFollows,
             V_HIS_BED_LOG bedLog,
-            List<HIS_EXECUTE_ROLE> executeRoles
+            List<HIS_EXECUTE_ROLE> executeRoles,
+            List<HIS_PATIENT_TYPE> patientTypes
             )
             : this(patient, departmentTran, ServiceReqPrint, sereServ, sereServExt, sereServsPttt,
                    treatment, ekipUsers, serviceTypes, serviceUnit, sereServFollows)
@@ -89,6 +90,7 @@ namespace MPS.Processor.Mps000324.PDO
             {
                 this.bedLog = bedLog;
                 this.ExecuteRoles = executeRoles;
+                this.PatientTypes = patientTypes;
             }
             catch (Exception ex)
             {

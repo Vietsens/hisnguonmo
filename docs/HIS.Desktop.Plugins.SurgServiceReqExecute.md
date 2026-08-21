@@ -114,11 +114,19 @@ Dataset master-detail mới (song song với `ServiceTypes` ↔ `SereServFollow`
 | Dataset | Trường | Ý nghĩa |
 |---------|--------|---------|
 | `Groups` | `ID`, `NUM_ORDER`, `NUM_ORDER_ROMAN`, `SERVICE_TYPE_ROMAN`, `SERVICE_TYPE_CODE`, `SERVICE_TYPE_NAME`, `ITEM_COUNT`, `TOTAL_AMOUNT` | Nhóm theo `HIS_SERVICE_TYPE`, kèm số La Mã + tổng tiền nhóm |
-| `Items` | `GROUP_ID`, `NUM_ORDER`, `NUM_ORDER_IN_GROUP`, `SERE_SERV_ID`, `SERVICE_CODE`, `SERVICE_NAME`, `SERVICE_UNIT_NAME`, `AMOUNT`, `PRICE`, `INTO_MONEY`, `IS_EXPEND`, `NOTE` | Dòng chi tiết; `INTO_MONEY = AMOUNT × PRICE`, `NOTE` = "Hao Phí"/"Thu Phí" |
+| `Items` | `GROUP_ID`, `NUM_ORDER`, `NUM_ORDER_IN_GROUP`, `SERE_SERV_ID`, `SERVICE_CODE`, `SERVICE_NAME`, `SERVICE_UNIT_NAME`, `AMOUNT`, `PRICE`, `INTO_MONEY`, `PATIENT_TYPE_ID/CODE/NAME`, `NOTE`, `IS_EXPEND`, `EXPEND_NOTE` | Dòng chi tiết; `INTO_MONEY = AMOUNT × PRICE`. **`NOTE` = `PATIENT_TYPE_NAME` (đối tượng thanh toán)**, không phải cờ `IS_EXPEND` |
 | `EkipRoles` | `EXECUTE_ROLE_ID`, `EXECUTE_ROLE_CODE`, `EXECUTE_ROLE_NAME`, `NUM_ORDER`, `USER_COUNT`, `USERNAMES`, `LOGINNAMES`, `IS_SURG_MAIN` | **Vai trò kíp mổ lấy từ bảng `HIS_EXECUTE_ROLE`** — mẫu in KHÔNG hardcode mã vai |
 | `EkipRolesUsed` | (như `EkipRoles`) | Chỉ vai trò **có người**, `NUM_ORDER` đánh lại liên tục — dùng cho khối ekip trên phiếu |
 
 Quan hệ: `Groups.ID` ↔ `Items.GROUP_ID`. `PRICE`/`INTO_MONEY`/`TOTAL_AMOUNT` để `null` khi không có giá → ô trên mẫu để trống.
+
+**Cột "Ghi chú" = đối tượng thanh toán:**
+
+Cột này bind `<#Items.PATIENT_TYPE_NAME;>` — tên đối tượng thanh toán của **từng dòng dịch vụ** (`HIS_SERE_SERV.PATIENT_TYPE_ID` → `HIS_PATIENT_TYPE`). Đổi đối tượng thanh toán ở màn hình thực hiện PTTT thì cột này đổi theo.
+
+Hai bẫy khi lấy trường này:
+- `SereServFollows` gọi `api/HisSereServ/Get` — **endpoint thường, không phải view** → mọi cột view (`PATIENT_TYPE_NAME`, `SERVICE_TYPE_NAME`, `SERVICE_UNIT_NAME`…) trả về `null`. Phải tra cứu từ `PATIENT_TYPE_ID` qua danh mục `HIS_PATIENT_TYPE` (truyền vào PDO qua `BackendDataWorker.Get<HIS_PATIENT_TYPE>()`), y như cách `ProcessListSereServ` đang đổ `SERVICE_UNIT_NAME`.
+- `IS_EXPEND` (cờ hao phí) **khác** `PATIENT_TYPE_ID` (đối tượng thanh toán). "Thu phí" là một bản ghi trong `HIS_PATIENT_TYPE` (mã lấy từ config `MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE`) chứ không phải giá trị của `IS_EXPEND`. Diễn giải theo cờ hao phí nằm ở trường riêng `EXPEND_NOTE`.
 
 **Khối kíp mổ — 2 cách dùng:**
 - Khối động (khuyến nghị): lặp `<#EkipRoles.EXECUTE_ROLE_NAME;>` + `<#EkipRoles.USERNAMES;>`. Nhãn vai trò lấy từ danh mục nên đổi danh mục là mẫu tự đổi theo. Vai trò không có người vẫn liệt kê với `USER_COUNT = 0` → lọc bằng FlexCel filter nếu chỉ muốn vai có người.
@@ -195,7 +203,9 @@ Template KHÔNG nằm trong git — lưu ở cấu hình print type backend, cac
 - [ ] In Mps000324 với mẫu `Mps000324.xlsx` **hiện tại** → kết quả giống hệt trước khi sửa (nhóm theo loại DV, 4 cột Tên/SL/ĐVT/Đơn giá, khối ekip `USERNAME_EXECUTE_ROLE_xx`).
 - [ ] Y lệnh không có dịch vụ con → `Groups`/`Items` rỗng, `GRAND_TOTAL_AMOUNT` = 0, không lỗi.
 - [ ] Y lệnh có thuốc + vật tư + dịch vụ khác → `Items` đủ dòng, `NUM_ORDER` chạy liên tục toàn phiếu, `NUM_ORDER_IN_GROUP` reset theo nhóm.
-- [ ] Dòng `IS_EXPEND = 1` → `NOTE` = "Hao Phí"; còn lại "Thu Phí".
+- [ ] Cột Ghi chú hiển thị **đối tượng thanh toán** của từng dòng; đổi đối tượng từ Thu phí sang Dịch vụ → in lại thấy "Dịch vụ".
+- [ ] Dòng có `PATIENT_TYPE_ID` không nằm trong danh mục → Ghi chú để trống, không lỗi.
+- [ ] `EXPEND_NOTE` vẫn trả "Hao Phí"/"Thu Phí" theo cờ `IS_EXPEND` (độc lập với cột Ghi chú).
 - [ ] Dòng `PRICE = 0` → `PRICE`/`INTO_MONEY` null → ô trên mẫu để trống; nhóm toàn dòng giá 0 → `TOTAL_AMOUNT` null.
 - [ ] `INTO_MONEY` = `AMOUNT × PRICE` với số lượng lẻ (0,02 × 121.800.000 = 2.436.000).
 - [ ] `GRAND_TOTAL_AMOUNT` = tổng các `Groups.TOTAL_AMOUNT`.

@@ -266,6 +266,18 @@ namespace MPS.Processor.Mps000324
                 }
 
                 Dictionary<long, HIS_SERVICE_UNIT> unitDic = BuildServiceUnitDictionary();
+
+                // Doi tuong thanh toan: SereServFollows lay qua api/HisSereServ/Get (khong phai
+                // view) nen PATIENT_TYPE_NAME null -> tra cuu tu danh muc theo PATIENT_TYPE_ID
+                Dictionary<long, HIS_PATIENT_TYPE> patyDic = new Dictionary<long, HIS_PATIENT_TYPE>();
+                if (rdo.PatientTypes != null)
+                {
+                    foreach (var paty in rdo.PatientTypes)
+                    {
+                        if (paty != null && !patyDic.ContainsKey(paty.ID)) patyDic.Add(paty.ID, paty);
+                    }
+                }
+
                 Dictionary<long, HIS_SERVICE_TYPE> typeDic = new Dictionary<long, HIS_SERVICE_TYPE>();
                 if (rdo.ServiceTypes != null)
                 {
@@ -312,6 +324,11 @@ namespace MPS.Processor.Mps000324
 
                         short isExpend = sereServ.IS_EXPEND ?? 0;
 
+                        HIS_PATIENT_TYPE paty = null;
+                        patyDic.TryGetValue(sereServ.PATIENT_TYPE_ID, out paty);
+                        // Uu tien ten tu danh muc; neu view co san ten thi dung luon
+                        string patyName = paty != null ? paty.PATIENT_TYPE_NAME : sereServ.PATIENT_TYPE_NAME;
+
                         rdo.Items.Add(new Mps000324ItemADO
                         {
                             GROUP_ID = group.Key,
@@ -324,8 +341,12 @@ namespace MPS.Processor.Mps000324
                             AMOUNT = sereServ.AMOUNT,
                             PRICE = sereServ.PRICE != 0 ? sereServ.PRICE : (decimal?)null,
                             INTO_MONEY = sereServ.PRICE != 0 ? intoMoney : (decimal?)null,
+                            PATIENT_TYPE_ID = sereServ.PATIENT_TYPE_ID,
+                            PATIENT_TYPE_CODE = paty != null ? paty.PATIENT_TYPE_CODE : sereServ.PATIENT_TYPE_CODE,
+                            PATIENT_TYPE_NAME = patyName,
                             IS_EXPEND = isExpend,
-                            NOTE = isExpend == 1 ? "Hao Phí" : "Thu Phí"
+                            EXPEND_NOTE = isExpend == 1 ? "Hao Phí" : "Thu Phí",
+                            NOTE = patyName
                         });
                     }
 

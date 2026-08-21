@@ -1776,7 +1776,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     BackendDataWorker.Get<HIS_SERVICE_UNIT>(),
                     sereServFollows ?? new List<V_HIS_SERE_SERV>(),
                     bedLog,
-                    executeRoles
+                    executeRoles,
+                    BackendDataWorker.Get<HIS_PATIENT_TYPE>()
                     );
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(vhisTreatment != null ? vhisTreatment.TREATMENT_CODE : "", printTypeCode, Module != null ? Module.RoomId : 0);

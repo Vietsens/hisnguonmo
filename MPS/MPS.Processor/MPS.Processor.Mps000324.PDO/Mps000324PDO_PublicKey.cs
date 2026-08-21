@@ -48,6 +48,11 @@ namespace MPS.Processor.Mps000324.PDO
     /// <summary>Danh muc vai tro kip mo (HIS_EXECUTE_ROLE) — nguon de sinh khoi ekip tren mau in</summary>
     public List<HIS_EXECUTE_ROLE> ExecuteRoles { get; set; }
 
+    /// <summary>Danh muc doi tuong thanh toan (HIS_PATIENT_TYPE).
+    /// Bat buoc vi SereServFollows lay qua api/HisSereServ/Get (khong phai view)
+    /// nen PATIENT_TYPE_NAME tra ve null, phai tra cuu tu PATIENT_TYPE_ID.</summary>
+    public List<HIS_PATIENT_TYPE> PatientTypes { get; set; }
+
     /// <summary>TAT CA vai tro trong danh muc, ke ca vai khong co nguoi (USER_COUNT = 0)</summary>
     public List<Mps000324EkipRoleADO> EkipRoles { get; set; }
 

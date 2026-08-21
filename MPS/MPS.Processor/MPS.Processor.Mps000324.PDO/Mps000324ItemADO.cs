@@ -56,10 +56,27 @@ namespace MPS.Processor.Mps000324.PDO
         /// <summary>Thanh tien = AMOUNT * PRICE. Null khi dong khong co gia</summary>
         public decimal? INTO_MONEY { get; set; }
 
-        /// <summary>"Hao Phi" khi IS_EXPEND = 1, nguoc lai "Thu Phi"</summary>
+        /// <summary>
+        /// Cot Ghi chu tren phieu = TEN DOI TUONG THANH TOAN cua dong dich vu
+        /// (HIS_PATIENT_TYPE.PATIENT_TYPE_NAME: Thu phi / Dich vu / BHYT / Hao phi...).
+        /// KHONG phai co IS_EXPEND — doi doi tuong thanh toan la cot nay doi theo.
+        /// </summary>
         public string NOTE { get; set; }
 
-        /// <summary>1: hao phi, 0: thu phi. De mau in loc/to mau neu can</summary>
+        /// <summary>Id doi tuong thanh toan cua dong dich vu</summary>
+        public long PATIENT_TYPE_ID { get; set; }
+
+        /// <summary>Ma doi tuong thanh toan</summary>
+        public string PATIENT_TYPE_CODE { get; set; }
+
+        /// <summary>Ten doi tuong thanh toan — cung gia tri voi NOTE, dat ten ro nghia</summary>
+        public string PATIENT_TYPE_NAME { get; set; }
+
+        /// <summary>1: hao phi, 0: khong hao phi. De mau in loc/to mau neu can</summary>
         public short IS_EXPEND { get; set; }
+
+        /// <summary>Dien giai co hao phi: "Hao Phi" / "Thu Phi". Tach rieng khoi NOTE
+        /// de mau in nao can cach hien thi cu van dung duoc</summary>
+        public string EXPEND_NOTE { get; set; }
     }
 }
