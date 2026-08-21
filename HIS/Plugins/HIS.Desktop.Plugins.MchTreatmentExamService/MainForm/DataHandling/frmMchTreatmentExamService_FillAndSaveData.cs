@@ -775,10 +775,17 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     _patient = new MCH_PATIENT();
                 }
                 var PatientId = _patient.ID;
-                Inventec.Common.Mapper.DataObjectMapper.Map<MCH_PATIENT>(_patient, Patient);
+                if (Patient != null)
+                {
+                    Inventec.Common.Mapper.DataObjectMapper.Map<MCH_PATIENT>(_patient, Patient);
+                }
                 // Tra danh muc gioi tinh null-safe: FirstOrDefault khong tim thay se lam vo ca ham map,
-                // keo theo cac truong bat buoc cua MCH_TREATMENT khong duoc gan (loi ORA-01400 khi luu)
-                var gender = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == Patient.GENDER_ID);
+                // keo theo cac truong bat buoc cua MCH_TREATMENT khong duoc gan (loi ORA-01400 khi luu).
+                // Cache co the null hoac chua phan tu null neu chua nap xong -> phai loc truoc.
+                var genders = BackendDataWorker.Get<HIS_GENDER>();
+                var gender = (Patient == null || genders == null)
+                    ? null
+                    : genders.Where(o => o != null).FirstOrDefault(o => o.ID == Patient.GENDER_ID);
                 if (gender != null)
                 {
                     _patient.GENDER_CODE = gender.GENDER_CODE;
@@ -884,11 +891,18 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 // Ưu tiên chi nhánh của hồ sơ điều trị, không tra được thì lấy chi nhánh đang làm việc
                 long branchId = (Treatment != null && Treatment.BRANCH_ID > 0) ? Treatment.BRANCH_ID : workingBranchId;
 
+                // Cache có thể null hoặc chứa phần tử null nếu chưa nạp xong
                 var branches = BackendDataWorker.Get<HIS_BRANCH>();
-                var branch = branches.FirstOrDefault(o => o.ID == branchId);
+                if (branches == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("FillTreatmentBranchInfo: cache HIS_BRANCH null.");
+                    return;
+                }
+                var validBranches = branches.Where(o => o != null).ToList();
+                var branch = validBranches.FirstOrDefault(o => o.ID == branchId);
                 if (branch == null && branchId != workingBranchId)
                 {
-                    branch = branches.FirstOrDefault(o => o.ID == workingBranchId);
+                    branch = validBranches.FirstOrDefault(o => o.ID == workingBranchId);
                 }
                 if (branch == null)
                 {
@@ -899,7 +913,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 }
 
                 // Tên cơ sở: ưu tiên danh mục HIS_MEDI_ORG, không có thì lấy tên chi nhánh
-                var mediOrg = BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(o => o.MEDI_ORG_CODE == branch.HEIN_MEDI_ORG_CODE);
+                var mediOrgs = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                var mediOrg = mediOrgs == null
+                    ? null
+                    : mediOrgs.Where(o => o != null).FirstOrDefault(o => o.MEDI_ORG_CODE == branch.HEIN_MEDI_ORG_CODE);
                 string mediOrgName = mediOrg != null ? mediOrg.MEDI_ORG_NAME : branch.BRANCH_NAME;
 
                 if (_examService != null)
