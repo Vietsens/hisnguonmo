@@ -53,6 +53,20 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
         long? timeSelected = null;
         string HourString = "0000";
 
+        //Giu cho khung gio kham (viec 54282)
+        private const string URI_HOLD = "api/HisNumOrderBlock/Hold";
+        private const string URI_RELEASE = "api/HisNumOrderBlock/Release";
+        private const string URI_HOLD_SETTING = "api/HisNumOrderBlock/GetHoldSetting";
+        private int holdMinute = 0;
+        private long? holdingNumOrderIssueId = null;
+        private long? holdExpireTime = null;
+        private long serverTimeAtHold = 0;
+        private DateTime holdStartedAt = DateTime.MinValue;
+        private bool isChooseConfirmed = false;
+        private System.Windows.Forms.Timer timerHold = null;
+        private string baseTitle = "";
+        private int tickCount = 0;
+
         public FormHisNumOrderBlockChooser(Inventec.Desktop.Common.Modules.Module currentModule, NumOrderBlockChooserADO numOrderBlockChooser, bool? _isNeedTime = null)
             : base(currentModule)
         {
@@ -70,6 +84,8 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
                 }
                 SetIcon();
                 this.Text = currentModule.text;
+                //Nha cho khi dong man ma chua bam Chon (viec 54282)
+                this.FormClosing += new FormClosingEventHandler(FormHisNumOrderBlockChooser_FormClosing);
             }
             catch (Exception ex)
             {
@@ -85,12 +101,232 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
                 InitCboRoom();
                 SetDefaultData();
                 LoadDataNumOrder();
+                InitHold();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        #region Giu cho khung gio kham (viec 54282)
+
+        /// <summary>
+        /// Doc so phut giu cho tu may chu. Bang 0 = tinh nang tat, man hinh chay y nhu truoc.
+        /// </summary>
+        private void InitHold()
+        {
+            try
+            {
+                this.baseTitle = this.Text;
+                CommonParam param = new CommonParam();
+                HisNumOrderBlockHoldSettingSDO setting = new BackendAdapter(param)
+                    .Get<HisNumOrderBlockHoldSettingSDO>(URI_HOLD_SETTING, ApiConsumers.MosConsumer, (long)0, param);
+                this.holdMinute = setting != null ? setting.HoldMinute : 0;
+
+                if (this.holdMinute > 0)
+                {
+                    this.timerHold = new System.Windows.Forms.Timer();
+                    this.timerHold.Interval = 1000;
+                    this.timerHold.Tick += new EventHandler(timerHold_Tick);
+                    this.timerHold.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Khong lay duoc cau hinh thi coi nhu tat tinh nang, khong chan nguoi dung
+                this.holdMinute = 0;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void timerHold_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                //Chua giu o nao: dinh ky nap lai luoi de thay cho nguoi khac vua giu.
+                //Chi lam khi chua chon gi de khong pha lua chon dang co.
+                if (!this.holdingNumOrderIssueId.HasValue)
+                {
+                    this.tickCount++;
+                    if (this.tickCount >= 15)
+                    {
+                        this.tickCount = 0;
+                        LoadDataNumOrder();
+                    }
+                    return;
+                }
+
+                if (!this.holdExpireTime.HasValue)
+                {
+                    return;
+                }
+
+                //Dem nguoc theo gio may chu luc giu, khong phu thuoc dong ho may tram
+                long secondRemain = GetSecondRemain();
+                if (secondRemain > 0)
+                {
+                    this.Text = string.Format("{0} — đang giữ chỗ {1:00}:{2:00}", this.baseTitle, secondRemain / 60, secondRemain % 60);
+                }
+                else
+                {
+                    //Het han giu: bo lua chon va nap lai luoi
+                    this.Text = this.baseTitle;
+                    this.holdingNumOrderIssueId = null;
+                    this.holdExpireTime = null;
+                    this.NumOrderBlock = null;
+                    this.lblStt.Text = "0";
+                    //Xoa luon gio da chon, neu khong lan bam Chon sau se lay gio cu (viec 54282)
+                    this.HourString = "0000";
+                    XtraMessageBox.Show("Đã quá thời gian giữ chỗ. Vui lòng chọn lại khung giờ khám.");
+                    LoadDataNumOrder();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private long GetSecondRemain()
+        {
+            try
+            {
+                if (!this.holdExpireTime.HasValue || this.serverTimeAtHold <= 0)
+                {
+                    return 0;
+                }
+                DateTime? expire = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.holdExpireTime.Value);
+                DateTime? atHold = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.serverTimeAtHold);
+                if (!expire.HasValue || !atHold.HasValue)
+                {
+                    return 0;
+                }
+                double total = expire.Value.Subtract(atHold.Value).TotalSeconds;
+                double elapsed = DateTime.Now.Subtract(this.holdStartedAt).TotalSeconds;
+                return (long)Math.Floor(total - elapsed);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Giu block vua chon. Neu dang giu o khac thi nha o cu trong cung mot lan goi.
+        /// </summary>
+        private bool DoHold(HisNumOrderBlockSDO block)
+        {
+            try
+            {
+                if (this.holdMinute <= 0 || block == null || cboRoom.EditValue == null)
+                {
+                    return true;
+                }
+
+                CommonParam param = new CommonParam();
+                HisNumOrderBlockHoldSDO sdo = new HisNumOrderBlockHoldSDO();
+                sdo.NumOrderBlockId = block.NUM_ORDER_BLOCK_ID;
+                sdo.IssueDate = Inventec.Common.TypeConvert.Parse.ToInt64(dtDate.DateTime.ToString("yyyyMMdd") + "000000");
+                sdo.RoomId = Inventec.Common.TypeConvert.Parse.ToInt64(cboRoom.EditValue.ToString());
+                sdo.HoldChannel = "HIS";
+                sdo.ReleaseNumOrderIssueId = this.holdingNumOrderIssueId;
+
+                HisNumOrderBlockHoldResultSDO result = new BackendAdapter(param)
+                    .Post<HisNumOrderBlockHoldResultSDO>(URI_HOLD, ApiConsumers.MosConsumer, sdo, param);
+
+                if (result == null)
+                {
+                    string message = GetMessage(param);
+                    XtraMessageBox.Show(!string.IsNullOrWhiteSpace(message) ? message : "Không giữ được khung giờ khám. Vui lòng chọn khung giờ khác.");
+                    LoadDataNumOrder();
+                    return false;
+                }
+
+                this.holdingNumOrderIssueId = result.NumOrderIssueId;
+                this.holdExpireTime = result.HoldExpireTime;
+                this.serverTimeAtHold = result.ServerTime;
+                this.holdStartedAt = DateTime.Now;
+
+                //Ve lai luoi de o vua nha doi mau ngay. Dua ra khoi su kien click roi moi nap
+                //vi nap lai se huy chinh cai nut dang xu ly su kien.
+                this.BeginInvoke(new Action(() => { try { LoadDataNumOrder(); } catch (Exception exr) { Inventec.Common.Logging.LogSystem.Error(exr); } }));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Nha block dang giu (doi o khac, dong man, huy chon)
+        /// </summary>
+        private void DoRelease()
+        {
+            try
+            {
+                if (!this.holdingNumOrderIssueId.HasValue || this.holdingNumOrderIssueId.Value <= 0)
+                {
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                HisNumOrderBlockReleaseSDO sdo = new HisNumOrderBlockReleaseSDO();
+                sdo.NumOrderIssueId = this.holdingNumOrderIssueId.Value;
+                new BackendAdapter(param).Post<bool>(URI_RELEASE, ApiConsumers.MosConsumer, sdo, param);
+
+                this.holdingNumOrderIssueId = null;
+                this.holdExpireTime = null;
+                this.Text = this.baseTitle;
+            }
+            catch (Exception ex)
+            {
+                //Nha that bai thi cung khong chan nguoi dung: het han se tu nha
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private string GetMessage(CommonParam param)
+        {
+            try
+            {
+                if (param != null && param.Messages != null && param.Messages.Count > 0)
+                {
+                    return string.Join(Environment.NewLine, param.Messages);
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return "";
+            }
+        }
+
+        private void FormHisNumOrderBlockChooser_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                if (this.timerHold != null)
+                {
+                    this.timerHold.Stop();
+                }
+                //Chua bam Chon ma dong man thi tra lai cho cho nguoi khac
+                if (!this.isChooseConfirmed)
+                {
+                    DoRelease();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
 
         private void SetIcon()
         {
@@ -244,18 +480,16 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
                     {
                         XtraTabPage tab = new XtraTabPage();
                         tab.Text = !String.IsNullOrWhiteSpace(times.Key.ROOM_TIME_NAME) ? times.Key.ROOM_TIME_NAME : string.Format("{0} - {1}", Base.GlobalVariablesProcess.GenerateHour(times.Key.ROOM_TIME_FROM), Base.GlobalVariablesProcess.GenerateHour(times.Key.ROOM_TIME_TO));
-                        if (timeSelected != null && timeSelected != 0)
-                        {
-                            UCTimes uc = new UCTimes(times.ToList(), SelectNumOrder, timeSelected);
-                            uc.Dock = DockStyle.Fill;
-                            tab.Controls.Add(uc);
-                        }
-                        else
-                        {
-                            UCTimes uc = new UCTimes(times.ToList(), SelectNumOrder);
-                            uc.Dock = DockStyle.Fill;
-                            tab.Controls.Add(uc);
-                        }
+                        //Luat "da qua gio" chi ap cho hom nay; ngay tuong lai moi o deu con hieu luc (viec 54282)
+                        bool isToday = (dtDate.EditValue != null && dtDate.DateTime != DateTime.MinValue)
+                                        ? dtDate.DateTime.Date == DateTime.Now.Date
+                                        : true;
+
+                        UCTimes uc = new UCTimes(times.ToList(), SelectNumOrder,
+                                                 (timeSelected != null && timeSelected != 0) ? timeSelected : null,
+                                                 isToday);
+                        uc.Dock = DockStyle.Fill;
+                        tab.Controls.Add(uc);
                         xtraTabTotal.TabPages.Add(tab);
                     }
                 }
@@ -270,6 +504,21 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
         {
             try
             {
+                //Khung gio cau hinh sai gio/phut (vi du 13:60) thi chan ngay tu luc bam,
+                //khong giu cho va khong tra ve man cha (viec 54282)
+                if (data != null && !IsHourHopLe(data.HOUR_STR))
+                {
+                    XtraMessageBox.Show(string.Format("Khung giờ khám {0} đang được cấu hình sai giờ/phút. Vui lòng chọn khung giờ khác hoặc báo quản trị hệ thống.",
+                        !string.IsNullOrWhiteSpace(data.HOUR_STR) ? data.HOUR_STR : "này"));
+                    return;
+                }
+
+                //Giu cho ngay khi bam chon o gio, khong doi toi luc bam Chon (viec 54282)
+                if (data != null && !DoHold(data))
+                {
+                    return;
+                }
+
                 this.NumOrderBlock = data;
                 if (data != null)
                 {
@@ -283,10 +532,56 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
             }
         }
 
+        /// <summary>
+        /// Chuoi gio dang "HH:mm" (hoac "HHmm") co hop le khong (viec 54282).
+        /// HIS_NUM_ORDER_BLOCK.FROM_TIME tung bi sinh sai thanh 1360, 1390, 1480 - phut &gt; 59.
+        /// Nhung gia tri do ghep lai thanh so 14 chu so vo nghia, ham doi so sang ngay gio
+        /// tra ve null va o "TG hen kham" cua man cha bi xoa trang.
+        /// </summary>
+        private bool IsHourHopLe(string hourStr)
+        {
+            int gio;
+            int phut;
+            return TachGioPhut(hourStr, out gio, out phut);
+        }
+
+        private bool TachGioPhut(string hourStr, out int gio, out int phut)
+        {
+            gio = 0;
+            phut = 0;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(hourStr))
+                {
+                    return false;
+                }
+                string so = hourStr.Replace(":", "");
+                if (so.Length < 4)
+                {
+                    return false;
+                }
+                if (!int.TryParse(so.Substring(0, 2), out gio))
+                {
+                    return false;
+                }
+                if (!int.TryParse(so.Substring(2, 2), out phut))
+                {
+                    return false;
+                }
+                return gio >= 0 && gio <= 23 && phut >= 0 && phut <= 59;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
         private void cboRoom_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
+                BoLuaChonHienTai();
                 LoadDataNumOrder();
             }
             catch (Exception ex)
@@ -299,7 +594,30 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
         {
             try
             {
+                BoLuaChonHienTai();
                 LoadDataNumOrder();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doi phong hoac doi ngay thi o gio dang chon khong con y nghia: nha cho da giu
+        /// va xoa gio cu, neu khong lan bam Chon sau se tra ve gio cua ngay/phong truoc (viec 54282).
+        /// </summary>
+        private void BoLuaChonHienTai()
+        {
+            try
+            {
+                DoRelease();
+                this.NumOrderBlock = null;
+                this.HourString = "0000";
+                if (this.lblStt != null)
+                {
+                    this.lblStt.Text = "0";
+                }
             }
             catch (Exception ex)
             {
@@ -377,12 +695,31 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
                 data.Date = Inventec.Common.TypeConvert.Parse.ToInt64(dtDate.DateTime.ToString("yyyyMMdd") + "000000");
                 if (isNeedTimeString == true)
                 {
-                    data.Date = Inventec.Common.TypeConvert.Parse.ToInt64(dtDate.DateTime.ToString("yyyyMMdd") + HourString + "00");
+                    //Dung DateTime that thay vi ghep chuoi: gio sai (13:60) tung cho ra so
+                    //20260910136000 khong doc nguoc lai duoc, man cha gan null va o ngay hen
+                    //bi trong ma khong bao gi (viec 54282)
+                    int gio;
+                    int phut;
+                    if (!TachGioPhut(this.HourString, out gio, out phut))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("HOLD54282 HourString khong hop le: " + this.HourString);
+                        XtraMessageBox.Show(string.Format("Khung giờ khám {0} đang được cấu hình sai giờ/phút. Vui lòng chọn khung giờ khác hoặc báo quản trị hệ thống.",
+                            !string.IsNullOrWhiteSpace(this.HourString) ? this.HourString : "này"));
+                        return;
+                    }
+                    DateTime gioHen = dtDate.DateTime.Date.AddHours(gio).AddMinutes(phut);
+                    data.Date = Inventec.Common.TypeConvert.Parse.ToInt64(gioHen.ToString("yyyyMMddHHmmss"));
                 }
                 //data.SelectedTime = NumOrderBlockChooser.SelectedTime;
                 data.RoomId = Inventec.Common.TypeConvert.Parse.ToInt64(cboRoom.EditValue.ToString());
                 data.NumOrderBlock = this.NumOrderBlock;
+                //Chuyen ma giu cho sang man cha de gui kem luc luu lich kham (viec 54282)
+                data.NumOrderIssueId = this.holdingNumOrderIssueId;
+                data.HoldExpireTime = this.holdExpireTime;
+                data.NumOrder = this.NumOrderBlock != null ? (long?)this.NumOrderBlock.NUM_ORDER : null;
 
+                //Da chot lua chon: khong nha cho khi dong man
+                this.isChooseConfirmed = true;
 
                 DelegateChooseData(data);
                 this.Close();

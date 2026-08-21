@@ -114,12 +114,28 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.Controls.Add(grid);
             this.Controls.Add(bottom);
 
-            // Tích sẵn những bệnh đang chọn để người dùng thấy và bỏ được, thay vì phải chọn lại từ đầu.
-            PreselectRows(source, currentIds);
-
             // Đóng bằng phím Enter / Esc như các bảng khác của phần mềm.
             this.AcceptButton = btnOk;
             this.CancelButton = btnCancel;
+
+            // Tích sẵn các bệnh đang chọn — làm SAU KHI bảng hiện ra, xem OnShown.
+            this.pendingIds = currentIds;
+            this.source = source;
+        }
+
+        private List<long> pendingIds;
+        private List<SytIcdItem> source;
+
+        /// <summary>
+        /// Tích sẵn những bệnh đang chọn, để người dùng thấy và bỏ bớt được thay vì chọn lại từ đầu.
+        ///
+        /// PHẢI làm ở đây, KHÔNG làm trong hàm dựng: lúc dựng thì lưới chưa gắn vào bảng nên chưa
+        /// tạo dòng nào, mọi lệnh tích đều rơi vào chỗ trống và bảng mở ra trắng trơn.
+        /// </summary>
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            PreselectRows(source, pendingIds);
         }
 
 
@@ -128,16 +144,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 if (source == null || currentIds == null || currentIds.Count == 0) return;
+
                 view.BeginSelection();
                 try
                 {
                     view.ClearSelection();
-                    for (int i = 0; i < source.Count; i++)
+                    // Duyệt theo DÒNG ĐANG HIỆN của lưới, không theo thứ tự danh sách nguồn: lưới có
+                    // sắp xếp và hàng lọc riêng nên số thứ tự trong danh sách nguồn KHÔNG trùng số
+                    // hiệu dòng — tra theo số thứ tự sẽ tích nhầm dòng khác hoặc trượt hết.
+                    int done = 0;
+                    for (int rh = 0; rh < view.DataRowCount; rh++)
                     {
-                        if (!currentIds.Contains(source[i].ID)) continue;
-                        int rh = view.GetRowHandle(i);
-                        if (rh >= 0) view.SelectRow(rh);
+                        SytIcdItem it = view.GetRow(rh) as SytIcdItem;
+                        if (it == null || !currentIds.Contains(it.ID)) continue;
+                        view.SelectRow(rh);
+                        done++;
                     }
+
+                    if (done > 0) view.FocusedRowHandle = view.GetSelectedRows()[0];
+                    if (done < currentIds.Count)
+                        LogSystem.Warn("SytHcm: bang chon benh chi tich duoc " + done + "/"
+                            + currentIds.Count + " benh da chon — so con lai khong co trong danh muc");
                 }
                 finally { view.EndSelection(); }
             }

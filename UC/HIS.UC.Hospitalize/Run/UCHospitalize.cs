@@ -143,6 +143,7 @@ namespace HIS.UC.Hospitalize.Run
                 LoadDataToComboCareer();
                 LoadDataToDepartmentComboExecute();
                 LoadDataToComboTreatmentType();
+                LoadDataToComboHeinPatientTypeCode();
                 LoadDataToComboEmergencyClassify();
                 TimerSDO timeSync = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam());
                 if (HisConfig.IsUsingServerTime)
@@ -241,6 +242,8 @@ namespace HIS.UC.Hospitalize.Run
                 UpdateCheckPrintAndSign();
                 checkIcdManager = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(dlgRefeshIcd, treatment);
                 ApplyGenerateNewInCodeState(this.hospitalizeInitADO);
+                // Hien thi ma doi tuong KCB tuong ung trang thai hien tai (chi de xem, khong luu)
+                RefreshHeinPatientTypeCode();
                 IsFirstLoad = false;
             }
             catch (Exception ex)
@@ -696,6 +699,10 @@ namespace HIS.UC.Hospitalize.Run
                 {
                     cboDepartment.Properties.DataSource = null;
                 }
+
+                // Doi dien dieu tri => tinh lai ma doi tuong KCB de hien thi cho nguoi dung biet.
+                // Chi hien thi, khong gui len backend.
+                RefreshHeinPatientTypeCode();
             }
             catch (Exception ex)
             {

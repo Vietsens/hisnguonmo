@@ -103,7 +103,8 @@
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTestTotal">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintTestTotal\HIS.Desktop.Plugins.Library.PrintTestTotal.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Utility">
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ViewEmrDocument">
@@ -291,6 +292,12 @@
     </Compile>
     <Compile Include="Key\HisConfigCFG.cs" />
     <Compile Include="Key\HisConfigKeys.cs" />
+    <Compile Include="Popup\frmCareLevel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmCareLevel.Designer.cs">
+      <DependentUpon>frmCareLevel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Popup\frmConsultation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -330,6 +337,9 @@
     <Compile Include="Run\UCBedRoomPartial__Pluss__Print.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Run\UCBedRoomPartial__Pluss__Anticipate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="Key\KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -360,6 +370,9 @@
     <EmbeddedResource Include="FrmFollow.resx">
       <DependentUpon>FrmFollow.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup\frmCareLevel.resx">
+      <DependentUpon>frmCareLevel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Popup\frmConsultation.resx">
       <DependentUpon>frmConsultation.cs</DependentUpon>

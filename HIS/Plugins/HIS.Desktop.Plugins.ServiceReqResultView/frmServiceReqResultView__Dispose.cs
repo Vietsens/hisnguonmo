@@ -32,6 +32,9 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 isLoadingForm = false;
                 taskForm_Load = null;
                 isContineuCheckbox = false;
+                viewLinkPacs = null;
+                isOpenForViewImage = false;
+                isGettingLinkFromPacs = false;
                 currentControlStateRDO = null;
                 controlStateWorker = null;
                 isSense = false;

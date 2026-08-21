@@ -2739,6 +2739,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         //txtTreatmentInstruction.Text = uCExamTreatmentFinish.TreatmentInstruction;
                         uCExamTreatmentFinish.CapSoLuuTruBAChanged += UCExamTreatmentFinish_CapSoLuuTruBAChanged;
+                        // Tick "Man tinh" --> to do ngay 2 nhan bat buoc nhap ben panel trai
+                        uCExamTreatmentFinish.ChronicRequiredChanged += UCExamTreatmentFinish_ChronicRequiredChanged;
                         uCExamTreatmentFinish.SetDelegateSendTeatmentMethod(FillTreatmentMethod);
                         uCExamTreatmentFinish.PathologicalProcessRequired += UcExamTreatmentFinish_PathologicalProcessRequired;
                     }
@@ -2814,6 +2816,123 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private void FillTreatmentMethod(object data)
         {
             txtTreatmentInstruction.Text = data.ToString();
+        }
+
+        /// <summary>
+        /// Tick / bo tick "Man tinh" ben UC ket thuc dieu tri.
+        /// Tick    --> "Tom tat ket qua can lam sang" + "Phuong phap dieu tri" thanh bat buoc nhap:
+        ///             to nhan mau Maroon + gan validation rule (giong cac truong bat buoc khac).
+        /// Bo tick --> tra nhan ve mau den + bo validation rule, TRU khi dien dieu tri von da
+        ///             bat buoc 2 truong nay (noi tru / ngoai tru / ban ngay).
+        /// </summary>
+        private void UCExamTreatmentFinish_ChronicRequiredChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (IsChronicRequired())
+                {
+                    lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidateForm();
+                }
+                else if (!IsTreatmentTypeRequiredSubclinicalAndMethod())
+                {
+                    lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Black;
+                    lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
+                    ClearValidationSubclinicalAndMethod();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Checkbox "Man tinh" dang tick --> 2 truong tro thanh bat buoc nhap.
+        /// </summary>
+        private bool IsChronicRequired()
+        {
+            var uc = this.ucTreatmentFinish as UCExamTreatmentFinish;
+            return chkTreatmentFinish.Checked && uc != null && uc.IsChronicChecked;
+        }
+
+        /// <summary>
+        /// Dien dieu tri noi tru / ngoai tru / ban ngay --> 2 truong da bat buoc nhap san
+        /// theo logic co truoc.
+        /// </summary>
+        private bool IsTreatmentTypeRequiredSubclinicalAndMethod()
+        {
+            var treatmentTypeId = this.treatment != null ? this.treatment.TDL_TREATMENT_TYPE_ID : null;
+            return treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
+                || treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                || treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY;
+        }
+
+        private void ClearValidationSubclinicalAndMethod()
+        {
+            try
+            {
+                this.dxValidationProviderForLeftPanel.SetValidationRule(txtSubclinical, null);
+                this.dxValidationProviderForLeftPanel.SetValidationRule(txtTreatmentInstruction, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chan luu khi tick "Man tinh" ma chua nhap
+        /// "Tom tat ket qua can lam sang" hoac "Phuong phap dieu tri".
+        /// Tra false --> khong cho luu.
+        /// </summary>
+        private bool CheckChronicRequiredFields()
+        {
+            try
+            {
+                if (!IsChronicRequired())
+                {
+                    return true;
+                }
+
+                List<string> errors = new List<string>();
+                if (String.IsNullOrWhiteSpace(txtSubclinical.Text))
+                {
+                    errors.Add(lblCaptionDiagnostic.Text.TrimEnd(':', ' '));
+                }
+                if (String.IsNullOrWhiteSpace(txtTreatmentInstruction.Text))
+                {
+                    errors.Add(lblCaptionConclude.Text.TrimEnd(':', ' '));
+                }
+
+                if (errors.Count == 0)
+                {
+                    return true;
+                }
+
+                lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Maroon;
+                lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Maroon;
+                ValidateForm();
+
+                XtraMessageBox.Show(
+                    String.Format(ResourceMessage.TichManTinhPhaiNhapTruongBatBuoc, String.Join(", ", errors)),
+                    ResourceMessage.ThongBao,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                var focusControl = String.IsNullOrWhiteSpace(txtSubclinical.Text) ? txtSubclinical : txtTreatmentInstruction;
+                this.BeginInvoke(new Action(() =>
+                {
+                    focusControl.Focus();
+                    focusControl.SelectAll();
+                }));
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
         }
 
         private void UCExamTreatmentFinish_CapSoLuuTruBAChanged(object sender, EventArgs e)
@@ -3344,6 +3463,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     return;
                 }
 
+                // Chan nhap vien khi con van ban chua hoan thanh thuoc loai co IS_HOSPITALIZATION = 1   
+                if (!CheckEmrDocumentBeforeHospitalize())
+                {
+                    return;
+                }
+
                 if (!VerifyTreatmentFinish())
                     return;
 
@@ -3629,54 +3754,57 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 //treatment.ICD_CODE = txtIcdCode.Text;
                 //treatment.ICD_SUB_CODE = txtIcdSubCode.Text;
                 //checkIcdManager = new CheckIcdManager(DlgIcdSubCode, treatment);
-                if (!string.IsNullOrEmpty(txtIcdCode.Text))
-                {
-                    string[] stringArray = txtIcdCode.Text.Split(';');
-                    totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                }
-                if (!string.IsNullOrEmpty(txtIcdSubCode.Text))
-                {
-                    string[] stringArray = txtIcdSubCode.Text.Split(';');
-                    totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                }
-                if (!string.IsNullOrEmpty(IcdCodeYHCT))
-                {
-                    string[] stringArray = IcdCodeYHCT.Split(';');
-                    totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                }
-                if (!string.IsNullOrEmpty(IcdSubCodeYHCT))
-                {
-                    string[] stringArray = IcdSubCodeYHCT.Split(';');
-                    totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                }
+
+                // CD chinh/CD phu dang nhap tren man hinh kham (gia tri se duoc luu o lan bam luu nay)
+                List<string> icdMainExam = SplitIcdCodes(txtIcdCode.Text);
+                List<string> icdSubExam = SplitIcdCodes(txtIcdSubCode.Text);
+                // CD chinh/CD phu YHCT dang nhap tren man hinh
+                List<string> icdMainYhct = SplitIcdCodes(IcdCodeYHCT);
+                List<string> icdSubYhct = SplitIcdCodes(IcdSubCodeYHCT);
+                // CD chinh/CD phu da luu truoc do cua phieu kham (khong phai gia tri dang nhap) 
+                List<string> icdMainSaved = new List<string>();
+                List<string> icdSubSaved = new List<string>();
                 if (HisServiceReqView != null && ucHospitalize != null)
                 {
-                    if (!string.IsNullOrEmpty(HisServiceReqView.ICD_CODE))
-                    {
-                        string[] stringArray = HisServiceReqView.ICD_CODE.Split(';');
-                        totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                    }
-                    if (!string.IsNullOrEmpty(HisServiceReqView.ICD_SUB_CODE))
-                    {
-                        string[] stringArray = HisServiceReqView.ICD_SUB_CODE.Split(';');
-                        totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                    }
+                    icdMainSaved = SplitIcdCodes(HisServiceReqView.ICD_CODE);
+                    icdSubSaved = SplitIcdCodes(HisServiceReqView.ICD_SUB_CODE);
                 }
+                // CD chinh/CD phu tren UC ket thuc dieu tri
+                List<string> icdMainFinish = new List<string>();
+                List<string> icdSubFinish = new List<string>();
                 if (TreatmentFinishSDO != null && ucExamFinish != null)
                 {
-                    if (!string.IsNullOrEmpty(TreatmentFinishSDO.IcdCode))
-                    {
-                        string[] stringArray = TreatmentFinishSDO.IcdCode.Split(';');
-                        totalIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                    }
-
-                    if (!string.IsNullOrEmpty(TreatmentFinishSDO.IcdSubCode))
-                    {
-                        string[] stringArray = TreatmentFinishSDO.IcdSubCode.Split(';');
-                        totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
-                    }
+                    icdMainFinish = SplitIcdCodes(TreatmentFinishSDO.IcdCode);
+                    icdSubFinish = SplitIcdCodes(TreatmentFinishSDO.IcdSubCode);
                 }
-                var duplicateIcds = totalIcd.Intersect(totalSubIcd).ToList();
+
+                totalIcd.AddRange(icdMainExam);
+                totalSubIcd.AddRange(icdSubExam);
+                totalIcd.AddRange(icdMainYhct);
+                totalSubIcd.AddRange(icdSubYhct);
+                totalIcd.AddRange(icdMainSaved);
+                totalSubIcd.AddRange(icdSubSaved);
+                totalIcd.AddRange(icdMainFinish);
+                totalSubIcd.AddRange(icdSubFinish);
+
+                // Chi canh bao khi CD chinh va CD phu HIEN TAI cua cung mot nhom du lieu bi trung nhau
+                // (CD chinh khong sua ma CD phu sua trung CD chinh, hoac ca hai deu sua ma van trung nhau).
+                // Truoc day gop tat ca nguon (ke ca ICD cua lan luu truoc - HisServiceReqView) roi Intersect
+                // => nguoi dung chuyen CD chinh cu thanh CD phu moi cung bi canh bao sai, khong luu duoc.
+                List<string> duplicateIcds = GetDuplicateIcdCodes(icdMainExam, icdSubExam);
+                foreach (string icdCode in GetDuplicateIcdCodes(icdMainYhct, icdSubYhct))
+                {
+                    if (!duplicateIcds.Exists(o => o.Equals(icdCode, StringComparison.OrdinalIgnoreCase)))
+                        duplicateIcds.Add(icdCode);
+                }
+                foreach (string icdCode in GetDuplicateIcdCodes(icdMainFinish, icdSubFinish))
+                {
+                    if (!duplicateIcds.Exists(o => o.Equals(icdCode, StringComparison.OrdinalIgnoreCase)))
+                        duplicateIcds.Add(icdCode);
+                }
+                Inventec.Common.Logging.LogSystem.Debug("CheckIcd -> duplicateIcds: " + string.Join(", ", duplicateIcds)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => totalIcd), totalIcd)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => totalSubIcd), totalSubIcd));
                 if (duplicateIcds.Count > 0)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(
@@ -3751,6 +3879,58 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
             return valid;
         }
+
+        /// <summary>
+        /// Tach chuoi ma ICD (phan cach boi ';') thanh danh sach ma, bo qua cac phan tu rong.
+        /// </summary>
+        private List<string> SplitIcdCodes(string icdCodes)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                if (!string.IsNullOrEmpty(icdCodes))
+                {
+                    result.AddRange(icdCodes.Split(';').Where(x => !string.IsNullOrEmpty(x)));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Lay cac ma bi trung giua CD chinh va CD phu cua CUNG mot nhom du lieu (khong phan biet hoa/thuong).
+        /// Khong doi chieu cheo giua cac nhom (man hinh kham / YHCT / ket thuc dieu tri / ICD da luu truoc do)
+        /// vi cac nhom nay duoc lay o cac thoi diem khac nhau -> se canh bao sai khi nguoi dung sua lai CD.
+        /// </summary>
+        private List<string> GetDuplicateIcdCodes(List<string> icdMainCodes, List<string> icdSubCodes)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                if (icdMainCodes == null || icdMainCodes.Count <= 0 || icdSubCodes == null || icdSubCodes.Count <= 0)
+                    return result;
+                foreach (string icdSubCode in icdSubCodes)
+                {
+                    if (string.IsNullOrWhiteSpace(icdSubCode))
+                        continue;
+                    string subCode = icdSubCode.Trim();
+                    if (icdMainCodes.Exists(o => !string.IsNullOrWhiteSpace(o) && o.Trim().Equals(subCode, StringComparison.OrdinalIgnoreCase))
+                        && !result.Exists(o => o.Equals(subCode, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        result.Add(subCode);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
         private bool CheckMustChooseSeviceExamOption()
         {
             bool rs = true;
@@ -3881,6 +4061,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (!ValidForSave()) return;
                 // Tick "Phụ nữ mang thai" thì bắt buộc nhập số tháng (1-9)
                 if (!ValidWomanClassify()) return;
+
+                // Tick "Mãn tính" thì bắt buộc nhập Tóm tắt KQ cận lâm sàng + Phương pháp điều trị
+                if (!CheckChronicRequiredFields())
+                {
+                    IsValidForSave = false;
+                    return;
+                }
 
                 if (!CheckExamServiceFinish())
                     return;
@@ -4383,6 +4570,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecute.btnAssignPre_Click.1");
+                // Chế độ kê đơn điều trị chỉ áp dụng khi bật cấu hình
+                // HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION.
+                // Cấu hình TẮT (mặc định) -> giữ nguyên luồng kê đơn cũ.
+                bool isTreatmentPresApply = isTreatmentPres && HisConfigCFG.EnableTreatmentPrescription;
                 if ((HisConfigCFG.RequiredWeightHeight_Option == "1" || HisConfigCFG.RequiredWeightHeight_Option == "3") && !ValidDhstOption())
                     return;
                 ValiTemperatureOption();
@@ -4469,7 +4660,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         List<object> listArgs = new List<object>();
                         HIS.Desktop.ADO.AssignPrescriptionADO assignServiceADO = new HIS.Desktop.ADO.AssignPrescriptionADO(HisServiceReqView.TREATMENT_ID, 0, 0);
                         // Force treatment (in-patient) prescription mode via the existing IsExecutePTTT lever (frmAssignPrescription.cs:408)
-                        assignServiceADO.IsExecutePTTT = isTreatmentPres;
+                        assignServiceADO.IsExecutePTTT = isTreatmentPresApply;
                         if (serviceReqDons != null && serviceReqDons.Count == 1)
                         {
                             var pres = serviceReqDons[0];
@@ -4583,7 +4774,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         long intructionTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                         AssignPrescriptionADO assignPrescription = new AssignPrescriptionADO(HisServiceReqView.TREATMENT_ID, intructionTime, this.HisServiceReqView.ID);
                         // Force treatment (in-patient) prescription mode via the existing IsExecutePTTT lever (frmAssignPrescription.cs:408)
-                        assignPrescription.IsExecutePTTT = isTreatmentPres;
+                        assignPrescription.IsExecutePTTT = isTreatmentPresApply;
                         assignPrescription.TreatmentCode = HisServiceReqView.TDL_TREATMENT_CODE;
                         assignPrescription.TreatmentId = HisServiceReqView.TREATMENT_ID;
                         assignPrescription.HeinCardnumber = HisServiceReqView.TDL_HEIN_CARD_NUMBER;

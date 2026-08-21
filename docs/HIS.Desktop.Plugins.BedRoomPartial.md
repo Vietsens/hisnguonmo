@@ -18,6 +18,25 @@
 4. Thao tác y lệnh: sửa, xóa, theo dõi, ký EMR, in phiếu, đăng ký dịch vụ mới
 5. Tách dịch vụ, gán giường mới, kết thúc điều trị
 
+### Hiển thị đơn thuốc dự trù theo ngày dự trù (config `ShowAnticipatePresByUseDate`)
+
+Mặc định TẮT — giữ nguyên hành vi cũ (đơn dự trù nằm ở ngày kê).
+
+Khi BẬT, ngày hiển thị của y lệnh (`ngày hiệu lực`) tính như sau:
+
+| Loại y lệnh | Ngày hiệu lực |
+|---|---|
+| Đơn thuốc dự trù | `date(USE_TIME)` |
+| Còn lại | `date(INTRUCTION_TIME)` |
+
+**Đơn thuốc dự trù** = `SERVICE_REQ_TYPE_ID` ∈ {`DONK`, `DONTT`, `DONDT`} **và** `USE_TIME` có giá trị **và** `date(USE_TIME) != date(INTRUCTION_TIME)`.
+Vế so sánh ngày bắt buộc vì các plugin `AssignPrescription*` gán `USE_TIME = INTRUCTION_TIME` khi bỏ trống ô "Dự trù".
+`DONM` (đơn máu), dịch vụ, giường **không** áp dụng — vẫn ở ngày kê và vẫn hiện chuỗi `"Dự trù: ..."` ở cột Khoa yêu cầu.
+
+Chiến lược nạp: config bật → nạp toàn đợt 1 lần trong `LoadAnticipateCache` (gọi từ `SelectPatient`), đổi ngày lọc RAM (0 API call). Đợt > 90 ngày → fallback gọi API theo từng ngày kê nguồn.
+
+Đơn dự trù nhiều ngày đã được backend **tách sẵn thành nhiều `HIS_SERVICE_REQ`**, mỗi đơn 1 `USE_TIME` — không dùng `USE_TIME_TO`.
+
 ### Điều kiện enable nút "Xóa y lệnh" trong TreeList (`ssRootSety.IsEnableDelete`)
 Với `SERVICE_REQ_STT_ID == CXL` (chưa xử lý), enable khi thỏa **1 trong 3**:
 1. Tài khoản đăng nhập là **người chỉ định** (`REQUEST_LOGINNAME == loginName`)
@@ -93,6 +112,7 @@ Plugin tích hợp nhiều mẫu in qua RichEditorStore + MpsPrinter, phụ thu�
 |------|-----------|-----------------|
 | 22/05/2026 | dangth2 | Việc 44693 (Tài liệu 2671): Bổ sung điều kiện enable nút "Xóa y lệnh giường" trong `Run/UCBedRoomPartial.cs` (2 vị trí thiết lập `ssRootSety.IsEnableDelete`) — nếu loại y lệnh là Giường (`SERVICE_REQ_TYPE.ID__G`) VÀ tài khoản có quyền HIS000053 thì enable. Các trường hợp khác giữ nguyên. Thêm `Base/ControlCode.cs`, field `hasDeleteBedPermission`, method `LoadDeleteBedPermission()`. Reference `ACS.EFMODEL.dll`. |
 | 06/07/2026 | phuongnm | Tài liệu 1223: Sửa hiển thị nhóm máu ở vùng thông tin hành chính (`Run/UCBedRoomPartial.cs`, `lblBloodType`). Trước đây điều kiện `abo && rh` khiến chỉ có 1 trong 2 giá trị thì không hiển thị. Sửa thành 4 trường hợp: có cả ABO+RH (`O; RH(-)`), chỉ ABO (`A`), chỉ RH (`RH(-)`), không có (trống). |
+| 17/08/2026 | phuongnm | Hiển thị đơn thuốc dự trù theo ngày dự trù trên màn Buồng bệnh. Thêm config `HIS.Desktop.Plugins.BedRoomPartial.ShowAnticipatePresByUseDate` (mặc định TẮT). Khi bật: đơn thuốc dự trù xếp theo `USE_TIME` thay vì `INTRUCTION_TIME`, chuyển hẳn không lặp ở ngày kê; thêm 2 cột "Ngày kê"/"Ngày dự trù"; tô xanh da trời đơn dự trù; tab "Tất cả" gom nhóm riêng `Dự trù — kê ngày X`. Chỉ áp dụng đơn thuốc (`SERVICE_REQ_TYPE_ID` ∈ DONK/DONTT/DONDT), loại trừ đơn máu DONM và dịch vụ/giường. File mới `Run/UCBedRoomPartial__Pluss__Anticipate.cs`. Kèm dọn nợ hiệu năng: 2 khối `dataServiceReq.Where(...)` gọi 4 lần trong vòng lặp → `Dictionary.TryGetValue`. Tài liệu: `A_NghiepVu_/B_KyThuat_DonDuTruTheoNgayDuTru_BuongBenh.docx`. |
 | 13/08/2026 | nampp | Việc 3170 (BV Điện Biên): Thêm nút "Kết quả CLS" trên thanh chức năng — mở màn xem kết quả cận lâm sàng (plugin `ContentSubclinical` chế độ CHỈ XEM) không cần vào tờ điều trị. Nút tạo RUNTIME trong `InitSubclinicalResultButton()` (`Run/UCBedRoomPartial.cs`, đặt sau nút "Danh sách y lệnh" qua `LayoutControlItem.Move`) — không sửa Designer vì dãy nút dùng toạ độ pixel cố định. **Luôn hiện, không gate key config** (bản đầu có key `ShowSubclinicalResultButton`, đã bỏ cùng ngày theo yêu cầu). Enable/disable theo bệnh nhân trong `SetEnableButton`. Handler `btnKetQuaCLS_Click` (`__Pluss__EventBtn.cs`), gỡ event trong `__Pluss__Dispose.cs`. Resource 3 ngôn ngữ `UCBedRoomPartial.btnKetQuaCLS.Text/ToolTip`. |
 | 21/08/2026 | nampp | Việc 3222 (v2): Tài liệu viện cập nhật — chế độ "BN chưa kê đơn trong khoảng" hiển thị cả bệnh nhân đã kết thúc điều trị/đã ra viện (truy vấn nền không giới hạn `HAS_OUT_TIME`, trạng thái mặc định "Tất cả"). Sửa `SetTreatmentBedRoomFilter` (`Run/UCBedRoomPartial.cs`): khi chế độ = 2 và trạng thái ≠ "Đã kết thúc điều trị" thì ép `HAS_OUT_TIME = false`; khi trạng thái = "Tất cả" ép thêm `IS_PAUSE = false`. Người dùng chọn trạng thái "Đã kết thúc điều trị" thì tôn trọng (không ép). KHÔNG tick hộ checkbox "Ẩn kết thúc tạm" vì trạng thái checkbox lưu ControlState theo người dùng. |
 | 19/08/2026 | nampp | Việc 3222 (BV Điện Biên): Lọc bệnh nhân chưa kê đơn trong ngày theo tài khoản bác sĩ điều trị. Cơ chế lọc đã có sẵn (`cboPatientFilter` = 2 → `NO_PRESCRIPTION_FROM/TO`; `cboEmployee` → `DOCTOR_LOGINNAME`) nhưng ô lọc bác sĩ không có nhãn nên người dùng không nhận ra. Sửa trong `Run/UCBedRoomPartial.cs`: `InitComboEmployee` đặt `NullText` = "Bác sĩ điều trị" + tooltip cho `layoutControlItem50`, lưu `lstDoctorFilter`; thêm `SetDoctorFilterByLoginUser()` tự điền tài khoản bác sĩ đang đăng nhập khi chọn chế độ "BN chưa kê đơn trong khoảng" (chỉ khi ô trống, rời chế độ chỉ hoàn tác giá trị hệ thống tự điền); gọi từ `cboPatientFilter_EditValueChanged`. Resource 3 ngôn ngữ `BacSiDieuTri`, `LocTheoBacSiDieuTri`. **Không sửa Designer.** Kèm sửa Backend `MOS.MANAGER/HisTreatmentBedRoom/HisTreatmentBedRoomGet.cs` — `GetLView` trước đây lọc "chưa kê đơn" SAU khi DAO đã phân trang nên mỗi trang khuyết bệnh nhân và tổng số bản ghi sai; nay lấy đủ dữ liệu, lọc, gán lại `param.Count` rồi mới `Skip/Take`. |

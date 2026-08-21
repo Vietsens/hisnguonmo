@@ -39,5 +39,17 @@ namespace MPS.Processor.Mps000111.PDO
         public List<HIS_SERE_SERV_DEPOSIT> _ListSereServDeposit = null;
         public List<V_HIS_TRANSACTION> _ListTranSaction = null;
         public List<HIS_SESE_DEPO_REPAY> _ListSeseDepoRepay = null;
+
+        /// <summary>
+        /// Bang hinh thuc thanh toan cua giao dich (HIS_TRANSACTION_PAYFORM theo TRANSACTION_ID).
+        /// Field public - noi goi in gan truc tiep sau khi khoi tao PDO, khong can constructor moi.
+        /// </summary>
+        public List<HIS_TRANSACTION_PAYFORM> _ListTransactionPayform = null;
+
+        /// <summary>
+        /// Bang chiet khau cua giao dich (HIS_TRANSACTION_DISCOUNT theo TRANSACTION_ID).
+        /// Field public - noi goi in gan truc tiep sau khi khoi tao PDO, khong can constructor moi.
+        /// </summary>
+        public List<HIS_TRANSACTION_DISCOUNT> _ListTransactionDiscount = null;
     }
 }

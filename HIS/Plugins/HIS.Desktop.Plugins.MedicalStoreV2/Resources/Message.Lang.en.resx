@@ -156,4 +156,19 @@
   <data name="XuLyThatBai" xml:space="preserve">
     <value>Handling failure</value>
   </data>
+  <data name="TatCa" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="DaKiemTra" xml:space="preserve">
+    <value>Checked</value>
+  </data>
+  <data name="ChuaKiemTra" xml:space="preserve">
+    <value>Not checked</value>
+  </data>
+  <data name="XacNhanDanhDauDaKiemTra" xml:space="preserve">
+    <value>Are you sure you want to mark this record as checked? This action cannot be undone.</value>
+  </data>
+  <data name="KhongDuQuyenDanhDauDaKiemTra" xml:space="preserve">
+    <value>You do not have permission to mark a record as checked.</value>
+  </data>
 </root>

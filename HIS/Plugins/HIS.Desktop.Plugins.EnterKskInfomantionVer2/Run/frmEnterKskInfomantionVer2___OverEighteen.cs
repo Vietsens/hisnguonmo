@@ -116,7 +116,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
-                if (clinicalExamHcmRows == null || clinicalExamHcmRows.Count == 0) return false;
+                // Ô nhập của tab HCM CHƯA được dựng -> đọc thẳng từ bản ghi đã lưu. Không có nhánh
+                // này thì mở hồ sơ rồi bấm Cập nhật mà không ghé tab HCM sẽ bị cảnh báo thiếu kết
+                // quả, dù dữ liệu đã có trong cơ sở dữ liệu.
+                //
+                // PHẢI xét CẢ CỜ ĐÃ DỰNG, không chỉ xét danh sách mục rỗng: danh sách mục được lập
+                // sẵn cùng tab, còn ô chọn bệnh thì dựng LƯỜI đúng lúc người dùng mở tab. Chưa mở
+                // tab thì danh sách vẫn có đủ 15 mục nhưng mọi ô đều trống — chỉ xét rỗng là hàm đọc
+                // nhằm ô trống và kết luận "chưa nhập".
+                if (!isClinicalExamHcmInited
+                    || clinicalExamHcmRows == null || clinicalExamHcmRows.Count == 0)
+                    return HasHcmResultInDb(sectionKey);
 
                 ClinicalExamHcmRow row = clinicalExamHcmRows
                     .FirstOrDefault(r => r != null && r.Key == sectionKey);
@@ -132,6 +142,42 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 GetHcmIcdValue(row.UcFinalIcd, out code, out name);
                 if (!string.IsNullOrWhiteSpace(code)) return true;
 
+                return false;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
+        }
+
+
+        /// <summary>
+        /// Mục khám của tab HCM đã có kết quả trong BẢN GHI ĐÃ LƯU chưa.
+        ///
+        /// Dùng khi ô nhập của tab chưa được dựng. Xét đúng ba thứ như khi đọc từ ô nhập: đã tích
+        /// "chưa phát hiện bất thường", hoặc đã có mã bệnh ở chẩn đoán sơ bộ, hoặc ở chẩn đoán kết luận.
+        /// </summary>
+        private bool HasHcmResultInDb(string sectionKey)
+        {
+            try
+            {
+                if (currentKskSytHcm == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: kiem tra muc \"" + sectionKey
+                        + "\" nhung CHUA nap duoc ban ghi mau M3 cua ho so -> coi nhu chua nhap");
+                    return false;
+                }
+
+                string prefix;
+                if (!SYT_HCM_SECTION_COLUMN.TryGetValue(sectionKey, out prefix))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: khong biet muc \"" + sectionKey
+                        + "\" ung voi cot nao -> coi nhu chua nhap");
+                    return false;
+                }
+
+                if (GetSytHcmShort(currentKskSytHcm, prefix + SYT_HCM_SUFFIX__IS_NORMAL) == 1) return true;
+                if (!string.IsNullOrWhiteSpace(GetSytHcmStr(currentKskSytHcm, prefix + SYT_HCM_SUFFIX__PRE_CODE)))
+                    return true;
+                if (!string.IsNullOrWhiteSpace(GetSytHcmStr(currentKskSytHcm, prefix + SYT_HCM_SUFFIX__CODE)))
+                    return true;
                 return false;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
@@ -284,6 +330,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     {
                         currentKskOverEight = data.First();
                         txtPathologicalHistoryFamily.Text = currentKskOverEight.PATHOLOGICAL_HISTORY_FAMILY;
+                        // Viện đã bật cổng -> ô chữ đổi thành danh sách ô tích, đổ lại theo mã đã lưu.
+                        BuildSytFamilyHistory();
+                        FillSytFamilyHistory(currentKskOverEight.PATHOLOGICAL_HISTORY_FAMILY);
                         txtPathologicalHistory2.Text = currentKskOverEight.PATHOLOGICAL_HISTORY;
                         txtMedicineUsing.Text = currentKskOverEight.MEDICINE_USING;
                         txtMaternityHistory.Text = currentKskOverEight.MATERNITY_HISTORY;
@@ -507,6 +556,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 try { FillKskSytHcmAdminControls(); }
                 catch (Exception exSyt) { Inventec.Common.Logging.LogSystem.Error(exSyt); }
 
+                // Mã ICD tiền sử gia đình — đổ Ở ĐÂY, cùng chỗ với tab Khám lâm sàng HCM.
+                //
+                // Đây là thời điểm hồ sơ CHẮC CHẮN đã nạp xong, nên tab lâm sàng đổ được. Trước đây
+                // tôi móc vào chỗ nạp kho tiền sử và chỗ đổ danh mục — cả hai đều chạy khi hồ sơ chưa
+                // nạp xong, nên ô luôn trắng.
+                try
+                {
+                    if (currentKskGeneral != null)
+                        FillSytFamilyIcd(currentKskGeneral.FAMILY_HISTORY_ICD_CODE,
+                            currentKskGeneral.FAMILY_HISTORY_ICD_NAME);
+                }
+                catch (Exception exFam) { Inventec.Common.Logging.LogSystem.Error(exFam); }
+
                 // Tab Khám lâm sàng HCM: chỉ đổ được khi tab đã dựng xong các ô chọn bệnh. Chưa mở
                 // tab lần nào thì bỏ qua — lúc mở tab sẽ tự đổ (xem EnsureClinicalExamHcmInited).
                 try { FillKskSytHcmClinicalControls(); }
@@ -549,7 +611,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (currentKskOverEight != null)
                     obj.ID = currentKskOverEight.ID;
-                obj.PATHOLOGICAL_HISTORY_FAMILY = txtPathologicalHistoryFamily.Text;
+                obj.PATHOLOGICAL_HISTORY_FAMILY = GetSytFamilyHistoryValue(txtPathologicalHistoryFamily.Text);
                 obj.PATHOLOGICAL_HISTORY = txtPathologicalHistory2.Text;
                 obj.MEDICINE_USING = txtMedicineUsing.Text;
                 obj.MATERNITY_HISTORY = txtMaternityHistory.Text;

@@ -67,6 +67,7 @@ namespace MPS.Processor.Mps000091
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
                 SetBarcodeKey();
                 this.SetSingleKey();
+                SetQrCodeDepositReqCode();
                 SetSingleKeyQrCode();
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
@@ -119,6 +120,22 @@ namespace MPS.Processor.Mps000091
             }
             return result;
         }
+        /// <summary>
+        /// Sinh QR code chứa mã yêu cầu tạm ứng (DEPOSIT_REQ_CODE).
+        /// Phải gọi sau SetSingleKey() vì lấy giá trị từ singleValueDictionary.
+        /// </summary>
+        private void SetQrCodeDepositReqCode()
+        {
+            try
+            {
+                SetQrCodeByKeyBase("DEPOSIT_REQ_CODE", Mps000091ExtendSingleKey.QRCODE_DEPOSIT_REQ_CODE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void SetSingleKeyQrCode()
         {
             try

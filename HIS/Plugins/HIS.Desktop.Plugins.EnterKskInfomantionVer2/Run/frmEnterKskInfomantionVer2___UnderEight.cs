@@ -499,6 +499,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         ado.VACCINE_TYPE_NAME = item.VACCINE_TYPE_NAME;
                         lstAdo.Add(ado);
                     }
+                    // Bản ghi MỚI: điền sẵn giá trị mặc định theo toggle "Mặc định:" (chkDefaultVaccine3).
+                    ApplyDefaultVaccine(lstAdo);
                     gridControl1.DataSource = new List<ADO.VaccineTypeADO>();
                     gridControl1.DataSource = lstAdo;
                 }
@@ -506,6 +508,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tài khoản đang đăng nhập, dùng để đóng dấu người khám. Ưu tiên this.currentLoginName (đã tính
+        /// sẵn ở Load), thiếu thì đọc lại từ token — cùng khuôn với SetDataCboExamLoginName.
+        /// </summary>
+        private string GetCurrentLoginNameForExam()
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(this.currentLoginName)) return this.currentLoginName;
+                return Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
             }
         }
 
@@ -566,6 +586,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_KIDNEY_UROLOGY_LOGINNAME = cboExamKidneyUrologyLoginName3.EditValue != null ? cboExamKidneyUrologyLoginName3.EditValue.ToString() : null;
                 obj.EXAM_NEURO_MENTAL_LOGINNAME = cboExamNeuroMentalLoginName3.EditValue != null ? cboExamNeuroMentalLoginName3.EditValue.ToString() : null;
                 obj.EXAM_MENTAL_LOGINNAME = cboExamMentalLoginName3.EditValue != null ? cboExamMentalLoginName3.EditValue.ToString() : null;
+                // Mục "Tâm thần" (Khám lâm sàng): khi TẠO MỚI bản ghi HIS_KSK_UNDER_EIGHTEEN mà chưa
+                // chọn người khám thì đóng dấu tài khoản đang đăng nhập, để bản ghi luôn truy được ai khám.
+                // Chỉ áp lúc tạo mới (currentKskUnderEight == null) và KHÔNG ghi đè nếu bác sĩ đã chọn người khác.
+                if (currentKskUnderEight == null && string.IsNullOrWhiteSpace(obj.EXAM_MENTAL_LOGINNAME))
+                {
+                    obj.EXAM_MENTAL_LOGINNAME = GetCurrentLoginNameForExam();
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "KskUnderEighteen: tao moi -> dong dau EXAM_MENTAL_LOGINNAME=" + obj.EXAM_MENTAL_LOGINNAME);
+                }
                 obj.EXAM_CLINICAL_OTHER_LOGINNAME = cboExamClinicalOtherLoginName3.EditValue != null ? cboExamClinicalOtherLoginName3.EditValue.ToString() : null;
                 obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName3.EditValue != null ? cboExamEyeLoginName3.EditValue.ToString() : null;
                 obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName3.EditValue != null ? cboExamEntLoginName3.EditValue.ToString() : null;

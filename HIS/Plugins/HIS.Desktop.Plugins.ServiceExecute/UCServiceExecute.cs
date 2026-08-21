@@ -3087,6 +3087,17 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (aSereServ != null)
                 {
                     if (aSereServ == null) return;
+
+                    //PACS Carestream: mo link xem anh cua dung dich vu vua chon
+                    if (ConnectImageOption == ServiceExecuteCFG.ConnectImageOption__CARESTREAM)
+                    {
+                        if (!String.IsNullOrEmpty(aSereServ.TDL_PACS_TYPE_CODE))
+                        {
+                            OpenPacsLinkCarestream(aSereServ.ID);
+                        }
+                        return;
+                    }
+
                     if (ConnectImageOption != "1" || String.IsNullOrEmpty(aSereServ.TDL_PACS_TYPE_CODE)) return;
                     if (String.IsNullOrEmpty(ConfigSystems.URI_API_PACS)) return;
 
@@ -3834,6 +3845,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                //PACS Carestream: khong tai anh ve, chi mo link xem anh da luu
+                if (ConnectImageOption == ServiceExecuteCFG.ConnectImageOption__CARESTREAM)
+                {
+                    if (this.sereServ != null && !String.IsNullOrEmpty(this.sereServ.TDL_PACS_TYPE_CODE))
+                    {
+                        OpenPacsLinkCarestream(this.sereServ.ID);
+                        return;
+                    }
+                    LoadDataImageLocal();
+                    return;
+                }
+
                 bool checkPacs = true;
                 checkPacs = checkPacs && ConnectImageOption == "1";
                 checkPacs = checkPacs && !String.IsNullOrEmpty(this.sereServ.TDL_PACS_TYPE_CODE);
@@ -6189,6 +6212,176 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Mo hinh anh cua he thong PACS Carestream (OptionImage = 3).
+        ///
+        /// Khac PACS Vietsens (OptionImage = 1) la HIS tai anh ve hien tren luoi:
+        /// Carestream chi tra ve MOT LINK xem anh. PACS goi /api/studycompleted day link sang HIS,
+        /// HIS luu tai HIS_SERE_SERV_EXT.JSON_FORM_ID. HIS KHONG tu sinh link nen buoc nay
+        /// khong goi sang PACS, chi mo link da luu.
+        ///
+        /// Uu tien mo man hinh Xem ket qua y lenh (HIS.Desktop.Plugins.ServiceReqResultView):
+        /// man do da co san WebView nhung (EO.WebBrowser - nhan Chromium) va da doc JSON_FORM_ID,
+        /// nen nguoi dung xem anh ngay trong HIS thay vi bat trinh duyet ngoai.
+        /// Mo that bai thi quay ve mo bang trinh duyet mac dinh.
+        /// </summary>
+        private void OpenPacsLinkCarestream(long sereServId)
+        {
+            try
+            {
+                if (sereServId <= 0) return;
+
+                string link = this.GetPacsLinkCarestream(sereServId);
+                if (String.IsNullOrWhiteSpace(link))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.ChuaCoHinhAnhTuPacs,
+                        ResourceMessage.ThongBao, MessageBoxButtons.OK);
+                    return;
+                }
+
+                //Truyen link sang de man hinh Xem ket qua khong phai lay lai lan nua.
+                if (this.ShowServiceReqResultView(sereServId, link))
+                {
+                    return;
+                }
+
+                //Du phong: Vue Motion la web viewer nen mo bang trinh duyet mac dinh.
+                //Link da duoc PACS ma hoa san (urltoken) => truyen nguyen van, KHONG encode lai.
+                System.Diagnostics.Process.Start(link);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.KhongMoDuocHinhAnhTuPacs,
+                    ResourceMessage.ThongBao, MessageBoxButtons.OK);
+            }
+        }
+
+        /// <summary>
+        /// Mo man hinh Xem ket qua y lenh cho mot dich vu, kem link xem anh da co.
+        /// Tra ve false neu khong mo duoc de ben goi dung phuong an du phong (mo trinh duyet).
+        ///
+        /// Luu y: PluginInstanceBehavior.ShowModule tra ve void va tu bat het exception ben trong,
+        /// nen phai TU kiem tra module co ton tai / co quyen truoc khi goi — neu khong,
+        /// nhanh du phong se khong bao gio chay.
+        /// </summary>
+        private bool ShowServiceReqResultView(long sereServId, string viewLink)
+        {
+            try
+            {
+                if (this.moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("moduleData is null. Khong mo duoc " + ModuleLinkString.ServiceReqResultView);
+                    return false;
+                }
+
+                Inventec.Desktop.Common.Modules.Module module = GlobalVariables.currentModuleRaws != null
+                    ? GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == ModuleLinkString.ServiceReqResultView)
+                    : null;
+
+                if (module == null || !module.IsPlugin || module.ExtensionInfo == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "Khong tim thay module hoac tai khoan chua duoc cap quyen. ModuleLink: " + ModuleLinkString.ServiceReqResultView);
+                    return false;
+                }
+
+                List<object> listArgs = new List<object>();
+                listArgs.Add(this.moduleData);
+                listArgs.Add(sereServId);
+                listArgs.Add(viewLink);
+
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    ModuleLinkString.ServiceReqResultView,
+                    this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Lay link da luu tai HIS_SERE_SERV_EXT.JSON_FORM_ID.
+        /// Uu tien du lieu dang co tren man hinh, chua co thi lay bo sung tu server
+        /// (PACS co the vua tra link sau khi man hinh da mo).
+        /// </summary>
+        private string GetPacsLinkCarestream(long sereServId)
+        {
+            //Uu tien goi backend: HIS tu sinh link DA MA HOA qua EncryptQSSecure nen link luon con
+            //hieu luc, khong phu thuoc han cua urltoken da luu. Backend tu quyet dinh thu tu uu tien
+            //giua "tu sinh" va "dung link da luu" theo cau hinh ViewerLinkOption.
+            string link = this.GetPacsLinkFromServer(sereServId);
+            if (!String.IsNullOrWhiteSpace(link))
+            {
+                return link;
+            }
+
+            //Du phong khi khong goi duoc backend: dung link PACS da day sang va luu tai
+            //HIS_SERE_SERV_EXT.JSON_FORM_ID.
+            return this.GetSavedPacsLinkCarestream(sereServId);
+        }
+
+        /// <summary>
+        /// Goi api/HisSereServExt/GetLinkResult - dung API ma man hinh Xem ket qua y lenh dang dung.
+        /// </summary>
+        private string GetPacsLinkFromServer(long sereServId)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                string link = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Get<string>(RequestUriStore.HIS_SERE_SERV_EXT_GET_LINK_RESULT,
+                        ApiConsumer.ApiConsumers.MosConsumer, sereServId, param);
+
+                if (String.IsNullOrWhiteSpace(link) || !link.Trim().StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong lay duoc link hinh anh PACS tu server. SERE_SERV_ID: " + sereServId);
+                    return null;
+                }
+                return link.Trim();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Link PACS da day sang qua /api/studycompleted, luu tai HIS_SERE_SERV_EXT.JSON_FORM_ID.
+        /// Man hinh co the da mo truoc khi PACS tra link nen nap lai tu server neu cache chua co.
+        /// </summary>
+        private string GetSavedPacsLinkCarestream(long sereServId)
+        {
+            try
+            {
+                MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT ext =
+                    dicSereServExt != null && dicSereServExt.ContainsKey(sereServId) ? dicSereServExt[sereServId] : null;
+
+                if (ext == null || String.IsNullOrWhiteSpace(ext.JSON_FORM_ID))
+                {
+                    ProcessDicSereServExt(new List<long>() { sereServId });
+                    ext = dicSereServExt != null && dicSereServExt.ContainsKey(sereServId) ? dicSereServExt[sereServId] : null;
+                }
+
+                if (ext == null || String.IsNullOrWhiteSpace(ext.JSON_FORM_ID))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Chua co link hinh anh PACS Carestream. SERE_SERV_ID: " + sereServId);
+                    return null;
+                }
+
+                return ext.JSON_FORM_ID.Trim();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
         }
         #endregion

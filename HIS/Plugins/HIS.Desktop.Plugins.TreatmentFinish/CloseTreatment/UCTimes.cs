@@ -79,6 +79,24 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                             {
                                 blockTime.Enabled = false;
                                 blockTime.ForeColor = new Color();
+
+                                //Dang duoc giu tam (viec 54282): mau rieng, cua minh thi van bam duoc
+                                if (times[j].IS_HOLDING == 1)
+                                {
+                                    if (times[j].IS_MINE == 1)
+                                    {
+                                        blockTime.Enabled = true;
+                                        //Nen dac chu trang thay vi xanh nhat: o minh dang giu phai
+                                        //nhin ra ngay giua luoi o trang (viec 54282)
+                                        blockTime.ForeColor = Color.White;
+                                        blockTime.BackColor = Color.FromArgb(21, 101, 192);
+                                    }
+                                    else
+                                    {
+                                        blockTime.ForeColor = Color.FromArgb(180, 83, 9);
+                                        blockTime.BackColor = Color.FromArgb(253, 240, 216);
+                                    }
+                                }
                             }
 
                             blockTime.Tag = times[j];

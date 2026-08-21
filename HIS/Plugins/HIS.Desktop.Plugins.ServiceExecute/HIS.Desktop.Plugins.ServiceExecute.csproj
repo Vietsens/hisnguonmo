@@ -402,6 +402,7 @@
       <DependentUpon>frmIcd.cs</DependentUpon>
     </Compile>
     <Compile Include="KeyboardWorker.cs" />
+    <Compile Include="ModuleLinkString.cs" />
     <Compile Include="PACS\ApiConsumerRaw.cs" />
     <Compile Include="PACS\ImageRequestADO.cs" />
     <Compile Include="PACS\ImageResponseADO.cs" />

@@ -208,6 +208,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 gridControlTreatmentBedRoom.ToolTipController = this.toolTipController1;
                 LoadKey();
                 assignBedOption = HisConfigCFG.AssignBedOption;
+                // Doc 1 lan — KHONG goi HisConfigs.Get trong vong lap dung cay (QT-11)
+                this.isShowAnticipateByUseDate = HisConfigCFG.ShowAnticipatePresByUseDate;
+                SetAnticipateColumnsVisible();
                 InitUiByConfig();
                 InitSubclinicalResultButton();
             }
@@ -706,6 +709,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.gridColumn1.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn1.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gc_ClassifyName.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gc_ClassifyName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gc_ClassifyName.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gc_ClassifyName.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gc_CareLevelName.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gc_CareLevelName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gc_CareLevelName.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gc_CareLevelName.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gc_MedisoftH.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gc_MedisoftH.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -827,10 +832,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 
                 }
 
-                CommonParam par = new CommonParam();
+                CommonParam par = new CommonParam(); 
                 MOS.Filter.HisTreatmentFilter _TreatmentFilter = new HisTreatmentFilter();
                 _TreatmentFilter.IDs = _TreatmentBedRoomADOs.Select(o => o.TREATMENT_ID).ToList();
                 histreatment = new BackendAdapter(par).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, _TreatmentFilter, par);
+                FillCareLevelName(_TreatmentBedRoomADOs);
                 LoadMchSyncStatusDict(_TreatmentBedRoomADOs);
                 EnsureMchStatusColumn();
                 gridControlTreatmentBedRoom.BeginUpdate();
@@ -859,6 +865,67 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gan ten phan loai cham soc cho tung dong luoi.
+        /// View L_HIS_TREATMENT_BED_ROOM khong tra ve CARE_LEVEL_ID nen phai lay tu danh sach HIS_TREATMENT da nap cung trang du lieu,
+        /// sau do doi chieu sang danh muc HIS_CARE_LEVEL trong cache
+        /// </summary>
+        private void FillCareLevelName(List<TreatmentBedRoomADO> treatmentBedRoomAdos)
+        {
+            try
+            {
+                if (treatmentBedRoomAdos == null || treatmentBedRoomAdos.Count == 0)
+                    return;
+
+                foreach (TreatmentBedRoomADO ado in treatmentBedRoomAdos)
+                {
+                    ado.CARE_LEVEL_NAME = null;
+                }
+
+                if (histreatment == null || histreatment.Count == 0)
+                    return;
+
+                List<HIS_CARE_LEVEL> careLevels = BackendDataWorker.Get<HIS_CARE_LEVEL>();
+                if (careLevels == null || careLevels.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("UCBedRoomPartial.FillCareLevelName. Khong lay duoc danh muc HIS_CARE_LEVEL tu cache");
+                    return;
+                }
+
+                Dictionary<long, string> careLevelNameById = new Dictionary<long, string>();
+                foreach (HIS_CARE_LEVEL careLevel in careLevels)
+                {
+                    if (careLevel != null && !careLevelNameById.ContainsKey(careLevel.ID))
+                        careLevelNameById.Add(careLevel.ID, careLevel.CARE_LEVEL_NAME);
+                }
+
+                Dictionary<long, long> careLevelIdByTreatmentId = new Dictionary<long, long>();
+                foreach (HIS_TREATMENT treatment in histreatment)
+                {
+                    if (treatment == null || !treatment.CARE_LEVEL_ID.HasValue)
+                        continue;
+
+                    if (!careLevelIdByTreatmentId.ContainsKey(treatment.ID))
+                        careLevelIdByTreatmentId.Add(treatment.ID, treatment.CARE_LEVEL_ID.Value);
+                }
+
+                foreach (TreatmentBedRoomADO ado in treatmentBedRoomAdos)
+                {
+                    long careLevelId = 0;
+                    if (!careLevelIdByTreatmentId.TryGetValue(ado.TREATMENT_ID, out careLevelId))
+                        continue;
+
+                    string careLevelName = null;
+                    if (careLevelNameById.TryGetValue(careLevelId, out careLevelName))
+                        ado.CARE_LEVEL_NAME = careLevelName;
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -1049,6 +1116,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
+                //Nạp cache y lệnh của đợt điều trị — PHẢI trước khi dựng cây ngày (QT-03)  
+                LoadAnticipateCache(treatmentId);
                 //ServiceReq3 OrderByDateTime Hiển thị các ngày có chỉ định dịch vụ
                 LoadDataDateByTreatmentToTreeList(treatmentId);
                 SetEnableButton(true);
@@ -1569,27 +1638,37 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     List<long> listTreeListIDs = new List<long>();
 
                     List<ServiceReqGroupByDateADO> Result = new List<ADO.ServiceReqGroupByDateADO>();
-                    foreach (var item in rs)
-                    {
-                        ServiceReqGroupByDateADO adoParent = new ADO.ServiceReqGroupByDateADO(item);
-                        listTreeListIDs.Add(adoParent.TREELIST_ID);
-                        if (adoParent.TREELIST_ID > 0)
-                            Result.Add(adoParent);
 
-                        if (ListTracking != null)
+                    if (this.isShowAnticipateByUseDate)
+                    {
+                        // Xếp node theo NGÀY HIỆU LỰC: đơn dự trù mang ngày dự trù, đơn thường
+                        // mang ngày kê. Ngày kê chỉ còn toàn đơn dự trù sẽ tự biến mất (QT-04, QT-06)
+                        Result = BuildTreeNodesByEffectiveDate(treatmentId, rs, ListTracking);
+                    }
+                    else
+                    {
+                        foreach (var item in rs)
                         {
-                            foreach (var tracking in ListTracking)    
+                            ServiceReqGroupByDateADO adoParent = new ADO.ServiceReqGroupByDateADO(item);
+                            listTreeListIDs.Add(adoParent.TREELIST_ID);
+                            if (adoParent.TREELIST_ID > 0)
+                                Result.Add(adoParent);
+
+                            if (ListTracking != null)
                             {
-                                if (adoParent.InstructionDate.ToString().Substring(0, 8) == tracking.TRACKING_TIME.ToString().Substring(0, 8))
+                                foreach (var tracking in ListTracking)
                                 {
-                                    ServiceReqGroupByDateADO adoChild = new ADO.ServiceReqGroupByDateADO(item, true, tracking.TRACKING_TIME, listTreeListIDs);
-                                    listTreeListIDs.Add(adoChild.TREELIST_ID);
-                                    adoChild.isParent = false;
-                                    adoChild.InstructionDate = tracking.TRACKING_TIME;
-                                    adoChild.TRACKING_ID = tracking.ID;
-                                    adoChild.TRACKING_TIME = tracking.TRACKING_TIME;
-                                    if (adoChild.TREELIST_ID > 0)
-                                        Result.Add(adoChild);
+                                    if (adoParent.InstructionDate.ToString().Substring(0, 8) == tracking.TRACKING_TIME.ToString().Substring(0, 8))
+                                    {
+                                        ServiceReqGroupByDateADO adoChild = new ADO.ServiceReqGroupByDateADO(item, true, tracking.TRACKING_TIME, listTreeListIDs);
+                                        listTreeListIDs.Add(adoChild.TREELIST_ID);
+                                        adoChild.isParent = false;
+                                        adoChild.InstructionDate = tracking.TRACKING_TIME;
+                                        adoChild.TRACKING_ID = tracking.ID;
+                                        adoChild.TRACKING_TIME = tracking.TRACKING_TIME;
+                                        if (adoChild.TREELIST_ID > 0)
+                                            Result.Add(adoChild);
+                                    }
                                 }
                             }
                         }
@@ -1599,7 +1678,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     treeListDateTime.DataSource = Result.OrderByDescending(o => o.InstructionDate).ToList();
                     treeListDateTime.BestFitColumns();
 
-                    this.rowClickByDate = Result[0];
+                    if (Result.Count > 0)
+                        this.rowClickByDate = Result[0];
                 }
                 IsLoadTreeListDateTime = false;
                 LoadDataSereServByTreatmentId(this.rowClickByDate);
@@ -1880,10 +1960,21 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 if (currentHisServiceReq != null && currentHisServiceReq.TreatmentId > 0)
                 {
                     CommonParam param = new CommonParam();
-                    DHisSereServ2Filter _sereServ2Filter = new DHisSereServ2Filter();
-                    _sereServ2Filter.TREATMENT_ID = currentHisServiceReq.TreatmentId;
-                    _sereServ2Filter.INTRUCTION_DATE = Int64.Parse(currentHisServiceReq.InstructionDate.ToString().Substring(0, 8) + "000000");
-                    dataNew = new BackendAdapter(param).Get<List<DHisSereServ2>>("api/HisSereServ/GetDHisSereServ2", ApiConsumers.MosConsumer, _sereServ2Filter, param);
+                    long dateNumber = Int64.Parse(currentHisServiceReq.InstructionDate.ToString().Substring(0, 8) + "000000");
+
+                    if (this.isShowAnticipateByUseDate && this.dictEffectiveDateByReqId != null)
+                    {
+                        // Lấy theo NGÀY HIỆU LỰC — đơn dự trù kê ngày khác vẫn vào được ngày này (QT-03)
+                        dataNew = LoadSereServByEffectiveDate(currentHisServiceReq.TreatmentId, dateNumber);
+                    }
+                    else
+                    {
+                        DHisSereServ2Filter _sereServ2Filter = new DHisSereServ2Filter();
+                        _sereServ2Filter.TREATMENT_ID = currentHisServiceReq.TreatmentId;
+                        _sereServ2Filter.INTRUCTION_DATE = dateNumber;
+                        dataNew = new BackendAdapter(param).Get<List<DHisSereServ2>>("api/HisSereServ/GetDHisSereServ2", ApiConsumers.MosConsumer, _sereServ2Filter, param);
+                    }
+
                     if (dataNew != null && dataNew.Count > 0)
                     {
                         if ((long)cboFilterByDepartment.EditValue == (long)0) //Theo khoa
@@ -1895,9 +1986,21 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         {
                             dataNew = dataNew.Where(o => o.TRACKING_ID == currentHisServiceReq.TRACKING_ID).ToList();
                         }
-                        HisServiceReqFilter filter = new HisServiceReqFilter();
-                        filter.IDs = dataNew.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
-                        dataServiceReq = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+
+                        if (this.isShowAnticipateByUseDate && this.dictServiceReqOfTreatment != null)
+                        {
+                            dataServiceReq = this.dictServiceReqOfTreatment.Values.ToList();
+                        }
+                        else
+                        {
+                            HisServiceReqFilter filter = new HisServiceReqFilter();
+                            filter.IDs = dataNew.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
+                            dataServiceReq = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                        }
+
+                        // Tra cứu O(1) — thay cho các đoạn dataServiceReq.Where(...) lặp trong vòng lặp
+                        Dictionary<long, HIS_SERVICE_REQ> dictReq = BuildServiceReqDictionary(dataServiceReq);
+
                         var listRootByType = dataNew.OrderByDescending(o => o.TRACKING_TIME).GroupBy(o => o.TDL_SERVICE_TYPE_ID).ToList();
                         var department = currentModule != null ? BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == currentModule.RoomId) : null;
                         var departmentId = department != null ? department.DEPARTMENT_ID : 0;
@@ -1911,15 +2014,13 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             long idDepartment = 0;
                             long idExecuteDepartment = 0;
                             short? IsTemporaryPres = 0;
-                            if (dataServiceReq != null && dataServiceReq.Count > 0)
+                            HIS_SERVICE_REQ reqOfType;
+                            if (dictReq.TryGetValue(types.First().SERVICE_REQ_ID ?? 0, out reqOfType) && reqOfType != null)
                             {
-                                if (dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID) != null && dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).ToList().Count > 0)
-                                {
-                                    idSerReqType = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().SERVICE_REQ_TYPE_ID;
-                                    idDepartment = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().REQUEST_DEPARTMENT_ID;
-                                    idExecuteDepartment = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().EXECUTE_DEPARTMENT_ID;
-                                    IsTemporaryPres = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().IS_TEMPORARY_PRES;
-                                }
+                                idSerReqType = reqOfType.SERVICE_REQ_TYPE_ID;
+                                idDepartment = reqOfType.REQUEST_DEPARTMENT_ID;
+                                idExecuteDepartment = reqOfType.EXECUTE_DEPARTMENT_ID;
+                                IsTemporaryPres = reqOfType.IS_TEMPORARY_PRES;
                             }
                             ssRootType.TRACKING_TIME = types.First().TRACKING_TIME;
                             ssRootType.TDL_SERVICE_TYPE_ID = types.First().TDL_SERVICE_TYPE_ID;
@@ -1932,12 +2033,16 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                 #region Child
                                 SereServADO ssRootSety = new SereServADO();
                                 ssRootSety.CONCRETE_ID__IN_SETY = ssRootType.CONCRETE_ID__IN_SETY + "_" + rootSety.First().SERVICE_REQ_ID;
-                                //qtcode
-                                if (rootSety.First().USE_TIME.HasValue)  
+                                // Đơn THUỐC dự trù -> điền 2 cột Ngày kê / Ngày dự trù (QT-07, QT-08).
+                                // Còn lại (config tắt, hoặc dịch vụ/giường/đơn máu có dự trù) -> giữ nguyên
+                                // chuỗi "Dự trù: ..." ở cột Khoa yêu cầu như hiện tại (QT-02, QT-11).
+                                if (!FillAnticipateDisplay(ssRootSety, rootSety.First().SERVICE_REQ_ID)
+                                    && rootSety.First().USE_TIME.HasValue)
                                 {
+                                    //qtcode
                                     ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.Value));
+                                    //qtcode
                                 }
-                                //qtcode
                                 ssRootSety.PARENT_ID__IN_SETY = ssRootType.CONCRETE_ID__IN_SETY;
                                 ssRootSety.REQUEST_DEPARTMENT_ID = idDepartment;
                                 ssRootSety.EXECUTE_DEPARTMENT_ID = idExecuteDepartment;
@@ -1950,11 +2055,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                 ssRootSety.SERVICE_CODE = rootSety.First().SERVICE_REQ_CODE;
                                 ssRootSety.SERVICE_REQ_CODE = rootSety.First().SERVICE_REQ_CODE;
                                 ssRootSety.IS_TEMPORARY_PRES = IsTemporaryPres;
-                                if (dataServiceReq != null && dataServiceReq.Count > 0)
+                                HIS_SERVICE_REQ reqOfSety;
+                                if (dictReq.TryGetValue(rootSety.First().SERVICE_REQ_ID ?? 0, out reqOfSety) && reqOfSety != null)
                                 {
-                                    var serviceReq = dataServiceReq.FirstOrDefault(o => o.ID == rootSety.First().SERVICE_REQ_ID) ?? new HIS_SERVICE_REQ();
-                                    ssRootSety.SAMPLE_TIME = serviceReq.SAMPLE_TIME;
-                                    ssRootSety.RECEIVE_SAMPLE_TIME = serviceReq.RECEIVE_SAMPLE_TIME;
+                                    ssRootSety.SAMPLE_TIME = reqOfSety.SAMPLE_TIME;
+                                    ssRootSety.RECEIVE_SAMPLE_TIME = reqOfSety.RECEIVE_SAMPLE_TIME;
                                 }
                                 ssRootSety.TDL_TREATMENT_ID = rootSety.First().TDL_TREATMENT_ID;
                                 ssRootSety.PRESCRIPTION_TYPE_ID = rootSety.First().PRESCRIPTION_TYPE_ID;
@@ -2000,6 +2105,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                     }
                                     ado.AMOUNT_SER = string.Format("{0} - {1}", item.AMOUNT, item.SERVICE_UNIT_NAME);
                                     ado.IS_TEMPORARY_PRES = IsTemporaryPres;
+                                    // Dòng thuốc kế thừa cờ đánh dấu từ đơn cha để cả đơn cùng tô màu (QT-08)
+                                    ado.IS_ANTICIPATE = ssRootSety.IS_ANTICIPATE;
+                                    ado.INSTRUCTION_DATE_STR = ssRootSety.INSTRUCTION_DATE_STR;
                                     SereServADOs.Add(ado);
                                     #endregion
                                 }
@@ -2094,14 +2202,33 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             try
             {
                 var departmentId = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == currentModule.RoomId).DEPARTMENT_ID;
-                var listRootByTracking = dataNew.OrderByDescending(o => o.TRACKING_TIME).GroupBy(o => o.TRACKING_TIME).ToList();
+
+                // Tra cứu O(1) — thay cho các đoạn dataServiceReq.Where(...) lặp trong vòng lặp
+                Dictionary<long, HIS_SERVICE_REQ> dictReq = BuildServiceReqDictionary(dataServiceReq);
+
+                // QT-09 — đơn dự trù đến từ ngày khác gom thành nhóm riêng, đặt lên đầu cây.
+                // Config tắt: không có key "A_" nào, thứ tự nhóm giữ nguyên như trước.
+                var groupedByKey = dataNew.OrderByDescending(o => o.TRACKING_TIME)
+                    .GroupBy(o => BuildAllTabGroupKey(o)).ToList();
+                var listRootByTracking = groupedByKey.Where(g => IsAnticipateGroupKey(g.Key)).ToList();
+                listRootByTracking.AddRange(groupedByKey.Where(g => !IsAnticipateGroupKey(g.Key)));
+
                 foreach (var tracking in listRootByTracking)
                 {
                     #region GrandFather
+                    bool isAnticipateGroup = IsAnticipateGroupKey(tracking.Key);
                     SereServADO ssRootTrackingTime = new ADO.SereServADO();
-                    ssRootTrackingTime.CONCRETE_ID__IN_SETY = tracking.First().TRACKING_TIME + "_";
-                    string dayHospitalize = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(tracking.First().TRACKING_TIME ?? 0);
-                    ssRootTrackingTime.SERVICE_CODE = !string.IsNullOrEmpty(dayHospitalize) ? (System.String.Format("{0:dd/MM/yyyy HH:mm}", dayHospitalize)).Substring(0, (System.String.Format("{0:dd/MM/yyyy HH:mm}", dayHospitalize)).Length - 3) : "Chưa tạo tờ điều trị";
+                    ssRootTrackingTime.CONCRETE_ID__IN_SETY = tracking.Key + "_";
+                    if (isAnticipateGroup)
+                    {
+                        ssRootTrackingTime.SERVICE_CODE = BuildAnticipateGroupName(tracking.First().SERVICE_REQ_ID);
+                        ssRootTrackingTime.IS_ANTICIPATE = true;
+                    }
+                    else
+                    {
+                        string dayHospitalize = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(tracking.First().TRACKING_TIME ?? 0);
+                        ssRootTrackingTime.SERVICE_CODE = !string.IsNullOrEmpty(dayHospitalize) ? (System.String.Format("{0:dd/MM/yyyy HH:mm}", dayHospitalize)).Substring(0, (System.String.Format("{0:dd/MM/yyyy HH:mm}", dayHospitalize)).Length - 3) : "Chưa tạo tờ điều trị";
+                    }
                     SereServADOs.Add(ssRootTrackingTime);
                     int count = 0;
                     #endregion
@@ -2118,15 +2245,13 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         long idDepartment = 0;
                         long idExecuteDepartment = 0;
                         short? IsTemporaryPres = 0;
-                        if (dataServiceReq != null && dataServiceReq.Count > 0)
+                        HIS_SERVICE_REQ reqOfType;
+                        if (dictReq.TryGetValue(types.First().SERVICE_REQ_ID ?? 0, out reqOfType) && reqOfType != null)
                         {
-                            if (dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID) != null && dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).ToList().Count > 0)
-                            {
-                                idSerReqType = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().SERVICE_REQ_TYPE_ID;
-                                idDepartment = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().REQUEST_DEPARTMENT_ID;
-                                idExecuteDepartment = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().EXECUTE_DEPARTMENT_ID;
-                                IsTemporaryPres = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().IS_TEMPORARY_PRES;
-                            }
+                            idSerReqType = reqOfType.SERVICE_REQ_TYPE_ID;
+                            idDepartment = reqOfType.REQUEST_DEPARTMENT_ID;
+                            idExecuteDepartment = reqOfType.EXECUTE_DEPARTMENT_ID;
+                            IsTemporaryPres = reqOfType.IS_TEMPORARY_PRES;
                         }
                         ssRootType.TRACKING_TIME = types.First().TRACKING_TIME;
                         ssRootType.TDL_SERVICE_TYPE_ID = types.First().TDL_SERVICE_TYPE_ID;
@@ -2144,12 +2269,16 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             ssRootSety.EXECUTE_DEPARTMENT_ID = idExecuteDepartment;
                             ssRootSety.SERVICE_REQ_TYPE_ID = BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>().FirstOrDefault(p => p.ID == idSerReqType) != null ?
                             BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>().FirstOrDefault(p => p.ID == idSerReqType).ID : 0;
-                            //qtcode
-                            if (rootSety.First().USE_TIME.HasValue)
+                            // Đơn THUỐC dự trù -> điền 2 cột Ngày kê / Ngày dự trù (QT-07, QT-08).
+                            // Còn lại (config tắt, hoặc dịch vụ/giường/đơn máu có dự trù) -> giữ nguyên
+                            // chuỗi "Dự trù: ..." ở cột Khoa yêu cầu như hiện tại (QT-02, QT-11).
+                            if (!FillAnticipateDisplay(ssRootSety, rootSety.First().SERVICE_REQ_ID)
+                                && rootSety.First().USE_TIME.HasValue)
                             {
+                                //qtcode
                                 ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.Value));
+                                //qtcode
                             }
-                            //qtcode
                             ssRootSety.TRACKING_TIME = rootSety.First().TRACKING_TIME;
                             ssRootSety.SERVICE_REQ_ID = rootSety.First().SERVICE_REQ_ID;
                             ssRootSety.SERVICE_REQ_STT_ID = rootSety.First().SERVICE_REQ_STT_ID;
@@ -2161,11 +2290,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             ssRootSety.SERVICE_CODE = rootSety.First().SERVICE_REQ_CODE;
                             ssRootSety.SERVICE_REQ_CODE = rootSety.First().SERVICE_REQ_CODE;
                             ssRootSety.IS_TEMPORARY_PRES = IsTemporaryPres;
-                            if (dataServiceReq != null && dataServiceReq.Count > 0)
+                            HIS_SERVICE_REQ reqOfSety;
+                            if (dictReq.TryGetValue(rootSety.First().SERVICE_REQ_ID ?? 0, out reqOfSety) && reqOfSety != null)
                             {
-                                var serviceReq = dataServiceReq.FirstOrDefault(o => o.ID == rootSety.First().SERVICE_REQ_ID) ?? new HIS_SERVICE_REQ();
-                                ssRootSety.SAMPLE_TIME = serviceReq.SAMPLE_TIME;
-                                ssRootSety.RECEIVE_SAMPLE_TIME = serviceReq.RECEIVE_SAMPLE_TIME;
+                                ssRootSety.SAMPLE_TIME = reqOfSety.SAMPLE_TIME;
+                                ssRootSety.RECEIVE_SAMPLE_TIME = reqOfSety.RECEIVE_SAMPLE_TIME;
                             }
                             ssRootSety.SERVICE_NAME = String.Format("- {0} - {1}", rootSety.First().REQUEST_ROOM_NAME, rootSety.First().REQUEST_DEPARTMENT_NAME);
                             var time = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rootSety.First().TDL_INTRUCTION_TIME ?? 0);
@@ -2210,6 +2339,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                 }
 
                                 ado.AMOUNT_SER = string.Format("{0} - {1}", item.AMOUNT, item.SERVICE_UNIT_NAME);
+                                // Dòng thuốc kế thừa cờ đánh dấu từ đơn cha để cả đơn cùng tô màu (QT-08)
+                                ado.IS_ANTICIPATE = ssRootSety.IS_ANTICIPATE;
+                                ado.INSTRUCTION_DATE_STR = ssRootSety.INSTRUCTION_DATE_STR;
                                 SereServADOs.Add(ado);
                                 #endregion
                             }

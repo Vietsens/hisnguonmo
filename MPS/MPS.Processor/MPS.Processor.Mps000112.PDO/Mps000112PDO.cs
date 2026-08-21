@@ -84,6 +84,34 @@ namespace MPS.Processor.Mps000112.PDO
 			this._TreatmentType = lst;
 		}
 
+		public Mps000112PDO(V_HIS_TRANSACTION transaction, V_HIS_PATIENT patient, decimal ratio, V_HIS_PATIENT_TYPE_ALTER PatyAlterBHYT, List<V_HIS_DEPARTMENT_TRAN> departmentTrans, Mps000112ADO ado, List<V_HIS_SERE_SERV> sereServs, List<HIS_SERE_SERV_DEPOSIT> sereServDeposits, List<HIS_PAY_FORM> payForms)
+		{
+			this._Transaction = transaction;
+			this._Patient = patient;
+			this.ratio = ratio;
+			this._PatyalterBHYT = PatyAlterBHYT;
+			this._DepartmentTranAllByTreatment = departmentTrans;
+			this.MpsADO = ado;
+			this._ListSereServ = sereServs;
+			this._ListSereServDeposit = sereServDeposits;
+			this._PayForms = payForms;
+		}
+
+		public Mps000112PDO(V_HIS_TRANSACTION transaction, V_HIS_PATIENT patient, decimal ratio, V_HIS_PATIENT_TYPE_ALTER PatyAlterBHYT, List<V_HIS_DEPARTMENT_TRAN> departmentTrans, Mps000112ADO ado, V_HIS_TREATMENT treatment, List<HIS_TREATMENT_TYPE> lst, List<V_HIS_SERE_SERV> sereServs, List<HIS_SERE_SERV_DEPOSIT> sereServDeposits, List<HIS_PAY_FORM> payForms)
+		{
+			this._Transaction = transaction;
+			this._Patient = patient;
+			this.ratio = ratio;
+			this._PatyalterBHYT = PatyAlterBHYT;
+			this._DepartmentTranAllByTreatment = departmentTrans;
+			this.MpsADO = ado;
+			this.treatment = treatment;
+			this._TreatmentType = lst;
+			this._ListSereServ = sereServs;
+			this._ListSereServDeposit = sereServDeposits;
+			this._PayForms = payForms;
+		}
+
 
 	}
 }

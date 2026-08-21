@@ -253,6 +253,12 @@
   <data name="TienGiamDinhTrangThaiKhongKiemTraDuoc" xml:space="preserve">
     <value>Không kiểm tra được</value>
   </data>
+  <data name="TienGiamDinhTrangThaiCongQuaTai" xml:space="preserve">
+    <value>Cổng quá tải — chưa kiểm được, kiểm lại sau</value>
+  </data>
+  <data name="TienGiamDinhTrangThaiQuaThoiGianCho" xml:space="preserve">
+    <value>Quá thời gian chờ — chưa kiểm được, kiểm lại sau</value>
+  </data>
   <data name="TienGiamDinhSaiThongTinXacThuc" xml:space="preserve">
     <value>Sai thông tin xác thực</value>
   </data>
@@ -269,12 +275,29 @@
     <value>Đã hủy kiểm tra giữa chừng nên chưa kiểm hết hồ sơ. Không thực hiện kết xuất để tránh lọt hồ sơ chưa kiểm.</value>
   </data>
   <data name="TienGiamDinhChanXuat" xml:space="preserve">
-    <value>Có {0} hồ sơ mang lỗi nghiêm trọng trên hệ thống tiền giám định nên không thực hiện kết xuất. Vui lòng sửa hồ sơ rồi kiểm tra lại.</value>
+    <value>Không thực hiện kết xuất: {0} hồ sơ mang lỗi nghiêm trọng, {1} hồ sơ chưa kiểm tra được trên hệ thống tiền giám định.
+Hồ sơ chưa kiểm tra được cũng bị chặn vì chưa thể khẳng định là không có lỗi. Vui lòng sửa hồ sơ hoặc bấm "Kiểm tra lỗi" lại rồi kết xuất.</value>
   </data>
   <data name="TienGiamDinhCanhBaoTruocKhiXuat" xml:space="preserve">
-    <value>Có {0} hồ sơ có cảnh báo và {1} hồ sơ không kiểm tra được. Bạn có muốn tiếp tục kết xuất không?</value>
+    <value>Có {0} hồ sơ có cảnh báo trên hệ thống tiền giám định. Bạn có muốn tiếp tục kết xuất không?</value>
   </data>
   <data name="TienGiamDinhTongKetKetQua" xml:space="preserve">
     <value>Đã kiểm {0} hồ sơ: {1} lỗi nghiêm trọng, {2} cảnh báo, {3} không kiểm tra được.</value>
+  </data>
+  <data name="TienGiamDinhXuatKhongCoDuLieu" xml:space="preserve">
+    <value>Không có hồ sơ nào còn lỗi để xuất.</value>
+  </data>
+  <data name="TienGiamDinhXuatThanhCong" xml:space="preserve">
+    <value>Đã xuất {0} dòng lỗi của {1} hồ sơ ra tệp:
+{2}</value>
+  </data>
+  <data name="TienGiamDinhXuatThatBai" xml:space="preserve">
+    <value>Không ghi được tệp danh sách lỗi. Vui lòng kiểm tra quyền ghi vào thư mục đã chọn hoặc đóng tệp nếu đang mở.</value>
+  </data>
+  <data name="TienGiamDinhXuatTenTepMacDinh" xml:space="preserve">
+    <value>DanhSachLoiTienGiamDinh_{0}.xlsx</value>
+  </data>
+  <data name="TienGiamDinhXuatGhiChuCatBot" xml:space="preserve">
+    <value>(Danh sách lỗi của hồ sơ này đã bị cắt bớt do vượt ngưỡng — có thể còn lỗi chưa được liệt kê)</value>
   </data>
 </root>

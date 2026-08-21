@@ -285,9 +285,16 @@ namespace HIS.UC.ServiceRoom
                         detail.PatientTypeId = this.currentPatientTypeAlter.PATIENT_TYPE_ID;
                         if (this.dicNumOrderBlock.ContainsKey(room.ROOM_ID) && this.dicNumOrderBlock[room.ROOM_ID].NumOrderBlock != null)
                         {
-                            //detail.NumOrder = this.dicNumOrderBlock[room.ROOM_ID].NumOrderBlock.NUM_ORDER;
                             detail.NumOrderBlockId = this.dicNumOrderBlock[room.ROOM_ID].NumOrderBlock.NUM_ORDER_BLOCK_ID;
-                            //detail.NumOrderIssueId = this.dicNumOrderBlock[room.ROOM_ID].NumOrderBlock.ROOM_TIME_ID;
+
+                            //Gui kem ma giu cho de may chu chot luot giu thanh dat that (viec 54282).
+                            //NumOrder va NumOrderIssueId bat buoc di cung nhau, thieu mot trong hai la bi chan.
+                            if (this.dicNumOrderBlock[room.ROOM_ID].NumOrderIssueId.HasValue
+                                && this.dicNumOrderBlock[room.ROOM_ID].NumOrderIssueId.Value > 0)
+                            {
+                                detail.NumOrderIssueId = this.dicNumOrderBlock[room.ROOM_ID].NumOrderIssueId;
+                                detail.NumOrder = this.dicNumOrderBlock[room.ROOM_ID].NumOrderBlock.NUM_ORDER;
+                            }
                         }
 
                         datas.Add(detail);

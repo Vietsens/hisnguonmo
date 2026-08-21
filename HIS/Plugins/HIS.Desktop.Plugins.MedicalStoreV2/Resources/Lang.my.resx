@@ -811,4 +811,22 @@
     <value>ဆေးရုံမှာ စစ်ဆေးတွေ့ရှိခဲ့ပါတယ်။</value>
     <comment>Chẩn đoán vào viện</comment>
   </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheck.Caption" xml:space="preserve">
+    <value>စစ်ဆေးပြီး</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheck.ToolTip" xml:space="preserve">
+    <value>စာရွက်စာတမ်းနှင့် လက်မှတ်များ စစ်ဆေးပြီးကြောင်း မှတ်သားပါ</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheckUser.Caption" xml:space="preserve">
+    <value>စစ်ဆေးသူ</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheckTime.Caption" xml:space="preserve">
+    <value>စစ်ဆေးချိန်</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciStoreCheckStatus.Text" xml:space="preserve">
+    <value>စစ်ဆေးမှုအခြေအနေ:</value>
+  </data>
+  <data name="UCMedicalStoreV2.cboStoreCheckStatus.Properties.NullText" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
 </root>

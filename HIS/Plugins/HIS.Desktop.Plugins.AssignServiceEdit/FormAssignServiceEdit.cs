@@ -93,6 +93,11 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
         HIS_PATIENT_TYPE patientTypeByPT;
         List<V_HIS_SERVICE> lstService = null;
         private List<long> intructionTimeSelecteds;
+
+        //Anh chup trang thai cua tung sere_serv luc vua nap len form (key = SERE_SERV_ID).
+        //Dung de chi gui len UpdateServices nhung dong THUC SU thay doi,
+        //tranh gui thua lam bat oan cac chot kiem tra dich vu da thu tien o backend.
+        private Dictionary<long, string> originalSereServSignatures = new Dictionary<long, string>();
         #endregion
 
         #region Construct
@@ -718,11 +723,20 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 if (listSereServAdd != null && listSereServAdd.Count > 0)
                     allSereServ.AddRange(listSereServAdd);
 
+                //Ghi lai trang thai goc cua tung dich vu da co trong phieu (truoc khi nguoi dung sua)
+                this.SetOriginalSereServSignatures();
+
+                //Moi dich vu da co trong phieu chi duoc ghep DUNG MOT LAN voi 1 dong tren luoi,
+                //de tranh truong hop 1 dich vu co 2 dong trong phieu thi dong thu 2 khong ghep duoc
+                //va bi coi la "nguoi dung bo tick" khi Luu.
+                List<long> matchedCurrentIds = new List<long>();
+
                 foreach (var sereServ in allSereServ)
                 {
-                    var current = listSereServCurrent.FirstOrDefault(o => o.SERVICE_ID == sereServ.SERVICE_ID);
+                    var current = listSereServCurrent.FirstOrDefault(o => o.SERVICE_ID == sereServ.SERVICE_ID && !matchedCurrentIds.Contains(o.ID));
                     if (current != null) // load doi tuong da chon
                     {
+                        matchedCurrentIds.Add(current.ID);
                         sereServ.ID = current.ID;
                         sereServ.IsChecked = true;
                         sereServ.AMOUNT = current.AMOUNT;
@@ -799,6 +813,11 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                     sereServ.IsNotLoadDefaultPatientType = false;
                 }
 
+                //Bo sung vao luoi cac dich vu da co trong phieu nhung khong thuoc danh muc dich vu
+                //cua phong dang chon (dich vu do phong khac thuc hien). Truoc day cac dich vu nay
+                //khong co dong nao tren luoi nen luc Luu bi sinh lenh xoa ngoai y muon.
+                this.AppendOutOfRoomSereServs(matchedCurrentIds);
+
                 WaitingManager.Hide();
                 GridControlService.BeginUpdate();
                 GridControlService.DataSource = null;
@@ -821,6 +840,217 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 WaitingManager.Hide();
             }
         }
+        /// <summary>
+        /// Chuoi dai dien cho cac truong ma backend dung de xac dinh "dich vu co bi sua khong".
+        /// Chi so sanh dung cac truong nay: AMOUNT, PATIENT_TYPE_ID, PRIMARY_PATIENT_TYPE_ID, IS_EXPEND, IS_OUT_PARENT_FEE.
+        /// </summary>
+        private string BuildSereServSignature(ADO.HisSereServADO sereServ)
+        {
+            if (sereServ == null) return "";
+            return string.Format("{0}|{1}|{2}|{3}|{4}",
+                sereServ.AMOUNT,
+                sereServ.PATIENT_TYPE_ID,
+                sereServ.PRIMARY_PATIENT_TYPE_ID.HasValue ? sereServ.PRIMARY_PATIENT_TYPE_ID.Value.ToString() : "",
+                sereServ.IsExpend || sereServ.IS_EXPEND == IS_TRUE ? "1" : "0",
+                sereServ.IsOutKtcFee || sereServ.IS_OUT_PARENT_FEE == IS_TRUE ? "1" : "0");
+        }
+
+        private void SetOriginalSereServSignatures()
+        {
+            try
+            {
+                this.originalSereServSignatures = new Dictionary<long, string>();
+                if (listSereServCurrent == null) return;
+                foreach (var item in listSereServCurrent)
+                {
+                    this.originalSereServSignatures[item.ID] = this.BuildSereServSignature(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Kiem tra dong tren luoi co thay doi so voi luc nap len form hay khong.
+        /// </summary>
+        private bool IsSereServChanged(ADO.HisSereServADO sereServ)
+        {
+            try
+            {
+                if (sereServ == null || sereServ.ID <= 0) return true;
+                if (this.originalSereServSignatures == null || !this.originalSereServSignatures.ContainsKey(sereServ.ID)) return true;
+                return this.originalSereServSignatures[sereServ.ID] != this.BuildSereServSignature(sereServ);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Bo sung vao luoi cac dich vu da co trong phieu ma khong ghep duoc voi danh muc dich vu
+        /// cua phong dang chon. Cac dong nay duoc tick san va khoa sua de nguoi dung khong sua/xoa
+        /// dich vu do phong khac thuc hien.
+        /// </summary>
+        private void AppendOutOfRoomSereServs(List<long> matchedCurrentIds)
+        {
+            try
+            {
+                if (listSereServCurrent == null || listSereServCurrent.Count <= 0) return;
+                if (allSereServ == null) allSereServ = new List<ADO.HisSereServADO>();
+                if (matchedCurrentIds == null) matchedCurrentIds = new List<long>();
+
+                List<ADO.HisSereServADO> outOfRooms = listSereServCurrent.Where(o => !matchedCurrentIds.Contains(o.ID)).ToList();
+                if (outOfRooms.Count <= 0) return;
+
+                foreach (var current in outOfRooms)
+                {
+                    ADO.HisSereServADO row = new ADO.HisSereServADO();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<ADO.HisSereServADO>(row, current);
+
+                    row.IsChecked = true;
+                    row.IsOutOfRoomService = true;
+                    row.isMulti = false;
+                    row.serviceType = Base.GlobalStore.SERE_SERV_TYPE;
+                    row.ExecuteRoomId = current.ExecuteRoomId;
+                    row.AssignNumOrder = current.ASSIGN_NUM_ORDER;
+                    row.IsExpend = current.IS_EXPEND == IS_TRUE;
+                    row.IsNotUseBhyt = current.IS_NOT_USE_BHYT == IS_TRUE;
+                    row.IsOutKtcFee = current.IS_OUT_PARENT_FEE == IS_TRUE;
+                    row.SERVICE_NAME_HIDDEN = convertToUnSign3(row.SERVICE_NAME) + row.SERVICE_NAME;
+                    row.SERVICE_CODE_HIDDEN = convertToUnSign3(row.SERVICE_CODE) + row.SERVICE_CODE;
+
+                    allSereServ.Add(row);
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug("AssignServiceEdit: bo sung " + outOfRooms.Count + " dich vu cua phieu khong thuoc danh muc dich vu cua phong dang chon vao luoi");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Danh sach SERE_SERV_ID cua phieu da thu tien hoac da tam ung (chua bi huy).
+        /// </summary>
+        private List<long> GetPaidSereServIds()
+        {
+            List<long> result = new List<long>();
+            try
+            {
+                MOS.Filter.HisSereServBillFilter billFilter = new MOS.Filter.HisSereServBillFilter();
+                billFilter.TDL_SERVICE_REQ_ID = this.serviceReqId;
+                billFilter.IS_NOT_CANCEL = true;
+                var bills = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_BILL>>(
+                    "api/HisSereServBill/Get", ApiConsumer.ApiConsumers.MosConsumer, billFilter, null);
+                if (bills != null && bills.Count > 0)
+                {
+                    result.AddRange(bills.Select(o => o.SERE_SERV_ID).Distinct().ToList());
+                }
+
+                MOS.Filter.HisSereServDepositFilter depositFilter = new MOS.Filter.HisSereServDepositFilter();
+                depositFilter.TDL_SERVICE_REQ_ID = this.serviceReqId;
+                depositFilter.IS_CANCEL = false;
+                var deposits = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_DEPOSIT>>(
+                    "api/HisSereServDeposit/Get", ApiConsumer.ApiConsumers.MosConsumer, depositFilter, null);
+                if (deposits != null && deposits.Count > 0)
+                {
+                    result.AddRange(deposits.Select(o => o.SERE_SERV_ID).Distinct().ToList());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result.Distinct().ToList();
+        }
+
+        /// <summary>
+        /// Khong bao gio gui len backend lenh xoa/sua doi voi dich vu da thu tien.
+        /// Neu co thi hoi lai nguoi dung: "Yes" = giu nguyen dich vu da thu, chi luu dich vu them moi;
+        /// "No" = quay lai man hinh de kiem tra.
+        /// Luu y: "Yes" KHONG co nghia la van xoa/sua dich vu da thu.
+        /// </summary>
+        private bool VerifyPaidSereServBeforeSave(MOS.SDO.HisServiceReqUpdateSDO serviceReqUpdate)
+        {
+            try
+            {
+                if (serviceReqUpdate == null) return true;
+
+                bool hasDelete = serviceReqUpdate.DeleteSereServIds != null && serviceReqUpdate.DeleteSereServIds.Count > 0;
+                bool hasUpdate = serviceReqUpdate.UpdateServices != null && serviceReqUpdate.UpdateServices.Count > 0;
+                if (!hasDelete && !hasUpdate) return true;
+
+                List<long> paidIds = this.GetPaidSereServIds();
+                if (paidIds == null || paidIds.Count <= 0) return true;
+
+                List<long> touchedPaidIds = new List<long>();
+                if (hasDelete)
+                {
+                    touchedPaidIds.AddRange(serviceReqUpdate.DeleteSereServIds.Where(id => paidIds.Contains(id)).ToList());
+                }
+                if (hasUpdate)
+                {
+                    touchedPaidIds.AddRange(serviceReqUpdate.UpdateServices
+                        .Where(o => o.SereServId.HasValue && paidIds.Contains(o.SereServId.Value))
+                        .Select(o => o.SereServId.Value).ToList());
+                }
+                touchedPaidIds = touchedPaidIds.Distinct().ToList();
+                if (touchedPaidIds.Count <= 0) return true;
+
+                List<string> names = listSereServCurrent != null
+                    ? listSereServCurrent.Where(o => touchedPaidIds.Contains(o.ID))
+                        .Select(o => o.TDL_SERVICE_NAME ?? o.SERVICE_NAME).ToList()
+                    : new List<string>();
+                string nameStr = string.Join(", ", names);
+
+                WaitingManager.Hide();
+                DialogResult dialogResult = MessageBox.Show(this,
+                    string.Format(ResourceMessage.SuaChiDinhDichVu_DichVuDaThuTienKhongTheBoKhoiPhieu, nameStr),
+                    HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (dialogResult != DialogResult.Yes)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("AssignServiceEdit: nguoi dung chon Huy khi co dich vu da thu tien bi cham: " + nameStr);
+                    return false;
+                }
+                WaitingManager.Show();
+
+                //"Yes" = GIU NGUYEN dich vu da thu: loai khoi danh sach xoa va danh sach sua, roi luu phan con lai
+                if (hasDelete)
+                {
+                    serviceReqUpdate.DeleteSereServIds = serviceReqUpdate.DeleteSereServIds
+                        .Where(id => !touchedPaidIds.Contains(id)).ToList();
+                }
+                if (hasUpdate)
+                {
+                    serviceReqUpdate.UpdateServices = serviceReqUpdate.UpdateServices
+                        .Where(o => !o.SereServId.HasValue || !touchedPaidIds.Contains(o.SereServId.Value)).ToList();
+                }
+                Inventec.Common.Logging.LogSystem.Debug("AssignServiceEdit: giu nguyen dich vu da thu tien, chi luu phan con lai: " + nameStr);
+
+                //Neu sau khi giu nguyen dich vu da thu ma khong con gi de luu thi khong goi API
+                bool nothingLeft = (serviceReqUpdate.InsertServices == null || serviceReqUpdate.InsertServices.Count <= 0)
+                    && (serviceReqUpdate.DeleteSereServIds == null || serviceReqUpdate.DeleteSereServIds.Count <= 0)
+                    && (serviceReqUpdate.UpdateServices == null || serviceReqUpdate.UpdateServices.Count <= 0);
+                if (nothingLeft)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("AssignServiceEdit: sau khi giu nguyen dich vu da thu thi khong con gi de luu");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+
         private void SetAssignNumOrder(HisSereServADO sereServ)
         {
             try
@@ -1517,6 +1747,27 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                     var data = (ADO.HisSereServADO)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                     if (data != null)
                     {
+                        //Dich vu cua phieu nhung khong thuoc danh muc dich vu cua phong dang chon:
+                        //chi hien thi de nguoi dung biet, khong cho sua cac o thong tin
+                        if (data.IsOutOfRoomService)
+                        {
+                            if (e.Column.FieldName == "PATIENT_TYPE_ID" || e.Column.FieldName == "PRIMARY_PATIENT_TYPE_ID")
+                            {
+                                e.RepositoryItem = repositoryItemCustomCboDisable;
+                                return;
+                            }
+                            if (e.Column.FieldName == "IsExpend")
+                            {
+                                e.RepositoryItem = ButtonEdit_IsExpendDisable;
+                                return;
+                            }
+                            if (e.Column.FieldName == "AMOUNT")
+                            {
+                                e.RepositoryItem = repositoryItemSpinAmountDisable;
+                                return;
+                            }
+                        }
+
                         if (e.Column.FieldName == "PATIENT_TYPE_ID")
                         {
                             if (data.IS_NOT_FIXED_SERVICE)
@@ -2223,7 +2474,11 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
 
                 // gan du lieu cho sereServs Update
                 serviceReqUpdate.UpdateServices = new List<ServiceReqDetailSDO>();
-                List<HisSereServADO> SereServUpdates = lstdata.Where(o => o.serviceType == Base.GlobalStore.SERE_SERV_TYPE).ToList();
+                //Chi gui len nhung dong THUC SU thay doi so voi luc nap len form.
+                //Gui thua se lam bat oan cac chot kiem tra dich vu da thu tien o backend.
+                List<HisSereServADO> SereServUpdates = lstdata
+                    .Where(o => o.serviceType == Base.GlobalStore.SERE_SERV_TYPE && this.IsSereServChanged(o))
+                    .ToList();
 
                 foreach (var item in SereServUpdates)
                 {
@@ -2634,11 +2889,18 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 if (listSereServAdd != null && listSereServAdd.Count > 0)
                     allSereServ.AddRange(listSereServAdd);
 
+                //Ghi lai trang thai goc cua tung dich vu da co trong phieu (truoc khi nguoi dung sua)
+                this.SetOriginalSereServSignatures();
+
+                //Moi dich vu da co trong phieu chi duoc ghep DUNG MOT LAN voi 1 dong tren luoi
+                List<long> matchedCurrentIds = new List<long>();
+
                 foreach (var sereServ in allSereServ)
                 {
-                    var current = listSereServCurrent.FirstOrDefault(o => o.SERVICE_ID == sereServ.SERVICE_ID);
+                    var current = listSereServCurrent.FirstOrDefault(o => o.SERVICE_ID == sereServ.SERVICE_ID && !matchedCurrentIds.Contains(o.ID));
                     if (current != null) // load doi tuong da chon
                     {
+                        matchedCurrentIds.Add(current.ID);
                         sereServ.ID = current.ID;
                         sereServ.IsChecked = true;
                         sereServ.AMOUNT = current.AMOUNT;
@@ -2677,6 +2939,11 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                         sereServ.IsAssignDay = true;
                     }
                 }
+
+                //Bo sung vao luoi cac dich vu da co trong phieu nhung khong thuoc danh muc dich vu
+                //cua phong dang chon (dich vu do phong khac thuc hien)
+                this.AppendOutOfRoomSereServs(matchedCurrentIds);
+
                 WaitingManager.Hide();
                 GridControlService.BeginUpdate();
                 GridControlService.DataSource = null;
@@ -2746,6 +3013,13 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 valid = valid && CheckAmountValidation(serviceReqUpdate.InsertServices, serviceReqUpdate.UpdateServices, param);
                 valid = valid && VerifyCheckFeeWhileAssign();
                 if (!valid) return;
+
+                //Khong gui len backend lenh xoa/sua doi voi dich vu da thu tien/tam ung
+                if (!this.VerifyPaidSereServBeforeSave(serviceReqUpdate))
+                {
+                    WaitingManager.Hide();
+                    return;
+                }
 
                 // check theo cấu hình ICD - dịch vụ
                 string serviceErrStr = "";

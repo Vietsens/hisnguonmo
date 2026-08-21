@@ -65,6 +65,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal const string MOS_HIS_KSK_SYNC__VLG_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO";
         internal static string VLG_2062__CONNECTION_INFO;
 
+        //Trung tâm điều hành y tế (cổng dữ liệu y tế — HOC), liên thông KCB theo QĐ 3176.
+        //DÙNG CHUNG khóa với liên thông KSK của CÙNG cổng này (cùng tài khoản, cùng host):
+        //MaCsyt|Username|Password|ClientId|MaTinh|GrantType|TokenUrl|PushUrl|PrivateKey (5 trường đầu bắt buộc).
+        //Không khai báo = viện chưa đấu nối = ẩn ô chọn + 2 mục gửi, không phát sinh kết nối.
+        internal const string MOS_HIS_KSK_SYNC__HSSK_HOC_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO";
+        internal static string HSSK_HOC_2062__CONNECTION_INFO;
+
         internal static void LoadConfig()
         {
             try
@@ -82,6 +89,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 TIEN_GIAM_DINH__CONNECTION_INFO = GetValue(HIS_TIEN_GIAM_DINH__CONNECTION_INFO);
                 //Cổng tiếp nhận KDLYT Vĩnh Long
                 VLG_2062__CONNECTION_INFO = GetValue(MOS_HIS_KSK_SYNC__VLG_2062_CONNECTION_INFO);
+                //Trung tâm điều hành y tế (HOC) — liên thông KCB theo QĐ 3176
+                HSSK_HOC_2062__CONNECTION_INFO = GetValue(MOS_HIS_KSK_SYNC__HSSK_HOC_2062_CONNECTION_INFO);
             }
             catch (Exception ex)
             {

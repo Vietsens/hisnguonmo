@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *
@@ -20,25 +20,128 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// <summary>Cờ đã fill dữ liệu cho từng tab (index 0..7) — chống fill lại.</summary>
         private readonly bool[] tabFilled = new bool[8];
 
+        /// <summary>Chỉ số 3 tab chọn theo tuổi khi y lệnh chưa có bản ghi KSK nào.</summary>
+        private const int TAB_OVER_EIGHTEEN = 1;
+        private const int TAB_UNDER_EIGHTEEN = 2;
+        private const int TAB_UNDER_SIX = 7;
+
         /// <summary>
         /// Suy ra tab mặc định cần fill khi mở (mirror thứ tự ưu tiên của SetTabDefault) — dựa
         /// vào bản ghi KSK đã prefetch (pre*), KHÔNG cần chạy FillData toàn bộ trước.
+        /// Chưa có bản ghi nào thì chọn theo TUỔI bệnh nhân (xem ResolveDefaultTabByAge).
         /// </summary>
         private int ResolveDefaultTab()
         {
             try
             {
+                LogDefaultTabInputs();
+                // BẢNG RIÊNG CỦA TẪNG TAB XÉT TRƯỚC, HIS_KSK_GENERAL XÉT SAU CÙNG.
+                //
+                // HIS_KSK_GENERAL KHÔNG còn là dấu hiệu "hồ sơ Ksk định kỳ": từ khi cụm Kết luận (ICD-10
+                // kết luận, ICD tiền sự, KSK_TYPE_ID, ngày kết luận, người kết luận) được lưu tập trung vào
+                // bảng này thì LƯU Ở TAB NÀO CŨNG sinh ra một bản ghi GENERAL. Để nguyên luật cũ
+                // "có GENERAL -> tab 0" thì lưu ở tab dưới 18 tuổi xong mở lại bị đẩy về tab "Ksk định kỳ"
+                // (đã xác nhận bằng log KskTabDefault: general=1, under18=1, over18=0 -> trả về 0).
+                int byRecord = ResolveTabBySpecificRecord();
+                if (byRecord >= 0) return byRecord;
+                // Chỉ có GENERAL mà không có bảng riêng nào -> đúng là hồ sơ Ksk định kỳ.
                 if (preKskGenerals != null && preKskGenerals.Count > 0) return 0;
-                if (preKskOverEighteens != null && preKskOverEighteens.Count > 0) return 1;
-                if (preKskUnderEighteens != null && preKskUnderEighteens.Count > 0) return 2;
-                if (preKskPeriodDrivers != null && preKskPeriodDrivers.Count > 0) return 3;
-                if (preKskDriverCars != null && preKskDriverCars.Count > 0) return 4;
-                if (preKskOthers != null && preKskOthers.Count > 0) return 5;
-                // Occupational: SetTabDefault hiển thị tab 0 (giữ nguyên hành vi cũ).
-                if (preKskOccupationals != null && preKskOccupationals.Count > 0) return 0;
+                // Chưa có bản ghi nào -> chọn tab theo tuổi.
+                int byAge = ResolveDefaultTabByAge();
+                if (byAge >= 0) return byAge;
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
             return 0;
+        }
+
+        /// <summary>
+        /// Tab suy từ BẢNG RIÊNG của từng loại KSK (không xét HIS_KSK_GENERAL). Trả -1 khi
+        /// không bảng riêng nào có bản ghi.
+        ///
+        /// Nhiều bảng cùng có dự liệu (hồ sơ cũ nhập lẫn, hoặc đã khám nhiều loại) -> ưu tiên tab
+        /// KHỚP TUỔI bệnh nhân, vì đó mới là loại hồ sơ đang cần nhập.
+        /// </summary>
+        private int ResolveTabBySpecificRecord()
+        {
+            int byAge = ResolveDefaultTabByAge();
+            if (byAge >= 0 && HasRecordForTab(byAge)) return byAge;
+
+            if (Cnt(preKskOverEighteens) > 0) return TAB_OVER_EIGHTEEN;
+            if (Cnt(preKskUnderEighteens) > 0) return TAB_UNDER_EIGHTEEN;
+            if (Cnt(preKskPeriodDrivers) > 0) return 3;
+            if (Cnt(preKskDriverCars) > 0) return 4;
+            if (Cnt(preKskOthers) > 0) return 5;
+            if (Cnt(preKskUnderSixes) > 0) return TAB_UNDER_SIX;
+            // Ksk nghề nghiệp hiển thị ở tab 0 — giữ nguyên hành vi cũ.
+            if (Cnt(preKskOccupationals) > 0) return 0;
+            return -1;
+        }
+
+        /// <summary>3 tab chọn theo tuổi đã có bản ghi chưa.</summary>
+        private bool HasRecordForTab(int tab)
+        {
+            if (tab == TAB_OVER_EIGHTEEN) return Cnt(preKskOverEighteens) > 0;
+            if (tab == TAB_UNDER_EIGHTEEN) return Cnt(preKskUnderEighteens) > 0;
+            if (tab == TAB_UNDER_SIX) return Cnt(preKskUnderSixes) > 0;
+            return false;
+        }
+
+        /// <summary>
+        /// Ghi nhật ký số bản ghi từng loại KSK + tab suy theo tuổi, để đọc được VÌ SAO mở ra
+        /// lại đứng ở tab này. Không đổi hành vi — chỉ ghi log.
+        /// </summary>
+        private void LogDefaultTabInputs()
+        {
+            try
+            {
+                LogSystem.Debug(string.Format(
+                    "KskTabDefault: general={0}, over18={1}, under18={2}, periodDriver={3},"
+                    + " driverCar={4}, other={5}, occupational={6}, underSix={7} | tabByAge={8}"
+                    + " | dob={9}, intructionTime={10}",
+                    Cnt(preKskGenerals), Cnt(preKskOverEighteens), Cnt(preKskUnderEighteens),
+                    Cnt(preKskPeriodDrivers), Cnt(preKskDriverCars), Cnt(preKskOthers),
+                    Cnt(preKskOccupationals), Cnt(preKskUnderSixes), ResolveDefaultTabByAge(),
+                    (currentServiceReq != null ? currentServiceReq.TDL_PATIENT_DOB : 0),
+                    (currentServiceReq != null ? currentServiceReq.INTRUCTION_TIME : 0)));
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        private static int Cnt(System.Collections.ICollection list)
+        {
+            return (list != null) ? list.Count : -1;
+        }
+
+        /// <summary>
+        /// Tab mặc định theo TUỔI bệnh nhân tại thời điểm khám, dùng khi y lệnh chưa có bản ghi KSK:
+        /// đủ 18 tuổi -> "Ksk trên 18 tuổi"; từ 6 đến dưới 18 -> "Ksk dưới 18 tuổi";
+        /// dưới 6 tuổi -> "Trẻ em dưới 6 tuổi".
+        ///
+        /// Tuổi tính theo ngày/tháng/năm (AgeInMonthsUnderSix — cùng cách với cảnh báo trẻ dưới 6
+        /// tuổi) chứ không lấy hiệu số năm, để mốc tròn tuổi đúng ngày sinh nhật.
+        /// Mốc so là giờ chỉ định y lệnh; không có thì lấy giờ hiện tại.
+        ///
+        /// Trả về -1 khi KHÔNG xác định được tuổi (chưa có y lệnh / không có ngày sinh) — khi đó
+        /// giữ nguyên hành vi cũ là tab "Ksk định kỳ".
+        /// </summary>
+        private int ResolveDefaultTabByAge()
+        {
+            try
+            {
+                if (currentServiceReq == null) return -1;
+                long dobNum = currentServiceReq.TDL_PATIENT_DOB;
+                if (dobNum <= 0) return -1;
+                // Bệnh nhân chỉ khai năm sinh: ParseHisDateNumber quy về 01/01 năm đó.
+                long examNum = (currentServiceReq.INTRUCTION_TIME > 0)
+                    ? currentServiceReq.INTRUCTION_TIME
+                    : Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+                int months = AgeInMonthsUnderSix(dobNum, examNum);
+                if (months >= 18 * 12) return TAB_OVER_EIGHTEEN;
+                if (months >= 6 * 12) return TAB_UNDER_EIGHTEEN;
+                return TAB_UNDER_SIX;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); return -1; }
         }
 
         /// <summary>Gọi đúng FillDataPage* theo tab index.</summary>
@@ -59,7 +162,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         /// <summary>
         /// Fill 1 tab (idempotent theo tabFilled): dữ liệu + nhúng UC ICD kết luận của tab + đổ ICD +
-        /// (tab trẻ &lt;6) default kết luận + ngày kết luận + enable control. Chạy khi mở tab mặc định
+        /// (tab trẻ &lt;6) ngày kết luận + enable control. Chạy khi mở tab mặc định
         /// và khi user chuyển sang tab lần đầu.
         /// </summary>
         private void EnsureTabLoaded(int tab)
@@ -72,12 +175,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // CHỐNG DÍNH DỮ LIỆU Y LỆNH TRƯỚC: xóa sạch mọi editor trên trang tab trước khi đổ dữ liệu.
                 // (ResetControl* của từng tab thiếu sót; nhánh else FillData* chỉ phủ 1 phần control.)
                 ClearTabInputEditors(tab);
+                // Phải đọc mặc định tiêm chủng TRƯỚC FillTabByIndex: SetDafaultGrid() nằm trong
+                // FillTabByIndex, nếu init sau thì lúc dựng lưới chưa biết mặc định là gì.
+                if (tab == 2) InitDefaultVaccineToggle();
                 FillTabByIndex(tab);
                 InitIcdConclusionUcForTab(tab);
                 LoadIcdConclusionToUc();
-                if (tab == 7) ApplyUnderSixConclusionDefaults();
                 // Đối tượng + Nguồn chi trả (bổ sung cho tab dưới 18 / trẻ <6) — init combo + đổ giá trị (STUB DB chờ cột).
-                if (tab == 2) LoadAdminCombosUnderEighteen();
+                if (tab == 2) { LoadAdminCombosUnderEighteen(); InitUnderEighteenTextLibButtons(); }
                 else if (tab == 7) { LoadAdminCombosUnderSix(); LoadAccompanyInfoUnderSix(); }
                 // Người khám (kết luận) là GridLookUpEdit thường -> bị ClearTabInputEditors xóa; FillTabByIndex
                 // không đổ lại (do LoadConcluderComboExt phụ trách riêng theo HIS_KSK_GENERAL) -> đổ lại tại đây,
@@ -116,6 +221,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 // UC có cơ chế nạp/xóa riêng -> KHÔNG đụng (và không đệ quy vào trong).
                 if (c is UcKskConclusionIcd || c is UcKskHistoryIcd) continue;
+
+                // Toggle "Mặc định:" của lưới tiêm chủng là CẤU HÌNH của máy, không phải dự liệu bệnh nhân
+                // -> không được xóa (xóa là mất lựa chọn đã lưu vì CheckStateChanged sẽ ghi đè ControlState).
+                if (c == chkDefaultVaccine3) continue;
 
                 CheckEdit chk = c as CheckEdit;
                 if (chk != null) { chk.Checked = false; continue; }

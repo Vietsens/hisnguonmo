@@ -167,6 +167,29 @@ V_HIS_ROOM room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID =
 
 > Lưu ý: `PacsAddress` của plugin này chỉ có `RoomCode` / `Address` / `Port` — KHÔNG có `Api` / `CloudInfo` như bản trong `HIS.Desktop.Plugins.ServiceReqResultView`. Không bổ sung vì tính năng này không dùng đến.
 
+### Xem ảnh PACS Carestream — `ConnectImageOption = 3` (cập nhật 12/08/2026)
+
+Khác PACS Vietsens (`= 1`, HIS tải ảnh về lưới), Carestream chỉ trả **một link xem ảnh**: PACS gọi `/api/studycompleted` đẩy link sang HIS, backend lưu vào `HIS_SERE_SERV_EXT.JSON_FORM_ID`. HIS không tự sinh được link.
+
+```
+btnLoadImage_Click  (ConnectImageOption == "3" và có TDL_PACS_TYPE_CODE)
+  └─ OpenPacsLinkCarestream(sereServId)
+       ├─ GetPacsLinkCarestream: dicSereServExt → thiếu thì ProcessDicSereServExt (1 lần API)
+       │    link rỗng → ResourceMessage.ChuaCoHinhAnhTuPacs → dừng
+       ├─ ShowServiceReqResultView(sereServId, link)
+       │    ├─ kiểm tra module + quyền trong GlobalVariables.currentModuleRaws
+       │    └─ ShowModule(ModuleLinkString.ServiceReqResultView, RoomId, RoomTypeId,
+       │                  { moduleData, sereServId, link })       ← truyền LINK sang
+       └─ false → Process.Start(link)  (mở trình duyệt mặc định)
+```
+
+| Điểm | Chi tiết |
+|------|----------|
+| Vì sao kiểm tra module trước | `PluginInstanceBehavior.ShowModule` trả `void` và tự bắt hết exception → không kiểm tra trước thì nhánh dự phòng không bao giờ chạy |
+| Vì sao truyền link | Màn Xem kết quả không phải lấy lại link (không gọi thêm API), và hiển thị được cả khi phòng chưa khai `Api` trong `MOS.PACS.ADDRESS` |
+| Link | Đã được PACS mã hóa sẵn (`urltoken`) → truyền **nguyên văn**, KHÔNG encode lại |
+| Thông báo | `ResourceMessage.ChuaCoHinhAnhTuPacs` / `KhongMoDuocHinhAnhTuPacs` (vi/en/my) |
+
 ### Điều kiện nghiệp vụ
 
 - Bật/tắt tính năng giữ layout: cần `HIS_CONFIG` key `HIS.Desktop.ApplyRestoreLayout.ModuleLinks` chứa `HIS.Desktop.Plugins.ServiceExecute` (CSV/SCSV ModuleLink)
@@ -267,6 +290,8 @@ V_HIS_ROOM room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID =
 |-------------|-----------|-------------|
 | HIS.Desktop.Plugins.ExecuteRoom | UC plugin này được embed bên trong | Module + V_HIS_SERVICE_REQ + DelegateRefresh |
 | EMR signing form | Khi bấm Ký số kết quả | InputADO từ EmrGenerateProcessor |
+| HIS.Desktop.Plugins.ServiceReqResultView | Bấm "Tải ảnh" khi `ConnectImageOption = 3` (PACS Carestream) | `Module` + `long sereServId` + `string` link xem ảnh (`JSON_FORM_ID`) |
+| HIS.Desktop.Plugins.AssignPaan / AssignService | Nút chỉ định tương ứng | Xem code từng nút |
 
 ### LIB framework
 
@@ -288,6 +313,7 @@ V_HIS_ROOM room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID =
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 12/08/2026 | anhnh2@vietsens.vn | **Sửa luồng mở màn Xem kết quả để xem ảnh PACS Carestream.** (1) `ShowServiceReqResultView(long, string)` — thêm tham số link, và **kiểm tra module + quyền** qua `GlobalVariables.currentModuleRaws` trước khi gọi `PluginInstanceBehavior.ShowModule`; trước đây hàm luôn trả `true` (ShowModule là `void` + nuốt exception) nên nhánh dự phòng `Process.Start(link)` là code chết. (2) Truyền link (`HIS_SERE_SERV_EXT.JSON_FORM_ID`) sang plugin đích để màn đó không phải lấy lại link. (3) Thay 2 chuỗi hardcode bằng `ResourceMessage.ChuaCoHinhAnhTuPacs` / `KhongMoDuocHinhAnhTuPacs` (thêm key vào `Message.Lang.vi/en/my.resx`). (4) Thêm `ModuleLinkString.cs` (const `ServiceReqResultView`) theo `inter_plugin.md`, đăng ký vào `.csproj`. Phía plugin đích `HIS.Desktop.Plugins.ServiceReqResultView` sửa kèm: nhận link qua Behavior, hiển thị link đã lưu khi phòng chưa khai `Api`, không auto-print+Close khi mở để xem ảnh. |
 | 31/07/2026 | nampp@vietsens.vn | **Bổ sung điều kiện hiển thị checkbox `chkSendExt`** — thêm hàm `ApplySendExtVisibility()` (`UCServiceExecute.cs`): chỉ hiện khi (1) HIS_CONFIG `HIS.DESKTOP.HIS_SERE_SERV_EXT.ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA` = `1`, (2) y lệnh loại CĐHA (`ServiceReqConstruct.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA`), (3) phòng đang xử lý có địa chỉ PACS hợp lệ trong `MOS.PACS.ADDRESS`. Gọi ở cuối `UCServiceExecute_Load` và trong `SearchNewTreatmentServiceReqForShowForm()` (bám theo y lệnh mới khi đổi bệnh nhân). Thêm accessor `AppConfigKeys.AllowDisplaySendOrderPacsCdha` (trả string thô, so `== "1"` tại nơi dùng — theo pattern `UNLOCK_FEE_OPTION` / `CHECK_SAME_HEIN`) + const `CONFIG_KEY__ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA`. Thêm hàm `GetIsSendExtForSave()` — checkbox ẩn thì trả `true` (mặc định luôn gửi, không hồi quy); 2 chỗ lưu đổi sang dùng hàm này. Điều kiện 3 chỉ so `RoomCode` (không ràng buộc field kết nối vì `MOS.PACS.ADDRESS` có nhiều schema), phòng lấy theo `ServiceReqConstruct.EXECUTE_ROOM_ID` (fallback `moduleData.RoomId`). Bổ sung vào `PACS/PacsCFG.cs` các thành viên MỚI tách biệt: class `PacsAddressRoom` (chỉ có `RoomCode`) + `PACS_ADDRESS_EXPAND_ROOM` (cache riêng) + `GetAddressExpandRoom()` + const `ROOM_CODE_SEPARATOR` — parse cùng key `MOS.PACS.ADDRESS` nhưng có tách `RoomCode` gộp nhiều phòng `"P01\|P02"`. **CỐ Ý KHÔNG sửa `PACS_ADDRESS` / `GetAddress()` cũ** để KHÔNG thay đổi hành vi nút "Tải ảnh" (`btnLoadImage_Click`). Diff `PacsCFG.cs` chỉ có dòng thêm, không có dòng xóa/sửa. Config mặc định TẮT = giữ nguyên hành vi hiện tại. |
 | 29/07/2026 | nampp@vietsens.vn | **Chủ động gửi kết quả sang hệ thống tích hợp (PACS).** Bổ sung checkbox `chkSendExt` "Gửi sang hệ thống tích hợp" vào `UCServiceExecute.Designer.cs` — layout item mới `lciSendExt` (169,291) size 199×24 trong `layoutControlGroup2`, thay chỗ `emptySpaceItem3` đã bỏ (cùng dòng với `lciDateResult`). Mặc định **luôn tích** mỗi lần mở màn (set tại `SetDefaultValueControl()`), KHÔNG dùng ControlState. Khi lưu gán `data.IsSendExt` tại `SaveProcess()` và `SaveAllProcess()` (`UCServiceExecute.cs`) — backend chỉ tạo tiến trình gửi PACS khi `IsSendExt = true` (bao gồm Pacs Bách Khoa `MOS.PACS.CONNECTION_TYPE = 2` gửi qua file). Form phụ `frmClsInfo.SaveProcessor()` gán cứng `data.IsSendExt = true` để giữ nguyên hành vi luôn gửi. Thêm caption + tooltip vào `Lang.vi/en/my.resx` và `LoadKeysFromlanguage()`. Phụ thuộc backend: `MOS.SDO.HisSereServExtSDO` phải có property `IsSendExt` (bool). |
 | 21/07/2026 | tuanln | **Tài liệu 43719 — Giữ kết nối camera khi chuyển bệnh nhân** (config-gated `HIS.Desktop.Plugins.ServiceExecute.IsKeepCameraConnectionOnSwitchPatient`, mặc định TẮT). (1) Thêm accessor `AppConfigKeys.IsKeepCameraConnectionOnSwitchPatient`. (2) Thêm entry point public `ReloadByServiceReq(V_HIS_SERVICE_REQ)` trong `UCServiceExecute.cs` — tái sử dụng luồng `ProcessSearchByServiceReqCode` → `SearchNewTreatmentServiceReqForShowForm` → `ReloadCameraAfterSearchByPatientThread` sẵn có để nạp BN mới vào cùng instance; camera chỉ đổi `SetClientCode` (KHÔNG mở lại thiết bị). (3) `UCServiceExecute_Leave` KHÔNG gọi `StopClick()` khi bật config (giữ camera sống lúc rời form để chuyển BN). (4) `ProcessDisposeModuleDataAfterClose` gọi `StopClick()` đầu hàm để chắc chắn giải phóng thiết bị camera khi đóng màn. Màn danh sách `HIS.Desktop.Plugins.ExecuteRoom` tái sử dụng instance đang mở thay vì mở tab mới. Config TẮT = giữ nguyên hành vi hiện tại (an toàn đa viện). |

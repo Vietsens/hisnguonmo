@@ -212,6 +212,11 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                     List<object> listArgs = new List<object>();
                     listArgs.Add(currentTreatment.ID);
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisTreatmentRecordChecking", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                    // The review screen changes the approval status of this treatment, so the
+                    // list is stale once it closes. That screen takes no callback, so the list
+                    // is reloaded here instead, right after the modal window returns.
+                    BtnRefreshs();
                 }
             }
             catch (Exception ex)

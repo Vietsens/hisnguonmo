@@ -322,6 +322,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             try
             {
                 // Parse cấu hình cổng BYT (giữ bản parse để log; parse lỗi -> config rỗng như hành vi cũ).
+                // Cấu hình đã chọn theo BRANCH_ID ở KskBranchConfig.GetValue; ở đây chỉ CẢNH BÁO nếu
+                // trường [0] BranchCode của chuỗi khác chi nhánh đang làm việc — KHÔNG chặn đẩy
+                // (truyền mã chi nhánh vào Parse sẽ làm parser trả null -> mất cả cổng).
+                KskBranchConfig.WarnIfBranchCodeMismatch(this.connectionInfo, "MOS.HIS_KSK_SYNC.CONNECTION_INFO");
                 Qd1551Config bytConfig = Qd1551ConfigParser.Parse(this.connectionInfo, null);
                 CreateQd1551Main main = new CreateQd1551Main(bytConfig ?? new Qd1551Config());   // 1 instance -> token cache dùng chung
                 X509Certificate2 certificate = LoadCertificate();
@@ -329,7 +333,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 Qd1551Config hsskConfig = null;
                 if (this.pushHssk && !string.IsNullOrWhiteSpace(this.hsskConnectionInfo))
+                {
+                    KskBranchConfig.WarnIfBranchCodeMismatch(this.hsskConnectionInfo,
+                        "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO");
                     hsskConfig = Qd1551ConfigParser.Parse(this.hsskConnectionInfo, null);
+                }
 
                 HocConfig hocConfig = null;
                 if (this.pushHoc && !string.IsNullOrWhiteSpace(this.hocConnectionInfo))
@@ -570,11 +578,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 sytHcmConfigRead = true;
                 try
                 {
-                    var list = BackendDataWorker.Get<HIS_CONFIG>(false, true, false, false);
-                    if (list == null || list.Count == 0) list = BackendDataWorker.Get<HIS_CONFIG>();
-                    if (list != null)
-                        foreach (var c in list)
-                            if (c != null && c.KEY == CFG_KEY_SYT_HCM) { sytHcmConnectionInfoCache = c.VALUE; break; }
+                    // Doc tuoi (bo cache) VA theo dung chi nhanh dang lam viec — nhieu co so chung 1 DB.
+                    sytHcmConnectionInfoCache = KskBranchConfig.GetValueFresh(CFG_KEY_SYT_HCM);
                 }
                 catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
                 return sytHcmConnectionInfoCache;
@@ -636,7 +641,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     return new KskSytHcmPushResult { Message = msg };
                 }
 
-                KskSytHcmPushResult r = KskSytHcmPusher.Push(cfg, body);
+                KskSytHcmPushResult r = KskSytHcmPusher.Push(cfg, body,
+                    KskSytHcmBodyBuilder.IsElderlyForm(src));
                 Inventec.Common.Logging.LogSystem.Info("SytHcm: y lenh " + sr + " -> "
                     + (r != null ? r.ToString() : "khong co ket qua"));
                 return r;
@@ -1075,8 +1081,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             string keyKsk = "";
             try
             {
-                var cfgKsk = BackendDataWorker.Get<HIS_CONFIG>().FirstOrDefault(o => o.KEY == "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK");
-                if (cfgKsk != null) keyKsk = cfgKsk.VALUE ?? "";
+                keyKsk = KskBranchConfig.GetValue("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK") ?? "";
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
             var alterByTr = GroupByKey(patientTypeAlters, a => a.TREATMENT_ID);
