@@ -40,5 +40,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         public bool isSyncKcb { get; set; }
         //Đồng bộ KCB (hoàn tất) lên Cổng tiếp nhận — Kho dữ liệu y tế tỉnh Vĩnh Long
         public bool isSyncKcbVlg { get; set; }
+        //Đồng bộ KCB theo QĐ 3176 lên Trung tâm điều hành y tế (cổng dữ liệu y tế)
+        public bool isSyncKcbHoc { get; set; }
     }
 }

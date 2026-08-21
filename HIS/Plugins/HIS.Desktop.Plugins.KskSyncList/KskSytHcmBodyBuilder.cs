@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2026 INVENTEC
  *
@@ -22,6 +22,7 @@
  * mục bệnh của HIS theo TỪ KHÓA TRONG TÊN, xem vùng "Tiền sử".
  */
 using MOS.EFMODEL.DataModels;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -73,12 +74,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private const string CAT__NHOM_MAU = "NhomMau";
         private const string CAT__YEU_TO_NHOM_MAU = "YeuToNhomMau";
         private const string CAT__XA_PHUONG = "DiaChiHienTai_XaPhuong";
+        private const string CAT__TINH = "DiaChiHienTai_Tinh";
         private const string CAT__NGHE_NGHIEP = "NgheNghiepId";
         private const string CAT__NOI_CONG_TAC = "NoiCongTacHocTap";
         private const string CAT__KET_LUAN_DE_NGHI = "KetLuan_DeNghi";
         private const string CAT__ICD = "ICD";
         private const string CAT__YES_NO = "Yes_No";
         private const string CAT__YES_NO_M4 = "YesNo";
+        private const string CAT__DOI_TUONG_KHAM = "M3_DoiTuongKham";
 
         /// <summary>
         /// Các câu hỏi có/không gửi 1/0 hay gửi Id danh mục (264 = Có, 265 = Không)?
@@ -116,13 +119,351 @@ namespace HIS.Desktop.Plugins.KskSyncList
             };
 
 
-            // Gửi kèm tên của BẢNG CHI TIẾT bên cạnh tên của VÍ DỤ BODY — xem AddAliases.
-            AddAliases(body.tthc, TTHC_ALIASES);
-            AddAliases(body.kham_the_luc, THE_LUC_ALIASES);
-            AddAliases(body.tien_su, TIEN_SU_ALIASES);
-            AddAliases(body.kham_lam_san, LAM_SAN_ALIASES);
-            AddAliases(body.ket_luan, KET_LUAN_ALIASES);
-            return body;
+            // Khối hỏi bệnh chỉ có ở mẫu M4 — hồ sơ M3 giữ nguyên hình dạng bản tin như cũ.
+            if (!IsElderlyForm(src)) return body;
+
+            JObject hb = ReadInterviewJson(src);
+            if (hb == null)
+            {
+                // Hồ sơ người cao tuổi mà tab hỏi bệnh còn trống. KHÔNG gửi khối toàn số 0: như
+                // vậy là khai thay bệnh nhân rằng họ trả lời "Không" cho mọi câu.
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "SytHcm: ho so NGUOI CAO TUOI nhung tab Hoi benh lam sang HCM chua nhap"
+                    + " -> ban tin M4 THIEU khoi kham_thuc_the va hoi_benh_kham_lam_sang");
+                return body;
+            }
+
+            JObject full = JObject.FromObject(body);
+            full["kham_thuc_the"] = JObject.FromObject(BuildKhamThucThe(src, hb));
+            full["hoi_benh_kham_lam_sang"] = JObject.FromObject(BuildHoiBenh(src, hb));
+            return full;
+        }
+
+
+
+        #region ===== V. Khám thực thể — mục B và C của Mẫu 4 (RIÊNG mẫu M4) =====
+
+        /// <summary>
+        /// Tiền sử gia đình theo MẪU M4 — 7 bệnh, khác hẳn danh mục của mẫu M3.
+        ///
+        /// KHÔNG suy từ ô tích tiền sử gia đình của mẫu M3: danh mục bên đó là Truyền nhiễm, Lao,
+        /// Động kinh, Rối loạn tâm thần... thiếu hẳn Tăng huyết áp, Phổi tắc nghẽn mạn tính,
+        /// Trầm cảm-lo âu; còn "Tim mạch" bên đó KHÔNG phải "Tim mạch sớm" có kèm mốc tuổi của mẫu
+        /// này. Vì vậy mẫu M4 có ô nhập riêng, đọc từ INTERVIEW_JSON.
+        /// </summary>
+        private static readonly string[] HB__TIEN_SU_GIA_DINH = new string[]
+        {
+            "tsb_giadinh",
+            "tsbgd_tanghuyetap", "tsbgd_daithaoduong", "tsbgd_phoi", "tsbgd_henphequan",
+            "tsbgd_tramcam", "tsbgd_ungthu", "tsbgd_timmach"
+        };
+
+        /// <summary>Đọc cột INTERVIEW_JSON. Trả null khi hồ sơ chưa nhập tab hỏi bệnh.</summary>
+        private static JObject ReadInterviewJson(KskSytHcmSource src)
+        {
+            try
+            {
+                if (src == null || src.SytHcm == null) return null;
+
+                string raw = GetStr(src.SytHcm, "INTERVIEW_JSON");
+                if (string.IsNullOrWhiteSpace(raw)) return null;
+
+                return JObject.Parse(raw);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "SytHcm: cot INTERVIEW_JSON khong doc duoc -> KHONG day cac khoi rieng cua M4");
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Khối kham_thuc_the của mẫu M4:
+        ///   ├ dieu_tri_benh_* / thai_san_*   (dùng lại nguồn của khối tiền sử)
+        ///   ├ tien_su_benh_gia_dinh          mục B — nhập ở tab Hỏi bệnh lâm sàng HCM
+        ///   ├ kham_the_luc                   mục C — trị số lấy từ bản ghi sinh hiệu
+        ///   └ phanloai                       phân loại thể lực
+        ///
+        /// LƯU Ý HÌNH DẠNG: mẫu M4 nhét kham_the_luc VÀO TRONG kham_thuc_the và để phanloai ra
+        /// ngoài nó, còn mẫu M3 để kham_the_luc ở tầng ngoài cùng và phanloai nằm bên trong. Hai
+        /// mẫu không dùng chung một khối được, nên dựng riêng thay vì dùng lại BuildKhamTheLuc.
+        /// </summary>
+        private static Dictionary<string, object> BuildKhamThucThe(KskSytHcmSource src, JObject hb)
+        {
+            var b = new Dictionary<string, object>();
+            HIS_KSK_OVER_EIGHTEEN ov = src.Over18;
+            HIS_DHST d = src.Dhst;
+
+            string treating = GetStr(ov, "PATHOLOGICAL_HISTORY");
+            b["dieu_tri_benh_co_khong"] = YesNo(!string.IsNullOrWhiteSpace(treating));
+            b["dieu_tri_benh_liet_ke"] = treating;
+
+            string maternity = GetStr(ov, "MATERNITY_HISTORY");
+            b["thai_san_co_khong"] = YesNo(!string.IsNullOrWhiteSpace(maternity));
+            b["thai_san_liet_ke"] = maternity;
+
+            b["tien_su_benh_gia_dinh"] = HoiBenhFlags(hb, HB__TIEN_SU_GIA_DINH);
+
+            // Trị số thể lực lấy từ BẢN GHI SINH HIỆU, không nhập lại ở tab hỏi bệnh — để hai nơi
+            // khỏi lệch nhau. Riêng cân nặng một năm trước là câu hỏi bệnh nhân, HIS không có chỗ
+            // nào lưu nên nằm trong INTERVIEW_JSON.
+            var tl = new Dictionary<string, object>();
+            tl["chieucao"] = Num(GetDecimal(d, "HEIGHT"));
+            tl["vongbung"] = Num(GetDecimal(d, "BELLY"));
+            tl["cannang"] = Num(GetDecimal(d, "WEIGHT"));
+            tl["cannang_namtruoc"] = ReadHoiBenhNum(hb, "cannang_namtruoc");
+            tl["mach"] = Num(GetDecimal(d, "PULSE"));
+            tl["huyetaptamthu"] = Num(GetDecimal(d, "BLOOD_PRESSURE_MAX"));
+            tl["huyetaptamtruong"] = Num(GetDecimal(d, "BLOOD_PRESSURE_MIN"));
+            tl["nhiptho"] = Num(GetDecimal(d, "BREATH_RATE"));
+            b["kham_the_luc"] = tl;
+
+            b["phanloai"] = KskSytHcmPayload.ResolveSytRankId(
+                GetLong(src.Over18, "DHST_RANK"), src.HisRanks);
+            return b;
+        }
+
+        /// <summary>Trị số nhập tay trong INTERVIEW_JSON. Chưa nhập thì null, không gửi số 0.</summary>
+        private static object ReadHoiBenhNum(JObject o, string field)
+        {
+            try
+            {
+                JToken t = (o != null) ? o[field] : null;
+                if (t == null) return null;
+
+                decimal v;
+                if (!decimal.TryParse(t.ToString(), System.Globalization.NumberStyles.Any,
+                        CultureInfo.InvariantCulture, out v) || v <= 0) return null;
+                return Num(v);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
+        #endregion
+
+        #region ===== VI. Hỏi bệnh và khám lâm sàng (mục D của Mẫu 4 — TT25) =====
+
+        /// <summary>
+        /// Ô tích của từng nhóm — cổng cần ĐỦ MẶT: không trả lời nghĩa là "Không", tức 0, chứ không
+        /// phải vắng mặt. Cơ sở dữ liệu lưu gọn bằng cách bỏ khoá, bản tin thì bù lại.
+        ///
+        /// Danh sách phải khớp với các ô ở tab Hỏi bệnh lâm sàng HCM. Thêm câu trên giao diện mà
+        /// quên thêm vào đây thì câu đó không lên cổng.
+        ///
+        /// KHÔNG có bpq_* (3 câu tầm soát phổi tắc nghẽn mạn tính): biểu mẫu in có mục này nhưng
+        /// đặc tả của cổng chưa có trường tương ứng.
+        /// </summary>
+        private static readonly string[] HB__THONG_TIN_BENH = new string[]
+        {
+            "benh_tanghuyetap", "benh_daithaoduong", "benh_phoi", "benh_hen", "benh_ungthu",
+            "benh_suytim", "benh_khop", "benh_thanmam", "benh_timthieumau", "benh_nhoimau",
+            "benh_dotqui", "benh_roiloan_tramcam", "benh_roiloan_loau", "benh_sasut_tritue"
+        };
+
+        /// <summary>
+        /// Ô chọn nơi đang điều trị. KHÔNG có benh_nhoimau_cskcb và benh_dotqui_cskcb: đặc tả của
+        /// cổng có hai trường này nhưng biểu mẫu in KHÔNG có ô nơi điều trị cho Nhồi máu cơ tim và
+        /// Đột quỵ, nên giao diện không thu thập — không có dữ liệu để gửi.
+        /// </summary>
+        private static readonly string[] HB__THONG_TIN_BENH_CSKCB = new string[]
+        {
+            "benh_tanghuyetap_cskcb", "benh_daithaoduong_cskcb", "benh_phoi_cskcb",
+            "benh_hen_cskcb", "benh_ungthu_cskcb", "benh_suytim_cskcb", "benh_khop_cskcb",
+            "benh_thanmam_cskcb", "benh_timthieumau_cskcb", "benh_roiloan_tramcam_cskcb",
+            "benh_roiloan_loau_cskcb", "benh_sasut_tritue_cskcb"
+        };
+
+        private static readonly string[] HB__DAI_THAO_DUONG = new string[]
+        { "dtd_maudoi", "dtd_khatnuoc", "dtd_ditieunhieu", "dtd_sutcan", "dtd_vetthuong" };
+
+        private static readonly string[] HB__HEN_PHE_QUAN = new string[]
+        {
+            "hpq_khokhe", "hpq_ho_demkhuya", "hpq_ho_thucgiac", "hpq_ho_vandong",
+            "hpq_hohap_theomua", "hpq_ho_chatkichthich", "hpq_dotcamlanh", "hpq_trieuchung_caithien"
+        };
+
+        private static readonly string[] HB__UNG_THU = new string[]
+        {
+            "ut_vetloet", "ut_hodai", "ut_ankhongtieu", "ut_thaydoi_thoiquen_ruotbongdai",
+            "ut_cucu", "ut_notruoi", "ut_hachto", "ut_utai_nghetmui", "ut_sutcan",
+            "ut_chaymau_dauvu", "ut_chaymau_amdao"
+        };
+
+        /// <summary>
+        /// Trầm cảm VÀ lo âu nằm CHUNG một khối của cổng, dù biểu mẫu in tách thành D6 và D7.
+        /// Trả lời bằng mã mức tần suất, chưa chọn thì không gửi.
+        /// </summary>
+        private static readonly string[] HB__ROI_LOAN_TRAM_CAM = new string[]
+        {
+            "rltc_ithungthu", "rltc_channan", "rltc_khongu", "rltc_metmoi", "rltc_khongngonmieng",
+            "rltc_camthayte", "rltc_khotaptrung", "rltc_chamchap", "rltc_ynghi",
+            "rlla_canthang", "rlla_kiemsoat_lolang", "rlla_lolang_nhieuthu", "rlla_khothugian",
+            "rlla_bucrut", "rlla_bucboi", "rlla_lolang"
+        };
+
+        private static readonly string[] HB__HOAT_DONG_SONG = new string[]
+        {
+            "hds_tutam", "hds_tumacquanao", "hds_tudivesinh", "hds_tudichuyen_khoigiuong",
+            "hds_kiemsoat_tieutieu", "hds_tuanuong"
+        };
+
+        private static readonly string[] HB__HOAT_DONG_HANG_NGAY = new string[]
+        {
+            "hdhn_nghedt", "hdhn_tumua_vatdung", "hdhn_tunauan", "hdhn_tulamviecnha",
+            "hdhn_tugiatquanao", "hdhn_tulaixe_batxe", "hdhn_tuchia_uongthuoc", "hdhn_tugiutien"
+        };
+
+        private static readonly string[] HB__DANH_GIA_TE_NGA = new string[]
+        { "dgtn_bite", "dgtn_loso_binga", "dgtn_didung" };
+
+        private static readonly string[] HB__GIAM_NHAN_THUC = new string[]
+        { "gnt_trinho_bigiam", "gnt_ghinho", "gnt_nho_noilai" };
+
+        /// <summary>
+        /// Dựng khối hỏi bệnh từ cột INTERVIEW_JSON.
+        ///
+        /// KHỐI NÀY LỒNG NHAU, KHÔNG PHẲNG — đúng theo đặc tả của Sở:
+        ///   hoi_benh_kham_lam_sang
+        ///     ├ macbenh
+        ///     ├ thong_tin_benh          (14 bệnh + nơi điều trị + bệnh khác)
+        ///     ├ dai_thao_duong / hen_phe_quan / ung_thu / roi_loan_tram_cam
+        ///     ├ tinh_than_van_dong
+        ///     │   └ hoat_dong_song / hoat_dong_hang_ngay / tinh_trang_suy_yeu
+        ///     │     / danh_gia_te_nga / giam_nhan_thuc
+        ///     └ dauhieu_khac
+        /// Cơ sở dữ liệu vẫn lưu PHẲNG một mức trong INTERVIEW_JSON: gói lồng là hình dạng của bản
+        /// tin, không phải hình dạng của dữ liệu — lưu phẳng thì đọc/ghi trên giao diện gọn hơn.
+        ///
+        /// Trả null khi hồ sơ chưa nhập tab này.
+        /// </summary>
+        private static Dictionary<string, object> BuildHoiBenh(KskSytHcmSource src, JObject o)
+        {
+            HIS_KSK_SYT_HCM h = src.SytHcm;
+
+            var thongTinBenh = HoiBenhFlags(o, HB__THONG_TIN_BENH);
+            HoiBenhAddIds(thongTinBenh, o, HB__THONG_TIN_BENH_CSKCB);
+            thongTinBenh["benh_khac_hoibenh"] = GetStr(h, "INTERVIEW_OTHER_DISEASE");
+
+            var suyYeu = HoiBenhFlags(o, new string[] { "ttsy_khokhan_leothang", "ttsy_khokhan_dibo" });
+            HoiBenhAddIds(suyYeu, o, new string[] { "ttsy_metmoi" });
+
+            var tinhThanVanDong = new Dictionary<string, object>();
+            tinhThanVanDong["hoat_dong_song"] = HoiBenhFlags(o, HB__HOAT_DONG_SONG);
+            tinhThanVanDong["hoat_dong_hang_ngay"] = HoiBenhFlags(o, HB__HOAT_DONG_HANG_NGAY);
+            tinhThanVanDong["tinh_trang_suy_yeu"] = suyYeu;
+            tinhThanVanDong["danh_gia_te_nga"] = HoiBenhFlags(o, HB__DANH_GIA_TE_NGA);
+            tinhThanVanDong["giam_nhan_thuc"] = HoiBenhFlags(o, HB__GIAM_NHAN_THUC);
+
+            var b = new Dictionary<string, object>();
+            b["macbenh"] = ReadHoiBenhFlag(o, "macbenh");
+            b["thong_tin_benh"] = thongTinBenh;
+            b["dai_thao_duong"] = HoiBenhFlags(o, HB__DAI_THAO_DUONG);
+            b["hen_phe_quan"] = HoiBenhFlags(o, HB__HEN_PHE_QUAN);
+            b["ung_thu"] = HoiBenhFlags(o, HB__UNG_THU);
+            b["roi_loan_tram_cam"] = HoiBenhIds(o, HB__ROI_LOAN_TRAM_CAM);
+            b["tinh_than_van_dong"] = tinhThanVanDong;
+            b["dauhieu_khac"] = GetStr(h, "INTERVIEW_OTHER_SIGN");
+
+            Inventec.Common.Logging.LogSystem.Warn("SytHcm/HoiBenh: da dung khoi hoi benh long nhau");
+            return b;
+        }
+
+        /// <summary>Một nhóm ô tích: gửi đủ mặt, không trả lời thì 0.</summary>
+        private static Dictionary<string, object> HoiBenhFlags(JObject o, string[] fields)
+        {
+            var b = new Dictionary<string, object>();
+            foreach (string f in fields) b[f] = ReadHoiBenhFlag(o, f);
+            return b;
+        }
+
+        /// <summary>Một nhóm ô chọn: chưa chọn thì KHÔNG gửi — 0 ở đây là một mã danh mục có thật.</summary>
+        private static Dictionary<string, object> HoiBenhIds(JObject o, string[] fields)
+        {
+            var b = new Dictionary<string, object>();
+            HoiBenhAddIds(b, o, fields);
+            return b;
+        }
+
+        private static void HoiBenhAddIds(Dictionary<string, object> b, JObject o, string[] fields)
+        {
+            foreach (string f in fields)
+            {
+                long? v = ReadHoiBenhId(o, f);
+                if (v.HasValue) b[f] = v.Value;
+            }
+        }
+
+        /// <summary>Ô tích: có khoá và bằng 1 thì 1, còn lại là 0.</summary>
+        private static int ReadHoiBenhFlag(JObject o, string field)
+        {
+            try
+            {
+                JToken t = o[field];
+                if (t == null) return 0;
+                int v;
+                return (int.TryParse(t.ToString(), out v) && v == 1) ? 1 : 0;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return 0; }
+        }
+
+        /// <summary>Ô chọn: trả mã đã chọn, chưa chọn thì null.</summary>
+        private static long? ReadHoiBenhId(JObject o, string field)
+        {
+            try
+            {
+                JToken t = o[field];
+                if (t == null) return null;
+                long v;
+                return (long.TryParse(t.ToString(), out v) && v > 0) ? (long?)v : null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
+        #endregion
+
+
+        /// <summary>
+        /// Hồ sơ này đẩy theo MẪU M4 (khám sức khoẻ người cao tuổi) hay M3.
+        ///
+        /// CĂN CỨ LÀ "ĐỐI TƯỢNG KHÁM", KHÔNG PHẢI TUỔI. Ba lý do:
+        ///   - Cổng đã mô hình hoá sẵn: "Người cao tuổi" là một mục của danh mục M3_DoiTuongKham,
+        ///     người dùng chọn trên màn nhập và đã lưu vào cột SYT_PATIENT_TYPES.
+        ///   - Đủ 60 tuổi không có nghĩa là khám theo chương trình người cao tuổi: một người 65
+        ///     tuổi còn đi làm, khám định kỳ theo diện người lao động thì vẫn là M3.
+        ///   - Trừ tuổi không đáng tin với đúng nhóm này: HIS có cờ IS_HAS_NOT_DAY_DOB cho bệnh
+        ///     nhân không nhớ ngày tháng sinh, mà người cao tuổi lại là nhóm hay chỉ có năm sinh.
+        ///
+        /// KHÔNG VIẾT CỨNG MÃ ĐỊNH DANH: tra tên trong danh mục của cổng, như phần giới tính.
+        /// Danh mục chưa tải về thì trả false — đẩy M3 như cũ, kèm cảnh báo, hơn là đoán.
+        /// </summary>
+        internal static bool IsElderlyForm(KskSytHcmSource src)
+        {
+            try
+            {
+                if (src == null || src.SytHcm == null) return false;
+
+                string types = GetStr(src.SytHcm, "SYT_PATIENT_TYPES");
+                if (string.IsNullOrWhiteSpace(types)) return false;
+
+                long? nctId = MapByName(CAT__DOI_TUONG_KHAM, "Người cao tuổi");
+                if (!nctId.HasValue)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SytHcm: chua tra duoc ma cua doi tuong kham 'Nguoi cao tuoi' trong danh muc "
+                        + CAT__DOI_TUONG_KHAM + " -> day theo mau M3");
+                    return false;
+                }
+
+                foreach (string part in types.Split(';', ','))
+                {
+                    long v;
+                    if (long.TryParse(part.Trim(), out v) && v == nctId.Value) return true;
+                }
+                return false;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
         }
 
         /// <summary>I. Thông tin hành chính — 23 chỉ tiêu.</summary>
@@ -151,7 +492,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             b["dan_toc_id"] = MapByName(CAT__DAN_TOC, FirstStr(p, "ETHNIC_NAME", "VIR_ETHNIC_NAME"));
             b["sdt"] = GetStr(p, "PHONE");
             b["nhom_mau_id"] = MapByName(CAT__NHOM_MAU, GetStr(p, "BLOOD_ABO_CODE"));
-            b["yeu_to_nhom_mau_id"] = MapByName(CAT__YEU_TO_NHOM_MAU, GetStr(p, "BLOOD_RH_CODE"));
+            b["yeu_to_nhom_mau_id"] = MapRhFactor(GetStr(p, "BLOOD_RH_CODE"));
             b["dia_chi_hien_tai"] = FirstStr(p, "VIR_HT_ADDRESS", "HT_ADDRESS", "VIR_ADDRESS", "ADDRESS");
 
             // Id VÀ MÃ phải lấy CÙNG MỘT MỤC trong danh mục của Sở. Lấy mã của HIS thì cổng báo
@@ -161,29 +502,63 @@ namespace HIS.Desktop.Plugins.KskSyncList
             b["ward_id"] = ToLongOrNull(ward != null ? ward.Id : null);
             b["ward_code"] = (ward != null) ? ward.Code : null;
 
-            KskSytCatalogItem career = MapByNameItem(CAT__NGHE_NGHIEP, GetStr(p, "CAREER_NAME"));
+            // TỈNH / THÀNH PHỐ — tra theo MÃ trước, theo TÊN sau, cùng cách với nghề nghiệp.
+            //
+            // Mã tỉnh trong danh mục của cổng có 3 chữ số kèm số 0 ở đầu ("079"), còn HIS có nơi lưu
+            // "79" — nên thử cả dạng đã thêm số 0 cho đủ 3 chữ số, nếu không sẽ trượt hết.
+            KskSytCatalogItem city = MapCityItem(
+                FirstStr(p, "HT_PROVINCE_CODE", "PROVINCE_CODE"),
+                FirstStr(p, "HT_PROVINCE_NAME", "PROVINCE_NAME"));
+            b["city_id"] = ToLongOrNull(city != null ? city.Id : null);
+            b["city_code"] = (city != null) ? city.Code : null;
+
+            // NGHỀ NGHIỆP — tra theo MÃ trước, theo TÊN sau.
+            //
+            // Danh mục của cổng có mã cho cả 792 mục, dạng 5 chữ số ("10110", "17210") — đúng bộ mã
+            // nghề nghiệp chuẩn mà danh mục của viện cũng dùng. Bằng chứng: cổng QĐ 1551 lấy 2 ký tự
+            // ĐẦU của `TDL_PATIENT_CAREER_CODE` làm mã nhóm nghề, tức mã của HIS dài hơn 2 ký tự và
+            // cùng hệ.
+            //
+            // Tra theo mã chắc hơn hẳn tra theo tên: tên cùng một nghề mỗi nơi ghi một kiểu, chỉ lệch
+            // một dấu cách hay một chữ viết hoa là trượt.
+            string careerCode = FirstStr(src.Treatment, "TDL_PATIENT_CAREER_CODE");
+            KskSytCatalogItem career = MapByNameItem(CAT__NGHE_NGHIEP, careerCode);
+            if (career == null)
+                career = MapByNameItem(CAT__NGHE_NGHIEP, GetStr(p, "CAREER_NAME"));
+
             if (career != null)
             {
+                // Id VÀ mã lấy CÙNG MỘT MỤC của danh mục cổng — ghép lẫn là cổng từ chối.
                 b["nghenghiep_id"] = ToLongOrNull(career.Id);
                 b["nghenghiep_code"] = career.Code;
             }
             else
             {
-                // TẠM THỜI, ĐANG CHỜ SỞ TRẢ LỜI — danh mục nghề nghiệp của cổng có 792 mục theo
-                // phân loại khác hẳn cách HIS đặt tên ("Nông dân" không có trong danh sách) nên
-                // chưa nối được, mà cổng thì bắt buộc trường này. Gửi tạm một mục CÓ THẬT.
-                b["nghenghiep_id"] = TAM_NGHE_NGHIEP_ID;
-                b["nghenghiep_code"] = TAM_NGHE_NGHIEP_CODE;
+                // KHÔNG gửi giá trị bịa. Trước đây tra không ra thì gửi cứng một nghề có thật cho
+                // qua cửa cổng — nhưng như vậy mọi bệnh nhân tra hụt đều thành cùng một nghề, trên
+                // cổng nhìn y như dữ liệu thật nên không ai phát hiện (cùng lý do đã bỏ nơi công tác).
+                Inventec.Common.Logging.LogSystem.Warn("SytHcm: khong tra duoc nghe nghiep — ma HIS=\""
+                    + (careerCode ?? "") + "\", ten=\"" + (GetStr(p, "CAREER_NAME") ?? "")
+                    + "\" -> KHONG gui nghe nghiep");
             }
 
             // NƠI CÔNG TÁC là Id trong danh mục của cổng, KHÔNG phải chữ. Bảng chi tiết ghi kiểu
             // chuỗi 2000 ký tự nhưng thực tế cổng chỉ nhận Id — gửi chữ là bị từ chối.
+            //
+            // TRA ĐƯỢC THÌ GỬI, KHÔNG THÌ ĐỂ TRỐNG. Trước đây không tra được thì gửi Id 1 cho khỏi
+            // bị cổng chê thiếu — nhưng như vậy MỌI bệnh nhân của viện đều thành cùng một nơi làm
+            // việc, nhìn trên cổng y như dữ liệu thật nên không ai phát hiện ra. Thà để trống và bị
+            // cổng chê, còn hơn gửi dữ liệu bịa (quyết định của người yêu cầu).
+            //
+            // Danh mục nơi công tác của cổng có 5431 mục là tên cơ sở cụ thể, còn HIS lưu nơi công
+            // tác dạng chữ tự do nên phần lớn hồ sơ sẽ không tra ra. Muốn gửi đúng thì phải bổ sung
+            // ô chọn nơi công tác lấy thẳng danh mục của cổng, như đã làm cho ô chọn bệnh.
             long? noiCongTac = MapByName(CAT__NOI_CONG_TAC,
                 FirstStr(o, "WORK_PLACE", "WORKING_PLACE"));
-            // TẠM THỜI, CÙNG LOẠI VẤN ĐỀ VỚI NGHỀ NGHIỆP — danh mục nơi công tác của cổng có 5431
-            // mục là tên cơ sở cụ thể, HIS không có dữ liệu tương ứng để nối, mà cổng bắt buộc.
-            b["noi_cong_tac"] = noiCongTac.HasValue ? (object)noiCongTac.Value : TAM_NOI_CONG_TAC_ID;
-            b["noi_cong_tac_xa_phuong"] = TAM_NOI_CONG_TAC_XA_PHUONG;
+            if (noiCongTac.HasValue) b["noi_cong_tac"] = noiCongTac.Value;
+
+            // `noi_cong_tac_xa_phuong` KHÔNG gửi: chưa rõ đây là xã/phường của NƠI CÔNG TÁC hay của
+            // bệnh nhân, và HIS không có chỗ lưu tương ứng. Chờ Sở trả lời.
 
             b["hinh_thuc_chi_tra_khamsk"] = GetLong(h, "SYT_PAYSOURCE_ID");
             b["hinh_thuc_chi_tra_khamsk_chi_tiet"] = GetLong(h, "SYT_PAY_SOURCE_DETAIL_ID");
@@ -199,10 +574,23 @@ namespace HIS.Desktop.Plugins.KskSyncList
             HIS_KSK_OVER_EIGHTEEN o = src.Over18;
 
             string family = GetStr(o, "PATHOLOGICAL_HISTORY_FAMILY");
-            b["giadinh_macbenh"] = YesNo(!string.IsNullOrWhiteSpace(family));
-            b["giadinh_danhsachbenh"] = null;       // HIS lưu dạng chữ, không có danh sách mã bệnh
-            b["giadinh_danhsachbenh_icd"] = null;
-            b["giadinh_macbenh_tenbenh"] = family;
+            // TIỀN SỬ GIA ĐÌNH — 4 chỉ tiêu, tất cả đã có chỗ lưu trong HIS kể từ khi màn hình
+            // nhập đổi ô chữ thành danh sách ô tích lấy từ danh mục của cổng.
+            //
+            //   giadinh_danhsachbenh      <- danh sách mã định danh bệnh trong danh mục của cổng
+            //   giadinh_danhsachbenh_icd  <- danh sách mã định danh trong danh mục ICD của cổng
+            //   giadinh_macbenh_tenbenh   <- tên các bệnh đã chọn ở ô mã ICD
+            //   giadinh_macbenh           <- có/không, suy ra từ ba chỉ tiêu trên
+            string famIds = ReplaceSeparator(family);
+            string famIcdIds = ReplaceSeparator(GetStr(src.General, "FAMILY_HISTORY_ICD_CODE"));
+            string famIcdNames = GetStr(src.General, "FAMILY_HISTORY_ICD_NAME");
+
+            b["giadinh_danhsachbenh"] = famIds;
+            b["giadinh_danhsachbenh_icd"] = famIcdIds;
+            b["giadinh_macbenh_tenbenh"] = famIcdNames;
+            b["giadinh_macbenh"] = YesNo(!string.IsNullOrWhiteSpace(famIds)
+                || !string.IsNullOrWhiteSpace(famIcdIds)
+                || !string.IsNullOrWhiteSpace(famIcdNames));
 
             b["ds_benh_ban_than"] = BuildDsBenhBanThan(src);
 
@@ -846,92 +1234,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
-        /// <summary>
-        /// Nơi công tác dùng tạm khi chưa nối được danh mục 5431 mục của cổng — Id 1, đúng giá trị
-        /// mà ví dụ body của Sở dùng. Bỏ khi Sở trả lời cách nối.
-        /// </summary>
-        private const int TAM_NOI_CONG_TAC_ID = 1;
-        private const int TAM_NOI_CONG_TAC_XA_PHUONG = 1;
-
-        /// <summary>
-        /// Nghề nghiệp dùng tạm khi chưa nối được danh mục 792 mục của cổng.
-        /// Chọn "Nông nghiệp, lâm nghiệp và thủy sản" — gần nghĩa với nghề của bệnh nhân đang thử
-        /// (HIS ghi "Nông dân"). Id và mã lấy đúng CÙNG một mục trong danh mục của Sở.
-        /// </summary>
-        private const int TAM_NGHE_NGHIEP_ID = 286;
-        private const string TAM_NGHE_NGHIEP_CODE = "17210";
 
         #endregion
 
-        #region ===== Gửi kèm tên trường của bảng chi tiết =====
-
-        /// <summary>
-        /// Đặc tả đặt tên trường KHÁC NHAU ở hai mục: ví dụ body (mục 2.2) và bảng chi tiết (mục 2.3).
-        /// Ban đầu chọn theo ví dụ body, nhưng thực tế cổng đòi theo BẢNG CHI TIẾT — gửi đủ
-        /// `huyetaptamthu` mà cổng vẫn báo "Vui lòng truyền huyetaptamthu!", tức là nó tìm
-        /// `theluc_huyetaptamthu`.
-        ///
-        /// Vì không biết chắc cổng đọc mục nào cho TỪNG trường, gửi CẢ HAI TÊN cho mọi trường lệch.
-        /// Trường thừa thì cổng bỏ qua (bản tin trước đã có `bmi`, `nhiptho` thừa mà không bị chê),
-        /// còn thiếu tên đúng thì hỏng cả hồ sơ. Bỏ dần khi Sở xác nhận tên chuẩn.
-        ///
-        /// Mỗi dòng: tên đang gửi -> tên thêm vào.
-        /// </summary>
-        private static readonly string[][] TTHC_ALIASES = new string[][]
-        {
-            new[] { "doi_tuong_kham", "doituongkham" },
-            new[] { "dia_diem_kham",  "diadiemkham"  },
-            new[] { "ward_id",        "wardId"       },
-            new[] { "ward_code",      "wardCode"     },
-            new[] { "ly_do_kham",     "lydokham"     }
-        };
-
-        private static readonly string[][] THE_LUC_ALIASES = new string[][]
-        {
-            new[] { "chieucao",         "theluc_chieucao"         },
-            new[] { "cannang",          "theluc_cannang"          },
-            new[] { "mach",             "theluc_mach"             },
-            new[] { "nhiptho",          "theluc_nhiptho"          },
-            new[] { "huyetaptamthu",    "theluc_huyetaptamthu"    },
-            new[] { "huyetaptamtruong", "theluc_huyetaptamtruong" },
-            new[] { "phanloai",         "theluc_phanloai"         },
-            new[] { "bmi",              "theluc_bmi"              }
-        };
-
-        private static readonly string[][] TIEN_SU_ALIASES = new string[][]
-        {
-            new[] { "giadinh_danhsachbenh",     "ts_giadinh_danhsachbenh"     },
-            new[] { "giadinh_danhsachbenh_icd", "ts_giadinh_danhsachbenh_icd" }
-        };
-
-        private static readonly string[][] LAM_SAN_ALIASES = new string[][]
-        {
-            new[] { "chi_tiet_kham_rang", "ChiTietKhamRang" }
-        };
-
-        /// <summary>
-        /// Khối kết luận KHÔNG cần gửi kèm tên nào nữa: trường danh mục có tên riêng là
-        /// `danh_muc_de_nghi`, đã gửi thẳng trong BuildKetLuan.
-        /// </summary>
-        private static readonly string[][] KET_LUAN_ALIASES = new string[][] { };
-
-        /// <summary>Thêm bản sao của một trường dưới tên khác, giữ nguyên giá trị.</summary>
-        private static void AddAliases(Dictionary<string, object> block, string[][] aliases)
-        {
-            try
-            {
-                if (block == null || aliases == null) return;
-                foreach (string[] a in aliases)
-                {
-                    object v;
-                    if (!block.TryGetValue(a[0], out v)) continue;
-                    if (!block.ContainsKey(a[1])) block[a[1]] = v;
-                }
-            }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
-        }
-
-        #endregion
 
         #region ===== Kiểm tra trước khi gửi =====
 
@@ -956,11 +1261,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
             new[] { "nghenghiep_id",        "tthc",         "nghề nghiệp của bệnh nhân — phải khớp danh mục của cổng" },
             new[] { "hinh_thuc_chi_tra_khamsk",            "tthc", "ô Nguồn chi trả ở màn hình nhập KSK" },
             new[] { "hinh_thuc_chi_tra_khamsk_chi_tiet",   "tthc", "ô Hình thức chi trả ở màn hình nhập KSK" },
-            new[] { "huyetaptamthu",        "kham_the_luc", "huyết áp tâm thu ở phần sinh hiệu" },
-            new[] { "huyetaptamtruong",     "kham_the_luc", "huyết áp tâm trương ở phần sinh hiệu" },
-            new[] { "chieucao",             "kham_the_luc", "chiều cao ở phần sinh hiệu" },
-            new[] { "cannang",              "kham_the_luc", "cân nặng ở phần sinh hiệu" },
-            new[] { "phanloai",             "kham_the_luc", "phân loại thể lực ở phần sinh hiệu" }
+            new[] { "huyetaptamthu",    "kham_the_luc", "huyết áp tâm thu ở phần sinh hiệu" },
+            new[] { "huyetaptamtruong", "kham_the_luc", "huyết áp tâm trương ở phần sinh hiệu" },
+            new[] { "chieucao",         "kham_the_luc", "chiều cao ở phần sinh hiệu" },
+            new[] { "cannang",          "kham_the_luc", "cân nặng ở phần sinh hiệu" },
+            new[] { "phanloai",         "kham_the_luc", "phân loại thể lực ở phần sinh hiệu" }
         };
 
         /// <summary>
@@ -1041,6 +1346,66 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// <summary>Bảng tra "tên đã chuẩn hóa" -> Id, dựng một lần cho mỗi danh mục.</summary>
         private static readonly Dictionary<string, Dictionary<string, long>> byNameCache
             = new Dictionary<string, Dictionary<string, long>>();
+
+        /// <summary>
+        /// Yeu to Rh cua HIS -> Id trong danh muc cua cong.
+        ///
+        /// HIS luu dau "+" / "-" (xac nhan cua nguoi yeu cau), con danh muc cua cong ghi "Rh+" /
+        /// "Rh-" nen so thang la truot, va truot thi ho so len cong bi thieu yeu to Rh ma khong co
+        /// canh bao nao. Nhan them cac cach viet thuong gap khac de khoi phai sua lai khi gap vien
+        /// luu kieu khac.
+        /// </summary>
+        private static object MapRhFactor(string code)
+        {
+            try
+            {
+                string v = Norm(code);
+                if (v.Length == 0) return null;
+
+                if (v == "+" || v == "rh+" || v == "pos" || v == "positive" || v == "duong" || v == "1")
+                    v = "rh+";
+                else if (v == "-" || v == "rh-" || v == "neg" || v == "negative" || v == "am" || v == "0")
+                    v = "rh-";
+
+                long? id = MapByName(CAT__YEU_TO_NHOM_MAU, v);
+                if (id.HasValue) return id.Value;
+
+                Inventec.Common.Logging.LogSystem.Warn("SytHcm: khong quy doi duoc yeu to Rh \""
+                    + (code ?? "") + "\" -> KHONG gui yeu_to_nhom_mau_id");
+                return null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
+        /// <summary>
+        /// Tra tinh / thanh pho trong danh muc cua cong: theo MA truoc, theo TEN sau.
+        ///
+        /// Ma trong danh muc cua cong la 3 chu so co so 0 o dau ("079" = TP.HCM), con HIS tuy noi
+        /// luu "79" hoac "079" — nen thu ca dang da them so 0 cho du 3 chu so.
+        /// Tra theo ten de du phong, vi ten tinh moi noi ghi mot kieu nen kem chac hon tra theo ma.
+        /// </summary>
+        private static KskSytCatalogItem MapCityItem(string code, string name)
+        {
+            try
+            {
+                string c = (code ?? "").Trim();
+                if (c.Length > 0)
+                {
+                    KskSytCatalogItem hit = MapByNameItem(CAT__TINH, c);
+                    if (hit == null && c.Length < 3) hit = MapByNameItem(CAT__TINH, c.PadLeft(3, '0'));
+                    if (hit == null && c.Length > 1) hit = MapByNameItem(CAT__TINH, c.TrimStart('0'));
+                    if (hit != null) return hit;
+                }
+
+                KskSytCatalogItem byName = MapByNameItem(CAT__TINH, name);
+                if (byName != null) return byName;
+
+                Inventec.Common.Logging.LogSystem.Warn("SytHcm: khong tra duoc tinh/thanh pho - ma HIS=\""
+                    + c + "\", ten=\"" + (name ?? "") + "\" -> KHONG gui city_id/city_code");
+                return null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
 
         /// <summary>
         /// Quy đổi theo TÊN nhưng trả về CẢ MỤC danh mục, để nơi gọi lấy được Id và mã của cùng
@@ -1306,15 +1671,30 @@ namespace HIS.Desktop.Plugins.KskSyncList
             return null;
         }
 
+        /// <summary>
+        /// Đọc một trị số từ bản ghi.
+        ///
+        /// KHÔNG đi vòng qua chuỗi. Trước đây hàm này gọi `v.ToString()` rồi đọc lại bằng ngôn ngữ
+        /// bất biến: máy đặt ngôn ngữ Việt ghi số 140.0 thành chuỗi "140,0", đọc lại thì dấu phẩy bị
+        /// hiểu là DẤU NGĂN NGHÌN (vì `NumberStyles.Any` cho phép) nên ra 1400 — sai gấp mười lần.
+        /// Chiều cao 140,0 cm đẩy lên cổng thành 1400.
+        /// </summary>
         private static decimal? GetDecimal(object o, string name)
         {
             PropertyInfo pi = Prop(o, name);
             if (pi == null) return null;
             object v = pi.GetValue(o, null);
             if (v == null) return null;
-            decimal r;
-            return decimal.TryParse(v.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out r)
-                ? (decimal?)r : null;
+
+            // Cột số thì đổi thẳng, không qua chuỗi.
+            if (v is decimal) return (decimal)v;
+            if (v is double) return (decimal)(double)v;
+            if (v is float) return (decimal)(float)v;
+            if (v is int || v is long || v is short || v is byte)
+                return Convert.ToDecimal(v, CultureInfo.InvariantCulture);
+
+            // Cột chữ thì mới phải đọc, và dùng lại đúng cách đọc của ToNum.
+            return ToNum(v.ToString());
         }
 
         /// <summary>
@@ -1335,7 +1715,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             if (string.IsNullOrWhiteSpace(s)) return null;
             decimal r;
-            return decimal.TryParse(s.Trim().Replace(',', '.'), NumberStyles.Any,
+            // NumberStyles.Float, KHÔNG dùng Any: Any cho phép dấu ngăn nghìn nên "1.234" thành 1234.
+            return decimal.TryParse(s.Trim().Replace(',', '.'), NumberStyles.Float,
                 CultureInfo.InvariantCulture, out r) ? (decimal?)r : null;
         }
 

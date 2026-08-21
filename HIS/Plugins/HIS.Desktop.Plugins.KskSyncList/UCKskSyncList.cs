@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2026 INVENTEC
  *
@@ -62,9 +62,6 @@ namespace HIS.Desktop.Plugins.KskSyncList
         // key VLG (khong thi vien Vinh Long deploy xong bam Dong bo ngay se day THIEU cong tinh ma van
         // bao thanh cong). User tick tay lan dau la JSON moi co truong nay -> ton trong lua chon user.
         private bool vlgStateSaved;
-
-        /// <summary>Đã dời nút "Nối chỉ số" xuống hàng riêng chưa — chỉ dời một lần.</summary>
-        private bool clsMapButtonMoved;
 
         /// <summary>Trạng thái đã lưu CÓ trường SyncSytHcm chưa — để biết khi nào cần tự tích một lần.</summary>
         private bool sytStateSaved;
@@ -595,18 +592,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             LoadSyncTargetAvailability();
             // AN TOAN DA VIEN: nut "Noi chi so CLS" chi phuc vu cong SYT TP.HCM nen chi hien voi
             // vien da khai bao cau hinh cong do; vien khac khong thay nut nay.
-            // Nút "Nối chỉ số" nằm CÙNG VÙNG NGANG với nút "Cập nhật KQ cổng VLG" (cả hai đều
-            // 1055-1176) nên đè lên nhau. Hai hàng của khung lọc đã kín, không còn khe nào, nên cho
-            // nút này xuống MỘT HÀNG RIÊNG.
-            //
-            // Viện không khai cấu hình cổng Sở Y tế thì mục bị đặt Never -> DevExpress loại hẳn khỏi
-            // bố cục, hàng đó biến mất, giao diện của viện khác không đổi một chút nào.
-            if (!clsMapButtonMoved && lciBtnClsMap != null && lciBtnSync != null)
-            {
-                clsMapButtonMoved = true;
-                try { lciBtnClsMap.Move(lciBtnSync, DevExpress.XtraLayout.Utils.InsertType.Bottom); }
-                catch (Exception exMove) { Inventec.Common.Logging.LogSystem.Warn(exMove); }
-            }
+            // KHÔNG dời nút bằng mã. Vị trí các nút đã đặt sẵn trong tệp bố cục (Designer): nút
+            // "Nối chỉ số" ở cuối hàng 1, nút "Đồng bộ lên cổng" ở cuối hàng 2. Gọi Move lúc chạy sẽ
+            // sắp lại cây bố cục và kéo theo hai hậu quả đã gặp: nút Đồng bộ bị đẩy lên hàng 1 tách
+            // khỏi nút Xuất XML, và phần lưới bên dưới không còn giãn hết chiều cao.
             lciBtnClsMap.Visibility = sytConfigAvailable
                 ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                 : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -801,7 +790,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     && !vlgConfigAvailable && !sytConfigAvailable)
                 {
                     XtraMessageBox.Show(
-                        "Chưa cấu hình cổng liên thông khám sức khỏe." + Environment.NewLine +
+                        "Chưa cấu hình cổng liên thông khám sức khỏe cho cơ sở " + GetCurrentBranchName() + "." + Environment.NewLine +
                         "Vui lòng cấu hình MOS.HIS_KSK_SYNC.CONNECTION_INFO (Liên thông KSK BYT), " +
                         "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO (Liên thông HSSK), " +
                         "MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO (Liên thông HOC), " +
@@ -922,15 +911,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
         }
 
-        /// <summary>Đọc VALUE của 1 key HIS_CONFIG (null nếu không có).</summary>
+        /// <summary>
+        /// Đọc VALUE của 1 key HIS_CONFIG theo CHI NHÁNH đang làm việc (null nếu không có).
+        /// Nhiều cơ sở chung 1 DB -> cùng key có nhiều bản ghi, phân biệt bằng BRANCH_ID.
+        /// </summary>
         private string GetConfigValue(string key)
         {
-            try
-            {
-                var cfg = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY == key).FirstOrDefault();
-                return cfg != null ? cfg.VALUE : null;
-            }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+            return KskBranchConfig.GetValue(key);
+        }
+
+        /// <summary>Tên chi nhánh (cơ sở) đang làm việc — dùng cho thông báo cấu hình thiếu.</summary>
+        private string GetCurrentBranchName()
+        {
+            return KskBranchConfig.CurrentBranchName();
         }
 
         /// <summary>
@@ -1064,18 +1057,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
         #endregion
 
         #region Dong bo (Scene 2 -> 4 -> 5)
+        /// <summary>Chuỗi cấu hình cổng BYT của chi nhánh đang làm việc.</summary>
         private string GetConnectionInfo()
         {
-            try
-            {
-                var cfg = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY == CONFIG_KEY__CONNECTION_INFO).FirstOrDefault();
-                return cfg != null ? cfg.VALUE : null;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return null;
-            }
+            return GetConfigValue(CONFIG_KEY__CONNECTION_INFO);
         }
 
         /// <summary>BR7 - an toan da vien: chua cau hinh ket noi cong => khong day (Scene 5).</summary>
@@ -1083,7 +1068,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             if (!string.IsNullOrWhiteSpace(GetConnectionInfo())) return true;
             XtraMessageBox.Show(
-                "Chưa có cấu hình kết nối Cổng dữ liệu Y tế cho cơ sở này." + Environment.NewLine +
+                "Chưa có cấu hình kết nối Cổng dữ liệu Y tế cho cơ sở " + GetCurrentBranchName() + "." + Environment.NewLine +
                 "Vui lòng liên hệ bộ phận quản trị để khai báo thông tin kết nối (tài khoản, địa chỉ cổng, chứng thư số) trước khi đẩy dữ liệu.",
                 "Không thể đồng bộ", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;

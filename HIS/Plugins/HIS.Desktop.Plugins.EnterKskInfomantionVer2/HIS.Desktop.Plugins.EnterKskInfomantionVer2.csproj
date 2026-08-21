@@ -267,6 +267,12 @@
     <Compile Include="Run\frmChooseExamResult.Designer.cs">
       <DependentUpon>frmChooseExamResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="ADO\KskDefaultFieldADO.cs" />
+    <Compile Include="ADO\KskServiceRefADO.cs" />
+    <Compile Include="ADO\KskSettingFileADO.cs" />
+    <Compile Include="ADO\KskDefaultGroupADO.cs" />
+    <Compile Include="ADO\KskDefaultRowADO.cs" />
+    <Compile Include="ADO\KskDefaultValueADO.cs" />
     <Compile Include="ADO\KskUnderSixADO.cs" />
     <Compile Include="ADO\TypeADO.cs" />
     <Compile Include="ADO\VaccineTypeADO.cs" />
@@ -353,6 +359,22 @@
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___UnderEighteenTextLib.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___UnderEighteenVaccineDefault.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___UnderEighteenChooseRs.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___RequiredValidation.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___AccompanyUnderSix.cs">
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>
@@ -366,6 +388,11 @@
     </Compile>
     <Compile Include="Run\frmAutoClsSetting.Designer.cs">
       <DependentUpon>frmAutoClsSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Run\KskDefaultSettingUtil.cs" />
+    <Compile Include="Run\frmEnterKskInfomantionVer2___UnderSixDefault.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___PrintMPS.cs">
       <SubType>Form</SubType>
@@ -405,6 +432,18 @@
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___SytFamilyHistory.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___InterviewHcm.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___InterviewHcmData.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___UnderEighteenRank.cs">
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>
@@ -413,6 +452,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___UnderSix.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___UnderSixTextLib.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___UnderSixNormalSign.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Run\UcKskConclusionIcd.cs">

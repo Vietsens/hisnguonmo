@@ -76,6 +76,25 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Resources
             }
         }
 
+        /// <summary>
+        /// Da tich "Man tinh", ban phai nhap: {0}.
+        /// </summary>
+        internal static string TichManTinhPhaiNhapTruongBatBuoc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TichManTinhPhaiNhapTruongBatBuoc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string TruongDuLieuBatBuoc
         {
             get

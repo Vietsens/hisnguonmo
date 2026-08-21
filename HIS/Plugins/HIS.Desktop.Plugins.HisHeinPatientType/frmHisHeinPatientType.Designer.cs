@@ -50,9 +50,7 @@
             this.cboTreatmentType = new DevExpress.XtraEditors.GridLookUpEdit();
             this.cboMediOrgCodes = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridViewMediOrgCodes = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.chkAllMediOrg = new DevExpress.XtraEditors.CheckEdit();
             this.lciMediOrgCodes = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciAllMediOrg = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridColumnMediOrgCodes = new DevExpress.XtraGrid.Columns.GridColumn();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
@@ -126,9 +124,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMediOrgCodes.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewMediOrgCodes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkAllMediOrg.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciMediOrgCodes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciAllMediOrg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRightRouteTypeCode.Properties)).BeginInit();
@@ -175,7 +171,6 @@
             // 
             this.layoutControl1.Controls.Add(this.cboTreatmentType);
             this.layoutControl1.Controls.Add(this.cboMediOrgCodes);
-            this.layoutControl1.Controls.Add(this.chkAllMediOrg);
             this.layoutControl1.Controls.Add(this.cboRightRouteTypeCode);
             this.layoutControl1.Controls.Add(this.txtRightRouteTypeCode);
             this.layoutControl1.Controls.Add(this.sprinNumOrder);
@@ -223,7 +218,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboMediOrgCodes.Properties.NullText = "";
             this.cboMediOrgCodes.Properties.View = this.gridViewMediOrgCodes;
-            this.cboMediOrgCodes.Size = new System.Drawing.Size(254, 20);
+            this.cboMediOrgCodes.Size = new System.Drawing.Size(354, 20);
             this.cboMediOrgCodes.StyleController = this.layoutControl1;
             this.cboMediOrgCodes.TabIndex = 20;
             this.cboMediOrgCodes.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboMediOrgCodes_CustomDisplayText);
@@ -234,17 +229,6 @@
             this.gridViewMediOrgCodes.Name = "gridViewMediOrgCodes";
             this.gridViewMediOrgCodes.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridViewMediOrgCodes.OptionsView.ShowGroupPanel = false;
-            //
-            // chkAllMediOrg
-            //
-            this.chkAllMediOrg.Location = new System.Drawing.Point(1198, 191);
-            this.chkAllMediOrg.MenuManager = this.barManager1;
-            this.chkAllMediOrg.Name = "chkAllMediOrg";
-            this.chkAllMediOrg.Properties.Caption = "";
-            this.chkAllMediOrg.Size = new System.Drawing.Size(43, 19);
-            this.chkAllMediOrg.StyleController = this.layoutControl1;
-            this.chkAllMediOrg.TabIndex = 21;
-            this.chkAllMediOrg.CheckedChanged += new System.EventHandler(this.chkAllMediOrg_CheckedChanged);
             //
             // barManager1
             //
@@ -757,8 +741,7 @@
             this.layoutControlItem14,
             this.layoutControlItem15,
             this.layoutTreatmentType,
-            this.lciMediOrgCodes,
-            this.lciAllMediOrg});
+            this.lciMediOrgCodes});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -955,24 +938,11 @@
             this.lciMediOrgCodes.Control = this.cboMediOrgCodes;
             this.lciMediOrgCodes.Location = new System.Drawing.Point(780, 187);
             this.lciMediOrgCodes.Name = "lciMediOrgCodes";
-            this.lciMediOrgCodes.Size = new System.Drawing.Size(363, 24);
+            this.lciMediOrgCodes.Size = new System.Drawing.Size(463, 24);
             this.lciMediOrgCodes.Text = "Mã cơ sở KCB BĐ:";
             this.lciMediOrgCodes.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciMediOrgCodes.TextSize = new System.Drawing.Size(100, 13);
             this.lciMediOrgCodes.TextToControlDistance = 5;
-            //
-            // lciAllMediOrg
-            //
-            this.lciAllMediOrg.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciAllMediOrg.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciAllMediOrg.Control = this.chkAllMediOrg;
-            this.lciAllMediOrg.Location = new System.Drawing.Point(1143, 187);
-            this.lciAllMediOrg.Name = "lciAllMediOrg";
-            this.lciAllMediOrg.Size = new System.Drawing.Size(100, 24);
-            this.lciAllMediOrg.Text = "Tất cả:";
-            this.lciAllMediOrg.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAllMediOrg.TextSize = new System.Drawing.Size(50, 20);
-            this.lciAllMediOrg.TextToControlDistance = 5;
             //
             // dxErrorProvider1
             //
@@ -1026,9 +996,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMediOrgCodes.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewMediOrgCodes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkAllMediOrg.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciMediOrgCodes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciAllMediOrg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRightRouteTypeCode.Properties)).EndInit();
@@ -1147,9 +1115,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraEditors.GridLookUpEdit cboMediOrgCodes;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewMediOrgCodes;
-        private DevExpress.XtraEditors.CheckEdit chkAllMediOrg;
         private DevExpress.XtraLayout.LayoutControlItem lciMediOrgCodes;
-        private DevExpress.XtraLayout.LayoutControlItem lciAllMediOrg;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnMediOrgCodes;
     }
 }

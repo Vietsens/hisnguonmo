@@ -43,6 +43,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
     public partial class frmBedRoomWithIn : HIS.Desktop.Utility.FormBase
     {
         List<HIS_PATIENT_CLASSIFY> dataClassiFy;
+        List<HIS_CARE_LEVEL> dataCareLevel;
         private void LoadComboEditor(DevExpress.XtraEditors.GridLookUpEdit cboEditor, string valueCode, string valueName, string valueId, object data)
         {
             try
@@ -177,6 +178,29 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                     txtPATIENT_CLASSIFY.Text = dataClassiFy[0].PATIENT_CLASSIFY_CODE;
                     txtPATIENT_CLASSIFY.Focus();
                     txtPATIENT_CLASSIFY.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadDataToCboCareLevel()
+        {
+            try
+            {
+                var data = BackendDataWorker.Get<HIS_CARE_LEVEL>();
+                if (data != null)
+                {
+                    data = data.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                        && o.IS_DELETE != IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE).ToList();
+                    dataCareLevel = data.ToList();
+                    List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                    columnInfos.Add(new ColumnInfo("CARE_LEVEL_CODE", "Mã", 80, 1));
+                    columnInfos.Add(new ColumnInfo("CARE_LEVEL_NAME", "Tên", 190, 2));
+                    ControlEditorADO controlEditorADO = new ControlEditorADO("CARE_LEVEL_NAME", "ID", columnInfos, false, 300);
+                    ControlEditorLoader.Load(cboCareLevel, data, controlEditorADO);
                 }
             }
             catch (Exception ex)

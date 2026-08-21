@@ -142,6 +142,19 @@ namespace MPS.Processor.Mps000086
                         // hien thi moi lo 1 dong rieng, khong phu thuoc gia tri _keyMert.
                         listAdoPrintSplitedByPackage = rdo.listAdo.ToList();
                     }
+                    // Sap xep dataset SplitedByPackage theo LOAI de cac dong cung 1 thuoc/vat tu (nhieu lo) nam lien nhau.
+                    // Truoc day dataset nay khong duoc sort nen giu thu tu rdo.listAdo (TYPE_ID asc, NUM_ORDER desc)
+                    // => cac lo cua cung 1 thuoc bi nam roi rac.
+                    // Thu tu: nhom lon (thuoc/vat tu/mau) -> thu tu danh muc -> ten -> ID (chong trung ten) -> lo/han dung.
+                    listAdoPrintSplitedByPackage = listAdoPrintSplitedByPackage
+                        .OrderBy(p => p.TYPE_ID)
+                        .ThenBy(p => p.MEDI_MATE_NUM_ORDER ?? 0)
+                        .ThenBy(p => p.MEDI_MATE_TYPE_NAME ?? string.Empty)
+                        .ThenBy(p => p.MEDI_MATE_TYPE_ID)
+                        .ThenBy(p => ToSortableDate(p.EXPIRED_DATE_STR))
+                        .ThenBy(p => p.PACKAGE_NUMBER ?? string.Empty)
+                        .ToList();
+
                     Inventec.Common.Logging.LogSystem.Debug("rdo.OderKey:____" + rdo.OrderKey);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("listAdoPrint:____", listAdoPrint));
                     if (rdo.OrderKey != 0)
@@ -300,6 +313,22 @@ namespace MPS.Processor.Mps000086
             }
             return result;
         }
+        /// <summary>
+        /// Doi chuoi han dung dd/MM/yyyy sang dang yyyyMMdd de sort theo thoi gian (thay vi sort chuoi).
+        /// Chuoi rong/khong dung dinh dang -> tra ve "99999999" (day xuong cuoi nhom).
+        /// </summary>
+        private string ToSortableDate(string dateStr)
+        {
+            if (string.IsNullOrWhiteSpace(dateStr)) return "99999999";
+            var parts = dateStr.Split('/');
+            if (parts.Length != 3) return "99999999";
+            int day, month, year;
+            if (!int.TryParse(parts[0], out day)
+                || !int.TryParse(parts[1], out month)
+                || !int.TryParse(parts[2], out year)) return "99999999";
+            return string.Format("{0:0000}{1:00}{2:00}", year, month, day);
+        }
+
         private void BuildParentGroupName(List<Mps000086ADO> list)
         {
             string lastParent = null;

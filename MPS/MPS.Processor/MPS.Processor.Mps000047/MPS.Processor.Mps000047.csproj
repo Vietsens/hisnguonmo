@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -39,8 +42,13 @@
     <Reference Include="Inventec.Common.DateTime">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.FlexCelExport">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+    <Reference Include="Inventec.Common.FlexCelExport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelExport.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>

@@ -52,9 +52,16 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
                 HideLayoutButton(btnImport);
                 HideLayoutButton(btnHoiDongKiemNhap);
 
-                // Nhãn ô Mã nhập + nút Làm mới theo ngôn ngữ
+                // Thông tin chung chỉ đọc ở cả 2 chế độ - plugin chỉ tra cứu/xem/in
+                SetReadOnlyCommonControls();
+
+                // Nhãn 2 ô tra cứu (Mã nhập, Số hóa đơn) + nút Làm mới theo ngôn ngữ
                 lblMaNhapSearch.Text = Inventec.Common.Resource.Get.Value(
                     "frmImpMestLookup.lblImpMestCode.Text",
+                    Resources.ResourceLanguageManager.LanguageResource,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                lblDocumentNumberSearch.Text = Inventec.Common.Resource.Get.Value(
+                    "frmImpMestLookup.lblDocumentNumberSearch.Text",
                     Resources.ResourceLanguageManager.LanguageResource,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 btnReset.Text = Inventec.Common.Resource.Get.Value(
@@ -64,25 +71,65 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
 
                 if (isLookupMode)
                 {
-                    // Chế độ tra cứu: tiêu đề "Tra cứu phiếu nhập", cho nhập Mã nhập, hiện nút Làm mới
+                    // Chế độ tra cứu: tiêu đề "Tra cứu phiếu nhập", cho nhập cả 2 ô, hiện nút Làm mới
                     this.Text = Inventec.Common.Resource.Get.Value(
                         "frmImpMestLookup.Text.Lookup",
                         Resources.ResourceLanguageManager.LanguageResource,
                         Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     txtImpMestCode.Properties.ReadOnly = false;
                     txtImpMestCode.Enabled = true;
+                    txtDocumentNumberSearch.Properties.ReadOnly = false;
+                    txtDocumentNumberSearch.Enabled = true;
                     btnReset.Visible = true;
                 }
                 else
                 {
-                    // Chế độ xem chi tiết: tiêu đề "Chi tiết nhập", Mã nhập chỉ đọc, ẩn nút Làm mới
+                    // Chế độ xem chi tiết: tiêu đề "Chi tiết nhập", 2 ô tra cứu chỉ đọc, ẩn nút Làm mới
                     this.Text = Inventec.Common.Resource.Get.Value(
                         "frmImpMestLookup.Text",
                         Resources.ResourceLanguageManager.LanguageResource,
                         Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     txtImpMestCode.Properties.ReadOnly = true;
+                    txtDocumentNumberSearch.Properties.ReadOnly = true;
                     btnReset.Visible = false;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đặt toàn bộ trường thông tin chung của phiếu nhập về trạng thái chỉ đọc.
+        /// 2 ô tra cứu ở thanh trên cùng (txtImpMestCode, txtDocumentNumberSearch) không thuộc nhóm này.
+        /// </summary>
+        private void SetReadOnlyCommonControls()
+        {
+            try
+            {
+                SetReadOnly(TxtDocumentNumber);
+                SetReadOnly(SpDocumentPrice);
+                SetReadOnly(SpDocumentVatPrice);
+                SetReadOnly(SpDiscount);
+                SetReadOnly(SpDiscountRatio);
+                SetReadOnly(TxtDeliverer);
+                SetReadOnly(txtDescription);
+                SetReadOnly(txtDocumentDate);
+                SetReadOnly(dtDocumentDate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetReadOnly(BaseEdit edit)
+        {
+            try
+            {
+                if (edit == null) return;
+                edit.Properties.ReadOnly = true;
             }
             catch (Exception ex)
             {
@@ -111,21 +158,21 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
         }
 
         /// <summary>
-        /// Đưa con trỏ về ô Mã nhập. Defer bằng BeginInvoke vì gọi Focus() ngay trong
-        /// sự kiện Load không có tác dụng (form chưa hiển thị) - mặc định focus sẽ rơi
-        /// vào control đầu tiên theo TabIndex (ô Số hóa đơn trong layoutControl1).
+        /// Đưa con trỏ về ô tra cứu Mã nhập (ô đầu tiên trên thanh tra cứu). Defer bằng BeginInvoke
+        /// vì gọi Focus() ngay trong sự kiện Load không có tác dụng (form chưa hiển thị) - mặc định
+        /// focus sẽ rơi vào control đầu tiên theo TabIndex trong layoutControl1.
         /// </summary>
-        private void FocusImpMestCode()
+        private void FocusSearchInput()
         {
             try
             {
-                this.ActiveControl = txtImpMestCode;
+                this.ActiveControl = txtDocumentNumberSearch;
                 this.BeginInvoke(new MethodInvoker(delegate
                 {
                     try
                     {
-                        txtImpMestCode.Focus();
-                        txtImpMestCode.SelectAll();
+                        txtDocumentNumberSearch.Focus();
+                        txtDocumentNumberSearch.SelectAll();
                     }
                     catch (Exception ex)
                     {
@@ -152,7 +199,24 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             {
                 if (e.KeyCode != Keys.Enter) return;
                 if (!isLookupMode) return;
-                DoLookupByCode();
+                DoLookupByImpMestCode();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Người dùng nhập Số hóa đơn + Enter ở chế độ tra cứu.
+        /// </summary>
+        private void txtDocumentNumberSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode != Keys.Enter) return;
+                if (!isLookupMode) return;
+                DoLookupByDocumentNumber();
             }
             catch (Exception ex)
             {
@@ -162,8 +226,9 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
 
         /// <summary>
         /// Tra cứu phiếu nhập theo Mã nhập (so khớp chính xác) rồi đổ dữ liệu lên màn hình.
+        /// Mã nhập là duy nhất nên kết quả kỳ vọng 0 hoặc 1 phiếu.
         /// </summary>
-        private void DoLookupByCode()
+        private void DoLookupByImpMestCode()
         {
             CommonParam param = new CommonParam();
             try
@@ -211,12 +276,8 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
                     return;
                 }
 
-                // 6. Tìm thấy -> gán thông tin và đổ dữ liệu
-                var found = impMests.FirstOrDefault();
-                this.ImpMestId = found.ID;
-                this.IMP_MEST_TYPE_ID = found.IMP_MEST_TYPE_ID;
-                this.ImpMestSttId = found.IMP_MEST_STT_ID;
-                LoadImpMestData();
+                // 6. Tìm thấy -> đổ dữ liệu
+                ApplyFoundImpMest(impMests.FirstOrDefault());
             }
             catch (Exception ex)
             {
@@ -226,16 +287,135 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
         }
 
         /// <summary>
-        /// Người dùng ấn Làm mới: xóa Mã nhập, dọn vùng chi tiết, focus về ô Mã nhập.
+        /// Tra cứu phiếu nhập theo Số hóa đơn (so khớp chính xác) rồi đổ dữ liệu lên màn hình.
+        /// Số hóa đơn không duy nhất nên kết quả có thể trả về nhiều phiếu -> cho người dùng chọn.
+        /// </summary>
+        private void DoLookupByDocumentNumber()
+        {
+            CommonParam param = new CommonParam();
+            try
+            {
+                // 1. Cắt khoảng trắng đầu/cuối, giữ nguyên phần còn lại (không pad zero, không đổi hoa/thường)
+                string documentNumber = (txtDocumentNumberSearch.Text ?? "").Trim();
+                txtDocumentNumberSearch.Text = documentNumber;
+
+                // 2. Rỗng -> cảnh báo trường bắt buộc, không gọi tra cứu
+                if (string.IsNullOrEmpty(documentNumber))
+                {
+                    dxErrorProvider1.SetError(txtDocumentNumberSearch,
+                        MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc),
+                        ErrorType.Warning);
+                    txtDocumentNumberSearch.Focus();
+                    return;
+                }
+                dxErrorProvider1.SetError(txtDocumentNumberSearch, "", ErrorType.None);
+
+                // 3. Tra cứu theo Số hóa đơn (so khớp chính xác)
+                WaitingManager.Show();
+                HisImpMestViewFilter filter = new HisImpMestViewFilter();
+                filter.DOCUMENT_NUMBER__EXACT = documentNumber;
+                var impMests = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST>>(
+                    HisRequestUriStore.HIS_IMP_MEST_GETVIEW, ApiConsumers.MosConsumer, filter, param);
+                WaitingManager.Hide();
+                SessionManager.ProcessTokenLost(param);
+
+                // 4. Không tìm thấy -> thông báo, giữ nguyên ô Số hóa đơn, không xáo trộn vùng chi tiết
+                if (impMests == null || impMests.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        string.Format(Resources.ResourceMessage.KhongTimThayPhieuNhapCoSoHoaDon, documentNumber),
+                        Resources.ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtDocumentNumberSearch.Focus();
+                    txtDocumentNumberSearch.SelectAll();
+                    return;
+                }
+
+                // 5. Nhiều phiếu trùng số hóa đơn -> cho người dùng chọn 1 phiếu
+                V_HIS_IMP_MEST found = null;
+                if (impMests.Count > 1)
+                {
+                    found = SelectImpMest(impMests);
+                    // Đóng màn chọn mà không chọn phiếu -> giữ nguyên trạng thái màn hình hiện tại
+                    if (found == null)
+                    {
+                        txtDocumentNumberSearch.Focus();
+                        txtDocumentNumberSearch.SelectAll();
+                        return;
+                    }
+                }
+                else
+                {
+                    found = impMests.FirstOrDefault();
+                }
+
+                // 6. Đã xác định đúng 1 phiếu -> đổ dữ liệu
+                ApplyFoundImpMest(found);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gán phiếu nhập tìm được vào trạng thái màn hình rồi đổ toàn bộ dữ liệu chi tiết.
+        /// Dùng chung cho cả 2 cách tra cứu (theo Mã nhập và theo Số hóa đơn).
+        /// </summary>
+        private void ApplyFoundImpMest(V_HIS_IMP_MEST found)
+        {
+            try
+            {
+                if (found == null) return;
+                this.ImpMestId = found.ID;
+                this.IMP_MEST_TYPE_ID = found.IMP_MEST_TYPE_ID;
+                this.ImpMestSttId = found.IMP_MEST_STT_ID;
+                LoadImpMestData();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Mở màn chọn phiếu nhập khi nhiều phiếu cùng số hóa đơn.
+        /// Trả về phiếu người dùng chọn, null nếu người dùng đóng màn mà không chọn.
+        /// </summary>
+        private V_HIS_IMP_MEST SelectImpMest(List<V_HIS_IMP_MEST> impMests)
+        {
+            V_HIS_IMP_MEST result = null;
+            try
+            {
+                using (frmImpMestSelect frm = new frmImpMestSelect(impMests))
+                {
+                    if (frm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        result = frm.SelectedImpMest;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Người dùng ấn Làm mới: xóa cả 2 ô tra cứu, dọn vùng chi tiết, focus về ô Mã nhập.
         /// </summary>
         private void btnReset_Click(object sender, EventArgs e)
         {
             try
             {
                 txtImpMestCode.Text = "";
+                txtDocumentNumberSearch.Text = "";
                 dxErrorProvider1.SetError(txtImpMestCode, "", ErrorType.None);
+                dxErrorProvider1.SetError(txtDocumentNumberSearch, "", ErrorType.None);
                 ClearAllData();
-                txtImpMestCode.Focus();
+                txtDocumentNumberSearch.Focus();
             }
             catch (Exception ex)
             {
@@ -270,7 +450,9 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
                 SetDataToCommonControl();
                 if (impMest == null) return;
 
+                // Đồng bộ lại cả 2 ô tra cứu theo phiếu nhập đang hiển thị
                 txtImpMestCode.Text = impMest.IMP_MEST_CODE;
+                txtDocumentNumberSearch.Text = impMest.DOCUMENT_NUMBER;
 
                 EnableGridColumn(IsAdmin);
                 LoadMobaExpMest();

@@ -59,6 +59,27 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
                 }
             }
         }
+        /// <summary>
+        /// Bat hien thi don thuoc du tru theo ngay du tru tren man Buong benh (QT-11).
+        /// Mac dinh tat de khong anh huong cac don vi dang su dung.
+        /// </summary>
+        internal static bool ShowAnticipatePresByUseDate
+        {
+            get
+            {
+                try
+                {
+                    return HisConfigs.Get<string>(
+                        Key.HisConfigKeys.HIS_CONFIG_KEY__ShowAnticipatePresByUseDate) == "1";
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                    return false;
+                }
+            }
+        }
+
         internal static string IsShowResultWhenReqComplete
         {
             get

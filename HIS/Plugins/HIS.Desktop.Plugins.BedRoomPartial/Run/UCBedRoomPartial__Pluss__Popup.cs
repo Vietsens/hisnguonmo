@@ -291,6 +291,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         case BedRoomPopupMenuProcessor.ModuleType.MedicalTreamentOut:
                             btnMedicalTreamentOutClick();
                             break;
+                        case BedRoomPopupMenuProcessor.ModuleType.CareLevel:
+                            btnCareLevel();
+                            break;
                             #endregion
                     }
                 }
@@ -305,6 +308,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         {
             frmDoctorTreatment frmDoctorTreatment = new frmDoctorTreatment(treatmentBedRoomRow, (DelegateRefreshData)RefreshData);
             frmDoctorTreatment.ShowDialog();
+        }
+
+        private void btnCareLevel()
+        {
+            frmCareLevel frmCareLevel = new frmCareLevel(treatmentBedRoomRow.TREATMENT_ID, (DelegateRefreshData)RefreshData);
+            frmCareLevel.ShowDialog();
         }
 
         private void btnSpecialty()

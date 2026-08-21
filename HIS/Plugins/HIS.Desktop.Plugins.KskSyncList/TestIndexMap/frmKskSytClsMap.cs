@@ -300,13 +300,9 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
         {
             try
             {
-                // Đọc thẳng từ nguồn để sửa cấu hình là thấy ngay, không phải khởi động lại.
-                var list = BackendDataWorker.Get<HIS_CONFIG>(false, true, false, false);
-                if (list == null || list.Count == 0) list = BackendDataWorker.Get<HIS_CONFIG>();
-                if (list == null) return null;
-                foreach (var c in list)
-                    if (c != null && c.KEY == CONFIG_KEY__SYT_HCM_CONNECTION_INFO) return c.VALUE;
-                return null;
+                // Đọc thẳng từ nguồn để sửa cấu hình là thấy ngay, không phải khởi động lại;
+                // và lấy đúng bản ghi của CHI NHÁNH đang làm việc (nhiều cơ sở chung 1 DB).
+                return KskBranchConfig.GetValueFresh(CONFIG_KEY__SYT_HCM_CONNECTION_INFO);
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }

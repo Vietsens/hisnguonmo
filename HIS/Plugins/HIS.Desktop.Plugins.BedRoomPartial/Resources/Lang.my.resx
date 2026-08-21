@@ -513,6 +513,15 @@
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DANG_XU_LY" xml:space="preserve">
     <value>လုပ်ဆောင်နေသည်</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__COL__INSTRUCTION_DATE" xml:space="preserve">
+    <value>ညွှန်ကြားသည့်ရက်စွဲ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__COL__USE_DATE" xml:space="preserve">
+    <value>စီစဉ်ထားသည့်ရက်စွဲ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__GROUP__ANTICIPATE" xml:space="preserve">
+    <value>စီစဉ်ထားသည် — ညွှန်ကြားသည့်ရက် {0}</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM" xml:space="preserve">
     <value>စမ်းသပ်မှုတောင်းဆိုချက်ကို ပြန်လည်ပေးပို့ပါ။</value>
   </data>
@@ -626,6 +635,12 @@
   </data>
   <data name="UCBedRoomPartial.gc_ClassifyName.ToolTip" xml:space="preserve">
     <value>လူနာအမျိုးအစားခွဲခြားခြင်း။</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_CareLevelName.Caption" xml:space="preserve">
+    <value>ပြုစုစောင့်ရှောက်မှုအဆင့်</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_CareLevelName.ToolTip" xml:space="preserve">
+    <value>ကုသမှုမှတ်တမ်း၏ ပြုစုစောင့်ရှောက်မှုအဆင့်</value>
   </data>
   <data name="UCBedRoomPartial.gc_MedisoftH.Caption" xml:space="preserve">
     <value>Medisoft ကုသမှုမှတ်တမ်း</value>

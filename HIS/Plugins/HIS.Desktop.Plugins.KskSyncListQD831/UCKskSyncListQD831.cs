@@ -797,12 +797,28 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
+        /// <summary>
+        /// Đọc VALUE của 1 key HIS_CONFIG theo CHI NHÁNH đang làm việc (null nếu không có).
+        ///
+        /// Nhiều cơ sở dùng chung 1 DB nên cùng 1 key có thể có nhiều bản ghi, phân biệt bằng
+        /// BRANCH_ID. Thứ tự ưu tiên (giống backend Loader.GetConfig(code, branchId)):
+        /// bản ghi đúng chi nhánh -> bản ghi dùng chung (BRANCH_ID null).
+        /// KHÔNG dùng FirstOrDefault theo KEY: sẽ lấy đại bản ghi của cơ sở khác.
+        /// </summary>
         private string GetConfigValue(string key)
         {
             try
             {
-                var cfg = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY == key).FirstOrDefault();
-                return cfg != null ? cfg.VALUE : null;
+                long branchId = HIS.Desktop.LocalStorage.LocalData.BranchWorker.GetCurrentBranchId();
+
+                List<HIS_CONFIG> configs = BackendDataWorker.Get<HIS_CONFIG>()
+                    .Where(o => o != null && o.KEY == key && (!o.BRANCH_ID.HasValue || o.BRANCH_ID.Value == branchId))
+                    .ToList();
+
+                HIS_CONFIG cfg = configs.FirstOrDefault(o => o.BRANCH_ID.HasValue && o.BRANCH_ID.Value == branchId)
+                              ?? configs.FirstOrDefault(o => !o.BRANCH_ID.HasValue);
+
+                return (cfg != null) ? cfg.VALUE : null;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }

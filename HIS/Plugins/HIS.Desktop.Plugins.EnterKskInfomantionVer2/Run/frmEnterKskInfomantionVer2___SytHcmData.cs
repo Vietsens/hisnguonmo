@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2026 INVENTEC
  *
@@ -102,6 +102,31 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         #endregion
 
+
+        /// <summary>
+        /// Chép mọi giá trị của bản ghi mẫu M3 sang bản ghi sắp lưu.
+        ///
+        /// Cần vì dịch vụ cập nhật thay cả dòng, mà màn hình chỉ gán được các ô đang dựng. Chép
+        /// bằng phản chiếu để cột mới bổ sung về sau tự được giữ, không phải sửa lại hàm này.
+        /// Chỉ chép cột dữ liệu (kiểu đơn giản), bỏ qua các thuộc tính liên kết của mô hình.
+        /// </summary>
+        private static void CopyKskSytHcmValues(HIS_KSK_SYT_HCM from, HIS_KSK_SYT_HCM to)
+        {
+            try
+            {
+                if (from == null || to == null) return;
+                foreach (System.Reflection.PropertyInfo pi in typeof(HIS_KSK_SYT_HCM).GetProperties())
+                {
+                    if (!pi.CanRead || !pi.CanWrite) continue;
+                    Type t = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
+                    if (!t.IsPrimitive && t != typeof(string) && t != typeof(decimal) && t != typeof(DateTime))
+                        continue;
+                    pi.SetValue(to, pi.GetValue(from, null), null);
+                }
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
         #region ===== NẠP =====
 
         /// <summary>
@@ -150,6 +175,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (currentKskSytHcm == null)
                 {
                     ClearKskSytHcmAdminControls();
+
+                    // Tab hoi benh cung phai xoa, neu khong no giu nguyen cau tra loi cua ho so mo
+                    // truoc do — va lan luu tiep theo se ghi nham sang benh nhan nay.
+                    ApplyInterviewHcmData(null, null, null);
+                    AutoTickElderlyObject();
                     return;
                 }
                 HIS_KSK_SYT_HCM d = currentKskSytHcm;
@@ -169,6 +199,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Ô này luôn chọn được nên đổ giá trị không cần xét trạng thái khóa.
                 SetKskPaySourceDetailValue(d.SYT_PAY_SOURCE_DETAIL_ID);
                 SetKskExamPlaceValue(d.SYT_EXAM_PLACE_ID);
+
+                // Tab hoi benh lam sang HCM — 3 cot rieng, xem InterviewHcmData.
+                FillInterviewHcmFromEntity(d);
+
+                AutoTickElderlyObject();
 
                 // Cụm "Đề nghị" — 2 cột này chỉ có sau khi bổ sung vào bảng; chưa có thì hàm đọc
                 // ghi cảnh báo "KHONG co cot" và trả null, không làm hỏng gì.
@@ -399,13 +434,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 CheckSytHcmColumnMapOnce();
 
+                // BẮT ĐẦU TỪ BẢN GHI ĐÃ LƯU, không từ bản ghi trống.
+                //
+                // Dịch vụ cập nhật THAY CẢ DÒNG: cột nào không gán sẽ thành rỗng. Mà màn hình chỉ
+                // gán được những ô ĐANG DỰNG — người dùng chưa mở tab Khám lâm sàng HCM thì toàn bộ
+                // cột lâm sàng, sơ đồ răng... không có gì để gán, gửi lên là XOÁ SẠCH dữ liệu cũ.
+                //
+                // Chép sẵn giá trị cũ vào rồi mới ghi đè phần người dùng vừa sửa: ô nào chưa dựng thì
+                // giữ nguyên giá trị đang có.
                 HIS_KSK_SYT_HCM d = new HIS_KSK_SYT_HCM();
+                CopyKskSytHcmValues(currentKskSytHcm, d);
                 d.KSK_OVER_EIGHTEEN_ID = kskOverEighteenId;
 
                 #region Ô hành chính
 
                 d.PAY_SOURCE_OTHER = GetKskPaySourceOtherValue();
                 d.SYT_EXAM_PLACE_ID = GetKskExamPlaceValue();
+
+                // Tab hoi benh lam sang HCM — 3 cot rieng, xem InterviewHcmData.
+                SetInterviewHcmToEntity(d);
 
                 // Ba ô dưới đây chỉ ghi khi ô đang giữ MÃ CỦA CỔNG. Chưa đổ được danh mục của cổng
                 // thì ô đang giữ mã của HIS (hoặc mã tạm) — ghi vào cột dành cho mã của cổng sẽ
@@ -848,6 +895,71 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         #endregion
 
         #region ===== Truy cập cột theo tên =====
+
+
+        #region ===== Gợi ý đối tượng khám "Người cao tuổi" =====
+
+        /// <summary>Mốc người cao tuổi theo Luật Người cao tuổi: ĐỦ 60, không phải "trên 60".</summary>
+        private const int SYT_ELDERLY_AGE = 60;
+
+        /// <summary>
+        /// Bệnh nhân đủ 60 tuổi tại ngày khám thì tự tích sẵn đối tượng "Người cao tuổi", cho đỡ sót
+        /// — vì chính ô này quyết định hồ sơ đẩy theo mẫu M3 hay M4.
+        ///
+        /// CHỈ GỢI Ý, KHÔNG ÉP:
+        ///   - Chỉ tích khi hồ sơ CHƯA chọn đối tượng nào. Người dùng đã chọn rồi thì không đụng
+        ///     vào, kể cả khi họ cố tình không chọn "Người cao tuổi" — một người 65 tuổi còn đi làm,
+        ///     khám định kỳ theo diện người lao động, vẫn là hồ sơ M3.
+        ///   - Tích xong người dùng bỏ tích được bình thường.
+        ///
+        /// TÌM THEO TÊN, KHÔNG VIẾT CỨNG MÃ: mã của "Người cao tuổi" ở danh mục của HIS là 1, ở danh
+        /// mục của cổng là 5. Ô này nạp danh mục nào tùy viện đã khai báo cấu hình cổng hay chưa,
+        /// nên viết cứng số là gán nhầm sang đối tượng khác.
+        ///
+        /// Tuổi tính tại NGÀY CHỈ ĐỊNH Y LỆNH, không phải hôm nay: cùng một hồ sơ mở lại sang năm
+        /// vẫn phải ra cùng kết quả. Dùng lại AgeInMonthsUnderSix — hàm đang dùng để chọn tab mặc
+        /// định theo tuổi, đã xử lý sẵn trường hợp bệnh nhân chỉ khai năm sinh.
+        /// </summary>
+        private void AutoTickElderlyObject()
+        {
+            try
+            {
+                if (!IsSytHcmDeclared()) return;
+                if (cboObject == null || currentServiceReq == null) return;
+
+                // Đã chọn rồi thì đây là quyết định của người dùng — không ghi đè.
+                if (!string.IsNullOrWhiteSpace(GetKskObjectValue())) return;
+
+                long dob = currentServiceReq.TDL_PATIENT_DOB;
+                if (dob <= 0) return;
+
+                long exam = (currentServiceReq.INTRUCTION_TIME > 0)
+                    ? currentServiceReq.INTRUCTION_TIME
+                    : Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+                int months = AgeInMonthsUnderSix(dob, exam);
+                if (months < SYT_ELDERLY_AGE * 12) return;
+
+                List<KskCodeNameADO> ds = cboObject.Properties.DataSource as List<KskCodeNameADO>;
+                if (ds == null) return;
+
+                KskCodeNameADO row = ds.FirstOrDefault(
+                    x => x.NAME != null && x.NAME.Trim() == "Người cao tuổi");
+                if (row == null)
+                {
+                    LogSystem.Warn("SytHcm: danh muc doi tuong kham dang nap KHONG co muc"
+                        + " 'Nguoi cao tuoi' -> bo qua goi y");
+                    return;
+                }
+
+                SetKskObjectValue(row.ID.ToString());
+                LogSystem.Warn("SytHcm: benh nhan du " + SYT_ELDERLY_AGE
+                    + " tuoi tai ngay kham -> tu tich doi tuong 'Nguoi cao tuoi' (ma " + row.ID + ")");
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        #endregion
 
         private static readonly Dictionary<string, PropertyInfo> sytHcmColumnCache =
             new Dictionary<string, PropertyInfo>();

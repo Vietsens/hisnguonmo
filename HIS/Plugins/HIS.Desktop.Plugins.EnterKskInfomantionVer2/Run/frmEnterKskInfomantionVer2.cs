@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -194,7 +194,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Tab "Khám lâm sàng HCM" (tab con của Ksk trên 18 tuổi) — chọn ICD theo chuyên khoa,
                 // cấu trúc Mẫu 03 mục II. Hiện chỉ dựng giao diện, chưa nạp/lưu dữ liệu.
                 // Bọc riêng: hỏng phần này thì ghi nhật ký rồi chạy tiếp, KHÔNG kéo đổ cả màn hình.
-                try { InitClinicalExamHcmTab(); }
+                try { InitClinicalExamHcmTab();
+ // Tab "Hoi benh lam sang HCM" — dat ngay canh tab Kham lam sang HCM.
+ InitInterviewHcmTab(); }
                 catch (Exception exHcm) { Inventec.Common.Logging.LogSystem.Error(exHcm); }
                 lap("ClinicalExamHcm");
                 // Nhúng combo "Người khám" kết luận vào panel host (tab trên/dưới 18 tuổi).
@@ -218,6 +220,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 InitYlenhData();
                 // "Tự động kết thúc" + nút "Kết thúc y lệnh khám".
                 InitFinishFeature();
+                // Cảnh báo trường bắt buộc (Đối tượng/Nguồn chi trả các tab + Lý do khám) tại control.
+                InitRequiredValidation();
                 this.ResumeLayout(false);
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Debug("KskLoad.TOTAL(before deferred): " + swLoad.ElapsedMilliseconds + " ms");
@@ -279,14 +283,28 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             catch (System.Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        /// <summary>Đổ ICD-10 từ HIS_KSK_GENERAL của lượt khám vào các UC đã nhúng.</summary>
+        /// <summary>
+        /// Đổ ICD-10 từ HIS_KSK_GENERAL của lượt khám vào các UC đã nhúng.
+        /// KHÔNG return sớm khi currentKskGeneral == null: phải gọi LoadFromGeneral(null) để UC tự XÓA
+        /// TRẮNG. ClearTabInputEditors cố tình bỏ qua UC này (nó "có cơ chế nạp/xóa riêng"), nên nếu
+        /// đây cũng return thì không ai xóa → chuyển y lệnh sang bệnh nhân chưa có bản ghi sẽ thấy ICD
+        /// của bệnh nhân trước ở CẢ 8 TAB, và Lưu thì ghi đè sang bản ghi bệnh nhân mới.
+        ///
+        /// Mọi tab (kể cả "Trẻ em dưới 6 tuổi") đều lưu ICD kết luận vào HIS_KSK_GENERAL cùng
+        /// SERVICE_REQ_ID — xem BuildKskGeneralConclusionEf — nên chỉ cần nạp từ nguồn duy nhất này.
+        /// </summary>
         private void LoadIcdConclusionToUc()
         {
             try
             {
-                if (currentKskGeneral == null) return;
                 foreach (var uc in dicIcdConclusionUc.Values)
                     if (uc != null) uc.LoadFromGeneral(currentKskGeneral);
+
+                Inventec.Common.Logging.LogSystem.Debug("KskIcdConclusion: uc=" + dicIcdConclusionUc.Count
+                    + "__general=" + (currentKskGeneral == null ? "null" : "co")
+                    + "__type=" + (currentKskGeneral == null || currentKskGeneral.CONCLUSION_ICD_TYPE == null
+                        ? "null" : currentKskGeneral.CONCLUSION_ICD_TYPE.ToString())
+                    + "__code=" + (currentKskGeneral == null ? "null" : (currentKskGeneral.CONCLUSION_ICD_CODE ?? "null")));
             }
             catch (System.Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -812,45 +830,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             return result;
         }
 
+        /// <summary>
+        /// Chọn tab đang hiển thị khi mở màn hình / khi đổi y lệnh ở bảng danh sách.
+        ///
+        /// DÙNG CHUNG ResolveDefaultTab() với phần nạp dự liệu: trước đây hàm này tự xét lại theo
+        /// current* theo một thứ tự riêng, nên tab được nạp và tab được chọn có thể lệch nhau.
+        /// Mọi luật ưu tiên (bảng riêng trước, GENERAL sau, cuối cùng mới theo tuổi) nằm Ở
+        /// MỘT CHỖ duy nhất là ResolveDefaultTab().
+        /// </summary>
         private void SetTabDefault()
         {
             try
             {
-                bool isActive = false;
-                if (currentKskGeneral != null)
+                // Có bản ghi KSK nào đã lưu hay chưa -> quyết định bật nút In.
+                bool isActive = currentKskGeneral != null
+                    || currentKskOverEight != null
+                    || currentKskUnderEight != null
+                    || currentKskPeriodDriver != null
+                    || currentKskDriverCar != null
+                    || currentKskOther != null
+                    || currentKsKOccupational != null;
+
+                int tab = ResolveDefaultTab();
+                if (tab >= 0 && tab < xtraTabControl1.TabPages.Count
+                    && xtraTabControl1.SelectedTabPageIndex != tab)
                 {
-                    xtraTabControl1.SelectedTabPageIndex = 0;
-                    isActive = true;
-                }
-                else if (currentKskOverEight != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 1;
-                    isActive = true;
-                }
-                else if (currentKskUnderEight != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 2;
-                    isActive = true;
-                }
-                else if (currentKskPeriodDriver != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 3;
-                    isActive = true;
-                }
-                else if (currentKskDriverCar != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 4;
-                    isActive = true;
-                }
-                else if (currentKskOther != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 5;
-                    isActive = true;
-                }
-                if (currentKsKOccupational != null)
-                {
-                    xtraTabControl1.SelectedTabPageIndex = 0;
-                    isActive = true;
+                    xtraTabControl1.SelectedTabPageIndex = tab;
                 }
                 btnPrint.Enabled = isActive;
             }
@@ -1221,27 +1226,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
-                // Lý do khám tối đa 500 ký tự — chặn khi Lưu (pattern XtraMessageBox như các màn khác).
-                if (txtLyDoKham.Text != null && txtLyDoKham.Text.Length > 500)
-                {
-                    DevExpress.XtraEditors.XtraMessageBox.Show("Lý do khám nhập quá 500 ký tự.", "Thông báo",
-                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
-                    txtLyDoKham.Focus();
-                    return;
-                }
+                // Trường bắt buộc nhập (icon cảnh báo + nội dung lỗi tại control):
+                //  - Lý do khám: bắt buộc ở mức FORM (mọi tab) + giới hạn 500 ký tự.
+                //  - Đối tượng / Nguồn chi trả: bắt buộc ở tab trên 18, dưới 18 và trẻ em dưới 6 tuổi.
+                if (!ValidateRequiredBeforeSave()) return;
                 bool success = false;
                 // R: tab ≥18 — vùng nào ĐÃ nhập Người khám mà THIẾU kết quả/phân loại thì chặn Lưu (nêu rõ vùng + người khám).
                 if (xtraTabControl1.SelectedTabPageIndex == 1)
                 {
-                    // Bắt buộc chọn "Đối tượng" (KSK_PATIENT_TYPES) khi lưu tab KSK trên 18 tuổi.
-                    if (string.IsNullOrWhiteSpace(GetKskObjectValue()))
-                    {
-                        DevExpress.XtraEditors.XtraMessageBox.Show(
-                            "Vui lòng chọn Đối tượng.", "Thông báo",
-                            System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
-                        cboObject.Focus();
-                        return;
-                    }
+                    // ("Đối tượng"/"Nguồn chi trả" đã kiểm tra ở ValidateRequiredBeforeSave.)
                     var examErrors = ValidateExaminerHasResultOverEighteen();
                     if (examErrors != null && examErrors.Count > 0)
                     {
@@ -2113,8 +2106,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 isSuppressAutoTestIndexEvent = false;
 
                 chkAutoTestIndex.Enabled = allow;
-                // Nút cấu hình chỉ enable khi checkbox "Tự động lấy kết quả CLS" enable.
-                btnAutoClsSetting.Enabled = chkAutoTestIndex.Enabled;
+                // Nút ⚙ giờ là form Thiết lập CHUNG (CLS + mặc định khám lâm sàng dưới 6 tuổi) nên
+                // luôn bật. Trước đây khóa theo chkAutoTestIndex → ở tab "Trẻ em dưới 6 tuổi" nút xám,
+                // không vào được phần thiết lập mặc định.
+                btnAutoClsSetting.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -2122,14 +2117,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
-        /// <summary>Nút setting cạnh "Tự động lấy kết quả CLS" — mở form cấu hình dịch vụ (chọn nhiều Máu/Nước tiểu/CĐHA).</summary>
+        /// <summary>
+        /// Nút ⚙ — mở form Thiết lập: tab "Tự động lấy CLS" (chọn nhiều Máu/Nước tiểu/CĐHA) và
+        /// tab "Mặc định khám lâm sàng (dưới 6 tuổi)". Danh mục 3 cột của tab 2 dựng từ layout
+        /// mục VI rồi truyền vào — form Thiết lập không thấy control của form này.
+        /// </summary>
         private void btnAutoClsSetting_Click(object sender, EventArgs e)
         {
             try
             {
-                using (var frm = new frmAutoClsSetting())
+                BuildUnderSixDefaultCatalog();
+                using (var frm = new frmAutoClsSetting(this.underSixDefaultGroups,
+                                                       this.underSixDefaultFields,
+                                                       this.underSixDefaultValues))
                 {
                     frm.ShowDialog(this);
+                    if (!frm.IsApplyNowRequested) return;
+
+                    // Chỉ điền khi đang đứng ở tab "Trẻ em dưới 6 tuổi": tab này lazy-load, điền lúc
+                    // chưa mở thì FillDataPageUnderSix chạy sau sẽ đè mất.
+                    if (this.xtraTabControl1 != null && this.xtraTabControl1.SelectedTabPage == this.xtraTabPage8)
+                    {
+                        ApplyUnderSixDefaults(true);
+                    }
+                    else
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Đã lưu thiết lập mặc định. Mở tab \"Trẻ em dưới 6 tuổi\" rồi bấm lại \"Áp dụng ngay\" để điền vào bản ghi đang mở.",
+                            "Thông báo", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    }
                 }
             }
             catch (Exception ex)
@@ -2146,6 +2162,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 btnAutoClsSetting.Text = "⚙";
                 btnAutoClsSetting.Appearance.Font = new System.Drawing.Font("Segoe UI Symbol", 9F);
                 btnAutoClsSetting.Appearance.Options.UseFont = true;
+                btnAutoClsSetting.ToolTip = "Thiết lập: tự động lấy CLS, mặc định nhập KSK (trẻ dưới 6 tuổi)";
+                // Designer để Enabled=false; bật ngay lúc load vì form Thiết lập dùng cho mọi tab.
+                btnAutoClsSetting.Enabled = true;
             }
             catch (Exception ex)
             {

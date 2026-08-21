@@ -147,10 +147,33 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
         internal static int IcdSubMaxCount;
 
+        // Chan nhap vien khi con van ban chua hoan thanh: danh sach DEPARTMENT_CODE ap dung, phan tach boi "|".
+        // Khong khai bao/de trong -> khong kiem tra.
+        private const string KEY_CheckDepaDocumentHospitalization = "HIS.Desktop.Plugins.ExamServiceReqExecute.CheckDepaDocument.Hospitalization";
+        internal static List<string> CheckDepaDocumentHospitalizationCodes = new List<string>();
+
+        /// <summary>
+        /// Cấu hình: HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION
+        /// - BẬT (= 1): cho phép kê đơn điều trị -> hiển thị mục "Kê đơn điều trị" trong menu Khác
+        ///   và mở form kê đơn ở chế độ đơn điều trị (IsExecutePTTT = true).
+        /// - TẮT (= 0 / null — mặc định): ẩn mục "Kê đơn điều trị", luồng kê đơn giữ nguyên hoàn toàn.
+        /// </summary>
+        private const string CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
+        internal static bool EnableTreatmentPrescription;
+
         internal static void LoadConfig()
         {
             try
             {
+                // Doc som: LoadConfig dung chung mot try/catch, neu mot key phia sau nem loi
+                // thi cac key con lai se khong duoc doc -> tinh nang chan nhap vien bi tat am tham.
+                string rawCheckDepaDocHospitalize = GetValue(KEY_CheckDepaDocumentHospitalization);
+                CheckDepaDocumentHospitalizationCodes = string.IsNullOrWhiteSpace(rawCheckDepaDocHospitalize)
+                    ? new List<string>()
+                    : rawCheckDepaDocHospitalize.Split('|').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).ToList();
+
+                EnableTreatmentPrescription = GetValue(CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION) == GlobalVariables.CommonStringTrue;
+
                 IsCheckValueMaxlengthOption = GetValue(KEY_IsCheckValueMaxlengthOption);
                 IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY_IsCheckServiceFollowWhenOut) == GlobalVariables.CommonStringTrue;
                 AutoCreatePaymentTransactions = GetValue(KEY__AutoCreatePaymentTransactions);

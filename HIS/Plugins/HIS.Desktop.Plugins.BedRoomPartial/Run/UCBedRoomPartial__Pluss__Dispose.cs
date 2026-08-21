@@ -90,6 +90,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 dataTotal = 0;
                 rowCount = 0;
                 TreeClickData = null;
+                // Cache phục vụ hiển thị đơn dự trù theo ngày dự trù
+                ClearAnticipateCache();
                 emrMenuPopupProcessor = null;
                 bedRoomPopupMenuProcessor = null;
                 rowClickByDate = null;
@@ -237,6 +239,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 repositoryItemBtnMedisoft = null;
                 gc_MedisoftH = null;
                 gc_ClassifyName = null;
+                gc_CareLevelName = null;
                 lciApprovalNote = null;
                 lblApprovalNote = null;
                 layoutControlItem31 = null;

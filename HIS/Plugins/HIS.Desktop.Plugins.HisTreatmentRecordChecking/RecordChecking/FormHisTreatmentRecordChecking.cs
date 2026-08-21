@@ -106,7 +106,18 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         bool IsLoadFirstForm = true;
 
         List<V_EMR_SIGN> lstVEmrSign = new List<V_EMR_SIGN>();
+
+        /// <summary>
+        /// Luong ky da nap, khoa la V_EMR_SIGN.ID. Dung de doi ma luong ky trong
+        /// SIGNERS / UN_SIGNERS sang ten luong khi hien thi (xem GetSigners).
+        /// </summary>
         Dictionary<long, V_EMR_SIGN> dicVEmrSign = new Dictionary<long, V_EMR_SIGN>();
+
+        /// <summary>
+        /// DOCUMENT_ID da hoi api/EmrSign/GetView trong lan tra soat hien tai.
+        /// Co de khong hoi lai cung mot van ban khi nguoi dung click qua lai giua cac dong.
+        /// </summary>
+        private HashSet<long> loadedEmrSignDocumentIds = new HashSet<long>();
 
         /// <summary>Config MOS.HIS_TREATMENT.IS_AUTO_APPROVAL_STORE == "1" -> tự động duyệt hồ sơ khi Đạt.</summary>
         private bool isAutoApprovalStore = false;

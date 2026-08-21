@@ -41,6 +41,24 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.ADO
         public long? RECEIVE_SAMPLE_TIME { get; set; }
         public short? IS_TEMPORARY_PRES { get; set; }
 
+        /// <summary>
+        /// Ngay ke y lenh dang dd/MM/yyyy — cot "Ngay ke" (QT-07).
+        /// Chi dien khi cau hinh ShowAnticipatePresByUseDate bat.
+        /// </summary>
+        public string INSTRUCTION_DATE_STR { get; set; }
+
+        /// <summary>
+        /// Ngay du tru dang dd/MM/yyyy — cot "Ngay du tru" (QT-07).
+        /// Luon 1 ngay vi don du tru nhieu ngay da duoc tach san (QT-05).
+        /// Don thuong de trong.
+        /// </summary>
+        public string USE_DATE_STR { get; set; }
+
+        /// <summary>
+        /// True neu la don THUOC du tru (QT-01 + QT-02) — dung de danh dau mau (QT-08).
+        /// </summary>
+        public bool IS_ANTICIPATE { get; set; }
+
         public SereServADO() { }
 
         public SereServADO(DHisSereServ2 data)
