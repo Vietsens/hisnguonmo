@@ -27039,6 +27039,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // lciAccompanyName8
             // 
+            this.lciAccompanyName8.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciAccompanyName8.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciAccompanyName8.Control = this.txtAccompanyPersonName8;
             this.lciAccompanyName8.Location = new System.Drawing.Point(0, 149);
             this.lciAccompanyName8.Name = "lciAccompanyName8";
@@ -27050,6 +27052,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // lciAccompanyRel8
             // 
+            this.lciAccompanyRel8.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciAccompanyRel8.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciAccompanyRel8.Control = this.rdoAccompanyRelationship8;
             this.lciAccompanyRel8.Location = new System.Drawing.Point(0, 221);
             this.lciAccompanyRel8.Name = "lciAccompanyRel8";
@@ -29707,6 +29711,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // lcgKetLuanSub8
             // 
+            this.lcgKetLuanSub8.AppearanceGroup.ForeColor = System.Drawing.Color.Maroon;
+            this.lcgKetLuanSub8.AppearanceGroup.Options.UseForeColor = true;
             this.lcgKetLuanSub8.AppearanceGroup.FontStyleDelta = System.Drawing.FontStyle.Bold;
             this.lcgKetLuanSub8.AppearanceGroup.Options.UseFont = true;
             this.lcgKetLuanSub8.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {

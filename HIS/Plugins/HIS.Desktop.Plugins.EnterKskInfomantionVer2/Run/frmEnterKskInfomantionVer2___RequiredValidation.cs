@@ -10,6 +10,9 @@
  *    dưới 18 tuổi (cboObject3/cboPaymentSource3), trẻ em dưới 6 tuổi (cboObject8/cboPaymentSource8).
  *    Chỉ kiểm tra cặp combo của TAB ĐANG LƯU (mỗi lần Lưu chỉ gửi dữ liệu 1 tab).
  *  - "Lý do khám" (txtLyDoKham): bắt buộc nhập ở MỨC FORM (mọi tab) + giới hạn độ dài.
+ *  - Tab trẻ em dưới 6 tuổi (index 7) thêm 3 trường: "Họ tên người đi cùng trẻ"
+ *    (txtAccompanyPersonName8), "Mối quan hệ với trẻ" (rdoAccompanyRelationship8) và
+ *    "Kết luận về sức khỏe" (rdoConclusionHealth8 — mục VII. KẾT LUẬN VÀ TƯ VẤN).
  */
 using System;
 using System.Collections.Generic;
@@ -55,6 +58,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 WireRequiredClearEvent(cboObject8);
                 WireRequiredClearEvent(cboPaymentSource8);
                 WireRequiredClearEvent(txtLyDoKham);
+                // Tab trẻ em dưới 6 tuổi — 3 trường bắt buộc bổ sung.
+                WireRequiredClearEvent(txtAccompanyPersonName8);
+                WireRequiredClearEvent(rdoAccompanyRelationship8);
+                WireRequiredClearEvent(rdoConclusionHealth8);
 
                 // Đổi tab -> bỏ cảnh báo của tab cũ (cảnh báo chỉ có nghĩa với tab đang lưu).
                 this.xtraTabControl1.SelectedPageChanged
@@ -80,8 +87,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 Control ctrl = sender as Control;
                 if (ctrl == null || dxErrorProviderRequired == null) return;
-                if (!string.IsNullOrWhiteSpace(ctrl.Text))
-                    ClearRequiredError(ctrl);
+                // RadioGroup: Text không phản ánh việc đã chọn -> xét EditValue.
+                RadioGroup rdo = ctrl as RadioGroup;
+                bool hasValue = (rdo != null)
+                    ? (rdo.EditValue != null && rdo.EditValue != DBNull.Value)
+                    : !string.IsNullOrWhiteSpace(ctrl.Text);
+                if (hasValue) ClearRequiredError(ctrl);
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
@@ -154,7 +165,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 else if (tabIndex == 2) // KSK dưới 18 tuổi
                     ValidateObjectAndPaySource(cboObject3, GetObjectValueExt(cboObject3), cboPaymentSource3, messages);
                 else if (tabIndex == 7) // Trẻ em dưới 6 tuổi
+                {
                     ValidateObjectAndPaySource(cboObject8, GetObjectValueExt(cboObject8), cboPaymentSource8, messages);
+                    ValidateRequiredUnderSix(messages);
+                }
 
                 if (messages.Count == 0) return true;
 
@@ -173,6 +187,40 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 LogSystem.Warn(ex);
                 return true; // lỗi kiểm tra không được chặn nghiệp vụ Lưu
             }
+        }
+
+        /// <summary>
+        /// Tab trẻ em dưới 6 tuổi: 3 trường bắt buộc (caption đã tô Maroon trong Designer)
+        ///  - "Họ tên người đi cùng trẻ"  (txtAccompanyPersonName8 — mục I. HÀNH CHÍNH)
+        ///  - "Mối quan hệ với trẻ"       (rdoAccompanyRelationship8 — mục I. HÀNH CHÍNH)
+        ///  - "Kết luận về sức khỏe"      (rdoConclusionHealth8 — mục VII. KẾT LUẬN VÀ TƯ VẤN)
+        /// </summary>
+        private void ValidateRequiredUnderSix(List<string> messages)
+        {
+            if (txtAccompanyPersonName8 != null && string.IsNullOrWhiteSpace(txtAccompanyPersonName8.Text))
+            {
+                string msg = "Họ tên người đi cùng trẻ bắt buộc nhập.";
+                SetRequiredError(txtAccompanyPersonName8, msg);
+                messages.Add(msg);
+            }
+            if (!HasRadioValue(rdoAccompanyRelationship8))
+            {
+                string msg = "Mối quan hệ với trẻ bắt buộc chọn.";
+                SetRequiredError(rdoAccompanyRelationship8, msg);
+                messages.Add(msg);
+            }
+            if (!HasRadioValue(rdoConclusionHealth8))
+            {
+                string msg = "Kết luận về sức khỏe bắt buộc chọn.";
+                SetRequiredError(rdoConclusionHealth8, msg);
+                messages.Add(msg);
+            }
+        }
+
+        /// <summary>RadioGroup đã chọn 1 mục hay chưa.</summary>
+        private bool HasRadioValue(RadioGroup rdo)
+        {
+            return rdo != null && rdo.EditValue != null && rdo.EditValue != DBNull.Value;
         }
 
         /// <summary>Cặp combo Đối tượng (chọn nhiều) + Nguồn chi trả (chọn 1) của 1 tab đều bắt buộc.</summary>
