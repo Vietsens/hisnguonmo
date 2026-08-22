@@ -132,6 +132,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.spinTransfusedNum = new DevExpress.XtraEditors.SpinEdit();
             this.spinTransferSpeed = new DevExpress.XtraEditors.SpinEdit();
             this.memoAbnormalNote = new DevExpress.XtraEditors.MemoEdit();
+            this.txtBloodDosage = new DevExpress.XtraEditors.TextEdit();
+            this.txtBloodTutorial = new DevExpress.XtraEditors.TextEdit();
             this.cboExecuteGroup_TabBlood = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboMediStockExport_TabBlood = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -166,6 +168,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.grcExpend__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcKHBHYT__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcTutorial__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grcDosage__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcUseTimeTo__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colREMOVE_SELECED_ROWUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colBLOOD_TYPE_CODEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -209,6 +212,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lciTransfusedNum = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTransferSpeed = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciAbnormalNote = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBloodDosage = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBloodTutorial = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -268,6 +273,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.spinTransfusedNum.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinTransferSpeed.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoAbnormalNote.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBloodDosage.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBloodTutorial.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExecuteGroup_TabBlood.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMediStockExport_TabBlood.Properties)).BeginInit();
@@ -310,6 +317,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.lciTransfusedNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTransferSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAbnormalNote)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodDosage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodTutorial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
@@ -358,6 +367,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lcEditorInfo.Controls.Add(this.spinTransfusedNum);
             this.lcEditorInfo.Controls.Add(this.spinTransferSpeed);
             this.lcEditorInfo.Controls.Add(this.memoAbnormalNote);
+            this.lcEditorInfo.Controls.Add(this.txtBloodDosage);
+            this.lcEditorInfo.Controls.Add(this.txtBloodTutorial);
             this.lcEditorInfo.Controls.Add(this.cboExecuteGroup_TabBlood);
             this.lcEditorInfo.Controls.Add(this.cboMediStockExport_TabBlood);
             this.lcEditorInfo.Controls.Add(this.dropDownPrintBlood);
@@ -1132,6 +1143,26 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.memoAbnormalNote.Size = new System.Drawing.Size(671, 19);
             this.memoAbnormalNote.StyleController = this.lcEditorInfo;
             this.memoAbnormalNote.TabIndex = 18;
+            //
+            // txtBloodDosage
+            //
+            this.txtBloodDosage.Location = new System.Drawing.Point(138, 738);
+            this.txtBloodDosage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBloodDosage.Name = "txtBloodDosage";
+            this.txtBloodDosage.Properties.MaxLength = 500;
+            this.txtBloodDosage.Size = new System.Drawing.Size(259, 22);
+            this.txtBloodDosage.StyleController = this.lcEditorInfo;
+            this.txtBloodDosage.TabIndex = 19;
+            //
+            // txtBloodTutorial
+            //
+            this.txtBloodTutorial.Location = new System.Drawing.Point(538, 738);
+            this.txtBloodTutorial.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBloodTutorial.Name = "txtBloodTutorial";
+            this.txtBloodTutorial.Properties.MaxLength = 1000;
+            this.txtBloodTutorial.Size = new System.Drawing.Size(327, 22);
+            this.txtBloodTutorial.StyleController = this.lcEditorInfo;
+            this.txtBloodTutorial.TabIndex = 20;
             // 
             // cboExecuteGroup_TabBlood
             // 
@@ -1269,6 +1300,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.grcExpend__TabBlood,
             this.grcKHBHYT__TabBlood,
             this.grcTutorial__TabBlood,
+            this.grcDosage__TabBlood,
             this.grcUseTimeTo__TabBlood,
             this.colREMOVE_SELECED_ROWUnb,
             this.colBLOOD_TYPE_CODEUnb,
@@ -1611,12 +1643,25 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // grcTutorial__TabBlood
             // 
-            this.grcTutorial__TabBlood.Caption = "Hướng dẫn sử dụng";
+            this.grcTutorial__TabBlood.Caption = "Cách dùng";
             this.grcTutorial__TabBlood.FieldName = "TUTORIAL";
             this.grcTutorial__TabBlood.Name = "grcTutorial__TabBlood";
             this.grcTutorial__TabBlood.OptionsColumn.AllowEdit = false;
+            this.grcTutorial__TabBlood.Visible = true;
+            this.grcTutorial__TabBlood.VisibleIndex = 13;
             this.grcTutorial__TabBlood.Width = 180;
-            // 
+            //
+            // grcDosage__TabBlood
+            //
+            this.grcDosage__TabBlood.Caption = "Liều dùng";
+            this.grcDosage__TabBlood.FieldName = "DOSAGE";
+            this.grcDosage__TabBlood.Name = "grcDosage__TabBlood";
+            this.grcDosage__TabBlood.OptionsColumn.AllowEdit = false;
+            this.grcDosage__TabBlood.ToolTip = "Liều dùng";
+            this.grcDosage__TabBlood.Visible = true;
+            this.grcDosage__TabBlood.VisibleIndex = 12;
+            this.grcDosage__TabBlood.Width = 140;
+            //
             // grcUseTimeTo__TabBlood
             // 
             this.grcUseTimeTo__TabBlood.Caption = "Sử dụng đến ngày";
@@ -1897,7 +1942,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem18,
             this.layoutControlItemExtrnalBlood,
             this.emptySpaceItem2,
-            this.lciAbnormalNote});
+            this.lciAbnormalNote,
+            this.lciBloodDosage,
+            this.lciBloodTutorial});
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "Root";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1977,7 +2024,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem1.Control = this.gridControlBloodType__BloodPage;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 101);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(868, 322);
+            this.layoutControlItem1.Size = new System.Drawing.Size(868, 294);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -2055,6 +2102,38 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lciAbnormalNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAbnormalNote.TextSize = new System.Drawing.Size(130, 20);
             this.lciAbnormalNote.TextToControlDistance = 5;
+            //
+            // lciBloodDosage
+            //
+            this.lciBloodDosage.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBloodDosage.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBloodDosage.Control = this.txtBloodDosage;
+            this.lciBloodDosage.Location = new System.Drawing.Point(0, 735);
+            this.lciBloodDosage.MaxSize = new System.Drawing.Size(0, 25);
+            this.lciBloodDosage.MinSize = new System.Drawing.Size(200, 25);
+            this.lciBloodDosage.Name = "lciBloodDosage";
+            this.lciBloodDosage.Size = new System.Drawing.Size(400, 28);
+            this.lciBloodDosage.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBloodDosage.Text = "Liều dùng:";
+            this.lciBloodDosage.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBloodDosage.TextSize = new System.Drawing.Size(130, 20);
+            this.lciBloodDosage.TextToControlDistance = 5;
+            //
+            // lciBloodTutorial
+            //
+            this.lciBloodTutorial.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBloodTutorial.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBloodTutorial.Control = this.txtBloodTutorial;
+            this.lciBloodTutorial.Location = new System.Drawing.Point(400, 735);
+            this.lciBloodTutorial.MaxSize = new System.Drawing.Size(0, 25);
+            this.lciBloodTutorial.MinSize = new System.Drawing.Size(200, 25);
+            this.lciBloodTutorial.Name = "lciBloodTutorial";
+            this.lciBloodTutorial.Size = new System.Drawing.Size(468, 28);
+            this.lciBloodTutorial.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBloodTutorial.Text = "Cách dùng:";
+            this.lciBloodTutorial.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBloodTutorial.TextSize = new System.Drawing.Size(130, 20);
+            this.lciBloodTutorial.TextToControlDistance = 5;
             // 
             // layoutControlItem8
             // 
@@ -2252,7 +2331,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // layoutControlItemExtrnalBlood
             // 
             this.layoutControlItemExtrnalBlood.Control = this.gridControlExternalBlood;
-            this.layoutControlItemExtrnalBlood.Location = new System.Drawing.Point(0, 423);
+            this.layoutControlItemExtrnalBlood.Location = new System.Drawing.Point(0, 395);
             this.layoutControlItemExtrnalBlood.Name = "layoutControlItemExtrnalBlood";
             this.layoutControlItemExtrnalBlood.Size = new System.Drawing.Size(868, 340);
             this.layoutControlItemExtrnalBlood.TextSize = new System.Drawing.Size(0, 0);
@@ -2336,6 +2415,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.spinTransfusedNum.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinTransferSpeed.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoAbnormalNote.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBloodDosage.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBloodTutorial.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExecuteGroup_TabBlood.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMediStockExport_TabBlood.Properties)).EndInit();
@@ -2378,6 +2459,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.lciTransfusedNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTransferSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAbnormalNote)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodDosage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodTutorial)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
@@ -2434,6 +2517,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         private DevExpress.XtraGrid.Columns.GridColumn grcUnit__TabBlood;
         private DevExpress.XtraGrid.Columns.GridColumn grcBloodABO__TabBlood;
         private DevExpress.XtraGrid.Columns.GridColumn grcTutorial__TabBlood;
+        private DevExpress.XtraGrid.Columns.GridColumn grcDosage__TabBlood;
         private DevExpress.XtraGrid.Columns.GridColumn grcBloodRH__TabBlood;
         private DevExpress.XtraGrid.Columns.GridColumn grcUseTimeTo__TabBlood;
         private DevExpress.XtraGrid.Columns.GridColumn grcNumOrder;
@@ -2461,6 +2545,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         private DevExpress.XtraEditors.SpinEdit spinTransferSpeed;
         private DevExpress.XtraLayout.LayoutControlItem lciTransferSpeed;
         private DevExpress.XtraGrid.Columns.GridColumn grcTransferSpeed__TabBlood;
+        private DevExpress.XtraEditors.TextEdit txtBloodDosage;
+        private DevExpress.XtraEditors.TextEdit txtBloodTutorial;
+        private DevExpress.XtraLayout.LayoutControlItem lciBloodDosage;
+        private DevExpress.XtraLayout.LayoutControlItem lciBloodTutorial;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup5;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem50;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem67;

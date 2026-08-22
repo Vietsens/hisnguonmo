@@ -381,7 +381,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             try
             {
                 if (string.IsNullOrEmpty(phoneNumber)) return true;
-                if (Config.HisConfigCFG.PatientAdvance != "1" && Config.HisConfigCFG.PatientAdvance != "2") return true;
+                if (HisConfigCFG.PatientAdvance != "1" && HisConfigCFG.PatientAdvance != "2") return true;
 
                 HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
                 filter.PHONE__EXACT = phoneNumber;
@@ -403,23 +403,23 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     + LogUtil.TraceData("duplicatePatient", duplicatePatient));
 
                 bool isSearchOldPatient = false;
-                if (Config.HisConfigCFG.PatientAdvance == "1")
-                {
-                    //Chan: chi hien nut Dong y, sau do tim kiem benh nhan cu de goi y chon
-                    XtraMessageBox.Show(string.Format("Số điện thoại {0} đã được sử dụng bởi bệnh nhân có mã {1}. Vui lòng chọn bệnh nhân cũ để tiếp đón.",
-                        phoneNumber, duplicatePatient.PATIENT_CODE), ResourceMessage.ThongBao, MessageBoxButtons.OK);
-                    isSearchOldPatient = true;
-                    result = false;
-                }
-                else
+                if (HisConfigCFG.PatientAdvance == "1")
                 {
                     //Canh bao: Co => bo qua tiep tuc tiep don; Khong => tim kiem benh nhan cu de goi y chon
-                    if (XtraMessageBox.Show(string.Format("Số điện thoại {0} đã được sử dụng bởi bệnh nhân có mã {1}. Bạn có muốn tiếp tục?",
+                    if (XtraMessageBox.Show(string.Format("Số điện thoại {0} đã được sử dụng bởi bệnh nhân có mã {1}. Bạn có muốn tiếp đón mới không?",
                         phoneNumber, duplicatePatient.PATIENT_CODE), ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         isSearchOldPatient = true;
                         result = false;
                     }
+                }
+                else if (HisConfigCFG.PatientAdvance == "2")
+                {
+                    //Chan: chi hien nut Dong y, sau do tim kiem benh nhan cu de goi y chon
+                    XtraMessageBox.Show(string.Format("Số điện thoại {0} đã được sử dụng bởi bệnh nhân có mã {1}",
+                        phoneNumber, duplicatePatient.PATIENT_CODE), ResourceMessage.ThongBao, MessageBoxButtons.OK);
+                    isSearchOldPatient = true;
+                    result = false;
                 }
 
                 if (isSearchOldPatient)

@@ -238,7 +238,10 @@
     <value>Total price</value>
   </data>
   <data name="frmHisAssignBlood.grcTutorial__TabBlood.Caption" xml:space="preserve">
-    <value>Tutorial</value>
+    <value>Usage</value>
+  </data>
+  <data name="frmHisAssignBlood.grcDosage__TabBlood.Caption" xml:space="preserve">
+    <value>Dosage</value>
   </data>
   <data name="frmHisAssignBlood.grcUnit__TabBlood.Caption" xml:space="preserve">
     <value>Service unit</value>
@@ -320,6 +323,12 @@
   </data>
   <data name="frmHisAssignBlood.grcTransferSpeed__TabBlood.Caption" xml:space="preserve">
     <value>Transfusion rate</value>
+  </data>
+  <data name="frmHisAssignBlood.lciBloodDosage.Text" xml:space="preserve">
+    <value>Dosage:</value>
+  </data>
+  <data name="frmHisAssignBlood.lciBloodTutorial.Text" xml:space="preserve">
+    <value>Usage:</value>
   </data>
   <data name="frmHisAssignBlood.layoutControlItem44.Text" xml:space="preserve">
     <value>Handling Group:</value>

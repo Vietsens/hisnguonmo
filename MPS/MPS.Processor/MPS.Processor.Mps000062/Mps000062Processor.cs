@@ -583,6 +583,82 @@ namespace MPS.Processor.Mps000062
 
         }
 
+        /// <summary>
+        /// Hau to toc do truyen cua 1 y lenh. Rong khi y lenh khong nhap (null hoac 0).
+        /// </summary>
+        private string SpeedSuffix(decimal? speed)
+        {
+            string result = "";
+            try
+            {
+                if (speed.HasValue && speed.Value > 0)
+                {
+                    result = " " + speed.Value.ToString("0.##") + " giọt/phút";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Noi toc do truyen vao cuoi Huong dan su dung (TUTORIAL) cua tung y lenh thuoc,
+        /// ap dung cho ca thuoc linh o kho (HIS_EXP_MEST_MEDICINE) va thuoc tu tuc (HIS_SERVICE_REQ_METY).
+        ///
+        /// Goi DUY NHAT 1 lan o dau ProcessData, TRUOC moi buoc gom nhom va ghep chuoi:
+        ///  - Chi noi 1 lan: cac Dictionary nay la doi tuong dung chung, duoc duyet lai o nhieu
+        ///    vong lap (theo tung to dieu tri, nhanh du tru, nhanh thuc hien du tru, nhanh pha truyen).
+        ///    Noi ben trong cac vong lap do se ra "... 50 giot/phut 50 giot/phut".
+        ///  - Noi TRUOC GroupBy(TDL_MEDICINE_TYPE_ID, TUTORIAL): 2 y lenh cung 1 thuoc, cung huong dan
+        ///    su dung nhung KHAC toc do se khong bi gom lam 1 dong va mat toc do cua y lenh sau.
+        ///
+        /// Nho di o tang du lieu nen ca 32 bien the tag MEDICINES...DATA tren mau in deu co
+        /// toc do truyen, khong phai sua mau in to dieu tri.
+        /// </summary>
+        private void AppendSpeedToTutorial()
+        {
+            try
+            {
+                if (rdo._DicExpMestMedicines != null)
+                {
+                    foreach (var lstMedicine in rdo._DicExpMestMedicines.Values)
+                    {
+                        if (lstMedicine == null) continue;
+                        foreach (var medicine in lstMedicine)
+                        {
+                            string suffix = SpeedSuffix(medicine.SPEED);
+                            if (!String.IsNullOrEmpty(suffix))
+                            {
+                                medicine.TUTORIAL = (medicine.TUTORIAL ?? "") + suffix;
+                            }
+                        }
+                    }
+                }
+
+                if (rdo._DicServiceReqMetys != null)
+                {
+                    foreach (var lstMety in rdo._DicServiceReqMetys.Values)
+                    {
+                        if (lstMety == null) continue;
+                        foreach (var mety in lstMety)
+                        {
+                            string suffix = SpeedSuffix(mety.SPEED);
+                            if (!String.IsNullOrEmpty(suffix))
+                            {
+                                mety.TUTORIAL = (mety.TUTORIAL ?? "") + suffix;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void ProcessorDataPrint()
         {
             try
@@ -2614,6 +2690,10 @@ namespace MPS.Processor.Mps000062
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("Mps000062 ------ ProcessData----1");
+
+                //Noi toc do truyen vao Huong dan su dung. Phai chay TRUOC moi buoc gom nhom/ghep chuoi
+                //va chi chay 1 lan duy nhat - xem chu thich cua AppendSpeedToTutorial.
+                AppendSpeedToTutorial();
 
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
@@ -6285,7 +6365,7 @@ namespace MPS.Processor.Mps000062
                     }
 
                     //_Bloods
-                    var listBloodss = this._Bloods != null && this._Bloods.Count > 0 ? this._Bloods.Where(o => o.TRACKING_ID == item.ID).GroupBy(o => new { o.BLOOD_TYPE_ID, o.BLOOD_ABO_ID, o.BLOOD_RH_ID }).ToList() : null;
+                    var listBloodss = this._Bloods != null && this._Bloods.Count > 0 ? this._Bloods.Where(o => o.TRACKING_ID == item.ID).GroupBy(o => new { o.BLOOD_TYPE_ID, o.BLOOD_ABO_ID, o.BLOOD_RH_ID, o.DOSAGE, o.TUTORIAL, o.TRANSFUSION_SPEED }).ToList() : null;
                     item.BLOOD___DATA = "";
                     if (listBloodss != null && listBloodss.Count > 0)
                     {
@@ -6304,11 +6384,39 @@ namespace MPS.Processor.Mps000062
 
                                         if (!String.IsNullOrEmpty(item1.BLOOD_RH_CODE))
                                         {
-                                            item.BLOOD___DATA += item1.BLOOD_RH_CODE + ")";
+                                            item.BLOOD___DATA += item1.BLOOD_RH_CODE;
                                         }
+
+                                        item.BLOOD___DATA += ")";
                                     }
 
                                     item.BLOOD___DATA += " * " + item1.AMOUNT + " Đơn vị";
+
+                                    if (item1.VOLUME.HasValue && item1.VOLUME.Value > 0)
+                                    {
+                                        item.BLOOD___DATA += " - " + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.VOLUME.Value) + " ml";
+                                    }
+
+                                    string bloodUsage = "";
+                                    if (!String.IsNullOrEmpty(item1.DOSAGE))
+                                    {
+                                        bloodUsage += item1.DOSAGE;
+                                    }
+                                    if (!String.IsNullOrEmpty(item1.TUTORIAL))
+                                    {
+                                        bloodUsage += (String.IsNullOrEmpty(bloodUsage) ? "" : " ") + item1.TUTORIAL;
+                                    }
+                                    string bloodSpeed = SpeedSuffix(item1.TRANSFUSION_SPEED);
+                                    if (!String.IsNullOrEmpty(bloodSpeed))
+                                    {
+                                        bloodUsage += (String.IsNullOrEmpty(bloodUsage) ? "" : " ") + bloodSpeed.Trim();
+                                    }
+                                    if (!String.IsNullOrEmpty(bloodUsage))
+                                    {
+                                        item.BLOOD___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                        item.BLOOD___DATA += bloodUsage;
+                                    }
+
                                     item.BLOOD___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
 
 
@@ -6336,11 +6444,40 @@ namespace MPS.Processor.Mps000062
 
                                         if (!String.IsNullOrEmpty(item1.BLOOD_RH_CODE))
                                         {
-                                            item.BLOOD___DATA += item1.BLOOD_RH_CODE + ")";
+                                            item.BLOOD___DATA += item1.BLOOD_RH_CODE;
                                         }
+
+                                        item.BLOOD___DATA += ")";
                                     }
 
                                     item.BLOOD___DATA += " * " + item1.AMOUNT + " Đơn vị";
+
+                                    if (item1.VOLUME.HasValue && item1.VOLUME.Value > 0)
+                                    {
+                                        item.BLOOD___DATA += " - " + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.VOLUME.Value) + " ml";
+                                    }
+
+                                    string bloodUsage = "";
+                                    if (!String.IsNullOrEmpty(item1.DOSAGE))
+                                    {
+                                        bloodUsage += item1.DOSAGE;
+                                    }
+                                    if (!String.IsNullOrEmpty(item1.TUTORIAL))
+                                    {
+                                        bloodUsage += (String.IsNullOrEmpty(bloodUsage) ? "" : " ") + item1.TUTORIAL;
+                                    }
+                                    string bloodSpeed = SpeedSuffix(item1.TRANSFUSION_SPEED);
+                                    if (!String.IsNullOrEmpty(bloodSpeed))
+                                    {
+                                        bloodUsage += (String.IsNullOrEmpty(bloodUsage) ? "" : " ") + bloodSpeed.Trim();
+                                    }
+                                    if (!String.IsNullOrEmpty(bloodUsage))
+                                    {
+                                        item.BLOOD___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                        item.BLOOD___DATA += bloodUsage;
+                                    }
+
+                                    item.BLOOD___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
 
                                     if (dem < listBloods.ToList().Count - 1)
                                     {

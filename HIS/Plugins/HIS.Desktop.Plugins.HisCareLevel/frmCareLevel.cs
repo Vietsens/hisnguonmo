@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *
@@ -81,6 +81,12 @@ namespace HIS.Desktop.Plugins.HisCareLevel
         /// bam Tim kiem tu trang >= 2, luoi hien nham trang cua ket qua moi va API bi goi 2 lan.
         /// </summary>
         bool isInitPaging = false;
+
+        /// <summary>
+        /// So ban ghi keo ve mot lan khi dang tim kiem. Danh muc cap cham soc chi vai chuc dong
+        /// nen keo het ve roi loc tai cho la re va chac an hon phan trang.
+        /// </summary>
+        const int SEARCH_FETCH_LIMIT = 1000;
 
         Inventec.Desktop.Common.Modules.Module moduleData;
 
@@ -341,12 +347,23 @@ namespace HIS.Desktop.Plugins.HisCareLevel
         {
             try
             {
-                //Bo qua lan goi lai do ucPaging.Init sinh ra (Start con la cua trang cu)
+                //Bo qua lan goi lai do ucPaging.Init sinh ra (Start con la cua trang cu) 
                 if (isInitPaging) return;
 
                 startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
-                CommonParam paramCommon = new CommonParam(startPage, limit);
+
+                string keyword = txtKeyword.Text.Trim();
+                bool searching = keyword.Length > 0;
+
+                // Dang tim kiem thi keo ca danh muc ve mot lan roi loc tai cho, khong phan trang.
+                // Ly do: van gui KEY_WORD len server nhung khong chac server co loc hay khong;
+                // neu no bo qua ma minh van phan trang thi chi loc duoc dung trang dau, cac ban ghi 
+                // khop nam o trang sau se mat. Danh muc cap cham soc chi vai chuc dong nen keo het
+                // ve la re. Danh muc phinh to sau nay thi phai xem lai cho nay.
+                CommonParam paramCommon = searching
+                    ? new CommonParam(0, SEARCH_FETCH_LIMIT)
+                    : new CommonParam(startPage, limit);
 
                 HisCareLevelFilter filter = new HisCareLevelFilter();
                 SetFilter(ref filter);
@@ -367,9 +384,31 @@ namespace HIS.Desktop.Plugins.HisCareLevel
                         data = (List<HIS_CARE_LEVEL>)apiResult.Data;
                     }
 
+                    int fromServer = (data == null ? 0 : data.Count);
+
+                    if (searching)
+                    {
+                        data = FilterByKeyword(data, keyword);
+
+                        if (data.Count != fromServer)
+                        {
+                            LogSystem.Warn(string.Format(
+                                "Server bo qua KEY_WORD=[{0}]: tra ve {1} dong, loc tai cho con {2}",
+                                keyword, fromServer, data.Count));
+                        }
+                    }
+
                     gridControlCareLevel.DataSource = data;
                     rowCount = (data == null ? 0 : data.Count);
-                    dataTotal = (apiResult == null || apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
+
+                    // Dang tim kiem thi khong con phan trang, tong chinh la so dong dang hien
+                    dataTotal = searching
+                        ? rowCount
+                        : (apiResult == null || apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
+
+                    LogSystem.Info(string.Format(
+                        "TimKiemCareLevel | KEY_WORD=[{0}] | Start={1} Limit={2} | server tra {3} dong | hien thi {4} dong, tong {5}",
+                        keyword, startPage, limit, fromServer, rowCount, dataTotal));
                 }
                 finally
                 {
@@ -424,6 +463,59 @@ namespace HIS.Desktop.Plugins.HisCareLevel
             {
                 LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Loc danh sach theo tu khoa ngay tai may tram, doi chieu ma va ten phan cap.
+        ///
+        /// Van gui KEY_WORD len server o SetFilter, day chi la luoi do: khong xac dinh duoc
+        /// backend co loc theo KEY_WORD cho danh muc nay hay khong, ma trieu chung nguoi dung
+        /// bao la "go tu khoa xong danh sach khong doi" - dung kieu server tra ve nguyen ca danh muc.
+        /// Server co loc thi ham nay chay tren tap da loc san, khong anh huong gi.
+        /// </summary>
+        private List<HIS_CARE_LEVEL> FilterByKeyword(List<HIS_CARE_LEVEL> source, string keyword)
+        {
+            List<HIS_CARE_LEVEL> result = new List<HIS_CARE_LEVEL>();
+            if (source == null) return result;
+
+            string needle = NormalizeForSearch(keyword);
+            if (needle.Length == 0) return source;
+
+            foreach (HIS_CARE_LEVEL item in source)
+            {
+                if (item == null) continue;
+
+                if (NormalizeForSearch(item.CARE_LEVEL_CODE).Contains(needle)
+                    || NormalizeForSearch(item.CARE_LEVEL_NAME).Contains(needle))
+                {
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Bo dau tieng Viet va chuyen ve chu thuong de so sanh.
+        /// Nguoi dung quen go khong dau ("cap 1") de tim "Cấp 1", khong bo dau thi tim khong ra.
+        /// </summary>
+        private string NormalizeForSearch(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return string.Empty;
+
+            string formD = value.Trim().ToLowerInvariant().Normalize(System.Text.NormalizationForm.FormD);
+            System.Text.StringBuilder sb = new System.Text.StringBuilder(formD.Length);
+
+            foreach (char c in formD)
+            {
+                if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c)
+                    != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(c);
+                }
+            }
+
+            // "đ" khong tach dau bang FormD nen phai doi tay
+            return sb.ToString().Normalize(System.Text.NormalizationForm.FormC).Replace('đ', 'd');
         }
 
         private void SetFilter(ref HisCareLevelFilter filter)
