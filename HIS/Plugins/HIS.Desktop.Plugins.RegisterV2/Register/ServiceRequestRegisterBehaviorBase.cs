@@ -97,6 +97,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected long? cCCDDate { get; set; }
         protected string cCCDNumber { get; set; }
         protected string cCCDPlace { get; set; }
+        //Trang thai check "Khong CCCD" o vung Thong tin khac => HIS_PATIENT.IS_NO_CHECK_CCCD
+        protected bool isNoCheckCccd { get; set; }
         protected string communeNowCode { get; set; }
         protected string districtNowCode { get; set; }
         protected string provinceNowCode { get; set; }
@@ -468,6 +470,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 }
                 this.cMNDDate = this.patientPlusInformationInfoValue.CMND_DATE;
                 this.cMNDPlace = this.patientPlusInformationInfoValue.CMND_PLACE;
+                this.isNoCheckCccd = this.patientPlusInformationInfoValue.IsCheckBoxCCCD;
                 this.houseHold_Code = this.patientPlusInformationInfoValue.HOUSEHOLD_CODE;
                 this.houseHoldRelative_ID = this.patientPlusInformationInfoValue.HOUSEHOLD_RELATION_ID;
                 this.hoseHold_Relative = this.patientPlusInformationInfoValue.HOUSEHOLD_RELATION_NAME;
@@ -686,6 +689,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisPatient.HOUSEHOLD_RELATION_NAME = this.hoseHold_Relative;
                 this.patientProfile.HisPatient.IS_HIV = this.IsHiv ? (short?)1 : null;
                 this.patientProfile.HisPatient.BRANCH_ID = WorkPlace.GetBranchId();
+                //Check "Khong CCCD" o vung Thong tin khac: tich => 1, khong tich => null.
+                //Gan vo dieu kien de bo tich ghi de duoc gia tri cu da duoc map tu ho so benh nhan cu (InitBase)
+                this.patientProfile.HisPatient.IS_NO_CHECK_CCCD = this.isNoCheckCccd ? (short?)1 : null;
                 //Kiểm tra số ký tự nhập vào trường CMND để phân biệt là nhập theo CMND hay theo thẻ căn cước công dân. Nhập 9 ký tự số => CMND, nhập 12 ký tự số => căn cước
                 if (!String.IsNullOrEmpty(this.cMNDNumber))
                 {
