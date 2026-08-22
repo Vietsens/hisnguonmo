@@ -679,12 +679,21 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                     sdo.Id = item.ID;
                                     sdo.InvoiceLookupCode = electronicBillResult.InvoiceLookupCode;
                                     var apiResult = new BackendAdapter(paramUpdate).Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, sdo, paramUpdate);
+                                    if (apiResult)
                                     {
+                                        //Ghi tra day du thong tin hoa don dien tu vao object dang giu tren form,
+                                        //vi cac ban in Mps000317/Mps000318 lay so hoa don - so bao mat truc tiep tu object nay.
                                         item.INVOICE_CODE = electronicBillResult.InvoiceCode;
                                         item.INVOICE_SYS = electronicBillResult.InvoiceSys;
                                         item.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
                                         item.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
                                         item.EINVOICE_TIME = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
+                                        item.INVOICE_LOOKUP_CODE = electronicBillResult.InvoiceLookupCode;
+                                    }
+                                    else
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Warn("UpdateInvoiceInfo tra ve false, khong ghi tra thong tin hoa don dien tu vao transaction. "
+                                            + Inventec.Common.Logging.LogUtil.TraceData("sdo", sdo));
                                     }
                                 }
                             }
@@ -1858,7 +1867,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 if (resultRecieptBill == null)
                     return;
-                MPS.Processor.Mps000317.PDO.Mps000317PDO rdo = new MPS.Processor.Mps000317.PDO.Mps000317PDO(resultRecieptBill);
+                //Doc lai tu view de co day du so hoa don - so bao mat - ky hieu (giong chuc nang Danh sach giao dich)
+                V_HIS_TRANSACTION transactionPrint = GetTransactionViewById(resultRecieptBill.ID) ?? resultRecieptBill;
+                MPS.Processor.Mps000317.PDO.Mps000317PDO rdo = new MPS.Processor.Mps000317.PDO.Mps000317PDO(transactionPrint);
                 if (dicPrinter.ContainsKey(printTypeCode) && !String.IsNullOrEmpty(dicPrinter[printTypeCode]))
                 {
                     if (isSavePrint || ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
@@ -1895,7 +1906,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 if (resultInvoiceBill == null)
                     return;
                 WaitingManager.Show();
-                MPS.Processor.Mps000318.PDO.Mps000318PDO rdo = new MPS.Processor.Mps000318.PDO.Mps000318PDO(resultInvoiceBill);
+                //Doc lai tu view de co day du so hoa don - so bao mat - ky hieu (giong chuc nang Danh sach giao dich)
+                V_HIS_TRANSACTION transactionPrint = GetTransactionViewById(resultInvoiceBill.ID) ?? resultInvoiceBill;
+                MPS.Processor.Mps000318.PDO.Mps000318PDO rdo = new MPS.Processor.Mps000318.PDO.Mps000318PDO(transactionPrint);
                 WaitingManager.Hide();
                 if (dicPrinter.ContainsKey(printTypeCode) && !String.IsNullOrEmpty(dicPrinter[printTypeCode]))
                 {
@@ -1998,6 +2011,40 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             catch (Exception ex)
             {
                 result = 0;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Doc lai giao dich tu view V_HIS_TRANSACTION theo ID de lay day du du lieu truoc khi in.
+        /// Ket qua api/HisTransaction/CreateBillTwoBook khong mang cac truong hoa don dien tu
+        /// (EINVOICE_NUM_ORDER, INVOICE_LOOKUP_CODE, SYMBOL_CODE...) vi chung chi co sau khi phat hanh hoa don.
+        /// Loi / khong tim thay -> tra ve null, noi goi tu dung lai object dang giu tren form.
+        /// </summary>
+        private V_HIS_TRANSACTION GetTransactionViewById(long? transactionId)
+        {
+            V_HIS_TRANSACTION result = null;
+            try
+            {
+                if (!transactionId.HasValue || transactionId.Value <= 0)
+                    return result;
+
+                HisTransactionViewFilter filter = new HisTransactionViewFilter();
+                filter.ID = transactionId;
+                var apiResult = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filter, null);
+                if (apiResult != null && apiResult.Count > 0)
+                {
+                    result = apiResult.FirstOrDefault();
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("GetTransactionViewById khong lay duoc du lieu. TransactionId: " + transactionId);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;

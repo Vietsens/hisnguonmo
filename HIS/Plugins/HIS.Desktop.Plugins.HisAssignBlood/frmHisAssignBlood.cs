@@ -3081,7 +3081,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             try
             {
 
-                if (HisPrescriptionSDOPrint == null && HisPrescriptionSDOPrint.Count == 0)
+                if (HisPrescriptionSDOPrint == null || HisPrescriptionSDOPrint.Count == 0)
                 {
                     MessageManager.Show(Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.ThongBaoDuLieuTrong));
                     return;
