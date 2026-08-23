@@ -62,6 +62,11 @@ namespace HIS.Desktop.Plugins.TreatmentList
         List<HIS_PATIENT> _KSK_Patient { get; set; }
         List<HIS_KSK_GENERAL> _KSK_General { get; set; }
         List<HIS_KSK_DRIVER> _KSK_Driver { get; set; }
+        // Phần khám của 3 mẫu KSK chuyên biệt — bản in lấy theo thứ tự ưu tiên
+        // trên-18 → dưới-18 → dưới-6 → khám chung (HIS_KSK_GENERAL).
+        List<HIS_KSK_OVER_EIGHTEEN> _KSK_OverEighteen { get; set; }
+        List<HIS_KSK_UNDER_EIGHTEEN> _KSK_UnderEighteen { get; set; }
+        List<HIS_KSK_UNDER_SIX> _KSK_UnderSix { get; set; }
         private void ProcessPrintf(List<V_HIS_TREATMENT_4> _KSK_Treatments_Check)
         {
             try
@@ -78,6 +83,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 _KSK_SereServTeins = new List<V_HIS_SERE_SERV_TEIN>();
                 _KSK_Patient = new List<HIS_PATIENT>();
                 _KSK_Driver = new List<HIS_KSK_DRIVER>();
+                _KSK_General = new List<HIS_KSK_GENERAL>();
+                ResetKskExamForms();
 
                 this._KSK_Treatments = _KSK_Treatments_Check;
 
@@ -95,6 +102,11 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     start += 100;
                     count -= 100;
                 }
+
+                // Phần khám 4 mẫu KSK cho bản in Mps000315 (y lệnh đã lấy xong ở CreateThreadByTreatmentIds).
+                List<long> kskServiceReqIds = (_KSK_ServiceReqs != null) ? _KSK_ServiceReqs.Select(o => o.ID).Distinct().ToList() : null;
+                GetKskGeneral_KSK(kskServiceReqIds);
+                GetKskExamForms_KSK(kskServiceReqIds);
 
                 List<long> patientIds = _KSK_Treatments.Select(s => s.PATIENT_ID).Distinct().ToList();
                 int skip = 0;
@@ -136,6 +148,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 _KSK_SereServTeins = new List<V_HIS_SERE_SERV_TEIN>();
                 _KSK_TestIndexs = new List<V_HIS_TEST_INDEX>();
                 _KSK_General = new List<HIS_KSK_GENERAL>();
+                ResetKskExamForms();
 
                 this._KSK_Treatments = _KSK_Treatments_Check;
 
@@ -185,6 +198,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
                 GetServiceReq_KSK(_treatmentIds);
                 GetKskGeneral_KSK(_KSK_ServiceReqs.Select(o => o.ID).ToList());
+                GetKskExamForms_KSK(_KSK_ServiceReqs.Select(o => o.ID).Distinct().ToList());
                 GetSereServ__KSK(_treatmentIds);
                 GetSereServExt__KSK(_treatmentIds);
                 GetSereServTein__KSK(_treatmentIds);
@@ -318,6 +332,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 KskRank,
                 KskPosition
                 );
+                // Phần khám theo thứ tự ưu tiên trên-18 → dưới-18 → dưới-6 → khám chung (processor tự chọn).
+                mps000481RDO.ksk_OverEighteens = _KSK_OverEighteen;
+                mps000481RDO.ksk_UnderEighteens = _KSK_UnderEighteen;
+                mps000481RDO.ksk_UnderSixs = _KSK_UnderSix;
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (_KSK_Treatments != null && _KSK_Treatments.Count == 1)
@@ -376,6 +394,11 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 _KSK_Patient,
                 _KSK_Driver
                 );
+                // Phần khám theo thứ tự ưu tiên trên-18 → dưới-18 → dưới-6 → khám chung (processor tự chọn).
+                mps000315RDO._KskGeneral = _KSK_General;
+                mps000315RDO._KskOverEighteens = _KSK_OverEighteen;
+                mps000315RDO._KskUnderEighteens = _KSK_UnderEighteen;
+                mps000315RDO._KskUnderSixs = _KSK_UnderSix;
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
 
@@ -609,6 +632,70 @@ namespace HIS.Desktop.Plugins.TreatmentList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Khởi tạo lại 3 danh sách phần khám mẫu KSK chuyên biệt trước mỗi lần in.</summary>
+        private void ResetKskExamForms()
+        {
+            _KSK_OverEighteen = new List<HIS_KSK_OVER_EIGHTEEN>();
+            _KSK_UnderEighteen = new List<HIS_KSK_UNDER_EIGHTEEN>();
+            _KSK_UnderSix = new List<HIS_KSK_UNDER_SIX>();
+        }
+
+        /// <summary>
+        /// Lấy phần khám 3 mẫu KSK chuyên biệt (trên-18, dưới-18, trẻ dưới-6) theo danh sách y lệnh KSK.
+        /// Processor MPS tự chọn theo thứ tự ưu tiên trên-18 → dưới-18 → dưới-6 → khám chung.
+        /// </summary>
+        private void GetKskExamForms_KSK(List<long> serviceReqIds)
+        {
+            try
+            {
+                if (serviceReqIds == null || serviceReqIds.Count == 0) return;
+                if (_KSK_OverEighteen == null || _KSK_UnderEighteen == null || _KSK_UnderSix == null) ResetKskExamForms();
+
+                foreach (var batchIds in SplitIdBatches(serviceReqIds))
+                {
+                    try
+                    {
+                        HisKskOverEighteenFilter overFilter = new HisKskOverEighteenFilter();
+                        overFilter.SERVICE_REQ_IDs = batchIds;
+                        var rsOver = new BackendAdapter(_KSK_param).Get<List<HIS_KSK_OVER_EIGHTEEN>>("api/HisKskOverEighteen/Get", ApiConsumers.MosConsumer, overFilter, _KSK_param);
+                        if (rsOver != null && rsOver.Count > 0) _KSK_OverEighteen.AddRange(rsOver);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+
+                    try
+                    {
+                        HisKskUnderEighteenFilter underFilter = new HisKskUnderEighteenFilter();
+                        underFilter.SERVICE_REQ_IDs = batchIds;
+                        var rsUnder = new BackendAdapter(_KSK_param).Get<List<HIS_KSK_UNDER_EIGHTEEN>>("api/HisKskUnderEighteen/Get", ApiConsumers.MosConsumer, underFilter, _KSK_param);
+                        if (rsUnder != null && rsUnder.Count > 0) _KSK_UnderEighteen.AddRange(rsUnder);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+
+                    try
+                    {
+                        HisKskUnderSixFilter sixFilter = new HisKskUnderSixFilter();
+                        sixFilter.SERVICE_REQ_IDs = batchIds;
+                        var rsSix = new BackendAdapter(_KSK_param).Get<List<HIS_KSK_UNDER_SIX>>("api/HisKskUnderSix/Get", ApiConsumers.MosConsumer, sixFilter, _KSK_param);
+                        if (rsSix != null && rsSix.Count > 0) _KSK_UnderSix.AddRange(rsSix);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1095,6 +1182,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 new KskExcelColumn("Năm sinh nữ", (o, i) => o.TDL_PATIENT_DOB_WOM),
                 new KskExcelColumn("Tên chức vụ", (o, i) => o.TDL_PATIENT_POSITION_NAME),
                 new KskExcelColumn("Tên Đoàn", (o, i) => o.WORK_PLACE_NAME),
+                new KskExcelColumn("Nơi làm việc", (o, i) => o.PATIENT_WORK_PLACE_NAME),
+                new KskExcelColumn("Số khám sức khỏe", (o, i) => o.KSK_NUMBER),
                 new KskExcelColumn("Số nhà", (o, i) => o.TDL_PATIENT_ADDRESS),
                 new KskExcelColumn("Số CMND", (o, i) => o.TDL_PATIENT_CMND_NUMBER),
                 new KskExcelColumn("SĐT", (o, i) => o.PHONE),
