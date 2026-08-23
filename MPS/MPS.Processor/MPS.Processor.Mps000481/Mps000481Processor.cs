@@ -287,6 +287,10 @@ namespace MPS.Processor.Mps000481
                     }
                 }
 
+                // Kết luận / phân loại sức khỏe lấy theo thứ tự ưu tiên mẫu KSK:
+                // trên-18 → dưới-18 → dưới-6 → khám chung.
+                ApplyKskFormPriority();
+
                 if (rdo.Treatments != null && rdo.Treatments.Count > 0)
                 {
                     TreatmentlADOs = (from r in rdo.Treatments select new TreatmentlADO(r, rdo.HisPositions, kskGeneralADOs)).ToList();
@@ -301,6 +305,108 @@ namespace MPS.Processor.Mps000481
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Ghi đè kết luận (bệnh tật khác) + phân loại sức khỏe của từng đợt điều trị theo thứ tự ưu tiên mẫu KSK:
+        /// HIS_KSK_OVER_EIGHTEEN → HIS_KSK_UNDER_EIGHTEEN → HIS_KSK_UNDER_SIX → HIS_KSK_GENERAL.
+        /// Đợt điều trị chỉ nhập ở mẫu dưới-18 / dưới-6 (không có bản ghi khám chung) được thêm mới vào danh sách.
+        /// Hướng giải quyết (TREATMENT_INSTRUCTION) giữ nguyên của khám chung vì 3 mẫu kia không có cột này.
+        /// </summary>
+        private void ApplyKskFormPriority()
+        {
+            try
+            {
+                Dictionary<long, kskGeneralADO> dicByTreatment = new Dictionary<long, kskGeneralADO>();
+                // Nạp từ mẫu ưu tiên THẤP đến CAO để mẫu ưu tiên cao ghi đè.
+                // Tên cột "bệnh tật khác" mỗi mẫu một khác: dưới-6 = CLINICAL_OBSERVATION, dưới-18 = PROBLEM_HEALTH.
+                AddKskFormData(dicByTreatment, rdo.ksk_UnderSixs, "CLINICAL_OBSERVATION");
+                AddKskFormData(dicByTreatment, rdo.ksk_UnderEighteens, "PROBLEM_HEALTH");
+                AddKskFormData(dicByTreatment, rdo.ksk_OverEighteens, "DISEASES");
+
+                foreach (var item in dicByTreatment)
+                {
+                    var exist = kskGeneralADOs.FirstOrDefault(o => o.TREATMENT_ID == item.Key);
+                    if (exist == null)
+                    {
+                        kskGeneralADOs.Add(item.Value);
+                        continue;
+                    }
+                    // Chỉ ghi đè khi mẫu ưu tiên cao THỰC SỰ có dữ liệu — tránh xóa trắng dữ liệu khám chung.
+                    if (!String.IsNullOrWhiteSpace(item.Value.DISEASES))
+                        exist.DISEASES = item.Value.DISEASES;
+                    if (item.Value.HEALTH_EXAM_RANK_ID != null)
+                    {
+                        exist.HEALTH_EXAM_RANK_ID = item.Value.HEALTH_EXAM_RANK_ID;
+                        exist.HEALTH_EXAM_RANK_CODE = item.Value.HEALTH_EXAM_RANK_CODE;
+                        exist.HEALTH_EXAM_RANK_NAME = item.Value.HEALTH_EXAM_RANK_NAME;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Đọc bản ghi của 1 mẫu KSK (bảng nào cũng có TDL_TREATMENT_ID) vào dictionary theo đợt điều trị.</summary>
+        private void AddKskFormData(Dictionary<long, kskGeneralADO> result, System.Collections.IEnumerable records, string diseaseField)
+        {
+            try
+            {
+                if (result == null || records == null) return;
+                foreach (var record in records)
+                {
+                    if (record == null) continue;
+                    long? treatmentId = GetKskLong(record, "TDL_TREATMENT_ID");
+                    if (treatmentId == null || treatmentId <= 0) continue;
+
+                    kskGeneralADO ado = new kskGeneralADO();
+                    ado.TREATMENT_ID = treatmentId;
+                    ado.DISEASES = GetKskStr(record, diseaseField);
+                    ado.HEALTH_EXAM_RANK_ID = GetKskLong(record, "HEALTH_EXAM_RANK_ID");
+                    if (ado.HEALTH_EXAM_RANK_ID != null && rdo.HealthExamRanks != null && rdo.HealthExamRanks.Count > 0)
+                    {
+                        var rank = rdo.HealthExamRanks.FirstOrDefault(o => o.ID == ado.HEALTH_EXAM_RANK_ID);
+                        if (rank != null)
+                        {
+                            ado.HEALTH_EXAM_RANK_CODE = rank.HEALTH_EXAM_RANK_CODE;
+                            ado.HEALTH_EXAM_RANK_NAME = rank.HEALTH_EXAM_RANK_NAME;
+                        }
+                    }
+                    result[treatmentId.Value] = ado;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private static string GetKskStr(object data, string name)
+        {
+            try
+            {
+                if (data == null || String.IsNullOrEmpty(name)) return null;
+                var pi = data.GetType().GetProperty(name);
+                if (pi == null) return null;
+                var value = pi.GetValue(data, null);
+                return value != null ? value.ToString() : null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
+        private static long? GetKskLong(object data, string name)
+        {
+            try
+            {
+                if (data == null || String.IsNullOrEmpty(name)) return null;
+                var pi = data.GetType().GetProperty(name);
+                if (pi == null) return null;
+                var value = pi.GetValue(data, null);
+                return value != null ? (long?)Convert.ToInt64(value) : null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
         private List<SereServTeinADO> getSereServTeinADOADO(long? IsImportant)

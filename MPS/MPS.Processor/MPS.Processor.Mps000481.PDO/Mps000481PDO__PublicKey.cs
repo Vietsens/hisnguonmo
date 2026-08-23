@@ -37,6 +37,12 @@ namespace MPS.Processor.Mps000481.PDO
         public List<V_HIS_SERE_SERV_TEIN> SereServTeins { get; set; }
         public List<HIS_HEALTH_EXAM_RANK> HealthExamRanks { get; set; }
         public List<HIS_POSITION> HisPositions { get; set; }
+        /// <summary>Phần khám mẫu KSK trên 18 tuổi — tùy chọn; ưu tiên cao nhất khi lấy kết luận/phân loại.</summary>
+        public List<HIS_KSK_OVER_EIGHTEEN> ksk_OverEighteens { get; set; }
+        /// <summary>Phần khám mẫu KSK dưới 18 tuổi — tùy chọn; ưu tiên sau mẫu trên 18 tuổi.</summary>
+        public List<HIS_KSK_UNDER_EIGHTEEN> ksk_UnderEighteens { get; set; }
+        /// <summary>Phần khám mẫu KSK trẻ dưới 6 tuổi — tùy chọn; ưu tiên sau mẫu dưới 18 tuổi.</summary>
+        public List<HIS_KSK_UNDER_SIX> ksk_UnderSixs { get; set; }
     }
 
     public class SereServADO : V_HIS_SERE_SERV
