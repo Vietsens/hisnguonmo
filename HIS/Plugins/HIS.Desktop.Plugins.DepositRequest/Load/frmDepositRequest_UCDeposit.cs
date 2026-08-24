@@ -423,8 +423,8 @@ namespace HIS.Desktop.Plugins.DepositRequest
                     currentdepositReq = data;
                     dtTransactionTime.DateTime = DateTime.Now;
                     txtAmount.EditValue = data.AMOUNT;
-                    ApplyEditAmountState(data);
-                    spinTransferAmount.EditValue = 0;
+                    spinTransferAmount.EditValue = null;
+                    dxErrorProvider.SetError(spinTransferAmount, string.Empty);
                     txtDescription.Text = data.DESCRIPTION;
                     txtEditReqCode.Text = data.DEPOSIT_REQ_CODE;
                     this.action = GlobalVariables.ActionEdit;
@@ -453,8 +453,8 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 {
                     currentdepositReq = null;
                     txtAmount.EditValue = null;
-                    ApplyEditAmountState(null);
-                    spinTransferAmount.EditValue = 0;
+                    spinTransferAmount.EditValue = null;
+                    dxErrorProvider.SetError(spinTransferAmount, string.Empty);
                     txtDescription.Text = "";
                     txtEditReqCode.Text = "";
                     SpNumOrder.EditValue = null;

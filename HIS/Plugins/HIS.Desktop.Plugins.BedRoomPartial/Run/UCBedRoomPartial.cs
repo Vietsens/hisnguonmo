@@ -76,8 +76,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         internal long treatmentId;
         internal string treatmentCode;
         bool isUseAddedTime = false;
-        List<V_HIS_EMPLOYEE> lstDoctorFilter = new List<V_HIS_EMPLOYEE>();
-        bool isDoctorFilterAutoSet = false;
         internal L_HIS_TREATMENT_BED_ROOM treatmentBedRoomRow { get; set; }
         internal L_HIS_TREATMENT_BED_ROOM RowCellClickBedRoom { get; set; }
         internal L_HIS_TREATMENT_BED_ROOM treatmentBedRoomRow2 { get; set; }
@@ -590,7 +588,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             try
             {
                 var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DOCTOR == 1).ToList();
-                this.lstDoctorFilter = data;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME","Tên đăng nhập", 150, 1));
                 columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ và tên", 250, 1));
@@ -3466,44 +3463,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     dtTo.DateTime = DateTime.Now;
                     this.isUseAddedTime = true;
                 }
-                SetDoctorFilterByLoginUser(Inventec.Common.TypeConvert.Parse.ToInt64((cboPatientFilter.EditValue ?? "0").ToString()) == 2);
                 btnSearch_Click(null, null);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        /// <summary>
-        /// Chế độ "BN chưa kê đơn trong khoảng" mặc định lọc theo tài khoản bác sĩ đang đăng nhập.
-        /// Chỉ tự điền khi ô đang trống và tài khoản đăng nhập là bác sĩ; khi rời chế độ thì trả lại
-        /// trạng thái cũ, không đụng vào lựa chọn do người dùng tự chọn.
-        /// </summary>
-        private void SetDoctorFilterByLoginUser(bool isNoPrescriptionMode)
-        {
-            try
-            {
-                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                if (String.IsNullOrWhiteSpace(loginName))
-                    return;
-
-                if (isNoPrescriptionMode)
-                {
-                    if (cboEmployee.EditValue != null)
-                        return;
-                    if (this.lstDoctorFilter == null || !this.lstDoctorFilter.Exists(o => String.Compare(o.LOGINNAME, loginName, true) == 0))
-                        return;
-
-                    cboEmployee.EditValue = loginName;
-                    this.isDoctorFilterAutoSet = true;
-                }
-                else if (this.isDoctorFilterAutoSet)
-                {
-                    if (cboEmployee.EditValue != null && String.Compare(cboEmployee.EditValue.ToString(), loginName, true) == 0)
-                        cboEmployee.EditValue = null;
-                    this.isDoctorFilterAutoSet = false;
-                }
             }
             catch (Exception ex)
             {
@@ -3770,7 +3730,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         private void cboEmployee_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             if (cboEmployee.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+            {
                 cboEmployee.EditValue = null;
+                // [3222] Xóa lọc bác sĩ = tìm lại ngay theo tất cả bác sĩ, khỏi phải bấm Tìm
+                btnSearch_Click(null, null);
+            }
         }
 
         private void lblPatientCode_Click(object sender, EventArgs e)
