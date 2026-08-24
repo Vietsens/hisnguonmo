@@ -221,7 +221,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                             // Ky CKS_NGUOI_KET_LUAN (chung thu nguoi ket luan cua nhom) -> roi ky CKS_BENH_VIEN.
                             EMR.EFMODEL.DataModels.EMR_SIGNER concEmr;
-                            if (concSigners.TryGetValue(concLogin, out concEmr))
+                            bool hasConcCert = concSigners.TryGetValue(concLogin, out concEmr);
+                            Inventec.Common.Logging.LogSystem.Info(string.Format(
+                                "CKS_NGUOI_KET_LUAN: file nhom nguoi ket luan {0} ({1} ho so): chung thu HSM={2}",
+                                string.IsNullOrEmpty(concLogin) ? "(trong)" : concLogin, idxs.Count,
+                                hasConcCert ? "co -> se ky" : "KHONG -> bo qua the"));
+                            if (hasConcCert)
                                 xml = signer.SignXmlByConcluder(xml, concEmr);
                             xml = signer.SignCksBenhVien(xml);
                             if (string.IsNullOrEmpty(xml)) { failed += idxs.Count; continue; }
@@ -441,6 +446,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 string cl = SafeString(GetProp(rowList[i], "CONCLUDER_LOGINNAME"));
                                 if (concSigners != null && !string.IsNullOrEmpty(cl)) concSigners.TryGetValue(cl, out concEmr);
                                 EMR.EFMODEL.DataModels.EMR_SIGNER emrLocal = concEmr;
+                                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                                    "CKS_NGUOI_KET_LUAN: ho so {0} (treatment_code={1}): CONCLUDER_LOGINNAME={2};"
+                                    + " chung thu HSM={3}",
+                                    i + 1, SafeString(GetProp(rowList[i], "TREATMENT_CODE")),
+                                    string.IsNullOrEmpty(cl) ? "(trong)" : cl,
+                                    (emrLocal != null) ? "co -> se ky" : "KHONG -> bo qua the"));
                                 // Ký CKS_NGUOI_KET_LUAN (chứng thư người kết luận) TRƯỚC, rồi CKS_BENH_VIEN.
                                 dataSigner = xml => signer.SignCksBenhVien(emrLocal != null ? signer.SignXmlByConcluder(xml, emrLocal) : xml);
                             }
@@ -1867,20 +1878,38 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// <summary>
         /// Ghi log PHAM VI ky so cua lan bam nay — de doi soat khi mo file XML thay the CKS_ trong:
         ///   - CKS_BENH_VIEN: luon ky khi tich ky so (HSM hoac USB token).
-        ///   - CKS_NGUOI_KET_LUAN: CHI ky duoc bang HSM cua nguoi ket luan (EMR_SIGNER co PCA_SERIAL).
-        ///     Cau hinh ky so khong phai HSM, hoac nguoi ket luan chua khai chung thu HSM -> the do DE TRONG
-        ///     (khong chan viec ky/xuat) => log ro ly do + liet ke loginname thieu chung thu.
+        ///   - CKS_NGUOI_KET_LUAN: LUON ky bang HSM cua nguoi ket luan (EMR_SIGNER co PCA_SERIAL), KHONG
+        ///     phu thuoc cau hinh USB token/HSM cua CKS_BENH_VIEN. Chua chon he thong HSM (HsmType=0), hoac
+        ///     nguoi ket luan chua khai chung thu HSM -> the do DE TRONG (khong chan viec ky/xuat) => log ro
+        ///     ly do + liet ke loginname thieu chung thu.
         /// </summary>
         private void LogSignScope(List<V_HIS_KSK_SYNC> rowList,
             Dictionary<string, EMR.EFMODEL.DataModels.EMR_SIGNER> concSigners, string prefix)
         {
             try
             {
-                if (this.signSetting == null) return;
-                if (!this.signSetting.IsHsm)
+                if (this.signSetting == null)
                 {
-                    Inventec.Common.Logging.LogSystem.Info(prefix + ": ky so bang USB token -> chi ky CKS_BENH_VIEN;"
-                        + " CKS_NGUOI_KET_LUAN DE TRONG (chi ky duoc bang HSM cua nguoi ket luan).");
+                    Inventec.Common.Logging.LogSystem.Info(prefix + ": CKS_SCOPE: signSetting = null (chua cau hinh"
+                        + " ky so) -> khong ky the CKS_ nao.");
+                    return;
+                }
+                // Log CAU HINH KY SO dang dung (KHONG log password/secret key) — de biet vi sao re nhanh USB/HSM.
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "{0}: CKS_SCOPE cau hinh ky so: IsHsm={1}; HsmType(Id)={2}; Name={3}; SerialNumber={4};"
+                    + " so ho so={5}; so nguoi ket luan co chung thu HSM={6}",
+                    prefix, this.signSetting.IsHsm, this.signSetting.Id,
+                    string.IsNullOrEmpty(this.signSetting.Name) ? "(trong)" : this.signSetting.Name,
+                    string.IsNullOrEmpty(this.signSetting.SerialNumber) ? "(trong)" : this.signSetting.SerialNumber,
+                    (rowList != null) ? rowList.Count : 0,
+                    (concSigners != null) ? concSigners.Count : 0));
+                // CKS_NGUOI_KET_LUAN LUON ky bang HSM cua nguoi ket luan, khong phu thuoc cau hinh
+                // USB token/HSM (cau hinh do chi quyet dinh cach ky CKS_BENH_VIEN). Dieu kien duy nhat:
+                // da chon he thong HSM (HsmType > 0) + nguoi ket luan co EMR_SIGNER.PCA_SERIAL.
+                if (this.signSetting.Id <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(prefix + ": chua chon HE THONG HSM (HsmType=0) trong form"
+                        + " cau hinh ky so -> chi ky CKS_BENH_VIEN, CKS_NGUOI_KET_LUAN DE TRONG.");
                     return;
                 }
                 var missCert = new List<string>();
@@ -1893,7 +1922,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     }
                 if (missCert.Count == 0)
                 {
-                    Inventec.Common.Logging.LogSystem.Info(prefix + ": ky CKS_BENH_VIEN + CKS_NGUOI_KET_LUAN (HSM)"
+                    Inventec.Common.Logging.LogSystem.Info(prefix + ": ky CKS_BENH_VIEN (bang "
+                        + (this.signSetting.IsHsm ? "HSM" : "USB token") + ") + CKS_NGUOI_KET_LUAN (bang HSM)"
                         + " cho toan bo nguoi ket luan.");
                     return;
                 }
@@ -1921,14 +1951,40 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     string cl = SafeString(GetProp(row, "CONCLUDER_LOGINNAME"));
                     if (!string.IsNullOrEmpty(cl) && !logins.Contains(cl)) logins.Add(cl);
                 }
-                if (logins.Count == 0) return map;
+                if (logins.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("CKS_NGUOI_KET_LUAN: khong ho so nao co"
+                        + " CONCLUDER_LOGINNAME -> khong tra chung thu nguoi ket luan.");
+                    return map;
+                }
                 var signers = GetList<EMR.EFMODEL.DataModels.EMR_SIGNER>("api/EmrSigner/Get",
                     new EMR.Filter.EmrSignerFilter { LOGINNAMEs = logins, IS_ACTIVE = 1 }, ApiConsumers.EmrConsumer);
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "CKS_NGUOI_KET_LUAN: tra emr_signer cho {0} nguoi ket luan ({1}) -> api tra ve {2} ban ghi.",
+                    logins.Count, string.Join(", ", logins.Take(30).ToArray()),
+                    (signers != null) ? signers.Count : -1));
                 if (signers != null)
                     foreach (var s in signers)
-                        if (s != null && !string.IsNullOrEmpty(s.LOGINNAME) && !string.IsNullOrEmpty(s.PCA_SERIAL)
-                            && !map.ContainsKey(s.LOGINNAME))
+                    {
+                        if (s == null || string.IsNullOrEmpty(s.LOGINNAME)) continue;
+                        // Log DU/THIEU tung truong can de ky HSM (chi log CO/KHONG — khong log gia tri mat).
+                        Inventec.Common.Logging.LogSystem.Info(string.Format(
+                            "CKS_NGUOI_KET_LUAN: emr_signer {0}: PCA_SERIAL={1}; HSM_USER_CODE={2}; PASSWORD={3};"
+                            + " SECRET_KEY={4}; CMND_NUMBER={5}",
+                            s.LOGINNAME,
+                            string.IsNullOrEmpty(s.PCA_SERIAL) ? "THIEU" : "co",
+                            string.IsNullOrEmpty(s.HSM_USER_CODE) ? "THIEU" : "co",
+                            string.IsNullOrEmpty(s.PASSWORD) ? "THIEU" : "co",
+                            string.IsNullOrEmpty(s.SECRET_KEY) ? "THIEU" : "co",
+                            string.IsNullOrEmpty(s.CMND_NUMBER) ? "THIEU" : "co"));
+                        if (!string.IsNullOrEmpty(s.PCA_SERIAL) && !map.ContainsKey(s.LOGINNAME))
                             map[s.LOGINNAME] = s;
+                    }
+                foreach (var lg in logins)
+                    if (!map.ContainsKey(lg))
+                        Inventec.Common.Logging.LogSystem.Warn("CKS_NGUOI_KET_LUAN: nguoi ket luan " + lg
+                            + " KHONG co emr_signer (IS_ACTIVE=1) kem PCA_SERIAL -> the CKS_NGUOI_KET_LUAN cua ho so"
+                            + " do se DE TRONG.");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
             return map;
