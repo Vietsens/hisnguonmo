@@ -105,7 +105,6 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 txtDescription.Text = data.DESCRIPTION;
                 txtAmount.EditValue = data.AMOUNT;
                 txtEditReqCode.Text = data.DEPOSIT_REQ_CODE;
-                ApplyEditAmountState(data);
             }
             catch (Exception ex)
             {

@@ -130,7 +130,7 @@
     <value>BN chưa kê đơn trong khoảng</value>
   </data>
   <data name="BacSiDieuTri" xml:space="preserve">
-    <value>Bác sĩ điều trị</value>
+    <value>Bác sĩ điều trị (tất cả)</value>
   </data>
   <data name="LocTheoBacSiDieuTri" xml:space="preserve">
     <value>Lọc bệnh nhân theo tài khoản bác sĩ điều trị</value>
