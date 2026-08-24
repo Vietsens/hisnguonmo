@@ -141,6 +141,9 @@
   <data name="KhongTimThayPhieuNhapCoMa" xml:space="preserve">
     <value>Không tìm thấy phiếu nhập có mã {0}</value>
   </data>
+  <data name="KhongTimThayPhieuNhapCoSoHoaDon" xml:space="preserve">
+    <value>Không tìm thấy phiếu nhập có số hóa đơn {0}</value>
+  </data>
   <data name="NguoiDungNhapNgayKhongHopLe" xml:space="preserve">
     <value>Người dùng nhập ngày không hợp lệ.</value>
   </data>

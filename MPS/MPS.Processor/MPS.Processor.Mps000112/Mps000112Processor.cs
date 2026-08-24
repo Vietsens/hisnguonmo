@@ -31,6 +31,9 @@ namespace MPS.Processor.Mps000112
     public class Mps000112Processor : AbstractProcessor
     {
         Mps000112PDO rdo;
+        List<Mps000112ServiceADO> serviceADOs = new List<Mps000112ServiceADO>();
+        List<Mps000112PayformADO> payformADOs = new List<Mps000112PayformADO>();
+        List<Mps000112DiscountADO> discountADOs = new List<Mps000112DiscountADO>();
         public Mps000112Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -47,6 +50,9 @@ namespace MPS.Processor.Mps000112
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 SetSingleKey();
                 SetBarcodeKey();
+                ProcessServiceADO();
+                ProcessPayformADO();
+                ProcessDiscountADO();
 
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
@@ -55,6 +61,9 @@ namespace MPS.Processor.Mps000112
 
                 barCodeTag.ProcessData(store, dicImage);
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
+                objectTag.AddObjectData(store, Mps000112ExtendSingleKey.OBJECT_TAG__SERVICE, serviceADOs);
+                objectTag.AddObjectData(store, Mps000112ExtendSingleKey.OBJECT_TAG__PAYFORM, payformADOs);
+                objectTag.AddObjectData(store, Mps000112ExtendSingleKey.OBJECT_TAG__DISCOUNT, discountADOs);
                 singleTag.ProcessData(store, singleValueDictionary);
                 result = true;
             }
@@ -139,6 +148,8 @@ namespace MPS.Processor.Mps000112
                 SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.RATIO, rdo.ratio));
                 SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.RATIO_STR, (rdo.ratio * 100) + "%"));
 
+                SetPayFormKey();
+
                 if (rdo.MpsADO != null)
                 {
                     AddObjectKeyIntoListkey<Mps000112ADO>(rdo.MpsADO, false);
@@ -163,6 +174,147 @@ namespace MPS.Processor.Mps000112
                 }
 
 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hinh thuc thanh toan cua giao dich.
+        /// View giao dich da co san PAY_FORM_CODE/PAY_FORM_NAME, chi tra cuu danh muc khi view khong co du lieu.
+        /// </summary>
+        private void SetPayFormKey()
+        {
+            try
+            {
+                if (rdo._Transaction == null) return;
+
+                string payFormCode = rdo._Transaction.PAY_FORM_CODE;
+                string payFormName = rdo._Transaction.PAY_FORM_NAME;
+
+                if ((String.IsNullOrWhiteSpace(payFormCode) || String.IsNullOrWhiteSpace(payFormName))
+                    && rdo._PayForms != null && rdo._PayForms.Count > 0)
+                {
+                    var payForm = rdo._PayForms.FirstOrDefault(o => o.ID == rdo._Transaction.PAY_FORM_ID);
+                    if (payForm != null)
+                    {
+                        if (String.IsNullOrWhiteSpace(payFormCode)) payFormCode = payForm.PAY_FORM_CODE;
+                        if (String.IsNullOrWhiteSpace(payFormName)) payFormName = payForm.PAY_FORM_NAME;
+                    }
+                }
+
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.PAY_FORM_CODE, payFormCode));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.PAY_FORM_NAME, payFormName));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Danh sach dich vu duoc tam ung boi phieu thu nay + cac key tong hop
+        /// </summary>
+        private void ProcessServiceADO()
+        {
+            try
+            {
+                if (rdo._ListSereServ != null && rdo._ListSereServ.Count > 0)
+                {
+                    long numOrder = 1;
+                    foreach (var sereServ in rdo._ListSereServ.OrderBy(o => o.TDL_SERVICE_TYPE_ID).ThenBy(o => o.TDL_SERVICE_NAME))
+                    {
+                        Mps000112ServiceADO ado = new Mps000112ServiceADO(sereServ);
+                        ado.NUM_ORDER = numOrder++;
+
+                        if (rdo._ListSereServDeposit != null && rdo._ListSereServDeposit.Count > 0)
+                        {
+                            ado.DEPOSIT_AMOUNT = rdo._ListSereServDeposit
+                                .Where(o => o.SERE_SERV_ID == sereServ.ID)
+                                .Sum(o => o.AMOUNT);
+                        }
+
+                        serviceADOs.Add(ado);
+                    }
+                }
+
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERVICE_COUNT, serviceADOs.Count));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERVICE_TOTAL_PRICE, serviceADOs.Sum(o => o.TOTAL_PRICE)));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERVICE_TOTAL_HEIN_PRICE, serviceADOs.Sum(o => o.TOTAL_HEIN_PRICE)));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERVICE_TOTAL_PATIENT_PRICE_BHYT, serviceADOs.Sum(o => o.TOTAL_PATIENT_PRICE_BHYT)));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERVICE_TOTAL_PATIENT_PRICE, serviceADOs.Sum(o => o.TOTAL_PATIENT_PRICE)));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERVICE_TOTAL_DEPOSIT_AMOUNT, serviceADOs.Sum(o => o.DEPOSIT_AMOUNT)));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERVICE_TOTAL_DISCOUNT, serviceADOs.Sum(o => o.DISCOUNT)));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bang hinh thuc thanh toan cua giao dich + cac key tong hop
+        /// </summary>
+        private void ProcessPayformADO()
+        {
+            try
+            {
+                if (rdo._ListTransactionPayform != null && rdo._ListTransactionPayform.Count > 0)
+                {
+                    long numOrder = 1;
+                    foreach (var payform in rdo._ListTransactionPayform
+                        .Where(o => o.IS_DELETE != 1)
+                        .OrderBy(o => o.SORT_ORDER).ThenBy(o => o.ID))
+                    {
+                        Mps000112PayformADO ado = new Mps000112PayformADO(payform, rdo._PayForms, rdo._Banks);
+                        ado.NUM_ORDER = numOrder++;
+                        payformADOs.Add(ado);
+                    }
+                }
+                else if (rdo._Transaction != null)
+                {
+                    //Giao dich thanh toan 1 hinh thuc (config MULTI_PAYFORM tat) khong co dong
+                    //HIS_TRANSACTION_PAYFORM -> suy 1 dong tu chinh giao dich de bang khong bi rong
+                    Mps000112PayformADO ado = new Mps000112PayformADO(rdo._Transaction);
+                    ado.NUM_ORDER = 1;
+                    payformADOs.Add(ado);
+                }
+
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.PAYFORM_COUNT, payformADOs.Count));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.PAYFORM_TOTAL_AMOUNT, payformADOs.Sum(o => o.AMOUNT)));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.PAYFORM_TOTAL_SURCHARGE, payformADOs.Sum(o => o.SURCHARGE_AMOUNT)));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.PAYFORM_TOTAL, payformADOs.Sum(o => o.TOTAL_AMOUNT)));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bang chiet khau cua giao dich + cac key tong hop
+        /// </summary>
+        private void ProcessDiscountADO()
+        {
+            try
+            {
+                if (rdo._ListTransactionDiscount != null && rdo._ListTransactionDiscount.Count > 0)
+                {
+                    long numOrder = 1;
+                    foreach (var discount in rdo._ListTransactionDiscount
+                        .Where(o => o.IS_DELETE != 1)
+                        .OrderBy(o => o.ID))
+                    {
+                        Mps000112DiscountADO ado = new Mps000112DiscountADO(discount);
+                        ado.NUM_ORDER = numOrder++;
+                        discountADOs.Add(ado);
+                    }
+                }
+
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.DISCOUNT_COUNT, discountADOs.Count));
+                SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.DISCOUNT_TOTAL, discountADOs.Sum(o => o.DISCOUNT)));
             }
             catch (Exception ex)
             {

@@ -1452,6 +1452,19 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             {
                 Inventec.Common.Logging.LogSystem.Debug("LoadServicePatyByAdo()-Start");
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.currrentServiceAdo", this.currrentServiceAdo));
+
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "ImpPrice__LoadServicePatyByAdo: MEDI_MATE_ID={0}, IMP_PRICE={1}, IMP_VAT_RATIO={2}, chkImprice={3}, chkPreExpPrice={4}, IsVaccin={5}, VACCINE_EXP_PRICE_OPTION={6}, ApplyServicePatyPrice={7}, IsServiceUnitPrimary={8}, medistock={9}/IS_BUSINESS={10}",
+                    this.currrentServiceAdo != null ? this.currrentServiceAdo.MEDI_MATE_ID : 0,
+                    this.currrentServiceAdo != null ? this.currrentServiceAdo.IMP_PRICE : 0,
+                    this.currrentServiceAdo != null ? this.currrentServiceAdo.IMP_VAT_RATIO : 0,
+                    chkImprice.Checked, chkPreExpPrice.Checked,
+                    this.currrentServiceAdo != null && this.currrentServiceAdo.IsVaccin,
+                    this._VACCINE_EXP_PRICE_OPTION, HisConfig.ApplyServicePatyPrice,
+                    this.currrentServiceAdo != null && this.currrentServiceAdo.IsServiceUnitPrimary,
+                    this.medistock == null ? "null" : this.medistock.MEDI_STOCK_NAME,
+                    this.medistock == null ? "" : Convert.ToString(this.medistock.IS_BUSINESS)));
+
                 if (this.currrentServiceAdo != null && chkImprice.Checked == false && (!this._VACCINE_EXP_PRICE_OPTION || !currrentServiceAdo.IsVaccin))
                 {
                     Dictionary<long, VHisServicePatyADO> dicPaty = new Dictionary<long, VHisServicePatyADO>();
@@ -1658,15 +1671,23 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             }
         }
 
+        private string _lastProfitCfgLog;
+
         private decimal CheckProfitCfg(decimal price, long patientTypeId)
         {
             decimal result = 0;
+            string reason = null;
+            long matchedCfgId = 0;
             try
             {
                 if (this.medistock != null && this.medistock.IS_BUSINESS == 1 && !(chkNoProfitBhyt.Checked && patientTypeId == Config.PatientTypeCFG.PATIENT_TYPE_ID__BHYT))
                 {
                     //#21344
                     var data = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(p => p.ID == this.currrentServiceAdo.SERVICE_UNIT_ID);
+                    if (data == null)
+                        reason = "khong tim thay HIS_SERVICE_UNIT ID=" + this.currrentServiceAdo.SERVICE_UNIT_ID;
+                    else if (data.IS_PRIMARY != 1)
+                        reason = "don vi tinh khong phai don vi co ban (IS_PRIMARY<>1), SERVICE_UNIT_ID=" + data.ID;
                     if (data != null && data.IS_PRIMARY == 1)
                     {
 
@@ -1692,9 +1713,38 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 dataSales = dataSales.OrderByDescending(p => p.MODIFY_TIME).ToList();
                                 result = dataSales.FirstOrDefault().RATIO;
+                                matchedCfgId = dataSales.FirstOrDefault().ID;
+                                if (dataSales.Count > 1)
+                                    reason = string.Format("co {0} dong HIS_SALE_PROFIT_CFG cung khop, lay dong MODIFY_TIME moi nhat ID={1}", dataSales.Count, matchedCfgId);
                             }
+                            else
+                                reason = string.Format("khong con dong cau hinh nao sau khi loc IS_DRUG_STORE (IS_SHOW_DRUG_STORE={0})", medistock.IS_SHOW_DRUG_STORE);
                         }
+                        else
+                            reason = string.Format("khong co dong HIS_SALE_PROFIT_CFG nao phu hop (gia={0}, IsMedicine={1}, isFunctionalFood={2})", price, this.currrentServiceAdo.IsMedicine, this.currrentServiceAdo.isFunctionalFood);
                     }
+                }
+                else
+                {
+                    reason = string.Format("khong xet thang so - medistock={0}, IS_BUSINESS={1}, chkNoProfitBhyt={2}, PATIENT_TYPE_ID={3}",
+                        this.medistock == null ? "null" : this.medistock.MEDI_STOCK_NAME,
+                        this.medistock == null ? "" : Convert.ToString(this.medistock.IS_BUSINESS),
+                        chkNoProfitBhyt.Checked, patientTypeId);
+                }
+
+                string msg = string.Format("ImpPrice__CheckProfitCfg: MEDI_MATE_ID={0}, gia von={1} => RATIO={2} (cfgId={3}){4}",
+                    this.currrentServiceAdo != null ? this.currrentServiceAdo.MEDI_MATE_ID : 0,
+                    price, result, matchedCfgId,
+                    string.IsNullOrEmpty(reason) ? "" : " | " + reason);
+
+                // Ham chay cho MOI doi tuong benh nhan trong luoi, moi lan go 1 ky tu vao o Gia nhap.
+                // Ket qua chi phu thuoc (thuoc, gia von) nen chi ghi khi khac lan truoc, tranh ngap log.
+                if (result <= 0 && price > 0)
+                    Inventec.Common.Logging.LogSystem.Warn(msg + ", PATIENT_TYPE_ID=" + patientTypeId);
+                else if (msg != this._lastProfitCfgLog)
+                {
+                    this._lastProfitCfgLog = msg;
+                    Inventec.Common.Logging.LogSystem.Debug(msg);
                 }
             }
             catch (Exception ex)
@@ -1874,6 +1924,22 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 Inventec.Common.Logging.LogSystem.Debug("ReUpdateProfit()-Start");
                 decimal price = (1 + spinImpVatRatio.Value / 100) * spinImpPrice.Value;
                 decimal price1 = (1 + spinImpVatRatio.Value / 100) * spinImpPrice1.Value;
+
+                // Neu ca 2 o gia nhap deu khong Enabled/Visible thi ExpPriceVat va PercentProfit KHONG duoc cap nhat
+                bool canUseImpPrice = spinImpPrice.Enabled && spinImpPrice.Visible;
+                bool canUseImpPrice1 = spinImpPrice1.Enabled && spinImpPrice1.Visible;
+                string reUpdateMsg = string.Format(
+                    "ImpPrice__ReUpdateProfit: MEDI_MATE_ID={0}, spinImpPrice={1} (En/Vis={2}/{3}), spinImpPrice1={4} (En/Vis={5}/{6}), VAT={7}, price={8}, price1={9}, IsServiceUnitPrimary={10}, soDongPaty={11}",
+                    this.currrentServiceAdo != null ? this.currrentServiceAdo.MEDI_MATE_ID : 0,
+                    spinImpPrice.Value, spinImpPrice.Enabled, spinImpPrice.Visible,
+                    spinImpPrice1.Value, spinImpPrice1.Enabled, spinImpPrice1.Visible,
+                    spinImpVatRatio.Value, price, price1,
+                    this.currrentServiceAdo != null && this.currrentServiceAdo.IsServiceUnitPrimary,
+                    listServicePatyAdo == null ? 0 : listServicePatyAdo.Count);
+                if (!canUseImpPrice && !canUseImpPrice1)
+                    Inventec.Common.Logging.LogSystem.Warn(reUpdateMsg + " | CA 2 O GIA NHAP DEU BI KHOA - gia von va thang so KHONG duoc tinh lai");
+                else
+                    Inventec.Common.Logging.LogSystem.Debug(reUpdateMsg);
                 foreach (var item in listServicePatyAdo)
                 {
                     if (this.currrentServiceAdo.IsServiceUnitPrimary)
@@ -2892,6 +2958,107 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Dong bo lai luoi chinh sach gia khi gia von (ExpPriceVat) chua duoc nap.
+        /// ExpPriceVat chi duoc gan luc chon thuoc/vat tu tu cay (LoadServicePatyByAdo) va trong
+        /// ReUpdateProfit. Neu thuoc duoc chon luc o Gia nhap con trong va gia duoc do vao sau bang
+        /// duong khong kich hoat ReUpdateProfit thi ExpPriceVat con = 0, keo theo Gia ban = 0 trong khi
+        /// cot %LN van giu gia tri da tinh tu CheckProfitCfg.
+        /// </summary>
+        private void NormalizeServicePatyPrice()
+        {
+            try
+            {
+                if (this.currrentServiceAdo == null || listServicePatyAdo == null || listServicePatyAdo.Count == 0)
+                    return;
+
+                decimal impPrice = this.currrentServiceAdo.IMP_PRICE;
+                if (impPrice <= 0)
+                    return;
+
+                decimal impPriceVat = impPrice * (1 + this.currrentServiceAdo.IMP_VAT_RATIO);
+                bool changed = false;
+                foreach (var paty in listServicePatyAdo)
+                {
+                    if (paty.IsNotSell || paty.ExpPriceVat > 0)
+                        continue;
+
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                        "NormalizeServicePatyPrice: gia von chua nap - MEDI_MATE_ID={0}, PATIENT_TYPE_ID={1}, PercentProfit={2}, PRICE={3}. Dong bo lai theo gia nhap {4}",
+                        this.currrentServiceAdo.MEDI_MATE_ID, paty.PATIENT_TYPE_ID, paty.PercentProfit, paty.PRICE, impPriceVat));
+
+                    paty.ExpPrice = impPrice;
+                    paty.ExpPriceVat = impPriceVat;
+                    if (paty.PRICE <= 0 && !HisConfig.ApplyServicePatyPrice)
+                        paty.PRICE = (1 + (paty.PercentProfit / (decimal)100)) * paty.ExpPriceVat;
+                    changed = true;
+                }
+
+                if (changed)
+                    gridControlServicePaty.RefreshDataSource();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Log dong chinh sach gia thuc su ghi xuong lo, kem doi chieu voi thang so dang hien thi.
+        /// Lech giua PRICE / PercentProfit / EXP_PRICE la dau hieu luoi bi mat dong bo.
+        /// </summary>
+        private void LogPatyPrice(string tag, ADO.VHisServicePatyADO paty, decimal? expPrice, decimal? expVatRatio)
+        {
+            try
+            {
+                if (paty == null)
+                    return;
+
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "ImpPrice__{0}: MEDI_MATE_ID={1}, PATIENT_TYPE_ID={2} ({3}), IMP_PRICE={4}, IMP_VAT_RATIO={5} | ExpPrice={6}, ExpPriceVat={7}, PercentProfit={8}, PRICE={9}, VAT_RATIO={10}, ExpVatRatio={11} => EXP_PRICE={12}, EXP_VAT_RATIO={13}",
+                    tag,
+                    this.currrentServiceAdo != null ? this.currrentServiceAdo.MEDI_MATE_ID : 0,
+                    paty.PATIENT_TYPE_ID, paty.PATIENT_TYPE_NAME,
+                    this.currrentServiceAdo != null ? this.currrentServiceAdo.IMP_PRICE : 0,
+                    this.currrentServiceAdo != null ? this.currrentServiceAdo.IMP_VAT_RATIO : 0,
+                    paty.ExpPrice, paty.ExpPriceVat, paty.PercentProfit, paty.PRICE,
+                    paty.VAT_RATIO, paty.ExpVatRatio,
+                    expPrice.HasValue ? expPrice.Value.ToString() : "null",
+                    expVatRatio.HasValue ? expVatRatio.Value.ToString() : "null"));
+
+                if (!expPrice.HasValue || paty.ExpPriceVat <= 0 || paty.PercentProfit <= 0)
+                    return;
+
+                // Gia ban chua VAT ky vong = gia von co VAT * (1 + thang so) / (1 + VAT ban)
+                decimal expected = (1 + (paty.PercentProfit / (decimal)100)) * paty.ExpPriceVat / (1 + paty.ExpVatRatio / 100);
+                if (Math.Abs(expected - expPrice.Value) > (decimal)0.01)
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                        "ImpPrice__{0}__LECH_THANG_SO: MEDI_MATE_ID={1}, PATIENT_TYPE_ID={2}, thang so={3}% => EXP_PRICE ky vong={4} nhung ghi xuong={5} (lech {6})",
+                        tag,
+                        this.currrentServiceAdo != null ? this.currrentServiceAdo.MEDI_MATE_ID : 0,
+                        paty.PATIENT_TYPE_ID, paty.PercentProfit, expected, expPrice.Value, expected - expPrice.Value));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gia ban chua VAT ghi vao chinh sach gia cua lo (HIS_MEDICINE_PATY / HIS_MATERIAL_PATY).
+        /// Khi ExpPriceVat chua san sang, KHONG duoc lay tran gia nhap lam gia ban - van phai ap thang so.
+        /// </summary>
+        private decimal GetExpPriceForPaty(ADO.VHisServicePatyADO paty)
+        {
+            if (paty.ExpPriceVat > 0 && (paty.ExpPrice <= 0 || !HisConfig.ApplyServicePatyPrice))
+                return paty.PRICE / (1 + paty.ExpVatRatio / 100);
+
+            if (paty.ExpPriceVat <= 0 && !HisConfig.ApplyServicePatyPrice)
+                return paty.ExpPrice * (1 + (paty.PercentProfit / (decimal)100));
+
+            return paty.ExpPrice;
         }
     }
 }

@@ -1360,6 +1360,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.dtEndTime.TabIndex = 5;
             this.dtEndTime.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtEndTime_Closed);
             this.dtEndTime.EditValueChanged += new System.EventHandler(this.dtEndTime_EditValueChanged);
+            this.dtEndTime.Leave += new System.EventHandler(this.dtEndTime_Leave_Chronic);
             this.dtEndTime.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.dtEndTime_PreviewKeyDown);
             // 
             // dtTimeIn

@@ -202,6 +202,7 @@
     </Compile>
     <Compile Include="Config\ControlStateConstant.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
+    <Compile Include="EnumStoreCheckStatus.cs" />
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="Popup\frmRejectStore.cs">
       <SubType>Form</SubType>

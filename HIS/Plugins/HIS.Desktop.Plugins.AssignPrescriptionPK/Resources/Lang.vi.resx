@@ -1545,6 +1545,9 @@ F6 để lấy lời dặn từ đơn đã kê. (F7 để thiết lập điều 
   <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_CONCENTRA" xml:space="preserve">
     <value>Hàm lượng</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDICINE_GROUP_NAME" xml:space="preserve">
+    <value>Nhóm thuốc</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_EXPIRED_DATE" xml:space="preserve">
     <value>HSD</value>
   </data>

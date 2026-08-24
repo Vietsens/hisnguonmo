@@ -837,8 +837,9 @@ namespace HIS.Desktop.Modules.Login
                 string languageCode = (appExeFolder.GetValue(RegistryConstant.LANGUAGE_KEY) ?? "").ToString().ToUpper();
                 Inventec.Common.Adapter.AdapterConfig.LanguageCode = languageCode;
 
-                SyncTimeFormServer();
+                //Phải gán token cho consumer TRƯỚC khi gọi api đồng bộ giờ, nếu không api/Timer/Sync luôn trả 401
                 ApiConsumers.SetConsunmer(tokenData.TokenCode);
+                SyncTimeFormServer();
                 string preLoginname = "";
                 InitDefaultBranch();
                 HIS.Desktop.EventLog.LoginLog.LoginSuccessLog(String.Format(HIS.Desktop.Resources.ResourceCommon.TruyCapVaoPhanMemThanhCong, GlobalVariables.APPLICATION_CODE));

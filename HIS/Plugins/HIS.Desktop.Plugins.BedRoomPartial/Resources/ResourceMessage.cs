@@ -210,6 +210,36 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Resources
                 return "";
             }
         }
+        internal static string BacSiDieuTri
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BacSiDieuTri", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string LocTheoBacSiDieuTri
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("LocTheoBacSiDieuTri", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
         internal static string CoBenhNhanhBHYTTrongTongSoBenhNhan
         {
             get

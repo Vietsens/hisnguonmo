@@ -1,7 +1,9 @@
 ﻿using DevExpress.XtraEditors;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Utilities.Extensions;
 using HIS.UC.SecondaryIcd.ADO;
 using MCH.EFMODEL.DataModels;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Linq;
 
@@ -366,7 +368,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 if (_child != null)
                 {
                     if (_child.IS_DEATH.HasValue)
-                        SetRadioGroupValue("IsDeath", _child.IS_DEATH ?? 0);
+                        SetRadioGroupValue("IsDeath", _child.IS_DEATH ?? 0); 
                     
                     if (!string.IsNullOrEmpty(_child.ABANDONED_CHILD))
                         SetRadioGroupValue("AbandonedChild", short.Parse(_child.ABANDONED_CHILD));
@@ -406,7 +408,6 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     
                     if (!string.IsNullOrEmpty(_child.HAS_BIRTH_CERTIFICATE))
                         SetRadioGroupValue("HasBirthCertificate", short.Parse(_child.HAS_BIRTH_CERTIFICATE));
-                    
                     txtBirthCertificateCode3.Text = _child.BIRTH_CERTIFICATE_CODE;
                     
                     if (_child.BIRTH_CERTIFICATE_DATE.HasValue)

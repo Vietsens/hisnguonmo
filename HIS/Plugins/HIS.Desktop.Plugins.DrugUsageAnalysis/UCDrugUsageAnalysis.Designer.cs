@@ -123,6 +123,13 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysis
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.btnDsYlenh = new DevExpress.XtraEditors.SimpleButton();
+            this.btnToDieuTri = new DevExpress.XtraEditors.SimpleButton();
+            this.btnSumaryTestResults = new DevExpress.XtraEditors.SimpleButton();
+            this.lciBtnDsYlenh = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnToDieuTri = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnSumaryTestResults = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItemViewInfo = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDateEdit1)).BeginInit();
@@ -165,6 +172,10 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysis
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnDsYlenh)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnToDieuTri)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnSumaryTestResults)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemViewInfo)).BeginInit();
             this.SuspendLayout();
             // 
             // ucPaging
@@ -427,6 +438,9 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysis
             this.layoutControl1.Controls.Add(this.txtKeyWord);
             this.layoutControl1.Controls.Add(this.dtCreateTimeFrom);
             this.layoutControl1.Controls.Add(this.btnRefresh);
+            this.layoutControl1.Controls.Add(this.btnDsYlenh);
+            this.layoutControl1.Controls.Add(this.btnToDieuTri);
+            this.layoutControl1.Controls.Add(this.btnSumaryTestResults);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
@@ -462,7 +476,7 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysis
             this.treeListDateTime.ParentFieldName = "ParentFieldName";
             this.treeListDateTime.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonEdit_DrugUsageAnalysisDetail});
-            this.treeListDateTime.Size = new System.Drawing.Size(621, 578);
+            this.treeListDateTime.Size = new System.Drawing.Size(621, 550);
             this.treeListDateTime.TabIndex = 21;
             this.treeListDateTime.UseDisabledStatePainter = false;
             this.treeListDateTime.CustomNodeCellEdit += new DevExpress.XtraTreeList.GetCustomNodeCellEditEventHandler(this.treeListDateTime_CustomNodeCellEdit);
@@ -730,6 +744,36 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysis
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             this.btnRefresh.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.btnRefresh_PreviewKeyDown);
             // 
+            // btnDsYlenh
+            // 
+            this.btnDsYlenh.Location = new System.Drawing.Point(1088, 556);
+            this.btnDsYlenh.Name = "btnDsYlenh";
+            this.btnDsYlenh.Size = new System.Drawing.Size(91, 22);
+            this.btnDsYlenh.StyleController = this.layoutControl1;
+            this.btnDsYlenh.TabIndex = 22;
+            this.btnDsYlenh.Text = "Danh sách y lệnh";
+            this.btnDsYlenh.Click += new System.EventHandler(this.btnDsYlenh_Click);
+            // 
+            // btnToDieuTri
+            // 
+            this.btnToDieuTri.Location = new System.Drawing.Point(1183, 556);
+            this.btnToDieuTri.Name = "btnToDieuTri";
+            this.btnToDieuTri.Size = new System.Drawing.Size(101, 22);
+            this.btnToDieuTri.StyleController = this.layoutControl1;
+            this.btnToDieuTri.TabIndex = 23;
+            this.btnToDieuTri.Text = "Tờ điều trị";
+            this.btnToDieuTri.Click += new System.EventHandler(this.btnToDieuTri_Click);
+            // 
+            // btnSumaryTestResults
+            // 
+            this.btnSumaryTestResults.Location = new System.Drawing.Point(1288, 556);
+            this.btnSumaryTestResults.Name = "btnSumaryTestResults";
+            this.btnSumaryTestResults.Size = new System.Drawing.Size(126, 22);
+            this.btnSumaryTestResults.StyleController = this.layoutControl1;
+            this.btnSumaryTestResults.TabIndex = 24;
+            this.btnSumaryTestResults.Text = "Xem kết quả xét nghiệm";
+            this.btnSumaryTestResults.Click += new System.EventHandler(this.btnSumaryTestResults_Click);
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -779,7 +823,11 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysis
             // 
             this.layoutControlGroup3.GroupBordersVisible = false;
             this.layoutControlGroup3.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem14});
+            this.layoutControlItem14,
+            this.emptySpaceItemViewInfo,
+            this.lciBtnDsYlenh,
+            this.lciBtnToDieuTri,
+            this.lciBtnSumaryTestResults});
             this.layoutControlGroup3.Location = new System.Drawing.Point(791, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -792,9 +840,44 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysis
             this.layoutControlItem14.Control = this.treeListDateTime;
             this.layoutControlItem14.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(625, 582);
+            this.layoutControlItem14.Size = new System.Drawing.Size(625, 554);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
+            // 
+            // emptySpaceItemViewInfo
+            // 
+            this.emptySpaceItemViewInfo.AllowHotTrack = false;
+            this.emptySpaceItemViewInfo.Location = new System.Drawing.Point(0, 554);
+            this.emptySpaceItemViewInfo.Name = "emptySpaceItemViewInfo";
+            this.emptySpaceItemViewInfo.Size = new System.Drawing.Size(295, 28);
+            this.emptySpaceItemViewInfo.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // lciBtnDsYlenh
+            // 
+            this.lciBtnDsYlenh.Control = this.btnDsYlenh;
+            this.lciBtnDsYlenh.Location = new System.Drawing.Point(295, 554);
+            this.lciBtnDsYlenh.Name = "lciBtnDsYlenh";
+            this.lciBtnDsYlenh.Size = new System.Drawing.Size(95, 28);
+            this.lciBtnDsYlenh.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnDsYlenh.TextVisible = false;
+            // 
+            // lciBtnToDieuTri
+            // 
+            this.lciBtnToDieuTri.Control = this.btnToDieuTri;
+            this.lciBtnToDieuTri.Location = new System.Drawing.Point(390, 554);
+            this.lciBtnToDieuTri.Name = "lciBtnToDieuTri";
+            this.lciBtnToDieuTri.Size = new System.Drawing.Size(105, 28);
+            this.lciBtnToDieuTri.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnToDieuTri.TextVisible = false;
+            // 
+            // lciBtnSumaryTestResults
+            // 
+            this.lciBtnSumaryTestResults.Control = this.btnSumaryTestResults;
+            this.lciBtnSumaryTestResults.Location = new System.Drawing.Point(495, 554);
+            this.lciBtnSumaryTestResults.Name = "lciBtnSumaryTestResults";
+            this.lciBtnSumaryTestResults.Size = new System.Drawing.Size(130, 28);
+            this.lciBtnSumaryTestResults.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnSumaryTestResults.TextVisible = false;
             // 
             // layoutControlGroup4
             // 
@@ -1001,6 +1084,10 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysis
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnDsYlenh)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnToDieuTri)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnSumaryTestResults)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemViewInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
@@ -1079,6 +1166,13 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysis
         private DevExpress.XtraTreeList.TreeList treeListDateTime;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeColDateTime;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
+        private DevExpress.XtraEditors.SimpleButton btnDsYlenh;
+        private DevExpress.XtraEditors.SimpleButton btnToDieuTri;
+        private DevExpress.XtraEditors.SimpleButton btnSumaryTestResults;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnDsYlenh;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnToDieuTri;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnSumaryTestResults;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemViewInfo;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumnSTT;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit_DrugUsageAnalysisDetail;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_DrugUsageAnalysisDetail;

@@ -71,7 +71,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
                     return new frmImpMestLookup(impMestViewDetailADO.ImpMestId, impMestViewDetailADO.IMP_MEST_TYPE_ID, impMestViewDetailADO.ImpMestSttId, moduleData, delegateSelectData);
                 }
 
-                // Chế độ tra cứu (mở từ menu, người dùng tự nhập Mã nhập)
+                // Chế độ tra cứu (mở từ menu, người dùng tự nhập Số hóa đơn)
                 return new frmImpMestLookup(moduleData);
             }
             catch (Exception ex)

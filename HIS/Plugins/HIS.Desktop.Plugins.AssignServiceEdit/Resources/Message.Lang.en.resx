@@ -154,4 +154,11 @@
   <data name="SuaChiDinhDichVu_KhongCoSoLuong" xml:space="preserve">
     <value>Not entered quantity</value>
   </data>
+  <data name="SuaChiDinhDichVu_DichVuDaThuTienKhongTheBoKhoiPhieu" xml:space="preserve">
+    <value>The following service(s) have been paid/deposited and cannot be removed from the request: {0}.
+
+Choose "Yes" to keep the paid services and save only the newly added services.
+Choose "No" to go back and review.</value>
+    <comment>(Các) dịch vụ đã thu tiền/tạm ứng nên không thể bỏ khỏi phiếu chỉ định</comment>
+  </data>
 </root>

@@ -171,6 +171,12 @@
   <data name="UCDepositRequest.layoutControlItem18.Text" xml:space="preserve">
     <value>Số tiền</value>
   </data>
+  <data name="UCDepositRequest.lciTransferAmount.Text" xml:space="preserve">
+    <value>Số tiền CK:</value>
+  </data>
+  <data name="UCDepositRequest.lciTransferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số tiền chuyển khoản</value>
+  </data>
   <data name="UCDepositRequest.layoutControlItem23.Text" xml:space="preserve">
     <value>Mã yêu cầu:</value>
   </data>

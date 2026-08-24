@@ -141,6 +141,9 @@
   <data name="KhongTimThayPhieuNhapCoMa" xml:space="preserve">
     <value>Import slip with code {0} was not found</value>
   </data>
+  <data name="KhongTimThayPhieuNhapCoSoHoaDon" xml:space="preserve">
+    <value>Import slip with invoice number {0} was not found</value>
+  </data>
   <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
     <value>Account does not exist executable function</value>
   </data>

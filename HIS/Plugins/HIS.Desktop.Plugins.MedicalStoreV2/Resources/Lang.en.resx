@@ -811,4 +811,22 @@
     <value>Diagnosed in hospital</value>
     <comment>Chẩn đoán vào viện</comment>
   </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheck.Caption" xml:space="preserve">
+    <value>Checked</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheck.ToolTip" xml:space="preserve">
+    <value>Mark the record as checked for documents and signatures</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheckUser.Caption" xml:space="preserve">
+    <value>Checked by</value>
+  </data>
+  <data name="UCMedicalStoreV2.gridColStoreCheckTime.Caption" xml:space="preserve">
+    <value>Checked time</value>
+  </data>
+  <data name="UCMedicalStoreV2.lciStoreCheckStatus.Text" xml:space="preserve">
+    <value>Check status:</value>
+  </data>
+  <data name="UCMedicalStoreV2.cboStoreCheckStatus.Properties.NullText" xml:space="preserve">
+    <value>All</value>
+  </data>
 </root>

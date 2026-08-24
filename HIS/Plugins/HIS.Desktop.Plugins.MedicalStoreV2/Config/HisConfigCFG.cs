@@ -34,9 +34,19 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Config
         private const string CONFIG_KEY__BLUE_WARNING_STORE_TIME = "HIS.Desktop.Plugins.MedicalStore.BLUE_WARNING_STORE_TIME";
         private const string CONFIG_KEY__ORANGE_WARNING_STORE_TIME = "HIS.Desktop.Plugins.MedicalStore.ORANGE_WARNING_STORE_TIME";
 
+        /// <summary>
+        /// Turn on/off the "mark medical record as checked" feature in Medical store (new) screen.
+        /// "1" = on, otherwise (or not declared) = off. Default is OFF.
+        /// The same key is read by the backend business layer, so it follows the backend key convention.
+        /// </summary>
+        private const string CONFIG_KEY__IS_USING_STORE_CHECK = "MOS.HIS_TREATMENT.IS_USING_STORE_CHECK";
+
         internal static long? RedWarningStoreTime;
         internal static long? BlueWarningStoreTime;
         internal static long? OrangeWarningStoreTime;
+
+        /// <summary>Feature switch of the "mark medical record as checked" function</summary>
+        internal static bool IsUsingStoreCheck;
 
         internal static void LoadConfig()
         {
@@ -45,6 +55,10 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Config
                 string blue = GetValue(CONFIG_KEY__BLUE_WARNING_STORE_TIME);
                 string red = GetValue(CONFIG_KEY__RED_WARNING_STORE_TIME);
                 string orange = GetValue(CONFIG_KEY__ORANGE_WARNING_STORE_TIME);
+
+                // Read fails -> GetValue returns null -> feature stays off. Safe default.
+                IsUsingStoreCheck = (GetValue(CONFIG_KEY__IS_USING_STORE_CHECK) == "1");
+
                 if (!String.IsNullOrWhiteSpace(blue))
                 {
                     BlueWarningStoreTime = Convert.ToInt32(blue ?? "");

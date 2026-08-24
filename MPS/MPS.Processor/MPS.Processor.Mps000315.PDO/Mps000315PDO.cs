@@ -40,6 +40,12 @@ namespace MPS.Processor.Mps000315.PDO
 
         public List<HIS_KSK_GENERAL> _KskGeneral { get; set; }
         public List<HIS_KSK_DRIVER> _KskDriver { get; set; }
+        /// <summary>Phần khám mẫu KSK trên 18 tuổi — tùy chọn; processor đổ key prefix OVER18_ và band "KskOverEighteen".</summary>
+        public List<HIS_KSK_OVER_EIGHTEEN> _KskOverEighteens { get; set; }
+        /// <summary>Phần khám mẫu KSK dưới 18 tuổi — tùy chọn; processor đổ key prefix UNDER18_ và band "KskUnderEighteen".</summary>
+        public List<HIS_KSK_UNDER_EIGHTEEN> _KskUnderEighteens { get; set; }
+        /// <summary>Phần khám mẫu KSK trẻ dưới 6 tuổi — tùy chọn; processor đổ key prefix UNDER6_ và band "KskUnderSix".</summary>
+        public List<HIS_KSK_UNDER_SIX> _KskUnderSixs { get; set; }
         /// <summary>Y lệnh KSK (entity HIS_SERVICE_REQ) — tùy chọn; processor đổ key prefix SREQ_.</summary>
         public HIS_SERVICE_REQ KskServiceReq { get; set; }
         /// <summary>Bệnh nhân (HIS_PATIENT) — tùy chọn; processor đổ key prefix PATIENT_.</summary>

@@ -247,6 +247,11 @@ namespace HIS.Desktop.Plugins.AllocateExecuteRoom
                     _ExpMestBloods_Print = new BackendAdapter(paramCommon).Get<List<V_HIS_EXP_MEST_BLOOD>>(HisRequestUriStore.HIS_EXP_MEST_BLOOD_GETVIEW, ApiConsumers.MosConsumer, bloodFilter, paramCommon);
                 }
 
+                if (expMestMeties == null || expMestMeties.Count == 0)
+                {
+                    expMestMeties = BuildBloodListBySereServ(examServiceReq.ID, paramCommon);
+                }
+
                 string treatmentCode = (treatment != null ? treatment.TREATMENT_CODE : "");
 
                 MPS.Processor.Mps000108.PDO.Mps000108PDO mps000108RDO = new MPS.Processor.Mps000108.PDO.Mps000108PDO(
@@ -282,6 +287,49 @@ namespace HIS.Desktop.Plugins.AllocateExecuteRoom
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Don mau chi dinh tu kho ngoai (ASSIGNED_MEDI_STOCK_ID) khong sinh HIS_EXP_MEST nen khong co
+        /// HIS_EXP_MEST_BLTY_REQ. Dung lai danh sach mau tu HIS_SERE_SERV cua chinh y lenh mau
+        /// de band ExpMestBlood tren mau in Mps000108 khong bi trong.
+        /// Luu y: BLOOD_ABO_CODE/BLOOD_RH_CODE khong duoc luu trong HIS o luong nay nen se de trong.
+        /// </summary>
+        private List<V_HIS_EXP_MEST_BLTY_REQ_1> BuildBloodListBySereServ(long serviceReqId, CommonParam paramCommon)
+        {
+            List<V_HIS_EXP_MEST_BLTY_REQ_1> result = new List<V_HIS_EXP_MEST_BLTY_REQ_1>();
+            try
+            {
+                HisSereServView1Filter sereServFilter = new HisSereServView1Filter();
+                sereServFilter.SERVICE_REQ_ID = serviceReqId;
+                var sereServs = new BackendAdapter(paramCommon).Get<List<V_HIS_SERE_SERV_1>>("api/HisSereServ/GetView1", ApiConsumers.MosConsumer, sereServFilter, paramCommon);
+                if (sereServs == null || sereServs.Count == 0) return result;
+
+                long numOrder = 1;
+                foreach (var item in sereServs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU).OrderBy(o => o.ID))
+                {
+                    V_HIS_EXP_MEST_BLTY_REQ_1 blty = new V_HIS_EXP_MEST_BLTY_REQ_1();
+                    blty.ID = item.ID;
+                    blty.SERVICE_ID = item.SERVICE_ID;
+                    blty.SERVICE_REQ_ID = serviceReqId;
+                    blty.BLOOD_TYPE_CODE = item.TDL_SERVICE_CODE;
+                    blty.BLOOD_TYPE_NAME = item.TDL_SERVICE_NAME;
+                    blty.AMOUNT = (long)item.AMOUNT;
+                    blty.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                    blty.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
+                    blty.PRICE = item.PRICE;
+                    blty.NUM_ORDER = numOrder++;
+                    result.Add(blty);
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("BuildBloodListBySereServ__serviceReqId", serviceReqId)
+                    + Inventec.Common.Logging.LogUtil.TraceData("BuildBloodListBySereServ__count", result.Count));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private void ProcessingPrintV2()

@@ -91,9 +91,32 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.ADO
             }
         }
 
+        /// <summary>
+        /// Dung node ngay truc tiep tu mot ngay hieu luc (QT-03).
+        /// Dung cho ngay du tru — ngay do khong co ban ghi HisServiceReqGroupByDateSDO tuong ung
+        /// vi API group-by-date chi tra ve cac ngay CO y lenh duoc ke.
+        /// </summary>
+        /// <param name="instructionDate">Ngay hieu luc dang yyyyMMdd000000</param>
+        /// <param name="treatmentId">Ma dieu tri</param>
+        public ServiceReqGroupByDateADO(long instructionDate, long treatmentId)
+        {
+            try
+            {
+                this.InstructionDate = instructionDate;
+                this.TreatmentId = treatmentId;
+                this.isParent = true;
+                this.TREELIST_ID = instructionDate;
+                this.DATETIME_DISPLAY = Inventec.Common.DateTime.Convert.TimeNumberToDateString(instructionDate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public ServiceReqGroupByDateADO()
         {
-            
+
         }
     }
 }

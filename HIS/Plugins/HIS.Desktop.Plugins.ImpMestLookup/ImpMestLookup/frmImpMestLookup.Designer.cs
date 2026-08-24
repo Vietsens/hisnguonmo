@@ -45,11 +45,10 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmImpMestLookup));
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
@@ -59,9 +58,9 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -272,6 +271,8 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.panelSearch = new DevExpress.XtraEditors.PanelControl();
             this.txtImpMestCode = new DevExpress.XtraEditors.TextEdit();
             this.lblMaNhapSearch = new DevExpress.XtraEditors.LabelControl();
+            this.txtDocumentNumberSearch = new DevExpress.XtraEditors.TextEdit();
+            this.lblDocumentNumberSearch = new DevExpress.XtraEditors.LabelControl();
             this.btnReset = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -374,6 +375,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             ((System.ComponentModel.ISupportInitialize)(this.panelSearch)).BeginInit();
             this.panelSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtImpMestCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDocumentNumberSearch.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // panelControl2
@@ -394,6 +396,10 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSave,
@@ -451,8 +457,8 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1100, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1100, 29);
             // 
             // barDockControlBottom
             // 
@@ -491,10 +497,10 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 65);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 93);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.LCGRoot;
-            this.layoutControl1.Size = new System.Drawing.Size(1100, 497);
+            this.layoutControl1.Size = new System.Drawing.Size(1100, 469);
             this.layoutControl1.TabIndex = 7;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -511,13 +517,13 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(270, 264, 250, 350);
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(1100, 497);
+            this.layoutControl2.Size = new System.Drawing.Size(1100, 469);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(420, 473);
+            this.btnSave.Location = new System.Drawing.Point(420, 445);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(125, 22);
             this.btnSave.StyleController = this.layoutControl2;
@@ -527,7 +533,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(689, 473);
+            this.btnImport.Location = new System.Drawing.Point(689, 445);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(137, 22);
             this.btnImport.StyleController = this.layoutControl2;
@@ -537,7 +543,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             // btnApproval
             // 
-            this.btnApproval.Location = new System.Drawing.Point(549, 473);
+            this.btnApproval.Location = new System.Drawing.Point(549, 445);
             this.btnApproval.Name = "btnApproval";
             this.btnApproval.Size = new System.Drawing.Size(136, 22);
             this.btnApproval.StyleController = this.layoutControl2;
@@ -548,7 +554,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // btnHoiDongKiemNhap
             // 
             this.btnHoiDongKiemNhap.Enabled = false;
-            this.btnHoiDongKiemNhap.Location = new System.Drawing.Point(830, 473);
+            this.btnHoiDongKiemNhap.Location = new System.Drawing.Point(830, 445);
             this.btnHoiDongKiemNhap.Name = "btnHoiDongKiemNhap";
             this.btnHoiDongKiemNhap.Size = new System.Drawing.Size(148, 22);
             this.btnHoiDongKiemNhap.StyleController = this.layoutControl2;
@@ -992,7 +998,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.Padding = new System.Windows.Forms.Padding(5);
             this.xtraTabControl1.SelectedTabPage = this.tabPageMedicine;
-            this.xtraTabControl1.Size = new System.Drawing.Size(1100, 373);
+            this.xtraTabControl1.Size = new System.Drawing.Size(1100, 345);
             this.xtraTabControl1.TabIndex = 6;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.tabPageMedicine,
@@ -1003,7 +1009,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             this.tabPageMedicine.Controls.Add(this.gridControlMedicine);
             this.tabPageMedicine.Name = "tabPageMedicine";
-            this.tabPageMedicine.Size = new System.Drawing.Size(1094, 345);
+            this.tabPageMedicine.Size = new System.Drawing.Size(1094, 317);
             this.tabPageMedicine.Text = "Thuốc";
             // 
             // gridControlMedicine
@@ -1028,7 +1034,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.repositoryItemSpin_MedicineTotalPrice,
             this.repositoryItemGridLookUpEdit_Medicine_Disable,
             this.ItemSpinEdit_MedicineTemperature});
-            this.gridControlMedicine.Size = new System.Drawing.Size(1094, 345);
+            this.gridControlMedicine.Size = new System.Drawing.Size(1094, 317);
             this.gridControlMedicine.TabIndex = 0;
             this.gridControlMedicine.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewMedicine});
@@ -1694,7 +1700,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             this.tabPageMaterial.Controls.Add(this.gridControlMaterial);
             this.tabPageMaterial.Name = "tabPageMaterial";
-            this.tabPageMaterial.Size = new System.Drawing.Size(1094, 378);
+            this.tabPageMaterial.Size = new System.Drawing.Size(1094, 345);
             this.tabPageMaterial.Text = "Vật tư";
             // 
             // gridControlMaterial
@@ -1716,7 +1722,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.ItemTextEdit_MaterialPackageNumber,
             this.repositoryItemSpin_Material_TotalPrice,
             this.repositoryItemGridLookUpEdit_Material_Disable});
-            this.gridControlMaterial.Size = new System.Drawing.Size(1094, 378);
+            this.gridControlMaterial.Size = new System.Drawing.Size(1094, 345);
             this.gridControlMaterial.TabIndex = 0;
             this.gridControlMaterial.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewMaterial});
@@ -2281,7 +2287,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             this.tabPageBlood.Controls.Add(this.gridControlBlood);
             this.tabPageBlood.Name = "tabPageBlood";
-            this.tabPageBlood.Size = new System.Drawing.Size(1094, 378);
+            this.tabPageBlood.Size = new System.Drawing.Size(1094, 345);
             this.tabPageBlood.Text = "Máu";
             // 
             // gridControlBlood
@@ -2295,7 +2301,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.ItemSpinEdit_BloodPrice,
             this.ItemSpinEdit_BloodVAT,
             this.ItemGridLookUpEdit_BloodName});
-            this.gridControlBlood.Size = new System.Drawing.Size(1094, 378);
+            this.gridControlBlood.Size = new System.Drawing.Size(1094, 345);
             this.gridControlBlood.TabIndex = 0;
             this.gridControlBlood.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewBlood});
@@ -2648,7 +2654,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             // cboPrint
             // 
-            this.cboPrint.Location = new System.Drawing.Point(982, 473);
+            this.cboPrint.Location = new System.Drawing.Point(982, 445);
             this.cboPrint.MenuManager = this.barManager1;
             this.cboPrint.Name = "cboPrint";
             this.cboPrint.Size = new System.Drawing.Size(116, 22);
@@ -2672,13 +2678,13 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(1100, 497);
+            this.Root.Size = new System.Drawing.Size(1100, 469);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.cboPrint;
-            this.layoutControlItem2.Location = new System.Drawing.Point(980, 471);
+            this.layoutControlItem2.Location = new System.Drawing.Point(980, 443);
             this.layoutControlItem2.MaxSize = new System.Drawing.Size(120, 26);
             this.layoutControlItem2.MinSize = new System.Drawing.Size(48, 26);
             this.layoutControlItem2.Name = "layoutControlItem2";
@@ -2690,7 +2696,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 471);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 443);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(418, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -2701,7 +2707,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 98);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem3.Size = new System.Drawing.Size(1100, 373);
+            this.layoutControlItem3.Size = new System.Drawing.Size(1100, 345);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -2717,7 +2723,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.btnHoiDongKiemNhap;
-            this.layoutControlItem5.Location = new System.Drawing.Point(828, 471);
+            this.layoutControlItem5.Location = new System.Drawing.Point(828, 443);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Size = new System.Drawing.Size(152, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
@@ -2726,7 +2732,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnApproval;
-            this.layoutControlItem6.Location = new System.Drawing.Point(547, 471);
+            this.layoutControlItem6.Location = new System.Drawing.Point(547, 443);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(140, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -2735,7 +2741,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnImport;
-            this.layoutControlItem7.Location = new System.Drawing.Point(687, 471);
+            this.layoutControlItem7.Location = new System.Drawing.Point(687, 443);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(141, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -2744,7 +2750,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.btnSave;
-            this.layoutControlItem8.Location = new System.Drawing.Point(418, 471);
+            this.layoutControlItem8.Location = new System.Drawing.Point(418, 443);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Size = new System.Drawing.Size(129, 26);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
@@ -2759,7 +2765,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.LCGRoot.Location = new System.Drawing.Point(0, 0);
             this.LCGRoot.Name = "LCGRoot";
             this.LCGRoot.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.LCGRoot.Size = new System.Drawing.Size(1100, 497);
+            this.LCGRoot.Size = new System.Drawing.Size(1100, 469);
             this.LCGRoot.TextVisible = false;
             // 
             // layoutControlItem1
@@ -2768,7 +2774,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem1.Size = new System.Drawing.Size(1100, 497);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1100, 469);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -2776,16 +2782,18 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             this.panelSearch.Controls.Add(this.txtImpMestCode);
             this.panelSearch.Controls.Add(this.lblMaNhapSearch);
+            this.panelSearch.Controls.Add(this.txtDocumentNumberSearch);
+            this.panelSearch.Controls.Add(this.lblDocumentNumberSearch);
             this.panelSearch.Controls.Add(this.btnReset);
             this.panelSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelSearch.Location = new System.Drawing.Point(0, 29);
             this.panelSearch.Name = "panelSearch";
-            this.panelSearch.Size = new System.Drawing.Size(1100, 36);
+            this.panelSearch.Size = new System.Drawing.Size(1100, 64);
             this.panelSearch.TabIndex = 8;
             // 
             // txtImpMestCode
             // 
-            this.txtImpMestCode.Location = new System.Drawing.Point(72, 8);
+            this.txtImpMestCode.Location = new System.Drawing.Point(84, 34);
             this.txtImpMestCode.MenuManager = this.barManager1;
             this.txtImpMestCode.Name = "txtImpMestCode";
             this.txtImpMestCode.Size = new System.Drawing.Size(220, 20);
@@ -2794,18 +2802,35 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             // 
             // lblMaNhapSearch
             // 
-            this.lblMaNhapSearch.Location = new System.Drawing.Point(12, 11);
+            this.lblMaNhapSearch.Location = new System.Drawing.Point(12, 37);
             this.lblMaNhapSearch.Name = "lblMaNhapSearch";
             this.lblMaNhapSearch.Size = new System.Drawing.Size(45, 13);
             this.lblMaNhapSearch.TabIndex = 0;
             this.lblMaNhapSearch.Text = "Mã nhập:";
             // 
+            // txtDocumentNumberSearch
+            // 
+            this.txtDocumentNumberSearch.Location = new System.Drawing.Point(84, 4);
+            this.txtDocumentNumberSearch.MenuManager = this.barManager1;
+            this.txtDocumentNumberSearch.Name = "txtDocumentNumberSearch";
+            this.txtDocumentNumberSearch.Size = new System.Drawing.Size(220, 20);
+            this.txtDocumentNumberSearch.TabIndex = 1;
+            this.txtDocumentNumberSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtDocumentNumberSearch_KeyDown);
+            // 
+            // lblDocumentNumberSearch
+            // 
+            this.lblDocumentNumberSearch.Location = new System.Drawing.Point(12, 7);
+            this.lblDocumentNumberSearch.Name = "lblDocumentNumberSearch";
+            this.lblDocumentNumberSearch.Size = new System.Drawing.Size(58, 13);
+            this.lblDocumentNumberSearch.TabIndex = 0;
+            this.lblDocumentNumberSearch.Text = "Số hóa đơn:";
+            // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(300, 7);
+            this.btnReset.Location = new System.Drawing.Point(312, 20);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(90, 22);
-            this.btnReset.TabIndex = 1;
+            this.btnReset.TabIndex = 2;
             this.btnReset.Text = "Làm mới";
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
@@ -2933,6 +2958,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
             this.panelSearch.ResumeLayout(false);
             this.panelSearch.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtImpMestCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDocumentNumberSearch.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2951,6 +2977,8 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
         private DevExpress.XtraEditors.PanelControl panelSearch;
         private DevExpress.XtraEditors.LabelControl lblMaNhapSearch;
         private DevExpress.XtraEditors.TextEdit txtImpMestCode;
+        private DevExpress.XtraEditors.LabelControl lblDocumentNumberSearch;
+        private DevExpress.XtraEditors.TextEdit txtDocumentNumberSearch;
         private DevExpress.XtraEditors.SimpleButton btnReset;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;

@@ -360,15 +360,24 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                 emrSignFlowUserFilter.SIGN_IDs = datas.Select(o => o.ID).ToList();
                 var signFlowUsers = new BackendAdapter(paramCommon).Get<List<EMR_SIGN_FLOW_USER>>("api/EmrSignFlowUser/Get", ApiConsumers.EmrConsumer, emrSignFlowUserFilter, paramCommon) ?? new List<EMR_SIGN_FLOW_USER>();
 
+                //Luon dung lai theo du lieu cua trang hien tai, tranh giu du lieu trang truoc khi API loi
+                dicVEmrSign = new Dictionary<long, V_EMR_SIGN>();
+                dicSignFlowUser = new Dictionary<long, EMR_SIGN_FLOW_USER>();
+
                 if (datas != null && datas.Count > 0)
                 {
-                    dicVEmrSign = datas.ToDictionary(x => x.ID, x => x);
+                    //GroupBy tranh ArgumentException khi API tra ve trung ID
+                    dicVEmrSign = datas.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First());
                 }
 
                 if (signFlowUsers != null && signFlowUsers.Count > 0)
                 {
-                    var flowLoginname = signFlowUsers.Where(o => o.LOGINNAME == LoggingName).ToList();
-                    dicSignFlowUser = flowLoginname != null && flowLoginname.Count()>0 ? flowLoginname.ToDictionary(x => x.SIGN_ID ?? 0, x => x) : new Dictionary<long, EMR_SIGN_FLOW_USER>();
+                    //Loai ban ghi SIGN_ID null (truoc day quy ve key 0 nen trung key) va gom nhom theo SIGN_ID
+                    var flowLoginname = signFlowUsers.Where(o => o.LOGINNAME == LoggingName && o.SIGN_ID.HasValue).ToList();
+                    if (flowLoginname.Count > 0)
+                    {
+                        dicSignFlowUser = flowLoginname.GroupBy(o => o.SIGN_ID.Value).ToDictionary(g => g.Key, g => g.First());
+                    }
                 }
             }
             catch (Exception ex)
@@ -1112,6 +1121,37 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             }
         }
 
+        /// <summary>
+        /// Kiem tra nguoi dang dang nhap da ky xong phan cua minh tren van ban hay chua.
+        /// SIGNERS/UN_SIGNERS la danh sach loginname phan cach boi dau phay nen phai tach ra so khop tung phan tu.
+        /// Van ban da ky nhieu chu ky (IS_MULTI_SIGN) co the vua co loginname trong SIGNERS vua dang cho chinh nguoi do ky tiep.
+        /// </summary>
+        private bool IsSignFinishedByLoginname(V_EMR_DOCUMENT document)
+        {
+            bool result = false;
+            try
+            {
+                if (document == null || String.IsNullOrEmpty(document.SIGNERS)) return false;
+
+                var signers = document.SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(o => o.Trim()).ToList();
+                if (!signers.Contains(LoggingName)) return false;
+
+                //Van con luot ky cua chinh minh tren van ban nay
+                if (document.NEXT_SIGNER == LoggingName || document.NEXT_FLOW_ID.HasValue) return false;
+
+                var unSigners = String.IsNullOrEmpty(document.UN_SIGNERS)
+                    ? new List<string>()
+                    : document.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(o => o.Trim()).ToList();
+
+                result = !unSigners.Contains(LoggingName);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
         private void btnSigns_Click(object sender, EventArgs e)
         {
             try
@@ -1129,8 +1169,10 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                     return;
                 }
 
-                if (docs.Exists(o => o.IS_DELETE == 1 || o.SIGNERS == LoggingName || !String.IsNullOrEmpty(o.REJECTER)))
+                var documentNotWaitSigns = docs.Where(o => o.IS_DELETE == 1 || !String.IsNullOrEmpty(o.REJECTER) || IsSignFinishedByLoginname(o)).ToList();
+                if (documentNotWaitSigns.Count > 0)
                 {
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => documentNotWaitSigns), documentNotWaitSigns.Select(o => o.DOCUMENT_CODE).ToList()));
                     MessageBox.Show(ResourceLanguageManager.ChiChoPhepKyVoiCacVanBanChoKy);
                     SetStateButtonSign(true);
                     return;

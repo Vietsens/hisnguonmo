@@ -71,6 +71,17 @@ namespace HIS.Desktop.Plugins.EmrDocument
         List<AttackADO> ListfileNameAttack = new List<AttackADO>();
         Action actRefesh;
 
+        /// <summary>
+        /// Độ phân giải và chất lượng JPEG khi làm phẳng file pdf đính kèm.
+        /// Đặt bằng đúng độ phân giải máy scan của chính màn hình này (xem AdjustScannerSettings).
+        /// Thư viện tự làm là 300 DPI/chất lượng 100, cho ra file to gấp gần 7 lần mà in ra không khác gì.
+        /// Muốn nét hơn thì nâng lên 200/85, file sẽ to gấp khoảng 1,7 lần mức này.
+        /// </summary>
+        private const int ATTACH_PDF_RENDER_DPI = 150;
+        private const int ATTACH_PDF_RENDER_QUALITY = 80;
+
+        private static bool asposeLicenseChecked = false;
+
         private List<string> _tempFilesToDelete = new List<string>();
         private PdfDocument _doc;
         private const string formatJpeg = "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}";
@@ -109,6 +120,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
             try
             {
                 Config.ConfigKey.GetConfigKey();
+                //cho phép đọc file pdf chỉ đặt mật khẩu chủ sở hữu (chặn sửa/in), nếu không PdfReader ném lỗi
+                //và cả lần đính kèm bị hỏng dù người dùng vẫn mở xem được file đó
+                iTextSharp.text.pdf.PdfReader.unethicalreading = true;
                 this.SetCaptionByLanguageKey();
                 this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 this.pdfview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -262,130 +276,142 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
             return output;
         }
-        private string CombineMultiplePDFs()
+        /// <summary>
+        /// Ghép toàn bộ file đính kèm (pdf + ảnh) thành 1 file pdf để gửi lên server.
+        /// Mỗi dòng được xử lý độc lập: 1 file lỗi chỉ bị bỏ qua chứ không làm hỏng cả lần lưu.
+        /// </summary>
+        /// <param name="fileFails">Tên các file không ghép được</param>
+        /// <param name="mergedCount">Số file đã ghép thành công</param>
+        /// <returns>Đường dẫn file pdf kết quả, null nếu không ghép được file nào</returns>
+        private string CombineMultiplePDFs(out List<string> fileFails, out int mergedCount)
         {
-            Document document = new Document();
-            string outFile = Path.GetTempFileName();
-            PdfCopy writer = new PdfCopy(document, new FileStream(outFile, FileMode.Create));
+            fileFails = new List<string>();
+            mergedCount = 0;
 
-            document.Open();
-
-
+            //Bước 1: quy mọi dòng đính kèm về danh sách file pdf trung gian
+            List<KeyValuePair<string, string>> pdfParts = new List<KeyValuePair<string, string>>();
+            List<string> tempParts = new List<string>();
             foreach (var item in this.ListfileNameAttack)
             {
-                string extensionc = System.IO.Path.GetExtension(item.FullName);
-                if ((extensionc ?? "").ToLower() == ".pdf")
+                if (item == null) continue;
+                string displayName = !String.IsNullOrEmpty(item.FILE_NAME) ? item.FILE_NAME : item.FullName;
+                try
                 {
-                    PdfReader reader = new PdfReader(item.FullName);
-                    reader.ConsolidateNamedDestinations();
-
-
-                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    if (!String.IsNullOrEmpty(item.FullName)
+                        && (System.IO.Path.GetExtension(item.FullName) ?? "").ToLower() == ".pdf"
+                        && File.Exists(item.FullName))
                     {
-                        PdfImportedPage page = writer.GetImportedPage(reader, i);
-                        document.NewPage();
-                        writer.NewPage();
-                        writer.AddPage(page);
-
+                        pdfParts.Add(new KeyValuePair<string, string>(displayName, item.FullName));
                     }
-
-                    PRAcroForm form = reader.AcroForm;
-                    if (form != null)
+                    else if (item.image != null)
                     {
-                        try
-                        {
-                            writer.CopyDocumentFields(reader);
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Error(ex);
-                        }
-                    }
-
-                    reader.Close();
-                }
-                else
-                {
-                    //FileInfo fi = new FileInfo(GeneratePdfFileFromImages());
-                    //if (!string.IsNullOrEmpty(GeneratePdfFileFromImages()) && File.Exists(GeneratePdfFileFromImages()) && fi.Length > 0)
-                    //{
-                    //    PdfReader reader = new PdfReader(GeneratePdfFileFromImages());
-                    //    reader.ConsolidateNamedDestinations();
-                    //    for (int i = 1; i <= reader.NumberOfPages; i++)
-                    //    {
-                    //        PdfImportedPage page = writer.GetImportedPage(reader, i);
-                    //        document.NewPage();
-                    //        writer.NewPage();
-                    //        writer.AddPage(page);
-
-                    //    }
-                    //} 
-
-                    string outputss = Path.GetTempFileName();
-                    FileStream fss = new FileStream(outputss, FileMode.Create, FileAccess.Write, FileShare.None);
-                    Document docc = new Document();
-                    PdfWriter.GetInstance(docc, fss);
-                    docc.Open();
-                    iTextSharp.text.Image image;
-                    image = iTextSharp.text.Image.GetInstance(item.image, BaseColor.BLACK);
-                    if (image.Height > image.Width)
-                    {
-                        float percentage = 0.0f;
-                        percentage = document.PageSize.Height / image.Height;
-                        image.ScalePercent(percentage * 90);
+                        string imagePdf = CreatePdfFromImage(item.image);
+                        pdfParts.Add(new KeyValuePair<string, string>(displayName, imagePdf));
+                        tempParts.Add(imagePdf);
                     }
                     else
                     {
-                        float percentage = 0.0f;
-                        percentage = document.PageSize.Width / image.Width;
-                        image.ScalePercent(percentage * 90);
+                        //dòng không có cả file pdf lẫn ảnh, thường do convert file pdf nguồn thất bại
+                        fileFails.Add(displayName);
+                        Inventec.Common.Logging.LogSystem.Warn("File dinh kem khong co du lieu de ghep____FILE_NAME:" + item.FILE_NAME + "____FullName:" + item.FullName);
                     }
-                    docc.NewPage();
-                    docc.Add(image);
-                    docc.Close();
-                    PdfReader reader = new PdfReader(outputss);
-                    reader.ConsolidateNamedDestinations();
-                    for (int i = 1; i <= reader.NumberOfPages; i++)
-                    {
-                        PdfImportedPage page = writer.GetImportedPage(reader, i);
-                        document.NewPage();
-                        writer.NewPage();
-                        writer.AddPage(page);
-                    }
-
+                }
+                catch (Exception ex)
+                {
+                    fileFails.Add(displayName);
+                    Inventec.Common.Logging.LogSystem.Warn("Khong chuyen duoc file dinh kem sang pdf____" + displayName, ex);
                 }
             }
 
-            writer.Close();
-            document.Close();
+            if (pdfParts.Count == 0) return null;
+
+            //Bước 2: nối các file pdf trung gian lại thành 1 file
+            string outFile = Path.GetTempFileName();
+            Document document = new Document();
+            FileStream outStream = null;
+            try
+            {
+                outStream = new FileStream(outFile, FileMode.Create, FileAccess.Write, FileShare.None);
+                PdfCopy writer = new PdfCopy(document, outStream);
+                document.Open();
+
+                foreach (var part in pdfParts)
+                {
+                    try
+                    {
+                        AppendPdfToWriter(writer, document, part.Value);
+                        mergedCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        fileFails.Add(part.Key);
+                        Inventec.Common.Logging.LogSystem.Warn("Khong noi duoc file vao ban ghep____" + part.Key + "____" + part.Value, ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                mergedCount = 0;
+            }
+            finally
+            {
+                //document.Close() ghi phần cuối file pdf, chỉ gọi được khi đã có ít nhất 1 trang
+                try
+                {
+                    if (mergedCount > 0) document.Close();
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    mergedCount = 0;
+                }
+                try
+                {
+                    if (outStream != null) outStream.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+
+                foreach (var tempPart in tempParts)
+                {
+                    try
+                    {
+                        if (File.Exists(tempPart)) File.Delete(tempPart);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }
+            }
+
+            if (mergedCount == 0)
+            {
+                try
+                {
+                    if (File.Exists(outFile)) File.Delete(outFile);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return null;
+            }
             return outFile;
         }
-        private string MultiplePDF()
+
+        /// <summary>
+        /// Nối toàn bộ trang của 1 file pdf vào bản ghép đang mở.
+        /// </summary>
+        private void AppendPdfToWriter(PdfCopy writer, Document document, string pdfFilePath)
         {
-            CombineMultiplePDFs();
-            GeneratePdfFileFromImages();
-            Document document = new Document();
-            List<string> file = new List<string>();
-            if (!string.IsNullOrEmpty(CombineMultiplePDFs()))
+            PdfReader reader = new PdfReader(pdfFilePath);
+            try
             {
-                file.Add(CombineMultiplePDFs());
-            }
-            if (!string.IsNullOrEmpty(GeneratePdfFileFromImages()))
-            {
-                file.Add(GeneratePdfFileFromImages());
-            }
-
-            string outFiles = Path.GetTempFileName();
-            PdfCopy writer = new PdfCopy(document, new FileStream(outFiles, FileMode.Create));
-
-            document.Open();
-
-            foreach (var item in file)
-            {
-
-                PdfReader reader = new PdfReader(item);
                 reader.ConsolidateNamedDestinations();
-
 
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
@@ -393,22 +419,62 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     document.NewPage();
                     writer.NewPage();
                     writer.AddPage(page);
-
                 }
 
                 PRAcroForm form = reader.AcroForm;
                 if (form != null)
                 {
-                    writer.CopyDocumentFields(reader);
+                    try
+                    {
+                        writer.CopyDocumentFields(reader);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
                 }
-
-                reader.Close();
-
-
             }
-            writer.Close();
-            document.Close();
-            return outFiles;
+            finally
+            {
+                reader.Close();
+            }
+        }
+
+        /// <summary>
+        /// Tạo 1 file pdf tạm chứa đúng 1 ảnh, co theo khổ giấy.
+        /// </summary>
+        private string CreatePdfFromImage(System.Drawing.Image source)
+        {
+            string outputImagePdf = Path.GetTempFileName();
+            try
+            {
+                Document imageDocument = new Document();
+                using (FileStream imageStream = new FileStream(outputImagePdf, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    PdfWriter.GetInstance(imageDocument, imageStream);
+                    imageDocument.Open();
+
+                    iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(source, BaseColor.BLACK);
+                    float percentage = image.Height > image.Width
+                        ? imageDocument.PageSize.Height / image.Height
+                        : imageDocument.PageSize.Width / image.Width;
+                    image.ScalePercent(percentage * 90);
+
+                    imageDocument.NewPage();
+                    imageDocument.Add(image);
+                    imageDocument.Close();
+                }
+            }
+            catch
+            {
+                try
+                {
+                    if (File.Exists(outputImagePdf)) File.Delete(outputImagePdf);
+                }
+                catch { }
+                throw;
+            }
+            return outputImagePdf;
         }
         private string GetBase64FileData(string outFile)
         {
@@ -443,13 +509,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 if (!String.IsNullOrEmpty(outFile))
                 {
-                    streamData = new MemoryStream();
-                    using (FileStream file = new FileStream(outFile, FileMode.Open, FileAccess.Read))
-                    {
-                        byte[] bytes = new byte[file.Length];
-                        file.Read(bytes, 0, (int)file.Length);
-                        streamData.Write(bytes, 0, (int)file.Length);
-                    }
+                    //ReadAllBytes đọc đủ file trong mọi trường hợp; cách cũ dùng file.Read(...) một lần
+                    //và bỏ qua số byte thực đọc được, thiếu byte nào là phần đuôi thành số 0 -> pdf hỏng
+                    byte[] bytes = File.ReadAllBytes(outFile);
+                    streamData = new MemoryStream(bytes, 0, bytes.Length, false, true);
                     streamData.Position = 0;
                 }
 
@@ -547,7 +610,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     Inventec.Common.Logging.LogSystem.Info("dữ liệu ảnh chụp: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListfileNameAttack), this.ListfileNameAttack));
 
                     gridView2.BeginUpdate();
-                    gridView2.GridControl.DataSource = this.ListfileNameAttack;
+                    gridView2.GridControl.DataSource = this.ListfileNameAttack.ToList();
                     gridView2.EndUpdate();
                 }
             }
@@ -556,12 +619,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        // Pseudocode plan:
-        // 1. In btnOpenFileInComputer_Click, when a PDF file is selected, load its path into AttackADO.FullName.
-        // 2. Do not convert PDF to image, just store the PDF path and Base64 data.
-        // 3. Do not set AttackADO.image for PDF files.
-        // 4. For non-PDF files, load as before.
 
         private void btnOpenFileInComputer_Click(object sender, EventArgs e)
         {
@@ -574,65 +631,45 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                 if (openFile.ShowDialog() == DialogResult.OK)
                 {
-                    // pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(openFile.FileName);
                     this.fullfileNameAttack = openFile.FileNames;
-                    // pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-                    // Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pteAnhChupFileDinhKem.Image.Tag), pteAnhChupFileDinhKem.Image.Tag));
 
+                    List<string> fileFails = new List<string>();
                     if (this.fullfileNameAttack != null)
                     {
                         foreach (var item in this.fullfileNameAttack)
                         {
-                            int lIndex = item.LastIndexOf("\\");
-                            int lIndex1 = item.LastIndexOf(".");
-                            this.fileNameAttack = new AttackADO();
-                            this.fileNameAttack.FILE_NAME = item.Substring(lIndex > 0 ? lIndex + 1 : lIndex);
-                            this.fileNameAttack.EXTENSION = item.Substring(lIndex1 > 0 ? lIndex1 + 1 : lIndex1);
-                            string extension = System.IO.Path.GetExtension(item);
-                            if ((extension ?? "").ToLower() == ".pdf")
+                            //Mỗi file đọc độc lập, 1 file lỗi không được làm dừng vòng lặp
+                            //khiến những file chọn sau đó bị mất
+                            try
                             {
-                                //từ đường dẫn file pdf là item đọc nội dung file và convert sang file ảnh
-                                string joinPdfPathFile = "";
-                                iTextSharp.text.pdf.PdfReader readerWorking = new iTextSharp.text.pdf.PdfReader(item);
-                                float pageHeight = readerWorking.GetPageSize(1).Height;
-                                Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(item, pageHeight, ref joinPdfPathFile);
-                                LogSystem.Debug("joinPdfPathFile:" + joinPdfPathFile);
-                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(joinPdfPathFile);
-                                this.fileNameAttack.FullName = joinPdfPathFile;
+                                AttackADO attackADO = LoadAttackFile(item);
+                                if (attackADO == null)
+                                {
+                                    fileFails.Add(System.IO.Path.GetFileName(item));
+                                    continue;
+                                }
+                                this.fileNameAttack = attackADO;
+                                this.ListfileNameAttack.Add(attackADO);
                             }
-                            else
+                            catch (Exception exItem)
                             {
-                                this.fileNameAttack.FullName = item;
-                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
+                                fileFails.Add(System.IO.Path.GetFileName(item));
+                                Inventec.Common.Logging.LogSystem.Warn("Khong doc duoc file dinh kem____" + item, exItem);
                             }
-
-
-                            if ((extension ?? "").ToLower() != ".pdf")
-                            {
-                                //int largestEdgeLength = 10;
-                                // DevExpress.XtraPdfViewer.PdfViewer pdf = new DevExpress.XtraPdfViewer.PdfViewer();
-                                //pdf.LoadDocument(item);
-                                //for (int i = 1; i <= pdf.PageCount; i++)
-                                //{
-                                //FileStream st = new FileStream(item, FileMode.Open);
-
-                                //    // Export all pages to bitmaps
-                                //  Bitmap image = pdf.CreateBitmap(i, largestEdgeLength);
-                                //    // Save the resulting images
-                                //   this.fileNameAttack.image = System.Drawing.Image.FromStream(st);
-                                //}
-                                this.fileNameAttack.image = System.Drawing.Image.FromFile(item);
-                            }
-                            //else
-                            //{
-                            //    
-                            //}
-                            this.ListfileNameAttack.Add(fileNameAttack);
                         }
                     }
+
+                    if (fileFails.Count > 0)
+                    {
+                        MessageBox.Show(this, "Không đọc được các file sau, vui lòng kiểm tra lại:" + Environment.NewLine
+                            + "- " + String.Join(Environment.NewLine + "- ", fileFails),
+                            "Đính kèm file", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
+
                 gridView2.BeginUpdate();
-                this.gridView2.GridControl.DataSource = ListfileNameAttack;
+                //phải gán bằng list mới, gán lại chính tham chiếu cũ thì grid bỏ qua và không hiện dòng vừa thêm
+                this.gridView2.GridControl.DataSource = this.ListfileNameAttack.ToList();
                 gridView2.EndUpdate();
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => fullfileNameAttack), fullfileNameAttack));
@@ -642,6 +679,204 @@ namespace HIS.Desktop.Plugins.EmrDocument
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đọc 1 file người dùng chọn từ máy tính thành 1 dòng đính kèm.
+        /// </summary>
+        /// <returns>null nếu file không dùng được</returns>
+        private AttackADO LoadAttackFile(string filePath)
+        {
+            if (String.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+            {
+                Inventec.Common.Logging.LogSystem.Warn("File dinh kem khong ton tai____" + filePath);
+                return null;
+            }
+
+            AttackADO result = new AttackADO();
+            result.FILE_NAME = System.IO.Path.GetFileName(filePath);
+            result.EXTENSION = (System.IO.Path.GetExtension(filePath) ?? "").TrimStart('.');
+
+            if ((System.IO.Path.GetExtension(filePath) ?? "").ToLower() == ".pdf")
+            {
+                //Làm phẳng file pdf (dựng từng trang thành ảnh rồi ghép lại) để khâu ghép/ký phía sau
+                //không vướng các thành phần pdf lạ. Làm phẳng hỏng thì dùng lại chính file gốc.
+                string joinPdfPathFile = FlattenPdfFile(filePath);
+                if (!String.IsNullOrEmpty(joinPdfPathFile))
+                {
+                    result.FullName = joinPdfPathFile;
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong lam phang duoc file pdf, dung lai chinh file goc____" + filePath);
+                    result.FullName = filePath;
+                }
+                //file pdf không đọc ra ảnh xem trước, khi lưu sẽ được nối trực tiếp bằng PdfReader
+            }
+            else
+            {
+                result.FullName = filePath;
+                result.image = System.Drawing.Image.FromFile(filePath);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Làm phẳng 1 file pdf: dựng lại từng trang thành ảnh rồi ghép thành pdf mới.
+        /// Vẫn dùng đúng hàm ghép của SignLibrary, chỉ tự dựng ảnh ở độ phân giải vừa phải
+        /// thay vì để thư viện dựng ở 300 DPI/chất lượng 100 (file phình lên gấp 7 lần).
+        /// </summary>
+        /// <returns>Đường dẫn pdf mới, chuỗi rỗng nếu không làm được</returns>
+        private string FlattenPdfFile(string filePath)
+        {
+            //Số trang thật, lấy bằng iTextSharp để đối chiếu - iTextSharp không bị giới hạn bản quyền như Aspose
+            int expectedPages = 0;
+            try
+            {
+                PdfReader sourceReader = new PdfReader(filePath);
+                try { expectedPages = sourceReader.NumberOfPages; }
+                finally { sourceReader.Close(); }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Khong doc duoc so trang file pdf____" + filePath, ex);
+            }
+
+            string joinPdfPathFile = "";
+
+            //Cách 1: tự dựng ảnh ở ATTACH_PDF_RENDER_DPI rồi nhờ thư viện ghép lại
+            try
+            {
+                List<ImageOfPageDTO> pageImages = RenderPdfPagesToImages(filePath, expectedPages);
+                if (pageImages != null && pageImages.Count > 0)
+                {
+                    //tham số chiều cao trang thư viện không dùng đến nên truyền 0
+                    Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(filePath, 0, ref joinPdfPathFile, pageImages);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Lam phang file pdf o " + ATTACH_PDF_RENDER_DPI + " DPI that bai____" + filePath, ex);
+                joinPdfPathFile = "";
+            }
+
+            //Cách 2: để thư viện tự làm hết như trước đây, nếu cách 1 không ra file dùng được
+            if (!IsUsablePdfFile(joinPdfPathFile, expectedPages))
+            {
+                joinPdfPathFile = "";
+                try
+                {
+                    Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(filePath, 0, ref joinPdfPathFile);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SplitOnePageToImageAndJoinToNewOnePdf loi____" + filePath, ex);
+                    joinPdfPathFile = "";
+                }
+            }
+
+            LogSystem.Debug("joinPdfPathFile:" + joinPdfPathFile);
+            return IsUsablePdfFile(joinPdfPathFile, expectedPages) ? joinPdfPathFile : "";
+        }
+
+        /// <summary>
+        /// Dựng từng trang pdf thành ảnh JPEG ngay trong bộ nhớ, không sinh file ảnh tạm trên đĩa.
+        /// </summary>
+        /// <param name="expectedPages">Số trang thật, để phát hiện Aspose bị cắt bớt trang. 0 = không kiểm tra</param>
+        /// <returns>null nếu không dựng đủ số trang</returns>
+        private List<ImageOfPageDTO> RenderPdfPagesToImages(string filePath, int expectedPages)
+        {
+            EnsureAsposeLicense();
+
+            List<ImageOfPageDTO> result = new List<ImageOfPageDTO>();
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(filePath);
+            foreach (Aspose.Pdf.Page page in pdfDocument.Pages)
+            {
+                using (MemoryStream pageStream = new MemoryStream())
+                {
+                    Aspose.Pdf.Devices.JpegDevice jpegDevice = new Aspose.Pdf.Devices.JpegDevice(
+                        new Aspose.Pdf.Devices.Resolution(ATTACH_PDF_RENDER_DPI), ATTACH_PDF_RENDER_QUALITY);
+                    jpegDevice.Process(page, pageStream);
+
+                    ImageOfPageDTO pageImage = new ImageOfPageDTO();
+                    pageImage.ImageContent = pageStream.ToArray();
+                    pageImage.PageNumber = page.Number;
+                    //giữ đúng khổ trang gốc, chỉ mật độ điểm ảnh là thấp hơn
+                    pageImage.Width = (float)page.Rect.Width;
+                    pageImage.Height = (float)page.Rect.Height;
+                    result.Add(pageImage);
+                }
+            }
+
+            if (expectedPages > 0 && result.Count != expectedPages)
+            {
+                //Aspose chạy chế độ dùng thử chỉ xử lý 4 trang đầu, dựng thiếu trang là mất dữ liệu
+                Inventec.Common.Logging.LogSystem.Warn(String.Format(
+                    "Dung anh thieu trang, bo cach tu dung anh____{0}____dung duoc {1}/{2} trang", filePath, result.Count, expectedPages));
+                return null;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Đặt license cho Aspose. SignLibrary có sẵn license nhưng hàm đặt là internal nên phải gọi qua reflection.
+        /// Không đặt được thì Aspose chạy chế độ dùng thử: đóng dấu chìm và chỉ xử lý 4 trang đầu.
+        /// </summary>
+        private static void EnsureAsposeLicense()
+        {
+            if (asposeLicenseChecked) return;
+            asposeLicenseChecked = true;
+            try
+            {
+                System.Reflection.Assembly signLibrary = typeof(Inventec.Common.SignLibrary.PdfDocumentProcess).Assembly;
+                Type licenceProcess = signLibrary.GetType("Inventec.Common.SignLibrary.License.LicenceProcess");
+                System.Reflection.MethodInfo setLicense = licenceProcess != null
+                    ? licenceProcess.GetMethod("SetLicenseForAspose", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public)
+                    : null;
+                if (setLicense == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong tim thay LicenceProcess.SetLicenseForAspose");
+                    return;
+                }
+                setLicense.Invoke(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// File pdf có mở được và đủ số trang mong đợi hay không.
+        /// </summary>
+        /// <param name="expectedPages">0 = chỉ cần mở được</param>
+        private bool IsUsablePdfFile(string filePath, int expectedPages)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(filePath) || !File.Exists(filePath) || new FileInfo(filePath).Length == 0)
+                    return false;
+
+                PdfReader reader = new PdfReader(filePath);
+                try
+                {
+                    if (reader.NumberOfPages <= 0) return false;
+                    if (expectedPages > 0 && reader.NumberOfPages != expectedPages)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(String.Format(
+                            "File pdf sinh ra thieu trang____{0}____co {1}/{2} trang", filePath, reader.NumberOfPages, expectedPages));
+                        return false;
+                    }
+                    return true;
+                }
+                finally { reader.Close(); }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
 
@@ -671,7 +906,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 if (!Config.ConfigKey.IsHasConnectionEmr)
                     return;
-                //if (pteAnhChupFileDinhKem.Image != null)
+                //if (pteAnhChupFileDinhKem.Image != null) 
                 if (this.ListfileNameAttack != null && this.ListfileNameAttack.Count > 0)
                 {
 
@@ -696,14 +931,52 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     //docCreate.OriginalVersion = new VersionTDO();
                     //docCreate.OriginalVersion.Base64Data = GetBase64FileData(output);
 
-                    List<Inventec.Core.FileHolder> files = new List<Inventec.Core.FileHolder>();
-                    //CombineMultiplePDFs();
-                    //GeneratePdfFileFromImages();
-                    //MultiplePDF();
-                    string output = CombineMultiplePDFs();
+                    List<string> fileFails;
+                    int mergedCount;
+                    string output = CombineMultiplePDFs(out fileFails, out mergedCount);
+                    if (String.IsNullOrEmpty(output) || mergedCount == 0)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Ghep file dinh kem that bai____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListfileNameAttack), this.ListfileNameAttack));
+                        MessageBox.Show(this, "Không tạo được file đính kèm từ danh sách đã chọn, vui lòng kiểm tra lại các file.",
+                            "Đính kèm file", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    if (fileFails.Count > 0)
+                    {
+                        //báo rõ file nào bị bỏ qua thay vì lưu thiếu mà người dùng không biết
+                        if (MessageBox.Show(this, "Các file sau không ghép được và sẽ bị bỏ qua:" + Environment.NewLine
+                            + "- " + String.Join(Environment.NewLine + "- ", fileFails) + Environment.NewLine + Environment.NewLine
+                            + "Bạn có muốn tiếp tục lưu không?",
+                            "Đính kèm file", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                        {
+                            try
+                            {
+                                if (File.Exists(output)) File.Delete(output);
+                            }
+                            catch { }
+                            return;
+                        }
+                    }
+
+                    //log kích thước để soi được trường hợp server từ chối vì file quá lớn
+                    //(mỗi trang pdf sau khi rasterize 300 DPI phình lên khoảng 1-2 MB)
+                    long outputLength = 0;
+                    try { outputLength = new FileInfo(output).Length; }
+                    catch (Exception exLen) { Inventec.Common.Logging.LogSystem.Warn(exLen); }
+                    Inventec.Common.Logging.LogSystem.Info(String.Format(
+                        "Dinh kem: so file={0}, so file da ghep={1}, so file bo qua={2}, kich thuoc file gui len={3} bytes ({4:0.00} MB)",
+                        this.ListfileNameAttack.Count, mergedCount, fileFails.Count, outputLength, outputLength / 1024.0 / 1024.0));
+
                     Inventec.Core.FileHolder file = new Inventec.Core.FileHolder();
                     file.FileName = output;
                     file.Content = GetMemoryStreamFileData(output);
+                    if (file.Content == null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Khong doc duoc noi dung file da ghep____" + output);
+                        MessageBox.Show(this, "Không đọc được nội dung file đính kèm vừa tạo, vui lòng thử lại.",
+                            "Đính kèm file", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
 
                     //TODO
 
@@ -744,7 +1017,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                //trước đây lỗi chỉ ghi log, người dùng bấm lưu mà không thấy phản hồi gì
+                MessageBox.Show(this, "Lưu file đính kèm thất bại, vui lòng kiểm tra lại các file đã chọn.",
+                    "Đính kèm file", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -765,10 +1041,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         //this.fileNameAttack = imageLocal.Substring(lIndex > 0 ? lIndex + 1 : lIndex);
                         rowData.FILE_NAME = imageLocal.Substring(lIndex > 0 ? lIndex + 1 : lIndex);
                     }
-                    else if (!String.IsNullOrEmpty(rowData.FullName))
+                    else if (String.IsNullOrEmpty(rowData.FILE_NAME) && !String.IsNullOrEmpty(rowData.FullName))
                     {
-                        int lIndex = rowData.FullName.LastIndexOf("\\");
-                        rowData.FILE_NAME = rowData.FullName.Substring(lIndex > 0 ? lIndex + 1 : lIndex);
+                        //chỉ điền khi chưa có tên, không ghi đè tên file gốc bằng tên file pdf tạm
+                        rowData.FILE_NAME = System.IO.Path.GetFileName(rowData.FullName);
                     }
                     //txtDocumentName.Text = this.fileNameAttack;
                 }
@@ -1173,75 +1449,43 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                 if (streams != null && streams.Count() > 0)
                 {
-                    string fileName = Path.GetTempFileName();
-
-
                     var check = this.ListfileNameAttack.OrderByDescending(o => o.Dem).FirstOrDefault();
 
                     Inventec.Common.Logging.LogSystem.Info("dem max: " + check);
-                    int dem = 0;
-                    if (check == null || check.Dem == 0)
+                    int dem = (check == null ? 0 : check.Dem);
+
+                    //máy scan 2 mặt/nạp giấy tự động trả về bao nhiêu trang phải nhận hết bấy nhiêu.
+                    //Trước đây chỉ xử lý đúng 1 hoặc 2 trang, quét từ 3 trang trở lên là mất sạch.
+                    this.imageview2.Visibility = streams.Count > 1
+                        ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                        : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                    for (int i = 0; i < streams.Count; i++)
                     {
-                        dem = 1;
+                        try
+                        {
+                            dem++;
+                            AttackADO scanADO = new AttackADO();
+                            scanADO.image = System.Drawing.Image.FromFile(streams[i].Url);
+                            scanADO.FILE_NAME = "Ảnh " + dem.ToString() + ".png";
+                            scanADO.FullName = streams[i].Url;
+                            scanADO.Dem = dem;
+                            this.ListfileNameAttack.Add(scanADO);
+                            this.fileNameAttack = scanADO;
+
+                            if (i == 0) pteAnhChupFileDinhKem.Image = scanADO.image;
+                            else if (i == 1) pteAnhChupFileDinhKem2.Image = scanADO.image;
+                        }
+                        catch (Exception exItem)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error("Khong doc duoc anh scan____" + streams[i].Url, exItem);
+                        }
                     }
-                    else
-                    {
-                        dem = check.Dem + 1;
-                    }
-                    if (streams.Count == 1)
-                    {
-                        this.imageview2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                        fileNameAttack = new AttackADO();
-                        this.fileNameAttack.FILE_NAME = "Ảnh " + dem.ToString() + ".png";
-
-                        pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(streams.First().Url);
-                        this.fileNameAttack.image = System.Drawing.Image.FromFile(streams.First().Url);
-                        this.fileNameAttack.Dem = dem;
-                        this.ListfileNameAttack.Add(this.fileNameAttack);
-                    }
-                    else if (streams.Count == 2)
-                    {
-                        fileNameAttack = new AttackADO();
-                        pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(streams.First().Url);
-                        pteAnhChupFileDinhKem2.Image = System.Drawing.Image.FromFile(streams.First().Url);
-                        this.imageview2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                        this.fileNameAttack.image = System.Drawing.Image.FromFile(streams.First().Url);
-
-                        this.fileNameAttack.FILE_NAME = "Ảnh " + dem.ToString() + ".png";
-                        this.fileNameAttack.Dem = dem;
-                        this.ListfileNameAttack.Add(this.fileNameAttack);
-
-                        var fileNameAttack2 = new AttackADO();
-                        dem++;
-                        fileNameAttack2.image = System.Drawing.Image.FromFile(streams.Last().Url);
-
-                        fileNameAttack2.FILE_NAME = "Ảnh " + dem.ToString() + ".png";
-                        fileNameAttack2.Dem = dem;
-                        this.ListfileNameAttack.Add(fileNameAttack2);
-                    }
-                    //fileNameAttack = new AttackADO();
-                    //this.fileNameAttack.FILE_NAME = "Ảnh " + dem.ToString() + ".png";
-                    //if (streams.Count == 1)
-                    //{
-                    //    pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(streams.First().Url);
-                    //    this.fileNameAttack.image = System.Drawing.Image.FromFile(streams.First().Url);
-
-                    //}
-                    //else if (streams.Count == 2)
-                    //{
-                    //    System.Drawing.Image image1 = Resize(System.Drawing.Image.FromFile(streams[0].Url), 0.5F, true);
-                    //    System.Drawing.Image image2 = Resize(System.Drawing.Image.FromFile(streams[1].Url), 0.5F, true);
-                    //    pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(MergeImages(image1, image2, fileName, 10));
-                    //    this.fileNameAttack.image = System.Drawing.Image.FromFile(fileName);
-                    //}
-
-                    //this.fileNameAttack.Dem = dem;
 
                     pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-                    //this.ListfileNameAttack.Add(this.fileNameAttack);
 
                     gridView2.BeginUpdate();
-                    gridView2.GridControl.DataSource = this.ListfileNameAttack;
+                    gridView2.GridControl.DataSource = this.ListfileNameAttack.ToList();
                     gridView2.EndUpdate();
                 }
 

@@ -495,4 +495,16 @@
   <data name="frmTienGiamDinhResult.gridColDescription.Caption" xml:space="preserve">
     <value>Mô tả lỗi</value>
   </data>
+  <data name="frmTienGiamDinhResult.btnExportError.Text" xml:space="preserve">
+    <value>Xuất danh sách lỗi</value>
+  </data>
+  <data name="frmTienGiamDinhResult.export.colStt" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmTienGiamDinhResult.export.colResultStatus" xml:space="preserve">
+    <value>Kết quả hồ sơ</value>
+  </data>
+  <data name="frmTienGiamDinhResult.export.colSeverity" xml:space="preserve">
+    <value>Mức độ lỗi</value>
+  </data>
 </root>

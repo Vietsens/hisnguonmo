@@ -37,6 +37,7 @@ namespace MPS.Processor.Mps000026
         Mps000026PDO rdo;
         List<SereServAdo> listAdo = new List<SereServAdo>();
         List<V_HIS_SERVICE> Listparent = new List<V_HIS_SERVICE>();
+        Dictionary<string, string> dicTestSampleTypeName;
         public Mps000026Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -261,6 +262,8 @@ namespace MPS.Processor.Mps000026
                             ado.SERVICE_NUM_ORDER = service.NUM_ORDER;
                             ado.ESTIMATE_DURATION = service.ESTIMATE_DURATION;
 
+                            SetTestSampleTypeOfAdo(ado, service);
+
                             ado.SERVICE_ORDER = service.NUM_ORDER ?? -1;
                             ado.SERVICE_PARENT_ID = service.PARENT_ID ?? 0;
                             if (service.PARENT_ID.HasValue)
@@ -315,6 +318,8 @@ namespace MPS.Processor.Mps000026
                         V_HIS_SERVICE service = rdo.ListService != null ? rdo.ListService.FirstOrDefault(o => o.ID == item.SERVICE_ID) : null;
                         if (service != null)
                         {
+                            SetTestSampleTypeOfAdo(ado, service);
+
                             ado.SERVICE_ORDER = service.NUM_ORDER ?? -1;
                             ado.SERVICE_PARENT_ID = service.PARENT_ID ?? 0;
                             if (service.PARENT_ID.HasValue)
@@ -358,6 +363,121 @@ namespace MPS.Processor.Mps000026
                         Listparent.Add(new V_HIS_SERVICE() { SERVICE_TYPE_ID = gr.First().TDL_SERVICE_TYPE_ID, SERVICE_NAME = gr.First().SERVICE_TYPE_NAME });
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lay ma/ten loai mau xet nghiem mac dinh cua dich vu (HIS_SERVICE.SAMPLE_TYPE_CODE)
+        /// </summary>
+        private void SetTestSampleTypeOfAdo(SereServAdo ado, V_HIS_SERVICE service)
+        {
+            try
+            {
+                if (ado == null || service == null || String.IsNullOrWhiteSpace(service.SAMPLE_TYPE_CODE)) return;
+
+                ado.TEST_SAMPLE_TYPE_CODE = service.SAMPLE_TYPE_CODE;
+                ado.TEST_SAMPLE_TYPE_NAME = GetTestSampleTypeName(service.SAMPLE_TYPE_CODE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ten loai mau xet nghiem theo ma loai mau cua dich vu (HIS_SERVICE.SAMPLE_TYPE_CODE).
+        /// Combo "Loai mau XN" ben danh muc dich vu (HisService) nap tu LIS_SAMPLE_TYPE khi tich hop LIS,
+        /// nguoc lai nap tu HIS_TEST_SAMPLE_TYPE => tra ca 2 danh muc, uu tien LIS_SAMPLE_TYPE.
+        /// </summary>
+        private string GetTestSampleTypeName(string testSampleTypeCode)
+        {
+            string result = "";
+            try
+            {
+                if (String.IsNullOrWhiteSpace(testSampleTypeCode)) return result;
+
+                if (dicTestSampleTypeName == null)
+                {
+                    dicTestSampleTypeName = new Dictionary<string, string>();
+
+                    var listLisSampleType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<LIS.EFMODEL.DataModels.LIS_SAMPLE_TYPE>();
+                    if (listLisSampleType != null && listLisSampleType.Count > 0)
+                    {
+                        foreach (var item in listLisSampleType)
+                        {
+                            if (item == null || String.IsNullOrWhiteSpace(item.SAMPLE_TYPE_CODE)) continue;
+                            if (dicTestSampleTypeName.ContainsKey(item.SAMPLE_TYPE_CODE) && item.IS_ACTIVE != 1) continue;
+                            dicTestSampleTypeName[item.SAMPLE_TYPE_CODE] = item.SAMPLE_TYPE_NAME;
+                        }
+                    }
+
+                    var listTestSampleType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_TEST_SAMPLE_TYPE>();
+                    if (listTestSampleType != null && listTestSampleType.Count > 0)
+                    {
+                        foreach (var item in listTestSampleType)
+                        {
+                            if (item == null || String.IsNullOrWhiteSpace(item.TEST_SAMPLE_TYPE_CODE)) continue;
+                            if (dicTestSampleTypeName.ContainsKey(item.TEST_SAMPLE_TYPE_CODE)) continue;
+                            dicTestSampleTypeName[item.TEST_SAMPLE_TYPE_CODE] = item.TEST_SAMPLE_TYPE_NAME;
+                        }
+                    }
+
+                    Inventec.Common.Logging.LogSystem.Debug("Mps000026 dicTestSampleTypeName count: " + dicTestSampleTypeName.Count);
+                }
+
+                if (dicTestSampleTypeName.ContainsKey(testSampleTypeCode))
+                {
+                    result = dicTestSampleTypeName[testSampleTypeCode];
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Key ma/ten loai mau xet nghiem cua phieu chi dinh.
+        /// Uu tien loai mau da chon tren y lenh (HIS_SERVICE_REQ.TEST_SAMPLE_TYPE_ID),
+        /// neu y lenh chua chon thi lay loai mau mac dinh cua cac dich vu trong phieu.
+        /// </summary>
+        private void SetTestSampleTypeKey()
+        {
+            try
+            {
+                string sampleTypeCode = rdo.ServiceReqPrint != null ? rdo.ServiceReqPrint.TEST_SAMPLE_TYPE_CODE : null;
+                string sampleTypeName = rdo.ServiceReqPrint != null ? rdo.ServiceReqPrint.TEST_SAMPLE_TYPE_NAME : null;
+
+                //y lenh co ma nhung view khong tra ve ten => tra danh muc
+                if (!String.IsNullOrWhiteSpace(sampleTypeCode) && String.IsNullOrWhiteSpace(sampleTypeName))
+                {
+                    sampleTypeName = GetTestSampleTypeName(sampleTypeCode);
+                }
+
+                if (String.IsNullOrWhiteSpace(sampleTypeCode) && listAdo != null && listAdo.Count > 0)
+                {
+                    sampleTypeCode = String.Join(", ", listAdo
+                        .Where(o => !String.IsNullOrWhiteSpace(o.TEST_SAMPLE_TYPE_CODE))
+                        .Select(o => o.TEST_SAMPLE_TYPE_CODE)
+                        .Distinct()
+                        .ToList());
+
+                    sampleTypeName = String.Join(", ", listAdo
+                        .Where(o => !String.IsNullOrWhiteSpace(o.TEST_SAMPLE_TYPE_NAME))
+                        .Select(o => o.TEST_SAMPLE_TYPE_NAME)
+                        .Distinct()
+                        .ToList());
+                }
+
+                //ghi de key sinh tu V_HIS_SERVICE_REQ (co the dang null)
+                singleValueDictionary[Mps000026ExtendSingleKey.TEST_SAMPLE_TYPE_CODE] = sampleTypeCode;
+                singleValueDictionary[Mps000026ExtendSingleKey.TEST_SAMPLE_TYPE_NAME] = sampleTypeName;
             }
             catch (Exception ex)
             {
@@ -594,6 +714,8 @@ namespace MPS.Processor.Mps000026
                 AddObjectKeyIntoListkey<V_HIS_SERVICE_REQ>(rdo.ServiceReqPrint, true);
                 AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo.CurrentHisTreatment, true);
                 AddObjectKeyIntoListkey<V_HIS_BED_LOG>(rdo.BedLog, false);
+
+                SetTestSampleTypeKey();
 
                 string isPaid = "0";
                 ProcesPaid(ref isPaid);

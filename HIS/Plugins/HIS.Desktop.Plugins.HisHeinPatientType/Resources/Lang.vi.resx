@@ -156,8 +156,11 @@
   <data name="frmHisHeinPatientType.lciMediOrgCodes.Text" xml:space="preserve">
     <value>Mã cơ sở KCB BĐ:</value>
   </data>
-  <data name="frmHisHeinPatientType.lciAllMediOrg.Text" xml:space="preserve">
-    <value>Tất cả:</value>
+  <data name="frmHisHeinPatientType.cboMediOrgCodes.AllText" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="frmHisHeinPatientType.cboMediOrgCodes.TooLongWarning" xml:space="preserve">
+    <value>Danh sách mã cơ sở KCB ban đầu quá dài. Vui lòng chọn ít cơ sở hơn, hoặc tích ô chọn tất cả trên tiêu đề danh sách nếu áp dụng cho mọi cơ sở.</value>
   </data>
   <data name="frmHisHeinPatientType.gridColumnMediOrgCodes.Caption" xml:space="preserve">
     <value>Mã cơ sở KCB ban đầu</value>

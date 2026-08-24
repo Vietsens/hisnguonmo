@@ -76,6 +76,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 bool canFinish = currentServiceReq != null && currentServiceReq.ID > 0
                     && currentServiceReq.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT;
                 btnFinishServiceReq.Enabled = canFinish;
+                // Ghi rõ VÌ SAO nút tắt: 3 điều kiện nhìn từ ngoài giống nhau (nút xám) nên không có
+                // log này thì phải đoán. STT: 1=chưa xử lý, 2=đã xử lý, 3=hoàn thành (ID__HT).
+                LogSystem.Debug("KskFinishBtn: enabled=" + canFinish
+                    + "__sreq=" + (currentServiceReq == null ? "null" : currentServiceReq.ID.ToString())
+                    + "__stt=" + (currentServiceReq == null ? "-" : currentServiceReq.SERVICE_REQ_STT_ID.ToString())
+                    + "__visible=" + btnFinishServiceReq.Visible
+                    + "__lyDo=" + (currentServiceReq == null ? "khong co y lenh"
+                        : currentServiceReq.ID <= 0 ? "y lenh ID<=0"
+                        : !canFinish ? "y lenh DA HOAN THANH" : "-"));
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }

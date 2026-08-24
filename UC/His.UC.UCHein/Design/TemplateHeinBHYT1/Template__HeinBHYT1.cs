@@ -213,48 +213,94 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             }
         }
         /// <summary>
-        /// Chon ban ghi doi tuong KCB theo uu tien ma co so KCB ban dau (nơi ĐKKCB ban đầu trên thẻ):
-        /// 1. Ban ghi co danh sach HEIN_MEDI_ORG_CODES chua ma DKKCB cua the
-        /// 2. Ban ghi "Chon tat ca" (HEIN_MEDI_ORG_CODES = "*")
-        /// 3. Ban ghi khong cau hinh (hanh vi cu)
-        /// Cung muc uu tien -> NUM_ORDER nho nhat (null xep cuoi) -> ID lon nhat.
+        /// Log chan doan viec chon ma doi tuong KCB — dung khi ho tro vien kiem tra vi sao ra ma do.
+        /// In ra: ma DKKCB ban dau dang xet, so ban ghi con lai sau khi loc tuyen/truong hop/dien dieu tri,
+        /// trong do bao nhieu ban ghi DA cau hinh ma co so, va ket qua chon.
+        /// </summary>
+        private void LogChonMaDoiTuongKcb(List<HIS_HEIN_PATIENT_TYPE> heinList, string dkbdCode, HIS_HEIN_PATIENT_TYPE matched, string ghiChu)
+        {
+            try
+            {
+                int soDaCauHinh = heinList.Count(o => !string.IsNullOrWhiteSpace(o.HEIN_MEDI_ORG_CODES));
+                Inventec.Common.Logging.LogSystem.Debug("ChonMaDoiTuongKCB: maDKKCBBanDau=" + (dkbdCode ?? "(trong)")
+                    + "___soBanGhiSauLoc=" + heinList.Count
+                    + "___soBanGhiDaCauHinhMaCoSo=" + soDaCauHinh
+                    + "___maChon=" + (matched != null ? matched.HEIN_PATIENT_TYPE_CODE : "(trong)")
+                    + "___ghiChu=" + ghiChu);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nguoi dung CHU DONG sua thong tin the (co so KCB ban dau / tuyen / truong hop)
+        /// => bo ma doi tuong KCB da luu tren ho so de luat tu chon tinh lai theo thong tin moi.
+        /// Neu khong bo thi man Doi tuong dieu tri se giu nguyen ma cu, sua the xong ma van sai.
+        ///
+        /// KHONG tinh lai trong 2 truong hop:
+        /// - Dang nap du lieu the tu DB len form (isFillingHeinDataFromDb): luc nay cac control
+        ///   bi set gia tri bang code nen su kien cung ban ra, phai giu nguyen ma da luu.
+        /// - Nguoi dung da tu tay chon ma trong danh sach (isClickCboPatientTypeCode): ton trong lua chon tay.
+        /// </summary>
+        private void ResetHeinPatientCodeForRecalc()
+        {
+            try
+            {
+                if (this.isFillingHeinDataFromDb) return;
+                if (this.isClickCboPatientTypeCode) return;
+                this.HeinPatientCode = null;
+                firstCheck = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ban ghi CO liet ke ma co so KCB ban dau cu the (khac rong va khac "*")
+        /// => chi ap dung cho dung nhung ma da liet ke.
+        /// De trong (NULL) hoac "*" => ap dung MOI co so, giong quy uoc cua truong Dien dieu tri.
+        /// </summary>
+        private bool IsMediOrgCodeListSpecific(string codes)
+        {
+            return !string.IsNullOrWhiteSpace(codes) && codes.Trim() != "*";
+        }
+
+        /// <summary>
+        /// Chon ban ghi doi tuong KCB, co xet them tieu chi ma co so KCB ban dau (nơi ĐKKCB trên thẻ):
+        /// 1. Ban ghi liet ke ma co so cu the va chua ma DKKCB cua the -> uu tien cao nhat
+        /// 2. Ban ghi de trong hoac "*" (ap dung moi co so)
+        /// Cung muc -> NUM_ORDER nho nhat (null xep cuoi) -> ID lon nhat.
+        /// Vien chua cau hinh gi -> tat ca deu thuoc muc 2 -> giu nguyen hanh vi truoc nang cap.
         /// </summary>
         private HIS_HEIN_PATIENT_TYPE GetHeinPatientTypeByMediOrgPriority(List<HIS_HEIN_PATIENT_TYPE> heinList, string dkbdCode)
         {
             try
             {
-                List<HIS_HEIN_PATIENT_TYPE> matchedList = null;
+                var specific = new List<HIS_HEIN_PATIENT_TYPE>();
                 if (!string.IsNullOrEmpty(dkbdCode))
                 {
-                    var specific = heinList.Where(o => !string.IsNullOrWhiteSpace(o.HEIN_MEDI_ORG_CODES)
-                        && o.HEIN_MEDI_ORG_CODES.Trim() != "*"
+                    specific = heinList.Where(o => IsMediOrgCodeListSpecific(o.HEIN_MEDI_ORG_CODES)
                         && o.HEIN_MEDI_ORG_CODES.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries)
                             .Any(c => c.Trim() == dkbdCode)).ToList();
-                    var applyAll = heinList.Where(o => !string.IsNullOrWhiteSpace(o.HEIN_MEDI_ORG_CODES)
-                        && o.HEIN_MEDI_ORG_CODES.Trim() == "*").ToList();
-                    if (specific.Count > 0)
-                        matchedList = specific;
-                    else if (applyAll.Count > 0)
-                        matchedList = applyAll;
                 }
-                if (matchedList == null)
-                {
-                    // Hanh vi cu: chi xet ban ghi khong cau hinh tieu chi co so KCB ban dau
-                    matchedList = heinList.Where(o => string.IsNullOrWhiteSpace(o.HEIN_MEDI_ORG_CODES)).ToList();
-                }
+                var applyAll = heinList.Where(o => !IsMediOrgCodeListSpecific(o.HEIN_MEDI_ORG_CODES)).ToList();
+
+                var matchedList = specific.Count > 0 ? specific : applyAll;
                 if (matchedList.Count == 0)
                 {
-                    // Du phong: khong con ung vien nao (vien cau hinh thieu ban ghi "Tat ca")
-                    // -> quay ve dung luat cu tren toan bo danh sach, tranh de trong o Doi tuong KCB
-                    Inventec.Common.Logging.LogSystem.Debug(
-                        "GetHeinPatientTypeByMediOrgPriority: khong khop ban ghi nao theo ma CSKCB ban dau="
-                        + dkbdCode + " -> dung luat cu theo NUM_ORDER");
-                    matchedList = heinList;
+                    LogChonMaDoiTuongKcb(heinList, dkbdCode, null, "khong ban ghi nao ap dung -> de trong");
+                    return null;
                 }
-                return matchedList.OrderBy(o => o.NUM_ORDER == null ? 1 : 0)
-                                  .ThenBy(o => o.NUM_ORDER)
-                                  .ThenByDescending(o => o.ID)
-                                  .FirstOrDefault();
+                var matched = matchedList.OrderBy(o => o.NUM_ORDER == null ? 1 : 0)
+                                         .ThenBy(o => o.NUM_ORDER)
+                                         .ThenByDescending(o => o.ID)
+                                         .FirstOrDefault();
+                LogChonMaDoiTuongKcb(heinList, dkbdCode, matched, specific.Count > 0 ? "khop ma co so cu the" : "ap dung moi co so (de trong hoac *)");
+                return matched;
             }
             catch (Exception ex)
             {

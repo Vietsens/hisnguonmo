@@ -505,7 +505,6 @@
     <EmbeddedResource Include="frmCheckBedRoom.resx">
       <DependentUpon>frmCheckBedRoom.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -594,8 +593,40 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>echo POSTBUILDSTEP for $(ProjectName)
+
+REM Dung $(ProjectDir) thay cho $(SolutionDir)/$(SolutionName): 2 macro do chi co gia tri khi build qua .sln,
+REM build rieng .csproj se ra *Undefined* -> xcopy hoi F/D roi doc rac tu stdin.
+
+REM --- Dich 1: thu muc chay khi F5 tu HIS\HIS.Desktop.sln
+if not exist "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\Plugins\Module" mkdir "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\Plugins\Module"
+if not exist "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\ReferencedAssemblies"
+xcopy "$(TargetDir)$(TargetName).dll" "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\Plugins\Module" /Y /I
+xcopy "$(TargetDir)*.dll" "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\ReferencedAssemblies" /I /D /Y
+
+REM --- Dich 2: thu muc chay cua HIS.exe ban test (D:\Code\histest\x64)
+if not exist "$(ProjectDir)..\..\..\..\histest\x64\Plugins\Module" mkdir "$(ProjectDir)..\..\..\..\histest\x64\Plugins\Module"
+xcopy "$(TargetDir)$(TargetName).dll" "$(ProjectDir)..\..\..\..\histest\x64\Plugins\Module" /Y /I
+
+REM --- Resource da ngon ngu (bo qua neu chua build ra), moi xcopy deu co "if exist" de khong set errorlevel
+if exist "$(TargetDir)vi\*.dll" xcopy "$(TargetDir)vi\*.dll" "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\vi" /Y /I
+if exist "$(TargetDir)en\*.dll" xcopy "$(TargetDir)en\*.dll" "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\en" /Y /I
+if exist "$(TargetDir)my\*.dll" xcopy "$(TargetDir)my\*.dll" "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\my" /Y /I
+if exist "$(TargetDir)vi\*.dll" xcopy "$(TargetDir)vi\*.dll" "$(ProjectDir)..\..\..\..\histest\x64\vi" /Y /I
+if exist "$(TargetDir)en\*.dll" xcopy "$(TargetDir)en\*.dll" "$(ProjectDir)..\..\..\..\histest\x64\en" /Y /I
+if exist "$(TargetDir)my\*.dll" xcopy "$(TargetDir)my\*.dll" "$(ProjectDir)..\..\..\..\histest\x64\my" /Y /I
+
+if errorlevel 1 goto BuildEventFailed
+
+REM Exit properly because the build will not fail
+REM unless the final step exits with an error code
+
+goto BuildEventOK
+:BuildEventFailed
+echo POSTBUILDSTEP for $(ProjectName) FAILED
+exit 1
+:BuildEventOK
+echo POSTBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

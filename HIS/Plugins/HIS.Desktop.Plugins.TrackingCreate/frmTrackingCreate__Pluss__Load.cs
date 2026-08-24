@@ -62,6 +62,47 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         List<HIS_SERVICE_REQ> rsServiceReqTab2 { get; set; }
 
         bool isSearch = false;
+
+        /// <summary>
+        /// Dau khoang ngay y lenh dang xem (yyyyMMdd000000), null neu chua chon ngay.
+        /// </summary>
+        private long? GetIntructionTimeFromFilter()
+        {
+            long? result = null;
+            try
+            {
+                if (dtTimeFromNew.EditValue != null && dtTimeFromNew.DateTime != DateTime.MinValue)
+                {
+                    result = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtTimeFromNew.EditValue).ToString("yyyyMMdd") + "000000");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Cuoi khoang ngay y lenh dang xem (yyyyMMdd235959), null neu chua chon ngay.
+        /// </summary>
+        private long? GetIntructionTimeToFilter()
+        {
+            long? result = null;
+            try
+            {
+                if (dtTimeToNew.EditValue != null && dtTimeToNew.DateTime != DateTime.MinValue)
+                {
+                    result = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtTimeToNew.EditValue).ToString("yyyyMMdd") + "235959");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
         void LoadDataSS(bool isSearch)
         {
             try
@@ -75,20 +116,20 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 serviceReqFilter.TREATMENT_ID = this.treatmentId;
 
-                if (!isSearch && this.currentTracking != null)
+                //Khoang ngay y lenh dang xem. dtTimeFromNew/dtTimeToNew luon duoc dong bo theo ngay cua to dieu tri
+                //(xem dtTrackingTime_EditValueChanged) nen day cung la ngay cua to dieu tri dang mo.
+                long? intructionTimeFrom = GetIntructionTimeFromFilter();
+                long? intructionTimeTo = GetIntructionTimeToFilter();
+
+                bool isLoadByTracking = !isSearch && this.currentTracking != null;
+                if (isLoadByTracking)
                 {
                     serviceReqFilter.TRACKING_ID = currentTracking.ID;
                 }
                 else
                 {
-                    if (dtTimeFromNew.EditValue != null && dtTimeFromNew.DateTime != DateTime.MinValue)
-                    {
-                        serviceReqFilter.INTRUCTION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtTimeFromNew.EditValue).ToString("yyyyMMdd") + "000000");
-                    }
-                    if (dtTimeToNew.EditValue != null && dtTimeToNew.DateTime != DateTime.MinValue)
-                    {
-                        serviceReqFilter.INTRUCTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtTimeToNew.EditValue).ToString("yyyyMMdd") + "235959");
-                    }
+                    serviceReqFilter.INTRUCTION_TIME_FROM = intructionTimeFrom;
+                    serviceReqFilter.INTRUCTION_TIME_TO = intructionTimeTo;
                 }
 
                 var work = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId);
@@ -97,11 +138,81 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 rsServiceReq = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, serviceReqFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
 
+                //api/HisTracking/Update coi danh sach ServiceReqs gui len la danh sach CUOI CUNG cua to dieu tri:
+                //y lenh dang gan ma khong co trong danh sach se bi UPDATE TRACKING_ID = NULL
+                //(MOS.MANAGER\HisTracking\HisTrackingUpdate.cs - ProcessServiceReq: olds = GetByTrackingId).
+                //Cay lai duoc tich toan bo sau khi nap (treeSereServ_CheckAllNode) => cay chinh la danh sach gui len,
+                //nen cay BAT BUOC phai chua dong thoi 2 nhom:
+                //  (1) y lenh DA gan vao to dieu tri nay - thieu la bi NHA GAN khi luu
+                //  (2) y lenh trong ngay dang xem nhung CHUA gan - thieu la KHONG GAN DUOC khi luu
+                //      (vd ke don nhieu ngay: don cua cac ngay chua co to dieu tri duoc backend luu voi
+                //       TRACKING_ID = NULL, xem HisServiceReqProcessor - chi map duoc ngay co trong TrackingInfos)
+                //Moi che do query chi lay duoc 1 nhom nen phai query bu nhom con lai roi gop theo ID.
+                if (this.currentTracking != null)
+                {
+                    MOS.Filter.HisServiceReqFilter serviceReqFilterMore = new MOS.Filter.HisServiceReqFilter();
+                    serviceReqFilterMore.TREATMENT_ID = this.treatmentId;
+                    bool hasFilterMore = false;
+                    string reasonMore = "";
+
+                    if (isLoadByTracking)
+                    {
+                        //Dang lay theo TRACKING_ID => bu nhom (2)
+                        if (intructionTimeFrom != null && intructionTimeTo != null)
+                        {
+                            serviceReqFilterMore.INTRUCTION_TIME_FROM = intructionTimeFrom;
+                            serviceReqFilterMore.INTRUCTION_TIME_TO = intructionTimeTo;
+                            if (cboDepartment.SelectedIndex == 0)
+                                serviceReqFilterMore.REQUEST_DEPARTMENT_ID = work.DepartmentId;
+                            hasFilterMore = true;
+                            reasonMore = "y lenh trong ngay chua gan";
+                        }
+                    }
+                    else
+                    {
+                        //Dang lay theo ngay => bu nhom (1). KHONG loc ngay/khoa: y lenh da gan phai duoc giu lai
+                        //bat ke ngay y lenh va khoa chi dinh, neu khong luu se nha gan mat.
+                        serviceReqFilterMore.TRACKING_ID = this.currentTracking.ID;
+                        hasFilterMore = true;
+                        reasonMore = "y lenh da gan to dieu tri";
+                    }
+
+                    if (hasFilterMore)
+                    {
+                        CommonParam paramMore = new CommonParam();
+                        var serviceReqMores = new BackendAdapter(paramMore).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, serviceReqFilterMore, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramMore);
+
+                        if (rsServiceReq == null)
+                            rsServiceReq = new List<HIS_SERVICE_REQ>();
+                        int countAdded = 0;
+                        if (serviceReqMores != null && serviceReqMores.Count > 0)
+                        {
+                            HashSet<long> serviceReqIdExists = new HashSet<long>(rsServiceReq.Select(o => o.ID));
+                            foreach (var serviceReqMore in serviceReqMores)
+                            {
+                                if (serviceReqIdExists.Add(serviceReqMore.ID))
+                                {
+                                    rsServiceReq.Add(serviceReqMore);
+                                    countAdded++;
+                                }
+                            }
+                        }
+                        Inventec.Common.Logging.LogSystem.Info("LoadDataSS: gop bo sung " + reasonMore + "___trackingId=" + this.currentTracking.ID
+                            + "; isLoadByTracking=" + isLoadByTracking
+                            + "; intructionTimeFrom=" + intructionTimeFrom + "; intructionTimeTo=" + intructionTimeTo
+                            + "; countAdded=" + countAdded);
+                    }
+                }
+
                 if (rsServiceReq != null && rsServiceReq.Count > 0)
                 {
                     if (chkIsMineNew.Checked)
                     {
-                        rsServiceReq = rsServiceReq.Where(o => o.REQUEST_LOGINNAME == this.loginName || o.IS_TEMPORARY_PRES == 1).ToList();
+                        //Y lenh da gan vao to dieu tri nay phai duoc giu lai du nguoi chi dinh la ai:
+                        //an di khoi cay = luu xong bi nha gan.
+                        long trackingIdKeep = this.currentTracking != null ? this.currentTracking.ID : 0;
+                        rsServiceReq = rsServiceReq.Where(o => o.REQUEST_LOGINNAME == this.loginName || o.IS_TEMPORARY_PRES == 1
+                            || (trackingIdKeep > 0 && o.TRACKING_ID == trackingIdKeep)).ToList();
                     }
                     if (this.currentTracking != null)
                     {
@@ -172,38 +283,74 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         CommonParam param_ = new CommonParam();
                         MOS.Filter.HisExpMestBltyReqView2Filter filter = new HisExpMestBltyReqView2Filter();
                         filter.TDL_TREATMENT_ID = this.treatmentId;
-                        if (!isSearch && this.currentTracking != null)
+                        if (isLoadByTracking)
                         {
                             filter.TRACKING_ID = currentTracking.ID;
                         }
                         else
                         {
-                            if (dtTimeFromNew.EditValue != null && dtTimeFromNew.DateTime != DateTime.MinValue)
-                            {
-                                filter.INTRUCTION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtTimeFromNew.EditValue).ToString("yyyyMMdd") + "000000");
-                            }
-                            if (dtTimeToNew.EditValue != null && dtTimeToNew.DateTime != DateTime.MinValue)
-                            {
-                                filter.INTRUCTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtTimeToNew.EditValue).ToString("yyyyMMdd") + "235959");
-                            }
+                            filter.INTRUCTION_TIME_FROM = intructionTimeFrom;
+                            filter.INTRUCTION_TIME_TO = intructionTimeTo;
                         }
                         HisExpMestBltyReq = new BackendAdapter(param_).Get<List<V_HIS_EXP_MEST_BLTY_REQ_2>>("/api/HisExpMestBltyReq/GetView2", ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param_);
+
+                        //Query bu cung nguyen tac nhu y lenh thuong o tren (cay = danh sach gui len backend)
+                        if (this.currentTracking != null)
+                        {
+                            MOS.Filter.HisExpMestBltyReqView2Filter filterBltyMore = new HisExpMestBltyReqView2Filter();
+                            filterBltyMore.TDL_TREATMENT_ID = this.treatmentId;
+                            bool hasFilterBltyMore = false;
+                            if (isLoadByTracking)
+                            {
+                                if (intructionTimeFrom != null && intructionTimeTo != null)
+                                {
+                                    filterBltyMore.INTRUCTION_TIME_FROM = intructionTimeFrom;
+                                    filterBltyMore.INTRUCTION_TIME_TO = intructionTimeTo;
+                                    hasFilterBltyMore = true;
+                                }
+                            }
+                            else
+                            {
+                                filterBltyMore.TRACKING_ID = this.currentTracking.ID;
+                                hasFilterBltyMore = true;
+                            }
+
+                            if (hasFilterBltyMore)
+                            {
+                                CommonParam paramBltyMore = new CommonParam();
+                                var bltyReqMores = new BackendAdapter(paramBltyMore).Get<List<V_HIS_EXP_MEST_BLTY_REQ_2>>("/api/HisExpMestBltyReq/GetView2", ApiConsumers.MosConsumer, filterBltyMore, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramBltyMore);
+
+                                if (HisExpMestBltyReq == null)
+                                    HisExpMestBltyReq = new List<V_HIS_EXP_MEST_BLTY_REQ_2>();
+                                if (bltyReqMores != null && bltyReqMores.Count > 0)
+                                {
+                                    HashSet<long> bltyReqIdExists = new HashSet<long>(HisExpMestBltyReq.Select(o => o.ID));
+                                    foreach (var bltyReqMore in bltyReqMores)
+                                    {
+                                        if (bltyReqIdExists.Add(bltyReqMore.ID))
+                                        {
+                                            HisExpMestBltyReq.Add(bltyReqMore);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         if (HisExpMestBltyReq != null && HisExpMestBltyReq.Count > 0 && chkIsMineNew.Checked)
                         {
-                            HisExpMestBltyReq = HisExpMestBltyReq.Where(p => p.REQUEST_LOGINNAME == this.loginName).ToList();
+                            //Giu y lenh mau da gan vao to dieu tri nay du nguoi chi dinh la ai (tranh bi nha gan khi luu)
+                            long trackingIdKeepBlty = this.currentTracking != null ? this.currentTracking.ID : 0;
+                            HisExpMestBltyReq = HisExpMestBltyReq.Where(p => p.REQUEST_LOGINNAME == this.loginName
+                                || (trackingIdKeepBlty > 0 && p.TRACKING_ID == trackingIdKeepBlty)).ToList();
                         }
                         //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
                         //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HisExpMestBltyReq), HisExpMestBltyReq));
                         if (HisExpMestBltyReq != null && HisExpMestBltyReq.Count > 0)
                         {
-                            if (!isSearch && this.currentTracking != null)
-                            {
-                                HisExpMestBltyReq = HisExpMestBltyReq.Where(x => x.TRACKING_ID != null).ToList();
-                            }
-                            else
-                            {
-                                HisExpMestBltyReq = HisExpMestBltyReq.Where(x => x.TRACKING_ID == null || x.TRACKING_ID < 1).ToList();
-                            }
+                            //Giu y lenh mau chua gan to dieu tri nao + y lenh mau da gan cho chinh to dieu tri nay
+                            //(cung nguyen tac loc nhu y lenh thuong o tren)
+                            long trackingIdCurrent = this.currentTracking != null ? this.currentTracking.ID : 0;
+                            HisExpMestBltyReq = HisExpMestBltyReq.Where(x => x.TRACKING_ID == null || x.TRACKING_ID < 1
+                                || (trackingIdCurrent > 0 && x.TRACKING_ID == trackingIdCurrent)).ToList();
 
                             //Inventec.Common.Logging.LogSystem.Debug("HisExpMestBltyReq____2" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HisExpMestBltyReq), HisExpMestBltyReq));
                             foreach (var item in HisExpMestBltyReq)
@@ -624,10 +771,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 serviceReqFilter.TREATMENT_ID = this.treatmentId;
 
-                if (!isSearch && this.currentTracking != null)
-                {
-                    serviceReqFilter.TRACKING_ID__OR__USED_FOR_TRACKING_ID = currentTracking.ID;
-                }
+                //KHONG loc TRACKING_ID__OR__USED_FOR_TRACKING_ID nua: loc nhu vay chi tra ve don da gan,
+                //don du tru cung ngay nhung chua gan (vd vua ke don nhieu ngay) se khong len cay tab 2
+                //=> luu to dieu tri khong gan duoc. Khoang ngay (USE_TIME) ben duoi da gioi han du lieu,
+                //loc USED_FOR_TRACKING_ID phia sau van chi giu don chua gan hoac gan cho chinh to dieu tri nay.
 
                 if (dteFromPreventive.EditValue != null && dteFromPreventive.DateTime != DateTime.MinValue)
                 {
@@ -655,6 +802,36 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 }
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqFilter), serviceReqFilter));
                 rsServiceReqTab2 = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, serviceReqFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+
+                //Backend cung xu ly UsedForServiceReqIds theo kieu thay the (usedForOlds khong co trong danh sach
+                //=> UPDATE USED_FOR_TRACKING_ID = NULL) nen don da gan phai luon co tren cay tab 2,
+                //bat ke khoang ngay su dung / nguoi chi dinh dang loc.
+                if (this.currentTracking != null)
+                {
+                    CommonParam paramMoreTab2 = new CommonParam();
+                    MOS.Filter.HisServiceReqFilter serviceReqFilterMoreTab2 = new MOS.Filter.HisServiceReqFilter();
+                    serviceReqFilterMoreTab2.TREATMENT_ID = this.treatmentId;
+                    serviceReqFilterMoreTab2.USED_FOR_TRACKING_ID = this.currentTracking.ID;
+                    var serviceReqMoreTab2s = new BackendAdapter(paramMoreTab2).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, serviceReqFilterMoreTab2, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramMoreTab2);
+
+                    if (rsServiceReqTab2 == null)
+                        rsServiceReqTab2 = new List<HIS_SERVICE_REQ>();
+                    int countAddedTab2 = 0;
+                    if (serviceReqMoreTab2s != null && serviceReqMoreTab2s.Count > 0)
+                    {
+                        HashSet<long> serviceReqIdExistsTab2 = new HashSet<long>(rsServiceReqTab2.Select(o => o.ID));
+                        foreach (var serviceReqMoreTab2 in serviceReqMoreTab2s)
+                        {
+                            if (serviceReqIdExistsTab2.Add(serviceReqMoreTab2.ID))
+                            {
+                                rsServiceReqTab2.Add(serviceReqMoreTab2);
+                                countAddedTab2++;
+                            }
+                        }
+                    }
+                    Inventec.Common.Logging.LogSystem.Info("LoadDataSSTab2: gop bo sung don du tru da gan to dieu tri___trackingId=" + this.currentTracking.ID
+                        + "; countAdded=" + countAddedTab2);
+                }
 
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsServiceReqTab2.Count), rsServiceReqTab2.Count));
                 if (rsServiceReqTab2 != null && rsServiceReqTab2.Count > 0)

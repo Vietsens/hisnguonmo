@@ -121,6 +121,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                 LoadConfig();
                 InitControlState();
                 LoadComboStatus();
+                LoadComboStoreCheckStatus();
                 LoadComboMediRecordType();
                 InitializePermissions();
                 InitializeGrid();
@@ -434,6 +435,12 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                 this.txtKeywordTreatment.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.txtKeywordTreatment.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboEndDepartment.Properties.NullText = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.cboEndDepartment.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciStatusEnd.Text = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.lciStatusEnd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciStoreCheckStatus.Text = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.lciStoreCheckStatus.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboStoreCheckStatus.Properties.NullText = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.cboStoreCheckStatus.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColStoreCheck.Caption = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.gridColStoreCheck.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColStoreCheck.ToolTip = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.gridColStoreCheck.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColStoreCheckUser.Caption = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.gridColStoreCheckUser.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColStoreCheckTime.Caption = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.gridColStoreCheckTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciEndDepartment.Text = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.lciEndDepartment.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciOutTimeFilter.Text = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.lciOutTimeFilter.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciInTimeFilter.Text = Inventec.Common.Resource.Get.Value("UCMedicalStoreV2.lciInTimeFilter.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -615,6 +622,41 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Load values of the "Check status" filter. No "All" row: clearing the editor means no filter.
+        /// </summary>
+        private void LoadComboStoreCheckStatus()
+        {
+            try
+            {
+                List<Status> status = new List<Status>();
+                // "All" is a real entry, not only the placeholder text. Without it the user
+                // cannot go back to "no filter" from the list after picking one of the others.
+                status.Add(new Status((long)EnumStoreCheckStatus.All, ResourceMessage.TatCa));
+                status.Add(new Status((long)EnumStoreCheckStatus.Checked, ResourceMessage.DaKiemTra));
+                status.Add(new Status((long)EnumStoreCheckStatus.NotChecked, ResourceMessage.ChuaKiemTra));
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("statusName", "", 300, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("statusName", "id", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboStoreCheckStatus, status, controlEditorADO);
+
+                // Default = no selection = All
+                cboStoreCheckStatus.EditValue = null;
+
+                // Restore the value remembered from the previous session
+                if (!string.IsNullOrEmpty(this.storeCheckStatusState))
+                {
+                    cboStoreCheckStatus.EditValue =
+                        Inventec.Common.TypeConvert.Parse.ToInt64(this.storeCheckStatusState);
+                }
+            }
+            catch (Exception ex)
+            {
 
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
@@ -641,6 +683,10 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             try
             {
                 InitRestoreLayoutGridViewFromXml(gridViewTreatment);
+                // The saved layout predates the mark columns, so restoring it drops them at the
+                // front of the grid. This runs on every search, so the order is re-applied here
+                // rather than only once when the screen opens.
+                InitializeStoreCheckControls();
                 WaitingManager.Show();
                 startPageTreatment = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
@@ -721,6 +767,11 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                         else if (item.KEY == ControlStateConstant.CHECK_JUST_SHOW_TREATMENT_LATCH)
                         {
                             checkJustShowTreatmentLatch.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == ControlStateConstant.CBO_STORE_CHECK_STATUS)
+                        {
+                            // Applied after the combo data is loaded, see LoadComboStoreCheckStatus
+                            this.storeCheckStatusState = item.VALUE;
                         }
                         if (IsRequiredLatchApproveStore == "1")
                         {
@@ -933,7 +984,16 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                     filter.IN_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(dtInTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
                 }
 
-
+                // Feature off, nothing selected, or "All" picked -> criterion not sent at all
+                if (HisConfigCFG.IsUsingStoreCheck && cboStoreCheckStatus.EditValue != null)
+                {
+                    long storeCheckStatus = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        cboStoreCheckStatus.EditValue.ToString());
+                    if (storeCheckStatus != (long)EnumStoreCheckStatus.All)
+                    {
+                        filter.IS_STORE_CHECKED = (storeCheckStatus == (long)EnumStoreCheckStatus.Checked);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -1162,6 +1222,10 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             }
         }
         private List<ACS_CONTROL> controlAcs;
+
+        /// <summary>Value of the check status filter restored from local control state</summary>
+        private string storeCheckStatusState;
+
         private void InitializePermissions()
         {
             try
@@ -1189,15 +1253,114 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             {
                 gridViewMediRecord.Columns["Edit"].Visible = false;  // Ẩn cột "Sửa"
             }
+
+            InitializeStoreCheckControls();
+        }
+
+        /// <summary>
+        /// Show or hide everything belonging to the "mark record as checked" feature.
+        /// Config off -> nothing shows and no filter is ever sent.
+        /// Config on but no right -> only the mark column is hidden, the two audit columns
+        /// and the filter stay usable for lookup.
+        /// </summary>
+        private void InitializeStoreCheckControls()
+        {
+            try
+            {
+                bool isUsingStoreCheck = HisConfigCFG.IsUsingStoreCheck;
+
+                // A record that is not closed yet keeps a disabled box, so that "not allowed"
+                // shows on the box itself instead of shading the whole cell.
+                repositoryItemCheckEdit_StoreCheck__Disable.Enabled = false;
+
+                // Other columns of this grid carry an explicit VisibleIndex, so the new ones
+                // must be positioned too, otherwise they land at the front of the grid.
+                gridColStoreCheck.Visible = isUsingStoreCheck && HasStoreCheckPermission();
+                if (gridColStoreCheck.Visible)
+                {
+                    // Right next to the reject / unreject action column
+                    gridColStoreCheck.VisibleIndex = gridColumn34.VisibleIndex + 1;
+                }
+
+                gridColStoreCheckUser.Visible = isUsingStoreCheck;
+                gridColStoreCheckTime.Visible = isUsingStoreCheck;
+                if (isUsingStoreCheck)
+                {
+                    // Audit columns always go last. Moving each one to the last visible slot in
+                    // turn leaves them at the end in this order.
+                    gridColStoreCheckUser.VisibleIndex = gridViewTreatment.VisibleColumns.Count - 1;
+                    gridColStoreCheckTime.VisibleIndex = gridViewTreatment.VisibleColumns.Count - 1;
+                }
+
+                lciStoreCheckStatus.Visibility = isUsingStoreCheck
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                // The saved column layout is restored on a background thread after the screen
+                // has loaded, and it carries the visible flag, so it can bring the mark column
+                // back for an account that has no right to it. Watch the layout and hide it
+                // again. Detach first so repeated calls do not stack up handlers.
+                gridViewTreatment.ColumnPositionChanged -= gridViewTreatment_ColumnPositionChanged;
+                gridViewTreatment.ColumnPositionChanged += gridViewTreatment_ColumnPositionChanged;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private bool HasEditPermission()
-        {         
+        {
             if (controlAcs != null)
             {
                 return controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000049") != null;
             }
-            return false;  
+            return false;
+        }
+
+        /// <summary>
+        /// Right to mark a medical record as checked. Not granted -> the mark column is hidden.
+        /// </summary>
+        /// <summary>Stops the enforcement below from reacting to its own change.</summary>
+        private bool isEnforcingStoreCheckColumn = false;
+
+        /// <summary>
+        /// Keeps the mark column hidden for an account without the right, whatever puts it back:
+        /// the restored layout file, or the user picking it from the column chooser.
+        /// Only hiding is enforced here - moving or hiding the other columns stays up to the user.
+        /// </summary>
+        private void gridViewTreatment_ColumnPositionChanged(object sender, EventArgs e)
+        {
+            if (isEnforcingStoreCheckColumn) return;
+
+            try
+            {
+                isEnforcingStoreCheckColumn = true;
+
+                if (gridColStoreCheck.Visible
+                    && !(HisConfigCFG.IsUsingStoreCheck && HasStoreCheckPermission()))
+                {
+                    gridColStoreCheck.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                isEnforcingStoreCheckColumn = false;
+            }
+        }
+
+        private bool HasStoreCheckPermission()
+        {
+            if (controlAcs != null)
+            {
+                return controlAcs.FirstOrDefault(
+                    o => o.CONTROL_CODE == StoreCheckConstant.CONTROL_CODE__STORE_CHECK) != null;
+            }
+            return false;
         }
 
         private void gridViewMediRecord_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
@@ -1903,9 +2066,15 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                         }
                         else if (e.Column.FieldName == "REJECT_STORE_REASON_STR")
                         {
-                            
+
                             e.Value = data.REJECT_STORE_REASON;
-                            
+
+                        }
+                        else if (e.Column.FieldName == "STORE_CHECK_TIME_STR")
+                        {
+                            e.Value = data.STORE_CHECK_TIME.HasValue
+                                ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.STORE_CHECK_TIME.Value)
+                                : "";
                         }
                         else if (e.Column.FieldName == "CLINICAL_IN_TIME_STR")
                         {
@@ -2844,6 +3013,203 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             }
         }
 
+        /// <summary>
+        /// Guards against re-entry: cancelling the cell edit puts the box back to unticked,
+        /// which raises CheckedChanged a second time and would ask the same question again.
+        /// </summary>
+        private bool isProcessingStoreCheck = false;
+
+        /// <summary>
+        /// User ticked the "Checked" cell of a treatment row. Confirm, then mark it.
+        /// Marking is one way: it cannot be undone from the screen.
+        /// </summary>
+        private void repositoryItemCheckEdit_StoreCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isProcessingStoreCheck) return;
+
+            try
+            {
+                // Only ticking is a business action. Unticking just puts the cell back.
+                var editor = sender as DevExpress.XtraEditors.CheckEdit;
+                if (editor == null || !editor.Checked) return;
+
+                var row = (TreatmentADO)gridViewTreatment.GetFocusedRow();
+                if (row == null || row.IsStoreChecked) return;
+
+                isProcessingStoreCheck = true;
+                try
+                {
+                    // Second guard after hiding the column: the right may be revoked while the screen is open
+                    if (!HasStoreCheckPermission())
+                    {
+                        RevertStoreCheckCell(editor);
+                        XtraMessageBox.Show(ResourceMessage.KhongDuQuyenDanhDauDaKiemTra,
+                            ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (XtraMessageBox.Show(ResourceMessage.XacNhanDanhDauDaKiemTra,
+                            ResourceMessage.ThongBao,
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    {
+                        RevertStoreCheckCell(editor);
+                        return;
+                    }
+
+                    if (StoreCheckProcess(row))
+                    {
+                        // Close the open editor before rebinding, then reload the list: the row
+                        // has to leave it when the filter excludes marked records, and the two
+                        // audit columns must come back filled from the server.
+                        gridViewTreatment.HideEditor();
+                        LoadDataToGridControlTreatment();
+                    }
+                    else
+                    {
+                        RevertStoreCheckCell(editor);
+                    }
+                }
+                finally
+                {
+                    isProcessingStoreCheck = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Put the tick back and drop the pending edit. Cancelling the row on its own is not
+        /// enough: the in-place editor is still open and keeps showing the tick, so its value
+        /// has to be reset and the editor closed without posting.
+        /// </summary>
+        private void RevertStoreCheckCell(DevExpress.XtraEditors.CheckEdit editor)
+        {
+            try
+            {
+                if (editor != null)
+                {
+                    editor.Checked = false;
+                }
+                gridViewTreatment.HideEditor();
+                gridViewTreatment.CancelUpdateCurrentRow();
+                gridViewTreatment.RefreshRow(gridViewTreatment.FocusedRowHandle);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Send the mark request. The endpoint takes a list so that a future bulk action
+        /// does not need a new endpoint; the screen marks one row at a time.
+        /// Returns false when the record was not marked, so the caller can put the tick back.
+        /// </summary>
+        private bool StoreCheckProcess(TreatmentADO row)
+        {
+            CommonParam param = new CommonParam();
+            bool success = false;
+            try
+            {
+                List<long> treatmentIds = new List<long>();
+                treatmentIds.Add(row.ID);
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => treatmentIds), treatmentIds));
+
+                WaitingManager.Show();
+                var result = new BackendAdapter(param).Post<List<HIS_TREATMENT>>(
+                    StoreCheckConstant.URI__CHECK_STORE, ApiConsumers.MosConsumer, treatmentIds, param);
+                WaitingManager.Hide();
+
+                success = (result != null && result.Count > 0);
+                if (success)
+                {
+                    var updated = result.FirstOrDefault(o => o.ID == row.ID);
+                    if (updated != null)
+                    {
+                        row.STORE_CHECK_TIME = updated.STORE_CHECK_TIME;
+                        row.STORE_CHECK_LOGINNAME = updated.STORE_CHECK_LOGINNAME;
+                        row.STORE_CHECK_USERNAME = updated.STORE_CHECK_USERNAME;
+                        row.IsStoreChecked = true;
+                    }
+                    gridViewTreatment.RefreshRow(gridViewTreatment.FocusedRowHandle);
+                }
+
+                MessageManager.Show(this.ParentForm, param, success);
+                SessionManager.ProcessTokenLost(param);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                success = false;
+                Inventec.Common.Logging.LogSystem.Error(
+                    "Danh dau ho so da kiem tra that bai."
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => row), row), ex);
+            }
+            return success;
+        }
+
+        private void cboStoreCheckStatus_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Index == 1)
+                {
+                    cboStoreCheckStatus.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Remember the chosen filter value for the next session</summary>
+        private void cboStoreCheckStatus_EditValueChanged(object sender, EventArgs e)
+        {
+            if (isInit) return;
+            try
+            {
+                string value = cboStoreCheckStatus.EditValue == null
+                    ? "" : cboStoreCheckStatus.EditValue.ToString();
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate =
+                    (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.Where(
+                        o => o.KEY == ControlStateConstant.CBO_STORE_CHECK_STATUS
+                          && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault()
+                    : null;
+
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = value;
+                }
+                else
+                {
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.CBO_STORE_CHECK_STATUS;
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    csAddOrUpdate.VALUE = value;
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void refreshDataTreatment(object data)
         {
             try
@@ -2926,6 +3292,18 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                             {
                                 e.RepositoryItem = repositoryItemCheckEdit3;
                             }
+                        }
+                        else if (e.Column.FieldName == "IsStoreChecked")
+                        {
+                            // Only a closed record that has not been marked yet can be marked.
+                            // This grid holds unstored records only, so no store condition is needed here.
+                            bool canCheck = !row.IsStoreChecked
+                                && row.APPROVAL_STORE_STT_ID.HasValue
+                                && row.APPROVAL_STORE_STT_ID.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__CHOT;
+
+                            e.RepositoryItem = canCheck
+                                ? repositoryItemCheckEdit_StoreCheck__Enable
+                                : repositoryItemCheckEdit_StoreCheck__Disable;
                         }
                     }
                 }

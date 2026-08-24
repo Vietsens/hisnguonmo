@@ -295,7 +295,10 @@
     <value>Kết hợp BHYT</value>
   </data>
   <data name="frmHisAssignBlood.grcTutorial__TabBlood.Caption" xml:space="preserve">
-    <value>Hướng dẫn sử dụng</value>
+    <value>Cách dùng</value>
+  </data>
+  <data name="frmHisAssignBlood.grcDosage__TabBlood.Caption" xml:space="preserve">
+    <value>Liều dùng</value>
   </data>
   <data name="frmHisAssignBlood.grcUseTimeTo__TabBlood.Caption" xml:space="preserve">
     <value>Sử dụng đến ngày</value>
@@ -368,6 +371,12 @@
   </data>
   <data name="frmHisAssignBlood.grcTransferSpeed__TabBlood.Caption" xml:space="preserve">
     <value>Tốc độ truyền</value>
+  </data>
+  <data name="frmHisAssignBlood.lciBloodDosage.Text" xml:space="preserve">
+    <value>Liều dùng:</value>
+  </data>
+  <data name="frmHisAssignBlood.lciBloodTutorial.Text" xml:space="preserve">
+    <value>Cách dùng:</value>
   </data>
   <data name="frmHisAssignBlood.layoutControlItem6.Text" xml:space="preserve">
     <value>Tên máu:</value>

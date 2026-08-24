@@ -237,6 +237,9 @@
   <data name="ThongBao" xml:space="preserve">
     <value>Thông báo</value>
   </data>
+  <data name="TichManTinhPhaiNhapTruongBatBuoc" xml:space="preserve">
+    <value>Đã tích "Mãn tính", bạn phải nhập: {0}.</value>
+  </data>
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Chưa nhập trường dữ liệu bắt buộc</value>
   </data>

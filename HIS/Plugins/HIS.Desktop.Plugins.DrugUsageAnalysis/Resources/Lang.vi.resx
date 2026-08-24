@@ -309,4 +309,16 @@
   <data name="UCDrugUsageAnalysis.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Mã điều trị</value>
   </data>
+  <data name="UCDrugUsageAnalysis.btnDsYlenh.Text" xml:space="preserve">
+    <value>Danh sách y lệnh</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.btnToDieuTri.Text" xml:space="preserve">
+    <value>Tờ điều trị</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.btnSumaryTestResults.Text" xml:space="preserve">
+    <value>Xem kết quả xét nghiệm</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.MsgChuaChonBenhNhan" xml:space="preserve">
+    <value>Bạn chưa chọn người bệnh. Vui lòng chọn người bệnh trên danh sách trước khi xem thông tin điều trị.</value>
+  </data>
 </root>

@@ -1543,6 +1543,9 @@ F6 to get the instructions from the prescribed menu. (F7 to set the condition to
   <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_CONCENTRA" xml:space="preserve">
     <value>Concentra</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDICINE_GROUP_NAME" xml:space="preserve">
+    <value>Medicine group</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_EXPIRED_DATE" xml:space="preserve">
     <value>HSD</value>
   </data>

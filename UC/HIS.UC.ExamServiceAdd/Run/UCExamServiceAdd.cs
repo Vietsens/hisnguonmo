@@ -826,7 +826,17 @@ namespace HIS.UC.ExamServiceAdd.Run
                 this.resultChooseNumOrderBlockADO = _resultChooseNumOrderBlockADO;
                 if ((Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtAppointment.DateTime) ?? 0) != this.resultChooseNumOrderBlockADO.Date)
                 {
-                    dtAppointment.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.resultChooseNumOrderBlockADO.Date);
+                    //Khong gan thang: neu khung gio cau hinh sai gio/phut thi ham doi so sang ngay gio
+                    //tra ve null, gan vao se XOA TRANG o ngay hen ma khong bao gi (viec 54282)
+                    DateTime? ngayHenMoi = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.resultChooseNumOrderBlockADO.Date);
+                    if (!ngayHenMoi.HasValue)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("HOLD54282 Man chon khung gio tra ve moc thoi gian khong hop le: " + this.resultChooseNumOrderBlockADO.Date);
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Khung giờ khám vừa chọn đang được cấu hình sai giờ/phút nên không nhận được thời gian hẹn khám. Vui lòng chọn khung giờ khác hoặc báo quản trị hệ thống.",
+                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                        return;
+                    }
+                    dtAppointment.EditValue = ngayHenMoi.Value;
                 }
                 ProcessLoadGetOccupiedStatus();
 

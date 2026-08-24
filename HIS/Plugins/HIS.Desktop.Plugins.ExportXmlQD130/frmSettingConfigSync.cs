@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -80,6 +80,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.actAfterSave = actAfterSave;
                 //Bỏ tích / tích "Đồng bộ KCB" có tác dụng NGAY (lưu tức thì), không cần bấm Lưu -> trạng thái checkbox = trạng thái auto dùng.
                 this.chkSyncKcb.CheckedChanged += new EventHandler(this.chkSyncKcb_CheckedChanged);
+                this.chkSyncKcbVlg.CheckedChanged += new EventHandler(this.chkSyncKcbVlg_CheckedChanged);
+                this.chkSyncKcbHoc.CheckedChanged += new EventHandler(this.chkSyncKcbHoc_CheckedChanged);
             }
             catch (Exception ex)
             {
@@ -591,6 +593,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     chkDontSend.Checked = configSync.dontSend;
                     txtFolder.Text = configSync.folderPath;
                     chkSyncKcb.Checked = configSync.isSyncKcb;
+                    chkSyncKcbVlg.Checked = configSync.isSyncKcbVlg;
+                    chkSyncKcbHoc.Checked = configSync.isSyncKcbHoc;
                 }
             }
             catch (Exception ex)
@@ -617,7 +621,44 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
+        //Lưu NGAY khi tích/bỏ tích "Đồng bộ KCB lên Cổng tiếp nhận KDLYT Vĩnh Long" (như chkSyncKcb).
+        private void chkSyncKcbVlg_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isLoadingConfig) return;              //đang nạp giá trị lúc mở form -> bỏ qua
+                if (this.configSync == null) return;
+                this.configSync.isSyncKcbVlg = chkSyncKcbVlg.Checked;
+                if (this.actAfterSave != null)
+                    this.actAfterSave(this.configSync);   //ghi ngay vào ControlState, KHÔNG đóng form
+                Inventec.Common.Logging.LogSystem.Info("frmSettingConfigSync - Luu ngay isSyncKcbVlg=" + chkSyncKcbVlg.Checked);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        //Lưu NGAY khi tích/bỏ tích "Đồng bộ KCB lên Trung tâm điều hành y tế (QĐ 3176)" (như chkSyncKcb).
+        private void chkSyncKcbHoc_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isLoadingConfig) return;              //đang nạp giá trị lúc mở form -> bỏ qua
+                if (this.configSync == null) return;
+                this.configSync.isSyncKcbHoc = chkSyncKcbHoc.Checked;
+                if (this.actAfterSave != null)
+                    this.actAfterSave(this.configSync);   //ghi ngay vào ControlState, KHÔNG đóng form
+                Inventec.Common.Logging.LogSystem.Info("frmSettingConfigSync - Luu ngay isSyncKcbHoc=" + chkSyncKcbHoc.Checked);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         //Ẩn/hiện checkbox đồng bộ KCB theo config MOS.CSDL_4750.IS_AUTO_SYNC (Bật/tắt toàn bộ liên thông CSDL 4750)
+        //+ checkbox Cổng tiếp nhận VLG theo khóa MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO.
         private void ProcessVisibleSyncKcb()
         {
             try
@@ -629,6 +670,26 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 if (!enable)
                 {
                     this.chkSyncKcb.Checked = false;
+                }
+
+                bool enableVlg = !string.IsNullOrWhiteSpace(HisConfigCFG.VLG_2062__CONNECTION_INFO);
+                this.lciSyncKcbVlg.Visibility = enableVlg
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                if (!enableVlg)
+                {
+                    this.chkSyncKcbVlg.Checked = false;
+                }
+
+                //Trung tâm điều hành y tế (QĐ 3176): gate duy nhất là khóa đấu nối cổng
+                //MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO — không có khóa bật/tắt riêng.
+                bool enableHoc = !string.IsNullOrWhiteSpace(HisConfigCFG.HSSK_HOC_2062__CONNECTION_INFO);
+                this.lciSyncKcbHoc.Visibility = enableHoc
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                if (!enableHoc)
+                {
+                    this.chkSyncKcbHoc.Checked = false;
                 }
             }
             catch (Exception ex)
@@ -691,6 +752,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.configSync.dontSend = chkDontSend.Checked;
                 #endregion
                 this.configSync.isSyncKcb = chkSyncKcb.Checked;
+                this.configSync.isSyncKcbVlg = chkSyncKcbVlg.Checked;
+                this.configSync.isSyncKcbHoc = chkSyncKcbHoc.Checked;
                 if (this.actAfterSave != null)
                 {
                     this.actAfterSave(this.configSync);

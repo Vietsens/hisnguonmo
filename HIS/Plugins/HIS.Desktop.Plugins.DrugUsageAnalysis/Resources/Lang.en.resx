@@ -309,4 +309,16 @@
   <data name="UCDrugUsageAnalysis.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Treatment code</value>
   </data>
+  <data name="UCDrugUsageAnalysis.btnDsYlenh.Text" xml:space="preserve">
+    <value>Service request list</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.btnToDieuTri.Text" xml:space="preserve">
+    <value>Treatment sheet</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.btnSumaryTestResults.Text" xml:space="preserve">
+    <value>View test results</value>
+  </data>
+  <data name="UCDrugUsageAnalysis.MsgChuaChonBenhNhan" xml:space="preserve">
+    <value>No patient selected. Please select a patient in the list before viewing treatment information.</value>
+  </data>
 </root>

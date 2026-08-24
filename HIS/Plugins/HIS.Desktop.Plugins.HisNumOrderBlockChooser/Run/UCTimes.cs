@@ -42,6 +42,40 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
         private int Rong = 50;
         long? timeSelected;
 
+        //Chu thich ly do o bi khoa (viec 54282)
+        private ToolTip toolTipBlock = new ToolTip();
+
+        /// <summary>
+        /// 20260813143944 -> "14:39"
+        /// </summary>
+        private string ToHourText(long? timeNumber)
+        {
+            try
+            {
+                if (!timeNumber.HasValue || timeNumber.Value <= 0)
+                {
+                    return "";
+                }
+                string s = timeNumber.Value.ToString();
+                if (s.Length < 12)
+                {
+                    return "";
+                }
+                return s.Substring(8, 2) + ":" + s.Substring(10, 2);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Chi ap luat "da qua gio" khi ngay dang xem la HOM NAY (viec 54282).
+        /// Ngay tuong lai thi moi o deu con hieu luc.
+        /// </summary>
+        private bool isToday = true;
+
         public UCTimes(List<MOS.SDO.HisNumOrderBlockSDO> list, Action<TimeADO> selectNumOrder)
         {
             // TODO: Complete member initialization
@@ -56,6 +90,14 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
             this.ListNumOrder = list;
             this.SelectNumOrder = selectNumOrder;
             this.timeSelected = timeSelected;
+        }
+        public UCTimes(List<MOS.SDO.HisNumOrderBlockSDO> list, Action<TimeADO> selectNumOrder, long? timeSelected, bool _isToday)
+        {
+            InitializeComponent();
+            this.ListNumOrder = list;
+            this.SelectNumOrder = selectNumOrder;
+            this.timeSelected = timeSelected;
+            this.isToday = _isToday;
         }
 
         private void UCTimes_Load(object sender, EventArgs e)
@@ -84,19 +126,65 @@ namespace HIS.Desktop.Plugins.HisNumOrderBlockChooser.Run
                         {
                             var blockTime = new Base.Block();
                             blockTime.Text = times[j].HOUR_STR;
-                            var time = DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString();
-                            if (Convert.ToInt64(times[j].HOUR_STR.Replace(":", "")) < Convert.ToInt64(time))
+                            blockTime.ForeColor = Color.Blue;
+
+                            //Moi o chi mo hoac khoa vi MOT ly do, va ly do do duoc ghi vao chu thich
+                            //de nguoi dung khong phai doan (viec 54282)
+                            string lyDo = null;
+
+                            //Gio hien tai phai dem 0 (truoc day noi chuoi Hour + Minute nen 9 gio 05 thanh "95",
+                            //khien o gio da qua van bam duoc gan nhu ca ngay)
+                            var time = DateTime.Now.ToString("HHmm");
+                            if (this.isToday
+                                && Convert.ToInt64(times[j].HOUR_STR.Replace(":", "")) < Convert.ToInt64(time))
+                            {
                                 blockTime.Enabled = false;
+                                blockTime.ForeColor = Color.FromArgb(150, 150, 150);
+                                blockTime.Font = new Font(blockTime.Font, FontStyle.Strikeout);
+                                lyDo = "Đã qua giờ";
+                            }
 
                             if (timeSelected != null && timeSelected != 0 && timeSelected == Convert.ToInt64(times[j].HOUR_STR.Replace(":", "")))
                             {
                                 blockTime.Enabled = false;
                             }
-                            blockTime.ForeColor = Color.Blue;
+
                             if (times[j].IS_ISSUED == 1)
                             {
                                 blockTime.Enabled = false;
                                 blockTime.ForeColor = new Color();
+                                blockTime.Font = new Font(blockTime.Font, FontStyle.Regular);
+                                lyDo = "Đã có người đặt";
+
+                                if (times[j].IS_HOLDING == 1)
+                                {
+                                    string denGio = ToHourText(times[j].HOLD_EXPIRE_TIME);
+                                    if (times[j].IS_MINE == 1)
+                                    {
+                                        //Cho cua chinh minh: van cho bam lai, tru khi da qua gio
+                                        blockTime.Enabled = blockTime.Font.Strikeout ? false : true;
+                                        //Nen dac chu trang thay vi xanh nhat: o minh dang giu phai
+                                        //nhin ra ngay giua luoi o trang (viec 54282)
+                                        blockTime.ForeColor = Color.White;
+                                        blockTime.BackColor = Color.FromArgb(21, 101, 192);
+                                        lyDo = "Bạn đang giữ chỗ này" + (!string.IsNullOrEmpty(denGio) ? ", đến " + denGio : "");
+                                    }
+                                    else
+                                    {
+                                        blockTime.ForeColor = Color.FromArgb(180, 83, 9);
+                                        blockTime.BackColor = Color.FromArgb(253, 240, 216);
+                                        lyDo = "Người khác đang giữ" + (!string.IsNullOrEmpty(denGio) ? ", đến " + denGio : "");
+                                    }
+                                }
+                            }
+                            else if (blockTime.Enabled)
+                            {
+                                lyDo = "Còn trống";
+                            }
+
+                            if (!string.IsNullOrEmpty(lyDo))
+                            {
+                                this.toolTipBlock.SetToolTip(blockTime, times[j].HOUR_STR + " — " + lyDo);
                             }
 
                             blockTime.Tag = times[j];

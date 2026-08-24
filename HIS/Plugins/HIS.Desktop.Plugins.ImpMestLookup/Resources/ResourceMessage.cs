@@ -123,6 +123,23 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup.Resources
             }
         }
 
+        /// <summary>Không tìm thấy phiếu nhập có số hóa đơn {0}</summary>
+        internal static string KhongTimThayPhieuNhapCoSoHoaDon
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhongTimThayPhieuNhapCoSoHoaDon", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string TaiThanhCong
         {
             get

@@ -53,6 +53,16 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR.Proce
         //qtcode
         public string BuyerName { get; set; }
         public string CusCode { get; set; }
+
+        /// <summary>
+        /// So CMND/CCCD cua nguoi mua
+        /// </summary>
+        public string CusIdentification { get; set; }
+
+        /// <summary>
+        /// So ho chieu cua nguoi mua
+        /// </summary>
+        public string PassportNo { get; set; }
     }
     public class ProductV2
     {

@@ -67,11 +67,19 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         internal static int E_BILL__PRINT_NUM_COPY;
         internal static int PlatformOption;
 
+        /// <summary>
+        /// Cách tính tách tiền 2 sổ - PHẢI khớp HisTransactionCFG.ENUM_BILL_OPTION bên MOS.
+        /// </summary>
         internal enum BILL_OPTION
         {
             CTO_TW = 1,
             HCM_115 = 2,
             QBH_CUBA = 3,
+            NTP = 4,
+            //BVND 115: tách tiền theo cấu hình từng dịch vụ (HIS_SERVICE.BILL_OPTION),
+            //đáp ứng NQ 399 / NQ 11 và bảng kê 697. Việc 54227.
+            //In cùng mẫu biên lai/hóa đơn với HCM_115 (Mps000317 / Mps000318).
+            HCM_115_NQ399 = 5,
         }
 
         internal static string PatientTypeCode__BHYT;

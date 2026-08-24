@@ -534,17 +534,12 @@ namespace HIS.Desktop.Plugins.AssignPaan
         {
             try
             {
-                cboPaanPosition.Properties.DataSource = BackendDataWorker.Get<HIS_PAAN_POSITION>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-                cboPaanPosition.Properties.DisplayMember = "PAAN_POSITION_NAME";
-                cboPaanPosition.Properties.ValueMember = "ID";
-                cboPaanPosition.Properties.ForceInitialize();
-                cboPaanPosition.Properties.Columns.Clear();
-                cboPaanPosition.Properties.Columns.Add(new LookUpColumnInfo("PAAN_POSITION_CODE", "", 80));
-                cboPaanPosition.Properties.Columns.Add(new LookUpColumnInfo("PAAN_POSITION_NAME", "", 200));
-                cboPaanPosition.Properties.ShowHeader = false;
-                cboPaanPosition.Properties.ImmediatePopup = true;
-                cboPaanPosition.Properties.DropDownRows = 10;
-                cboPaanPosition.Properties.PopupWidth = 280;
+                var datas = BackendDataWorker.Get<HIS_PAAN_POSITION>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("PAAN_POSITION_CODE", "", 80, 1));
+                columnInfos.Add(new ColumnInfo("PAAN_POSITION_NAME", "", 200, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("PAAN_POSITION_NAME", "ID", columnInfos, false, 280);
+                ControlEditorLoader.Load(this.cboPaanPosition, datas, controlEditorADO);
             }
             catch (Exception ex)
             {

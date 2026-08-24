@@ -54,6 +54,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         List<HIS_CARD> listHisCard { get; set; }
         List<HIS_TRANS_REQ> TransReq { get; set; }
 
+        private static bool? msExcelAvailable;
 
         public PrintKiosk(V_HIS_PATIENT_TYPE_ALTER patyAlter, V_HIS_SERVICE_REQ ServiceReqPrint, List<V_HIS_SERE_SERV> sereServs, DelegateReturnSuccess success, string printTypeCode, string fileName, HIS_TREATMENT treatmentPrint, List<HIS_SERE_SERV_DEPOSIT> _ListSereServDeposit, List<HIS_SERE_SERV_BILL> _ListSereServBill, List<V_HIS_TRANSACTION> _ListTransaction, bool _checkPrintAgain)
         {
@@ -138,66 +139,15 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 LogSystem.Debug(LogUtil.TraceData("Du lieu mps000025PDO khi dang ky kham", mps000025PDO));
                 WaitingManager.Hide();
 
-                string templateFile = Application.StartupPath + "\\Mps000025__Temp__" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".xlsx";
-                if (File.Exists(templateFile))
+                bool printSuccess = PrintMps000025(mps000025PDO);
+                if (printSuccess && this.checkPrintAgain)
                 {
-                    try
-                    {
-                        File.Delete(templateFile);
-                    }
-                    catch { }
+                    UpdateSereServAfterPrint();
                 }
 
-                LogSystem.Info(LogUtil.TraceData("Du lieu templateFile truyen vao", templateFile));
-
-                PrintData printData = new PrintData(printTypeCode, fileName, mps000025PDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "", 1, templateFile);
-
-                bool printSuccess = MPS.MpsPrinter.Run(printData);
-                if (printSuccess && File.Exists(templateFile))
+                if (this.success != null)
                 {
-                    Inventec.Common.MSOfficePrint.MSOfficePrintProcessor printProcessor = new Inventec.Common.MSOfficePrint.MSOfficePrintProcessor(templateFile, null, null, printData.numCopy, false, "");
-
-                    if (!printProcessor.Print())
-                    {
-                        Inventec.Common.Logging.LogSystem.Warn("Call printProcessor.Print fail.");
-                    }
-                    else
-                    {
-                        if (this.checkPrintAgain)
-                        {
-                            if (this.sereServs != null && this.sereServs.Count > 0)
-                            {
-                                AutoMapper.Mapper.CreateMap<V_HIS_SERE_SERV, HIS_SERE_SERV>();
-                                var servSereApi = AutoMapper.Mapper.Map<List<HIS_SERE_SERV>>(this.sereServs);
-
-                                if (servSereApi != null && servSereApi.Count > 0)
-                                {
-                                    foreach (var item in servSereApi)
-                                    {
-                                        if (item.IS_NO_EXECUTE == 1)
-                                            item.IS_NO_EXECUTE = null;
-                                    }
-                                }
-
-                                LogSystem.Debug(LogUtil.TraceData("api cap nhat servsere truyen len", servSereApi));
-
-                                CommonParam param = new CommonParam();
-                                HisSereServPayslipSDO sdo = new HisSereServPayslipSDO();
-                                sdo.SereServs = servSereApi;
-                                sdo.Field = MOS.SDO.UpdateField.IS_NO_EXECUTE;
-                                sdo.TreatmentId = this.ServiceReqPrint.TREATMENT_ID;
-                                LogSystem.Info(LogUtil.TraceData("api cap nhat servsere truyen len", sdo));
-
-                                var updateSs = new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_SERE_SERV>>("api/HisSereServ/UpdatePayslipInfo", ApiConsumers.MosConsumer, sdo, param);
-                                LogSystem.Info(LogUtil.TraceData("api cap nhat servsere tra ve", updateSs));
-                            }
-                        }
-                    }
-
-                    if (this.success != null)
-                    {
-                        this.success(true);
-                    }
+                    this.success(printSuccess);
                 }
             }
             catch (Exception ex)
@@ -260,70 +210,155 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 );
                 LogSystem.Debug(LogUtil.TraceData("Du lieu mps000025PDO khi dang ky kham", mps000025PDO));
                 WaitingManager.Hide();
-                string templateFile = Application.StartupPath + "\\Mps000025__Temp__" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".xlsx";
-                if (File.Exists(templateFile))
+                bool printSuccess = PrintMps000025(mps000025PDO);
+                if (printSuccess && this.checkPrintAgain)
                 {
-                    try
-                    {
-                        File.Delete(templateFile);
-                    }
-                    catch { }
+                    UpdateSereServAfterPrint();
                 }
-                LogSystem.Info(LogUtil.TraceData("Du lieu templateFile truyen vao", templateFile));
 
-                PrintData printData = new PrintData(printTypeCode, fileName, mps000025PDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "", 1, templateFile);
-
-                bool printSuccess = MPS.MpsPrinter.Run(printData);
-                if (printSuccess && File.Exists(templateFile))
+                if (this.success != null)
                 {
-                    Inventec.Common.MSOfficePrint.MSOfficePrintProcessor printProcessor = new Inventec.Common.MSOfficePrint.MSOfficePrintProcessor(templateFile, null, null, printData.numCopy, false, "");
-
-                    if (!printProcessor.Print())
-                    {
-                        Inventec.Common.Logging.LogSystem.Warn("Call printProcessor.Print fail.");
-                    }
-                    else
-                    {
-                        if (this.checkPrintAgain)
-                        {
-                            if (this.sereServs != null && this.sereServs.Count > 0)
-                            {
-                                AutoMapper.Mapper.CreateMap<V_HIS_SERE_SERV, HIS_SERE_SERV>();
-                                var servSereApi = AutoMapper.Mapper.Map<List<HIS_SERE_SERV>>(this.sereServs);
-
-                                if (servSereApi != null && servSereApi.Count > 0)
-                                {
-                                    foreach (var item in servSereApi)
-                                    {
-                                        if (item.IS_NO_EXECUTE == 1)
-                                            item.IS_NO_EXECUTE = null;
-                                    }
-                                }
-
-                                LogSystem.Debug(LogUtil.TraceData("api cap nhat servsere truyen len", servSereApi));
-
-                                CommonParam param = new CommonParam();
-                                HisSereServPayslipSDO sdo = new HisSereServPayslipSDO();
-                                sdo.SereServs = servSereApi;
-                                sdo.Field = MOS.SDO.UpdateField.IS_NO_EXECUTE;
-                                sdo.TreatmentId = this.ServiceReqPrint.TREATMENT_ID;
-                                LogSystem.Info(LogUtil.TraceData("api cap nhat servsere truyen len", sdo));
-
-                                var updateSs = new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_SERE_SERV>>("api/HisSereServ/UpdatePayslipInfo", ApiConsumers.MosConsumer, sdo, param);
-                                LogSystem.Info(LogUtil.TraceData("api cap nhat servsere tra ve", updateSs));
-                            }
-                        }
-                    }
-
-                    if (this.success != null)
-                    {
-                        this.success(true);
-                    }
+                    this.success(printSuccess);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// In phiếu Mps000025 tại Kios.
+        /// Máy có MS Excel: xuất file xlsx rồi in qua Excel Interop (giữ nguyên cách in cũ).
+        /// Máy không có Excel (hoặc gọi Excel thất bại): để MPS in trực tiếp bằng FlexCel, không phụ thuộc MS Office.
+        /// </summary>
+        private bool PrintMps000025(MPS.Processor.Mps000025.PDO.Mps000025PDO mps000025PDO)
+        {
+            bool result = false;
+            string templateFile = null;
+            try
+            {
+                if (IsMsExcelAvailable())
+                {
+                    templateFile = Application.StartupPath + "\\Mps000025__Temp__" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".xlsx";
+                    DeleteTempFile(templateFile);
+                    LogSystem.Info(LogUtil.TraceData("Du lieu templateFile truyen vao", templateFile));
+
+                    PrintData printData = new PrintData(printTypeCode, fileName, mps000025PDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "", 1, templateFile);
+                    if (MPS.MpsPrinter.Run(printData) && File.Exists(templateFile))
+                    {
+                        Inventec.Common.MSOfficePrint.MSOfficePrintProcessor printProcessor = new Inventec.Common.MSOfficePrint.MSOfficePrintProcessor(templateFile, null, null, printData.numCopy, false, "");
+                        result = printProcessor.Print();
+                        if (!result)
+                        {
+                            // Print() chỉ trả false khi chưa kịp gửi lệnh in ra máy in -> fallback FlexCel không gây in trùng
+                            LogSystem.Warn("Call printProcessor.Print fail. Chuyen sang in bang FlexCel.");
+                        }
+                    }
+                    else
+                    {
+                        LogSystem.Warn("Call MpsPrinter.Run (SaveFile) fail. templateFile = " + templateFile);
+                    }
+                }
+
+                if (!result)
+                {
+                    PrintData printDataFlexCel = new PrintData(printTypeCode, fileName, mps000025PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "", 1);
+                    result = MPS.MpsPrinter.Run(printDataFlexCel);
+                    if (!result)
+                    {
+                        LogSystem.Warn("Call MpsPrinter.Run (PrintNow) fail.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogSystem.Warn(ex);
+            }
+            finally
+            {
+                DeleteTempFile(templateFile);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Kiểm tra máy trạm có đăng ký COM của MS Excel hay không.
+        /// Không có sẽ ném COMException REGDB_E_CLASSNOTREG khi new Excel.Application.
+        /// </summary>
+        private static bool IsMsExcelAvailable()
+        {
+            try
+            {
+                if (msExcelAvailable == null)
+                {
+                    msExcelAvailable = (Type.GetTypeFromProgID("Excel.Application", false) != null);
+                    LogSystem.Info("Kiem tra dang ky COM Excel.Application tren may tram: " + msExcelAvailable);
+                }
+            }
+            catch (Exception ex)
+            {
+                msExcelAvailable = false;
+                LogSystem.Warn(ex);
+            }
+            return msExcelAvailable ?? false;
+        }
+
+        private static void DeleteTempFile(string filePath)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Cập nhật lại IS_NO_EXECUTE cho các dịch vụ sau khi in lại phiếu thành công.
+        /// </summary>
+        private void UpdateSereServAfterPrint()
+        {
+            try
+            {
+                if (this.sereServs == null || this.sereServs.Count <= 0)
+                {
+                    return;
+                }
+
+                AutoMapper.Mapper.CreateMap<V_HIS_SERE_SERV, HIS_SERE_SERV>();
+                var servSereApi = AutoMapper.Mapper.Map<List<HIS_SERE_SERV>>(this.sereServs);
+
+                if (servSereApi != null && servSereApi.Count > 0)
+                {
+                    foreach (var item in servSereApi)
+                    {
+                        if (item.IS_NO_EXECUTE == 1)
+                            item.IS_NO_EXECUTE = null;
+                    }
+                }
+
+                LogSystem.Debug(LogUtil.TraceData("api cap nhat servsere truyen len", servSereApi));
+
+                CommonParam param = new CommonParam();
+                HisSereServPayslipSDO sdo = new HisSereServPayslipSDO();
+                sdo.SereServs = servSereApi;
+                sdo.Field = MOS.SDO.UpdateField.IS_NO_EXECUTE;
+                sdo.TreatmentId = this.ServiceReqPrint.TREATMENT_ID;
+                LogSystem.Info(LogUtil.TraceData("api cap nhat servsere truyen len", sdo));
+
+                var updateSs = new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_SERE_SERV>>("api/HisSereServ/UpdatePayslipInfo", ApiConsumers.MosConsumer, sdo, param);
+                LogSystem.Info(LogUtil.TraceData("api cap nhat servsere tra ve", updateSs));
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
             }
         }
     }

@@ -77,6 +77,8 @@ namespace HIS.UC.Hospitalize.Run
                     hospitalize.HisDepartmentTranHospitalizeSDO.BedRoomId = Inventec.Common.TypeConvert.Parse.ToInt64((cboBedRoom.EditValue).ToString());
                 }
                 hospitalize.HisDepartmentTranHospitalizeSDO.TreatmentTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentType.EditValue ?? "0").ToString());
+                //Ma doi tuong KCB nguoi dung xac nhan tren man hinh (tu tinh theo dien dieu tri, cho phep chon lai)
+                SetHeinPatientTypeCodeIfSupported(hospitalize.HisDepartmentTranHospitalizeSDO, GetHeinPatientTypeCodeValue());
 
                 if (chkPrintHospitalizeExam.CheckState == CheckState.Checked)
                     hospitalize.IsPrintHospitalizeExam = true;

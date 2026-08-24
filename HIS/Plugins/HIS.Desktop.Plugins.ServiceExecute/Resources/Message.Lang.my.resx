@@ -276,4 +276,10 @@
   <data name="BanCoMuonKhoiPhucLayoutMacDinh" xml:space="preserve">
     <value>မူရင်း layout ကို ပြန်လည်တည်ဆောက်လိုပါသလား? ပြုပြင်ထားသော layout ကို ဖျက်ပစ်ပါမည်။</value>
   </data>
+  <data name="ChuaCoHinhAnhTuPacs" xml:space="preserve">
+    <value>ဤဝန်ဆောင်မှုအတွက် PACS စနစ်မှ ပုံရိပ်များ မရှိသေးပါ။</value>
+  </data>
+  <data name="KhongMoDuocHinhAnhTuPacs" xml:space="preserve">
+    <value>PACS စနစ်မှ ပုံရိပ်များကို ဖွင့်၍ မရပါ။</value>
+  </data>
 </root>

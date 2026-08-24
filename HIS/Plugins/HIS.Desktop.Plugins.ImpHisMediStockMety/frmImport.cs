@@ -266,7 +266,8 @@ namespace HIS.Desktop.Plugins.ImpHisMediStockMety
                     //Mã kho
                     if (!string.IsNullOrEmpty(item.MEDI_STOCK_CODE))
                     {
-                        if (item.MEDI_STOCK_CODE.Length > 10)
+                        //Do dai ma kho: lay theo chuc nang danh muc kho (HisMediStock) - 20
+                        if (Inventec.Common.String.CountVi.Count(item.MEDI_STOCK_CODE) > 20)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã kho");
                         }
@@ -304,7 +305,8 @@ namespace HIS.Desktop.Plugins.ImpHisMediStockMety
                     //Mã kho xuất
                     if (!string.IsNullOrEmpty(item.EXP_MEDI_STOCK_CODE))
                     {
-                        if (item.MEDI_STOCK_CODE.Length > 10)
+                        //Do dai ma kho xuat: lay theo chuc nang danh muc kho (HisMediStock) - 20
+                        if (Inventec.Common.String.CountVi.Count(item.EXP_MEDI_STOCK_CODE) > 20)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã kho xuất");
                         }
@@ -326,7 +328,8 @@ namespace HIS.Desktop.Plugins.ImpHisMediStockMety
                     //Mã loại thuốc
                     if (!string.IsNullOrEmpty(item.MEDICINE_TYPE_CODE))
                     {
-                        if (item.MEDICINE_TYPE_CODE.Length > 25)
+                        //Do dai ma loai thuoc: lay theo chuc nang danh muc loai thuoc (MedicineTypeCreate) - 50
+                        if (Inventec.Common.String.CountVi.Count(item.MEDICINE_TYPE_CODE) > 50)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã loại thuốc");
                         }

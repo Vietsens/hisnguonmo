@@ -161,7 +161,8 @@ namespace HIS.Desktop.Plugins.HisService
             new CauHinhItem(18, "KHONG_BAT_BUOC_HOAN_THANH", "Không bắt buộc hoàn thành"),
             new CauHinhItem(19, "KHONG_HUONG_BHYT", "Không hưởng BHYT"),
             new CauHinhItem(20, "CHO_PHEP_GUI_SANG_PACS", "Cho phép gửi sang PACS"),
-            new CauHinhItem(21, "XU_LY_NHIEU_LAN", "Xử lý nhiều lần")
+            new CauHinhItem(21, "XU_LY_NHIEU_LAN", "Xử lý nhiều lần"),
+            new CauHinhItem(22, "CHAN_NHAP_VIEN", "Chặn nhập viện")
         };
         #endregion
 
@@ -3361,6 +3362,7 @@ namespace HIS.Desktop.Plugins.HisService
                 currentDTO.MUST_BE_CONSULTED = (short)(IsItemSelected("BAT_BUOC_BIEN_BAN_HOI_CHAN") ? 1 : 0);
                 currentDTO.IS_OUT_OF_MANAGEMENT = (short)(IsItemSelected("DICH_VU_QUAN_LY_NGOAI") ? 1 : 0);
                 currentDTO.IS_BLOCK_DEPARTMENT_TRAN = (short)(IsItemSelected("CHAN_CHUYEN_KHOA") ? 1 : 0);
+                currentDTO.IS_BLOCK_HOSPITALIZE = IsItemSelected("CHAN_NHAP_VIEN") ? (short?)1 : null;
                 currentDTO.ALLOW_SIMULTANEITY = (short)(IsItemSelected("KHONG_CHAN_THUC_HIEN_CUNG_LUC") ? 1 : 0);
                 if (IsItemSelected("KHONG_HUONG_BHYT"))
                 {
@@ -7881,6 +7883,16 @@ namespace HIS.Desktop.Plugins.HisService
                 if (data.IS_BLOCK_DEPARTMENT_TRAN == 1)
                 {
                     var item = allItems.FirstOrDefault(x => x.Code == "CHAN_CHUYEN_KHOA");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_BLOCK_HOSPITALIZE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CHAN_NHAP_VIEN");
                     if (item != null)
                     {
                         gridCheck.Selection.Add(item);

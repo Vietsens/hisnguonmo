@@ -55,6 +55,8 @@ namespace MPS.Processor.Mps000318
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 ProcessSingleKey();
                 SetBarcodeKey();
+                SetQrCodeKey();
+                SetServiceTypeAmountKey();
 
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
@@ -143,6 +145,18 @@ namespace MPS.Processor.Mps000318
 
                     dicImage.Add(Mps000318ExtendSingleKey.TRANSACTION_CODE_BAR, barcodeTransactionCode);
                 }
+
+                //Barcode mã điều trị
+                if (rdo._Transaction != null && !String.IsNullOrEmpty(rdo._Transaction.TREATMENT_CODE))
+                {
+                    dicImage.Add(Mps000318ExtendSingleKey.TREATMENT_CODE_BAR, CreateBarcode(rdo._Transaction.TREATMENT_CODE));
+                }
+
+                //Barcode mã bệnh nhân
+                if (rdo._Transaction != null && !String.IsNullOrEmpty(rdo._Transaction.TDL_PATIENT_CODE))
+                {
+                    dicImage.Add(Mps000318ExtendSingleKey.PATIENT_CODE_BAR, CreateBarcode(rdo._Transaction.TDL_PATIENT_CODE));
+                }
             }
             catch (Exception ex)
             {
@@ -150,6 +164,149 @@ namespace MPS.Processor.Mps000318
             }
         }
 
+
+
+        Inventec.Common.BarcodeLib.Barcode CreateBarcode(string code)
+        {
+            Inventec.Common.BarcodeLib.Barcode barcode = new Inventec.Common.BarcodeLib.Barcode(code);
+            barcode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
+            barcode.Width = 120;
+            barcode.Height = 40;
+            barcode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
+            barcode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
+            barcode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
+            barcode.IncludeLabel = true;
+            return barcode;
+        }
+
+        /// <summary>
+        /// Sinh anh QR ma tra cuu hoa don dien tu.
+        /// Goi SAU ProcessSingleKey() (can singleValueDictionary da nap key tu V_HIS_TRANSACTION)
+        /// va TRUOC singleTag.ProcessData().
+        /// Truong nguon rong thi khong sinh anh -> o tren bieu mau de trong, khong loi.
+        /// </summary>
+        void SetQrCodeKey()
+        {
+            try
+            {
+                //QR chua So bao mat (dung de tra cuu tren cong hoa don dien tu)
+                SetQrCodeByKeyBase("INVOICE_LOOKUP_CODE", Mps000318ExtendSingleKey.INVOICE_LOOKUP_CODE_QR);
+                //QR chua duong dan tra cuu hoa don dien tu
+                SetQrCodeByKeyBase("EINVOICE_URL", Mps000318ExtendSingleKey.EINVOICE_URL_QR);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        /// <summary>
+        /// Ma loai dich vu (HIS_SERVICE_TYPE.SERVICE_TYPE_CODE) co trong TransactionInfoSDO.
+        /// Moi ma tuong ung 3 truong tien: AMOUNT_&lt;MA&gt;_BH / _VP / _DV.
+        /// </summary>
+        static readonly string[] SERVICE_TYPE_CODES = new string[]
+        {
+            "AN", "CL", "CN", "GB", "GI", "HA", "KH", "MA",
+            "NS", "PH", "PT", "SA", "TH", "TT", "VT", "XN"
+        };
+
+        /// <summary>
+        /// Bieu HOA DON (so hoa don, kieu HCM-115/QBH-CUBA) chi thu phan DICH VU THEO YEU CAU -> CHI lay _DV.
+        /// _BH la phan BHYT chi tra (benh nhan khong nop) nen khong tinh vao phieu thu.
+        /// </summary>
+        static readonly string[] AMOUNT_SUFFIXES = new string[] { "_DV" };
+
+        /// <summary>
+        /// Sinh key so tien da thu tach theo tung loai dich vu: "Ten loai(so tien); ...".
+        /// Nguon: HIS_TRANSACTION.TRANSACTION_INFO (JSON cua MOS.SDO.TransactionInfoSDO) - backend ghi san khi tao giao dich.
+        /// Goi SAU ProcessSingleKey() va TRUOC singleTag.ProcessData().
+        /// TRANSACTION_INFO rong / JSON hong -> khong set key, o tren bieu mau de trong, khong loi.
+        /// </summary>
+        void SetServiceTypeAmountKey()
+        {
+            try
+            {
+                if (rdo._Transaction == null || String.IsNullOrWhiteSpace(rdo._Transaction.TRANSACTION_INFO))
+                    return;
+
+                MOS.SDO.TransactionInfoSDO info = null;
+                try
+                {
+                    info = Newtonsoft.Json.JsonConvert.DeserializeObject<MOS.SDO.TransactionInfoSDO>(rdo._Transaction.TRANSACTION_INFO);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                if (info == null) return;
+
+                //Danh muc loai dich vu: nap 1 lan, tra cuu O(1) theo SERVICE_TYPE_CODE
+                Dictionary<string, string> serviceTypeNameByCode = new Dictionary<string, string>();
+                var serviceTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_TYPE>();
+                if (serviceTypes != null)
+                {
+                    foreach (var st in serviceTypes)
+                    {
+                        if (st == null || String.IsNullOrWhiteSpace(st.SERVICE_TYPE_CODE)) continue;
+                        string code = st.SERVICE_TYPE_CODE.Trim().ToUpper();
+                        if (!serviceTypeNameByCode.ContainsKey(code))
+                            serviceTypeNameByCode.Add(code, st.SERVICE_TYPE_NAME);
+                    }
+                }
+
+                List<string> amountPositives = new List<string>();
+                List<string> amountAlls = new List<string>();
+                Type infoType = typeof(MOS.SDO.TransactionInfoSDO);
+
+                foreach (string code in SERVICE_TYPE_CODES)
+                {
+                    string serviceTypeName = null;
+                    if (!serviceTypeNameByCode.TryGetValue(code, out serviceTypeName) || String.IsNullOrWhiteSpace(serviceTypeName))
+                        continue;   //ma khong co trong danh muc -> bo qua
+
+                    bool hasValue = false;
+                    decimal total = GetAmountByServiceTypeCode(infoType, info, code, ref hasValue);
+                    if (!hasValue) continue;    //loai khong phat sinh trong giao dich
+
+                    string display = String.Format("{0}({1})", serviceTypeName, Inventec.Common.Number.Convert.NumberToString(total));
+                    amountAlls.Add(display);
+                    if (total > 0) amountPositives.Add(display);
+                }
+
+                SetSingleKey(new KeyValue(Mps000318ExtendSingleKey.SERVICE_TYPE_AMOUNTs, String.Join("; ", amountPositives)));
+                SetSingleKey(new KeyValue(Mps000318ExtendSingleKey.SERVICE_TYPE_AMOUNT_ALLs, String.Join("; ", amountAlls)));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tong tien 1 loai dich vu theo cac hau to trong AMOUNT_SUFFIXES.
+        /// hasValue = true khi truong tuong ung co gia tri (loai co phat sinh trong giao dich).
+        /// </summary>
+        decimal GetAmountByServiceTypeCode(Type infoType, MOS.SDO.TransactionInfoSDO info, string code, ref bool hasValue)
+        {
+            decimal total = 0;
+            try
+            {
+                string[] suffixes = AMOUNT_SUFFIXES;
+                foreach (string suffix in suffixes)
+                {
+                    var pi = infoType.GetProperty("AMOUNT_" + code + suffix);
+                    if (pi == null) continue;
+                    object value = pi.GetValue(info, null);
+                    if (value == null) continue;
+                    hasValue = true;
+                    total += Convert.ToDecimal(value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return total;
+        }
         public override string ProcessPrintLogData()
         {
             string log = "";

@@ -599,6 +599,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         /// <summary>Không kiểm tra được</summary>
         internal static string TienGiamDinhTrangThaiKhongKiemTraDuoc { get { return GetTienGiamDinhValue("TienGiamDinhTrangThaiKhongKiemTraDuoc"); } }
 
+        /// <summary>Cổng quá tải — chưa kiểm được, kiểm lại sau</summary>
+        internal static string TienGiamDinhTrangThaiCongQuaTai { get { return GetTienGiamDinhValue("TienGiamDinhTrangThaiCongQuaTai"); } }
+
+        /// <summary>Quá thời gian chờ — chưa kiểm được, kiểm lại sau</summary>
+        internal static string TienGiamDinhTrangThaiQuaThoiGianCho { get { return GetTienGiamDinhValue("TienGiamDinhTrangThaiQuaThoiGianCho"); } }
+
         /// <summary>Sai thông tin xác thực</summary>
         internal static string TienGiamDinhSaiThongTinXacThuc { get { return GetTienGiamDinhValue("TienGiamDinhSaiThongTinXacThuc"); } }
 
@@ -622,6 +628,21 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
 
         /// <summary>Đã kiểm {0} hồ sơ: {1} lỗi nghiêm trọng, {2} cảnh báo, {3} không kiểm tra được.</summary>
         internal static string TienGiamDinhTongKetKetQua { get { return GetTienGiamDinhValue("TienGiamDinhTongKetKetQua"); } }
+
+        /// <summary>Không có hồ sơ nào còn lỗi để xuất.</summary>
+        internal static string TienGiamDinhXuatKhongCoDuLieu { get { return GetTienGiamDinhValue("TienGiamDinhXuatKhongCoDuLieu"); } }
+
+        /// <summary>Đã xuất {0} dòng lỗi của {1} hồ sơ ra tệp: {2}</summary>
+        internal static string TienGiamDinhXuatThanhCong { get { return GetTienGiamDinhValue("TienGiamDinhXuatThanhCong"); } }
+
+        /// <summary>Không ghi được tệp danh sách lỗi...</summary>
+        internal static string TienGiamDinhXuatThatBai { get { return GetTienGiamDinhValue("TienGiamDinhXuatThatBai"); } }
+
+        /// <summary>Tên tệp mặc định, {0} là thời điểm xuất dạng yyyyMMddHHmmss</summary>
+        internal static string TienGiamDinhXuatTenTepMacDinh { get { return GetTienGiamDinhValue("TienGiamDinhXuatTenTepMacDinh"); } }
+
+        /// <summary>(Danh sách lỗi của hồ sơ này đã bị cắt bớt do vượt ngưỡng...)</summary>
+        internal static string TienGiamDinhXuatGhiChuCatBot { get { return GetTienGiamDinhValue("TienGiamDinhXuatGhiChuCatBot"); } }
 
         /// <summary>Đọc chuỗi hiển thị theo ngôn ngữ đang dùng. Lỗi thì trả rỗng, không làm vỡ luồng nghiệp vụ.</summary>
         private static string GetTienGiamDinhValue(string key)

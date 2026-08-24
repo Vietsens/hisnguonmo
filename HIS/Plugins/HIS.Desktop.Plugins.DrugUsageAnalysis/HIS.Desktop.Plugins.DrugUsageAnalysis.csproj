@@ -170,6 +170,9 @@
     <Compile Include="UCDrugUsageAnalysis_GridView_EventHandler.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCDrugUsageAnalysis_ViewInfo_EventHandler.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCDrugUsageAnalysis_Search_EventHandler.cs">
       <SubType>UserControl</SubType>
     </Compile>

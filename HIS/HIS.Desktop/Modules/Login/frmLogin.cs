@@ -177,18 +177,20 @@ namespace HIS.Desktop.Modules.Login
                     Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.UseRegistry(false);
               
                 var tokenData = isUseRegisTryToken ? Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.Init(param) : null;
-                if (tokenData != null && tokenData.User != null)
+                if (tokenData != null && tokenData.User != null && IsTokenAcceptedByResourceServer(tokenData))
                 {
                     GlobalVariables.IsLostToken = false;
                     GlobalVariables.isLogouter = false;
+
+                    //gán delegate để out his khi mất token. Phải gán TRƯỚC khi nạp dữ liệu để 401 trong lúc nạp
+                    //kích hoạt luồng hết phiên làm việc, thay vì bị nuốt và vào trang chủ với cache rỗng.
+                    Inventec.Common.Adapter.AdapterBase.SetDelegate(HIS.Desktop.Controls.Session.SessionManager.ActionLostToken);
+
                     this.Close();
                     frmLoadConfigSystem frmLoad = new frmLoadConfigSystem(tokenData, moduleLink);
                     frmLoad.ShowDialog();
                     //Xóa session khác đã đăng nhập trước đó.
                     RemoveOtherSession();
-
-                    //gán delegate để out his khi mất token
-                    Inventec.Common.Adapter.AdapterBase.SetDelegate(HIS.Desktop.Controls.Session.SessionManager.ActionLostToken);
 
                     //Vao trang chu
                     frmMain fMain = new frmMain();
@@ -203,7 +205,24 @@ namespace HIS.Desktop.Modules.Login
                 }
                 else
                 {
-                    LogSystem.Info("Khong co du lieu token cua phien lam viec truoc, nguoi dung vao trang dang nhap");
+                    if (tokenData != null && tokenData.User != null)
+                    {
+                        //Token cua phien lam viec truoc van con trong registry nhung resource server tu choi (401)
+                        //=> xoa token trong registry (Logout tu goi ClearRegistry) va bat nguoi dung dang nhap lai
+                        LogSystem.Warn("Token cua phien lam viec truoc khong con hieu luc tren resource server, xoa token va yeu cau dang nhap lai");
+                        try
+                        {
+                            Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.Logout(new CommonParam());
+                        }
+                        catch (Exception exLogout)
+                        {
+                            LogSystem.Warn(exLogout);
+                        }
+                    }
+                    else
+                    {
+                        LogSystem.Info("Khong co du lieu token cua phien lam viec truoc, nguoi dung vao trang dang nhap");
+                    }
                     //Neu token khong ton tai hoac khong hop le thi vao dang nhap
                     InitUCLogin();
                     LoadOnFocus();
@@ -213,6 +232,40 @@ namespace HIS.Desktop.Modules.Login
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Kiem tra token lay tu registry (phien lam viec truoc) co con duoc resource server chap nhan hay khong.
+        /// ClientTokenManager.Init chi hoi token server nen token da bi huy phien o MOS/SDA/LIS van duoc coi la hop le
+        /// => vao thang trang chu roi toan bo api tra ve 401, cache rong.
+        /// </summary>
+        private bool IsTokenAcceptedByResourceServer(Inventec.Token.Core.TokenData tokenData)
+        {
+            bool result = false;
+            try
+            {
+                if (tokenData == null || String.IsNullOrEmpty(tokenData.TokenCode) || tokenData.User == null)
+                    return false;
+
+                //Gan token cho cac consumer truoc khi goi api kiem tra
+                ApiConsumers.SetConsunmer(tokenData.TokenCode);
+
+                CommonParam param = new CommonParam();
+                ACS.SDO.AcsTokenLoginSDO tokenLoginSDO = new ACS.SDO.AcsTokenLoginSDO();
+                tokenLoginSDO.LOGIN_NAME = tokenData.User.LoginName;
+                tokenLoginSDO.APPLICATION_CODE = GlobalVariables.APPLICATION_CODE;
+
+                var authorizeSDO = new BackendAdapter(param).Get<ACS.SDO.AcsAuthorizeSDO>(AcsRequestUriStore.ACS_TOKEN__AUTHORIZE, ApiConsumers.AcsConsumer, tokenLoginSDO, param);
+                result = (authorizeSDO != null);
+                if (!result)
+                    LogSystem.Warn("Kiem tra token phien lam viec truoc that bai." + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                result = false;
+            }
+            return result;
         }
 
         private void InitUCLogin()
@@ -441,6 +494,7 @@ namespace HIS.Desktop.Modules.Login
             try
             {
                 CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Error("11111111111111111");
                 HisBranchFilter branchFilter = new MOS.Filter.HisBranchFilter();
                 branchFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 results = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_BRANCH>>(HisRequestUriStore.HIS_BRANCH_GET, ApiConsumers.MosConsumer, branchFilter, param);
@@ -527,13 +581,15 @@ namespace HIS.Desktop.Modules.Login
                 watch.Stop();
                 Inventec.Common.Logging.LogAction.Info(String.Format("{0}____{1}____{2}____{3}____{4}____{5}____{6}____{7}", GlobalVariables.APPLICATION_CODE, GlobalString.VersionApp, (double)((double)watch.ElapsedMilliseconds / (double)1000), "HIS.Desktop", "LoginApp:CallApi", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), StringUtil.GetIpLocal(), StringUtil.CustomerCode));
                 this.Hide();
+
+                //gán delegate để out his khi mất token. Gán trước khi nạp dữ liệu để 401 trong lúc nạp
+                //kích hoạt luồng hết phiên làm việc thay vì vào trang chủ với cache rỗng.
+                Inventec.Common.Adapter.AdapterBase.SetDelegate(HIS.Desktop.Controls.Session.SessionManager.ActionLostToken);
+
                 frmLoadConfigSystem frm = new frmLoadConfigSystem(tokenData, moduleLink,  SuccessData);
                 frm.ShowDialog();
                 //Xóa session khác đã đăng nhập trước đó.
                 RemoveOtherSession();
-
-                //gán delegate để out his khi mất token
-                Inventec.Common.Adapter.AdapterBase.SetDelegate(HIS.Desktop.Controls.Session.SessionManager.ActionLostToken);
 
                 //Vao trang chu
                 frmMain fMain = new frmMain();

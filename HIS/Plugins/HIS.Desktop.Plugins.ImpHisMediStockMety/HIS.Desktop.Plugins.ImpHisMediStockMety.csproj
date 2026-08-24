@@ -51,6 +51,9 @@
     <Reference Include="Inventec.Common.Mapper">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.String.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>

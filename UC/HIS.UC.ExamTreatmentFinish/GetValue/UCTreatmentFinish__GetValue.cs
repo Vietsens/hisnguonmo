@@ -157,6 +157,9 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                     AutoMapper.Mapper.CreateMap<HisTreatmentFinishSDO, HisTreatmentFinishSDO>();
                     ExamTreatmentFinishSDO = AutoMapper.Mapper.Map<HisTreatmentFinishSDO, HisTreatmentFinishSDO>(currentTreatmentFinishSDO);
                     ExamTreatmentFinishSDO.NumOrderBlockId = currentTreatmentFinishSDO.NumOrderBlockId;
+                    //Ma giu cho phai di kem, thieu no thi may chu coi nhu chua giu (viec 54282)
+                    ExamTreatmentFinishSDO.NumOrderIssueId = currentTreatmentFinishSDO.NumOrderIssueId;
+                    ExamTreatmentFinishSDO.NumOrder = currentTreatmentFinishSDO.NumOrder;
                     if (cboTreatmentEndTypeExt.EditValue != null)
                     {
                         ExamTreatmentFinishSDO.TreatmentEndTypeExtId = Inventec.Common.TypeConvert.Parse.ToInt64(cboTreatmentEndTypeExt.EditValue.ToString());

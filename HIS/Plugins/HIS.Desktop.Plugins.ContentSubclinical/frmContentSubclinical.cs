@@ -83,9 +83,34 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         // Chế độ headless theo serviceIds: ép danh sách "đã chọn" thay cho GetListCheck (không xét trạng thái tích).
         internal List<TreeSereServADO> overrideChecks = null;
 
+        // Chế độ CHỈ XEM kết quả CLS (mở từ ngoài tờ điều trị, vd nút "Kết quả CLS" màn Buồng bệnh):
+        // ẩn phần tích chọn/chèn kết quả, chỉ phục vụ tra cứu. Mặc định false => luồng cũ giữ nguyên.
+        bool isViewOnly = false;
+        // Nút "Đóng" chỉ tạo runtime khi ở chế độ chỉ xem.
+        DevExpress.XtraEditors.SimpleButton btnClose;
+
         public frmContentSubclinical()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Constructor cho chế độ CHỈ XEM: không có DelegateSelectData vì không trả dữ liệu về plugin gọi.
+        /// </summary>
+        public frmContentSubclinical(Inventec.Desktop.Common.Modules.Module currentModule, long _treatmentId, bool _isViewOnly)
+            : base(currentModule)
+        {
+            InitializeComponent();
+            try
+            {
+                this.currentModule = currentModule;
+                this.treatmentId = _treatmentId;
+                this.isViewOnly = _isViewOnly;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         public frmContentSubclinical(Inventec.Desktop.Common.Modules.Module currentModule, long _treatmentId, HIS.Desktop.Common.DelegateSelectData _delegateSelectData, bool returnObject)
@@ -227,6 +252,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 {
                     this.Text = this.currentModule.text;
                 }
+                ApplyViewOnlyMode();
                 chkThisTreatment.Checked = true;
                 style = NumberStyles.Any;
                 ShowResultWhenReqComplete = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete");
@@ -236,6 +262,89 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chế độ CHỈ XEM: ẩn toàn bộ phần "chọn để chèn vào tờ điều trị" (checkbox trên cây, nút Chọn,
+        /// 6 tuỳ chọn định dạng chèn), vô hiệu Ctrl+S, thêm nút Đóng. Giữ nguyên phần đọc:
+        /// cây kết quả, bộ lọc, in kết quả. Không làm gì khi isViewOnly = false (luồng cũ giữ nguyên).
+        /// </summary>
+        private void ApplyViewOnlyMode()
+        {
+            try
+            {
+                if (!this.isViewOnly) return;
+
+                // Ẩn checkbox tích chọn trên cây kết quả
+                this.treeListServiceReq.OptionsView.ShowCheckBoxes = false;
+
+                // Vô hiệu + ẩn phím tắt Ctrl+S (bar item)
+                this.barButtonItemSave.Enabled = false;
+                this.barButtonItemSave.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+
+                // Ẩn nút "Chọn (Ctrl S)" + 6 tuỳ chọn định dạng khi chèn (layout tự dồn, không chừa khoảng trống)
+                this.layoutControlItem14.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;         // btnSave "Chọn (Ctrl S)"
+                this.layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;         // chkAssign "Hiển thị ngày chỉ định"
+                this.layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;         // chkServiceType "Hiển thị loại dịch vụ"
+                this.layoutControlItem13.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;         // chkLineBreak "Xuống dòng"
+                this.layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;         // chkGetInfo "Lấy cả ghi chú, nhận xét, kết luận"
+                this.lciJustSelectIndexImportant.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; // "Chỉ chọn các chỉ số XN quan trọng"
+                this.lciNotSelectSurg.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;            // "Không chọn thủ thuật"
+
+                // Tiêu đề form theo chế độ chỉ xem (đè lại tên module đã gán ở Load)
+                this.Text = Inventec.Common.Resource.Get.Value("frmContentSubclinical.Text.ViewOnly", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                // Thêm nút "Đóng" cạnh nút "In kết quả" (tạo runtime — chế độ cũ không có nút này)
+                this.btnClose = new DevExpress.XtraEditors.SimpleButton();
+                this.btnClose.Name = "btnClose";
+                this.btnClose.Text = Inventec.Common.Resource.Get.Value("frmContentSubclinical.btnClose.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnClose.Click += new EventHandler(this.btnClose_Click);
+                this.layoutControl1.BeginUpdate();
+                try
+                {
+                    // Khóa bề rộng nút "In kết quả" (chiều cao 0 = theo hàng) — không để nút bị kéo giãn
+                    // chiếm toàn bộ khoảng trống do các item vừa ẩn nhả ra.
+                    this.layoutControlItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                    this.layoutControlItem3.MinSize = new Size(90, 0);
+                    this.layoutControlItem3.MaxSize = new Size(90, 0);
+
+                    // Khoảng trống co giãn bên TRÁI nút In — hút hết phần dư, đẩy nút In + Đóng gọn về phải.
+                    DevExpress.XtraLayout.EmptySpaceItem esiViewOnly = new DevExpress.XtraLayout.EmptySpaceItem();
+                    esiViewOnly.Name = "esiViewOnly";
+                    esiViewOnly.AllowHotTrack = false;
+                    esiViewOnly.TextSize = new Size(0, 0);
+                    this.layoutControlGroup1.AddItem(esiViewOnly);
+                    esiViewOnly.Move(this.layoutControlItem3, DevExpress.XtraLayout.Utils.InsertType.Left);
+
+                    DevExpress.XtraLayout.LayoutControlItem lciClose = new DevExpress.XtraLayout.LayoutControlItem(this.layoutControl1, this.btnClose);
+                    lciClose.Name = "lciClose";
+                    lciClose.TextVisible = false;
+                    lciClose.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                    lciClose.MinSize = new Size(79, 0);
+                    lciClose.MaxSize = new Size(79, 0);
+                    lciClose.Move(this.layoutControlItem3, DevExpress.XtraLayout.Utils.InsertType.Right);
+                }
+                finally
+                {
+                    this.layoutControl1.EndUpdate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -562,7 +671,9 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         {
             try
             {
-                if (this._DelegateSelectData != null)           
+                // Chế độ chỉ xem: không có chọn/chèn (an toàn kép — nút và Ctrl+S đã ẩn/vô hiệu).
+                if (this.isViewOnly) return;
+                if (this._DelegateSelectData != null)
                 {
                     if (this.isReturnObject) 
                     {

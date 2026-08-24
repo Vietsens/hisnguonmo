@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -236,6 +236,9 @@
   </data>
   <data name="ThongBao" xml:space="preserve">
     <value>Notify</value>
+  </data>
+  <data name="TichManTinhPhaiNhapTruongBatBuoc" xml:space="preserve">
+    <value>"Chronic" is checked, you must enter: {0}.</value>
   </data>
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Required fields have not been entered</value>

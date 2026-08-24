@@ -116,10 +116,10 @@ namespace HIS.Desktop.Common.BankQrCode
                     }
                 }
                 #endregion
-                #region "MBB", "VCB", "CTG", "NAPAS", "SHB", "DLTW"
+                #region "MBB", "VCB", "CTG", "NAPAS", "SHB", "DLTW", "TCB"
                 else
                 {
-                    List<string> banks = new List<string>() { "MBB", "VCB", "CTG", "NAPAS", "SHB", "VPB", "DLTW" };
+                    List<string> banks = new List<string>() { "MBB", "VCB", "CTG", "NAPAS", "SHB", "VPB", "DLTW", "TCB" };
                     if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count > 0 && banks.Exists(o => configValue.Exists(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", o)) > -1)))
                     {
                         if (configValue.Count == 1)
@@ -135,6 +135,7 @@ namespace HIS.Desktop.Common.BankQrCode
                             else if (configValue[0].KEY.Contains("SHB")) tdo.Bank = "SHB";
                             else if (configValue[0].KEY.Contains("VPB")) tdo.Bank = "VPB";
                             else if (configValue[0].KEY.Contains("DLTW")) tdo.Bank = "DLTW";
+                            else if (configValue[0].KEY.Contains("TCB")) tdo.Bank = "TCB";
                             else tdo.Bank = "UNKNOWN";
 
                             tdo.BankConfig = configValue[0].VALUE;
@@ -190,6 +191,18 @@ namespace HIS.Desktop.Common.BankQrCode
                             {
                                 ProvinceType bankType = ProvinceType.BIDV;
                                 string key = GetTemplateKey(cfg.KEY, ref bankType);
+
+                                // GetTemplateKey returns null for a bank that has no template key mapping.
+                                // Writing result[null] throws and Task.WaitAll then aborts every other bank,
+                                // so the whole print loses its QR image and payment amount.
+                                // Skip the unsupported config instead and let the supported ones through.
+                                if (String.IsNullOrWhiteSpace(key))
+                                {
+                                    Inventec.Common.Logging.LogSystem.Warn(
+                                        "QrCodeProcessor.CreateQrImage: bo qua cau hinh ngan hang khong duoc ho tro. KEY=" + cfg.KEY);
+                                    return;
+                                }
+
                                 BankQrCodeInputADO inputData = new BankQrCodeInputADO();
                                 inputData.Amount = data.AMOUNT;
                                 inputData.TransactionCode = data.TRANS_REQ_CODE;

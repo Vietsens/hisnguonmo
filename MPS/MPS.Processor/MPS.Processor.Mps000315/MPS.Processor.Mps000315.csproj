@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\KskExamAdo.cs" />
     <Compile Include="ADO\SereServResultAdo.cs" />
     <Compile Include="ADO\ServiceReqAdo.cs" />
     <Compile Include="ADO\TreatmentAdo.cs" />

@@ -76,6 +76,9 @@
   <ItemGroup>
     <Compile Include="Mps000112ExtendSingleKey.cs" />
     <Compile Include="Mps000112Processor.cs" />
+    <Compile Include="Mps000112ServiceADO.cs" />
+    <Compile Include="Mps000112PayformADO.cs" />
+    <Compile Include="Mps000112DiscountADO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

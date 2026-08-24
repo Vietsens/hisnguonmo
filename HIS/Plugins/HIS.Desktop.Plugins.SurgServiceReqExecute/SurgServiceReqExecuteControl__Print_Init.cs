@@ -1756,6 +1756,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 var sereServFollows = new BackendAdapter(new CommonParam())
                    .Get<List<V_HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, filters, new CommonParam());
 
+                // Giuong benh moi nhat cua lan dieu tri — phuc vu key Phong/Giuong tren mau in moi
+                V_HIS_BED_LOG bedLog = GetLastBedLogForMps000324(param);
+
+                // Danh muc vai tro kip mo — mau in lay ten vai tro tu bang, khong hardcode ma vai
+                List<HIS_EXECUTE_ROLE> executeRoles = GetExecuteRolesForMps000324(param);
+
                 WaitingManager.Hide();
                 MPS.Processor.Mps000324.PDO.Mps000324PDO rdo = new MPS.Processor.Mps000324.PDO.Mps000324PDO(
                     currentPatient,
@@ -1768,7 +1774,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     vEkipUsers,
                     BackendDataWorker.Get<HIS_SERVICE_TYPE>(),
                     BackendDataWorker.Get<HIS_SERVICE_UNIT>(),
-                    sereServFollows ?? new List<V_HIS_SERE_SERV>()
+                    sereServFollows ?? new List<V_HIS_SERE_SERV>(),
+                    bedLog,
+                    executeRoles,
+                    BackendDataWorker.Get<HIS_PATIENT_TYPE>()
                     );
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(vhisTreatment != null ? vhisTreatment.TREATMENT_CODE : "", printTypeCode, Module != null ? Module.RoomId : 0);
@@ -1779,6 +1788,74 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 WaitingManager.Hide();
             }
+        }
+
+        /// <summary>
+        /// Lay ban ghi giuong benh moi nhat cua lan dieu tri hien tai (Mps000324).
+        /// Tra ve null khi khong tim thay — mau in se de trong o Phong/Giuong.
+        /// </summary>
+        private V_HIS_BED_LOG GetLastBedLogForMps000324(CommonParam param)
+        {
+            V_HIS_BED_LOG result = null;
+            try
+            {
+                if (serviceReq == null) return result;
+
+                MOS.Filter.HisTreatmentBedRoomFilter treatmentBedRoomFilter = new HisTreatmentBedRoomFilter();
+                treatmentBedRoomFilter.TREATMENT_ID = serviceReq.TREATMENT_ID;
+                var treatmentBedRooms = new BackendAdapter(param)
+                    .Get<List<HIS_TREATMENT_BED_ROOM>>("api/HisTreatmentBedRoom/Get", ApiConsumers.MosConsumer, treatmentBedRoomFilter, param);
+
+                if (treatmentBedRooms == null || treatmentBedRooms.Count == 0) return result;
+
+                MOS.Filter.HisBedLogViewFilter bedLogFilter = new HisBedLogViewFilter();
+                bedLogFilter.TREATMENT_BED_ROOM_IDs = treatmentBedRooms.Select(o => o.ID).Distinct().ToList();
+                var bedLogs = new BackendAdapter(param)
+                    .Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumers.MosConsumer, bedLogFilter, param);
+
+                if (bedLogs != null && bedLogs.Count > 0)
+                {
+                    result = bedLogs.OrderByDescending(o => o.START_TIME).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Lay danh muc vai tro kip mo (HIS_EXECUTE_ROLE) cho Mps000324.
+        /// Uu tien cache RAM, chua co thi goi API va nap lai vao cache — cung pattern voi FormEkipUser.
+        /// </summary>
+        private List<HIS_EXECUTE_ROLE> GetExecuteRolesForMps000324(CommonParam param)
+        {
+            List<HIS_EXECUTE_ROLE> result = null;
+            try
+            {
+                if (BackendDataWorker.IsExistsKey<HIS_EXECUTE_ROLE>())
+                {
+                    result = BackendDataWorker.Get<HIS_EXECUTE_ROLE>();
+                }
+                else
+                {
+                    MOS.Filter.HisExecuteRoleFilter filter = new HisExecuteRoleFilter();
+                    result = new BackendAdapter(param)
+                        .Get<List<HIS_EXECUTE_ROLE>>("api/HisExecuteRole/Get", ApiConsumers.MosConsumer, filter, param);
+
+                    if (result != null)
+                    {
+                        BackendDataWorker.UpdateToRam(typeof(HIS_EXECUTE_ROLE), result,
+                            long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result ?? new List<HIS_EXECUTE_ROLE>();
         }
 
         public string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)

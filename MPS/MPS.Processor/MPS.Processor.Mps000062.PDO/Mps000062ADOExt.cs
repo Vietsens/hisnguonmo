@@ -882,6 +882,101 @@ namespace MPS.Processor.Mps000062.PDO
         public long BLOOD_TYPE_ID { get; set; }
         public string BLOOD_TYPE_NAME { get; set; }
         public decimal? DD_AMOUNT { get; set; }
+        public decimal? VOLUME { get; set; }
+        public decimal? TRANSFUSION_SPEED { get; set; }
+        public string DOSAGE { get; set; }
+        public string TUTORIAL { get; set; }
+
+        //máu: các chuỗi sẵn sàng in, dùng cho mẫu in Excel (băng Bloods) để mẫu chỉ việc thả tag.
+        //Đường in .repx không dùng mấy property này, nó ghép chuỗi BLOOD___DATA trong processor.
+        public string BLOOD_ABO_RH_STR
+        {
+            get
+            {
+                string result = "";
+                try
+                {
+                    if (!String.IsNullOrEmpty(this.BLOOD_ABO_CODE))
+                    {
+                        result = "(" + this.BLOOD_ABO_CODE + (this.BLOOD_RH_CODE ?? "") + ")";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+                return result;
+            }
+        }
+
+        public string VOLUME_STR
+        {
+            get
+            {
+                string result = "";
+                try
+                {
+                    if (this.VOLUME.HasValue && this.VOLUME.Value > 0)
+                    {
+                        result = this.VOLUME.Value.ToString("0.##") + " ml";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+                return result;
+            }
+        }
+
+        public string SPEED_STR
+        {
+            get
+            {
+                string result = "";
+                try
+                {
+                    if (this.TRANSFUSION_SPEED.HasValue && this.TRANSFUSION_SPEED.Value > 0)
+                    {
+                        result = this.TRANSFUSION_SPEED.Value.ToString("0.##") + " giọt/phút";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+                return result;
+            }
+        }
+
+        public string USAGE_STR
+        {
+            get
+            {
+                string result = "";
+                try
+                {
+                    if (!String.IsNullOrEmpty(this.DOSAGE))
+                    {
+                        result += this.DOSAGE;
+                    }
+                    if (!String.IsNullOrEmpty(this.TUTORIAL))
+                    {
+                        result += (String.IsNullOrEmpty(result) ? "" : " ") + this.TUTORIAL;
+                    }
+                    if (!String.IsNullOrEmpty(this.SPEED_STR))
+                    {
+                        result += (String.IsNullOrEmpty(result) ? "" : " ") + this.SPEED_STR;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+                return result;
+            }
+        }
+
         public long EXP_MEST_ID { get; set; }
         public string EXP_MEST_SUB_CODE { get; set; }
         public string EXP_MEST_SUB_CODE_2 { get; set; }
@@ -937,6 +1032,14 @@ namespace MPS.Processor.Mps000062.PDO
                     this.BLOOD_TYPE_ID = data.BLOOD_TYPE_ID;
                     this.BLOOD_TYPE_NAME = data.BLOOD_TYPE_NAME;
                     this.DD_AMOUNT = data.DD_AMOUNT;
+                    //TODO: mo lai dong duoi khi view V_HIS_EXP_MEST_BLTY_REQ_2 da co cot VOLUME
+                    //(chay buoc 3 trong DDL_KeDonMau_LieuDungCachDung.sql: them BLTY.BLOOD_VOLUME_ID, BVE.VOLUME
+                    // vao SELECT cua view, roi Update Model). Tam thoi VOLUME de null nen VOLUME_STR tra ve chuoi rong,
+                    // to dieu tri khong in dung tich; lieu dung / cach dung / toc do truyen van in binh thuong.
+                    //this.VOLUME = data.VOLUME;
+                    this.TRANSFUSION_SPEED = data.TRANSFUSION_SPEED;
+                    this.DOSAGE = data.DOSAGE;
+                    this.TUTORIAL = data.TUTORIAL;
                     this.EXP_MEST_ID = data.EXP_MEST_ID;
                     this.EXP_MEST_SUB_CODE = data.EXP_MEST_SUB_CODE;
                     this.EXP_MEST_SUB_CODE_2 = data.EXP_MEST_SUB_CODE_2;

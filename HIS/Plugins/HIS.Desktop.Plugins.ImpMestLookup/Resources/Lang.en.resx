@@ -246,6 +246,21 @@
   <data name="frmImpMestLookup.btnReset.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="frmImpMestLookup.lblDocumentNumberSearch.Text" xml:space="preserve">
+    <value>Invoice number:</value>
+  </data>
+  <data name="frmImpMestSelect.Text" xml:space="preserve">
+    <value>Select import slip</value>
+  </data>
+  <data name="frmImpMestSelect.btnSelect.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="frmImpMestSelect.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmImpMestSelect.gridColumnDocumentPrice.Caption" xml:space="preserve">
+    <value>Invoice amount</value>
+  </data>
   <data name="HeThongTBCuaSoThongBaoBanCoMuonThucNhapDuLieuKhong" xml:space="preserve">
     <value>Are you sure to import medicine/material?</value>
   </data>

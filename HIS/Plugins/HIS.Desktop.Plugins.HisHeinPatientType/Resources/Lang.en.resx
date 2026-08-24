@@ -156,8 +156,11 @@
   <data name="frmHisHeinPatientType.lciMediOrgCodes.Text" xml:space="preserve">
     <value>Initial medi org codes:</value>
   </data>
-  <data name="frmHisHeinPatientType.lciAllMediOrg.Text" xml:space="preserve">
-    <value>All:</value>
+  <data name="frmHisHeinPatientType.cboMediOrgCodes.AllText" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="frmHisHeinPatientType.cboMediOrgCodes.TooLongWarning" xml:space="preserve">
+    <value>The list of initial medical org codes is too long. Please select fewer items, or tick the select-all box in the list header to apply to every organization.</value>
   </data>
   <data name="frmHisHeinPatientType.gridColumnMediOrgCodes.Caption" xml:space="preserve">
     <value>Initial medical org codes</value>

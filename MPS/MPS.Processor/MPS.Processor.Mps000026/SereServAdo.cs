@@ -48,6 +48,9 @@ namespace MPS.Processor.Mps000026
         public string SERVICE_CONDITION_CODE { get; set; }
         public string SERVICE_CONDITION_NAME { get; set; }
 
+        public string TEST_SAMPLE_TYPE_CODE { get; set; }
+        public string TEST_SAMPLE_TYPE_NAME { get; set; }
+
         public long SERVICE_PARENT_ID { get; set; }
 
         public SereServAdo(V_HIS_SERE_SERV data)

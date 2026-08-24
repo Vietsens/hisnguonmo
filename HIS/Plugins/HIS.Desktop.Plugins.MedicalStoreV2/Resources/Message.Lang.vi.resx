@@ -156,4 +156,19 @@
   <data name="XuLyThatBai" xml:space="preserve">
     <value>Xử lý thất bại</value>
   </data>
+  <data name="TatCa" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="DaKiemTra" xml:space="preserve">
+    <value>Đã kiểm tra</value>
+  </data>
+  <data name="ChuaKiemTra" xml:space="preserve">
+    <value>Chưa kiểm tra</value>
+  </data>
+  <data name="XacNhanDanhDauDaKiemTra" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn đánh dấu hồ sơ đã kiểm tra? Thao tác này không hoàn tác được.</value>
+  </data>
+  <data name="KhongDuQuyenDanhDauDaKiemTra" xml:space="preserve">
+    <value>Bạn không có quyền đánh dấu hồ sơ đã kiểm tra.</value>
+  </data>
 </root>

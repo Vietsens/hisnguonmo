@@ -196,6 +196,9 @@
     <Compile Include="Load\frmDepositRequest_Save.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Load\frmDepositRequest_TransferAmount.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Load\frmDepositRequest_SetDefault.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -208,6 +211,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="Validtion\SpinTranferAmountValidationRule.cs" />
     <Compile Include="UCDepositRequest.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -216,7 +220,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />

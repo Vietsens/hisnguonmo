@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
         int positionHandleControl = -1;
         internal bool IsAllowDuplicateDocument = false;
         /// <summary>
-        /// true = chế độ Tra cứu (mở từ menu, người dùng nhập Mã nhập).
+        /// true = chế độ Tra cứu (mở từ menu, người dùng nhập Mã nhập hoặc Số hóa đơn).
         /// false = chế độ Xem chi tiết (mở từ chức năng khác, có truyền sẵn phiếu nhập).
         /// </summary>
         bool isLookupMode = false;
@@ -136,6 +136,7 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
         {
             try
             {
+                txtDocumentNumberSearch.Focus();
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
                 SetIcon();
@@ -153,9 +154,9 @@ namespace HIS.Desktop.Plugins.ImpMestLookup.ImpMestLookup
                 }
                 else
                 {
-                    // Chế độ tra cứu: để trống, focus ô Mã nhập
+                    // Chế độ tra cứu: để trống, focus ô tra cứu đầu tiên (Mã nhập)
                     ClearAllData();
-                    FocusImpMestCode();
+                    FocusSearchInput();
                 }
                 WaitingManager.Hide();
             }

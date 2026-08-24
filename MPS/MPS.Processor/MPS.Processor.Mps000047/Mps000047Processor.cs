@@ -109,7 +109,7 @@ namespace MPS.Processor.Mps000047
                     SetBarcodeKey();
                     SetSingleKey();
 
-                    //ghi đè PrintLogData và UniqueCodeData
+                    //ghi đè PrintLogData và UniqueCodeData 
                     ProcessPrintLogData();
                     //lấy số lần in
                     SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
@@ -118,12 +118,10 @@ namespace MPS.Processor.Mps000047
                     singleTag.ProcessData(store, singleValueDictionary);
                     barCodeTag.ProcessData(store, dicImage);
 
-                    item.ExpMestAggregatePrintADOs = item.ExpMestAggregatePrintADOs.OrderBy(o => o.PATIENT_CODE).ToList();
-
+                    //Ca 2 danh sach deu da duoc sap xep trong PrepareData:
+                    //phong chi dinh (giong luoi chon phong grdRoom) -> buong -> giuong -> ten benh nhan. 
+                    //Khong sap xep lai o day de khong pha vo thu tu do.
                     objectTag.AddObjectData(store, "Patients", item.ExpMestAggregatePrintADOs);
-
-
-                    item.ExpMestAggregateReqRoomPrintADOs = item.ExpMestAggregateReqRoomPrintADOs.OrderBy(o => o.PATIENT_CODE).ToList();
 
                     objectTag.AddObjectData(store, "PatientRooms", item.ExpMestAggregateReqRoomPrintADOs);
                     result = true;
@@ -286,12 +284,140 @@ namespace MPS.Processor.Mps000047
 
         }
 
+        /// <summary>
+        /// Lay thu tu cac phong chi dinh dung nhu danh sach hien thi tren luoi chon phong (grdRoom)
+        /// cua chuc nang HIS.Desktop.Plugins.AggrExpMestPrintFilter: theo thu tu V_HIS_ROOM trong cache,
+        /// chi giu lai cac phong chi dinh co trong du lieu in.
+        /// </summary>
+        Dictionary<long, int> GetReqRoomOrders(List<Mps000047ADO> medicineExpmestTypeADOs)
+        {
+            Dictionary<long, int> result = new Dictionary<long, int>();
+            try
+            {
+                List<long> reqRoomIds = medicineExpmestTypeADOs.Select(o => o.REQ_ROOM_ID).Distinct().ToList();
+                var rooms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>()
+                    .Where(o => reqRoomIds.Contains(o.ID)).ToList();
+                foreach (var room in rooms)
+                {
+                    if (!result.ContainsKey(room.ID))
+                    {
+                        result.Add(room.ID, result.Count);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Thu tu phong cua 1 benh nhan. Benh nhan co thuoc/vat tu cua nhieu phong chi dinh
+        /// thi lay phong dung dau trong luoi chon phong. Phong khong xac dinh duoc thi xep cuoi. 
+        /// </summary>
+        int GetReqRoomOrder(Dictionary<long, int> reqRoomOrders, List<Mps000047ADO> trains)
+        {
+            int result = int.MaxValue;
+            try
+            {
+                foreach (var train in trains)
+                {
+                    int roomOrder = reqRoomOrders.ContainsKey(train.REQ_ROOM_ID) ? reqRoomOrders[train.REQ_ROOM_ID] : int.MaxValue;
+                    if (roomOrder < result)
+                    {
+                        result = roomOrder;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Khoa sap xep tu nhien: cac cum chu so duoc dem 0 cho bang do dai
+        /// de "Buong 2" dung truoc "Buong 10" (sap xep chuoi thuong thi "10" dung truoc "2").
+        /// Gia tri rong luon xep cuoi.
+        /// </summary>
+        static string GetNaturalOrderKey(string value)
+        {
+            string result = "";
+            try
+            {
+                if (String.IsNullOrWhiteSpace(value))
+                    return "￿";
+
+                StringBuilder builder = new StringBuilder();
+                int index = 0;
+                while (index < value.Length)
+                {
+                    if (Char.IsDigit(value[index]))
+                    {
+                        int start = index;
+                        while (index < value.Length && Char.IsDigit(value[index]))
+                        {
+                            index++;
+                        }
+                        builder.Append(value.Substring(start, index - start).TrimStart('0').PadLeft(12, '0'));
+                    }
+                    else
+                    {
+                        builder.Append(Char.ToUpperInvariant(value[index]));
+                        index++;
+                    }
+                }
+                result = builder.ToString();
+            }
+            catch (Exception ex)
+            {
+                result = value ?? "";
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sap xep danh sach benh nhan hien thi tren bieu in:
+        /// phong chi dinh (dung thu tu luoi chon phong grdRoom) -> buong -> giuong -> ten -> ma benh nhan.
+        /// </summary>
+        List<ExpMestAggregatePrintADO> SortPatientPrints(List<ExpMestAggregatePrintADO> trainPrints, List<int> roomOrders)
+        {
+            List<ExpMestAggregatePrintADO> result = trainPrints;
+            try
+            {
+                result = trainPrints
+                    .Select((o, i) => new { PRINT_ADO = o, ROOM_ORDER = (i < roomOrders.Count ? roomOrders[i] : int.MaxValue) })
+                    .OrderBy(o => o.ROOM_ORDER)
+                    .ThenBy(o => GetNaturalOrderKey(o.PRINT_ADO.BED_ROOM_NAMEs), StringComparer.Ordinal)
+                    .ThenBy(o => GetNaturalOrderKey(o.PRINT_ADO.BED_CODE), StringComparer.Ordinal)
+                    .ThenBy(o => GetNaturalOrderKey(o.PRINT_ADO.BED_NAME), StringComparer.Ordinal)
+                    .ThenBy(o => o.PRINT_ADO.VIR_PATIENT_NAME)
+                    .ThenBy(o => o.PRINT_ADO.PATIENT_CODE)
+                    .Select(o => o.PRINT_ADO)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                result = trainPrints;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+
         List<ExpMestAggregatePrintByPageADO> PrepareData(List<Mps000047ADO> medicineExpmestTypeADOs)
         {
             result = null;
             if (medicineExpmestTypeADOs != null && medicineExpmestTypeADOs.Count > 0)
             {
                 result = new List<ExpMestAggregatePrintByPageADO>();
+                Dictionary<long, int> reqRoomOrders = GetReqRoomOrders(medicineExpmestTypeADOs);
                 List<long> distinctDates = medicineExpmestTypeADOs.OrderBy(o => o.MEDICINE_TYPE_NAME)
                     .Select(o => o.SERVICE_ID)
                     .Distinct().ToList();
@@ -327,6 +453,7 @@ namespace MPS.Processor.Mps000047
 
                     var trainGroups = medicineExpmestTypeADOs.GroupBy(o => new { o.Patient, o.TreatmentId });
                     List<ExpMestAggregatePrintADO> trainPrints = new List<ExpMestAggregatePrintADO>();
+                    List<int> trainPrintRoomOrders = new List<int>();
                     foreach (var group in trainGroups)
                     {
                         ExpMestAggregatePrintADO trainPrint = new ExpMestAggregatePrintADO();
@@ -370,11 +497,15 @@ namespace MPS.Processor.Mps000047
                         }
 
                         trainPrints.Add(trainPrint);
+                        trainPrintRoomOrders.Add(GetReqRoomOrder(reqRoomOrders, trains));
                     }
-                    sdo.ExpMestAggregatePrintADOs = trainPrints.OrderBy(o => o.BED_ROOM_NAMEs).ThenBy(o => o.VIR_PATIENT_NAME).ToList();
+                    //Sap xep theo dung thu tu phong chi dinh hien thi tren luoi chon phong (grdRoom - AggrExpMestPrintFilter),
+                    //cung phong thi theo buong -> giuong -> ten benh nhan
+                    sdo.ExpMestAggregatePrintADOs = SortPatientPrints(trainPrints, trainPrintRoomOrders);
 
                     var trainGroupsRoom = medicineExpmestTypeADOs.GroupBy(o => new { o.Patient, o.TreatmentId,o.REQ_ROOM_ID });
                     List<ExpMestAggregatePrintADO> trainPrintsRoom = new List<ExpMestAggregatePrintADO>();
+                    List<int> trainPrintRoomOrdersByRoom = new List<int>();
                     foreach (var group in trainGroupsRoom)
                     {
                         ExpMestAggregatePrintADO trainPrint = new ExpMestAggregatePrintADO();
@@ -417,8 +548,10 @@ namespace MPS.Processor.Mps000047
                         }
 
                         trainPrintsRoom.Add(trainPrint);
+                        trainPrintRoomOrdersByRoom.Add(reqRoomOrders.ContainsKey(group.Key.REQ_ROOM_ID) ? reqRoomOrders[group.Key.REQ_ROOM_ID] : int.MaxValue);
                     }
-                    sdo.ExpMestAggregateReqRoomPrintADOs = trainPrintsRoom.OrderBy(o => o.BED_ROOM_NAMEs).ThenBy(o => o.VIR_PATIENT_NAME).ToList();
+                    //Bieu in tach theo phong: cot dau tien la phong chi dinh nen phai gom theo dung thu tu phong tren luoi chon phong
+                    sdo.ExpMestAggregateReqRoomPrintADOs = SortPatientPrints(trainPrintsRoom, trainPrintRoomOrdersByRoom);
                     result.Add(sdo);
                 }
             }

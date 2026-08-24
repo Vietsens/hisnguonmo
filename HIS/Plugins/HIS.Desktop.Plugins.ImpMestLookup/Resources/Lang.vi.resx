@@ -246,6 +246,21 @@
   <data name="frmImpMestLookup.btnReset.Text" xml:space="preserve">
     <value>Làm mới</value>
   </data>
+  <data name="frmImpMestLookup.lblDocumentNumberSearch.Text" xml:space="preserve">
+    <value>Số hóa đơn:</value>
+  </data>
+  <data name="frmImpMestSelect.Text" xml:space="preserve">
+    <value>Chọn phiếu nhập</value>
+  </data>
+  <data name="frmImpMestSelect.btnSelect.Text" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmImpMestSelect.btnClose.Text" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="frmImpMestSelect.gridColumnDocumentPrice.Caption" xml:space="preserve">
+    <value>Số tiền hóa đơn</value>
+  </data>
   <data name="HeThongTBCuaSoThongBaoBanCoMuonThucNhapDuLieuKhong" xml:space="preserve">
     <value>Bạn có chắc chắn thực nhập dữ liệu?</value>
   </data>

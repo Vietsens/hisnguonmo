@@ -30,5 +30,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
         internal const string HIS_CONFIG_KEY__FormClosingOption = "HIS.Desktop.FormClosingOption";
         internal const string HIS_CONFIG_KEY__ModuleLinkApply = "HIS.Desktop.FormClosingOption.ModuleLinkApply";
         internal const string HIS_CONFIG_KEY__MaxTimeFilter__Option = "HIS.Desktop.Plugins.MaxTimeFilter.Option";
+        /// <summary>
+        /// Hien thi don thuoc du tru theo ngay du tru tren man Buong benh (QT-11).
+        /// "1" = bat, rong/khac = tat (mac dinh).
+        /// </summary>
+        internal const string HIS_CONFIG_KEY__ShowAnticipatePresByUseDate = "HIS.Desktop.Plugins.BedRoomPartial.ShowAnticipatePresByUseDate";
     }
 }

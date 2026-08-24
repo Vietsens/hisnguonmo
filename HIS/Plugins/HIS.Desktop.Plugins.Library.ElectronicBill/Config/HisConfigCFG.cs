@@ -41,6 +41,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Config
 
         //private const string His_Desktop_plugins_ElectriconicBill_IsViewTreatmentCode = "HIS.Desktop.Plugins.Library.ElectronicBill.IsViewTreatmentCode";
         private const string His_Desktop_plugins_ElectriconicBill_NameOption = "HIS.Desktop.Plugins.Library.ElectronicBill.NameOption";
+        //Softdreams: ho ten nguoi mua -> dong Ho ten nguoi mua hang, don vi -> dong Ten don vi, kem thong tin dinh danh
+        private const string SodrBuyerInfoOptionCFG = "HIS.Desktop.Plugins.Library.ElectronicBill.SODR.BuyerInfoOption";
         private const string AutoPrintTypeCFG = "HIS.Desktop.Plugins.TransactionBill.ElectronicBill.AutoPrintType";//hóa đơn thường, hóa đơn dịch vụ
         private const string BuyerOrganizationOptionCFG = "HIS.Desktop.Plugins.TransactionBill.ElectronicBill.AutoFill.BuyerOrganizationOption";
         private const string BuyerNameOptionCFG = "HIS.Desktop.Plugins.Library.ElectronicBill.BuyerNameOption";
@@ -63,6 +65,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Config
         internal static bool IsHideQuantity;
         internal static bool IsHidePrice;
         internal static bool IsSwapNameOption;
+        internal static bool IsSodrBuyerInfoOption;
         internal static bool IsPrintNormal;
         internal static bool IsSplitServicesWithVat;
         internal static List<string> listTempalteSymbol;
@@ -101,6 +104,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Config
                 LogSystem.Debug("LoadConfig => 1");
                 //IsViewTreatmentCodeCFG = GetValue(His_Desktop_plugins_ElectriconicBill_IsViewTreatmentCode) == "1";
                 IsSwapNameOption = GetValue(His_Desktop_plugins_ElectriconicBill_NameOption) == "1";
+                IsSodrBuyerInfoOption = GetValue(SodrBuyerInfoOptionCFG) == "1";
                 IsPrintNormal = GetValue(AutoPrintTypeCFG) == "1";
                 IsSplitServicesWithVat = GetValue(TemplateSplitVat) == "1";
                 ElectronicBillXmlInvoicePlus = GetValue(ElectronicBillXmlInvoicePlusCFG);

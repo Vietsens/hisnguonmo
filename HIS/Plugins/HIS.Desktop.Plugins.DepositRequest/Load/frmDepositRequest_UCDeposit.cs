@@ -422,7 +422,9 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 {
                     currentdepositReq = data;
                     dtTransactionTime.DateTime = DateTime.Now;
-                    txtAmount.Text = Inventec.Common.Number.Convert.NumberToString(data.AMOUNT, ConfigApplications.NumberSeperator);
+                    txtAmount.EditValue = data.AMOUNT;
+                    ApplyEditAmountState(data);
+                    spinTransferAmount.EditValue = 0;
                     txtDescription.Text = data.DESCRIPTION;
                     txtEditReqCode.Text = data.DEPOSIT_REQ_CODE;
                     this.action = GlobalVariables.ActionEdit;
@@ -450,7 +452,9 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 else
                 {
                     currentdepositReq = null;
-                    txtAmount.Text = "";
+                    txtAmount.EditValue = null;
+                    ApplyEditAmountState(null);
+                    spinTransferAmount.EditValue = 0;
                     txtDescription.Text = "";
                     txtEditReqCode.Text = "";
                     SpNumOrder.EditValue = null;

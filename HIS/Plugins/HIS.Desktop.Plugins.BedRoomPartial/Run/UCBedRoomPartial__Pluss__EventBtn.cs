@@ -474,6 +474,40 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             }
         }
 
+        /// <summary>
+        /// Mở màn xem kết quả cận lâm sàng của bệnh nhân đang chọn — tái dùng plugin ContentSubclinical
+        /// (màn "Chọn kết quả CLS" trong tờ điều trị) ở CHẾ ĐỘ CHỈ XEM: truyền cờ List&lt;string&gt; {"VIEW_ONLY"},
+        /// KHÔNG truyền DelegateSelectData (không chèn kết quả về đâu cả).
+        /// </summary>
+        private void btnKetQuaCLS_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (RowCellClickBedRoom != null)
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
+                    if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.ContentSubclinical'");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(RowCellClickBedRoom.TREATMENT_ID);
+                        // Cờ chế độ chỉ xem — ContentSubclinicalBehavior.ARG__VIEW_ONLY
+                        listArgs.Add(new List<string> { "VIEW_ONLY" });
+                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
+                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void btnTongHpVienPhi_Click(object sender, EventArgs e)
         {
             try

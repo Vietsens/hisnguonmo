@@ -396,6 +396,9 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                     departmentTranReceiveSDO.HospitalizeReasonCode = this.REASON_CODE;
                     departmentTranReceiveSDO.HospitalizeReasonName = this.REASON_NAME;
                 }
+
+                if (cboCareLevel.EditValue != null)
+                    departmentTranReceiveSDO.CareLevelId = (long)cboCareLevel.EditValue;
             }
 
             catch (Exception ex)

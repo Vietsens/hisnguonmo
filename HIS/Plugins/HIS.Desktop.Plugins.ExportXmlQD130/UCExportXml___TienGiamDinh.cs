@@ -219,7 +219,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             result.PatientName = treatment == null ? "" : treatment.TDL_PATIENT_NAME;
             FillTienGiamDinhDisplayName(result);
 
-            if (!string.IsNullOrEmpty(treatmentCode))
+            //CHI nho ket qua da tra cuu duoc. Ket qua that bai (cong qua tai, qua thoi gian cho,
+            //loi he thong) khong duoc nho: nho lai thi lan bam "Kiem tra loi" sau se tra ve
+            //dung loi cu ma khong goi lai cong, nguoi dung khong con duong nao kiem lai
+            //ngoai viec tai lai ca danh sach.
+            if (!string.IsNullOrEmpty(treatmentCode)
+                && result.Status != EnumTienGiamDinhStatus.CheckFailed
+                && result.Status != EnumTienGiamDinhStatus.NotChecked)
             {
                 this.tienGiamDinhResultInSession[treatmentCode] = result;
             }
@@ -243,9 +249,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         result.StatusName = Resources.ResourceMessageLang.TienGiamDinhTrangThaiLoiNghiemTrong;
                         break;
                     case EnumTienGiamDinhStatus.CheckFailed:
-                        result.StatusName = result.FailReason == EnumTienGiamDinhFailReason.Unauthorized
-                            ? Resources.ResourceMessageLang.TienGiamDinhSaiThongTinXacThuc
-                            : Resources.ResourceMessageLang.TienGiamDinhTrangThaiKhongKiemTraDuoc;
+                        result.StatusName = GetTienGiamDinhFailReasonName(result.FailReason);
                         break;
                     default:
                         result.StatusName = "";
@@ -278,10 +282,39 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
+        /// <summary>
+        /// Ten ly do khong tra cuu duoc, tach rieng tung ly do thay vi gop chung mot chu.
+        /// Nguoi dung phai phan biet duoc viec nen bam kiem lai (cong qua tai, qua thoi gian cho)
+        /// voi viec phai bao ky thuat (sai thong tin xac thuc, loi he thong).
+        /// </summary>
+        private string GetTienGiamDinhFailReasonName(EnumTienGiamDinhFailReason failReason)
+        {
+            switch (failReason)
+            {
+                case EnumTienGiamDinhFailReason.Unauthorized:
+                    return Resources.ResourceMessageLang.TienGiamDinhSaiThongTinXacThuc;
+
+                case EnumTienGiamDinhFailReason.RateLimited:
+                    return Resources.ResourceMessageLang.TienGiamDinhTrangThaiCongQuaTai;
+
+                case EnumTienGiamDinhFailReason.Timeout:
+                    return Resources.ResourceMessageLang.TienGiamDinhTrangThaiQuaThoiGianCho;
+
+                default:
+                    //NotConfigured va SystemError - nguoi dung khong tu xu ly duoc, giu chu chung
+                    return Resources.ResourceMessageLang.TienGiamDinhTrangThaiKhongKiemTraDuoc;
+            }
+        }
+
         private void ShowTienGiamDinhResult(List<TienGiamDinhResultADO> results)
         {
             try
             {
+                //Cua so ket qua co nut xuat danh sach loi ra Excel. Ban quyen Aspose chi duoc dang ky
+                //ngay truoc cac luong xuat Excel san co, nen phai dang ky o day - neu khong,
+                //nguoi dung chua tung xuat Excel trong phien se nhan tep dinh dau ban dung thu.
+                try { SetLicenseForAsposeCell(); } catch (Exception exLicense) { LogSystem.Warn(exLicense); }
+
                 using (frmTienGiamDinhResult form = new frmTienGiamDinhResult(results))
                 {
                     form.ShowDialog(this.ParentForm);
@@ -300,8 +333,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         /// Quy tac (PTTK_53286 QT-13 den QT-15):
         ///  - Chua dau noi -> cho xuat, khong phat sinh luot goi nao.
         ///  - Co ho so mang loi nghiem trong -> DUNG CA LUOT, khong sinh tep nao.
+        ///  - Co ho so CHUA KIEM TRA DUOC -> cung DUNG CA LUOT. "Khong kiem duoc" khong dong nghia
+        ///    "ho so sach", nen khong duoc phep di qua cong nay.
         ///  - Chi co loi nhe -> canh bao, nguoi dung xac nhan thi cho xuat.
-        ///  - He ngoai loi -> canh bao, cho xuat (khong de he ngoai chet lam tac viec nop ho so).
+        ///
+        /// Luu y van hanh: he tien giam dinh chet thi toan bo chuc nang xuat XML dung theo,
+        /// ke ca ho so hoan toan sach. Day la lua chon co chu dich cua vien, khong phai thieu sot.
+        /// Muon xuat trong luc cong chet thi phai xoa cau hinh HIS.TIEN_GIAM_DINH.CONNECTION_INFO.
         /// </summary>
         private async Task<bool> EnsureTienGiamDinhPassedAsync()
         {
@@ -334,14 +372,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     return false;
                 }
 
-                List<TienGiamDinhResultADO> blocked = results
-                    .Where(o => o.Status == EnumTienGiamDinhStatus.Critical).ToList();
+                int criticalCount = results.Count(o => o.Status == EnumTienGiamDinhStatus.Critical);
+                int failedCount = results.Count(o => o.Status == EnumTienGiamDinhStatus.CheckFailed);
 
-                if (blocked.Count > 0)
+                //Chan theo lo: mot ho so khong dat la dung ca luot, tranh tep ra mot nua.
+                //Ho so chua kiem duoc bi chan ngang hang voi ho so co loi nghiem trong -
+                //chua kiem duoc thi khong ai dam chac no sach.
+                if (criticalCount > 0 || failedCount > 0)
                 {
-                    //Chan theo lo: mot ho so loi la dung ca luot, tranh tep ra mot nua
                     XtraMessageBox.Show(
-                        string.Format(Resources.ResourceMessageLang.TienGiamDinhChanXuat, blocked.Count),
+                        string.Format(Resources.ResourceMessageLang.TienGiamDinhChanXuat,
+                            criticalCount, failedCount),
                         Resources.ResourceMessageLang.ThongBao,
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
@@ -350,13 +391,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
 
                 int warningCount = results.Count(o => o.Status == EnumTienGiamDinhStatus.Warning);
-                int failedCount = results.Count(o => o.Status == EnumTienGiamDinhStatus.CheckFailed);
 
-                if (warningCount > 0 || failedCount > 0)
+                if (warningCount > 0)
                 {
                     string message = string.Format(
                         Resources.ResourceMessageLang.TienGiamDinhCanhBaoTruocKhiXuat,
-                        warningCount, failedCount);
+                        warningCount);
 
                     if (XtraMessageBox.Show(message, Resources.ResourceMessageLang.ThongBao,
                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)

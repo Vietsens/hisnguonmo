@@ -64,6 +64,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public string DESCRIPTION { get; set; }
         public short? IS_OUT_HOSPITAL { get; set; }
         public long? MEDICINE_GROUP_ID { get; set; }
+        public string MEDICINE_GROUP_NAME { get; set; }//Nhom thuoc - lay tu danh muc HIS_MEDICINE_GROUP theo MEDICINE_GROUP_ID
         public string ODD_WARNING_CONTENT { get; set; }
         public bool IsExistAssignPres { get; set; }
         public long IdRow { get; set; }

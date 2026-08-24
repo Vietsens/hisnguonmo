@@ -276,4 +276,10 @@
   <data name="BanCoMuonKhoiPhucLayoutMacDinh" xml:space="preserve">
     <value>Do you want to restore the default layout? Customized layout will be removed.</value>
   </data>
+  <data name="ChuaCoHinhAnhTuPacs" xml:space="preserve">
+    <value>No image from the PACS system for this service yet.</value>
+  </data>
+  <data name="KhongMoDuocHinhAnhTuPacs" xml:space="preserve">
+    <value>Cannot open the image from the PACS system.</value>
+  </data>
 </root>

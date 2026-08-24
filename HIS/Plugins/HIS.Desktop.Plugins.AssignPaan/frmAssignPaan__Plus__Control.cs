@@ -720,6 +720,37 @@ namespace HIS.Desktop.Plugins.AssignPaan
             }
         }
 
+        private void cboPaanPosition_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Control && e.KeyCode == Keys.A)
+                {
+                    this.cboPaanPosition.Focus();
+                    this.cboPaanPosition.SelectAll();
+                }
+                else if (e.KeyCode == Keys.Enter)
+                {
+                    if (cboPaanPosition.EditValue != null)
+                    {
+                        txtPaanLiquidCode.Focus();
+                        txtPaanLiquidCode.SelectAll();
+                    }
+                    e.Handled = true;
+                }
+                else
+                {
+                    this.cboPaanPosition.ShowPopup();
+                    Inventec.Common.Controls.PopupLoader.PopupLoader.SelectFirstRowPopup(this.cboPaanPosition);
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void cboPaanPosition_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
             try

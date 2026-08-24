@@ -476,26 +476,47 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                     invoiceV.CusPhone = data.BuyerPhone;
                     invoiceV.CusCode = data.BuyerCode;
                     invoiceV.CusTaxCode = data.BuyerTaxCode;
-                    //invoiceV.CusName = (data.BuyerName ?? data.BuyerOrganization);
-                    string cusName = (data.BuyerName ?? data.BuyerOrganization);
-                    //qtcode
-                    HisConfigCFG config = new HisConfigCFG();
-                    if (!String.IsNullOrEmpty(invoiceV.CusTaxCode)) // trường hợp có mã số thuế hiển thị họ tên tại trường tên đơn vị
+                    if (HisConfigCFG.IsSodrBuyerInfoOption)
                     {
-                        invoiceV.BuyerName = "";
-                        invoiceV.CusName = cusName;
-                    }
-                    else if (HisConfigCFG.IsSwapNameOption)
-                    {
-                        invoiceV.BuyerName = cusName;
-                        invoiceV.CusName = "";
+                        //Ho ten nguoi mua len dong "Ho ten nguoi mua hang (Buyer)", ten don vi len dong "Ten don vi (Company name)"
+                        invoiceV.BuyerName = data.BuyerName ?? "";
+                        invoiceV.CusName = data.BuyerOrganization ?? "";
+
+                        //Thong tin dinh danh: CMND/CCCD (hoac chua chon loai giay to) -> CusIdentification, ho chieu -> PassportNo
+                        if (!String.IsNullOrWhiteSpace(data.BuyerIdentityNumber))
+                        {
+                            if (data.BuyerIdentityType == "3") // 3 for Passport
+                            {
+                                invoiceV.PassportNo = data.BuyerIdentityNumber.Trim();
+                            }
+                            else
+                            {
+                                invoiceV.CusIdentification = data.BuyerIdentityNumber.Trim();
+                            }
+                        }
                     }
                     else
                     {
-                        invoiceV.BuyerName = "";
-                        invoiceV.CusName = cusName;
+                        //invoiceV.CusName = (data.BuyerName ?? data.BuyerOrganization);
+                        string cusName = (data.BuyerName ?? data.BuyerOrganization);
+                        //qtcode
+                        if (!String.IsNullOrEmpty(invoiceV.CusTaxCode)) // trường hợp có mã số thuế hiển thị họ tên tại trường tên đơn vị
+                        {
+                            invoiceV.BuyerName = "";
+                            invoiceV.CusName = cusName;
+                        }
+                        else if (HisConfigCFG.IsSwapNameOption)
+                        {
+                            invoiceV.BuyerName = cusName;
+                            invoiceV.CusName = "";
+                        }
+                        else
+                        {
+                            invoiceV.BuyerName = "";
+                            invoiceV.CusName = cusName;
+                        }
                     }
-                    
+
                     invoiceV.Email = data.BuyerEmail;
                     invoiceV.PaymentMethod = this.ElectronicBillDataInput.PaymentMethod;
                     if (ElectronicBillDataInput.Transaction != null && !String.IsNullOrEmpty(ElectronicBillDataInput.Transaction.TRANSACTION_CODE))

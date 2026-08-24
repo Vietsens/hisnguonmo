@@ -291,4 +291,10 @@
   <data name="BanCoMuonKhoiPhucLayoutMacDinh" xml:space="preserve">
     <value>Bạn có muốn khôi phục layout về mặc định? Layout đã chỉnh sửa sẽ bị xóa.</value>
   </data>
+  <data name="ChuaCoHinhAnhTuPacs" xml:space="preserve">
+    <value>Chưa có hình ảnh từ hệ thống PACS cho dịch vụ này.</value>
+  </data>
+  <data name="KhongMoDuocHinhAnhTuPacs" xml:space="preserve">
+    <value>Không mở được hình ảnh từ hệ thống PACS.</value>
+  </data>
 </root>

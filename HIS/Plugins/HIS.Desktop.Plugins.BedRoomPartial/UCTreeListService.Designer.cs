@@ -93,6 +93,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.tc_NoteAdo = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.tc_RequestDepartmentName = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.tc_TdlMedicineConcentra = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.tc_InstructionDate = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.tc_UseDate = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemButton__Send = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Send__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton_IsUse = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -145,7 +147,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.tc_Number,
             this.tc_NoteAdo,
             this.tc_RequestDepartmentName,
-            this.tc_TdlMedicineConcentra});
+            this.tc_TdlMedicineConcentra,
+            this.tc_InstructionDate,
+            this.tc_UseDate});
             this.treeSereServ.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeSereServ.KeyFieldName = "CONCRETE_ID__IN_SETY";
             this.treeSereServ.Location = new System.Drawing.Point(2, 2);
@@ -338,7 +342,27 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.tc_TdlMedicineConcentra.Visible = true;
             this.tc_TdlMedicineConcentra.VisibleIndex = 12;
             this.tc_TdlMedicineConcentra.Width = 180;
-            // 
+            //
+            // tc_InstructionDate
+            //
+            this.tc_InstructionDate.Caption = "Ngày kê";
+            this.tc_InstructionDate.FieldName = "INSTRUCTION_DATE_STR";
+            this.tc_InstructionDate.Name = "tc_InstructionDate";
+            this.tc_InstructionDate.OptionsColumn.AllowEdit = false;
+            this.tc_InstructionDate.Visible = false;
+            this.tc_InstructionDate.VisibleIndex = 13;
+            this.tc_InstructionDate.Width = 80;
+            //
+            // tc_UseDate
+            //
+            this.tc_UseDate.Caption = "Ngày dự trù";
+            this.tc_UseDate.FieldName = "USE_DATE_STR";
+            this.tc_UseDate.Name = "tc_UseDate";
+            this.tc_UseDate.OptionsColumn.AllowEdit = false;
+            this.tc_UseDate.Visible = false;
+            this.tc_UseDate.VisibleIndex = 14;
+            this.tc_UseDate.Width = 90;
+            //
             // repositoryItemButton__Send
             // 
             this.repositoryItemButton__Send.AutoHeight = false;
@@ -487,5 +511,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 		private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit rep_btnDelete_Enable;
 		private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit rep_btnDelete_Disable;
         private DevExpress.XtraTreeList.Columns.TreeListColumn tc_TdlMedicineConcentra;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn tc_InstructionDate;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn tc_UseDate;
     }
 }

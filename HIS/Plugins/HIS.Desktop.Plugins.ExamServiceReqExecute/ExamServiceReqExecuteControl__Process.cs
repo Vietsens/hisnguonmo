@@ -543,8 +543,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                // Open the prescription form in treatment (in-patient) stock mode
-                btnAssignPre_Click_Action(null, null, true);
+                // Open the prescription form in treatment (in-patient) stock mode.
+                // Chỉ có tác dụng khi bật cấu hình ENABLE_TREATMENT_PRESCRIPTION (mục menu cũng chỉ hiện khi bật).
+                btnAssignPre_Click_Action(null, null, HisConfigCFG.EnableTreatmentPrescription);
             }
             catch (Exception ex)
             {
@@ -2056,6 +2057,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             serviceReqUpdateSDO.HospitalizeSDO.CareerId = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.CareerId;
                             serviceReqUpdateSDO.HospitalizeSDO.InHospitalizationReasonCode = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.InHospitalizationReasonCode;
                             serviceReqUpdateSDO.HospitalizeSDO.InHospitalizationReasonName = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.InHospitalizationReasonName;
+
+                            // Ma doi tuong KCB (BHYT) nguoi dung xac nhan tren man Nhap vien — copy tu SDO cua UC.Hospitalize
+                            CopyHeinPatientTypeCodeIfSupported(serviceReqUpdateSDO.HospitalizeSDO, hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO);
                         }
                         serviceReqUpdateSDO.SpecialistNote = hisDepartmentTranHospitalizeSDO.SpecialistNote;
                         serviceReqUpdateSDO.ExecutedServices = hisDepartmentTranHospitalizeSDO.ExecutedServices;
@@ -2099,6 +2103,27 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
 
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Copy ma doi tuong KCB tu SDO cua UC.Hospitalize sang SDO gui len backend.
+        /// Dung reflection de van chay duoc voi ban MOS.SDO cu chua co truong nay.
+        /// </summary>
+        private void CopyHeinPatientTypeCodeIfSupported(HisDepartmentTranHospitalizeSDO target, HisDepartmentTranHospitalizeSDO source)
+        {
+            try
+            {
+                if (target == null || source == null) return;
+                var property = source.GetType().GetProperty("HeinPatientTypeCode");
+                if (property != null && property.CanRead && property.CanWrite)
+                {
+                    property.SetValue(target, property.GetValue(source, null), null);
                 }
             }
             catch (Exception ex)

@@ -36,6 +36,7 @@ using System.Net.NetworkInformation;
 using HIS.UC.ServiceRoom.OperatingStatus;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Utility;
+using Inventec.Core;
 
 namespace HIS.UC.ServiceRoom
 {
@@ -667,6 +668,10 @@ namespace HIS.UC.ServiceRoom
                         long date = Inventec.Common.TypeConvert.Parse.ToInt64(this.GetIntructionTime().ToString("yyyyMMdd") + "000000");
                         if (dicNumOrderBlock.ContainsKey(hasNumOrder.First().ROOM_ID) && dicNumOrderBlock[hasNumOrder.First().ROOM_ID].Date != date)
                         {
+                            //Doi ngay chi dinh: tra lai cac cho dang giu cho nguoi khac,
+                            //truoc day chi xoa o bo nho may tram nen block bi giu den khi het han (viec 54282)
+                            ReleaseAllHolding();
+
                             hasNumOrder.ForEach(o => o.NumOrderBlock = null);
                             dicNumOrderBlock = new Dictionary<long, Desktop.ADO.ResultChooseNumOrderBlockADO>();
                         }
@@ -753,6 +758,17 @@ namespace HIS.UC.ServiceRoom
                 //Inventec.Common.Logging.LogSystem.Debug("1___________________________" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultChooseNumOrderBlock), resultChooseNumOrderBlock));
                 if (resultChooseNumOrderBlock != null)
                 {
+                    //Chon lai khung gio cho cung mot phong: tra lai cho dang giu truoc do (viec 54282)
+                    if (this.dicNumOrderBlock.ContainsKey(resultChooseNumOrderBlock.RoomId))
+                    {
+                        Desktop.ADO.ResultChooseNumOrderBlockADO old = this.dicNumOrderBlock[resultChooseNumOrderBlock.RoomId];
+                        if (old != null && old.NumOrderIssueId.HasValue
+                            && old.NumOrderIssueId != resultChooseNumOrderBlock.NumOrderIssueId)
+                        {
+                            ReleaseHolding(old.NumOrderIssueId);
+                        }
+                    }
+
                     this.dicNumOrderBlock[resultChooseNumOrderBlock.RoomId] = resultChooseNumOrderBlock;
                     var thisRow = this.roomExts.FirstOrDefault(o => o.ROOM_ID == resultChooseNumOrderBlock.RoomId);
                     if (thisRow != null && resultChooseNumOrderBlock.NumOrderBlock != null)
@@ -779,5 +795,58 @@ namespace HIS.UC.ServiceRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        #region Nha cho khung gio kham (viec 54282)
+
+        /// <summary>
+        /// Tra lai tat ca cac cho dang giu (doi ngay chi dinh, bo chon phong)
+        /// </summary>
+        internal void ReleaseAllHolding()
+        {
+            try
+            {
+                if (this.dicNumOrderBlock == null)
+                {
+                    return;
+                }
+                foreach (var item in this.dicNumOrderBlock)
+                {
+                    if (item.Value != null)
+                    {
+                        ReleaseHolding(item.Value.NumOrderIssueId);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tra lai mot cho dang giu. That bai chi ghi log: het han thi may chu tu nha.
+        /// </summary>
+        internal void ReleaseHolding(long? numOrderIssueId)
+        {
+            try
+            {
+                if (!numOrderIssueId.HasValue || numOrderIssueId.Value <= 0)
+                {
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                MOS.SDO.HisNumOrderBlockReleaseSDO sdo = new MOS.SDO.HisNumOrderBlockReleaseSDO();
+                sdo.NumOrderIssueId = numOrderIssueId.Value;
+                new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Post<bool>("api/HisNumOrderBlock/Release", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
     }
 }

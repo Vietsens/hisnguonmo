@@ -68,8 +68,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831.Sync
                 form.Add(new StringContent(reqLogin.Password ?? ""), "password");
                 HttpResponseMessage resp = client.PostAsync(cfg.LoginUrl, form).Result;
                 string body = resp.Content.ReadAsStringAsync().Result;
-                // LOG CHI TIẾT (TEMP): full body
-                Inventec.Common.Logging.LogSystem.Info("HSSK831 LOGIN RESP BODY (chi tiết): status=" + (int)resp.StatusCode + "; body=" + body);
+                // KHONG log full body login (chua token con hieu luc 3h) — chi log status; token da MaskToken o duoi.
                 if (!resp.IsSuccessStatusCode)
                 {
                     Inventec.Common.Logging.LogSystem.Info("HSSK831 LOGIN RESP FAIL: status=" + (int)resp.StatusCode + "; body=" + Truncate(body));
@@ -126,9 +125,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831.Sync
             Inventec.Common.Logging.LogSystem.Info(string.Format(
                 "HSSK831 PUSH REQ: url={0}; nguoi_gui={1}; xmlFile={2} ({3} bytes); token={4}",
                 cfg.PushUrl, reqPush.NguoiGui, reqPush.FileName, reqPush.XmlFile.Length, MaskToken(tk)));
-            // LOG CHI TIẾT (TEMP): full token + full XML (chứa dữ liệu bệnh nhân) — gỡ khi xong debug.
-            Inventec.Common.Logging.LogSystem.Info("HSSK831 PUSH REQ TOKEN (chi tiết): " + (tk ?? ""));
-            Inventec.Common.Logging.LogSystem.Info("HSSK831 PUSH REQ XML (chi tiết):" + Environment.NewLine + (xml ?? ""));
+            // Da go log TEMP full token + full XML (token 3h + du lieu benh nhan khong duoc nam trong log).
             using (var client = new HttpClient())
             using (var form = new MultipartFormDataContent())
             {

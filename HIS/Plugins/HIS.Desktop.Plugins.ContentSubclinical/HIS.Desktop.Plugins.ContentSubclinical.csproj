@@ -229,7 +229,6 @@
     <EmbeddedResource Include="frmContentSubclinical.resx">
       <DependentUpon>frmContentSubclinical.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

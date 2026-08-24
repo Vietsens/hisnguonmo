@@ -36,6 +36,14 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView.ServiceReqResultView
         object[] entity;
         Inventec.Desktop.Common.Modules.Module currentModule;
         long sereServid;
+
+        /// <summary>
+        /// Link xem anh PACS do ben goi truyen sang (tuy chon).
+        /// Dung khi plugin cha da doc san HIS_SERE_SERV_EXT.JSON_FORM_ID
+        /// (VD: HIS.Desktop.Plugins.ServiceExecute voi PACS Carestream)
+        /// de man hinh nay khong phai lay lai link lan nua.
+        /// </summary>
+        string viewLinkPacs;
         public ServiceReqResultViewBehavior()
             : base()
         {
@@ -54,6 +62,8 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView.ServiceReqResultView
             {
                 if (entity != null && entity.Count() > 0)
                 {
+                    //Duyet het tham so roi moi tao form: cac tham so tuy chon (link xem anh)
+                    //co the nam sau Module/sereServId trong danh sach.
                     foreach (var item in entity)
                     {
                         if (item is Inventec.Desktop.Common.Modules.Module)
@@ -64,11 +74,15 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView.ServiceReqResultView
                         {
                             sereServid = (long)item;
                         }
-                        if (currentModule != null && sereServid > 0)
+                        else if (item is string)
                         {
-                            result = new frmServiceReqResultView(currentModule, sereServid);
-                            break;
+                            viewLinkPacs = (string)item;
                         }
+                    }
+
+                    if (currentModule != null && sereServid > 0)
+                    {
+                        result = new frmServiceReqResultView(currentModule, sereServid, viewLinkPacs);
                     }
                 }
             }

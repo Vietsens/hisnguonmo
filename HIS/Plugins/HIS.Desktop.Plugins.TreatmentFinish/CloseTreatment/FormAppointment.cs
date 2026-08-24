@@ -275,6 +275,33 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             }
         }
 
+        /// <summary>
+        /// O ngay hen kham da co gia tri that hay chua (viec 54282).
+        /// Khi chua chon, dtTimeAppointments.DateTime tra ve 01/01/0001 -> gui len may chu thanh
+        /// ISSUE_DATE = 10101000000, khong co khung gio nao va nguoi dung nhan thong bao sai
+        /// "Da cap het so kham vao ngay 01/01".
+        /// </summary>
+        private bool IsCoNgayHenKham()
+        {
+            try
+            {
+                if (dtTimeAppointments == null || dtTimeAppointments.EditValue == null)
+                {
+                    return false;
+                }
+                if (dtTimeAppointments.DateTime == DateTime.MinValue || dtTimeAppointments.DateTime.Year <= 1)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
         private void ProcessLoadGetOccupiedStatusBlock()
         {
             try
@@ -282,25 +309,34 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 Inventec.Common.Logging.LogSystem.Debug("ProcessLoadGetOccupiedStatus.1");
                 List<HisNumOrderBlockSDO> HisNumOrderBlockSDOs = new List<HisNumOrderBlockSDO>();
                 NumOrderBlockID = null;
+
+                //Chua co ngay hen kham thi khong hoi may chu va khong bao gi ca.
+                //Truoc day van goi voi ngay rong (01/01/0001) roi bao "da cap het so kham vao ngay 01/01" (viec 54282)
+                if (!IsCoNgayHenKham() || cboRoomEx == null || cboRoomEx.EditValue == null)
+                {
+                    return;
+                }
+
                 HisNumOrderBlockOccupiedStatusFilter filter = new HisNumOrderBlockOccupiedStatusFilter();
                 filter.ISSUE_DATE = Inventec.Common.TypeConvert.Parse.ToInt64(dtTimeAppointments.DateTime.ToString("yyyyMMdd") + "000000");
                 filter.ROOM_ID = Int64.Parse(cboRoomEx.EditValue.ToString());
                 var HisNumOrderBlockSDOTmps = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HisNumOrderBlockSDO>>("api/HisNumOrderBlock/GetOccupiedStatus", ApiConsumers.MosConsumer, filter, null);
                 if (HisNumOrderBlockSDOTmps != null && HisNumOrderBlockSDOTmps.Count > 0)
                 {
-                    HisNumOrderBlockSDOs = HisNumOrderBlockSDOTmps.Where(o => o.IS_ISSUED == null || o.IS_ISSUED != 1).OrderBy(o => o.FROM_TIME).ToList();
+                    //O do chinh minh dang giu van con chon duoc nen khong tinh la het cho
+                    HisNumOrderBlockSDOs = HisNumOrderBlockSDOTmps.Where(o => o.IS_ISSUED == null || o.IS_ISSUED != 1 || o.IS_MINE == 1).OrderBy(o => o.FROM_TIME).ToList();
                     if (!(HisNumOrderBlockSDOs != null && HisNumOrderBlockSDOs.Count > 0))
                     {
                         Inventec.Common.Logging.LogSystem.Debug("ProcessLoadGetOccupiedStatus.3");
-                        List<HisAppointmentPeriodCountByDateSDO> ListTime = new List<HisAppointmentPeriodCountByDateSDO>();
                         NumOrderBlockID = null;
-                        DevExpress.XtraEditors.XtraMessageBox.Show(String.Format(ResourceMessage.DaCapHetSoKhamVaoNgay, dtTimeAppointments.DateTime.ToString("dd/MM")),
+                        DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Đã cấp hết số khám vào ngày {0}", dtTimeAppointments.DateTime.ToString("dd/MM/yyyy")),
                              Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                     }
                 }
                 else
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(String.Format(ResourceMessage.DaCapHetSoKhamVaoNgay, dtTimeAppointments.DateTime.ToString("dd/MM")),
+                    //Khong co block nao: phong khong lam viec vao thu do, khong phai het cho
+                    DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Phòng khám không có khung giờ khám nào vào ngày {0}. Vui lòng chọn ngày khác hoặc phòng khác.", dtTimeAppointments.DateTime.ToString("dd/MM/yyyy")),
                              Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                     NumOrderBlockID = null;
                 }
@@ -392,6 +428,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 cboTimeFrame.EditValue = null;
                 HisNumOrderBlockSDOs = new List<HisNumOrderBlockSDO>();
 
+                //Chua co ngay hen kham thi khong hoi may chu va khong bao gi ca (viec 54282)
+                if (!IsCoNgayHenKham())
+                {
+                    return;
+                }
+
                 HisNumOrderBlockOccupiedStatusFilter filter = new HisNumOrderBlockOccupiedStatusFilter();
                 filter.ISSUE_DATE = Inventec.Common.TypeConvert.Parse.ToInt64(dtTimeAppointments.DateTime.ToString("yyyyMMdd") + "000000");
                 if (_RoomExamADOs != null && _RoomExamADOs.Count > 0 && _RoomExamADOs.Exists(o => o.IsCheck))
@@ -401,7 +443,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 var HisNumOrderBlockSDOTmps = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HisNumOrderBlockSDO>>("api/HisNumOrderBlock/GetOccupiedStatus", ApiConsumers.MosConsumer, filter, null);
                 if (HisNumOrderBlockSDOTmps != null && HisNumOrderBlockSDOTmps.Count > 0)
                 {
-                    HisNumOrderBlockSDOs = HisNumOrderBlockSDOTmps.Where(o => o.IS_ISSUED == null || o.IS_ISSUED != 1).OrderBy(o => o.FROM_TIME).ToList();
+                    //O do chinh minh dang giu van con chon duoc nen khong tinh la het cho (viec 54282)
+                    HisNumOrderBlockSDOs = HisNumOrderBlockSDOTmps.Where(o => o.IS_ISSUED == null || o.IS_ISSUED != 1 || o.IS_MINE == 1).OrderBy(o => o.FROM_TIME).ToList();
                     if (HisNumOrderBlockSDOs != null && HisNumOrderBlockSDOs.Count > 0)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("ProcessLoadGetOccupiedStatus.2");
@@ -422,13 +465,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                         Inventec.Common.Logging.LogSystem.Debug("ProcessLoadGetOccupiedStatus.3");
                         ListTime = new List<HisAppointmentPeriodCountByDateSDO>();
                         cboTimeFrame.EditValue = null;
-                        DevExpress.XtraEditors.XtraMessageBox.Show(String.Format(ResourceMessage.DaCapHetSoKhamVaoNgay, dtTimeAppointments.DateTime.ToString("dd/MM")),
+                        DevExpress.XtraEditors.XtraMessageBox.Show(String.Format(ResourceMessage.DaCapHetSoKhamVaoNgay, dtTimeAppointments.DateTime.ToString("dd/MM/yyyy")),
                              Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                     }
                 }
                 else
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(String.Format(ResourceMessage.DaCapHetSoKhamVaoNgay, dtTimeAppointments.DateTime.ToString("dd/MM")),
+                    //Khong co block nao: phong khong lam viec vao ngay do, khong phai het cho (viec 54282)
+                    DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Phòng khám không có khung giờ khám nào vào ngày {0}. Vui lòng chọn ngày khác hoặc phòng khác.", dtTimeAppointments.DateTime.ToString("dd/MM/yyyy")),
                             Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                 }
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter)
@@ -884,6 +928,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                         currentTreatmentFinishSDO.NumOrderBlockId = NumOrderBlockID;
                     }
 
+                    //Gui kem ma giu cho de may chu chot luot giu thanh dat that (viec 54282).
+                    //NumOrder va NumOrderIssueId bat buoc di cung nhau.
+                    if (this.resultChooseNumOrderBlockADO != null
+                        && this.resultChooseNumOrderBlockADO.NumOrderIssueId.HasValue
+                        && this.resultChooseNumOrderBlockADO.NumOrderIssueId.Value > 0
+                        && this.resultChooseNumOrderBlockADO.NumOrder.HasValue)
+                    {
+                        currentTreatmentFinishSDO.NumOrderIssueId = this.resultChooseNumOrderBlockADO.NumOrderIssueId;
+                        currentTreatmentFinishSDO.NumOrder = this.resultChooseNumOrderBlockADO.NumOrder;
+                    }
 
                     MyGetData(currentTreatmentFinishSDO);
                     this.Close();
@@ -1545,7 +1599,17 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 this.resultChooseNumOrderBlockADO = _resultChooseNumOrderBlockADO;
                 if ((Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTimeAppointments.DateTime) ?? 0) != this.resultChooseNumOrderBlockADO.Date)
                 {
-                    dtTimeAppointments.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.resultChooseNumOrderBlockADO.Date);
+                    //Khong gan thang: neu khung gio cau hinh sai gio/phut thi ham doi so sang ngay gio
+                    //tra ve null, gan vao se XOA TRANG o TG hen kham ma khong bao gi (viec 54282)
+                    DateTime? ngayHenMoi = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.resultChooseNumOrderBlockADO.Date);
+                    if (!ngayHenMoi.HasValue)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("HOLD54282 Man chon khung gio tra ve moc thoi gian khong hop le: " + this.resultChooseNumOrderBlockADO.Date);
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Khung giờ khám vừa chọn đang được cấu hình sai giờ/phút nên không nhận được thời gian hẹn khám. Vui lòng chọn khung giờ khác hoặc báo quản trị hệ thống.",
+                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                        return;
+                    }
+                    dtTimeAppointments.EditValue = ngayHenMoi.Value;
                 }
                 _RoomExamADOs = (List<RoomExamADO>)gridControlRoomExam.DataSource;
                 if (_RoomExamADOs != null && _RoomExamADOs.Count > 0)

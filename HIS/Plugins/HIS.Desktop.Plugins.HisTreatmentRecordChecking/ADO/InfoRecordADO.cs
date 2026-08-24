@@ -33,5 +33,40 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.ADO
         public string SEARCH_CODE { get; set; }
         public long REQ_TYPE_STT_ID { get; set; }
         public string CREATOR { get; set; }
+
+        #region Task 53180
+
+        /// <summary>
+        /// Record creation time. Used by the doctor filter (QT-05) and shown in the
+        /// "Thoi gian tao" column, which is separate from CREATE_TIME_STR because the
+        /// latter carries the business time and differs per document type.
+        /// </summary>
+        public long? CREATE_TIME { get; set; }
+
+        /// <summary>Display string of CREATE_TIME. Bound to column Gv_IR_CreateTimeReal.</summary>
+        public string CREATE_TIME_REAL_STR { get; set; }
+
+        /// <summary>
+        /// Document status of the order (QT-09). Computed BEFORE binding the grid -
+        /// never inside CustomUnboundColumnData.
+        /// </summary>
+        public EnumRecordDocumentStatus DOC_STATUS { get; set; }
+
+        /// <summary>Localised name of DOC_STATUS. Bound to column Gv_IR_DocStatus.</summary>
+        public string DOC_STATUS_NAME { get; set; }
+
+        /// <summary>Treatment id. Only filled in mode 2, used to jump back to mode 1.</summary>
+        public long? TREATMENT_ID { get; set; }
+
+        /// <summary>Treatment code. Only filled in mode 2.</summary>
+        public string TREATMENT_CODE { get; set; }
+
+        /// <summary>Patient code. Only filled in mode 2.</summary>
+        public string PATIENT_CODE { get; set; }
+
+        /// <summary>Patient name. Only filled in mode 2.</summary>
+        public string PATIENT_NAME { get; set; }
+
+        #endregion
     }
 }

@@ -40,10 +40,16 @@ namespace Inventec.Common.FlexCelPrint
     /// </summary>
     public partial class frmSetupPrintPreviewMerge : DevExpress.XtraEditors.XtraForm
     {
+        /// <summary>
+        /// Dang nap cau hinh sheet lan dau => bo qua event doi may in de tranh ve preview nhieu lan
+        /// </summary>
+        private bool isLoadingSheetConfig;
+
         private void LoadSheetConfig()
         {
             try
             {
+                isLoadingSheetConfig = true;
                 ExcelFile Xls = flexCelPrintDocument1.Workbook;
 
                 //Load other settings
@@ -86,6 +92,10 @@ namespace Inventec.Common.FlexCelPrint
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            finally
+            {
+                isLoadingSheetConfig = false;
+            }
         }
 
         private void LoadGridViewPopupMenu()
@@ -105,6 +115,7 @@ namespace Inventec.Common.FlexCelPrint
         {
             try
             {
+                cboPrinters.Properties.Items.Clear();
                 //Load all avaiable printers
                 if (PrinterSettings.InstalledPrinters != null)
                 {
@@ -122,10 +133,150 @@ namespace Inventec.Common.FlexCelPrint
                 {
                     cboPrinters.EditValue = defaultPrintName;
                 }
+
+                //Ap ten may in vao PrinterSettings NGAY TAI DAY, truoc khi LoadPaperSizes/LoadPaperSources chay.
+                //Neu khong, danh sach co giay va khay giay se lay theo may in mac dinh cua Windows
+                //chu khong phai may in dang chon (defaultPrintName tu cau hinh His.Config.PrintType.Printer).
+                ApplyPrinterName(cboPrinters.EditValue != null ? cboPrinters.EditValue.ToString() : null);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Debug(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gan ten may in vao PrinterSettings cua document.
+        /// </summary>
+        /// <returns>false neu ten may in rong/khong ton tai tren may tram</returns>
+        private bool ApplyPrinterName(string printerName)
+        {
+            bool result = false;
+            try
+            {
+                if (String.IsNullOrEmpty(printerName) || PrinterSettings.InstalledPrinters == null)
+                    return false;
+
+                bool installed = false;
+                foreach (String printer in PrinterSettings.InstalledPrinters)
+                {
+                    if (printer == printerName)
+                    {
+                        installed = true;
+                        break;
+                    }
+                }
+                if (!installed)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("May in khong ton tai tren may tram: " + printerName);
+                    return false;
+                }
+
+                if (flexCelPrintDocument1.PrinterSettings.PrinterName != printerName)
+                {
+                    flexCelPrintDocument1.PrinterSettings.PrinterName = printerName;
+                }
+                result = flexCelPrintDocument1.PrinterSettings.IsValid;
+                if (!result)
+                    Inventec.Common.Logging.LogSystem.Warn("PrinterSettings khong hop le voi may in: " + printerName);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Sau khi nap lai danh sach co giay theo may in moi: neu co giay dang chon khong con
+        /// ton tai tren may in nay thi lay co giay mac dinh cua may in (hoac phan tu dau tien).
+        /// </summary>
+        private void EnsurePaperSizeSelectionValid()
+        {
+            try
+            {
+                List<PaperSize> paperSizes = cboPaperSize.Properties.DataSource as List<PaperSize>;
+                if (paperSizes == null || paperSizes.Count <= 0)
+                    return;
+
+                string selected = cboPaperSize.EditValue != null ? cboPaperSize.EditValue.ToString() : "";
+                if (paperSizes.Any(o => o.RawKind.ToString() == selected))
+                    return;
+
+                PaperSize fallback = null;
+                PaperSize defaultSize = flexCelPrintDocument1.PrinterSettings.DefaultPageSettings.PaperSize;
+                if (defaultSize != null)
+                    fallback = paperSizes.FirstOrDefault(o => o.RawKind == defaultSize.RawKind);
+                if (fallback == null)
+                    fallback = paperSizes[0];
+
+                Inventec.Common.Logging.LogSystem.Warn(String.Format(
+                    "May in {0} khong ho tro co giay {1}, chuyen sang {2}",
+                    flexCelPrintDocument1.PrinterSettings.PrinterName, selected, fallback.PaperName));
+
+                cboPaperSize.EditValue = fallback.RawKind.ToString();
+                currentPaperSize = fallback;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doi may in => nap lai Co giay + Khay giay theo may in vua chon va tinh lai Do phong
+        /// theo ty le kho giay thuc te, sau do ve lai preview.
+        /// </summary>
+        private void cboPrinters_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isLoadingSheetConfig) return;
+                if (flexCelPrintDocument1 == null || flexCelPrintDocument1.Workbook == null) return;
+                if (cboPrinters.EditValue == null) return;
+                if (!ApplyPrinterName(cboPrinters.EditValue.ToString())) return;
+
+                ExcelFile Xls = flexCelPrintDocument1.Workbook;
+                TPaperDimensions tOld = Xls.PrintPaperDimensions;
+                PaperSize oldPaperSize = new PaperSize(tOld.PaperName, System.Convert.ToInt32(tOld.Width), System.Convert.ToInt32(tOld.Height));
+                decimal oldZoom = spinZoom.Value;
+
+                //Tam bo 2 event de tranh ve lai preview nhieu lan va tranh vong lap
+                this.cboPaperSize.EditValueChanged -= new System.EventHandler(this.cboPaperSize_EditValueChanged);
+                this.spinZoom.ValueChanged -= new System.EventHandler(this.spinZoom_ValueChanged);
+                try
+                {
+                    LoadPaperSizes(Xls);
+                    LoadPaperSources(Xls);
+                    EnsurePaperSizeSelectionValid();
+
+                    //Ap co giay moi vao workbook roi tinh lai do phong theo ty le be rong giay
+                    InitPrintPreviewControl();
+
+                    TPaperDimensions tNew = Xls.PrintPaperDimensions;
+                    currentPaperSize = new PaperSize(tNew.PaperName, System.Convert.ToInt32(tNew.Width), System.Convert.ToInt32(tNew.Height));
+                    if (oldPaperSize.Width > 0 && currentPaperSize.Width > 0 && currentPaperSize.Width != oldPaperSize.Width)
+                    {
+                        decimal zoom = (decimal)((decimal)((decimal)currentPaperSize.Width / (decimal)oldPaperSize.Width) * oldZoom);
+                        if (zoom > 0)
+                        {
+                            spinZoom.EditValue = zoom;
+                            spinZoom.Update();
+                        }
+                    }
+                }
+                finally
+                {
+                    this.cboPaperSize.EditValueChanged += new System.EventHandler(this.cboPaperSize_EditValueChanged);
+                    this.spinZoom.ValueChanged += new System.EventHandler(this.spinZoom_ValueChanged);
+                }
+
+                InitPrintPreviewControl();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -168,6 +319,8 @@ namespace Inventec.Common.FlexCelPrint
                 //int counter = 0;
                 //PrinterSettings settings = new PrinterSettings();
                 //cboSourcePage.DisplayMember = "SourceName";
+                //Xoa danh sach cu de khi doi may in khong bi nhan doi khay giay
+                cboSourcePage.Properties.Items.Clear();
                 //Add all paper sources to the combo box
                 foreach (PaperSource source in flexCelPrintDocument1.PrinterSettings.PaperSources)
                 {

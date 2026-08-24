@@ -29,6 +29,12 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ADO
         public bool CheckTreatment { get; set; }
         public bool CheckStore { get; set; }
 
+        /// <summary>
+        /// Whether the medical record has been marked as checked.
+        /// Computed once here instead of inside grid painting events.
+        /// </summary>
+        public bool IsStoreChecked { get; set; }
+
         public TreatmentADO() { }
 
         public TreatmentADO(L_HIS_TREATMENT_3 data)
@@ -37,6 +43,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ADO
             {
                 Inventec.Common.Mapper.DataObjectMapper.Map<TreatmentADO>(this, data);
                 //this.CheckTreatment = data.DATA_STORE_ID != null ? true : false;
+                this.IsStoreChecked = data.STORE_CHECK_TIME.HasValue;
             }
         }
     }

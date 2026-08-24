@@ -562,6 +562,7 @@ namespace Inventec.Common.FlexCelPrint
                 this.chkHorizontally.CheckedChanged -= new System.EventHandler(this.chkHorizontally_CheckedChanged);
                 this.spinZoom.ValueChanged -= new System.EventHandler(this.spinZoom_ValueChanged);
                 this.cboPaperSize.EditValueChanged -= new System.EventHandler(this.cboPaperSize_EditValueChanged);
+                this.cboPrinters.EditValueChanged -= new System.EventHandler(this.cboPrinters_EditValueChanged);
                 this.ChkHidePrinting.CheckedChanged -= new System.EventHandler(this.ChkHidePrinting_CheckedChanged);
                 this.btnOpenFileTemplate.Click -= new System.EventHandler(this.btnOpenFileTemplate_Click);
                 this.btnOpenTutorial.Click -= new System.EventHandler(this.btnOpenTutorial_Click);

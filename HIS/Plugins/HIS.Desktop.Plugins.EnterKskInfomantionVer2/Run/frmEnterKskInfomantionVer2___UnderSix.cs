@@ -144,6 +144,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 k.TDL_PATIENT_ID = a.TDL_PATIENT_ID;
                 if (k.DHST_ID == null) k.DHST_ID = a.DHST_ID;
                 k.IS_PREMATURE_BIRTH = ToShort(a.IS_PREMATURE_BIRTH);
+                k.GESTATIONAL_AGE_WEEK = a.GESTATIONAL_AGE_WEEK;   // Tuần thai khi sinh
                 k.ETHNIC = a.ETHNIC; k.RESIDENCE = a.RESIDENCE;
                 k.ACCOMPANY_PERSON_NAME = a.ACCOMPANY_PERSON_NAME;
                 k.ACCOMPANY_RELATIONSHIP = ToShort(a.ACCOMPANY_RELATIONSHIP);
@@ -731,6 +732,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 this.rdoAccompanyRelationship8.EditValueChanged += rdoAccompanyRelationship8_EditValueChanged;
 
                 // Combo xếp loại sức khỏe + bác sĩ khám (giống các tab khác)
+                // Ô "Bình thường" (mục III) loại trừ lẫn nhau với 5 ô dấu hiệu bất thường.
+                InitNormalNutritionSign();
                 SetDataCboRank(this.cboHealthExamRank8);
                 SetDataCboExamLoginName(this.cboConcluder8);
                 // BS khám từng mục khám lâm sàng (Da/Đầu-cổ/Mắt/Tai...) — load danh sách BS giống cboConcluder8.
@@ -743,9 +746,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Load HIS_KSK_UNDER_SIX (mục A–O) từ backend theo SERVICE_REQ_ID; kết luận (mục P) lấy từ HIS_KSK_GENERAL
                 if (currentServiceReq != null)
                 {
-                    Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
-                    var filter = new  MOS.Filter.HisKskUnderSixFilter();
+                    var filter = new MOS.Filter.HisKskUnderSixFilter();
                     filter.SERVICE_REQ_ID = currentServiceReq.ID;
+                    // Nguồn duy nhất là call gộp api/HisKskSync/GetKskData (SDO.HisKskUnderSixs) — đã
+                    // kiểm chứng nó trả đủ. KHÔNG gọi api/HisKskUnderSix/Get dự phòng: khi SDO rỗng thì
+                    // API lẻ cùng SERVICE_REQ_ID cũng rỗng (thật sự chưa có bản ghi) → chỉ tốn round-trip.
                     var data = preKskUnderSixes;
                     if (data != null && data.Count > 0)
                     {
@@ -758,6 +763,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         // từ dữ liệu đã nhập ở màn hình khác (HIS_DHST, HIS_TREATMENT, HIS_BABY).
                         FillUnderSixControlsFromEf(null, currentKskGeneral);
                         FillUnderSixDefaultsFromExisting();
+                        // Mục VI: mặc định do người dùng tự cấu hình ở form ⚙ Thiết lập (lưu theo máy).
+                        // Chỉ chạy khi đã bật "Tự động điền mặc định khi mở bản ghi mới".
+                        ApplyUnderSixDefaultsOnNewRecord();
                     }
                 }
 
@@ -774,29 +782,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         /// <summary>
-        /// Mặc định vùng kết luận tab trẻ &lt;6 tuổi khi CHƯA có thông tin khám sức khỏe cũ
-        /// (control kết luận còn trống — không đè dữ liệu đã có):
-        ///  - "Kết luận về sức khỏe" = Bình thường (HEALTH_CONCLUSION_TYPE = 1).
-        ///  - "Kết luận theo bệnh (ICD-10)" = Chưa phát hiện bất thường (CONCLUSION_ICD_TYPE = 1).
-        /// </summary>
-        private void ApplyUnderSixConclusionDefaults()
-        {
-            try
-            {
-                if (this.rdoConclusionHealth8 != null && this.rdoConclusionHealth8.EditValue == null)
-                    SetRadioValue(this.rdoConclusionHealth8, 1);
-
-                if (dicIcdConclusionUc.ContainsKey(7) && dicIcdConclusionUc[7] != null
-                    && dicIcdConclusionUc[7].GetConclusionIcdType() == null)
-                    dicIcdConclusionUc[7].SetData(1, null, null);
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
         /// Đổ dữ liệu từ DB vào control: mục A–O lấy từ HIS_KSK_UNDER_SIX (k),
         /// kết luận (mục P, trừ ICD) lấy từ HIS_KSK_GENERAL (g). ICD-10 do LoadIcdConclusionToUc đổ vào UC.
         /// </summary>
@@ -805,10 +790,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 // Fill từ bản RỖNG khi k==null -> xóa trắng toàn bộ control (tránh dính dữ liệu y lệnh trước khi chuyển).
+                // Nhớ TRƯỚC khi thay k rỗng: chỉ bản ghi THẬT mới suy được ô "Bình thường" của hàng Dấu hiệu (mục III).
+                bool hasRecordUnderSix = (k != null);
                 if (k == null) k = new MOS.EFMODEL.DataModels.HIS_KSK_UNDER_SIX();
                 {
                     // I. Hành chính
                     SetRadioValue(this.rdoIsPrematureBirth8, k.IS_PREMATURE_BIRTH);
+                    this.txtGestationWeek8.Text = k.GESTATIONAL_AGE_WEEK;   // Tuần thai khi sinh
                     this.txtEthnic8.Text = k.ETHNIC;
                     this.txtResidence8.Text = k.RESIDENCE;
                     this.txtAccompanyPersonName8.Text = k.ACCOMPANY_PERSON_NAME;
@@ -837,6 +825,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     SetCheckValue(this.chkIsRicketsSign8, k.IS_RICKETS_SIGN);
                     SetCheckValue(this.chkIsMalnutrition8, k.IS_MALNUTRITION);
                     SetCheckValue(this.chkIsOverweight8, k.IS_OVERWEIGHT);
+                    // Ô "Bình thường" không có cột DB -> suy từ 5 cờ trên (chỉ khi đã có bản ghi).
+                    if (hasRecordUnderSix) SyncNormalNutritionSignFromFlags();
+                    else ClearNormalNutritionSign();
                     // IV. Phát triển
                     SetRadioValue(this.rdoMentalDevNormal8, k.MENTAL_DEV_NORMAL);
                     SetRadioValue(this.rdoMotorDevNormal8, k.MOTOR_DEV_NORMAL);
@@ -1114,6 +1105,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
                 // I. Hành chính
                 obj.IS_PREMATURE_BIRTH = GetRadioValue(this.rdoIsPrematureBirth8);
+                obj.GESTATIONAL_AGE_WEEK = this.txtGestationWeek8.Text;   // Tuần thai khi sinh
                 obj.ETHNIC = this.txtEthnic8.Text;
                 obj.RESIDENCE = this.txtResidence8.Text;
                 obj.ACCOMPANY_PERSON_NAME = this.txtAccompanyPersonName8.Text;

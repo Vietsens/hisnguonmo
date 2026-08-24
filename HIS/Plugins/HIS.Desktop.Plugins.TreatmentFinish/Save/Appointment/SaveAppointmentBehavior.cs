@@ -88,6 +88,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Appointment
                 result.PatientWorkPlace = hisTreatmentFinishSDO_process.PatientWorkPlace;
                 result.WorkPlaceId = hisTreatmentFinishSDO_process.WorkPlaceId;
                 result.NumOrderBlockId = hisTreatmentFinishSDO_process.NumOrderBlockId;
+                //Ma giu cho phai di kem, thieu no thi may chu coi nhu chua giu va bao
+                //"Khung gio kham nay da duoc dang ky" boi chinh luot giu cua minh (viec 54282)
+                result.NumOrderIssueId = hisTreatmentFinishSDO_process.NumOrderIssueId;
+                result.NumOrder = hisTreatmentFinishSDO_process.NumOrder;
                 result.EndTypeExtNote = hisTreatmentFinishSDO_process.EndTypeExtNote;
                 result.IsPregnancyTermination = hisTreatmentFinishSDO_process.IsPregnancyTermination;
                 result.GestationalAge = hisTreatmentFinishSDO_process.GestationalAge;

@@ -233,5 +233,73 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Resources
                 return "";
             }
         }
+
+        /// <summary>Đã kiểm tra</summary>
+        internal static string DaKiemTra
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("DaKiemTra", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Chưa kiểm tra</summary>
+        internal static string ChuaKiemTra
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChuaKiemTra", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Bạn có chắc chắn muốn đánh dấu hồ sơ đã kiểm tra? Thao tác này không hoàn tác được.</summary>
+        internal static string XacNhanDanhDauDaKiemTra
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("XacNhanDanhDauDaKiemTra", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Bạn không có quyền đánh dấu hồ sơ đã kiểm tra.</summary>
+        internal static string KhongDuQuyenDanhDauDaKiemTra
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhongDuQuyenDanhDauDaKiemTra", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

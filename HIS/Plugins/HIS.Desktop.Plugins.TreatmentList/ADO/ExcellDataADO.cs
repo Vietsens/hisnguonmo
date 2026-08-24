@@ -69,6 +69,8 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
         public string TDL_PATIENT_POSITION_NAME { get; set; }
         // Cột bổ sung
         public string PHONE { get; set; }                 // SĐT
+        public string PATIENT_WORK_PLACE_NAME { get; set; } // Nơi làm việc (TDL_PATIENT_WORK_PLACE_NAME → TDL_PATIENT_WORK_PLACE)
+        public string KSK_NUMBER { get; set; }             // Số khám sức khỏe — mã hồ sơ KSK (KSK_*_CODE) do backend sinh
         public string EXAM_OBSTETRIC { get; set; }         // Sản
         public string OBSTETRIC_ICD_NAME { get; set; }     // Tên ICD sản (HIS_KSK_GENERAL.OBSTETRIC_DISEASE_ICD_NAME)
         public string CONCLUSION_ICD_CODE { get; set; }    // Kết luận khám (ICD) (HIS_KSK_GENERAL.CONCLUSION_ICD_CODE)
@@ -103,6 +105,10 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
             this.PHONE = FirstNotEmpty(
                 GetStr(data, "TDL_PATIENT_MOBILE"),
                 GetStr(data, "TDL_PATIENT_PHONE"));
+            // Cột "Nơi làm việc": ưu tiên tên nơi làm việc theo danh mục → nơi làm việc nhập tay.
+            this.PATIENT_WORK_PLACE_NAME = FirstNotEmpty(
+                GetStr(data, "TDL_PATIENT_WORK_PLACE_NAME"),
+                GetStr(data, "TDL_PATIENT_WORK_PLACE"));
             if (data.TDL_PATIENT_GENDER_ID == 1)
             {
                 TDL_PATIENT_DOB_WOM = data.TDL_PATIENT_DOB.ToString().Substring(0, 4);
@@ -151,31 +157,41 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
 
                 // Phần khám lâm sàng + vitals lấy theo loại KSK (dựa KSK_TYPE_ID như EnterKskInfomantionVer2):
                 // KSK_TYPE_ID = 2 (trên 18 tuổi / nghề nghiệp) không lấy ở HIS_KSK_GENERAL mà ở bảng chuyên biệt.
-                // Xác định bằng bảng nào có bản ghi trong SDO (ưu tiên trên-18 → nghề nghiệp → general).
+                // Xác định bằng bảng nào có bản ghi trong SDO — THỨ TỰ ƯU TIÊN:
+                // trên-18 → dưới-18 → dưới-6 → nghề nghiệp → general.
                 HIS_KSK_OVER_EIGHTEEN kskOverEighteen = (kskData != null && kskData.HisKskOverEighteens != null)
                     ? kskData.HisKskOverEighteens.FirstOrDefault() : null;
+                HIS_KSK_UNDER_EIGHTEEN kskUnderEighteen = (kskData != null && kskData.HisKskUnderEighteens != null)
+                    ? kskData.HisKskUnderEighteens.FirstOrDefault() : null;
+                HIS_KSK_UNDER_SIX kskUnderSix = (kskData != null && kskData.HisKskUnderSixs != null)
+                    ? kskData.HisKskUnderSixs.FirstOrDefault() : null;
                 HIS_KSK_OCCUPATIONAL kskOccupational = (kskData != null && kskData.HisKskOccupationals != null)
                     ? kskData.HisKskOccupationals.FirstOrDefault() : null;
-                object examRecord = (object)kskOverEighteen ?? (object)kskOccupational ?? (object)currentGenaral;
+                object examRecord = (object)kskOverEighteen ?? (object)kskUnderEighteen ?? (object)kskUnderSix
+                    ?? (object)kskOccupational ?? (object)currentGenaral;
                 if (examRecord != null)
                 {
-                    EXAM_CIRCULATION = Pick(examRecord, currentGenaral, "EXAM_CIRCULATION");
-                    EXAM_RESPIRATORY = Pick(examRecord, currentGenaral, "EXAM_RESPIRATORY");
-                    EXAM_DIGESTION = Pick(examRecord, currentGenaral, "EXAM_DIGESTION");
+                    // Tên field mỗi bảng một khác nên truyền kèm tên thay thế (Pick thử lần lượt trên bản ghi
+                    // ưu tiên, hết mới rơi về HIS_KSK_GENERAL):
+                    //  - dưới-18: EXAM_NEURO_MENTAL (thần kinh–tâm thần), EXAM_CLINICAL_OTHER, PROBLEM_HEALTH.
+                    //  - dưới-6 : mẫu QĐ1551 không có cột EXAM_* mà tách theo cơ quan → lấy ô ghi chú tương ứng.
+                    EXAM_CIRCULATION = Pick(examRecord, currentGenaral, "EXAM_CIRCULATION", "HEART_AUSCULTATION", "CARDIO_NOTE");
+                    EXAM_RESPIRATORY = Pick(examRecord, currentGenaral, "EXAM_RESPIRATORY", "LUNG_AUSCULTATION", "RESP_NOTE");
+                    EXAM_DIGESTION = Pick(examRecord, currentGenaral, "EXAM_DIGESTION", "ABDOMEN_NOTE");
                     EXAM_OEND = Pick(examRecord, currentGenaral, "EXAM_OEND");
-                    EXAM_MUSCLE_BONE = Pick(examRecord, currentGenaral, "EXAM_MUSCLE_BONE");
-                    EXAM_NEUROLOGICAL = Pick(examRecord, currentGenaral, "EXAM_NEUROLOGICAL");
+                    EXAM_MUSCLE_BONE = Pick(examRecord, currentGenaral, "EXAM_MUSCLE_BONE", "MUSCULOSKELETAL_NOTE");
+                    EXAM_NEUROLOGICAL = Pick(examRecord, currentGenaral, "EXAM_NEUROLOGICAL", "EXAM_NEURO_MENTAL");
                     EXAM_MENTAL = Pick(examRecord, currentGenaral, "EXAM_MENTAL");
-                    EXAM_DERMATOLOGY = Pick(examRecord, currentGenaral, "EXAM_DERMATOLOGY");
+                    EXAM_DERMATOLOGY = Pick(examRecord, currentGenaral, "EXAM_DERMATOLOGY", "SKIN_NOTE");
                     EXAM_KIDNEY_UROLOGY = Pick(examRecord, currentGenaral, "EXAM_KIDNEY_UROLOGY");
                     EXAM_SURGERY = Pick(examRecord, currentGenaral, "EXAM_SURGERY");
                     EXAM_OBSTETRIC = Pick(examRecord, currentGenaral, "EXAM_OBSTETRIC");
                     // Tên field khác nhau: GENERAL dùng EXAM_EYE/EXAM_ENT/EXAM_STOMATOLOGY,
                     // bảng chuyên biệt dùng EXAM_EYE_DISEASE/EXAM_ENT_DISEASE/EXAM_STOMATOLOGY_DISEASE.
-                    EXAM_EYE = Pick(examRecord, currentGenaral, "EXAM_EYE", "EXAM_EYE_DISEASE");
-                    EXAM_ENT = Pick(examRecord, currentGenaral, "EXAM_ENT", "EXAM_ENT_DISEASE");
-                    EXAM_STOMATOLOGY = Pick(examRecord, currentGenaral, "EXAM_STOMATOLOGY", "EXAM_STOMATOLOGY_DISEASE");
-                    DISEASES = Pick(examRecord, currentGenaral, "DISEASES");
+                    EXAM_EYE = Pick(examRecord, currentGenaral, "EXAM_EYE", "EXAM_EYE_DISEASE", "EYE_NOTE");
+                    EXAM_ENT = Pick(examRecord, currentGenaral, "EXAM_ENT", "EXAM_ENT_DISEASE", "NOSETHROAT_NOTE", "EAR_NOTE");
+                    EXAM_STOMATOLOGY = Pick(examRecord, currentGenaral, "EXAM_STOMATOLOGY", "EXAM_STOMATOLOGY_DISEASE", "MOUTHTEETH_NOTE");
+                    DISEASES = Pick(examRecord, currentGenaral, "DISEASES", "PROBLEM_HEALTH", "CLINICAL_OBSERVATION");
                     TREATMENT_INSTRUCTION = Pick(examRecord, currentGenaral, "TREATMENT_INSTRUCTION");
                     NOTE_BLOOD = Pick(examRecord, currentGenaral, "NOTE_BLOOD");
                     NOTE_BIOCHEMICAL = Pick(examRecord, currentGenaral, "NOTE_BIOCHEMICAL");
@@ -207,15 +223,22 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                             BREATH_RATE = currentDhst.BREATH_RATE;
                         }
                     }
+
+                    // Mẫu dưới-6 tuổi (QĐ1551) nhập chỉ số sinh tồn dạng CHUỖI ngay trên HIS_KSK_UNDER_SIX
+                    // (có thể không qua HIS_DHST) → điền bù ô còn trống, lấy phần số trong chuỗi (vd "36,5 độ" → 36.5).
+                    if (kskUnderSix != null)
+                    {
+                        HEIGHT = HEIGHT ?? ParseDecimalLoose(GetStr(kskUnderSix, "BODY_LENGTH"));
+                        WEIGHT = WEIGHT ?? ParseDecimalLoose(GetStr(kskUnderSix, "WEIGHT"));
+                        PULSE = PULSE ?? ParseDecimalLoose(GetStr(kskUnderSix, "PULSE"));
+                        TEMPERATURE = TEMPERATURE ?? ParseDecimalLoose(GetStr(kskUnderSix, "TEMPERATURE"));
+                        BREATH_RATE = BREATH_RATE ?? ParseDecimalLoose(GetStr(kskUnderSix, "RESPIRATORY_RATE"));
+                    }
                 }
 
                 // Đối tượng / Nguồn chi trả / Nhóm tuổi — lấy GIỐNG EnterKskInfomantionVer2:
                 // KSK_PATIENT_TYPES + KSK_PAY_SOURCE nằm ở bảng chuyên biệt theo tab đã nhập
                 // (≥18 → HIS_KSK_OVER_EIGHTEEN, <18 → HIS_KSK_UNDER_EIGHTEEN, trẻ <6 → HIS_KSK_UNDER_SIX).
-                HIS_KSK_UNDER_EIGHTEEN kskUnderEighteen = (kskData != null && kskData.HisKskUnderEighteens != null)
-                    ? kskData.HisKskUnderEighteens.FirstOrDefault() : null;
-                HIS_KSK_UNDER_SIX kskUnderSix = (kskData != null && kskData.HisKskUnderSixs != null)
-                    ? kskData.HisKskUnderSixs.FirstOrDefault() : null;
 
                 // Đối tượng: chuỗi mã CSV "1;3;13" → tên (bảng danh mục QĐ 1551).
                 string kskPatientTypes = FirstNotEmpty(
@@ -235,6 +258,18 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                 long? kskTypeId = GetLong(currentGenaral, "KSK_TYPE_ID")
                     ?? ResolveKskTypeId(kskOverEighteen, kskUnderEighteen, kskUnderSix, data, currentGenaral);
                 KSK_AGE_GROUP_NAME = MapKskAgeGroupName(kskTypeId);
+
+                // Cột "Số khám sức khỏe" (ksk_number ở form nhập KSK — backend tự sinh qua PKG_KSK_CODE,
+                // FE chỉ hiển thị). Mỗi mẫu lưu ở cột CODE riêng → lấy theo đúng thứ tự ưu tiên mẫu KSK.
+                object kskOther = (kskData != null && kskData.HisKskOthers != null)
+                    ? kskData.HisKskOthers.FirstOrDefault() : null;
+                KSK_NUMBER = FirstNotEmpty(
+                    GetStr(kskOverEighteen, "KSK_OVER_EIGHTEEN_CODE"),
+                    GetStr(kskUnderEighteen, "KSK_UNDER_EIGHTEEN_CODE"),
+                    GetStr(kskUnderSix, "KSK_UNDER_SIX_CODE"),
+                    GetStr(kskOccupational, "KSK_OCCUPATIONAL_CODE"),
+                    GetStr(kskOther, "KSK_OTHER_CODE"),
+                    GetStr(currentGenaral, "KSK_GENERAL_CODE"));
 
                 // Các cột ICD LUÔN lấy từ HIS_KSK_GENERAL (mọi loại KSK đều ghi ICD về bảng general).
                 if (currentGenaral != null)
@@ -500,6 +535,32 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
         {
             if (value == null) return null;
             return value.Value.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Lấy số từ chuỗi nhập tự do của mẫu dưới-6 tuổi (vd "36,5 độ C" → 36.5; "80 lần/phút" → 80).
+        /// Không đọc được số thì trả null (để ô Excel trống thay vì ghi 0 sai lệch).
+        /// </summary>
+        private static decimal? ParseDecimalLoose(string text)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(text)) return null;
+                StringBuilder sb = new StringBuilder();
+                foreach (char c in text.Replace(',', '.'))
+                {
+                    if (char.IsDigit(c) || (c == '.' && sb.Length > 0 && sb.ToString().IndexOf('.') < 0)) sb.Append(c);
+                    else if (sb.Length > 0) break; // đã lấy được số đầu tiên thì dừng
+                }
+                string number = sb.ToString().TrimEnd('.');
+                if (string.IsNullOrEmpty(number)) return null;
+                decimal value;
+                if (decimal.TryParse(number, System.Globalization.NumberStyles.Any,
+                        System.Globalization.CultureInfo.InvariantCulture, out value))
+                    return value;
+                return null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
         /// <summary>Trả về giá trị chuỗi đầu tiên khác rỗng.</summary>

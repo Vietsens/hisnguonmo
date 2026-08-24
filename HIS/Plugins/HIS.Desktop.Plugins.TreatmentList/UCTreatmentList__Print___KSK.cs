@@ -62,6 +62,11 @@ namespace HIS.Desktop.Plugins.TreatmentList
         List<HIS_PATIENT> _KSK_Patient { get; set; }
         List<HIS_KSK_GENERAL> _KSK_General { get; set; }
         List<HIS_KSK_DRIVER> _KSK_Driver { get; set; }
+        // Phần khám của 3 mẫu KSK chuyên biệt — bản in lấy theo thứ tự ưu tiên
+        // trên-18 → dưới-18 → dưới-6 → khám chung (HIS_KSK_GENERAL).
+        List<HIS_KSK_OVER_EIGHTEEN> _KSK_OverEighteen { get; set; }
+        List<HIS_KSK_UNDER_EIGHTEEN> _KSK_UnderEighteen { get; set; }
+        List<HIS_KSK_UNDER_SIX> _KSK_UnderSix { get; set; }
         private void ProcessPrintf(List<V_HIS_TREATMENT_4> _KSK_Treatments_Check)
         {
             try
@@ -78,6 +83,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 _KSK_SereServTeins = new List<V_HIS_SERE_SERV_TEIN>();
                 _KSK_Patient = new List<HIS_PATIENT>();
                 _KSK_Driver = new List<HIS_KSK_DRIVER>();
+                _KSK_General = new List<HIS_KSK_GENERAL>();
+                ResetKskExamForms();
 
                 this._KSK_Treatments = _KSK_Treatments_Check;
 
@@ -95,6 +102,11 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     start += 100;
                     count -= 100;
                 }
+
+                // Phần khám 4 mẫu KSK cho bản in Mps000315 (y lệnh đã lấy xong ở CreateThreadByTreatmentIds).
+                List<long> kskServiceReqIds = (_KSK_ServiceReqs != null) ? _KSK_ServiceReqs.Select(o => o.ID).Distinct().ToList() : null;
+                GetKskGeneral_KSK(kskServiceReqIds);
+                GetKskExamForms_KSK(kskServiceReqIds);
 
                 List<long> patientIds = _KSK_Treatments.Select(s => s.PATIENT_ID).Distinct().ToList();
                 int skip = 0;
@@ -136,6 +148,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 _KSK_SereServTeins = new List<V_HIS_SERE_SERV_TEIN>();
                 _KSK_TestIndexs = new List<V_HIS_TEST_INDEX>();
                 _KSK_General = new List<HIS_KSK_GENERAL>();
+                ResetKskExamForms();
 
                 this._KSK_Treatments = _KSK_Treatments_Check;
 
@@ -185,6 +198,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
                 GetServiceReq_KSK(_treatmentIds);
                 GetKskGeneral_KSK(_KSK_ServiceReqs.Select(o => o.ID).ToList());
+                GetKskExamForms_KSK(_KSK_ServiceReqs.Select(o => o.ID).Distinct().ToList());
                 GetSereServ__KSK(_treatmentIds);
                 GetSereServExt__KSK(_treatmentIds);
                 GetSereServTein__KSK(_treatmentIds);
@@ -199,12 +213,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
 
         private void GetTestIndex__KSK(List<long> lstId)
         {
-            try
+            foreach (var batchIds in SplitIdBatches(lstId))
             {
-                if (lstId != null)
+                try
                 {
                     HisTestIndexViewFilter filter = new HisTestIndexViewFilter();
-                    filter.IDs = lstId;
+                    filter.IDs = batchIds;
 
                     var rs = new BackendAdapter(_KSK_param).Get<List<V_HIS_TEST_INDEX>>("api/HisTestIndex/GetView", ApiConsumers.MosConsumer, filter, _KSK_param);
                     if (rs != null && rs.Count > 0)
@@ -212,21 +226,21 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         _KSK_TestIndexs.AddRange(rs);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
             }
         }
 
         private void GetService__KSK(List<long> lstId)
         {
-            try
+            foreach (var batchIds in SplitIdBatches(lstId))
             {
-                if (lstId != null)
+                try
                 {
                     HisServiceFilter filter = new HisServiceFilter();
-                    filter.IDs = lstId;
+                    filter.IDs = batchIds;
 
                     var rs = new BackendAdapter(_KSK_param).Get<List<HIS_SERVICE>>("api/HisService/Get", ApiConsumers.MosConsumer, filter, _KSK_param);
                     if (rs != null && rs.Count > 0)
@@ -234,10 +248,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         _KSK_Services.AddRange(rs);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
             }
         }
 
@@ -318,6 +332,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 KskRank,
                 KskPosition
                 );
+                // Phần khám theo thứ tự ưu tiên trên-18 → dưới-18 → dưới-6 → khám chung (processor tự chọn).
+                mps000481RDO.ksk_OverEighteens = _KSK_OverEighteen;
+                mps000481RDO.ksk_UnderEighteens = _KSK_UnderEighteen;
+                mps000481RDO.ksk_UnderSixs = _KSK_UnderSix;
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (_KSK_Treatments != null && _KSK_Treatments.Count == 1)
@@ -376,6 +394,11 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 _KSK_Patient,
                 _KSK_Driver
                 );
+                // Phần khám theo thứ tự ưu tiên trên-18 → dưới-18 → dưới-6 → khám chung (processor tự chọn).
+                mps000315RDO._KskGeneral = _KSK_General;
+                mps000315RDO._KskOverEighteens = _KSK_OverEighteen;
+                mps000315RDO._KskUnderEighteens = _KSK_UnderEighteen;
+                mps000315RDO._KskUnderSixs = _KSK_UnderSix;
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
 
@@ -612,22 +635,89 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
         }
 
-        private void GetKskGeneral_KSK(List<long> serviceReqIds)
+        /// <summary>Khởi tạo lại 3 danh sách phần khám mẫu KSK chuyên biệt trước mỗi lần in.</summary>
+        private void ResetKskExamForms()
+        {
+            _KSK_OverEighteen = new List<HIS_KSK_OVER_EIGHTEEN>();
+            _KSK_UnderEighteen = new List<HIS_KSK_UNDER_EIGHTEEN>();
+            _KSK_UnderSix = new List<HIS_KSK_UNDER_SIX>();
+        }
+
+        /// <summary>
+        /// Lấy phần khám 3 mẫu KSK chuyên biệt (trên-18, dưới-18, trẻ dưới-6) theo danh sách y lệnh KSK.
+        /// Processor MPS tự chọn theo thứ tự ưu tiên trên-18 → dưới-18 → dưới-6 → khám chung.
+        /// </summary>
+        private void GetKskExamForms_KSK(List<long> serviceReqIds)
         {
             try
             {
-                HisKskGeneralFilter filter = new HisKskGeneralFilter();
-                filter.SERVICE_REQ_IDs = serviceReqIds;
+                if (serviceReqIds == null || serviceReqIds.Count == 0) return;
+                if (_KSK_OverEighteen == null || _KSK_UnderEighteen == null || _KSK_UnderSix == null) ResetKskExamForms();
 
-                var rs = new BackendAdapter(_KSK_param).Get<List<HIS_KSK_GENERAL>>("api/HisKskGeneral/Get", ApiConsumers.MosConsumer, filter, _KSK_param);
-                if (rs != null && rs.Count > 0)
+                foreach (var batchIds in SplitIdBatches(serviceReqIds))
                 {
-                    _KSK_General.AddRange(rs);
+                    try
+                    {
+                        HisKskOverEighteenFilter overFilter = new HisKskOverEighteenFilter();
+                        overFilter.SERVICE_REQ_IDs = batchIds;
+                        var rsOver = new BackendAdapter(_KSK_param).Get<List<HIS_KSK_OVER_EIGHTEEN>>("api/HisKskOverEighteen/Get", ApiConsumers.MosConsumer, overFilter, _KSK_param);
+                        if (rsOver != null && rsOver.Count > 0) _KSK_OverEighteen.AddRange(rsOver);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+
+                    try
+                    {
+                        HisKskUnderEighteenFilter underFilter = new HisKskUnderEighteenFilter();
+                        underFilter.SERVICE_REQ_IDs = batchIds;
+                        var rsUnder = new BackendAdapter(_KSK_param).Get<List<HIS_KSK_UNDER_EIGHTEEN>>("api/HisKskUnderEighteen/Get", ApiConsumers.MosConsumer, underFilter, _KSK_param);
+                        if (rsUnder != null && rsUnder.Count > 0) _KSK_UnderEighteen.AddRange(rsUnder);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+
+                    try
+                    {
+                        HisKskUnderSixFilter sixFilter = new HisKskUnderSixFilter();
+                        sixFilter.SERVICE_REQ_IDs = batchIds;
+                        var rsSix = new BackendAdapter(_KSK_param).Get<List<HIS_KSK_UNDER_SIX>>("api/HisKskUnderSix/Get", ApiConsumers.MosConsumer, sixFilter, _KSK_param);
+                        if (rsSix != null && rsSix.Count > 0) _KSK_UnderSix.AddRange(rsSix);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GetKskGeneral_KSK(List<long> serviceReqIds)
+        {
+            foreach (var batchIds in SplitIdBatches(serviceReqIds))
+            {
+                try
+                {
+                    HisKskGeneralFilter filter = new HisKskGeneralFilter();
+                    filter.SERVICE_REQ_IDs = batchIds;
+
+                    var rs = new BackendAdapter(_KSK_param).Get<List<HIS_KSK_GENERAL>>("api/HisKskGeneral/Get", ApiConsumers.MosConsumer, filter, _KSK_param);
+                    if (rs != null && rs.Count > 0)
+                    {
+                        _KSK_General.AddRange(rs);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
         }
 
@@ -1092,6 +1182,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 new KskExcelColumn("Năm sinh nữ", (o, i) => o.TDL_PATIENT_DOB_WOM),
                 new KskExcelColumn("Tên chức vụ", (o, i) => o.TDL_PATIENT_POSITION_NAME),
                 new KskExcelColumn("Tên Đoàn", (o, i) => o.WORK_PLACE_NAME),
+                new KskExcelColumn("Nơi làm việc", (o, i) => o.PATIENT_WORK_PLACE_NAME),
+                new KskExcelColumn("Số khám sức khỏe", (o, i) => o.KSK_NUMBER),
                 new KskExcelColumn("Số nhà", (o, i) => o.TDL_PATIENT_ADDRESS),
                 new KskExcelColumn("Số CMND", (o, i) => o.TDL_PATIENT_CMND_NUMBER),
                 new KskExcelColumn("SĐT", (o, i) => o.PHONE),
@@ -1194,22 +1286,51 @@ namespace HIS.Desktop.Plugins.TreatmentList
             "Hc3pScUpWUVJaME1vVm5CaHVQQUprNWVsaTdmaFZjRjhoV2QzRTRYUTNMemZtSkN1YWoyTk" +
             "V0ZVJpNUhyZmc9PC9TaWduYXR1cmU+DQo8L0xpY2Vuc2U+";
 
+        /// <summary>
+        /// Số ID tối đa cho 1 lời gọi API. Filter được serialize JSON (pretty-print) rồi base64 vào query string
+        /// của request GET → mỗi ID tốn ~22 byte trên URL. Trần URL thực tế 16 KB, nên 100 ID/lô (~2,2 KB) là an toàn.
+        /// Truyền cả danh sách vào 1 lời gọi sẽ vượt trần → HTTP 414 → mất dữ liệu mà không có thông báo lỗi.
+        /// </summary>
+        private const int KSK_EXCEL_ID_BATCH_SIZE = 100;
+
+        /// <summary>Chia danh sách ID (đã loại trùng) thành các lô nhỏ để mỗi lời gọi API không vượt trần độ dài URL.</summary>
+        private static List<List<long>> SplitIdBatches(List<long> ids)
+        {
+            List<List<long>> batches = new List<List<long>>();
+            if (ids == null || ids.Count == 0) return batches;
+            var distinctIds = ids.Distinct().ToList();
+            for (int skip = 0; skip < distinctIds.Count; skip += KSK_EXCEL_ID_BATCH_SIZE)
+            {
+                batches.Add(distinctIds.Skip(skip).Take(KSK_EXCEL_ID_BATCH_SIZE).ToList());
+            }
+            return batches;
+        }
+
+        /// <summary>
+        /// Lấy dịch vụ theo danh sách đợt điều trị, chia lô để tránh URL quá dài. Lô nào lỗi thì bỏ qua lô đó
+        /// và ghi log, các lô còn lại vẫn giữ nguyên — KHÔNG vứt toàn bộ dữ liệu đã lấy được.
+        /// </summary>
         private List<HIS_SERE_SERV> GetSereServToExcel(List<long> treatmentId)
         {
-            List<HIS_SERE_SERV> rs = null;
-            try
+            List<HIS_SERE_SERV> rs = new List<HIS_SERE_SERV>();
+            foreach (var batchIds in SplitIdBatches(treatmentId))
             {
-                CommonParam param = new CommonParam();
-                HisSereServFilter filter = new HisSereServFilter();
-                filter.TREATMENT_IDs = treatmentId;
-                rs = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, filter, param);
+                try
+                {
+                    CommonParam param = new CommonParam();
+                    HisSereServFilter filter = new HisSereServFilter();
+                    filter.TREATMENT_IDs = batchIds;
+                    var batchRs = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (batchRs != null && batchRs.Count > 0)
+                    {
+                        rs.AddRange(batchRs);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return null;
-            }
-
             return rs;
         }
 
@@ -1221,30 +1342,23 @@ namespace HIS.Desktop.Plugins.TreatmentList
         private List<HIS_SERE_SERV_EXT> GetSereServExtToExcel(List<long> sereServId)
         {
             List<HIS_SERE_SERV_EXT> rs = new List<HIS_SERE_SERV_EXT>();
-            try
+            foreach (var batchIds in SplitIdBatches(sereServId))
             {
-                if (sereServId != null && sereServId.Count > 0)
+                try
                 {
-                    int skip = 0;
-                    while (skip < sereServId.Count)
+                    CommonParam param = new CommonParam();
+                    HisSereServExtFilter filter = new HisSereServExtFilter();
+                    filter.SERE_SERV_IDs = batchIds;
+                    var batchRs = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (batchRs != null && batchRs.Count > 0)
                     {
-                        var batchIds = sereServId.Skip(skip).Take(100).ToList();
-                        skip += 100;
-                        CommonParam param = new CommonParam();
-                        HisSereServExtFilter filter = new HisSereServExtFilter();
-                        filter.SERE_SERV_IDs = batchIds;
-                        var batchRs = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, filter, param);
-                        if (batchRs != null && batchRs.Count > 0)
-                        {
-                            rs.AddRange(batchRs);
-                        }
+                        rs.AddRange(batchRs);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return null;
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
             return rs;
         }
@@ -1258,31 +1372,27 @@ namespace HIS.Desktop.Plugins.TreatmentList
         private List<V_HIS_SERE_SERV_TEIN> GetSereServTeinToExcel(List<long> lstTreatmentId, List<long> lstSSid)
         {
             List<V_HIS_SERE_SERV_TEIN> rs = new List<V_HIS_SERE_SERV_TEIN>();
-            try
+            foreach (var batchIds in SplitIdBatches(lstSSid))
             {
-                if (lstSSid != null && lstSSid.Count > 0)
+                try
                 {
-                    int skip = 0;
-                    while (skip < lstSSid.Count)
+                    CommonParam param = new CommonParam();
+                    HisSereServTeinViewFilter filter = new HisSereServTeinViewFilter();
+                    // CHỈ lọc theo SERE_SERV_IDs. KHÔNG truyền TDL_TREATMENT_IDs: mỗi sere_serv đã thuộc đúng
+                    // 1 đợt điều trị nên điều kiện đó thừa, mà truyền cả danh sách đợt ở MỌI lô làm URL vượt
+                    // trần → HTTP 414 → mất sạch kết quả xét nghiệm. Thêm nữa, backend lọc kèm
+                    // "TDL_TREATMENT_ID.HasValue" nên còn đánh rơi các dòng kết quả có cột TDL này NULL.
+                    filter.SERE_SERV_IDs = batchIds;
+                    var batchRs = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN>>("api/HisSereServTein/GetView", ApiConsumers.MosConsumer, filter, param);
+                    if (batchRs != null && batchRs.Count > 0)
                     {
-                        var batchIds = lstSSid.Skip(skip).Take(100).ToList();
-                        skip += 100;
-                        CommonParam param = new CommonParam();
-                        HisSereServTeinViewFilter filter = new HisSereServTeinViewFilter();
-                        filter.SERE_SERV_IDs = batchIds;
-                        filter.TDL_TREATMENT_IDs = lstTreatmentId;
-                        var batchRs = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN>>("api/HisSereServTein/GetView", ApiConsumers.MosConsumer, filter, param);
-                        if (batchRs != null && batchRs.Count > 0)
-                        {
-                            rs.AddRange(batchRs);
-                        }
+                        rs.AddRange(batchRs);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return null;
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
             return rs;
         }

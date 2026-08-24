@@ -81,12 +81,37 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
         Task taskForm_Load = null;
         bool isLoadingForm = false;
 
+        /// <summary>
+        /// Link xem anh PACS do plugin cha truyen sang (tuy chon).
+        /// Co gia tri khi man hinh duoc mo voi muc dich XEM ANH — plugin cha da doc san
+        /// HIS_SERE_SERV_EXT.JSON_FORM_ID nen khong phai lay lai link.
+        /// </summary>
+        string viewLinkPacs;
+
+        /// <summary>
+        /// True khi man hinh duoc mo de xem anh PACS (co viewLinkPacs).
+        /// Dung de KHONG tu dong in + dong form theo cau hinh PrintOption — nguoi dung
+        /// dang muon xem anh chu khong phai in phieu.
+        /// </summary>
+        bool isOpenForViewImage = false;
+
+        /// <summary>
+        /// True khi da gui yeu cau lay link moi tu PACS (nhanh CloudInfo - PACS Sancy).
+        /// Khi do KHONG dung link cu luu tai JSON_FORM_ID.
+        /// </summary>
+        bool isGettingLinkFromPacs = false;
+
         public frmServiceReqResultView()
         {
             InitializeComponent();
         }
 
         public frmServiceReqResultView(Inventec.Desktop.Common.Modules.Module currentModule, long sereServId)
+            : this(currentModule, sereServId, null)
+        {
+        }
+
+        public frmServiceReqResultView(Inventec.Desktop.Common.Modules.Module currentModule, long sereServId, string viewLinkPacs)
             : base(currentModule)
         {
             InitializeComponent();
@@ -94,6 +119,8 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             {
                 this.currentModule = currentModule;
                 this.sereServId = sereServId;
+                this.viewLinkPacs = viewLinkPacs;
+                this.isOpenForViewImage = IsValidViewLink(viewLinkPacs);
                 EO.Base.Runtime.EnableEOWP = true;
                 EO.WebBrowser.Runtime.AddLicense(license_code);
                 webView1.NewWindow += NewWindowBrowser;
@@ -102,6 +129,36 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Link xem ket qua hop le khi khac rong va la dia chi http/https.
+        /// </summary>
+        private bool IsValidViewLink(string link)
+        {
+            return !String.IsNullOrWhiteSpace(link) && link.Trim().StartsWith("http");
+        }
+
+        /// <summary>
+        /// Lay link xem anh da duoc PACS day sang HIS va luu tai HIS_SERE_SERV_EXT.JSON_FORM_ID.
+        /// Dung cho cac PACS chi tra ve link (VD: Carestream) — khong phu thuoc cau hinh
+        /// Api/CloudInfo trong MOS.PACS.ADDRESS.
+        /// </summary>
+        private bool TryGetSavedPacsViewLink(ref string link)
+        {
+            try
+            {
+                if (sereServExt != null && IsValidViewLink(sereServExt.JSON_FORM_ID))
+                {
+                    link = sereServExt.JSON_FORM_ID.Trim();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
         }
 
         private void frmServiceReqResultView_Load(object sender, EventArgs e)
@@ -155,7 +212,9 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 InsertSignatureImagesIntoDocument(txtDescription);
                 btnPrint.Focus();
                 InitControlState();
-                if (!isSense && HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ServiceExecute.PrintOption") == "1"
+                //Mo de XEM ANH thi khong tu dong in + dong form theo cau hinh PrintOption.
+                if (!isSense && !this.isOpenForViewImage
+                    && HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ServiceExecute.PrintOption") == "1"
                     && this.isShowEmrDocument == false)
                 {
                     PrintOption1(false);
@@ -173,6 +232,13 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                     this.lciPrint.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
                 VisibleBtnUpdateResult();
+
+                //Mo de xem anh: dua thang nguoi dung vao tab hinh anh PACS.
+                if (this.isOpenForViewImage && isSense)
+                {
+                    xtraTab.ShowTabHeader = DevExpress.Utils.DefaultBoolean.True;
+                    xtraTab.SelectedTabPage = xtraTabPacs;
+                }
             }
             catch (Exception ex)
             {
@@ -418,7 +484,26 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                     string url = "";
                     try
                     {
-                        if (PacsCFG.PACS_ADDRESS != null && PacsCFG.PACS_ADDRESS.Count > 0)
+                        //Uu tien 1: link do plugin cha truyen sang (da doc JSON_FORM_ID).
+                        //Khong goi lai API lay link, khong phu thuoc cau hinh MOS.PACS.ADDRESS.
+                        if (this.isOpenForViewImage)
+                        {
+                            url = this.viewLinkPacs.Trim();
+                            isSense = true;
+                        }
+                        //PACS Carestream: backend tu quyet dinh nguon link (tu sinh link da ma hoa,
+                        //khong duoc thi dung link PACS da day sang). Khong phu thuoc CloudInfo/Api
+                        //trong MOS.PACS.ADDRESS de nguoi trien khai khong phai cau hinh meo.
+                        else if (PacsCFG.PACS_INTEGRATE_OPTION == PacsIntegrateOptionCode.CARESTREAM)
+                        {
+                            xtraTab.ShowTabHeader = DevExpress.Utils.DefaultBoolean.True;
+                            if (sereServ != null && sereServ.ID > 0)
+                            {
+                                isGettingLinkFromPacs = true;
+                                CreateThreadGetLinkResult(sereServ.ID, false);
+                            }
+                        }
+                        else if (PacsCFG.PACS_ADDRESS != null && PacsCFG.PACS_ADDRESS.Count > 0)
                         {
                             PacsAddress address = null;
                             List<PacsAddress> listValidAddress = new List<PacsAddress>();
@@ -439,11 +524,14 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                             if (address != null && !String.IsNullOrWhiteSpace(address.CloudInfo))
                             {
                                 xtraTab.ShowTabHeader = DevExpress.Utils.DefaultBoolean.True;
-                                if (sereServ != null && sereServ.ID > 0 && (sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA 
-                                    || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA 
-                                    || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN 
+                                if (sereServ != null && sereServ.ID > 0 && (sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA
+                                    || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA
+                                    || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN
                                     || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS))
                                 {
+                                    //PACS tu sinh link theo yeu cau (Sancy): cho thread lay link,
+                                    //KHONG dung link cu da luu de tranh hien link het han roi ghi de.
+                                    isGettingLinkFromPacs = true;
                                     CreateThreadGetLinkResult(sereServ.ID, false);
                                 }
                             }
@@ -457,11 +545,17 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                 {
                                     HIS_PATIENT patient = GetPatientById(sereServ.TDL_PATIENT_ID);
 
-                                    url = string.Format("http://{0}{1}", address.Address, address.Api);
+                                    //Trim ca 2 gia tri: cau hinh MOS.PACS.ADDRESS thuong bi
+                                    //dinh khoang trang thua, ghep thang se ra dia chi hong
+                                    //kieu "http:// https://...".
+                                    string addressValue = (address.Address ?? "").Trim();
+                                    string apiValue = (address.Api ?? "").Trim();
 
-                                    if (address.Api.Trim().StartsWith("http"))
+                                    url = string.Format("http://{0}{1}", addressValue, apiValue);
+
+                                    if (apiValue.StartsWith("http"))
                                     {
-                                        url = address.Api;
+                                        url = apiValue;
                                     }
 
                                     string idChiDinh = sereServ.ID.ToString();
@@ -470,7 +564,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                     string PACS_BASE_URI = ConfigSystems.URI_API_PACS;
 
                                     url = url.Replace("<#PACS_BASE_URI;>", PACS_BASE_URI);
-                                    var urlSplit = address.Api.Split('=', '&');
+                                    var urlSplit = apiValue.Split('=', '&');
                                     var keyUrl = urlSplit.Where(o => o.Contains(":")).ToList();
                                     foreach (var item in keyUrl)
                                     {
@@ -492,8 +586,19 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                             }
                             else if (address != null && String.IsNullOrWhiteSpace(address.Api))
                             {
-                                XtraMessageBox.Show("Chưa cấu hình địa chỉ xem kết quả");
+                                //Phong khong khai Api: van hien duoc neu PACS da day link sang HIS.
+                                if (TryGetSavedPacsViewLink(ref url))
+                                    isSense = true;
+                                else
+                                    XtraMessageBox.Show("Chưa cấu hình địa chỉ xem kết quả");
                             }
+                        }
+
+                        //Du phong: phong khong co trong MOS.PACS.ADDRESS hoac chua khai cau hinh,
+                        //nhung PACS da day link sang HIS (HIS_SERE_SERV_EXT.JSON_FORM_ID).
+                        if (!isSense && !isGettingLinkFromPacs && TryGetSavedPacsViewLink(ref url))
+                        {
+                            isSense = true;
                         }
                     }
                     catch (Exception ex)
@@ -2594,7 +2699,31 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 string url = "";
                 try
                 {
-                    if (PacsCFG.PACS_ADDRESS != null && PacsCFG.PACS_ADDRESS.Count > 0)
+                    //Uu tien link da co tren man hinh (do plugin cha truyen sang hoac doc tu
+                    //HIS_SERE_SERV_EXT.JSON_FORM_ID) — PACS chi tra link thi khong co gi de dung lai.
+                    if (this.isOpenForViewImage && IsValidViewLink(txtUrl.Text))
+                    {
+                        url = txtUrl.Text.Trim();
+                        isSense = true;
+                    }
+                    //PACS Carestream: link do backend sinh (EncryptQSSecure) hoac lay tu JSON_FORM_ID.
+                    //KHONG dung template Api trong MOS.PACS.ADDRESS - template do danh cho PACS khac,
+                    //ghep vao se ra dia chi sai.
+                    else if (PacsCFG.PACS_INTEGRATE_OPTION == PacsIntegrateOptionCode.CARESTREAM)
+                    {
+                        url = txtUrl.Text;
+                        if (IsValidViewLink(url))
+                        {
+                            url = url.Trim();
+                            isSense = true;
+                        }
+                        else if (sereServ != null && sereServ.ID > 0)
+                        {
+                            CreateThreadGetLinkResult(sereServ.ID, isOpenWeb);
+                            return;
+                        }
+                    }
+                    else if (PacsCFG.PACS_ADDRESS != null && PacsCFG.PACS_ADDRESS.Count > 0)
                     {
                         var dtExecuteRoom = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p => p.ROOM_ID == currentServiceReq.EXECUTE_ROOM_ID);
                         if (dtExecuteRoom != null)
@@ -2663,11 +2792,17 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                 else
                                 {
                                     HIS_PATIENT patient = GetPatientById(sereServ.TDL_PATIENT_ID);
-                                    url = string.Format("http://{0}{1}", address.Address, address.Api);
+                                    //Trim ca 2 gia tri: cau hinh MOS.PACS.ADDRESS thuong bi
+                                    //dinh khoang trang thua, ghep thang se ra dia chi hong
+                                    //kieu "http:// https://...".
+                                    string addressValue = (address.Address ?? "").Trim();
+                                    string apiValue = (address.Api ?? "").Trim();
 
-                                    if (address.Api.Trim().StartsWith("http"))
+                                    url = string.Format("http://{0}{1}", addressValue, apiValue);
+
+                                    if (apiValue.StartsWith("http"))
                                     {
-                                        url = address.Api;
+                                        url = apiValue;
                                     }
 
                                     string idChiDinh = sereServ.ID.ToString();
@@ -2676,7 +2811,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                     string PACS_BASE_URI = ConfigSystems.URI_API_PACS;
 
                                     url = url.Replace("<#PACS_BASE_URI;>", PACS_BASE_URI);
-                                    var urlSplit = address.Api.Split('=', '&');
+                                    var urlSplit = apiValue.Split('=', '&');
                                     var keyUrl = urlSplit.Where(o => o.Contains(":")).ToList();
                                     foreach (var item in keyUrl)
                                     {
@@ -2699,16 +2834,29 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                             }
                             else if (address == null || (address != null && String.IsNullOrWhiteSpace(address.Api)))
                             {
-                                isSense = false;
-                                if (isShowMess)
+                                //Chua khai Api nhung PACS da day link sang HIS thi van mo duoc.
+                                if (TryGetSavedPacsViewLink(ref url))
                                 {
-                                    DevExpress.XtraEditors.XtraMessageBox.Show("Phòng xử lý chưa được thiết lập đường dẫn xem kết quả vui lòng thử lại sau.", "Thông báo", System.Windows.Forms.MessageBoxButtons.OK);
+                                    isSense = true;
                                 }
                                 else
                                 {
-                                    return;
+                                    isSense = false;
+                                    if (isShowMess)
+                                    {
+                                        DevExpress.XtraEditors.XtraMessageBox.Show("Phòng xử lý chưa được thiết lập đường dẫn xem kết quả vui lòng thử lại sau.", "Thông báo", System.Windows.Forms.MessageBoxButtons.OK);
+                                    }
+                                    else
+                                    {
+                                        return;
+                                    }
                                 }
                             }
+                        }
+                        else if (TryGetSavedPacsViewLink(ref url))
+                        {
+                            //Phong thuc hien khong co cau hinh PACS nhung da co link do PACS day sang.
+                            isSense = true;
                         }
                         else
                         {
@@ -2825,7 +2973,8 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             {
                 int integrateOption = PacsCFG.PACS_INTEGRATE_OPTION;
                 LogSystem.Debug("integrateOption" + integrateOption);
-                bool isVisible = (integrateOption == 3);
+                //Chi PACS Bach Khoa co API de HIS keo ket qua ve; Carestream khong co nen an nut.
+                bool isVisible = (integrateOption == PacsIntegrateOptionCode.BACH_KHOA);
 
                 btnUpdateResult.Visible = isVisible;
 

@@ -45,10 +45,9 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkIsSplitByCashierDeposit = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barBtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnExport = new DevExpress.XtraBars.BarButtonItem();
@@ -123,6 +122,9 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             this.lciError = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.cboBranch = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.customGridViewWithFilterMultiColumnNoFocus1 = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsSplitByCashierDeposit.Properties)).BeginInit();
@@ -180,6 +182,9 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             ((System.ComponentModel.ISupportInitialize)(this.lciError)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBranch.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumnNoFocus1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -369,6 +374,7 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.cboBranch);
             this.layoutControl2.Controls.Add(this.cboTreatmentType);
             this.layoutControl2.Controls.Add(this.dtLastDepositTimeTo);
             this.layoutControl2.Controls.Add(this.dtLastDepositTimeFrom);
@@ -391,7 +397,7 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             // 
             // cboTreatmentType
             // 
-            this.cboTreatmentType.Location = new System.Drawing.Point(404, 26);
+            this.cboTreatmentType.Location = new System.Drawing.Point(538, 26);
             this.cboTreatmentType.MenuManager = this.barManager1;
             this.cboTreatmentType.Name = "cboTreatmentType";
             this.cboTreatmentType.Properties.AutoComplete = false;
@@ -401,7 +407,7 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             this.cboTreatmentType.Properties.NullText = "";
             this.cboTreatmentType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboTreatmentType.Properties.View = this.customGridLookUpEditWithFilterMultiColumnNoFocus1View;
-            this.cboTreatmentType.Size = new System.Drawing.Size(121, 20);
+            this.cboTreatmentType.Size = new System.Drawing.Size(83, 20);
             this.cboTreatmentType.StyleController = this.layoutControl2;
             this.cboTreatmentType.TabIndex = 16;
             this.cboTreatmentType.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTreatmentType_ButtonClick);
@@ -621,9 +627,9 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(726, 26);
+            this.btnSearch.Location = new System.Drawing.Point(771, 26);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(165, 22);
+            this.btnSearch.Size = new System.Drawing.Size(120, 22);
             this.btnSearch.StyleController = this.layoutControl2;
             this.btnSearch.TabIndex = 11;
             this.btnSearch.Text = "Tìm (Ctrl F)";
@@ -636,38 +642,38 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             this.txtPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân";
             this.txtPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtPatientCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtPatientCode.Size = new System.Drawing.Size(80, 20);
+            this.txtPatientCode.Size = new System.Drawing.Size(98, 20);
             this.txtPatientCode.StyleController = this.layoutControl2;
             this.txtPatientCode.TabIndex = 10;
             this.txtPatientCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPatientCode_PreviewKeyDown);
             // 
             // txtTreatmentCode
             // 
-            this.txtTreatmentCode.Location = new System.Drawing.Point(86, 26);
+            this.txtTreatmentCode.Location = new System.Drawing.Point(104, 26);
             this.txtTreatmentCode.Name = "txtTreatmentCode";
             this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
             this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtTreatmentCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtTreatmentCode.Size = new System.Drawing.Size(87, 20);
+            this.txtTreatmentCode.Size = new System.Drawing.Size(97, 20);
             this.txtTreatmentCode.StyleController = this.layoutControl2;
             this.txtTreatmentCode.TabIndex = 9;
             this.txtTreatmentCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTreatmentCode_PreviewKeyDown);
             // 
             // txtKeyWord
             // 
-            this.txtKeyWord.Location = new System.Drawing.Point(177, 26);
+            this.txtKeyWord.Location = new System.Drawing.Point(205, 26);
             this.txtKeyWord.Name = "txtKeyWord";
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeyWord.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtKeyWord.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtKeyWord.Size = new System.Drawing.Size(148, 20);
+            this.txtKeyWord.Size = new System.Drawing.Size(108, 20);
             this.txtKeyWord.StyleController = this.layoutControl2;
             this.txtKeyWord.TabIndex = 8;
             this.txtKeyWord.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtKeyWord_PreviewKeyDown);
             // 
             // cboEndType
             // 
-            this.cboEndType.Location = new System.Drawing.Point(594, 26);
+            this.cboEndType.Location = new System.Drawing.Point(690, 26);
             this.cboEndType.Name = "cboEndType";
             this.cboEndType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboEndType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -675,7 +681,7 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboEndType.Properties.NullText = "";
             this.cboEndType.Properties.View = this.gridLookUpEdit3View;
-            this.cboEndType.Size = new System.Drawing.Size(128, 20);
+            this.cboEndType.Size = new System.Drawing.Size(77, 20);
             this.cboEndType.StyleController = this.layoutControl2;
             this.cboEndType.TabIndex = 7;
             this.cboEndType.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboEndType_PreviewKeyDown);
@@ -767,7 +773,8 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             this.lciLastDepositTimeFrom,
             this.lciLastDepositTimeTo,
             this.lciDepartment,
-            this.layoutControlItem3});
+            this.layoutControlItem3,
+            this.layoutControlItem4});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -777,18 +784,18 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.txtKeyWord;
-            this.layoutControlItem7.Location = new System.Drawing.Point(175, 24);
+            this.layoutControlItem7.Location = new System.Drawing.Point(203, 24);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(152, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(112, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnSearch;
-            this.layoutControlItem10.Location = new System.Drawing.Point(724, 24);
+            this.layoutControlItem10.Location = new System.Drawing.Point(769, 24);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(169, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(124, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -815,9 +822,9 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             this.lciEndType.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciEndType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciEndType.Control = this.cboEndType;
-            this.lciEndType.Location = new System.Drawing.Point(527, 24);
+            this.lciEndType.Location = new System.Drawing.Point(623, 24);
             this.lciEndType.Name = "lciEndType";
-            this.lciEndType.Size = new System.Drawing.Size(197, 26);
+            this.lciEndType.Size = new System.Drawing.Size(146, 26);
             this.lciEndType.Text = "Trạng thái:";
             this.lciEndType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciEndType.TextSize = new System.Drawing.Size(60, 13);
@@ -854,16 +861,16 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             this.layoutControlItem9.Control = this.txtPatientCode;
             this.layoutControlItem9.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(84, 26);
+            this.layoutControlItem9.Size = new System.Drawing.Size(102, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.txtTreatmentCode;
-            this.layoutControlItem8.Location = new System.Drawing.Point(84, 24);
+            this.layoutControlItem8.Location = new System.Drawing.Point(102, 24);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(91, 26);
+            this.layoutControlItem8.Size = new System.Drawing.Size(101, 26);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -913,9 +920,9 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             this.layoutControlItem3.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem3.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem3.Control = this.cboTreatmentType;
-            this.layoutControlItem3.Location = new System.Drawing.Point(327, 24);
+            this.layoutControlItem3.Location = new System.Drawing.Point(461, 24);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(200, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(162, 26);
             this.layoutControlItem3.Text = "Diện điều trị:";
             this.layoutControlItem3.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem3.TextSize = new System.Drawing.Size(70, 20);
@@ -1090,6 +1097,42 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             this.layoutControlItem1.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem1.TextToControlDistance = 5;
             // 
+            // cboBranch
+            // 
+            this.cboBranch.EditValue = "";
+            this.cboBranch.Location = new System.Drawing.Point(377, 26);
+            this.cboBranch.MenuManager = this.barManager1;
+            this.cboBranch.Name = "cboBranch";
+            this.cboBranch.Properties.AutoComplete = false;
+            this.cboBranch.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBranch.Properties.NullText = "";
+            this.cboBranch.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboBranch.Properties.View = this.customGridViewWithFilterMultiColumnNoFocus1;
+            this.cboBranch.Size = new System.Drawing.Size(82, 20);
+            this.cboBranch.StyleController = this.layoutControl2;
+            this.cboBranch.TabIndex = 17;
+            // 
+            // layoutControlItem4
+            // 
+            this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem4.Control = this.cboBranch;
+            this.layoutControlItem4.Location = new System.Drawing.Point(315, 24);
+            this.layoutControlItem4.Name = "layoutControlItem4";
+            this.layoutControlItem4.Size = new System.Drawing.Size(146, 26);
+            this.layoutControlItem4.Text = "Chi nhánh:";
+            this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(55, 20);
+            this.layoutControlItem4.TextToControlDistance = 5;
+            // 
+            // customGridViewWithFilterMultiColumnNoFocus1
+            // 
+            this.customGridViewWithFilterMultiColumnNoFocus1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumnNoFocus1.Name = "customGridViewWithFilterMultiColumnNoFocus1";
+            this.customGridViewWithFilterMultiColumnNoFocus1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumnNoFocus1.OptionsView.ShowGroupPanel = false;
+            // 
             // FormEInvoiceCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1166,6 +1209,9 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
             ((System.ComponentModel.ISupportInitialize)(this.lciError)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBranch.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumnNoFocus1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1250,5 +1296,8 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
         private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridLookUpEditWithFilterMultiColumnNoFocus1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraGrid.Columns.GridColumn gc_TreatmentTypeName;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus cboBranch;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridViewWithFilterMultiColumnNoFocus1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
     }
 }

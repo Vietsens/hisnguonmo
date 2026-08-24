@@ -969,5 +969,39 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 return "";
             }
         }
+
+        /// <summary>Chưa có hình ảnh từ hệ thống PACS cho dịch vụ này.</summary>
+        internal static string ChuaCoHinhAnhTuPacs
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChuaCoHinhAnhTuPacs", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Không mở được hình ảnh từ hệ thống PACS.</summary>
+        internal static string KhongMoDuocHinhAnhTuPacs
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhongMoDuocHinhAnhTuPacs", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

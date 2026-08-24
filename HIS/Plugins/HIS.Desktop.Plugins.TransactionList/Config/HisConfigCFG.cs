@@ -68,11 +68,17 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
         //- Mặc định là ẩn chức năng đi
         /// </summary>
 
+        /// <summary>
+        /// Cách tính tách tiền 2 sổ - PHẢI khớp HisTransactionCFG.ENUM_BILL_OPTION bên MOS.
+        /// </summary>
         internal enum BILL_OPTION
         {
             CTO_TW = 1,
             HCM_115 = 2,
             QBH_CUBA = 3,
+            NTP = 4,
+            //BVND 115 - việc 54227: in cùng mẫu biên lai/hóa đơn với HCM_115 (Mps000317 / Mps000318)
+            HCM_115_NQ399 = 5,
         }
 
         internal static string TRANSACTION_ALLOW_EDIT;
