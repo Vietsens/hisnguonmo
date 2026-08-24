@@ -1,7 +1,9 @@
 ﻿using DevExpress.XtraEditors;
+using HIS.Desktop.LocalStorage.BackendData;
 using MCH.EFMODEL.DataModels;
 using MOS.EFMODEL.DataModels;
 using System;
+using System.Linq;
 
 namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 {
@@ -56,7 +58,21 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 if (baby.BIRTH_CERT_NUM.HasValue)
                 {
-                    _child.BIRTH_CERTIFICATE_CODE = baby.BIRTH_CERT_NUM.Value.ToString();
+                    var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == Treatment.BRANCH_ID);
+                    string bornTime = "", birthCert = "";
+                    if (baby.ISSUED_DATE != null)
+                    {
+                        bornTime = baby.ISSUED_DATE.ToString().Substring(2, 2);
+                    }
+                    if (baby.BIRTH_CERT_NUM != null)
+                    {
+                        birthCert = baby.BIRTH_CERT_NUM.Value.ToString();
+                        if (baby.BIRTH_CERT_NUM.ToString().Length < 5)
+                        {
+                            birthCert = String.Format("{0:00000}", baby.BIRTH_CERT_NUM);
+                        }
+                    }
+                    _child.BIRTH_CERTIFICATE_CODE = String.Format("{0}.GCS.{1}.{2}", birthCert, branch != null ? branch.HEIN_MEDI_ORG_CODE : null, bornTime);
                 }
 
                 _child.CHILD_BIRTH_DATE = baby.BORN_TIME;
