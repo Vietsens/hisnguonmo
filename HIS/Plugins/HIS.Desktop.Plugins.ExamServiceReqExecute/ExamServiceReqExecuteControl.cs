@@ -145,6 +145,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         bool isInPhieuPhuLuc = false;
         bool isKyPhieuPhuLuc = false;
         bool isPrintPrescription = false;
+        bool isSignPrescription = false;
         bool isPayment = false;
 
         bool IsAppointment_ExamServiceAdd = false;
@@ -3419,6 +3420,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 isInPhieuPhuLuc = false;
                 isKyPhieuPhuLuc = false;
                 isPrintPrescription = false;
+                isSignPrescription = false;
                 isPrintHosTransfer = false;
                 IsPrintMps178 = false;
                 IsReturn = false;

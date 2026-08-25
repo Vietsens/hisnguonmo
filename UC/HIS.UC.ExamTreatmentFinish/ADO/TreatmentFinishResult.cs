@@ -45,6 +45,7 @@ namespace HIS.UC.ExamTreatmentFinish.ADO
         public bool IsSignTrichPhuLuc { get; set; }
         public bool IsPrintTrichPhuLuc { get; set; }
         public bool IsPrintPrescription { get; set; }
+        public bool IsSignPrescription { get; set; }
         public HIS_SEVERE_ILLNESS_INFO SevereIllNessInfo { get; set; }
         public List<HIS_EVENTS_CAUSES_DEATH> ListEventsCausesDeath { get; set; }
         public HIS.UC.Icd.ADO.IcdInputADO icdADOInTreatment { get; set; }

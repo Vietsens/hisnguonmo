@@ -373,6 +373,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 {
                     ExamTreatmentFinish.IsPrintPrescription = true;
                 }
+                if (chkSignPrescription.Checked)
+                {
+                    ExamTreatmentFinish.IsSignPrescription = true;
+                }
                 if (chkPrintHosTransfer.Checked && IsVisibleHosTransfer)
                 {
                     ExamTreatmentFinish.IsPrintHosTransfer = true;
