@@ -135,12 +135,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
 
                 // Cổng đã nhận diện được thẻ nên tra cứu cùng chi trả mới có cái để đối chiếu.
-                // Chỉ chạy khi bệnh viện bật cấu hình; nút tra cứu thủ công vẫn dùng được.
                 // Lỗi ở đây không ảnh hưởng kết quả kiểm tra thẻ phía trên.
-                if (BHXHLoginCFG.IsAutoCheckMcct)
-                {
-                    await this.CheckTienMCCT(heinCard);
-                }
+                await this.CheckTienMCCT(heinCard);
                 //else
                 //{
                 //    //data = this.CheckPatientOldByHeinCard(heinCard);

@@ -1583,15 +1583,36 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                     listBhytParam = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_BHYT_PARAM>>(
                         "api/HisBhytParam/Get", ApiConsumerStore.MosConsumer, filter, param);
+
+                    // Log 1 lần/phiên: cần FROM_TIME, TO_TIME, BASE_SALARY của mọi bản ghi để
+                    // đối chiếu khi ngưỡng 06 tháng ra không như mong đợi.
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "GetCurrentBhytParam: nap HIS_BHYT_PARAM____"
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => listBhytParam), listBhytParam));
                 }
 
                 if (listBhytParam == null)
                     return null;
 
-                return listBhytParam
-                    .Where(o => o.TO_TIME == null)
+                // Phải chặn cả FROM_TIME: viện có thể khai sẵn bản ghi lương cơ sở của đợt
+                // sắp tới mà TO_TIME vẫn null. Thiếu điều kiện này sẽ lấy nhầm mức lương
+                // chưa tới hiệu lực, làm ngưỡng 06 tháng cao hơn thực tế.
+                long nowNumber = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
+                MOS.EFMODEL.DataModels.HIS_BHYT_PARAM bhytParam = listBhytParam
+                    .Where(o => o.TO_TIME == null && (o.FROM_TIME ?? 0) <= nowNumber)
                     .OrderByDescending(o => o.FROM_TIME)
                     .FirstOrDefault();
+
+                if (bhytParam == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "GetCurrentBhytParam: khong co ban ghi HIS_BHYT_PARAM nao dang hieu luc."
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => listBhytParam), listBhytParam));
+                }
+
+                return bhytParam;
             }
             catch (Exception ex)
             {

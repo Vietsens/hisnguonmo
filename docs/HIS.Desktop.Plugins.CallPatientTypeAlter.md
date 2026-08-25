@@ -45,7 +45,7 @@ Thiết kế chi tiết: `docs/B_KyThuat_TraCuuTienMCCT_CungChiTraLuyKe.md`.
 
 | Luồng | Vị trí |
 |-------|--------|
-| Tự động | `frmPatientTypeAlter_CheckGOV.cs` — cuối `CheckThongTuyen()`, chỉ chạy khi `BHXHLoginCFG.IsAutoCheckMcct` |
+| Tự động | `frmPatientTypeAlter_CheckGOV.cs` — cuối `CheckThongTuyen()`, luôn chạy khi thẻ hợp lệ |
 | Thủ công | Nút Search trên `txtCoPaidAccumulate` → delegate `DelegateCheckTienMCCT` → `CheckTienMCCTManual()` |
 
 **Công thức** (`R` = `DataCCT[]`, `LIMIT` = `BASE_SALARY × 6`)
@@ -58,11 +58,7 @@ Thiết kế chi tiết: `docs/B_KyThuat_TraCuuTienMCCT_CungChiTraLuyKe.md`.
 
 **Cấu hình**
 
-| Key | Ý nghĩa |
-|-----|---------|
-| `HIS.CHECK_HEIN_CARD.BHXH__AUTO_CHECK_MCCT` | `1` = tự động sau check thẻ · `0` = chỉ thủ công |
-
-Đường dẫn `api/TraCuuCCT/TraCuuTienMCCT` **cố định trong code** (hằng số `API_MCCT` của `ApiInsuranceExpertise`) — không có cấu hình.
+**Không có cấu hình riêng.** Đường dẫn API (`api/TraCuuCCT/TraCuuTienMCCT`) và việc tra cứu tự động đều cố định trong code. Chỉ dùng lại tài khoản/địa chỉ cổng sẵn có: `HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS` và `HIS.CHECK_HEIN_CARD.BHXH__ADDRESS`.
 
 Tài khoản / địa chỉ cổng tái sử dụng `HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS` và `HIS.CHECK_HEIN_CARD.BHXH__ADDRESS` — dùng chung token với luồng check thẻ nên cùng IP, không vướng ràng buộc IP của cổng.
 
@@ -79,7 +75,7 @@ Tài khoản / địa chỉ cổng tái sử dụng `HIS.CHECK_HEIN_CARD.BHXH.LO
 |---------------|----------|
 | His.UC.UCHein (MainHisHeinBhyt) | Hiển thị thông tin BHYT + chẩn đoán giới thiệu chuyển tuyến. Logic lọc/cảnh báo ICD nằm trong UC này. `SetCoPaidAccumulateFromGov()` nhận kết quả tra cứu MCCT và tính 3 trường cùng chi trả |
 | HIS.Desktop.Plugins.Library.CheckHeinGOV | `HeinGOVManager.CheckTienMCCT()` — gọi cổng BHYT, trả dữ liệu thô |
-| HIS.Desktop.Plugins.Library.RegisterConfig | `BHXHLoginCFG` — tài khoản, địa chỉ cổng, `IsAutoCheckMcct` |
+| HIS.Desktop.Plugins.Library.RegisterConfig | `BHXHLoginCFG` — tài khoản, địa chỉ cổng |
 | His.Bhyt.InsuranceExpertise (repo `common`) | `ApiInsuranceExpertise.TraCuuTienMCCT()` — HTTP header + body JSON |
 
 ## 8. Changelog
@@ -90,6 +86,7 @@ Tài khoản / địa chỉ cổng tái sử dụng `HIS.CHECK_HEIN_CARD.BHXH.LO
 | 17/06/2026 | sinhnt | Fix bug: sửa mã đối tượng đúng tuyến (RIGHT_ROUTE_TYPE_CODE, vd 3.1→3.6) lưu thành công nhưng mở lại vẫn giá trị cũ. Nguyên nhân: nhánh ActionEdit sau Update không đồng bộ kết quả về object cache `currentTreatmentLogSDO`. Fix: map đầy đủ `resultPatientTypeAlter.PatientTypeAlter` về cache (giống ActionAdd) |
 | 29/07/2026 | tuanln | PT-44730: khi chuyển đối tượng thanh toán của hồ sơ, chỉ định thuộc dịch vụ đã khai trong bảng cấu hình `HIS_SERVICE_DEFAULT_PATY` (chờ backend) mà tài khoản không đủ quyền sửa ĐTTT thì **giữ nguyên ĐTTT cũ** của chỉ định đó, các chỉ định còn lại vẫn chuyển bình thường. Thêm partial `frmPatientTypeAlter___ServiceDefaultPaty.cs` (worker nạp cấu hình 1 lần/form + `IsAllowEditPatientTypeByServiceConfig`, người chỉ định lấy theo `TDL_REQUEST_LOGINNAME` của chỉ định). Trong `SwapPatientTypeAlter`, chèn bước hoàn lại `oldPatientTypeId` ngay trước khối xử lý `SERVICE_CONDITION_ID` / `DO_NOT_USE_BHYT`. Quyền theo key `HIS.Desktop.Plugins.Assign.ServiceDefaultPatyEditOption` (`1` = quản trị · `2` = quản trị hoặc người chỉ định · khác = không siết) |
 
+| 25/08/2026 | khainq | Bỏ key `HIS.CHECK_HEIN_CARD.BHXH__AUTO_CHECK_MCCT` — tra cứu tự động **luôn chạy** sau khi kiểm tra thẻ thành công. Bỏ `AUTO_CHECK_MCCT` và `IsAutoCheckMcct` khỏi `BHXHLoginCFG`, bỏ nhánh `if` ở hai nơi gọi. Tính năng nay **không có cấu hình riêng nào** — cả đường dẫn API lẫn việc tự động đều cố định trong code |
 | 24/08/2026 | khainq | Cập nhật tiền cùng chi trả / miễn cùng chi trả qua cổng BHYT (`api/TraCuuCCT/TraCuuTienMCCT`). Tự động gọi sau khi check thẻ thành công (theo cấu hình `BHXH__AUTO_CHECK_MCCT`), kèm nút tra cứu thủ công trên ô lũy kế. Suy ra 3 trường `CO_PAID_ACCUMULATE_AMOUNT` / `PAID_6_MONTH` / `FREE_CO_PAID_TIME` — xem mục 4. Thêm 4 LDO + `TraCuuTienMCCT()` (`His.Bhyt.InsuranceExpertise`), `ResultMCCTADO` + `CheckTienMCCT()` (`CheckHeinGOV`), `Core/SetCoPaidAccumulateFromGov/` + `Template__HeinBHYT1__CoPaidMCCT.cs` (`His.UC.UCHein`). Thiết kế: `docs/B_KyThuat_TraCuuTienMCCT_CungChiTraLuyKe.md` |
 
 ## 9. Test Cases
@@ -107,7 +104,7 @@ Tài khoản / địa chỉ cổng tái sử dụng `HIS.CHECK_HEIN_CARD.BHXH.LO
 - [ ] Số cổng trùng số trên form → không bung hộp thoại
 - [ ] `HIS_BHYT_PARAM` không có bản ghi hiệu lực → chỉ điền lũy kế, không đụng checkbox và TDMC CT
 - [ ] Sau khi điền tự động, bấm Lưu → không bị `ValidateCoPaidAccumulate` chặn
-- [ ] `BHXH__AUTO_CHECK_MCCT=0` → không gọi tự động, nút tra cứu thủ công vẫn chạy
+- [ ] Nút tra cứu thủ công trên ô lũy kế hoạt động độc lập với lần gọi tự động
 - [ ] Lưu xong, mở lại form Sửa → 3 trường hiển thị đúng giá trị đã lưu
 - [ ] In 3 mẫu Mps000508 / Mps000510 / Mps000512 → trường lũy kế hiển thị đúng
 

@@ -438,19 +438,16 @@ Vì dùng chung token với luồng kiểm tra thẻ nên **cùng IP, cùng phi�
 | `hoTen` | Họ tên người bệnh, đã xử lý mã hoá ký tự | Dùng chung hàm với luồng kiểm tra thẻ |
 | `ngaySinh` | Ngày sinh người bệnh | Luồng hiện có đã sinh `dd/MM/yyyy` hoặc `yyyy` — **cả hai đều hợp lệ** theo 1.2 |
 
-### Config mới duy nhất
+### Không thêm cấu hình nào
 
-```
-HIS.CHECK_HEIN_CARD.BHXH__AUTO_CHECK_MCCT    (0 = tắt tự động, 1 = bật)
-```
+Tính năng **không có tham số cấu hình riêng**. Hai thứ đều cố định trong code:
 
-**Đường dẫn API cố định trong code**, không đưa ra cấu hình:
+| Cố định | Giá trị | Vì sao |
+|---|---|---|
+| Đường dẫn API | `api/TraCuuCCT/TraCuuTienMCCT` (hằng `API_MCCT`) | Cổng BHXH quy định, không đổi theo bệnh viện |
+| Tra cứu tự động | **Luôn chạy** sau khi kiểm tra thẻ thành công | Là hành vi mặc định mong muốn ở mọi bệnh viện |
 
-```
-api/TraCuuCCT/TraCuuTienMCCT
-```
-
-Đây là hằng số `API_MCCT` trong lớp gọi API. Đường dẫn do cổng BHXH quy định, không thay đổi theo từng bệnh viện, nên không cần khai báo cấu hình — bớt một khoản phải thiết lập khi triển khai và loại luôn khả năng gõ sai.
+Triển khai chỉ cần tài khoản và địa chỉ cổng vốn đã có sẵn — không phải khai báo thêm gì, cũng không có khả năng gõ sai key.
 
 > **Không nối thêm vào key `HIS.CHECK_HEIN_CARD.BHXH__API`** (đang chứa 4 phần ngăn bằng `|`). Hàm tách chuỗi của `BHXHLoginCFG` có lỗi so sánh biên — thêm phần thứ 5 sẽ ném lỗi và ghi log Error mỗi lần nạp cấu hình.
 
@@ -493,7 +490,6 @@ Người dùng quét QR / nhập số thẻ BHYT
         │
         └─ thẻ hợp lệ
              │
-             └─ nếu AUTO_CHECK_MCCT = 1
                   │
                   └─> Tra cứu tiền MCCT
                         ├─ dùng lại token nếu chưa hết hạn 10 phút
@@ -589,7 +585,7 @@ Lớp 1–3 (API, cấu hình, thư viện gọi cổng) **dùng lại nguyên v
 
 | Việc | Vị trí |
 |---|---|
-| Gọi tự động sau khi kiểm tra thẻ | `UCRegister__CheckHeinGOV.cs` — ngay sau `heinGOVManager.Check()`, chạy khi `BHXHLoginCFG.IsAutoCheckMcct` |
+| Gọi tự động sau khi kiểm tra thẻ | `UCRegister__CheckHeinGOV.cs` — ngay sau `heinGOVManager.Check()` |
 | `CheckTienMCCT` / `CheckTienMCCTManual` / `BuildHeinCardDataForMcct` | cùng file |
 | Nối delegate nút tra cứu | `UCRegister__SetDelegate.cs` |
 

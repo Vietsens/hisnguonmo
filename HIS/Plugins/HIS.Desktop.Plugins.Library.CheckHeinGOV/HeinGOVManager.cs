@@ -1573,12 +1573,12 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                 rsData.ThongTinSoThe = rsApi.ThongTinSoThe;
                 rsData.JsonBHYT = rsApi.JsonBHYT;
 
+                // Log toan bo ket qua: MaKetQua, GhiChu, tung ban ghi DataCCT va ThongTinSoThe.
+                // Can day du de doi chieu khi so tien tren form khac voi so nguoi dung mong doi.
                 Inventec.Common.Logging.LogSystem.Info(
                     "CheckTienMCCT OUTPUT____"
                     + Inventec.Common.Logging.LogUtil.TraceData(
-                        Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData.MaKetQua), rsData.MaKetQua)
-                    + Inventec.Common.Logging.LogUtil.TraceData(
-                        Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData.GhiChu), rsData.GhiChu));
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData), rsData));
             }
             catch (Exception ex)
             {

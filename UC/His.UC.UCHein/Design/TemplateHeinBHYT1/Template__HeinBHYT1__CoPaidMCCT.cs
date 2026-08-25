@@ -34,6 +34,34 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         /// <summary>Number of months of base salary that forms the exemption threshold.</summary>
         const int MCCT_BASE_SALARY_MONTHS = 6;
 
+
+        /// <summary>
+        /// Returns the HIS_BHYT_PARAM record in force at a given moment (yyyyMMddHHmmss).
+        /// Used so the six-months threshold follows the base salary of the episode's own date
+        /// rather than today's rate.
+        /// </summary>
+        private MOS.EFMODEL.DataModels.HIS_BHYT_PARAM GetBhytParamAtTime(long timeNumber)
+        {
+            try
+            {
+                if (listBhytParam == null || timeNumber <= 0)
+                {
+                    return null;
+                }
+
+                return listBhytParam
+                    .Where(o => (o.FROM_TIME ?? 0) <= timeNumber
+                             && (o.TO_TIME == null || o.TO_TIME >= timeNumber))
+                    .OrderByDescending(o => o.FROM_TIME)
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
         /// <summary>
         /// Applies a BHXH co-payment lookup to the three related fields:
         /// accumulated amount, the six-months flag and the exemption date.
@@ -147,8 +175,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 ado.HasAccumulate = true;
                 ado.TotalMcctAmount = records.Sum(o => o.tBNCCTMCCT);
 
-                MOS.EFMODEL.DataModels.HIS_BHYT_PARAM bhytParam = this.GetCurrentBhytParam();
-                if (bhytParam == null || bhytParam.BASE_SALARY <= 0)
+                MOS.EFMODEL.DataModels.HIS_BHYT_PARAM bhytParamNow = this.GetCurrentBhytParam();
+                if (bhytParamNow == null || bhytParamNow.BASE_SALARY <= 0)
                 {
                     // Without a base salary neither the flag nor the date can be decided;
                     // the amount alone is still worth filling in.
@@ -157,17 +185,19 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     return ado;
                 }
 
-                decimal limit = bhytParam.BASE_SALARY * MCCT_BASE_SALARY_MONTHS;
                 ado.HasThreshold = true;
-                ado.IsPaid6Month = ado.CoPaidAccumulateAmount > limit;
+                decimal limitNow = bhytParamNow.BASE_SALARY * MCCT_BASE_SALARY_MONTHS;
 
-                // Exemption starts when the episode that first crossed the threshold ended.
-                // Single pass keeping the earliest discharge date instead of sorting the list.
+                // The six-months threshold must use the base salary in force ON THE DAY the
+                // episode ended, not today's rate. When the base salary changes mid-year, an
+                // episode from early in the year still has to be measured against the earlier
+                // rate - using the newer, higher one hides the crossing and loses the date.
                 DateTime crossingDate = DateTime.MaxValue;
+                decimal crossingLimit = 0;
                 bool hasCrossing = false;
                 foreach (DataCCTLDO item in records)
                 {
-                    if (item == null || item.tBNCCTLuyKe <= limit)
+                    if (item == null)
                     {
                         continue;
                     }
@@ -178,26 +208,54 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         continue;
                     }
 
+                    long dischargeNumber = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dischargeDate.Value) ?? 0;
+                    MOS.EFMODEL.DataModels.HIS_BHYT_PARAM paramAtDischarge = this.GetBhytParamAtTime(dischargeNumber);
+                    decimal limitAtDischarge = (paramAtDischarge != null && paramAtDischarge.BASE_SALARY > 0)
+                        ? paramAtDischarge.BASE_SALARY * MCCT_BASE_SALARY_MONTHS
+                        : limitNow;
+
+                    if (item.tBNCCTLuyKe <= limitAtDischarge)
+                    {
+                        continue;
+                    }
+
                     if (!hasCrossing || dischargeDate.Value < crossingDate)
                     {
                         crossingDate = dischargeDate.Value;
+                        crossingLimit = limitAtDischarge;
                         hasCrossing = true;
                     }
                 }
 
                 if (hasCrossing)
                 {
+                    // Once the threshold was passed at some point in the year, the exemption
+                    // holds for the rest of that year.
+                    ado.IsPaid6Month = true;
                     ado.FreeCoPaidTime = Inventec.Common.TypeConvert.Parse.ToInt64(crossingDate.ToString("yyyyMMdd"));
                 }
-                else if (ado.IsPaid6Month)
+                else
                 {
-                    ado.IsMissingFreeCoPaidTime = true;
+                    // No episode crossed by discharge date (for instance the gateway returned an
+                    // empty ngayRa) - fall back to the largest accumulated against today's limit.
+                    ado.IsPaid6Month = ado.CoPaidAccumulateAmount > limitNow;
+                    if (ado.IsPaid6Month)
+                    {
+                        ado.IsMissingFreeCoPaidTime = true;
+                    }
                 }
 
-                Inventec.Common.Logging.LogSystem.Debug(
+                // Muc Info de van ghi khi moi truong chay o muc Info - can BASE_SALARY va limit
+                // de doi chieu ngay khi TDMC CT suy ra khong nhu mong doi.
+                decimal baseSalaryNow = bhytParamNow.BASE_SALARY;
+                Inventec.Common.Logging.LogSystem.Info(
                     "CalculateCoPaidMcct____"
                     + Inventec.Common.Logging.LogUtil.TraceData(
-                        Inventec.Common.Logging.LogUtil.GetMemberName(() => limit), limit)
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => baseSalaryNow), baseSalaryNow)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => limitNow), limitNow)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => crossingLimit), crossingLimit)
                     + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => ado), ado));
             }

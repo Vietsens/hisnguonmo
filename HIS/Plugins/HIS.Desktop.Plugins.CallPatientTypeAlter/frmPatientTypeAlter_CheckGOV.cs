@@ -143,12 +143,8 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     }
 
                     // The card is known to the gateway, so the co-payment lookup has something to
-                    // match on. Runs only when the site enabled it; the manual button stays available
-                    // either way. A failure here never affects the card check outcome above.
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.BHXHLoginCFG.IsAutoCheckMcct)
-                    {
-                        await this.CheckTienMCCT(dataHein);
-                    }
+                    // match on. A failure here never affects the card check outcome above.
+                    await this.CheckTienMCCT(dataHein);
                 }
                 IsRuning = true;
             }
