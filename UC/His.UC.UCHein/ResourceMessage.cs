@@ -171,5 +171,83 @@ namespace His.UC.UCHein
                 return "";
             }
         }
+
+        #region Tra cuu tien cung chi tra / mien cung chi tra tren cong BHXH
+
+        /// <summary>Cùng chi trả lũy kế trên cổng BHXH: {0}   (hiện tại: {1})</summary>
+        internal static string CungChiTraLuyKeTrenCongBHXH
+        {
+            get { return GetMessageValue("CungChiTraLuyKeTrenCongBHXH"); }
+        }
+
+        /// <summary>Đã cùng chi trả 6 tháng lương cơ sở: {0}</summary>
+        internal static string DaCungChiTra06ThangLuongCoSo
+        {
+            get { return GetMessageValue("DaCungChiTra06ThangLuongCoSo"); }
+        }
+
+        /// <summary>Thời điểm miễn cùng chi trả trên cổng: {0}   (hiện tại: {1})</summary>
+        internal static string ThoiDiemMienCungChiTraTrenCong
+        {
+            get { return GetMessageValue("ThoiDiemMienCungChiTraTrenCong"); }
+        }
+
+        /// <summary>Bạn có muốn lấy thông tin từ cổng BHXH?</summary>
+        internal static string BanCoMuonLayThongTinTuCongBHXHKhong
+        {
+            get { return GetMessageValue("BanCoMuonLayThongTinTuCongBHXHKhong"); }
+        }
+
+        /// <summary>
+        /// Lũy kế đã vượt ngưỡng nhưng cổng không trả về ngày ra viện của đợt vượt ngưỡng
+        /// nên không suy được thời điểm miễn cùng chi trả.
+        /// </summary>
+        internal static string KhongXacDinhDuocThoiDiemMienCungChiTra
+        {
+            get { return GetMessageValue("KhongXacDinhDuocThoiDiemMienCungChiTra"); }
+        }
+
+        /// <summary>Có</summary>
+        internal static string Co
+        {
+            get { return GetMessageValue("Co"); }
+        }
+
+        /// <summary>Không</summary>
+        internal static string Khong
+        {
+            get { return GetMessageValue("Khong"); }
+        }
+
+        /// <summary>Không xác định</summary>
+        internal static string KhongXacDinh
+        {
+            get { return GetMessageValue("KhongXacDinh"); }
+        }
+
+        /// <summary>đang để trống</summary>
+        internal static string DangDeTrong
+        {
+            get { return GetMessageValue("DangDeTrong"); }
+        }
+
+        /// <summary>
+        /// Reads one message from the resource file for the current culture.
+        /// Returns an empty string instead of throwing, so a missing key never breaks the UI.
+        /// </summary>
+        private static string GetMessageValue(string key)
+        {
+            try
+            {
+                return Inventec.Common.Resource.Get.Value(key, languageMessage, Base.LanguageManager.GetCulture());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
+        }
+
+        #endregion
     }
 }

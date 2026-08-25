@@ -126,7 +126,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.dtFreeCoPainTime = new DevExpress.XtraEditors.DateEdit();
             this.txtInCode = new DevExpress.XtraEditors.TextEdit();
             this.txtHNCode = new DevExpress.XtraEditors.TextEdit();
-            this.txtCoPaidAccumulate = new DevExpress.XtraEditors.TextEdit();
+            this.txtCoPaidAccumulate = new DevExpress.XtraEditors.ButtonEdit();
             this.checkKhongKTHSD = new DevExpress.XtraEditors.CheckEdit();
             this.rdoRightRoute = new DevExpress.XtraEditors.CheckEdit();
             this.chkPaid6Month = new DevExpress.XtraEditors.CheckEdit();
@@ -786,11 +786,14 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             // 
             this.txtCoPaidAccumulate.Location = new System.Drawing.Point(1034, 100);
             this.txtCoPaidAccumulate.Name = "txtCoPaidAccumulate";
+            this.txtCoPaidAccumulate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Search)});
             this.txtCoPaidAccumulate.Properties.MaxLength = 18;
             this.txtCoPaidAccumulate.Size = new System.Drawing.Size(284, 20);
             this.txtCoPaidAccumulate.StyleController = this.layoutControl1;
             this.txtCoPaidAccumulate.TabIndex = 31;
             this.txtCoPaidAccumulate.ToolTip = "Số tiền cùng chi trả lũy kế";
+            this.txtCoPaidAccumulate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtCoPaidAccumulate_ButtonClick);
             // 
             // checkKhongKTHSD
             // 
@@ -2114,7 +2117,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         private DevExpress.XtraLayout.LayoutControlItem lciKhongKTHSD;
         internal DevExpress.XtraEditors.TextEdit txtHNCode;
         private DevExpress.XtraLayout.LayoutControlItem lciHNCode;
-        internal DevExpress.XtraEditors.TextEdit txtCoPaidAccumulate;
+        internal DevExpress.XtraEditors.ButtonEdit txtCoPaidAccumulate;
         private DevExpress.XtraLayout.LayoutControlItem lciCoPaidAccumulate;
         internal DevExpress.XtraEditors.TextEdit txtInCode;
         private DevExpress.XtraLayout.LayoutControlItem lciInCode;

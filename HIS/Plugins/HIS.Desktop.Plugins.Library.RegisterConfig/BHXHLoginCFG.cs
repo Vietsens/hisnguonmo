@@ -32,6 +32,15 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         private const string CONFIG_KEY_ADDRESS_OPTION = "HIS.CHECK_HEIN_CARD.BHXH__ADDRESS__OPTION";
         private const string CONFIG_KEY_BHXH__API = "HIS.CHECK_HEIN_CARD.BHXH__API";
 
+        // Declared as dedicated keys rather than extra segments of CONFIG_KEY_BHXH__API:
+        // Get(value, index, splitChar) below tests data.Length >= index instead of > index,
+        // so asking for a segment beyond the last one throws and logs an error on every load.
+        private const string CONFIG_KEY_BHXH__API_MCCT = "HIS.CHECK_HEIN_CARD.BHXH__API_MCCT";
+        private const string CONFIG_KEY_BHXH__AUTO_CHECK_MCCT = "HIS.CHECK_HEIN_CARD.BHXH__AUTO_CHECK_MCCT";
+
+        /// <summary>Relative path of the co-payment lookup service when the site overrides it.</summary>
+        private const string DEFAULT_API_MCCT = "api/TraCuuCCT/TraCuuTienMCCT";
+
         public static string USERNAME;
         public static string PASSWORD;
         public static string ADDRESS;
@@ -41,6 +50,31 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         public static string OFFICERNAME;
         public static string CCCDOFFICER;
         public static string OTHERAPIEGW;
+
+        /// <summary>
+        /// Relative path of api/TraCuuCCT/TraCuuTienMCCT. Defaults to DEFAULT_API_MCCT
+        /// when the site has not declared the configuration key.
+        /// </summary>
+        public static string API_MCCT;
+
+        /// <summary>
+        /// 1 = look the co-payment up automatically right after a successful card check.
+        /// 0 = manual lookup only, through the button on the accumulated co-payment field.
+        /// </summary>
+        public static long AUTO_CHECK_MCCT;
+
+        /// <summary>Value of AUTO_CHECK_MCCT that turns the automatic lookup on.</summary>
+        private const long AUTO_CHECK_MCCT__ON = 1;
+
+        /// <summary>
+        /// True when the site asked for the co-payment to be looked up automatically
+        /// after every successful health insurance card check.
+        /// </summary>
+        public static bool IsAutoCheckMcct
+        {
+            get { return AUTO_CHECK_MCCT == AUTO_CHECK_MCCT__ON; }
+        }
+
         public static void LoadConfig()
         {
             try
@@ -53,6 +87,13 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 OFFICERNAME = Get(HisConfigs.Get<string>(CONFIG_KEY_BHXH__API), 1, '|');
                 CCCDOFFICER = Get(HisConfigs.Get<string>(CONFIG_KEY_BHXH__API), 2, '|');
                 OTHERAPIEGW = Get(HisConfigs.Get<string>(CONFIG_KEY_BHXH__API), 3, '|');
+
+                API_MCCT = (HisConfigs.Get<string>(CONFIG_KEY_BHXH__API_MCCT) ?? "").Trim();
+                if (String.IsNullOrEmpty(API_MCCT))
+                {
+                    API_MCCT = DEFAULT_API_MCCT;
+                }
+                AUTO_CHECK_MCCT = HisConfigs.Get<long>(CONFIG_KEY_BHXH__AUTO_CHECK_MCCT);
             }
             catch (Exception ex)
             {
