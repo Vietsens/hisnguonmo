@@ -1544,8 +1544,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     return rsData;
                 }
 
+                // The service path is fixed inside ApiInsuranceExpertise - nothing to configure here.
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
-                apiInsuranceExpertise.ApiMcct = BHXHLoginCFG.API_MCCT;
 
                 TraCuuMCCTLDO request = new TraCuuMCCTLDO();
                 request.username = BHXHLoginCFG.USERNAME;

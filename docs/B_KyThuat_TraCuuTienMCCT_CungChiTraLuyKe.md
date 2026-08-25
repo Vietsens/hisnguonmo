@@ -441,9 +441,16 @@ Vì dùng chung token với luồng kiểm tra thẻ nên **cùng IP, cùng phi�
 ### Config mới duy nhất
 
 ```
-HIS.CHECK_HEIN_CARD.BHXH__API_MCCT           (mặc định: api/TraCuuCCT/TraCuuTienMCCT)
 HIS.CHECK_HEIN_CARD.BHXH__AUTO_CHECK_MCCT    (0 = tắt tự động, 1 = bật)
 ```
+
+**Đường dẫn API cố định trong code**, không đưa ra cấu hình:
+
+```
+api/TraCuuCCT/TraCuuTienMCCT
+```
+
+Đây là hằng số `API_MCCT` trong lớp gọi API. Đường dẫn do cổng BHXH quy định, không thay đổi theo từng bệnh viện, nên không cần khai báo cấu hình — bớt một khoản phải thiết lập khi triển khai và loại luôn khả năng gõ sai.
 
 > **Không nối thêm vào key `HIS.CHECK_HEIN_CARD.BHXH__API`** (đang chứa 4 phần ngăn bằng `|`). Hàm tách chuỗi của `BHXHLoginCFG` có lỗi so sánh biên — thêm phần thứ 5 sẽ ném lỗi và ghi log Error mỗi lần nạp cấu hình.
 
@@ -453,8 +460,8 @@ HIS.CHECK_HEIN_CARD.BHXH__AUTO_CHECK_MCCT    (0 = tắt tự động, 1 = bật)
 
 | # | Project | Việc |
 |---|---|---|
-| **1** | `His.Bhyt.InsuranceExpertise` | **Thêm** 4 lớp LDO cho request và response<br>**Sửa** lớp gọi API — bổ sung hàm tra cứu MCCT dùng HTTP header và body JSON |
-| **2** | `Library.RegisterConfig` | **Sửa** `BHXHLoginCFG` — thêm 2 tham số cấu hình mới (xem 3.1) |
+| **1** | `His.Bhyt.InsuranceExpertise` | **Thêm** 4 lớp LDO cho request và response<br>**Sửa** lớp gọi API — bổ sung hàm tra cứu MCCT dùng HTTP header và body JSON, đường dẫn cố định bằng hằng số |
+| **2** | `Library.RegisterConfig` | **Sửa** `BHXHLoginCFG` — thêm cờ bật/tắt tra cứu tự động (xem 3.1) |
 | **3** | `Library.CheckHeinGOV` | **Thêm** lớp ADO chứa dữ liệu thô từ cổng<br>**Sửa** `HeinGOVManager` — thêm hàm tra cứu MCCT: kiểm tra độ dài mã thẻ, gọi API, ánh xạ `MaKetQua` sang thông báo |
 | **4** | `His.UC.UCHein` | **Thêm** nhóm Interface + Factory + Behavior theo pattern có sẵn<br>**Sửa** `MainHisHeinBhyt` — mở hàm public nhận kết quả từ cổng<br>**Sửa** `Template__HeinBHYT1` — tính 3 trường theo Phần 2, điền có chặn side-effect<br>**Sửa** Designer — thêm nút tra cứu vào ô lũy kế<br>**Sửa** Resources — bổ sung ngôn ngữ vi / en / my |
 | **5** | `Plugins.CallPatientTypeAlter` | **Sửa** luồng kiểm tra thẻ — gọi tra cứu MCCT sau khi kiểm tra thẻ thành công |

@@ -60,8 +60,9 @@ Thiết kế chi tiết: `docs/B_KyThuat_TraCuuTienMCCT_CungChiTraLuyKe.md`.
 
 | Key | Ý nghĩa |
 |-----|---------|
-| `HIS.CHECK_HEIN_CARD.BHXH__API_MCCT` | Đường dẫn API. Mặc định `api/TraCuuCCT/TraCuuTienMCCT` |
 | `HIS.CHECK_HEIN_CARD.BHXH__AUTO_CHECK_MCCT` | `1` = tự động sau check thẻ · `0` = chỉ thủ công |
+
+Đường dẫn `api/TraCuuCCT/TraCuuTienMCCT` **cố định trong code** (hằng số `API_MCCT` của `ApiInsuranceExpertise`) — không có cấu hình.
 
 Tài khoản / địa chỉ cổng tái sử dụng `HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS` và `HIS.CHECK_HEIN_CARD.BHXH__ADDRESS` — dùng chung token với luồng check thẻ nên cùng IP, không vướng ràng buộc IP của cổng.
 
@@ -78,7 +79,7 @@ Tài khoản / địa chỉ cổng tái sử dụng `HIS.CHECK_HEIN_CARD.BHXH.LO
 |---------------|----------|
 | His.UC.UCHein (MainHisHeinBhyt) | Hiển thị thông tin BHYT + chẩn đoán giới thiệu chuyển tuyến. Logic lọc/cảnh báo ICD nằm trong UC này. `SetCoPaidAccumulateFromGov()` nhận kết quả tra cứu MCCT và tính 3 trường cùng chi trả |
 | HIS.Desktop.Plugins.Library.CheckHeinGOV | `HeinGOVManager.CheckTienMCCT()` — gọi cổng BHYT, trả dữ liệu thô |
-| HIS.Desktop.Plugins.Library.RegisterConfig | `BHXHLoginCFG` — tài khoản, địa chỉ cổng, `API_MCCT`, `IsAutoCheckMcct` |
+| HIS.Desktop.Plugins.Library.RegisterConfig | `BHXHLoginCFG` — tài khoản, địa chỉ cổng, `IsAutoCheckMcct` |
 | His.Bhyt.InsuranceExpertise (repo `common`) | `ApiInsuranceExpertise.TraCuuTienMCCT()` — HTTP header + body JSON |
 
 ## 8. Changelog
