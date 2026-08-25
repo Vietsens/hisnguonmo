@@ -2467,6 +2467,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         isInPhieuPhuLuc = treatmentFinish.IsPrintTrichPhuLuc;
                         isKyPhieuPhuLuc = treatmentFinish.IsSignTrichPhuLuc;
                         isPrintPrescription = treatmentFinish.IsPrintPrescription;
+                        isSignPrescription = treatmentFinish.IsSignPrescription;
                         isPrintHosTransfer = treatmentFinish.IsPrintHosTransfer;
                         IsSignExam = treatmentFinish.IsSignExam;
                         IsPrintExam = treatmentFinish.IsPrintExam;
@@ -3174,10 +3175,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         //    }
                         //}
 
-                        if (this.isPrintPrescription)
+                        //Don thuoc (luong xu ly tuong tu Phieu trich phu luc Mps000316)
+                        if (this.isPrintPrescription && !this.isSignPrescription)
                         {
-                            bool printNow = true;
-                            InDonPhongKhamTongHop(printNow, false);
+                            InDonPhongKhamTongHop(true, false, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow);
+                        }
+                        else if (this.isPrintPrescription && this.isSignPrescription)
+                        {
+                            InDonPhongKhamTongHop(true, false, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow);
+                        }
+                        else if (!this.isPrintPrescription && this.isSignPrescription)
+                        {
+                            InDonPhongKhamTongHop(false, false, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow);
                         }
                     }
                     if (this.isPrintHosTransfer)
