@@ -239,6 +239,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 repositoryItemBtnMedisoft = null;
                 gc_MedisoftH = null;
                 gc_ClassifyName = null;
+                gc_CareLevelName = null;
                 lciApprovalNote = null;
                 lblApprovalNote = null;
                 layoutControlItem31 = null;

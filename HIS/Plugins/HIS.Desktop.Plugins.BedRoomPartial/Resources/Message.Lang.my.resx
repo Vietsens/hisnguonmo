@@ -129,6 +129,12 @@
   <data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
     <value>လူနာသည် ခန့်မှန်းချေကို မသတ်မှတ်ထားပေ။</value>
   </data>
+  <data name="BacSiDieuTri" xml:space="preserve">
+    <value>ကုသဆရာဝန် (အားလုံး)</value>
+  </data>
+  <data name="LocTheoBacSiDieuTri" xml:space="preserve">
+    <value>ကုသဆရာဝန် အကောင့်ဖြင့် လူနာများကို စစ်ထုတ်ရန်</value>
+  </data>
   <data name="BNDangOTrongBuong" xml:space="preserve">
     <value>လူနာက အခန်းထဲမှာ</value>
   </data>

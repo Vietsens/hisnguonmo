@@ -1,4 +1,4 @@
-namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
+﻿namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
 {
     partial class frmTreatmentBedRoom
     {
@@ -29,6 +29,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         private void InitializeComponent()
         {
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.toggleSwitch1 = new DevExpress.XtraEditors.ToggleSwitch();
+            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.spinReloadTime = new DevExpress.XtraEditors.SpinEdit();
             this.gridControlRoom = new DevExpress.XtraGrid.GridControl();
             this.gridViewRoom = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gcCheck = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -39,16 +42,18 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciDepartment = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciRoom = new DevExpress.XtraLayout.LayoutControlItem();
-            this.spinEdit1 = new DevExpress.XtraEditors.SpinEdit();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.toggleSwitch1 = new DevExpress.XtraEditors.ToggleSwitch();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.spinColumnCount = new DevExpress.XtraEditors.SpinEdit();
+            this.lciColumnCount = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinReloadTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
@@ -56,20 +61,22 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDepartment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciRoom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinColumnCount.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciColumnCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
             this.layoutControl1.Controls.Add(this.toggleSwitch1);
             this.layoutControl1.Controls.Add(this.labelControl1);
-            this.layoutControl1.Controls.Add(this.spinEdit1);
+            this.layoutControl1.Controls.Add(this.spinColumnCount);
+            this.layoutControl1.Controls.Add(this.spinReloadTime);
             this.layoutControl1.Controls.Add(this.gridControlRoom);
             this.layoutControl1.Controls.Add(this.txtDepartment);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -79,6 +86,41 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             this.layoutControl1.Size = new System.Drawing.Size(431, 321);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // toggleSwitch1
+            // 
+            this.toggleSwitch1.Location = new System.Drawing.Point(166, 295);
+            this.toggleSwitch1.Name = "toggleSwitch1";
+            this.toggleSwitch1.Properties.OffText = "Bật màn hình mở rộng";
+            this.toggleSwitch1.Properties.OnText = "On";
+            this.toggleSwitch1.Size = new System.Drawing.Size(263, 24);
+            this.toggleSwitch1.StyleController = this.layoutControl1;
+            this.toggleSwitch1.TabIndex = 6;
+            this.toggleSwitch1.Toggled += new System.EventHandler(this.toggleSwitch1_Toggled);
+            // 
+            // labelControl1
+            // 
+            this.labelControl1.Location = new System.Drawing.Point(303, 271);
+            this.labelControl1.Name = "labelControl1";
+            this.labelControl1.Size = new System.Drawing.Size(20, 13);
+            this.labelControl1.StyleController = this.layoutControl1;
+            this.labelControl1.TabIndex = 5;
+            this.labelControl1.Text = "giây";
+            // 
+            // spinReloadTime
+            // 
+            this.spinReloadTime.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinReloadTime.Location = new System.Drawing.Point(127, 271);
+            this.spinReloadTime.Name = "spinReloadTime";
+            this.spinReloadTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinReloadTime.Size = new System.Drawing.Size(172, 20);
+            this.spinReloadTime.StyleController = this.layoutControl1;
+            this.spinReloadTime.TabIndex = 4;
             // 
             // gridControlRoom
             // 
@@ -182,7 +224,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             this.emptySpaceItem1,
             this.layoutControlItem2,
             this.layoutControlItem3,
-            this.emptySpaceItem2});
+            this.emptySpaceItem2,
+            this.lciColumnCount,
+            this.emptySpaceItem3});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -207,24 +251,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             this.lciRoom.Control = this.gridControlRoom;
             this.lciRoom.Location = new System.Drawing.Point(0, 24);
             this.lciRoom.Name = "lciRoom";
-            this.lciRoom.Size = new System.Drawing.Size(431, 245);
+            this.lciRoom.Size = new System.Drawing.Size(431, 221);
             this.lciRoom.TextSize = new System.Drawing.Size(0, 0);
             this.lciRoom.TextVisible = false;
-            // 
-            // spinEdit1
-            // 
-            this.spinEdit1.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.spinEdit1.Location = new System.Drawing.Point(127, 271);
-            this.spinEdit1.Name = "spinEdit1";
-            this.spinEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spinEdit1.Size = new System.Drawing.Size(172, 20);
-            this.spinEdit1.StyleController = this.layoutControl1;
-            this.spinEdit1.TabIndex = 4;
             // 
             // layoutControlItem1
             // 
@@ -232,7 +261,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             this.layoutControlItem1.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem1.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem1.Control = this.spinEdit1;
+            this.layoutControlItem1.Control = this.spinReloadTime;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 269);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Size = new System.Drawing.Size(301, 24);
@@ -249,15 +278,6 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             this.emptySpaceItem1.Size = new System.Drawing.Size(106, 24);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // labelControl1
-            // 
-            this.labelControl1.Location = new System.Drawing.Point(303, 271);
-            this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(20, 13);
-            this.labelControl1.StyleController = this.layoutControl1;
-            this.labelControl1.TabIndex = 5;
-            this.labelControl1.Text = "giây";
-            // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.labelControl1;
@@ -267,16 +287,6 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
-            // toggleSwitch1
-            // 
-            this.toggleSwitch1.Location = new System.Drawing.Point(166, 295);
-            this.toggleSwitch1.Name = "toggleSwitch1";
-            this.toggleSwitch1.Properties.OffText = "Bật màn hình mở rộng";
-            this.toggleSwitch1.Properties.OnText = "On";
-            this.toggleSwitch1.Size = new System.Drawing.Size(263, 24);
-            this.toggleSwitch1.StyleController = this.layoutControl1;
-            this.toggleSwitch1.TabIndex = 6;
-            // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.toggleSwitch1;
@@ -285,9 +295,59 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             this.layoutControlItem3.Size = new System.Drawing.Size(267, 28);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
-            // 
+            //
+            // spinColumnCount
+            //
+            this.spinColumnCount.EditValue = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.spinColumnCount.Location = new System.Drawing.Point(127, 247);
+            this.spinColumnCount.Name = "spinColumnCount";
+            this.spinColumnCount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinColumnCount.Properties.IsFloatValue = false;
+            this.spinColumnCount.Properties.Mask.EditMask = "N00";
+            this.spinColumnCount.Properties.MaxValue = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.spinColumnCount.Properties.MinValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.spinColumnCount.Size = new System.Drawing.Size(172, 20);
+            this.spinColumnCount.StyleController = this.layoutControl1;
+            this.spinColumnCount.TabIndex = 7;
+            //
+            // lciColumnCount
+            //
+            this.lciColumnCount.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciColumnCount.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lciColumnCount.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciColumnCount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciColumnCount.Control = this.spinColumnCount;
+            this.lciColumnCount.Location = new System.Drawing.Point(0, 245);
+            this.lciColumnCount.Name = "lciColumnCount";
+            this.lciColumnCount.Size = new System.Drawing.Size(301, 24);
+            this.lciColumnCount.Text = "Số cột hiển thị:";
+            this.lciColumnCount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciColumnCount.TextSize = new System.Drawing.Size(120, 20);
+            this.lciColumnCount.TextToControlDistance = 5;
+            //
+            // emptySpaceItem3
+            //
+            this.emptySpaceItem3.AllowHotTrack = false;
+            this.emptySpaceItem3.Location = new System.Drawing.Point(301, 245);
+            this.emptySpaceItem3.Name = "emptySpaceItem3";
+            this.emptySpaceItem3.Size = new System.Drawing.Size(130, 24);
+            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
+            //
             // emptySpaceItem2
-            // 
+            //
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 293);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
@@ -308,6 +368,8 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinReloadTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
@@ -315,12 +377,13 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDepartment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciRoom)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinColumnCount.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciColumnCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -341,12 +404,15 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit1;
         private DevExpress.XtraLayout.LayoutControlItem lciRoom;
         private DevExpress.XtraEditors.LabelControl labelControl1;
-        private DevExpress.XtraEditors.SpinEdit spinEdit1;
+        private DevExpress.XtraEditors.SpinEdit spinReloadTime;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraEditors.ToggleSwitch toggleSwitch1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraEditors.SpinEdit spinColumnCount;
+        private DevExpress.XtraLayout.LayoutControlItem lciColumnCount;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
     }
 }

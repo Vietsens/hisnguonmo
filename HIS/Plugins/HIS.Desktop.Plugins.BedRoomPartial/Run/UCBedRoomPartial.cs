@@ -595,6 +595,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 ControlEditorLoader.Load(cboEmployee, data, controlEditorADO);
                 cboEmployee.Properties.ImmediatePopup = true;
                 cboEmployee.Properties.PopupFormMinSize = new Size(400, cboEmployee.Properties.PopupFormMinSize.Height);
+                cboEmployee.Properties.NullText = Resources.ResourceMessage.BacSiDieuTri;
+                layoutControlItem50.OptionsToolTip.ToolTip = Resources.ResourceMessage.LocTheoBacSiDieuTri;
             }
             catch (Exception ex)
             {
@@ -704,6 +706,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.gridColumn1.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn1.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gc_ClassifyName.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gc_ClassifyName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gc_ClassifyName.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gc_ClassifyName.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gc_CareLevelName.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gc_CareLevelName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gc_CareLevelName.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gc_CareLevelName.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gc_MedisoftH.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gc_MedisoftH.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -825,10 +829,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 
                 }
 
-                CommonParam par = new CommonParam();
+                CommonParam par = new CommonParam(); 
                 MOS.Filter.HisTreatmentFilter _TreatmentFilter = new HisTreatmentFilter();
                 _TreatmentFilter.IDs = _TreatmentBedRoomADOs.Select(o => o.TREATMENT_ID).ToList();
                 histreatment = new BackendAdapter(par).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, _TreatmentFilter, par);
+                FillCareLevelName(_TreatmentBedRoomADOs);
                 LoadMchSyncStatusDict(_TreatmentBedRoomADOs);
                 EnsureMchStatusColumn();
                 gridControlTreatmentBedRoom.BeginUpdate();
@@ -857,6 +862,67 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gan ten phan loai cham soc cho tung dong luoi.
+        /// View L_HIS_TREATMENT_BED_ROOM khong tra ve CARE_LEVEL_ID nen phai lay tu danh sach HIS_TREATMENT da nap cung trang du lieu,
+        /// sau do doi chieu sang danh muc HIS_CARE_LEVEL trong cache
+        /// </summary>
+        private void FillCareLevelName(List<TreatmentBedRoomADO> treatmentBedRoomAdos)
+        {
+            try
+            {
+                if (treatmentBedRoomAdos == null || treatmentBedRoomAdos.Count == 0)
+                    return;
+
+                foreach (TreatmentBedRoomADO ado in treatmentBedRoomAdos)
+                {
+                    ado.CARE_LEVEL_NAME = null;
+                }
+
+                if (histreatment == null || histreatment.Count == 0)
+                    return;
+
+                List<HIS_CARE_LEVEL> careLevels = BackendDataWorker.Get<HIS_CARE_LEVEL>();
+                if (careLevels == null || careLevels.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("UCBedRoomPartial.FillCareLevelName. Khong lay duoc danh muc HIS_CARE_LEVEL tu cache");
+                    return;
+                }
+
+                Dictionary<long, string> careLevelNameById = new Dictionary<long, string>();
+                foreach (HIS_CARE_LEVEL careLevel in careLevels)
+                {
+                    if (careLevel != null && !careLevelNameById.ContainsKey(careLevel.ID))
+                        careLevelNameById.Add(careLevel.ID, careLevel.CARE_LEVEL_NAME);
+                }
+
+                Dictionary<long, long> careLevelIdByTreatmentId = new Dictionary<long, long>();
+                foreach (HIS_TREATMENT treatment in histreatment)
+                {
+                    if (treatment == null || !treatment.CARE_LEVEL_ID.HasValue)
+                        continue;
+
+                    if (!careLevelIdByTreatmentId.ContainsKey(treatment.ID))
+                        careLevelIdByTreatmentId.Add(treatment.ID, treatment.CARE_LEVEL_ID.Value);
+                }
+
+                foreach (TreatmentBedRoomADO ado in treatmentBedRoomAdos)
+                {
+                    long careLevelId = 0;
+                    if (!careLevelIdByTreatmentId.TryGetValue(ado.TREATMENT_ID, out careLevelId))
+                        continue;
+
+                    string careLevelName = null;
+                    if (careLevelNameById.TryGetValue(careLevelId, out careLevelName))
+                        ado.CARE_LEVEL_NAME = careLevelName;
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -922,7 +988,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         }
                     }
 
-                    switch (Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentStatus.EditValue ?? "0").ToString()))
+                    long treatmentSttValue = Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentStatus.EditValue ?? "0").ToString());
+                    switch (treatmentSttValue)
                     {
                         case 1:
                             treatFilter.IS_IN_ROOM = true;
@@ -937,6 +1004,18 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             break;
                         default:
                             break;
+                    }
+
+                    // [3222] Chế độ "BN chưa kê đơn trong khoảng" chỉ lấy bệnh nhân đang điều trị tại khoa:
+                    // loại hồ sơ đã kết thúc điều trị/ra viện, trừ khi người dùng chủ động chọn
+                    // trạng thái "Đã kết thúc điều trị" trên combo.
+                    if (cboPatientFilter.EditValue != null && (long)cboPatientFilter.EditValue == 2 && treatmentSttValue != 3)
+                    {
+                        treatFilter.HAS_OUT_TIME = false;
+                        if (treatmentSttValue == 0)
+                        {
+                            treatFilter.IS_PAUSE = false;
+                        }
                     }
                 }
                 else
@@ -1034,7 +1113,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
-                //Nạp cache y lệnh của đợt điều trị — PHẢI trước khi dựng cây ngày (QT-03)
+                //Nạp cache y lệnh của đợt điều trị — PHẢI trước khi dựng cây ngày (QT-03)  
                 LoadAnticipateCache(treatmentId);
                 //ServiceReq3 OrderByDateTime Hiển thị các ngày có chỉ định dịch vụ
                 LoadDataDateByTreatmentToTreeList(treatmentId);
@@ -3651,7 +3730,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         private void cboEmployee_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             if (cboEmployee.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+            {
                 cboEmployee.EditValue = null;
+                // [3222] Xóa lọc bác sĩ = tìm lại ngay theo tất cả bác sĩ, khỏi phải bấm Tìm
+                btnSearch_Click(null, null);
+            }
         }
 
         private void lblPatientCode_Click(object sender, EventArgs e)

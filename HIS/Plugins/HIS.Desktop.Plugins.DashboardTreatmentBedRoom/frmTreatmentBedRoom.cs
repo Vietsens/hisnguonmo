@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *
@@ -43,6 +43,13 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
 
         /// <summary>Trạng thái checkbox "chọn tất cả" vẽ ở header cột Chọn.</summary>
         bool isCheckedAll = false;
+
+        /// <summary>Màn hình mở rộng đang mở, null khi chưa mở.</summary>
+
+        /// <summary>
+        /// Cờ chặn đệ quy: gán lại toggleSwitch1.IsOn trong chính handler Toggled sẽ bắn lại Toggled.
+        /// </summary>
+        bool isSyncingToggle = false;
         #endregion
 
         #region Constructor
@@ -74,11 +81,32 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             try
             {
                 SetCaptionByLanguageKey();
+                LoadSavedSettings();
                 LoadDataToGridRoom();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đổ lại số cột và thời gian tải lại của lần dùng trước.
+        /// Chưa lưu lần nào thì giữ nguyên giá trị mặc định đang có trên form.
+        /// </summary>
+        private void LoadSavedSettings()
+        {
+            try
+            {
+                int columnCount, reloadSecond;
+                DashboardSettings.Load(out columnCount, out reloadSecond);
+
+                if (columnCount > 0) this.spinColumnCount.EditValue = columnCount;
+                if (reloadSecond > 0) this.spinReloadTime.EditValue = reloadSecond;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -100,6 +128,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 this.gcCheck.ToolTip = GetLang("frmTreatmentBedRoom.gcCheck.ToolTip", this.gcCheck.ToolTip);
                 this.gcRoomCode.Caption = GetLang("frmTreatmentBedRoom.gcRoomCode.Caption", this.gcRoomCode.Caption);
                 this.gcRoomName.Caption = GetLang("frmTreatmentBedRoom.gcRoomName.Caption", this.gcRoomName.Caption);
+                this.lciColumnCount.Text = GetLang("frmTreatmentBedRoom.lciColumnCount.Text", this.lciColumnCount.Text);
+                this.toggleSwitch1.Properties.OffText = GetLang("frmTreatmentBedRoom.toggleSwitch1.OffText", this.toggleSwitch1.Properties.OffText);
+                this.toggleSwitch1.Properties.OnText = GetLang("frmTreatmentBedRoom.toggleSwitch1.OnText", this.toggleSwitch1.Properties.OnText);
             }
             catch (Exception ex)
             {
@@ -135,6 +166,11 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 this.txtDepartment.Text = "";
 
                 List<V_HIS_ROOM> allRooms = BackendDataWorker.Get<V_HIS_ROOM>();
+
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                var userRoomByUserIds = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM>().Where(o => o.LOGINNAME == loginName 
+                && (o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)).Select(o => o.ROOM_ID).ToList();
+
                 V_HIS_ROOM currentRoom = allRooms.FirstOrDefault(o => o.ID == this.roomId);
                 if (currentRoom == null)
                 {
@@ -146,18 +182,26 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 this.departmentId = currentRoom.DEPARTMENT_ID;
                 this.txtDepartment.Text = string.Format("{0} - {1}", currentRoom.DEPARTMENT_CODE, currentRoom.DEPARTMENT_NAME);
 
-                List<V_HIS_ROOM> rooms = allRooms
-                    .Where(o => o.DEPARTMENT_ID == this.departmentId
-                        && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                    .OrderBy(o => o.ROOM_CODE)
-                    .ToList();
+                List<V_HIS_ROOM> rooms = (userRoomByUserIds != null && userRoomByUserIds.Count > 0) ? BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG
+                            && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                            && userRoomByUserIds.Contains(o.ID)
+                            && o.DEPARTMENT_ID == currentRoom.DEPARTMENT_ID).ToList() : null;
 
+                // Người dùng chưa được gán phòng nào thì rooms là null — để nguyên grid rỗng, đừng ném lỗi
+                if (rooms == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Nguoi dung khong duoc gan buong nao trong khoa. DEPARTMENT_ID: " + this.departmentId);
+                    BindDataToGridRoom();
+                    return;
+                }
+
+                // Mặc định tích sẵn toàn bộ phòng của khoa, người dùng bỏ bớt phòng không muốn xem
                 this.roomAdos = rooms.Select(o => new RoomCheckADO()
                 {
                     ROOM_ID = o.ID,
                     ROOM_CODE = o.ROOM_CODE,
                     ROOM_NAME = o.ROOM_NAME,
-                    IsCheck = (o.ID == this.roomId)
+                    IsCheck = true
                 }).ToList();
 
                 BindDataToGridRoom();
@@ -328,6 +372,190 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         }
         #endregion
 
+        #region Extended screen
+        /// <summary>
+        /// Gạt bật → mở màn hình mở rộng với đúng các phòng đang tích và chu kỳ làm mới đang đặt.
+        /// Gạt tắt → đóng màn hình mở rộng.
+        /// </summary>
+        private void toggleSwitch1_Toggled(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.isSyncingToggle)
+                {
+                    return;
+                }
+
+                // Chi xu ly chieu bat. Bat xong la man thiet lap dong luon nen khong con
+                // chieu tat de xu ly; bang dien tu thoat bang phim ESC cua chinh no.
+                if (this.toggleSwitch1.IsOn)
+                {
+                    OpenDashboard();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Mở bảng điện tử rồi đóng luôn màn thiết lập.
+        ///
+        /// Hai form KHÔNG dính vòng đời với nhau: bảng điện tử là cửa sổ độc lập, sống tiếp sau khi
+        /// màn thiết lập đóng. Không giữ tham chiếu, không bắt FormClosed của nó — giữ lại thì lúc
+        /// bảng đóng sẽ gọi ngược về một form đã dispose.
+        /// </summary>
+        /// <summary>Chu kỳ làm mới ngắn hơn mức này thì dội API liên tục mà không kịp đọc.</summary>
+        private const int MIN_RELOAD_SECOND = 60;
+
+        /// <summary>
+        /// Kiểm tra đầu vào trước khi mở bảng. Sai chỗ nào thì báo, đưa con trỏ về đúng ô đó
+        /// rồi gạt công tắc về tắt — người dùng sửa xong gạt lại.
+        /// </summary>
+        private bool ValidateInput()
+        {
+            // Tach hai truong hop: bo trong va nhap qua nho. Gop chung mot cau thi nguoi dung
+            // bo trong lai tuong minh da nhap sai so, khong biet la chua nhap gi.
+            if (this.spinReloadTime.EditValue == null
+                || string.IsNullOrEmpty((this.spinReloadTime.Text ?? string.Empty).Trim()))
+            {
+                ShowWarning(string.Format(
+                    GetLang("frmTreatmentBedRoom.MsgReloadTimeRequired",
+                        "Chưa nhập thời gian tải lại.\r\n\r\nĐây là khoảng thời gian bảng tự cập nhật số liệu một lần. Thời gian tải lại cần >= {0} giây để quá trình cập nhật không bị liên tục."),
+                    MIN_RELOAD_SECOND));
+                this.spinReloadTime.Focus();
+                this.spinReloadTime.SelectAll();
+                return false;
+            }
+
+            int reloadSecond = GetReloadSecond();
+            if (reloadSecond < MIN_RELOAD_SECOND)
+            {
+                ShowWarning(string.Format(
+                    GetLang("frmTreatmentBedRoom.MsgReloadTimeTooSmall",
+                        "Thời gian tải lại {0} giây hơi ngắn.\r\n\r\nThời gian tải lại cần >= {1} giây để quá trình cập nhật không bị liên tục."),
+                    reloadSecond, MIN_RELOAD_SECOND));
+                this.spinReloadTime.Focus();
+                this.spinReloadTime.SelectAll();
+                return false;
+            }
+
+            if (GetColumnCount() <= 0)
+            {
+                ShowWarning(GetLang("frmTreatmentBedRoom.MsgColumnCountInvalid",
+                    "Chưa nhập số cột hiển thị, số cột phải > 0"));
+                this.spinColumnCount.Focus();
+                this.spinColumnCount.SelectAll();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ShowWarning(string message)
+        {
+            DevExpress.XtraEditors.XtraMessageBox.Show(
+                this, message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void OpenDashboard()
+        {
+            try
+            {
+                List<long> roomIds = GetCheckedRoomIds();
+                if (roomIds == null || roomIds.Count == 0)
+                {
+                    ShowWarning(GetLang("frmTreatmentBedRoom.MsgNoRoomChecked",
+                        "Chưa chọn buồng hiển thị, số buồng phải > 0"));
+                    SetToggleWithoutEvent(false);
+                    return;
+                }
+
+                if (!ValidateInput())
+                {
+                    SetToggleWithoutEvent(false);
+                    return;
+                }
+
+                int reloadSecond = GetReloadSecond();
+                int columnCount = GetColumnCount();
+
+                // Chi luu sau khi da qua ValidateInput, khong luu gia tri hong
+                DashboardSettings.Save(columnCount, reloadSecond);
+
+                frmDashboard board = new frmDashboard(
+                    this.departmentId, roomIds, reloadSecond, columnCount);
+
+                // Show() khong owner: cua so co chu luon nam de len chu, HIS se bi chan
+                ShowFormProcessor.ShowFullScreenOnSecondMonitor(board);
+
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                SetToggleWithoutEvent(false);
+            }
+        }
+
+        private void SetToggleWithoutEvent(bool isOn)
+        {
+            try
+            {
+                this.isSyncingToggle = true;
+                this.toggleSwitch1.IsOn = isOn;
+            }
+            finally
+            {
+                this.isSyncingToggle = false;
+            }
+        }
+
+        /// <summary>
+        /// Số cột đang đặt trên spinColumnCount. Bỏ trống hoặc đọc lỗi thì trả 0 để
+        /// frmDashboard tự rơi về mặc định — chỗ chốt giá trị nằm bên đó, không phải ở đây.
+        /// </summary>
+        private int GetColumnCount()
+        {
+            try
+            {
+                if (this.spinColumnCount.EditValue == null)
+                {
+                    return 0;
+                }
+                return Convert.ToInt32(this.spinColumnCount.Value);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Chu kỳ làm mới đang đặt trên spinReloadTime, đơn vị giây. 0 = không tự làm mới.
+        /// </summary>
+        private int GetReloadSecond()
+        {
+            try
+            {
+                if (this.spinReloadTime.EditValue == null)
+                {
+                    return 0;
+                }
+
+                int second = Convert.ToInt32(this.spinReloadTime.Value);
+                return second < 0 ? 0 : second;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return 0;
+        }
+        #endregion
+
         #region Public
         /// <summary>
         /// Khoa suy ra từ phòng đầu vào (0 nếu không tìm được phòng trong cache).
@@ -364,6 +592,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         {
             try
             {
+                // KHONG dong bang dien tu o day. No la cua so doc lap, phai song tiep sau khi
+                // man thiet lap dong - dong theo thi vua bat xong da tat ngay.
+                // Muon tat bang dien tu thi bam ESC ben do.
                 this.roomAdos = null;
                 this.currentModule = null;
             }

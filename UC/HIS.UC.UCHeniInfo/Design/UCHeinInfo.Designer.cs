@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -129,6 +129,8 @@ namespace HIS.UC.UCHeniInfo
             this.lciIsBhytHolded = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciHasAbsentLetter = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIsTt46 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.txtCoPaidAccumulate = new DevExpress.XtraEditors.ButtonEdit();
+            this.lciCoPaidAccumulate = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciNote = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -192,6 +194,8 @@ namespace HIS.UC.UCHeniInfo
             ((System.ComponentModel.ISupportInitialize)(this.lciKV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPaid6Month)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciFreeCoPainTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCoPaidAccumulate.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCoPaidAccumulate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHasWorkingLetter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsBhytHolded)).BeginInit();
@@ -212,6 +216,7 @@ namespace HIS.UC.UCHeniInfo
             this.layoutControl1.Controls.Add(this.chkSs);
             this.layoutControl1.Controls.Add(this.btnCheckInfoBHYT);
             this.layoutControl1.Controls.Add(this.txtNote);
+            this.layoutControl1.Controls.Add(this.txtCoPaidAccumulate);
             this.layoutControl1.Controls.Add(this.chkIsTt46);
             this.layoutControl1.Controls.Add(this.chkHasAbsentLetter);
             this.layoutControl1.Controls.Add(this.chkIsBhytHolded);
@@ -790,11 +795,12 @@ namespace HIS.UC.UCHeniInfo
             this.layoutControlItem1,
             this.layoutControlItem2,
             this.lci5Y,
-            this.lciHeinPatientType});
+            this.lciHeinPatientType,
+            this.lciCoPaidAccumulate});
             this.gboxHeinCardInformation.Location = new System.Drawing.Point(0, 0);
             this.gboxHeinCardInformation.Name = "Root";
             this.gboxHeinCardInformation.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.gboxHeinCardInformation.Size = new System.Drawing.Size(438, 239);
+            this.gboxHeinCardInformation.Size = new System.Drawing.Size(438, 263);
             this.gboxHeinCardInformation.Text = "BHYT (F3)";
             // 
             // lciHasDobCertificate
@@ -1040,6 +1046,37 @@ namespace HIS.UC.UCHeniInfo
             this.lciHasAbsentLetter.TextSize = new System.Drawing.Size(70, 20);
             this.lciHasAbsentLetter.TextToControlDistance = 5;
             // 
+            // txtCoPaidAccumulate
+            // 
+            this.txtCoPaidAccumulate.Location = new System.Drawing.Point(133, 220);
+            this.txtCoPaidAccumulate.Name = "txtCoPaidAccumulate";
+            this.txtCoPaidAccumulate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Search)});
+            this.txtCoPaidAccumulate.Properties.MaxLength = 18;
+            this.txtCoPaidAccumulate.Size = new System.Drawing.Size(303, 20);
+            this.txtCoPaidAccumulate.StyleController = this.layoutControl1;
+            this.txtCoPaidAccumulate.TabIndex = 61;
+            this.txtCoPaidAccumulate.ToolTip = "Số tiền cùng chi trả lũy kế";
+            this.txtCoPaidAccumulate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtCoPaidAccumulate_ButtonClick);
+            // 
+            // lciCoPaidAccumulate
+            // 
+            this.lciCoPaidAccumulate.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciCoPaidAccumulate.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciCoPaidAccumulate.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.lciCoPaidAccumulate.Control = this.txtCoPaidAccumulate;
+            this.lciCoPaidAccumulate.Location = new System.Drawing.Point(0, 218);
+            this.lciCoPaidAccumulate.Name = "lciCoPaidAccumulate";
+            this.lciCoPaidAccumulate.OptionsToolTip.ToolTip = "Số tiền cùng chi trả lũy kế trong năm tài chính";
+            this.lciCoPaidAccumulate.Size = new System.Drawing.Size(436, 24);
+            this.lciCoPaidAccumulate.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciCoPaidAccumulate.MaxSize = new System.Drawing.Size(0, 24);
+            this.lciCoPaidAccumulate.MinSize = new System.Drawing.Size(200, 24);
+            this.lciCoPaidAccumulate.Text = "Cùng chi trả lũy kế:";
+            this.lciCoPaidAccumulate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciCoPaidAccumulate.TextSize = new System.Drawing.Size(128, 20);
+            this.lciCoPaidAccumulate.TextToControlDistance = 5;
+            // 
             // lciIsTt46
             // 
             this.lciIsTt46.Control = this.chkIsTt46;
@@ -1179,6 +1216,8 @@ namespace HIS.UC.UCHeniInfo
             ((System.ComponentModel.ISupportInitialize)(this.lciKV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPaid6Month)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciFreeCoPainTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCoPaidAccumulate.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCoPaidAccumulate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHasWorkingLetter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsBhytHolded)).EndInit();
@@ -1252,6 +1291,8 @@ namespace HIS.UC.UCHeniInfo
         private DevExpress.XtraLayout.LayoutControlItem lciIsBhytHolded;
         private DevExpress.XtraLayout.LayoutControlItem lciHasAbsentLetter;
         private DevExpress.XtraLayout.LayoutControlItem lciIsTt46;
+        internal DevExpress.XtraEditors.ButtonEdit txtCoPaidAccumulate;
+        private DevExpress.XtraLayout.LayoutControlItem lciCoPaidAccumulate;
         private DevExpress.XtraLayout.LayoutControlItem lciNote;
 		private DevExpress.XtraEditors.SimpleButton btnCheckInfoBHYT;
 		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;

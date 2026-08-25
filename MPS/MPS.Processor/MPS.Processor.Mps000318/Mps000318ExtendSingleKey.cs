@@ -31,8 +31,18 @@ namespace MPS.Processor.Mps000318
         internal const string AMOUNT_AFTER_EXEMPTION_TEXT = "AMOUNT_AFTER_EXEMPTION_TEXT";
         internal const string AMOUNT_AFTER_EXEMPTION_TEXT_UPPER_FIRST = "AMOUNT_AFTER_EXEMPTION_TEXT_UPPER_FIRST";
         internal static string TRANSACTION_CODE_BAR = "TRANSACTION_CODE_BAR";
+        internal static string TREATMENT_CODE_BAR = "TREATMENT_CODE_BAR";
+        internal static string PATIENT_CODE_BAR = "PATIENT_CODE_BAR";
+        /// <summary>QR ma tra cuu hoa don dien tu - chua So bao mat (INVOICE_LOOKUP_CODE)</summary>
+        internal const string INVOICE_LOOKUP_CODE_QR = "INVOICE_LOOKUP_CODE_QR";
+        /// <summary>QR ma tra cuu hoa don dien tu - chua duong dan tra cuu (EINVOICE_URL)</summary>
+        internal const string EINVOICE_URL_QR = "EINVOICE_URL_QR";
         internal static string AMOUNT_AWAY_ZERO_TEXT_UPPER_FIRST = "AMOUNT_AWAY_ZERO_TEXT_UPPER_FIRST";
         internal const string CT_AMOUNT = "CT_AMOUNT";
         internal const string CT_AMOUNT_TEXT_UPPER_FIRST = "CT_AMOUNT_TEXT_UPPER_FIRST";
+        /// <summary>So tien da thu tach theo tung loai dich vu - CHI loai co tien > 0</summary>
+        internal const string SERVICE_TYPE_AMOUNTs = "SERVICE_TYPE_AMOUNTs";
+        /// <summary>So tien da thu tach theo tung loai dich vu - MOI loai co phat sinh, ke ca tien = 0</summary>
+        internal const string SERVICE_TYPE_AMOUNT_ALLs = "SERVICE_TYPE_AMOUNT_ALLs";
     }
 }

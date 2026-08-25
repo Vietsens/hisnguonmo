@@ -100,6 +100,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     dataHein.AutoCheckIcd = HisConfigCFG.AutoCheckIcd;
                     dataHein.IsEdit = this.isEdit;
                     dataHein.CheckExamHistory = this.CheckTT;
+                    dataHein.CheckTienMCCT = this.CheckTienMCCTManual;
                     dataHein.ExceedDayAllow = HisConfigs.Get<long>("MOS.BHYT.EXCEED_DAY_ALLOW_FOR_IN_PATIENT");
                     dataHein.HisTreatment = this.currentHisTreatment;
 

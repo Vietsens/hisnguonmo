@@ -370,11 +370,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 var data = (SereServADO)treeSereServ.GetDataRecordByNode(e.Node);
                 if (data != null)
                 {
-                    // QT-08 — đơn thuốc dự trù tô cam để phân biệt với đơn thường cùng ngày.
+                    // QT-08 — đơn thuốc dự trù tô xanh da trời để phân biệt với đơn thường cùng ngày.
                     // Đặt TRƯỚC nhánh HasChildren vì dòng đơn cha cũng cần tô.
                     if (data.IS_ANTICIPATE)
                     {
-                        e.Appearance.ForeColor = Color.DarkOrange;
+                        e.Appearance.ForeColor = Color.DodgerBlue;
                         if (e.Node.HasChildren)
                             e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
                         else if (data.IS_NO_EXECUTE == 1)

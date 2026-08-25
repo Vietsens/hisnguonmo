@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -61,6 +61,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkSyncKcb = new DevExpress.XtraEditors.CheckEdit();
             this.chkSyncKcbVlg = new DevExpress.XtraEditors.CheckEdit();
+            this.chkSyncKcbHoc = new DevExpress.XtraEditors.CheckEdit();
             this.chkXML3176 = new DevExpress.XtraEditors.CheckEdit();
             this.txtFolder = new DevExpress.XtraEditors.ButtonEdit();
             this.chkDontSend = new DevExpress.XtraEditors.CheckEdit();
@@ -97,11 +98,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciSyncKcbVlg = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciSyncKcbHoc = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcb.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcbVlg.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcbHoc.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkXML3176.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFolder.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDontSend.Properties)).BeginInit();
@@ -137,6 +140,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSyncKcbVlg)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSyncKcbHoc)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -203,6 +207,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             this.layoutControl1.Controls.Add(this.chkSyncKcb);
             this.layoutControl1.Controls.Add(this.chkSyncKcbVlg);
+            this.layoutControl1.Controls.Add(this.chkSyncKcbHoc);
             this.layoutControl1.Controls.Add(this.chkXML3176);
             this.layoutControl1.Controls.Add(this.txtFolder);
             this.layoutControl1.Controls.Add(this.chkDontSend);
@@ -221,7 +226,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControl1.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(389, 294);
+            this.layoutControl1.Size = new System.Drawing.Size(389, 318);
             this.layoutControl1.TabIndex = 5;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -256,6 +261,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.chkSyncKcbVlg.StyleController = this.layoutControl1;
             this.chkSyncKcbVlg.TabIndex = 25;
             this.chkSyncKcbVlg.ToolTip = "Đẩy bản tin XML GIAMDINHHS (Kết thúc khám/Xuất viện) lên Cổng tiếp nhận — Kho dữ liệu y tế tỉnh Vĩnh Long (POST /api/kham-chua-benh/hoan-tat)";
+            // 
+            // chkSyncKcbHoc
+            // 
+            this.chkSyncKcbHoc.Location = new System.Drawing.Point(2, 266);
+            this.chkSyncKcbHoc.MenuManager = this.barManager1;
+            this.chkSyncKcbHoc.Name = "chkSyncKcbHoc";
+            this.chkSyncKcbHoc.Properties.Caption = "Đồng bộ KCB lên Trung tâm điều hành y tế (QĐ 3176)";
+            this.chkSyncKcbHoc.Size = new System.Drawing.Size(385, 19);
+            this.chkSyncKcbHoc.StyleController = this.layoutControl1;
+            this.chkSyncKcbHoc.TabIndex = 26;
+            this.chkSyncKcbHoc.ToolTip = "Đẩy hồ sơ KCB (XML GIAMDINHHS theo QĐ 3176) lên Trung tâm điều hành y tế khi Kết thúc khám/Xuất viện. Bản tin trạng thái KCB (check-in) gửi bằng mục riêng trong nhóm chức năng gửi.";
             //
             // txtFolder
             //
@@ -477,11 +493,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem5,
             this.layoutControlItem8,
             this.layoutControlItem9,
-            this.lciSyncKcbVlg});
+            this.lciSyncKcbVlg,
+            this.lciSyncKcbHoc});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup1.Size = new System.Drawing.Size(389, 294);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(389, 318);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // emptySpaceItem1
@@ -670,12 +687,21 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.lciSyncKcbVlg.Size = new System.Drawing.Size(389, 24);
             this.lciSyncKcbVlg.TextSize = new System.Drawing.Size(0, 0);
             this.lciSyncKcbVlg.TextVisible = false;
+            // 
+            // lciSyncKcbHoc
+            // 
+            this.lciSyncKcbHoc.Control = this.chkSyncKcbHoc;
+            this.lciSyncKcbHoc.Location = new System.Drawing.Point(0, 264);
+            this.lciSyncKcbHoc.Name = "lciSyncKcbHoc";
+            this.lciSyncKcbHoc.Size = new System.Drawing.Size(389, 24);
+            this.lciSyncKcbHoc.TextSize = new System.Drawing.Size(0, 0);
+            this.lciSyncKcbHoc.TextVisible = false;
             //
             // frmSettingConfigSync
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(389, 323);
+            this.ClientSize = new System.Drawing.Size(389, 347);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -695,6 +721,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcb.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcbHoc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcbVlg.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkXML3176.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFolder.Properties)).EndInit();
@@ -730,6 +757,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSyncKcbHoc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSyncKcbVlg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -782,6 +810,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private DevExpress.XtraEditors.CheckEdit chkSyncKcb;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraEditors.CheckEdit chkSyncKcbVlg;
+        private DevExpress.XtraEditors.CheckEdit chkSyncKcbHoc;
         private DevExpress.XtraLayout.LayoutControlItem lciSyncKcbVlg;
+        private DevExpress.XtraLayout.LayoutControlItem lciSyncKcbHoc;
     }
 }

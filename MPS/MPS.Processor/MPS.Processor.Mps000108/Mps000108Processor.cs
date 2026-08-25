@@ -73,6 +73,9 @@ namespace MPS.Processor.Mps000108
         {
             try
             {
+                //Don mau chi dinh tu kho ngoai khong sinh HIS_EXP_MEST -> khong co ma phieu de tao barcode
+                if (rdo.ExpMest == null || String.IsNullOrEmpty(rdo.ExpMest.EXP_MEST_CODE)) return;
+
                 Inventec.Common.BarcodeLib.Barcode expMestCodeBar = new Inventec.Common.BarcodeLib.Barcode(rdo.ExpMest.EXP_MEST_CODE);
                 expMestCodeBar.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
                 expMestCodeBar.IncludeLabel = false;

@@ -1483,5 +1483,108 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             }
             return rsData;
         }
+
+        /// <summary>
+        /// Valid lengths of a health insurance card number accepted by the co-payment service,
+        /// measured after whitespace and separators have been removed.
+        /// </summary>
+        static readonly int[] MCCT_VALID_CARD_LENGTHS = new int[] { 10, 12, 15 };
+
+        /// <summary>
+        /// Looks the accumulated co-payment of a patient up on the BHXH gateway.
+        ///
+        /// Returns the gateway payload unchanged; turning it into the three form values is the
+        /// caller's job, because the six-months threshold needs HIS_BHYT_PARAM which the UC
+        /// already keeps cached.
+        ///
+        /// Reuses the session token of the card-check flow, so the call goes out from the same
+        /// IP address the token was issued to - the gateway rejects any other origin.
+        /// </summary>
+        /// <param name="dataHein">Card data already collected by the card-check flow.</param>
+        /// <returns>Never null. Inspect MaKetQua and HasData before using the payload.</returns>
+        public async Task<ResultMCCTADO> CheckTienMCCT(HeinCardData dataHein)
+        {
+            ResultMCCTADO rsData = new ResultMCCTADO();
+            try
+            {
+                if (dataHein == null)
+                {
+                    rsData.IsBlockedLocally = true;
+                    Inventec.Common.Logging.LogSystem.Warn("CheckTienMCCT: khong co du lieu the truyen vao.");
+                    return rsData;
+                }
+
+                if (String.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
+                    || String.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
+                    || String.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
+                {
+                    rsData.IsBlockedLocally = true;
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "CheckTienMCCT: kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS' -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS'");
+                    return rsData;
+                }
+
+                string maThe = HeinCardHelper.TrimHeinCardNumber(dataHein.HeinCardNumber ?? "");
+                string hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
+                hoTen = String.IsNullOrEmpty(hoTen) ? dataHein.PatientName : hoTen;
+                string ngaySinh = dataHein.Dob;
+
+                // The gateway answers 400 for these; filter them out before spending a round trip.
+                if (String.IsNullOrEmpty(maThe)
+                    || String.IsNullOrEmpty(hoTen)
+                    || String.IsNullOrEmpty(ngaySinh)
+                    || !MCCT_VALID_CARD_LENGTHS.Contains(maThe.Length))
+                {
+                    rsData.IsBlockedLocally = true;
+                    rsData.MaKetQua = His.Bhyt.InsuranceExpertise.LDO.ResultMCCTLDO.MaKetQuaStore.INVALID_PARAM;
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "CheckTienMCCT: du lieu dau vao khong hop le, khong goi cong BHXH."
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => maThe), maThe));
+                    return rsData;
+                }
+
+                // The service path is fixed inside ApiInsuranceExpertise - nothing to configure here.
+                ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
+
+                TraCuuMCCTLDO request = new TraCuuMCCTLDO();
+                request.username = BHXHLoginCFG.USERNAME;
+                request.maThe = maThe;
+                request.hoTen = hoTen;
+                request.ngaySinh = ngaySinh;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "CheckTienMCCT INPUT____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => request), request));
+
+                ResultMCCTLDO rsApi = await apiInsuranceExpertise.TraCuuTienMCCT(
+                    BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, request);
+
+                if (rsApi == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("CheckTienMCCT: cong BHXH khong tra ve du lieu.");
+                    return rsData;
+                }
+
+                rsData.MaKetQua = rsApi.MaKetQua;
+                rsData.GhiChu = rsApi.GhiChu;
+                rsData.DataCCT = rsApi.DataCCT;
+                rsData.ThongTinSoThe = rsApi.ThongTinSoThe;
+                rsData.JsonBHYT = rsApi.JsonBHYT;
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "CheckTienMCCT OUTPUT____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData.MaKetQua), rsData.MaKetQua)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData.GhiChu), rsData.GhiChu));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return rsData;
+        }
     }
 }

@@ -218,6 +218,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 scrollClinicalExamHcm.SizeChanged += (s, e) => LayoutClinicalExamHcm();
 
                 this.xtraTabControl2.TabPages.Add(tabClinicalExamHcm);
+                HideStandardClinicalTab();
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Ẩn tab "Khám lâm sàng" thường khi viện đã dùng tab "Khám lâm sàng HCM".
+        ///
+        /// Hai tab hỏi cùng một nội dung khám, để cả hai thì người nhập không biết nhập ở đâu và
+        /// dễ nhập một nửa mỗi bên. CHỈ ẨN, không xoá: các ô của tab cũ vẫn giữ nguyên giá trị đã
+        /// lưu và vẫn được ghi xuống cơ sở dữ liệu như trước, nên hồ sơ cũ không mất dữ liệu.
+        /// </summary>
+        private void HideStandardClinicalTab()
+        {
+            try
+            {
+                if (this.xtraTabPage10 == null) return;
+                if (!this.xtraTabPage10.PageVisible) return;
+
+                this.xtraTabPage10.PageVisible = false;
+                LogSystem.Warn("SytHcm: da an tab Kham lam sang thuong vi dang dung tab Kham lam sang HCM");
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }

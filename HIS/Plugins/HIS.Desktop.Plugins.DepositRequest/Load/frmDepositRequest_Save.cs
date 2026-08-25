@@ -285,12 +285,59 @@ namespace HIS.Desktop.Plugins.DepositRequest
                         txtAccountBookCode.Focus();
                         valid = false;
                     }
+
+                var payFormCheck = GetCurrentPayForm();
+                if (valid && payFormCheck != null && (payFormCheck.PAY_FORM_CODE == "03" || payFormCheck.PAY_FORM_CODE == "06")
+                    && spinTransferAmount.EditValue != null && spinTransferAmount.Value > this.hisDepositSDO.Transaction.AMOUNT)
+                {
+                    string msg = payFormCheck.PAY_FORM_CODE == "03"
+                        ? "Số tiền chuyển khoản lớn hơn số tiền thanh toán của bệnh nhân"
+                        : "Số tiền quẹt thẻ lớn hơn số tiền thanh toán của bệnh nhân";
+                    WaitingManager.Hide();
+                    dxErrorProvider.SetError(spinTransferAmount, msg, DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                    MessageBox.Show(msg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    spinTransferAmount.Focus();
+                    spinTransferAmount.SelectAll();
+                    valid = false;
+                }
+                else
+                {
+                    dxErrorProvider.SetError(spinTransferAmount, string.Empty);
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return valid;
+        }
+
+        /// <summary>
+        /// Viec 54923: doc so tien tu o nhap (o dang mask so nen EditValue la kieu so).
+        /// </summary>
+        private bool TryGetEditAmount(out decimal amount)
+        {
+            amount = 0;
+            try
+            {
+                object editValue = txtAmount.EditValue;
+                if (editValue == null) return true;
+
+                if (editValue is string)
+                {
+                    string text = ((string)editValue).Trim();
+                    if (String.IsNullOrEmpty(text)) return true;
+                    return decimal.TryParse(text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.CurrentCulture, out amount);
+                }
+
+                amount = Convert.ToDecimal(editValue);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
         }
 
         private void UpdateDataFormTransactionDepositToDTO(ref HisTransactionDepositSDO transactionData, V_HIS_DEPOSIT_REQ depo)
@@ -326,6 +373,22 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 if (cboPayForm.EditValue != null)
                 {
                     transactionData.Transaction.PAY_FORM_ID = (Inventec.Common.TypeConvert.Parse.ToInt64((cboPayForm.EditValue ?? "").ToString()));
+                }
+
+                //Viec 54923: luu so tien chuyen khoan / quet the theo hinh thuc - flow chuan man Xuat hoa don ban thuoc (MedicineSaleBill)
+                transactionData.Transaction.TRANSFER_AMOUNT = null;
+                transactionData.Transaction.SWIPE_AMOUNT = null;
+                var payFormSave = GetCurrentPayForm();
+                if (payFormSave != null && spinTransferAmount.Enabled && spinTransferAmount.EditValue != null)
+                {
+                    if (payFormSave.PAY_FORM_CODE == "03")
+                    {
+                        transactionData.Transaction.TRANSFER_AMOUNT = spinTransferAmount.Value;
+                    }
+                    else if (payFormSave.PAY_FORM_CODE == "06")
+                    {
+                        transactionData.Transaction.SWIPE_AMOUNT = spinTransferAmount.Value;
+                    }
                 }
 
                 if (depo != null)

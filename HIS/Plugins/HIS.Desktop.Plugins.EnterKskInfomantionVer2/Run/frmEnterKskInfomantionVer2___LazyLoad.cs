@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *
@@ -162,7 +162,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         /// <summary>
         /// Fill 1 tab (idempotent theo tabFilled): dữ liệu + nhúng UC ICD kết luận của tab + đổ ICD +
-        /// (tab trẻ &lt;6) default kết luận + ngày kết luận + enable control. Chạy khi mở tab mặc định
+        /// (tab trẻ &lt;6) ngày kết luận + enable control. Chạy khi mở tab mặc định
         /// và khi user chuyển sang tab lần đầu.
         /// </summary>
         private void EnsureTabLoaded(int tab)
@@ -181,7 +181,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 FillTabByIndex(tab);
                 InitIcdConclusionUcForTab(tab);
                 LoadIcdConclusionToUc();
-                if (tab == 7) ApplyUnderSixConclusionDefaults();
                 // Đối tượng + Nguồn chi trả (bổ sung cho tab dưới 18 / trẻ <6) — init combo + đổ giá trị (STUB DB chờ cột).
                 if (tab == 2) { LoadAdminCombosUnderEighteen(); InitUnderEighteenTextLibButtons(); }
                 else if (tab == 7) { LoadAdminCombosUnderSix(); LoadAccompanyInfoUnderSix(); }

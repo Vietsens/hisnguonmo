@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -1028,9 +1028,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                 PosStatic.SendData(null);
                         }
                     }
-                    LogSystem.Info("ma:" + inputTransReq.BankName);
-                    if (!string.IsNullOrEmpty(inputTransReq.BankName) && (inputTransReq.BankName.Trim() == "CTG" || inputTransReq.BankName == "Vietinbank" || inputTransReq.BankName.Trim() == "PVCB" || inputTransReq.BankName == "MBB")
-                    && currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)  
+                    LogSystem.Info("ma:" + inputTransReq.BankName + " | bankCode: " + GetCurrentBankCode());
+                    if (IsSupportCheckQrStatus()
+                    && currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
                     {
                         layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         var img = imageList1.Images[0];
@@ -1127,30 +1127,51 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 timerReloadTransReq.Stop();
-                // xử lý thêm ngân hàng SHB
-                var lstCheckBank = new List<string>() { "VCB", "MBB", "CTG", "SHB" };
-                if (string.IsNullOrEmpty(inputTransReq.BankName) || !lstCheckBank.Contains(inputTransReq.BankName))
+                // xử lý thêm ngân hàng SHB, TCB
+                // TCB có API hủy giao dịch (/transaction/cancel) nên phải gọi QrPaymentCancel
+                // thay vì chỉ đổi trạng thái ở HIS, để mã QR bên ngân hàng cũng hết hiệu lực.
+                var lstCheckBank = new List<string>() { "VCB", "MBB", "CTG", "SHB", "TCB" };
+
+                // Dung GetCurrentBankCode() thay cho inputTransReq.BankName truc tiep:
+                // co man hinh goi khong truyen BankName (chi truyen ConfigValue), khi do
+                // luong se roi nham vao nhanh chi doi trang thai o HIS ma KHONG goi ngan hang huy QR
+                // -> ma QR van con hieu luc, benh nhan quet van tra duoc tien.
+                string bankCode = GetCurrentBankCode();
+                bool coCauHinhNganHang = inputTransReq.ConfigValue != null
+                    && !string.IsNullOrWhiteSpace(inputTransReq.ConfigValue.KEY);
+
+                if (string.IsNullOrEmpty(bankCode) || !lstCheckBank.Contains(bankCode) || !coCauHinhNganHang)
                 {
                     if (currentTransReq != null)
                     {
-                        {
-                            IsCheckNode = false;
-                            CallApiCancelTransReq();
-                        }
-
+                        IsCheckNode = false;
+                        CallApiCancelTransReq();
                     }
                 }
-                else if (lstCheckBank.Contains(inputTransReq.BankName) && currentTransReq != null && lstCheckBank.Exists(o => inputTransReq.ConfigValue.KEY.Contains(o)))
+                else if (currentTransReq != null && inputTransReq.ConfigValue.KEY.Contains(bankCode))
                 {
+                    IsCheckNode = false;
+                    CommonParam param = new CommonParam();
+                    MOS.SDO.QrPaymentCancelSDO tdo = new MOS.SDO.QrPaymentCancelSDO();
+                    tdo.Bank = bankCode;
+                    tdo.TransReqId = currentTransReq.ID;
+                    tdo.BankConfig = inputTransReq.ConfigValue.VALUE;
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tdo), tdo));
+
+                    var IsCancel = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisTransReq/QrPaymentCancel", ApiConsumers.MosConsumer, tdo, param);
+
+                    // Ngan hang tu choi huy (vi du TCB tra 4000010 khi giao dich da phat sinh tien)
+                    // thi phai bao cho thu ngan biet, khong duoc im lang bo qua.
+                    if (!IsCancel)
                     {
-                        IsCheckNode = false;
-                        CommonParam param = new CommonParam();
-                        MOS.SDO.QrPaymentCancelSDO tdo = new MOS.SDO.QrPaymentCancelSDO();
-                        tdo.Bank = inputTransReq.BankName;
-                        tdo.TransReqId = currentTransReq.ID;
-                        tdo.BankConfig = inputTransReq.ConfigValue.VALUE;
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tdo), tdo));
-                        var IsCancel = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisTransReq/QrPaymentCancel", ApiConsumers.MosConsumer, tdo, param);
+                        string msgCancel = param.GetMessage();
+                        Inventec.Common.Logging.LogSystem.Error("Huy ma QR tai ngan hang that bai. Bank=" + bankCode
+                            + ", TransReqId=" + currentTransReq.ID + ", Message=" + msgCancel);
+                        XtraMessageBox.Show(
+                            string.IsNullOrWhiteSpace(msgCancel)
+                                ? "Hủy mã QR tại ngân hàng không thành công. Vui lòng kiểm tra lại trạng thái giao dịch trước khi tạo yêu cầu mới."
+                                : msgCancel,
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
 
@@ -1178,50 +1199,79 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
-                if ((inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0) || inputTransReq.Transaction != null)
+                if (HisConfigCFG.DeleteTransactionOnQrCancel != "1" && HisConfigCFG.DeleteTransactionOnQrCancel != "2")
                 {
-                    CommonParam param = new CommonParam();
-                    
-                    if (HisConfigCFG.DeleteTransactionOnQrCancel == "1")
-                    {
-                        if (XtraMessageBox.Show("Yêu cầu thanh toán QR đã được hủy. Bạn có muốn hủy giao dịch tương ứng không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        {
-                            var dataTrans = inputTransReq.Transaction != null ? new List<HIS_TRANSACTION>() { inputTransReq.Transaction } : null;
-                            foreach (var item in dataTrans)
-                            {
-                                MOS.SDO.HisTransactionCancelSDO dataupdate = new MOS.SDO.HisTransactionCancelSDO();
+                    return;
+                }
 
-                                var cashier = BackendDataWorker.Get<HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ID == item.CASHIER_ROOM_ID);
-                                dataupdate.TransactionId = item.ID;
-                                dataupdate.RequestRoomId = cashier.ROOM_ID;
-                                dataupdate.CancelTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
-                                dataupdate.CancelReason = "Tự động hủy giao dịch do yêu cầu thanh toán QR bị hủy";
-                                var Result = new BackendAdapter(param).Post<bool>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, dataupdate, param);
-                            }
-                        }
+                // Gom CA HAI nguon giao dich.
+                // Truoc day danh sach chi dung tu inputTransReq.Transaction (so it), trong khi dieu kien
+                // vao khoi lai chap nhan ca truong hop chi co inputTransReq.Transactions (so nhieu).
+                // Man hinh mo theo loai "thanh toan theo giao dich" (TRANS_REQ_TYPE = 5) chi co so nhieu,
+                // nen danh sach ra null va foreach nem NullReferenceException.
+                List<HIS_TRANSACTION> dataTrans = new List<HIS_TRANSACTION>();
+                if (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0)
+                {
+                    dataTrans.AddRange(inputTransReq.Transactions.Where(o => o != null));
+                }
+                if (inputTransReq.Transaction != null
+                    && !dataTrans.Any(o => o.ID == inputTransReq.Transaction.ID))
+                {
+                    dataTrans.Add(inputTransReq.Transaction);
+                }
+
+                if (dataTrans.Count == 0)
+                {
+                    return;
+                }
+
+                if (HisConfigCFG.DeleteTransactionOnQrCancel == "1"
+                    && XtraMessageBox.Show("Yêu cầu thanh toán QR đã được hủy. Bạn có muốn hủy giao dịch tương ứng không?",
+                        "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                foreach (var item in dataTrans)
+                {
+                    var cashier = BackendDataWorker.Get<HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ID == item.CASHIER_ROOM_ID);
+                    if (cashier == null)
+                    {
+                        // Truoc day truy cap thang cashier.ROOM_ID nen cung nem NullReferenceException
+                        // khi giao dich tro toi phong thu ngan khong con trong danh muc.
+                        Inventec.Common.Logging.LogSystem.Error(
+                            "Khong tim thay phong thu ngan CASHIER_ROOM_ID=" + item.CASHIER_ROOM_ID
+                            + " nen bo qua huy giao dich HIS_TRANSACTION.ID=" + item.ID);
+                        continue;
                     }
-                    else if (HisConfigCFG.DeleteTransactionOnQrCancel == "2")
-                    {
-                        var dataTrans = inputTransReq.Transaction != null ? new List<HIS_TRANSACTION>() { inputTransReq.Transaction } : null;
-                        foreach (var item in dataTrans)
-                        {
-                            MOS.SDO.HisTransactionCancelSDO dataupdate = new MOS.SDO.HisTransactionCancelSDO();
 
-                            var cashier = BackendDataWorker.Get<HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ID == item.CASHIER_ROOM_ID);
-                            dataupdate.TransactionId = item.ID;
-                            dataupdate.RequestRoomId = cashier.ROOM_ID;
-                            dataupdate.CancelTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
-                            dataupdate.CancelReason = "Tự động hủy giao dịch do yêu cầu thanh toán QR bị hủy";
-                            var Result = new BackendAdapter(param).Post<bool>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, dataupdate, param);
-                        }
+                    MOS.SDO.HisTransactionCancelSDO dataupdate = new MOS.SDO.HisTransactionCancelSDO();
+                    dataupdate.TransactionId = item.ID;
+                    dataupdate.RequestRoomId = cashier.ROOM_ID;
+                    dataupdate.CancelTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
+                    dataupdate.CancelReason = "Tự động hủy giao dịch do yêu cầu thanh toán QR bị hủy";
+
+                    // api/HisTransaction/Cancel tra ve HIS_TRANSACTION chu KHONG phai bool.
+                    // Truoc day goi Post<bool> nen Newtonsoft luon nem JsonSerializationException
+                    // ("Cannot deserialize ... into type System.Boolean", Path 'Data.ID')
+                    // va ket qua luon ra false du huy thanh cong.
+                    var Result = new BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, dataupdate, param);
+                    if (Result == null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Huy giao dich that bai. HIS_TRANSACTION.ID=" + item.ID
+                            + ", Message=" + param.GetMessage());
                     }
                 }
-                
             }
             catch (Exception ex)
             {
-
-                throw;
+                // Truoc day nem lai (throw) nen ca luong btnNew_Click bi dung giua chung:
+                // man hinh khong duoc reset, thu ngan khong tao duoc yeu cau moi.
+                // Ma QR da huy xong roi nen chi ghi log va bao nguoi dung, khong lam gay luong.
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                XtraMessageBox.Show("Hủy giao dịch tương ứng không thành công. Vui lòng kiểm tra lại danh sách giao dịch.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -1693,7 +1743,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         lstTran,
                         listSeseDepoRepay
                         );
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                    pdo._ListTransactionPayform = GetTransactionPayformForPrint(item != null ? item.ID : 0);
+                    pdo._ListTransactionDiscount = GetTransactionDiscountForPrint(item != null ? item.ID : 0);
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode,fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
                     //if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                     //{
                     //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
@@ -1875,8 +1927,26 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     var treatmentList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null);
                     if (treatmentList != null && treatmentList.Count > 0)
                         treatment = treatmentList.First();
+
+                    //Danh sach dich vu: uu tien dich vu duoc tam ung boi chinh phieu nay,
+                    //neu phieu tam ung khong gan dich vu thi lay toan bo dich vu cua dot dieu tri
+                    HisSereServDepositFilter sereServDepositFilter = new HisSereServDepositFilter();
+                    sereServDepositFilter.DEPOSIT_ID = item.ID;
+                    sereServDepositFilter.IS_CANCEL = false;
+                    var sereServDeposits = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_DEPOSIT>>("api/HisSereServDeposit/Get", ApiConsumers.MosConsumer, sereServDepositFilter, null);
+
+                    HisSereServViewFilter sereServViewFilter = new HisSereServViewFilter();
+                    if (sereServDeposits != null && sereServDeposits.Count > 0)
+                        sereServViewFilter.IDs = sereServDeposits.Select(o => o.SERE_SERV_ID).Distinct().ToList();
+                    else
+                        sereServViewFilter.TREATMENT_ID = item.TREATMENT_ID;
+                    var sereServs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW, ApiConsumers.MosConsumer, sereServViewFilter, null) ?? new List<V_HIS_SERE_SERV>();
+
                     MPS.Processor.Mps000112.PDO.Mps000112PDO rdo =
-                        new MPS.Processor.Mps000112.PDO.Mps000112PDO(deposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>());
+                        new MPS.Processor.Mps000112.PDO.Mps000112PDO(deposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>(), sereServs, sereServDeposits, BackendDataWorker.Get<HIS_PAY_FORM>());
+                    rdo._Banks = BackendDataWorker.Get<HIS_BANK>();
+                    rdo._ListTransactionPayform = GetTransactionPayformForPrint(item != null ? item.ID : 0);
+                    rdo._ListTransactionDiscount = GetTransactionDiscountForPrint(item != null ? item.ID : 0);
                     MPS.ProcessorBase.Core.PrintData printData = null;
                     WaitingManager.Hide();
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
@@ -3520,6 +3590,55 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
         }
 
+        /// <summary>
+        /// Danh sach ngan hang backend ho tro chu dong truy van trang thai giao dich.
+        /// PHAI khop voi cac nhanh trong
+        /// MOS.MANAGER\HisTransReq\CheckQrStatus\HisTransReqCheckQrStatus.cs
+        /// (NAPAS, CTG/Vietinbank, PVCB, VPB, DLTW, TCB).
+        /// Them ngan hang moi o backend thi bo sung ma tuong ung vao day.
+        /// </summary>
+        private static readonly List<string> BANKS_SUPPORT_CHECK_QR_STATUS =
+            new List<string>() { "CTG", "Vietinbank", "NAPAS", "PVCB", "VPB", "DLTW", "TCB" };
+
+        /// <summary>
+        /// Lay ma ngan hang dang su dung.
+        /// Uu tien BankName; neu man hinh goi khong truyen BankName (vi du luong QR theo phong)
+        /// thi suy ra tu KEY cau hinh dang HIS.Desktop.Plugins.PaymentQrCode.{BANK}Info.
+        /// Luu y: key cua Vietinbank/CTG co the co khoang trang ("CTG Info") nen bat buoc Trim.
+        /// </summary>
+        private string GetCurrentBankCode()
+        {
+            try
+            {
+                if (inputTransReq == null) return null;
+
+                if (!string.IsNullOrWhiteSpace(inputTransReq.BankName))
+                {
+                    return inputTransReq.BankName.Trim();
+                }
+
+                if (inputTransReq.ConfigValue != null && !string.IsNullOrWhiteSpace(inputTransReq.ConfigValue.KEY))
+                {
+                    return inputTransReq.ConfigValue.KEY.Split('.').Last().Replace("Info", "").Trim();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
+        }
+
+        /// <summary>Ngan hang hien tai co ho tro nut "Kiem tra trang thai" khong.</summary>
+        private bool IsSupportCheckQrStatus()
+        {
+            string bankCode = GetCurrentBankCode();
+            if (string.IsNullOrEmpty(bankCode)) return false;
+
+            return BANKS_SUPPORT_CHECK_QR_STATUS.Exists(
+                o => string.Equals(o, bankCode, StringComparison.OrdinalIgnoreCase));
+        }
+
         private void btnCheckTrans_Click(object sender, EventArgs e)
         {
             try
@@ -3533,13 +3652,60 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
                 else
                 {
-                    XtraMessageBox.Show("Giao dịch chưa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    // Hien thi thong bao that cua backend (chua thanh toan / thieu cau hinh / ngan hang
+                    // chua ho tro...) thay vi luon bao "chua thanh toan", giup do soat nhanh hon.
+                    string msg = param.GetMessage();
+                    XtraMessageBox.Show(
+                        string.IsNullOrWhiteSpace(msg) ? "Giao dịch chưa thành công!" : msg,
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bang hinh thuc thanh toan cua giao dich (HIS_TRANSACTION_PAYFORM) - dung cho ban in Mps000111/Mps000112.
+        /// </summary>
+        private List<HIS_TRANSACTION_PAYFORM> GetTransactionPayformForPrint(long transactionId)
+        {
+            try
+            {
+                if (transactionId <= 0) return null;
+                CommonParam param = new CommonParam();
+                HisTransactionPayformFilter filter = new HisTransactionPayformFilter();
+                filter.TRANSACTION_ID = transactionId;
+                return new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_TRANSACTION_PAYFORM>>(
+                    "api/HisTransactionPayform/Get", ApiConsumers.MosConsumer, filter, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Bang chiet khau cua giao dich (HIS_TRANSACTION_DISCOUNT) - dung cho ban in Mps000111/Mps000112.
+        /// HisTransactionDiscountFilter chua co TRANSACTION_ID nen dung anonymous object nhu TransactionBill.
+        /// </summary>
+        private List<HIS_TRANSACTION_DISCOUNT> GetTransactionDiscountForPrint(long transactionId)
+        {
+            try
+            {
+                if (transactionId <= 0) return null;
+                CommonParam param = new CommonParam();
+                return new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_TRANSACTION_DISCOUNT>>(
+                    "api/HisTransactionDiscount/Get", ApiConsumers.MosConsumer,
+                    new { TRANSACTION_ID = transactionId, IS_ACTIVE = (short?)1 }, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
         }
     }

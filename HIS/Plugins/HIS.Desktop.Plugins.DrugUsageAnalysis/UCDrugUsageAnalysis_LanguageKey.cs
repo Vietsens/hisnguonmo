@@ -49,6 +49,9 @@ namespace HIS.Desktop.Plugins.DrugUsageAnalysis
                 this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("UCDrugUsageAnalysis.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem5.Text = Inventec.Common.Resource.Get.Value("UCDrugUsageAnalysis.layoutControlItem5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("UCDrugUsageAnalysis.layoutControlItem6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnDsYlenh.Text = Inventec.Common.Resource.Get.Value("UCDrugUsageAnalysis.btnDsYlenh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnToDieuTri.Text = Inventec.Common.Resource.Get.Value("UCDrugUsageAnalysis.btnToDieuTri.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSumaryTestResults.Text = Inventec.Common.Resource.Get.Value("UCDrugUsageAnalysis.btnSumaryTestResults.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {

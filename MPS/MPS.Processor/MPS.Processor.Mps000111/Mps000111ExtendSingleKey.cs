@@ -76,5 +76,35 @@ namespace MPS.Processor.Mps000111
         internal const string PATIENT_CODE_BAR = "PATIENT_CODE_BAR";
 
         internal const string REPAY_NUM_ORDER = "REPAY_NUM_ORDER";
+
+        //Hinh thuc thanh toan
+        internal const string PAY_FORM_CODE = "PAY_FORM_CODE";
+        internal const string PAY_FORM_NAME = "PAY_FORM_NAME";
+
+        //Band danh sach dich vu (dung chung ten key voi Mps000112)
+        internal const string OBJECT_TAG__SERVICE = "Service";
+
+        //Tong hop danh sach dich vu
+        internal const string SERVICE_COUNT = "SERVICE_COUNT";
+        internal const string SERVICE_TOTAL_PRICE = "SERVICE_TOTAL_PRICE";
+        internal const string SERVICE_TOTAL_HEIN_PRICE = "SERVICE_TOTAL_HEIN_PRICE";
+        internal const string SERVICE_TOTAL_PATIENT_PRICE_BHYT = "SERVICE_TOTAL_PATIENT_PRICE_BHYT";
+        internal const string SERVICE_TOTAL_PATIENT_PRICE = "SERVICE_TOTAL_PATIENT_PRICE";
+        internal const string SERVICE_TOTAL_DEPOSIT_AMOUNT = "SERVICE_TOTAL_DEPOSIT_AMOUNT";
+        internal const string SERVICE_TOTAL_DISCOUNT = "SERVICE_TOTAL_DISCOUNT";
+
+        //Band bang hinh thuc thanh toan + bang chiet khau
+        internal const string OBJECT_TAG__PAYFORM = "Payform";
+        internal const string OBJECT_TAG__DISCOUNT = "Discount";
+
+        //Tong hop bang hinh thuc thanh toan
+        internal const string PAYFORM_COUNT = "PAYFORM_COUNT";
+        internal const string PAYFORM_TOTAL_AMOUNT = "PAYFORM_TOTAL_AMOUNT";
+        internal const string PAYFORM_TOTAL_SURCHARGE = "PAYFORM_TOTAL_SURCHARGE";
+        internal const string PAYFORM_TOTAL = "PAYFORM_TOTAL";
+
+        //Tong hop bang chiet khau
+        internal const string DISCOUNT_COUNT = "DISCOUNT_COUNT";
+        internal const string DISCOUNT_TOTAL = "DISCOUNT_TOTAL";
     }
 }

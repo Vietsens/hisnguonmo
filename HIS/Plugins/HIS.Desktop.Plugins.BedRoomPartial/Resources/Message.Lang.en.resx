@@ -129,6 +129,12 @@
   <data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
     <value>The patient has not prescribed for approx</value>
   </data>
+  <data name="BacSiDieuTri" xml:space="preserve">
+    <value>Treating doctor (all)</value>
+  </data>
+  <data name="LocTheoBacSiDieuTri" xml:space="preserve">
+    <value>Filter patients by treating doctor account</value>
+  </data>
   <data name="BNDangOTrongBuong" xml:space="preserve">
     <value>Patient is in the room</value>
   </data>

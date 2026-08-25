@@ -121,6 +121,9 @@ namespace HIS.UC.UCHeniInfo
             try
             {
                 valid = this.dxValidationProviderControl.Validate();
+
+                // Lũy kế vượt 06 tháng lương cơ sở mà trống TDMC CT thì chặn lưu
+                valid = valid && this.ValidateCoPaidAccumulate();
             }
             catch (Exception ex)
             {

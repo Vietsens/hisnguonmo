@@ -194,7 +194,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Tab "Khám lâm sàng HCM" (tab con của Ksk trên 18 tuổi) — chọn ICD theo chuyên khoa,
                 // cấu trúc Mẫu 03 mục II. Hiện chỉ dựng giao diện, chưa nạp/lưu dữ liệu.
                 // Bọc riêng: hỏng phần này thì ghi nhật ký rồi chạy tiếp, KHÔNG kéo đổ cả màn hình.
-                try { InitClinicalExamHcmTab(); }
+                try { InitClinicalExamHcmTab();
+ // Tab "Hoi benh lam sang HCM" — dat ngay canh tab Kham lam sang HCM.
+ InitInterviewHcmTab(); }
                 catch (Exception exHcm) { Inventec.Common.Logging.LogSystem.Error(exHcm); }
                 lap("ClinicalExamHcm");
                 // Nhúng combo "Người khám" kết luận vào panel host (tab trên/dưới 18 tuổi).
@@ -281,14 +283,28 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             catch (System.Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        /// <summary>Đổ ICD-10 từ HIS_KSK_GENERAL của lượt khám vào các UC đã nhúng.</summary>
+        /// <summary>
+        /// Đổ ICD-10 từ HIS_KSK_GENERAL của lượt khám vào các UC đã nhúng.
+        /// KHÔNG return sớm khi currentKskGeneral == null: phải gọi LoadFromGeneral(null) để UC tự XÓA
+        /// TRẮNG. ClearTabInputEditors cố tình bỏ qua UC này (nó "có cơ chế nạp/xóa riêng"), nên nếu
+        /// đây cũng return thì không ai xóa → chuyển y lệnh sang bệnh nhân chưa có bản ghi sẽ thấy ICD
+        /// của bệnh nhân trước ở CẢ 8 TAB, và Lưu thì ghi đè sang bản ghi bệnh nhân mới.
+        ///
+        /// Mọi tab (kể cả "Trẻ em dưới 6 tuổi") đều lưu ICD kết luận vào HIS_KSK_GENERAL cùng
+        /// SERVICE_REQ_ID — xem BuildKskGeneralConclusionEf — nên chỉ cần nạp từ nguồn duy nhất này.
+        /// </summary>
         private void LoadIcdConclusionToUc()
         {
             try
             {
-                if (currentKskGeneral == null) return;
                 foreach (var uc in dicIcdConclusionUc.Values)
                     if (uc != null) uc.LoadFromGeneral(currentKskGeneral);
+
+                Inventec.Common.Logging.LogSystem.Debug("KskIcdConclusion: uc=" + dicIcdConclusionUc.Count
+                    + "__general=" + (currentKskGeneral == null ? "null" : "co")
+                    + "__type=" + (currentKskGeneral == null || currentKskGeneral.CONCLUSION_ICD_TYPE == null
+                        ? "null" : currentKskGeneral.CONCLUSION_ICD_TYPE.ToString())
+                    + "__code=" + (currentKskGeneral == null ? "null" : (currentKskGeneral.CONCLUSION_ICD_CODE ?? "null")));
             }
             catch (System.Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -2090,8 +2106,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 isSuppressAutoTestIndexEvent = false;
 
                 chkAutoTestIndex.Enabled = allow;
-                // Nút cấu hình chỉ enable khi checkbox "Tự động lấy kết quả CLS" enable.
-                btnAutoClsSetting.Enabled = chkAutoTestIndex.Enabled;
+                // Nút ⚙ giờ là form Thiết lập CHUNG (CLS + mặc định khám lâm sàng dưới 6 tuổi) nên
+                // luôn bật. Trước đây khóa theo chkAutoTestIndex → ở tab "Trẻ em dưới 6 tuổi" nút xám,
+                // không vào được phần thiết lập mặc định.
+                btnAutoClsSetting.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -2099,14 +2117,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
-        /// <summary>Nút setting cạnh "Tự động lấy kết quả CLS" — mở form cấu hình dịch vụ (chọn nhiều Máu/Nước tiểu/CĐHA).</summary>
+        /// <summary>
+        /// Nút ⚙ — mở form Thiết lập: tab "Tự động lấy CLS" (chọn nhiều Máu/Nước tiểu/CĐHA) và
+        /// tab "Mặc định khám lâm sàng (dưới 6 tuổi)". Danh mục 3 cột của tab 2 dựng từ layout
+        /// mục VI rồi truyền vào — form Thiết lập không thấy control của form này.
+        /// </summary>
         private void btnAutoClsSetting_Click(object sender, EventArgs e)
         {
             try
             {
-                using (var frm = new frmAutoClsSetting())
+                BuildUnderSixDefaultCatalog();
+                using (var frm = new frmAutoClsSetting(this.underSixDefaultGroups,
+                                                       this.underSixDefaultFields,
+                                                       this.underSixDefaultValues))
                 {
                     frm.ShowDialog(this);
+                    if (!frm.IsApplyNowRequested) return;
+
+                    // Chỉ điền khi đang đứng ở tab "Trẻ em dưới 6 tuổi": tab này lazy-load, điền lúc
+                    // chưa mở thì FillDataPageUnderSix chạy sau sẽ đè mất.
+                    if (this.xtraTabControl1 != null && this.xtraTabControl1.SelectedTabPage == this.xtraTabPage8)
+                    {
+                        ApplyUnderSixDefaults(true);
+                    }
+                    else
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Đã lưu thiết lập mặc định. Mở tab \"Trẻ em dưới 6 tuổi\" rồi bấm lại \"Áp dụng ngay\" để điền vào bản ghi đang mở.",
+                            "Thông báo", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    }
                 }
             }
             catch (Exception ex)
@@ -2123,6 +2162,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 btnAutoClsSetting.Text = "⚙";
                 btnAutoClsSetting.Appearance.Font = new System.Drawing.Font("Segoe UI Symbol", 9F);
                 btnAutoClsSetting.Appearance.Options.UseFont = true;
+                btnAutoClsSetting.ToolTip = "Thiết lập: tự động lấy CLS, mặc định nhập KSK (trẻ dưới 6 tuổi)";
+                // Designer để Enabled=false; bật ngay lúc load vì form Thiết lập dùng cho mọi tab.
+                btnAutoClsSetting.Enabled = true;
             }
             catch (Exception ex)
             {
