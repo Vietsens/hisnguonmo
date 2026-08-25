@@ -60,10 +60,24 @@ namespace HIS.UC.UCHeniInfo
                 if (listBhytParamMcct == null)
                     return null;
 
-                return listBhytParamMcct
-                    .Where(o => o.TO_TIME == null)
+                // Phải chặn cả FROM_TIME: viện có thể khai sẵn bản ghi lương cơ sở của đợt
+                // sắp tới mà TO_TIME vẫn null. Thiếu điều kiện này sẽ lấy nhầm mức lương
+                // chưa tới hiệu lực, làm ngưỡng 06 tháng cao hơn thực tế.
+                long nowNumber = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
+                MOS.EFMODEL.DataModels.HIS_BHYT_PARAM bhytParam = listBhytParamMcct
+                    .Where(o => o.TO_TIME == null && (o.FROM_TIME ?? 0) <= nowNumber)
                     .OrderByDescending(o => o.FROM_TIME)
                     .FirstOrDefault();
+
+                if (bhytParam == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "GetCurrentBhytParam: khong co ban ghi HIS_BHYT_PARAM nao dang hieu luc."
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => listBhytParamMcct), listBhytParamMcct));
+                }
+
+                return bhytParam;
             }
             catch (Exception ex)
             {
@@ -233,8 +247,13 @@ namespace HIS.UC.UCHeniInfo
                     ado.IsMissingFreeCoPaidTime = true;
                 }
 
-                Inventec.Common.Logging.LogSystem.Debug(
+                // Muc Info de van ghi khi moi truong chay o muc Info - can BASE_SALARY va limit
+                // de doi chieu ngay khi TDMC CT suy ra khong nhu mong doi.
+                decimal baseSalary = bhytParam.BASE_SALARY;
+                Inventec.Common.Logging.LogSystem.Info(
                     "CalculateCoPaidMcct____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => baseSalary), baseSalary)
                     + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => limit), limit)
                     + Inventec.Common.Logging.LogUtil.TraceData(

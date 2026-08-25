@@ -194,8 +194,13 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     ado.IsMissingFreeCoPaidTime = true;
                 }
 
-                Inventec.Common.Logging.LogSystem.Debug(
+                // Muc Info de van ghi khi moi truong chay o muc Info - can BASE_SALARY va limit
+                // de doi chieu ngay khi TDMC CT suy ra khong nhu mong doi.
+                decimal baseSalary = bhytParam.BASE_SALARY;
+                Inventec.Common.Logging.LogSystem.Info(
                     "CalculateCoPaidMcct____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => baseSalary), baseSalary)
                     + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => limit), limit)
                     + Inventec.Common.Logging.LogUtil.TraceData(
