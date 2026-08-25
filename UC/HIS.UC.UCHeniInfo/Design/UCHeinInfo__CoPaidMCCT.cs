@@ -55,6 +55,13 @@ namespace HIS.UC.UCHeniInfo
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                     listBhytParamMcct = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_BHYT_PARAM>>(
                         "api/HisBhytParam/Get", ApiConsumers.MosConsumer, filter, param);
+
+                    // Log 1 lần/phiên: cần FROM_TIME, TO_TIME, BASE_SALARY của mọi bản ghi để
+                    // đối chiếu khi ngưỡng 06 tháng ra không như mong đợi.
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "GetCurrentBhytParam: nap HIS_BHYT_PARAM____"
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => listBhytParamMcct), listBhytParamMcct));
                 }
 
                 if (listBhytParamMcct == null)
@@ -82,6 +89,34 @@ namespace HIS.UC.UCHeniInfo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// Lấy bản ghi HIS_BHYT_PARAM đang hiệu lực tại một thời điểm cụ thể (yyyyMMddHHmmss).
+        /// Dùng để tính ngưỡng 06 tháng theo đúng mức lương cơ sở của thời điểm đợt KCB,
+        /// thay vì mức lương hiện tại.
+        /// </summary>
+        private MOS.EFMODEL.DataModels.HIS_BHYT_PARAM GetBhytParamAtTime(long timeNumber)
+        {
+            try
+            {
+                if (listBhytParamMcct == null || timeNumber <= 0)
+                {
+                    return null;
+                }
+
+                return listBhytParamMcct
+                    .Where(o => (o.FROM_TIME ?? 0) <= timeNumber
+                             && (o.TO_TIME == null || o.TO_TIME >= timeNumber))
+                    .OrderByDescending(o => o.FROM_TIME)
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
                 return null;
             }
         }
@@ -200,8 +235,8 @@ namespace HIS.UC.UCHeniInfo
                 ado.HasAccumulate = true;
                 ado.TotalMcctAmount = records.Sum(o => o.tBNCCTMCCT);
 
-                MOS.EFMODEL.DataModels.HIS_BHYT_PARAM bhytParam = this.GetCurrentBhytParam();
-                if (bhytParam == null || bhytParam.BASE_SALARY <= 0)
+                MOS.EFMODEL.DataModels.HIS_BHYT_PARAM bhytParamNow = this.GetCurrentBhytParam();
+                if (bhytParamNow == null || bhytParamNow.BASE_SALARY <= 0)
                 {
                     // Không có lương cơ sở thì không kết luận được cờ 6 tháng lẫn ngày miễn;
                     // riêng số tiền lũy kế vẫn đáng điền.
@@ -210,17 +245,19 @@ namespace HIS.UC.UCHeniInfo
                     return ado;
                 }
 
-                decimal limit = bhytParam.BASE_SALARY * MCCT_BASE_SALARY_MONTHS;
                 ado.HasThreshold = true;
-                ado.IsPaid6Month = ado.CoPaidAccumulateAmount > limit;
+                decimal limitNow = bhytParamNow.BASE_SALARY * MCCT_BASE_SALARY_MONTHS;
 
-                // Miễn cùng chi trả bắt đầu khi đợt KCB đầu tiên vượt ngưỡng kết thúc.
-                // Duyệt 1 lượt giữ ngày ra viện nhỏ nhất, thay vì sắp xếp lại danh sách.
+                // Ngưỡng 06 tháng phải tính theo mức lương cơ sở ĐANG HIỆU LỰC TẠI THỜI ĐIỂM
+                // đợt KCB đó kết thúc, không phải mức lương hôm nay. Lương cơ sở thay đổi giữa
+                // năm thì đợt KCB đầu năm vẫn phải xét theo mức lương của đầu năm — nếu lấy mức
+                // mới (cao hơn) sẽ không tìm ra đợt vượt ngưỡng và mất luôn TDMC CT.
                 DateTime crossingDate = DateTime.MaxValue;
+                decimal crossingLimit = 0;
                 bool hasCrossing = false;
                 foreach (DataCCTLDO item in records)
                 {
-                    if (item == null || item.tBNCCTLuyKe <= limit)
+                    if (item == null)
                     {
                         continue;
                     }
@@ -231,31 +268,53 @@ namespace HIS.UC.UCHeniInfo
                         continue;
                     }
 
+                    long dischargeNumber = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dischargeDate.Value) ?? 0;
+                    MOS.EFMODEL.DataModels.HIS_BHYT_PARAM paramAtDischarge = this.GetBhytParamAtTime(dischargeNumber);
+                    decimal limitAtDischarge = (paramAtDischarge != null && paramAtDischarge.BASE_SALARY > 0)
+                        ? paramAtDischarge.BASE_SALARY * MCCT_BASE_SALARY_MONTHS
+                        : limitNow;
+
+                    if (item.tBNCCTLuyKe <= limitAtDischarge)
+                    {
+                        continue;
+                    }
+
                     if (!hasCrossing || dischargeDate.Value < crossingDate)
                     {
                         crossingDate = dischargeDate.Value;
+                        crossingLimit = limitAtDischarge;
                         hasCrossing = true;
                     }
                 }
 
                 if (hasCrossing)
                 {
+                    // Đã vượt ngưỡng tại một thời điểm trong năm thì được miễn đến hết năm đó.
+                    ado.IsPaid6Month = true;
                     ado.FreeCoPaidTime = Inventec.Common.TypeConvert.Parse.ToInt64(crossingDate.ToString("yyyyMMdd"));
                 }
-                else if (ado.IsPaid6Month)
+                else
                 {
-                    ado.IsMissingFreeCoPaidTime = true;
+                    // Không đợt nào vượt ngưỡng theo ngày ra viện (ví dụ cổng trả ngayRa rỗng)
+                    // thì quay về đối chiếu số lũy kế lớn nhất với ngưỡng hiện tại.
+                    ado.IsPaid6Month = ado.CoPaidAccumulateAmount > limitNow;
+                    if (ado.IsPaid6Month)
+                    {
+                        ado.IsMissingFreeCoPaidTime = true;
+                    }
                 }
 
                 // Muc Info de van ghi khi moi truong chay o muc Info - can BASE_SALARY va limit
                 // de doi chieu ngay khi TDMC CT suy ra khong nhu mong doi.
-                decimal baseSalary = bhytParam.BASE_SALARY;
+                decimal baseSalaryNow = bhytParamNow.BASE_SALARY;
                 Inventec.Common.Logging.LogSystem.Info(
                     "CalculateCoPaidMcct____"
                     + Inventec.Common.Logging.LogUtil.TraceData(
-                        Inventec.Common.Logging.LogUtil.GetMemberName(() => baseSalary), baseSalary)
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => baseSalaryNow), baseSalaryNow)
                     + Inventec.Common.Logging.LogUtil.TraceData(
-                        Inventec.Common.Logging.LogUtil.GetMemberName(() => limit), limit)
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => limitNow), limitNow)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => crossingLimit), crossingLimit)
                     + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => ado), ado));
             }

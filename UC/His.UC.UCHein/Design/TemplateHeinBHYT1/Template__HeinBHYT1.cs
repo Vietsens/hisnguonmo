@@ -1583,6 +1583,13 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                     listBhytParam = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_BHYT_PARAM>>(
                         "api/HisBhytParam/Get", ApiConsumerStore.MosConsumer, filter, param);
+
+                    // Log 1 lần/phiên: cần FROM_TIME, TO_TIME, BASE_SALARY của mọi bản ghi để
+                    // đối chiếu khi ngưỡng 06 tháng ra không như mong đợi.
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "GetCurrentBhytParam: nap HIS_BHYT_PARAM____"
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => listBhytParam), listBhytParam));
                 }
 
                 if (listBhytParam == null)
