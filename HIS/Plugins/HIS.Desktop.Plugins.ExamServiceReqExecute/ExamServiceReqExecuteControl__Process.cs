@@ -2217,14 +2217,24 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             }
                         }
 
-                        // 2608 - Bệnh nặng xin về: nếu KQĐT thuộc config (và không phải tử vong) thì bắt buộc nhập popup HisDeathInfo
+                        // 2608 - Bệnh nặng xin về: giống chức năng Kết thúc điều trị (TreatmentFinish) —
+                        // Loại ra viện thuộc config VÀ Kết quả điều trị = Nặng hơn (và không phải tử vong)
+                        // thì bắt buộc nhập popup InformationAllowGoHome (Bệnh nặng xin về).
                         if (treatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
+                            && treatmentFinish.TreatmentFinishSDO.TreatmentResultId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG
                             && this.treatment != null
                             && Base.SevereIllnessHomeWorker.IsMustInputByEndTypeId(treatmentEndTypeId, HisConfigCFG.MustInputSevereIllnessHomeCodes))
                         {
                             if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.treatment.ID))
                             {
-                                Base.SevereIllnessHomeWorker.OpenPopup(this.moduleData, this.treatment.ID);
+                                //Truyen thoi gian ket thuc dieu tri lam mac dinh cho o "Thoi gian xin ve",
+                                //callback gan lai DEATH_TIME vao SDO de luu khi commit (giong TreatmentFinish)
+                                HisTreatmentFinishSDO finishSDOForSevereHome = treatmentFinish.TreatmentFinishSDO;
+                                Base.SevereIllnessHomeWorker.OpenPopup(
+                                    this.moduleData,
+                                    this.treatment.ID,
+                                    finishSDOForSevereHome.TreatmentFinishTime,
+                                    (deathTime) => { finishSDOForSevereHome.DeathTime = deathTime; });
                                 if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.treatment.ID))
                                 {
                                     DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.ChuaNhapThongTinBenhNangXinVe, ResourceMessage.ThongBao);
