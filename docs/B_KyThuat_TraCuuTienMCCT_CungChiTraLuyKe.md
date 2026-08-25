@@ -541,6 +541,83 @@ Toàn bộ đoạn điền phải **chặn side-effect**: gán giá trị cho ô
 
 ---
 
+# PHẦN 5. ÁP DỤNG CHO MÀN HÌNH TIẾP ĐÓN (RegisterV2)
+
+## 5.1 Vì sao phải làm riêng
+
+Hai màn hình dùng hai User Control khác nhau cho thẻ BHYT:
+
+| | Đối tượng điều trị | Tiếp đón |
+|---|---|---|
+| Plugin | `HIS.Desktop.Plugins.CallPatientTypeAlter` | `HIS.Desktop.Plugins.RegisterV2` |
+| UC thẻ BHYT | `His.UC.UCHein` → `Template__HeinBHYT1` | `HIS.UC.UCHeniInfo` → `UCHeinInfo` |
+| Cách gọi vào UC | Qua `MainHisHeinBhyt` (Interface/Factory/Behavior) | Gọi thẳng method public trên UserControl |
+| Luồng gọi cổng | `CheckThongTuyen()` | `CheckTTFull()` |
+
+`UCHeinInfo` là bản sao gần như nguyên văn của `Template__HeinBHYT1` — trùng tên biến control, trùng cả tên class validation. Vì là hai bản độc lập nên tính năng **không tự lan sang**, phải bổ sung riêng.
+
+Lớp 1–3 (API, cấu hình, thư viện gọi cổng) **dùng lại nguyên vẹn**, không sửa dòng nào.
+
+## 5.2 Đã có sẵn trong `UCHeinInfo`
+
+| Thành phần | Ghi chú |
+|---|---|
+| `chkJoin5Year`, `chkPaid6Month`, `txtFreeCoPainTime` + `dtFreeCoPainTime` | Trùng tên biến với `Template__HeinBHYT1` |
+| Cờ chặn side-effect `isFillingHeinDataFromDb` | Đã có |
+| Tự tick 5Y/6M theo TDMC CT | Logic y hệt |
+| Lưu `PAID_6_MONTH` và `FREE_CO_PAID_TIME` trong `GetValue()` | **Đường lưu đã thông sẵn** |
+| Property `ResultDataADO` + tham chiếu `CheckHeinGOV` | Đã có |
+| Resources vi / en / my + `ResourceMessage.cs` | Đã có |
+
+## 5.3 Phần bổ sung
+
+**`HIS.UC.UCHeniInfo`**
+
+| Việc | Chi tiết |
+|---|---|
+| Ô cùng chi trả lũy kế | `txtCoPaidAccumulate` (ButtonEdit + nút tra cứu), đặt trong group `BHYT (F3)` |
+| Ngưỡng 06 tháng | Thêm `GetCurrentBhytParam()` — UC này trước đó không hề đọc `HIS_BHYT_PARAM` |
+| Phần tính 3 trường | `Design/UCHeinInfo__CoPaidMCCT.cs` — công thức giữ nguyên theo Phần 2 |
+| ADO kết quả | `ADO/CoPaidMcctADO.cs` |
+| Cờ `IsAutoCheck` | UC này trước chỉ có `isFillingHeinDataFromDb` |
+| Lưu trường thứ ba | `GetValue()` ghi thêm `CO_PAID_ACCUMULATE_AMOUNT` |
+| Kiểm tra ngưỡng | `ValidateCoPaidAccumulate()`, nối vào `ValidateRequiredField()` |
+| Đa ngôn ngữ | 10 câu thông báo × 3 file resx + accessor |
+| Delegate | `DelegateCheckTienMCCT` + `SetDelegateCheckTienMCCT()` |
+
+**`Plugins.RegisterV2`**
+
+| Việc | Vị trí |
+|---|---|
+| Gọi tự động sau khi kiểm tra thẻ | `UCRegister__CheckHeinGOV.cs` — ngay sau `heinGOVManager.Check()`, chạy khi `BHXHLoginCFG.IsAutoCheckMcct` |
+| `CheckTienMCCT` / `CheckTienMCCTManual` / `BuildHeinCardDataForMcct` | cùng file |
+| Nối delegate nút tra cứu | `UCRegister__SetDelegate.cs` |
+
+## 5.4 Bố trí trên giao diện
+
+Group layout `BHYT (F3)` rộng 438px, 9 hàng đều dùng kín chiều ngang (chỉ dư 2px). Không thể chèn ngang vào hàng nào.
+
+Giải pháp: **thêm hàng thứ 10** tại `y=218`, group cao 239 → 263. An toàn vì RegisterV2 cấp cho UC vùng **454×315**, tức còn dư 76px chiều cao.
+
+```
+y=194  lciIsTt46[0-131]  lciNote[131-436]
+y=218  lciCoPaidAccumulate[0-436]        <- hàng mới
+```
+
+## 5.5 Ba khác biệt hành vi so với Đối tượng điều trị
+
+**a. Tôn trọng cấu hình `IsNotAutoCheck5Y6M`.** Màn tiếp đón có cấu hình ép `chkPaid6Month = false`. Khi cấu hình này bật, kết quả cổng vẫn điền số lũy kế và TDMC CT nhưng **không tự tick** checkbox 6 tháng, và checkbox cũng không tham gia phép so sánh chênh lệch.
+
+**b. Không đọc lại số lũy kế từ DB.** Màn tiếp đón cố ý để trống TDMC CT mỗi lượt khám (đoạn fill từ DB đang comment sẵn) — giữ nguyên, không mở lại. Ô lũy kế theo cùng nguyên tắc: reset trắng khi làm mới, chỉ điền khi tra cứu cổng.
+
+**c. Kiểm tra ngưỡng gắn vào `ValidateRequiredField()`** thay vì hàm validate riêng như bên Đối tượng điều trị.
+
+## 5.6 Giữ hai bản UC
+
+Không gộp `UCHeinInfo` với `Template__HeinBHYT1`. Hệ quả cần biết: **mọi thay đổi về sau cho vùng thẻ BHYT đều phải làm hai lần**, và phần tính cùng chi trả nay tồn tại ở hai file gần như giống hệt nhau.
+
+---
+
 # PHỤ LỤC A. QUYẾT ĐỊNH THIẾT KẾ ĐÃ CHỐT
 
 | Vấn đề | Phương án đã chọn | Lý do |
