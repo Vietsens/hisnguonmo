@@ -67,5 +67,7 @@ namespace MPS.Processor.Mps000510
         internal const string IMG_AVATAR = "IMG_AVATAR";
         internal const string AVT_AND_BHYT_NULL = "AVT_AND_BHYT_NULL";
         internal const string CO_PAID_ACCUMULATE_AMOUNT = "CO_PAID_ACCUMULATE_AMOUNT";
+        internal const string IN_TIME_STR = "IN_TIME_STR";
+        internal const string SERVICE_REQ_START_TIME_STR = "SERVICE_REQ_START_TIME_STR";
     }
 }

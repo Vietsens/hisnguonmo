@@ -546,14 +546,24 @@ namespace MPS.Processor.Mps000512
             return r;
         }
 
-        private void ProcessSingleKey()
+        private void ProcessSingleKey() 
         {
             try
-            {
+            { 
+                if (rdo.ServiceReqs != null &&
+                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList() != null &&
+                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList().Count > 0)
+                {
+                    var ServiceReqsKh = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList();
+                    long startTime = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList().OrderBy(o => o.START_TIME ?? 0).FirstOrDefault().START_TIME ?? 0;
+                    SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.SERVICE_REQ_START_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(startTime)));
+                }
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.RATIO_STR, rdo.SingleKeyValue.ratio));
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TREATMENT_CODE, rdo.Treatment.TREATMENT_CODE));
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.USERNAME_RETURN_RESULT, rdo.SingleKeyValue.userNameReturnResult));
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.STATUS_TREATMENT_OUT, rdo.SingleKeyValue.statusTreatmentOut));
+                if (rdo.Treatment.IN_TIME > 0 && rdo.Treatment.IN_TIME != null)
+                    SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.IN_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.Treatment.IN_TIME)));
 
 
                 if (rdo.CurrentPatyAlter != null)
