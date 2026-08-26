@@ -84,6 +84,12 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
         /// <summary>Chua le hai ben trong o chu ky de khoi khong dinh net ke.</summary>
         private const float SIGN_CELL_PADDING = 1.5f;
 
+        /// <summary>Co chu lon nhat/nho nhat khi ve lai chu trong dau ky.</summary>
+        private const float SIGN_TEXT_MAX_FONT = 4.5f, SIGN_TEXT_MIN_FONT = 3f;
+
+        /// <summary>Phan tren/duoi duong co so cua mot dong chu, dung de tinh dai chu can phu.</summary>
+        private const float SIGN_TEXT_LINE_ASCENT = 4.5f, SIGN_TEXT_LINE_DESCENT = 1.5f;
+
         /// <summary>
         /// Chieu cao hang chu ky so voi mot hang thuong, lay tu mau phieu rptPhieuTDVaCSCap23_QN:
         /// hang "TEN DIEU DUONG" (tableRow4) Weight=1.5699879 / hang thuong Weight=0.8 = 1.9625.
@@ -112,6 +118,14 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
             /// <summary>Bien tren/duoi thuc te cua hang.</summary>
             internal float Top;
             internal float Bottom;
+        }
+
+        /// <summary>Mot cot tren to gop: lay tu phieu nao, cot nao, dat vao cot nao.</summary>
+        private class SignColumn
+        {
+            internal SheetInfo Source;
+            internal int SourceSlot;
+            internal int TargetSlot;
         }
 
         private class SheetInfo
@@ -245,6 +259,13 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
                     //chi duoc ghi ra khi stamper.Close() -> dong reader som se loi "Cannot access a closed file"
                     List<PdfReader> sourceReaders = new List<PdfReader>();
 
+                    //Ghi nhan tung cot da dan de ve lai chu trong khoi chu ky o buoc cuoi
+                    List<SignColumn> signColumns = new List<SignColumn>();
+                    foreach (int slot in baseSheet.UsedSlots)
+                    {
+                        signColumns.Add(new SignColumn() { Source = baseSheet, SourceSlot = slot, TargetSlot = slot });
+                    }
+
                     int freeIndex = 0;
                     for (int index = 1; index < sheets.Count; index++)
                     {
@@ -272,8 +293,15 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
                             int skipped = PasteSlot(canvas, importedPage, baseSheet, source,
                                 sourceSlot, targetSlot, signRowYBase, signRowYSource);
                             totalSkippedRow += skipped;
+
+                            signColumns.Add(new SignColumn() { Source = source, SourceSlot = sourceSlot, TargetSlot = targetSlot });
                         }
                     }
+
+                    //Da thu ve lai chu dau ky (phu trang roi ve co nho) nhung khong dung duoc:
+                    //khong phu het chu cu va co dong bi gan sang cot ben canh -> chu de len chu.
+                    //Giu nguyen anh goc, chi keo khoi dau ky vao trong o (xem PasteSignBlock).
+                    //RedrawSignText(canvas, baseSheet, signColumns, signRowYBase);
 
                     stamper.Close();
                     readerBase.Close();
@@ -426,6 +454,158 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Ve lai phan chu cua khoi chu ky trong tung o. Chuoi "Nguoi Ky: ... / Chuc danh: ..."
+        /// cua mau phieu nay rong hon be rong o nen khi cat theo o se mat chu. Vi vay:
+        ///  - Xac dinh dai chu (khong gom net ky va ten dieu duong) cua tung cot.
+        ///  - Phu trang dai do trong pham vi o (khong cham net ke).
+        ///  - Ve lai chu bang co nho, tu xuong dong cho vua o.
+        /// Ap dung cho ca cot cua phieu nen de toan bo to gop dong nhat.
+        /// </summary>
+        private static void RedrawSignText(PdfContentByte canvas, SheetInfo baseSheet,
+            List<SignColumn> signColumns, float signRowYBase)
+        {
+            try
+            {
+                if (signColumns == null || signColumns.Count == 0) return;
+
+                BaseFont baseFont = CreateVietnameseFont();
+                if (baseFont == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("MergeColumns: khong tao duoc font tieng Viet - bo qua buoc ve lai chu dau ky");
+                    return;
+                }
+
+                float targetSignHeight = Math.Max(1f, signRowYBase - baseSheet.SignBottom);
+
+                foreach (SignColumn column in signColumns)
+                {
+                    SheetInfo source = column.Source;
+                    float sourceSlotX0 = source.SlotX0 + column.SourceSlot * source.SlotW;
+                    float sourceSlotX1 = sourceSlotX0 + source.SlotW;
+                    float targetSlotX0 = baseSheet.SlotX0 + column.TargetSlot * baseSheet.SlotW;
+
+                    float sourceSignHeight = Math.Max(1f, source.SignTop - source.SignBottom);
+                    float scaleY = Math.Min(1f, targetSignHeight / sourceSignHeight);
+
+                    //Chu thuoc o nay: lay theo phan CHONG LAN nhieu nhat voi o (chuoi dau ky tran ra hai ben)
+                    List<TextItem> items = source.Items
+                        .Where(o => o.Y0 < source.SignTop && o.Y0 >= source.SignBottom
+                                 && OverlapWidth(o, sourceSlotX0, sourceSlotX1) > 0f
+                                 && OverlapWidth(o, sourceSlotX0, sourceSlotX1) >= OverlapWidth(o, sourceSlotX0 - source.SlotW, sourceSlotX0)
+                                 && OverlapWidth(o, sourceSlotX0, sourceSlotX1) >= OverlapWidth(o, sourceSlotX1, sourceSlotX1 + source.SlotW)
+                                 && Normalize(o.Text).Length > 0)
+                        .ToList();
+
+                    //Chi xu ly cac dong bi TRAN ra ngoai o; net ky va ten dieu duong nam trong o thi giu nguyen
+                    List<TextItem> overflow = items
+                        .Where(o => o.X0 < sourceSlotX0 - 0.5f || o.X1 > sourceSlotX1 + 0.5f)
+                        .ToList();
+                    if (overflow.Count == 0) continue;
+
+                    float bandTopSource = overflow.Max(o => o.Y0) + SIGN_TEXT_LINE_ASCENT;
+                    float bandBottomSource = overflow.Min(o => o.Y0) - SIGN_TEXT_LINE_DESCENT;
+
+                    //Cac dong nam trong dai se bi phu -> phai ve lai het, khong chi cac dong tran
+                    List<TextItem> lines = items
+                        .Where(o => o.Y0 >= bandBottomSource && o.Y0 <= bandTopSource)
+                        .OrderByDescending(o => o.Y0).ThenBy(o => o.X0).ToList();
+
+                    float bandTop = baseSheet.SignBottom + (bandTopSource - source.SignBottom) * scaleY;
+                    float bandBottom = baseSheet.SignBottom + (bandBottomSource - source.SignBottom) * scaleY;
+                    if (bandTop - bandBottom < 2f) continue;
+
+                    float cellX0 = targetSlotX0 + SIGN_CELL_PADDING;
+                    float cellX1 = targetSlotX0 + baseSheet.SlotW - SIGN_CELL_PADDING;
+
+                    //Phu trang dai chu cu
+                    canvas.SaveState();
+                    canvas.SetColorFill(iTextSharp.text.BaseColor.WHITE);
+                    canvas.Rectangle(cellX0, bandBottom, cellX1 - cellX0, bandTop - bandBottom);
+                    canvas.Fill();
+                    canvas.RestoreState();
+
+                    //Ve lai chu, giam co dan cho vua dai
+                    string content = String.Join("\n", lines.Select(o => Normalize(o.Text)).ToArray());
+                    DrawWrappedText(canvas, baseFont, content, cellX0, bandBottom, cellX1, bandTop);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Be rong phan chong lan giua mot doan chu va mot khoang x.</summary>
+        private static float OverlapWidth(TextItem item, float x0, float x1)
+        {
+            float left = Math.Max(item.X0, x0);
+            float right = Math.Min(item.X1, x1);
+            return right > left ? right - left : 0f;
+        }
+
+        /// <summary>Ve chu tu xuong dong trong mot o, giam co chu dan den khi vua.</summary>
+        private static void DrawWrappedText(PdfContentByte canvas, BaseFont baseFont, string content,
+            float x0, float y0, float x1, float y1)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(content)) return;
+
+                for (float size = SIGN_TEXT_MAX_FONT; size >= SIGN_TEXT_MIN_FONT; size -= 0.3f)
+                {
+                    iTextSharp.text.Font font = new iTextSharp.text.Font(baseFont, size);
+                    ColumnText columnText = new ColumnText(canvas);
+                    columnText.SetSimpleColumn(x0, y0, x1, y1);
+                    columnText.SetLeading(0f, 1.08f);
+
+                    iTextSharp.text.Paragraph paragraph = new iTextSharp.text.Paragraph(content, font);
+                    paragraph.Alignment = iTextSharp.text.Element.ALIGN_LEFT;
+                    columnText.AddElement(paragraph);
+
+                    int status = columnText.Go(true);   //chay thu de kiem tra co vua khong
+                    if (!ColumnText.HasMoreText(status) || size - 0.3f < SIGN_TEXT_MIN_FONT)
+                    {
+                        ColumnText real = new ColumnText(canvas);
+                        real.SetSimpleColumn(x0, y0, x1, y1);
+                        real.SetLeading(0f, 1.08f);
+                        iTextSharp.text.Paragraph paragraphReal = new iTextSharp.text.Paragraph(content, font);
+                        paragraphReal.Alignment = iTextSharp.text.Element.ALIGN_LEFT;
+                        real.AddElement(paragraphReal);
+                        real.Go();
+                        return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Tao font co dau tieng Viet tu font he thong.</summary>
+        private static BaseFont CreateVietnameseFont()
+        {
+            string[] candidates = new string[] { "arial.ttf", "tahoma.ttf", "times.ttf", "segoeui.ttf" };
+            string fontFolder = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            fontFolder = Path.Combine(Path.GetDirectoryName(fontFolder) ?? "C:\\Windows", "Fonts");
+
+            foreach (string name in candidates)
+            {
+                try
+                {
+                    string path = Path.Combine(fontFolder, name);
+                    if (!File.Exists(path)) continue;
+                    return BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+            }
+            return null;
         }
 
         /// <summary>Dan noi dung mot o: cat theo o dich, nen doc cho vua chieu cao o dich.</summary>
