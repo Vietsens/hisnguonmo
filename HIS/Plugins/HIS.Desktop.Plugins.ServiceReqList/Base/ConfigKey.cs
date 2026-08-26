@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -41,6 +41,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList.Base
         internal const string PATIENT_TYPE_ID__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
 
         internal const string MpsTotalToBordereau = "HIS.Desktop.Plugins.ServiceReqList.MpsTotalToBordereau";//dùng cho thành phố in bảng kê trên mẫu tổng hợp, cho phép in thuốc trên mẫu in mps37
+
+        //Mã biểu in dùng cho nút "In phiếu chỉ định TH". Không khai báo -> in Mps000037 như cũ; khai báo "Mps190001" -> in mẫu riêng của viện.
+        internal const string PrintTypeCodeChiDinhTongHop = "HIS.Desktop.Plugins.ServiceReqList.PrintTypeCodeChiDinhTongHop";
 
         private static string heinLevelCodeCurrent;
         public static string HEIN_LEVEL_CODE__CURRENT
