@@ -66,6 +66,18 @@ namespace MPS.Processor.Mps000276
         public bool IsResultInDiffDay { get; set; }
 
         public long ServiceReqNumOrder { get; set; }
+
+        /// <summary>
+        /// Tong so thu tu da cap tai phong thuc hien cua dong nay, trong ngay chi dinh
+        /// (= so thu tu lon nhat da cap cua phong do)
+        /// </summary>
+        public long? ExecuteRoomTotalNumOrder { get; set; }
+
+        /// <summary>
+        /// Dang ghep "so thu tu cua benh nhan/tong so" - VD: 4/30
+        /// </summary>
+        public string ServiceReqNumOrderWithTotal { get; set; }
+
         public long? ServiceNumOrder { get; set; }
         public long? ServiceTypeNumOrder { get; set; }
         public long? ExecuteNumOrder { get; set; }
