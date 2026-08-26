@@ -1851,9 +1851,9 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // emptySpaceItem7
             //
             this.emptySpaceItem7.AllowHotTrack = false;
-            this.emptySpaceItem7.Location = new System.Drawing.Point(179, 278);
+            this.emptySpaceItem7.Location = new System.Drawing.Point(179, 279);
             this.emptySpaceItem7.Name = "emptySpaceItem7";
-            this.emptySpaceItem7.Size = new System.Drawing.Size(112, 22);
+            this.emptySpaceItem7.Size = new System.Drawing.Size(112, 19);
             this.emptySpaceItem7.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem28
@@ -1983,6 +1983,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.chkIsExpXml4210Collinear.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintHosTransfer.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintPrescription.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSignPrescription.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkKyPhieuTrichLuc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkInPhieuTrichLuc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSignBHXH.Properties)).EndInit();
