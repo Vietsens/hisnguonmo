@@ -34,6 +34,6 @@ namespace MPS.Processor.Mps000091
         internal const string HEIN_CARD_FROM_TIME_STR = "HEIN_CARD_FROM_TIME_STR";
         internal const string HEIN_CARD_TO_TIME_STR = "HEIN_CARD_TO_TIME_STR";
         internal const string PAYMENT_AMOUNT = "PAYMENT_AMOUNT";
-        internal const string QRCODE_DEPOSIT_REQ_CODE = "QRCODE_DEPOSIT_REQ_CODE";
+        internal const string QRCODE_DEPOSIT_REQ_CODE = "QRCODE_DEPOSIT_REQ_CODE"; 
     }
 }
