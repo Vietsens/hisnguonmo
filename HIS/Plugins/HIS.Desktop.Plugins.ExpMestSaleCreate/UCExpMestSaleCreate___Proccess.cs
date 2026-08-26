@@ -169,7 +169,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 {
                     isTwoPatient = false;
                     uriRequest = "api/HisExpMest/SaleUpdateListSdo";
-                    txtPrescriptionCode_KeyDown(txtPrescriptionCode, new KeyEventArgs(Keys.Enter));
+                    // Khong tra cuu lai don o day: ProcessorSearch se ReleaseAll + nap lai luoi tu server,
+                    // ghi de so luong/ghi chu nguoi dung vua sua ngay truoc khi dung du lieu gui API.
+                    //txtPrescriptionCode_KeyDown(txtPrescriptionCode, new KeyEventArgs(Keys.Enter));
 
                     //ProcessorSearchPatient();
                     InitDataToSaleCreate(ref saleSDO);
