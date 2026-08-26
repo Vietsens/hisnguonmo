@@ -1553,7 +1553,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                 request.hoTen = hoTen;
                 request.ngaySinh = ngaySinh;
 
-                Inventec.Common.Logging.LogSystem.Debug(
+                Inventec.Common.Logging.LogSystem.Info(
                     "CheckTienMCCT INPUT____"
                     + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => request), request));

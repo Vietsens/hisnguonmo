@@ -168,11 +168,14 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             {
                 if (dataHein == null || uCMainHein == null || ucHein__BHYT == null)
                 {
+                    Inventec.Common.Logging.LogSystem.Warn(String.Format(
+                        "CheckTienMCCT: bo qua - dataHein null: {0}, uCMainHein null: {1}, ucHein__BHYT null: {2}",
+                        dataHein == null, uCMainHein == null, ucHein__BHYT == null));
                     return;
                 }
 
-                Inventec.Common.Logging.LogSystem.Debug(
-                    "CheckTienMCCT__"
+                Inventec.Common.Logging.LogSystem.Info(
+                    "CheckTienMCCT BEGIN____"
                     + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
 
@@ -181,6 +184,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
 
                 if (resultMcct == null)
                 {
+                    Inventec.Common.Logging.LogSystem.Error("CheckTienMCCT: HeinGOVManager tra ve null.");
                     return;
                 }
 
@@ -200,9 +204,13 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info("CheckTienMCCTManual: bat dau tra cuu thu cong.");
+
                 HeinCardData dataHein = this.BuildHeinCardDataForMcct();
                 if (dataHein == null)
                 {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "CheckTienMCCTManual: khong dung duoc du lieu the, dung tra cuu.");
                     return;
                 }
 

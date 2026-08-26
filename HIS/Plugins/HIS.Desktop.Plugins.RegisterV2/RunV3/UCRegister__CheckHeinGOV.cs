@@ -51,18 +51,36 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         {
             try
             {
-                if (!HisConfigCFG.IsCheckExamHistory) return;
+                // Bon cua chan duoi day cung chan luon buoc tra cuu tien MCCT o cuoi ham.
+                // Ghi log tung cua de nhin log biet duoc vi sao luong khong chay.
+                if (!HisConfigCFG.IsCheckExamHistory)
+                {
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "CheckTTFull: bo qua - cau hinh IsCheckExamHistory dang tat.");
+                    return;
+                }
                 if (this.ucPatientRaw1 != null)
                 {
                     UCPatientRawADO patientRawADO = this.ucPatientRaw1.GetValue();
                     if (patientRawADO.PATIENTTYPE_ID != HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT)
                     {
+                        Inventec.Common.Logging.LogSystem.Info(String.Format(
+                            "CheckTTFull: bo qua - doi tuong khong phai BHYT. PATIENTTYPE_ID: {0}",
+                            patientRawADO.PATIENTTYPE_ID));
                         return;
                     }
                 }
 
-                if (heinCard == null) { return; }
-                if (this.isResetForm) { return; }
+                if (heinCard == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("CheckTTFull: bo qua - heinCard null.");
+                    return;
+                }
+                if (this.isResetForm)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("CheckTTFull: bo qua - form dang reset.");
+                    return;
+                }
 
                 HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
                 if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
@@ -281,11 +299,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             {
                 if (dataHein == null || this.ucHeinInfo1 == null)
                 {
+                    Inventec.Common.Logging.LogSystem.Warn(String.Format(
+                        "CheckTienMCCT: bo qua - dataHein null: {0}, ucHeinInfo1 null: {1}",
+                        dataHein == null, this.ucHeinInfo1 == null));
                     return;
                 }
 
-                Inventec.Common.Logging.LogSystem.Debug(
-                    "CheckTienMCCT__"
+                Inventec.Common.Logging.LogSystem.Info(
+                    "CheckTienMCCT BEGIN____"
                     + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
 
@@ -294,6 +315,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                 if (resultMcct == null)
                 {
+                    Inventec.Common.Logging.LogSystem.Error("CheckTienMCCT: HeinGOVManager tra ve null.");
                     return;
                 }
 
@@ -313,9 +335,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info("CheckTienMCCTManual: bat dau tra cuu thu cong.");
+
                 HeinCardData dataHein = this.BuildHeinCardDataForMcct();
                 if (dataHein == null)
                 {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "CheckTienMCCTManual: khong dung duoc du lieu the, dung tra cuu.");
                     return;
                 }
 
@@ -347,6 +373,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             {
                 if (this.ucHeinInfo1 == null || this.ucPatientRaw1 == null)
                 {
+                    Inventec.Common.Logging.LogSystem.Warn(String.Format(
+                        "BuildHeinCardDataForMcct: ucHeinInfo1 null: {0}, ucPatientRaw1 null: {1}",
+                        this.ucHeinInfo1 == null, this.ucPatientRaw1 == null));
                     return null;
                 }
 
@@ -365,6 +394,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 var dataPatient = (UCPatientRawADO)this.ucPatientRaw1.GetValue();
                 if (dataPatient == null)
                 {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "BuildHeinCardDataForMcct: ucPatientRaw1.GetValue() tra ve null.");
                     return null;
                 }
 

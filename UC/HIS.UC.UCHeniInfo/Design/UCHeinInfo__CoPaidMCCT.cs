@@ -552,14 +552,21 @@ namespace HIS.UC.UCHeniInfo
         {
             try
             {
-                if (this.dlgCheckTienMCCT != null)
+                Inventec.Common.Logging.LogSystem.Info("txtCoPaidAccumulate_ButtonClick: nguoi dung bam nut tra cuu MCCT thu cong.");
+
+                if (this.dlgCheckTienMCCT == null)
                 {
-                    this.dlgCheckTienMCCT();
+                    // Host chua goi SetDelegateCheckTienMCCT -> bam nut se khong co gi xay ra.
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "txtCoPaidAccumulate_ButtonClick: dlgCheckTienMCCT chua duoc gan, khong tra cuu duoc.");
+                    return;
                 }
+
+                this.dlgCheckTienMCCT();
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -575,6 +582,10 @@ namespace HIS.UC.UCHeniInfo
                 {
                     this.txtCoPaidAccumulate.Properties.Buttons[0].Visible = _dlgCheckTienMCCT != null;
                 }
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "SetDelegateCheckTienMCCT: da gan handler tra cuu thu cong = "
+                    + (_dlgCheckTienMCCT != null ? "CO" : "NULL"));
             }
             catch (Exception ex)
             {
