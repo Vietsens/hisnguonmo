@@ -18,6 +18,7 @@
 using Inventec.Common.Logging;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000160.PDO;
+using MPS.Processor.Mps000160.ADO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

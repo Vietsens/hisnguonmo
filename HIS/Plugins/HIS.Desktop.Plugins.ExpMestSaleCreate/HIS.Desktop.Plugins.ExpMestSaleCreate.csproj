@@ -352,6 +352,9 @@
     <Compile Include="UCExpMestSaleCreate___Proccess.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExpMestSaleCreate___SaveSignPrintInvoice.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="RowAdd\AddAbstract.cs" />
     <Compile Include="UCExpMestSaleCreate__Load.cs">
       <SubType>UserControl</SubType>

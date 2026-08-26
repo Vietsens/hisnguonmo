@@ -503,16 +503,30 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 MessageManager.Show(this.ParentForm, param, success);
                 SessionManager.ProcessTokenLost(param);
 
-                string keyy = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ExpMestSaleCreate__Show_MedicineSaleBill");
-                if (keyy == "1")
+                if (this.savePrintInvoice)
                 {
-                    btnSaleBill_Click(null, null);
+                    // Viec 3082: Luu in + tick "In" -> mo form Xuat hoa don o che do tu dong
+                    // (thay cho nhanh config Show_MedicineSaleBill de khong mo form 2 lan)
+                    this.savePrintInvoice = false;
+                    if (success)
+                    {
+                        OpenMedicineSaleBillAutoSignPrint();
+                    }
+                }
+                else
+                {
+                    string keyy = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ExpMestSaleCreate__Show_MedicineSaleBill");
+                    if (keyy == "1")
+                    {
+                        btnSaleBill_Click(null, null);
+                    }
                 }
 
             }
             catch (Exception ex)
             {
                 this.savePrint = false;
+                this.savePrintInvoice = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 success = false;
             }
@@ -1809,17 +1823,23 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         {
                             chkSign.Checked = item.VALUE == "1";
                         }
+                        else if (item.KEY == ControlStateConstant.CHK_PRINT_INVOICE)
+                        {
+                            chkPrintInvoice.Checked = item.VALUE == "1";
+                        }
                     }
                 }
 
-                // Viec 3082: config bat -> thanh toan/xuat hoa don thuc hien tai form Xuat hoa don (checkbox "In" + Luu ky).
-                // Bo tick va khoa "Xuat bien lai/hoa don": neu tick, phieu tao bill ngay khi luu -> form hoa don
+                // Viec 3082: key bat -> hien checkbox "In" canh "Ky don nha thuoc" (tick + Luu in = Luu > HDDT > duyet/thuc xuat > in),
+                // dong thoi bo tick va khoa "Xuat bien lai/hoa don": neu tick, phieu tao bill ngay khi luu -> form hoa don
                 // loc HAS_BILL_ID = false nen khong tim thay phieu, mo ra trong.
-                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport") == "1")
+                bool isSaveSignPrintAutoExport = IsSaveSignPrintAutoExportEnabled();
+                SetPrintInvoiceCheckboxByConfig(isSaveSignPrintAutoExport);
+                if (isSaveSignPrintAutoExport)
                 {
                     chkCreateBill.Checked = false;
                     chkCreateBill.Enabled = false;
-                    chkCreateBill.ToolTip = "Đã bật cấu hình in hóa đơn điện tử tại form Xuất hóa đơn — xuất biên lai/hóa đơn thực hiện ở form Xuất hóa đơn (F10)";
+                    chkCreateBill.ToolTip = "Đã bật cấu hình in hóa đơn điện tử (tick \"In\" + Lưu in, hoặc Xuất hóa đơn F10) — không xuất biên lai/hóa đơn ngay khi lưu phiếu";
                 }
 
                 isNotLoadWhileChangeControlStateInFirst = false;

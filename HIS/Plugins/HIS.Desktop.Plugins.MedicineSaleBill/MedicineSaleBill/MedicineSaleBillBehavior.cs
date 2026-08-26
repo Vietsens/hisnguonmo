@@ -53,6 +53,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill.MedicineSaleBill
                 List<long> expMestIds = null;
                 DelegateSelectData delegateSelectData = null;
                 MOS.EFMODEL.DataModels.V_HIS_TRANSACTION transaction = null;
+                // Viec 3082: man Xuat ban truyen List<string> chua Config.AUTO_ACTION__SAVE_SIGN_PRINT
+                // -> form tu chay Luu ky + duyet/thuc xuat + in hoa don roi tu dong
+                List<string> autoActions = null;
                 if (entity != null && entity.Count() > 0)
                 {
                     for (int i = 0; i < entity.Count(); i++)
@@ -77,6 +80,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill.MedicineSaleBill
                         {
                             transaction = (MOS.EFMODEL.DataModels.V_HIS_TRANSACTION)entity[i];
                         }
+                        else if (entity[i] is List<string>)
+                        {
+                            autoActions = (List<string>)entity[i];
+                        }
                     }
                 }
 
@@ -85,7 +92,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill.MedicineSaleBill
                     expMestIds = new List<long> { expMestId.Value };
                 }
 
-                return new frmMedicineSaleBill(moduleData, expMestIds, delegateSelectData, transaction);
+                return new frmMedicineSaleBill(moduleData, expMestIds, delegateSelectData, transaction, autoActions);
             }
             catch (Exception ex)
             {
