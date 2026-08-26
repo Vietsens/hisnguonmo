@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace MPS.Processor.Mps000510
 {
-    public partial class Mps000510Processor : AbstractProcessor
+    public partial class Mps000510Processor : AbstractProcessor 
     {
         private PatientADO patientADO { get; set; }
 

@@ -18,7 +18,7 @@ using Inventec.Common.Logging;
 
 namespace MPS.Processor.Mps000508
 {
-    public partial class Mps000508Processor : AbstractProcessor
+    public partial class Mps000508Processor : AbstractProcessor 
     {
         private PatientADO patientADO { get; set; }
         private List<PatyAlterBhytADO> patyAlterBHYTADOs { get; set; }
