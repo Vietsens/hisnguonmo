@@ -1491,6 +1491,13 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
         static readonly int[] MCCT_VALID_CARD_LENGTHS = new int[] { 10, 12, 15 };
 
         /// <summary>
+        /// Build marker written at the head of every co-payment log line.
+        /// Bump it whenever this file is rebuilt so the log itself tells which
+        /// binary the workstation actually loaded.
+        /// </summary>
+        const string MCCT_LOG_TAG = "[MCCT-B20260826] ";
+
+        /// <summary>
         /// Looks the accumulated co-payment of a patient up on the BHXH gateway.
         ///
         /// Returns the gateway payload unchanged; turning it into the three form values is the
@@ -1507,10 +1514,14 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             ResultMCCTADO rsData = new ResultMCCTADO();
             try
             {
+                // Unconditional entry log: proves the workstation reached this method at all,
+                // before any guard can return silently.
+                Inventec.Common.Logging.LogSystem.Info(MCCT_LOG_TAG + "CheckTienMCCT: vao ham tra cuu tien MCCT.");
+
                 if (dataHein == null)
                 {
                     rsData.IsBlockedLocally = true;
-                    Inventec.Common.Logging.LogSystem.Warn("CheckTienMCCT: khong co du lieu the truyen vao.");
+                    Inventec.Common.Logging.LogSystem.Warn(MCCT_LOG_TAG + "CheckTienMCCT: khong co du lieu the truyen vao.");
                     return rsData;
                 }
 
@@ -1520,7 +1531,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                 {
                     rsData.IsBlockedLocally = true;
                     Inventec.Common.Logging.LogSystem.Error(
-                        "CheckTienMCCT: kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS' -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS'");
+                        MCCT_LOG_TAG + "CheckTienMCCT: kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS' -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS'");
                     return rsData;
                 }
 
@@ -1538,7 +1549,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     rsData.IsBlockedLocally = true;
                     rsData.MaKetQua = His.Bhyt.InsuranceExpertise.LDO.ResultMCCTLDO.MaKetQuaStore.INVALID_PARAM;
                     Inventec.Common.Logging.LogSystem.Warn(
-                        "CheckTienMCCT: du lieu dau vao khong hop le, khong goi cong BHXH."
+                        MCCT_LOG_TAG + "CheckTienMCCT: du lieu dau vao khong hop le, khong goi cong BHXH."
                         + Inventec.Common.Logging.LogUtil.TraceData(
                             Inventec.Common.Logging.LogUtil.GetMemberName(() => maThe), maThe));
                     return rsData;
@@ -1554,7 +1565,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                 request.ngaySinh = ngaySinh;
 
                 Inventec.Common.Logging.LogSystem.Info(
-                    "CheckTienMCCT INPUT____"
+                    MCCT_LOG_TAG + "CheckTienMCCT INPUT____"
                     + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => request), request));
 
@@ -1563,7 +1574,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
 
                 if (rsApi == null)
                 {
-                    Inventec.Common.Logging.LogSystem.Error("CheckTienMCCT: cong BHXH khong tra ve du lieu.");
+                    Inventec.Common.Logging.LogSystem.Error(MCCT_LOG_TAG + "CheckTienMCCT: cong BHXH khong tra ve du lieu.");
                     return rsData;
                 }
 
@@ -1576,7 +1587,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                 // Log toan bo ket qua: MaKetQua, GhiChu, tung ban ghi DataCCT va ThongTinSoThe.
                 // Can day du de doi chieu khi so tien tren form khac voi so nguoi dung mong doi.
                 Inventec.Common.Logging.LogSystem.Info(
-                    "CheckTienMCCT OUTPUT____"
+                    MCCT_LOG_TAG + "CheckTienMCCT OUTPUT____"
                     + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData), rsData));
             }
