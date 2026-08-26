@@ -299,6 +299,9 @@
     <Reference Include="MPS.Processor.Mps000517.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000517.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps190001.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps190001.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -357,6 +360,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmServiceReqList__Plus__InKQTongHopXN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmServiceReqList__Plus__InChiDinhTongHopMps190001.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmServiceReqList.cs">
