@@ -104,38 +104,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             }
         }
 
-        /// <summary>
-        /// Dung this.resultSDO tu danh sach phieu xuat dang hien thi tren man hinh
-        /// (luong tra cuu/chon tu DS(F3)) de cac chuc nang in su dung duoc ngay ma khong can bam Luu.
-        /// </summary>
-        private void BuildResultSdoForPrint(List<V_HIS_EXP_MEST> expMestList, List<V_HIS_EXP_MEST_MEDICINE> expMestMedicines, List<V_HIS_EXP_MEST_MATERIAL> expMestMaterials)
-        {
-            try
-            {
-                if (expMestList == null || expMestList.Count <= 0)
-                    return;
-
-                this.resultSDO = new HisExpMestSaleListResultSDO();
-                this.resultSDO.ExpMestSdos = new List<HisExpMestSaleResultSDO>();
-                foreach (var expMest in expMestList)
-                {
-                    HisExpMestSaleResultSDO hisExpMestResultSDO = new HisExpMestSaleResultSDO();
-                    hisExpMestResultSDO.ExpMest = expMest;
-                    if (expMestMedicines != null && expMestMedicines.Count > 0)
-                        hisExpMestResultSDO.ExpMedicines = expMestMedicines.Where(o => o.EXP_MEST_ID == expMest.ID).ToList();
-                    if (expMestMaterials != null && expMestMaterials.Count > 0)
-                        hisExpMestResultSDO.ExpMaterials = expMestMaterials.Where(o => o.EXP_MEST_ID == expMest.ID).ToList();
-                    this.resultSDO.ExpMestSdos.Add(hisExpMestResultSDO);
-                }
-
-                InitMenuPrint(expMestList.FirstOrDefault());
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void LoadDataExpMestByEditMulti(List<V_HIS_EXP_MEST> ExpMestList, HisExpMestForSaleSDO expMestForSaleSDO, bool IsSearch)
         {
             try
@@ -172,8 +140,14 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     LoadDataFromExpMest(ExpMestList[0], true);
                     LoadMediMateBeanByExpMestMediMate(ExpMestList, expMestMedicines, expMestMaterials, expMestForSaleSDO, IsSearch);
 
-                    // Gan kem thuoc/vat tu de ban in khong bi trong noi dung
-                    BuildResultSdoForPrint(ExpMestList, expMestMedicines, expMestMaterials);
+                    this.resultSDO = new HisExpMestSaleListResultSDO();
+                    this.resultSDO.ExpMestSdos = new List<HisExpMestSaleResultSDO>();
+                    foreach (var item in ExpMestList)
+                    {
+                        HisExpMestSaleResultSDO hisExpMestResultSDO = new HisExpMestSaleResultSDO();
+                        hisExpMestResultSDO.ExpMest = item;
+                        this.resultSDO.ExpMestSdos.Add(hisExpMestResultSDO);
+                    }
 
                     moduleAction = GlobalDataStore.ModuleAction.EDIT;
                     btnCancelExport.Enabled = true;

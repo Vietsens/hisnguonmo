@@ -235,11 +235,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     InXuatBan(this.resultSDO, store);
                 }
 
-                WaitingManager.Hide();
+
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -256,8 +255,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                 if (expMestIdTemps.Count == 0)
                 {
-                    WaitingManager.Hide();
-                    XtraMessageBox.Show("Không có phiếu xuất để in", "Thông báo", DevExpress.Utils.DefaultBoolean.True);
                     return;
                 }
                 _Transaction_Sale_Print = new V_HIS_TRANSACTION();
@@ -291,7 +288,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         _Transaction_Sale_Print = new BackendAdapter(param).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tranFilter, param).FirstOrDefault();
                     }
 
-                    string key = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ExpMestSaleCreate.PrintSplitOption") ?? "";//#24245
+                    string key = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ExpMestSaleCreate.PrintSplitOption");//#24245
                     WaitingManager.Hide();
 
                     if (key.Trim() == "1")
@@ -345,7 +342,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
