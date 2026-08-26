@@ -68,6 +68,12 @@ namespace His.UC.UCHein.Data
         public CheckExamHistoryByHeinCardNumber CheckExamHistory { get; set; }
         public DelegateSetRelativeAddress SetRelativeAddress { get; set; }
         public DeleteTreatmentTypeId DeleteTreatmentTypeId { get; set; }
+
+        /// <summary>
+        /// Handler for the manual co-payment lookup button on the accumulated co-payment field.
+        /// Leave null to hide the button.
+        /// </summary>
+        public DelegateCheckTienMCCT CheckTienMCCT { get; set; }
         public Action ActChangePatientDob { get; set; }
         public bool IsSampleDepartment { get; set; }
         public MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4 HisTreatment { get; set; }

@@ -133,6 +133,14 @@ namespace HIS.UC.UCHeniInfo
 				}
 				else
 					patientProfileSDO.HisPatientTypeAlter.FREE_CO_PAID_TIME = null;
+
+				// Cùng chi trả lũy kế — lấy từ cổng BHXH hoặc người dùng nhập tay
+				string coPaidAccumulateStr = new string((this.txtCoPaidAccumulate.Text ?? "").Where(Char.IsDigit).ToArray());
+				if (!String.IsNullOrEmpty(coPaidAccumulateStr))
+					patientProfileSDO.HisPatientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT = Inventec.Common.TypeConvert.Parse.ToInt64(coPaidAccumulateStr);
+				else
+					patientProfileSDO.HisPatientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT = null;
+
 				patientProfileSDO.HisPatientTypeAlter.ADDRESS = this.txtAddress.Text.Trim();
                 if (patientProfileSDO.HisTreatment == null)
                     patientProfileSDO.HisTreatment = new MOS.EFMODEL.DataModels.HIS_TREATMENT();
