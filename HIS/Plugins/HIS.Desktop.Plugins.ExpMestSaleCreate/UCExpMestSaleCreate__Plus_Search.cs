@@ -68,6 +68,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 Inventec.Common.Logging.LogSystem.Debug("****Bat dau goi ProcessorSearch ****");
                 lblTotalPrice.Text = "";
                 lblPayPrice.Text = "";
+                // Xoa ket qua cua lan lam viec truoc de khong in nham phieu xuat cu
+                this.resultSDO = null;
                 ReleaseAll();
                 SetControlByExpMest(null);
                 treeListMediMate.DataSource = null;
@@ -1159,6 +1161,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     LoadDataFromExpMest(_expMest[0], _is);
 
                     moduleAction = GlobalDataStore.ModuleAction.EDIT;
+
+                    // Dung du lieu in tu phieu xuat vua tra cuu (chon tu DS(F3), quet ma don...)
+                    // de nut "In phieu xuat ban" hoat dong khi chua bam Luu.
+                    BuildResultSdoForPrint(_expMest, expMestMedicines, expMestMaterials);
 
                     SetLabelSave(this.moduleAction);
                 }
