@@ -292,6 +292,7 @@
   <ItemGroup>
     <Compile Include="ADO\CccdInfo.cs" />
     <Compile Include="ADO\CmktADO.cs" />
+    <Compile Include="ADO\ExamSelectionADO.cs" />
     <Compile Include="ADO\FaceRegADO.cs" />
     <Compile Include="ADO\FaceRegisterADO.cs" />
     <Compile Include="ADO\InformationObjectADO.cs" />
