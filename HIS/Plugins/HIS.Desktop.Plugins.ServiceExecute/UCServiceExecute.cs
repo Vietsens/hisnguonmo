@@ -2390,6 +2390,63 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             return null;
         }
 
+        /// <summary>
+        /// Luu may xu ly cho cac dong con lai tren luoi dich vu.
+        /// Luong luu chinh chi ghi HIS_SERE_SERV_EXT cua dong dang xu ly (SaveProcessor) hoac cac dong duoc gop
+        /// (SaveAllProcess) nen may da chon/da tu lay o cac dong khac khong duoc ghi xuong.
+        /// Dung api/HisSereServ/UpdateMachine - API danh rieng cho viec gan may hang loat: tu tao ext neu chua co,
+        /// cap nhat MACHINE_ID/MACHINE_CODE, HIS_SERE_SERV_TEIN va MACHINE_NAMES cua y lenh.
+        /// </summary>
+        /// <param name="savedSereServIds">Danh sach sere serv da duoc luong luu chinh xu ly, khong gui lai</param>
+        private void SaveMachineForOtherSereServ(List<long> savedSereServIds)
+        {
+            try
+            {
+                if (listServiceADO == null || listServiceADO.Count == 0 || currentServiceReq == null) return;
+
+                List<MOS.SDO.HisSereServUpdateMachineSDO> lstData = new List<MOS.SDO.HisSereServUpdateMachineSDO>();
+                List<long> sereServIds = new List<long>();
+                foreach (var ado in listServiceADO)
+                {
+                    if (ado == null) continue;
+                    if (savedSereServIds != null && savedSereServIds.Contains(ado.ID)) continue;
+                    if (!ado.MACHINE_ID.HasValue || ado.MACHINE_ID.Value <= 0) continue;
+
+                    var ext = (dicSereServExt != null && dicSereServExt.ContainsKey(ado.ID)) ? dicSereServExt[ado.ID] : null;
+                    if (ext != null && ext.MACHINE_ID == ado.MACHINE_ID) continue;//may khong doi
+
+                    lstData.Add(new MOS.SDO.HisSereServUpdateMachineSDO()
+                    {
+                        ServiceReqID = currentServiceReq.ID,
+                        SereServID = ado.ID,
+                        MachineId = ado.MACHINE_ID.Value
+                    });
+                    sereServIds.Add(ado.ID);
+                }
+
+                if (lstData.Count == 0) return;
+
+                CommonParam param = new CommonParam();
+                bool success = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>(
+                    "api/HisSereServ/UpdateMachine", ApiConsumer.ApiConsumers.MosConsumer, lstData, param);
+                Inventec.Common.Logging.LogSystem.Debug("SaveMachineForOtherSereServ success: " + success
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstData), lstData));
+
+                if (success)
+                {
+                    ProcessDicSereServExt(sereServIds);//dong bo lai ext trong bo nho
+                }
+                else
+                {
+                    Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void ProcessLoadGridImage(List<ADO.ImageADO> listImage)
         {
             try
@@ -5220,6 +5277,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     ProcessPatientInfo();
 
                     success = true;
+                    //luu may xu ly cho cac dong khac tren luoi (luong nay chi luu ext cua dong dang xu ly)
+                    SaveMachineForOtherSereServ(new List<long> { this.sereServ.ID });
                     if (listServiceADO != null && listServiceADO.Count > 0)
                     {
                         foreach (var item in listServiceADO)
@@ -5642,6 +5701,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         success = false;
                         break;
                     }
+                }
+                if (success)
+                {
+                    //luu may xu ly cho cac dong khong nam trong danh sach gop ket qua
+                    SaveMachineForOtherSereServ(listServiceADOForAllInOne != null ? listServiceADOForAllInOne.Select(o => o.ID).ToList() : null);
                 }
                 Inventec.Desktop.Common.Message.WaitingManager.Hide();
                 //lưu và ký và đóng
