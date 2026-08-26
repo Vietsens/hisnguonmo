@@ -284,6 +284,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem51 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem55 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkPrintInvoice = new DevExpress.XtraEditors.CheckEdit();
+            this.lciPrintInvoice = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem56 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
@@ -295,6 +297,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.txtElectronicExpMestCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrintInvoice.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtIdentification.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEmail.Properties)).BeginInit();
@@ -464,6 +467,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem51)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem55)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPrintInvoice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Save)).BeginInit();
@@ -474,6 +478,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.layoutControl1.Controls.Add(this.txtElectronicExpMestCode);
             this.layoutControl1.Controls.Add(this.chkSign);
+            this.layoutControl1.Controls.Add(this.chkPrintInvoice);
             this.layoutControl1.Controls.Add(this.txtIdentification);
             this.layoutControl1.Controls.Add(this.toggleSwitch1);
             this.layoutControl1.Controls.Add(this.txtEmail);
@@ -689,10 +694,22 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.chkSign.MenuManager = this.barManager1;
             this.chkSign.Name = "chkSign";
             this.chkSign.Properties.Caption = "";
-            this.chkSign.Size = new System.Drawing.Size(56, 19);
+            this.chkSign.Size = new System.Drawing.Size(21, 19);
             this.chkSign.StyleController = this.layoutControl1;
             this.chkSign.TabIndex = 93;
             this.chkSign.CheckedChanged += new System.EventHandler(this.chkSign_CheckedChanged);
+            //
+            // chkPrintInvoice (viec 3082)
+            //
+            this.chkPrintInvoice.Location = new System.Drawing.Point(480, 617);
+            this.chkPrintInvoice.MenuManager = this.barManager1;
+            this.chkPrintInvoice.Name = "chkPrintInvoice";
+            this.chkPrintInvoice.Properties.Caption = "In";
+            this.chkPrintInvoice.Size = new System.Drawing.Size(31, 19);
+            this.chkPrintInvoice.StyleController = this.layoutControl1;
+            this.chkPrintInvoice.TabIndex = 94;
+            this.chkPrintInvoice.ToolTip = "In hóa đơn điện tử: tick để nút Lưu in thực hiện Lưu > Xuất hóa đơn điện tử > Ký > Duyệt + thực xuất > In hóa đơn";
+            this.chkPrintInvoice.CheckedChanged += new System.EventHandler(this.chkPrintInvoice_CheckedChanged);
             // 
             // txtIdentification
             // 
@@ -2712,6 +2729,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem51,
             this.emptySpaceItem5,
             this.layoutControlItem55,
+            this.lciPrintInvoice,
             this.emptySpaceItem1,
             this.layoutControlItem56});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
@@ -3450,11 +3468,21 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem55.CustomizationFormText = "Ký đơn nhà thuốc";
             this.layoutControlItem55.Location = new System.Drawing.Point(328, 615);
             this.layoutControlItem55.Name = "layoutControlItem55";
-            this.layoutControlItem55.Size = new System.Drawing.Size(185, 26);
+            this.layoutControlItem55.Size = new System.Drawing.Size(150, 26);
             this.layoutControlItem55.Text = "Ký đơn nhà thuốc";
             this.layoutControlItem55.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem55.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem55.TextToControlDistance = 5;
+            //
+            // lciPrintInvoice (viec 3082)
+            //
+            this.lciPrintInvoice.Control = this.chkPrintInvoice;
+            this.lciPrintInvoice.CustomizationFormText = "In hóa đơn điện tử";
+            this.lciPrintInvoice.Location = new System.Drawing.Point(478, 615);
+            this.lciPrintInvoice.Name = "lciPrintInvoice";
+            this.lciPrintInvoice.Size = new System.Drawing.Size(35, 26);
+            this.lciPrintInvoice.TextSize = new System.Drawing.Size(0, 0);
+            this.lciPrintInvoice.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
@@ -3504,6 +3532,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.txtElectronicExpMestCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrintInvoice.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtIdentification.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEmail.Properties)).EndInit();
@@ -3673,6 +3702,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem51)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem55)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPrintInvoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Save)).EndInit();
@@ -3906,6 +3936,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraEditors.CheckEdit chkSign;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem55;
+        private DevExpress.XtraEditors.CheckEdit chkPrintInvoice;
+        private DevExpress.XtraLayout.LayoutControlItem lciPrintInvoice;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn11;
         private DevExpress.XtraEditors.SpinEdit spinSwipeAmountNew;
