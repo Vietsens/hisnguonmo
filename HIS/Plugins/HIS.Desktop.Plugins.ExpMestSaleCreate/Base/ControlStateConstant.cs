@@ -33,5 +33,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Base
         internal const string SPIN_BASE_VALUE = "SPIN_BASE_VALUE";
         internal const string CHK_KetNoiPos = "CHK_KetNoiPos";
         internal const string CHK_Sign = "chkSign";
+        /// <summary>
+        /// Viec 3082: checkbox "In" canh "Ky don nha thuoc" — tick thi nut Luu in phat hanh HDDT + tu dong thuc xuat + in hoa don
+        /// </summary>
+        internal const string CHK_PRINT_INVOICE = "chkPrintInvoice";
     }
 }

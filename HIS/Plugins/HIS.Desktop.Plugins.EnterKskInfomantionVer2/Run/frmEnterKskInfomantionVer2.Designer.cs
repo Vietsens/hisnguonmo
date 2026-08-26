@@ -13173,6 +13173,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // layoutControlItem185
             // 
+            this.layoutControlItem185.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem185.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem185.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem185.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem185.Control = this.cboHealthExamRank2;
@@ -13202,6 +13204,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.lciKskConcluder1.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciKskConcluder1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciKskConcluder1.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciKskConcluder1.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciKskConcluder1.Control = this.cboConcluderLoginName2;
             this.lciKskConcluder1.Location = new System.Drawing.Point(547, 0);
             this.lciKskConcluder1.MaxSize = new System.Drawing.Size(0, 24);
@@ -16918,6 +16922,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.lciHealthExamRank3.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciHealthExamRank3.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciHealthExamRank3.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciHealthExamRank3.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciHealthExamRank3.Control = this.cboHealthExamRank3;
             this.lciHealthExamRank3.Location = new System.Drawing.Point(0, 220);
             this.lciHealthExamRank3.Name = "lciHealthExamRank3";
@@ -16944,6 +16950,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.lciKskConcluder2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciKskConcluder2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciKskConcluder2.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciKskConcluder2.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciKskConcluder2.Control = this.cboConcluderLoginName3;
             this.lciKskConcluder2.Location = new System.Drawing.Point(627, 220);
             this.lciKskConcluder2.MaxSize = new System.Drawing.Size(0, 24);
@@ -27039,6 +27047,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // lciAccompanyName8
             // 
+            this.lciAccompanyName8.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciAccompanyName8.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciAccompanyName8.Control = this.txtAccompanyPersonName8;
             this.lciAccompanyName8.Location = new System.Drawing.Point(0, 149);
             this.lciAccompanyName8.Name = "lciAccompanyName8";
@@ -27050,6 +27060,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // lciAccompanyRel8
             // 
+            this.lciAccompanyRel8.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciAccompanyRel8.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciAccompanyRel8.Control = this.rdoAccompanyRelationship8;
             this.lciAccompanyRel8.Location = new System.Drawing.Point(0, 221);
             this.lciAccompanyRel8.Name = "lciAccompanyRel8";
@@ -29688,6 +29700,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // lciConcluder8
             // 
+            this.lciConcluder8.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciConcluder8.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciConcluder8.Control = this.cboConcluder8;
             this.lciConcluder8.Location = new System.Drawing.Point(0, 595);
             this.lciConcluder8.Name = "lciConcluder8";
@@ -29707,6 +29721,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // lcgKetLuanSub8
             // 
+            this.lcgKetLuanSub8.AppearanceGroup.ForeColor = System.Drawing.Color.Maroon;
+            this.lcgKetLuanSub8.AppearanceGroup.Options.UseForeColor = true;
             this.lcgKetLuanSub8.AppearanceGroup.FontStyleDelta = System.Drawing.FontStyle.Bold;
             this.lcgKetLuanSub8.AppearanceGroup.Options.UseFont = true;
             this.lcgKetLuanSub8.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
@@ -29728,6 +29744,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // lciHealthRank8
             // 
+            this.lciHealthRank8.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciHealthRank8.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciHealthRank8.Control = this.cboHealthExamRank8;
             this.lciHealthRank8.Location = new System.Drawing.Point(0, 547);
             this.lciHealthRank8.Name = "lciHealthRank8";

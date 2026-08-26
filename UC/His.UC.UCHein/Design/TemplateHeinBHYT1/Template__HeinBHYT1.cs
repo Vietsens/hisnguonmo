@@ -58,6 +58,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         DelegateAutoCheckCC dlgautoCheckCC;
         DeleteTreatmentTypeId TreatmentTypeId1;
         CheckExamHistoryByHeinCardNumber dlgcheckExamHistory;
+        DelegateCheckTienMCCT dlgCheckTienMCCT;
         FillDataPatientSDOToRegisterForm dlgfillDataPatientSDOToRegisterForm;
         DelegateSetRelativeAddress _DelegateSetRelativeAddress;
         Action actChangePatientDob;
@@ -177,6 +178,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.dlgautoCheckCC = data.AutoCheckCC;
                     this.TreatmentTypeId1 = data.DeleteTreatmentTypeId;
                     this.dlgcheckExamHistory = data.CheckExamHistory;
+                    this.dlgCheckTienMCCT = data.CheckTienMCCT;
                     this.dlgsetFocusMoveOut = data.SetFocusMoveOut;
                     this.dlgsetShortcutKeyDown = data.SetShortcutKeyDown;
                     this._DelegateSetRelativeAddress = data.SetRelativeAddress;
@@ -184,6 +186,9 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.ExceedDayAllow = data.ExceedDayAllow;
                     this.PatientId = data.PatientId;
                     this.ActionType = data.ActionType;
+
+                    // The manual co-payment lookup button only makes sense once a handler exists.
+                    this.InitCoPaidMcctButton();
                 }
             }
             catch (Exception ex)
@@ -1578,15 +1583,36 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                     listBhytParam = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_BHYT_PARAM>>(
                         "api/HisBhytParam/Get", ApiConsumerStore.MosConsumer, filter, param);
+
+                    // Log 1 lần/phiên: cần FROM_TIME, TO_TIME, BASE_SALARY của mọi bản ghi để
+                    // đối chiếu khi ngưỡng 06 tháng ra không như mong đợi.
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "GetCurrentBhytParam: nap HIS_BHYT_PARAM____"
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => listBhytParam), listBhytParam));
                 }
 
                 if (listBhytParam == null)
                     return null;
 
-                return listBhytParam
-                    .Where(o => o.TO_TIME == null)
+                // Phải chặn cả FROM_TIME: viện có thể khai sẵn bản ghi lương cơ sở của đợt
+                // sắp tới mà TO_TIME vẫn null. Thiếu điều kiện này sẽ lấy nhầm mức lương
+                // chưa tới hiệu lực, làm ngưỡng 06 tháng cao hơn thực tế.
+                long nowNumber = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
+                MOS.EFMODEL.DataModels.HIS_BHYT_PARAM bhytParam = listBhytParam
+                    .Where(o => o.TO_TIME == null && (o.FROM_TIME ?? 0) <= nowNumber)
                     .OrderByDescending(o => o.FROM_TIME)
                     .FirstOrDefault();
+
+                if (bhytParam == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "GetCurrentBhytParam: khong co ban ghi HIS_BHYT_PARAM nao dang hieu luc."
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => listBhytParam), listBhytParam));
+                }
+
+                return bhytParam;
             }
             catch (Exception ex)
             {
@@ -1895,6 +1921,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 _DelegateSetRelativeAddress = null;
                 dlgfillDataPatientSDOToRegisterForm = null;
                 dlgcheckExamHistory = null;
+                dlgCheckTienMCCT = null;
                 dlgautoCheckCC = null;
                 TreatmentTypeId1 = null;
                 dlgProcessFillDataCareerUnder6AgeByHeinCardNumber = null;
@@ -1929,6 +1956,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 this.cboNoiSong.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.cboNoiSong_KeyUp);
                 this.cboNoiSong.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboNoiSong_PreviewKeyDown);
                 this.chkTempQN.CheckedChanged -= new System.EventHandler(this.chkTempQN_CheckedChanged);
+                this.txtCoPaidAccumulate.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtCoPaidAccumulate_ButtonClick);
                 this.txtFreeCoPainTime.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtFreeCoPainTime_ButtonClick);
                 this.txtFreeCoPainTime.InvalidValue -= new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.txtFreeCoPainTime_InvalidValue);
                 this.txtFreeCoPainTime.TextChanged -= new System.EventHandler(this.txtDTMCChiTra_TextChanged);

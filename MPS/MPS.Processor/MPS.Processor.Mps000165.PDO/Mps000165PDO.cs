@@ -53,5 +53,23 @@ namespace MPS.Processor.Mps000165.PDO
             this._Medicines = listMedicine;
             this.ListMachine = machine;
         }
+
+        /// <summary>
+        /// Overload with blood units (blood stock exports). Existing constructors are kept unchanged.
+        /// </summary>
+        public Mps000165PDO(V_HIS_EXP_MEST otherExpMest, List<V_HIS_EXP_MEST_MEDICINE> listMedicine, List<V_HIS_EXP_MEST_MATERIAL> listMaterial, List<V_HIS_EXP_MEST_BLOOD> listBlood)
+            : this(otherExpMest, listMedicine, listMaterial)
+        {
+            this._Bloods = listBlood;
+        }
+
+        /// <summary>
+        /// Overload with blood units and machines.
+        /// </summary>
+        public Mps000165PDO(V_HIS_EXP_MEST otherExpMest, List<V_HIS_EXP_MEST_MEDICINE> listMedicine, List<V_HIS_EXP_MEST_MATERIAL> listMaterial, List<V_HIS_EXP_MEST_BLOOD> listBlood, List<HIS_MACHINE> machine)
+            : this(otherExpMest, listMedicine, listMaterial, machine)
+        {
+            this._Bloods = listBlood;
+        }
     }
 }

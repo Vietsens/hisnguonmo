@@ -595,6 +595,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 ControlEditorLoader.Load(cboEmployee, data, controlEditorADO);
                 cboEmployee.Properties.ImmediatePopup = true;
                 cboEmployee.Properties.PopupFormMinSize = new Size(400, cboEmployee.Properties.PopupFormMinSize.Height);
+                cboEmployee.Properties.NullText = Resources.ResourceMessage.BacSiDieuTri;
+                layoutControlItem50.OptionsToolTip.ToolTip = Resources.ResourceMessage.LocTheoBacSiDieuTri;
             }
             catch (Exception ex)
             {
@@ -986,7 +988,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         }
                     }
 
-                    switch (Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentStatus.EditValue ?? "0").ToString()))
+                    long treatmentSttValue = Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentStatus.EditValue ?? "0").ToString());
+                    switch (treatmentSttValue)
                     {
                         case 1:
                             treatFilter.IS_IN_ROOM = true;
@@ -1001,6 +1004,18 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             break;
                         default:
                             break;
+                    }
+
+                    // [3222] Chế độ "BN chưa kê đơn trong khoảng" chỉ lấy bệnh nhân đang điều trị tại khoa:
+                    // loại hồ sơ đã kết thúc điều trị/ra viện, trừ khi người dùng chủ động chọn
+                    // trạng thái "Đã kết thúc điều trị" trên combo.
+                    if (cboPatientFilter.EditValue != null && (long)cboPatientFilter.EditValue == 2 && treatmentSttValue != 3)
+                    {
+                        treatFilter.HAS_OUT_TIME = false;
+                        if (treatmentSttValue == 0)
+                        {
+                            treatFilter.IS_PAUSE = false;
+                        }
                     }
                 }
                 else
@@ -3715,7 +3730,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         private void cboEmployee_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             if (cboEmployee.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+            {
                 cboEmployee.EditValue = null;
+                // [3222] Xóa lọc bác sĩ = tìm lại ngay theo tất cả bác sĩ, khỏi phải bấm Tìm
+                btnSearch_Click(null, null);
+            }
         }
 
         private void lblPatientCode_Click(object sender, EventArgs e)

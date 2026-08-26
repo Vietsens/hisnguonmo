@@ -1566,8 +1566,9 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 WaitingManager.Show();
                 //ProcessPrint(printTypeCode);
 
+                // Pass blood units (already loaded by LoadExpMestBltyReq) so blood-stock exports print rows in MPS000165
                 MPS.Processor.Mps000165.PDO.Mps000165PDO rdo = new MPS.Processor.Mps000165.PDO.Mps000165PDO(
-                    this._CurrentExpMest, this._ExpMestMedicines_Print, this._ExpMestMaterials_Print);
+                    this._CurrentExpMest, this._ExpMestMedicines_Print, this._ExpMestMaterials_Print, this._ExpMestBloods_Print);
                 result = MpsPrinterRun(null, printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)

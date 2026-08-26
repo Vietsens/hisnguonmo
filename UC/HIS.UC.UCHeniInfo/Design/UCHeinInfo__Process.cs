@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -557,6 +557,9 @@ namespace HIS.UC.UCHeniInfo
                 this.txtFreeCoPainTime.Text = "";
                 this.dtFreeCoPainTime.EditValue = null;
                 //}
+
+                // Luy ke lay tu cong BHXH theo tung luot tiep don, khong doc lai tu DB
+                this.txtCoPaidAccumulate.Text = "";
 
                 //if (this.currentPatientSdo != null
                 //    && !String.IsNullOrEmpty(this.currentPatientSdo.AppointmentCode))

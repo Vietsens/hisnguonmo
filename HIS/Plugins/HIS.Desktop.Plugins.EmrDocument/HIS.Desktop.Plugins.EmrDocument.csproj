@@ -245,6 +245,7 @@
     <Compile Include="Base\PatientSignType.cs" />
     <Compile Include="Config\ConfigKey.cs" />
     <Compile Include="Worker\EmrDocumentMergeColumnsWorker.cs" />
+    <Compile Include="Worker\EmrDocumentSheetGridReader.cs" />
     <Compile Include="DocumentUpdateStateForIntegrateSystem.cs" />
     <Compile Include="EmrConfigCFG.cs" />
     <Compile Include="EmrDocumentProcesser.cs" />

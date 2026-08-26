@@ -68,6 +68,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.chkIsExpXml4210Collinear = new DevExpress.XtraEditors.CheckEdit();
             this.chkPrintHosTransfer = new DevExpress.XtraEditors.CheckEdit();
             this.chkPrintPrescription = new DevExpress.XtraEditors.CheckEdit();
+            this.chkSignPrescription = new DevExpress.XtraEditors.CheckEdit();
             this.btnICDInformation = new DevExpress.XtraEditors.SimpleButton();
             this.chkKyPhieuTrichLuc = new DevExpress.XtraEditors.CheckEdit();
             this.chkInPhieuTrichLuc = new DevExpress.XtraEditors.CheckEdit();
@@ -178,6 +179,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem6 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciSignPrescription = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem7 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIsExpXml4210Collinear = new DevExpress.XtraLayout.LayoutControlItem();
@@ -201,6 +203,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.chkIsExpXml4210Collinear.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintHosTransfer.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintPrescription.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSignPrescription.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkKyPhieuTrichLuc.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkInPhieuTrichLuc.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSignBHXH.Properties)).BeginInit();
@@ -311,6 +314,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSignPrescription)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsExpXml4210Collinear)).BeginInit();
@@ -334,6 +338,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControl1.Controls.Add(this.chkIsExpXml4210Collinear);
             this.layoutControl1.Controls.Add(this.chkPrintHosTransfer);
             this.layoutControl1.Controls.Add(this.chkPrintPrescription);
+            this.layoutControl1.Controls.Add(this.chkSignPrescription);
             this.layoutControl1.Controls.Add(this.btnICDInformation);
             this.layoutControl1.Controls.Add(this.chkKyPhieuTrichLuc);
             this.layoutControl1.Controls.Add(this.chkInPhieuTrichLuc);
@@ -494,7 +499,19 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.chkPrintPrescription.StyleController = this.layoutControl1;
             this.chkPrintPrescription.TabIndex = 37;
             this.chkPrintPrescription.CheckedChanged += new System.EventHandler(this.chkPrintPrescription_CheckedChanged);
-            // 
+            //
+            // chkSignPrescription
+            //
+            this.chkSignPrescription.Location = new System.Drawing.Point(141, 279);
+            this.chkSignPrescription.Name = "chkSignPrescription";
+            this.chkSignPrescription.Properties.Caption = ":Ký";
+            this.chkSignPrescription.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkSignPrescription.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkSignPrescription.Size = new System.Drawing.Size(38, 19);
+            this.chkSignPrescription.StyleController = this.layoutControl1;
+            this.chkSignPrescription.TabIndex = 47;
+            this.chkSignPrescription.CheckedChanged += new System.EventHandler(this.chkSignPrescription_CheckedChanged);
+            //
             // btnICDInformation
             // 
             this.btnICDInformation.Image = ((System.Drawing.Image)(resources.GetObject("btnICDInformation.Image")));
@@ -1419,6 +1436,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem25,
             this.emptySpaceItem6,
             this.layoutControlItem27,
+            this.lciSignPrescription,
             this.emptySpaceItem7,
             this.layoutControlItem28,
             this.lciIsExpXml4210Collinear,
@@ -1819,13 +1837,23 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem27.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem27.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem27.TextToControlDistance = 5;
-            // 
+            //
+            // lciSignPrescription
+            //
+            this.lciSignPrescription.Control = this.chkSignPrescription;
+            this.lciSignPrescription.Location = new System.Drawing.Point(141, 279);
+            this.lciSignPrescription.Name = "lciSignPrescription";
+            this.lciSignPrescription.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.lciSignPrescription.Size = new System.Drawing.Size(38, 19);
+            this.lciSignPrescription.TextSize = new System.Drawing.Size(0, 0);
+            this.lciSignPrescription.TextVisible = false;
+            //
             // emptySpaceItem7
-            // 
+            //
             this.emptySpaceItem7.AllowHotTrack = false;
-            this.emptySpaceItem7.Location = new System.Drawing.Point(141, 278);
+            this.emptySpaceItem7.Location = new System.Drawing.Point(179, 279);
             this.emptySpaceItem7.Name = "emptySpaceItem7";
-            this.emptySpaceItem7.Size = new System.Drawing.Size(150, 22);
+            this.emptySpaceItem7.Size = new System.Drawing.Size(112, 19);
             this.emptySpaceItem7.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem28
@@ -1955,6 +1983,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.chkIsExpXml4210Collinear.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintHosTransfer.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintPrescription.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSignPrescription.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkKyPhieuTrichLuc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkInPhieuTrichLuc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSignBHXH.Properties)).EndInit();
@@ -2065,6 +2094,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSignPrescription)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsExpXml4210Collinear)).EndInit();
@@ -2174,6 +2204,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         private DevExpress.XtraEditors.SimpleButton btnICDInformation;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem26;
         private DevExpress.XtraEditors.CheckEdit chkPrintPrescription;
+        private DevExpress.XtraEditors.CheckEdit chkSignPrescription;
+        private DevExpress.XtraLayout.LayoutControlItem lciSignPrescription;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem27;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem7;
 		private DevExpress.XtraEditors.CheckEdit chkPrintHosTransfer;
