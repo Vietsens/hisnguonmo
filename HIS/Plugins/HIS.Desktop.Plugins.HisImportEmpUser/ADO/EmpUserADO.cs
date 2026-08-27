@@ -69,6 +69,19 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.ADO
         public string TECH_TRANSFER_DECISIONS { get; set; }
         public string WORKING_SCHEDULE { get; set; }
         public string WEEK_WORK_DAYS { get; set; }
+
+        // TT12 - MAU_02 (DMNHANLUCKBCB)
+        public string GENDER_CODE { get; set; }
+        public string CAREER_TITLE_CODE { get; set; }
+        public string POSITION_STR { get; set; }
+        public string SPECIALITY_CODES { get; set; }
+        public string TYPE_OF_TIME_STR { get; set; }
+        public string MEDI_ORG_CODES { get; set; }
+
+        public short? GENDER_ID { get; set; }
+        public long? CAREER_TITLE_ID { get; set; }
+        public short? POSITION { get; set; }
+        public short? TYPE_OF_TIME { get; set; }
         // TG hiệu lực từ/đến: đọc dạng chuỗi dd/MM/yyyy từ Excel, validate rồi convert sang long khi lưu
         public string FROM_TIME { get; set; }
         public string TO_TIME { get; set; }

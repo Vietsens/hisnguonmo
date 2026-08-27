@@ -123,6 +123,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn52 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn53 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn54 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMaxReuseCount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_ErrorLine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -313,7 +314,8 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumnBytNumOrder,
             this.gridColumn52,
             this.gridColumn53,
-            this.gridColumn54});
+            this.gridColumn54,
+            this.gridColumnMaxReuseCount});
             this.gridViewMaterialType.GridControl = this.gridControlMaterialType;
             this.gridViewMaterialType.Name = "gridViewMaterialType";
             this.gridViewMaterialType.OptionsCustomization.AllowFilter = false;
@@ -887,6 +889,15 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn54.Visible = true;
             this.gridColumn54.VisibleIndex = 50;
             // 
+            // gridColumnMaxReuseCount
+            // 
+            this.gridColumnMaxReuseCount.Caption = "Định mức tái sử dụng";
+            this.gridColumnMaxReuseCount.FieldName = "MAX_REUSE_COUNT_STR";
+            this.gridColumnMaxReuseCount.Name = "gridColumnMaxReuseCount";
+            this.gridColumnMaxReuseCount.Visible = true;
+            this.gridColumnMaxReuseCount.VisibleIndex = 51;
+            this.gridColumnMaxReuseCount.Width = 120;
+            // 
             // Btn_ErrorLine
             // 
             this.Btn_ErrorLine.AutoHeight = false;
@@ -1184,5 +1195,6 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn52;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn53;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn54;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMaxReuseCount;
     }
 }
