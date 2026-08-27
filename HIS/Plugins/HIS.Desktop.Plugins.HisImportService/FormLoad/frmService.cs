@@ -51,6 +51,8 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
         Inventec.Desktop.Common.Modules.Module currentModule;
         Dictionary<string, V_HIS_SERVICE> DicService;
         string serviceCodeConfig;
+        // TT12 - MAU_05: thuoc hao phi (DS_THUOCPX) doc tu sheet thu 3 cua file mau
+        List<ServiceMetyImportADO> serviceMetyAdos;
 
         public frmService(Inventec.Desktop.Common.Modules.Module module, RefeshReference _delegate)
             : base(module)
@@ -610,6 +612,32 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                         }
                     }
 
+                    #region TT12 - MAU_05 (DMDICHVUKBCB)
+                    if (!string.IsNullOrEmpty(item.PROCESS_CODE))
+                    {
+                        if (item.PROCESS_CODE.Length > 50)
+                        {
+                            error += string.Format(Message.MessageImport.Maxlength, "Quy trình");
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(item.SO_LUONG_CGKT_STR))
+                    {
+                        if (Inventec.Common.Number.Check.IsNumber(item.SO_LUONG_CGKT_STR))
+                        {
+                            serAdo.SO_LUONG_CGKT = Inventec.Common.TypeConvert.Parse.ToInt64(item.SO_LUONG_CGKT_STR);
+                            if ((serAdo.SO_LUONG_CGKT ?? 0) > 9999999999 || (serAdo.SO_LUONG_CGKT ?? 0) < 0)
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "SL CGKT");
+                            }
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "SL CGKT");
+                        }
+                    }
+                    #endregion
+
                     if (!string.IsNullOrEmpty(item.PACKAGE_PRICE_STR))
                     {
                         if (Inventec.Common.Number.Check.IsDecimal(item.PACKAGE_PRICE_STR))
@@ -818,6 +846,21 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             {
                 bool success = false;
                 WaitingManager.Show();
+
+                // TT12 - MAU_05: file chi co sheet thuoc hao phi thi bo qua buoc luu dich vu
+                if (serviceAdos == null || serviceAdos.Count == 0)
+                {
+                    bool metySuccess = this.SaveServiceMety(null);
+                    WaitingManager.Hide();
+                    if (metySuccess)
+                    {
+                        btnSave.Enabled = false;
+                        if (this.delegateRefresh != null)
+                            this.delegateRefresh();
+                    }
+                    return;
+                }
+
                 AutoMapper.Mapper.CreateMap<ServiceImportADO, HIS_SERVICE>();
                 var data = AutoMapper.Mapper.Map<List<HIS_SERVICE>>(serviceAdos);
 
@@ -836,6 +879,10 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                     success = true;
                     btnSave.Enabled = false;
                     BackendDataWorker.Reset<V_HIS_SERVICE>();
+
+                    // TT12 - MAU_05: luu thuoc hao phi sau khi dich vu da co ID
+                    this.SaveServiceMety(rs);
+
                     if (this.delegateRefresh != null)
                     {
                         this.delegateRefresh();
@@ -1257,6 +1304,324 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             }
         }
 
+        #region TT12 - MAU_05 (DS_THUOCPX)
+
+        /// <summary>
+        /// Doc sheet thu 3 ("Thuoc PX") cua file IMPORT_SERVICE, kiem tra du lieu va do len luoi.
+        /// Sheet nay khong bat buoc - file cu chi co 2 sheet van import binh thuong.
+        /// </summary>
+        private void ProcessServiceMetySheet(Inventec.Common.ExcelImport.Import import, List<ServiceImportADO> serviceRows)
+        {
+            this.serviceMetyAdos = new List<ServiceMetyImportADO>();
+            try
+            {
+                var metyImport = import.GetWithCheck<ServiceMetyImportADO>(2);
+                if (metyImport == null || metyImport.Count == 0)
+                {
+                    gridControlMety.DataSource = null;
+                    return;
+                }
+
+                var rows = metyImport.Where(o => !o.IsEmptyRow).ToList();
+                if (rows.Count == 0)
+                {
+                    gridControlMety.DataSource = null;
+                    return;
+                }
+
+                var listMedicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
+                var duplicatedKeys = rows
+                    .Where(o => !string.IsNullOrWhiteSpace(o.SERVICE_CODE) && !string.IsNullOrWhiteSpace(o.MEDICINE_TYPE_CODE))
+                    .GroupBy(o => o.SERVICE_CODE.Trim().ToUpper() + "|" + o.MEDICINE_TYPE_CODE.Trim().ToUpper())
+                    .Where(g => g.Count() > 1)
+                    .Select(g => g.Key)
+                    .ToList();
+
+                foreach (var item in rows)
+                {
+                    string error = "";
+
+                    // Ma dich vu: tim trong danh muc, hoac trong chinh sheet dich vu cua lan import nay
+                    if (string.IsNullOrWhiteSpace(item.SERVICE_CODE))
+                    {
+                        error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã dịch vụ");
+                    }
+                    else
+                    {
+                        string serviceCode = item.SERVICE_CODE.Trim();
+                        V_HIS_SERVICE service = null;
+                        if (DicService != null && DicService.ContainsKey(serviceCode))
+                            service = DicService[serviceCode];
+
+                        if (service != null)
+                        {
+                            item.SERVICE_ID = service.ID;
+                            item.SERVICE_NAME = service.SERVICE_NAME;
+                        }
+                        else if (!this.IsServiceCodeInImportSheet(serviceCode, serviceRows))
+                        {
+                            error += string.Format(Message.MessageImport.KhongTonTai, "Mã dịch vụ");
+                        }
+                    }
+
+                    // Ma thuoc: bat buoc co trong danh muc thuoc
+                    if (string.IsNullOrWhiteSpace(item.MEDICINE_TYPE_CODE))
+                    {
+                        error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã thuốc");
+                    }
+                    else
+                    {
+                        string medicineCode = item.MEDICINE_TYPE_CODE.Trim();
+                        var medicineType = listMedicineType != null
+                            ? listMedicineType.FirstOrDefault(o => o.MEDICINE_TYPE_CODE == medicineCode)
+                            : null;
+                        if (medicineType != null)
+                        {
+                            item.MEDICINE_TYPE_ID = medicineType.ID;
+                            item.MEDICINE_TYPE_NAME = medicineType.MEDICINE_TYPE_NAME;
+                            item.SERVICE_UNIT_ID = medicineType.SERVICE_UNIT_ID;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongTonTai, "Mã thuốc");
+                        }
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(item.SERVICE_CODE) && !string.IsNullOrWhiteSpace(item.MEDICINE_TYPE_CODE)
+                        && duplicatedKeys.Contains(item.SERVICE_CODE.Trim().ToUpper() + "|" + item.MEDICINE_TYPE_CODE.Trim().ToUpper()))
+                    {
+                        error += string.Format(Message.MessageImport.TonTaiTrungNhauTrongFileImport, "dịch vụ - thuốc");
+                    }
+
+                    item.EXPEND_PRICE = this.ParseMetyNumber(item.EXPEND_PRICE_STR, "Đơn giá thuốc", ref error);
+                    item.DM_NSX_CDD = this.ParseMetyNumber(item.DM_NSX_CDD_STR, "ĐM NSX CĐD", ref error);
+                    item.DM_THUCTE_CDD = this.ParseMetyNumber(item.DM_THUCTE_CDD_STR, "ĐM thực tế CĐD", ref error);
+                    item.LIEU_BQ_PX = this.ParseMetyNumber(item.LIEU_BQ_PX_STR, "Liều BQ PX", ref error);
+                    item.TL_THUCTE_BQ_PX = this.ParseMetyNumber(item.TL_THUCTE_BQ_PX_STR, "TL thực tế BQ PX", ref error);
+
+                    // TL_THUCTE_BQ_PX la mau so khi tinh THANH_TIEN_THUOC luc xuat XML
+                    if (item.LIEU_BQ_PX.HasValue && item.LIEU_BQ_PX.Value != 0
+                        && (!item.TL_THUCTE_BQ_PX.HasValue || item.TL_THUCTE_BQ_PX.Value == 0))
+                    {
+                        error += "Có Liều BQ PX thì phải nhập TL thực tế BQ PX khác 0|";
+                    }
+
+                    item.ERROR = error;
+                    this.serviceMetyAdos.Add(item);
+                }
+
+                gridControlMety.DataSource = this.serviceMetyAdos;
+                gridViewMety.RefreshData();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dich vu chua co trong danh muc nhung dang duoc tao moi o sheet dau cua chinh file nay.
+        /// </summary>
+        private bool IsServiceCodeInImportSheet(string serviceCode, List<ServiceImportADO> serviceRows)
+        {
+            if (string.IsNullOrWhiteSpace(serviceCode) || serviceRows == null)
+                return false;
+
+            return serviceRows.Any(o => !string.IsNullOrWhiteSpace(o.SERVICE_CODE)
+                && o.SERVICE_CODE.Trim().Equals(serviceCode.Trim(), StringComparison.OrdinalIgnoreCase));
+        }
+
+        private decimal? ParseMetyNumber(string value, string fieldName, ref string error)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            if (!Inventec.Common.Number.Check.IsDecimal(value.Trim()))
+            {
+                error += string.Format(Message.MessageImport.KhongHopLe, fieldName);
+                return null;
+            }
+
+            decimal result = Inventec.Common.TypeConvert.Parse.ToDecimal(value.Trim());
+            if (result < 0)
+            {
+                error += string.Format(Message.MessageImport.KhongHopLe, fieldName);
+                return null;
+            }
+
+            return result;
+        }
+
+        private void gridViewMety_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+        {
+            try
+            {
+                if (e.RowHandle < 0)
+                    return;
+
+                var data = gridViewMety.GetRow(e.RowHandle) as ServiceMetyImportADO;
+                if (data != null && !string.IsNullOrEmpty(data.ERROR))
+                {
+                    e.Appearance.BackColor = Color.MistyRose;
+                    e.Appearance.ForeColor = Color.Red;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Luu thuoc hao phi (DS_THUOCPX cua MAU_05) vao HIS_SERVICE_METY.
+        /// Trung cap dich vu - thuoc thi cap nhat, chua co thi tao moi; khong dung den dong ngoai file.
+        /// </summary>
+        /// <param name="savedServices">Danh sach dich vu vua tao (de lay ID), co the null.</param>
+        private bool SaveServiceMety(List<HIS_SERVICE> savedServices)
+        {
+            try
+            {
+                if (this.serviceMetyAdos == null || this.serviceMetyAdos.Count == 0)
+                    return true;
+
+                var validRows = this.serviceMetyAdos.Where(o => string.IsNullOrEmpty(o.ERROR)).ToList();
+                if (validRows.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không có dòng thuốc hợp lệ để lưu", "Thông báo");
+                    return false;
+                }
+
+                // Dich vu vua tao chua co trong cache - lay ID tu ket qua tra ve cua API
+                foreach (var item in validRows)
+                {
+                    if (item.SERVICE_ID.HasValue || string.IsNullOrWhiteSpace(item.SERVICE_CODE))
+                        continue;
+
+                    if (savedServices != null)
+                    {
+                        var created = savedServices.FirstOrDefault(o => !string.IsNullOrWhiteSpace(o.SERVICE_CODE)
+                            && o.SERVICE_CODE.Trim().Equals(item.SERVICE_CODE.Trim(), StringComparison.OrdinalIgnoreCase));
+                        if (created != null)
+                        {
+                            item.SERVICE_ID = created.ID;
+                            continue;
+                        }
+                    }
+
+                    var fromCache = BackendDataWorker.Get<V_HIS_SERVICE>()
+                        .FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CODE.Trim());
+                    if (fromCache != null)
+                        item.SERVICE_ID = fromCache.ID;
+                }
+
+                var rowsToSave = validRows.Where(o => o.SERVICE_ID.HasValue && o.MEDICINE_TYPE_ID.HasValue).ToList();
+                var rowsNoService = validRows.Where(o => !o.SERVICE_ID.HasValue || !o.MEDICINE_TYPE_ID.HasValue).ToList();
+                if (rowsToSave.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không xác định được dịch vụ của các dòng thuốc, chưa lưu được thuốc hao phí", "Thông báo");
+                    return false;
+                }
+
+                var existeds = this.GetExistedServiceMety(rowsToSave.Select(o => o.SERVICE_ID.Value).Distinct().ToList());
+
+                List<HIS_SERVICE_METY> creates = new List<HIS_SERVICE_METY>();
+                List<HIS_SERVICE_METY> updates = new List<HIS_SERVICE_METY>();
+                foreach (var item in rowsToSave)
+                {
+                    var existed = existeds.FirstOrDefault(o => o.SERVICE_ID == item.SERVICE_ID.Value
+                        && o.MEDICINE_TYPE_ID == item.MEDICINE_TYPE_ID.Value);
+
+                    HIS_SERVICE_METY mety = new HIS_SERVICE_METY();
+                    if (existed != null)
+                    {
+                        mety.ID = existed.ID;
+                        mety.EXPEND_AMOUNT = existed.EXPEND_AMOUNT;
+                        mety.AMOUNT_BHYT = existed.AMOUNT_BHYT;
+                        mety.IS_NOT_EXPEND = existed.IS_NOT_EXPEND;
+                        mety.SERVICE_UNIT_ID = existed.SERVICE_UNIT_ID;
+                    }
+                    else
+                    {
+                        if (item.SERVICE_UNIT_ID.HasValue)
+                            mety.SERVICE_UNIT_ID = item.SERVICE_UNIT_ID.Value;
+                    }
+
+                    mety.SERVICE_ID = item.SERVICE_ID.Value;
+                    mety.MEDICINE_TYPE_ID = item.MEDICINE_TYPE_ID.Value;
+                    mety.EXPEND_PRICE = item.EXPEND_PRICE;
+                    mety.DM_NSX_CDD = item.DM_NSX_CDD;
+                    mety.DM_THUCTE_CDD = item.DM_THUCTE_CDD;
+                    mety.LIEU_BQ_PX = item.LIEU_BQ_PX;
+                    mety.TL_THUCTE_BQ_PX = item.TL_THUCTE_BQ_PX;
+
+                    if (existed != null)
+                        updates.Add(mety);
+                    else
+                        creates.Add(mety);
+                }
+
+                bool result = true;
+                CommonParam param = new CommonParam();
+                if (creates.Count > 0)
+                {
+                    var created = new BackendAdapter(param).Post<List<HIS_SERVICE_METY>>(
+                        "api/HisServiceMety/CreateList", ApiConsumers.MosConsumer, creates, param);
+                    result = result && created != null;
+                }
+                if (updates.Count > 0)
+                {
+                    var updated = new BackendAdapter(param).Post<List<HIS_SERVICE_METY>>(
+                        "api/HisServiceMety/UpdateList", ApiConsumers.MosConsumer, updates, param);
+                    result = result && updated != null;
+                }
+
+                if (result)
+                {
+                    string message = string.Format("Đã lưu {0} dòng thuốc hao phí (thêm mới {1}, cập nhật {2})",
+                        rowsToSave.Count, creates.Count, updates.Count);
+                    if (rowsNoService.Count > 0)
+                        message += string.Format(". Bỏ qua {0} dòng chưa xác định được dịch vụ", rowsNoService.Count);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo");
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Lưu danh mục dịch vụ thành công nhưng lưu thuốc hao phí thất bại", "Thông báo");
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                DevExpress.XtraEditors.XtraMessageBox.Show("Lưu thuốc hao phí thất bại", "Thông báo");
+                return false;
+            }
+        }
+
+        private List<V_HIS_SERVICE_METY> GetExistedServiceMety(List<long> serviceIds)
+        {
+            try
+            {
+                if (serviceIds == null || serviceIds.Count == 0)
+                    return new List<V_HIS_SERVICE_METY>();
+
+                MOS.Filter.HisServiceMetyFilter filter = new MOS.Filter.HisServiceMetyFilter();
+                filter.SERVICE_IDs = serviceIds;
+
+                var result = new BackendAdapter(new CommonParam()).Get<List<V_HIS_SERVICE_METY>>(
+                    "api/HisServiceMety/GetView", ApiConsumers.MosConsumer, filter, null);
+
+                return result ?? new List<V_HIS_SERVICE_METY>();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return new List<V_HIS_SERVICE_METY>();
+            }
+        }
+
         private void btnImport_Click(object sender, EventArgs e)
         {
             try
@@ -1272,6 +1637,9 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                     if (import.ReadFileExcel(ofd.FileName))
                     {
                         var hisServiceImport = import.GetWithCheck<ServiceImportADO>(0);
+                        // TT12 - MAU_05: sheet thuoc hao phi (DS_THUOCPX) nam o sheet thu 3 cua file mau
+                        this.ProcessServiceMetySheet(import, hisServiceImport);
+
                         if (hisServiceImport != null && hisServiceImport.Count > 0)
                         {
                             List<ServiceImportADO> listAfterRemove = new List<ServiceImportADO>();
@@ -1331,6 +1699,13 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                                 SetDataSource(serviceAdos);
                             }
                             //btnSave.Enabled = true;
+                        }
+                        else if (this.serviceMetyAdos != null && this.serviceMetyAdos.Count > 0)
+                        {
+                            // Chi co sheet thuoc hao phi: van cho luu de cap nhat thuoc cho dich vu da ton tai
+                            WaitingManager.Hide();
+                            checkClick = false;
+                            btnSave.Enabled = true;
                         }
                         else
                         {

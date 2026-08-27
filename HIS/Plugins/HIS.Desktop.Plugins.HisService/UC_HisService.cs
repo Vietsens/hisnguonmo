@@ -8283,10 +8283,7 @@ namespace HIS.Desktop.Plugins.HisService
             foreach (var svc in services)
             {
                 var metyOfSvc = listMety.Where(m => m.SERVICE_ID == svc.ID).ToList();
-                var paty = listPaty
-                    .Where(p => p.SERVICE_ID == svc.ID && p.PATIENT_TYPE_ID == 1)
-                    .OrderByDescending(p => p.MODIFY_TIME ?? p.CREATE_TIME)
-                    .FirstOrDefault();
+                var paty = this.PickPatyForXmlTT12(listPaty, svc.ID);
 
                 decimal sumThuoc = metyOfSvc.Sum(m =>
                 {
@@ -8389,6 +8386,75 @@ namespace HIS.Desktop.Plugins.HisService
             sb.AppendLine("  <CHUKYDONVI/>");
             sb.AppendLine("</HSDANHMUC>");
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Chon dong gia BHYT dai dien cho dich vu khi xuat XML TT12 (MAU_05).
+        /// Uu tien dong gia chuan - dong khong gan bat ky dieu kien dac thu nao cua HIS_SERVICE_PATY
+        /// (dieu kien dich vu, goi, chi nhanh, phong, khoa, khung gio, thu, lan chi dinh, phan loai BN...).
+        /// Trong cung mot nhom thi lay dong sua gan nhat. Neu khong co dong chuan moi lui ve dong dac thu.
+        /// </summary>
+        private MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY PickPatyForXmlTT12(
+            List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY> listPaty, long serviceId)
+        {
+            try
+            {
+                if (listPaty == null || listPaty.Count == 0)
+                    return null;
+
+                long bhytPatientTypeId = Config.HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
+                if (bhytPatientTypeId <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("XuatXmlTT12: khong xac dinh duoc doi tuong BHYT tu cau hinh MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT");
+                    return null;
+                }
+
+                var patiesOfService = listPaty
+                    .Where(p => p.SERVICE_ID == serviceId && p.PATIENT_TYPE_ID == bhytPatientTypeId)
+                    .ToList();
+
+                if (patiesOfService.Count == 0)
+                    return null;
+
+                var standards = patiesOfService.Where(p => this.IsStandardPaty(p)).ToList();
+                var source = standards.Count > 0 ? standards : patiesOfService;
+
+                return source
+                    .OrderByDescending(p => p.MODIFY_TIME ?? p.CREATE_TIME)
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Dong gia chuan: khong rang buoc dieu kien nao, ap dung cho moi truong hop chi dinh.
+        /// </summary>
+        private bool IsStandardPaty(MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY paty)
+        {
+            if (paty == null)
+                return false;
+
+            return !paty.SERVICE_CONDITION_ID.HasValue
+                && !paty.PACKAGE_ID.HasValue
+                && !paty.PATIENT_CLASSIFY_ID.HasValue
+                && !paty.RATION_TIME_ID.HasValue
+                && !paty.INTRUCTION_NUMBER_FROM.HasValue
+                && !paty.INTRUCTION_NUMBER_TO.HasValue
+                && !paty.INSTR_NUM_BY_TYPE_FROM.HasValue
+                && !paty.INSTR_NUM_BY_TYPE_TO.HasValue
+                && !paty.TREATMENT_FROM_TIME.HasValue
+                && !paty.TREATMENT_TO_TIME.HasValue
+                && !paty.DAY_FROM.HasValue
+                && !paty.DAY_TO.HasValue
+                && string.IsNullOrWhiteSpace(paty.HOUR_FROM)
+                && string.IsNullOrWhiteSpace(paty.HOUR_TO)
+                && string.IsNullOrWhiteSpace(paty.EXECUTE_ROOM_IDS)
+                && string.IsNullOrWhiteSpace(paty.REQUEST_ROOM_IDS)
+                && string.IsNullOrWhiteSpace(paty.REQUEST_DEPARMENT_IDS);
         }
 
         private string X(string tag, string value, int indent)

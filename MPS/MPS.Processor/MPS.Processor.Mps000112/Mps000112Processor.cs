@@ -49,6 +49,8 @@ namespace MPS.Processor.Mps000112
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 SetSingleKey();
+                SetSereServRequestKey();
+                SetDepositReqKey();
                 SetBarcodeKey();
                 ProcessServiceADO();
                 ProcessPayformADO();
@@ -174,6 +176,89 @@ namespace MPS.Processor.Mps000112
                 }
 
 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Khoa/phong YEU CAU (chi dinh) lay tu danh sach dich vu cua phieu (V_HIS_SERE_SERV).
+        /// Cach lay giong ban in Mps000446 - Yeu cau thanh toan: chi set khi tat ca dich vu cung
+        /// mot khoa/phong yeu cau, neu khac nhau thi de trong.
+        /// Khac voi REQUEST_DEPARTMENT_* (lay tu HIS_DEPARTMENT_TRAN = khoa benh nhan dang nam
+        /// tai thoi diem giao dich) - giu nguyen key cu de khong pha cac mau in dang dung.
+        /// </summary>
+        private void SetSereServRequestKey()
+        {
+            try
+            {
+                if (rdo._ListSereServ == null || rdo._ListSereServ.Count == 0)
+                    return;
+
+                var sereServs = rdo._ListSereServ.Where(o => o.IS_DELETE == 0).ToList();
+                if (sereServs.Count == 0)
+                    return;
+
+                var departmentIds = sereServs.Select(o => o.TDL_REQUEST_DEPARTMENT_ID).Distinct().ToList();
+                if (departmentIds.Count == 1)
+                {
+                    var sereServ = sereServs.First();
+                    SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERE_SERV_REQUEST_DEPARTMENT_CODE, sereServ.REQUEST_DEPARTMENT_CODE));
+                    SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERE_SERV_REQUEST_DEPARTMENT_NAME, sereServ.REQUEST_DEPARTMENT_NAME));
+                }
+
+                var roomIds = sereServs.Select(o => o.TDL_REQUEST_ROOM_ID).Distinct().ToList();
+                if (roomIds.Count == 1)
+                {
+                    var sereServ = sereServs.First();
+                    SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERE_SERV_REQUEST_ROOM_CODE, sereServ.REQUEST_ROOM_CODE));
+                    SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.SERE_SERV_REQUEST_ROOM_NAME, sereServ.REQUEST_ROOM_NAME));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Khoa/phong YEU CAU lay tu YEU CAU TAM UNG (V_HIS_DEPOSIT_REQ) gan voi giao dich nay.
+        /// Day chinh la nguon ma cot "Khoa yeu cau" tren man hinh Yeu cau tam ung dang hien thi
+        /// (DEPARTMENT_NAME <- REQUEST_DEPARTMENT_ID, backend suy khoa tu phong tao phieu).
+        /// Chi set khi tat ca yeu cau tam ung cua phieu thu cung mot khoa/phong, khac nhau thi de trong.
+        /// </summary>
+        private void SetDepositReqKey()
+        {
+            try
+            {
+                if (rdo._ListDepositReq == null || rdo._ListDepositReq.Count == 0)
+                    return;
+
+                var depositReqs = rdo._ListDepositReq.Where(o => o.IS_DELETE == 0).ToList();
+                if (depositReqs.Count == 0)
+                    return;
+
+                var first = depositReqs.First();
+
+                if (depositReqs.Select(o => o.DEPOSIT_REQ_CODE).Distinct().Count() == 1)
+                {
+                    SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.DEPOSIT_REQ_CODE, first.DEPOSIT_REQ_CODE));
+                    SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.DEPOSIT_REQ_REQUEST_USERNAME, first.REQUEST_USERNAME));
+                }
+
+                if (depositReqs.Select(o => o.REQUEST_DEPARTMENT_ID).Distinct().Count() == 1)
+                {
+                    SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.DEPOSIT_REQ_DEPARTMENT_CODE, first.DEPARTMENT_CODE));
+                    SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.DEPOSIT_REQ_DEPARTMENT_NAME, first.DEPARTMENT_NAME));
+                }
+
+                if (depositReqs.Select(o => o.REQUEST_ROOM_ID).Distinct().Count() == 1)
+                {
+                    SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.DEPOSIT_REQ_ROOM_CODE, first.ROOM_CODE));
+                    SetSingleKey(new KeyValue(Mps000112ExtendSingleKey.DEPOSIT_REQ_ROOM_NAME, first.ROOM_NAME));
+                }
             }
             catch (Exception ex)
             {
