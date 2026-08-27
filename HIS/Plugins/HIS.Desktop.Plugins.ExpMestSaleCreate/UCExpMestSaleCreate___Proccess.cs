@@ -177,6 +177,22 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     InitDataToSaleCreate(ref saleSDO);
                 }
 
+                // Neu buoc dung du lieu bi dung giua chung (thieu thong tin/loi) thi khong goi API
+                // voi SDO rong -> tranh tao/sua phieu xuat khong co dong thuoc nao.
+                if (!isTwoPatient)
+                {
+                    if (saleSDO.SaleData == null || saleSDO.SaleData.Count <= 0)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Khong goi API xuat ban: saleSDO.SaleData rong.");
+                        return;
+                    }
+                }
+                else if (listSaleSDO == null || listSaleSDO.Count <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong goi API xuat ban: listSaleSDO rong.");
+                    return;
+                }
+
                 WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug("bat dau goi api api/HisExpMest/SaleCreateListSdo hoac api/HisExpMest/SaleUpdateListSdo " + disCountRatio);
 
@@ -910,13 +926,17 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 }
                 if (!string.IsNullOrWhiteSpace(txtIdentification.Text))
                 {
-                    if (cboIdentification.EditValue == null)
+                    // cboIdentification cho phep go tu do (TextEditStyle = Standard) nen EditValue
+                    // co the la chuoi nguoi dung go -> phai TryParse, khong Convert.ToInt32 truc tiep.
+                    int identityType = 0;
+                    if (cboIdentification.EditValue == null
+                        || !int.TryParse(cboIdentification.EditValue.ToString(), out identityType))
                     {
                         MessageBox.Show("Vui lòng chọn loại giấy tờ tùy thân.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        cboIdentification.Focus();
                         return;
                     }
 
-                    int identityType = Convert.ToInt32(cboIdentification.EditValue);
                     switch (identityType)
                     {
                         case 1:
@@ -1275,9 +1295,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                         if (!string.IsNullOrWhiteSpace(txtIdentification.Text))
                         {
-                            if (cboIdentification.EditValue != null)
+                            int identityType = 0;
+                            if (cboIdentification.EditValue != null
+                                && int.TryParse(cboIdentification.EditValue.ToString(), out identityType))
                             {
-                                int identityType = Convert.ToInt32(cboIdentification.EditValue);
                                 switch (identityType)
                                 {
                                     case 1:
