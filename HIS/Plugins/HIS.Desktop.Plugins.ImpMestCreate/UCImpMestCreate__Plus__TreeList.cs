@@ -610,7 +610,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             txtSoDangKy.Text = this.MedicalContractMety.MEDICINE_REGISTER_NUMBER;
                             txtNognDoHL.Text = this.MedicalContractMety.CONCENTRA;
                             spinImpPriceVAT.Value = (spinImpPrice.Value * (1 + spinImpVatRatio.Value / 100));
-                            spinCanImpAmount.Value = (this.MedicalContractMety.AMOUNT - (this.MedicalContractMety.IN_AMOUNT ?? 0)) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
+                            spinCanImpAmount.Value = (this.MedicalContractMety.AMOUNT - (this.MedicalContractMety.IN_AMOUNT ?? 0)) - GetImpAmountInVoucher() + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
 
                             txtBidNumber.Text = MedicalContractMety.BID_NUMBER;
                             txtBidNumOrder.Text = MedicalContractMety.BID_NUM_ORDER;
@@ -744,15 +744,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                             spinImpPriceVAT.Value = (spinImpPrice.Value * (1 + spinImpVatRatio.Value / 100));
 
-                            decimal amountMap = 0;
-                            if (this.currrentServiceAdo.MAP_MEDI_MATE_ID.HasValue && this.listServiceADO != null && this.listServiceADO.Count > 0)
-                            {
-                                var listMap = this.listServiceADO.Where(o => o.MAP_MEDI_MATE_ID == this.currrentServiceAdo.MAP_MEDI_MATE_ID).ToList();
-                                if (listMap != null && listMap.Count > 0)
-                                {
-                                    amountMap = listMap.Sum(s => s.IMP_AMOUNT);
-                                }
-                            }
+                            decimal amountMap = GetImpAmountInVoucher();
 
                             spinCanImpAmount.Value = (this.MedicalContractMaty.AMOUNT - (this.MedicalContractMaty.IN_AMOUNT ?? 0)) - amountMap + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
 
@@ -952,6 +944,59 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Số lượng cần trừ khỏi số lượng khả nhập của thầu/hợp đồng do các dòng thuốc/vật tư
+        /// cùng loại đã có trong phiếu hiện tại (nhập nhiều lô cho cùng 1 thuốc/vật tư).
+        /// - Phiếu chưa lưu (isSave = false): IN_AMOUNT phía server chưa gồm các dòng trong lưới
+        ///   => trừ tổng số lượng các dòng cùng loại, trừ dòng đang được sửa (cộng trả lại).
+        /// - Phiếu đã lưu (isSave = true): IN_AMOUNT đã gồm các dòng trong lưới
+        ///   => chỉ cộng trả lại số lượng của dòng đang được sửa.
+        /// </summary>
+        private decimal GetImpAmountInVoucher()
+        {
+            decimal amountInVoucher = 0;
+            try
+            {
+                if (this.currrentServiceAdo == null || this.listServiceADO == null || this.listServiceADO.Count <= 0)
+                    return 0;
+
+                bool isEditingRowInVoucher = false;
+                foreach (var item in this.listServiceADO)
+                {
+                    if (item == null)
+                        continue;
+
+                    bool isSameType = this.currrentServiceAdo.MAP_MEDI_MATE_ID.HasValue
+                        ? (item.MAP_MEDI_MATE_ID == this.currrentServiceAdo.MAP_MEDI_MATE_ID)
+                        : (item.IsMedicine == this.currrentServiceAdo.IsMedicine
+                            && item.MEDI_MATE_ID == this.currrentServiceAdo.MEDI_MATE_ID
+                            && string.Equals(item.TDL_BID_GROUP_CODE ?? "", this.currrentServiceAdo.TDL_BID_GROUP_CODE ?? ""));
+
+                    if (!isSameType)
+                        continue;
+
+                    //dòng đang được sửa (double click) -> cộng trả lại số lượng khả nhập
+                    if (object.ReferenceEquals(item, this.currrentServiceAdo))
+                    {
+                        isEditingRowInVoucher = true;
+                        continue;
+                    }
+
+                    if (!this.isSave)
+                        amountInVoucher += item.IMP_AMOUNT;
+                }
+
+                if (this.isSave && isEditingRowInVoucher)
+                    amountInVoucher -= this.currrentServiceAdo.IMP_AMOUNT;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                amountInVoucher = 0;
+            }
+            return amountInVoucher;
         }
 
         private void SetValueByServiceAdo()
@@ -1281,7 +1326,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             dtHieuLucDen.EditValue = null;
                         }
 
-                        spinCanImpAmount.Value = Math.Round(bidMediType.AMOUNT + (bidMediType.AMOUNT * bidMediType.IMP_MORE_RATIO ?? 0) - (bidMediType.IN_AMOUNT ?? 0) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0), MidpointRounding.AwayFromZero);
+                        spinCanImpAmount.Value = Math.Round(bidMediType.AMOUNT + (bidMediType.AMOUNT * bidMediType.IMP_MORE_RATIO ?? 0) - (bidMediType.IN_AMOUNT ?? 0) - GetImpAmountInVoucher() + (currrentServiceAdo.ADJUST_AMOUNT ?? 0), MidpointRounding.AwayFromZero);
 
                         this.currrentServiceAdo.BidImpPrice = bidMediType.IMP_PRICE;
                         this.currrentServiceAdo.BidImpVatRatio = bidMediType.IMP_VAT_RATIO;
@@ -1393,15 +1438,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             dtHieuLucDen.EditValue = null;
                         }
 
-                        decimal amountMap = 0;
-                        if (this.currrentServiceAdo.MAP_MEDI_MATE_ID.HasValue && this.listServiceADO != null && this.listServiceADO.Count > 0)
-                        {
-                            var listMap = this.listServiceADO.Where(o => o.MAP_MEDI_MATE_ID == this.currrentServiceAdo.MAP_MEDI_MATE_ID).ToList();
-                            if (listMap != null && listMap.Count > 0)
-                            {
-                                amountMap = listMap.Sum(s => s.IMP_AMOUNT);
-                            }
-                        }
+                        decimal amountMap = GetImpAmountInVoucher();
 
                         spinCanImpAmount.Value = Math.Round(bidMateType.AMOUNT + (bidMateType.AMOUNT * bidMateType.IMP_MORE_RATIO ?? 0) - (bidMateType.IN_AMOUNT ?? 0) - amountMap + (currrentServiceAdo.ADJUST_AMOUNT ?? 0), MidpointRounding.AwayFromZero);
                         this.currrentServiceAdo.BidImpPrice = bidMateType.IMP_PRICE;
