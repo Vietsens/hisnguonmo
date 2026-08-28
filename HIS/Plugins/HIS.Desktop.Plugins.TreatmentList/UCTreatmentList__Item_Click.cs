@@ -392,7 +392,28 @@ namespace HIS.Desktop.Plugins.TreatmentList
         /// <param name="e"></param>
         private void repositoryItembtnTimeLine_btnClick(object sender, ButtonPressedEventArgs e)
         {
+            try
+            {
+                V_HIS_TREATMENT_4 row = null;
+                var focusedView = gridControlTreatmentList.FocusedView as DevExpress.XtraGrid.Views.Base.ColumnView;
+                if (focusedView != null)
+                {
+                    row = focusedView.GetFocusedRow() as V_HIS_TREATMENT_4;
+                }
+                if (row == null)
+                {
+                    row = gridViewtreatmentList.GetFocusedRow() as V_HIS_TREATMENT_4;
+                }
+                if (row == null) return;
 
+                this.currentTreatment = row;
+                this.btnTimelineClick();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         /// <summary>
