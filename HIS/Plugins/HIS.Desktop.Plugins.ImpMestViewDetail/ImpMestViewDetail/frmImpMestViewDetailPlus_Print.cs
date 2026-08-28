@@ -1142,6 +1142,73 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             }
         }
 
+        /// <summary>
+        /// Sinh du lieu thiet lap ky tu danh sach hoi dong kiem nhap.
+        /// Thu tu ky giu nguyen thu tu cua danh sach hoi dong kiem nhap.
+        /// </summary>
+        private List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO> ProcessSignerConfigs(List<V_HIS_IMP_MEST_USER> impMestUsers)
+        {
+            List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO> result = null;
+            try
+            {
+                if (impMestUsers == null || impMestUsers.Count == 0)
+                    return null;
+
+                result = new List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO>();
+                long numOrder = 1;
+                foreach (var impMestUser in impMestUsers.OrderBy(o => o.ID).ToList())
+                {
+                    if (String.IsNullOrWhiteSpace(impMestUser.LOGINNAME))
+                        continue;
+                    if (result.Exists(o => o.Loginname == impMestUser.LOGINNAME))
+                        continue;
+
+                    Inventec.Common.SignLibrary.DTO.SignerConfigDTO signerConfig = new Inventec.Common.SignLibrary.DTO.SignerConfigDTO();
+                    signerConfig.Loginname = impMestUser.LOGINNAME;
+                    signerConfig.NumOrder = numOrder;
+                    result.Add(signerConfig);
+                    numOrder++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = null;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Khi tich "Tu dong tao thiet lap ky theo HDKN" ma khong co hoi dong kiem nhap
+        /// thi canh bao xac nhan truoc khi in.
+        /// </summary>
+        private bool AllowPrintWithAutoSign(List<V_HIS_IMP_MEST_USER> impMestUsers, out List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO> signerConfigs)
+        {
+            signerConfigs = null;
+            try
+            {
+                if (!chkAutoSign.Checked)
+                    return true;
+
+                if (impMestUsers == null || impMestUsers.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    return DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Không có thông tin hội đồng kiểm nhập để tự động tạo thiết lập ký. Bạn có muốn tiếp tục?",
+                        Resources.ResourceMessage.ThongBao,
+                        System.Windows.Forms.MessageBoxButtons.YesNo,
+                        System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes;
+                }
+
+                signerConfigs = ProcessSignerConfigs(impMestUsers);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+
         private void InBienBanKiemNhapTuNhaCungCap(string printTypeCode, string fileName, ref bool result)
         {
             try
@@ -1156,6 +1223,11 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 userFilter.IMP_MEST_ID = this.ImpMestId;
                 var rs = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>("/api/HisImpMestUser/GetView", ApiConsumers.MosConsumer, userFilter, param);
                 rs = rs.OrderBy(p => p.ID).ToList();
+
+                List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO> signerConfigs = null;
+                if (!AllowPrintWithAutoSign(rs, out signerConfigs))
+                    return;
+
                 MOS.Filter.HisImpMestBloodFilter bloodFilter = new MOS.Filter.HisImpMestBloodFilter();
                 bloodFilter.IMP_MEST_ID = this.ImpMestId;
                 var bloodData = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>("/api/HisImpMestBlood/GetView", ApiConsumers.MosConsumer, bloodFilter, param);
@@ -1258,6 +1330,12 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 }
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this.impMest?.TDL_TREATMENT_CODE) ? this.impMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, moduleData != null ? moduleData.RoomId : 0);
+                if (signerConfigs != null && signerConfigs.Count > 0)
+                {
+                    ////Truyen san danh sach nguoi ky theo hoi dong kiem nhap + tich "Ky song song"
+                    inputADO.SignerConfigs = signerConfigs;
+                    inputADO.IsMultiSign = true;
+                }
 
                 List<V_HIS_MEDICINE_PATY> medicinePaty = new List<V_HIS_MEDICINE_PATY>();
                 if (medicines != null && medicines.Count > 0)

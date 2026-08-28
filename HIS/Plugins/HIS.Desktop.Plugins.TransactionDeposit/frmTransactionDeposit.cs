@@ -2776,6 +2776,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                 MPS.Processor.Mps000112.PDO.Mps000112PDO rdo = new MPS.Processor.Mps000112.PDO.Mps000112PDO(this.resultTranDeposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>(), sereServs, sereServDeposits, BackendDataWorker.Get<HIS_PAY_FORM>());
                 FillPayformAndDiscountForPrint(rdo, this.resultTranDeposit != null ? this.resultTranDeposit.ID : (long?)null);
+                rdo._ListDepositReq = GetDepositReqForPrint(this.resultTranDeposit != null ? this.resultTranDeposit.TREATMENT_ID : (long?)null, this.resultTranDeposit != null ? this.resultTranDeposit.ID : 0);
                 MPS.ProcessorBase.Core.PrintData printData = null;
 
                 string printerName = "";
@@ -2900,6 +2901,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                 MPS.Processor.Mps000112.PDO.Mps000112PDO rdo = new MPS.Processor.Mps000112.PDO.Mps000112PDO(this.resultTranDeposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>(), sereServs, sereServDeposits, BackendDataWorker.Get<HIS_PAY_FORM>());
                 FillPayformAndDiscountForPrint(rdo, this.resultTranDeposit != null ? this.resultTranDeposit.ID : (long?)null);
+                rdo._ListDepositReq = GetDepositReqForPrint(this.resultTranDeposit != null ? this.resultTranDeposit.TREATMENT_ID : (long?)null, this.resultTranDeposit != null ? this.resultTranDeposit.ID : 0);
                 //MPS.ProcessorBase.Core.PrintData printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, null);
 
                 string printerName = "";
@@ -3784,6 +3786,35 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             }
         }
 
+
+        /// <summary>
+        /// Yeu cau tam ung (HIS_DEPOSIT_REQ) gan voi giao dich tam ung nay - dung cho ban in Mps000112
+        /// de lay khoa/phong YEU CAU giong cot "Khoa yeu cau" tren man hinh Yeu cau tam ung.
+        /// HisDepositReqViewFilter chua ho tro DEPOSIT_ID nen lay theo dot dieu tri roi loc lai o client.
+        /// </summary>
+        private List<MOS.EFMODEL.DataModels.V_HIS_DEPOSIT_REQ> GetDepositReqForPrint(long? treatmentId, long transactionId)
+        {
+            try
+            {
+                if (!treatmentId.HasValue || treatmentId.Value <= 0 || transactionId <= 0)
+                    return null;
+
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                MOS.Filter.HisDepositReqViewFilter filter = new MOS.Filter.HisDepositReqViewFilter();
+                filter.TREATMENT_ID = treatmentId.Value;
+                var data = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_DEPOSIT_REQ>>(
+                    "api/HisDepositReq/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (data == null)
+                    return null;
+
+                return data.Where(o => o.DEPOSIT_ID == transactionId).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
         /// <summary>
         /// Nap bang hinh thuc thanh toan (HIS_TRANSACTION_PAYFORM), bang chiet khau
         /// (HIS_TRANSACTION_DISCOUNT) va danh muc ngan hang vao PDO in Mps000112.

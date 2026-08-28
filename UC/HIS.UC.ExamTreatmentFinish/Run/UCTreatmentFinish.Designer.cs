@@ -499,10 +499,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.chkPrintPrescription.StyleController = this.layoutControl1;
             this.chkPrintPrescription.TabIndex = 37;
             this.chkPrintPrescription.CheckedChanged += new System.EventHandler(this.chkPrintPrescription_CheckedChanged);
-            //
+            // 
             // chkSignPrescription
-            //
-            this.chkSignPrescription.Location = new System.Drawing.Point(141, 279);
+            // 
+            this.chkSignPrescription.Location = new System.Drawing.Point(141, 278);
             this.chkSignPrescription.Name = "chkSignPrescription";
             this.chkSignPrescription.Properties.Caption = ":Ký";
             this.chkSignPrescription.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
@@ -511,7 +511,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.chkSignPrescription.StyleController = this.layoutControl1;
             this.chkSignPrescription.TabIndex = 47;
             this.chkSignPrescription.CheckedChanged += new System.EventHandler(this.chkSignPrescription_CheckedChanged);
-            //
+            // 
             // btnICDInformation
             // 
             this.btnICDInformation.Image = ((System.Drawing.Image)(resources.GetObject("btnICDInformation.Image")));
@@ -776,9 +776,9 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // 
             // panelExamTreatmentFinish
             // 
-            this.panelExamTreatmentFinish.Location = new System.Drawing.Point(0, 354);
+            this.panelExamTreatmentFinish.Location = new System.Drawing.Point(0, 353);
             this.panelExamTreatmentFinish.Name = "panelExamTreatmentFinish";
-            this.panelExamTreatmentFinish.Size = new System.Drawing.Size(660, 1);
+            this.panelExamTreatmentFinish.Size = new System.Drawing.Size(660, 2);
             this.panelExamTreatmentFinish.TabIndex = 19;
             // 
             // layoutControl3
@@ -1226,7 +1226,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(225, 341, 250, 350);
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(656, 50);
+            this.layoutControl2.Size = new System.Drawing.Size(656, 49);
             this.layoutControl2.TabIndex = 14;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -1260,7 +1260,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(656, 50);
+            this.Root.Size = new System.Drawing.Size(656, 49);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem12
@@ -1268,7 +1268,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem12.Control = this.labelControl1;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(153, 50);
+            this.layoutControlItem12.Size = new System.Drawing.Size(153, 49);
             this.layoutControlItem12.Text = " ";
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(20, 20);
@@ -1279,7 +1279,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem13.Control = this.btnChiDinhDichVuHenKham;
             this.layoutControlItem13.Location = new System.Drawing.Point(153, 0);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(53, 50);
+            this.layoutControlItem13.Size = new System.Drawing.Size(53, 49);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
@@ -1288,7 +1288,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(206, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(450, 50);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(450, 49);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // chkPrintBordereau
@@ -1499,7 +1499,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.lciChiDinhDichVuhenKham.Control = this.layoutControl2;
             this.lciChiDinhDichVuhenKham.Location = new System.Drawing.Point(0, 300);
             this.lciChiDinhDichVuhenKham.Name = "lciChiDinhDichVuhenKham";
-            this.lciChiDinhDichVuhenKham.Size = new System.Drawing.Size(660, 54);
+            this.lciChiDinhDichVuhenKham.Size = new System.Drawing.Size(660, 53);
             this.lciChiDinhDichVuhenKham.TextSize = new System.Drawing.Size(0, 0);
             this.lciChiDinhDichVuhenKham.TextVisible = false;
             this.lciChiDinhDichVuhenKham.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -1560,10 +1560,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // layoutControlIPanelUCExtend
             // 
             this.layoutControlIPanelUCExtend.Control = this.panelExamTreatmentFinish;
-            this.layoutControlIPanelUCExtend.Location = new System.Drawing.Point(0, 354);
+            this.layoutControlIPanelUCExtend.Location = new System.Drawing.Point(0, 353);
             this.layoutControlIPanelUCExtend.Name = "layoutControlIPanelUCExtend";
             this.layoutControlIPanelUCExtend.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlIPanelUCExtend.Size = new System.Drawing.Size(660, 1);
+            this.layoutControlIPanelUCExtend.Size = new System.Drawing.Size(660, 2);
             this.layoutControlIPanelUCExtend.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlIPanelUCExtend.TextVisible = false;
             this.layoutControlIPanelUCExtend.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -1837,23 +1837,23 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem27.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem27.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem27.TextToControlDistance = 5;
-            //
+            // 
             // lciSignPrescription
-            //
+            // 
             this.lciSignPrescription.Control = this.chkSignPrescription;
-            this.lciSignPrescription.Location = new System.Drawing.Point(141, 279);
+            this.lciSignPrescription.Location = new System.Drawing.Point(141, 278);
             this.lciSignPrescription.Name = "lciSignPrescription";
             this.lciSignPrescription.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lciSignPrescription.Size = new System.Drawing.Size(38, 19);
+            this.lciSignPrescription.Size = new System.Drawing.Size(38, 22);
             this.lciSignPrescription.TextSize = new System.Drawing.Size(0, 0);
             this.lciSignPrescription.TextVisible = false;
-            //
+            // 
             // emptySpaceItem7
-            //
+            // 
             this.emptySpaceItem7.AllowHotTrack = false;
-            this.emptySpaceItem7.Location = new System.Drawing.Point(179, 279);
+            this.emptySpaceItem7.Location = new System.Drawing.Point(179, 278);
             this.emptySpaceItem7.Name = "emptySpaceItem7";
-            this.emptySpaceItem7.Size = new System.Drawing.Size(112, 19);
+            this.emptySpaceItem7.Size = new System.Drawing.Size(112, 22);
             this.emptySpaceItem7.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem28

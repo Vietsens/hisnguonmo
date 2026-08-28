@@ -150,15 +150,16 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SAFECERT
                         if (!string.IsNullOrWhiteSpace(trans.BUYER_SOCIAL_RELATIONS_CODE))
                             maDvqhNsach = trans.BUYER_SOCIAL_RELATIONS_CODE;
 
-                        if (!string.IsNullOrWhiteSpace(trans.BUYER_IDENTITY_NUMBER))
+                        //Lay so giay to da duoc chuan hoa trong InvoiceInfoProcessor (nguon van uu tien Transaction.BUYER_IDENTITY_NUMBER)
+                        if (!string.IsNullOrWhiteSpace(ado.BuyerIdentityNumber))
                         {
-                            if (trans.BUYER_IDENTITY_TYPE == 1 || trans.BUYER_IDENTITY_TYPE == 2 || trans.BUYER_IDENTITY_TYPE == null)
+                            if (ado.BuyerIdentityType == "3")
                             {
-                                cccdAn = trans.BUYER_IDENTITY_NUMBER;
+                                soHoChieu = ado.BuyerIdentityNumber;
                             }
-                            else if (trans.BUYER_IDENTITY_TYPE == 3) 
+                            else
                             {
-                                soHoChieu = trans.BUYER_IDENTITY_NUMBER;
+                                cccdAn = ado.BuyerIdentityNumber;
                             }
                         }
                     }
