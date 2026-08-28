@@ -1310,12 +1310,21 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
         /// Doc sheet thu 3 ("Thuoc PX") cua file IMPORT_SERVICE, kiem tra du lieu va do len luoi.
         /// Sheet nay khong bat buoc - file cu chi co 2 sheet van import binh thuong.
         /// </summary>
-        private void ProcessServiceMetySheet(Inventec.Common.ExcelImport.Import import, List<ServiceImportADO> serviceRows)
+        private void ProcessServiceMetySheet(string filePath, List<ServiceImportADO> serviceRows)
         {
             this.serviceMetyAdos = new List<ServiceMetyImportADO>();
             try
             {
-                var metyImport = import.GetWithCheck<ServiceMetyImportADO>(2);
+                // Phai dung mot Import rieng: Import chi quet tag mot lan cho ca vong doi doi tuong,
+                // dung lai instance cua sheet dich vu se lay nham danh sach tag cua sheet do.
+                var metyReader = new Inventec.Common.ExcelImport.Import();
+                if (!metyReader.ReadFileExcel(filePath))
+                {
+                    gridControlMety.DataSource = null;
+                    return;
+                }
+
+                var metyImport = metyReader.GetWithCheck<ServiceMetyImportADO>(2);
                 if (metyImport == null || metyImport.Count == 0)
                 {
                     gridControlMety.DataSource = null;
@@ -1638,7 +1647,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                     {
                         var hisServiceImport = import.GetWithCheck<ServiceImportADO>(0);
                         // TT12 - MAU_05: sheet thuoc hao phi (DS_THUOCPX) nam o sheet thu 3 cua file mau
-                        this.ProcessServiceMetySheet(import, hisServiceImport);
+                        this.ProcessServiceMetySheet(ofd.FileName, hisServiceImport);
 
                         if (hisServiceImport != null && hisServiceImport.Count > 0)
                         {
