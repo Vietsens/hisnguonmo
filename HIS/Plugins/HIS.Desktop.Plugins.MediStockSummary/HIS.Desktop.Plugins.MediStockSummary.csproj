@@ -213,7 +213,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.BloodTypeInStock">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.BloodTypeInStock.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.BloodTypeInStock.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.MaterialInStock">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.MaterialInStock\HIS.UC.MaterialInStock.dll</HintPath>
@@ -330,16 +330,16 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000131.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000217.PDO">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000217.PDO.dll</HintPath>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000217.PDO\bin\Debug\MPS.Processor.Mps000217.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000218.PDO">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000218.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000218.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000219.PDO">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000219.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000219.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000220.PDO">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000220.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000220.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000482.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000482.PDO.dll</HintPath>
