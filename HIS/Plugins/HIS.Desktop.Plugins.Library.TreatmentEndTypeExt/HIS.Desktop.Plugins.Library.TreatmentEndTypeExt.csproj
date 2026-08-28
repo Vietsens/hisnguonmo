@@ -65,9 +65,6 @@
     <Reference Include="His.Bhyt.InsuranceExpertise">
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.BaseCompensationCreate">
-      <HintPath>..\HIS.Desktop.Plugins.BaseCompensationCreate\obj\Debug\HIS.Desktop.Plugins.BaseCompensationCreate.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>

@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EMR.Desktop.Plugins.EmrPatientCertificateRegister">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Plugins\Module\EMR.Desktop.Plugins.EmrPatientCertificateRegister.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\Plugins\Module\EMR.Desktop.Plugins.EmrPatientCertificateRegister.dll</HintPath>
     </Reference>
     <Reference Include="EMR.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -51,9 +51,8 @@
     <Reference Include="EMR.URI">
       <HintPath>..\..\..\..\lib\EMR\EMR.URI.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.LocalData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData">
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
