@@ -97,11 +97,11 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
         string ServiceCode;
 
         #region Dang ky nhieu cong kham trong mot luot (cau hinh IsAllowRegisterMultiExam)
-        /// <summary>Cong kham chon dau tien - la cong kham chinh cua luot dang ky</summary>
-        ExamSelectionADO mainExamSelection;
-
-        /// <summary>Cac cong kham chon them, gui len qua HisExamRegisterKioskSDO.AdditionalServices</summary>
-        List<ExamSelectionADO> extraExamSelections = new List<ExamSelectionADO>();
+        /// <summary>
+        /// Danh sach cong kham nguoi benh da chon trong luot dang ky.
+        /// Phan tu dau tien la cong kham chinh; cac phan tu sau gui kem qua AdditionalServices.
+        /// </summary>
+        List<ExamSelectionADO> examSelections = new List<ExamSelectionADO>();
         #endregion
         #endregion
 
@@ -1021,18 +1021,10 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             {
                 if (executeRoom == null) return;
 
-                //Cham lai phong da chon: dang ky cac cong kham da chon hoac bo chon phong nay
+                //Cham lai phong da chon: mo cua so danh sach de nguoi benh xoa bot hoac dang ky
                 if (IsSelectedRoom(executeRoom.ROOM_ID))
                 {
-                    string messageSelected = String.Format("{0}\n\nPhòng khám này đã được chọn.\nChọn \"Có\" để đăng ký, chọn \"Không\" để bỏ chọn phòng này.", GetSelectedExamSummary());
-                    if (XtraMessageBox.Show(messageSelected, "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        RegisterSelectedExams();
-                    }
-                    else
-                    {
-                        RemoveExamSelection(executeRoom.ROOM_ID);
-                    }
+                    ShowSelectedExamList();
                     return;
                 }
 
@@ -1065,25 +1057,13 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                     }
                 }
 
-                ExamSelectionADO selection = new ExamSelectionADO(executeRoom, service);
-                if (this.mainExamSelection == null)
-                {
-                    this.mainExamSelection = selection;
-                }
-                else
-                {
-                    this.extraExamSelections.Add(selection);
-                }
+                this.examSelections.Add(new ExamSelectionADO(executeRoom, service));
 
                 Inventec.Common.Logging.LogSystem.Info("Kiosk chon cong kham____"
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => executeRoom.ROOM_ID), executeRoom.ROOM_ID)
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => service.ID), service.ID));
 
-                string message = String.Format("{0}\n\nBạn có muốn chọn thêm phòng khám khác không?", GetSelectedExamSummary());
-                if (XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                {
-                    RegisterSelectedExams();
-                }
+                ShowSelectedExamList();
             }
             catch (Exception ex)
             {
@@ -1118,13 +1098,15 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
         {
             try
             {
-                if (this.mainExamSelection == null)
+                if (this.examSelections == null || this.examSelections.Count == 0)
                 {
                     XtraMessageBox.Show("Vui lòng chọn ít nhất một phòng khám.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                btnRegister_Click(null, null, this.mainExamSelection.Service, this.mainExamSelection.ExecuteRoom);
+                //Cong kham dau tien la cong kham chinh, gui truc tiep trong sdo
+                ExamSelectionADO mainSelection = this.examSelections[0];
+                btnRegister_Click(null, null, mainSelection.Service, mainSelection.ExecuteRoom);
             }
             catch (Exception ex)
             {
@@ -1140,15 +1122,17 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
         {
             try
             {
-                if (sdo == null || this.extraExamSelections == null || this.extraExamSelections.Count == 0) return;
+                if (sdo == null || this.examSelections == null || this.examSelections.Count <= 1) return;
 
                 if (sdo.AdditionalServices == null)
                 {
                     sdo.AdditionalServices = new List<ServiceReqDetailSDO>();
                 }
 
-                foreach (var item in this.extraExamSelections)
+                //Bo qua phan tu dau tien vi do la cong kham chinh, da nam trong sdo.RoomId/sdo.ServiceId
+                for (int i = 1; i < this.examSelections.Count; i++)
                 {
+                    ExamSelectionADO item = this.examSelections[i];
                     ServiceReqDetailSDO detail = new ServiceReqDetailSDO();
                     detail.Amount = 1;
                     detail.ServiceId = item.ServiceId;
@@ -1168,29 +1152,22 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
         }
 
         /// <summary>
-        /// Bo mot cong kham khoi danh sach da chon.
-        /// Neu bo dung cong kham chinh thi cong kham chon ke tiep tro thanh cong kham chinh.
+        /// Mo cua so danh sach cong kham da chon: nguoi benh xoa bot, chon them phong hoac dang ky.
+        /// Cua so sua truc tiep tren danh sach examSelections nen khong phai dong bo lai.
         /// </summary>
-        private void RemoveExamSelection(long roomId)
+        private void ShowSelectedExamList()
         {
             try
             {
-                if (this.mainExamSelection != null && this.mainExamSelection.RoomId == roomId)
+                using (var frmSelected = new Popup.SelectedExam.frmSelectedExamList(this.examSelections, this.currentModule))
                 {
-                    this.mainExamSelection = null;
-                    if (this.extraExamSelections != null && this.extraExamSelections.Count > 0)
+                    frmSelected.ShowDialog();
+
+                    if (frmSelected.ActionResult == EnumSelectedExamAction.Register)
                     {
-                        this.mainExamSelection = this.extraExamSelections[0];
-                        this.extraExamSelections.RemoveAt(0);
+                        RegisterSelectedExams();
                     }
                 }
-                else if (this.extraExamSelections != null)
-                {
-                    this.extraExamSelections.RemoveAll(o => o.RoomId == roomId);
-                }
-
-                Inventec.Common.Logging.LogSystem.Info("Kiosk bo chon cong kham____"
-                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => roomId), roomId));
             }
             catch (Exception ex)
             {
@@ -1203,63 +1180,25 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
         {
             try
             {
-                this.mainExamSelection = null;
-                if (this.extraExamSelections != null)
+                if (this.examSelections != null)
                 {
-                    this.extraExamSelections.Clear();
+                    this.examSelections.Clear();
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
-
-        private int GetSelectedExamCount()
-        {
-            return (this.mainExamSelection != null ? 1 : 0)
-                + (this.extraExamSelections != null ? this.extraExamSelections.Count : 0);
         }
 
         private bool IsSelectedRoom(long roomId)
         {
-            if (this.mainExamSelection != null && this.mainExamSelection.RoomId == roomId) return true;
-            return this.extraExamSelections != null && this.extraExamSelections.Exists(o => o.RoomId == roomId);
+            return this.examSelections != null && this.examSelections.Exists(o => o.RoomId == roomId);
         }
 
         private bool IsSelectedService(long serviceId)
         {
-            if (this.mainExamSelection != null && this.mainExamSelection.ServiceId == serviceId) return true;
-            return this.extraExamSelections != null && this.extraExamSelections.Exists(o => o.ServiceId == serviceId);
-        }
-
-        /// <summary>Danh sach cong kham da chon, hien thi cho nguoi benh doi chieu truoc khi dang ky</summary>
-        private string GetSelectedExamSummary()
-        {
-            StringBuilder builder = new StringBuilder();
-            try
-            {
-                builder.Append("Bạn đã chọn:");
-                int index = 0;
-                if (this.mainExamSelection != null)
-                {
-                    index++;
-                    builder.Append(String.Format("\n{0}. {1} - {2}", index, this.mainExamSelection.RoomName, this.mainExamSelection.ServiceName));
-                }
-                if (this.extraExamSelections != null)
-                {
-                    foreach (var item in this.extraExamSelections)
-                    {
-                        index++;
-                        builder.Append(String.Format("\n{0}. {1} - {2}", index, item.RoomName, item.ServiceName));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            return builder.ToString();
+            return this.examSelections != null && this.examSelections.Exists(o => o.ServiceId == serviceId);
         }
 
         #endregion
