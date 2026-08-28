@@ -567,6 +567,9 @@
   <data name="UCTreatmentFinish.chkPrintPrescription.Properties.Caption" xml:space="preserve">
     <value>: ပုံနှိပ်ပါ။</value>
   </data>
+  <data name="UCTreatmentFinish.chkSignPrescription.Properties.Caption" xml:space="preserve">
+    <value>: ဆိုင်းဘုတ်</value>
+  </data>
   <data name="UCTreatmentFinish.chkSignAppoinment.Properties.Caption" xml:space="preserve">
     <value>: ဆိုင်းဘုတ်</value>
   </data>

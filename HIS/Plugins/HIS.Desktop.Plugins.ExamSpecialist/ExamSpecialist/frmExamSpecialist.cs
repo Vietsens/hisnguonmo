@@ -39,6 +39,8 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         int start = 0;
         V_HIS_SPECIALIST_EXAM curentSpecialistExam;
         List<HIS_DEPARTMENT> lstDepartment = new List<HIS_DEPARTMENT>();
+        // Toàn bộ dữ liệu đã lọc quyền xem — nguồn để phân trang phía client
+        List<V_HIS_SPECIALIST_EXAM> lstDataFiltered = new List<V_HIS_SPECIALIST_EXAM>();
         #endregion
         private Inventec.Desktop.Common.Modules.Module currentModule;
         public frmExamSpecialist()
@@ -136,6 +138,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             try
             {
                 int pagingSize = ucPaging1.pagingGrid != null ? ucPaging1.pagingGrid.PageSize : (int)ConfigApplications.NumPageSize;// xác định số dòng /trang
+                LoadDataFromServer(); // lấy toàn bộ dữ liệu + lọc quyền xem TRƯỚC khi phân trang
                 FillDataToGridTransaction(new CommonParam(0, pagingSize)); // nạp dữ liệu cho trang đầu tiên
                 CommonParam param = new CommonParam();
                 param.Limit = rowCount;  // giới hạn số dòng
@@ -148,43 +151,84 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             }
         }
 
+        /// <summary>
+        /// Lấy toàn bộ dữ liệu từ server (không phân trang) rồi lọc quyền xem.
+        /// Bắt buộc lọc trước khi phân trang: nếu để server cắt trang theo MODIFY_TIME DESC
+        /// rồi mới lọc thì các y lệnh của khoa hiện tại nằm ngoài trang đầu sẽ bị mất hết.
+        /// </summary>
+        private void LoadDataFromServer()
+        {
+            try
+            {
+                WaitingManager.Show();
+                lstDataFiltered = new List<V_HIS_SPECIALIST_EXAM>();
+                dataTotal = 0;
+
+                HisSpecialistExamViewFilter filter = new HisSpecialistExamViewFilter();
+                SetFilter(ref filter);
+                CommonParam paramCommon = new CommonParam();
+                var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+                if (result != null && result.Data != null)
+                {
+                    string userName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    long? currentDepartmentId = GetCurrentDepartmentId();
+
+                    lstDataFiltered = result.Data.Where(x => x.IS_ACTIVE == 1 && x.IS_DELETE != 1 && x.INVITE_TYPE == 1 &&
+                    ((!string.IsNullOrEmpty(x.EXAM_EXECUTE_LOGINNAME) && x.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(userName))
+                    || (string.IsNullOrEmpty(x.EXAM_EXECUTE_LOGINNAME) && x.EXAM_EXECUTE_DEPARMENT_ID != null && currentDepartmentId != null && x.EXAM_EXECUTE_DEPARMENT_ID == currentDepartmentId)
+                    || (currentDepartmentId != null && x.INVITE_DEPARMENT_ID == currentDepartmentId)
+                    || (x.INVITE_DOCTOR_LOGINNAME == userName))).ToList();
+
+                    dataTotal = lstDataFiltered.Count;
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format("FillDataToGrid: server tra ve {0} dong, sau loc quyen xem con {1} dong, departmentId = {2}",
+                        result.Data.Count, dataTotal, currentDepartmentId));
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Khoa của phòng đang làm việc — dùng để lọc quyền xem
+        /// </summary>
+        private long? GetCurrentDepartmentId()
+        {
+            try
+            {
+                if (this.currentModule == null) return null;
+                var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
+                if (room == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format("Khong tim thay phong lam viec trong cache. RoomId = {0}", this.currentModule.RoomId));
+                    return null;
+                }
+                return room.DEPARTMENT_ID;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
         private void FillDataToGridTransaction(object param)
         {
             try
             {
                 WaitingManager.Show();
-                List<V_HIS_SPECIALIST_EXAM> listData = new List<V_HIS_SPECIALIST_EXAM>();
                 gridControlExamSpecialist.DataSource = null;
                 start = ((CommonParam)param).Start ?? 0;
                 var limit = ((CommonParam)param).Limit ?? 0;
-                CommonParam paramCommon = new CommonParam(start, limit);
-                HisSpecialistExamViewFilter filter = new HisSpecialistExamViewFilter();
-                SetFilter(ref filter);
-                var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
-                if (result != null)
-                {
-                    string UserName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                    var m = result.Data.Where(x => x.ID == 536).ToList();
+                if (limit <= 0) limit = lstDataFiltered.Count;
 
+                // Cắt trang trên tập đã lọc quyền xem
+                List<V_HIS_SPECIALIST_EXAM> listData = lstDataFiltered.Skip(start).Take(limit).ToList();
+                rowCount = listData.Count;
 
-                    var specialistExam = result.Data.Where(x => x.IS_ACTIVE == 1 && x.IS_DELETE != 1 && x.INVITE_TYPE == 1 &&
-                    ((x.EXAM_EXECUTE_LOGINNAME != null && x.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(UserName))
-                    || (x.EXAM_EXECUTE_LOGINNAME == null && x.EXAM_EXECUTE_DEPARMENT_ID != null && x.EXAM_EXECUTE_DEPARMENT_ID == BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID)
-                    || (x.INVITE_DEPARMENT_ID == BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID)
-                    || (x.INVITE_DOCTOR_LOGINNAME == UserName))).ToList();
-
-                    if (specialistExam != null && specialistExam.Count > 0)
-                    {
-                        listData = specialistExam;
-                        rowCount = (listData == null ? 0 : listData.Count);
-                        dataTotal = (listData == null ? 0 : listData.Count);
-                        Inventec.Common.Logging.LogSystem.Debug("API Result with invite_type = 1: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", listData));
-                    }
-                    else
-                    {
-                        listData = null;
-                    }
-                }
                 gridControlExamSpecialist.BeginUpdate();
                 gridControlExamSpecialist.DataSource = listData;
                 gridControlExamSpecialist.EndUpdate();

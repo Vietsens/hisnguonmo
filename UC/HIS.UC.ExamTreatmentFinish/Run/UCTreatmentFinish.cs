@@ -112,6 +112,12 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         private const short IS_CHRONIC__TRUE = 1;
 
         /// <summary>
+        /// Gia tri HIS_TREATMENT.IS_PAUSE khi ho so DA ket thuc dieu tri.
+        /// Kieu short de so sanh truc tiep voi HIS_TREATMENT.IS_PAUSE (short?).
+        /// </summary>
+        private const short IS_PAUSE__TRUE = 1;
+
+        /// <summary>
         /// Chan chkChronic_CheckedChanged goi API khi dang gan Checked bang code
         /// (luc mo man hinh, luc revert sau khi API loi).
         /// </summary>
@@ -414,6 +420,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 this.chkIsExpXml4210Collinear.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkIsExpXml4210Collinear.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkPrintHosTransfer.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkPrintHosTransfer.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkPrintPrescription.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkPrintPrescription.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkSignPrescription.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkSignPrescription.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnICDInformation.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.btnICDInformation.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnICDInformation.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.btnICDInformation.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkKyPhieuTrichLuc.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkKyPhieuTrichLuc.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -639,6 +646,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                         if (item.KEY == chkPrintPrescription.Name)
                         {
                             chkPrintPrescription.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == chkSignPrescription.Name)
+                        {
+                            chkSignPrescription.Checked = item.VALUE == "1";
                         }
                         if (item.KEY == chkPrintHosTransfer.Name)
                         {
@@ -1068,7 +1079,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         public event EventHandler CapSoLuuTruBAChanged;
         public void UpdateLabelColor(LayoutControlItem LayoutControlItem1, LayoutControlItem LayoutControlItem2)
         {
-            if (chkCapSoLuuTruBA.Checked)
+            // Tick "Man tinh" cung lam 2 truong nay thanh bat buoc nhap --> to mau Maroon
+            if (chkCapSoLuuTruBA.Checked || this.IsChronicChecked)
             {
                 LayoutControlItem1.AppearanceItemCaption.ForeColor = Color.Maroon;
                 LayoutControlItem2.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -1333,8 +1345,15 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 this.lciChronic.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 this.chkChronic.Checked = treatment != null && treatment.IS_CHRONIC == IS_CHRONIC__TRUE;
 
+                // Ho so DA ket thuc dieu tri --> khoa checkbox.
+                // Neu khong khoa, nguoi dung van tick/bo tick duoc va API SetChronic se bi tu choi
+                // (kiem tra IsUnpause) --> hien thong bao loi gay nham lan.
+                bool isFinished = treatment != null && treatment.IS_PAUSE == IS_PAUSE__TRUE;
+                this.chkChronic.ReadOnly = isFinished;
+
                 Inventec.Common.Logging.LogSystem.Debug(
                     "[CHRONIC_TRACE] ProcessChronicVisibility:"
+                    + " isFinished=" + isFinished
                     + " TreatmentId=" + (treatment != null ? treatment.ID.ToString() : "null")
                     + ", IS_CHRONIC=" + (treatment != null && treatment.IS_CHRONIC.HasValue ? treatment.IS_CHRONIC.Value.ToString() : "null")
                     + ", TDL_TREATMENT_TYPE_ID=" + (treatment != null && treatment.TDL_TREATMENT_TYPE_ID.HasValue ? treatment.TDL_TREATMENT_TYPE_ID.Value.ToString() : "null")
@@ -1358,8 +1377,76 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         private void chkChronic_CheckedChanged(object sender, EventArgs e)
         {
             if (isNotProcessChronicChanged) return;
+            ProcessSetChronic(this.chkChronic.Checked, true);
+        }
 
-            bool newChecked = this.chkChronic.Checked;
+        /// <summary>
+        /// Checkbox "Man tinh" dang tick hay khong — plugin cha doc de bat buoc nhap
+        /// "Tom tat ket qua can lam sang" va "Phuong phap dieu tri".
+        /// </summary>
+        public bool IsChronicChecked
+        {
+            get { return this.chkChronic != null && this.chkChronic.Checked; }
+        }
+
+        /// <summary>
+        /// Bao plugin cha khi trang thai checkbox "Man tinh" doi thanh cong, de to mau / bo to mau
+        /// cac truong bat buoc nhap ben panel trai.
+        /// </summary>
+        public event EventHandler ChronicRequiredChanged;
+
+        /// <summary>
+        /// Thoi diem cho dong dien dieu tri ngoai tru = gia tri o "Thoi gian ra".
+        /// Xem giai thich chi tiet o ADO.SetChronicADO.LogTime.
+        /// Tra null neu o chua co gia tri --> BE tu lay thoi diem he thong.
+        /// </summary>
+        private long? GetChronicLogTime()
+        {
+            try
+            {
+                if (this.dtEndTime == null || this.dtEndTime.EditValue == null)
+                {
+                    return null;
+                }
+                return Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(this.dtEndTime.DateTime);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        // Nguoi dung sua "Thoi gian ra" SAU khi da tick "Man tinh" --> dong bo lai thoi diem cua
+        // dong dien dieu tri ngoai tru, tranh CLINICAL_IN_TIME > OUT_TIME khi luu.
+        // Dung Leave (roi khoi o) chu KHONG dung EditValueChanged: DateEdit ban ra
+        // EditValueChanged nhieu lan trong luc nhap --> se goi API lien tuc.
+        private void dtEndTime_Leave_Chronic(object sender, EventArgs e)
+        {
+            if (isNotProcessChronicChanged) return;
+            if (this.chkChronic == null || !this.chkChronic.Checked) return;
+            if (this.lciChronic == null || this.lciChronic.Visibility != DevExpress.XtraLayout.Utils.LayoutVisibility.Always) return;
+
+            try
+            {
+                ProcessSetChronic(true, false);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Goi API danh dau / bo danh dau man tinh.
+        /// </summary>
+        /// <param name="newChecked">Trang thai mong muon</param>
+        /// <param name="revertOnFail">
+        /// true  = do tick/bo tick truc tiep --> that bai thi tra checkbox ve trang thai cu.
+        /// false = do dong bo lai thoi diem khi doi "Thoi gian ra" --> KHONG doi trang thai checkbox.
+        /// </param>
+        private void ProcessSetChronic(bool newChecked, bool revertOnFail)
+        {
             Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
             try
             {
@@ -1368,8 +1455,11 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                     : null;
                 if (treatment == null)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("[CHRONIC_TRACE] chkChronic_CheckedChanged: Treatment null, bo qua.");
-                    RevertChronicChecked(!newChecked);
+                    Inventec.Common.Logging.LogSystem.Warn("[CHRONIC_TRACE] ProcessSetChronic: Treatment null, bo qua.");
+                    if (revertOnFail)
+                    {
+                        RevertChronicChecked(!newChecked);
+                    }
                     return;
                 }
 
@@ -1377,6 +1467,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 sdo.TreatmentId = treatment.ID;
                 sdo.IsChronic = newChecked;
                 sdo.RequestRoomId = this.moduleData != null ? this.moduleData.RoomId : this.RoomId;
+                sdo.LogTime = GetChronicLogTime();
 
                 Inventec.Common.Logging.LogSystem.Debug(
                     "[CHRONIC_TRACE] chkChronic_CheckedChanged: goi " + URI__HIS_TREATMENT_SET_CHRONIC
@@ -1404,8 +1495,14 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                         + " TreatmentId=" + resultData.ID
                         + ", IS_CHRONIC=" + (resultData.IS_CHRONIC.HasValue ? resultData.IS_CHRONIC.Value.ToString() : "null")
                         + ", TDL_TREATMENT_TYPE_ID=" + (resultData.TDL_TREATMENT_TYPE_ID.HasValue ? resultData.TDL_TREATMENT_TYPE_ID.Value.ToString() : "null"));
+
+                    // Bao plugin cha to mau / bo to mau cac truong bat buoc nhap
+                    if (this.ChronicRequiredChanged != null)
+                    {
+                        this.ChronicRequiredChanged(this, EventArgs.Empty);
+                    }
                 }
-                else
+                else if (revertOnFail)
                 {
                     RevertChronicChecked(!newChecked);
                 }
@@ -1416,9 +1513,12 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             catch (Exception ex)
             {
                 WaitingManager.Hide();
-                RevertChronicChecked(!newChecked);
+                if (revertOnFail)
+                {
+                    RevertChronicChecked(!newChecked);
+                }
                 Inventec.Common.Logging.LogSystem.Error(
-                    "[CHRONIC_TRACE] chkChronic_CheckedChanged that bai. newChecked=" + newChecked, ex);
+                    "[CHRONIC_TRACE] ProcessSetChronic that bai. newChecked=" + newChecked, ex);
             }
         }
 
@@ -2111,6 +2211,40 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkSignPrescription_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignPrescription.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkSignPrescription.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkSignPrescription.Name;
+                    csAddOrUpdate.VALUE = (chkSignPrescription.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

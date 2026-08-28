@@ -114,7 +114,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 dataPatient.HOUSEHOLD_RELATION_NAME = _currentPatientSDO.HOUSEHOLD_RELATION_NAME;
                 dataPatient.TAX_CODE = _currentPatientSDO.TAX_CODE;
                 dataPatient.BUD_REL_UNIT_CODE = _currentPatientSDO.BUD_REL_UNIT_CODE;
-                
+                //Benh nhan da duoc danh dau khong co CCCD => tich lai check "Khong CCCD" o vung Thong tin khac
+                //=> bo qua kiem tra bat buoc nhap so CMND/CCCD khi tiep don lai
+                dataPatient.IsCheckBoxCCCD = (_currentPatientSDO.IS_NO_CHECK_CCCD == 1); 
+
                 this.ucPlusInfo1.SetValue(dataPatient);
             }
             catch (Exception ex)

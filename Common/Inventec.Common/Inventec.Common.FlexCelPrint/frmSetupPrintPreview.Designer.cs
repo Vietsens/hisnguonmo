@@ -890,6 +890,7 @@ namespace Inventec.Common.FlexCelPrint
             this.cboPrinters.Size = new System.Drawing.Size(139, 20);
             this.cboPrinters.StyleController = this.layoutControl2;
             this.cboPrinters.TabIndex = 6;
+            this.cboPrinters.EditValueChanged += new System.EventHandler(this.cboPrinters_EditValueChanged);
             // 
             // layoutControlGroup2
             // 

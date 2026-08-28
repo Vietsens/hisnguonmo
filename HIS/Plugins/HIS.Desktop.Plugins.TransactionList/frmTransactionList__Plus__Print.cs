@@ -2241,6 +2241,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     lstTran,
                     listSeseDepoRepay
                     );
+                FillPayformAndDiscountForPrint111(pdo, this.transactionPrint != null ? this.transactionPrint.ID : (long?)null);
 
                 if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
@@ -2575,8 +2576,25 @@ namespace HIS.Desktop.Plugins.TransactionList
                 var treatmentList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null);
                 if (treatmentList != null && treatmentList.Count > 0)
                     treatment = treatmentList.First();
+
+                //Danh sach dich vu: uu tien dich vu duoc tam ung boi chinh phieu nay,
+                //neu phieu tam ung khong gan dich vu thi lay toan bo dich vu cua dot dieu tri
+                HisSereServDepositFilter sereServDepositFilter = new HisSereServDepositFilter();
+                sereServDepositFilter.DEPOSIT_ID = this.transactionPrint.ID;
+                sereServDepositFilter.IS_CANCEL = false;
+                var sereServDeposits = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_DEPOSIT>>("api/HisSereServDeposit/Get", ApiConsumers.MosConsumer, sereServDepositFilter, null);
+
+                HisSereServViewFilter sereServViewFilter = new HisSereServViewFilter();
+                if (sereServDeposits != null && sereServDeposits.Count > 0)
+                    sereServViewFilter.IDs = sereServDeposits.Select(o => o.SERE_SERV_ID).Distinct().ToList();
+                else
+                    sereServViewFilter.TREATMENT_ID = this.transactionPrint.TREATMENT_ID;
+                var sereServs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW, ApiConsumers.MosConsumer, sereServViewFilter, null) ?? new List<V_HIS_SERE_SERV>();
+
                 MPS.Processor.Mps000112.PDO.Mps000112PDO rdo =
-                    new MPS.Processor.Mps000112.PDO.Mps000112PDO(deposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>());
+                    new MPS.Processor.Mps000112.PDO.Mps000112PDO(deposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>(), sereServs, sereServDeposits, BackendDataWorker.Get<HIS_PAY_FORM>());
+                FillPayformAndDiscountForPrint112(rdo, this.transactionPrint != null ? this.transactionPrint.ID : (long?)null);
+                rdo._ListDepositReq = GetDepositReqForPrint(this.transactionPrint != null ? this.transactionPrint.TREATMENT_ID : (long?)null, this.transactionPrint != null ? this.transactionPrint.ID : 0);
                 MPS.ProcessorBase.Core.PrintData printData = null;
                 WaitingManager.Hide();
                 if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
@@ -4504,6 +4522,105 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Nap bang hinh thuc thanh toan + bang chiet khau cua giao dich vao PDO in Mps000111.
+        /// </summary>
+        private void FillPayformAndDiscountForPrint111(MPS.Processor.Mps000111.PDO.Mps000111PDO pdo, long? transactionId)
+        {
+            try
+            {
+                if (pdo == null || !transactionId.HasValue || transactionId.Value <= 0) return;
+                pdo._ListTransactionPayform = GetTransactionPayform(transactionId.Value);
+                pdo._ListTransactionDiscount = GetTransactionDiscount(transactionId.Value);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Yeu cau tam ung (HIS_DEPOSIT_REQ) gan voi giao dich tam ung nay - dung cho ban in Mps000112
+        /// de lay khoa/phong YEU CAU giong cot "Khoa yeu cau" tren man hinh Yeu cau tam ung.
+        /// HisDepositReqViewFilter chua ho tro DEPOSIT_ID nen lay theo dot dieu tri roi loc lai o client.
+        /// </summary>
+        private List<MOS.EFMODEL.DataModels.V_HIS_DEPOSIT_REQ> GetDepositReqForPrint(long? treatmentId, long transactionId)
+        {
+            try
+            {
+                if (!treatmentId.HasValue || treatmentId.Value <= 0 || transactionId <= 0)
+                    return null;
+
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                MOS.Filter.HisDepositReqViewFilter filter = new MOS.Filter.HisDepositReqViewFilter();
+                filter.TREATMENT_ID = treatmentId.Value;
+                var data = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_DEPOSIT_REQ>>(
+                    "api/HisDepositReq/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (data == null)
+                    return null;
+
+                return data.Where(o => o.DEPOSIT_ID == transactionId).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+        /// <summary>
+        /// Nap bang hinh thuc thanh toan + bang chiet khau + danh muc ngan hang vao PDO in Mps000112.
+        /// </summary>
+        private void FillPayformAndDiscountForPrint112(MPS.Processor.Mps000112.PDO.Mps000112PDO pdo, long? transactionId)
+        {
+            try
+            {
+                if (pdo == null) return;
+                pdo._Banks = BackendDataWorker.Get<HIS_BANK>();
+                if (!transactionId.HasValue || transactionId.Value <= 0) return;
+                pdo._ListTransactionPayform = GetTransactionPayform(transactionId.Value);
+                pdo._ListTransactionDiscount = GetTransactionDiscount(transactionId.Value);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private List<HIS_TRANSACTION_PAYFORM> GetTransactionPayform(long transactionId)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisTransactionPayformFilter filter = new HisTransactionPayformFilter();
+                filter.TRANSACTION_ID = transactionId;
+                return new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_TRANSACTION_PAYFORM>>(
+                    "api/HisTransactionPayform/Get", ApiConsumers.MosConsumer, filter, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        private List<HIS_TRANSACTION_DISCOUNT> GetTransactionDiscount(long transactionId)
+        {
+            try
+            {
+                //HisTransactionDiscountFilter chua co TRANSACTION_ID -> dung anonymous object nhu TransactionBill
+                CommonParam param = new CommonParam();
+                return new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_TRANSACTION_DISCOUNT>>(
+                    "api/HisTransactionDiscount/Get", ApiConsumers.MosConsumer,
+                    new { TRANSACTION_ID = transactionId, IS_ACTIVE = (short?)1 }, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
         }
     }
 }

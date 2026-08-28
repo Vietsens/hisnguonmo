@@ -51,7 +51,7 @@
     <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="HIS.Desktop.ApiConsumer">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT\HIS.Desktop.ApiConsumer.dll</HintPath>
+      <HintPath>..\..\HIS.Desktop.ApiConsumer\bin\$(Configuration)\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\MOS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -61,7 +61,7 @@
     </Reference>
     <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ExcelExport">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ExcelExport\Inventec.Common.ExcelExport.dll</HintPath>

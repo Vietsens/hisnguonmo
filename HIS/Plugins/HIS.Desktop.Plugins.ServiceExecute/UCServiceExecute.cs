@@ -140,6 +140,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
         private List<HIS_MACHINE> ListMachine { get; set; }
         private List<HIS_SERVICE_MACHINE> ListServiceMachine { get; set; }
+        private Dictionary<long, string> dicAllMachineName = null;
 
         private int positionHandle = -1;
         private bool? isExecuter = null, isReadResult = null;
@@ -2318,7 +2319,24 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             try
             {
                 var currentServiceMachine = ListServiceMachine.Where(o => o.SERVICE_ID == data.SERVICE_ID).Select(o => o.MACHINE_ID).ToList();
-                List<HIS_MACHINE> dataCombo = (currentServiceMachine != null && currentServiceMachine.Count > 0) ? ListMachine.Where(o => currentServiceMachine.Contains(o.ID)).ToList() : null;
+                List<HIS_MACHINE> dataCombo = null;
+                if (currentServiceMachine != null && currentServiceMachine.Count > 0)
+                {
+                    if (AppConfigKeys.MachineShowOption == "1")
+                    {
+                        //Voi MachineShowOption = 1, combo chi loc theo dich vu (khong loc theo phong lam viec)
+                        //=> danh sach lay may mac dinh cung phai lay tu danh sach may day du, neu khong se khong tu lay
+                        //duoc may khi dich vu chi thiet lap 1 may nhung may do khong gan cho phong lam viec.
+                        var allMachines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
+                        dataCombo = allMachines != null
+                            ? allMachines.Where(o => o.IS_ACTIVE == 1 && currentServiceMachine.Contains(o.ID)).ToList()
+                            : null;
+                    }
+                    else
+                    {
+                        dataCombo = ListMachine.Where(o => currentServiceMachine.Contains(o.ID)).ToList();
+                    }
+                }
                 if (dataCombo != null && dataCombo.Count > 0)
                 {
                     //+ Nếu C ko có bản ghi nào, thì yêu cầu người dùng chọn máy từ danh sách A.
@@ -2330,7 +2348,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     else if (GlobalVariables.DicExecuteRoomMachine != null && GlobalVariables.DicExecuteRoomMachine.ContainsKey(moduleData.RoomId) && GlobalVariables.DicExecuteRoomMachine[moduleData.RoomId].Count > 0)
                     {
                         dataCombo = dataCombo.Where(o => GlobalVariables.DicExecuteRoomMachine[moduleData.RoomId].Contains(o.ID)).ToList();
-                        result = dataCombo.First().ID;
+                        //Tranh First() tren list rong (khi may dung lan truoc cua phong khong con hop le) gay exception
+                        if (dataCombo.Count > 0)
+                        {
+                            result = dataCombo.First().ID;
+                        }
                     }
                 }
             }
@@ -2340,6 +2362,89 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 result = null;
             }
             return result;
+        }
+
+        /// <summary>
+        /// Tim may theo ID: uu tien danh sach may cua phong lam viec (ListMachine),
+        /// neu khong co thi tim trong danh sach may day du.
+        /// Voi cau hinh MachineShowOption = 1, may duoc chon co the khong thuoc phong lam viec.
+        /// </summary>
+        private HIS_MACHINE GetMachineById(long? machineId)
+        {
+            try
+            {
+                if (!machineId.HasValue || machineId.Value <= 0) return null;
+
+                var machine = ListMachine != null ? ListMachine.FirstOrDefault(o => o.ID == machineId.Value) : null;
+                if (machine == null)
+                {
+                    var allMachines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
+                    machine = allMachines != null ? allMachines.FirstOrDefault(o => o.ID == machineId.Value) : null;
+                }
+                return machine;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Luu may xu ly cho cac dong con lai tren luoi dich vu.
+        /// Luong luu chinh chi ghi HIS_SERE_SERV_EXT cua dong dang xu ly (SaveProcessor) hoac cac dong duoc gop
+        /// (SaveAllProcess) nen may da chon/da tu lay o cac dong khac khong duoc ghi xuong.
+        /// Dung api/HisSereServ/UpdateMachine - API danh rieng cho viec gan may hang loat: tu tao ext neu chua co,
+        /// cap nhat MACHINE_ID/MACHINE_CODE, HIS_SERE_SERV_TEIN va MACHINE_NAMES cua y lenh.
+        /// </summary>
+        /// <param name="savedSereServIds">Danh sach sere serv da duoc luong luu chinh xu ly, khong gui lai</param>
+        private void SaveMachineForOtherSereServ(List<long> savedSereServIds)
+        {
+            try
+            {
+                if (listServiceADO == null || listServiceADO.Count == 0 || currentServiceReq == null) return;
+
+                List<MOS.SDO.HisSereServUpdateMachineSDO> lstData = new List<MOS.SDO.HisSereServUpdateMachineSDO>();
+                List<long> sereServIds = new List<long>();
+                foreach (var ado in listServiceADO)
+                {
+                    if (ado == null) continue;
+                    if (savedSereServIds != null && savedSereServIds.Contains(ado.ID)) continue;
+                    if (!ado.MACHINE_ID.HasValue || ado.MACHINE_ID.Value <= 0) continue;
+
+                    var ext = (dicSereServExt != null && dicSereServExt.ContainsKey(ado.ID)) ? dicSereServExt[ado.ID] : null;
+                    if (ext != null && ext.MACHINE_ID == ado.MACHINE_ID) continue;//may khong doi
+
+                    lstData.Add(new MOS.SDO.HisSereServUpdateMachineSDO()
+                    {
+                        ServiceReqID = currentServiceReq.ID,
+                        SereServID = ado.ID,
+                        MachineId = ado.MACHINE_ID.Value
+                    });
+                    sereServIds.Add(ado.ID);
+                }
+
+                if (lstData.Count == 0) return;
+
+                CommonParam param = new CommonParam();
+                bool success = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>(
+                    "api/HisSereServ/UpdateMachine", ApiConsumer.ApiConsumers.MosConsumer, lstData, param);
+                Inventec.Common.Logging.LogSystem.Debug("SaveMachineForOtherSereServ success: " + success
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstData), lstData));
+
+                if (success)
+                {
+                    ProcessDicSereServExt(sereServIds);//dong bo lai ext trong bo nho
+                }
+                else
+                {
+                    Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void ProcessLoadGridImage(List<ADO.ImageADO> listImage)
@@ -4620,7 +4725,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     string machineName = detail.MachineName;
                     if (string.IsNullOrWhiteSpace(machineName) && detail.MachineId.HasValue)
                     {
-                        var machine = ListMachine != null ? ListMachine.FirstOrDefault(o => o.ID == detail.MachineId.Value) : null;
+                        var machine = GetMachineById(detail.MachineId);
                         machineName = machine != null ? machine.MACHINE_NAME : null;
                     }
 
@@ -4663,7 +4768,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     string machineName = detail.MachineName;
                     if (string.IsNullOrWhiteSpace(machineName) && detail.MachineId.HasValue)
                     {
-                        var machine = ListMachine != null ? ListMachine.FirstOrDefault(o => o.ID == detail.MachineId.Value) : null;
+                        var machine = GetMachineById(detail.MachineId);
                         machineName = machine != null ? machine.MACHINE_NAME : null;
                     }
 
@@ -4811,7 +4916,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     string machineName = detail.MachineName;
                     if (string.IsNullOrWhiteSpace(machineName) && detail.MachineId.HasValue)
                     {
-                        var machine = ListMachine != null ? ListMachine.FirstOrDefault(o => o.ID == detail.MachineId.Value) : null;
+                        var machine = GetMachineById(detail.MachineId);
                         machineName = machine != null ? machine.MACHINE_NAME : null;
                     }
                     if (string.IsNullOrWhiteSpace(machineName))
@@ -5045,7 +5150,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 //đã gán và kiểm tra theo datasource
                 this.sereServExt.MACHINE_ID = sereServ.MACHINE_ID;
-                var machine = ListMachine.FirstOrDefault(o => o.ID == sereServ.MACHINE_ID);
+                var machine = GetMachineById(sereServ.MACHINE_ID);
                 if (machine != null)
                 {
                     this.sereServExt.MACHINE_CODE = machine.MACHINE_CODE;
@@ -5172,6 +5277,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     ProcessPatientInfo();
 
                     success = true;
+                    //luu may xu ly cho cac dong khac tren luoi (luong nay chi luu ext cua dong dang xu ly)
+                    SaveMachineForOtherSereServ(new List<long> { this.sereServ.ID });
                     if (listServiceADO != null && listServiceADO.Count > 0)
                     {
                         foreach (var item in listServiceADO)
@@ -5457,7 +5564,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     //danh sách máy xử lý bị mất thông tin
                     sereServExt.MACHINE_ID = sereServ.MACHINE_ID;
 
-                    var machine = ListMachine.FirstOrDefault(o => o.ID == sereServ.MACHINE_ID);
+                    var machine = GetMachineById(sereServ.MACHINE_ID);
                     if (machine != null)
                     {
                         sereServExt.MACHINE_CODE = machine.MACHINE_CODE;
@@ -5594,6 +5701,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         success = false;
                         break;
                     }
+                }
+                if (success)
+                {
+                    //luu may xu ly cho cac dong khong nam trong danh sach gop ket qua
+                    SaveMachineForOtherSereServ(listServiceADOForAllInOne != null ? listServiceADOForAllInOne.Select(o => o.ID).ToList() : null);
                 }
                 Inventec.Desktop.Common.Message.WaitingManager.Hide();
                 //lưu và ký và đóng
@@ -6726,6 +6838,47 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hien thi ten may xu ly tren cot Gc_MachineId.
+        /// DevExpress lay text cua cell tu DataSource cua repositoryItemMachineId (danh sach may da loc theo phong lam viec),
+        /// con danh sach trong combo lai duoc gan tren instance editor cua tung dong (loc theo dich vu/cau hinh MachineShowOption).
+        /// Neu may nguoi dung chon khong nam trong DataSource cua repository item thi cell hien thi rong.
+        /// => Tu resolve ten may theo MACHINE_ID tu danh sach may day du.
+        /// </summary>
+        private void gridViewSereServ_CustomColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (e.Column != Gc_MachineId) return;
+
+                long machineId = Inventec.Common.TypeConvert.Parse.ToInt64((e.Value ?? "0").ToString());
+                if (machineId <= 0)
+                {
+                    e.DisplayText = "";
+                    return;
+                }
+
+                if (dicAllMachineName == null)
+                {
+                    dicAllMachineName = new Dictionary<long, string>();
+                    var allMachines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
+                    if (allMachines != null)
+                    {
+                        foreach (var machine in allMachines)
+                        {
+                            dicAllMachineName[machine.ID] = machine.MACHINE_NAME;
+                        }
+                    }
+                }
+
+                e.DisplayText = dicAllMachineName.ContainsKey(machineId) ? dicAllMachineName[machineId] : "";
             }
             catch (Exception ex)
             {

@@ -95,6 +95,14 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
         HisPatientForKioskSDO patientForKioskSDO;
         long PrimaryTypeId = 0;
         string ServiceCode;
+
+        #region Dang ky nhieu cong kham trong mot luot (cau hinh IsAllowRegisterMultiExam)
+        /// <summary>
+        /// Danh sach cong kham nguoi benh da chon trong luot dang ky.
+        /// Phan tu dau tien la cong kham chinh; cac phan tu sau gui kem qua AdditionalServices.
+        /// </summary>
+        List<ExamSelectionADO> examSelections = new List<ExamSelectionADO>();
+        #endregion
         #endregion
 
         #region Contructor
@@ -816,6 +824,13 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Debug("this.PatientTypeId 1 là : " + this.PatientTypeId);
                 getService((V_HIS_EXECUTE_ROOM_1)e.Item.Tag, hisCardPatientSdo, ref vlistService, true);
 
+                //Co cau hinh cho phep chon nhieu cong kham: gom phong vao danh sach, chua dang ky ngay
+                if (HisConfigCFG.IsAllowRegisterMultiExam)
+                {
+                    ProcessSelectExamRoom((V_HIS_EXECUTE_ROOM_1)e.Item.Tag);
+                    return;
+                }
+
                 if (vlistService != null && vlistService.Count > 1)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("this.PatientTypeId là : " + this.PatientTypeId);
@@ -993,6 +1008,201 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             return null;
         }
 
+        #region Dang ky nhieu cong kham trong mot luot
+
+        /// <summary>
+        /// Nguoi benh cham vao mot phong kham khi cau hinh cho phep nhieu cong kham.
+        /// Chon dich vu kham cua phong, kiem tra trung phong/trung dich vu/gioi han tuoi,
+        /// dua vao danh sach cong kham roi hoi co chon them phong khac khong.
+        /// </summary>
+        private void ProcessSelectExamRoom(V_HIS_EXECUTE_ROOM_1 executeRoom)
+        {
+            try
+            {
+                if (executeRoom == null) return;
+
+                //Cham lai phong da chon: mo cua so danh sach de nguoi benh xoa bot hoac dang ky
+                if (IsSelectedRoom(executeRoom.ROOM_ID))
+                {
+                    ShowSelectedExamList();
+                    return;
+                }
+
+                if (this.vlistService == null || this.vlistService.Count == 0)
+                {
+                    XtraMessageBox.Show("Phòng không có dịch vụ nào");
+                    return;
+                }
+
+                V_HIS_SERVICE service = (this.vlistService.Count == 1)
+                    ? this.vlistService.FirstOrDefault()
+                    : SelectExamServiceByRoom(executeRoom);
+
+                if (service == null) return;
+
+                if (IsSelectedService(service.ID))
+                {
+                    XtraMessageBox.Show("Dịch vụ khám này đã được chọn ở phòng khác.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                int? ageMonth = CalculateAgeMonthFromDob(hisCardPatientSdo != null ? hisCardPatientSdo.Dob : 0);
+                if (ageMonth.HasValue)
+                {
+                    string ageMessage = BuildServiceAgeLimitMessage(service, ageMonth.Value);
+                    if (!String.IsNullOrWhiteSpace(ageMessage))
+                    {
+                        XtraMessageBox.Show(ageMessage, "Thông báo", MessageBoxButtons.OK);
+                        return;
+                    }
+                }
+
+                this.examSelections.Add(new ExamSelectionADO(executeRoom, service));
+
+                Inventec.Common.Logging.LogSystem.Info("Kiosk chon cong kham____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => executeRoom.ROOM_ID), executeRoom.ROOM_ID)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => service.ID), service.ID));
+
+                ShowSelectedExamList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Mo popup dich vu kham o che do chi chon, tra ve dich vu nguoi benh da chon</summary>
+        private V_HIS_SERVICE SelectExamServiceByRoom(V_HIS_EXECUTE_ROOM_1 executeRoom)
+        {
+            V_HIS_SERVICE result = null;
+            try
+            {
+                frmServiceRoom = new frmServiceRoom(executeRoom, hisCardPatientSdo, requestRoomId, null, this.vlistService, this.currentModule, this.PatientTypeId, sdoData);
+                frmServiceRoom.IsSelectOnlyMode = true;
+                frmServiceRoom.ShowDialog();
+                result = frmServiceRoom.SelectedService;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                frmServiceRoom = null;
+            }
+            return result;
+        }
+
+        /// <summary>Dang ky toan bo cong kham da chon: cong kham dau tien la cong kham chinh</summary>
+        private void RegisterSelectedExams()
+        {
+            try
+            {
+                if (this.examSelections == null || this.examSelections.Count == 0)
+                {
+                    XtraMessageBox.Show("Vui lòng chọn ít nhất một phòng khám.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                //Cong kham dau tien la cong kham chinh, gui truc tiep trong sdo
+                ExamSelectionADO mainSelection = this.examSelections[0];
+                btnRegister_Click(null, null, mainSelection.Service, mainSelection.ExecuteRoom);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dua cac cong kham chon them vao AdditionalServices de gui kem trong cung mot lan goi api.
+        /// Doi tuong thanh toan va phu thu ap dung chung voi cong kham chinh.
+        /// </summary>
+        private void AppendExtraExamSelections(HisExamRegisterKioskSDO sdo)
+        {
+            try
+            {
+                if (sdo == null || this.examSelections == null || this.examSelections.Count <= 1) return;
+
+                if (sdo.AdditionalServices == null)
+                {
+                    sdo.AdditionalServices = new List<ServiceReqDetailSDO>();
+                }
+
+                //Bo qua phan tu dau tien vi do la cong kham chinh, da nam trong sdo.RoomId/sdo.ServiceId
+                for (int i = 1; i < this.examSelections.Count; i++)
+                {
+                    ExamSelectionADO item = this.examSelections[i];
+                    ServiceReqDetailSDO detail = new ServiceReqDetailSDO();
+                    detail.Amount = 1;
+                    detail.ServiceId = item.ServiceId;
+                    detail.RoomId = item.RoomId;
+                    detail.PatientTypeId = sdo.PatientTypeId;
+                    detail.PrimaryPatientTypeId = sdo.PrimaryPatientTypeId;
+                    sdo.AdditionalServices.Add(detail);
+                }
+
+                Inventec.Common.Logging.LogSystem.Info("Kiosk dang ky nhieu cong kham____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo.AdditionalServices), sdo.AdditionalServices));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Mo cua so danh sach cong kham da chon: nguoi benh xoa bot, chon them phong hoac dang ky.
+        /// Cua so sua truc tiep tren danh sach examSelections nen khong phai dong bo lai.
+        /// </summary>
+        private void ShowSelectedExamList()
+        {
+            try
+            {
+                using (var frmSelected = new Popup.SelectedExam.frmSelectedExamList(this.examSelections, this.currentModule))
+                {
+                    frmSelected.ShowDialog();
+
+                    if (frmSelected.ActionResult == EnumSelectedExamAction.Register)
+                    {
+                        RegisterSelectedExams();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Xoa danh sach cong kham da chon</summary>
+        private void ClearExamSelections()
+        {
+            try
+            {
+                if (this.examSelections != null)
+                {
+                    this.examSelections.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private bool IsSelectedRoom(long roomId)
+        {
+            return this.examSelections != null && this.examSelections.Exists(o => o.RoomId == roomId);
+        }
+
+        private bool IsSelectedService(long serviceId)
+        {
+            return this.examSelections != null && this.examSelections.Exists(o => o.ServiceId == serviceId);
+        }
+
+        #endregion
+
         private void btnRegister_Click(object sender, EventArgs e, V_HIS_SERVICE vhisService, V_HIS_EXECUTE_ROOM_1 executeRoom)
         {
             try
@@ -1163,6 +1373,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                     sdo.IsNotRequireFee = chkRecieveLater.Checked ? true : false;
                 }
 
+                //Bo sung cac cong kham nguoi benh chon them trong cung luot dang ky
+                AppendExtraExamSelections(sdo);
+
                 LogSystem.Info(LogUtil.TraceData("Du kieu gui len khi dkk kios:", sdo));
                 examServiceReqRegisterResultSDO = new BackendAdapter(param).Post<HisServiceReqExamRegisterResultSDO>("api/HisServiceReq/ExamRegisterKiosk", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
                 LogSystem.Info(LogUtil.TraceData("Du kieu dang ky kham tra ve", examServiceReqRegisterResultSDO));
@@ -1173,6 +1386,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                     hisCardPatientSdo.PatientId = examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient.ID;
                     hisCardPatientSdo.PatientCode = examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient.PATIENT_CODE;
                     success = true; 
+                    //Dang ky xong thi xoa danh sach cong kham da chon, tranh dang ky lai o luot sau
+                    ClearExamSelections();
                     onClickPrint();
 
                     if (!ProcessRegisterAddress.CheckAddress(examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient))
@@ -1551,6 +1766,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 this.ServiceReqPrint = new V_HIS_SERVICE_REQ();
                 V_HIS_PATIENT_TYPE_ALTER patyAlter = new V_HIS_PATIENT_TYPE_ALTER();
                 HIS_TREATMENT treatmentPrint = new HIS_TREATMENT();
+                //Danh sach phieu kham can in: mot luot dang ky co the co nhieu cong kham
+                List<V_HIS_SERVICE_REQ> examServiceReqPrints = new List<V_HIS_SERVICE_REQ>();
 
                 if (hisCardPatientSdo.PatientId != null)
                     treatmentPrint = getTreatmentID(hisCardPatientSdo);
@@ -1596,6 +1813,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                         if (ServiceReqPrint != null)
                         {
                             getSereServs(this.ServiceReqPrint);
+                            examServiceReqPrints.Add(this.ServiceReqPrint);
                         }
                     }
                 }
@@ -1631,30 +1849,52 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                         }
 
                         this.sereServs = examServiceReqRegisterResultSDO.SereServs;
-                        this.ServiceReqPrint = examServiceReqRegisterResultSDO.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).OrderBy(o => o.INTRUCTION_TIME).ThenBy(o => o.ID).FirstOrDefault(); ;
+                        //Moi cong kham sinh mot phieu kham rieng nen phai in day du, khong chi phieu dau tien
+                        examServiceReqPrints = examServiceReqRegisterResultSDO.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).OrderBy(o => o.INTRUCTION_TIME).ThenBy(o => o.ID).ToList();
+                        this.ServiceReqPrint = examServiceReqPrints.FirstOrDefault();
                     }
                 }
 
-                if (ServiceReqPrint != null && sereServs != null && sereServs.Count > 0)
+                if (examServiceReqPrints != null && examServiceReqPrints.Count > 0 && sereServs != null && sereServs.Count > 0)
                 {
+                    //Lay the kham benh mot lan cho ca luot in, khong lay lai trong vong lap
+                    List<HIS_CARD> hisCardList = null;
                     if (treatmentPrint != null && treatmentPrint.HAS_CARD == 1)
                     {
-                        List<HIS_CARD> hisCardList = new List<HIS_CARD>();
                         HisCardFilter cardfilter = new HisCardFilter();
                         cardfilter.PATIENT_ID = treatmentPrint.PATIENT_ID;
                         hisCardList = new BackendAdapter(new CommonParam()).Get<List<HIS_CARD>>("api/HisCard/Get", ApiConsumers.MosConsumer, cardfilter, null);
-                        if (hisCardList != null && hisCardList.Count > 0)
+                    }
+
+                    //In mot phieu cho moi cong kham
+                    List<V_HIS_SERE_SERV> allSereServs = this.sereServs;
+                    foreach (var examServiceReq in examServiceReqPrints)
+                    {
+                        if (examServiceReq == null) continue;
+
+                        this.ServiceReqPrint = examServiceReq;
+                        this.sereServs = (examServiceReqPrints.Count > 1)
+                            ? allSereServs.Where(o => o.SERVICE_REQ_ID == examServiceReq.ID).ToList()
+                            : allSereServs;
+
+                        if (this.sereServs == null || this.sereServs.Count == 0) continue;
+
+                        if (treatmentPrint != null && treatmentPrint.HAS_CARD == 1)
                         {
-                            PrintKiosk printKiosk = new PrintKiosk(patyAlter, ServiceReqPrint, sereServs, (DelegateReturnSuccess)DelegateSuccess, printTypeCode, fileName, treatmentPrint, null, null, null, this.checkPrint, hisCardList);
-                            printKiosk.RunPrintHasCard();
+                            if (hisCardList != null && hisCardList.Count > 0)
+                            {
+                                PrintKiosk printKiosk = new PrintKiosk(patyAlter, ServiceReqPrint, sereServs, (DelegateReturnSuccess)DelegateSuccess, printTypeCode, fileName, treatmentPrint, null, null, null, this.checkPrint, hisCardList);
+                                printKiosk.RunPrintHasCard();
+                            }
+                        }
+                        else
+                        {
+                            PrintKiosk printKiosk = new PrintKiosk(patyAlter, ServiceReqPrint, sereServs, (DelegateReturnSuccess)DelegateSuccess, printTypeCode, fileName, treatmentPrint, null, null, null, this.checkPrint);
+                            printKiosk.RunPrint();
                         }
                     }
-                    else
-                    {
-                        PrintKiosk printKiosk = new PrintKiosk(patyAlter, ServiceReqPrint, sereServs, (DelegateReturnSuccess)DelegateSuccess, printTypeCode, fileName, treatmentPrint, null, null, null, this.checkPrint);
-                        printKiosk.RunPrint();
 
-                    }
+                    this.sereServs = allSereServs;
                 }
                 WaitingManager.Hide();
             }

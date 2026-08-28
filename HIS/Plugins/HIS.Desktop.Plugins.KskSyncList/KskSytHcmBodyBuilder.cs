@@ -22,6 +22,7 @@
  * mục bệnh của HIS theo TỪ KHÓA TRONG TÊN, xem vùng "Tiền sử".
  */
 using MOS.EFMODEL.DataModels;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -80,6 +81,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private const string CAT__ICD = "ICD";
         private const string CAT__YES_NO = "Yes_No";
         private const string CAT__YES_NO_M4 = "YesNo";
+        private const string CAT__DOI_TUONG_KHAM = "M3_DoiTuongKham";
 
         /// <summary>
         /// Các câu hỏi có/không gửi 1/0 hay gửi Id danh mục (264 = Có, 265 = Không)?
@@ -117,8 +119,351 @@ namespace HIS.Desktop.Plugins.KskSyncList
             };
 
 
-            // Gửi kèm tên của BẢNG CHI TIẾT bên cạnh tên của VÍ DỤ BODY — xem AddAliases.
-            return body;
+            // Khối hỏi bệnh chỉ có ở mẫu M4 — hồ sơ M3 giữ nguyên hình dạng bản tin như cũ.
+            if (!IsElderlyForm(src)) return body;
+
+            JObject hb = ReadInterviewJson(src);
+            if (hb == null)
+            {
+                // Hồ sơ người cao tuổi mà tab hỏi bệnh còn trống. KHÔNG gửi khối toàn số 0: như
+                // vậy là khai thay bệnh nhân rằng họ trả lời "Không" cho mọi câu.
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "SytHcm: ho so NGUOI CAO TUOI nhung tab Hoi benh lam sang HCM chua nhap"
+                    + " -> ban tin M4 THIEU khoi kham_thuc_the va hoi_benh_kham_lam_sang");
+                return body;
+            }
+
+            JObject full = JObject.FromObject(body);
+            full["kham_thuc_the"] = JObject.FromObject(BuildKhamThucThe(src, hb));
+            full["hoi_benh_kham_lam_sang"] = JObject.FromObject(BuildHoiBenh(src, hb));
+            return full;
+        }
+
+
+
+        #region ===== V. Khám thực thể — mục B và C của Mẫu 4 (RIÊNG mẫu M4) =====
+
+        /// <summary>
+        /// Tiền sử gia đình theo MẪU M4 — 7 bệnh, khác hẳn danh mục của mẫu M3.
+        ///
+        /// KHÔNG suy từ ô tích tiền sử gia đình của mẫu M3: danh mục bên đó là Truyền nhiễm, Lao,
+        /// Động kinh, Rối loạn tâm thần... thiếu hẳn Tăng huyết áp, Phổi tắc nghẽn mạn tính,
+        /// Trầm cảm-lo âu; còn "Tim mạch" bên đó KHÔNG phải "Tim mạch sớm" có kèm mốc tuổi của mẫu
+        /// này. Vì vậy mẫu M4 có ô nhập riêng, đọc từ INTERVIEW_JSON.
+        /// </summary>
+        private static readonly string[] HB__TIEN_SU_GIA_DINH = new string[]
+        {
+            "tsb_giadinh",
+            "tsbgd_tanghuyetap", "tsbgd_daithaoduong", "tsbgd_phoi", "tsbgd_henphequan",
+            "tsbgd_tramcam", "tsbgd_ungthu", "tsbgd_timmach"
+        };
+
+        /// <summary>Đọc cột INTERVIEW_JSON. Trả null khi hồ sơ chưa nhập tab hỏi bệnh.</summary>
+        private static JObject ReadInterviewJson(KskSytHcmSource src)
+        {
+            try
+            {
+                if (src == null || src.SytHcm == null) return null;
+
+                string raw = GetStr(src.SytHcm, "INTERVIEW_JSON");
+                if (string.IsNullOrWhiteSpace(raw)) return null;
+
+                return JObject.Parse(raw);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "SytHcm: cot INTERVIEW_JSON khong doc duoc -> KHONG day cac khoi rieng cua M4");
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Khối kham_thuc_the của mẫu M4:
+        ///   ├ dieu_tri_benh_* / thai_san_*   (dùng lại nguồn của khối tiền sử)
+        ///   ├ tien_su_benh_gia_dinh          mục B — nhập ở tab Hỏi bệnh lâm sàng HCM
+        ///   ├ kham_the_luc                   mục C — trị số lấy từ bản ghi sinh hiệu
+        ///   └ phanloai                       phân loại thể lực
+        ///
+        /// LƯU Ý HÌNH DẠNG: mẫu M4 nhét kham_the_luc VÀO TRONG kham_thuc_the và để phanloai ra
+        /// ngoài nó, còn mẫu M3 để kham_the_luc ở tầng ngoài cùng và phanloai nằm bên trong. Hai
+        /// mẫu không dùng chung một khối được, nên dựng riêng thay vì dùng lại BuildKhamTheLuc.
+        /// </summary>
+        private static Dictionary<string, object> BuildKhamThucThe(KskSytHcmSource src, JObject hb)
+        {
+            var b = new Dictionary<string, object>();
+            HIS_KSK_OVER_EIGHTEEN ov = src.Over18;
+            HIS_DHST d = src.Dhst;
+
+            string treating = GetStr(ov, "PATHOLOGICAL_HISTORY");
+            b["dieu_tri_benh_co_khong"] = YesNo(!string.IsNullOrWhiteSpace(treating));
+            b["dieu_tri_benh_liet_ke"] = treating;
+
+            string maternity = GetStr(ov, "MATERNITY_HISTORY");
+            b["thai_san_co_khong"] = YesNo(!string.IsNullOrWhiteSpace(maternity));
+            b["thai_san_liet_ke"] = maternity;
+
+            b["tien_su_benh_gia_dinh"] = HoiBenhFlags(hb, HB__TIEN_SU_GIA_DINH);
+
+            // Trị số thể lực lấy từ BẢN GHI SINH HIỆU, không nhập lại ở tab hỏi bệnh — để hai nơi
+            // khỏi lệch nhau. Riêng cân nặng một năm trước là câu hỏi bệnh nhân, HIS không có chỗ
+            // nào lưu nên nằm trong INTERVIEW_JSON.
+            var tl = new Dictionary<string, object>();
+            tl["chieucao"] = Num(GetDecimal(d, "HEIGHT"));
+            tl["vongbung"] = Num(GetDecimal(d, "BELLY"));
+            tl["cannang"] = Num(GetDecimal(d, "WEIGHT"));
+            tl["cannang_namtruoc"] = ReadHoiBenhNum(hb, "cannang_namtruoc");
+            tl["mach"] = Num(GetDecimal(d, "PULSE"));
+            tl["huyetaptamthu"] = Num(GetDecimal(d, "BLOOD_PRESSURE_MAX"));
+            tl["huyetaptamtruong"] = Num(GetDecimal(d, "BLOOD_PRESSURE_MIN"));
+            tl["nhiptho"] = Num(GetDecimal(d, "BREATH_RATE"));
+            b["kham_the_luc"] = tl;
+
+            b["phanloai"] = KskSytHcmPayload.ResolveSytRankId(
+                GetLong(src.Over18, "DHST_RANK"), src.HisRanks);
+            return b;
+        }
+
+        /// <summary>Trị số nhập tay trong INTERVIEW_JSON. Chưa nhập thì null, không gửi số 0.</summary>
+        private static object ReadHoiBenhNum(JObject o, string field)
+        {
+            try
+            {
+                JToken t = (o != null) ? o[field] : null;
+                if (t == null) return null;
+
+                decimal v;
+                if (!decimal.TryParse(t.ToString(), System.Globalization.NumberStyles.Any,
+                        CultureInfo.InvariantCulture, out v) || v <= 0) return null;
+                return Num(v);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
+        #endregion
+
+        #region ===== VI. Hỏi bệnh và khám lâm sàng (mục D của Mẫu 4 — TT25) =====
+
+        /// <summary>
+        /// Ô tích của từng nhóm — cổng cần ĐỦ MẶT: không trả lời nghĩa là "Không", tức 0, chứ không
+        /// phải vắng mặt. Cơ sở dữ liệu lưu gọn bằng cách bỏ khoá, bản tin thì bù lại.
+        ///
+        /// Danh sách phải khớp với các ô ở tab Hỏi bệnh lâm sàng HCM. Thêm câu trên giao diện mà
+        /// quên thêm vào đây thì câu đó không lên cổng.
+        ///
+        /// KHÔNG có bpq_* (3 câu tầm soát phổi tắc nghẽn mạn tính): biểu mẫu in có mục này nhưng
+        /// đặc tả của cổng chưa có trường tương ứng.
+        /// </summary>
+        private static readonly string[] HB__THONG_TIN_BENH = new string[]
+        {
+            "benh_tanghuyetap", "benh_daithaoduong", "benh_phoi", "benh_hen", "benh_ungthu",
+            "benh_suytim", "benh_khop", "benh_thanmam", "benh_timthieumau", "benh_nhoimau",
+            "benh_dotqui", "benh_roiloan_tramcam", "benh_roiloan_loau", "benh_sasut_tritue"
+        };
+
+        /// <summary>
+        /// Ô chọn nơi đang điều trị. KHÔNG có benh_nhoimau_cskcb và benh_dotqui_cskcb: đặc tả của
+        /// cổng có hai trường này nhưng biểu mẫu in KHÔNG có ô nơi điều trị cho Nhồi máu cơ tim và
+        /// Đột quỵ, nên giao diện không thu thập — không có dữ liệu để gửi.
+        /// </summary>
+        private static readonly string[] HB__THONG_TIN_BENH_CSKCB = new string[]
+        {
+            "benh_tanghuyetap_cskcb", "benh_daithaoduong_cskcb", "benh_phoi_cskcb",
+            "benh_hen_cskcb", "benh_ungthu_cskcb", "benh_suytim_cskcb", "benh_khop_cskcb",
+            "benh_thanmam_cskcb", "benh_timthieumau_cskcb", "benh_roiloan_tramcam_cskcb",
+            "benh_roiloan_loau_cskcb", "benh_sasut_tritue_cskcb"
+        };
+
+        private static readonly string[] HB__DAI_THAO_DUONG = new string[]
+        { "dtd_maudoi", "dtd_khatnuoc", "dtd_ditieunhieu", "dtd_sutcan", "dtd_vetthuong" };
+
+        private static readonly string[] HB__HEN_PHE_QUAN = new string[]
+        {
+            "hpq_khokhe", "hpq_ho_demkhuya", "hpq_ho_thucgiac", "hpq_ho_vandong",
+            "hpq_hohap_theomua", "hpq_ho_chatkichthich", "hpq_dotcamlanh", "hpq_trieuchung_caithien"
+        };
+
+        private static readonly string[] HB__UNG_THU = new string[]
+        {
+            "ut_vetloet", "ut_hodai", "ut_ankhongtieu", "ut_thaydoi_thoiquen_ruotbongdai",
+            "ut_cucu", "ut_notruoi", "ut_hachto", "ut_utai_nghetmui", "ut_sutcan",
+            "ut_chaymau_dauvu", "ut_chaymau_amdao"
+        };
+
+        /// <summary>
+        /// Trầm cảm VÀ lo âu nằm CHUNG một khối của cổng, dù biểu mẫu in tách thành D6 và D7.
+        /// Trả lời bằng mã mức tần suất, chưa chọn thì không gửi.
+        /// </summary>
+        private static readonly string[] HB__ROI_LOAN_TRAM_CAM = new string[]
+        {
+            "rltc_ithungthu", "rltc_channan", "rltc_khongu", "rltc_metmoi", "rltc_khongngonmieng",
+            "rltc_camthayte", "rltc_khotaptrung", "rltc_chamchap", "rltc_ynghi",
+            "rlla_canthang", "rlla_kiemsoat_lolang", "rlla_lolang_nhieuthu", "rlla_khothugian",
+            "rlla_bucrut", "rlla_bucboi", "rlla_lolang"
+        };
+
+        private static readonly string[] HB__HOAT_DONG_SONG = new string[]
+        {
+            "hds_tutam", "hds_tumacquanao", "hds_tudivesinh", "hds_tudichuyen_khoigiuong",
+            "hds_kiemsoat_tieutieu", "hds_tuanuong"
+        };
+
+        private static readonly string[] HB__HOAT_DONG_HANG_NGAY = new string[]
+        {
+            "hdhn_nghedt", "hdhn_tumua_vatdung", "hdhn_tunauan", "hdhn_tulamviecnha",
+            "hdhn_tugiatquanao", "hdhn_tulaixe_batxe", "hdhn_tuchia_uongthuoc", "hdhn_tugiutien"
+        };
+
+        private static readonly string[] HB__DANH_GIA_TE_NGA = new string[]
+        { "dgtn_bite", "dgtn_loso_binga", "dgtn_didung" };
+
+        private static readonly string[] HB__GIAM_NHAN_THUC = new string[]
+        { "gnt_trinho_bigiam", "gnt_ghinho", "gnt_nho_noilai" };
+
+        /// <summary>
+        /// Dựng khối hỏi bệnh từ cột INTERVIEW_JSON.
+        ///
+        /// KHỐI NÀY LỒNG NHAU, KHÔNG PHẲNG — đúng theo đặc tả của Sở:
+        ///   hoi_benh_kham_lam_sang
+        ///     ├ macbenh
+        ///     ├ thong_tin_benh          (14 bệnh + nơi điều trị + bệnh khác)
+        ///     ├ dai_thao_duong / hen_phe_quan / ung_thu / roi_loan_tram_cam
+        ///     ├ tinh_than_van_dong
+        ///     │   └ hoat_dong_song / hoat_dong_hang_ngay / tinh_trang_suy_yeu
+        ///     │     / danh_gia_te_nga / giam_nhan_thuc
+        ///     └ dauhieu_khac
+        /// Cơ sở dữ liệu vẫn lưu PHẲNG một mức trong INTERVIEW_JSON: gói lồng là hình dạng của bản
+        /// tin, không phải hình dạng của dữ liệu — lưu phẳng thì đọc/ghi trên giao diện gọn hơn.
+        ///
+        /// Trả null khi hồ sơ chưa nhập tab này.
+        /// </summary>
+        private static Dictionary<string, object> BuildHoiBenh(KskSytHcmSource src, JObject o)
+        {
+            HIS_KSK_SYT_HCM h = src.SytHcm;
+
+            var thongTinBenh = HoiBenhFlags(o, HB__THONG_TIN_BENH);
+            HoiBenhAddIds(thongTinBenh, o, HB__THONG_TIN_BENH_CSKCB);
+            thongTinBenh["benh_khac_hoibenh"] = GetStr(h, "INTERVIEW_OTHER_DISEASE");
+
+            var suyYeu = HoiBenhFlags(o, new string[] { "ttsy_khokhan_leothang", "ttsy_khokhan_dibo" });
+            HoiBenhAddIds(suyYeu, o, new string[] { "ttsy_metmoi" });
+
+            var tinhThanVanDong = new Dictionary<string, object>();
+            tinhThanVanDong["hoat_dong_song"] = HoiBenhFlags(o, HB__HOAT_DONG_SONG);
+            tinhThanVanDong["hoat_dong_hang_ngay"] = HoiBenhFlags(o, HB__HOAT_DONG_HANG_NGAY);
+            tinhThanVanDong["tinh_trang_suy_yeu"] = suyYeu;
+            tinhThanVanDong["danh_gia_te_nga"] = HoiBenhFlags(o, HB__DANH_GIA_TE_NGA);
+            tinhThanVanDong["giam_nhan_thuc"] = HoiBenhFlags(o, HB__GIAM_NHAN_THUC);
+
+            var b = new Dictionary<string, object>();
+            b["macbenh"] = ReadHoiBenhFlag(o, "macbenh");
+            b["thong_tin_benh"] = thongTinBenh;
+            b["dai_thao_duong"] = HoiBenhFlags(o, HB__DAI_THAO_DUONG);
+            b["hen_phe_quan"] = HoiBenhFlags(o, HB__HEN_PHE_QUAN);
+            b["ung_thu"] = HoiBenhFlags(o, HB__UNG_THU);
+            b["roi_loan_tram_cam"] = HoiBenhIds(o, HB__ROI_LOAN_TRAM_CAM);
+            b["tinh_than_van_dong"] = tinhThanVanDong;
+            b["dauhieu_khac"] = GetStr(h, "INTERVIEW_OTHER_SIGN");
+
+            Inventec.Common.Logging.LogSystem.Warn("SytHcm/HoiBenh: da dung khoi hoi benh long nhau");
+            return b;
+        }
+
+        /// <summary>Một nhóm ô tích: gửi đủ mặt, không trả lời thì 0.</summary>
+        private static Dictionary<string, object> HoiBenhFlags(JObject o, string[] fields)
+        {
+            var b = new Dictionary<string, object>();
+            foreach (string f in fields) b[f] = ReadHoiBenhFlag(o, f);
+            return b;
+        }
+
+        /// <summary>Một nhóm ô chọn: chưa chọn thì KHÔNG gửi — 0 ở đây là một mã danh mục có thật.</summary>
+        private static Dictionary<string, object> HoiBenhIds(JObject o, string[] fields)
+        {
+            var b = new Dictionary<string, object>();
+            HoiBenhAddIds(b, o, fields);
+            return b;
+        }
+
+        private static void HoiBenhAddIds(Dictionary<string, object> b, JObject o, string[] fields)
+        {
+            foreach (string f in fields)
+            {
+                long? v = ReadHoiBenhId(o, f);
+                if (v.HasValue) b[f] = v.Value;
+            }
+        }
+
+        /// <summary>Ô tích: có khoá và bằng 1 thì 1, còn lại là 0.</summary>
+        private static int ReadHoiBenhFlag(JObject o, string field)
+        {
+            try
+            {
+                JToken t = o[field];
+                if (t == null) return 0;
+                int v;
+                return (int.TryParse(t.ToString(), out v) && v == 1) ? 1 : 0;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return 0; }
+        }
+
+        /// <summary>Ô chọn: trả mã đã chọn, chưa chọn thì null.</summary>
+        private static long? ReadHoiBenhId(JObject o, string field)
+        {
+            try
+            {
+                JToken t = o[field];
+                if (t == null) return null;
+                long v;
+                return (long.TryParse(t.ToString(), out v) && v > 0) ? (long?)v : null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
+        #endregion
+
+
+        /// <summary>
+        /// Hồ sơ này đẩy theo MẪU M4 (khám sức khoẻ người cao tuổi) hay M3.
+        ///
+        /// CĂN CỨ LÀ "ĐỐI TƯỢNG KHÁM", KHÔNG PHẢI TUỔI. Ba lý do:
+        ///   - Cổng đã mô hình hoá sẵn: "Người cao tuổi" là một mục của danh mục M3_DoiTuongKham,
+        ///     người dùng chọn trên màn nhập và đã lưu vào cột SYT_PATIENT_TYPES.
+        ///   - Đủ 60 tuổi không có nghĩa là khám theo chương trình người cao tuổi: một người 65
+        ///     tuổi còn đi làm, khám định kỳ theo diện người lao động thì vẫn là M3.
+        ///   - Trừ tuổi không đáng tin với đúng nhóm này: HIS có cờ IS_HAS_NOT_DAY_DOB cho bệnh
+        ///     nhân không nhớ ngày tháng sinh, mà người cao tuổi lại là nhóm hay chỉ có năm sinh.
+        ///
+        /// KHÔNG VIẾT CỨNG MÃ ĐỊNH DANH: tra tên trong danh mục của cổng, như phần giới tính.
+        /// Danh mục chưa tải về thì trả false — đẩy M3 như cũ, kèm cảnh báo, hơn là đoán.
+        /// </summary>
+        internal static bool IsElderlyForm(KskSytHcmSource src)
+        {
+            try
+            {
+                if (src == null || src.SytHcm == null) return false;
+
+                string types = GetStr(src.SytHcm, "SYT_PATIENT_TYPES");
+                if (string.IsNullOrWhiteSpace(types)) return false;
+
+                long? nctId = MapByName(CAT__DOI_TUONG_KHAM, "Người cao tuổi");
+                if (!nctId.HasValue)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SytHcm: chua tra duoc ma cua doi tuong kham 'Nguoi cao tuoi' trong danh muc "
+                        + CAT__DOI_TUONG_KHAM + " -> day theo mau M3");
+                    return false;
+                }
+
+                foreach (string part in types.Split(';', ','))
+                {
+                    long v;
+                    if (long.TryParse(part.Trim(), out v) && v == nctId.Value) return true;
+                }
+                return false;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
         }
 
         /// <summary>I. Thông tin hành chính — 23 chỉ tiêu.</summary>
@@ -229,10 +574,23 @@ namespace HIS.Desktop.Plugins.KskSyncList
             HIS_KSK_OVER_EIGHTEEN o = src.Over18;
 
             string family = GetStr(o, "PATHOLOGICAL_HISTORY_FAMILY");
-            b["giadinh_macbenh"] = YesNo(!string.IsNullOrWhiteSpace(family));
-            b["giadinh_danhsachbenh"] = null;       // HIS lưu dạng chữ, không có danh sách mã bệnh
-            b["giadinh_danhsachbenh_icd"] = null;
-            b["giadinh_macbenh_tenbenh"] = family;
+            // TIỀN SỬ GIA ĐÌNH — 4 chỉ tiêu, tất cả đã có chỗ lưu trong HIS kể từ khi màn hình
+            // nhập đổi ô chữ thành danh sách ô tích lấy từ danh mục của cổng.
+            //
+            //   giadinh_danhsachbenh      <- danh sách mã định danh bệnh trong danh mục của cổng
+            //   giadinh_danhsachbenh_icd  <- danh sách mã định danh trong danh mục ICD của cổng
+            //   giadinh_macbenh_tenbenh   <- tên các bệnh đã chọn ở ô mã ICD
+            //   giadinh_macbenh           <- có/không, suy ra từ ba chỉ tiêu trên
+            string famIds = ReplaceSeparator(family);
+            string famIcdIds = ReplaceSeparator(GetStr(src.General, "FAMILY_HISTORY_ICD_CODE"));
+            string famIcdNames = GetStr(src.General, "FAMILY_HISTORY_ICD_NAME");
+
+            b["giadinh_danhsachbenh"] = famIds;
+            b["giadinh_danhsachbenh_icd"] = famIcdIds;
+            b["giadinh_macbenh_tenbenh"] = famIcdNames;
+            b["giadinh_macbenh"] = YesNo(!string.IsNullOrWhiteSpace(famIds)
+                || !string.IsNullOrWhiteSpace(famIcdIds)
+                || !string.IsNullOrWhiteSpace(famIcdNames));
 
             b["ds_benh_ban_than"] = BuildDsBenhBanThan(src);
 

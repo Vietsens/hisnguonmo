@@ -258,6 +258,9 @@
     <Compile Include="Core\PatientOldUnder6\IPatientOldUnder6.cs" />
     <Compile Include="Core\PatientOldUnder6\PatientOldUnder6Behavior.cs" />
     <Compile Include="Core\PatientOldUnder6\PatientOldUnder6Factory.cs" />
+    <Compile Include="Core\SetCoPaidAccumulateFromGov\ISetCoPaidAccumulateFromGov.cs" />
+    <Compile Include="Core\SetCoPaidAccumulateFromGov\SetCoPaidAccumulateFromGovBehavior.cs" />
+    <Compile Include="Core\SetCoPaidAccumulateFromGov\SetCoPaidAccumulateFromGovFactory.cs" />
     <Compile Include="Core\SetResultDataADO\ISetResultDataADO.cs" />
     <Compile Include="Core\SetResultDataADO\SetResultDataADOBehavior.cs" />
     <Compile Include="Core\SetResultDataADO\SetResultDataADOFactory.cs" />
@@ -315,6 +318,9 @@
     <Compile Include="Design\TemplateHeinBHYT1\Template__HeinBHYT1__Control.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Design\TemplateHeinBHYT1\Template__HeinBHYT1__CoPaidMCCT.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Design\TemplateHeinBHYT1\Template__HeinBHYT1__Process.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -367,6 +373,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainHisHeinBhyt__Hein.cs" />
+    <Compile Include="Data\CoPaidMcctADO.cs" />
     <Compile Include="Data\DataInitHeinBhyt.cs" />
     <Compile Include="Core\Init\IInit.cs" />
     <Compile Include="Core\Init\InitBhytBehavior.cs" />

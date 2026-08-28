@@ -130,6 +130,10 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         private const string CONFIG_KEY__HideAddressLevel = "HIS.Desktop.Plugins.Register.HideAddressLevel";
         private const string CONFIG_KEY__WarningOverMonth = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
         private const string CONFIG_KEY_GuaranteeConnection = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
+        private const string CONFIG_KEY__PatientAdvance = "HIS.Desktop.Plugins.RegisterV2.PatientAdvance"; 
+        private const string CONFIG_KEY__ShowPreviousExamByMedicalOrder = "HIS.Desktop.Plugins.RegisterV2.ShowPreviousExamByMedicalOrder"; 
+        public static string PatientAdvance;
+        public static string ShowPreviousExamByMedicalOrde;
 
         public static bool HideAddressLevel;
         public static string CHECK_DUPLICATION;
@@ -275,6 +279,8 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 LogSystem.Debug("LoadConfig => 1");
                 //Get BHYT
                 BHXHLoginCFG.LoadConfig();
+                ShowPreviousExamByMedicalOrde = GetValue(CONFIG_KEY__ShowPreviousExamByMedicalOrder);   
+                PatientAdvance = GetValue(CONFIG_KEY__PatientAdvance);
                 HideAddressLevel = GetValue(CONFIG_KEY__HideAddressLevel) == valueString__true;
                 WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__WarningHeinPatientTypeCode);
                 IsAllowProgramPatientOld = GetValue("HIS.Desktop.Plugins.RegisterV2.IsAllowProgramPatientOld");

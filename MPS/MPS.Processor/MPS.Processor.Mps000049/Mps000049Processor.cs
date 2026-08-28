@@ -50,6 +50,21 @@ namespace MPS.Processor.Mps000049
         // Sentinel cho MEDICINE_GROUP_ID của phiếu SPKPLT — giá trị âm để không trùng nhóm thuốc thật (luôn dương)
         const long SPKPLT_MEDICINE_GROUP_ID = -2778;
 
+        #region Nhóm trang in (PageGroups): thuốc thường vs thuốc kiểm soát đặc biệt
+
+        // Nhóm trang 1: thuốc thường (tất cả nhóm còn lại)
+        const long PAGE_GROUP_ID__NORMAL = 1;
+        // Nhóm trang 2: gây nghiện, hướng thần, tiền chất (kể cả dạng phối hợp)
+        const long PAGE_GROUP_ID__CONTROLLED = 2;
+
+        const string PAGE_GROUP_NAME__NORMAL = "THUỐC THƯỜNG";
+        const string PAGE_GROUP_NAME__CONTROLLED = "THUỐC GÂY NGHIỆN, HƯỚNG THẦN, TIỀN CHẤT";
+
+        // Tiền tố tiêu đề phiếu, ghép với tên nhóm thành PAGE_GROUP_TITLE
+        const string PAGE_GROUP_TITLE_PREFIX = "PHIẾU XUẤT KHO ";
+
+        #endregion
+
         public Mps000049Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -212,7 +227,11 @@ namespace MPS.Processor.Mps000049
                 objectTag.AddObjectData(store, "MedicineUseForms", medicineUseForms);
                 objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
                 objectTag.AddObjectData(store, "MedicineParent", listParentFilter);
-                
+
+                // Tách trang theo nhóm trang (thuốc thường / thuốc kiểm soát đặc biệt).
+                // Bộ dataset + quan hệ này là THÊM MỚI, độc lập với khối quan hệ đang tạm tắt bên dưới.
+                ProcessPageGroups(objectTag);
+
                 // ===== DIAGNOSTIC 2778: TẠM TẮT toàn bộ relationship để khoanh vùng lỗi FlexCel DeleteRange 1048577 =====
                 // Nếu in được sau khi tắt -> quan hệ master-detail thiếu band master trong template là nguyên nhân.
                 // Nếu vẫn lỗi -> do cấu trúc band/template. ĐÂY LÀ TEST TẠM, sẽ khôi phục sau.
@@ -336,6 +355,121 @@ namespace MPS.Processor.Mps000049
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Sinh dataset "PageGroups" (mỗi bản ghi = 1 trang phiếu) và quan hệ tới các dòng thuốc,
+        /// để template bind band phủ cả trang vào __PageGroups__ và ngắt trang theo nhóm:
+        /// trang 1 = thuốc thường, trang 2 = thuốc gây nghiện/hướng thần/tiền chất.
+        /// Nhóm nào không có dữ liệu thì không sinh trang.
+        /// </summary>
+        private void ProcessPageGroups(Inventec.Common.FlexCellExport.ProcessObjectTag objectTag)
+        {
+            try
+            {
+                List<Mps000049ADO> all = (rdo.listAdo != null) ? rdo.listAdo : new List<Mps000049ADO>();
+
+                // Gán khóa nhóm trang + tính sẵn số lượng in và thành tiền cho từng dòng.
+                // listAdo và listAdoArrangeM_T_N dùng CHUNG instance nên chỉ cần gán 1 lần.
+                foreach (var item in all)
+                {
+                    StampPageGroupFields(item);
+                }
+                if (ExpMestADOsSplit != null)
+                {
+                    foreach (var item in ExpMestADOsSplit)
+                    {
+                        StampPageGroupFields(item);
+                    }
+                }
+
+                List<Mps000049PageGroupADO> pageGroups = new List<Mps000049PageGroupADO>();
+                AddPageGroup(pageGroups, all, PAGE_GROUP_ID__NORMAL, PAGE_GROUP_NAME__NORMAL);
+                AddPageGroup(pageGroups, all, PAGE_GROUP_ID__CONTROLLED, PAGE_GROUP_NAME__CONTROLLED);
+
+                objectTag.AddObjectData(store, "PageGroups", pageGroups);
+                objectTag.AddRelationship(store, "PageGroups", "ExpMestAggregates", "PAGE_GROUP_ID", "PAGE_GROUP_ID");
+                objectTag.AddRelationship(store, "PageGroups", "ExpMestAggregates1", "PAGE_GROUP_ID", "PAGE_GROUP_ID");
+
+                Inventec.Common.Logging.LogSystem.Debug(String.Format(
+                    "MPS49_PAGEGROUPS____so trang={0}; chi tiet={1}",
+                    pageGroups.Count,
+                    String.Join(" | ", pageGroups.Select(o => o.PAGE_GROUP_NAME + ": " + o.ITEM_COUNT + " khoan, tong tien " + o.TOTAL_PRICE))));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gán nhóm trang, số lượng in và thành tiền cho 1 dòng thuốc/vật tư.
+        /// </summary>
+        private static void StampPageGroupFields(Mps000049ADO ado)
+        {
+            try
+            {
+                if (ado == null) return;
+
+                ado.PAGE_GROUP_ID = IsControlledMedicine(ado) ? PAGE_GROUP_ID__CONTROLLED : PAGE_GROUP_ID__NORMAL;
+                // Phiếu chưa duyệt/xuất thì AMOUNT_EXCUTE = 0 -> lấy số yêu cầu để phiếu không in ra số 0
+                ado.AMOUNT_PRINT = (ado.AMOUNT_EXCUTE > 0) ? ado.AMOUNT_EXCUTE : ado.AMOUNT_REQUEST;
+                ado.TOTAL_PRICE = ado.AMOUNT_PRINT * (ado.PRICE ?? 0);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Thuốc phải kiểm soát đặc biệt: gây nghiện, hướng thần, tiền chất và các dạng phối hợp.
+        /// Ưu tiên so theo ID nhóm thuốc; fallback theo tên nhóm cho dữ liệu cũ/nhóm tự tạo.
+        /// </summary>
+        private static bool IsControlledMedicine(Mps000049ADO ado)
+        {
+            if (ado == null) return false;
+
+            long groupId = ado.MEDICINE_GROUP_ID ?? 0;
+            if (groupId == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN
+                || groupId == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT
+                || groupId == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__TC
+                || groupId == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN
+                || groupId == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT)
+            {
+                return true;
+            }
+
+            string name = (ado.MEDICINE_GROUP_NAME ?? "").Trim().ToUpper();
+            return name.Contains("GÂY NGHIỆN") || name.Contains("HƯỚNG THẦN") || name.Contains("TIỀN CHẤT");
+        }
+
+        /// <summary>
+        /// Tạo 1 bản ghi nhóm trang kèm các số tổng tính sẵn. Không có dòng nào thì bỏ qua (không in trang rỗng).
+        /// </summary>
+        private static void AddPageGroup(List<Mps000049PageGroupADO> result, List<Mps000049ADO> all, long pageGroupId, string pageGroupName)
+        {
+            try
+            {
+                List<Mps000049ADO> rows = all.Where(o => o.PAGE_GROUP_ID == pageGroupId).ToList();
+                if (rows.Count <= 0) return;
+
+                Mps000049PageGroupADO ado = new Mps000049PageGroupADO();
+                ado.PAGE_GROUP_ID = pageGroupId;
+                ado.PAGE_GROUP_NAME = pageGroupName;
+                ado.PAGE_GROUP_TITLE = PAGE_GROUP_TITLE_PREFIX + pageGroupName;
+                ado.ITEM_COUNT = rows.Count;
+                ado.TOTAL_AMOUNT = rows.Sum(o => o.AMOUNT_PRINT);
+                ado.TOTAL_PRICE = rows.Sum(o => o.TOTAL_PRICE ?? 0);
+                ado.TOTAL_PRICE_TEXT = Inventec.Common.String.Convert.CurrencyToVneseString(
+                    string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.TOTAL_PRICE)));
+
+                result.Add(ado);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void ProcessListMedicineUse()

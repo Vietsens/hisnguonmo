@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -41,6 +41,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         public static string OFFICERNAME;
         public static string CCCDOFFICER;
         public static string OTHERAPIEGW;
+
         public static void LoadConfig()
         {
             try

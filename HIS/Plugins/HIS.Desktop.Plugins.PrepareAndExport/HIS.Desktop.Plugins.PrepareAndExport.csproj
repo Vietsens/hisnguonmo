@@ -162,6 +162,7 @@
       <DependentUpon>frmRequirements .cs</DependentUpon>
     </Compile>
     <Compile Include="PrepareAndExportProcessor.cs" />
+    <Compile Include="TreatmentBatchLoader.cs" />
     <Compile Include="PrepareAndExport\IPrepareAndExport.cs" />
     <Compile Include="PrepareAndExport\PrepareAndExportBehavior.cs" />
     <Compile Include="PrepareAndExport\PrepareAndExportFactory.cs" />

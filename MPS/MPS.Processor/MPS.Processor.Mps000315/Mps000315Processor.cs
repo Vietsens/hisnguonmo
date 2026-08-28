@@ -124,6 +124,33 @@ namespace MPS.Processor.Mps000315
 
                 objectTag.AddRelationship(store, "KskGeneral", "Dhst", "DHST_ID", "ID");
 
+                // Phần khám theo 3 mẫu KSK còn lại — biểu mẫu có thể duyệt band riêng từng mẫu.
+                if (rdo._KskOverEighteens == null)
+                {
+                    rdo._KskOverEighteens = new List<HIS_KSK_OVER_EIGHTEEN>();
+                }
+                objectTag.AddObjectData(store, "KskOverEighteen", rdo._KskOverEighteens);
+                if (rdo._KskUnderEighteens == null)
+                {
+                    rdo._KskUnderEighteens = new List<HIS_KSK_UNDER_EIGHTEEN>();
+                }
+                objectTag.AddObjectData(store, "KskUnderEighteen", rdo._KskUnderEighteens);
+                if (rdo._KskUnderSixs == null)
+                {
+                    rdo._KskUnderSixs = new List<HIS_KSK_UNDER_SIX>();
+                }
+                objectTag.AddObjectData(store, "KskUnderSix", rdo._KskUnderSixs);
+
+                objectTag.AddRelationship(store, "KskOverEighteen", "Dhst", "DHST_ID", "ID");
+                objectTag.AddRelationship(store, "KskUnderEighteen", "Dhst", "DHST_ID", "ID");
+                objectTag.AddRelationship(store, "KskUnderSix", "Dhst", "DHST_ID", "ID");
+                objectTag.AddRelationship(store, "Treatment", "KskOverEighteen", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "Treatment", "KskUnderEighteen", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "Treatment", "KskUnderSix", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "ServiceReq", "KskOverEighteen", "ID", "SERVICE_REQ_ID");
+                objectTag.AddRelationship(store, "ServiceReq", "KskUnderEighteen", "ID", "SERVICE_REQ_ID");
+                objectTag.AddRelationship(store, "ServiceReq", "KskUnderSix", "ID", "SERVICE_REQ_ID");
+
 
                 if (rdo._KSK_HealthExamRank == null)
                 {
@@ -206,6 +233,30 @@ namespace MPS.Processor.Mps000315
                         AddObjectKeyIntoListkey<HIS_KSK_GENERAL>(rdo._KskGeneral[0], true);
                 }
 
+                // Key riêng từng mẫu (biểu mẫu gọi trực tiếp OVER18_/UNDER18_/UNDER6_ + tên field của mẫu đó).
+                HIS_KSK_OVER_EIGHTEEN kskOverEighteen = (rdo._KskOverEighteens != null && rdo._KskOverEighteens.Count == 1)
+                    ? rdo._KskOverEighteens[0] : null;
+                HIS_KSK_UNDER_EIGHTEEN kskUnderEighteen = (rdo._KskUnderEighteens != null && rdo._KskUnderEighteens.Count == 1)
+                    ? rdo._KskUnderEighteens[0] : null;
+                HIS_KSK_UNDER_SIX kskUnderSix = (rdo._KskUnderSixs != null && rdo._KskUnderSixs.Count == 1)
+                    ? rdo._KskUnderSixs[0] : null;
+                if (kskOverEighteen != null)
+                    AddObjectKeyIntoListkeyWithPrefix<HIS_KSK_OVER_EIGHTEEN>(kskOverEighteen, "OVER18_", true);
+                if (kskUnderEighteen != null)
+                    AddObjectKeyIntoListkeyWithPrefix<HIS_KSK_UNDER_EIGHTEEN>(kskUnderEighteen, "UNDER18_", true);
+                if (kskUnderSix != null)
+                    AddObjectKeyIntoListkeyWithPrefix<HIS_KSK_UNDER_SIX>(kskUnderSix, "UNDER6_", true);
+
+                // Bộ key CHUẨN (tên field như HIS_KSK_GENERAL) lấy theo thứ tự ưu tiên
+                // trên-18 → dưới-18 → dưới-6 → khám chung, ghi SAU khối general để ưu tiên cao hơn thắng.
+                // Nhờ vậy biểu mẫu cũ (đang dùng key của HIS_KSK_GENERAL) hiển thị được cả mẫu <18 và <6.
+                HIS_KSK_GENERAL kskGeneral = (rdo._KskGeneral != null && rdo._KskGeneral.Count == 1)
+                    ? rdo._KskGeneral[0] : null;
+                KskExamAdo kskExamAdo = KskExamAdo.Build(kskOverEighteen, kskUnderEighteen, kskUnderSix,
+                    kskGeneral, rdo._KSK_HealthExamRank);
+                if (kskExamAdo != null)
+                    AddObjectKeyIntoListkey<KskExamAdo>(kskExamAdo, true);
+
                 TreatmentAdos = new List<TreatmentAdo>();
                 if (rdo._KSK_Treatments != null && rdo._KSK_Treatments.Count > 0)
                 {
@@ -257,10 +308,36 @@ namespace MPS.Processor.Mps000315
                 }
                 // AddObjectKeyIntoListkey<V_HIS_TREATMENT>(rdo._KSK_Treatments);
                 
-                if (rdo._KSK_Dhsts != null)
+                if (rdo._KSK_Dhsts != null && rdo._KSK_Dhsts.Count > 0)
                 {
                     SetSingleKey((new KeyValue(Mps000315ExtendSingleKey.DHST_LOGINNAME, rdo._KSK_Dhsts.FirstOrDefault().EXECUTE_LOGINNAME)));
                 }
+                // Kết luận theo bệnh (ICD-10) — 3 cờ "x" phái sinh từ HIS_KSK_GENERAL.CONCLUSION_ICD_TYPE
+                SetConclusionIcdFlagKeys();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Kết luận theo bệnh (ICD-10) — dữ liệu ở HIS_KSK_GENERAL (UC dùng chung mọi tab KSK).
+        /// Key thô CONCLUSION_ICD_TYPE/_CODE/_NAME đã có sẵn qua AddObjectKeyIntoListkey&lt;HIS_KSK_GENERAL&gt;;
+        /// hàm này bổ sung 3 cờ "x" cho biểu mẫu tick ô (khuôn theo Mps000516):
+        /// 1=Chưa phát hiện bất thường, 2=Chẩn đoán sơ bộ, 3=Chẩn đoán xác định.
+        /// </summary>
+        private void SetConclusionIcdFlagKeys()
+        {
+            try
+            {
+                HIS_KSK_GENERAL kskGeneral = (rdo._KskGeneral != null && rdo._KskGeneral.Count > 0)
+                    ? rdo._KskGeneral[0] : null;
+                long? icdType = (kskGeneral != null && kskGeneral.CONCLUSION_ICD_TYPE != null)
+                    ? (long?)kskGeneral.CONCLUSION_ICD_TYPE.Value : null;
+                SetSingleKey(new KeyValue(Mps000315ExtendSingleKey.CONCLUSION_ICD_NONE_X, icdType == 1 ? "x" : ""));
+                SetSingleKey(new KeyValue(Mps000315ExtendSingleKey.CONCLUSION_ICD_PRELIM_X, icdType == 2 ? "x" : ""));
+                SetSingleKey(new KeyValue(Mps000315ExtendSingleKey.CONCLUSION_ICD_FINAL_X, icdType == 3 ? "x" : ""));
             }
             catch (Exception ex)
             {

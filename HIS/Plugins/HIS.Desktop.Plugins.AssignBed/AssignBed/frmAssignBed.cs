@@ -6846,6 +6846,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         sdo.BedStartTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(item.TIME_FROM);
                         sdo.IsNotUseBhyt = item.IsNotUseBhyt;
                         sdo.AssignNumOrder = item.AssignNumOrder;
+                        sdo.PrimaryPatientTypeId = item.PRIMARY_PATIENT_TYPE_ID;
                         if (item.TEST_SAMPLE_TYPE_ID > 0)
                             sdo.SampleTypeCode = item.TEST_SAMPLE_TYPE_CODE;
                         serviceReqSDO.ServiceReqDetails.Add(sdo);

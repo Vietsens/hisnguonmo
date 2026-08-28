@@ -636,6 +636,12 @@
   <data name="UCBedRoomPartial.gc_ClassifyName.ToolTip" xml:space="preserve">
     <value>Patient classification</value>
   </data>
+  <data name="UCBedRoomPartial.gc_CareLevelName.Caption" xml:space="preserve">
+    <value>Care level</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_CareLevelName.ToolTip" xml:space="preserve">
+    <value>Care level of the treatment record</value>
+  </data>
   <data name="UCBedRoomPartial.gc_MedisoftH.Caption" xml:space="preserve">
     <value>Medisoft treatment history</value>
   </data>

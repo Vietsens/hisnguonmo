@@ -55,7 +55,7 @@ Hệ quả: bác sĩ và điều dưỡng phải nhớ đơn kê từ ngày nào
 |---|---|
 | Cột **Ngày kê** | Ngày bác sĩ kê đơn. Hiện với mọi y lệnh |
 | Cột **Ngày dự trù** | Ngày đơn được dự trù dùng. Chỉ đơn dự trù, đơn thường để trống |
-| Đánh dấu | Dòng đơn dự trù **tô màu cam**, di chuột hiện chú thích đủ 2 mốc ngày |
+| Đánh dấu | Dòng đơn dự trù **tô màu xanh da trời**, di chuột hiện chú thích đủ 2 mốc ngày |
 
 Khi cấu hình tắt, 2 cột này **ẩn** — giao diện y hệt hiện tại.
 
@@ -108,7 +108,7 @@ Sau khi chuyển đơn dự trù đi, nếu một ngày không còn y lệnh nà
 
 ## QT-07 / QT-08 / QT-09 — Hiển thị
 
-Hiển thị đồng thời **Ngày kê và Ngày dự trù** (QT-07). Đơn dự trù **tô màu cam** kèm chú thích (QT-08). Ở tab "Tất cả", đơn dự trù đến từ ngày khác gom vào nhóm riêng `Dự trù — kê ngày X` trên đầu; đơn kê trong chính ngày đang xem vẫn nhóm theo tờ điều trị (QT-09).
+Hiển thị đồng thời **Ngày kê và Ngày dự trù** (QT-07). Đơn dự trù **tô màu xanh da trời** kèm chú thích (QT-08). Ở tab "Tất cả", đơn dự trù đến từ ngày khác gom vào nhóm riêng `Dự trù — kê ngày X` trên đầu; đơn kê trong chính ngày đang xem vẫn nhóm theo tờ điều trị (QT-09).
 
 ## QT-10 — Ngày dự trù tương lai
 
@@ -132,7 +132,7 @@ Ngày kê lưu trong dữ liệu, tổng hợp phiếu lĩnh, duyệt thuốc, c
 
 | # | Tình huống | Kết quả mong đợi |
 |---|---|---|
-| 1 | Bật cấu hình. Mùng 6 kê đơn dự trù cho mùng 7. Sang mùng 7 chọn ngày mùng 7 | Thấy đơn ngay, tô cam, Ngày kê 06/08, Ngày dự trù 07/08 |
+| 1 | Bật cấu hình. Mùng 6 kê đơn dự trù cho mùng 7. Sang mùng 7 chọn ngày mùng 7 | Thấy đơn ngay, tô xanh da trời, Ngày kê 06/08, Ngày dự trù 07/08 |
 | 2 | Cấu hình bật, chọn lại ngày mùng 6 để tìm đơn | **Không** còn đơn đó (QT-04). Nếu mùng 6 hết y lệnh thì ngày 06 biến mất (QT-06). Tra ngày kê ở cột "Ngày kê" của đơn |
 | 3 | Cấu hình bật. Mùng 7 kê thêm một đơn thuốc thường | Ngày 07 hiện **cả hai** đơn, phân biệt bằng màu và cột Ngày dự trù |
 | 4 | **Tắt** cấu hình. Kê đơn dự trù mùng 6 cho mùng 7 | Đơn vẫn ở mùng 6 như hiện tại, 2 cột mới ẩn (QT-11) |
@@ -171,7 +171,7 @@ Ngày kê lưu trong dữ liệu, tổng hợp phiếu lĩnh, duyệt thuốc, c
 
 - [ ] D1 — Đơn dự trù: đủ 2 cột Ngày kê + Ngày dự trù (QT-07)
 - [ ] D2 — Đơn thường: cột Ngày dự trù **để trống**
-- [ ] D3 — Đơn dự trù tô cam, đơn thường không tô; di chuột hiện chú thích (QT-08)
+- [ ] D3 — Đơn dự trù tô xanh da trời, đơn thường không tô; di chuột hiện chú thích (QT-08)
 - [ ] D4 — Tab "Tất cả": đơn dự trù nằm trong nhóm `Dự trù — kê ngày X` trên đầu, tên nhóm ghi đúng ngày kê (QT-09)
 - [ ] D5 — Bốn tab phân loại y lệnh đúng như trước
 

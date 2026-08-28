@@ -3053,6 +3053,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         lstTranPrint,
                         lstSeseRepayPrint
                         );
+                    FillPayformAndDiscountForPrint(pdo, resultTranBill != null ? resultTranBill.ID : (long?)null);
 
                     MPS.ProcessorBase.Core.PrintData printData = null;
 
@@ -3805,6 +3806,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     lstTranPrint,
                     lstSeseRepayPrint
                     );
+                FillPayformAndDiscountForPrint(pdo, resultTranBill != null ? resultTranBill.ID : (long?)null);
 
                 MPS.ProcessorBase.Core.PrintData printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
                 WaitingManager.Hide();
@@ -3919,6 +3921,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     listSereDepoPrint,
                     lstTranPrint,
                     lstSeseRepayPrint);
+                FillPayformAndDiscountForPrint(pdo, resultTranBill != null ? resultTranBill.ID : (long?)null);
                 MPS.ProcessorBase.Core.PrintData printData;
                 if (isEmr)
                 {
@@ -4419,6 +4422,35 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                     ((Form)extenceInstance).ShowDialog();
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nap bang hinh thuc thanh toan (HIS_TRANSACTION_PAYFORM) va bang chiet khau
+        /// (HIS_TRANSACTION_DISCOUNT) cua giao dich vao PDO in Mps000111.
+        /// Loi khong lam gian doan luong in - band tuong ung se rong.
+        /// </summary>
+        private void FillPayformAndDiscountForPrint(MPS.Processor.Mps000111.PDO.Mps000111PDO pdo, long? transactionId)
+        {
+            try
+            {
+                if (pdo == null || !transactionId.HasValue || transactionId.Value <= 0) return;
+
+                CommonParam paramPayform = new CommonParam();
+                HisTransactionPayformFilter payformFilter = new HisTransactionPayformFilter();
+                payformFilter.TRANSACTION_ID = transactionId.Value;
+                pdo._ListTransactionPayform = new BackendAdapter(paramPayform).Get<List<HIS_TRANSACTION_PAYFORM>>(
+                    "api/HisTransactionPayform/Get", ApiConsumers.MosConsumer, payformFilter, paramPayform);
+
+                //HisTransactionDiscountFilter chua co TRANSACTION_ID -> dung anonymous object nhu GridDiscount
+                CommonParam paramDiscount = new CommonParam();
+                pdo._ListTransactionDiscount = new BackendAdapter(paramDiscount).Post<List<HIS_TRANSACTION_DISCOUNT>>(
+                    RequestUriStore.HIS_TRANSACTION_DISCOUNT_GET, ApiConsumers.MosConsumer,
+                    new { TRANSACTION_ID = transactionId.Value, IS_ACTIVE = (short?)1 }, paramDiscount);
             }
             catch (Exception ex)
             {

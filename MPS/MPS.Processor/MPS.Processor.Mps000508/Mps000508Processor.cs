@@ -18,7 +18,7 @@ using Inventec.Common.Logging;
 
 namespace MPS.Processor.Mps000508
 {
-    public partial class Mps000508Processor : AbstractProcessor
+    public partial class Mps000508Processor : AbstractProcessor 
     {
         private PatientADO patientADO { get; set; }
         private List<PatyAlterBhytADO> patyAlterBHYTADOs { get; set; }
@@ -682,6 +682,15 @@ namespace MPS.Processor.Mps000508
                     }
                 }
 
+                if (rdo.ServiceReqs != null &&
+                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList() != null &&
+                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList().Count > 0)
+                {
+                    var ServiceReqsKh = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList();
+                    long startTime = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList().OrderBy(o => o.START_TIME ?? 0).FirstOrDefault().START_TIME ?? 0;
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.SERVICE_REQ_START_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(startTime)));
+                }
+
                 if (rdo.Treatment != null)
                 {
                     if (rdo.Treatment.CLINICAL_IN_TIME.HasValue)
@@ -693,6 +702,9 @@ namespace MPS.Processor.Mps000508
                     {
                         SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CLOSE_TIME_SEPARATE_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.Treatment.OUT_TIME.Value)));
                     }
+
+                    if (rdo.Treatment.IN_TIME > 0 && rdo.Treatment.IN_TIME != null)
+                        SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.IN_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.Treatment.IN_TIME)));
 
                     if (rdo.Treatment.END_DEPARTMENT_ID.HasValue)
                     {

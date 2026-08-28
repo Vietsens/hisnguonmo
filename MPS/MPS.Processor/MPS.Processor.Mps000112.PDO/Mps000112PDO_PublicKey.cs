@@ -34,6 +34,44 @@ namespace MPS.Processor.Mps000112.PDO
 		public Mps000112ADO MpsADO = null;
 		public V_HIS_TREATMENT treatment = null;
 		public List<HIS_TREATMENT_TYPE> _TreatmentType = null;
+
+		/// <summary>
+		/// Danh sach dich vu duoc tam ung boi phieu thu nay
+		/// </summary>
+		public List<V_HIS_SERE_SERV> _ListSereServ = null;
+
+		/// <summary>
+		/// Chi tiet tam ung theo tung dich vu (de lay so tien tam ung cua tung dich vu)
+		/// </summary>
+		public List<HIS_SERE_SERV_DEPOSIT> _ListSereServDeposit = null;
+
+		/// <summary>
+		/// Danh muc hinh thuc thanh toan (dung de tra cuu khi view giao dich khong co ten hinh thuc)
+		/// </summary>
+		public List<HIS_PAY_FORM> _PayForms = null;
+
+		/// <summary>
+		/// Bang hinh thuc thanh toan cua giao dich (HIS_TRANSACTION_PAYFORM theo TRANSACTION_ID)
+		/// </summary>
+		public List<HIS_TRANSACTION_PAYFORM> _ListTransactionPayform = null;
+
+		/// <summary>
+		/// Bang chiet khau cua giao dich (HIS_TRANSACTION_DISCOUNT theo TRANSACTION_ID)
+		/// </summary>
+		public List<HIS_TRANSACTION_DISCOUNT> _ListTransactionDiscount = null;
+
+		/// <summary>
+		/// Danh muc ngan hang (de hien ten ngan hang tren bang hinh thuc thanh toan)
+		/// </summary>
+		public List<HIS_BANK> _Banks = null;
+
+		/// <summary>
+		/// Danh sach yeu cau tam ung (V_HIS_DEPOSIT_REQ) cua dot dieu tri, da loc theo
+		/// DEPOSIT_ID = ID giao dich cua phieu thu nay.
+		/// Dung de lay khoa/phong YEU CAU giong man hinh "Yeu cau tam ung"
+		/// (V_HIS_DEPOSIT_REQ.DEPARTMENT_NAME <- REQUEST_DEPARTMENT_ID).
+		/// </summary>
+		public List<V_HIS_DEPOSIT_REQ> _ListDepositReq = null;
 	}
 
 	public class Mps000112ADO

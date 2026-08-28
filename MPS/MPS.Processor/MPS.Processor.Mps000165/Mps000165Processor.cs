@@ -214,6 +214,70 @@ namespace MPS.Processor.Mps000165
             return result;
         }
 
+        List<string> GetListStringApprovalLogFromExpMestBloods(List<V_HIS_EXP_MEST_BLOOD> expMestBloodList)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                if (expMestBloodList != null && expMestBloodList.Count > 0)
+                {
+                    result = expMestBloodList.Where(p => !string.IsNullOrEmpty(p.APPROVAL_LOGINNAME))
+                        .Select(p => p.APPROVAL_LOGINNAME)
+                        .Distinct()
+                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = new List<string>();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        List<string> GetListStringExpLogFromExpMestBloods(List<V_HIS_EXP_MEST_BLOOD> expMestBloodList)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                if (expMestBloodList != null && expMestBloodList.Count > 0)
+                {
+                    result = expMestBloodList.Where(p => !string.IsNullOrEmpty(p.EXP_LOGINNAME))
+                        .Select(p => p.EXP_LOGINNAME)
+                        .Distinct()
+                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = new List<string>();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        List<string> GetListStringExpTimeLogFromExpMestBloods(List<V_HIS_EXP_MEST_BLOOD> expMestBloodList)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                if (expMestBloodList != null && expMestBloodList.Count > 0)
+                {
+                    result = expMestBloodList.Where(p => p.EXP_TIME != null)
+                        .Select(p => p.EXP_TIME)
+                        .Distinct()
+                        .Select(p => Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(p ?? 0))
+                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = new List<string>();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
         private void SetSingleKey()
         {
             try
@@ -376,9 +440,51 @@ namespace MPS.Processor.Mps000165
                     }
                 }
 
-                string approvalLoginname = String.Join(", ", GetListStringApprovalLogFromExpMestMedicineMaterial(rdo._Medicines, rdo._Materials));
-                string expLoginName = String.Join(", ", GetListStringExpLogFromExpMestMedicineMaterial(rdo._Medicines, rdo._Materials));
-                string expTime = String.Join(", ", GetListStringExpTimeLogFromExpMestMedicineMaterial(rdo._Medicines, rdo._Materials));
+                // Blood units (blood stock). Each V_HIS_EXP_MEST_BLOOD record is 1 unit -> AMOUNT = group count.
+                // Group also by ABO / Rh so units of different blood groups are never merged into one row.
+                if (rdo._Bloods != null && rdo._Bloods.Count > 0)
+                {
+                    try
+                    {
+                        rdo._Bloods = rdo._Bloods.OrderBy(o => o.ID).ToList();
+                        discount += rdo._Bloods.Sum(o => o.DISCOUNT ?? 0);
+
+                        var bloodGroups = rdo._Bloods
+                            .GroupBy(g => new
+                            {
+                                g.BLOOD_TYPE_ID,
+                                g.BLOOD_ABO_ID,
+                                g.BLOOD_RH_ID,
+                                g.IMP_PRICE,
+                                g.IMP_VAT_RATIO,
+                                g.DISCOUNT,
+                                g.PACKAGE_NUMBER,
+                                g.EXPIRED_DATE
+                            })
+                            .ToList();
+
+                        foreach (var group in bloodGroups)
+                        {
+                            var listByGroup = group.ToList();
+                            rdo.listAdo.Add(new Mps000165ADO(listByGroup));
+                            foreach (var item in listByGroup)
+                            {
+                                totalPrice += 1 * item.IMP_PRICE * (item.IMP_VAT_RATIO + 1);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                }
+
+                string approvalLoginname = String.Join(", ", GetListStringApprovalLogFromExpMestMedicineMaterial(rdo._Medicines, rdo._Materials)
+                    .Union(GetListStringApprovalLogFromExpMestBloods(rdo._Bloods)));
+                string expLoginName = String.Join(", ", GetListStringExpLogFromExpMestMedicineMaterial(rdo._Medicines, rdo._Materials)
+                    .Union(GetListStringExpLogFromExpMestBloods(rdo._Bloods)));
+                string expTime = String.Join(", ", GetListStringExpTimeLogFromExpMestMedicineMaterial(rdo._Medicines, rdo._Materials)
+                    .Union(GetListStringExpTimeLogFromExpMestBloods(rdo._Bloods)));
                 SetSingleKey(new KeyValue(Mps000165ExtendSingleKey.EXP_TIME, expTime));
                 SetSingleKey(new KeyValue(Mps000165ExtendSingleKey.APPROVAL_LOGINNAME, approvalLoginname));
                 SetSingleKey(new KeyValue(Mps000165ExtendSingleKey.EXP_LOGINNAME, expLoginName));

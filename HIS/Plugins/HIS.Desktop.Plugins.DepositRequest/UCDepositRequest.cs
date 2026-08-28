@@ -100,8 +100,10 @@ namespace HIS.Desktop.Plugins.DepositRequest
         {
             try
             {
+                if (data == null) return;
+
                 txtDescription.Text = data.DESCRIPTION;
-                txtAmount.Text = Inventec.Common.Number.Convert.NumberToString(data.AMOUNT, ConfigApplications.NumberSeperator);
+                txtAmount.EditValue = data.AMOUNT;
                 txtEditReqCode.Text = data.DEPOSIT_REQ_CODE;
             }
             catch (Exception ex)
@@ -128,6 +130,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 SetDefaultTransactionTime();
                 SetDefaultCreateQR();
                 FillDataToControlEditor(currentdepositReq);
+                CheckPayFormTienMatChuyenKhoan(GetCurrentPayForm());
                 WaitingManager.Hide();
             }
             catch (Exception ex)

@@ -514,7 +514,7 @@
     <value>Đang xử lý</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__COL__INSTRUCTION_DATE" xml:space="preserve">
-    <value>Ngày kê</value>
+    <value>Ngày y lênh</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE__COL__USE_DATE" xml:space="preserve">
     <value>Ngày dự trù</value>
@@ -635,6 +635,12 @@
   </data>
   <data name="UCBedRoomPartial.gc_ClassifyName.ToolTip" xml:space="preserve">
     <value>Phân loại bệnh nhân</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_CareLevelName.Caption" xml:space="preserve">
+    <value>Phân loại chăm sóc</value>
+  </data>
+  <data name="UCBedRoomPartial.gc_CareLevelName.ToolTip" xml:space="preserve">
+    <value>Phân loại chăm sóc (phân cấp chăm sóc) của hồ sơ điều trị</value>
   </data>
   <data name="UCBedRoomPartial.gc_MedisoftH.Caption" xml:space="preserve">
     <value>Lịch sử điều trị medisoft</value>

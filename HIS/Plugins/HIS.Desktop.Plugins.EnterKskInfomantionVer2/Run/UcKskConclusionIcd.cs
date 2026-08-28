@@ -227,11 +227,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
 
-        /// <summary>Đổ ICD-10 từ bản ghi HIS_KSK_GENERAL vào UC.</summary>
+        /// <summary>
+        /// Đổ ICD-10 từ bản ghi HIS_KSK_GENERAL vào UC.
+        /// g == null (lượt khám CHƯA có bản ghi) → XÓA TRẮNG UC, KHÔNG return.
+        /// Trước đây return sớm nên khi chuyển sang y lệnh chưa có bản ghi thì UC giữ nguyên ICD của
+        /// bệnh nhân TRƯỚC, và lúc Lưu (FillToGeneral) ghi luôn ICD đó sang bệnh nhân mới.
+        /// </summary>
         public void LoadFromGeneral(HIS_KSK_GENERAL g)
         {
-            if (g == null) return;
+            if (g == null) { ClearData(); return; }
             SetData(g.CONCLUSION_ICD_TYPE, g.CONCLUSION_ICD_CODE, g.CONCLUSION_ICD_NAME);
+        }
+
+        /// <summary>Xóa trắng UC (bỏ chọn loại kết luận + xóa mã/tên ICD).</summary>
+        public void ClearData()
+        {
+            SetData(null, null, null);
         }
 
         #endregion

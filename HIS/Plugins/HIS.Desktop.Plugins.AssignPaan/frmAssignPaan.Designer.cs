@@ -69,7 +69,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
             this.dtLiquidTime = new DevExpress.XtraEditors.DateEdit();
             this.cboPaanLiquid = new DevExpress.XtraEditors.LookUpEdit();
             this.txtPaanLiquidCode = new DevExpress.XtraEditors.TextEdit();
-            this.cboPaanPosition = new DevExpress.XtraEditors.LookUpEdit();
+            this.cboPaanPosition = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.gridViewPaanPosition = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.txtPaanPositionCode = new DevExpress.XtraEditors.TextEdit();
             this.spinPrice = new DevExpress.XtraEditors.SpinEdit();
             this.cboExecuteRoom = new DevExpress.XtraEditors.LookUpEdit();
@@ -122,6 +123,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
             ((System.ComponentModel.ISupportInitialize)(this.cboPaanLiquid.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPaanLiquidCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPaanPosition.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewPaanPosition)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPaanPositionCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinPrice.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExecuteRoom.Properties)).BeginInit();
@@ -441,14 +443,25 @@ namespace HIS.Desktop.Plugins.AssignPaan
             // 
             this.cboPaanPosition.Location = new System.Drawing.Point(169, 100);
             this.cboPaanPosition.Name = "cboPaanPosition";
+            this.cboPaanPosition.Properties.AutoComplete = false;
             this.cboPaanPosition.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboPaanPosition.Properties.NullText = "";
+            this.cboPaanPosition.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboPaanPosition.Properties.View = this.gridViewPaanPosition;
             this.cboPaanPosition.Size = new System.Drawing.Size(238, 20);
             this.cboPaanPosition.StyleController = this.layoutControl1;
             this.cboPaanPosition.TabIndex = 17;
             this.cboPaanPosition.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboPaanPosition_Closed);
             this.cboPaanPosition.EditValueChanged += new System.EventHandler(this.cboPaanPosition_EditValueChanged);
+            this.cboPaanPosition.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboPaanPosition_KeyUp);
+            // 
+            // gridViewPaanPosition
+            // 
+            this.gridViewPaanPosition.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewPaanPosition.Name = "gridViewPaanPosition";
+            this.gridViewPaanPosition.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewPaanPosition.OptionsView.ShowGroupPanel = false;
             // 
             // txtPaanPositionCode
             // 
@@ -980,6 +993,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
             ((System.ComponentModel.ISupportInitialize)(this.cboPaanLiquid.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPaanLiquidCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPaanPosition.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewPaanPosition)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPaanPositionCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinPrice.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExecuteRoom.Properties)).EndInit();
@@ -1046,7 +1060,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
         private DevExpress.XtraEditors.DateEdit dtLiquidTime;
         private DevExpress.XtraEditors.LookUpEdit cboPaanLiquid;
         private DevExpress.XtraEditors.TextEdit txtPaanLiquidCode;
-        private DevExpress.XtraEditors.LookUpEdit cboPaanPosition;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboPaanPosition;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn gridViewPaanPosition;
         private DevExpress.XtraEditors.TextEdit txtPaanPositionCode;
         private DevExpress.XtraLayout.LayoutControlItem lciPaanPosition;
         private DevExpress.XtraLayout.LayoutControlItem lciCboPaanPosition;
