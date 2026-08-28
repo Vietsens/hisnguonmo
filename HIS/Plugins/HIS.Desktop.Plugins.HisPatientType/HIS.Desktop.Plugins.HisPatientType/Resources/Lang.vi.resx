@@ -486,4 +486,13 @@
   <data name="frmHisPatientType.chkSerNotAllow.Text" xml:space="preserve">
     <value>Không cho phép sửa xóa dịch vụ đã chỉ định</value>
   </data>
+  <data name="frmHisPatientType.chkAllowPresForEmergency.Properties.Caption" xml:space="preserve">
+    <value>Không chặn kê đơn với bệnh nhân khoa cấp cứu</value>
+  </data>
+  <data name="frmHisPatientType.chkAllowPresForEmergency.Text" xml:space="preserve">
+    <value>Không chặn kê đơn với bệnh nhân khoa cấp cứu</value>
+  </data>
+  <data name="frmHisPatientType.chkAllowPresForEmergency.ToolTip" xml:space="preserve">
+    <value>Chỉ có hiệu lực khi đối tượng bệnh nhân được check "Không cho phép kê đơn với bệnh nhân khám nếu chưa thực hiện xong dịch vụ CLS". Khi khoa chỉ định là khoa cấp cứu thì không chặn kê đơn.</value>
+  </data>
 </root>
