@@ -166,7 +166,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 btnSave_Click(null, null);
-                if (!IsValidForSave)
+                if (!IsValidForSave || CreateTracking())
                     return;
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisAssignBlood").FirstOrDefault();
                 if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisAssignBlood");
@@ -3085,7 +3085,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         ReLoadPrintExamAddition();
                         if (this.isPrintExamServiceAdd || this.isSignExamServiceAdd)
                         {
-                            PrintProcess(PrintType.YEU_CAU_KHAM_THEM);
+                            PrintProcess(PrintType.YEU_CAU_KHAM);
                         }
                     }
 
