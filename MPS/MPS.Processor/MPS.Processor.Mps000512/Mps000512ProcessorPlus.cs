@@ -569,11 +569,12 @@ namespace MPS.Processor.Mps000512
                         medicineLineADO.MEDICINE_LINE_NAME = "Chưa xác định";
                     }
 
-                    //Tinh so thang
+                    //Tinh so thang 
                     if (rdo.ServiceReqs != null && rdo.ServiceReqs.Count > 0)
                     {
                         List<long> serviceReqIds = sereServs.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
-                        List<HIS_SERVICE_REQ> serviceReqTemps = rdo.ServiceReqs.Where(o => serviceReqIds.Contains(o.ID) && o.REMEDY_COUNT.HasValue).ToList();
+                        List<long> donTypeIds = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };
+                        List<HIS_SERVICE_REQ> serviceReqTemps = rdo.ServiceReqs.Where(o => serviceReqIds.Contains(o.ID) && o.REMEDY_COUNT.HasValue && donTypeIds.Contains(o.SERVICE_REQ_TYPE_ID)).ToList();
                         if (serviceReqTemps != null && serviceReqTemps.Count > 0)
                         {
                             medicineLineADO.REMEDY_COUNT = serviceReqTemps.Sum(o => o.REMEDY_COUNT ?? 0);
