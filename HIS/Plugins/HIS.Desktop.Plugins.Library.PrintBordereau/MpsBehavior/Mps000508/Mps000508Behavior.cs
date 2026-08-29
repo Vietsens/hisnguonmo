@@ -139,15 +139,10 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000508
                     medicineTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_TYPE>();
                     medicineLines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_LINE>();
                 }
-                if (isShowMedicineLine == 1 || hisConfigValue.IsGroupHeinServiceByUseTime)
-                {
-                    HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
-                    serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
-                    serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };
-                    serviceReqs = new BackendAdapter(param)
-                    .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
-
-                }
+                HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
+                serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
+                serviceReqs = new BackendAdapter(param)
+                .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
 
                 MPS.Processor.Mps000508.PDO.Mps000508PDO rdo = null;
                 rdo = new MPS.Processor.Mps000508.PDO.Mps000508PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, medicineTypes, materialTypes, medicineLines, serviceReqs, departments, singleValue, hisConfigValue, servuceUnit, diimTypes, mediOrg, otherPaySource, this.transReq, this.lstConfig);
