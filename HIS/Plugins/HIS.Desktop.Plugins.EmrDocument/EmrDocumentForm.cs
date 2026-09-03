@@ -702,8 +702,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
 
-                    apiResult = new ApiResultObject<List<EmrDocumentADO>>();
-                    apiResult.Data = new BackendAdapter(paramCommon).Get<List<EmrDocumentADO>>(HIS.Desktop.Plugins.EmrDocument.EmrRequestUriStore.EMR_DOCUMENT_GET_MERGE_VIEW, ApiConsumers.EmrConsumer, filter, paramCommon);
+                    apiResult = new BackendAdapter(paramCommon).GetRO<List<EmrDocumentADO>>(HIS.Desktop.Plugins.EmrDocument.EmrRequestUriStore.EMR_DOCUMENT_GET_MERGE_VIEW, ApiConsumers.EmrConsumer, filter, paramCommon);
 
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.4.1");
 
@@ -1083,7 +1082,11 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     treeListDocument.CollapseAll();
 
                     rowCount = (listData == null ? 0 : listData.Count);
-                    dataTotal = rowCount;
+                    dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
+                    if (dataTotal < rowCount)
+                    {
+                        dataTotal = rowCount;
+                    }
                      
                     pictureEdit1.Image = imageCheck.Images[0];
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.13");
@@ -1627,6 +1630,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                         && s.COOR_Y_RECTANGLE > 0)
                                     .ToList();
 
+                                LogSystem.Info(string.Format(
+                                    "[FingerPrintSize][EmrDocument][GetFileSDO] Pre-filter tai GetFileSDO: documentId={0}, tong dong ky cua tai lieu={1}, sau loc (X>0, Y>0, IS_SIGN_ELECTRONIC=1) con {2}",
+                                    doc.ID,
+                                    (allSigns == null ? 0 : allSigns.Where(s => s.DOCUMENT_ID == doc.ID).Count()),
+                                    docPatientSigns.Count));
+
                                 if (docPatientSigns.Count > 0)
                                 {
                                     using (FileStream fs = new FileStream(tempFilePath, FileMode.Create))
@@ -1635,7 +1644,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                     }
 
                                     PdfReader reader = new PdfReader(File.ReadAllBytes(tempFilePath));
-                                    ProcessInsertPatientSign(reader, tempFilePath, doc.ID, docPatientSigns);
+                                    ProcessInsertPatientSign(reader, tempFilePath, doc.ID, docPatientSigns, "GetFileSDO");
                                     reader.Close();
 
                                     finalStream = new MemoryStream(File.ReadAllBytes(tempFilePath));
@@ -2739,7 +2748,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 string output = Utils.GenerateTempFileWithin();
                 if (signAlls != null && signAlls.Count > 0)
                 {
-                    ProcessInsertPatientSign(reader1, output, documentId, signAlls);
+                    ProcessInsertPatientSign(reader1, output, documentId, signAlls, "SignStream");
                 }
                 else
                 {
@@ -2821,7 +2830,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             {
                                 stream.Position = 0;
                                 var reader2g = new PdfReader(stream);
-                                ProcessInsertPatientSign(reader2g, pdfAddFile, item.Key, signAlls);
+                                ProcessInsertPatientSign(reader2g, pdfAddFile, item.Key, signAlls, "JoinFile");
                             }
                         }
                         else
@@ -2902,7 +2911,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
         //                sourceSignedTemp = Utils.GenerateTempFileWithin();
         //                using (var reader = new PdfReader(sourceFile))
         //                {
-        //                    ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls);
+        //                    ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls, "ViewStream");
         //                }
         //                using (var reader = new PdfReader(sourceSignedTemp))
         //                {
@@ -2925,7 +2934,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
         //                sourceSignedTemp = Utils.GenerateTempFileWithin();
         //                using (var reader = new PdfReader(sourceStream))
         //                {
-        //                    ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls);
+        //                    ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls, "ViewStream");
         //                }
         //                using (var reader = new PdfReader(sourceSignedTemp))
         //                {
@@ -3168,13 +3177,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     if (useFile)
                     {
                         using (var reader = new PdfReader(sourceFile))
-                            ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls);
+                            ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls, "ViewFile");
                     }
                     else
                     {
                         sourceStream.Position = 0;
                         using (var reader = new PdfReader(sourceStream))
-                            ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls);
+                            ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls, "ViewStream");
                     }
 
                     // Verify file signed hợp lệ
@@ -3329,7 +3338,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     try
                     {
                         using (var reader = new PdfReader(pdfPath))
-                            ProcessInsertPatientSign(reader, signedPath, docId, signAlls);
+                            ProcessInsertPatientSign(reader, signedPath, docId, signAlls, "ShowPreview");
 
                         var fi = new FileInfo(signedPath);
                         if (!fi.Exists || fi.Length == 0)
@@ -4854,10 +4863,11 @@ namespace HIS.Desktop.Plugins.EmrDocument
         //        LogSystem.Error(ex);
         //    }
         //}
-        private static void ProcessInsertPatientSign(PdfReader readerWorking, string outPathFile, long documentId, List<EMR_SIGN> signAlls)
+        private static void ProcessInsertPatientSign(PdfReader readerWorking, string outPathFile, long documentId, List<EMR_SIGN> signAlls, string callerTag = "?")
         {
             try
             {
+                LogPatientSignInput(documentId, signAlls, callerTag, readerWorking);
                 DisplayConfig = ProcessFontSizeFit(DisplayConfig);
                 using (FileStream fs_ = File.Open(outPathFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
                 using (PdfStamper stam = new PdfStamper(readerWorking, fs_))
@@ -4869,13 +4879,17 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                            && o.DOCUMENT_ID == documentId).ToList()
                         : null;
 
+                    LogSystem.Info(string.Format(
+                        "[FingerPrintSize][EmrDocument][{0}] Sau filter (IS_SIGN_ELECTRONIC=1, X>0, Y>0, DOCUMENT_ID={1}): con {2} dong ky de ve",
+                        callerTag, documentId, (signElectronics == null ? 0 : signElectronics.Count)));
+
                     if (signElectronics == null || signElectronics.Count == 0) return;
 
                     foreach (var itemSign in signElectronics)
                     {
                         try
                         {
-                            ProcessOneSign(stam, itemSign, documentId);
+                            ProcessOneSign(stam, itemSign, documentId, callerTag);
                         }
                         catch (Exception signEx)
                         {
@@ -4894,10 +4908,60 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
         }
 
-        private static void ProcessOneSign(PdfStamper stam, EMR_SIGN itemSign, long documentId)
+        /// <summary>
+        /// Log toan bo dong ky nhan duoc va LY DO tung dong bi loai - dung khi anh van tay khong hien thi.
+        /// Dat ten tham so log giong thu vien Inventec.Common.SignLibrary de do log 2 ben cung luc.
+        /// </summary>
+        private static void LogPatientSignInput(long documentId, List<EMR_SIGN> signAlls, string callerTag, PdfReader readerWorking)
+        {
+            try
+            {
+                LogSystem.Info(string.Format(
+                    "[FingerPrintSize][EmrDocument][{0}] === VAO ProcessInsertPatientSign === documentId={1}, tong so dong ky nhan vao={2}, so trang PDF={3}, KhungKy: W={4}, H={5}, TextPosition={6}, SizeFont={7}, SignaltureImageWidth={8}",
+                    callerTag, documentId, (signAlls == null ? 0 : signAlls.Count),
+                    (readerWorking == null ? 0 : readerWorking.NumberOfPages),
+                    (DisplayConfig == null ? 0 : DisplayConfig.WidthRectangle),
+                    (DisplayConfig == null ? 0 : DisplayConfig.HeightRectangle),
+                    (DisplayConfig == null ? (object)"null" : DisplayConfig.TextPosition),
+                    (DisplayConfig == null ? 0 : DisplayConfig.SizeFont),
+                    (DisplayConfig == null ? 0 : DisplayConfig.SignaltureImageWidth)));
+
+                if (signAlls == null || signAlls.Count == 0) return;
+
+                foreach (var sign in signAlls)
+                {
+                    string lyDoLoai = "";
+                    if (sign.DOCUMENT_ID != documentId) lyDoLoai += "DOCUMENT_ID khac; ";
+                    if (sign.IS_SIGN_ELECTRONIC != 1) lyDoLoai += "IS_SIGN_ELECTRONIC != 1; ";
+                    if (!(sign.COOR_X_RECTANGLE > 0)) lyDoLoai += "COOR_X_RECTANGLE <= 0 (hoac null); ";
+                    if (!(sign.COOR_Y_RECTANGLE > 0)) lyDoLoai += "COOR_Y_RECTANGLE <= 0 (hoac null) - toa do bake bang 0 se bi loai o day; ";
+                    if (sign.SIGN_IMAGE == null || sign.SIGN_IMAGE.Length == 0) lyDoLoai += "SIGN_IMAGE rong => KHONG co anh de ve (server da bake anh vao PDF, plugin chi ve chu); ";
+
+                    LogSystem.Info(string.Format(
+                        "[FingerPrintSize][EmrDocument][{0}] Dong ky: ID={1}, DOCUMENT_ID={2}, PAGE_NUMBER={3}, IS_SIGN_ELECTRONIC={4}, IS_SIGN_BOARD={5}, X={6}, Y={7}, SIGN_IMAGE.Len={8}, PatientName='{9}', Relation='{10}' => {11}",
+                        callerTag, sign.ID, sign.DOCUMENT_ID, sign.PAGE_NUMBER, sign.IS_SIGN_ELECTRONIC, sign.IS_SIGN_BOARD,
+                        sign.COOR_X_RECTANGLE, sign.COOR_Y_RECTANGLE,
+                        (sign.SIGN_IMAGE == null ? 0 : sign.SIGN_IMAGE.Length),
+                        sign.VIR_PATIENT_NAME, sign.RELATION_PEOPLE_NAME,
+                        (String.IsNullOrEmpty(lyDoLoai) ? "SE VE" : "BI LOAI/THIEU: " + lyDoLoai)));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private static void ProcessOneSign(PdfStamper stam, EMR_SIGN itemSign, long documentId, string callerTag = "?")
         {
             int pageNum = (int)(itemSign.PAGE_NUMBER ?? 1);
-            if (pageNum < 1 || pageNum > stam.Reader.NumberOfPages) return;
+            if (pageNum < 1 || pageNum > stam.Reader.NumberOfPages)
+            {
+                LogSystem.Warn(string.Format(
+                    "[FingerPrintSize][EmrDocument][{0}] BO QUA dong ky ID={1}: PAGE_NUMBER={2} ngoai pham vi 1..{3} => khong ve gi",
+                    callerTag, itemSign.ID, pageNum, stam.Reader.NumberOfPages));
+                return;
+            }
 
             const float signShiftDown = 20f;
             PdfContentByte cbo = stam.GetOverContent(pageNum);
@@ -4938,7 +5002,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         maxHeight = DisplayConfig.HeightRectangle - plusH - imageSpacing;
                     }
 
+                    float rawWidth = image.Width;
+                    float rawHeight = image.Height;
                     image.ScaleToFit(maxWidth, maxHeight);
+                    LogSystem.Info(string.Format(
+                        "[FingerPrintSize][EmrDocument][{0}][KichThuocAnh] Anh {1} {2}x{3}, ratio(W/H)={4}, nguong<={5} => gioi han maxWidth={6}, maxHeight={7} (fill={8}, widthImagePercent={9}, plusH={10}, imageSpacing={11}) => ve ra {12}x{13}",
+                        callerTag, (isFingerPrintImg ? "VAN TAY" : "CHU KY THUONG"), rawWidth, rawHeight,
+                        (rawHeight > 0 ? rawWidth / rawHeight : 0f), FINGERPRINT_ASPECT_MAX,
+                        maxWidth, maxHeight, FINGERPRINT_DISPLAY_FILL, widthImagePercent, plusH, imageSpacing,
+                        image.ScaledWidth, image.ScaledHeight));
 
                     if (!isFingerPrintImg && DisplayConfig.SignaltureImageWidth > 0 && image.ScaledWidth > DisplayConfig.SignaltureImageWidth)
                     {
@@ -4951,10 +5023,28 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     image.SetAbsolutePosition(centerX, posY);
 
                     float textY = (float)itemSign.COOR_Y_RECTANGLE - signShiftDown;
+                    iTextSharp.text.Rectangle pageSizeLog = stam.Reader.GetPageSizeWithRotation(pageNum);
+                    bool anhNamNgoaiTrang = pageSizeLog != null
+                        && (posY + image.ScaledHeight < pageSizeLog.Bottom || posY > pageSizeLog.Top
+                            || centerX + image.ScaledWidth < pageSizeLog.Left || centerX > pageSizeLog.Right);
+                    LogSystem.Info(string.Format(
+                        "[FingerPrintSize][EmrDocument][{0}][ViTriAnh] Toa do diem ky (X={1}, Y={2}), signShiftDown={3} => ve anh goc duoi-trai (X={4}, Y={5}), anh chiem Y={5}..{6}, dong chu ky tai Y={7}, trang {8} kich thuoc {9}x{10}{11}",
+                        callerTag, itemSign.COOR_X_RECTANGLE, itemSign.COOR_Y_RECTANGLE, signShiftDown,
+                        centerX, posY, posY + image.ScaledHeight, textY, pageNum,
+                        (pageSizeLog == null ? 0 : pageSizeLog.Width), (pageSizeLog == null ? 0 : pageSizeLog.Height),
+                        (anhNamNgoaiTrang ? " *** ANH NAM NGOAI VUNG TRANG => KHONG HIEN THI ***" : "")));
                     var document = listDataTrueStatic.FirstOrDefault(o => o.ID == documentId);
                     int displayType = document != null && document.PATIENT_SIGNATURE_DISPLAY_TYPE.HasValue
                         ? (int)document.PATIENT_SIGNATURE_DISPLAY_TYPE.Value
                         : -1;
+
+                    LogSystem.Info(string.Format(
+                        "[FingerPrintSize][EmrDocument][{0}][SignDisplayType] PATIENT_SIGNATURE_DISPLAY_TYPE={1} => {2}",
+                        callerTag, displayType,
+                        (displayType == 0 ? "0: CHI ANH"
+                         : displayType == 1 ? "1: CHI CHU 'da ky' - KHONG VE ANH"
+                         : displayType == 2 ? "2: ANH + CHU"
+                         : "default: ANH + CHU")));
 
                     switch (displayType)
                     {
@@ -4987,6 +5077,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
                 else if (itemSign.COOR_X_RECTANGLE.HasValue && itemSign.COOR_Y_RECTANGLE.HasValue)
                 {
+                    LogSystem.Warn(string.Format(
+                        "[FingerPrintSize][EmrDocument][{0}] Dong ky ID={1} KHONG CO SIGN_IMAGE => chi ve dong chu tai (X={2}, Y={3}). Neu server da bake anh vao PDF thi anh phai co san trong file goc",
+                        callerTag, itemSign.ID, itemSign.COOR_X_RECTANGLE, (float)itemSign.COOR_Y_RECTANGLE - signShiftDown));
                     cbo.ShowTextAligned(
                         PdfContentByte.ALIGN_CENTER, signText,
                         (float)itemSign.COOR_X_RECTANGLE,
@@ -5048,7 +5141,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     reader1 = new PdfReader(streamSourceStr);
                 }
-                ProcessInsertPatientSign(reader1, desFileJoined, documentId, signAlls);
+                ProcessInsertPatientSign(reader1, desFileJoined, documentId, signAlls, "InsertPageOne");
             }
             else if (sourceFile != null)
             {
@@ -5060,7 +5153,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             else if (!string.IsNullOrEmpty(streamSourceStr))
             {
                 reader1 = new PdfReader(streamSourceStr);
-                ProcessInsertPatientSign(reader1, desFileJoined, documentId, signAlls);
+                ProcessInsertPatientSign(reader1, desFileJoined, documentId, signAlls, "InsertPageOne");
             }
             try
             {
