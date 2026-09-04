@@ -32,7 +32,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         #endregion
 
         #region Declare — Đối tượng mắc bệnh (DOI_TUONG_MAC_BENH)
-        private TextEdit txtHoTen, txtCccd, txtDienThoai, txtNoiLamViec, txtDiaChi, txtDiaChiTru;
+        private TextEdit txtHoTen, txtCccd, txtDienThoai, txtNoiLamViec, txtDiaChi, txtDiaChiTru, txtNgheNghiepHoSo;
         private DateEdit dteNgaySinh;
         private SpinEdit spnTuoi;
         private LookUpEdit cboGioiTinh, cboDanToc, cboNgheNghiep, cboTinh, cboXa, cboThon, cboTinhTru, cboXaTru;
@@ -254,6 +254,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             txtDienThoai = new TextEdit();
             cboDanToc = new LookUpEdit();
             cboNgheNghiep = new LookUpEdit();
+            txtNgheNghiepHoSo = new TextEdit();
+            txtNgheNghiepHoSo.Properties.ReadOnly = true;   // nghề nghiệp gốc của hồ sơ — chỉ đọc
             txtNoiLamViec = new TextEdit();
             cboTinh = new LookUpEdit();
             cboXa = new LookUpEdit();
@@ -275,7 +277,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             F("Số CCCD/CMND (*):", txtCccd);
             F("Số điện thoại (*):", txtDienThoai);
             F("Dân tộc (*):", cboDanToc);
-            F("Nghề nghiệp:", cboNgheNghiep);
+            F("Nghề nghiệp (hồ sơ):", txtNgheNghiepHoSo);
+            F("Nghề nghiệp (cổng):", cboNgheNghiep);
             F("Nơi làm việc:", txtNoiLamViec);
             F("", chkMangThai);
 

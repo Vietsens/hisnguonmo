@@ -78,8 +78,12 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             }
         }
 
-        /// <summary>Bind LookUpEdit từ danh mục ECDS (id/ten).</summary>
-        private void SetupLookup(LookUpEdit cbo, System.Collections.IList data, string valueMember, string displayMember)
+        /// <summary>
+        /// Bind LookUpEdit từ danh mục. Hiển thị 2 cột "Mã | Tên" trong dropdown (showCode=true).
+        /// codeMember: field làm cột Mã (mặc định = valueMember; VD danh mục cổng bind theo id thì truyền "ma").
+        /// </summary>
+        private void SetupLookup(LookUpEdit cbo, System.Collections.IList data, string valueMember, string displayMember,
+            string codeMember = null, bool showCode = true)
         {
             try
             {
@@ -87,10 +91,27 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 cbo.Properties.ValueMember = valueMember;
                 cbo.Properties.DisplayMember = displayMember;
                 cbo.Properties.NullText = "";
-                cbo.Properties.ShowHeader = false;
                 cbo.Properties.Columns.Clear();
-                cbo.Properties.Columns.Add(
-                    new DevExpress.XtraEditors.Controls.LookUpColumnInfo(displayMember));
+
+                string codeCol = string.IsNullOrEmpty(codeMember) ? valueMember : codeMember;
+                bool twoCols = showCode && !string.IsNullOrEmpty(codeCol)
+                    && !string.Equals(codeCol, displayMember, StringComparison.OrdinalIgnoreCase);
+
+                if (twoCols)
+                {
+                    cbo.Properties.ShowHeader = true;
+                    var colMa = new DevExpress.XtraEditors.Controls.LookUpColumnInfo(codeCol, "Mã");
+                    colMa.Width = 90;
+                    cbo.Properties.Columns.Add(colMa);
+                    cbo.Properties.Columns.Add(
+                        new DevExpress.XtraEditors.Controls.LookUpColumnInfo(displayMember, "Tên"));
+                }
+                else
+                {
+                    cbo.Properties.ShowHeader = false;
+                    cbo.Properties.Columns.Add(
+                        new DevExpress.XtraEditors.Controls.LookUpColumnInfo(displayMember));
+                }
             }
             catch (Exception ex)
             {
@@ -98,10 +119,10 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             }
         }
 
-        /// <summary>Bind LookUpEdit từ danh sách enum (KeyValueADO).</summary>
+        /// <summary>Bind LookUpEdit từ danh sách enum (KeyValueADO) — chỉ hiển thị Tên (không có mã nghiệp vụ).</summary>
         private void BindEnumCombo(LookUpEdit cbo, List<KeyValueADO> items)
         {
-            SetupLookup(cbo, items, "Value", "Text");
+            SetupLookup(cbo, items, "Value", "Text", null, false);
         }
 
         /// <summary>Lấy long yyyyMMddHHmmss từ DateEdit (null nếu trống).</summary>

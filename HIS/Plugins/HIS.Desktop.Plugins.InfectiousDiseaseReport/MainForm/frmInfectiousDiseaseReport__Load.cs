@@ -128,9 +128,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 // --- Danh mục nghiệp vụ ECDS (bệnh, cơ sở) lấy từ CỔNG (chỉ khi đã cấu hình) ---
                 if (!EcdsConfigCFG.IsValid()) return;
                 WaitingManager.Show();
-                SetupLookup(cboBenh, catalogCache.GetStatic(EcdsCatalogCache.DM_BENH), "id", "ten");
-                SetupLookup(cboDonViXN, catalogCache.GetStatic(EcdsCatalogCache.DM_COSO), "id", "ten");
-                SetupLookup(cboBenhVienChuyenToi, catalogCache.GetStatic(EcdsCatalogCache.DM_COSO), "id", "ten");
+                SetupLookup(cboBenh, catalogCache.GetStatic(EcdsCatalogCache.DM_BENH), "id", "ten", "ma");
+                SetupLookup(cboDonViXN, catalogCache.GetStatic(EcdsCatalogCache.DM_COSO), "id", "ten", "ma");
+                SetupLookup(cboBenhVienChuyenToi, catalogCache.GetStatic(EcdsCatalogCache.DM_COSO), "id", "ten", "ma");
                 // Nghề nghiệp: bind THẲNG danh mục cổng (nghe-nghiep, mã "TT"/"CN"/"HSSV"...) — ValueMember = ma
                 // -> chọn là ra đúng mã cổng, KHÔNG cần đối chiếu mã HIS (mã HIS khác hệ mã cổng).
                 SetupLookup(cboNgheNghiep, catalogCache.GetStatic(EcdsCatalogCache.DM_NGHENGHIEP), "ma", "ten");
@@ -200,12 +200,15 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             }
         }
 
-        /// <summary>Xóa các control nhập khi tạo mới.</summary>
+        /// <summary>
+        /// Xóa control nhập khi tạo mới / đổi bệnh nhân — CHỈ trong thân form (pnlBody),
+        /// KHÔNG đụng panel tìm kiếm danh sách bên trái (giữ nguyên từ khóa + khoảng ngày).
+        /// </summary>
         private void ClearInputControls()
         {
             try
             {
-                foreach (Control c in GetAllInputControls(this))
+                foreach (Control c in GetAllInputControls(pnlBody))
                 {
                     if (c is BaseEdit && !(c is LabelControl))
                         ((BaseEdit)c).EditValue = null;

@@ -298,7 +298,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                     Worker.EcdsCatalogCache.DM_CAPDOBENH,
                     new SearchDanhMucFastDto { maIcd10Benh = icdCode },
                     icdCode);
-                SetupLookup(cboCapDoBenh, list, "id", "ten");
+                SetupLookup(cboCapDoBenh, list, "id", "ten", "ma");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -362,14 +362,14 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             {
                 if (string.IsNullOrEmpty(xaCode) || catalogCache == null || !Config.EcdsConfigCFG.IsValid())
                 {
-                    SetupLookup(cboThon, new System.Collections.Generic.List<DanhMucItemDto>(), "id", "ten");
+                    SetupLookup(cboThon, new System.Collections.Generic.List<DanhMucItemDto>(), "id", "ten", "ma");
                     return;
                 }
                 var list = catalogCache.GetCascade(
                     Worker.EcdsCatalogCache.DM_THON,
                     new SearchDanhMucFastDto { maXa = xaCode },
                     xaCode);
-                SetupLookup(cboThon, list, "id", "ten");
+                SetupLookup(cboThon, list, "id", "ten", "ma");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -428,8 +428,13 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
 
                 // ---- Danh mục SDA: chọn theo mã ----
                 SetLookupStr(cboDanToc, p.ETHNIC_CODE);
-                // Nghề nghiệp: combo bind danh mục CỔNG -> tự chọn item cổng khớp TÊN nghề HIS (mã HIS khác hệ mã cổng).
-                SelectPortalNgheByName(p.CAREER_CODE);
+                // Nghề nghiệp GỐC hồ sơ (chỉ đọc): mã + tên HIS.
+                var careerHoSo = BackendDataWorker.Get<HIS_CAREER>().FirstOrDefault(o => o.CAREER_CODE == p.CAREER_CODE);
+                txtNgheNghiepHoSo.Text = careerHoSo != null
+                    ? (careerHoSo.CAREER_CODE + " - " + careerHoSo.CAREER_NAME)
+                    : (p.CAREER_CODE ?? "");
+                // Nghề nghiệp (cổng): combo bind danh mục CỔNG -> tự chọn item cổng khớp MÃ nghề HIS.
+                SelectPortalNgheByCode(p.CAREER_CODE);
 
                 // Hiện nay: ưu tiên HT_*; thiếu thì lấy không tiền tố.
                 SetLookupStr(cboTinh, !string.IsNullOrEmpty(p.HT_PROVINCE_CODE) ? p.HT_PROVINCE_CODE : p.PROVINCE_CODE);
@@ -452,28 +457,18 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         }
 
         /// <summary>
-        /// Tự chọn nghề nghiệp trên combo (đã bind danh mục CỔNG) theo TÊN nghề HIS (HIS_CAREER.CAREER_NAME):
-        /// khớp `ten` cổng (bằng chính xác trước, rồi khớp chứa). Không khớp -> để trống cho người dùng chọn.
+        /// Tự chọn nghề nghiệp trên combo (đã bind danh mục CỔNG) theo MÃ nghề HIS (HIS_CAREER.CAREER_CODE):
+        /// đối chiếu `ma` cổng (bằng chính xác / theo số / theo token). Không khớp -> để trống cho người dùng chọn.
         /// </summary>
-        private void SelectPortalNgheByName(string careerCode)
+        private void SelectPortalNgheByCode(string careerCode)
         {
             try
             {
                 if (string.IsNullOrEmpty(careerCode) || catalogCache == null) return;
-                var career = BackendDataWorker.Get<HIS_CAREER>()
-                    .FirstOrDefault(o => o.CAREER_CODE == careerCode);
-                string name = career != null ? (career.CAREER_NAME ?? "").Trim() : "";
-                if (string.IsNullOrEmpty(name)) return;
-
                 var list = catalogCache.GetStatic(Worker.EcdsCatalogCache.DM_NGHENGHIEP);
-                if (list == null) return;
-                var item = list.FirstOrDefault(o => o != null && !string.IsNullOrEmpty(o.ten)
-                                && string.Equals(o.ten.Trim(), name, StringComparison.OrdinalIgnoreCase))
-                         ?? list.FirstOrDefault(o => o != null && !string.IsNullOrEmpty(o.ten)
-                                && (o.ten.Trim().IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0
-                                    || name.IndexOf(o.ten.Trim(), StringComparison.OrdinalIgnoreCase) >= 0));
-                if (item != null && !string.IsNullOrEmpty(item.ma))
-                    cboNgheNghiep.EditValue = item.ma;
+                string ma = catalogCache.FindMaByMa(list, careerCode);   // MÃ HIS -> mã cổng
+                if (!string.IsNullOrEmpty(ma))
+                    cboNgheNghiep.EditValue = ma;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
