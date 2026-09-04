@@ -25,6 +25,21 @@ using iTextSharp.text.pdf.parser;
 namespace HIS.Desktop.Plugins.EmrDocument.Worker
 {
     /// <summary>
+    /// Cac KHOA DANH DAU dat trong mau phieu (chu trang hoac co 1pt, khong nhin thay khi in) de phan mem
+    /// nhan dien phieu gop ngang - cung kieu voi {SignLibrary.SplitPdfHeaderKey} cua gop doc.
+    ///  - FLAG      : chi can khoa nay la phieu duoc gop ngang; so do lay tu net ke cua bang.
+    ///  - TOP_LEFT / TOP_RIGHT / BOTTOM / COUNT=N : tuy chon, cho khung vung cot khi phieu khong co net ke.
+    /// </summary>
+    internal static class MergeColumnKeys
+    {
+        internal const string FLAG = "{SignLibrary.MergeColumnKey}";
+        internal const string TOP_LEFT = "{SignLibrary.MergeColumnTopLeftKey}";
+        internal const string TOP_RIGHT = "{SignLibrary.MergeColumnTopRightKey}";
+        internal const string BOTTOM = "{SignLibrary.MergeColumnBottomKey}";
+        internal const string COUNT_PREFIX = "{SignLibrary.MergeColumnCountKey=";
+    }
+
+    /// <summary>
     /// Ghep ngang cac phieu cung mau thanh mot to: moi lan nhan dinh mot cot.
     ///
     /// Cach map hang: phieu co ca hang nhan CO DINH (Mach, Nhiet do, Huyet ap...) va hang nhan
@@ -87,8 +102,20 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
         /// <summary>Co chu lon nhat/nho nhat khi ve lai chu trong dau ky.</summary>
         private const float SIGN_TEXT_MAX_FONT = 4.5f, SIGN_TEXT_MIN_FONT = 3f;
 
-        /// <summary>Phan tren/duoi duong co so cua mot dong chu, dung de tinh dai chu can phu.</summary>
+        /// <summary>Phan tren/duoi duong co so cua mot dong chu, dung de tinh dai chu dau ky.</summary>
         private const float SIGN_TEXT_LINE_ASCENT = 4.5f, SIGN_TEXT_LINE_DESCENT = 1.5f;
+
+        /// <summary>Phan cho chu dau ky tran ra hai ben o, tinh theo be rong cot.</summary>
+        private const float SIGN_OVERFLOW_RATIO = 0.9f;
+
+        /// <summary>Le chua sat net ke doc khi lay noi dung trong o de dich ngang (net ke day ~0,5-1pt).</summary>
+        private const float SIGN_LINE_MARGIN = 1.2f;
+
+        /// <summary>
+        /// Phan tren/duoi duong co so khi tinh DAI PHU chu dau ky cu. Lay rong hon chieu cao dong
+        /// that su de khong con sot chu cu (sot thi thanh chu de len chu).
+        /// </summary>
+        private const float SIGN_TEXT_BAND_ASCENT = 6.5f, SIGN_TEXT_BAND_DESCENT = 3f;
 
         /// <summary>
         /// Chieu cao hang chu ky so voi mot hang thuong, lay tu mau phieu rptPhieuTDVaCSCap23_QN:
@@ -118,6 +145,17 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
             /// <summary>Bien tren/duoi thuc te cua hang.</summary>
             internal float Top;
             internal float Bottom;
+        }
+
+        /// <summary>
+        /// Khung vung cot nhan dinh doc tu cac khoa danh dau trong mau phieu (xem MergeColumnKeys).
+        /// Chi cho khung ngoai va so cot; bien tung hang van phai lay tu net ke hoac chu.
+        /// </summary>
+        internal class MergeColumnKeyGeometry
+        {
+            internal float X0, X1, Top, Bottom;
+            internal int ColumnCount;
+            internal float ColumnWidth { get { return this.ColumnCount > 0 ? (this.X1 - this.X0) / this.ColumnCount : 0f; } }
         }
 
         /// <summary>Mot cot tren to gop: lay tu phieu nao, cot nao, dat vao cot nao.</summary>
@@ -151,14 +189,17 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
             /// <summary>Luoi o doc tu net ve cua bang. Null neu phieu khong co net (anh scan...).</summary>
             internal SheetGrid Grid;
 
-            //Hinh hoc dung cho phieu nay: uu tien luoi doc duoc, khong co thi dung hang so do tay
-            internal float SlotX0 { get { return this.Grid != null ? this.Grid.ColumnX[0] : SLOT_X0; } }
-            internal float SlotW { get { return this.Grid != null ? this.Grid.ColumnWidth : SLOT_W; } }
-            internal int SlotCount { get { return this.Grid != null ? this.Grid.ColumnCount : SLOT_COUNT; } }
-            internal float TableTopY { get { return this.Grid != null ? this.Grid.TableTop : TABLE_TOP; } }
-            internal float TableBottomY { get { return this.Grid != null ? this.Grid.TableBottom : TABLE_BOTTOM; } }
-            internal float LabelZoneX0 { get { return this.Grid != null ? this.Grid.LabelX0 - 1f : LABEL_X_MIN; } }
-            internal float LabelZoneX1 { get { return this.Grid != null ? this.Grid.LabelX1 : CONTENT_X_MAX; } }
+            /// <summary>Khung vung cot doc tu cac KHOA DANH DAU trong mau (du phong khi khong doc duoc net ke).</summary>
+            internal MergeColumnKeyGeometry KeyGeometry;
+
+            //Hinh hoc dung cho phieu nay - thu tu uu tien: luoi net ke > khoa danh dau > hang so do tay
+            internal float SlotX0 { get { return this.Grid != null ? this.Grid.ColumnX[0] : (this.KeyGeometry != null ? this.KeyGeometry.X0 : SLOT_X0); } }
+            internal float SlotW { get { return this.Grid != null ? this.Grid.ColumnWidth : (this.KeyGeometry != null ? this.KeyGeometry.ColumnWidth : SLOT_W); } }
+            internal int SlotCount { get { return this.Grid != null ? this.Grid.ColumnCount : (this.KeyGeometry != null ? this.KeyGeometry.ColumnCount : SLOT_COUNT); } }
+            internal float TableTopY { get { return this.Grid != null ? this.Grid.TableTop : (this.KeyGeometry != null ? this.KeyGeometry.Top : TABLE_TOP); } }
+            internal float TableBottomY { get { return this.Grid != null ? this.Grid.TableBottom : (this.KeyGeometry != null ? this.KeyGeometry.Bottom : TABLE_BOTTOM); } }
+            internal float LabelZoneX0 { get { return this.Grid != null ? this.Grid.LabelX0 - 1f : (this.KeyGeometry != null ? 0f : LABEL_X_MIN); } }
+            internal float LabelZoneX1 { get { return this.Grid != null ? this.Grid.LabelX1 : (this.KeyGeometry != null ? this.KeyGeometry.X0 : CONTENT_X_MAX); } }
 
             internal float GetRowY(string label)
             {
@@ -266,6 +307,8 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
                         signColumns.Add(new SignColumn() { Source = baseSheet, SourceSlot = slot, TargetSlot = slot });
                     }
 
+                    List<SignColumn> sheetSignColumns = new List<SignColumn>();
+
                     int freeIndex = 0;
                     for (int index = 1; index < sheets.Count; index++)
                     {
@@ -294,13 +337,18 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
                                 sourceSlot, targetSlot, signRowYBase, signRowYSource);
                             totalSkippedRow += skipped;
 
+                            sheetSignColumns.Add(new SignColumn() { Source = source, SourceSlot = sourceSlot, TargetSlot = targetSlot });
                             signColumns.Add(new SignColumn() { Source = source, SourceSlot = sourceSlot, TargetSlot = targetSlot });
                         }
+
+                        //Khoi chu ky: dan CA KHOI cua phieu nay trong mot lan, dich ngang dung so nguyen
+                        //lan be rong cot. Nho vay the so le giua cac cot cua phieu goc duoc giu nguyen,
+                        //chu dau ky hien du ma khong cot nao de len cot nao.
+                        PasteSignRowBlock(canvas, importedPage, baseSheet, source, sheetSignColumns, signRowYBase);
+                        sheetSignColumns.Clear();
                     }
 
-                    //Da thu ve lai chu dau ky (phu trang roi ve co nho) nhung khong dung duoc:
-                    //khong phu het chu cu va co dong bi gan sang cot ben canh -> chu de len chu.
-                    //Giu nguyen anh goc, chi keo khoi dau ky vao trong o (xem PasteSignBlock).
+                    //Khong ve lai chu dau ky (da thu, ket qua khong dat). Giu nguyen ban goc cat theo o.
                     //RedrawSignText(canvas, baseSheet, signColumns, signRowYBase);
 
                     stamper.Close();
@@ -369,9 +417,7 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
                         PasteCell(canvas, importedPage, sourceSlotX0, srcBottom, srcHeight,
                             targetSlotX0, tgtBottom, tgtHeight, baseSheet.SlotW);
                     }
-                    PasteSignBlock(canvas, importedPage, baseSheet, source, sourceSlot, targetSlot,
-                        sourceSlotX0, targetSlotX0, signRowYBase, signRowYSource);
-                    return 0;
+                    return 0;   //khoi chu ky dan chung ca phieu o PasteSignRowBlock
                 }
 
                 //1b. Khac so hang: nhan co dinh dong bo, nhan tu do ghep theo thu tu trong cung khoang moc
@@ -409,9 +455,7 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
                     baseIndex = targetIndex + 1;
                 }
 
-                //2. Khoi chu ky
-                PasteSignBlock(canvas, importedPage, baseSheet, source, sourceSlot, targetSlot,
-                    sourceSlotX0, targetSlotX0, signRowYBase, signRowYSource);
+                //Khoi chu ky khong dan o day: dan chung ca phieu mot lan o PasteSignRowBlock
             }
             catch (Exception ex)
             {
@@ -421,8 +465,149 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
         }
 
         /// <summary>
-        /// Dan khoi ten dieu duong + chu ky o chan cot, nen cho vua khung chu ky cua phieu nen.
-        /// Day khoi chu ky do tren tung phieu (SignBottom) chu khong dung hang so.
+        /// Dan CA KHOI chu ky cua mot phieu trong mot lan.
+        ///
+        /// Vi sao khong dan tach tung cot: chu dau ky ("Nguoi Ky: ...") rong hon o nen tran ra hai ben.
+        /// Neu cat theo o thi mat chu; neu noi bien tung cot thi vung lay kem ca chu cua cot ben canh
+        /// (hai cot ke nhau co chu o do cao gan nhau) -> chu de len chu.
+        ///
+        /// Dan ca khoi va dich ngang dung SO NGUYEN lan be rong cot thi:
+        ///  - The so le san co giua cac cot cua phieu goc duoc giu nguyen -> khong cot nao de cot nao.
+        ///  - Net ke doc cua phieu nguon trung khit net ke cua to dich -> khong sinh vach la.
+        ///  - Chu tran ra hai ben van hien du.
+        /// Chi ap dung khi cac cot dich lien tiep va cung mot do dich; nguoc lai cat theo tung o.
+        /// </summary>
+        private static void PasteSignRowBlock(PdfContentByte canvas, PdfImportedPage importedPage,
+            SheetInfo baseSheet, SheetInfo source, List<SignColumn> columns, float signRowYBase)
+        {
+            try
+            {
+                if (columns == null || columns.Count == 0) return;
+
+                List<SignColumn> ordered = columns.OrderBy(o => o.SourceSlot).ToList();
+
+                //Kiem tra cung mot do dich cho moi cot
+                int shift = ordered[0].TargetSlot - ordered[0].SourceSlot;
+                bool sameShift = ordered.All(o => o.TargetSlot - o.SourceSlot == shift);
+
+                float targetSignHeight = Math.Max(1f, signRowYBase - baseSheet.SignBottom);
+                float sourceSignHeight = Math.Max(1f, source.SignTop - source.SignBottom);
+                float scaleY = Math.Min(1f, targetSignHeight / sourceSignHeight);
+
+                //LUON cat theo tung o. Khong duoc phep tran ra ngoai o vi moi phieu deu TO TRANG
+                //kin ca trang truoc khi ve noi dung: vung chep sang mang theo nen trang do, nen tran
+                //sang cot ben la XOA MAT noi dung cua cot ben (net ky, ten dieu duong).
+                //Dan nguyen o, khong dich ngang, khong ve lai chu (theo yeu cau nguoi dat hang).
+                foreach (SignColumn column in ordered)
+                {
+                    float srcX0 = source.SlotX0 + column.SourceSlot * source.SlotW;
+                    float tgtX0 = baseSheet.SlotX0 + column.TargetSlot * baseSheet.SlotW;
+                    PasteCell(canvas, importedPage, srcX0, source.SignBottom, sourceSignHeight,
+                        tgtX0, baseSheet.SignBottom, targetSignHeight, baseSheet.SlotW);
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(String.Format(
+                    "MergeColumns sign row: slots={0}-{1} shift={2} sameShift={3} srcH={4} tgtH={5} scaleY={6} (cat theo tung o)",
+                    ordered[0].SourceSlot, ordered[ordered.Count - 1].SourceSlot, shift, sameShift,
+                    sourceSignHeight, targetSignHeight, scaleY));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dan o chu ky cua MOT cot, cat dung theo o, va CAN NET KY VAO GIUA O.
+        ///
+        /// Tren phieu goc, khoi dau ky (net ky + "Nguoi Ky" + "Chuc danh") dat lech ve ben trai o
+        /// nen khi cat theo o thi net ky bi khuyet mep trai. Cach xu ly:
+        ///  - Do tam khoi dau ky theo cac dong chu dau ky thuoc dung cot nay.
+        ///  - Dai TREN (net ky + chu dau ky): dich ngang mot doan dx de tam khoi trung tam o.
+        ///  - Dai DUOI (ten dieu duong): giu nguyen, khong dich.
+        /// Khi dich, chi lay phan noi dung NAM TRONG o nguon (tru le de khong lay net ke) va de trong
+        /// phan mep o dich khong duoc phu -> khong bao gio keo net ke cua phieu nguon vao giua o.
+        /// O dich vang trang san (cot trong cua to dich) nen phan de trong khong lo ra gi.
+        /// </summary>
+        private static void PasteSignCellCentered(PdfContentByte canvas, PdfImportedPage importedPage,
+            SheetInfo baseSheet, SheetInfo source, int sourceSlot, int targetSlot,
+            float sourceSignHeight, float targetSignHeight, float scaleY)
+        {
+            try
+            {
+                float srcX0 = source.SlotX0 + sourceSlot * source.SlotW;
+                float srcX1 = srcX0 + source.SlotW;
+                float tgtX0 = baseSheet.SlotX0 + targetSlot * baseSheet.SlotW;
+
+                //Cac dong chu dau ky (bi tran ra ngoai o) thuoc dung cot nay
+                List<TextItem> stampLines = GetStampTextOfSlot(source, sourceSlot);
+
+                if (stampLines.Count == 0)
+                {
+                    //Khong nhan dien duoc khoi dau ky -> dan nguyen o, khong dich
+                    PasteCell(canvas, importedPage, srcX0, source.SignBottom, sourceSignHeight,
+                        tgtX0, baseSheet.SignBottom, targetSignHeight, baseSheet.SlotW);
+                    return;
+                }
+
+                //Tam khoi dau ky va do dich can thiet de ve giua o
+                float stampCenter = (stampLines.Min(o => o.X0) + stampLines.Max(o => o.X1)) / 2f;
+                float cellCenter = srcX0 + source.SlotW / 2f;
+                float dx = cellCenter - stampCenter;
+                float maxShift = source.SlotW / 2f - SIGN_LINE_MARGIN;
+                if (dx > maxShift) dx = maxShift;
+                if (dx < -maxShift) dx = -maxShift;
+
+                //Ranh gioi giua dai chu dau ky (tren) va dai ten dieu duong (duoi)
+                float laneBottom = stampLines.Min(o => o.Y0) - SIGN_TEXT_LINE_DESCENT;
+                if (laneBottom < source.SignBottom) laneBottom = source.SignBottom;
+                if (laneBottom > source.SignTop) laneBottom = source.SignTop;
+
+                float lowerHeightSrc = laneBottom - source.SignBottom;
+                float upperHeightSrc = source.SignTop - laneBottom;
+
+                //Dai DUOI: ten dieu duong, dan nguyen o
+                if (lowerHeightSrc > 0.5f)
+                {
+                    PasteCell(canvas, importedPage, srcX0, source.SignBottom, lowerHeightSrc,
+                        tgtX0, baseSheet.SignBottom, lowerHeightSrc * scaleY, baseSheet.SlotW);
+                }
+
+                //Dai TREN: net ky + chu dau ky, dich ngang dx de can giua
+                if (upperHeightSrc > 0.5f)
+                {
+                    float upperBottomTgt = baseSheet.SignBottom + lowerHeightSrc * scaleY;
+                    float upperHeightTgt = upperHeightSrc * scaleY;
+
+                    //Phan trong o nguon duoc lay: [srcX0+m, srcX1-m], bo di |dx| o phia bi dich ra ngoai
+                    float takeSrcX0 = srcX0 + SIGN_LINE_MARGIN + (dx < 0 ? -dx : 0f);
+                    float takeSrcX1 = srcX1 - SIGN_LINE_MARGIN - (dx > 0 ? dx : 0f);
+                    float takeWidth = takeSrcX1 - takeSrcX0;
+
+                    if (takeWidth > 1f)
+                    {
+                        //Vi tri dat tren to dich: cung offset trong o + dx
+                        float putTgtX0 = tgtX0 + (takeSrcX0 - srcX0) + dx;
+
+                        PdfTemplate band = canvas.CreateTemplate(takeWidth, upperHeightTgt);
+                        band.AddTemplate(importedPage, 1, 0, 0, scaleY, -takeSrcX0, -laneBottom * scaleY);
+                        canvas.AddTemplate(band, putTgtX0, upperBottomTgt);
+                    }
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(String.Format(
+                    "MergeColumns sign cell: srcSlot={0} tgtSlot={1} stampCenter={2} cellCenter={3} dx={4} laneBottom={5} lowerH={6} upperH={7}",
+                    sourceSlot, targetSlot, stampCenter, cellCenter, dx, laneBottom, lowerHeightSrc, upperHeightSrc));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// (Khong con dung) Dan khoi chu ky theo tung cot. Giu lai de doi chieu:
+        /// cach nay lam mat chu khi cat theo o, hoac de chu len nhau khi noi bien tung cot.
         /// </summary>
         private static void PasteSignBlock(PdfContentByte canvas, PdfImportedPage importedPage,
             SheetInfo baseSheet, SheetInfo source, int sourceSlot, int targetSlot,
@@ -434,21 +619,66 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
                 //Dau ky trong phieu goc von tran ra ngoai o (chuoi "Nguoi Ky: ..." rong hon o),
                 //neu neo theo chu thi ca khoi bi day lech khoi o. Cho phep tran ra hai ben mot khoang
                 //bang phieu goc va chi nen ngang khi khoi rong hon ca khung tran.
-                //Cat DUNG THEO O nhu cac o du lieu khac: khong noi bien, khong dich, khong nen ngang.
-                //Neu noi bien thi vung lay se kem ca manh cua o ben canh va NET KE cua phieu goc,
-                //dan sang o dich se sinh vach doc la va de len cot truoc.
                 float targetSignHeight = Math.Max(1f, signRowYBase - baseSheet.SignBottom);
                 float sourceSignHeight = Math.Max(1f, signRowYSource - source.SignBottom);
                 float scaleYSign = Math.Min(1f, targetSignHeight / sourceSignHeight);
+                float sourceSlotX1 = sourceSlotX0 + source.SlotW;
+
+                //Chu dau ky cua cot nay: doan chu chong lan nhieu nhat voi o va bi tran ra ngoai o
+                List<TextItem> stampTexts = GetStampTextOfSlot(source, sourceSlot);
+
+                //Dai chu duoc phep tran ngang chi khi KHONG co cot khac cung nam trong dai do.
+                //Mau phieu in chu dau ky cua hai cot ke nhau o hai do cao lech nhau nen thuong thoa.
+                float laneTop = 0f, laneBottom = 0f;
+                bool canOverflow = false;
+                if (stampTexts.Count > 0)
+                {
+                    laneTop = stampTexts.Max(o => o.Y0) + SIGN_TEXT_LINE_ASCENT;
+                    laneBottom = stampTexts.Min(o => o.Y0) - SIGN_TEXT_LINE_DESCENT;
+                    canOverflow = !HasOtherSlotTextInLane(source, sourceSlot, laneBottom, laneTop);
+                }
 
                 Inventec.Common.Logging.LogSystem.Debug(String.Format(
-                    "MergeColumns sign block: srcSlot={0} tgtSlot={1} srcSignTop={2} srcSignBottom={3} srcH={4} baseSignTop={5} baseSignBottom={6} tgtH={7} srcX0={8} tgtX0={9} cellW={10} scaleY={11}",
-                    sourceSlot, targetSlot, signRowYSource, source.SignBottom, sourceSignHeight,
-                    signRowYBase, baseSheet.SignBottom, targetSignHeight, sourceSlotX0, targetSlotX0,
-                    baseSheet.SlotW, scaleYSign));
+                    "MergeColumns sign block: srcSlot={0} tgtSlot={1} srcX0={2} tgtX0={3} cellW={4} srcH={5} tgtH={6} scaleY={7} stampLines={8} lane=[{9}..{10}] choTran={11}",
+                    sourceSlot, targetSlot, sourceSlotX0, targetSlotX0, baseSheet.SlotW,
+                    sourceSignHeight, targetSignHeight, scaleYSign, stampTexts.Count, laneBottom, laneTop, canOverflow));
 
-                PasteCell(canvas, importedPage, sourceSlotX0, source.SignBottom, sourceSignHeight,
-                    targetSlotX0, baseSheet.SignBottom, targetSignHeight, baseSheet.SlotW);
+                if (!canOverflow)
+                {
+                    //Khong the cho tran (chu cua cot khac cung do cao): cat dung theo o
+                    PasteCell(canvas, importedPage, sourceSlotX0, source.SignBottom, sourceSignHeight,
+                        targetSlotX0, baseSheet.SignBottom, targetSignHeight, baseSheet.SlotW);
+                    return;
+                }
+
+                //1. Dai TREN dai chu (net ky): cat dung theo o
+                float upperHeight = signRowYSource - laneTop;
+                if (upperHeight > 1f)
+                {
+                    PasteCell(canvas, importedPage, sourceSlotX0, laneTop, upperHeight,
+                        targetSlotX0, baseSheet.SignBottom + (laneTop - source.SignBottom) * scaleYSign,
+                        upperHeight * scaleYSign, baseSheet.SlotW);
+                }
+
+                //2. Dai DUOI dai chu (ten dieu duong): cat dung theo o
+                float lowerHeight = laneBottom - source.SignBottom;
+                if (lowerHeight > 1f)
+                {
+                    PasteCell(canvas, importedPage, sourceSlotX0, source.SignBottom, lowerHeight,
+                        targetSlotX0, baseSheet.SignBottom, lowerHeight * scaleYSign, baseSheet.SlotW);
+                }
+
+                //3. Dai CHU dau ky: noi bien hai ben cho chu hien du. Dich ngang dung SO NGUYEN lan
+                //   be rong cot nen net ke doc cua phieu nguon trung khit net ke phieu dich.
+                float laneHeight = Math.Max(1f, laneTop - laneBottom);
+                float bleedLeft = source.SlotW * SIGN_OVERFLOW_RATIO;
+                float bleedRight = source.SlotW * SIGN_OVERFLOW_RATIO;
+
+                PdfTemplate laneCell = canvas.CreateTemplate(baseSheet.SlotW + bleedLeft + bleedRight, laneHeight * scaleYSign);
+                laneCell.AddTemplate(importedPage, 1, 0, 0, scaleYSign,
+                    -(sourceSlotX0 - bleedLeft), -laneBottom * scaleYSign);
+                canvas.AddTemplate(laneCell, targetSlotX0 - bleedLeft,
+                    baseSheet.SignBottom + (laneBottom - source.SignBottom) * scaleYSign);
             }
             catch (Exception ex)
             {
@@ -490,35 +720,43 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
                     float sourceSignHeight = Math.Max(1f, source.SignTop - source.SignBottom);
                     float scaleY = Math.Min(1f, targetSignHeight / sourceSignHeight);
 
-                    //Chu thuoc o nay: lay theo phan CHONG LAN nhieu nhat voi o (chuoi dau ky tran ra hai ben)
+                    //Chu thuoc o nay: dung ham chon cot theo phan chong lan nhieu nhat trong so cac cot
+                    //du lieu (lan truoc so voi vung dich chuyen nen nhat lan dong cua cot ben canh).
                     List<TextItem> items = source.Items
                         .Where(o => o.Y0 < source.SignTop && o.Y0 >= source.SignBottom
-                                 && OverlapWidth(o, sourceSlotX0, sourceSlotX1) > 0f
-                                 && OverlapWidth(o, sourceSlotX0, sourceSlotX1) >= OverlapWidth(o, sourceSlotX0 - source.SlotW, sourceSlotX0)
-                                 && OverlapWidth(o, sourceSlotX0, sourceSlotX1) >= OverlapWidth(o, sourceSlotX1, sourceSlotX1 + source.SlotW)
-                                 && Normalize(o.Text).Length > 0)
+                                 && Normalize(o.Text).Length > 0
+                                 && GetOwnerSlot(source, o) == column.SourceSlot)
                         .ToList();
 
-                    //Chi xu ly cac dong bi TRAN ra ngoai o; net ky va ten dieu duong nam trong o thi giu nguyen
+                    //Chi xu ly khi co dong bi TRAN ra ngoai o; net ky va ten dieu duong giu nguyen
                     List<TextItem> overflow = items
                         .Where(o => o.X0 < sourceSlotX0 - 0.5f || o.X1 > sourceSlotX1 + 0.5f)
                         .ToList();
                     if (overflow.Count == 0) continue;
 
-                    float bandTopSource = overflow.Max(o => o.Y0) + SIGN_TEXT_LINE_ASCENT;
-                    float bandBottomSource = overflow.Min(o => o.Y0) - SIGN_TEXT_LINE_DESCENT;
+                    //Dai phu tinh RONG HON chieu cao dong that su de khong con sot chu cu
+                    //(lan truoc tinh qua hep nen chu cu van hien -> chu de len chu).
+                    float bandTopSource = overflow.Max(o => o.Y0) + SIGN_TEXT_BAND_ASCENT;
+                    float bandBottomSource = overflow.Min(o => o.Y0) - SIGN_TEXT_BAND_DESCENT;
 
                     //Cac dong nam trong dai se bi phu -> phai ve lai het, khong chi cac dong tran
                     List<TextItem> lines = items
                         .Where(o => o.Y0 >= bandBottomSource && o.Y0 <= bandTopSource)
                         .OrderByDescending(o => o.Y0).ThenBy(o => o.X0).ToList();
+                    if (lines.Count == 0) continue;
 
                     float bandTop = baseSheet.SignBottom + (bandTopSource - source.SignBottom) * scaleY;
                     float bandBottom = baseSheet.SignBottom + (bandBottomSource - source.SignBottom) * scaleY;
                     if (bandTop - bandBottom < 2f) continue;
 
-                    float cellX0 = targetSlotX0 + SIGN_CELL_PADDING;
-                    float cellX1 = targetSlotX0 + baseSheet.SlotW - SIGN_CELL_PADDING;
+                    //Phu het be rong o, chi chua 0,8pt moi ben de khong xoa net ke doc
+                    float cellX0 = targetSlotX0 + 0.8f;
+                    float cellX1 = targetSlotX0 + baseSheet.SlotW - 0.8f;
+
+                    Inventec.Common.Logging.LogSystem.Debug(String.Format(
+                        "MergeColumns redraw: srcSlot={0} tgtSlot={1} dong={2} dai=[{3}..{4}] noiDung=\"{5}\"",
+                        column.SourceSlot, column.TargetSlot, lines.Count, bandBottom, bandTop,
+                        String.Join(" | ", lines.Select(o => Normalize(o.Text)).ToArray())));
 
                     //Phu trang dai chu cu
                     canvas.SaveState();
@@ -536,6 +774,70 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Cac doan chu dau ky ("Nguoi Ky: ...", "Chuc danh: ...") thuoc mot cot va bi tran ra ngoai o.
+        /// Gan doan chu ve cot co phan CHONG LAN nhieu nhat trong so cac cot du lieu.
+        /// </summary>
+        private static List<TextItem> GetStampTextOfSlot(SheetInfo sheet, int slot)
+        {
+            List<TextItem> result = new List<TextItem>();
+            try
+            {
+                float slotX0 = sheet.SlotX0 + slot * sheet.SlotW;
+                float slotX1 = slotX0 + sheet.SlotW;
+
+                foreach (TextItem item in sheet.Items)
+                {
+                    if (item.Y0 >= sheet.SignTop || item.Y0 < sheet.SignBottom) continue;
+                    if (Normalize(item.Text).Length == 0) continue;
+                    if (GetOwnerSlot(sheet, item) != slot) continue;
+
+                    //Chi quan tam doan chu bi tran ra ngoai o
+                    if (item.X0 < slotX0 - 0.5f || item.X1 > slotX1 + 0.5f) result.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Cot so huu mot doan chu: cot co phan chong lan nhieu nhat. Tra ve -1 neu khong thuoc cot nao.</summary>
+        private static int GetOwnerSlot(SheetInfo sheet, TextItem item)
+        {
+            int owner = -1;
+            float best = 0f;
+            for (int slot = 0; slot < sheet.SlotCount; slot++)
+            {
+                float x0 = sheet.SlotX0 + slot * sheet.SlotW;
+                float overlap = OverlapWidth(item, x0, x0 + sheet.SlotW);
+                if (overlap > best) { best = overlap; owner = slot; }
+            }
+            return owner;
+        }
+
+        /// <summary>Trong dai do cao nay co chu cua cot khac hay khong (neu co thi khong duoc cho tran ngang).</summary>
+        private static bool HasOtherSlotTextInLane(SheetInfo sheet, int slot, float laneBottom, float laneTop)
+        {
+            try
+            {
+                foreach (TextItem item in sheet.Items)
+                {
+                    if (item.Y0 < laneBottom || item.Y0 > laneTop) continue;
+                    if (Normalize(item.Text).Length == 0) continue;
+
+                    int owner = GetOwnerSlot(sheet, item);
+                    if (owner >= 0 && owner != slot) return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
         }
 
         /// <summary>Be rong phan chong lan giua mot doan chu va mot khoang x.</summary>
@@ -692,8 +994,9 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
                     reader.Close();
                 }
 
-                //Uu tien doc luoi o tu net ve cua bang; khong co net thi do theo chu nhu truoc
+                //Uu tien doc luoi o tu net ve cua bang; khong co net thi dung khung tu khoa danh dau; khong co nua thi do theo chu
                 sheet.Grid = EmrDocumentSheetGridReader.Read(filePath);
+                if (sheet.Grid == null) sheet.KeyGeometry = ReadKeyGeometry(sheet.Items);
 
                 if (sheet.Grid != null)
                     BuildRowsFromGrid(sheet);
@@ -717,7 +1020,7 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
 
                 Inventec.Common.Logging.LogSystem.Debug(String.Format(
                     "MergeColumns read sheet: nguon={0} sortKey={1} rows={2} usedSlots=[{3}] slotX0={4} slotW={5} slotCount={6} signTop={7} signBottom={8}",
-                    sheet.Grid != null ? "LUOI NET VE" : "DO THEO CHU", sheet.SortKey, sheet.RowList.Count,
+                    sheet.Grid != null ? "LUOI NET VE" : (sheet.KeyGeometry != null ? "KHOA DANH DAU" : "DO THEO CHU"), sheet.SortKey, sheet.RowList.Count,
                     String.Join(",", sheet.UsedSlots), sheet.SlotX0, sheet.SlotW, sheet.SlotCount,
                     sheet.SignTop, sheet.SignBottom));
 
@@ -776,6 +1079,98 @@ namespace HIS.Desktop.Plugins.EmrDocument.Worker
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        #region Khoa danh dau trong mau phieu
+
+        /// <summary>
+        /// Phieu co khoa co "gop ngang" trong mau hay khong. Doc chu trang 1 cua file PDF.
+        /// Dung de nhan dien loai gop ma khong can khai cau hinh ma loai van ban.
+        /// </summary>
+        internal static bool HasMergeColumnKey(string pdfFilePath)
+        {
+            try
+            {
+                if (String.IsNullOrWhiteSpace(pdfFilePath) || !File.Exists(pdfFilePath)) return false;
+
+                List<TextItem> items;
+                PdfReader reader = new PdfReader(pdfFilePath);
+                try
+                {
+                    TextCollector collector = new TextCollector();
+                    new PdfReaderContentParser(reader).ProcessContent(1, collector);
+                    items = MergeSameLine(collector.Items);
+                }
+                finally
+                {
+                    reader.Close();
+                }
+
+                foreach (TextItem item in items)
+                {
+                    string text = Normalize(item.Text).Replace(" ", "");
+                    if (text.IndexOf(MergeColumnKeys.FLAG, StringComparison.OrdinalIgnoreCase) >= 0) return true;
+                    if (text.IndexOf(MergeColumnKeys.TOP_LEFT, StringComparison.OrdinalIgnoreCase) >= 0) return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Doc khung vung cot tu cac khoa danh dau: TopLeft (goc tren-trai), TopRight (goc tren-phai),
+        /// Bottom (day bang), Count=N (so cot). Thieu khoa nao thi tra ve null.
+        /// </summary>
+        private static MergeColumnKeyGeometry ReadKeyGeometry(List<TextItem> items)
+        {
+            try
+            {
+                TextItem topLeft = null, topRight = null, bottom = null;
+                int count = 0;
+
+                foreach (TextItem item in items)
+                {
+                    string text = Normalize(item.Text).Replace(" ", "");
+                    if (text.IndexOf(MergeColumnKeys.TOP_LEFT, StringComparison.OrdinalIgnoreCase) >= 0) topLeft = item;
+                    else if (text.IndexOf(MergeColumnKeys.TOP_RIGHT, StringComparison.OrdinalIgnoreCase) >= 0) topRight = item;
+                    else if (text.IndexOf(MergeColumnKeys.BOTTOM, StringComparison.OrdinalIgnoreCase) >= 0) bottom = item;
+                    else
+                    {
+                        int at = text.IndexOf(MergeColumnKeys.COUNT_PREFIX, StringComparison.OrdinalIgnoreCase);
+                        if (at >= 0)
+                        {
+                            string digits = new String(text.Substring(at + MergeColumnKeys.COUNT_PREFIX.Length).TakeWhile(Char.IsDigit).ToArray());
+                            int.TryParse(digits, out count);
+                        }
+                    }
+                }
+
+                if (topLeft == null || topRight == null || bottom == null || count <= 0) return null;
+
+                MergeColumnKeyGeometry geometry = new MergeColumnKeyGeometry();
+                geometry.X0 = topLeft.X0;
+                geometry.X1 = topRight.X1;
+                geometry.Top = topLeft.Y0;
+                geometry.Bottom = bottom.Y0;
+                geometry.ColumnCount = count;
+
+                if (geometry.X1 - geometry.X0 < 10f || geometry.Top - geometry.Bottom < 50f) return null;
+
+                Inventec.Common.Logging.LogSystem.Debug(String.Format(
+                    "MergeColumns key geometry: x=[{0}..{1}] top={2} bottom={3} cols={4} colW={5}",
+                    geometry.X0, geometry.X1, geometry.Top, geometry.Bottom, geometry.ColumnCount, geometry.ColumnWidth));
+                return geometry;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        #endregion
 
         /// <summary>Dung danh sach hang theo chu o cot nhan (dung khi phieu khong co net ve).</summary>
         private static void BuildRowsFromText(SheetInfo sheet)

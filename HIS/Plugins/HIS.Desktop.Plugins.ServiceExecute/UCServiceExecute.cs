@@ -2233,6 +2233,25 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                                 .ToList();
                         }
 
+                        //GlobalVariables.MachineCounterSdos chi duoc nap o man Phong thuc hien va chi khi bat key
+                        //MAX_SERVICE_PER_DAY.WARNING_OPTION = 1|2, phong khong phai phong kham/phau thuat/kiosk.
+                        //Neu khong co counter (hoac benh nhan khong thuoc dien dung counter) van phai hien thi
+                        //danh sach may theo thiet lap Dich vu - May, neu khong combo se trong hoan toan.
+                        if (dataCombo.Count == 0 && allowMachineIds.Count > 0)
+                        {
+                            var allMachines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
+                            if (allMachines != null)
+                            {
+                                var allowSetNoCounter = new HashSet<long>(allowMachineIds);
+                                foreach (var item in allMachines.Where(o => o.IS_ACTIVE == 1 && allowSetNoCounter.Contains(o.ID)))
+                                {
+                                    var sdo = new HisMachineCounterSDO();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<HisMachineCounterSDO>(sdo, item);
+                                    dataCombo.Add(sdo);
+                                }
+                            }
+                        }
+
                         InitComboExecuteRoom(editor, dataCombo);
                         return;
                     }
