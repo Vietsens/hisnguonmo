@@ -28,10 +28,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.gridViewUrine = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboDiim = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridViewDiim = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboBloodGluco = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewBloodGluco = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboBloodUre = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewBloodUre = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboBloodCreatinin = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewBloodCreatinin = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboBloodAsat = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewBloodAsat = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboBloodAlat = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewBloodAlat = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboBloodOther = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewBloodOther = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboOtherPara = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewOtherPara = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboPeriodic = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewPeriodic = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciBlood = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBloodGluco = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBloodUre = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBloodCreatinin = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBloodAsat = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBloodAlat = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBloodOther = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciUrine = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDiim = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciOtherPara = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciPeriodic = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.tabUnderSixDefault = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
@@ -81,10 +105,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.gridViewUrine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDiim.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewDiim)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodGluco.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodGluco)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodUre.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodUre)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodCreatinin.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodCreatinin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodAsat.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodAsat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodAlat.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodAlat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodOther.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodOther)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboOtherPara.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPara)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPeriodic.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewPeriodic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBlood)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodGluco)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodUre)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodCreatinin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodAsat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodAlat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodOther)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciUrine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDiim)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciOtherPara)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPeriodic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             this.tabUnderSixDefault.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -149,8 +197,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControl1
             //
             this.layoutControl1.Controls.Add(this.cboBlood);
+            this.layoutControl1.Controls.Add(this.cboBloodGluco);
+            this.layoutControl1.Controls.Add(this.cboBloodUre);
+            this.layoutControl1.Controls.Add(this.cboBloodCreatinin);
+            this.layoutControl1.Controls.Add(this.cboBloodAsat);
+            this.layoutControl1.Controls.Add(this.cboBloodAlat);
+            this.layoutControl1.Controls.Add(this.cboBloodOther);
             this.layoutControl1.Controls.Add(this.cboUrine);
             this.layoutControl1.Controls.Add(this.cboDiim);
+            this.layoutControl1.Controls.Add(this.cboOtherPara);
+            this.layoutControl1.Controls.Add(this.cboPeriodic);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
@@ -179,14 +235,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             //
             // cboUrine
             //
-            this.cboUrine.Location = new System.Drawing.Point(157, 36);
+            this.cboUrine.Location = new System.Drawing.Point(157, 180);
             this.cboUrine.Name = "cboUrine";
             this.cboUrine.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboUrine.Properties.View = this.gridViewUrine;
             this.cboUrine.Size = new System.Drawing.Size(585, 20);
             this.cboUrine.StyleController = this.layoutControl1;
-            this.cboUrine.TabIndex = 1;
+            this.cboUrine.TabIndex = 7;
             //
             // gridViewUrine
             //
@@ -197,14 +253,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             //
             // cboDiim
             //
-            this.cboDiim.Location = new System.Drawing.Point(157, 60);
+            this.cboDiim.Location = new System.Drawing.Point(157, 204);
             this.cboDiim.Name = "cboDiim";
             this.cboDiim.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboDiim.Properties.View = this.gridViewDiim;
             this.cboDiim.Size = new System.Drawing.Size(585, 20);
             this.cboDiim.StyleController = this.layoutControl1;
-            this.cboDiim.TabIndex = 2;
+            this.cboDiim.TabIndex = 8;
             //
             // gridViewDiim
             //
@@ -213,14 +269,166 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.gridViewDiim.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridViewDiim.OptionsView.ShowGroupPanel = false;
             //
+            // cboBloodGluco
+            //
+            this.cboBloodGluco.Location = new System.Drawing.Point(157, 36);
+            this.cboBloodGluco.Name = "cboBloodGluco";
+            this.cboBloodGluco.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBloodGluco.Properties.View = this.gridViewBloodGluco;
+            this.cboBloodGluco.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodGluco.StyleController = this.layoutControl1;
+            this.cboBloodGluco.TabIndex = 1;
+            //
+            // gridViewBloodGluco
+            //
+            this.gridViewBloodGluco.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewBloodGluco.Name = "gridViewBloodGluco";
+            this.gridViewBloodGluco.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBloodGluco.OptionsView.ShowGroupPanel = false;
+            //
+            // cboBloodUre
+            //
+            this.cboBloodUre.Location = new System.Drawing.Point(157, 60);
+            this.cboBloodUre.Name = "cboBloodUre";
+            this.cboBloodUre.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBloodUre.Properties.View = this.gridViewBloodUre;
+            this.cboBloodUre.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodUre.StyleController = this.layoutControl1;
+            this.cboBloodUre.TabIndex = 2;
+            //
+            // gridViewBloodUre
+            //
+            this.gridViewBloodUre.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewBloodUre.Name = "gridViewBloodUre";
+            this.gridViewBloodUre.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBloodUre.OptionsView.ShowGroupPanel = false;
+            //
+            // cboBloodCreatinin
+            //
+            this.cboBloodCreatinin.Location = new System.Drawing.Point(157, 84);
+            this.cboBloodCreatinin.Name = "cboBloodCreatinin";
+            this.cboBloodCreatinin.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBloodCreatinin.Properties.View = this.gridViewBloodCreatinin;
+            this.cboBloodCreatinin.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodCreatinin.StyleController = this.layoutControl1;
+            this.cboBloodCreatinin.TabIndex = 3;
+            //
+            // gridViewBloodCreatinin
+            //
+            this.gridViewBloodCreatinin.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewBloodCreatinin.Name = "gridViewBloodCreatinin";
+            this.gridViewBloodCreatinin.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBloodCreatinin.OptionsView.ShowGroupPanel = false;
+            //
+            // cboBloodAsat
+            //
+            this.cboBloodAsat.Location = new System.Drawing.Point(157, 108);
+            this.cboBloodAsat.Name = "cboBloodAsat";
+            this.cboBloodAsat.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBloodAsat.Properties.View = this.gridViewBloodAsat;
+            this.cboBloodAsat.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodAsat.StyleController = this.layoutControl1;
+            this.cboBloodAsat.TabIndex = 4;
+            //
+            // gridViewBloodAsat
+            //
+            this.gridViewBloodAsat.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewBloodAsat.Name = "gridViewBloodAsat";
+            this.gridViewBloodAsat.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBloodAsat.OptionsView.ShowGroupPanel = false;
+            //
+            // cboBloodAlat
+            //
+            this.cboBloodAlat.Location = new System.Drawing.Point(157, 132);
+            this.cboBloodAlat.Name = "cboBloodAlat";
+            this.cboBloodAlat.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBloodAlat.Properties.View = this.gridViewBloodAlat;
+            this.cboBloodAlat.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodAlat.StyleController = this.layoutControl1;
+            this.cboBloodAlat.TabIndex = 5;
+            //
+            // gridViewBloodAlat
+            //
+            this.gridViewBloodAlat.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewBloodAlat.Name = "gridViewBloodAlat";
+            this.gridViewBloodAlat.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBloodAlat.OptionsView.ShowGroupPanel = false;
+            //
+            // cboBloodOther
+            //
+            this.cboBloodOther.Location = new System.Drawing.Point(157, 156);
+            this.cboBloodOther.Name = "cboBloodOther";
+            this.cboBloodOther.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBloodOther.Properties.View = this.gridViewBloodOther;
+            this.cboBloodOther.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodOther.StyleController = this.layoutControl1;
+            this.cboBloodOther.TabIndex = 6;
+            //
+            // gridViewBloodOther
+            //
+            this.gridViewBloodOther.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewBloodOther.Name = "gridViewBloodOther";
+            this.gridViewBloodOther.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBloodOther.OptionsView.ShowGroupPanel = false;
+            //
+            // cboOtherPara
+            //
+            this.cboOtherPara.Location = new System.Drawing.Point(157, 228);
+            this.cboOtherPara.Name = "cboOtherPara";
+            this.cboOtherPara.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboOtherPara.Properties.View = this.gridViewOtherPara;
+            this.cboOtherPara.Size = new System.Drawing.Size(585, 20);
+            this.cboOtherPara.StyleController = this.layoutControl1;
+            this.cboOtherPara.TabIndex = 9;
+            //
+            // gridViewOtherPara
+            //
+            this.gridViewOtherPara.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewOtherPara.Name = "gridViewOtherPara";
+            this.gridViewOtherPara.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewOtherPara.OptionsView.ShowGroupPanel = false;
+            //
+            // cboPeriodic
+            //
+            this.cboPeriodic.Location = new System.Drawing.Point(157, 252);
+            this.cboPeriodic.Name = "cboPeriodic";
+            this.cboPeriodic.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboPeriodic.Properties.View = this.gridViewPeriodic;
+            this.cboPeriodic.Size = new System.Drawing.Size(585, 20);
+            this.cboPeriodic.StyleController = this.layoutControl1;
+            this.cboPeriodic.TabIndex = 10;
+            //
+            // gridViewPeriodic
+            //
+            this.gridViewPeriodic.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewPeriodic.Name = "gridViewPeriodic";
+            this.gridViewPeriodic.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewPeriodic.OptionsView.ShowGroupPanel = false;
+            //
             // layoutControlGroup1
             //
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lciBlood,
+            this.lciBloodGluco,
+            this.lciBloodUre,
+            this.lciBloodCreatinin,
+            this.lciBloodAsat,
+            this.lciBloodAlat,
+            this.lciBloodOther,
             this.lciUrine,
             this.lciDiim,
+            this.lciOtherPara,
+            this.lciPeriodic,
             this.emptySpaceItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
@@ -235,20 +443,98 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBlood.Location = new System.Drawing.Point(0, 0);
             this.lciBlood.Name = "lciBlood";
             this.lciBlood.Size = new System.Drawing.Size(734, 24);
-            this.lciBlood.Text = "Máu:";
+            this.lciBlood.Text = "1a. Công thức máu:";
             this.lciBlood.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBlood.TextSize = new System.Drawing.Size(140, 20);
             this.lciBlood.TextToControlDistance = 5;
+            //
+            // lciBloodGluco
+            //
+            this.lciBloodGluco.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBloodGluco.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBloodGluco.Control = this.cboBloodGluco;
+            this.lciBloodGluco.Location = new System.Drawing.Point(0, 24);
+            this.lciBloodGluco.Name = "lciBloodGluco";
+            this.lciBloodGluco.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodGluco.Text = "1b. Đường máu:";
+            this.lciBloodGluco.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBloodGluco.TextSize = new System.Drawing.Size(140, 20);
+            this.lciBloodGluco.TextToControlDistance = 5;
+            //
+            // lciBloodUre
+            //
+            this.lciBloodUre.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBloodUre.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBloodUre.Control = this.cboBloodUre;
+            this.lciBloodUre.Location = new System.Drawing.Point(0, 48);
+            this.lciBloodUre.Name = "lciBloodUre";
+            this.lciBloodUre.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodUre.Text = "1b. Urê:";
+            this.lciBloodUre.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBloodUre.TextSize = new System.Drawing.Size(140, 20);
+            this.lciBloodUre.TextToControlDistance = 5;
+            //
+            // lciBloodCreatinin
+            //
+            this.lciBloodCreatinin.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBloodCreatinin.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBloodCreatinin.Control = this.cboBloodCreatinin;
+            this.lciBloodCreatinin.Location = new System.Drawing.Point(0, 72);
+            this.lciBloodCreatinin.Name = "lciBloodCreatinin";
+            this.lciBloodCreatinin.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodCreatinin.Text = "1b. Creatinin:";
+            this.lciBloodCreatinin.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBloodCreatinin.TextSize = new System.Drawing.Size(140, 20);
+            this.lciBloodCreatinin.TextToControlDistance = 5;
+            //
+            // lciBloodAsat
+            //
+            this.lciBloodAsat.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBloodAsat.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBloodAsat.Control = this.cboBloodAsat;
+            this.lciBloodAsat.Location = new System.Drawing.Point(0, 96);
+            this.lciBloodAsat.Name = "lciBloodAsat";
+            this.lciBloodAsat.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodAsat.Text = "1b. ASAT (GOT):";
+            this.lciBloodAsat.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBloodAsat.TextSize = new System.Drawing.Size(140, 20);
+            this.lciBloodAsat.TextToControlDistance = 5;
+            //
+            // lciBloodAlat
+            //
+            this.lciBloodAlat.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBloodAlat.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBloodAlat.Control = this.cboBloodAlat;
+            this.lciBloodAlat.Location = new System.Drawing.Point(0, 120);
+            this.lciBloodAlat.Name = "lciBloodAlat";
+            this.lciBloodAlat.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodAlat.Text = "1b. ALAT (GPT):";
+            this.lciBloodAlat.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBloodAlat.TextSize = new System.Drawing.Size(140, 20);
+            this.lciBloodAlat.TextToControlDistance = 5;
+            //
+            // lciBloodOther
+            //
+            this.lciBloodOther.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBloodOther.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBloodOther.Control = this.cboBloodOther;
+            this.lciBloodOther.Location = new System.Drawing.Point(0, 144);
+            this.lciBloodOther.Name = "lciBloodOther";
+            this.lciBloodOther.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodOther.Text = "1c. XN máu - Khác:";
+            this.lciBloodOther.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBloodOther.TextSize = new System.Drawing.Size(140, 20);
+            this.lciBloodOther.TextToControlDistance = 5;
             //
             // lciUrine
             //
             this.lciUrine.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciUrine.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciUrine.Control = this.cboUrine;
-            this.lciUrine.Location = new System.Drawing.Point(0, 24);
+            this.lciUrine.Location = new System.Drawing.Point(0, 168);
             this.lciUrine.Name = "lciUrine";
             this.lciUrine.Size = new System.Drawing.Size(734, 24);
-            this.lciUrine.Text = "Nước tiểu:";
+            this.lciUrine.Text = "2. XN nước tiểu:";
             this.lciUrine.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciUrine.TextSize = new System.Drawing.Size(140, 20);
             this.lciUrine.TextToControlDistance = 5;
@@ -258,20 +544,46 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciDiim.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciDiim.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciDiim.Control = this.cboDiim;
-            this.lciDiim.Location = new System.Drawing.Point(0, 48);
+            this.lciDiim.Location = new System.Drawing.Point(0, 192);
             this.lciDiim.Name = "lciDiim";
             this.lciDiim.Size = new System.Drawing.Size(734, 24);
-            this.lciDiim.Text = "Chẩn đoán hình ảnh:";
+            this.lciDiim.Text = "3. Chẩn đoán hình ảnh:";
             this.lciDiim.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciDiim.TextSize = new System.Drawing.Size(140, 20);
             this.lciDiim.TextToControlDistance = 5;
             //
+            // lciOtherPara
+            //
+            this.lciOtherPara.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciOtherPara.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciOtherPara.Control = this.cboOtherPara;
+            this.lciOtherPara.Location = new System.Drawing.Point(0, 216);
+            this.lciOtherPara.Name = "lciOtherPara";
+            this.lciOtherPara.Size = new System.Drawing.Size(734, 24);
+            this.lciOtherPara.Text = "4. KQ khám CLS khác:";
+            this.lciOtherPara.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciOtherPara.TextSize = new System.Drawing.Size(140, 20);
+            this.lciOtherPara.TextToControlDistance = 5;
+            //
+            // lciPeriodic
+            //
+            this.lciPeriodic.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciPeriodic.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciPeriodic.Control = this.cboPeriodic;
+            this.lciPeriodic.Location = new System.Drawing.Point(0, 240);
+            this.lciPeriodic.Name = "lciPeriodic";
+            this.lciPeriodic.Size = new System.Drawing.Size(734, 24);
+            this.lciPeriodic.Text = "KSK định kỳ - Kết quả:";
+            this.lciPeriodic.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciPeriodic.TextSize = new System.Drawing.Size(140, 20);
+            this.lciPeriodic.TextToControlDistance = 5;
+            //
             // emptySpaceItem1
             //
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 72);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 264);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(734, 381);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(734, 189);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             //
             // tabUnderSixDefault
@@ -721,10 +1033,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.tabUnderSixDefault.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPeriodic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciOtherPara)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDiim)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciUrine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodOther)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodAlat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodAsat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodCreatinin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodUre)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBloodGluco)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBlood)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewPeriodic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPeriodic.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPara)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboOtherPara.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodOther)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodOther.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodAlat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodAlat.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodAsat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodAsat.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodCreatinin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodCreatinin.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodUre)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodUre.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodGluco)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodGluco.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewDiim)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDiim.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewUrine)).EndInit();
@@ -754,10 +1090,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewUrine;
         private DevExpress.XtraEditors.GridLookUpEdit cboDiim;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewDiim;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBloodGluco;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewBloodGluco;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBloodUre;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewBloodUre;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBloodCreatinin;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewBloodCreatinin;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBloodAsat;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewBloodAsat;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBloodAlat;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewBloodAlat;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBloodOther;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewBloodOther;
+        private DevExpress.XtraEditors.GridLookUpEdit cboOtherPara;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewOtherPara;
+        private DevExpress.XtraEditors.GridLookUpEdit cboPeriodic;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewPeriodic;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraLayout.LayoutControlItem lciBlood;
+        private DevExpress.XtraLayout.LayoutControlItem lciBloodGluco;
+        private DevExpress.XtraLayout.LayoutControlItem lciBloodUre;
+        private DevExpress.XtraLayout.LayoutControlItem lciBloodCreatinin;
+        private DevExpress.XtraLayout.LayoutControlItem lciBloodAsat;
+        private DevExpress.XtraLayout.LayoutControlItem lciBloodAlat;
+        private DevExpress.XtraLayout.LayoutControlItem lciBloodOther;
         private DevExpress.XtraLayout.LayoutControlItem lciUrine;
         private DevExpress.XtraLayout.LayoutControlItem lciDiim;
+        private DevExpress.XtraLayout.LayoutControlItem lciOtherPara;
+        private DevExpress.XtraLayout.LayoutControlItem lciPeriodic;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraLayout.LayoutControl layoutControl2;
         private DevExpress.XtraGrid.GridControl grdDefault;

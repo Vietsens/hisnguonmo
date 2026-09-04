@@ -67,5 +67,12 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         /// </summary>
         internal const string AUTO_ACTION__SAVE_SIGN_PRINT = "AUTO_SAVE_SIGN_PRINT";
 
+        /// <summary>
+        /// Viec 3082 (29/08/2026): man Xuat ban da tao bill ngay khi luu (tick "Xuat bien lai/hoa don") -> form chi
+        /// phat hanh HDDT cho bill do + duyet/thuc xuat + in roi tu dong. Kem tham so "TRANSACTION_ID=&lt;id&gt;".
+        /// </summary>
+        internal const string AUTO_ACTION__ISSUE_EXISTING_BILL = "AUTO_ISSUE_EXISTING_BILL";
+        internal const string AUTO_PARAM__TRANSACTION_ID = "TRANSACTION_ID=";
+
     }
 }

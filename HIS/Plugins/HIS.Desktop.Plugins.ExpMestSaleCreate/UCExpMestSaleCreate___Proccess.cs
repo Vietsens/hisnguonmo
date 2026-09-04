@@ -507,7 +507,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                 if (this.savePrintInvoice)
                 {
-                    // Viec 3082: Luu in + tick "In" -> mo form Xuat hoa don o che do tu dong
+                    // Viec 3082: nut "Luu ky in" (tick "Xuat HDDT") -> mo form Xuat hoa don o che do tu dong
                     // (thay cho nhanh config Show_MedicineSaleBill de khong mo form 2 lan)
                     this.savePrintInvoice = false;
                     if (success)
@@ -1825,24 +1825,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         {
                             chkSign.Checked = item.VALUE == "1";
                         }
-                        else if (item.KEY == ControlStateConstant.CHK_PRINT_INVOICE)
-                        {
-                            chkPrintInvoice.Checked = item.VALUE == "1";
-                        }
                     }
                 }
 
-                // Viec 3082: key bat -> hien checkbox "In" canh "Ky don nha thuoc" (tick + Luu in = Luu > HDDT > duyet/thuc xuat > in),
-                // dong thoi bo tick va khoa "Xuat bien lai/hoa don": neu tick, phieu tao bill ngay khi luu -> form hoa don
-                // loc HAS_BILL_ID = false nen khong tim thay phieu, mo ra trong.
-                bool isSaveSignPrintAutoExport = IsSaveSignPrintAutoExportEnabled();
-                SetPrintInvoiceCheckboxByConfig(isSaveSignPrintAutoExport);
-                if (isSaveSignPrintAutoExport)
-                {
-                    chkCreateBill.Checked = false;
-                    chkCreateBill.Enabled = false;
-                    chkCreateBill.ToolTip = "Đã bật cấu hình in hóa đơn điện tử (tick \"In\" + Lưu in, hoặc Xuất hóa đơn F10) — không xuất biên lai/hóa đơn ngay khi lưu phiếu";
-                }
+                // Viec 3082: nut "Luu ky in" enable khi tick "Xuat bien lai/hoa don" (khong key, khong checkbox rieng — 29/08/2026)
+                InitSaveSignPrintButton();
 
                 isNotLoadWhileChangeControlStateInFirst = false;
             }

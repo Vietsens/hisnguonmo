@@ -1226,7 +1226,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 }
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : ""), printTypeCode, this.moduleData != null ? moduleData.RoomId : 0);
 
-                long keyPrintMerge = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.CONFIG_KEY__HIS_DESKTOP_PLUGINS_EMR_DOCUMENT_IS_PRINT_MERGE));
+                long keyPrintMerge = HisConfigCFG.GetKeyPrintMerge();
                 if (keyPrintMerge == 1)
                 {
                     inputADO.MergeCode = String.Format("{0}_{1}_{2}", printTypeCode, "", (this.treatment != null ? this.treatment.TREATMENT_CODE : ""));
@@ -2484,7 +2484,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 }
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : ""), printTypeCode, this.moduleData != null ? moduleData.RoomId : 0);
 
-                long keyPrintMerge = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.CONFIG_KEY__HIS_DESKTOP_PLUGINS_EMR_DOCUMENT_IS_PRINT_MERGE));
+                long keyPrintMerge = HisConfigCFG.GetKeyPrintMerge();
                 if (keyPrintMerge == 1)
                 {
                     inputADO.MergeCode = String.Format("{0}_{1}_{2}", printTypeCode, "", (this.treatment != null ? this.treatment.TREATMENT_CODE : ""));

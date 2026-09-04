@@ -18,7 +18,6 @@
 using DevExpress.XtraEditors;
 using HIS.Desktop.Common;
 using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Plugins.ExpMestSaleCreate.Base;
 using HIS.Desktop.Utility;
 using MOS.SDO;
 using System;
@@ -29,103 +28,135 @@ using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 {
     /// <summary>
-    /// Viec 3082 (25/08/2026): checkbox "In" canh "Ky don nha thuoc".
-    /// Tick "In" + bam "Luu in (F9)" -> Luu phieu -> mo form Xuat hoa don (F10) o CHE DO TU DONG:
-    /// kiem tra ton -> tao bill + phat hanh (ky) HDDT -> tu dong duyet/thuc xuat phieu (neu chua hoan thanh)
-    /// -> in thang hoa don -> form tu dong. KHONG in phieu xuat ban trong luot nay.
-    /// Gate: key HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport = 1 (dung chung voi form hoa don).
+    /// Viec 3082 (29/08/2026): nut MOI "Luu ky in (Ctrl E / F11)" canh nut "Luu in".
+    /// Enable/disable theo checkbox "Xuat bien lai/hoa don" (chkCreateBill) co san: tick -> enable, bo tick -> disable
+    /// (va nut Luu in dang enable). KHONG dung key config, KHONG checkbox rieng. Nut "Luu in" cu giu nguyen.
+    /// Bam "Luu ky in": Luu phieu (BE tao bill ngay khi luu vi dang tick Xuat bien lai/hoa don) -> mo form Xuat hoa don (F10)
+    /// o che do tu dong "phat hanh cho bill da co": kiem tra ton -> phat hanh (ky) HDDT VNPT -> tu dong duyet/thuc xuat
+    /// (neu chua hoan thanh) -> in thang hoa don -> form tu dong. Luot nay KHONG in phieu xuat ban.
     /// </summary>
     public partial class UCExpMestSaleCreate : UserControlBase
     {
-        /// <summary>Marker truyen sang form hoa don qua args (List&lt;string&gt;) — PHAI TRUNG Config.AUTO_ACTION__SAVE_SIGN_PRINT ben plugin MedicineSaleBill</summary>
+        /// <summary>Marker truyen sang form hoa don — PHAI TRUNG Config.AUTO_ACTION__* ben plugin MedicineSaleBill</summary>
         private const string MEDICINE_SALE_BILL__AUTO_ACTION__SAVE_SIGN_PRINT = "AUTO_SAVE_SIGN_PRINT";
+        private const string MEDICINE_SALE_BILL__AUTO_ACTION__ISSUE_EXISTING_BILL = "AUTO_ISSUE_EXISTING_BILL";
+        private const string MEDICINE_SALE_BILL__AUTO_PARAM__TRANSACTION_ID = "TRANSACTION_ID=";
         private const string MEDICINE_SALE_BILL__MODULE_LINK = "HIS.Desktop.Plugins.MedicineSaleBill";
-        private const string CONFIG_KEY__SAVE_SIGN_PRINT_AUTO_EXPORT = "HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport";
+        private const string CONFIG_KEY__USING_FUNCTION_KEY = "HIS.Desktop.Plugins.ExpMestSaleCreate.IsUsingFunctionKeyInsteadOfCtrlKey";
 
         /// <summary>
-        /// true trong luot "Luu in" co tick "In": sau khi luu phieu thanh cong thi mo form hoa don tu dong
+        /// true trong luot bam "Luu ky in": sau khi luu phieu thanh cong thi mo form hoa don tu dong
         /// (thay cho in phieu xuat ban va thay cho nhanh config Show_MedicineSaleBill).
         /// </summary>
         private bool savePrintInvoice = false;
 
-        /// <summary>Key config 3082 dang bat?</summary>
-        private bool IsSaveSignPrintAutoExportEnabled()
+        /// <summary>Da gan cac su kien dong bo trang thai nut Luu ky in chua</summary>
+        private bool isSaveSignPrintButtonWired = false;
+
+        /// <summary>
+        /// Khoi tao nut "Luu ky in": nhan phim tat, gan su kien dong bo (tick "Xuat bien lai/hoa don", Enabled cua Luu in,
+        /// Enabled/Visible cua UC) va refresh ngay + refresh tre sau khi Load xong.
+        /// Goi trong InitControlState.
+        /// </summary>
+        private void InitSaveSignPrintButton()
         {
             try
             {
-                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__SAVE_SIGN_PRINT_AUTO_EXPORT) == "1";
+                bool isUsingFunctionKey = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__USING_FUNCTION_KEY) == "1";
+                btnSaveSignPrint.Text = isUsingFunctionKey ? "Lưu ký in (F11)" : "Lưu ký in (Ctrl E)";
+
+                if (!isSaveSignPrintButtonWired)
+                {
+                    // Control.Enabled la trang thai HIEU DUNG (false khi form cha dang bi WaitingManager khoa luc load)
+                    // va LayoutControl khong chac lan EnabledChanged tu form cha xuong tung nut -> bat nhieu moc + refresh tre.
+                    chkCreateBill.CheckedChanged += new EventHandler(SaveSignPrintState_Changed);
+                    btnSavePrint.EnabledChanged += new EventHandler(SaveSignPrintState_Changed);
+                    this.EnabledChanged += new EventHandler(SaveSignPrintState_Changed);
+                    this.VisibleChanged += new EventHandler(SaveSignPrintState_Changed);
+                    isSaveSignPrintButtonWired = true;
+                }
+                RefreshSaveSignPrintButton();
+                if (this.IsHandleCreated)
+                {
+                    this.BeginInvoke(new Action(RefreshSaveSignPrintButton));
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-                return false;
+            }
+        }
+
+        private void SaveSignPrintState_Changed(object sender, EventArgs e)
+        {
+            RefreshSaveSignPrintButton();
+        }
+
+        /// <summary>
+        /// Dieu kien enable nut "Luu ky in": tick "Xuat bien lai/hoa don" + nut Luu in dang enable.
+        /// Khi UC/form cha dang bi disable (Enabled hieu dung = false) thi KHONG ket luan — cho lan refresh sau.
+        /// </summary>
+        private void RefreshSaveSignPrintButton()
+        {
+            try
+            {
+                if (!chkCreateBill.Checked)
+                {
+                    btnSaveSignPrint.Enabled = false;
+                    return;
+                }
+                if (!this.Enabled)
+                {
+                    return;
+                }
+                btnSaveSignPrint.Enabled = btnSavePrint.Enabled;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
         /// <summary>
-        /// Hien/an checkbox "In" theo key config. Goi trong InitControlState (flag isNotLoadWhileChangeControlStateInFirst dang bat
-        /// nen bo tick khi key tat khong ghi ControlState).
+        /// Nut "Luu ky in": luu phieu (BE tao bill vi dang tick Xuat bien lai/hoa don, khong in phieu xuat ban)
+        /// -> ProcessSave thay flag savePrintInvoice -> mo form hoa don tu dong. Flag reset trong finally.
         /// </summary>
-        private void SetPrintInvoiceCheckboxByConfig(bool isEnabled)
+        private void btnSaveSignPrint_Click(object sender, EventArgs e)
         {
             try
             {
-                lciPrintInvoice.Visibility = isEnabled ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                if (!isEnabled)
-                {
-                    chkPrintInvoice.Checked = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>Luot "Luu in" hien tai co chay chuoi HDDT (tick "In" + key bat) khong</summary>
-        private bool IsSavePrintInvoiceMode()
-        {
-            try
-            {
-                return lciPrintInvoice.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
-                    && chkPrintInvoice.Checked
-                    && IsSaveSignPrintAutoExportEnabled();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return false;
-            }
-        }
-
-        /// <summary>Nho trang thai tick "In" giua cac phien (ControlState) — cung mau voi chkSign_CheckedChanged</summary>
-        private void chkPrintInvoice_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (isNotLoadWhileChangeControlStateInFirst)
+                if (!btnSaveSignPrint.Enabled || !chkCreateBill.Checked)
                 {
                     return;
                 }
+                this.savePrintInvoice = true;
+                this.savePrint = false;
+                try
+                {
+                    btnSave_Click(null, null);
+                }
+                finally
+                {
+                    this.savePrintInvoice = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.savePrintInvoice = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
-                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (UCExpMestSaleCreate.currentControlStateRDO != null && UCExpMestSaleCreate.currentControlStateRDO.Count > 0)
-                    ? UCExpMestSaleCreate.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.CHK_PRINT_INVOICE && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault()
-                    : null;
-                if (csAddOrUpdate != null)
+        /// <summary>Phim tat Ctrl E / F11 (KeyboardWorker)</summary>
+        public void BtnSaveSignPrintShortcut()
+        {
+            try
+            {
+                if (btnSaveSignPrint.Enabled)
                 {
-                    csAddOrUpdate.VALUE = (chkPrintInvoice.Checked ? "1" : "");
+                    btnSaveSignPrint.Focus();
+                    btnSaveSignPrint_Click(null, null);
                 }
-                else
-                {
-                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-                    csAddOrUpdate.KEY = ControlStateConstant.CHK_PRINT_INVOICE;
-                    csAddOrUpdate.VALUE = (chkPrintInvoice.Checked ? "1" : "");
-                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
-                    if (UCExpMestSaleCreate.currentControlStateRDO == null)
-                        UCExpMestSaleCreate.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-                    UCExpMestSaleCreate.currentControlStateRDO.Add(csAddOrUpdate);
-                }
-                UCExpMestSaleCreate.controlStateWorker.SetData(UCExpMestSaleCreate.currentControlStateRDO);
             }
             catch (Exception ex)
             {
@@ -135,8 +166,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
         /// <summary>
         /// Mo form Xuat hoa don (HIS.Desktop.Plugins.MedicineSaleBill) o che do tu dong cho tung ket qua luu
-        /// (1 benh nhan: resultSDO; nhieu benh nhan: ListResultSDO). Form tu chay Luu ky + duyet/thuc xuat + in roi tu dong;
-        /// neu co buoc fail thi form giu mo de nguoi dung xu ly tiep. Callback EnableControlAfterSaveSaleBill giu nhu nut F10.
+        /// (1 benh nhan: resultSDO; nhieu benh nhan: ListResultSDO).
+        /// - Co Transaction (bill da tao khi luu): marker ISSUE_EXISTING_BILL + TRANSACTION_ID -> form phat hanh HDDT cho bill do,
+        ///   duyet/thuc xuat, in, tu dong. Hinh thuc QR: bo qua (ProcessSave da mo module QR).
+        /// - Khong co Transaction (BE khong tao bill): marker SAVE_SIGN_PRINT -> form tu tao bill + phat hanh nhu F10.
+        /// Callback EnableControlAfterSaveSaleBill giu nhu nut F10.
         /// </summary>
         private void OpenMedicineSaleBillAutoSignPrint()
         {
@@ -146,7 +180,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 if (moduleData == null || !moduleData.IsPlugin || moduleData.ExtensionInfo == null)
                 {
                     Inventec.Common.Logging.LogSystem.Error("OpenMedicineSaleBillAutoSignPrint: Not found module by ModuleLink = '" + MEDICINE_SALE_BILL__MODULE_LINK + "'");
-                    XtraMessageBox.Show("Không tìm thấy chức năng Xuất hóa đơn (" + MEDICINE_SALE_BILL__MODULE_LINK + "). Phiếu đã lưu, vui lòng bấm Xuất hóa đơn (F10) để xử lý thủ công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    XtraMessageBox.Show("Không tìm thấy chức năng Xuất hóa đơn (" + MEDICINE_SALE_BILL__MODULE_LINK + "). Phiếu đã lưu, vui lòng phát hành hóa đơn điện tử thủ công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -165,25 +199,40 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     if (rs.ExpMestSdos == null || rs.ExpMestSdos.Count == 0)
                         continue;
 
-                    // Form hoa don chi tim phieu chua co bill (HAS_BILL_ID = false) -> bo qua phieu da co bill
-                    List<long> expMestIds = rs.ExpMestSdos
-                        .Where(p => p.ExpMest != null && !p.ExpMest.BILL_ID.HasValue)
-                        .Select(p => p.ExpMest.ID).Distinct().ToList();
-                    if (expMestIds.Count == 0)
+                    List<string> autoActions = new List<string>();
+                    List<long> expMestIds = null;
+                    if (rs.Transaction != null)
                     {
-                        Inventec.Common.Logging.LogSystem.Warn("OpenMedicineSaleBillAutoSignPrint: phieu da co bill, khong mo form tu dong. "
+                        if (rs.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                        {
+                            Inventec.Common.Logging.LogSystem.Info("Viec 3082: bill hinh thuc QR -> khong phat hanh HDDT tu dong. TransactionId = " + rs.Transaction.ID);
+                            continue;
+                        }
+                        expMestIds = rs.ExpMestSdos.Where(p => p.ExpMest != null).Select(p => p.ExpMest.ID).Distinct().ToList();
+                        autoActions.Add(MEDICINE_SALE_BILL__AUTO_ACTION__ISSUE_EXISTING_BILL);
+                        autoActions.Add(MEDICINE_SALE_BILL__AUTO_PARAM__TRANSACTION_ID + rs.Transaction.ID);
+                    }
+                    else
+                    {
+                        // BE khong tao bill khi luu -> form tu tao bill + phat hanh (chi phieu chua co bill)
+                        expMestIds = rs.ExpMestSdos.Where(p => p.ExpMest != null && !p.ExpMest.BILL_ID.HasValue).Select(p => p.ExpMest.ID).Distinct().ToList();
+                        autoActions.Add(MEDICINE_SALE_BILL__AUTO_ACTION__SAVE_SIGN_PRINT);
+                    }
+                    if (expMestIds == null || expMestIds.Count == 0)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("OpenMedicineSaleBillAutoSignPrint: khong co phieu phu hop de mo form tu dong. "
                             + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
                         continue;
                     }
 
-                    Inventec.Common.Logging.LogSystem.Info("Viec 3082: Luu in + tick In -> mo form Xuat hoa don tu dong. ExpMestIds = " + string.Join(",", expMestIds));
+                    Inventec.Common.Logging.LogSystem.Info("Viec 3082: Luu ky in -> mo form Xuat hoa don tu dong. Actions = " + string.Join(",", autoActions) + "; ExpMestIds = " + string.Join(",", expMestIds));
                     moduleData.RoomId = this.roomId;
                     moduleData.RoomTypeId = this.roomTypeId;
                     List<object> listArgs = new List<object>();
                     listArgs.Add(moduleData);
                     listArgs.Add(expMestIds);
                     listArgs.Add((DelegateSelectData)EnableControlAfterSaveSaleBill);
-                    listArgs.Add(new List<string> { MEDICINE_SALE_BILL__AUTO_ACTION__SAVE_SIGN_PRINT });
+                    listArgs.Add(autoActions);
                     var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.roomId, this.roomTypeId), listArgs);
                     if (extenceInstance == null)
                     {
