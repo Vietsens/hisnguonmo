@@ -484,6 +484,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         accountBook = lstBook.OrderByDescending(o => o.ID).First();
                     }
                 }
+
+                //chua co so nao duoc chon truoc do (dang nhap lan dau) va thu ngan chi co dung 1 so => tu dong chon
+                if (accountBook == null && Config.IsAutoSelectAccountBookIfHasOne && ListAccountBook != null && ListAccountBook.Count == 1)
+                {
+                    accountBook = ListAccountBook.First();
+                }
+
                 if (accountBook != null)
                 {
                     cboAccountBook.EditValue = accountBook.ID;
