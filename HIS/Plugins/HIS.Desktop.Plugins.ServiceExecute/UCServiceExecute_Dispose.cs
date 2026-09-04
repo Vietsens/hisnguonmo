@@ -180,6 +180,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 this.repositoryItembtnTraKqSA.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItembtnTraKqSA_ButtonClick);
                 this.repositoryItemMachineId.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.repositoryItemMachineId_Closed);
                 this.repositoryItemMachineId.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemMachineId_ButtonClick_1);
+                this.repositoryItemMachineId.Popup -= new System.EventHandler(this.repositoryItemMachineId_Popup);
+                this.gridView1.SelectionChanged -= new DevExpress.Data.SelectionChangedEventHandler(this.gridView1_SelectionChanged);
+                this.gridView1.MouseUp -= new System.Windows.Forms.MouseEventHandler(this.gridView1_MouseUp);
                 this.repositoryItemButtonServiceReqMaty.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonServiceReqMaty_ButtonClick);
                 this.repositoryItemMachineHideDelete.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.repositoryItemMachineHideDelete_Closed);
                 this.toolTipController1.GetActiveObjectInfo -= new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController1_GetActiveObjectInfo);
@@ -388,6 +391,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 repositoryItemMachineHideDelete = null;
                 gridView1 = null;
                 repositoryItemMachineId = null;
+                checkedMachines = null;
+                machinePopupRow = null;
+                machinePopupOriginIds = null;
                 Gc_MachineId = null;
                 layoutControlItem4 = null;
                 CheckAllInOne = null;

@@ -456,6 +456,47 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 dataSigner = xml => signer.SignCksBenhVien(emrLocal != null ? signer.SignXmlByConcluder(xml, emrLocal) : xml);
                             }
                             // ĐẨY ĐÚNG 1 HỒ SƠ.
+                            // ===== VLG PRE-GATE: sai dữ liệu bắt buộc / vượt độ dài QĐ 2062 -> CHẶN CỨNG,
+                            // KHÔNG đồng bộ lên BẤT KỲ cổng nào (không đẩy BYT/HSSK/HOC/HCC/SYT). Chỉ áp
+                            // khi viện có chọn cổng VLG; viện không dùng VLG -> giữ nguyên luồng cũ.
+                            string vlgBlockReason = null;
+                            string vlgPayload = null;
+                            bool vlgSignFailed = false;
+                            if (vlgPusher != null)
+                            {
+                                vlgBlockReason = ValidateVlgInput(inp);   // thiếu CCCD / lý do khám / MA_LOAI_KCB > 2
+                                if (vlgBlockReason == null)
+                                {
+                                    // Dựng bản tin (bọc JSON + chuẩn hóa ngày + ký CKS_) rồi kiểm độ dài trên
+                                    // XML thực sự gửi đi (kể cả giá trị thư viện tự sinh, giải mã NOIDUNGFILE base64).
+                                    vlgPayload = BuildVlgPayload(vlgMacskcb, inp, dataSigner, out vlgSignFailed);
+                                    if (vlgSignFailed)
+                                        vlgBlockReason = "VLG: ký số thất bại (CKS_BENH_VIEN/CKS_NGUOI_KET_LUAN)"
+                                            + " — không đẩy bản tin chưa ký. Kiểm tra cấu hình chứng thư / HSM / USB token.";
+                                    else
+                                    {
+                                        // Thiếu trường bắt buộc (Đối tượng / Nguồn chi trả) + vượt độ dài QĐ 2062.
+                                        var vlgReasons = new List<string>();
+                                        string reqReason = KskVlgLengthRules.ValidateRequired(vlgPayload);
+                                        if (reqReason != null) vlgReasons.Add(reqReason);
+                                        string lenReason = KskVlgLengthRules.Validate(vlgPayload);
+                                        if (lenReason != null) vlgReasons.Add(lenReason);
+                                        if (vlgReasons.Count > 0) vlgBlockReason = string.Join(" | ", vlgReasons.ToArray());
+                                    }
+                                }
+                            }
+
+                            if (vlgBlockReason != null)
+                            {
+                                // Chặn cứng: đánh dấu Thất bại + lý do, KHÔNG gọi push cổng nào. BuildResultAdo
+                                // giữ TRANSACTION_CODE/REGISTRATION_NO cũ (không mất mã đối soát của lần trước).
+                                ado = BuildResultAdo(rowList[i], null, null,
+                                    KskVlgPushResult.Failure(vlgBlockReason), syncTime,
+                                    libSingleLabel, configError, null);
+                            }
+                            else
+                            {
+                            // ĐẨY ĐÚNG 1 HỒ SƠ.
                             ResultADO r0 = null;
                             if (pushViaLibrary)
                             {
@@ -471,30 +512,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 hccResult = hccPusher.Push(BuildHccPayload(hccMacskcb, inp, hccIsJson,
                                     signXmlForHcc ? dataSigner : null));
 
-                            // Cổng KDLYT Vĩnh Long (nếu chọn) — XML KHAMSUCKHOE bọc JSON wrapper kèm metadata
-                            // (ma_yeu_cau = mã điều trị + hash nội dung; treatment_code để tỉnh đối soát).
-                            // CHẶN TRƯỚC KHI ĐẨY các lỗi cổng chắc chắn chối (cảnh báo rõ để viện sửa dữ liệu):
-                            //   - MA_LOAI_KCB > 2 ký tự (cổng chỉ nhận tối đa 2 — mã "100" của Khám + đối tượng KSK
-                            //     bị chối; tiếp đón phải chọn loại điều trị KSK định kỳ (15) / Khám sàng lọc (16));
-                            //   - thiếu Số CCCD / Lý do khám (cổng bắt buộc SO_CCCD + LY_DO_VV).
-                            // Bản tin là XML nên luôn ký được CKS_ (không có hạn chế json như HCC). Đã tích ký số
-                            // mà ký thất bại -> KHÔNG đẩy bản chưa ký, đánh dấu thất bại rõ lý do.
+                            // Cổng KDLYT Vĩnh Long (nếu chọn) — payload đã dựng + đã kiểm ở pre-gate trên.
                             KskVlgPushResult vlgResult = null;
                             if (vlgPusher != null)
-                            {
-                                string vlgBlockReason = ValidateVlgInput(inp);
-                                if (vlgBlockReason != null)
-                                    vlgResult = KskVlgPushResult.Failure(vlgBlockReason);
-                                else
-                                {
-                                    bool vlgSignFailed;
-                                    string vlgPayload = BuildVlgPayload(vlgMacskcb, inp, dataSigner, out vlgSignFailed);
-                                    vlgResult = vlgSignFailed
-                                        ? KskVlgPushResult.Failure("VLG: ký số thất bại (CKS_BENH_VIEN/CKS_NGUOI_KET_LUAN)"
-                                            + " — không đẩy bản tin chưa ký. Kiểm tra cấu hình chứng thư / HSM / USB token.")
-                                        : vlgPusher.Push(vlgPayload, SafeString(GetProp(rowList[i], "TDL_TREATMENT_CODE")));
-                                }
-                            }
+                                vlgResult = vlgPusher.Push(vlgPayload, SafeString(GetProp(rowList[i], "TDL_TREATMENT_CODE")));
 
                             // Cổng Sở Y tế TP.HCM (mẫu M3) — hàm này tự bọc try/catch nên lỗi ở
                             // cổng này KHÔNG làm hỏng kết quả của các cổng trên.
@@ -502,6 +523,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                             ado = BuildResultAdo(rowList[i], r0, hccResult, vlgResult, syncTime,
                                 libSingleLabel, configError, sytResult);
+                            }
+
                         }
                     }
                     catch (Exception exRow)
@@ -1039,25 +1062,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
             var vatyByU18 = GroupByKey(vatys, v => v.KSK_UNDER_EIGHTEEN_ID);
             var dityByO18 = GroupByKey(ditys, d => d.KSK_OVER_EIGHTEEN_ID ?? 0);
 
-            // Bang du lieu rieng cua mau M3 (cong So Y te TP.HCM). Chi goi khi vien DA KHAI BAO
-            // cau hinh cong do -> vien khac khong phat sinh them truy van nao.
-            var sytHcmByO18 = new Dictionary<long, HIS_KSK_SYT_HCM>();
-            try
+            // Bang du lieu mau M3 (So Y te TP.HCM). TACH sang method rieng: HIS_KSK_SYT_HCM la type
+            // cua MOS.EFMODEL ban moi — vien dung EFMODEL cu KHONG co type nay, neu ham nay tham chieu
+            // truc tiep se loi TypeLoad khi JIT (chan het viec dong bo). Chi goi (JIT) khi da cau hinh SYT.
+            System.Collections.IDictionary sytHcmByO18 = null;
+            if (!string.IsNullOrWhiteSpace(this.sytHcmConnectionInfo))
             {
-                if (!string.IsNullOrWhiteSpace(this.sytHcmConnectionInfo) && over18s != null && over18s.Count > 0)
-                {
-                    List<long> o18Ids = over18s.Where(x => x != null).Select(x => x.ID).Distinct().ToList();
-                    var sytList = GetList<HIS_KSK_SYT_HCM>("api/HisKskSytHcm/Get",
-                        new MOS.Filter.HisKskSytHcmFilter { KSK_OVER_EIGHTEEN_IDs = o18Ids });
-                    if (sytList != null)
-                        foreach (var x in sytList)
-                            if (x != null && !sytHcmByO18.ContainsKey(x.KSK_OVER_EIGHTEEN_ID))
-                                sytHcmByO18[x.KSK_OVER_EIGHTEEN_ID] = x;
-                    Inventec.Common.Logging.LogSystem.Info("SytHcm: nap bang du lieu mau M3 cho "
-                        + sytHcmByO18.Count + "/" + o18Ids.Count + " ho so KSK tren 18 tuoi");
-                }
+                try { sytHcmByO18 = LoadSytHcmByO18(over18s); }
+                catch (Exception exSyt) { Inventec.Common.Logging.LogSystem.Warn(exSyt); }
             }
-            catch (Exception exSyt) { Inventec.Common.Logging.LogSystem.Warn(exSyt); }
 
             // Danh muc chi nhanh (cache local) — MA_CSKCB = HEIN_MEDI_ORG_CODE theo BRANCH_ID.
             Dictionary<long, HIS_BRANCH> branchById = null;
@@ -1165,7 +1178,6 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             // Ho so KSK khong gan ban ghi sinh hieu -> lay ban ghi sinh hieu khac
                             // cua CUNG dot dieu tri, thay vi bo trong ca khoi kham the luc.
                             Dhst = dhstOne ?? FirstDhstOfTreatment(dhstForInput),
-                            SytHcm = ValOrNull(sytHcmByO18, over18.ID),
                             HisRanks = ranks,
                             Ditys = ListOrNull(dityByO18, over18.ID),
                             DiseaseTypes = diseaseTypes,
@@ -1174,6 +1186,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 (trea != null) ? trea.ID : 0),
                             ClsMapJson = this.SytClsMapJson
                         };
+                        if (sytHcmByO18 != null) AttachSytHcm(sytSourceBySr[sr], sytHcmByO18, over18.ID);
                     }
                 }
                 catch (Exception exSytSrc) { Inventec.Common.Logging.LogSystem.Warn(exSytSrc); }
@@ -1816,6 +1829,34 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>Goi API danh sach (Get) — MosConsumer. Loi -> null (khong chan cac call khac).</summary>
+        /// <summary>
+        /// Nap bang HIS_KSK_SYT_HCM theo KSK >=18 (mau M3 So Y te TP.HCM). TACH RIENG khoi BuildInputs de
+        /// type HIS_KSK_SYT_HCM (MOS.EFMODEL ban moi) chi bi JIT nap khi vien co cau hinh cong SYT TP.HCM;
+        /// vien dung EFMODEL cu khong co type nay se KHONG loi TypeLoad khi dong bo cac cong khac.
+        /// </summary>
+        private System.Collections.IDictionary LoadSytHcmByO18(List<HIS_KSK_OVER_EIGHTEEN> over18s)
+        {
+            var map = new Dictionary<long, HIS_KSK_SYT_HCM>();
+            if (over18s == null || over18s.Count == 0) return map;
+            List<long> o18Ids = over18s.Where(x => x != null).Select(x => x.ID).Distinct().ToList();
+            var sytList = GetList<HIS_KSK_SYT_HCM>("api/HisKskSytHcm/Get",
+                new MOS.Filter.HisKskSytHcmFilter { KSK_OVER_EIGHTEEN_IDs = o18Ids });
+            if (sytList != null)
+                foreach (var x in sytList)
+                    if (x != null && !map.ContainsKey(x.KSK_OVER_EIGHTEEN_ID))
+                        map[x.KSK_OVER_EIGHTEEN_ID] = x;
+            Inventec.Common.Logging.LogSystem.Info("SytHcm: nap bang du lieu mau M3 cho "
+                + map.Count + "/" + o18Ids.Count + " ho so KSK tren 18 tuoi");
+            return map;
+        }
+
+        /// <summary>Gan HIS_KSK_SYT_HCM vao source KSK — tach rieng vi ly do JIT type-load nhu LoadSytHcmByO18.</summary>
+        private static void AttachSytHcm(KskSytHcmSource src, System.Collections.IDictionary sytHcmByO18, long over18Id)
+        {
+            if (src == null || sytHcmByO18 == null) return;
+            if (sytHcmByO18.Contains(over18Id)) src.SytHcm = (HIS_KSK_SYT_HCM)sytHcmByO18[over18Id];
+        }
+
         private static List<T> GetList<T>(string uri, object filter)
         {
             return GetList<T>(uri, filter, ApiConsumers.MosConsumer);

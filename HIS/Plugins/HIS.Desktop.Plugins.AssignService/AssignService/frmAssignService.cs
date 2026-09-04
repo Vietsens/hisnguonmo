@@ -2494,10 +2494,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         else
                             e.RepositoryItem = this.repositoryItemCheckEditIsNotUseBhyt;
                     }
-                    else if (e.Column.FieldName == "EKIP_TEMP")
+                    else if (e.Column.FieldName == "EKIP_TEMP") 
                     {
-                        if (data != null && data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT && workingAssignServiceADO.OpenFromBedRoomPartial)
+                        if (data != null && 
+                            (data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT || data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT) 
+                            && workingAssignServiceADO.OpenFromBedRoomPartial)
+                        {
                             e.RepositoryItem = this.repositoryItemButtonEkipTempEn;
+                        }      
                         else
                             e.RepositoryItem = this.repositoryItemButtonEkipTempDis;
                     }

@@ -40,7 +40,7 @@ Tính năng bật/tắt bằng **một key cấu hình toàn viện**. Bệnh vi
 | Có làm | Không làm |
 |---|---|
 | Chọn nhiều phòng khám trong một lượt tại kiosk | Thay đổi màn Tiếp đón tại quầy (RegisterV2) |
-| Xem lại danh sách đã chọn và bỏ chọn từng phòng | Thay đổi cách đọc thẻ CCCD, thẻ BHYT, nhận diện khuôn mặt |
+| Cửa sổ danh sách: xem lại, xóa từng công khám, xác nhận đăng ký | Thay đổi cách đọc thẻ CCCD, thẻ BHYT, nhận diện khuôn mặt |
 | Đăng ký một lần cho toàn bộ công khám đã chọn | Thay đổi quy trình khám, chuyển khoa, chỉ định cận lâm sàng |
 | In phiếu cho từng công khám | Thay đổi nghiệp vụ chỉ định dịch vụ cận lâm sàng theo phiếu hẹn |
 | Key cấu hình bật/tắt tính năng theo từng bệnh viện | Đăng ký khám cho nhiều người bệnh trong một lượt |
@@ -57,7 +57,7 @@ Khối lượng công việc do đó tập trung ở **màn hình kiosk**. Chi t
 
 # PHẦN 2. THAY ĐỔI TRÊN MÀN HÌNH
 
-Nguyên tắc triển khai: **giữ nguyên bố cục màn hình kiosk hiện tại**, không thêm vùng hiển thị mới, không thêm nút mới. Việc chọn nhiều công khám thực hiện qua chính các ô phòng khám đang có và các hộp thoại xác nhận — cùng cách kiosk đang hỏi người bệnh hiện nay.
+Màn chọn phòng khám **giữ nguyên bố cục hiện tại**. Việc chọn nhiều công khám thực hiện qua chính các ô phòng đang có, cộng thêm **một cửa sổ danh sách** để người bệnh xem lại, xóa bớt và xác nhận đăng ký.
 
 Toàn bộ mục 2 dưới đây chỉ áp dụng khi **key cấu hình được bật** (QT-02). Không bật key thì không có bất kỳ thay đổi nào trên màn hình.
 
@@ -65,62 +65,56 @@ Toàn bộ mục 2 dưới đây chỉ áp dụng khi **key cấu hình được
 
 | Trường hợp | Trước | Sau (khi bật key) |
 |---|---|---|
-| Chạm vào ô phòng khám | Đăng ký ngay, in phiếu, kết thúc | Ghi nhận công khám vào danh sách rồi hỏi *"Bạn có muốn chọn thêm phòng khám khác không?"* |
-| Trả lời **Không** | Không có | Đăng ký toàn bộ công khám đã chọn, in phiếu, kết thúc |
-| Trả lời **Có** | Không có | Quay lại màn chọn phòng để chạm phòng tiếp theo |
-| Phòng có nhiều dịch vụ khám | Mở cửa sổ chọn dịch vụ rồi đăng ký ngay | Mở cửa sổ chọn dịch vụ, chọn xong quay về màn chọn phòng và hỏi như trên |
-| Chạm lại phòng đã chọn | Không có | Hỏi đăng ký ngay hoặc bỏ chọn phòng đó (2.3) |
+| Chạm vào ô phòng khám | Đăng ký ngay, in phiếu, kết thúc | Ghi nhận công khám rồi **mở cửa sổ danh sách** (2.2) |
+| Phòng có nhiều dịch vụ khám | Mở cửa sổ chọn dịch vụ rồi đăng ký ngay | Mở cửa sổ chọn dịch vụ, chọn xong mở cửa sổ danh sách |
+| Chạm lại ô phòng đã chọn | Không có | **Mở cửa sổ danh sách** để xóa bớt hoặc đăng ký |
 
-## 2.2 Hộp thoại xác nhận sau mỗi lần chọn
-
-Mỗi lần người bệnh chọn xong một công khám, kiosk hiển thị danh sách đã chọn kèm câu hỏi:
+## 2.2 Cửa sổ "Các phòng khám bạn đã chọn"
 
 ```
-Bạn đã chọn:
-1. Phòng khám Nội tổng hợp - Khám nội tổng hợp
-2. Phòng khám Tai Mũi Họng - Khám tai mũi họng
+┌──────────────────────────────────────────────────────────┐
+│  CÁC PHÒNG KHÁM BẠN ĐÃ CHỌN                              │
+├────┬──────────────────────┬────────────────────┬─────────┤
+│ TT │ Phòng khám           │ Dịch vụ khám       │         │
+├────┼──────────────────────┼────────────────────┼─────────┤
+│ 1  │ Nội tổng hợp         │ Khám nội tổng hợp  │  [ XÓA ]│
+│ 2  │ Tai Mũi Họng         │ Khám tai mũi họng  │  [ XÓA ]│
+└────┴──────────────────────┴────────────────────┴─────────┘
+   Phòng khám đầu tiên trong danh sách là phòng khám chính
 
-Bạn có muốn chọn thêm phòng khám khác không?
-
-                              [ Có ]   [ Không ]
+┌────────────────────┬──────────────────┬──────────────────┐
+│ + CHỌN THÊM PHÒNG  │    ĐĂNG KÝ (2)   │      ĐÓNG        │
+└────────────────────┴──────────────────┴──────────────────┘
 ```
 
-Danh sách này thay cho vùng "công khám đã chọn" trên màn hình — người bệnh vẫn đối chiếu được đầy đủ trước khi đăng ký, mà giao diện kiosk không phải thay đổi.
+| Thao tác | Kết quả |
+|---|---|
+| Bấm **XÓA** trên một dòng | Hỏi xác nhận, đồng ý thì xóa công khám đó; danh sách và số trên nút Đăng ký cập nhật ngay |
+| Xóa hết danh sách | Nút Đăng ký mờ đi, người bệnh bấm ĐÓNG để chọn lại từ đầu |
+| Bấm **+ CHỌN THÊM PHÒNG** | Đóng cửa sổ, quay về màn chọn phòng, danh sách giữ nguyên |
+| Bấm **ĐĂNG KÝ (n)** | Đóng cửa sổ và đăng ký toàn bộ công khám trong danh sách |
+| Bấm **ĐÓNG** | Quay về màn chọn phòng, danh sách giữ nguyên, **không** đăng ký |
+| Không thao tác quá thời gian chờ | Cửa sổ tự đóng, quay về màn chờ, **không** đăng ký |
 
-## 2.3 Khi chạm lại phòng đã chọn
+Dòng ghi chú dưới lưới chỉ hiện khi có từ hai công khám trở lên.
 
-Kiosk hiển thị danh sách đã chọn kèm hai lựa chọn:
+## 2.3 Cửa sổ chọn dịch vụ khám của phòng
 
-```
-Bạn đã chọn:
-1. Phòng khám Nội tổng hợp - Khám nội tổng hợp
-2. Phòng khám Tai Mũi Họng - Khám tai mũi họng
+Giữ nguyên bố cục hiện tại. Khác biệt duy nhất: chạm vào một dịch vụ **không** hỏi *"Bạn có chắc chắn muốn đăng ký khám?"* và **không** đăng ký ngay — cửa sổ đóng lại, dịch vụ được ghi vào danh sách, rồi cửa sổ danh sách (2.2) mở ra.
 
-Phòng khám này đã được chọn.
-Chọn "Có" để đăng ký, chọn "Không" để bỏ chọn phòng này.
-
-                              [ Có ]   [ Không ]
-```
-
-Đây cũng là đường thoát khi đăng ký thất bại: người bệnh chạm lại một phòng đã chọn rồi trả lời "Có" để thử đăng ký lại.
-
-## 2.4 Cửa sổ chọn dịch vụ khám của phòng
-
-Giữ nguyên bố cục và cách hiển thị hiện tại. Khác biệt duy nhất: chạm vào một dịch vụ **không** hỏi *"Bạn có chắc chắn muốn đăng ký khám?"* và **không** đăng ký ngay — cửa sổ đóng lại, dịch vụ được ghi vào danh sách, rồi màn chọn phòng hỏi tiếp theo mục 2.2.
-
-## 2.5 Phiếu in
+## 2.4 Phiếu in
 
 Mỗi công khám in **một phiếu riêng**, theo đúng mẫu phiếu đang dùng, in liên tiếp nhau. Mỗi phiếu chỉ chứa dịch vụ khám của chính phòng đó cùng số thứ tự của phòng đó.
 
-## 2.6 Thông báo cho người bệnh
+## 2.5 Thông báo cho người bệnh
 
 | Tình huống | Thông báo |
 |---|---|
-| Chạm lại phòng đã chọn | "Phòng khám này đã được chọn. Chọn "Có" để đăng ký, chọn "Không" để bỏ chọn phòng này." |
+| Bấm XÓA trên một dòng | "Bạn có muốn bỏ phòng khám {tên phòng} khỏi danh sách không?" |
 | Chọn dịch vụ khám đã có ở phòng khác | "Dịch vụ khám này đã được chọn ở phòng khác." |
 | Phòng không có dịch vụ khám | "Phòng không có dịch vụ nào" (giữ nguyên như hiện tại) |
 | Dịch vụ khám vượt giới hạn tuổi | Giữ nguyên thông báo giới hạn tuổi hiện tại, kiểm tra ngay khi chọn |
-| Một phòng đã hết lượt khám trong ngày | Giữ nguyên thông báo lỗi từ máy chủ; **danh sách đã chọn được giữ lại** để bỏ chọn phòng đó rồi đăng ký lại |
+| Một phòng đã hết lượt khám trong ngày | Giữ nguyên thông báo lỗi từ máy chủ; **danh sách được giữ lại** để xóa phòng đó rồi đăng ký lại |
 
 # PHẦN 3. QUY TẮC NGHIỆP VỤ
 
@@ -145,9 +139,9 @@ Số lượt khám thực tế vẫn bị chặn bởi giới hạn lượt khá
 
 ## QT-03 — Không chọn trùng phòng khám
 
-Một phòng khám chỉ được chọn một lần trong cùng một lượt. Chạm lại vào phòng đã chọn dẫn tới hộp thoại đăng ký hoặc bỏ chọn (2.3), không phải thêm lần hai.
+Một phòng khám chỉ được chọn một lần trong cùng một lượt. Chạm lại vào phòng đã chọn sẽ mở cửa sổ danh sách (2.2), không phải thêm lần hai.
 
-Nếu bỏ chọn đúng công khám chính thì công khám được chọn kế tiếp trở thành công khám chính (QT-05).
+Xóa công khám thực hiện tại cửa sổ danh sách, xóa được **bất kỳ dòng nào**. Nếu xóa đúng dòng đầu tiên thì dòng kế tiếp trở thành công khám chính (QT-05).
 
 ## QT-04 — Không chọn trùng dịch vụ khám
 
@@ -161,7 +155,7 @@ Công khám **được chọn đầu tiên** là công khám chính. Nó quyết
 - Phiếu khám được đánh dấu là phiếu khám chính.
 - Phòng khám ghi nhận là phòng khám đầu tiên của lần điều trị.
 
-Các công khám chọn sau là khám thường, không phải khám chính. Thứ tự này hiển thị cho người bệnh trong hộp thoại xác nhận (2.2).
+Các công khám chọn sau là khám thường, không phải khám chính. Thứ tự hiển thị ở cột TT của cửa sổ danh sách (2.2), kèm ghi chú "Phòng khám đầu tiên trong danh sách là phòng khám chính".
 
 ## QT-06 — Số thứ tự khám
 
@@ -222,14 +216,15 @@ Chiều cao và cân nặng người bệnh nhập ở bước trước được
 | # | Tình huống | Kết quả mong đợi |
 |---|---|---|
 | 0 | **Không bật key**. Chạm phòng Nội tổng hợp | Đăng ký ngay, in một phiếu — y hệt hiện tại, không có hộp thoại nào (QT-13) |
-| 1 | Bật key. Chọn phòng Nội tổng hợp rồi trả lời "Không" | Kết quả giống hệt đăng ký một công khám như trước: một hồ sơ, một phiếu khám, in một phiếu |
-| 2 | Chọn phòng Nội tổng hợp, trả lời "Có", chọn phòng Tai Mũi Họng, trả lời "Không" | Một hồ sơ điều trị, hai phiếu khám, hai số thứ tự của hai phòng, in hai phiếu (QT-06, QT-12) |
-| 3 | Chọn ba phòng rồi trả lời "Không" | Một hồ sơ, ba phiếu khám, in ba phiếu — không có giới hạn số lượng (QT-02) |
-| 4 | Chọn phòng Nội tổng hợp, trả lời "Có", rồi chạm lại chính ô đó, trả lời "Không" | Bỏ chọn phòng đó, danh sách rỗng, chưa đăng ký gì (QT-03) |
+| 1 | Bật key. Chọn phòng Nội tổng hợp rồi bấm ĐĂNG KÝ | Kết quả giống hệt đăng ký một công khám như trước: một hồ sơ, một phiếu khám, in một phiếu |
+| 2 | Chọn Nội tổng hợp, bấm CHỌN THÊM PHÒNG, chọn Tai Mũi Họng, bấm ĐĂNG KÝ | Một hồ sơ điều trị, hai phiếu khám, hai số thứ tự của hai phòng, in hai phiếu (QT-06, QT-12) |
+| 3 | Chọn ba phòng rồi bấm ĐĂNG KÝ | Một hồ sơ, ba phiếu khám, in ba phiếu — không có giới hạn số lượng (QT-02) |
+| 4 | Chọn ba phòng, bấm XÓA ở dòng 2, rồi bấm ĐĂNG KÝ | Chỉ đăng ký hai công khám còn lại, đúng phòng và dịch vụ còn trong danh sách (QT-03) |
+| 4b | Chọn ba phòng, bấm XÓA ở dòng 1 | Dòng 2 trở thành dòng 1 và là công khám chính; khoa tiếp nhận lấy theo phòng đó (QT-05) |
 | 5 | Chọn hai phòng có cùng một dịch vụ "Khám nội tổng hợp" | Thông báo trùng dịch vụ, không thêm được (QT-04) |
-| 6 | Chọn hai phòng, một phòng đã hết lượt khám trong ngày | Từ chối cả lượt, thông báo nêu tên phòng hết lượt; danh sách được giữ lại để bỏ chọn phòng đó (QT-08, 2.6) |
+| 6 | Chọn hai phòng, một phòng đã hết lượt khám trong ngày | Từ chối cả lượt, thông báo nêu tên phòng hết lượt; chạm lại một phòng đã chọn để mở danh sách, XÓA phòng bị lỗi rồi ĐĂNG KÝ lại (QT-08, 2.5) |
 | 7 | Chọn hai phòng, mất kết nối máy chủ khi đăng ký | Không tạo hồ sơ, không tạo phiếu khám nào, thông báo lỗi, danh sách được giữ lại (QT-09) |
-| 8 | Chọn hai phòng, trả lời "Có" rồi bỏ đi | Hết thời gian chờ, màn hình về màn chờ, **không** đăng ký gì (QT-14) |
+| 8 | Chọn hai phòng rồi bỏ đi khi cửa sổ danh sách đang mở | Hết thời gian chờ, cửa sổ tự đóng, về màn chờ, **không** đăng ký gì (QT-14) |
 | 9 | Người bệnh dùng thẻ khám bệnh trả trước, chọn hai công khám | Khi đăng ký trừ đúng tổng tiền của cả hai công khám vào thẻ (QT-10) |
 | 10 | Người bệnh có phiếu hẹn kèm chỉ định cận lâm sàng, chọn hai công khám | Vẫn hỏi thực hiện cận lâm sàng như hiện tại; đồng ý thì có cả hai phiếu khám và các chỉ định cận lâm sàng (QT-11) |
 | 11 | Chọn hai công khám, phòng đầu tiên là Tai Mũi Họng | Khoa tiếp nhận của hồ sơ là khoa của phòng Tai Mũi Họng; phiếu khám của phòng đó là phiếu chính (QT-05) |
@@ -254,15 +249,19 @@ Chiều cao và cân nặng người bệnh nhập ở bước trước được
 
 ## Nhóm B — Chọn và bỏ chọn công khám
 
-- [ ] B1 — Chạm ô phòng: hộp thoại liệt kê công khám vừa chọn và hỏi chọn thêm (QT-01)
-- [ ] B2 — Chạm lại ô đã chọn, trả lời "Không": công khám đó bị xóa khỏi danh sách (QT-03)
-- [ ] B3 — Bỏ chọn đúng công khám đầu tiên: công khám kế tiếp trở thành công khám chính (QT-05)
-- [ ] B4 — Phòng có nhiều dịch vụ: chọn dịch vụ xong quay lại màn chọn phòng, danh sách ghi đúng dịch vụ đã chọn
-- [ ] B5 — Phòng có một dịch vụ: thêm thẳng vào danh sách, không hỏi
-- [ ] B6 — Chọn từ 4 phòng trở lên: vẫn thêm được, không bị chặn số lượng khi key bật (QT-02)
-- [ ] B7 — Chọn hai phòng cùng dịch vụ khám: thông báo trùng dịch vụ (QT-04)
-- [ ] B8 — Bỏ chọn hết công khám rồi chọn lại: đăng ký đúng công khám mới chọn
-- [ ] B9 — Thứ tự công khám trong hộp thoại đúng thứ tự chọn (QT-05)
+- [ ] B1 — Chạm ô phòng: cửa sổ danh sách mở ra, có đúng công khám vừa chọn (QT-01)
+- [ ] B2 — Chạm lại ô phòng đã chọn: cửa sổ danh sách mở ra, không thêm dòng trùng (QT-03)
+- [ ] B3 — Bấm XÓA dòng bất kỳ: hỏi xác nhận, đồng ý thì dòng biến mất, số trên nút ĐĂNG KÝ giảm đúng
+- [ ] B4 — Bấm XÓA rồi trả lời "Không": danh sách giữ nguyên
+- [ ] B5 — Xóa dòng đầu tiên: dòng kế tiếp lên vị trí 1 và thành công khám chính (QT-05)
+- [ ] B6 — Xóa hết các dòng: nút ĐĂNG KÝ mờ, bấm vào không có tác dụng
+- [ ] B7 — Bấm CHỌN THÊM PHÒNG: về màn chọn phòng, danh sách giữ nguyên; chọn tiếp thì danh sách có đủ
+- [ ] B8 — Bấm ĐÓNG: về màn chọn phòng, không đăng ký, danh sách giữ nguyên
+- [ ] B9 — Phòng có nhiều dịch vụ: chọn dịch vụ xong danh sách ghi đúng dịch vụ đã chọn
+- [ ] B10 — Phòng có một dịch vụ: thêm thẳng vào danh sách, không hỏi chọn dịch vụ
+- [ ] B11 — Chọn từ 4 phòng trở lên: vẫn thêm được, không bị chặn số lượng khi key bật (QT-02)
+- [ ] B12 — Chọn hai phòng cùng dịch vụ khám: thông báo trùng dịch vụ (QT-04)
+- [ ] B13 — Cột TT đánh số 1, 2, 3 đúng thứ tự chọn và đánh lại đúng sau khi xóa
 
 ## Nhóm C — Đăng ký thành công
 
@@ -280,10 +279,10 @@ Chiều cao và cân nặng người bệnh nhập ở bước trước được
 ## Nhóm D — Đăng ký thất bại, tính toàn vẹn (QT-09)
 
 - [ ] D1 — Ngắt mạng khi chạm "Đăng ký": không sinh hồ sơ, không sinh phiếu khám nào
-- [ ] D2 — Sau lỗi, danh sách còn nguyên; chạm lại một phòng đã chọn rồi trả lời "Có" thì đăng ký lại được (2.3)
+- [ ] D2 — Sau lỗi, chạm lại một phòng đã chọn: cửa sổ danh sách còn nguyên các công khám, bấm ĐĂNG KÝ lại được (2.2)
 - [ ] D3 — Thử lại thành công: chỉ sinh **một** hồ sơ, không sinh hồ sơ thừa từ lần lỗi trước
 - [ ] D4 — Một phòng vượt giới hạn lượt khám trong ngày: từ chối cả lượt, thông báo nêu tên phòng (QT-08)
-- [ ] D5 — Sau lỗi ở D4, bỏ chọn phòng đó rồi đăng ký lại: thành công với các phòng còn lại
+- [ ] D5 — Sau lỗi ở D4, XÓA phòng bị lỗi trong cửa sổ danh sách rồi ĐĂNG KÝ lại: thành công với các phòng còn lại
 
 ## Nhóm E — Thanh toán và BHYT
 
@@ -305,15 +304,15 @@ Chiều cao và cân nặng người bệnh nhập ở bước trước được
 ## Nhóm G — Thời gian chờ và thao tác (QT-14)
 
 - [ ] G1 — Đang chọn công khám, để yên quá thời gian chờ: về màn chờ, không đăng ký gì
-- [ ] G2 — Mỗi lần chạm ô phòng làm bộ đếm chạy lại từ đầu
-- [ ] G3 — Trả lời "Không" hai lần liên tiếp thật nhanh: chỉ đăng ký **một** lần, không sinh hồ sơ thứ hai
+- [ ] G2 — Mỗi lần chạm ô phòng hoặc bấm XÓA làm bộ đếm chạy lại từ đầu
+- [ ] G3 — Bấm ĐĂNG KÝ hai lần liên tiếp thật nhanh: chỉ đăng ký **một** lần, không sinh hồ sơ thứ hai
 - [ ] G4 — Đăng ký xong, kiosk quay về màn chờ và xóa sạch dữ liệu người bệnh trước đó
 
 ## Nhóm H — Giao diện
 
-- [ ] H1 — Hộp thoại xác nhận đọc được ở khoảng cách đứng bình thường trước kiosk
-- [ ] H2 — Hộp thoại liệt kê đủ các công khám đã chọn (thử với 5 công khám), không bị cắt chữ
-- [ ] H3 — Nút Có/Không của hộp thoại đủ lớn để chạm bằng ngón tay
+- [ ] H1 — Chữ trong cửa sổ danh sách đọc được ở khoảng cách đứng bình thường trước kiosk
+- [ ] H2 — Danh sách 5 công khám hiển thị đủ, cuộn được, không bị cắt chữ
+- [ ] H3 — Nút XÓA trên từng dòng và ba nút dưới đủ lớn để chạm bằng ngón tay
 - [ ] H4 — Nội dung hộp thoại và các thông báo mới hiển thị đúng tiếng Việt có dấu
 
 ---

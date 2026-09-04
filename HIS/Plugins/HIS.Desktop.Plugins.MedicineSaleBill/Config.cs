@@ -67,5 +67,27 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         /// </summary>
         internal const string AUTO_ACTION__SAVE_SIGN_PRINT = "AUTO_SAVE_SIGN_PRINT";
 
+        /// <summary>
+        /// Viec 3082 (29/08/2026): man Xuat ban da tao bill ngay khi luu (tick "Xuat bien lai/hoa don") -> form chi
+        /// phat hanh HDDT cho bill do + duyet/thuc xuat + in roi tu dong. Kem tham so "TRANSACTION_ID=&lt;id&gt;".
+        /// </summary>
+        internal const string AUTO_ACTION__ISSUE_EXISTING_BILL = "AUTO_ISSUE_EXISTING_BILL";
+        internal const string AUTO_PARAM__TRANSACTION_ID = "TRANSACTION_ID=";
+
+        private const string AutoSelectAccountBookIfHasOneKey = "HIS.Desktop.Plugins.TransactionBill.AutoSelectAccountBookIfHasOne";
+
+        /// <summary>
+        /// = 1: neu thu ngan chi duoc gan dung 1 so thu chi thi tu dong chon so do ngay tu lan mo man dau tien
+        /// (khong phai doi den khi user tu chon 1 lan). Dung chung key voi cac man
+        /// TransactionBill / ExpMestSaleCreate / AdjustmentTransaction / EInvoiceCreate.
+        /// </summary>
+        internal static bool IsAutoSelectAccountBookIfHasOne
+        {
+            get
+            {
+                return (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AutoSelectAccountBookIfHasOneKey) == "1");
+            }
+        }
+
     }
 }

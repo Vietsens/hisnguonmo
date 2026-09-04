@@ -176,6 +176,8 @@ namespace HIS.Desktop.Plugins.HisPatientType.HisPatientType
                 this.chkDefaultDisplay.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkDefaultDisplay.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkAssign.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkAssign.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkCheckFinishCls.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkCheckFinishCls.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkAllowPresForEmergency.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkAllowPresForEmergency.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkAllowPresForEmergency.ToolTip = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkAllowPresForEmergency.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkPres.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkPres.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColAddition.Caption = Inventec.Common.Resource.Get.Value("frmHisPatientType.grdColAddition.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsNotServBill.Text = Inventec.Common.Resource.Get.Value("frmHisPatientType.chkIsNotServBill.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -865,6 +867,8 @@ namespace HIS.Desktop.Plugins.HisPatientType.HisPatientType
                     chkAddition.Checked = (data.IS_ADDITION == 1 ? true : false);
                     chkAssign.Checked = (data.IS_CHECK_FEE_WHEN_ASSIGN == 1 ? true : false);
                     chkCheckFinishCls.Checked = (data.IS_CHECK_FINISH_CLS_WHEN_PRES == 1 ? true : false);
+                    chkAllowPresForEmergency.Checked = (chkCheckFinishCls.Checked && data.IS_ALLOW_PRES_FOR_EMERGENCY == 1);
+                    chkAllowPresForEmergency.Enabled = chkCheckFinishCls.Checked;
                     chkIsNotServBill.Checked = (data.IS_NOT_SERVICE_BILL == 1 ? true : false);
                     chkForSaleExp.Checked = (data.IS_FOR_SALE_EXP == 1 ? true : false);
                     chkPres.Checked = (data.IS_CHECK_FEE_WHEN_PRES == 1 ? true : false);
@@ -1164,12 +1168,32 @@ namespace HIS.Desktop.Plugins.HisPatientType.HisPatientType
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
                 ResetFormData();
                 chkCheckFinishCls.Checked = false;
+                chkAllowPresForEmergency.Checked = false;
+                chkAllowPresForEmergency.Enabled = false;
                 chkIsRation.Checked = false;
                 chkIsAdditionRequire.Checked = false;
                 chkSerNotAllow.Checked = false;
                 SetFocusEditor();
                 InitComboBasePatientType(listPatientType);
                 txtPatientTypeCode.Focus();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //Checkbox "Khong chan ke don voi benh nhan khoa cap cuu" chi co nghia khi da chan ke don theo CLS
+        //=> chi enable khi chkCheckFinishCls duoc check, bo check thi clear gia tri va disable
+        private void chkCheckFinishCls_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!chkCheckFinishCls.Checked)
+                {
+                    chkAllowPresForEmergency.Checked = false;
+                }
+                chkAllowPresForEmergency.Enabled = chkCheckFinishCls.Checked;
             }
             catch (Exception ex)
             {
@@ -1393,6 +1417,10 @@ namespace HIS.Desktop.Plugins.HisPatientType.HisPatientType
                     currentDTO.IS_CHECK_FINISH_CLS_WHEN_PRES = 1;
                 else
                     currentDTO.IS_CHECK_FINISH_CLS_WHEN_PRES = null;
+                if (chkCheckFinishCls.Checked && chkAllowPresForEmergency.Checked)
+                    currentDTO.IS_ALLOW_PRES_FOR_EMERGENCY = 1;
+                else
+                    currentDTO.IS_ALLOW_PRES_FOR_EMERGENCY = null;
                 if (chkIsRation.Checked)
                 {
                     currentDTO.IS_RATION = 1;

@@ -27,9 +27,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO
         public KskSettingFileADO()
         {
             this.ROWS = new List<KskDefaultRowADO>();
-            this.AUTO_CLS_BLOOD = new List<KskServiceRefADO>();
-            this.AUTO_CLS_URINE = new List<KskServiceRefADO>();
-            this.AUTO_CLS_DIIM = new List<KskServiceRefADO>();
+            this.AUTO_CLS = new Dictionary<string, List<KskServiceRefADO>>();
         }
 
         // ===== Tab "Mặc định nhập KSK (trẻ dưới 6 tuổi)" =====
@@ -42,23 +40,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO
 
         // ===== Tab "Tự động lấy CLS" =====
 
-        /// <summary>Dịch vụ xét nghiệm cho ô "Máu".</summary>
-        public List<KskServiceRefADO> AUTO_CLS_BLOOD { get; set; }
-
-        /// <summary>Dịch vụ xét nghiệm cho ô "Nước tiểu".</summary>
-        public List<KskServiceRefADO> AUTO_CLS_URINE { get; set; }
-
-        /// <summary>Dịch vụ chẩn đoán hình ảnh cho ô "Chẩn đoán hình ảnh".</summary>
-        public List<KskServiceRefADO> AUTO_CLS_DIIM { get; set; }
+        /// <summary>
+        /// Dịch vụ đã tick theo TỪNG DÒNG cấu hình, key trùng key ghi trong file JSON
+        /// (BLOOD, BLOOD_GLUCO, BLOOD_URE, BLOOD_CREATININ, BLOOD_ASAT, BLOOD_ALAT, BLOOD_OTHER,
+        /// URINE, DIIM, OTHER_PARACLINICAL, PERIODIC — việc 56156). Key BLOOD/URINE/DIIM giữ
+        /// nguyên tên cũ nên file đã xuất từ bản 3 dòng vẫn nhập được; phần nào không có trong
+        /// file thì khi nhập được BỎ QUA (không xóa thiết lập đang có).
+        /// </summary>
+        public Dictionary<string, List<KskServiceRefADO>> AUTO_CLS { get; set; }
 
         /// <summary>File có phần "Tự động lấy CLS" hay không (dùng để báo và để bỏ qua khi nhập).</summary>
         public bool HasAutoCls
         {
             get
             {
-                return (AUTO_CLS_BLOOD != null && AUTO_CLS_BLOOD.Count > 0)
-                    || (AUTO_CLS_URINE != null && AUTO_CLS_URINE.Count > 0)
-                    || (AUTO_CLS_DIIM != null && AUTO_CLS_DIIM.Count > 0);
+                if (AUTO_CLS == null) return false;
+                foreach (var item in AUTO_CLS.Values)
+                    if (item != null && item.Count > 0) return true;
+                return false;
             }
         }
     }

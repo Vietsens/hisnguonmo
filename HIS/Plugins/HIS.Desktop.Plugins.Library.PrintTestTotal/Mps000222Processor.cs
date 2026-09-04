@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
         private List<V_HIS_SERVICE> HisServices; //các dịch vụ xét nghiệm để gom nhóm
         private List<HIS_SERE_SERV> HisSereServs;
         private List<V_HIS_SERE_SERV_TEIN> VHisSereServTeins;
+        private List<HIS_SERE_SERV_EXT> HisSereServExtTests; //kết luận cấp dịch vụ của dịch vụ xét nghiệm
         private List<HIS_DIIM_TYPE> HisDiimType;
         private List<HIS_FUEX_TYPE> HisFuexType;
         private MPS.Processor.Mps000222.PDO.Mps000222SDO Mps000222SDO;
@@ -81,6 +82,9 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
 
                     // Mức lọc cầu thận (eGFR / CrCl) — tính runtime, thiếu dữ liệu -> null -> phiếu để trống.
                     mps000222PDO.mLCTADOs = BuildMlctado(treatment);
+
+                    // Kết luận cấp dịch vụ xét nghiệm — dùng cho dòng kết luận trên phiếu
+                    mps000222PDO.HisSereServExtTests = HisSereServExtTests;
 
                     string printerName = "";
                     if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
@@ -613,6 +617,11 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
                         MOS.Filter.HisSereServTeinViewFilter teinFilter = new MOS.Filter.HisSereServTeinViewFilter();
                         teinFilter.SERE_SERV_IDs = this.HisSereServs.Select(s => s.ID).ToList();
                         this.VHisSereServTeins = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV_TEIN>>("api/HisSereServTein/GetView", ApiConsumer.ApiConsumers.MosConsumer, teinFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+
+                        // Kết luận cấp dịch vụ của dịch vụ xét nghiệm — nguồn kết quả khi chỉ số không có giá trị
+                        MOS.Filter.HisSereServExtFilter extTestFilter = new MOS.Filter.HisSereServExtFilter();
+                        extTestFilter.SERE_SERV_IDs = this.HisSereServs.Select(s => s.ID).ToList();
+                        this.HisSereServExtTests = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, extTestFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
 
                         if (VHisSereServTeins != null && VHisSereServTeins.Count > 0)
                         {

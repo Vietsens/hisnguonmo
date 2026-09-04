@@ -58,6 +58,9 @@
     <Reference Include="Inventec.Common.Mapper">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Number">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
@@ -67,8 +70,9 @@
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000118.PDO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000118.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000118.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MPS.Processor.Mps000118.PDO\bin\Debug\MPS.Processor.Mps000118.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
