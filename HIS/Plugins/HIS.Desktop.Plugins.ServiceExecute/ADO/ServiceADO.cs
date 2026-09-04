@@ -34,6 +34,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute.ADO
         public string description { get; set; }
         
         public long? MACHINE_ID { get; set; }
+
+        /// <summary>
+        /// Danh sach may duoc tich chon tren combo may (cot Gc_MachineId).
+        /// CSDL chi luu duoc 1 may (HIS_SERE_SERV_EXT.MACHINE_ID) nen MACHINE_ID giu may dau tien,
+        /// danh sach nay chi phuc vu hien thi tren luoi va key in MACHINE_NAME/MACHINE_NAMES.
+        /// </summary>
+        public List<long> MACHINE_IDs { get; set; }
+
         public long? NUMBER_OF_FILM { get; set; }
 
         public bool MustHavePressBeforeExecute { get; set; }
