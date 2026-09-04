@@ -45,7 +45,7 @@ namespace HIS.Desktop.Plugins.HisProductInfo
                         }
                     }
                 }
-                return new HisProductInfo(moduleData, ado);
+                return new frmProductInfo(moduleData, ado);
             }
             catch (Exception ex)
             {

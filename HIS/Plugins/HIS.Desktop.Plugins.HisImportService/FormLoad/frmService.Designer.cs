@@ -59,6 +59,21 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.btnImport = new DevExpress.XtraEditors.SimpleButton();
             this.btnShowLineError = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
+            this.xtraTabControlImport = new DevExpress.XtraTab.XtraTabControl();
+            this.tabPageService = new DevExpress.XtraTab.XtraTabPage();
+            this.tabPageMety = new DevExpress.XtraTab.XtraTabPage();
+            this.gridControlMety = new DevExpress.XtraGrid.GridControl();
+            this.gridViewMety = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.colMetyServiceCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMetyServiceName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMetyMedicineCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMetyMedicineName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMetyExpendPrice = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMetyDmNsxCdd = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMetyDmThucteCdd = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMetyLieuBqPx = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMetyTlThucteBqPx = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMetyError = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridControlService = new DevExpress.XtraGrid.GridControl();
             this.gridViewService = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -120,6 +135,12 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.xtraTabControlImport)).BeginInit();
+            this.xtraTabControlImport.SuspendLayout();
+            this.tabPageService.SuspendLayout();
+            this.tabPageMety.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlMety)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewMety)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlService)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewService)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Item_Check)).BeginInit();
@@ -141,7 +162,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.layoutControl1.Controls.Add(this.btnImport);
             this.layoutControl1.Controls.Add(this.btnShowLineError);
             this.layoutControl1.Controls.Add(this.btnSave);
-            this.layoutControl1.Controls.Add(this.gridControlService);
+            this.layoutControl1.Controls.Add(this.xtraTabControlImport);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
@@ -192,14 +213,15 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             // 
             // gridControlService
             // 
-            this.gridControlService.Location = new System.Drawing.Point(2, 28);
+            this.gridControlService.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControlService.Location = new System.Drawing.Point(0, 0);
             this.gridControlService.MainView = this.gridViewService;
             this.gridControlService.Name = "gridControlService";
             this.gridControlService.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.Btn_ErrorLine,
             this.Btn_Delete,
             this.Item_Check});
-            this.gridControlService.Size = new System.Drawing.Size(1232, 452);
+            this.gridControlService.Size = new System.Drawing.Size(1230, 426);
             this.gridControlService.TabIndex = 4;
             this.gridControlService.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewService});
@@ -682,6 +704,152 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.Btn_Delete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_Delete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Delete_ButtonClick);
             // 
+            // xtraTabControlImport
+            // 
+            this.xtraTabControlImport.Location = new System.Drawing.Point(2, 28);
+            this.xtraTabControlImport.Name = "xtraTabControlImport";
+            this.xtraTabControlImport.SelectedTabPage = this.tabPageService;
+            this.xtraTabControlImport.Size = new System.Drawing.Size(1232, 452);
+            this.xtraTabControlImport.TabIndex = 4;
+            this.xtraTabControlImport.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
+            this.tabPageService,
+            this.tabPageMety});
+            // 
+            // tabPageService
+            // 
+            this.tabPageService.Controls.Add(this.gridControlService);
+            this.tabPageService.Name = "tabPageService";
+            this.tabPageService.Size = new System.Drawing.Size(1230, 426);
+            this.tabPageService.Text = "Dịch vụ";
+            // 
+            // tabPageMety
+            // 
+            this.tabPageMety.Controls.Add(this.gridControlMety);
+            this.tabPageMety.Name = "tabPageMety";
+            this.tabPageMety.Size = new System.Drawing.Size(1230, 426);
+            this.tabPageMety.Text = "Thuốc phóng xạ";
+            // 
+            // gridControlMety
+            // 
+            this.gridControlMety.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControlMety.Location = new System.Drawing.Point(0, 0);
+            this.gridControlMety.MainView = this.gridViewMety;
+            this.gridControlMety.Name = "gridControlMety";
+            this.gridControlMety.Size = new System.Drawing.Size(1230, 426);
+            this.gridControlMety.TabIndex = 0;
+            this.gridControlMety.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewMety});
+            // 
+            // gridViewMety
+            // 
+            this.gridViewMety.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.colMetyServiceCode,
+            this.colMetyServiceName,
+            this.colMetyMedicineCode,
+            this.colMetyMedicineName,
+            this.colMetyExpendPrice,
+            this.colMetyDmNsxCdd,
+            this.colMetyDmThucteCdd,
+            this.colMetyLieuBqPx,
+            this.colMetyTlThucteBqPx,
+            this.colMetyError});
+            this.gridViewMety.GridControl = this.gridControlMety;
+            this.gridViewMety.Name = "gridViewMety";
+            this.gridViewMety.OptionsBehavior.Editable = false;
+            this.gridViewMety.OptionsView.ColumnAutoWidth = false;
+            this.gridViewMety.OptionsView.ShowGroupPanel = false;
+            this.gridViewMety.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewMety_RowStyle);
+            // 
+            // colMetyServiceCode
+            // 
+            this.colMetyServiceCode.Caption = "Mã dịch vụ";
+            this.colMetyServiceCode.FieldName = "SERVICE_CODE";
+            this.colMetyServiceCode.Name = "colMetyServiceCode";
+            this.colMetyServiceCode.Visible = true;
+            this.colMetyServiceCode.VisibleIndex = 0;
+            this.colMetyServiceCode.Width = 110;
+            // 
+            // colMetyServiceName
+            // 
+            this.colMetyServiceName.Caption = "Tên dịch vụ";
+            this.colMetyServiceName.FieldName = "SERVICE_NAME";
+            this.colMetyServiceName.Name = "colMetyServiceName";
+            this.colMetyServiceName.Visible = true;
+            this.colMetyServiceName.VisibleIndex = 1;
+            this.colMetyServiceName.Width = 220;
+            // 
+            // colMetyMedicineCode
+            // 
+            this.colMetyMedicineCode.Caption = "Mã thuốc";
+            this.colMetyMedicineCode.FieldName = "MEDICINE_TYPE_CODE";
+            this.colMetyMedicineCode.Name = "colMetyMedicineCode";
+            this.colMetyMedicineCode.Visible = true;
+            this.colMetyMedicineCode.VisibleIndex = 2;
+            this.colMetyMedicineCode.Width = 110;
+            // 
+            // colMetyMedicineName
+            // 
+            this.colMetyMedicineName.Caption = "Tên thuốc";
+            this.colMetyMedicineName.FieldName = "MEDICINE_TYPE_NAME";
+            this.colMetyMedicineName.Name = "colMetyMedicineName";
+            this.colMetyMedicineName.Visible = true;
+            this.colMetyMedicineName.VisibleIndex = 3;
+            this.colMetyMedicineName.Width = 220;
+            // 
+            // colMetyExpendPrice
+            // 
+            this.colMetyExpendPrice.Caption = "Đơn giá thuốc";
+            this.colMetyExpendPrice.FieldName = "EXPEND_PRICE_STR";
+            this.colMetyExpendPrice.Name = "colMetyExpendPrice";
+            this.colMetyExpendPrice.Visible = true;
+            this.colMetyExpendPrice.VisibleIndex = 4;
+            this.colMetyExpendPrice.Width = 110;
+            // 
+            // colMetyDmNsxCdd
+            // 
+            this.colMetyDmNsxCdd.Caption = "ĐM NSX CĐD";
+            this.colMetyDmNsxCdd.FieldName = "DM_NSX_CDD_STR";
+            this.colMetyDmNsxCdd.Name = "colMetyDmNsxCdd";
+            this.colMetyDmNsxCdd.Visible = true;
+            this.colMetyDmNsxCdd.VisibleIndex = 5;
+            this.colMetyDmNsxCdd.Width = 110;
+            // 
+            // colMetyDmThucteCdd
+            // 
+            this.colMetyDmThucteCdd.Caption = "ĐM thực tế CĐD";
+            this.colMetyDmThucteCdd.FieldName = "DM_THUCTE_CDD_STR";
+            this.colMetyDmThucteCdd.Name = "colMetyDmThucteCdd";
+            this.colMetyDmThucteCdd.Visible = true;
+            this.colMetyDmThucteCdd.VisibleIndex = 6;
+            this.colMetyDmThucteCdd.Width = 120;
+            // 
+            // colMetyLieuBqPx
+            // 
+            this.colMetyLieuBqPx.Caption = "Liều BQ PX";
+            this.colMetyLieuBqPx.FieldName = "LIEU_BQ_PX_STR";
+            this.colMetyLieuBqPx.Name = "colMetyLieuBqPx";
+            this.colMetyLieuBqPx.Visible = true;
+            this.colMetyLieuBqPx.VisibleIndex = 7;
+            this.colMetyLieuBqPx.Width = 110;
+            // 
+            // colMetyTlThucteBqPx
+            // 
+            this.colMetyTlThucteBqPx.Caption = "TL thực tế BQ PX";
+            this.colMetyTlThucteBqPx.FieldName = "TL_THUCTE_BQ_PX_STR";
+            this.colMetyTlThucteBqPx.Name = "colMetyTlThucteBqPx";
+            this.colMetyTlThucteBqPx.Visible = true;
+            this.colMetyTlThucteBqPx.VisibleIndex = 8;
+            this.colMetyTlThucteBqPx.Width = 130;
+            // 
+            // colMetyError
+            // 
+            this.colMetyError.Caption = "Lỗi";
+            this.colMetyError.FieldName = "ERROR";
+            this.colMetyError.Name = "colMetyError";
+            this.colMetyError.Visible = true;
+            this.colMetyError.VisibleIndex = 9;
+            this.colMetyError.Width = 300;
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -701,7 +869,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             // 
             // layoutControlItem1
             // 
-            this.layoutControlItem1.Control = this.gridControlService;
+            this.layoutControlItem1.Control = this.xtraTabControlImport;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Size = new System.Drawing.Size(1236, 456);
@@ -833,6 +1001,12 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewMety)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlMety)).EndInit();
+            this.tabPageMety.ResumeLayout(false);
+            this.tabPageService.ResumeLayout(false);
+            this.xtraTabControlImport.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.xtraTabControlImport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlService)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewService)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Item_Check)).EndInit();
@@ -857,6 +1031,21 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
         private DevExpress.XtraEditors.SimpleButton btnShowLineError;
         private DevExpress.XtraEditors.SimpleButton btnSave;
         private DevExpress.XtraGrid.GridControl gridControlService;
+        private DevExpress.XtraTab.XtraTabControl xtraTabControlImport;
+        private DevExpress.XtraTab.XtraTabPage tabPageService;
+        private DevExpress.XtraTab.XtraTabPage tabPageMety;
+        private DevExpress.XtraGrid.GridControl gridControlMety;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewMety;
+        private DevExpress.XtraGrid.Columns.GridColumn colMetyServiceCode;
+        private DevExpress.XtraGrid.Columns.GridColumn colMetyServiceName;
+        private DevExpress.XtraGrid.Columns.GridColumn colMetyMedicineCode;
+        private DevExpress.XtraGrid.Columns.GridColumn colMetyMedicineName;
+        private DevExpress.XtraGrid.Columns.GridColumn colMetyExpendPrice;
+        private DevExpress.XtraGrid.Columns.GridColumn colMetyDmNsxCdd;
+        private DevExpress.XtraGrid.Columns.GridColumn colMetyDmThucteCdd;
+        private DevExpress.XtraGrid.Columns.GridColumn colMetyLieuBqPx;
+        private DevExpress.XtraGrid.Columns.GridColumn colMetyTlThucteBqPx;
+        private DevExpress.XtraGrid.Columns.GridColumn colMetyError;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewService;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;

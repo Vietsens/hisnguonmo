@@ -292,6 +292,14 @@
   <ItemGroup>
     <Compile Include="ADO\CccdInfo.cs" />
     <Compile Include="ADO\CmktADO.cs" />
+    <Compile Include="ADO\ExamSelectionADO.cs" />
+    <Compile Include="EnumSelectedExamAction.cs" />
+    <Compile Include="Popup\SelectedExam\frmSelectedExamList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\SelectedExam\frmSelectedExamList.Designer.cs">
+      <DependentUpon>frmSelectedExamList.cs</DependentUpon>
+    </Compile>
     <Compile Include="ADO\FaceRegADO.cs" />
     <Compile Include="ADO\FaceRegisterADO.cs" />
     <Compile Include="ADO\InformationObjectADO.cs" />

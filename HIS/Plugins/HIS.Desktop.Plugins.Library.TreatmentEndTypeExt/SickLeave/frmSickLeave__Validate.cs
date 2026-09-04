@@ -72,6 +72,8 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
         /// because their TabIndex (26/27) is the highest, they are handled last (Nơi làm việc → Mã BHXH →
         /// Phương pháp điều trị → Số CCCD → Ngày cấp).
         /// When config = 0 or missing, current behavior is unchanged.
+        /// Ngoại lệ: bệnh nhân được đánh dấu không có CCCD (HIS_TREATMENT.TDL_PATIENT_IS_NO_CHECK_CCCD = 1)
+        /// thì bỏ qua kiểm tra, cho phép để trống "Số CCCD/HC" và "Ngày cấp"; khác 1 thì giữ nguyên như hiện tại.
         /// </summary>
         private void ConfigRequireCccdNumber()
         {
@@ -81,19 +83,45 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 if (!isRequireCccdNumber)
                     return;
 
+                //Benh nhan da duoc danh dau khong co CCCD tu man tiep don => bo qua kiem tra CCCD
+                if (IsPatientNoCheckCccd())
+                {
+                    isRequireCccdNumber = false;
+                    Inventec.Common.Logging.LogSystem.Debug("ConfigRequireCccdNumber: TDL_PATIENT_IS_NO_CHECK_CCCD = 1 => bo qua kiem tra CCCD. TreatmentId = " + this.treatmentId);
+                    return;
+                }
+
                 // Highlight the two captions like the other required fields on this form.
                 layoutControlItem16.AppearanceItemCaption.ForeColor = Color.Maroon;
                 layoutControlItem16.AppearanceItemCaption.Options.UseForeColor = true;
                 layoutControlItem17.AppearanceItemCaption.ForeColor = Color.Maroon;
                 layoutControlItem17.AppearanceItemCaption.Options.UseForeColor = true;
-
-                // Warning icon on the control + block Save when empty (checked by dxValidationProvider1.Validate()).
+                 
+                // Warning icon on the control + block Save when empty (checked by dxValidationProvider1.Validate()). 
                 ValidationRequired(txtCCCDNumber);
                 ValidationRequired(cboDateCCCD);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Benh nhan duoc danh dau khong co CCCD o man tiep don (check "Khong CCCD" => HIS_PATIENT.IS_NO_CHECK_CCCD = 1,
+        /// duoc dong bo sang HIS_TREATMENT.TDL_PATIENT_IS_NO_CHECK_CCCD).
+        /// Moi truong hop khac (null, 0, khong doc duoc du lieu) => giu nguyen kiem tra nhu hien tai.
+        /// </summary>
+        private bool IsPatientNoCheckCccd()
+        {
+            try
+            {
+                return this.treatment != null && this.treatment.TDL_PATIENT_IS_NO_CHECK_CCCD == 1;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
 

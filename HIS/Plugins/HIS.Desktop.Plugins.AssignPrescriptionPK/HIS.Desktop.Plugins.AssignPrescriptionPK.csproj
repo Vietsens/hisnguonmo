@@ -144,6 +144,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt\bin\Debug\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.TreatmentEndTypeExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
@@ -824,10 +828,6 @@
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.csproj">
       <Project>{74a53da7-c004-4103-a72c-ca0b57798441}</Project>
       <Name>HIS.Desktop.Plugins.Library.PrintTreatmentFinish</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.csproj">
-      <Project>{1b07baeb-f145-400d-b3c6-94957934a3a9}</Project>
-      <Name>HIS.Desktop.Plugins.Library.TreatmentEndTypeExt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

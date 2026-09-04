@@ -47,6 +47,11 @@ namespace MPS.Processor.Mps000222.PDO
         // Nhân bản pattern MLCTADO của Mps000517 / Mps000096.
         public MLCTADO mLCTADOs { get; set; }
 
+        // Kết luận cấp dịch vụ của các dịch vụ xét nghiệm (bảng mở rộng của dịch vụ đã thực hiện).
+        // Dùng để in dòng kết luận cho dịch vụ mà không có chỉ số nào mang kết quả — nếu không, dịch
+        // vụ đó mất hẳn khỏi phiếu. Gán tại nơi gọi in như mLCTADOs để không đổi chữ ký constructor.
+        public List<HIS_SERE_SERV_EXT> HisSereServExtTests { get; set; }
+
         public Mps000222PDO(V_HIS_TREATMENT _HisTreatment,
             List<V_HIS_SERVICE_REQ> _VHisServiceReqExam,
             List<V_HIS_SERVICE_REQ> _VHisServiceReqTest,

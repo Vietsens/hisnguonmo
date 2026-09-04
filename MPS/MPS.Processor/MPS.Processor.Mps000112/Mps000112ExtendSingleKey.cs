@@ -48,6 +48,24 @@ namespace MPS.Processor.Mps000112
         internal const string NEXT_DEPARTMENT_CODE = "NEXT_DEPARTMENT_CODE";
         internal const string NEXT_DEPARTMENT_NAME = "NEXT_DEPARTMENT_NAME";
 
+        //Khoa/phong YEU CAU (chi dinh) lay tu danh sach dich vu (V_HIS_SERE_SERV.TDL_REQUEST_*)
+        //=> giong cach ban in Mps000446 (Yeu cau thanh toan) dang lay. Chi set khi tat ca dich vu
+        //cung mot khoa/phong yeu cau, neu khac nhau thi de trong.
+        internal const string SERE_SERV_REQUEST_DEPARTMENT_CODE = "SERE_SERV_REQUEST_DEPARTMENT_CODE";
+        internal const string SERE_SERV_REQUEST_DEPARTMENT_NAME = "SERE_SERV_REQUEST_DEPARTMENT_NAME";
+        internal const string SERE_SERV_REQUEST_ROOM_CODE = "SERE_SERV_REQUEST_ROOM_CODE";
+        internal const string SERE_SERV_REQUEST_ROOM_NAME = "SERE_SERV_REQUEST_ROOM_NAME";
+
+        //Khoa/phong YEU CAU lay tu YEU CAU TAM UNG (V_HIS_DEPOSIT_REQ.REQUEST_DEPARTMENT_ID /
+        //REQUEST_ROOM_ID) => giong cot "Khoa yeu cau" tren man hinh Yeu cau tam ung.
+        //Chi set khi tat ca yeu cau tam ung cua phieu thu cung mot khoa/phong.
+        internal const string DEPOSIT_REQ_CODE = "DEPOSIT_REQ_CODE";
+        internal const string DEPOSIT_REQ_DEPARTMENT_CODE = "DEPOSIT_REQ_DEPARTMENT_CODE";
+        internal const string DEPOSIT_REQ_DEPARTMENT_NAME = "DEPOSIT_REQ_DEPARTMENT_NAME";
+        internal const string DEPOSIT_REQ_ROOM_CODE = "DEPOSIT_REQ_ROOM_CODE";
+        internal const string DEPOSIT_REQ_ROOM_NAME = "DEPOSIT_REQ_ROOM_NAME";
+        internal const string DEPOSIT_REQ_REQUEST_USERNAME = "DEPOSIT_REQ_REQUEST_USERNAME";
+
         internal const string IN_TREATMENT_TYPE_NAME = "IN_TREATMENT_TYPE_NAME";
         internal const string PATIENT_CLASSIFY_NAME = "PATIENT_CLASSIFY_NAME";
 

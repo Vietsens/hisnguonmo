@@ -486,4 +486,13 @@
   <data name="frmHisPatientType.chkSerNotAllow.Text" xml:space="preserve">
     <value>Editing or deleting the specified service is not allowed</value>
   </data>
+  <data name="frmHisPatientType.chkAllowPresForEmergency.Properties.Caption" xml:space="preserve">
+    <value>Do not block prescribing for patients of the emergency department</value>
+  </data>
+  <data name="frmHisPatientType.chkAllowPresForEmergency.Text" xml:space="preserve">
+    <value>Do not block prescribing for patients of the emergency department</value>
+  </data>
+  <data name="frmHisPatientType.chkAllowPresForEmergency.ToolTip" xml:space="preserve">
+    <value>Only applied when the patient type is checked "Prescribing is not allowed for patients without the CLS service being completed". Prescribing is not blocked when the requesting department is an emergency department.</value>
+  </data>
 </root>

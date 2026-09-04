@@ -64,5 +64,12 @@ namespace MPS.Processor.Mps000118.PDO
         public string USE_TIME_STR { get; set; }
         public int Type { get; set; }//1: thuoc // 2: vat tu, 3: thuoc trong kho, 4: thuoc ngoai kho, 5: tu tuc
         public decimal? PRES_AMOUNT { get; set; }
+
+        //Lieu dung theo buoi da chuan hoa so. VD: 4. Rong neu khong ke theo buoi
+        //Gia tri goc chua chuan hoa nam o key MORNING/NOON/AFTERNOON/EVENING (ke thua V_HIS_EXP_MEST_MEDICINE)
+        public string MORNING_STR { get; set; }//Lieu dung buoi sang
+        public string NOON_STR { get; set; }//Lieu dung buoi trua
+        public string AFTERNOON_STR { get; set; }//Lieu dung buoi chieu
+        public string EVENING_STR { get; set; }//Lieu dung buoi toi
     }
 }

@@ -42,6 +42,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Config
         public const string NATIONAL_CODE__BASE = "EXE.NATIONAL_CODE_BASE";
         public const string ETHNIC_CODE__BASE = "EXE.ETHNIC_CODE_BASE";
         public const string CONFIG_KEY__IdentityNumberOption = "HIS.Desktop.Plugins.RegisterExamKiosk.IdentityNumberOption";
+        public const string CONFIG_KEY__IsAllowRegisterMultiExam = "HIS.Desktop.Plugins.RegisterExamKiosk.IsAllowRegisterMultiExam";
 
         private const string CONFIG_KEY__USER_NAME = "MOS.VVN.USER_NAME";
         private const string CONFIG_KEY__KEY = "MOS.VVN.KEY";
@@ -138,6 +139,29 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Config
             set
             {
                 patientTypeIdIsHein = value;
+            }
+        }
+
+        /// <summary>
+        /// Cho phep nguoi benh chon nhieu cong kham trong mot luot dang ky tai kiosk.
+        /// Khong khai bao key hoac khai bao gia tri "0": giu nguyen hanh vi cu (cham phong la dang ky ngay).
+        /// Khai bao key voi gia tri khac "0": bat tinh nang chon nhieu cong kham.
+        /// </summary>
+        public static bool IsAllowRegisterMultiExam
+        {
+            get
+            {
+                bool result = false;
+                try
+                {
+                    string value = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IsAllowRegisterMultiExam);
+                    result = !String.IsNullOrWhiteSpace(value) && value.Trim() != "0";
+                }
+                catch (Exception ex)
+                {
+                    LogSystem.Warn(ex);
+                }
+                return result;
             }
         }
 

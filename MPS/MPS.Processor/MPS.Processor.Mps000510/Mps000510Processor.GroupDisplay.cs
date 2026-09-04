@@ -214,7 +214,8 @@ namespace MPS.Processor.Mps000510
                     if (rdo.ServiceReqs != null && rdo.ServiceReqs.Count > 0)
                     {
                         List<long> serviceReqIds = g.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
-                        List<HIS_SERVICE_REQ> serviceReqTemps = rdo.ServiceReqs.Where(o => serviceReqIds.Contains(o.ID) && o.REMEDY_COUNT.HasValue).ToList();
+                        List<long> donTypeIds = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };
+                        List<HIS_SERVICE_REQ> serviceReqTemps = rdo.ServiceReqs.Where(o => serviceReqIds.Contains(o.ID) && o.REMEDY_COUNT.HasValue && donTypeIds.Contains(o.SERVICE_REQ_TYPE_ID)).ToList();
                         if (serviceReqTemps.Count > 0)
                             ado.REMEDY_COUNT = serviceReqTemps.Sum(o => o.REMEDY_COUNT ?? 0);
                     }
@@ -263,7 +264,8 @@ namespace MPS.Processor.Mps000510
                     if (rdo.ServiceReqs != null && rdo.ServiceReqs.Count > 0)
                     {
                         List<long> serviceReqIds = g.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
-                        List<HIS_SERVICE_REQ> serviceReqTemps = rdo.ServiceReqs.Where(o => serviceReqIds.Contains(o.ID) && o.REMEDY_COUNT.HasValue).ToList();
+                        List<long> donTypeIds = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };
+                        List<HIS_SERVICE_REQ> serviceReqTemps = rdo.ServiceReqs.Where(o => serviceReqIds.Contains(o.ID) && o.REMEDY_COUNT.HasValue && donTypeIds.Contains(o.SERVICE_REQ_TYPE_ID)).ToList();
                         if (serviceReqTemps.Count > 0)
                             ado.REMEDY_COUNT = serviceReqTemps.Sum(o => o.REMEDY_COUNT ?? 0);
                     }
@@ -297,7 +299,7 @@ namespace MPS.Processor.Mps000510
                     ado.HEIN_SERVICE_TYPE_ID = first.HEIN_SERVICE_TYPE_ID;
                     ado.MEDICINE_LINE_CODE = first.MEDICINE_LINE_CODE;
                     ado.MEDICINE_LINE_NAME = first.MEDICINE_LINE_NAME;
-                    // Khớp 281: null MEDICINE_LINE_ID -> không vào nhánh "Chưa xác định"
+                    // Khớp 281: null MEDICINE_LINE_ID -> không vào nhánh "Chưa xác định" 
                     // (so sánh nullable: null <= 0 trả về false). Chỉ kích hoạt khi LÀ 0 thật sự.
                     if (first.MEDICINE_LINE_ID <= 0 && first.HEIN_SERVICE_TYPE_ID > 0)
                     {
@@ -309,7 +311,8 @@ namespace MPS.Processor.Mps000510
                     if (rdo.ServiceReqs != null && rdo.ServiceReqs.Count > 0)
                     {
                         List<long> serviceReqIds = g.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
-                        List<HIS_SERVICE_REQ> serviceReqTemps = rdo.ServiceReqs.Where(o => serviceReqIds.Contains(o.ID) && o.REMEDY_COUNT.HasValue).ToList();
+                        List<long> donTypeIds = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };
+                        List<HIS_SERVICE_REQ> serviceReqTemps = rdo.ServiceReqs.Where(o => serviceReqIds.Contains(o.ID) && o.REMEDY_COUNT.HasValue && donTypeIds.Contains(o.SERVICE_REQ_TYPE_ID)).ToList();
                         if (serviceReqTemps.Count > 0)
                             ado.REMEDY_COUNT = serviceReqTemps.Sum(o => o.REMEDY_COUNT ?? 0);
                     }

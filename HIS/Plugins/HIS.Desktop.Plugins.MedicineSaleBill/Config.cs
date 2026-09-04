@@ -74,5 +74,20 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         internal const string AUTO_ACTION__ISSUE_EXISTING_BILL = "AUTO_ISSUE_EXISTING_BILL";
         internal const string AUTO_PARAM__TRANSACTION_ID = "TRANSACTION_ID=";
 
+        private const string AutoSelectAccountBookIfHasOneKey = "HIS.Desktop.Plugins.TransactionBill.AutoSelectAccountBookIfHasOne";
+
+        /// <summary>
+        /// = 1: neu thu ngan chi duoc gan dung 1 so thu chi thi tu dong chon so do ngay tu lan mo man dau tien
+        /// (khong phai doi den khi user tu chon 1 lan). Dung chung key voi cac man
+        /// TransactionBill / ExpMestSaleCreate / AdjustmentTransaction / EInvoiceCreate.
+        /// </summary>
+        internal static bool IsAutoSelectAccountBookIfHasOne
+        {
+            get
+            {
+                return (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AutoSelectAccountBookIfHasOneKey) == "1");
+            }
+        }
+
     }
 }

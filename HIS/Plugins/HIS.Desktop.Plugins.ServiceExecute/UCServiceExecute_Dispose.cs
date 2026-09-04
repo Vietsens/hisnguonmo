@@ -173,6 +173,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 this.gridViewSereServ.PopupMenuShowing -= new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.gridViewSereServ_PopupMenuShowing);
                 this.gridViewSereServ.ShownEditor -= new System.EventHandler(this.gridView_ShownEditor);
                 this.gridViewSereServ.CustomUnboundColumnData -= new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewSereServ_CustomUnboundColumnData);
+                this.gridViewSereServ.CustomColumnDisplayText -= new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.gridViewSereServ_CustomColumnDisplayText);
                 this.gridViewSereServ.KeyDown -= new System.Windows.Forms.KeyEventHandler(this.gridView_KeyDown);
                 this.gridViewSereServ.DoubleClick -= new System.EventHandler(this.gridView_DoubleClick);
                 this.ButtonEdit_Print__PhieuKeKhai.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEdit_Print__PhieuKeKhai_ButtonClick);

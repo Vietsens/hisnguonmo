@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\ServiceImportADO.cs" />
+    <Compile Include="ADO\ServiceMetyImportADO.cs" />
     <Compile Include="FormLoad\frmService.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -188,6 +188,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         "IS_ANTIBIOTIC_RESISTANCE",
                         "SERVICE_REQ_TYPE_ID",
                         "REQUEST_ROOM_ID",
+                        "REQUEST_DEPARTMENT_ID",
                         "INTRUCTION_TIME",
                         "IS_SUB_PRES",
                         "EXECUTE_ROOM_ID",
@@ -886,6 +887,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.LoadDataSereServWithTreatment(currentTreatmentWithPatientType, 0);
                 this.PatientTypeWithTreatmentView7();
                 this.FillTreatmentInfo__PatientType();//tinh toan va hien thi thong tin ve tong tien tat ca cac dich vu dang chi dinh
+                if (this.CheckFinishClsWhenPres()) return;
                 this.CheckWarningOverTotalPatientPrice();
 
                 this.LoadIcdDefault();
@@ -895,6 +897,127 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Cac loai y lenh duoc coi la dich vu CLS khi kiem tra "chua thuc hien xong dich vu CLS".
+        /// </summary>
+        private static readonly long[] ClsServiceReqTypeIds = new long[]
+        {
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN,
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA,
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN,
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS,
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA,
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL,
+        };
+
+        /// <summary>
+        /// Y lenh kham con y lenh con thuoc nhom CLS chua thuc hien xong
+        /// (SERVICE_REQ_STT_ID = ID__CXL - Chua xu ly, tuc chua bat dau thuc hien).
+        /// Bo sung cho IS_WAIT_CHILD: co IS_WAIT_CHILD = 1 chi khi bac si da ket thuc kham o trang thai
+        /// cho ket qua CLS, nen truong hop vua chi dinh CLS xong khong bat duoc bang co do.
+        /// </summary>
+        private bool HasUnfinishedClsChild(long examServiceReqId)
+        {
+            bool result = false;
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                HisServiceReqFilter filter = new HisServiceReqFilter();
+                filter.PARENT_ID = examServiceReqId;
+                filter.SERVICE_REQ_TYPE_IDs = ClsServiceReqTypeIds.ToList();
+                filter.ColumnParams = new List<string>()
+                    {
+                        "ID",
+                        "SERVICE_REQ_CODE",
+                        "SERVICE_REQ_TYPE_ID",
+                        "SERVICE_REQ_STT_ID",
+                    };
+                var children = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HIS_SERVICE_REQ>>((RequestUriStore.HIS_SERVICE_REQ_GET_DYNAMIC), ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
+                if (children != null && children.Count > 0)
+                {
+                    result = children.Exists(o => o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL);
+                }
+                LogSystem.Debug("HasUnfinishedClsChild|ExamServiceReqId=" + examServiceReqId
+                    + "|ChildCount=" + (children == null ? 0 : children.Count)
+                    + "|Statuses=" + (children == null ? "" : String.Join(",", children.Select(o => o.SERVICE_REQ_TYPE_ID + ":" + o.SERVICE_REQ_STT_ID).ToArray()))
+                    + "|HasUnfinished=" + result);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Kiem tra "Khong cho phep ke don voi benh nhan kham neu chua thuc hien xong dich vu CLS".
+        /// Tach rieng khoi CheckWarningOverTotalPatientPrice de khong phu thuoc luong tinh vien phi
+        /// va API so du the (2 early-return + goi API o dau ham do lam check nay co the khong chay toi).
+        /// Tra ve true khi da chan (da hien thi canh bao va dong form ke don).
+        /// </summary>
+        private bool CheckFinishClsWhenPres()
+        {
+            try
+            {
+                var patientTypeByPT = (this.currentHisPatientTypeAlter != null && this.currentHisPatientTypeAlter.PATIENT_TYPE_ID > 0)
+                    ? BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.ID == this.currentHisPatientTypeAlter.PATIENT_TYPE_ID).FirstOrDefault()
+                    : null;
+
+                //Doi tuong benh nhan duoc check "Khong chan ke don voi benh nhan khoa cap cuu"
+                //(HIS_PATIENT_TYPE.IS_ALLOW_PRES_FOR_EMERGENCY = 1) va khoa dang chi dinh la khoa cap cuu
+                //(HIS_DEPARTMENT.IS_EMERGENCY = 1) => khong canh bao, duoc phep ke don
+                bool isAllowPresForEmergency = false;
+                long requestDepartmentId = 0;
+                if (patientTypeByPT != null && patientTypeByPT.IS_ALLOW_PRES_FOR_EMERGENCY == 1)
+                {
+                    //Khoa dang chi dinh: uu tien khoa chi dinh cua y lenh kham dang xu ly,
+                    //neu khong lay duoc thi dung khoa cua phong nguoi dung dang lam viec
+                    V_HIS_ROOM workingRoom = null;
+                    if (this.currentModule != null)
+                    {
+                        workingRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
+                    }
+                    requestDepartmentId = (this.serviceReqMain != null && this.serviceReqMain.REQUEST_DEPARTMENT_ID > 0)
+                        ? this.serviceReqMain.REQUEST_DEPARTMENT_ID
+                        : (workingRoom != null ? workingRoom.DEPARTMENT_ID : 0);
+                    if (requestDepartmentId > 0)
+                    {
+                        var requestDepartment = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().Where(o => o.ID == requestDepartmentId).FirstOrDefault();
+                        isAllowPresForEmergency = (requestDepartment != null && requestDepartment.IS_EMERGENCY == 1);
+                    }
+                }
+
+                //Log chan doan (chi log ID/co, khong log thong tin dinh danh benh nhan)
+                LogSystem.Debug("CheckFinishClsWhenPres"
+                    + "|TreatmentId=" + this.treatmentId
+                    + "|ServiceReqParentId=" + this.serviceReqParentId
+                    + "|ServiceReqMainId=" + (this.serviceReqMain == null ? "" : "" + this.serviceReqMain.ID)
+                    + "|PatientTypeId=" + (patientTypeByPT == null ? "" : "" + patientTypeByPT.ID)
+                    + "|IsCheckFinishClsWhenPres=" + (patientTypeByPT == null ? "" : "" + patientTypeByPT.IS_CHECK_FINISH_CLS_WHEN_PRES)
+                    + "|IsAllowPresForEmergency=" + (patientTypeByPT == null ? "" : "" + patientTypeByPT.IS_ALLOW_PRES_FOR_EMERGENCY)
+                    + "|RequestDepartmentId=" + requestDepartmentId
+                    + "|isAllowPresForEmergency=" + isAllowPresForEmergency
+                    + "|TdlTreatmentTypeId=" + (this.VHistreatment == null ? "" : "" + this.VHistreatment.TDL_TREATMENT_TYPE_ID)
+                    + "|ServiceReqTypeId=" + (this.serviceReqMain == null ? "" : "" + this.serviceReqMain.SERVICE_REQ_TYPE_ID)
+                    + "|IsWaitChild=" + (this.serviceReqMain == null ? "" : "" + this.serviceReqMain.IS_WAIT_CHILD));
+
+                if (patientTypeByPT != null && patientTypeByPT.IS_CHECK_FINISH_CLS_WHEN_PRES == 1 && !isAllowPresForEmergency
+                        && this.VHistreatment != null && this.VHistreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                        && this.serviceReqMain != null && this.serviceReqMain.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH 
+                        && (this.serviceReqMain.IS_WAIT_CHILD == 1 || this.HasUnfinishedClsChild(this.serviceReqMain.ID)))
+                {
+                    MessageBox.Show(this, ResourceMessage.ChuaThucHienXongDichVuCLS, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                    this.Close();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return false;
         }
 
         private void FillSomePatientInfoSelectedInFormGeneralAfterLoad()
@@ -1015,14 +1138,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 var patientTypeByPT = (currentHisPatientTypeAlter != null && currentHisPatientTypeAlter.PATIENT_TYPE_ID > 0) ? BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.ID == currentHisPatientTypeAlter.PATIENT_TYPE_ID).FirstOrDefault() : null;
 
-                if (patientTypeByPT != null && patientTypeByPT.IS_CHECK_FINISH_CLS_WHEN_PRES == 1
-                        && this.VHistreatment != null && this.VHistreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
-                        && this.serviceReqMain != null && this.serviceReqMain.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && this.serviceReqMain.IS_WAIT_CHILD == 1)
-                {
-                    MessageBox.Show(this, ResourceMessage.ChuaThucHienXongDichVuCLS, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                    this.Close();
-                    return;
-                }
                 transferTotal = transferTotal < 1 ? 0 : transferTotal;
                 if (patientTypeByPT != null && patientTypeByPT.IS_CHECK_FEE_WHEN_PRES == 1
                     && treatmentFees[0].TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM

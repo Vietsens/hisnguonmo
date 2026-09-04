@@ -161,6 +161,21 @@ Plugin này không mở plugin ngoài (chỉ mở form con `frmMediCardByDateRep
 | `EXP_PRICE_1..10`, `PATIENT_TYPE_NAME_1..10`, `EXP_VAT_RATIO` | Giá theo 10 đối tượng đầu tiên |
 | `DicExpPrice`, `DicExpVatRatio`, `DicPatientTypeName` | Dictionary động cho > 10 đối tượng |
 
+### Trường dữ liệu phục vụ template Thẻ kho (Mrs00067 → Mps000217)
+
+`MPS.Processor.Mps000217.PDO.Mrs00067RDO` — bind dưới key `Report.<TÊN_TRƯỜNG>` / `ListMedicine.<TÊN_TRƯỜNG>` / `ReportByPackage.<TÊN_TRƯỜNG>` trong template:
+
+| Trường | Ý nghĩa |
+|--------|---------|
+| `CONTENT` | **Nội dung diễn giải đầy đủ** (bổ sung 25/08/2026) — ghép sẵn: loại phiếu → kho nguồn/kho đích → NCC → khoa → bệnh nhân → số phiếu đối ứng. Dùng thay cho việc ghép nhiều tag rời trong ô "Diễn giải" |
+| `FROM_MEDI_STOCK_NAME` | Kho/tủ trực xuất hàng (chỉ có với phiếu chuyển kho), đã kèm tiền tố `kho`/`tủ trực` theo `HIS_MEDI_STOCK.IS_CABINET` |
+| `TO_MEDI_STOCK_NAME` | Kho/tủ trực nhận hàng (chỉ có với phiếu chuyển kho), đã kèm tiền tố `kho`/`tủ trực` |
+| `TDL_PATIENT_CODE` | Mã bệnh nhân của phiếu — lấy cho MỌI loại phiếu nhập/xuất. Phiếu tổng hợp (gom nhiều BN) liệt kê các mã, ngăn cách bằng dấu phẩy |
+| `TDL_TREATMENT_CODE` | Mã điều trị của phiếu — lấy cho MỌI loại phiếu nhập/xuất. Phiếu tổng hợp liệt kê các mã, ngăn cách bằng dấu phẩy |
+| `TDL_PATIENT_NAME` | Tên bệnh nhân — chỉ hiển thị khi phiếu chỉ gắn với 1 bệnh nhân (`Mrs00067RDO.SingleOrEmpty`) |
+| `TDL_TREATMENT_ID`, `TDL_PATIENT_ID` | ID điều trị / bệnh nhân lấy từ chính dòng chi tiết `V_HIS_EXP_MEST_MEDICINE`, dùng để tra ngược mã điều trị khi phiếu xuất không lưu sẵn `TDL_TREATMENT_CODE` |
+| `TREATMENT_CODE`, `VIR_PATIENT_NAME`, `CLIENT_NAME` | (cũ) chỉ có giá trị với phiếu bán lẻ / đơn thuốc DPK, DDT, DTT |
+| `IMP_MEDI_STOCK_NAME`, `EXP_MEDI_STOCK_NAME` | (cũ) tên kho đích/nguồn thô, không kèm tiền tố |
 ## 8. Changelog
 
 | Ngày | Người sửa | Mô tả thay đổi |
@@ -168,6 +183,7 @@ Plugin này không mở plugin ngoài (chỉ mở form con `frmMediCardByDateRep
 | 24/04/2026 | dangth | [42819] BV HAGL — Bổ sung cột `Nhóm cha` vào file Excel xuất tồn kho thuốc và vật tư. Code: thêm trường `PARENT_GROUP_NAME` trong `MedicineInStockExportADO` / `MaterialInStockExportADO`; `UCMediStockSummary.LoadPrint` tra `V_HIS_MEDICINE_TYPE.PARENT_ID` / `V_HIS_MATERIAL_TYPE.PARENT_ID` qua dictionary (O(1)) để lấy `MEDICINE_TYPE_NAME` / `MATERIAL_TYPE_NAME` của loại cha. Template: `Tmp/Exp/DanhMucThuoc.xls` chèn cột C "Nhóm cha" (merge dòng 3-4, dòng 6 chứa tag `<#ExportResult.PARENT_GROUP_NAME;>`); `Tmp/Exp/DanhMucVatTu.xls` chèn cột C "Nhóm cha" (dòng 3, dòng 5 chứa tag `<#ExportResult.PARENT_GROUP_NAME;>`). |
 | 20/05/2026 | dangth | [42819] Fix bug "Xuất Excel theo ĐK" — màn hình hiện N thuốc nhưng Excel chỉ ra 1 thuốc. Trước đây luồng xuất chỉ giữ detail-lot (`!isTypeNode && ID > 0`) nên loại thuốc đang hiện ở chế độ thu gọn mà không có lot hợp lệ sẽ bị mất. Sửa `UCMediStockSummary.LoadPrint`: bổ sung fallback — với mỗi type-node `IS_LEAF=1` chưa có detail-lot pass filter, xuất chính type-node làm 1 dòng (dùng AMOUNT/AvailableAmount đã aggregate). Điều chỉnh `GroupBy` để tách type-node (`TN_<NodeId>`) và detail (`DT_<ID>`); `dicData` dùng key âm `-MEDICINE_TYPE_ID` / `-MATERIAL_TYPE_ID` cho type-node để tránh collision khi ID=0; `medicineIds` / `materialIds` truyền vào `HisMedicinePaty/Get` chỉ chứa ID detail-lot dương. Áp dụng cho cả thuốc và vật tư. |
 | 05/06/2026 | tuanln | [FE] Bổ sung cột `Thời gian đóng gói` (FieldName `PackingTimeStr`) đứng ngay sau cột `Hạn sử dụng` trong cây tồn kho **Máu** (`InitHisBloodTree`). Cột unbound, fill trong `bloodType_CustomUnboundColumnData` từ `HisBloodInStockSDO.PackingTime` (long, backend đã bổ sung) định dạng bằng `TimeNumberToTimeString`. Dời `VisibleIndex` các cột sau: Ngày còn lại 9→10, Nhà cung cấp 10→11, Dung tích 11→12, Số lượng tồn 12→13. Đồng thời đổi định dạng cột `Hạn sử dụng` (`ExpiredDateStr`) từ `TimeNumberToDateString` (dd/MM/yyyy) sang `TimeNumberToTimeString` (dd/MM/yyyy HH:mm:ss), nới width 120→140. |
+| 25/08/2026 | huannh | [BV Nhi đồng 115] Thẻ kho thuốc (Mrs00067 → Mps000217): cột "Diễn giải" ghi rõ **xuất từ kho nào sang tủ trực nào** (và nhập từ kho nào vào tủ trực nào), đồng thời hiển thị **mã bệnh nhân / mã điều trị** ở nội dung xuất. Code: `Mps000217PDO.Mrs00067RDO` bổ sung `FROM_MEDI_STOCK_NAME`, `TO_MEDI_STOCK_NAME`, `TDL_PATIENT_CODE`, `TDL_TREATMENT_CODE`, `TDL_PATIENT_NAME` và property tổng hợp `CONTENT`; thông tin bệnh nhân lấy từ `V_HIS_EXP_MEST`/`V_HIS_IMP_MEST` cho MỌI loại phiếu (trước đây chỉ lấy cho phiếu bán lẻ/đơn thuốc); thêm overload constructor phiếu nhập nhận `List<HIS_MEDI_STOCK>`; fix NullReferenceException khi phiếu chuyển kho không tìm thấy kho nhập trong danh mục (lỗi này làm mất luôn tên loại phiếu của dòng chuyển kho). `CreateReport/Mrs00067.cs` (3 plugin: MediStockSummary, MediStockSummaryWithImpExp, AnticipateCreateV2) hoist `BackendDataWorker.Get<>` ra ngoài vòng lặp và copy các trường mới khi gộp nhóm theo phiếu. Template: ô "Diễn giải" dùng `<#Report.CONTENT;>` / `<#ListMedicine.CONTENT;>`; nới cột `Tồn` (I) 11.3→16.5 và thu cột `Diễn giải` (F) 32.7→27.5 để số tồn không bị hiển thị `######`. Phiếu xuất tổng hợp phòng khám (`HIS_EXP_MEST_TYPE.ID__THPK`) gom nhiều bệnh nhân: giữ 1 dòng thẻ kho, liệt kê mã BN / mã điều trị của các đơn con qua `Mrs00067RDO.JoinDistinct`, tên BN chỉ hiện khi phiếu có duy nhất 1 BN (`SingleOrEmpty`). NCC chỉ hiển thị ở dòng nhập (trước đó dòng xuất cũng hiện NCC của lô thuốc gây nhầm lẫn). Bổ sung `Mrs00067.FillTreatmentInfo` — khi phiếu xuất không lưu sẵn `TDL_TREATMENT_CODE` (gặp ở luồng tổng hợp phòng khám), tra `V_HIS_TREATMENT` theo `TDL_TREATMENT_ID` của dòng chi tiết (`HIS_TREATMENT_GETVIEW`, chunk theo `MAX_REQUEST_LENGTH_PARAM`, chỉ gọi khi thực sự thiếu) để lấy `TREATMENT_CODE` / `TDL_PATIENT_CODE` / `TDL_PATIENT_NAME`. |
 
 ## 9. Test Cases
 

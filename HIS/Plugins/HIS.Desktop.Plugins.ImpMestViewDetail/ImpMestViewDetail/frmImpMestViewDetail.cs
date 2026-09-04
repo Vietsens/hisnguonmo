@@ -80,6 +80,15 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
         bool IsAdmin = false;
         int positionHandleControl = -1;
         internal bool IsAllowDuplicateDocument = false;
+
+        ////Trang thai check "Tu dong tao thiet lap ky theo HDKN". Dung chung MODULE_LINK voi chuc nang
+        ////Hoi dong kiem nhap (HIS.Desktop.Plugins.HisRoleUser) de 2 chuc nang dong bo trang thai.
+        internal const string CONTROL_STATE__MODULE_LINK__AUTO_SIGN = "HIS.Desktop.Plugins.HisRoleUser";
+        internal const string CONTROL_STATE__KEY__AUTO_SIGN = "chkAutoSignByImpMestUser";
+
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> listControlState;
+        bool isLoadingControlState = false;
         #endregion
 
         #region Construct
@@ -146,6 +155,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 GetControlAcs();
                 EnableButton();
                 InitMenuToButtonPrint();
+                InitControlState();
                 ValidateControlForm();
                 WaitingManager.Hide();
                 ItemGridLookUpEdit_BloodName.CloseUpKey = new DevExpress.Utils.KeyShortcut(Keys.Enter);
@@ -153,6 +163,60 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitControlState()
+        {
+            try
+            {
+                this.isLoadingControlState = true;
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.listControlState = this.controlStateWorker.GetData(CONTROL_STATE__MODULE_LINK__AUTO_SIGN);
+                if (this.listControlState != null && this.listControlState.Count > 0)
+                {
+                    var state = this.listControlState.FirstOrDefault(o => o.KEY == CONTROL_STATE__KEY__AUTO_SIGN);
+                    if (state != null)
+                    {
+                        chkAutoSign.Checked = state.VALUE == "1";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.isLoadingControlState = false;
+            }
+        }
+
+        private void chkAutoSign_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ////Khong ghi lai trang thai khi dang doc trang thai luc mo form
+                if (this.controlStateWorker == null || this.isLoadingControlState)
+                    return;
+
+                if (this.listControlState == null)
+                    this.listControlState = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var state = this.listControlState.FirstOrDefault(o => o.KEY == CONTROL_STATE__KEY__AUTO_SIGN);
+                if (state == null)
+                {
+                    state = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    state.KEY = CONTROL_STATE__KEY__AUTO_SIGN;
+                    state.MODULE_LINK = CONTROL_STATE__MODULE_LINK__AUTO_SIGN;
+                    this.listControlState.Add(state);
+                }
+                state.VALUE = (chkAutoSign.Checked ? "1" : "");
+                this.controlStateWorker.SetData(this.listControlState);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

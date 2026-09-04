@@ -58,10 +58,10 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000222.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000222.PDO.dll</HintPath>
+      <HintPath>..\MPS.Processor.Mps000222.PDO\bin\Debug\MPS.Processor.Mps000222.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\MPS.ProcessorBase.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.ProcessorBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
