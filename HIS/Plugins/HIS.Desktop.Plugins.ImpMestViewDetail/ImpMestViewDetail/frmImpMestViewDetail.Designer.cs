@@ -258,6 +258,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.repositoryItemGridLookUpEdit_Material_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboPrint = new DevExpress.XtraEditors.DropDownButton();
+            this.chkAutoSign = new DevExpress.XtraEditors.CheckEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -267,6 +268,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciChkAutoSign = new DevExpress.XtraLayout.LayoutControlItem();
             this.LCGRoot = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
@@ -365,6 +367,8 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoSign.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkAutoSign)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LCGRoot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             this.SuspendLayout();
@@ -498,6 +502,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.btnSave);
+            this.layoutControl2.Controls.Add(this.chkAutoSign);
             this.layoutControl2.Controls.Add(this.btnImport);
             this.layoutControl2.Controls.Add(this.btnApproval);
             this.layoutControl2.Controls.Add(this.btnHoiDongKiemNhap);
@@ -521,6 +526,18 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.btnSave.TabIndex = 11;
             this.btnSave.Text = "Lưu (Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // chkAutoSign
+            // 
+            this.chkAutoSign.Location = new System.Drawing.Point(190, 509);
+            this.chkAutoSign.MenuManager = this.barManager1;
+            this.chkAutoSign.Name = "chkAutoSign";
+            this.chkAutoSign.Properties.Caption = "Tự động tạo thiết lập ký theo HĐKN";
+            this.chkAutoSign.Size = new System.Drawing.Size(226, 19);
+            this.chkAutoSign.StyleController = this.layoutControl2;
+            this.chkAutoSign.TabIndex = 10;
+            this.chkAutoSign.ToolTip = "Tự động tạo thiết lập ký theo hội đồng kiểm nhập";
+            this.chkAutoSign.CheckedChanged += new System.EventHandler(this.chkAutoSign_CheckedChanged);
             // 
             // btnImport
             // 
@@ -2677,7 +2694,8 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.layoutControlItem5,
             this.layoutControlItem6,
             this.layoutControlItem7,
-            this.layoutControlItem8});
+            this.layoutControlItem8,
+            this.lciChkAutoSign});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2698,7 +2716,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 507);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(418, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(188, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
@@ -2755,6 +2773,16 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.layoutControlItem8.Size = new System.Drawing.Size(129, 26);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
+            // 
+            // lciChkAutoSign
+            // 
+            this.lciChkAutoSign.Control = this.chkAutoSign;
+            this.lciChkAutoSign.Location = new System.Drawing.Point(188, 507);
+            this.lciChkAutoSign.Name = "lciChkAutoSign";
+            this.lciChkAutoSign.OptionsToolTip.ToolTip = "Tự động tạo thiết lập ký theo hội đồng kiểm nhập";
+            this.lciChkAutoSign.Size = new System.Drawing.Size(230, 26);
+            this.lciChkAutoSign.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChkAutoSign.TextVisible = false;
             // 
             // LCGRoot
             // 
@@ -2894,6 +2922,8 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoSign.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkAutoSign)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LCGRoot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             this.ResumeLayout(false);
@@ -3023,6 +3053,8 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
         private Inventec.Desktop.CustomControl.MyGridControl gridControlMedicine;
         private Inventec.Desktop.CustomControl.MyGridView gridViewMedicine;
         private DevExpress.XtraEditors.SimpleButton btnSave;
+        private DevExpress.XtraEditors.CheckEdit chkAutoSign;
+        private DevExpress.XtraLayout.LayoutControlItem lciChkAutoSign;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraGrid.Columns.GridColumn colPRICEUnb;
         private DevExpress.XtraGrid.Columns.GridColumn colVAT_RATIO_100Unb;

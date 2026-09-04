@@ -52,6 +52,10 @@ namespace HIS.Desktop.Plugins.HisImportBid.ADO
         public string BID_YEAR { get; set; }
         public long? BID_TYPE_ID { get; set; }
         public string BID_TYPE_NAME { get; set; }
+        // TT12 - HT_THAU (hinh thuc thau) - thuoc cap HIS_BID
+        public string BID_FORM_CODE { get; set; }
+        public long? BID_FORM_ID { get; set; }
+        public string BID_FORM_NAME { get; set; }
         public string MATERIAL_TYPE_MAP_CODE { get; set; }
         public string JOIN_BID_MATERIAL_TYPE_CODE { get; set; }
         public string BID_MATERIAL_TYPE_CODE { get; set; }

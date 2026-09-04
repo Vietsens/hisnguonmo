@@ -111,5 +111,7 @@ namespace MPS.Processor.Mps000508
 
         internal const string TOTAL_PRICE_PATIENT_ALL_697 = "TOTAL_PRICE_PATIENT_ALL_697";
         internal const string TOTAL_PRICE_PATIENT_ALL_TEXT_697 = "TOTAL_PRICE_PATIENT_ALL_TEXT_697";
+        internal const string IN_TIME_STR = "IN_TIME_STR";
+        internal const string SERVICE_REQ_START_TIME_STR = "SERVICE_REQ_START_TIME_STR";
     }
 }

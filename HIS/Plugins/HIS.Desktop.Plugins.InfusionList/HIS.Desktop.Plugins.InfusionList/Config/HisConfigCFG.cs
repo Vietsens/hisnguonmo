@@ -26,5 +26,31 @@ namespace HIS.Desktop.Plugins.InfusionCreate.Config
     class HisConfigCFG
     {
         public const string CONFIG_KEY__HIS_DESKTOP_PLUGINS_EMR_DOCUMENT_IS_PRINT_MERGE = "HIS.Desktop.Plugins.EmrDocument.IsPrintMerge";
+        public const string CONFIG_KEY__HIS_DESKTOP_PLUGINS_INFUSION_IS_PRINT_MERGE = "HIS.Desktop.Plugins.Infusion.IsPrintMerge";
+
+        /// <summary>
+        /// Merge-print flag for infusion sheets. Reads the dedicated key first;
+        /// falls back to the legacy shared key (EmrDocument.IsPrintMerge) when not configured,
+        /// so hospitals without the new key keep the current behavior.
+        /// </summary>
+        public static long GetKeyPrintMerge()
+        {
+            long result = 0;
+            try
+            {
+                string value = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__HIS_DESKTOP_PLUGINS_INFUSION_IS_PRINT_MERGE);
+                if (String.IsNullOrWhiteSpace(value))
+                {
+                    value = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__HIS_DESKTOP_PLUGINS_EMR_DOCUMENT_IS_PRINT_MERGE);
+                }
+                result = Inventec.Common.TypeConvert.Parse.ToInt64(value);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                result = 0;
+            }
+            return result;
+        }
     }
 }

@@ -201,8 +201,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// </summary>
         public const string JSON_TYPE_LEGACY = "KSK_UNDER_SIX_DEFAULT";
 
-        /// <summary>Phiên bản cấu trúc file — 1 = chỉ ROWS, 2 = thêm AUTO_CLS.</summary>
-        public const int JSON_VERSION = 2;
+        /// <summary>Phiên bản cấu trúc file — 1 = chỉ ROWS, 2 = thêm AUTO_CLS (3 mục), 3 = AUTO_CLS đủ 11 mục (việc 56156).</summary>
+        public const int JSON_VERSION = 3;
 
         /// <summary>
         /// Dựng JSON để xuất cả 2 tab. Phần mặc định ghi kèm caption (Mục / Nội dung / Giá trị) và
@@ -241,10 +241,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
             }
 
+            // Ghi từng dòng cấu hình theo key form đưa sang (BLOOD, BLOOD_GLUCO, ..., PERIODIC — việc 56156).
             var autoCls = new Newtonsoft.Json.Linq.JObject();
-            autoCls["BLOOD"] = BuildServiceArray(data.AUTO_CLS_BLOOD);
-            autoCls["URINE"] = BuildServiceArray(data.AUTO_CLS_URINE);
-            autoCls["DIIM"] = BuildServiceArray(data.AUTO_CLS_DIIM);
+            if (data.AUTO_CLS != null)
+            {
+                foreach (var pair in data.AUTO_CLS)
+                {
+                    if (string.IsNullOrEmpty(pair.Key)) continue;
+                    autoCls[pair.Key] = BuildServiceArray(pair.Value);
+                }
+            }
 
             var root = new Newtonsoft.Json.Linq.JObject();
             root["TYPE"] = JSON_TYPE;
@@ -340,12 +346,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     }
                 }
 
+                // Đọc MỌI key trong AUTO_CLS (file cũ chỉ có BLOOD/URINE/DIIM, file mới có 11 key) —
+                // key lạ cứ đọc vào, form nhập sẽ tự bỏ qua key không khớp dòng cấu hình nào.
                 var cls = root["AUTO_CLS"] as Newtonsoft.Json.Linq.JObject;
                 if (cls != null)
                 {
-                    data.AUTO_CLS_BLOOD = ParseServiceArray(cls["BLOOD"] as Newtonsoft.Json.Linq.JArray);
-                    data.AUTO_CLS_URINE = ParseServiceArray(cls["URINE"] as Newtonsoft.Json.Linq.JArray);
-                    data.AUTO_CLS_DIIM = ParseServiceArray(cls["DIIM"] as Newtonsoft.Json.Linq.JArray);
+                    foreach (var prop in cls.Properties())
+                    {
+                        if (prop == null || string.IsNullOrWhiteSpace(prop.Name)) continue;
+                        data.AUTO_CLS[prop.Name.Trim()] = ParseServiceArray(prop.Value as Newtonsoft.Json.Linq.JArray);
+                    }
                 }
 
                 if (data.ROWS.Count == 0 && !data.HasAutoCls)

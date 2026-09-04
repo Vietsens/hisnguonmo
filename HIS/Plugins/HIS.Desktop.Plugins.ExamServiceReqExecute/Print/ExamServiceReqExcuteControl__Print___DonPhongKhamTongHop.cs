@@ -49,6 +49,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
 		private void InDonPhongKhamTongHop(bool printNow, bool IsMenuButton)
 		{
+			InDonPhongKhamTongHop(printNow, IsMenuButton, null);
+		}
+
+		/// <summary>
+		/// In/ky don thuoc phong kham tong hop
+		/// </summary>
+		/// <param name="printNow">in ngay khong hien preview</param>
+		/// <param name="IsMenuButton">goi tu menu in (cho in ca khi khong co thuoc)</param>
+		/// <param name="previewType">null: giu nguyen hanh vi cu; khac null: in/ky theo PreviewType (PrintNow/EmrSignAndPrintNow/EmrSignNow)</param>
+		private void InDonPhongKhamTongHop(bool printNow, bool IsMenuButton, MPS.ProcessorBase.PrintConfig.PreviewType? previewType)
+		{
 			try
 			{
 				CommonParam param = new CommonParam();
@@ -161,7 +172,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 									OutPatientPresResultSDOForPrints.Add(outPatientPresResultSDO);
 								}
 								PrintPrescriptionProcessor printPrescriptionProcessor = new PrintPrescriptionProcessor(OutPatientPresResultSDOForPrints, expMest, this.moduleData);
-								printPrescriptionProcessor.Print(printTypeCode, false);
+								if (previewType == null)
+									printPrescriptionProcessor.Print(printTypeCode, false);
+								else
+									printPrescriptionProcessor.Print(printTypeCode, printNow, previewType);
 							}
 						}
 						else
@@ -186,7 +200,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 								OutPatientPresResultSDOForPrints.Add(outPatientPresResultSDO);
 							}
 							PrintPrescriptionProcessor printPrescriptionProcessor = new PrintPrescriptionProcessor(OutPatientPresResultSDOForPrints, expMestPrimary, this.moduleData);
-							printPrescriptionProcessor.Print(printTypeCode, printNow);
+							if (previewType == null)
+								printPrescriptionProcessor.Print(printTypeCode, printNow);
+							else
+								printPrescriptionProcessor.Print(printTypeCode, printNow, previewType);
 						}
 					}
 					#endregion
@@ -203,7 +220,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 					OutPatientPresResultSDOForPrints.Add(outPatientPresResultSDO);
 
 					PrintPrescriptionProcessor printPrescriptionProcessor = new PrintPrescriptionProcessor(OutPatientPresResultSDOForPrints, expMestsFake.First(), this.moduleData);
-					printPrescriptionProcessor.Print(printTypeCode, printNow);
+					if (previewType == null)
+						printPrescriptionProcessor.Print(printTypeCode, printNow);
+					else
+						printPrescriptionProcessor.Print(printTypeCode, printNow, previewType);
 				}
 
 			}

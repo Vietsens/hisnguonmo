@@ -1036,103 +1036,222 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             arr[idx] = reason;
         }
 
+        // ── vCong46659: hạ tầng đọc XML thô ──────────────────────────────────────────
+        // LOAIHOSO → (kiểu dữ liệu của 1 dòng, tên thẻ XML lặp lại theo dòng).
+        // Kiểu dữ liệu giữ nguyên như trước để số cột, thứ tự cột, tên cột của mọi sheet không đổi.
+        private class RawSchema
+        {
+            public readonly Type RowType;
+            public readonly string RowElement;
+
+            public RawSchema(Type rowType, string rowElement)
+            {
+                this.RowType = rowType;
+                this.RowElement = rowElement;
+            }
+        }
+
+        private static readonly Dictionary<string, RawSchema> RawSchemas =
+            new Dictionary<string, RawSchema>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "XML1",  new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML1.QD130.XML.XML1Data), "TONG_HOP") },
+                { "XML2",  new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML2.QD130.XML.XML2DetailData), "CHI_TIET_THUOC") },
+                { "XML3",  new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML3.XML3DetailData), "CHI_TIET_DVKT") },
+                { "XML4",  new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML4.QD130.XML.XML4DetailData), "CHI_TIET_CLS") },
+                { "XML5",  new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML5.QD130.XML.XML5.XML5DetailData), "CHI_TIET_DIEN_BIEN_BENH") },
+                { "XML6",  new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML6.QD130.XML.XML6DetailData), "HO_SO_BENH_AN_CHAM_SOC_VA_DIEU_TRI_HIV_AIDS") },
+                { "XML7",  new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML7.XML7Data), "CHI_TIEU_DU_LIEU_GIAY_RA_VIEN") },
+                { "XML8",  new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML8.QD130.XML.XML8Data), "CHI_TIEU_DU_LIEU_TOM_TAT_HO_SO_BENH_AN") },
+                { "XML9",  new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML9.QD130.XML.XML9.XML9DetailData), "DU_LIEU_GIAY_CHUNG_SINH") },
+                { "XML10", new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML10.QD130.XML.XML10Data), "CHI_TIEU_DU_LIEU_GIAY_NGHI_DUONG_THAI") },
+                { "XML11", new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML11.QD130.XML.XML11Data), "CHI_TIEU_DU_LIEU_GIAY_CHUNG_NHAN_NGHI_VIEC_HUONG_BAO_HIEM_XA_HOI") },
+                { "XML12", new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML12.QD130.XML.XML12DetailData), "GIAM_DINH_Y_KHOA") },
+                { "XML13", new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML13.QD130.XML.XML13Data), "CHI_TIEU_GIAYCHUYENTUYEN") },
+                { "XML14", new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML14.QD130.XML.XML14Data), "CHI_TIEU_GIAYHEN_KHAMLAI") },
+                { "XML15", new RawSchema(typeof(His.Bhyt.ExportXml.XML130.XML15.QD130.XML.XML15DetailData), "CHITIET_DIEUTRI_BENHLAO") },
+            };
+
+        // Setter đã compile cho từng thẻ dữ liệu — tránh reflection trong vòng lặp ghi hàng chục nghìn dòng
+        private class RawSetter
+        {
+            public Action<object, object> Set;
+            public bool IsCData;
+        }
+
+        // Tra theo TÊN THẺ để mỗi dòng chỉ duyệt danh sách thẻ con đúng 1 lượt
+        private static readonly ConcurrentDictionary<Type, Dictionary<string, RawSetter>> RawSetterCache
+            = new ConcurrentDictionary<Type, Dictionary<string, RawSetter>>();
+
+        private static readonly ConcurrentDictionary<Type, Func<object>> RawFactoryCache
+            = new ConcurrentDictionary<Type, Func<object>>();
+
+        // XmlDocument chỉ dùng để tạo node CDATA. Không thread-safe nên gắn theo thread.
+        [ThreadStatic]
+        private static XmlDocument _cdataOwnerDoc;
+
+        private static Dictionary<string, RawSetter> GetRawSetters(Type t)
+        {
+            return RawSetterCache.GetOrAdd(t, type =>
+            {
+                var props = type.GetProperties();
+                var setters = new Dictionary<string, RawSetter>(props.Length, StringComparer.Ordinal);
+                for (int i = 0; i < props.Length; i++)
+                {
+                    var prop = props[i];
+                    var setMethod = prop.GetSetMethod();
+                    if (setMethod == null) continue;
+
+                    bool isCData = prop.PropertyType == typeof(XmlCDataSection);
+                    if (!isCData && prop.PropertyType != typeof(string)) continue;
+                    if (setters.ContainsKey(prop.Name)) continue;
+
+                    var objParam = Expression.Parameter(typeof(object), "obj");
+                    var valParam = Expression.Parameter(typeof(object), "val");
+                    var body = Expression.Call(
+                        Expression.Convert(objParam, type),
+                        setMethod,
+                        Expression.Convert(valParam, prop.PropertyType));
+
+                    setters.Add(prop.Name, new RawSetter
+                    {
+                        Set = Expression.Lambda<Action<object, object>>(body, objParam, valParam).Compile(),
+                        IsCData = isCData
+                    });
+                }
+                return setters;
+            });
+        }
+
+        private static Func<object> GetRawFactory(Type t)
+        {
+            return RawFactoryCache.GetOrAdd(t, type =>
+                Expression.Lambda<Func<object>>(
+                    Expression.Convert(Expression.New(type), typeof(object))).Compile());
+        }
+
+        private static XmlCDataSection MakeCData(string text)
+        {
+            if (_cdataOwnerDoc == null) _cdataOwnerDoc = new XmlDocument();
+            return _cdataOwnerDoc.CreateCDataSection(text ?? string.Empty);
+        }
+
+        // Cắt BOM bằng so sánh Ordinal.
+        // KHÔNG dùng lại RemoveByteOrderMark hiện có: hàm đó so sánh theo culture, mà BOM là ký tự
+        // trọng số 0 nên StartsWith luôn trả true → cắt nhầm ký tự '<' đầu tiên khi chuỗi không có BOM.
+        private static string StripByteOrderMark(string xml)
+        {
+            if (string.IsNullOrEmpty(xml)) return xml;
+            string bom = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+            return xml.StartsWith(bom, StringComparison.Ordinal) ? xml.Remove(0, bom.Length) : xml;
+        }
+
+        // Đọc từng dòng dữ liệu từ chuỗi XML, lấy NGUYÊN VĂN nội dung mỗi thẻ con.
+        // Thẻ không có trong XML → để null (ô Excel trống), giống kết quả deserialize trước đây.
+        private List<object> ReadRowsRaw(string xmlString, RawSchema schema, out string maLk)
+        {
+            maLk = null;
+            var rows = new List<object>();
+            if (string.IsNullOrEmpty(xmlString) || schema == null) return rows;
+
+            var setters = GetRawSetters(schema.RowType);
+            var factory = GetRawFactory(schema.RowType);
+
+            var settings = new XmlReaderSettings
+            {
+                IgnoreComments = true,
+                IgnoreProcessingInstructions = true,
+                IgnoreWhitespace = true,
+                CheckCharacters = false,
+                DtdProcessing = DtdProcessing.Prohibit
+            };
+
+            // Đọc streaming (không dựng DOM) — nhanh hơn và ít cấp phát khi xuất hàng chục nghìn hồ sơ
+            using (var textReader = new StringReader(StripByteOrderMark(xmlString)))
+            using (var reader = XmlReader.Create(textReader, settings))
+            {
+                while (reader.Read())
+                {
+                    if (reader.NodeType != XmlNodeType.Element) continue;
+                    if (!string.Equals(reader.Name, schema.RowElement, StringComparison.Ordinal)) continue;
+
+                    object row = factory();
+                    if (!reader.IsEmptyElement)
+                        ReadRowFields(reader, setters, row, ref maLk);
+                    rows.Add(row);
+                }
+            }
+            return rows;
+        }
+
+        // Đọc các thẻ con của 1 dòng. Thẻ lạ (không có trong kiểu dữ liệu) được bỏ qua nguyên cụm.
+        private static void ReadRowFields(
+            XmlReader reader, Dictionary<string, RawSetter> setters, object row, ref string maLk)
+        {
+            int rowDepth = reader.Depth;
+            bool alreadyAdvanced = false;
+
+            while (true)
+            {
+                if (!alreadyAdvanced && !reader.Read()) break;
+                alreadyAdvanced = false;
+
+                if (reader.NodeType == XmlNodeType.EndElement && reader.Depth == rowDepth) break;
+                if (reader.NodeType != XmlNodeType.Element) continue;
+
+                string name = reader.Name;
+                RawSetter setter;
+                if (!setters.TryGetValue(name, out setter))
+                {
+                    if (!reader.IsEmptyElement)
+                    {
+                        reader.Skip();
+                        alreadyAdvanced = true;
+                    }
+                    continue;
+                }
+
+                string text;
+                if (reader.IsEmptyElement)
+                {
+                    text = string.Empty;
+                }
+                else
+                {
+                    text = reader.ReadElementContentAsString();
+                    alreadyAdvanced = true;
+                }
+
+                setter.Set(row, setter.IsCData ? (object)MakeCData(text) : text);
+
+                if (maLk == null && text.Length > 0
+                    && string.Equals(name, "MA_LK", StringComparison.Ordinal))
+                    maLk = text;
+            }
+        }
+
+        // vCong46659: đọc XML THÔ — giữ nguyên văn giá trị như trong file XML đã sinh.
+        //
+        // KHÔNG dùng RunXmlNData/LoadFromXMLString của thư viện XML130 nữa: các hàm đó chạy ConvertValue
+        // ngay sau khi deserialize, đổi ngày giờ sang dd/MM/yyyy ở 13/15 nhóm hồ sơ (chỉ XML3, XML7 giữ
+        // nguyên) và có trường hợp trả rỗng khi chuỗi ngày ngắn hơn 12 ký tự → Excel lệch XML.
+        // Thư viện KHÔNG sửa vì màn Xem XML 130 (XMLViewer130) đang cần hiển thị dd/MM/yyyy trên lưới.
         private List<object> ExtractItems(His.Bhyt.ExportXml.XML130.XML.FileHoSo fileHoSo, out string maLk)
         {
             maLk = null;
             var listObj = new List<object>();
             try
             {
-                switch (fileHoSo.LOAIHOSO)
-                {
-                    case "XML1":
-                        var xml1Main = new His.Bhyt.ExportXml.XML130.XML1.CreateXmlMain();
-                        var xml1Data = xml1Main.RunXml1Data(fileHoSo.NOIDUNGFILE);
-                        if (xml1Data != null)
-                        {
-                            listObj.Add(xml1Data);
-                            var prop = xml1Data.GetType().GetProperty("MA_LK");
-                            if (prop != null)
-                            {
-                                var v = prop.GetValue(xml1Data, null);
-                                if (v != null) maLk = v.ToString();
-                            }
-                        }
-                        break;
-                    case "XML2":
-                        var xml2Main = new His.Bhyt.ExportXml.XML130.XML2.CreateXmlMain();
-                        var xml2Data = xml2Main.RunXml2Data(fileHoSo.NOIDUNGFILE);
-                        if (xml2Data != null && xml2Data.DSACH_CHI_TIET_THUOC != null
-                            && xml2Data.DSACH_CHI_TIET_THUOC.CHI_TIET_THUOC != null)
-                            listObj.AddRange(xml2Data.DSACH_CHI_TIET_THUOC.CHI_TIET_THUOC);
-                        break;
-                    case "XML3":
-                        var xml3Data = His.Bhyt.ExportXml.XML130.XML3.XML3Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                        if (xml3Data != null && xml3Data.DSACH_CHI_TIET_DVKT != null
-                            && xml3Data.DSACH_CHI_TIET_DVKT.CHI_TIET_DVKT != null)
-                            listObj.AddRange(xml3Data.DSACH_CHI_TIET_DVKT.CHI_TIET_DVKT);
-                        break;
-                    case "XML4":
-                        var xml4Main = new His.Bhyt.ExportXml.XML130.XML4.CreateXmlMain();
-                        var xml4Items = xml4Main.RunXml4DetailData(fileHoSo.NOIDUNGFILE);
-                        if (xml4Items != null) listObj.AddRange(xml4Items);
-                        break;
-                    case "XML5":
-                        var xml5Main = new His.Bhyt.ExportXml.XML130.XML5.CreateXmlMain();
-                        var xml5Items = xml5Main.RunXml5DetailData(fileHoSo.NOIDUNGFILE);
-                        if (xml5Items != null) listObj.AddRange(xml5Items);
-                        break;
-                    case "XML6":
-                        var xml6Main = new His.Bhyt.ExportXml.XML130.XML6.CreateXmlMain();
-                        var xml6Data = xml6Main.RunXml6Data(fileHoSo.NOIDUNGFILE);
-                        if (xml6Data != null
-                            && xml6Data.DSACH_HO_SO_BENH_AN_CHAM_SOC_VA_DIEU_TRI_HIV_AIDS != null)
-                            listObj.AddRange(xml6Data.DSACH_HO_SO_BENH_AN_CHAM_SOC_VA_DIEU_TRI_HIV_AIDS.HO_SO_BENH_AN_CHAM_SOC_VA_DIEU_TRI_HIV_AIDS);
-                        break;
-                    case "XML7":
-                        var xml7Data = His.Bhyt.ExportXml.XML130.XML7.XML7Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                        if (xml7Data != null) listObj.Add(xml7Data);
-                        break;
-                    case "XML8":
-                        var xml8Main = new His.Bhyt.ExportXml.XML130.XML8.CreateXmlMain();
-                        var xml8Data = xml8Main.RunXml8Data(fileHoSo.NOIDUNGFILE);
-                        if (xml8Data != null) listObj.Add(xml8Data);
-                        break;
-                    case "XML9":
-                        var xml9Main = new His.Bhyt.ExportXml.XML130.XML9.CreateXmlMain();
-                        var xml9Items = xml9Main.RunXml9DetailData(fileHoSo.NOIDUNGFILE);
-                        if (xml9Items != null) listObj.AddRange(xml9Items);
-                        break;
-                    case "XML10":
-                        var xml10Main = new His.Bhyt.ExportXml.XML130.XML10.CreateXmlMain();
-                        var xml10Data = xml10Main.RunXml10DetailData(fileHoSo.NOIDUNGFILE);
-                        if (xml10Data != null) listObj.Add(xml10Data);
-                        break;
-                    case "XML11":
-                        var xml11Main = new His.Bhyt.ExportXml.XML130.XML11.CreateXmlMain();
-                        var xml11Data = xml11Main.RunXml11Data(fileHoSo.NOIDUNGFILE);
-                        if (xml11Data != null) listObj.Add(xml11Data);
-                        break;
-                    case "XML12":
-                        var xml12Main = new His.Bhyt.ExportXml.XML130.XML12.CreateXmlMain();
-                        var xml12Items = xml12Main.RunXml12DetailsData(fileHoSo.NOIDUNGFILE);
-                        if (xml12Items != null) listObj.AddRange(xml12Items);
-                        break;
-                    case "XML13":
-                        var xml13Main = new His.Bhyt.ExportXml.XML130.XML13.CreateXmlMain();
-                        var xml13Data = xml13Main.RunXML13DetailsData(fileHoSo.NOIDUNGFILE);
-                        if (xml13Data != null) listObj.Add(xml13Data);
-                        break;
-                    case "XML14":
-                        var xml14Main = new His.Bhyt.ExportXml.XML130.XML14.CreateXmlMain();
-                        var xml14Data = xml14Main.RunXML14DetailsData(fileHoSo.NOIDUNGFILE);
-                        if (xml14Data != null) listObj.Add(xml14Data);
-                        break;
-                    case "XML15":
-                        var xml15Main = new His.Bhyt.ExportXml.XML130.XML15.CreateXmlMain();
-                        var xml15Items = xml15Main.RunXML15DetailsData(fileHoSo.NOIDUNGFILE);
-                        if (xml15Items != null) listObj.AddRange(xml15Items);
-                        break;
-                }
+                RawSchema schema;
+                if (fileHoSo.LOAIHOSO == null
+                    || !RawSchemas.TryGetValue(fileHoSo.LOAIHOSO, out schema))
+                    return listObj;
+
+                string maLkRead;
+                listObj = ReadRowsRaw(fileHoSo.NOIDUNGFILE, schema, out maLkRead);
+
+                // Giữ đúng hành vi cũ: chỉ XML1 cung cấp MA_LK để đặt tên file và đối soát Batch/Group
+                if (string.Equals(fileHoSo.LOAIHOSO, "XML1", StringComparison.OrdinalIgnoreCase))
+                    maLk = maLkRead;
             }
             catch (Exception ex)
             {
@@ -1175,10 +1294,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     catch { value = null; }
                     var cdata = value as XmlCDataSection;
                     if (cdata != null) value = cdata.Value;
-
-                    // Apply column-specific value transform (e.g. T_* amount string → double)
-                    var tx = meta.ColumnSpecs[col].ValueTransform;
-                    if (tx != null) value = tx(value);
 
                     data[row + 1, col] = NeutralizeFormula(value);
                 }
@@ -1243,9 +1358,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     catch { value = null; }
                     var cdata = value as XmlCDataSection;
                     if (cdata != null) value = cdata.Value;
-
-                    var tx = ctx.Meta.ColumnSpecs[col].ValueTransform;
-                    if (tx != null) value = tx(value);
 
                     ctx.BufferArray[ctx.BufferRowCount, col] = NeutralizeFormula(value);
                 }
@@ -1329,95 +1441,37 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             });
         }
 
-        // Heuristic: PropertyType + Name → Excel NumberFormat + optional ValueTransform
+        // Heuristic: PropertyType → Excel NumberFormat
+        //
+        // vCong46659: mọi chỉ tiêu XML130/3176 đều là chuỗi → ghi TEXT, giữ nguyên văn giá trị như XML.
+        // Trước đây các cột tiền (T_*, THANH_TIEN*, DON_GIA, SO_LUONG, TYLE_*, MUC_HUONG) bị convert
+        // sang double và để format General → Excel tự làm tròn theo độ rộng cột, số ≥ 12 chữ số ra dạng
+        // khoa học (1.23457E+11). Bỏ hẳn phần convert đó để Excel khớp XML từng ký tự.
         private static ExcelColumnSpec BuildExcelColumnSpec(PropertyInfo p)
         {
             Type t = p.PropertyType;
-            string name = p.Name ?? string.Empty;
 
             // Numeric ints → "0"
             if (t == typeof(int) || t == typeof(short) || t == typeof(byte)
                 || t == typeof(uint) || t == typeof(ushort)
                 || t == typeof(long) || t == typeof(ulong))
-                return new ExcelColumnSpec { NumberFormat = "0", ValueTransform = null };
+                return new ExcelColumnSpec { NumberFormat = "0" };
 
             // Floating → "#,##0.##"
             if (t == typeof(double) || t == typeof(float) || t == typeof(decimal))
-                return new ExcelColumnSpec { NumberFormat = "#,##0.##", ValueTransform = null };
-
-            // XmlCDataSection → text (cdata.Value đã unwrap khi ghi cell)
-            if (t == typeof(XmlCDataSection))
-                return new ExcelColumnSpec { NumberFormat = "@", ValueTransform = null };
+                return new ExcelColumnSpec { NumberFormat = "#,##0.##" };
 
             // DateTime → date format
             if (t == typeof(DateTime) || t == typeof(DateTime?))
-                return new ExcelColumnSpec { NumberFormat = "yyyy-mm-dd hh:mm:ss", ValueTransform = null };
+                return new ExcelColumnSpec { NumberFormat = "yyyy-mm-dd hh:mm:ss" };
 
-            // String — heuristic theo prefix tên property
-            if (t == typeof(string))
-            {
-                // Toàn bộ trường tiền tệ trong XML130 (XML1..XML15):
-                //  - T_*  (tổng tiền): T_THUOC, T_VTYT, T_TONGCHI_BV, T_TONGCHI_BH, T_BNTT, T_BNCCT,
-                //                       T_BHTT, T_NGUONKHAC, T_BHTT_GDV, T_NGUONKHAC_NSNN/VTNN/VTTN/CL
-                //  - THANH_TIEN_BV, THANH_TIEN_BH
-                //  - DON_GIA, DON_GIA_BV, DON_GIA_BH
-                // → convert string → double + format "#,##0" (thousands separator, Excel SUM được)
-                // Dùng prefix exact, KHÔNG dùng substring contains "TIEN"/"GIA" để tránh false positives
-                // (NGAY_MIEN_CCT, GIAY_CHUYEN_TUYEN, TONG_TYLE_TTCT, KHAM_GIAM_DINH, …)
-                if (name.StartsWith("T_", StringComparison.Ordinal)
-                    || name.StartsWith("THANH_TIEN", StringComparison.Ordinal)
-                    || name.StartsWith("DON_GIA", StringComparison.Ordinal)
-                    || name.StartsWith("SO_LUONG", StringComparison.Ordinal)
-                    || name.StartsWith("TYLE_", StringComparison.Ordinal)
-                    || name.StartsWith("MUC_HUONG", StringComparison.Ordinal))
-                {
-                    return new ExcelColumnSpec
-                    {
-                        //NumberFormat = "0.####",
-                        NumberFormat = null,
-                        ValueTransform = TransformStringToDouble
-                    };
-                }
-
-                // Mặc định string → text "@" để chống Excel auto-convert dãy số dài/ngày dạng yyyymmdd
-                return new ExcelColumnSpec { NumberFormat = "@", ValueTransform = null };
-            }
+            // string + XmlCDataSection (cdata.Value đã unwrap khi ghi cell) → text "@"
+            // Chống Excel auto-convert dãy số dài, ngày dạng yyyyMMddHHmm, mã có số 0 ở đầu.
+            if (t == typeof(string) || t == typeof(XmlCDataSection))
+                return new ExcelColumnSpec { NumberFormat = "@" };
 
             // Fallback: không set format
-            return new ExcelColumnSpec { NumberFormat = null, ValueTransform = null };
-        }
-
-        // String số tiền → double (parse fail → giữ string gốc để user thấy data raw)
-        // Data XML130 dạng VN: "1.200,125" (. = thousand, , = decimal) → normalize sang invariant "1200.125"
-        private static object TransformStringToDouble(object value)
-        {
-            if (value == null) return null;
-            string s = value as string;
-            if (string.IsNullOrWhiteSpace(s)) return null;
-
-            // VN format → invariant: bỏ hết dấu '.', đổi ',' thành '.'
-            //string normalized = s.Replace(".", "").Replace(",", ".");
-            //string normalized = s.IndexOf(',') >= 0
-            //    ? s.Replace(".", string.Empty).Replace(",", ".")
-            //    : s;
-            string normalized;
-            if (s.IndexOf(',') >= 0)
-            {
-                normalized = s.Replace(".", string.Empty).Replace(",", ".");
-            }
-            else
-            {
-                int dotCount = 0;
-                for (int i = 0; i < s.Length; i++) if (s[i] == '.') dotCount++;
-                normalized = dotCount >= 2 ? s.Replace(".", string.Empty) : s;
-            }
-
-
-            double d;
-            if (double.TryParse(normalized, NumberStyles.Float,
-                                CultureInfo.InvariantCulture, out d))
-                return d;
-            return s;
+            return new ExcelColumnSpec { NumberFormat = null };
         }
 
         // Apply Style.Custom + StyleFlag.NumberFormat cho từng column. O(cols), không loop cell.
@@ -1858,11 +1912,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             public ExcelColumnSpec[] ColumnSpecs;
         }
 
-        // Excel column format + optional value transform (e.g. amount string → double)
+        // Excel column format
         private class ExcelColumnSpec
         {
             public string NumberFormat;                  // "@", "0", "#,##0", … set vào Style.Custom
-            public Func<object, object> ValueTransform;  // null = giữ nguyên
         }
 
         private class IndividualSaveJob

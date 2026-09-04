@@ -1816,6 +1816,23 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                             mateAdo.ALERT_MAX_IN_DAY_STR_ERROR = 1;
                         }
                     }
+                    if (!string.IsNullOrEmpty(item.MAX_REUSE_COUNT_STR))
+                    {
+                        if (Inventec.Common.Number.Check.IsNumber(item.MAX_REUSE_COUNT_STR))
+                        {
+                            mateAdo.MAX_REUSE_COUNT = Inventec.Common.TypeConvert.Parse.ToInt64(item.MAX_REUSE_COUNT_STR);
+                            if ((mateAdo.MAX_REUSE_COUNT ?? 0) > 9999999999 || (mateAdo.MAX_REUSE_COUNT ?? 0) < 0)
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Định mức tái sử dụng");
+                                mateAdo.MAX_REUSE_COUNT_STR_ERROR = 1;
+                            }
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Định mức tái sử dụng");
+                            mateAdo.MAX_REUSE_COUNT_STR_ERROR = 1;
+                        }
+                    }
                     if (!string.IsNullOrEmpty(item.COGS_STR))
                     {
                         if (Inventec.Common.Number.Check.IsDecimal(item.COGS_STR))

@@ -288,6 +288,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
                 rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
+                // Kết luận theo bệnh (ICD-10) — lưu ở HIS_KSK_GENERAL (UC dùng chung mọi tab KSK)
+                rdo.HisKskGeneral = BuildKskGeneralForPrint();
                 PrintData(printTypeCode, fileName, rdo, ref result);
             }
             catch (Exception ex)
@@ -358,6 +360,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
                 rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
+                // Kết luận theo bệnh (ICD-10) — lưu ở HIS_KSK_GENERAL (UC dùng chung mọi tab KSK)
+                rdo.HisKskGeneral = BuildKskGeneralForPrint();
                     PrintData(printTypeCode, fileName, rdo, ref result);
                 }
                 catch (Exception ex)
@@ -410,6 +414,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
                 rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
+                // Kết luận theo bệnh (ICD-10) — lưu ở HIS_KSK_GENERAL (UC dùng chung mọi tab KSK)
+                rdo.HisKskGeneral = BuildKskGeneralForPrint();
                 PrintData(printTypeCode, fileName, rdo, ref result);
             }
             catch (Exception ex)
@@ -432,6 +438,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     );
                 rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
                 rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
+                // Kết luận theo bệnh (ICD-10) — lưu ở HIS_KSK_GENERAL (UC dùng chung mọi tab KSK)
+                rdo.HisKskGeneral = BuildKskGeneralForPrint();
                 PrintData(printTypeCode, fileName, rdo, ref result);
             }
             catch (Exception ex)
@@ -452,6 +460,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     );
                 rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
                 rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
+                // Kết luận theo bệnh (ICD-10) — lưu ở HIS_KSK_GENERAL (UC dùng chung mọi tab KSK)
+                rdo.HisKskGeneral = BuildKskGeneralForPrint();
                 PrintData(printTypeCode, fileName, rdo, ref result);
             }
             catch (Exception ex)
@@ -517,6 +527,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
                 rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
+                // Kết luận theo bệnh (ICD-10) — lưu ở HIS_KSK_GENERAL (UC dùng chung mọi tab KSK)
+                rdo.HisKskGeneral = BuildKskGeneralForPrint();
                  PrintData(printTypeCode, fileName, rdo, ref result);
                 WaitingManager.Hide();
             }
@@ -582,6 +594,36 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Dựng bản ghi HIS_KSK_GENERAL để truyền vào PDO các Mps (phục vụ mục "Kết luận theo bệnh ICD-10").
+        /// Lấy bản ghi hiện tại của lượt khám (nếu có) rồi PHỦ giá trị ICD đang hiển thị trên tab hiện hành
+        /// để bản in khớp màn hình kể cả khi vừa sửa chưa lưu. Trả về BẢN SAO — không chạm currentKskGeneral.
+        /// </summary>
+        private HIS_KSK_GENERAL BuildKskGeneralForPrint()
+        {
+            HIS_KSK_GENERAL result = new HIS_KSK_GENERAL();
+            try
+            {
+                if (currentKskGeneral != null)
+                {
+                    // Copy từng property (không dùng thư viện mapper — plugin không tham chiếu Inventec.Common.Mapper)
+                    foreach (var pi in typeof(HIS_KSK_GENERAL).GetProperties())
+                    {
+                        if (!pi.CanRead || !pi.CanWrite) continue;
+                        pi.SetValue(result, pi.GetValue(currentKskGeneral, null), null);
+                    }
+                }
+                int tabIndex = xtraTabControl1.SelectedTabPageIndex;
+                if (dicIcdConclusionUc.ContainsKey(tabIndex) && dicIcdConclusionUc[tabIndex] != null)
+                    dicIcdConclusionUc[tabIndex].FillToGeneral(result);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         private void PrintData(string printTypeCode, string fileName, object data, ref bool result)

@@ -187,6 +187,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\CoPaidMcctADO.cs" />
     <Compile Include="ADO\DataInitUCHeniInfo.cs" />
     <Compile Include="ADO\TranPatiDataADO.cs" />
     <Compile Include="ADO\UCHeinADO.cs" />
@@ -220,6 +221,9 @@
     <Compile Include="CustomValidateRule\TemplateHeinBHYT1__HeinCardToTime__ValidationRule.cs" />
     <Compile Include="CustomValidateRule\TemplateHeinBHYT1__RightRouteType__ValidationRule.cs" />
     <Compile Include="Design\UCHeinInfo__Validate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCHeinInfo__CoPaidMCCT.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Core\Delegates.cs" />

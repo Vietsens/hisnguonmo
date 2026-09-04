@@ -33,6 +33,24 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
             this.medicine = _medicine;
         }
 
+        /// <summary>
+        /// Bệnh nhân được đánh dấu không có CCCD ở màn tiếp đón (check "Không CCCD" => HIS_PATIENT.IS_NO_CHECK_CCCD = 1,
+        /// đồng bộ sang HIS_TREATMENT.TDL_PATIENT_IS_NO_CHECK_CCCD).
+        /// Mọi trường hợp khác (null, 0, không đọc được dữ liệu) => giữ nguyên kiểm tra như hiện tại.
+        /// </summary>
+        private bool IsPatientNoCheckCccd(HIS_TREATMENT treatment)
+        {
+            try
+            {
+                return treatment != null && treatment.TDL_PATIENT_IS_NO_CHECK_CCCD == 1;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
         public bool CheckData()
         {
             string message = "";
@@ -47,7 +65,15 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 //    return result;
                 //}
 
-                if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
+                //Bệnh nhân được đánh dấu không có CCCD (HIS_TREATMENT.TDL_PATIENT_IS_NO_CHECK_CCCD = 1)
+                //=> bỏ qua kiểm tra CCCD, cho phép để null. Khác 1 => giữ nguyên như hiện tại. 
+                bool isNoCheckCccd = IsPatientNoCheckCccd(data);
+                if (isNoCheckCccd)
+                    Inventec.Common.Logging.LogSystem.Info("ConnectWhoCndProcessor CheckData: TDL_PATIENT_IS_NO_CHECK_CCCD = 1 => bo qua kiem tra CCCD. TreatmentId = " + data.ID);
+
+                if (data == null
+                    || (!isNoCheckCccd && String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER))
+                    || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
                 {
                     //message += "";
                     UpdateNcdWhoStatus(data.ID, 2, "Bệnh nhân thiếu thông tin CCCD hoặc số thẻ BHYT.");

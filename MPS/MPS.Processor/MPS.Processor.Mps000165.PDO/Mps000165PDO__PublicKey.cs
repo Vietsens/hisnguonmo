@@ -32,6 +32,11 @@ namespace MPS.Processor.Mps000165.PDO
         public V_HIS_EXP_MEST OtherExpMest { get; set; }
         public List<V_HIS_EXP_MEST_MEDICINE> _Medicines = null;
         public List<V_HIS_EXP_MEST_MATERIAL> _Materials = null;
+        /// <summary>
+        /// Blood units of the export (blood stock). Each record is exactly 1 unit.
+        /// Null / empty for medicine-material stocks -> behaviour unchanged.
+        /// </summary>
+        public List<V_HIS_EXP_MEST_BLOOD> _Bloods = null;
 
         public List<Mps000165ADO> listAdo = new List<Mps000165ADO>();
     }
@@ -74,8 +79,74 @@ namespace MPS.Processor.Mps000165.PDO
         public string STORAGE_CONDITION_CODE { get; set; }
         public string STORAGE_CONDITION_NAME { get; set; }
 
+        // Blood-only columns (TYPE_ID = 3). Empty for medicine / material rows.
+        public string BLOOD_CODE { get; set; }
+        public string BLOOD_TYPE_CODE { get; set; }
+        public string BLOOD_TYPE_NAME { get; set; }
+        public string BLOOD_ABO_CODE { get; set; }
+        public string BLOOD_RH_CODE { get; set; }
+        public decimal? VOLUME { get; set; }
+        public string PREPARATIONS_BLOOD_NAME { get; set; }
+        public string IMP_SOURCE_NAME { get; set; }
+        public string GIVE_CODE { get; set; }
+
         public Mps000165ADO()
         {
+        }
+
+        /// <summary>
+        /// One print row from a group of blood units (V_HIS_EXP_MEST_BLOOD).
+        /// The view has no AMOUNT column - each record is exactly 1 unit, so AMOUNT = number of records in the group.
+        /// Medicine/material columns are filled from the blood type so existing templates print blood rows without changes.
+        /// </summary>
+        public Mps000165ADO(List<V_HIS_EXP_MEST_BLOOD> listBlood)
+        {
+            try
+            {
+                if (listBlood != null && listBlood.Count > 0)
+                {
+                    V_HIS_EXP_MEST_BLOOD first = listBlood.First();
+                    this.TYPE_ID = 3;
+                    this.MEDI_MATE_TYPE_ID = first.BLOOD_TYPE_ID;
+                    this.MEDI_MATE_TYPE_CODE = first.BLOOD_TYPE_CODE;
+                    this.MEDI_MATE_TYPE_NAME = NormalizePrintText(first.BLOOD_TYPE_NAME);
+                    this.PACKAGE_NUMBER = first.PACKAGE_NUMBER;
+                    this.SERVICE_UNIT_CODE = first.SERVICE_UNIT_CODE;
+                    this.SERVICE_UNIT_NAME = first.SERVICE_UNIT_NAME;
+                    this.SUPPLIER_CODE = first.SUPPLIER_CODE;
+                    this.SUPPLIER_NAME = first.SUPPLIER_NAME;
+                    this.BID_NAME = first.BID_NAME;
+                    this.BID_NUMBER = first.BID_NUMBER;
+                    this.EXPIRED_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(first.EXPIRED_DATE ?? 0);
+                    this.EXP_TIME_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(first.EXP_TIME ?? 0);
+                    this.IMP_TIME_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(first.IMP_TIME ?? 0);
+                    this.AMOUNT = listBlood.Count;
+                    this.NUM_ORDER = first.NUM_ORDER;
+                    this.DESCRIPTION = first.DESCRIPTION;
+                    this.DISCOUNT = first.DISCOUNT;
+                    this.EXP_MEST_CODE = first.EXP_MEST_CODE;
+                    this.IMP_PRICE = first.IMP_PRICE;
+                    this.IMP_VAT_RATIO = first.IMP_VAT_RATIO;
+                    this.PRICE = first.PRICE;
+                    this.VAT_RATIO = first.VAT_RATIO;
+                    this.IMP_PRICE_AFTER_VAT = first.IMP_PRICE + (first.IMP_PRICE * first.IMP_VAT_RATIO);
+                    this.IMP_PRICE_AFTER_VAT_TOTAL = this.IMP_PRICE_AFTER_VAT * this.AMOUNT;
+
+                    this.BLOOD_CODE = String.Join(", ", listBlood.Where(o => !String.IsNullOrEmpty(o.BLOOD_CODE)).Select(o => o.BLOOD_CODE).Distinct());
+                    this.BLOOD_TYPE_CODE = first.BLOOD_TYPE_CODE;
+                    this.BLOOD_TYPE_NAME = first.BLOOD_TYPE_NAME;
+                    this.BLOOD_ABO_CODE = first.BLOOD_ABO_CODE;
+                    this.BLOOD_RH_CODE = first.BLOOD_RH_CODE;
+                    this.VOLUME = first.VOLUME;
+                    this.PREPARATIONS_BLOOD_NAME = first.PREPARATIONS_BLOOD_NAME;
+                    this.IMP_SOURCE_NAME = first.IMP_SOURCE_NAME;
+                    this.GIVE_CODE = first.GIVE_CODE;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         public Mps000165ADO(List<V_HIS_EXP_MEST_MEDICINE> listMedicine)

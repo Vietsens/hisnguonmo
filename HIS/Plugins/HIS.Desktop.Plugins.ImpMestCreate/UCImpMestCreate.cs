@@ -3968,7 +3968,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                         var listvalue = dicContractMety.Select(s => s.Value).ToList();
                                         this.MedicalContractMety = listvalue.FirstOrDefault(o => o.ID == medicine.MEDI_CONTRACT_METY_ID.Value);
                                         cboDosageForm.EditValue = MedicalContractMety.DOSAGE_FORM;
-                                        spinCanImpAmount.Value = this.MedicalContractMety.AMOUNT - (this.MedicalContractMety.IN_AMOUNT ?? 0) + currrentServiceAdo.IMP_AMOUNT + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
+                                        spinCanImpAmount.Value = this.MedicalContractMety.AMOUNT - (this.MedicalContractMety.IN_AMOUNT ?? 0) - GetImpAmountInVoucher() + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
                                     }
                                 }
                             }
@@ -4010,26 +4010,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                                     if (dicContractMaty.Count > 0 && material != null)
                                     {
-                                        decimal amountMap = 0;
-                                        if (this.currrentServiceAdo.MAP_MEDI_MATE_ID.HasValue && this.listServiceADO != null && this.listServiceADO.Count > 0)
-                                        {
-                                            var listMap = this.listServiceADO.Where(o => o.MAP_MEDI_MATE_ID == this.currrentServiceAdo.MAP_MEDI_MATE_ID).ToList();
-                                            if (listMap != null && listMap.Count > 0)
-                                            {
-                                                amountMap = listMap.Sum(s => s.IMP_AMOUNT);
-                                            }
-                                        }
+                                        decimal amountMap = GetImpAmountInVoucher();
 
                                         var listvalue = dicContractMaty.Select(s => s.Value).ToList();
                                         this.MedicalContractMaty = listvalue.FirstOrDefault(o => o.ID == material.MEDI_CONTRACT_MATY_ID.Value);
-                                        if (!isSave)
-                                        {
-                                            spinCanImpAmount.Value = this.MedicalContractMaty.AMOUNT - (this.MedicalContractMaty.IN_AMOUNT ?? 0) - amountMap + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
-                                        }
-                                        else
-                                        {
-                                            spinCanImpAmount.Value = this.MedicalContractMaty.AMOUNT - (this.MedicalContractMaty.IN_AMOUNT ?? 0) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
-                                        }
+                                        spinCanImpAmount.Value = this.MedicalContractMaty.AMOUNT - (this.MedicalContractMaty.IN_AMOUNT ?? 0) - amountMap + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
                                     }
                                 }
                             }
@@ -4063,7 +4048,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                                 if (bidMediType != null && bidMediType.ID > 0)
                                 {
-                                    spinCanImpAmount.Value = bidMediType.AMOUNT - (bidMediType.IN_AMOUNT ?? 0) + (bidMediType.AMOUNT * bidMediType.IMP_MORE_RATIO ?? 0) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
+                                    spinCanImpAmount.Value = bidMediType.AMOUNT - (bidMediType.IN_AMOUNT ?? 0) - GetImpAmountInVoucher() + (bidMediType.AMOUNT * bidMediType.IMP_MORE_RATIO ?? 0) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
                                 }
                             }
                             else if (xtraTabControlMain.SelectedTabPage == xtraTabPageMaterial)
@@ -4089,28 +4074,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     bidMateType = dicBidMaterial[Base.StaticMethod.GetTypeKey(this.currrentServiceAdo.MEDI_MATE_ID, this.currrentServiceAdo.TDL_BID_GROUP_CODE)];
                                 }
 
-                                decimal amountMap = 0;
-                                if (this.currrentServiceAdo.MAP_MEDI_MATE_ID.HasValue && this.listServiceADO != null && this.listServiceADO.Count > 0)
-                                {
-                                    var listMap = this.listServiceADO.Where(o => o.MAP_MEDI_MATE_ID == this.currrentServiceAdo.MAP_MEDI_MATE_ID).ToList();
-                                    if (listMap != null && listMap.Count > 0)
-                                    {
-                                        amountMap = listMap.Sum(s => s.IMP_AMOUNT);
-                                    }
-                                }
+                                decimal amountMap = GetImpAmountInVoucher();
 
                                 if (bidMateType != null && bidMateType.ID > 0)
                                 {
-                                    if (!isSave)
-                                    {
-
-                                        spinCanImpAmount.Value = bidMateType.AMOUNT - (bidMateType.IN_AMOUNT ?? 0) - amountMap + (bidMateType.AMOUNT * bidMateType.IMP_MORE_RATIO ?? 0) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
-                                    }
-                                    else
-                                    {
-                                        spinCanImpAmount.Value = bidMateType.AMOUNT - (bidMateType.IN_AMOUNT ?? 0) + (bidMateType.AMOUNT * bidMateType.IMP_MORE_RATIO ?? 0) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
-                                    }
-
+                                    spinCanImpAmount.Value = bidMateType.AMOUNT - (bidMateType.IN_AMOUNT ?? 0) - amountMap + (bidMateType.AMOUNT * bidMateType.IMP_MORE_RATIO ?? 0) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
                                 }
                             }
                         }

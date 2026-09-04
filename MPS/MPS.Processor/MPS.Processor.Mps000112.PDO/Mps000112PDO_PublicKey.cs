@@ -64,6 +64,14 @@ namespace MPS.Processor.Mps000112.PDO
 		/// Danh muc ngan hang (de hien ten ngan hang tren bang hinh thuc thanh toan)
 		/// </summary>
 		public List<HIS_BANK> _Banks = null;
+
+		/// <summary>
+		/// Danh sach yeu cau tam ung (V_HIS_DEPOSIT_REQ) cua dot dieu tri, da loc theo
+		/// DEPOSIT_ID = ID giao dich cua phieu thu nay.
+		/// Dung de lay khoa/phong YEU CAU giong man hinh "Yeu cau tam ung"
+		/// (V_HIS_DEPOSIT_REQ.DEPARTMENT_NAME <- REQUEST_DEPARTMENT_ID).
+		/// </summary>
+		public List<V_HIS_DEPOSIT_REQ> _ListDepositReq = null;
 	}
 
 	public class Mps000112ADO

@@ -38,4 +38,12 @@ namespace His.UC.UCHein
     public delegate bool FillDataPatientSDOToRegisterForm(HisPatientSDO patientSDO);
     public delegate void DelegateSetRelativeAddress(bool value);
     public delegate void DeleteTreatmentTypeId(long value);
+
+    /// <summary>
+    /// Raised when the user asks for a manual co-payment lookup on the BHXH gateway.
+    /// The host builds the card payload and pushes the answer back through
+    /// MainHisHeinBhyt.SetCoPaidAccumulateFromGov - the UC never calls the gateway itself,
+    /// because only the host holds the current patient context.
+    /// </summary>
+    public delegate void DelegateCheckTienMCCT();
 }

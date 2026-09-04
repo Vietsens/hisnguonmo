@@ -1359,6 +1359,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
         {
             try
             {
+                //Van ban thuoc ma loai duoc cau hinh GOP NGANG -> ghep moi van ban cung MERGE_CODE mot cot
+                if (IsMergeColumnDocument(data))
+                {
+                    LoadPdfMergeColumnViewer(data);
+                    return;
+                }
+
                 outPdfFile = "";
                 string strDTI = String.Format("{0}|{1}|{2}|{3}|{4}|{5}", ConfigSystems.URI_API_ACS, ConfigSystems.URI_API_EMR, ConfigSystems.URI_API_FSS, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData().TokenCode, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName());
                 DocumentManager documentManager = new DocumentManager(strDTI);
@@ -1383,6 +1390,61 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 this.panel1.Controls.Clear();
                 this.panel1 = new Panel();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Khung xem van ban gop NGANG theo MERGE_CODE (moi van ban mot cot).</summary>
+        private void LoadPdfMergeColumnViewer(V_EMR_DOCUMENT data)
+        {
+            try
+            {
+                string warning, error;
+                byte[] merged = BuildMergeColumnPdfByMergeCode(data, out warning, out error);
+                if (merged == null)
+                {
+                    this.panel1.Controls.Clear();
+                    if (!String.IsNullOrWhiteSpace(error))
+                        DevExpress.XtraEditors.XtraMessageBox.Show(error, Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                    return;
+                }
+
+                SignLibraryGUIProcessor libraryProcessor = new SignLibraryGUIProcessor();
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADO(data.TREATMENT_CODE, data.DOCUMENT_CODE, data.DOCUMENT_NAME, currentModule.RoomId);
+                inputADO.IsSign = false;
+                inputADO.IsSave = false;
+                inputADO.IsExport = false;
+                inputADO.IsPrint = true;
+                inputADO.IsEnableButtonPrint = controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "EMR000002") != null;
+                inputADO.IsShowPatientSign = false;
+                inputADO.IsSignConfig = false;
+                if (data.WIDTH != null && data.HEIGHT != null && data.RAW_KIND != null)
+                {
+                    inputADO.PaperSizeDefault = new System.Drawing.Printing.PaperSize(data.PAPER_NAME, (int)data.WIDTH, (int)data.HEIGHT);
+                    inputADO.PaperSizeDefault.RawKind = (int)data.RAW_KIND;
+                }
+
+                var uc = libraryProcessor.GetUC(Convert.ToBase64String(merged), FileType.Pdf, inputADO);
+                if (uc != null)
+                {
+                    uc.Dock = DockStyle.Fill;
+                    this.panel1.Controls.Clear();
+                    this.panel1.Controls.Add(uc);
+
+                    string message = "Xem văn bản gộp ngang. Mã văn bản: " + data.DOCUMENT_CODE + ", MERGE_CODE:" + data.MERGE_CODE + ", TREATMENT_CODE: " + data.TREATMENT_CODE + ". Thời gian xem: " + Inventec.Common.DateTime.Convert.SystemDateTimeToTimeSeparateString(DateTime.Now) + ". Người xem: " + Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    His.EventLog.Logger.Log(GlobalVariables.APPLICATION_CODE, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), message, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress());
+                }
+                else
+                {
+                    this.panel1.Controls.Clear();
+                }
+
+                if (!String.IsNullOrWhiteSpace(warning))
+                    DevExpress.XtraEditors.XtraMessageBox.Show(warning, Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+            }
+            catch (Exception ex)
+            {
+                this.panel1.Controls.Clear();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -3366,6 +3428,232 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
             }
         }
+        /// <summary>Ket qua kiem tra khoa gop ngang trong file, nho theo ID van ban de khong tai lai.</summary>
+        private Dictionary<long, bool> mergeColumnKeyCache = new Dictionary<long, bool>();
+
+        /// <summary>
+        /// Van ban gop theo MERGE_CODE nay co thuoc kieu GOP NGANG khong.
+        /// Nhan dien DUY NHAT bang khoa danh dau {SignLibrary.MergeColumnKey} dat trong mau phieu
+        /// (cung kieu voi {SignLibrary.SplitPdfHeaderKey} cua gop doc): mau nao co khoa la tu gop ngang
+        /// o moi vien, khong can khai cau hinh. Phai tai file de kiem tra; ket qua nho theo van ban.
+        /// </summary>
+        private bool IsMergeColumnDocument(V_EMR_DOCUMENT document)
+        {
+            try
+            {
+                if (document == null || String.IsNullOrWhiteSpace(document.MERGE_CODE)) return false;
+                return HasMergeColumnKeyInFile(document);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        private bool HasMergeColumnKeyInFile(V_EMR_DOCUMENT document)
+        {
+            bool cached;
+            if (mergeColumnKeyCache.TryGetValue(document.ID, out cached)) return cached;
+
+            bool result = false;
+            string temp = null;
+            try
+            {
+                if (!String.IsNullOrEmpty(document.LAST_VERSION_URL))
+                {
+                    var files = GetEmrDocumentFile(document, null, false, false, false);
+                    var pdf = files != null ? files.FirstOrDefault(o => o.Extension != null && o.Extension.ToLower().Equals("pdf")) : null;
+                    if (pdf != null && !String.IsNullOrEmpty(pdf.Base64Data))
+                    {
+                        temp = Utils.GenerateTempFileWithin();
+                        Utils.ByteToFile(Convert.FromBase64String(pdf.Base64Data), temp);
+                        result = Worker.EmrDocumentMergeColumnsWorker.HasMergeColumnKey(temp);
+                    }
+                }
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("MergeColumns key check: documentId={0} typeCode={1} hasKey={2}", document.ID, document.DOCUMENT_TYPE_CODE, result));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                try { if (temp != null && File.Exists(temp)) File.Delete(temp); } catch { }
+            }
+            mergeColumnKeyCache[document.ID] = result;
+            return result;
+        }
+
+        /// <summary>
+        /// Dung PDF gop ngang cho mot nhom van ban cung MERGE_CODE: lay tat ca van ban cung ma gop,
+        /// da ky hoan tat, tai file ve roi ghep moi van ban mot cot. Tra ve null neu khong dung duoc.
+        /// </summary>
+        private byte[] BuildMergeColumnPdfByMergeCode(V_EMR_DOCUMENT representative, out string warning, out string error)
+        {
+            warning = "";
+            error = "";
+            List<string> tempFiles = new List<string>();
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                EmrDocumentViewFilter filter = new EmrDocumentViewFilter();
+                filter.MERGE_CODE__EXACT = representative.MERGE_CODE;
+                if (chkSTORE_CODE.Checked && lstTreatmentID_Treatment != null && lstTreatmentID_Treatment.Count > 0)
+                    filter.TREATMENT_IDs = lstTreatmentID_Treatment;
+                else
+                    filter.TREATMENT_ID = representative.TREATMENT_ID;
+                filter.IS_DELETE = false;
+                filter.HAS_REJECTER = false;
+                filter.HAS_NEXT_SIGNER_OR_NOT_SIGNERS = false;   //chi lay van ban da ky hoan tat
+                filter.ORDER_FIELD = "DOCUMENT_TIME";
+                filter.ORDER_DIRECTION = "ASC";
+
+                List<V_EMR_DOCUMENT> documents = new BackendAdapter(paramCommon).Get<List<V_EMR_DOCUMENT>>(
+                    HIS.Desktop.Plugins.EmrDocument.EmrRequestUriStore.EMR_DOCUMENT_GET_VIEW, ApiConsumers.EmrConsumer, filter, paramCommon);
+
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("MergeColumns by MERGE_CODE={0}: {1} van ban da ky hoan tat",
+                    representative.MERGE_CODE, documents != null ? documents.Count : 0));
+
+                if (documents == null || documents.Count == 0)
+                {
+                    error = "Chưa có văn bản nào đã ký hoàn tất trong nhóm gộp này.";
+                    return null;
+                }
+
+                int opt = 0; int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
+                bool showWatermark = (opt == 1);
+                var files = GetEmrDocumentFile(null, documents.Select(o => o.ID).ToList(), false, chkAddPatientSign.Checked, showWatermark);
+                if (files == null || files.Count == 0)
+                {
+                    error = ResourceMessage.KhongLayDuocFile;
+                    return null;
+                }
+
+                foreach (var file in files.Where(o => o.Extension != null && o.Extension.ToLower().Equals("pdf")))
+                {
+                    string path = Utils.GenerateTempFileWithin();
+                    Utils.ByteToFile(Convert.FromBase64String(file.Base64Data), path);
+                    tempFiles.Add(path);
+                }
+
+                if (tempFiles.Count == 0)
+                {
+                    error = ResourceMessage.KhongLayDuocFile;
+                    return null;
+                }
+
+                //Chi mot van ban -> khong can gop, tra nguyen file
+                if (tempFiles.Count == 1)
+                    return File.ReadAllBytes(tempFiles[0]);
+
+                if (tempFiles.Count > Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT)
+                {
+                    warning = String.Format("Nhóm có {0} văn bản, vượt quá {1} cột của một phiếu — chỉ gộp được {1} văn bản đầu.",
+                        tempFiles.Count, Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT);
+                    tempFiles = tempFiles.Take(Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT).ToList();
+                }
+
+                string mergeWarning;
+                byte[] merged = Worker.EmrDocumentMergeColumnsWorker.Merge(tempFiles, out mergeWarning);
+                if (!String.IsNullOrWhiteSpace(mergeWarning))
+                    warning = String.IsNullOrWhiteSpace(warning) ? mergeWarning : warning + " " + mergeWarning;
+
+                if (merged == null || merged.Length == 0)
+                {
+                    error = String.IsNullOrWhiteSpace(mergeWarning) ? "Không gộp ngang được các văn bản trong nhóm." : mergeWarning;
+                    warning = "";
+                    return null;
+                }
+                return merged;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                error = "Không gộp được văn bản. Vui lòng kiểm tra lại hoặc liên hệ quản trị hệ thống.";
+                return null;
+            }
+            finally
+            {
+                foreach (string path in tempFiles)
+                {
+                    try { if (File.Exists(path)) File.Delete(path); } catch { }
+                }
+            }
+        }
+
+        /// <summary>
+        /// In cac nhom van ban gop NGANG: moi dong dai dien (mot MERGE_CODE) -> mot to gop; nhieu dong -> noi cac to.
+        /// </summary>
+        private void PrintMergeColumnGroups(List<EmrDocumentADO> representatives)
+        {
+            string output = Utils.GenerateTempFileWithin();
+            List<string> pageFiles = new List<string>();
+            try
+            {
+                List<string> warnings = new List<string>();
+                foreach (var representative in representatives.OrderBy(o => o.CUSTOM_NUM_ORDER))
+                {
+                    string warning, error;
+                    byte[] merged = BuildMergeColumnPdfByMergeCode(representative, out warning, out error);
+                    if (merged == null)
+                    {
+                        warnings.Add(String.Format("{0}: {1}", representative.DOCUMENT_NAME, error));
+                        continue;
+                    }
+                    if (!String.IsNullOrWhiteSpace(warning)) warnings.Add(String.Format("{0}: {1}", representative.DOCUMENT_NAME, warning));
+
+                    string page = Utils.GenerateTempFileWithin();
+                    Utils.ByteToFile(merged, page);
+                    pageFiles.Add(page);
+                }
+
+                if (pageFiles.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    DevExpress.XtraEditors.XtraMessageBox.Show(warnings.Count > 0 ? String.Join("\n", warnings) : ResourceMessage.KhongLayDuocFile, Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                    return;
+                }
+
+                using (Stream outStream = File.Open(output, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                {
+                    var concat = new iTextSharp.text.pdf.PdfConcatenate(outStream);
+                    foreach (string page in pageFiles)
+                    {
+                        var reader = new iTextSharp.text.pdf.PdfReader(page);
+                        concat.AddPages(reader);
+                        reader.Close();
+                    }
+                    concat.Close();
+                }
+
+                Inventec.Common.DocumentViewer.Template.frmPdfViewer viewer = new Inventec.Common.DocumentViewer.Template.frmPdfViewer(output);
+                viewer.Text = "In";
+                WaitingManager.Hide();
+
+                foreach (var item in representatives)
+                {
+                    string message = "In văn bản gộp ngang. MERGE_CODE: " + item.MERGE_CODE + ". DOCUMENT_NAME: " + item.DOCUMENT_NAME + ". TREATMENT_CODE: " + item.TREATMENT_CODE + ". Thời gian: " + Inventec.Common.DateTime.Convert.SystemDateTimeToTimeSeparateString(DateTime.Now) + ". Người in: " + Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    His.EventLog.Logger.Log(GlobalVariables.APPLICATION_CODE, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), message, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress());
+                }
+
+                if (warnings.Count > 0)
+                    DevExpress.XtraEditors.XtraMessageBox.Show(String.Join("\n", warnings), Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+
+                viewer.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                foreach (string page in pageFiles) { try { if (File.Exists(page)) File.Delete(page); } catch { } }
+                try { if (File.Exists(output)) File.Delete(output); } catch { }
+            }
+        }
+
         /// <summary>
         /// Kiem tra dieu kien in gop ngang. Loai cac phieu chua ky hoan tat/bi tu choi ky khoi
         /// danh sach gop (co thong bao). Tra ve false neu khong the gop.
@@ -3445,6 +3733,21 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
 
                 IsMergeDocument = (chkMergeDoc.Checked || chkMerge.Checked) && !isMergeColumn;
+
+                //Dang o che do "Hien thi van ban gop" va cac dong da chon thuoc ma loai GOP NGANG
+                //-> moi dong dai dien mot MERGE_CODE: gop ngang tat ca van ban cung ma roi in
+                if (IsMergeDocument && this.listDataTrue != null && this.listDataTrue.Any(o => IsMergeColumnDocument(o)))
+                {
+                    if (this.listDataTrue.Any(o => !IsMergeColumnDocument(o)))
+                    {
+                        WaitingManager.Hide();
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Đang chọn lẫn văn bản gộp ngang với văn bản khác. Vui lòng in riêng từng loại.", Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                        return;
+                    }
+                    PrintMergeColumnGroups(this.listDataTrue);
+                    return;
+                }
+
                 if (IsMergeDocument)
                 {
                     loadDictionary();

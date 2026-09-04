@@ -111,6 +111,7 @@
     <Compile Include="HeinGOVManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultDataADO.cs" />
+    <Compile Include="ResultMCCTADO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.DelegateRegister\HIS.Desktop.DelegateRegister.csproj">

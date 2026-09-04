@@ -94,6 +94,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool isNotLoadWhileChangeControlStateInFirst;
         V_HIS_TRANSACTION originalTransaction;
+        /// <summary>Viec 3082: hanh dong tu dong do man Xuat ban truyen vao qua args (chua Config.AUTO_ACTION__SAVE_SIGN_PRINT)</summary>
+        List<string> autoActions = null;
+        /// <summary>Viec 3082: chuoi tu dong chi chay 1 lan sau khi form Shown</summary>
+        bool isAutoSaveSignPrintStarted = false;
         List<ReplaceTransactionADO> replaceTransactionADOs = null;
         private string selectedRadio = null;
         private decimal totalPrice = 0;
@@ -109,7 +113,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
 
         public frmMedicineSaleBill(Inventec.Desktop.Common.Modules.Module module,
-            List<long> expMestIds, DelegateSelectData _delegateSelectData, V_HIS_TRANSACTION _OriginalTransaction)
+            List<long> expMestIds, DelegateSelectData _delegateSelectData, V_HIS_TRANSACTION _OriginalTransaction, List<string> _autoActions = null)
             : base(module)
         {
             InitializeComponent();
@@ -127,6 +131,19 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 }
                 expMestIdForEdits = expMestIds;
                 originalTransaction = _OriginalTransaction;
+
+                // Viec 3082: man Xuat ban (Luu in + tick "In") yeu cau form tu chay Luu ky + duyet/thuc xuat + in roi tu dong
+                this.autoActions = _autoActions;
+                if (IsAutoSaveSignPrint || IsAutoIssueExistingBill)
+                {
+                    // Che do tu dong: form chi la "dong co" chay chuoi -> AN hoan toan (khong hien cho nguoi dung),
+                    // chi thay WaitingManager + popup loi (neu co). Moi nhanh deu phai tu dong form (CloseAutoForm).
+                    this.Opacity = 0;
+                    this.ShowInTaskbar = false;
+                    this.StartPosition = FormStartPosition.Manual;
+                    this.Location = new System.Drawing.Point(-32000, -32000);
+                    this.Shown += new EventHandler(frmMedicineSaleBill_Shown);
+                }
             }
             catch (Exception ex)
             {
@@ -473,6 +490,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         accountBook = lstBook.OrderByDescending(o => o.ID).First();
                     }
                 }
+
+                //chua co so nao duoc chon truoc do (dang nhap lan dau) va thu ngan chi co dung 1 so => tu dong chon
+                if (accountBook == null && Config.IsAutoSelectAccountBookIfHasOne && ListAccountBook != null && ListAccountBook.Count == 1)
+                {
+                    accountBook = ListAccountBook.First();
+                }
+
                 if (accountBook != null)
                 {
                     cboAccountBook.EditValue = accountBook.ID;
@@ -910,7 +934,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     expMestFilter.IDs = this.expMestIdForEdits;
                     expMestFilter.ORDER_FIELD = "MODIFY_TIME";
                     expMestFilter.ORDER_DIRECTION = "DESC";
-                    expMestFilter.HAS_BILL_ID = false;
+                    if (!IsAutoIssueExistingBill)
+                    {
+                        // Che do tu dong "bill da co" (viec 3082): phieu DA co BILL_ID -> khong loc
+                        expMestFilter.HAS_BILL_ID = false;
+                    }
                     var listExpMest = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, expMestFilter, null);
                     if (listExpMest == null || listExpMest.Count == 0)
                     {
@@ -2806,35 +2834,87 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     }
                 }
 
-                // Viec 3082: tick checkbox "In" -> sau khi luu ky, IN THANG hoa don dien tu ra may in.
-                // KHONG tu duyet/thuc xuat phieu: phan mem da tu thuc xuat khi luu phieu xuat ban.
-                bool autoPrintInvoice = (lciAutoExportPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoExportPrint.Checked);
+                // Viec 3082 (v3 25/08/2026): tick checkbox "In" -> kiem tra ton -> Luu ky (bill + HDDT)
+                // -> tu dong duyet/thuc xuat phan con thieu -> in thang. Khong tick -> luong Luu ky cu.
+                bool autoExportPrint = (lciAutoExportPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoExportPrint.Checked);
+                ProcessSaveSignPrintCore(autoExportPrint);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
+        /// <summary>Ket qua chuoi Luu ky (+ In) — che do tu dong dua vao day de quyet dinh dong form hay giu mo</summary>
+        private enum SaveSignPrintResult
+        {
+            /// <summary>Tao bill / phat hanh HDDT / duyet-thuc xuat / lay link in that bai — form giu mo de xu ly tiep</summary>
+            Failed = 0,
+            /// <summary>Da phat hanh HDDT, phieu da hoan thanh (tru kho), da in</summary>
+            Success = 1,
+            /// <summary>Thieu ton kho — chua luu ky, chua xuat hoa don</summary>
+            StockLack = 2,
+            /// <summary>Khong tick "In" hoac hinh thuc QR: chay luong Luu ky cu</summary>
+            ManualFlow = 3
+        }
+
+        /// <summary>
+        /// Phan xu ly sau validate cua nut Luu ky. autoExportPrint = true (tick "In"):
+        /// (1) kiem tra ton -> (2) SaveProcess(true): tao bill + phat hanh HDDT -> (3) AutoApproveExportExpMests -> (4) PrintInvoiceNow.
+        /// Dung ngay tai buoc fail; buoc 1 fail thi chua lam gi ca.
+        /// </summary>
+        private SaveSignPrintResult ProcessSaveSignPrintCore(bool autoExportPrint)
+        {
+            SaveSignPrintResult result = SaveSignPrintResult.Failed;
+            try
+            {
+                bool isQrPayForm = (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8);
+                List<long> selectedExpMestIds = null;
+                if (autoExportPrint && !isQrPayForm)
+                {
+                    // Buoc 1: kiem tra ton kho cac phieu CHUA hoan thanh — thieu thi dung ngay (chua luu ky, chua xuat hoa don)
+                    selectedExpMestIds = this.listMediMateAdo.Where(o => o.Check).Select(s => s.EXP_MEST_ID).Distinct().ToList();
+                    if (!CheckStockBeforeExport(selectedExpMestIds))
+                        return SaveSignPrintResult.StockLack;
+                }
+
+                // Buoc 2: tao bill + phat hanh (ky) HDDT — nguyen luong Luu ky cu
                 if (this.SaveProcess(true))
                 {
-                    bool isQrPayForm = (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8);
-                    if (autoPrintInvoice && !isQrPayForm)
+                    if (autoExportPrint && !isQrPayForm)
                     {
                         if (this.transactionBillResult != null && !String.IsNullOrEmpty(this.transactionBillResult.INVOICE_CODE))
                         {
-                            PrintInvoiceNow();
+                            // Buoc 3: tu dong duyet + thuc xuat phan con thieu (BE co the da tu thuc xuat khi luu phieu hoac khi tao bill)
+                            if (AutoApproveExportExpMests(selectedExpMestIds))
+                            {
+                                // Buoc 4: in thang hoa don dien tu ra may in
+                                if (PrintInvoiceNow())
+                                {
+                                    result = SaveSignPrintResult.Success;
+                                }
+                            }
                         }
                         else
                         {
-                            // Phat hanh HDDT that bai (message da hien trong SaveProcess) -> khong in
-                            Inventec.Common.Logging.LogSystem.Warn("BtnSaveSign(tick In): HDDT chua phat hanh, khong in. "
+                            // Phat hanh HDDT that bai (message da hien trong SaveProcess) -> khong thuc xuat, khong in
+                            Inventec.Common.Logging.LogSystem.Warn("ProcessSaveSignPrint(tick In): HDDT chua phat hanh, khong tu dong duyet/thuc xuat/in. "
                                 + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => transactionBillResult), transactionBillResult));
                         }
                     }
-                    else if (!chkHideHddt.Checked)
+                    else
                     {
-                        if (Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
+                        result = SaveSignPrintResult.ManualFlow;
+                        if (!chkHideHddt.Checked)
                         {
+                            if (Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
+                            {
+                                System.Threading.Thread.Sleep(2000);
+                                this.onClickInHoaDonDienTu(null, null);
+                            }
                             System.Threading.Thread.Sleep(2000);
-                            this.onClickInHoaDonDienTu(null, null);
+                            //this.onClickInHoaDonDienTu(null, null);
                         }
-                        System.Threading.Thread.Sleep(2000);
-                        //this.onClickInHoaDonDienTu(null, null);
                     }
                 }
                 if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
@@ -2844,9 +2924,544 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             }
             catch (Exception ex)
             {
+                result = SaveSignPrintResult.Failed;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            return result;
         }
+
+        #region Viec 3082 — che do tu dong tu man Xuat ban (Luu in + tick "In")
+
+        /// <summary>Form duoc man Xuat ban mo o che do tu dong (args co List&lt;string&gt; chua AUTO_SAVE_SIGN_PRINT)?</summary>
+        private bool IsAutoSaveSignPrint
+        {
+            get
+            {
+                return this.autoActions != null && this.autoActions.Contains(Config.AUTO_ACTION__SAVE_SIGN_PRINT);
+            }
+        }
+
+        private void frmMedicineSaleBill_Shown(object sender, EventArgs e)
+        {
+            try
+            {
+                if ((!IsAutoSaveSignPrint && !IsAutoIssueExistingBill) || isAutoSaveSignPrintStarted)
+                    return;
+                isAutoSaveSignPrintStarted = true;
+                // Cho form ve xong roi moi chay de nguoi dung thay tien trinh
+                if (IsAutoIssueExistingBill)
+                {
+                    this.BeginInvoke(new Action(RunAutoIssueExistingBill));
+                }
+                else
+                {
+                    this.BeginInvoke(new Action(RunAutoSaveSignPrint));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chuoi tu dong: validate -> kiem tra ton -> Luu ky (bill + HDDT) -> duyet/thuc xuat -> in -> dong form.
+        /// Thieu ton: dong form (chua lam gi) de sua phieu tai man Xuat ban. Buoc khac fail: GIU FORM MO de xu ly thu cong.
+        /// </summary>
+        private void RunAutoSaveSignPrint()
+        {
+            try
+            {
+                if (!Config.IsSaveSignPrintAutoExport)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("RunAutoSaveSignPrint: key SaveSignPrintAutoExport tat -> giu form thu cong.");
+                    return;
+                }
+                if (lcibtnSaveAndSign.Visibility != DevExpress.XtraLayout.Utils.LayoutVisibility.Always || !BtnSaveSign.Enabled)
+                {
+                    XtraMessageBox.Show("Không thể tự động lưu ký hóa đơn điện tử: chưa cấu hình loại hóa đơn điện tử (HIS.Desktop.ElectronicBill.Type) hoặc nút Lưu ký không khả dụng."
+                        + Environment.NewLine + "Vui lòng xử lý thủ công qua nút Xuất hóa đơn (F10).", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (this.ExpMests == null || this.ExpMests.Count == 0 || this.listMediMateAdo == null || this.listMediMateAdo.Count == 0)
+                {
+                    XtraMessageBox.Show("Không tìm thấy phiếu xuất bán chưa thanh toán để lưu ký hóa đơn điện tử.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("RunAutoSaveSignPrint: hinh thuc thanh toan QR -> giu luong thu cong.");
+                    return;
+                }
+
+                positionHandle = -1;
+                if (!dxValidationProviderEditorInfo.Validate())
+                {
+                    XtraMessageBox.Show("Chưa đủ thông tin hóa đơn (sổ hóa đơn, hình thức thanh toán, người mua...). Vui lòng xử lý thủ công qua nút Xuất hóa đơn (F10).",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (this.replaceTransactionADOs != null && this.replaceTransactionADOs.Count > 0 && this.cboOriginalTransaction.EditValue == null)
+                {
+                    if (MessageBox.Show("Tồn tại hóa đơn điện từ có thể thay thế. Bạn có muốn thay thế không?", "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    {
+                        this.cboOriginalTransaction.Focus();
+                        return;
+                    }
+                }
+
+                SaveSignPrintResult rs = ProcessSaveSignPrintCore(true);
+                Inventec.Common.Logging.LogSystem.Info("RunAutoSaveSignPrint: ket qua = " + rs.ToString());
+                if (rs == SaveSignPrintResult.Success)
+                {
+                    CloseAutoForm(DialogResult.OK);
+                }
+                else if (rs == SaveSignPrintResult.StockLack)
+                {
+                    CloseAutoForm(DialogResult.Cancel);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                // Form an -> khong duoc de mo (nguoi dung khong thay/khong dong duoc): nhanh nao chua dong thi dong tai day
+                CloseAutoForm(DialogResult.Cancel);
+            }
+        }
+
+        /// <summary>Che do tu dong: dong form dung 1 lan (form an, ShowDialog) va tra DialogResult</summary>
+        private bool isAutoFormClosed = false;
+        private void CloseAutoForm(DialogResult dialogResult)
+        {
+            try
+            {
+                if (isAutoFormClosed || this.IsDisposed)
+                    return;
+                isAutoFormClosed = true;
+                this.DialogResult = dialogResult;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Viec 3082 (29/08): form duoc man Xuat ban mo de phat hanh HDDT cho bill DA tao khi luu phieu?</summary>
+        private bool IsAutoIssueExistingBill
+        {
+            get
+            {
+                return this.autoActions != null && this.autoActions.Contains(Config.AUTO_ACTION__ISSUE_EXISTING_BILL);
+            }
+        }
+
+        /// <summary>Lay TRANSACTION_ID tu args "TRANSACTION_ID=&lt;id&gt;" (0 neu khong co)</summary>
+        private long GetAutoTransactionId()
+        {
+            try
+            {
+                if (this.autoActions == null) return 0;
+                string s = this.autoActions.FirstOrDefault(o => !String.IsNullOrEmpty(o) && o.StartsWith(Config.AUTO_PARAM__TRANSACTION_ID));
+                if (String.IsNullOrEmpty(s)) return 0;
+                return Inventec.Common.TypeConvert.Parse.ToInt64(s.Substring(Config.AUTO_PARAM__TRANSACTION_ID.Length));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Chuoi tu dong cho BILL DA CO (man Xuat ban tick "Xuat bien lai/hoa don" + bam "Luu ky in"):
+        /// lay giao dich -> dong bo so/hinh thuc theo bill -> kiem tra ton -> phat hanh (ky) HDDT neu chua co INVOICE_CODE
+        /// -> tu dong duyet/thuc xuat phan con thieu -> in thang -> dong form.
+        /// Form o che do nay khong dung duoc thu cong (Luu ky se bao "phieu da thanh toan") nen moi truong hop fail deu
+        /// hien thong bao roi DONG form; xu ly tiep tai man Danh sach giao dich / Thuc xuat thuoc.
+        /// </summary>
+        private void RunAutoIssueExistingBill()
+        {
+            CommonParam param = new CommonParam();
+            try
+            {
+                long transactionId = GetAutoTransactionId();
+                if (transactionId <= 0)
+                {
+                    XtraMessageBox.Show("Không xác định được giao dịch (bill) vừa tạo để phát hành hóa đơn điện tử. Vui lòng phát hành thủ công tại Danh sách giao dịch.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    CloseAutoForm(DialogResult.Cancel); return;
+                }
+                if (String.IsNullOrEmpty(InvoiceTypeCreate) || InvoiceTypeCreate != invoiceTypeCreate__CreateInvoiceVnpt)
+                {
+                    XtraMessageBox.Show("Chưa cấu hình hóa đơn điện tử VNPT (HIS.Desktop.ElectronicBill.Type = 1). Bill đã tạo, không phát hành hóa đơn điện tử tự động.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    CloseAutoForm(DialogResult.Cancel); return;
+                }
+                if (this.ExpMests == null || this.ExpMests.Count == 0 || this.listMediMateAdo == null || this.listMediMateAdo.Count == 0)
+                {
+                    XtraMessageBox.Show("Không tải được phiếu xuất bán của giao dịch vừa tạo. Vui lòng phát hành hóa đơn điện tử thủ công tại Danh sách giao dịch.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    CloseAutoForm(DialogResult.Cancel); return;
+                }
+
+                WaitingManager.Show();
+                HisTransactionViewFilter transactionFilter = new HisTransactionViewFilter();
+                transactionFilter.ID = transactionId;
+                var transactions = new BackendAdapter(param).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, transactionFilter, param);
+                WaitingManager.Hide();
+                this.transactionBillResult = (transactions != null) ? transactions.FirstOrDefault() : null;
+                if (this.transactionBillResult == null)
+                {
+                    XtraMessageBox.Show("Không tải được giao dịch ID = " + transactionId + ". Vui lòng phát hành hóa đơn điện tử thủ công tại Danh sách giao dịch.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    CloseAutoForm(DialogResult.Cancel); return;
+                }
+
+                // Dong bo so hoa don / hinh thuc thanh toan theo bill da tao (mau so, ky hieu lay tu so)
+                if (ListAccountBook != null && ListAccountBook.Any(o => o.ID == this.transactionBillResult.ACCOUNT_BOOK_ID))
+                {
+                    cboAccountBook.EditValue = this.transactionBillResult.ACCOUNT_BOOK_ID;
+                }
+                if (this.transactionBillResult.PAY_FORM_ID != null)
+                {
+                    cboPayFrom.EditValue = this.transactionBillResult.PAY_FORM_ID;
+                }
+                if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("RunAutoIssueExistingBill: hinh thuc QR -> khong phat hanh HDDT tu dong.");
+                    CloseAutoForm(DialogResult.Cancel); return;
+                }
+
+                List<long> expMestIds = this.ExpMests.Select(o => o.ID).Distinct().ToList();
+
+                // Buoc 1: kiem tra ton cac phieu chua hoan thanh
+                if (!CheckStockBeforeExport(expMestIds))
+                {
+                    CloseAutoForm(DialogResult.Cancel); return;
+                }
+
+                // Buoc 2: phat hanh (ky) HDDT cho bill neu chua co
+                if (String.IsNullOrEmpty(this.transactionBillResult.INVOICE_CODE))
+                {
+                    if (!IssueElectronicInvoiceForExistingBill(param))
+                    {
+                        string mes = (param.Messages != null && param.Messages.Count > 0) ? String.Join(". ", param.Messages.Distinct()) : "";
+                        XtraMessageBox.Show("Phát hành hóa đơn điện tử thất bại." + (String.IsNullOrEmpty(mes) ? "" : Environment.NewLine + mes)
+                            + Environment.NewLine + "Bill đã tạo — vui lòng phát hành lại tại Danh sách giao dịch.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        CloseAutoForm(DialogResult.Cancel); return;
+                    }
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Info("RunAutoIssueExistingBill: bill da co INVOICE_CODE = " + this.transactionBillResult.INVOICE_CODE + " -> bo qua phat hanh.");
+                }
+
+                // Buoc 3: tu dong duyet/thuc xuat phan con thieu (message da hien trong ham khi fail)
+                if (!AutoApproveExportExpMests(expMestIds))
+                {
+                    CloseAutoForm(DialogResult.Cancel); return;
+                }
+
+                // Buoc 4: in thang hoa don
+                PrintInvoiceNow();
+                if (delegateSelectData != null)
+                {
+                    delegateSelectData(this.transactionBillResult);
+                }
+                CloseAutoForm(DialogResult.OK);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                CloseAutoForm(DialogResult.Cancel);
+            }
+        }
+
+        /// <summary>
+        /// Phat hanh (ky) HDDT ben thu 3 cho bill da co (this.transactionBillResult) — cung buoc voi SaveProcess(isLuuKy)
+        /// sau khi tao bill: TaoHoaDonDienTuBenThu3CungCap -> api/HisTransaction/UpdateInvoiceInfo -> cap nhat INVOICE_* len ket qua.
+        /// </summary>
+        private bool IssueElectronicInvoiceForExistingBill(CommonParam param)
+        {
+            try
+            {
+                List<HIS.Desktop.Plugins.MedicineSaleBill.ADO.MediMateTypeADO> seleteds = this.listMediMateAdo.Where(o => o.Check).ToList();
+                if (seleteds.Count == 0)
+                {
+                    seleteds = this.listMediMateAdo;
+                }
+                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+
+                WaitingManager.Show();
+                ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(tran, seleteds);
+                WaitingManager.Hide();
+                if (electronicBillResult == null || !electronicBillResult.Success)
+                {
+                    param.Messages.Add("Tạo hóa đơn điện tử thất bại");
+                    if (electronicBillResult != null && electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                    {
+                        param.Messages.AddRange(electronicBillResult.Messages);
+                    }
+                    param.Messages = param.Messages.Distinct().ToList();
+                    return false;
+                }
+
+                CommonParam paramUpdate = new CommonParam();
+                HisTransactionInvoiceInfoSDO sdo = new HisTransactionInvoiceInfoSDO();
+                sdo.EinvoiceLoginname = electronicBillResult.InvoiceLoginname;
+                sdo.InvoiceCode = electronicBillResult.InvoiceCode;
+                sdo.InvoiceSys = electronicBillResult.InvoiceSys;
+                sdo.EinvoiceNumOrder = electronicBillResult.InvoiceNumOrder;
+                sdo.EInvoiceTime = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
+                sdo.Id = transactionBillResult.ID;
+                sdo.InvoiceLookupCode = electronicBillResult.InvoiceLookupCode;
+                Inventec.Common.Logging.LogSystem.Info("Viec 3082 IssueElectronicInvoiceForExistingBill: Call API api/HisTransaction/UpdateInvoiceInfo"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+                var apiResult = new BackendAdapter(paramUpdate).Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, sdo, paramUpdate);
+                if (!apiResult)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("IssueElectronicInvoiceForExistingBill: UpdateInvoiceInfo tra ve false — HDDT da phat hanh (INVOICE_CODE = " + electronicBillResult.InvoiceCode + ") nhung chua luu duoc vao giao dich.");
+                }
+
+                transactionBillResult.INVOICE_CODE = electronicBillResult.InvoiceCode;
+                transactionBillResult.INVOICE_SYS = electronicBillResult.InvoiceSys;
+                transactionBillResult.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
+                transactionBillResult.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
+                transactionBillResult.EINVOICE_TIME = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
+                transactionBillResult.INVOICE_LOOKUP_CODE = electronicBillResult.InvoiceLookupCode;
+                ddBtnPrint.Enabled = true;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
+        /// <summary>Lay lai trang thai MOI NHAT cua phieu (khong loc HAS_BILL_ID); loi thi dung du lieu da tai khi mo form</summary>
+        private List<V_HIS_EXP_MEST> GetExpMestsFresh(List<long> expMestIds)
+        {
+            List<V_HIS_EXP_MEST> result = null;
+            try
+            {
+                HisExpMestViewFilter expMestFilter = new HisExpMestViewFilter();
+                expMestFilter.IDs = expMestIds;
+                result = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, expMestFilter, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            if (result == null || result.Count == 0)
+            {
+                result = (this.ExpMests ?? new List<V_HIS_EXP_MEST>()).Where(o => expMestIds.Contains(o.ID)).ToList();
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Buoc 1 (viec 3082): kiem tra ton kho (AMOUNT theo lo — V_HIS_MEDICINE / V_HIS_MATERIAL) cua cac phieu CHUA hoan thanh.
+        /// Phieu da HOAN THANH (kho tu thuc xuat khi luu, hoac da thuc xuat truoc) da tru kho -> bo qua, tranh chan oan.
+        /// Thieu -> popup danh sach mat hang thieu, tra ve false (chua luu ky, chua xuat hoa don).
+        /// Loi ky thuat khi kiem tra -> tra ve true (de BE Export quyet dinh), co log.
+        /// </summary>
+        private bool CheckStockBeforeExport(List<long> selectedExpMestIds)
+        {
+            try
+            {
+                if (selectedExpMestIds == null || selectedExpMestIds.Count == 0)
+                    return true;
+
+                WaitingManager.Show();
+                List<V_HIS_EXP_MEST> expMestFresh = GetExpMestsFresh(selectedExpMestIds);
+                HashSet<long> expMestIdSet = new HashSet<long>(expMestFresh
+                    .Where(o => o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
+                    .Select(o => o.ID));
+                if (expMestIdSet.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    Inventec.Common.Logging.LogSystem.Info("CheckStockBeforeExport: tat ca phieu da HOAN THANH (da tru kho) -> bo qua kiem tra ton.");
+                    return true;
+                }
+
+                System.Text.StringBuilder lackInfo = new System.Text.StringBuilder();
+                if (this.listExpMestMedicine != null && this.listExpMestMedicine.Count > 0)
+                {
+                    var medicineDetails = this.listExpMestMedicine.Where(o => expMestIdSet.Contains(o.EXP_MEST_ID ?? 0) && o.MEDICINE_ID != null).ToList();
+                    if (medicineDetails.Count > 0)
+                    {
+                        var requiredByMedicine = medicineDetails.GroupBy(o => o.MEDICINE_ID.Value)
+                            .ToDictionary(g => g.Key, g => g.Sum(s => s.AMOUNT - (s.TH_AMOUNT ?? 0)));
+                        HisMedicineViewFilter medicineFilter = new HisMedicineViewFilter();
+                        medicineFilter.IDs = requiredByMedicine.Keys.ToList();
+                        var medicines = new BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDICINE>>("api/HisMedicine/GetView", ApiConsumers.MosConsumer, medicineFilter, null);
+                        var medicineDic = (medicines ?? new List<V_HIS_MEDICINE>()).ToDictionary(o => o.ID);
+                        foreach (var required in requiredByMedicine)
+                        {
+                            V_HIS_MEDICINE medicine = null;
+                            medicineDic.TryGetValue(required.Key, out medicine);
+                            if (medicine == null || medicine.AMOUNT < required.Value)
+                            {
+                                var detail = medicineDetails.First(o => o.MEDICINE_ID == required.Key);
+                                lackInfo.AppendLine(String.Format("- {0} ({1}): cần {2}, tồn {3}",
+                                    detail.MEDICINE_TYPE_NAME,
+                                    detail.MEDICINE_TYPE_CODE,
+                                    Inventec.Common.Number.Convert.NumberToString(required.Value, ConfigApplications.NumberSeperator),
+                                    Inventec.Common.Number.Convert.NumberToString(medicine != null ? medicine.AMOUNT : 0, ConfigApplications.NumberSeperator)));
+                            }
+                        }
+                    }
+                }
+
+                if (this.listExpMestMaterial != null && this.listExpMestMaterial.Count > 0)
+                {
+                    var materialDetails = this.listExpMestMaterial.Where(o => expMestIdSet.Contains(o.EXP_MEST_ID ?? 0) && o.MATERIAL_ID != null).ToList();
+                    if (materialDetails.Count > 0)
+                    {
+                        var requiredByMaterial = materialDetails.GroupBy(o => o.MATERIAL_ID.Value)
+                            .ToDictionary(g => g.Key, g => g.Sum(s => s.AMOUNT - (s.TH_AMOUNT ?? 0)));
+                        HisMaterialViewFilter materialFilter = new HisMaterialViewFilter();
+                        materialFilter.IDs = requiredByMaterial.Keys.ToList();
+                        var materials = new BackendAdapter(new CommonParam()).Get<List<V_HIS_MATERIAL>>("api/HisMaterial/GetView", ApiConsumers.MosConsumer, materialFilter, null);
+                        var materialDic = (materials ?? new List<V_HIS_MATERIAL>()).ToDictionary(o => o.ID);
+                        foreach (var required in requiredByMaterial)
+                        {
+                            V_HIS_MATERIAL material = null;
+                            materialDic.TryGetValue(required.Key, out material);
+                            if (material == null || material.AMOUNT < required.Value)
+                            {
+                                var detail = materialDetails.First(o => o.MATERIAL_ID == required.Key);
+                                lackInfo.AppendLine(String.Format("- {0} ({1}): cần {2}, tồn {3}",
+                                    detail.MATERIAL_TYPE_NAME,
+                                    detail.MATERIAL_TYPE_CODE,
+                                    Inventec.Common.Number.Convert.NumberToString(required.Value, ConfigApplications.NumberSeperator),
+                                    Inventec.Common.Number.Convert.NumberToString(material != null ? material.AMOUNT : 0, ConfigApplications.NumberSeperator)));
+                            }
+                        }
+                    }
+                }
+
+                WaitingManager.Hide();
+
+                if (lackInfo.Length > 0)
+                {
+                    XtraMessageBox.Show("Không đủ tồn kho để thực xuất — chưa lưu ký, chưa xuất hóa đơn. Danh sách mặt hàng thiếu:" + Environment.NewLine + lackInfo.ToString(),
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Buoc 3 (viec 3082): tu dong DUYET (Nhap/Yeu cau) va THUC XUAT (tru kho) cac phieu xuat ban CHUA hoan thanh
+        /// sau khi phat hanh HDDT thanh cong. Lay lai trang thai moi nhat truoc khi goi vi BE co the da tu duyet/thuc xuat
+        /// khi luu phieu (kho tu thuc xuat) hoac ngay khi tao bill (key MOS.TRANSACTION.EXP_MEST_SALE.IS_AUTO_EXPORT).
+        /// That bai -> hien ly do tu API + huong dan xu ly thu cong, tra ve false de KHONG in.
+        /// </summary>
+        private bool AutoApproveExportExpMests(List<long> selectedExpMestIds)
+        {
+            bool result = false;
+            CommonParam param = new CommonParam();
+            try
+            {
+                if (selectedExpMestIds == null || selectedExpMestIds.Count == 0)
+                    return false;
+
+                WaitingManager.Show();
+                List<V_HIS_EXP_MEST> expMestFresh = GetExpMestsFresh(selectedExpMestIds);
+                var expMestPendings = expMestFresh.Where(o => o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE).ToList();
+                if (expMestPendings.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    Inventec.Common.Logging.LogSystem.Info("AutoApproveExportExpMests: phieu da HOAN THANH (BE da tu thuc xuat), khong can duyet/thuc xuat them.");
+                    return true;
+                }
+
+                bool valid = true;
+                foreach (var expMest in expMestPendings)
+                {
+                    long? sttId = expMest.EXP_MEST_STT_ID;
+                    // Phieu chua duyet -> duyet truoc khi thuc xuat
+                    if (sttId == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DRAFT
+                        || sttId == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST)
+                    {
+                        HisExpMestApproveSDO approveSdo = new HisExpMestApproveSDO();
+                        approveSdo.ExpMestId = expMest.ID;
+                        approveSdo.ReqRoomId = this.roomId;
+                        Inventec.Common.Logging.LogSystem.Info("LuuKyAutoExportPrint: Call API api/HisExpMest/Approve"
+                            + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => approveSdo), approveSdo));
+                        var approveResult = new BackendAdapter(param).Post<HisExpMestResultSDO>("api/HisExpMest/Approve", ApiConsumers.MosConsumer, approveSdo, param);
+                        if (approveResult == null)
+                        {
+                            valid = false;
+                            break;
+                        }
+                        // Kho tu thuc xuat: BE co the da xuat luon trong buoc duyet
+                        sttId = (approveResult.ExpMest != null) ? approveResult.ExpMest.EXP_MEST_STT_ID : IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE;
+                    }
+
+                    if (sttId == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
+                        continue;
+
+                    HisExpMestExportSDO exportSdo = new HisExpMestExportSDO();
+                    exportSdo.ExpMestId = expMest.ID;
+                    exportSdo.ReqRoomId = this.roomId;
+                    exportSdo.IsFinish = true;
+                    Inventec.Common.Logging.LogSystem.Info("LuuKyAutoExportPrint: Call API api/HisExpMest/Export"
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => exportSdo), exportSdo));
+                    var exportResult = new BackendAdapter(param).Post<HIS_EXP_MEST>(HisRequestUriStore.HIS_EXP_MEST_EXPORT, ApiConsumers.MosConsumer, exportSdo, param);
+                    if (exportResult == null)
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+                result = valid;
+                WaitingManager.Hide();
+
+                if (!result)
+                {
+                    string reason = "";
+                    if (param.Messages != null && param.Messages.Count > 0)
+                    {
+                        reason = String.Join(". ", param.Messages.Distinct());
+                    }
+                    if (param.BugCodes != null && param.BugCodes.Count > 0)
+                    {
+                        reason += Environment.NewLine + "Mã sự cố: " + String.Join(",", param.BugCodes.Distinct());
+                    }
+                    XtraMessageBox.Show("Hóa đơn đã phát hành nhưng DUYỆT/THỰC XUẤT TỰ ĐỘNG THẤT BẠI, hệ thống KHÔNG in hóa đơn."
+                        + (String.IsNullOrEmpty(reason) ? "" : Environment.NewLine + "Lý do: " + reason)
+                        + Environment.NewLine + "Vui lòng vào màn 'Thực xuất thuốc' xử lý thủ công, sau đó in lại hóa đơn bằng nút In > In hóa đơn điện tử.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                SessionManager.ProcessTokenLost(param);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        #endregion
+
         private void onClickInHoaDonDienTu(object sender, EventArgs e)
         {
             try
@@ -2931,15 +3546,16 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         /// <summary>
         /// Viec 3082: in thang hoa don dien tu ra may in (khong mo man xem):
         /// lay link HDDT (retry toi da 3 lan thay Sleep 2000 cung) roi goi DocumentViewerManager.Print.
+        /// Tra ve true khi da gui lenh in; false khi khong lay duoc link (da hien huong dan in lai bang nut In).
         /// </summary>
-        private void PrintInvoiceNow()
+        private bool PrintInvoiceNow()
         {
             try
             {
                 if (this.transactionBillResult == null || String.IsNullOrEmpty(this.transactionBillResult.INVOICE_CODE))
                 {
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => transactionBillResult), transactionBillResult));
-                    return;
+                    return false;
                 }
                 ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
                 dataInput.PartnerInvoiceID = Inventec.Common.TypeConvert.Parse.ToInt64(this.transactionBillResult.INVOICE_CODE);
@@ -2993,7 +3609,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     XtraMessageBox.Show("Không lấy được link hóa đơn điện tử để in." + mes
                         + Environment.NewLine + "Vui lòng in lại bằng nút In > In hóa đơn điện tử.",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    return false;
                 }
                 Inventec.Common.DocumentViewer.InputADO ado = new InputADO();
                 ado.DeleteWhenClose = true;
@@ -3001,11 +3617,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 ado.NumberOfCopy = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("CONFIG_KEY__HIS_DESKTOP__ELECTRONIC_BILL__PRINT_NUM_COPY");
                 Inventec.Common.DocumentViewer.DocumentViewerManager viewManager = new Inventec.Common.DocumentViewer.DocumentViewerManager(ViewType.ENUM.Pdf);
                 viewManager.Print(ado, HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("Inventec.Common.DocumentViewer.PlatformOption") == 1 ? ViewType.Platform.Telerik : ViewType.Platform.Devexpress);
+                return true;
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
         }
 

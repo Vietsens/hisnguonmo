@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -28,6 +28,10 @@ namespace MPS.Processor.Mps000315
     {
         internal const string DOB_STR = "DOB_STR";
         internal const string DHST_LOGINNAME = "DHST_LOGINNAME";
+        // ----- Kết luận theo bệnh (ICD-10) — cờ "x" phái sinh từ HIS_KSK_GENERAL.CONCLUSION_ICD_TYPE -----
+        internal const string CONCLUSION_ICD_NONE_X = "CONCLUSION_ICD_NONE_X";
+        internal const string CONCLUSION_ICD_PRELIM_X = "CONCLUSION_ICD_PRELIM_X";
+        internal const string CONCLUSION_ICD_FINAL_X = "CONCLUSION_ICD_FINAL_X";
         
     }
 }

@@ -143,7 +143,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\HeinServiceTypeADO.cs" />
+    <Compile Include="ADO\PatientADO.cs" />
+    <Compile Include="ADO\PatyAlterBhytADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="ADO\SereServKey.cs" />
     <Compile Include="ADO\SurchargeADO.cs" />
     <Compile Include="AgeUtil.cs" />
     <Compile Include="DataRawProcess.cs" />

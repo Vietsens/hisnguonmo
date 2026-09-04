@@ -342,7 +342,6 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 // Edit mode (double-click tu danh sach): user co the chuyen sang vat tu khac
                 txtMaterialType.Enabled = true;
                 cboMaterialType.Enabled = true;
-                chkIsBusiness.Checked = (this.ActionType == GlobalVariables.ActionEdit);
 
                 // PTTK 42762: Load du lieu mau xuong form khi co materialTypeId
                 // (ca Edit mode lan Add mode + chon vat tu mau de Sao chep)
@@ -359,11 +358,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                         btnSave.Enabled = (currentVHisMaterialTypeDTODefault.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
                     }
 
-                    // Edit-only behaviors: chi disable Refresh va override chkIsBusiness khi DANG Sua ban ghi goc
+                    // Edit-only behaviors: chi disable Refresh khi DANG Sua ban ghi goc
                     if (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                     {
                         btnRefresh.Enabled = false;
-                        chkIsBusiness.Checked = false;
                     }
                 }
                 else

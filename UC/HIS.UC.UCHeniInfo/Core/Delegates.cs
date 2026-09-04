@@ -34,4 +34,12 @@ namespace HIS.UC.UCHeniInfo
     public delegate void UpdateTranPatiDataByPatientOld(HIS_PATIENT_TYPE_ALTER patientTypeAlter);
     //public delegate long DelegateGetPatientTypeId();
     public delegate void DelegateCheckSS(bool isCheck);
+
+    /// <summary>
+    /// Raised when the user asks for a manual co-payment lookup on the BHXH gateway.
+    /// The host builds the card payload and pushes the answer back through
+    /// SetCoPaidAccumulateFromGov - the UC never calls the gateway itself,
+    /// because only the host holds the current patient context.
+    /// </summary>
+    public delegate void DelegateCheckTienMCCT();
 }

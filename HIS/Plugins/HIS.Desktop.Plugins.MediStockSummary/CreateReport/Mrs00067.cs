@@ -268,9 +268,14 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                     }
                 }
 
+                //Danh muc dung chung cho ca phieu nhap va phieu xuat
+                List<HIS_DEPARTMENT> departments = BackendDataWorker.Get<HIS_DEPARTMENT>();
+                List<V_HIS_ROOM> rooms = BackendDataWorker.Get<V_HIS_ROOM>();
+                List<HIS_MEDI_STOCK> mediStocks = BackendDataWorker.Get<HIS_MEDI_STOCK>();
+
                 if (hisImpMestMedicines != null && hisImpMestMedicines.Count > 0)
                 {
-                    var listSub = (from r in hisImpMestMedicines select new Mrs00067RDO(r, ImpMest, sourceMest, impMestTypes, BackendDataWorker.Get<HIS_DEPARTMENT>(), BackendDataWorker.Get<V_HIS_ROOM>())).ToList();
+                    var listSub = (from r in hisImpMestMedicines select new Mrs00067RDO(r, ImpMest, sourceMest, impMestTypes, departments, rooms, mediStocks)).ToList();
 
                     this.ProcessGroupByImpMest(listSub);
                     this.ProcessGroupByImpMestPackage(listSub);
@@ -278,7 +283,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
 
                 if (hisExpMestMedicine != null && hisExpMestMedicine.Count > 0)
                 {
-                    var listSub = (from r in hisExpMestMedicine select new Mrs00067RDO(r, hisExpMest, destMest, expMestTypes, BackendDataWorker.Get<HIS_MEDI_STOCK>(), BackendDataWorker.Get<HIS_DEPARTMENT>(), BackendDataWorker.Get<V_HIS_ROOM>())).ToList();
+                    var listSub = (from r in hisExpMestMedicine select new Mrs00067RDO(r, hisExpMest, destMest, expMestTypes, mediStocks, departments, rooms)).ToList();
+
+                    this.FillTreatmentInfo(listSub);
 
                     this.ProcessGroupByExpMest(listSub);
                     this.ProcessGroupByExpMestPackage(listSub);
@@ -295,6 +302,55 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             return result;
         }
 
+        /// <summary>
+        /// Bo sung ma dieu tri / ma benh nhan cho cac dong xuat chua co san thong tin nay tren phieu
+        /// (phieu tong hop phong kham khong luu TDL_TREATMENT_CODE tren HIS_EXP_MEST).
+        /// Tra cuu theo TDL_TREATMENT_ID cua chinh dong chi tiet xuat kho.
+        /// </summary>
+        private void FillTreatmentInfo(List<Mrs00067RDO> listSub)
+        {
+            try
+            {
+                if (listSub == null || listSub.Count == 0) return;
+
+                List<long> treatmentIds = listSub
+                    .Where(o => string.IsNullOrWhiteSpace(o.TDL_TREATMENT_CODE) && o.TDL_TREATMENT_ID.HasValue && o.TDL_TREATMENT_ID.Value > 0)
+                    .Select(o => o.TDL_TREATMENT_ID.Value).Distinct().ToList();
+                if (treatmentIds.Count == 0) return;
+
+                List<V_HIS_TREATMENT> treatments = new List<V_HIS_TREATMENT>();
+                var skip = 0;
+                while (treatmentIds.Count - skip > 0)
+                {
+                    var listIDs = treatmentIds.Skip(skip).Take(ManagerConstant.MAX_REQUEST_LENGTH_PARAM).ToList();
+                    skip = skip + ManagerConstant.MAX_REQUEST_LENGTH_PARAM;
+                    HisTreatmentViewFilter treatmentFilter = new HisTreatmentViewFilter()
+                    {
+                        IDs = listIDs
+                    };
+                    var x = new BackendAdapter(null).Get<List<V_HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW, ApiConsumers.MosConsumer, treatmentFilter, SessionManager.ActionLostToken, null);
+                    if (x != null) treatments.AddRange(x);
+                }
+                if (treatments.Count == 0) return;
+
+                Dictionary<long, V_HIS_TREATMENT> dicTreatment = treatments.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First());
+                foreach (var item in listSub)
+                {
+                    if (!string.IsNullOrWhiteSpace(item.TDL_TREATMENT_CODE) || !item.TDL_TREATMENT_ID.HasValue) continue;
+
+                    V_HIS_TREATMENT treatment = null;
+                    if (!dicTreatment.TryGetValue(item.TDL_TREATMENT_ID.Value, out treatment) || treatment == null) continue;
+
+                    item.TDL_TREATMENT_CODE = treatment.TREATMENT_CODE;
+                    if (string.IsNullOrWhiteSpace(item.TDL_PATIENT_CODE)) item.TDL_PATIENT_CODE = treatment.TDL_PATIENT_CODE;
+                    if (string.IsNullOrWhiteSpace(item.TDL_PATIENT_NAME)) item.TDL_PATIENT_NAME = treatment.TDL_PATIENT_NAME;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
         private void ProcessGroupByExpMest(List<Mrs00067RDO> listSub)
         {
             var groupByCode = listSub.GroupBy(o => o.EXP_MEST_CODE).ToList();
@@ -333,6 +389,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                     VIR_PATIENT_NAME = p.First().VIR_PATIENT_NAME,
                     VIR_PATIENT_ADDRESS = p.First().VIR_PATIENT_ADDRESS,
                     TREATMENT_CODE = p.First().TREATMENT_CODE,
+                    TDL_TREATMENT_CODE = Mrs00067RDO.JoinDistinct(p.Select(q => q.TDL_TREATMENT_CODE)),
+                    TDL_PATIENT_CODE = Mrs00067RDO.JoinDistinct(p.Select(q => q.TDL_PATIENT_CODE)),
+                    TDL_PATIENT_NAME = Mrs00067RDO.SingleOrEmpty(p.Select(q => q.TDL_PATIENT_NAME)),
+                    FROM_MEDI_STOCK_NAME = p.First().FROM_MEDI_STOCK_NAME,
+                    TO_MEDI_STOCK_NAME = p.First().TO_MEDI_STOCK_NAME,
                     SUPPLIER_NAME = p.First().SUPPLIER_NAME,
                     SUPPLIER_CODE = p.First().SUPPLIER_CODE,
                     SUPPLIER_ID = p.First().SUPPLIER_ID,
@@ -384,6 +445,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                     VIR_PATIENT_NAME = p.First().VIR_PATIENT_NAME,
                     VIR_PATIENT_ADDRESS = p.First().VIR_PATIENT_ADDRESS,
                     TREATMENT_CODE = p.First().TREATMENT_CODE,
+                    TDL_TREATMENT_CODE = Mrs00067RDO.JoinDistinct(p.Select(q => q.TDL_TREATMENT_CODE)),
+                    TDL_PATIENT_CODE = Mrs00067RDO.JoinDistinct(p.Select(q => q.TDL_PATIENT_CODE)),
+                    TDL_PATIENT_NAME = Mrs00067RDO.SingleOrEmpty(p.Select(q => q.TDL_PATIENT_NAME)),
+                    FROM_MEDI_STOCK_NAME = p.First().FROM_MEDI_STOCK_NAME,
+                    TO_MEDI_STOCK_NAME = p.First().TO_MEDI_STOCK_NAME,
                     SUPPLIER_NAME = p.First().SUPPLIER_NAME,
                     SUPPLIER_CODE = p.First().SUPPLIER_CODE,
                     SUPPLIER_ID = p.First().SUPPLIER_ID,
@@ -431,6 +497,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                     VIR_PATIENT_NAME = p.First().VIR_PATIENT_NAME,
                     VIR_PATIENT_ADDRESS = p.First().VIR_PATIENT_ADDRESS,
                     TREATMENT_CODE = p.First().TREATMENT_CODE,
+                    TDL_TREATMENT_CODE = Mrs00067RDO.JoinDistinct(p.Select(q => q.TDL_TREATMENT_CODE)),
+                    TDL_PATIENT_CODE = Mrs00067RDO.JoinDistinct(p.Select(q => q.TDL_PATIENT_CODE)),
+                    TDL_PATIENT_NAME = Mrs00067RDO.SingleOrEmpty(p.Select(q => q.TDL_PATIENT_NAME)),
+                    FROM_MEDI_STOCK_NAME = p.First().FROM_MEDI_STOCK_NAME,
+                    TO_MEDI_STOCK_NAME = p.First().TO_MEDI_STOCK_NAME,
                     SUPPLIER_NAME = p.First().SUPPLIER_NAME,
                     SUPPLIER_CODE = p.First().SUPPLIER_CODE,
                     SUPPLIER_ID = p.First().SUPPLIER_ID,
@@ -482,6 +553,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                     VIR_PATIENT_NAME = p.First().VIR_PATIENT_NAME,
                     VIR_PATIENT_ADDRESS = p.First().VIR_PATIENT_ADDRESS,
                     TREATMENT_CODE = p.First().TREATMENT_CODE,
+                    TDL_TREATMENT_CODE = Mrs00067RDO.JoinDistinct(p.Select(q => q.TDL_TREATMENT_CODE)),
+                    TDL_PATIENT_CODE = Mrs00067RDO.JoinDistinct(p.Select(q => q.TDL_PATIENT_CODE)),
+                    TDL_PATIENT_NAME = Mrs00067RDO.SingleOrEmpty(p.Select(q => q.TDL_PATIENT_NAME)),
+                    FROM_MEDI_STOCK_NAME = p.First().FROM_MEDI_STOCK_NAME,
+                    TO_MEDI_STOCK_NAME = p.First().TO_MEDI_STOCK_NAME,
                     SUPPLIER_NAME = p.First().SUPPLIER_NAME,
                     SUPPLIER_CODE = p.First().SUPPLIER_CODE,
                     SUPPLIER_ID = p.First().SUPPLIER_ID,

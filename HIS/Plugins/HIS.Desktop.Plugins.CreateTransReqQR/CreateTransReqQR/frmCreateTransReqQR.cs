@@ -1942,8 +1942,13 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         sereServViewFilter.TREATMENT_ID = item.TREATMENT_ID;
                     var sereServs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW, ApiConsumers.MosConsumer, sereServViewFilter, null) ?? new List<V_HIS_SERE_SERV>();
 
+                    //Yeu cau tam ung gan voi chinh phieu thu nay (DEPOSIT_ID = ID giao dich)
+                    //=> lay khoa/phong yeu cau giong cot "Khoa yeu cau" tren man hinh Yeu cau tam ung
+                    var depositReqs = GetDepositReqForPrint(item.TREATMENT_ID, item.ID);
+
                     MPS.Processor.Mps000112.PDO.Mps000112PDO rdo =
                         new MPS.Processor.Mps000112.PDO.Mps000112PDO(deposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>(), sereServs, sereServDeposits, BackendDataWorker.Get<HIS_PAY_FORM>());
+                    rdo._ListDepositReq = depositReqs;
                     rdo._Banks = BackendDataWorker.Get<HIS_BANK>();
                     rdo._ListTransactionPayform = GetTransactionPayformForPrint(item != null ? item.ID : 0);
                     rdo._ListTransactionDiscount = GetTransactionDiscountForPrint(item != null ? item.ID : 0);
@@ -3701,6 +3706,35 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 return new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_TRANSACTION_DISCOUNT>>(
                     "api/HisTransactionDiscount/Get", ApiConsumers.MosConsumer,
                     new { TRANSACTION_ID = transactionId, IS_ACTIVE = (short?)1 }, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Yeu cau tam ung (HIS_DEPOSIT_REQ) gan voi giao dich tam ung nay - dung cho ban in Mps000112
+        /// de lay khoa/phong YEU CAU giong cot "Khoa yeu cau" tren man hinh Yeu cau tam ung.
+        /// HisDepositReqViewFilter chua ho tro DEPOSIT_ID nen lay theo dot dieu tri roi loc lai o client.
+        /// </summary>
+        private List<MOS.EFMODEL.DataModels.V_HIS_DEPOSIT_REQ> GetDepositReqForPrint(long? treatmentId, long transactionId)
+        {
+            try
+            {
+                if (!treatmentId.HasValue || treatmentId.Value <= 0 || transactionId <= 0)
+                    return null;
+
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                MOS.Filter.HisDepositReqViewFilter filter = new MOS.Filter.HisDepositReqViewFilter();
+                filter.TREATMENT_ID = treatmentId.Value;
+                var data = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_DEPOSIT_REQ>>(
+                    "api/HisDepositReq/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (data == null)
+                    return null;
+
+                return data.Where(o => o.DEPOSIT_ID == transactionId).ToList();
             }
             catch (Exception ex)
             {

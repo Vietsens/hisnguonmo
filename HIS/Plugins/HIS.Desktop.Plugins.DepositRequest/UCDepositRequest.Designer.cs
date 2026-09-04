@@ -75,6 +75,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.SpNumOrder = new DevExpress.XtraEditors.SpinEdit();
             this.txtAmount = new DevExpress.XtraEditors.TextEdit();
             this.spinTransferAmount = new DevExpress.XtraEditors.SpinEdit();
+            this.lblCanThu = new DevExpress.XtraEditors.LabelControl();
             this.txtEditReqCode = new DevExpress.XtraEditors.TextEdit();
             this.btnSavePrint = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -101,6 +102,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.LciNumOrder = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutbtnQRCe = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTransferAmount = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciCanThu = new DevExpress.XtraLayout.LayoutControlItem();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -110,6 +112,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar3 = new DevExpress.XtraBars.Bar();
@@ -172,6 +175,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             ((System.ComponentModel.ISupportInitialize)(this.LciNumOrder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutbtnQRCe)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTransferAmount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCanThu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
@@ -181,6 +185,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.SuspendLayout();
@@ -454,6 +459,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControl7.Controls.Add(this.SpNumOrder);
             this.layoutControl7.Controls.Add(this.txtAmount);
             this.layoutControl7.Controls.Add(this.spinTransferAmount);
+            this.layoutControl7.Controls.Add(this.lblCanThu);
             this.layoutControl7.Controls.Add(this.txtEditReqCode);
             this.layoutControl7.Controls.Add(this.btnSavePrint);
             this.layoutControl7.Controls.Add(this.btnSave);
@@ -510,6 +516,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.txtAmount.Size = new System.Drawing.Size(124, 20);
             this.txtAmount.StyleController = this.layoutControl7;
             this.txtAmount.TabIndex = 16;
+            this.txtAmount.EditValueChanged += new System.EventHandler(this.txtAmount_EditValueChanged);
             // 
             // spinTransferAmount
             // 
@@ -530,10 +537,19 @@ namespace HIS.Desktop.Plugins.DepositRequest
             232830,
             0,
             0});
-            this.spinTransferAmount.Size = new System.Drawing.Size(331, 20);
+            this.spinTransferAmount.Size = new System.Drawing.Size(124, 20);
             this.spinTransferAmount.StyleController = this.layoutControl7;
             this.spinTransferAmount.TabIndex = 18;
             this.spinTransferAmount.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinTransferAmount_PreviewKeyDown);
+            this.spinTransferAmount.EditValueChanged += new System.EventHandler(this.spinTransferAmount_EditValueChanged);
+            // 
+            // lblCanThu
+            // 
+            this.lblCanThu.Location = new System.Drawing.Point(320, 122);
+            this.lblCanThu.Name = "lblCanThu";
+            this.lblCanThu.Size = new System.Drawing.Size(108, 20);
+            this.lblCanThu.StyleController = this.layoutControl7;
+            this.lblCanThu.TabIndex = 19;
             // 
             // txtEditReqCode
             // 
@@ -653,6 +669,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem23,
             this.layoutControlItem18,
             this.lciTransferAmount,
+            this.lciCanThu,
             this.LciNumOrder,
             this.layoutbtnQRCe});
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
@@ -817,12 +834,24 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.lciTransferAmount.Control = this.spinTransferAmount;
             this.lciTransferAmount.Location = new System.Drawing.Point(0, 120);
             this.lciTransferAmount.Name = "lciTransferAmount";
-            this.lciTransferAmount.Size = new System.Drawing.Size(430, 24);
+            this.lciTransferAmount.Size = new System.Drawing.Size(223, 24);
             this.lciTransferAmount.Text = "Số tiền CK:";
             this.lciTransferAmount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTransferAmount.TextSize = new System.Drawing.Size(90, 20);
             this.lciTransferAmount.TextToControlDistance = 5;
-            this.lciTransferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
+            // lciCanThu
+            // 
+            this.lciCanThu.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciCanThu.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciCanThu.Control = this.lblCanThu;
+            this.lciCanThu.Location = new System.Drawing.Point(223, 120);
+            this.lciCanThu.Name = "lciCanThu";
+            this.lciCanThu.Size = new System.Drawing.Size(207, 24);
+            this.lciCanThu.Text = "Cần thu:";
+            this.lciCanThu.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciCanThu.TextSize = new System.Drawing.Size(90, 20);
+            this.lciCanThu.TextToControlDistance = 5;
             // 
             // LciNumOrder
             // 
@@ -845,6 +874,10 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutbtnQRCe.Size = new System.Drawing.Size(78, 37);
             this.layoutbtnQRCe.TextSize = new System.Drawing.Size(0, 0);
             this.layoutbtnQRCe.TextVisible = false;
+            // 
+            // dxErrorProvider
+            // 
+            this.dxErrorProvider.ContainerControl = this;
             // 
             // Root
             // 
@@ -1060,6 +1093,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             ((System.ComponentModel.ISupportInitialize)(this.LciNumOrder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutbtnQRCe)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTransferAmount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCanThu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
@@ -1069,6 +1103,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.ResumeLayout(false);
@@ -1133,6 +1168,9 @@ namespace HIS.Desktop.Plugins.DepositRequest
         private DevExpress.XtraEditors.TextEdit txtEditReqCode;
         private DevExpress.XtraEditors.SpinEdit spinTransferAmount;
         private DevExpress.XtraLayout.LayoutControlItem lciTransferAmount;
+        private DevExpress.XtraEditors.LabelControl lblCanThu;
+        private DevExpress.XtraLayout.LayoutControlItem lciCanThu;
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
         private DevExpress.XtraEditors.DateEdit dtTransactionTime;
         private DevExpress.XtraLayout.LayoutControlItem lciTransactionTime;

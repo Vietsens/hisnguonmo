@@ -36,6 +36,12 @@ namespace MPS.Processor.Mps000454.PDO
         public HIS_SERVICE_REQ KskServiceReq { get; set; }
         /// <summary>Bệnh nhân (HIS_PATIENT) — tùy chọn; processor đổ key prefix PATIENT_.</summary>
         public HIS_PATIENT KskPatient { get; set; }
+        /// <summary>
+        /// Kết luận theo bệnh (ICD-10) của lượt khám — lưu ở HIS_KSK_GENERAL cùng SERVICE_REQ_ID
+        /// (UC "Kết luận theo bệnh ICD-10" dùng chung cho mọi tab KSK).
+        /// Tùy chọn; processor đổ key CONCLUSION_ICD_* + object tag {KskGeneral.x}.
+        /// </summary>
+        public HIS_KSK_GENERAL HisKskGeneral { get; set; }
         public Mps000454PDO(
             HIS_KSK_PERIOD_DRIVER HisKskPeriodDriver,
            V_HIS_SERVICE_REQ HisServiceReq,

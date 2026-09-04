@@ -39,6 +39,7 @@ using His.UC.UCHein.Core.UpdateDataFormIntoPatientTypeAlter;
 using His.UC.UCHein.Set.SetFocusUserByLiveAreaCode;
 using His.UC.UCHein.Dispose;
 using His.UC.UCHein.Core.SetResultDataADO;
+using His.UC.UCHein.Core.SetCoPaidAccumulateFromGov;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 
 namespace His.UC.UCHein
@@ -78,6 +79,24 @@ namespace His.UC.UCHein
             try
             {
                 SetResultDataADOFactory.MakeISetResultDataADO(param, UC, ResultDataADO).Run();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Applies a BHXH co-payment lookup to the accumulated amount, the six-months flag
+        /// and the exemption date. Asks the user before overwriting values that differ.
+        /// </summary>
+        /// <param name="UC">The health insurance card control.</param>
+        /// <param name="resultMcct">Answer of HeinGOVManager.CheckTienMCCT.</param>
+        public void SetCoPaidAccumulateFromGov(UserControl UC, ResultMCCTADO resultMcct)
+        {
+            try
+            {
+                SetCoPaidAccumulateFromGovFactory.MakeISetCoPaidAccumulateFromGov(param, UC, resultMcct).Run();
             }
             catch (Exception ex)
             {

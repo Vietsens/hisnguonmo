@@ -141,6 +141,10 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                             this.CheckTTProcessResultData(dataHein, ResultDataADO);
                         }
                     }
+
+                    // The card is known to the gateway, so the co-payment lookup has something to
+                    // match on. A failure here never affects the card check outcome above.
+                    await this.CheckTienMCCT(dataHein);
                 }
                 IsRuning = true;
             }
@@ -148,6 +152,146 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Looks the accumulated co-payment up on the BHXH gateway and hands the answer to the
+        /// health insurance card control, which derives the accumulated amount, the six-months
+        /// flag and the exemption date.
+        ///
+        /// Never blocks the card check: any failure here is logged and the form carries on with
+        /// whatever the user already entered.
+        /// </summary>
+        internal async Task CheckTienMCCT(HeinCardData dataHein)
+        {
+            try
+            {
+                if (dataHein == null || uCMainHein == null || ucHein__BHYT == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(String.Format(
+                        "CheckTienMCCT: bo qua - dataHein null: {0}, uCMainHein null: {1}, ucHein__BHYT null: {2}",
+                        dataHein == null, uCMainHein == null, ucHein__BHYT == null));
+                    return;
+                }
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "CheckTienMCCT BEGIN____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
+
+                HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
+                ResultMCCTADO resultMcct = await heinGOVManager.CheckTienMCCT(dataHein);
+
+                if (resultMcct == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("CheckTienMCCT: HeinGOVManager tra ve null.");
+                    return;
+                }
+
+                uCMainHein.SetCoPaidAccumulateFromGov(ucHein__BHYT, resultMcct);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Handler of the lookup button on the accumulated co-payment field.
+        /// Builds the card payload from the current patient and the card number typed on the form.
+        /// </summary>
+        private async void CheckTienMCCTManual()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("CheckTienMCCTManual: bat dau tra cuu thu cong.");
+
+                HeinCardData dataHein = this.BuildHeinCardDataForMcct();
+                if (dataHein == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "CheckTienMCCTManual: khong dung duoc du lieu the, dung tra cuu.");
+                    return;
+                }
+
+                WaitingManager.Show();
+                try
+                {
+                    await this.CheckTienMCCT(dataHein);
+                }
+                finally
+                {
+                    WaitingManager.Hide();
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Collects the card number currently on the form together with the patient name and
+        /// date of birth, in the formats the gateway accepts (dd/MM/yyyy, or yyyy when the
+        /// patient has no full date of birth).
+        /// </summary>
+        private HeinCardData BuildHeinCardDataForMcct()
+        {
+            HeinCardData result = null;
+            try
+            {
+                HisPatientProfileSDO profile = new HisPatientProfileSDO();
+                this.UpdateHeinCardBHYTDTOFromDataForm(profile);
+
+                string heinCardNumber = profile.HisPatientTypeAlter != null
+                    ? profile.HisPatientTypeAlter.HEIN_CARD_NUMBER
+                    : null;
+
+                if (String.IsNullOrEmpty(heinCardNumber))
+                {
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "BuildHeinCardDataForMcct: chua nhap so the BHYT, khong goi cong BHXH.");
+                    return null;
+                }
+
+                if (_HisTreatment == null)
+                {
+                    _HisTreatment = this.GetSDO(this.treatmentId).SingleOrDefault();
+                }
+                if (_HisTreatment == null)
+                {
+                    return null;
+                }
+
+                V_HIS_PATIENT patient = this.GetPatientById(_HisTreatment.PATIENT_ID);
+                if (patient == null)
+                {
+                    return null;
+                }
+
+                result = new HeinCardData();
+                result.HeinCardNumber = heinCardNumber;
+                result.PatientName = patient.VIR_PATIENT_NAME;
+                result.Gender = HisToHein(patient.GENDER_ID.ToString());
+
+                if (patient.IS_HAS_NOT_DAY_DOB == 1)
+                {
+                    result.Dob = patient.DOB.ToString().Substring(0, 4);
+                }
+                else
+                {
+                    string dob = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(patient.DOB);
+                    var dobSplit = dob.Split(new String[] { " " }, StringSplitOptions.None);
+                    result.Dob = dobSplit[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = null;
+            }
+            return result;
         }
 
         private HIS_PATIENT GetCurrentpatient(HIS_PATIENT currenPatient)

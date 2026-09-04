@@ -130,7 +130,7 @@
     <value>The patient has not prescribed for approx</value>
   </data>
   <data name="BacSiDieuTri" xml:space="preserve">
-    <value>Treating doctor</value>
+    <value>Treating doctor (all)</value>
   </data>
   <data name="LocTheoBacSiDieuTri" xml:space="preserve">
     <value>Filter patients by treating doctor account</value>

@@ -33,12 +33,50 @@ dataHein.IsWarningIcdNotRecommendMainWhenEdit = true; // cảnh báo khi sửa "
 |--------|------|----------|
 | HIS_ICD / V_HIS_ICD | Table/View | Danh mục ICD. Bổ sung `IS_NOT_RECOMMEND_MAIN`, `IS_DEATH_CAUSE_ONLY` (short?) |
 | HIS_TREATMENT | Table | Lưu `TRANSFER_IN_ICD_CODE`, `TRANSFER_IN_ICD_NAME` (chẩn đoán chuyển tuyến) |
+| HIS_PATIENT_TYPE_ALTER | Table | `CO_PAID_ACCUMULATE_AMOUNT` (long?), `PAID_6_MONTH` (C/K), `FREE_CO_PAID_TIME` (long? `yyyyMMdd`) — cập nhật từ cổng BHYT |
+| HIS_BHYT_PARAM | Table | `BASE_SALARY` — nguồn tính ngưỡng 06 tháng lương cơ sở |
+
+## 4. Tra Cứu Tiền Cùng Chi Trả / Miễn Cùng Chi Trả (MCCT)
+
+Gọi dịch vụ `api/TraCuuCCT/TraCuuTienMCCT` trên cổng BHYT để cập nhật 3 trường cùng chi trả.
+Thiết kế chi tiết: `docs/B_KyThuat_TraCuuTienMCCT_CungChiTraLuyKe.md`.
+
+**Điểm gọi**
+
+| Luồng | Vị trí |
+|-------|--------|
+| Tự động | `frmPatientTypeAlter_CheckGOV.cs` — cuối `CheckThongTuyen()`, luôn chạy khi thẻ hợp lệ |
+| Thủ công | Nút Search trên `txtCoPaidAccumulate` → delegate `DelegateCheckTienMCCT` → `CheckTienMCCTManual()` |
+
+**Công thức** (`R` = `DataCCT[]`, `LIMIT` = `BASE_SALARY × 6`)
+
+| Trường | Công thức |
+|--------|-----------|
+| `CO_PAID_ACCUMULATE_AMOUNT` | `làm tròn( Max(R[i].tBNCCTLuyKe) )` — **KHÔNG dùng tổng**, `tBNCCTLuyKe` đã là số cộng dồn |
+| `PAID_6_MONTH` | `(lũy kế > LIMIT) ? 'C' : 'K'` — dùng `>`, không phải `>=` |
+| `FREE_CO_PAID_TIME` | `ngayRa` của đợt **đầu tiên** có `tBNCCTLuyKe > LIMIT` (sắp tăng dần theo ngày) → `yyyyMMdd` |
+
+**Cấu hình**
+
+**Không có cấu hình riêng.** Đường dẫn API (`api/TraCuuCCT/TraCuuTienMCCT`) và việc tra cứu tự động đều cố định trong code. Chỉ dùng lại tài khoản/địa chỉ cổng sẵn có: `HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS` và `HIS.CHECK_HEIN_CARD.BHXH__ADDRESS`.
+
+Tài khoản / địa chỉ cổng tái sử dụng `HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS` và `HIS.CHECK_HEIN_CARD.BHXH__ADDRESS` — dùng chung token với luồng check thẻ nên cùng IP, không vướng ràng buộc IP của cổng.
+
+**Lưu ý**
+
+- Căn cứ `MaKetQua`, **không** dựa vào mã HTTP — mã `204` vẫn trả HTTP 200 kèm `DataCCT` rỗng, khi đó **giữ nguyên** giá trị trên form (không gán 0).
+- Chỉ hỏi ghi đè khi có ít nhất 1 trong 3 trường lệch so với form.
+- Thứ tự điền bắt buộc: lũy kế → TDMC CT → checkbox 6 tháng (nếu ngược, `ValidateCoPaidAccumulate` chặn lưu).
+- Đoạn điền bọc trong cờ `isFillingHeinDataFromDb` + `IsAutoCheck`, reset trong `finally` — tránh `txtDTMCChiTra_TextChanged` tự tick lại checkbox và bung hộp thoại giấy chứng nhận.
 
 ## 6. Dependencies
 
 | UC dùng chung | Mục đích |
 |---------------|----------|
-| His.UC.UCHein (MainHisHeinBhyt) | Hiển thị thông tin BHYT + chẩn đoán giới thiệu chuyển tuyến. Logic lọc/cảnh báo ICD nằm trong UC này |
+| His.UC.UCHein (MainHisHeinBhyt) | Hiển thị thông tin BHYT + chẩn đoán giới thiệu chuyển tuyến. Logic lọc/cảnh báo ICD nằm trong UC này. `SetCoPaidAccumulateFromGov()` nhận kết quả tra cứu MCCT và tính 3 trường cùng chi trả |
+| HIS.Desktop.Plugins.Library.CheckHeinGOV | `HeinGOVManager.CheckTienMCCT()` — gọi cổng BHYT, trả dữ liệu thô |
+| HIS.Desktop.Plugins.Library.RegisterConfig | `BHXHLoginCFG` — tài khoản, địa chỉ cổng |
+| His.Bhyt.InsuranceExpertise (repo `common`) | `ApiInsuranceExpertise.TraCuuTienMCCT()` — HTTP header + body JSON |
 
 ## 8. Changelog
 
@@ -48,7 +86,29 @@ dataHein.IsWarningIcdNotRecommendMainWhenEdit = true; // cảnh báo khi sửa "
 | 17/06/2026 | sinhnt | Fix bug: sửa mã đối tượng đúng tuyến (RIGHT_ROUTE_TYPE_CODE, vd 3.1→3.6) lưu thành công nhưng mở lại vẫn giá trị cũ. Nguyên nhân: nhánh ActionEdit sau Update không đồng bộ kết quả về object cache `currentTreatmentLogSDO`. Fix: map đầy đủ `resultPatientTypeAlter.PatientTypeAlter` về cache (giống ActionAdd) |
 | 29/07/2026 | tuanln | PT-44730: khi chuyển đối tượng thanh toán của hồ sơ, chỉ định thuộc dịch vụ đã khai trong bảng cấu hình `HIS_SERVICE_DEFAULT_PATY` (chờ backend) mà tài khoản không đủ quyền sửa ĐTTT thì **giữ nguyên ĐTTT cũ** của chỉ định đó, các chỉ định còn lại vẫn chuyển bình thường. Thêm partial `frmPatientTypeAlter___ServiceDefaultPaty.cs` (worker nạp cấu hình 1 lần/form + `IsAllowEditPatientTypeByServiceConfig`, người chỉ định lấy theo `TDL_REQUEST_LOGINNAME` của chỉ định). Trong `SwapPatientTypeAlter`, chèn bước hoàn lại `oldPatientTypeId` ngay trước khối xử lý `SERVICE_CONDITION_ID` / `DO_NOT_USE_BHYT`. Quyền theo key `HIS.Desktop.Plugins.Assign.ServiceDefaultPatyEditOption` (`1` = quản trị · `2` = quản trị hoặc người chỉ định · khác = không siết) |
 
+| 25/08/2026 | khainq | Bỏ key `HIS.CHECK_HEIN_CARD.BHXH__AUTO_CHECK_MCCT` — tra cứu tự động **luôn chạy** sau khi kiểm tra thẻ thành công. Bỏ `AUTO_CHECK_MCCT` và `IsAutoCheckMcct` khỏi `BHXHLoginCFG`, bỏ nhánh `if` ở hai nơi gọi. Tính năng nay **không có cấu hình riêng nào** — cả đường dẫn API lẫn việc tự động đều cố định trong code |
+| 24/08/2026 | khainq | Cập nhật tiền cùng chi trả / miễn cùng chi trả qua cổng BHYT (`api/TraCuuCCT/TraCuuTienMCCT`). Tự động gọi sau khi check thẻ thành công (theo cấu hình `BHXH__AUTO_CHECK_MCCT`), kèm nút tra cứu thủ công trên ô lũy kế. Suy ra 3 trường `CO_PAID_ACCUMULATE_AMOUNT` / `PAID_6_MONTH` / `FREE_CO_PAID_TIME` — xem mục 4. Thêm 4 LDO + `TraCuuTienMCCT()` (`His.Bhyt.InsuranceExpertise`), `ResultMCCTADO` + `CheckTienMCCT()` (`CheckHeinGOV`), `Core/SetCoPaidAccumulateFromGov/` + `Template__HeinBHYT1__CoPaidMCCT.cs` (`His.UC.UCHein`). Thiết kế: `docs/B_KyThuat_TraCuuTienMCCT_CungChiTraLuyKe.md` |
+
 ## 9. Test Cases
+
+**Tra cứu MCCT**
+
+- [ ] `MaKetQua=200`, lũy kế > LIMIT, có đợt vượt ngưỡng → điền đủ 3 trường, TDMC CT = ngày ra viện đợt vượt **lần đầu**
+- [ ] `MaKetQua=200`, lũy kế ≤ LIMIT → điền lũy kế, bỏ tick 6 tháng, TDMC CT trống, không cảnh báo
+- [ ] `MaKetQua=200`, mọi `ngayRa` rỗng nhưng lũy kế vượt → điền lũy kế + tick 6 tháng, TDMC CT trống **kèm cảnh báo**
+- [ ] `MaKetQua=204` → **giữ nguyên** 3 control, không xóa giá trị đang có
+- [ ] Mã thẻ 11 ký tự → chặn tại client, không gọi cổng
+- [ ] Token hết hạn → tự lấy token mới rồi gọi lại 1 lần
+- [ ] Cổng timeout / không phản hồi → không treo form, giữ nguyên 3 control
+- [ ] Số cổng khác số trên form → hộp thoại Có/Không; chọn Không thì giữ nguyên toàn bộ
+- [ ] Số cổng trùng số trên form → không bung hộp thoại
+- [ ] `HIS_BHYT_PARAM` không có bản ghi hiệu lực → chỉ điền lũy kế, không đụng checkbox và TDMC CT
+- [ ] Sau khi điền tự động, bấm Lưu → không bị `ValidateCoPaidAccumulate` chặn
+- [ ] Nút tra cứu thủ công trên ô lũy kế hoạt động độc lập với lần gọi tự động
+- [ ] Lưu xong, mở lại form Sửa → 3 trường hiển thị đúng giá trị đã lưu
+- [ ] In 3 mẫu Mps000508 / Mps000510 / Mps000512 → trường lũy kế hiển thị đúng
+
+**TT 06/2026**
 
 - [ ] Danh sách chẩn đoán giới thiệu KHÔNG hiển thị ICD có IS_DEATH_CAUSE_ONLY=1
 - [ ] Sửa chẩn đoán có IS_NOT_RECOMMEND_MAIN=1 → hiện cảnh báo; chọn Không → xóa & chọn lại; chọn Có → giữ nguyên

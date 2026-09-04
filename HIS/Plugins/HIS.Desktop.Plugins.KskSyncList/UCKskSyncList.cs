@@ -972,6 +972,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 hccConfigAvailable = !string.IsNullOrWhiteSpace(GetHccConnectionInfo());
                 vlgConfigAvailable = !string.IsNullOrWhiteSpace(GetVlgConnectionInfo());
                 sytConfigAvailable = !string.IsNullOrWhiteSpace(GetConfigValue(CONFIG_KEY__SYT_HCM_CONNECTION_INFO));
+
+                // Tom tat cong nao co cau hinh THEO CHI NHANH dang lam viec — soi nhanh khi vien bao
+                // "da khai cau hinh ma khong tich duoc cong". Chi tiet tung key: marker "KskBranchConfig:".
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "KskSyncList: chi nhanh dang lam viec={0} ({1}) | co cau hinh: BYT={2}, HSSK={3},"
+                    + " HOC={4}, HCC={5}, VLG={6}, SYT_HCM={7}",
+                    KskBranchConfig.CurrentBranchId(), KskBranchConfig.CurrentBranchName(),
+                    bytConfigAvailable, hsskConfigAvailable, hocConfigAvailable,
+                    hccConfigAvailable, vlgConfigAvailable, sytConfigAvailable));
+
                 if (syncTarget == null) syncTarget = new KskSyncTargetADO();
                 if (!hasSavedSyncState)
                 {
@@ -1002,9 +1012,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 lciBtnVlgStatus.Visibility = vlgConfigAvailable
                     ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                     : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                emptyFilterTop.Visibility = vlgConfigAvailable
-                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
-                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                // (26/08 Designer dong bo tu may dev da bo EmptySpaceItem "emptyFilterTop" va them btnClsMap — khong con swap cap.)
                 if (!sytConfigAvailable) syncTarget.SyncSytHcm = false;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
@@ -1148,8 +1156,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     return;
                 }
 
-                // CKS_NGUOI_KET_LUAN chi ky duoc bang HSM -> chi doi hoi day du nguoi ket luan khi cau hinh la HSM.
-                if (chkSign.Checked && SettingSignADO != null && SettingSignADO.IsHsm)
+                // CKS_NGUOI_KET_LUAN luon ky bang HSM cua nguoi ket luan (khong phu thuoc USB token/HSM cua
+                // the CKS_BENH_VIEN) -> da tich ky so la doi hoi ho so nao cung co nguoi ket luan.
+                if (chkSign.Checked && SettingSignADO != null)
                 {
                     string missConcluderMsg;
                     if (!KskSyncProcessor.AllHaveConcluder(rows, out missConcluderMsg))

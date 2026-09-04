@@ -16,7 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using FlexCel.Report;
+using HIS.Desktop.ApiConsumer;
 using Inventec.Common.Logging;
+using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -44,6 +47,10 @@ namespace MPS.Processor.Mps000276
         private List<Mps000276ADO> _ListSereServGroupNonKsk;
         private List<ServiceNumOderAdo> _ListServiceNumOder = new List<ServiceNumOderAdo>();
         private List<TreatmentADO> _ListTreatment = new List<TreatmentADO>();
+        //Tong so thu tu da cap theo tung phong thuc hien (key: EXECUTE_ROOM_ID)
+        private Dictionary<long, long> _TotalNumOrderByRoom = null;
+        //Cau hinh co san cua he thong: vien co sinh STT rieng cho cac chi dinh "uu tien" hay khong
+        private const string CONFIG_KEY__IS_USING_OTHER_NUM_ORDER_FOR_PRIORITIZED = "MOS.HIS_SERVICE_REQ.IS_USING_OTHER_NUM_ORDER_FOR_PRIORITIZED";
         public Mps000276Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -175,6 +182,82 @@ namespace MPS.Processor.Mps000276
             return result;
         }
 
+        /// <summary>
+        /// Lay tong so thu tu da cap cua tung phong thuc hien co tren phieu, trong ngay chi dinh
+        /// (= so thu tu lon nhat da cap cua phong do, do STT duoc cap tang dan lien tuc
+        /// trong pham vi (phong thuc hien, ngay chi dinh))
+        /// Loi/khong co du lieu thi bo qua, van in phieu binh thuong
+        /// </summary>
+        void GetTotalNumOrderInRoom()
+        {
+            try
+            {
+                this._TotalNumOrderByRoom = null;
+
+                if (rdo == null || rdo._vServiceReqs == null || rdo._vServiceReqs.Count <= 0)
+                {
+                    return;
+                }
+
+                //Neu vien tach day so rieng cho chi dinh "uu tien" thi phai lay tong so trong dung day
+                //cua y lenh, neu khong STT cua benh nhan se bi so voi tong so cua day khac
+                HIS_CONFIG priorityCfg = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_CONFIG>()
+                    .FirstOrDefault(o => o.KEY == CONFIG_KEY__IS_USING_OTHER_NUM_ORDER_FOR_PRIORITIZED);
+                bool isUsingOtherNumOrderForPrioritized = (priorityCfg != null && priorityCfg.VALUE == "1");
+
+                Dictionary<long, long> totalNumOrders = new Dictionary<long, long>();
+
+                var groups = rdo._vServiceReqs
+                    .Where(o => o.EXECUTE_ROOM_ID > 0)
+                    .GroupBy(o => new
+                    {
+                        INTRUCTION_DATE = o.INTRUCTION_DATE,
+                        IS_PRIORITY = isUsingOtherNumOrderForPrioritized && (o.PRIORITY ?? 0) != 0
+                    })
+                    .ToList();
+
+                foreach (var group in groups)
+                {
+                    CommonParam param = new CommonParam();
+                    HisServiceReqMaxNumOrderFilter filter = new HisServiceReqMaxNumOrderFilter();
+                    filter.INSTRUCTION_DATE = group.Key.INTRUCTION_DATE;
+                    filter.EXECUTE_ROOM_IDs = group.Select(o => o.EXECUTE_ROOM_ID).Distinct().ToList();
+                    if (isUsingOtherNumOrderForPrioritized)
+                    {
+                        filter.IS_PRIORITY = group.Key.IS_PRIORITY;
+                    }
+
+                    var maxNumOrders = new Inventec.Common.Adapter.BackendAdapter(param)
+                        .Get<List<HisServiceReqMaxNumOrderSDO>>("api/HisServiceReq/GetMaxNumOrder", ApiConsumers.MosConsumer, filter, param);
+
+                    if (maxNumOrders == null || maxNumOrders.Count <= 0)
+                    {
+                        continue;
+                    }
+
+                    foreach (var item in maxNumOrders)
+                    {
+                        if (!totalNumOrders.ContainsKey(item.EXECUTE_ROOM_ID))
+                        {
+                            totalNumOrders.Add(item.EXECUTE_ROOM_ID, item.MAX_NUM_ORDER);
+                        }
+                        else if (totalNumOrders[item.EXECUTE_ROOM_ID] < item.MAX_NUM_ORDER)
+                        {
+                            totalNumOrders[item.EXECUTE_ROOM_ID] = item.MAX_NUM_ORDER;
+                        }
+                    }
+                }
+
+                this._TotalNumOrderByRoom = (totalNumOrders.Count > 0) ? totalNumOrders : null;
+            }
+            catch (Exception ex)
+            {
+                //Khong lay duoc tong so thi van in phieu binh thuong
+                this._TotalNumOrderByRoom = null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         void ProcessListData()
         {
             try
@@ -183,6 +266,7 @@ namespace MPS.Processor.Mps000276
                 {
                     return;
                 }
+                this.GetTotalNumOrderInRoom();
                 var Groups = rdo._vServiceReqs.GroupBy(g => g.CASHIER_ROOM_ID ?? 0).ToList();
                 var ServiceTypeS = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_TYPE>();
                 long maxStt = (rdo._ServiceNumOrder != null && rdo._ServiceNumOrder.Count > 0) ? rdo._ServiceNumOrder.Max(m => m.NUM_ORDER) : 0;
@@ -317,6 +401,16 @@ namespace MPS.Processor.Mps000276
                         ado.ServiceName = ss.TDL_SERVICE_NAME;
                         ado.ServiceReqId = sr.ID;
                         ado.ServiceReqNumOrder = sr.NUM_ORDER ?? 99999999;
+                        // Tong so thu tu da cap tai phong thuc hien cua chinh dong nay
+                        // (phieu co nhieu phong thi moi dong mot tong so rieng)
+                        if (this._TotalNumOrderByRoom != null && this._TotalNumOrderByRoom.ContainsKey(sr.EXECUTE_ROOM_ID))
+                        {
+                            ado.ExecuteRoomTotalNumOrder = this._TotalNumOrderByRoom[sr.EXECUTE_ROOM_ID];
+                            if (sr.NUM_ORDER.HasValue)
+                            {
+                                ado.ServiceReqNumOrderWithTotal = string.Format("{0}/{1}", sr.NUM_ORDER.Value, ado.ExecuteRoomTotalNumOrder);
+                            }
+                        }
                         ado.ServiceTypeId = ss.TDL_SERVICE_TYPE_ID;
                         if (service != null)
                         {

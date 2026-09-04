@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -107,6 +107,15 @@ namespace HIS.UC.UCHeniInfo
         List<HIS_HEIN_PATIENT_TYPE> heinPatientTypeData;
         bool IsCheckAutoDT = false;
         bool IsShowMessage = false;
+
+        /// <summary>
+        /// Cờ chặn cảnh báo tự động khi chương trình tự tick chkJoin5Year/chkPaid6Month.
+        /// Dùng khi điền dữ liệu cùng chi trả lấy từ cổng BHXH.
+        /// </summary>
+        bool IsAutoCheck = false;
+
+        /// <summary>Handler tra cứu tiền cùng chi trả thủ công trên ô lũy kế.</summary>
+        DelegateCheckTienMCCT dlgCheckTienMCCT;
         enum RightRouterFactory
         {
             RIGHT_ROUTER,
@@ -291,6 +300,7 @@ namespace HIS.UC.UCHeniInfo
                 this.cboNoiSong.EditValue = null;
                 this.cboNoiSong.Properties.Buttons[1].Visible = false;
                 this.txtFreeCoPainTime.Text = "";
+                this.txtCoPaidAccumulate.Text = "";
                 this.txtMucHuong.Text = "";
                 this.heinCardData = new HeinCardData();
                 this.oldHeinCardNumber = null;
@@ -2199,6 +2209,7 @@ namespace HIS.UC.UCHeniInfo
                         this.txtAddress.Text = "";
                         this.txtFreeCoPainTime.Text = "";
                         this.dtFreeCoPainTime.Text = "";
+                        this.txtCoPaidAccumulate.Text = "";
                         this.cboDKKCBBD.EditValue = null;
                         this.cboHeinRightRoute.EditValue = null;
                         this.cboNoiSong.EditValue = null;

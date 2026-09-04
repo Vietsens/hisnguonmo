@@ -52,6 +52,8 @@ namespace MPS.Processor.Mps000454
                 //objectTag.AddObjectData(store, "KskPeriodDriver", new List<HIS_KSK_PERIOD_DRIVER>() { rdo.HisKskPeriodDriver });
 
                 SetSingleKey();
+                // Kết luận theo bệnh (ICD-10) của lượt khám — lấy từ HIS_KSK_GENERAL
+                SetConclusionIcdKeysFromGeneral();
                 SetSignatureKeyImageByCFG();
                 SetImageKey();
                 objectTag.AddObjectData(store, "ExamRank", rdo.examRank);
@@ -129,6 +131,39 @@ namespace MPS.Processor.Mps000454
 
                 }
                 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Kết luận theo bệnh (ICD-10) — dữ liệu nằm ở HIS_KSK_GENERAL cùng SERVICE_REQ_ID
+        /// (UC "Kết luận theo bệnh ICD-10" dùng chung cho mọi tab KSK), KHÔNG nằm ở bảng khám của mẫu này.
+        /// Khuôn theo Mps000516: sinh 3 cờ "x" theo CONCLUSION_ICD_TYPE
+        /// (1=Chưa phát hiện bất thường, 2=Chẩn đoán sơ bộ, 3=Chẩn đoán xác định) + mã/tên ICD.
+        /// Ngoài ra đổ toàn bộ cột HIS_KSK_GENERAL với prefix GENERAL_ để biểu mẫu dùng thêm
+        /// các trường kết luận khác ({GENERAL_DISEASES}, {GENERAL_CONCLUDER_USERNAME}...) mà không đụng key.
+        /// </summary>
+        private void SetConclusionIcdKeysFromGeneral()
+        {
+            try
+            {
+                HIS_KSK_GENERAL kskGeneral = rdo.HisKskGeneral;
+                if (kskGeneral != null)
+                {
+                    AddObjectKeyIntoListkeyWithPrefix<HIS_KSK_GENERAL>(kskGeneral, "GENERAL_", false);
+                }
+                long? icdType = (kskGeneral != null && kskGeneral.CONCLUSION_ICD_TYPE != null)
+                    ? (long?)kskGeneral.CONCLUSION_ICD_TYPE.Value : null;
+                SetSingleKey(new KeyValue(Mps000454ExtendSingleKey.CONCLUSION_ICD_NONE_X, icdType == 1 ? "x" : ""));
+                SetSingleKey(new KeyValue(Mps000454ExtendSingleKey.CONCLUSION_ICD_PRELIM_X, icdType == 2 ? "x" : ""));
+                SetSingleKey(new KeyValue(Mps000454ExtendSingleKey.CONCLUSION_ICD_FINAL_X, icdType == 3 ? "x" : ""));
+                SetSingleKey(new KeyValue(Mps000454ExtendSingleKey.CONCLUSION_ICD_CODE,
+                    (kskGeneral != null ? kskGeneral.CONCLUSION_ICD_CODE : null) ?? ""));
+                SetSingleKey(new KeyValue(Mps000454ExtendSingleKey.CONCLUSION_ICD_NAME,
+                    (kskGeneral != null ? kskGeneral.CONCLUSION_ICD_NAME : null) ?? ""));
             }
             catch (Exception ex)
             {

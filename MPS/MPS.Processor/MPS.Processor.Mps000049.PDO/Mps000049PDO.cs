@@ -200,8 +200,23 @@ namespace MPS.Processor.Mps000049.PDO
         public string OTHER_PAY_SOURCE_NAME { get; set; }
         public long? MEDICINE_LINE_ID { get; set; }
 
-        /// <summary>Cờ "Sản phẩm không phải là thuốc" (TPCN, mỹ phẩm, dinh dưỡng...) — dùng để tách phiếu.</summary>
+        /// <summary>Cờ "Sản phẩm không phải là thuốc" (TPCN, mỹ phẩm, dinh dưỡng...) — dùng để tách phiếu.</summary>  
         public short? IS_FUNCTIONAL_FOOD { get; set; }
+
+        /// <summary>
+        /// Khóa nhóm trang in: 1 = thuốc thường, 2 = thuốc gây nghiện/hướng thần/tiền chất.
+        /// Dùng làm khóa quan hệ PageGroups -> ExpMestAggregates để template tách trang.
+        /// </summary>
+        public long PAGE_GROUP_ID { get; set; }
+
+        /// <summary>
+        /// Số lượng dùng để in: ưu tiên số thực xuất (AMOUNT_EXCUTE), nếu phiếu chưa duyệt/xuất 
+        /// thì lấy số yêu cầu (AMOUNT_REQUEST) để phiếu không in ra số 0.
+        /// </summary>
+        public decimal AMOUNT_PRINT { get; set; }
+
+        /// <summary>Thành tiền = AMOUNT_PRINT * PRICE. Tính sẵn ở processor để template không phải dùng công thức.</summary>
+        public decimal? TOTAL_PRICE { get; set; }
 
         /// <summary>
         /// Key danh sách "Loại thuốc" — nối các loại phân loại của 1 thuốc bằng dấu phẩy.
@@ -421,6 +436,36 @@ namespace MPS.Processor.Mps000049.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+    }
+
+    /// <summary>
+    /// Một "nhóm trang" của phiếu in — mỗi bản ghi là 1 trang phiếu.
+    /// Template bind band phủ cả trang vào __PageGroups__ + tag page break để in nhiều trang trong 1 file:
+    /// trang 1 = thuốc thường, trang 2 = thuốc gây nghiện/hướng thần/tiền chất.
+    /// Các số tổng được tính sẵn tại processor (không dùng Aggregate của FlexCel vì Aggregate không scope theo band).
+    /// </summary>
+    public class Mps000049PageGroupADO
+    {
+        /// <summary>Khóa quan hệ với Mps000049ADO.PAGE_GROUP_ID.</summary>
+        public long PAGE_GROUP_ID { get; set; }
+
+        /// <summary>Tên nhóm, VD: "THUỐC THƯỜNG".</summary>
+        public string PAGE_GROUP_NAME { get; set; }
+
+        /// <summary>Tiêu đề phiếu đầy đủ, VD: "PHIẾU XUẤT KHO THUỐC THƯỜNG".</summary>
+        public string PAGE_GROUP_TITLE { get; set; }
+
+        /// <summary>Tổng số khoản (số dòng thuốc) của trang.</summary>
+        public int ITEM_COUNT { get; set; }
+
+        /// <summary>Tổng số lượng của trang.</summary>
+        public decimal TOTAL_AMOUNT { get; set; }
+
+        /// <summary>Tổng thành tiền của trang.</summary>
+        public decimal TOTAL_PRICE { get; set; }
+
+        /// <summary>Tổng thành tiền viết bằng chữ.</summary>
+        public string TOTAL_PRICE_TEXT { get; set; }
     }
 
     public class Mps000049Config

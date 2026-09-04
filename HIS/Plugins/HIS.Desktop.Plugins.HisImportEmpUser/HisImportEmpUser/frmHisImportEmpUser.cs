@@ -326,6 +326,52 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
         /// <summary>
         /// Chuyển chuỗi ngày dd/MM/yyyy (đã validate) sang time number (yyyyMMddHHmmss). Trả null nếu rỗng/sai định dạng.
         /// </summary>
+        /// <summary>
+        /// Kiem tra danh sach ma (ngan cach bang ; hoac ,) co ton tai trong danh muc khong.
+        /// Tra ve chuoi cac ma khong hop le, rong neu tat ca deu hop le.
+        /// </summary>
+        private string GetInvalidCodes(string codes, List<string> validCodes)
+        {
+            List<string> invalids = new List<string>();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(codes))
+                    return "";
+
+                var items = codes.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var code in items)
+                {
+                    string value = code.Trim();
+                    if (string.IsNullOrEmpty(value))
+                        continue;
+                    if (validCodes == null || !validCodes.Contains(value))
+                        invalids.Add(value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return string.Join(";", invalids);
+        }
+
+        /// <summary>
+        /// Chuan hoa danh sach ma nhap tu Excel ve dang "MA1;MA2" giong cach form danh muc luu.
+        /// </summary>
+        private string NormalizeCodes(string codes)
+        {
+            if (string.IsNullOrWhiteSpace(codes))
+                return null;
+
+            var items = codes.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(o => o.Trim())
+                .Where(o => !string.IsNullOrEmpty(o))
+                .Distinct()
+                .ToList();
+
+            return items.Count > 0 ? string.Join(";", items) : null;
+        }
+
         private long? ParseImportDateToTimeNumber(string dateStr)
         {
             try
@@ -473,6 +519,86 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                             error += string.Format(Message.MessageImport.KhongDungDinhDang, "TG hiệu lực đến");
                         }
                     }
+                    #region TT12 - MAU_02 (DMNHANLUCKBCB)
+                    // GIOI_TINH: nhap ma gioi tinh trong danh muc HIS_GENDER
+                    if (!string.IsNullOrEmpty(item.GENDER_CODE))
+                    {
+                        var gender = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.GENDER_CODE == item.GENDER_CODE.Trim());
+                        if (gender != null)
+                        {
+                            serAdo.GENDER_ID = (short)gender.ID;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Mã giới tính");
+                        }
+                    }
+
+                    // CHUCDANH_NN: ma chuc danh nghe nghiep trong danh muc HIS_CAREER_TITLE
+                    if (!string.IsNullOrEmpty(item.CAREER_TITLE_CODE))
+                    {
+                        var careerTitle = BackendDataWorker.Get<HIS_CAREER_TITLE>().FirstOrDefault(o => o.CAREER_TITLE_CODE == item.CAREER_TITLE_CODE.Trim());
+                        if (careerTitle != null)
+                        {
+                            serAdo.CAREER_TITLE_ID = careerTitle.ID;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Mã chức danh nghề nghiệp");
+                        }
+                    }
+
+                    // VI_TRI: 1..6 theo danh sach vi tri hanh nghe
+                    if (!string.IsNullOrEmpty(item.POSITION_STR))
+                    {
+                        short position;
+                        if (Int16.TryParse(item.POSITION_STR.Trim(), out position) && position >= 1 && position <= 6)
+                        {
+                            serAdo.POSITION = position;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Vị trí (nhập 1-6)");
+                        }
+                    }
+
+                    // THOIGIAN_DK: 1 = toan thoi gian, 2 = ban thoi gian
+                    if (!string.IsNullOrEmpty(item.TYPE_OF_TIME_STR))
+                    {
+                        short typeOfTime;
+                        if (Int16.TryParse(item.TYPE_OF_TIME_STR.Trim(), out typeOfTime) && (typeOfTime == 1 || typeOfTime == 2))
+                        {
+                            serAdo.TYPE_OF_TIME = typeOfTime;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "TG đăng ký (nhập 1 hoặc 2)");
+                        }
+                    }
+
+                    // PHAMVI_CM: danh sach ma chuyen khoa, ngan cach bang dau ;
+                    if (!string.IsNullOrEmpty(item.SPECIALITY_CODES))
+                    {
+                        string invalidCodes = this.GetInvalidCodes(item.SPECIALITY_CODES,
+                            BackendDataWorker.Get<HIS_SPECIALITY>().Select(o => o.SPECIALITY_CODE).ToList());
+                        if (!string.IsNullOrEmpty(invalidCodes))
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Phạm vi CM (" + invalidCodes + ")");
+                        }
+                    }
+
+                    // CSKCB_KHAC: danh sach ma co so KCB khac, ngan cach bang dau ;
+                    if (!string.IsNullOrEmpty(item.MEDI_ORG_CODES))
+                    {
+                        string invalidCodes = this.GetInvalidCodes(item.MEDI_ORG_CODES,
+                            BackendDataWorker.Get<HIS_MEDI_ORG>().Select(o => o.MEDI_ORG_CODE).ToList());
+                        if (!string.IsNullOrEmpty(invalidCodes))
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "CSKCB khác (" + invalidCodes + ")");
+                        }
+                    }
+                    #endregion
+
                     if (!string.IsNullOrEmpty(item.ALLOW_UPDATE_OTHER_SCLINICAL_STR))
                     {
                         if (item.ALLOW_UPDATE_OTHER_SCLINICAL_STR.Trim().ToLower() == "x")
@@ -821,6 +947,12 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                         ado.TECH_TRANSFER_DECISIONS = string.IsNullOrWhiteSpace(item.TECH_TRANSFER_DECISIONS) ? null : item.TECH_TRANSFER_DECISIONS.Trim();
                         ado.WORKING_SCHEDULE = string.IsNullOrWhiteSpace(item.WORKING_SCHEDULE) ? null : item.WORKING_SCHEDULE.Trim();
                         ado.WEEK_WORK_DAYS = string.IsNullOrWhiteSpace(item.WEEK_WORK_DAYS) ? null : item.WEEK_WORK_DAYS.Trim();
+                        ado.GENDER_ID = item.GENDER_ID;
+                        ado.CAREER_TITLE_ID = item.CAREER_TITLE_ID;
+                        ado.POSITION = item.POSITION;
+                        ado.TYPE_OF_TIME = item.TYPE_OF_TIME;
+                        ado.SPECIALITY_CODES = NormalizeCodes(item.SPECIALITY_CODES);
+                        ado.MEDI_ORG_CODES = NormalizeCodes(item.MEDI_ORG_CODES);
                         ado.FROM_TIME = ParseImportDateToTimeNumber(item.FROM_TIME);
                         ado.TO_TIME = ParseImportDateToTimeNumber(item.TO_TIME);
                         datas.Add(ado);

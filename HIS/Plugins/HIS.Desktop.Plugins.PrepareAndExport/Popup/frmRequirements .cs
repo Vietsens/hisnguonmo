@@ -35,31 +35,44 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Popup
             LoadListHisTreatment();
         }
 
+        /// <summary>
+        /// Tra cuu dot dieu tri cua toan bo phieu tren man hinh. Truoc day day CA danh sach ID (ngay dong
+        /// la ca nghin) vao MOT loi goi -> vuot tran do dai URL -> API loi, BackendAdapter tra null,
+        /// popup trang khong bao gi. Nay chia lo 100 ID chay goi dau nhau — xem TreatmentBatchLoader. 
+        /// Dieu kien IS_REASON_UNFINISH / IS_CONFIRM_UNFINISH / IS_PAUSE loc theo TUNG ban ghi nen gan
+        /// vao tung lo la khong doi nghia.
+        /// </summary>
         private void LoadListHisTreatment()
         {
             try
-            {   
+            {
                 if(lstAll!=null && lstAll.Count > 0)
                 {
                     var treatmentIds = lstAll
-                          .Select(x => x.TDL_TREATMENT_ID??0)
+                          .Where(x => x.TDL_TREATMENT_ID.HasValue && x.TDL_TREATMENT_ID.Value > 0)
+                          .Select(x => x.TDL_TREATMENT_ID.Value)
                           .Distinct()
                           .ToList();
 
-                    CommonParam param = new CommonParam();
-                    HisTreatmentFilter filter = new HisTreatmentFilter();
-                    filter.IDs = treatmentIds;
-                    filter.IS_REASON_UNFINISH = 1;
-                    filter.IS_CONFIRM_UNFINISH = 0;
-                    filter.IS_PAUSE = true;
-                    
-                    List<HIS_TREATMENT> treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param);
+                    Inventec.Common.Logging.LogSystem.Debug("YEU CAU DIEU TRI ___ BAT DAU: phieu=" + lstAll.Count
+                        + ", dot dieu tri phai tra cuu=" + treatmentIds.Count);
+
+                    List<HIS_TREATMENT> treatment = TreatmentBatchLoader.GetByIds("YeuCauDieuTri", treatmentIds,
+                        filter =>
+                        {
+                            filter.IS_REASON_UNFINISH = 1;
+                            filter.IS_CONFIRM_UNFINISH = 0;
+                            filter.IS_PAUSE = true;
+                        });
+
                     gridControl2.DataSource = null;
-                    if (treatment != null && treatment.Count > 0)
+                    //Gan ca khi rong: giu list cu thi o tim kiem se lam hien lai nhung dong da bien mat.
+                    allTreatments = (treatment != null) ? treatment : new List<HIS_TREATMENT>();
+                    if (allTreatments.Count > 0)
                     {
-                        allTreatments = treatment;
-                        gridControl2.DataSource = treatment;
+                        gridControl2.DataSource = allTreatments;
                     }
+                    Inventec.Common.Logging.LogSystem.Debug("YEU CAU DIEU TRI ___ KET QUA: len grid=" + allTreatments.Count + " dong");
                 }
 
             }

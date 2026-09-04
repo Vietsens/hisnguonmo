@@ -41,6 +41,7 @@ using HeinCardData = Inventec.Common.QrCodeBHYT.HeinCardData;
 using DevExpress.XtraEditors;
 using MOS.SDO;
 using MOS.EFMODEL.DataModels;
+using Inventec.Desktop.Common.Message;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
@@ -50,18 +51,36 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         {
             try
             {
-                if (!HisConfigCFG.IsCheckExamHistory) return;
+                // Bon cua chan duoi day cung chan luon buoc tra cuu tien MCCT o cuoi ham.
+                // Ghi log tung cua de nhin log biet duoc vi sao luong khong chay.
+                if (!HisConfigCFG.IsCheckExamHistory)
+                {
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "CheckTTFull: bo qua - cau hinh IsCheckExamHistory dang tat.");
+                    return;
+                }
                 if (this.ucPatientRaw1 != null)
                 {
                     UCPatientRawADO patientRawADO = this.ucPatientRaw1.GetValue();
                     if (patientRawADO.PATIENTTYPE_ID != HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT)
                     {
+                        Inventec.Common.Logging.LogSystem.Info(String.Format(
+                            "CheckTTFull: bo qua - doi tuong khong phai BHYT. PATIENTTYPE_ID: {0}",
+                            patientRawADO.PATIENTTYPE_ID));
                         return;
                     }
                 }
 
-                if (heinCard == null) { return; }
-                if (this.isResetForm) { return; }
+                if (heinCard == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("CheckTTFull: bo qua - heinCard null.");
+                    return;
+                }
+                if (this.isResetForm)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("CheckTTFull: bo qua - form dang reset.");
+                    return;
+                }
 
                 HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
                 if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
@@ -132,6 +151,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                     this.CheckTTProcessResultData(heinCard, focusNextControl, false);
                 }
+
+                // Cổng đã nhận diện được thẻ nên tra cứu cùng chi trả mới có cái để đối chiếu.
+                // Lỗi ở đây không ảnh hưởng kết quả kiểm tra thẻ phía trên.
+                await this.CheckTienMCCT(heinCard);
                 //else
                 //{
                 //    //data = this.CheckPatientOldByHeinCard(heinCard);
@@ -261,6 +284,141 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Tra cứu tiền cùng chi trả trên cổng BHXH rồi chuyển kết quả cho UC thẻ BHYT,
+        /// nơi suy ra số lũy kế, cờ đủ 06 tháng và thời điểm miễn cùng chi trả.
+        ///
+        /// Không bao giờ chặn luồng kiểm tra thẻ: mọi lỗi ở đây chỉ ghi log, form vẫn
+        /// giữ nguyên những gì người dùng đã nhập.
+        /// </summary>
+        internal async Task CheckTienMCCT(HeinCardData dataHein)
+        {
+            try
+            {
+                if (dataHein == null || this.ucHeinInfo1 == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(String.Format(
+                        "CheckTienMCCT: bo qua - dataHein null: {0}, ucHeinInfo1 null: {1}",
+                        dataHein == null, this.ucHeinInfo1 == null));
+                    return;
+                }
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "CheckTienMCCT BEGIN____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => dataHein), dataHein));
+
+                HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
+                ResultMCCTADO resultMcct = await heinGOVManager.CheckTienMCCT(dataHein);
+
+                if (resultMcct == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("CheckTienMCCT: HeinGOVManager tra ve null.");
+                    return;
+                }
+
+                this.ucHeinInfo1.SetCoPaidAccumulateFromGov(resultMcct);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Handler nút tra cứu thủ công trên ô cùng chi trả lũy kế.
+        /// Dựng dữ liệu thẻ từ thông tin đang có trên form rồi gọi cổng.
+        /// </summary>
+        private async void CheckTienMCCTManual()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("CheckTienMCCTManual: bat dau tra cuu thu cong.");
+
+                HeinCardData dataHein = this.BuildHeinCardDataForMcct();
+                if (dataHein == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "CheckTienMCCTManual: khong dung duoc du lieu the, dung tra cuu.");
+                    return;
+                }
+
+                WaitingManager.Show();
+                try
+                {
+                    await this.CheckTienMCCT(dataHein);
+                }
+                finally
+                {
+                    WaitingManager.Hide();
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gom số thẻ đang nhập trên form cùng họ tên và ngày sinh bệnh nhân,
+        /// theo đúng định dạng cổng chấp nhận (dd/MM/yyyy, hoặc yyyy khi không có ngày sinh đầy đủ).
+        /// </summary>
+        private HeinCardData BuildHeinCardDataForMcct()
+        {
+            HeinCardData result = null;
+            try
+            {
+                if (this.ucHeinInfo1 == null || this.ucPatientRaw1 == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(String.Format(
+                        "BuildHeinCardDataForMcct: ucHeinInfo1 null: {0}, ucPatientRaw1 null: {1}",
+                        this.ucHeinInfo1 == null, this.ucPatientRaw1 == null));
+                    return null;
+                }
+
+                var profile = (MOS.SDO.HisPatientProfileSDO)this.ucHeinInfo1.GetValue();
+                string heinCardNumber = profile != null && profile.HisPatientTypeAlter != null
+                    ? profile.HisPatientTypeAlter.HEIN_CARD_NUMBER
+                    : null;
+
+                if (String.IsNullOrEmpty(heinCardNumber))
+                {
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "BuildHeinCardDataForMcct: chua nhap so the BHYT, khong goi cong BHXH.");
+                    return null;
+                }
+
+                var dataPatient = (UCPatientRawADO)this.ucPatientRaw1.GetValue();
+                if (dataPatient == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "BuildHeinCardDataForMcct: ucPatientRaw1.GetValue() tra ve null.");
+                    return null;
+                }
+
+                result = new HeinCardData();
+                result.HeinCardNumber = heinCardNumber;
+                result.PatientName = dataPatient.PATIENT_NAME;
+                result.Gender = GenderConvert.HisToHein(dataPatient.GENDER_ID.ToString());
+
+                if (dataPatient.IS_HAS_NOT_DAY_DOB == 1)
+                {
+                    result.Dob = dataPatient.DOB.ToString().Substring(0, 4);
+                }
+                else
+                {
+                    result.Dob = Inventec.Common.DateTime.Convert.TimeNumberToDateString(dataPatient.DOB);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = null;
+            }
+            return result;
         }
 
         private bool CheckRRCodeTTFee(bool IsSave)

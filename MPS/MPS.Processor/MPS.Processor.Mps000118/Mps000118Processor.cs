@@ -541,11 +541,72 @@ namespace MPS.Processor.Mps000118
                         }
                     }
                 }
+
+                ProcessDoseByTimeKey();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        //Set key lieu dung theo buoi: MORNING_STR, NOON_STR, AFTERNOON_STR, EVENING_STR
+        private void ProcessDoseByTimeKey()
+        {
+            try
+            {
+                if (expMestMedicines_Sort == null || expMestMedicines_Sort.Count <= 0) return;
+
+                foreach (var medi in expMestMedicines_Sort)
+                {
+                    string morning = MakeDoseString(medi.MORNING);
+                    string noon = MakeDoseString(medi.NOON);
+                    string afternoon = MakeDoseString(medi.AFTERNOON);
+                    string evening = MakeDoseString(medi.EVENING);
+
+                    //Thuoc khong ke buoi nao: de rong ca 4 key de mau in an han dong lieu dung
+                    if (String.IsNullOrEmpty(morning) && String.IsNullOrEmpty(noon)
+                        && String.IsNullOrEmpty(afternoon) && String.IsNullOrEmpty(evening))
+                    {
+                        medi.MORNING_STR = "";
+                        medi.NOON_STR = "";
+                        medi.AFTERNOON_STR = "";
+                        medi.EVENING_STR = "";
+                        continue;
+                    }
+
+                    //Co ke it nhat 1 buoi: buoi khong ke tra ve 0 de in du ca 4 buoi
+                    medi.MORNING_STR = String.IsNullOrEmpty(morning) ? "0" : morning;
+                    medi.NOON_STR = String.IsNullOrEmpty(noon) ? "0" : noon;
+                    medi.AFTERNOON_STR = String.IsNullOrEmpty(afternoon) ? "0" : afternoon;
+                    medi.EVENING_STR = String.IsNullOrEmpty(evening) ? "0" : evening;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        //Chuan hoa so luong lieu dung theo buoi. Tra ve rong neu khong ke theo buoi
+        private string MakeDoseString(string doseValue)
+        {
+            string result = "";
+            try
+            {
+                if (String.IsNullOrWhiteSpace(doseValue)) return result;
+
+                decimal dose = Inventec.Common.TypeConvert.Parse.ToDecimal(doseValue);
+                if (dose <= 0) return result;
+
+                result = Inventec.Common.Number.Convert.NumberToStringRoundAuto(dose, 4);
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         //Lọc thuốc theo thứ tự

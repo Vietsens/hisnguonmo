@@ -169,4 +169,34 @@
   <data name="TheBHYTDaHetHanSuDungBanCoMuonTiepTucKhong" xml:space="preserve">
     <value>Thẻ BHYT đã hết hạn sử dụng. Bạn có muốn tiếp tục không?</value>
   </data>
+  <data name="CungChiTraLuyKeTrenCongBHXH" xml:space="preserve">
+    <value>Cùng chi trả lũy kế trên cổng BHXH: {0}   (hiện tại: {1})</value>
+  </data>
+  <data name="DaCungChiTra06ThangLuongCoSo" xml:space="preserve">
+    <value>Đã cùng chi trả 6 tháng lương cơ sở: {0}</value>
+  </data>
+  <data name="ThoiDiemMienCungChiTraTrenCong" xml:space="preserve">
+    <value>Thời điểm miễn cùng chi trả trên cổng: {0}   (hiện tại: {1})</value>
+  </data>
+  <data name="BanCoMuonLayThongTinTuCongBHXHKhong" xml:space="preserve">
+    <value>Bạn có muốn lấy thông tin từ cổng BHXH?</value>
+  </data>
+  <data name="KhongXacDinhDuocThoiDiemMienCungChiTra" xml:space="preserve">
+    <value>Số tiền cùng chi trả lũy kế đã vượt 06 tháng lương cơ sở nhưng cổng BHXH không trả về ngày ra viện của đợt vượt ngưỡng. Vui lòng nhập thời điểm miễn cùng chi trả theo giấy chứng nhận không cùng chi trả.</value>
+  </data>
+  <data name="Co" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="Khong" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="KhongXacDinh" xml:space="preserve">
+    <value>Không xác định</value>
+  </data>
+  <data name="DangDeTrong" xml:space="preserve">
+    <value>đang để trống</value>
+  </data>
+  <data name="SoTienLuyKeCungChiTraVuot06ThangLuongCoSo" xml:space="preserve">
+    <value>Số tiền lũy kế cùng chi trả bắt đầu vượt 06 tháng lương cơ sở. Vui lòng bổ sung thông tin thời gian và tích 6 tháng</value>
+  </data>
 </root>

@@ -1364,6 +1364,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
                 rdo._Banks = BackendDataWorker.Get<HIS_BANK>();
                 rdo._ListTransactionPayform = GetTransactionPayformForPrint(transaction != null ? transaction.ID : 0);
                 rdo._ListTransactionDiscount = GetTransactionDiscountForPrint(transaction != null ? transaction.ID : 0);
+                rdo._ListDepositReq = GetDepositReqForPrint(transaction != null ? transaction.TREATMENT_ID : (long?)null, transaction != null ? transaction.ID : 0);
                 MPS.ProcessorBase.Core.PrintData printData = null;
                 WaitingManager.Hide();
                 if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
@@ -2556,6 +2557,35 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
             }
         }
 
+
+        /// <summary>
+        /// Yeu cau tam ung (HIS_DEPOSIT_REQ) gan voi giao dich tam ung nay - dung cho ban in Mps000112
+        /// de lay khoa/phong YEU CAU giong cot "Khoa yeu cau" tren man hinh Yeu cau tam ung.
+        /// HisDepositReqViewFilter chua ho tro DEPOSIT_ID nen lay theo dot dieu tri roi loc lai o client.
+        /// </summary>
+        private List<MOS.EFMODEL.DataModels.V_HIS_DEPOSIT_REQ> GetDepositReqForPrint(long? treatmentId, long transactionId)
+        {
+            try
+            {
+                if (!treatmentId.HasValue || treatmentId.Value <= 0 || transactionId <= 0)
+                    return null;
+
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                MOS.Filter.HisDepositReqViewFilter filter = new MOS.Filter.HisDepositReqViewFilter();
+                filter.TREATMENT_ID = treatmentId.Value;
+                var data = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_DEPOSIT_REQ>>(
+                    "api/HisDepositReq/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (data == null)
+                    return null;
+
+                return data.Where(o => o.DEPOSIT_ID == transactionId).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
         /// <summary>
         /// Bang hinh thuc thanh toan cua giao dich (HIS_TRANSACTION_PAYFORM) - dung cho ban in Mps000111/Mps000112.
         /// </summary>

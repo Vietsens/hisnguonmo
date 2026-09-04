@@ -38,7 +38,7 @@
     <Reference Include="Accessibility" />
     <Reference Include="HIS.Desktop.Library.CacheClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.UCOtherServiceReqInfo\HIS.Desktop.Library.CacheClient.dll</HintPath>
+      <HintPath>..\HIS.Desktop.Library.CacheClient\bin\$(Configuration)\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>

@@ -124,6 +124,51 @@ namespace MPS.Processor.Mps000217.PDO
         public decimal? IMP_AMOUNT_HOAN { get; set; }
         public decimal? CHMS_TYPE_ID { get; set; }
         public string DOCUMENT_NUMBER { get; set; }
+
+        #region Noi dung dien giai chi tiet (kho nguon - kho dich, benh nhan)
+        /// <summary>
+        /// Ten kho/tu truc xuat hang, da kem tien to "kho"/"tu truc".
+        /// Chi co gia tri voi phieu chuyen kho.
+        /// </summary>
+        public string FROM_MEDI_STOCK_NAME { get; set; }
+
+        /// <summary>
+        /// Ten kho/tu truc nhan hang, da kem tien to "kho"/"tu truc".
+        /// Chi co gia tri voi phieu chuyen kho.
+        /// </summary>
+        public string TO_MEDI_STOCK_NAME { get; set; }
+
+        /// <summary>Ma dieu tri gan voi phieu - lay cho MOI loai phieu nhap/xuat</summary>
+        public string TDL_TREATMENT_CODE { get; set; }
+
+        /// <summary>Ma benh nhan gan voi phieu - lay cho MOI loai phieu nhap/xuat</summary>
+        public string TDL_PATIENT_CODE { get; set; }
+
+        /// <summary>Ten benh nhan gan voi phieu - lay cho MOI loai phieu nhap/xuat</summary>
+        public string TDL_PATIENT_NAME { get; set; }
+
+        /// <summary>
+        /// ID dieu tri lay tu dong chi tiet xuat kho - dung de tra cuu ma dieu tri, ma benh nhan
+        /// khi phieu xuat khong luu san cac truong TDL_ (vi du phieu tong hop phong kham).
+        /// </summary>
+        public long? TDL_TREATMENT_ID { get; set; }
+
+        /// <summary>ID benh nhan lay tu dong chi tiet xuat kho</summary>
+        public long? TDL_PATIENT_ID { get; set; }
+
+        /// <summary>
+        /// Noi dung dien giai day du dung cho cot "Dien giai" cua the kho.
+        /// - Chuyen kho: ghi ro xuat tu kho nao sang tu truc nao (nhap tu kho nao vao tu truc nao).
+        /// - Xuat/nhap cho benh nhan: ghi ro ma benh nhan, ma dieu tri, ten benh nhan.
+        /// </summary>
+        private string content;
+        public string CONTENT
+        {
+            get { return !string.IsNullOrEmpty(content) ? content : BuildContent(); }
+            set { content = value; }
+        }
+        #endregion
+
         public Mrs00067RDO(
             V_HIS_IMP_MEST_MEDICINE imp,
             List<V_HIS_IMP_MEST> Listimp,
@@ -236,6 +281,47 @@ namespace MPS.Processor.Mps000217.PDO
             }
         }
 
+        /// <summary>
+        /// Overload bo sung danh sach kho de xac dinh ro kho/tu truc nguon - dich
+        /// va thong tin benh nhan cua phieu nhap.
+        /// </summary>
+        public Mrs00067RDO(
+            V_HIS_IMP_MEST_MEDICINE imp,
+            List<V_HIS_IMP_MEST> Listimp,
+            List<V_HIS_EXP_MEST> sourceMest,
+            List<HIS_IMP_MEST_TYPE> impMestTypes,
+            List<HIS_DEPARTMENT> _Departments,
+            List<V_HIS_ROOM> _Rooms,
+            List<HIS_MEDI_STOCK> _MediStocks)
+            : this(imp, Listimp, sourceMest, impMestTypes, _Departments, _Rooms)
+        {
+            try
+            {
+                V_HIS_IMP_MEST impMest = Listimp != null ? Listimp.FirstOrDefault(o => o.ID == imp.IMP_MEST_ID) : null;
+                if (impMest == null) return;
+
+                //Chuyen kho: kho xuat lay tu phieu xuat nguon, kho nhap la kho dang in the kho
+                if (impMest.CHMS_EXP_MEST_ID.HasValue && sourceMest != null)
+                {
+                    V_HIS_EXP_MEST sourceExpMest = sourceMest.FirstOrDefault(o => o.ID == impMest.CHMS_EXP_MEST_ID.Value);
+                    if (sourceExpMest != null)
+                    {
+                        FROM_MEDI_STOCK_NAME = MakeMediStockLabel(sourceExpMest.MEDI_STOCK_NAME, GetIsCabinet(_MediStocks, sourceExpMest.MEDI_STOCK_ID));
+                        TO_MEDI_STOCK_NAME = MakeMediStockLabel(impMest.MEDI_STOCK_NAME, GetIsCabinet(_MediStocks, impMest.MEDI_STOCK_ID));
+                    }
+                }
+
+                //Lay theo phieu con de the kho van hien thi duoc ma dieu tri, ma benh nhan
+                TDL_TREATMENT_CODE = impMest.TDL_TREATMENT_CODE;
+                TDL_PATIENT_CODE = impMest.TDL_PATIENT_CODE;
+                TDL_PATIENT_NAME = impMest.TDL_PATIENT_NAME;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public Mrs00067RDO(
             V_HIS_EXP_MEST_MEDICINE exp,
             List<V_HIS_EXP_MEST> Listexp,
@@ -253,6 +339,8 @@ namespace MPS.Processor.Mps000217.PDO
                 EXP_AMOUNT = exp.AMOUNT;
                 EXP_MEST_CODE = exp.EXP_MEST_CODE;
                 DESCRIPTION_DETAIL = exp.DESCRIPTION;
+                TDL_TREATMENT_ID = exp.TDL_TREATMENT_ID;
+                TDL_PATIENT_ID = exp.TDL_PATIENT_ID;
                 SUPPLIER_CODE = exp.SUPPLIER_CODE;
                 SUPPLIER_ID = exp.SUPPLIER_ID;
                 SUPPLIER_NAME = exp.SUPPLIER_NAME;
@@ -261,6 +349,11 @@ namespace MPS.Processor.Mps000217.PDO
                 if (ExpMest != null)
                 {
                     DESCRIPTION = ExpMest.DESCRIPTION;
+
+                    //Thong tin benh nhan lay cho MOI loai phieu xuat (khong chi don thuoc/ban le)
+                    TDL_TREATMENT_CODE = ExpMest.TDL_TREATMENT_CODE;
+                    TDL_PATIENT_CODE = ExpMest.TDL_PATIENT_CODE;
+                    TDL_PATIENT_NAME = ExpMest.TDL_PATIENT_NAME;
                 }
 
 
@@ -269,10 +362,16 @@ namespace MPS.Processor.Mps000217.PDO
                 if (chmsExpMest != null)
                 {
                     V_HIS_IMP_MEST chmsImpMest = destMest != null ? destMest.Where(o => o.CHMS_EXP_MEST_ID == chmsExpMest.ID).FirstOrDefault() : null;
-                    this.IMP_MEDI_STOCK_CODE = _MediStocks.FirstOrDefault(o => o.ID == chmsExpMest.IMP_MEDI_STOCK_ID).MEDI_STOCK_CODE ?? "";
-                    this.IMP_MEDI_STOCK_NAME = _MediStocks.FirstOrDefault(o => o.ID == chmsExpMest.IMP_MEDI_STOCK_ID).MEDI_STOCK_NAME ?? "";
+                    HIS_MEDI_STOCK impMediStock = _MediStocks != null && chmsExpMest.IMP_MEDI_STOCK_ID.HasValue
+                        ? _MediStocks.FirstOrDefault(o => o.ID == chmsExpMest.IMP_MEDI_STOCK_ID.Value) : null;
+                    this.IMP_MEDI_STOCK_CODE = impMediStock != null ? impMediStock.MEDI_STOCK_CODE : "";
+                    this.IMP_MEDI_STOCK_NAME = impMediStock != null ? impMediStock.MEDI_STOCK_NAME : "";
                     this.SECOND_MEST_CODE = chmsImpMest != null ? chmsImpMest.IMP_MEST_CODE : "";
                     CHMS_TYPE_ID = chmsImpMest != null ? chmsImpMest.CHMS_TYPE_ID:null;
+
+                    //Ghi ro xuat tu kho nao sang tu truc nao
+                    this.FROM_MEDI_STOCK_NAME = MakeMediStockLabel(chmsExpMest.MEDI_STOCK_NAME, GetIsCabinet(_MediStocks, chmsExpMest.MEDI_STOCK_ID));
+                    this.TO_MEDI_STOCK_NAME = impMediStock != null ? MakeMediStockLabel(impMediStock.MEDI_STOCK_NAME, impMediStock.IS_CABINET) : "";
                 }
 
 
@@ -313,6 +412,9 @@ namespace MPS.Processor.Mps000217.PDO
                         this.VIR_PATIENT_NAME = "";
                         this.TREATMENT_CODE = "";
                         this.VIR_PATIENT_ADDRESS = "";
+
+                        //TDL_TREATMENT_CODE/TDL_PATIENT_CODE giu nguyen theo phieu con
+                        //de the kho van hien thi duoc ma dieu tri, ma benh nhan cua phieu tong hop
 
                         if (data != null)
                         {
@@ -358,6 +460,180 @@ namespace MPS.Processor.Mps000217.PDO
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Ghep cac gia tri khac rong, khong trung lap - dung khi gom nhieu phieu con
+        /// vao 1 dong the kho (phieu tong hop gom nhieu benh nhan).
+        /// </summary>
+        public static string JoinDistinct(IEnumerable<string> values)
+        {
+            string result = "";
+            try
+            {
+                if (values == null) return result;
+                result = string.Join(", ", values.Where(o => !string.IsNullOrWhiteSpace(o)).Select(o => o.Trim()).Distinct());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Tra ve gia tri duy nhat neu ca nhom chi co 1 gia tri, nguoc lai tra ve rong.
+        /// Dung cho ten benh nhan - phieu tong hop nhieu benh nhan thi khong hien thi ten.
+        /// </summary>
+        public static string SingleOrEmpty(IEnumerable<string> values)
+        {
+            string result = "";
+            try
+            {
+                if (values == null) return result;
+                List<string> distinctValues = values.Where(o => !string.IsNullOrWhiteSpace(o)).Select(o => o.Trim()).Distinct().ToList();
+                if (distinctValues.Count == 1) result = distinctValues[0];
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gan tien to "kho"/"tu truc" vao truoc ten kho de noi dung dien giai ro nghia.
+        /// Neu ten kho da bat dau bang "kho"/"tu" thi giu nguyen, tranh lap tu.
+        /// </summary>
+        private static string MakeMediStockLabel(string mediStockName, short? isCabinet)
+        {
+            string result = "";
+            try
+            {
+                if (string.IsNullOrWhiteSpace(mediStockName)) return result;
+
+                result = mediStockName.Trim();
+                //So sanh theo tu dau tien de khong nham "Khoa ..." voi "Kho ..."
+                string firstWord = result.Split(' ')[0].ToLower();
+                if (firstWord == "kho" || firstWord == "tủ" || firstWord == "tu")
+                    return result;
+
+                result = (isCabinet == 1 ? "tủ trực " : "kho ") + result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private static short? GetIsCabinet(List<HIS_MEDI_STOCK> mediStocks, long? mediStockId)
+        {
+            short? result = null;
+            try
+            {
+                if (mediStocks == null || !mediStockId.HasValue) return result;
+
+                HIS_MEDI_STOCK mediStock = mediStocks.FirstOrDefault(o => o.ID == mediStockId.Value);
+                if (mediStock != null) result = mediStock.IS_CABINET;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Ghep noi dung dien giai: loai phieu - kho nguon/kho dich - NCC - khoa - benh nhan - phieu doi ung.
+        /// </summary>
+        private string BuildContent()
+        {
+            string result = "";
+            try
+            {
+                bool isImport = !string.IsNullOrWhiteSpace(IMP_MEST_CODE);
+                List<string> parts = new List<string>();
+
+                string mestTypeName = isImport ? IMP_MEST_TYPE_NAME : EXP_MEST_TYPE_NAME;
+                if (!string.IsNullOrWhiteSpace(mestTypeName)) parts.Add(mestTypeName.Trim());
+
+                string stockContent = BuildStockContent(isImport);
+                if (!string.IsNullOrWhiteSpace(stockContent)) parts.Add(stockContent);
+
+                //NCC chi co y nghia voi phieu nhap - dong xuat khong hien thi de tranh nham lan
+                if (isImport && !string.IsNullOrWhiteSpace(SUPPLIER_NAME)) parts.Add("NCC: " + SUPPLIER_NAME.Trim());
+
+                if (!string.IsNullOrWhiteSpace(REQUEST_DEPARTMENT_NAME)) parts.Add("Khoa: " + REQUEST_DEPARTMENT_NAME.Trim());
+
+                string patientContent = BuildPatientContent();
+                if (!string.IsNullOrWhiteSpace(patientContent)) parts.Add(patientContent);
+
+                if (!string.IsNullOrWhiteSpace(SECOND_MEST_CODE)) parts.Add("Phiếu: " + SECOND_MEST_CODE.Trim());
+
+                result = string.Join(" - ", parts);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Noi dung kho nguon - kho dich: "Xuat tu kho A sang tu truc B" / "Nhap tu kho A vao tu truc B".
+        /// </summary>
+        private string BuildStockContent(bool isImport)
+        {
+            string result = "";
+            try
+            {
+                bool hasFromStock = !string.IsNullOrWhiteSpace(FROM_MEDI_STOCK_NAME);
+                bool hasToStock = !string.IsNullOrWhiteSpace(TO_MEDI_STOCK_NAME);
+                if (!hasFromStock && !hasToStock) return result;
+
+                string action = isImport ? "Nhập" : "Xuất";
+                string toWord = isImport ? "vào" : "sang";
+
+                if (hasFromStock && hasToStock)
+                    result = string.Format("{0} từ {1} {2} {3}", action, FROM_MEDI_STOCK_NAME, toWord, TO_MEDI_STOCK_NAME);
+                else if (hasFromStock)
+                    result = string.Format("{0} từ {1}", action, FROM_MEDI_STOCK_NAME);
+                else
+                    result = string.Format("{0} {1} {2}", action, toWord, TO_MEDI_STOCK_NAME);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Noi dung benh nhan: ma benh nhan, ma dieu tri, ten benh nhan.
+        /// </summary>
+        private string BuildPatientContent()
+        {
+            string result = "";
+            try
+            {
+                string patientCode = TDL_PATIENT_CODE;
+                string treatmentCode = !string.IsNullOrWhiteSpace(TDL_TREATMENT_CODE) ? TDL_TREATMENT_CODE : TREATMENT_CODE;
+                string patientName = !string.IsNullOrWhiteSpace(TDL_PATIENT_NAME) ? TDL_PATIENT_NAME : VIR_PATIENT_NAME;
+                if (string.IsNullOrWhiteSpace(patientName)) patientName = CLIENT_NAME;
+
+                List<string> parts = new List<string>();
+                if (!string.IsNullOrWhiteSpace(patientCode)) parts.Add("Mã BN: " + patientCode.Trim());
+                if (!string.IsNullOrWhiteSpace(treatmentCode)) parts.Add("Mã ĐT: " + treatmentCode.Trim());
+                if (!string.IsNullOrWhiteSpace(patientName)) parts.Add(patientName.Trim());
+
+                result = string.Join(" - ", parts);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private void SetExtendField(Mrs00067RDO data)

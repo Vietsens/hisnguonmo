@@ -567,6 +567,9 @@
   <data name="UCTreatmentFinish.chkPrintPrescription.Properties.Caption" xml:space="preserve">
     <value>:In</value>
   </data>
+  <data name="UCTreatmentFinish.chkSignPrescription.Properties.Caption" xml:space="preserve">
+    <value>:Ký</value>
+  </data>
   <data name="UCTreatmentFinish.chkSignAppoinment.Properties.Caption" xml:space="preserve">
     <value>:Ký</value>
   </data>

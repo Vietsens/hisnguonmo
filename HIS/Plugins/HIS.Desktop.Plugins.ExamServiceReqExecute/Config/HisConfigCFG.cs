@@ -54,6 +54,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string CONFIG_KEY_IS_CHECK_ENABLE_EXAM_TYPE = "HIS.Desktop.Plugins.ExamServiceReqExecute.EnableByExamType";
         private const string CONFIG_KEY__IS_REQUIRED_TREATMENT_METHOD_OPTION = "HIS.Desktop.Plugins.TreatmentFinish.RequiredTreatmentMethodOption"; 
         private const string KEY_TreatmentEndTypeIsTransfer = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentEndTypeIsTransfer";
+        private const string KEY_PrinMps000062 = "HIS.Desktop.Plugins.ExamServiceReqExecute.PrinMps000062";
+        internal static string keyMps000062;
         internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string enableExamtype;
 
@@ -149,7 +151,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
 
         // Chan nhap vien khi con van ban chua hoan thanh: danh sach DEPARTMENT_CODE ap dung, phan tach boi "|".
         // Khong khai bao/de trong -> khong kiem tra.
-        private const string KEY_CheckDepaDocumentHospitalization = "HIS.Desktop.Plugins.ExamServiceReqExecute.CheckDepaDocument.Hospitalization";
+        internal const string KEY_CheckDepaDocumentHospitalization = "HIS.Desktop.Plugins.ExamServiceReqExecute.CheckDepaDocument.Hospitalization";
         internal static List<string> CheckDepaDocumentHospitalizationCodes = new List<string>();
 
         /// <summary>
@@ -167,6 +169,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
             {
                 // Doc som: LoadConfig dung chung mot try/catch, neu mot key phia sau nem loi
                 // thi cac key con lai se khong duoc doc -> tinh nang chan nhap vien bi tat am tham.
+                keyMps000062 = GetValue(KEY_PrinMps000062);
                 string rawCheckDepaDocHospitalize = GetValue(KEY_CheckDepaDocumentHospitalization);
                 CheckDepaDocumentHospitalizationCodes = string.IsNullOrWhiteSpace(rawCheckDepaDocHospitalize)
                     ? new List<string>()

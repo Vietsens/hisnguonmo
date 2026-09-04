@@ -116,5 +116,7 @@ namespace MPS.Processor.Mps000512
 
         internal const string LAST_TRANSACTION_AMOUNT = "LAST_TRANSACTION_AMOUNT";
         internal const string CO_PAID_ACCUMULATE_AMOUNT = "CO_PAID_ACCUMULATE_AMOUNT";
+        internal const string IN_TIME_STR = "IN_TIME_STR";
+        internal const string SERVICE_REQ_START_TIME_STR = "SERVICE_REQ_START_TIME_STR";
     }
 }

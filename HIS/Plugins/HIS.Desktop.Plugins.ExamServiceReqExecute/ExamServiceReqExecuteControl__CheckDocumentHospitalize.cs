@@ -59,6 +59,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private const string URI__EMR_DOCUMENT_TYPE_GET = "api/EmrDocumentType/Get";
 
         /// <summary>
+        /// Tien to log de tim nhanh trong LogSystem.txt khi kiem tra khong chan nhap vien nhu mong doi.
+        /// Moi diem thoat som deu ghi log kem gia tri thuc te vi tat ca cac nhanh do deu tra ve true
+        /// (cho phep luu) - khong co log thi khong biet dut o dau.
+        /// </summary>
+        private const string LOG__CHECK_DOCUMENT_HOSPITALIZE = "CheckEmrDocumentBeforeHospitalize: ";
+
+        /// <summary>
         /// Kiem tra van ban chua hoan thanh truoc khi cho phep nhap vien.
         /// </summary>
         /// <returns>true = duoc phep luu; false = con van ban chua hoan thanh, chan luu.</returns>
@@ -67,7 +74,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 if (chkHospitalize == null || !chkHospitalize.Checked)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(LOG__CHECK_DOCUMENT_HOSPITALIZE + "khong tich nhap vien, khong can kiem tra van ban.");
                     return true;
+                }
 
                 if (!IsCurrentDepartmentCheckDocumentHospitalize())
                     return true;
@@ -75,13 +85,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 string treatmentCode = this.HisServiceReqView != null ? this.HisServiceReqView.TDL_TREATMENT_CODE : null;
                 if (string.IsNullOrEmpty(treatmentCode))
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("CheckEmrDocumentBeforeHospitalize: TDL_TREATMENT_CODE rong, bo qua kiem tra van ban.");
+                    Inventec.Common.Logging.LogSystem.Warn(LOG__CHECK_DOCUMENT_HOSPITALIZE + "TDL_TREATMENT_CODE rong, bo qua kiem tra van ban.");
                     return true;
                 }
 
                 MediRecordCheckingResultADO checkingResult = GetMediRecordChecking(treatmentCode);
                 if (checkingResult == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(LOG__CHECK_DOCUMENT_HOSPITALIZE + "api " + URI__EMR_DOCUMENT_MEDI_RECORD_CHECKING
+                        + " tra ve null (ma dieu tri " + treatmentCode + "), bo qua kiem tra van ban.");
                     return true;
+                }
 
                 // Van ban da tao nhung chua hoan thanh chu ky.
                 // Tin theo ket qua cua api (dung nhu HIS.Desktop.Plugins.TransDepartment\frmDepartmentTran.cs):
@@ -98,15 +112,35 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     .ToList();
 
                 if (unsignedDocuments.Count == 0 && mandatoryMissingNames.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(LOG__CHECK_DOCUMENT_HOSPITALIZE + "ho so " + treatmentCode
+                        + " khong con van ban chua hoan thanh, cho phep nhap vien.");
                     return true;
+                }
 
-                List<EMR_DOCUMENT_TYPE> blockingTypes = GetHospitalizationBlockingDocumentTypes(unsignedDocuments, mandatoryMissingNames.Count > 0);
+                List<EMR_DOCUMENT_TYPE> blockingTypes = GetHospitalizationBlockingDocumentTypes();
                 if (blockingTypes == null || blockingTypes.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(LOG__CHECK_DOCUMENT_HOSPITALIZE
+                        + "khong lay duoc loai van ban nao co IS_HOSPITALIZATION = 1 (kiem tra lai cau hinh loai van ban tren man HIS.Desktop.Plugins.EmrDocumentType), bo qua kiem tra van ban.");
                     return true;
+                }
 
                 List<string> messages = BuildBlockingMessages(unsignedDocuments, mandatoryMissingNames, blockingTypes);
                 if (messages.Count == 0)
+                {
+                    // Ho so con van ban chua hoan thanh nhung khong van ban nao thuoc loai chan nhap vien.
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                        LOG__CHECK_DOCUMENT_HOSPITALIZE + "ho so {0} con {1} van ban chua ky du va {2} van ban bat buoc chua tao, "
+                        + "nhung khong van ban nao thuoc {3} loai van ban co IS_HOSPITALIZATION = 1. Loai chan nhap vien: [{4}]. Loai van ban chua ky du: [{5}].",
+                        treatmentCode,
+                        unsignedDocuments.Count,
+                        mandatoryMissingNames.Count,
+                        blockingTypes.Count,
+                        string.Join(", ", blockingTypes.Select(o => string.Format("{0}#{1}", o.ID, o.DOCUMENT_TYPE_CODE))),
+                        string.Join(", ", unsignedDocuments.Select(o => string.Format("{0}#{1}", o.DOCUMENT_TYPE_ID, o.DOCUMENT_TYPE_CODE)).Distinct())));
                     return true;
+                }
 
                 StringBuilder message = new StringBuilder();
                 message.AppendLine("Không thể nhập viện. Hồ sơ còn văn bản chưa hoàn thành:");
@@ -124,7 +158,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             catch (Exception ex)
             {
                 // Loi khi kiem tra thi khong chan nghiep vu luu
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(LOG__CHECK_DOCUMENT_HOSPITALIZE + "loi khi kiem tra van ban nen KHONG chan nhap vien.", ex);
                 return true;
             }
         }
@@ -138,13 +172,31 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 List<string> departmentCodes = HisConfigCFG.CheckDepaDocumentHospitalizationCodes;
                 if (departmentCodes == null || departmentCodes.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(LOG__CHECK_DOCUMENT_HOSPITALIZE + "key cau hinh "
+                        + HisConfigCFG.KEY_CheckDepaDocumentHospitalization
+                        + " chua khai bao (hoac de trong) nen KHONG kiem tra van ban. Khai bao danh sach DEPARTMENT_CODE, phan tach boi \"|\".");
                     return false;
+                }
 
                 string currentDepartmentCode = GetCurrentDepartmentCode();
                 if (string.IsNullOrEmpty(currentDepartmentCode))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(LOG__CHECK_DOCUMENT_HOSPITALIZE
+                        + "khong xac dinh duoc khoa cua phong lam viec nen KHONG kiem tra van ban.");
                     return false;
+                }
 
-                return departmentCodes.Contains(currentDepartmentCode.Trim().ToUpper());
+                bool isCheck = departmentCodes.Contains(currentDepartmentCode.Trim().ToUpper());
+                if (!isCheck)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                        LOG__CHECK_DOCUMENT_HOSPITALIZE + "khoa cua phong lam viec [{0}] khong nam trong danh sach cau hinh [{1}] cua key {2} nen KHONG kiem tra van ban.",
+                        currentDepartmentCode.Trim().ToUpper(),
+                        string.Join("|", departmentCodes),
+                        HisConfigCFG.KEY_CheckDepaDocumentHospitalization));
+                }
+                return isCheck;
             }
             catch (Exception ex)
             {
@@ -161,16 +213,29 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 if (this.moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(LOG__CHECK_DOCUMENT_HOSPITALIZE + "moduleData null, khong lay duoc khoa hien tai.");
                     return null;
+                }
 
                 var workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO
                     .FirstOrDefault(o => o.RoomId == this.moduleData.RoomId);
                 if (workPlace == null || workPlace.DepartmentId <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(LOG__CHECK_DOCUMENT_HOSPITALIZE
+                        + "khong tim thay WorkPlaceSDO (hoac DepartmentId <= 0) cua phong lam viec RoomId = " + this.moduleData.RoomId + ".");
                     return null;
+                }
 
                 var department = BackendDataWorker.Get<HIS_DEPARTMENT>()
                     .FirstOrDefault(o => o.ID == workPlace.DepartmentId);
-                return department != null ? department.DEPARTMENT_CODE : null;
+                if (department == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(LOG__CHECK_DOCUMENT_HOSPITALIZE
+                        + "khong tim thay HIS_DEPARTMENT co ID = " + workPlace.DepartmentId + " trong BackendData.");
+                    return null;
+                }
+                return department.DEPARTMENT_CODE;
             }
             catch (Exception ex)
             {
@@ -190,22 +255,35 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 var checkingResult = new BackendAdapter(paramCheck).Post<MediRecordCheckingResultADO>(
                     URI__EMR_DOCUMENT_MEDI_RECORD_CHECKING, ApiConsumers.EmrConsumer, treatmentCode, paramCheck);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("MediRecordChecking result", checkingResult));
+                if (checkingResult != null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        LOG__CHECK_DOCUMENT_HOSPITALIZE + "ho so {0}: {1} van ban chua ky du, {2} van ban bat buoc chua tao.",
+                        treatmentCode,
+                        checkingResult.SignatureMissingDocuments != null ? checkingResult.SignatureMissingDocuments.Count : 0,
+                        checkingResult.MandatoryMissingDocuments != null ? checkingResult.MandatoryMissingDocuments.Count : 0));
+                }
                 return checkingResult;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(LOG__CHECK_DOCUMENT_HOSPITALIZE + "loi khi goi api "
+                    + URI__EMR_DOCUMENT_MEDI_RECORD_CHECKING + " (ma dieu tri " + treatmentCode + ").", ex);
                 return null;
             }
         }
 
         /// <summary>
         /// Lay cac loai van ban chan nhap vien (IS_HOSPITALIZATION = 1).
-        /// Khi co van ban bat buoc chua tao thi phai lay toan bo loai van ban dang hoat dong
-        /// vi api chi tra ve ten van ban, khong co DOCUMENT_TYPE_ID de loc.
+        ///
+        /// Lay toan bo loai van ban dang hoat dong roi loc tai client (giong cac plugin EMR khac,
+        /// vi du EMR.Desktop.Plugins.EmrDocumentList) thay vi loc theo filter.IDs:
+        ///  - van ban bat buoc chua tao chi duoc api tra ve TEN, khong co DOCUMENT_TYPE_ID de loc;
+        ///  - filter cua BackendAdapter.Get di qua query string, truyen danh sach ID vao day la them
+        ///    mot duong tra ve null im lang ma diem goi khong phan biet duoc voi "khong co loai nao".
+        /// Bang EMR_DOCUMENT_TYPE chi vai chuc dong nen lay het khong dang ke.
         /// </summary>
-        private List<EMR_DOCUMENT_TYPE> GetHospitalizationBlockingDocumentTypes(
-            List<MediRecordCheckingDocumentADO> unsignedDocuments, bool hasMandatoryMissing)
+        private List<EMR_DOCUMENT_TYPE> GetHospitalizationBlockingDocumentTypes()
         {
             try
             {
@@ -213,29 +291,26 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 EmrDocumentTypeFilter filter = new EmrDocumentTypeFilter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
 
-                if (!hasMandatoryMissing)
-                {
-                    List<long> documentTypeIds = unsignedDocuments
-                        .Where(o => o.DOCUMENT_TYPE_ID.HasValue)
-                        .Select(o => o.DOCUMENT_TYPE_ID.Value)
-                        .Distinct()
-                        .ToList();
-                    if (documentTypeIds.Count == 0)
-                        return null;
-
-                    filter.IDs = documentTypeIds;
-                }
-
                 var documentTypes = new BackendAdapter(paramType).Get<List<EMR_DOCUMENT_TYPE>>(
                     URI__EMR_DOCUMENT_TYPE_GET, ApiConsumers.EmrConsumer, filter, paramType);
                 if (documentTypes == null || documentTypes.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(LOG__CHECK_DOCUMENT_HOSPITALIZE + "api " + URI__EMR_DOCUMENT_TYPE_GET
+                        + " tra ve rong, khong xac dinh duoc loai van ban chan nhap vien.");
                     return null;
+                }
 
-                return documentTypes.Where(o => o != null && o.IS_HOSPITALIZATION == 1).ToList();
+                List<EMR_DOCUMENT_TYPE> blockingTypes = documentTypes.Where(o => o != null && o.IS_HOSPITALIZATION == 1).ToList();
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    LOG__CHECK_DOCUMENT_HOSPITALIZE + "co {0}/{1} loai van ban dang hoat dong co IS_HOSPITALIZATION = 1: [{2}].",
+                    blockingTypes.Count,
+                    documentTypes.Count,
+                    string.Join(", ", blockingTypes.Select(o => string.Format("{0}#{1}", o.ID, o.DOCUMENT_TYPE_CODE)))));
+                return blockingTypes;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(LOG__CHECK_DOCUMENT_HOSPITALIZE + "loi khi lay loai van ban chan nhap vien.", ex);
                 return null;
             }
         }

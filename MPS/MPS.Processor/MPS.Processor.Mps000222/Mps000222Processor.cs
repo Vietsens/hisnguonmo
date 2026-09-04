@@ -45,10 +45,16 @@ namespace MPS.Processor.Mps000222
         const string config = "_Once";
         bool isOnce = false;
 
+        // Sắp xếp theo thời gian chỉ định: bật bằng cách thêm "_ByTime" vào tên file mẫu in
+        // (cùng cơ chế với "_Once") — đơn vị nào không đổi tên mẫu thì thứ tự phiếu giữ nguyên như cũ
+        const string configByTime = "_ByTime";
+        bool isSortByTime = false;
+
         public Mps000222Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
             isOnce = printData.fileName.Contains(config);
+            isSortByTime = printData.fileName.Contains(configByTime);
             rdo = (Mps000222PDO)rdoBase;
         }
 
@@ -81,6 +87,13 @@ namespace MPS.Processor.Mps000222
                 objectTag.AddRelationship(store, "ServiceTestIndex", "ServiceTest", new string[] { "SERVICE_CODE_1", "INTRUCTION_TIME_1" }, new string[] { "SERVICE_CODE_1", "INTRUCTION_TIME_1" });
                 objectTag.AddRelationship(store, "Service1", "ServiceTest", new string[] { "SERVICE_ID", "SERVICE_REQ_ID" }, new string[] { "SERVICE_ID", "SERVICE_REQ_ID" });
                 objectTag.AddRelationship(store, "ServiceCLS", "ServiceCLSFull", new string[] { "SERVICE_TYPE_ID", "DIIM_TYPE_ID", "FUEX_TYPE_ID", "INTRUCTION_TIME" }, new string[] { "SERVICE_TYPE_ID", "DIIM_TYPE_ID", "FUEX_TYPE_ID", "INTRUCTION_TIME" });
+
+                // Gom theo dịch vụ cha: cho phép lồng Service > ServiceTestIndex > ServiceTest.
+                // Chỉ đăng ký khi mẫu in bật _ByTime để không đổi cách render mẫu của các đơn vị khác.
+                if (isSortByTime)
+                {
+                    objectTag.AddRelationship(store, "Service", "ServiceTestIndex", "SERVICE_ID", "SERVICE_ID");
+                }
             }
             catch (Exception ex)
             {
@@ -129,6 +142,8 @@ namespace MPS.Processor.Mps000222
                         var groupService = rdo.HisServices.FirstOrDefault(o => o.SERVICE_CODE == item.FirstOrDefault().SERVICE_CODE_1);
                         ado.SERVICE_NAME = groupService != null ? groupService.SERVICE_NAME : item.FirstOrDefault().SERVICE_NAME;
                         ado.INTRUCTION_TIME_1 = item.FirstOrDefault().INTRUCTION_TIME_1;
+                        // Khóa lên dịch vụ cha để template lồng được Service > ServiceTestIndex > ServiceTest
+                        ado.SERVICE_ID = item.FirstOrDefault().SERVICE_ID;
                         GroupByParentServiceTest.Add(ado);
                     }
                 }                    
@@ -138,6 +153,117 @@ namespace MPS.Processor.Mps000222
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 		}
+        /// <summary>
+        /// Dòng kết luận cấp dịch vụ xét nghiệm: kết quả dạng kết luận (VD "DƯƠNG TÍNH") nằm ở bảng mở rộng
+        /// của dịch vụ đã thực hiện, không nằm ở chỉ số. Dịch vụ nào không có chỉ số nào mang kết quả thì
+        /// bổ sung một dòng kết luận, nếu không dịch vụ đó mất hẳn khỏi phiếu.
+        /// </summary>
+        private void SetDataServiceConclude()
+        {
+            try
+            {
+                if (rdo.HisSereServExtTests == null || rdo.HisSereServExtTests.Count == 0) return;
+                if (rdo.HisSereServs == null || rdo.HisServices == null) return;
+
+                var dicSereServ = new Dictionary<long, HIS_SERE_SERV>();
+                foreach (var item in rdo.HisSereServs)
+                {
+                    if (!dicSereServ.ContainsKey(item.ID)) dicSereServ[item.ID] = item;
+                }
+                var dicService = new Dictionary<long, V_HIS_SERVICE>();
+                foreach (var item in rdo.HisServices)
+                {
+                    if (!dicService.ContainsKey(item.ID)) dicService[item.ID] = item;
+                }
+
+                foreach (var ext in rdo.HisSereServExtTests)
+                {
+                    if (String.IsNullOrWhiteSpace(ext.CONCLUDE)) continue;
+
+                    HIS_SERE_SERV sese = null;
+                    if (!dicSereServ.TryGetValue(ext.SERE_SERV_ID, out sese) || sese == null) continue;
+
+                    // Kết luận là thông tin độc lập với chỉ số: dịch vụ có kháng sinh đồ vẫn có thể có
+                    // kết luận riêng, nên luôn in dòng kết luận, không phụ thuộc dịch vụ đã có chỉ số hay chưa.
+
+                    // Xác định nhóm cho dòng kết luận.
+                    // Ưu tiên dùng đúng nhóm mà các dòng chỉ số của chính dịch vụ này đang nằm — luồng gom
+                    // nhóm chỉ số đi theo cây dịch vụ nên tự suy ra từ danh mục dễ lệch nhóm.
+                    long parentId = 0;
+                    string parentName = null;
+                    var sameService = this.ExesereServs.FirstOrDefault(o => o.SERVICE_CODE_1 == sese.TDL_SERVICE_CODE
+                        && o.INTRUCTION_TIME_1 == sese.TDL_INTRUCTION_TIME);
+                    if (sameService == null)
+                    {
+                        // Chưa có dòng chỉ số cùng thời điểm chỉ định thì lấy theo dịch vụ (bất kể thời điểm)
+                        sameService = this.ExesereServs.FirstOrDefault(o => o.SERVICE_CODE_1 == sese.TDL_SERVICE_CODE);
+                    }
+                    if (sameService != null)
+                    {
+                        parentId = sameService.SERVICE_ID;
+                        // Tên nhóm lấy từ danh sách nhóm đã dựng, vì dòng chỉ số mang tên dịch vụ con
+                        var existedGroup = this.Service.FirstOrDefault(o => o.SERVICE_ID == parentId);
+                        parentName = (existedGroup != null ? existedGroup.SERVICE_NAME : sese.TDL_SERVICE_NAME);
+                    }
+
+                    // Dịch vụ không có dòng chỉ số nào trên phiếu thì mới suy ra nhóm từ danh mục
+                    if (parentId <= 0)
+                    {
+                        parentId = sese.SERVICE_ID;
+                        parentName = sese.TDL_SERVICE_NAME;
+                        V_HIS_SERVICE service = null;
+                        if (dicService.TryGetValue(sese.SERVICE_ID, out service) && service != null)
+                        {
+                            V_HIS_SERVICE parent = null;
+                            if (service.PARENT_ID.HasValue
+                                && dicService.TryGetValue(service.PARENT_ID.Value, out parent) && parent != null)
+                            {
+                                parentId = parent.ID;
+                                parentName = parent.SERVICE_NAME;
+                            }
+                            else
+                            {
+                                parentId = service.ID;
+                                parentName = service.SERVICE_NAME;
+                            }
+                        }
+                    }
+
+                    long resultTime = ext.END_TIME ?? 0;
+                    if (resultTime <= 0 && rdo.VHisServiceReqTests != null)
+                    {
+                        var serviceReq = rdo.VHisServiceReqTests.FirstOrDefault(o => o.ID == sese.SERVICE_REQ_ID);
+                        resultTime = (serviceReq != null ? (serviceReq.FINISH_TIME ?? 0) : 0);
+                    }
+
+                    Mps000222ADO ado = new Mps000222ADO();
+                    ado.SERVICE_ID = parentId;
+                    ado.SERVICE_NAME = parentName;
+                    ado.SERVICE_NAME_1 = sese.TDL_SERVICE_NAME;
+                    ado.SERVICE_CODE_1 = sese.TDL_SERVICE_CODE;
+                    ado.VALUE_1 = ext.CONCLUDE;
+                    ado.INTRUCTION_TIME_1 = sese.TDL_INTRUCTION_TIME;
+                    ado.INTRUCTION_TIME_1_STR = TimeToShortString(sese.TDL_INTRUCTION_TIME);
+                    ado.RESULT_TIME_1 = resultTime > 0 ? (long?)resultTime : null;
+                    ado.RESULT_TIME_1_STR = TimeToShortString(resultTime);
+                    this.ExesereServs.Add(ado);
+
+                    // Nhóm dịch vụ cha có thể chưa được thêm (do không có chỉ số nào mang kết quả)
+                    if (!this.Service.Exists(o => o.SERVICE_ID == parentId))
+                    {
+                        Mps000222ADO parentAdo = new Mps000222ADO();
+                        parentAdo.SERVICE_ID = parentId;
+                        parentAdo.SERVICE_NAME = parentName;
+                        this.Service.Add(parentAdo);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void SetService()
         {
             try
@@ -213,7 +339,11 @@ namespace MPS.Processor.Mps000222
                                                     {
                                                         foreach (var sereServTein in dicSereServTeins[sese.ID])
                                                         {
-                                                            if (String.IsNullOrEmpty(sereServTein.VALUE)) continue;
+                                                            // Kháng sinh đồ trả kết quả ở SRI_CODE, VALUE (MIC) có thể trống
+                                                            // -> chỉ bỏ dòng khi không có bất kỳ loại kết quả nào
+                                                            if (String.IsNullOrEmpty(sereServTein.VALUE)
+                                                                && String.IsNullOrEmpty(sereServTein.SRI_CODE)
+                                                                && String.IsNullOrEmpty(sereServTein.BACTERIUM_NAME)) continue;
                                                             Mps000222ADO exeSereServTein = new Mps000222ADO();
                                                             exeSereServTein.SERVICE_ID = serviceParent.ID;
                                                             exeSereServTein.SERVICE_REQ_ID = ReqAndParentSv.SERVICE_REQ_ID;
@@ -229,6 +359,15 @@ namespace MPS.Processor.Mps000222
                                                             exeSereServTein.BACTERIUM_NAME = sereServTein.BACTERIUM_NAME;
                                                             exeSereServTein.ANTIBIOTIC_NAME = sereServTein.ANTIBIOTIC_RESISTANCE_NAME;
                                                             exeSereServTein.SRI_CODE = sereServTein.SRI_CODE;
+                                                            exeSereServTein.INTRUCTION_TIME_1_STR = TimeToShortString(sese.TDL_INTRUCTION_TIME);
+                                                            // Ngày trả kết quả: ưu tiên thời điểm trả của từng chỉ số, thiếu thì lấy thời điểm hoàn thành yêu cầu
+                                                            long? resultTime = sereServTein.RESULT_TIME;
+                                                            if (!resultTime.HasValue || resultTime.Value <= 0)
+                                                            {
+                                                                resultTime = (serviceReq != null ? serviceReq.FINISH_TIME : null);
+                                                            }
+                                                            exeSereServTein.RESULT_TIME_1 = resultTime;
+                                                            exeSereServTein.RESULT_TIME_1_STR = TimeToShortString(resultTime ?? 0);
                                                             // serviceReq có thể null (yêu cầu XN không nằm trong VHisServiceReqTests) — fallback sang treatment
                                                             long patientDob = serviceReq != null ? serviceReq.TDL_PATIENT_DOB : (rdo.HisTreatment != null ? rdo.HisTreatment.TDL_PATIENT_DOB : 0);
                                                             long? patientGenderId = serviceReq != null ? serviceReq.TDL_PATIENT_GENDER_ID : (rdo.HisTreatment != null ? rdo.HisTreatment.TDL_PATIENT_GENDER_ID : (long?)null);
@@ -281,8 +420,11 @@ namespace MPS.Processor.Mps000222
                                                 tein.TEST_INDEX_CODE_2 = exeSeseTein[i + count].TEST_INDEX_CODE_2;
                                             }
                                             tein.BACTERIUM_NAME = exeSeseTein[i].BACTERIUM_NAME;
-                                            tein.ANTIBIOTIC_NAME = exeSeseTein[i].ANTIBIOTIC_RESISTANCE_NAME;
+                                            tein.ANTIBIOTIC_NAME = exeSeseTein[i].ANTIBIOTIC_NAME;
                                             tein.SRI_CODE = exeSeseTein[i].SRI_CODE;
+                                            tein.INTRUCTION_TIME_1_STR = exeSeseTein[i].INTRUCTION_TIME_1_STR;
+                                            tein.RESULT_TIME_1 = exeSeseTein[i].RESULT_TIME_1;
+                                            tein.RESULT_TIME_1_STR = exeSeseTein[i].RESULT_TIME_1_STR;
                                             exeSereServ.Add(tein);
                                         }
                                     }
@@ -297,7 +439,24 @@ namespace MPS.Processor.Mps000222
                             }
                         }
                     }
+                    // Dòng kết luận cấp dịch vụ (chỉ khi mẫu in bật _ByTime)
+                    if (isSortByTime)
+                    {
+                        SetDataServiceConclude();
+                    }
                     SetDataGroupServiceTest();
+
+                    // Sắp xếp tăng dần theo thời gian chỉ định (OrderBy giữ nguyên thứ tự chỉ số trong cùng nhóm)
+                    if (isSortByTime)
+                    {
+                        GroupByParentServiceTest = GroupByParentServiceTest.OrderBy(o => o.INTRUCTION_TIME_1).ToList();
+                        ExesereServs = ExesereServs.OrderBy(o => o.INTRUCTION_TIME_1).ToList();
+                        // Dịch vụ cha xếp theo lần chỉ định sớm nhất thuộc nhóm đó
+                        var minTimeByParent = ExesereServs.GroupBy(o => o.SERVICE_ID)
+                            .ToDictionary(g => g.Key, g => g.Min(x => x.INTRUCTION_TIME_1));
+                        Service = Service.OrderBy(o => minTimeByParent.ContainsKey(o.SERVICE_ID)
+                            ? minTimeByParent[o.SERVICE_ID] : long.MaxValue).ToList();
+                    }
                 }
             }
             catch (Exception ex)
@@ -574,6 +733,30 @@ namespace MPS.Processor.Mps000222
             }
         }
 
+        /// <summary>
+        /// Ngày giờ dạng ngắn dd/MM/yyyy HH:mm cho 2 cột thời gian trên phiếu (cột hẹp, tránh xuống 3 dòng)
+        /// </summary>
+        private string TimeToShortString(long time)
+        {
+            string result = "";
+            try
+            {
+                if (time > 0)
+                {
+                    result = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(time) ?? "";
+                    if (result.Length > 16)
+                    {
+                        result = result.Substring(0, 16);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
         private void SetData()
         {
             try
@@ -765,6 +948,10 @@ namespace MPS.Processor.Mps000222
                         }
                     }
                     ServiceCLS = lstTemp;
+                    if (isSortByTime)
+                    {
+                        ServiceCLS = ServiceCLS.OrderBy(o => o.INTRUCTION_TIME).ToList();
+                    }
 					foreach (var item in ServiceCLS)
 					{
 						var checkConClude = this.ServiceCLSFull.Where(o => o.SERVICE_TYPE_ID == item.SERVICE_TYPE_ID & o.FUEX_TYPE_ID == item.FUEX_TYPE_ID && o.DIIM_TYPE_ID == item.DIIM_TYPE_ID && o.INTRUCTION_TIME == item.INTRUCTION_TIME).ToList();

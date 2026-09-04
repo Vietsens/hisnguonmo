@@ -50,6 +50,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
         private int MAU = 3;
 
         private List<HIS_BID_TYPE> bidTypes;
+        private List<HIS_BID_FORM> bidForms;
 
         public FormImportBid()
         {
@@ -85,6 +86,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                 LoadKeysFromlanguage();
 
                 LoadBidType();
+                LoadBidForm();
 
                 BtnSave.Enabled = false;
                 BtnShowLineError.Enabled = false;
@@ -106,6 +108,43 @@ namespace HIS.Desktop.Plugins.HisImportBid
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void LoadBidForm()
+        {
+            try
+            {
+                MOS.Filter.HisBidFormFilter bidFormFilter = new MOS.Filter.HisBidFormFilter();
+                bidForms = new Inventec.Common.Adapter.BackendAdapter(new Inventec.Core.CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_BID_FORM>>("/api/HisBidForm/Get", ApiConsumer.ApiConsumers.MosConsumer, bidFormFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doi ma hinh thuc thau (HT_THAU - TT12) sang ID. Tra ve false neu ma khong ton tai.
+        /// </summary>
+        private bool ResolveBidForm(ADO.ImportADO target, string bidFormCode)
+        {
+            target.BID_FORM_CODE = bidFormCode;
+            target.BID_FORM_ID = null;
+            target.BID_FORM_NAME = null;
+
+            if (String.IsNullOrWhiteSpace(bidFormCode))
+                return true;
+
+            if (bidForms == null || bidForms.Count == 0)
+                return false;
+
+            var bidForm = bidForms.FirstOrDefault(o => o.BID_FORM_CODE == bidFormCode.Trim());
+            if (bidForm == null)
+                return false;
+
+            target.BID_FORM_ID = bidForm.ID;
+            target.BID_FORM_NAME = bidForm.BID_FORM_NAME;
+            return true;
         }
 
         private void LoadKeysFromlanguage()
@@ -599,6 +638,11 @@ namespace HIS.Desktop.Plugins.HisImportBid
                         medicineType.BID_TYPE_NAME = bidType.BID_TYPE_NAME;
                     }
 
+                    if (!this.ResolveBidForm(medicineType, medicineTypeImport.BID_FORM_CODE))
+                    {
+                        medicineType.ERROR = "Mã hình thức thầu không tồn tại.";
+                    }
+
                     medicineType.MATERIAL_TYPE_MAP_CODE = medicineTypeImport.MATERIAL_TYPE_MAP_CODE;
                     //medicineType.JOIN_BID_MATERIAL_TYPE_CODE = medicineTypeImport.JOIN_BID_MATERIAL_TYPE_CODE;
                     //medicineType.BID_MATERIAL_TYPE_CODE = medicineTypeImport.BID_MATERIAL_TYPE_CODE;
@@ -839,6 +883,11 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     {
                         medicineType.BID_TYPE_ID = bidType.ID;
                         medicineType.BID_TYPE_NAME = bidType.BID_TYPE_NAME;
+                    }
+
+                    if (!this.ResolveBidForm(medicineType, materialTypeImport.BID_FORM_CODE))
+                    {
+                        medicineType.ERROR = "Mã hình thức thầu không tồn tại.";
                     }
                     if (String.IsNullOrWhiteSpace(medicineType.IS_MEDICINE))
                     {
@@ -1288,6 +1337,13 @@ namespace HIS.Desktop.Plugins.HisImportBid
                         bidModel.BID_EXTRA_CODE = group.First().BID_EXTRA_CODE;
                         bidModel.BID_TYPE_ID = group.First().BID_TYPE_ID;
                         bidModel.BID_YEAR = group.First().BID_YEAR;     
+
+                        // TT12 - HT_THAU: lay ma hinh thuc thau dau tien co gia tri trong nhom thau
+                        var bidFormLine = group.FirstOrDefault(o => o.BID_FORM_ID.HasValue);
+                        if (bidFormLine != null)
+                        {
+                            bidModel.BID_FORM_ID = bidFormLine.BID_FORM_ID;
+                        }
 
                         string ToTime = null;
                         foreach (var item in group)

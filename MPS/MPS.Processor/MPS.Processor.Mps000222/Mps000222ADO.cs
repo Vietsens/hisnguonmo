@@ -62,5 +62,10 @@ namespace MPS.Processor.Mps000222
         public string ANTIBIOTIC_RESISTANCE_NAME { get; set; }
         public string ANTIBIOTIC_NAME { get; set; }
         public string SRI_CODE { get; set; }
+
+        // Thời gian chỉ định / trả kết quả của từng dòng chỉ số
+        public string INTRUCTION_TIME_1_STR { get; set; }
+        public long? RESULT_TIME_1 { get; set; }
+        public string RESULT_TIME_1_STR { get; set; }
     }
 }

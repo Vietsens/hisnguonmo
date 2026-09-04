@@ -1058,6 +1058,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         {
             try
             {
+                // Nut Luu in giu nguyen luong cu; chuoi HDDT (viec 3082) nam o nut rieng btnSaveSignPrint
                 this.savePrint = true;
                 btnSave_Click(null, null);
             }

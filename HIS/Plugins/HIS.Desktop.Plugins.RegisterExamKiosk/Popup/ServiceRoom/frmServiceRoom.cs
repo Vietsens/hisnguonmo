@@ -69,6 +69,15 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ServiceRoom
         public decimal? HeightValue { get; set; }
         public decimal? WeightValue { get; set; }
         HisExamRegisterKioskSDO sdoData;
+
+        /// <summary>
+        /// Che do chi chon dich vu kham, khong dang ky ngay.
+        /// Bat khi co cau hinh IsAllowRegisterMultiExam va man chon phong dang gom nhieu cong kham.
+        /// </summary>
+        public bool IsSelectOnlyMode { get; set; }
+
+        /// <summary>Dich vu kham nguoi benh vua chon, chi co gia tri khi IsSelectOnlyMode = true</summary>
+        public V_HIS_SERVICE SelectedService { get; private set; }
         #endregion
 
         #region Contructor
@@ -243,6 +252,15 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ServiceRoom
         {
             try
             {
+                //Che do chi chon: tra dich vu ve man chon phong de gom thanh danh sach cong kham, khong dang ky ngay
+                if (this.IsSelectOnlyMode)
+                {
+                    this.SelectedService = (V_HIS_SERVICE)e.Item.Tag;
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                    return;
+                }
+
                 if (DevExpress.XtraEditors.XtraMessageBox.Show("Bạn có chắc chắn muốn đăng ký khám?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     var vhisService = new V_HIS_SERVICE();

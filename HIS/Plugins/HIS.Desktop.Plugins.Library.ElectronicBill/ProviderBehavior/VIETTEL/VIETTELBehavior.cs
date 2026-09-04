@@ -1610,9 +1610,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
 
                 // Xử lý định danh cá nhân
                 //qtcode
-                if (!String.IsNullOrWhiteSpace(electronicBillDataInput.Transaction?.BUYER_IDENTITY_NUMBER))
+                //Lay so giay to da duoc chuan hoa trong InvoiceInfoProcessor (nguon van uu tien Transaction.BUYER_IDENTITY_NUMBER)
+                if (!String.IsNullOrWhiteSpace(adoInfo.BuyerIdentityNumber))
                 {
-                    result.buyerIdNo = electronicBillDataInput.Transaction.BUYER_IDENTITY_NUMBER.Trim();
+                    result.buyerIdNo = adoInfo.BuyerIdentityNumber;
                 }
                 //else if (!String.IsNullOrWhiteSpace(adoInfo.BuyerIdentityNumber))
                 //{

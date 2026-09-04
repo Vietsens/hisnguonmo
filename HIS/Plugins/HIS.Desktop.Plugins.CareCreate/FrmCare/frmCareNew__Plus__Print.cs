@@ -739,7 +739,7 @@ namespace HIS.Desktop.Plugins.CareCreate
                 {
                     _TreatmetnbedRoom = TreatmetnbedRooms.FirstOrDefault();
                 }
-                long keyPrintMerge = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKeys.CONFIG_KEY__HIS_DESKTOP_PLUGINS_CARE_IS_PRINT_MERGE));
+                long keyPrintMerge = SdaConfigKeys.GetKeyPrintMerge();
 
                 List<HIS_CARE> _CareChecks = new List<HIS_CARE>();
                 _CareChecks.Add(this.hisCareCurrent);

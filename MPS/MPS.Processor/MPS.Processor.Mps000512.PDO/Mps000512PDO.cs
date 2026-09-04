@@ -244,7 +244,7 @@ namespace MPS.Processor.Mps000512.PDO
                 this.ListSereServDeposits = _listSereServDeposits;
                 this.ListSeseDepoRepays = _listSeseDepoRepays;
                 this.TransReq = transReq;
-                this.ListHisConfigPaymentQrCode = listHisConfigPaymentQrCode;
+                this.ListHisConfigPaymentQrCode = listHisConfigPaymentQrCode; 
                 this.ServiceReqs = serviceReqs;
             }
             catch (Exception ex)

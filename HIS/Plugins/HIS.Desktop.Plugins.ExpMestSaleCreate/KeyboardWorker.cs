@@ -33,6 +33,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
     [KeyboardAction("BtnSaveShortcut", "HIS.Desktop.Plugins.ExpMestSaleCreate.UCExpMestSaleCreate", "BtnSaveShortcut", KeyStroke = XKeys.F5)]
     [KeyboardAction("BtnSaveWithPrintShortcut", "HIS.Desktop.Plugins.ExpMestSaleCreate.UCExpMestSaleCreate", "BtnSaveWithPrintShortcut", KeyStroke = XKeys.Control | XKeys.I)]
     [KeyboardAction("BtnSaveWithPrintShortcut", "HIS.Desktop.Plugins.ExpMestSaleCreate.UCExpMestSaleCreate", "BtnSaveWithPrintShortcut", KeyStroke = XKeys.F9)]
+    [KeyboardAction("BtnSaveSignPrintShortcut", "HIS.Desktop.Plugins.ExpMestSaleCreate.UCExpMestSaleCreate", "BtnSaveSignPrintShortcut", KeyStroke = XKeys.Control | XKeys.E)]
+    [KeyboardAction("BtnSaveSignPrintShortcut", "HIS.Desktop.Plugins.ExpMestSaleCreate.UCExpMestSaleCreate", "BtnSaveSignPrintShortcut", KeyStroke = XKeys.F11)]
     [KeyboardAction("BtnNewShortcut", "HIS.Desktop.Plugins.ExpMestSaleCreate.UCExpMestSaleCreate", "BtnNewShortcut", KeyStroke = XKeys.Control | XKeys.N)]
     [KeyboardAction("BtnNewExpMestShortcut", "HIS.Desktop.Plugins.ExpMestSaleCreate.UCExpMestSaleCreate", "BtnNewExpMestShortcut", KeyStroke = XKeys.Control | XKeys.D)]
     [KeyboardAction("BtnNewExpMestShortcut", "HIS.Desktop.Plugins.ExpMestSaleCreate.UCExpMestSaleCreate", "BtnNewExpMestShortcut", KeyStroke = XKeys.F7)]

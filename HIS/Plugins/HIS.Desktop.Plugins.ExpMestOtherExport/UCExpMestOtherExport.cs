@@ -456,8 +456,10 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
                          .Get<List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetView", ApiConsumers.MosConsumer, materialFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                 }
 
+                // Blood stock: pass blood units so MPS000165 prints them in ListMediMate (null when the export has no blood)
+                List<V_HIS_EXP_MEST_BLOOD> expMestBloods = GetExpMestBloodsForPrint(param);
 
-                MPS.Processor.Mps000165.PDO.Mps000165PDO rdo = new MPS.Processor.Mps000165.PDO.Mps000165PDO(expMest, expMestMedicines, expMestMaterials);
+                MPS.Processor.Mps000165.PDO.Mps000165PDO rdo = new MPS.Processor.Mps000165.PDO.Mps000165PDO(expMest, expMestMedicines, expMestMaterials, expMestBloods);
 
 
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
@@ -539,23 +541,10 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
                 V_HIS_EXP_MEST expMest = new BackendAdapter(param)
                      .Get<List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, expMestFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param).FirstOrDefault();
 
-                if (this.resultSdo.ExpBloods != null && this.resultSdo.ExpBloods.Count > 0)
+                // Shared loader - also used by MPS000165 "Phieu xuat khac" (InPhieuXuatKhac)
+                listExpBloods = GetExpMestBloodsForPrint(param);
+                if (listExpBloods != null && listExpBloods.Count > 0)
                 {
-                    HisExpMestBloodViewFilter bloodFilter = new HisExpMestBloodViewFilter();
-                    bloodFilter.IDs = this.resultSdo.ExpBloods.Select(o => o.ID).ToList();
-                    listExpBloods = new BackendAdapter(param)
-                        .Get<List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_BLOOD>>("api/HisExpMestBlood/GetView", ApiConsumers.MosConsumer, bloodFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
-
-                    var bloods = dicTypeAdo.ContainsKey(TYPE_BLOOD) ? dicTypeAdo[TYPE_BLOOD].Select(s => s.Value).Where(o => o.IsBlood == true).ToList() : null;
-
-                    if (bloods != null)
-                    {
-                        foreach (var item in bloods)
-                        {
-                            listExpBloods.FirstOrDefault(o => o.BLOOD_ID == item.BLOOD_ID).DESCRIPTION = item.ExpBlood.Description;
-                            //listExpBloods.FirstOrDefault(o => o.BLOOD_ID == item.BLOOD_ID). = item.BLOOD_ABO_CODE;
-                        }
-                    }
                     var distinctBloodGiveIds = listExpBloods
                        .Where(s => s.BLOOD_GIVE_ID != null)
                        .Select(s => s.BLOOD_GIVE_ID)
@@ -601,6 +590,43 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 result = false;
             }
+        }
+
+        /// <summary>
+        /// Load blood units of the current export for printing.
+        /// Shared by MPS000165 "Phieu xuat khac" and MPS000203 "Phieu xuat khac mau".
+        /// Returns null when the export has no blood so callers keep the medicine/material-only behaviour.
+        /// </summary>
+        private List<V_HIS_EXP_MEST_BLOOD> GetExpMestBloodsForPrint(CommonParam param)
+        {
+            List<V_HIS_EXP_MEST_BLOOD> listExpBloods = null;
+            try
+            {
+                if (this.resultSdo == null || this.resultSdo.ExpBloods == null || this.resultSdo.ExpBloods.Count == 0)
+                    return null;
+
+                HisExpMestBloodViewFilter bloodFilter = new HisExpMestBloodViewFilter();
+                bloodFilter.IDs = this.resultSdo.ExpBloods.Select(o => o.ID).ToList();
+                listExpBloods = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_BLOOD>>("api/HisExpMestBlood/GetView", ApiConsumers.MosConsumer, bloodFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+
+                // Copy the description typed on screen into the printed rows (same as MPS000203 did before)
+                if (listExpBloods != null && listExpBloods.Count > 0 && dicTypeAdo != null && dicTypeAdo.ContainsKey(TYPE_BLOOD))
+                {
+                    var bloods = dicTypeAdo[TYPE_BLOOD].Select(s => s.Value).Where(o => o.IsBlood == true).ToList();
+                    foreach (var item in bloods)
+                    {
+                        var expBlood = listExpBloods.FirstOrDefault(o => o.BLOOD_ID == item.BLOOD_ID);
+                        if (expBlood != null && item.ExpBlood != null)
+                            expBlood.DESCRIPTION = item.ExpBlood.Description;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return listExpBloods;
         }
 
         private void ResetValueControlDetail()

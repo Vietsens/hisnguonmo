@@ -28,6 +28,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
 {
     class InvoiceInfoProcessor
     {
+        private const string IDENTITY_TYPE__CCCD = "1";
+        private const string IDENTITY_TYPE__CMND = "2";
+        private const string IDENTITY_TYPE__PASSPORT = "3";
+        private const int IDENTITY_LENGTH__CCCD = 12;
+        private const int IDENTITY_LENGTH__CMND = 9;
+
         internal static InvoiceInfoADO GetData(Base.ElectronicBillDataInput dataInput, bool isFillByTreatment = true)
         {
             InvoiceInfoADO result = new InvoiceInfoADO();
@@ -217,7 +223,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                         }
                         else if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_CMND_NUMBER))
                         {
-                            result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_CCCD_NUMBER;
+                            result.BuyerIdentityNumber = dataInput.Treatment.TDL_PATIENT_CMND_NUMBER;
                             result.BuyerIdentityType = "2"; // 2 for CMND
                         }
                         else if (!String.IsNullOrWhiteSpace(dataInput.Treatment.TDL_PATIENT_PASSPORT_NUMBER))
@@ -248,10 +254,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                     result.Note = result.Note.Trim();
                 if (!String.IsNullOrWhiteSpace(result.PaymentMethod))
                     result.PaymentMethod = result.PaymentMethod.Trim();
-                if (!String.IsNullOrWhiteSpace(result.BuyerCCCD))
-                    result.BuyerCCCD = result.BuyerCCCD.Trim();
-                //if (!String.IsNullOrWhiteSpace(result.BuyerIdentityNumber))
-                //    result.BuyerIdentityNumber = result.BuyerIdentityNumber.Trim();
+                //Chuan hoa so giay to tuy than truoc khi gui sang nha cung cap hoa don dien tu
+                //(tranh loi "Can cuoc cong dan khong dung dinh dang" do khoang trang/ky tu la/do dai sai)
+                NormalizeBuyerIdentity(result);
 
                 if (Config.HisConfigCFG.BuyerCodeOption == "1")
                 {
@@ -297,6 +302,91 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Chuan hoa thong tin giay to tuy than cua nguoi mua (CCCD/CMND/Ho chieu).
+        /// - Bo khoang trang va cac ky tu khong phai so doi voi CCCD/CMND
+        /// - Chi gui khi do dai hop le: 12 so (CCCD) hoac 9 so (CMND); nguoc lai bo trong
+        /// - Ho chieu (type = 3) chi trim, khong loc ky tu vi co the chua chu cai
+        /// </summary>
+        private static void NormalizeBuyerIdentity(InvoiceInfoADO result)
+        {
+            try
+            {
+                if (result == null)
+                    return;
+
+                //So CCCD lay tu ho so benh nhan: chi giu lai khi dung 9 hoac 12 chu so
+                string cccd = GetDigitOnly(result.BuyerCCCD);
+                if (cccd.Length == IDENTITY_LENGTH__CCCD || cccd.Length == IDENTITY_LENGTH__CMND)
+                {
+                    result.BuyerCCCD = cccd;
+                }
+                else
+                {
+                    if (!String.IsNullOrWhiteSpace(result.BuyerCCCD))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Bo qua so CCCD khong dung dinh dang khi tao hoa don dien tu. Do dai so: " + cccd.Length);
+                    }
+                    result.BuyerCCCD = "";
+                }
+
+                string identityType = (result.BuyerIdentityType ?? "").Trim();
+                string identityNumber = (result.BuyerIdentityNumber ?? "").Trim();
+
+                if (String.IsNullOrWhiteSpace(identityNumber))
+                {
+                    result.BuyerIdentityNumber = "";
+                    result.BuyerIdentityType = identityType;
+                    return;
+                }
+
+                //Ho chieu: giu nguyen ky tu, chi trim
+                if (identityType == IDENTITY_TYPE__PASSPORT)
+                {
+                    result.BuyerIdentityNumber = identityNumber;
+                    result.BuyerIdentityType = identityType;
+                    return;
+                }
+
+                string number = GetDigitOnly(identityNumber);
+                if (number.Length == IDENTITY_LENGTH__CCCD)
+                {
+                    result.BuyerIdentityNumber = number;
+                    result.BuyerIdentityType = IDENTITY_TYPE__CCCD;
+                }
+                else if (number.Length == IDENTITY_LENGTH__CMND)
+                {
+                    result.BuyerIdentityNumber = number;
+                    result.BuyerIdentityType = IDENTITY_TYPE__CMND;
+                }
+                else
+                {
+                    //Do dai khong hop le -> khong gui len nha cung cap de tranh hoa don bi tu choi
+                    Inventec.Common.Logging.LogSystem.Warn("Bo qua so giay to tuy than khong dung dinh dang khi tao hoa don dien tu. Loai giay to: " + identityType + ", do dai so: " + number.Length);
+                    result.BuyerIdentityNumber = "";
+                    result.BuyerIdentityType = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private static string GetDigitOnly(string value)
+        {
+            if (String.IsNullOrWhiteSpace(value))
+                return "";
+
+            StringBuilder builder = new StringBuilder();
+            foreach (char c in value)
+            {
+                if (c >= '0' && c <= '9')
+                    builder.Append(c);
+            }
+            return builder.ToString();
         }
     }
 }

@@ -77,7 +77,21 @@ namespace HIS.Desktop.Plugins.ImportDepartment
                             if (!String.IsNullOrEmpty(item.TheoryPatientCountStr) && this.IsNumber(item.TheoryPatientCountStr))
                                 item.THEORY_PATIENT_COUNT = Int64.Parse(item.TheoryPatientCountStr);
                             if (!String.IsNullOrEmpty(item.NumOrderStr) && this.IsNumber(item.NumOrderStr))
-                                item.NUM_ORDER = Int64.Parse(item.TheoryPatientCountStr);
+                                item.NUM_ORDER = Int64.Parse(item.NumOrderStr);
+
+                            #region TT12 - MAU_01 (DMBOPHANCHUYENMON)
+                            if (!String.IsNullOrEmpty(item.ExamDeskCountStr) && this.IsNumber(item.ExamDeskCountStr))
+                                item.EXAM_DESK_COUNT = Int64.Parse(item.ExamDeskCountStr);
+                            if (!String.IsNullOrEmpty(item.RealityPatientCountStr) && this.IsNumber(item.RealityPatientCountStr))
+                                item.REALITY_PATIENT_COUNT = Int64.Parse(item.RealityPatientCountStr);
+                            if (!String.IsNullOrEmpty(item.IcuBedCountStr) && this.IsNumber(item.IcuBedCountStr))
+                                item.ICU_BED_COUNT = Int64.Parse(item.IcuBedCountStr);
+                            if (!String.IsNullOrEmpty(item.ErResusBedCountStr) && this.IsNumber(item.ErResusBedCountStr))
+                                item.ER_RESUS_BED_COUNT = Int64.Parse(item.ErResusBedCountStr);
+                            item.FROM_TIME = this.ConvertDateToHisTime(item.FromTimeStr);
+                            item.TO_TIME = this.ConvertDateToHisTime(item.ToTimeStr);
+                            #endregion
+
                             item.BRANCH_ID = this.GetBranchId(item.BRANCH_CODE);
                             item.IsAutoReceivePatient = item.IsAutoReceivePatientStr == "x" ? true : false;
                             item.IsClinical = item.IsClinicalStr == "x" ? true : false;
@@ -145,6 +159,12 @@ namespace HIS.Desktop.Plugins.ImportDepartment
                     && String.IsNullOrEmpty(department.BHYT_CODE)
                     && String.IsNullOrEmpty(department.NumOrderStr)
                     && String.IsNullOrEmpty(department.TheoryPatientCountStr)
+                    && String.IsNullOrEmpty(department.ExamDeskCountStr)
+                    && String.IsNullOrEmpty(department.RealityPatientCountStr)
+                    && String.IsNullOrEmpty(department.IcuBedCountStr)
+                    && String.IsNullOrEmpty(department.ErResusBedCountStr)
+                    && String.IsNullOrEmpty(department.FromTimeStr)
+                    && String.IsNullOrEmpty(department.ToTimeStr)
                     && String.IsNullOrEmpty(department.G_CODE))
                     result = false;
             }
@@ -268,6 +288,38 @@ namespace HIS.Desktop.Plugins.ImportDepartment
                 }
                 #endregion
 
+                #region TT12 - MAU_01 (DMBOPHANCHUYENMON)
+                if (!String.IsNullOrEmpty(department.ExamDeskCountStr) && !this.IsNumber(department.ExamDeskCountStr))
+                {
+                    error += "Số bàn khám sai định dạng | ";
+                }
+                if (!String.IsNullOrEmpty(department.RealityPatientCountStr) && !this.IsNumber(department.RealityPatientCountStr))
+                {
+                    error += "Số giường thực kê sai định dạng | ";
+                }
+                if (!String.IsNullOrEmpty(department.IcuBedCountStr) && !this.IsNumber(department.IcuBedCountStr))
+                {
+                    error += "Số giường hồi sức tích cực sai định dạng | ";
+                }
+                if (!String.IsNullOrEmpty(department.ErResusBedCountStr) && !this.IsNumber(department.ErResusBedCountStr))
+                {
+                    error += "Số giường hồi sức cấp cứu sai định dạng | ";
+                }
+                if (!this.IsValidDate(department.FromTimeStr))
+                {
+                    error += "Từ ngày sai định dạng | ";
+                }
+                if (!this.IsValidDate(department.ToTimeStr))
+                {
+                    error += "Đến ngày sai định dạng | ";
+                }
+                if (department.FROM_TIME.HasValue && department.TO_TIME.HasValue
+                    && department.FROM_TIME.Value > department.TO_TIME.Value)
+                {
+                    error += "Từ ngày lớn hơn Đến ngày | ";
+                }
+                #endregion
+
                 #region G_CODE
                 if (String.IsNullOrEmpty(department.G_CODE))
                 {
@@ -330,6 +382,53 @@ namespace HIS.Desktop.Plugins.ImportDepartment
         {
             Regex regex = new Regex(@"^[-+]?[0-9]*\.?[0-9]+$");
             return regex.IsMatch(pText);
+        }
+
+        /// <summary>
+        /// Chuyen chuoi ngay trong file excel ve dang time number HIS (yyyyMMddHHmmss).
+        /// Chap nhan: yyyyMMdd, yyyyMMddHHmmss, dd/MM/yyyy, dd-MM-yyyy.
+        /// </summary>
+        private long? ConvertDateToHisTime(string value)
+        {
+            long? result = null;
+            try
+            {
+                if (String.IsNullOrWhiteSpace(value))
+                    return null;
+
+                string text = value.Trim();
+                if (this.IsNumber(text))
+                {
+                    if (text.Length == 14)
+                        result = Int64.Parse(text);
+                    else if (text.Length == 8)
+                        result = Int64.Parse(text + "000000");
+                    return result;
+                }
+
+                string[] formats = new string[] { "dd/MM/yyyy", "d/M/yyyy", "dd-MM-yyyy", "d-M-yyyy", "dd/MM/yyyy HH:mm:ss", "dd-MM-yyyy HH:mm:ss" };
+                DateTime date;
+                if (DateTime.TryParseExact(text, formats, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
+                {
+                    result = Int64.Parse(date.ToString("yyyyMMddHHmmss"));
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Kiem tra dinh dang ngay hop le de canh bao tren luoi.
+        /// </summary>
+        private bool IsValidDate(string value)
+        {
+            if (String.IsNullOrWhiteSpace(value))
+                return true;
+            return this.ConvertDateToHisTime(value).HasValue;
         }
 
         private long GetBranchId(string branchCode)

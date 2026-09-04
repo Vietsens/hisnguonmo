@@ -47,15 +47,20 @@
 ## 7. Print
 
 - In phiếu xuất qua MPS (Mps000494...) trong `frmExpMestViewDetailPlus_Print.cs` (sử dụng `SERIAL_NUMBER` khi tái sử dụng vật tư).
+- Phiếu xuất loại **KHÁC** có 2 mục in: **"Phiếu xuất khác"** (`MPS000165`, `InPhieuXuatKhac()`) và **"Phiếu xuất khác máu"** (`MPS000203`, `InPhieuXuatKhacMau()`).
+- `InPhieuXuatKhac()` dựng `Mps000165PDO(_CurrentExpMest, _ExpMestMedicines_Print, _ExpMestMaterials_Print, _ExpMestBloods_Print)` — **có truyền danh sách máu** (từ 26/08/2026) nên phiếu xuất khác tại kho máu in ra dòng máu trên cùng bảng `ListMediMate` với thuốc/vật tư. `_ExpMestBloods_Print` được nạp sẵn ở `LoadExpMestBltyReq()` (thread khi mở form, API `HIS_EXP_MEST_BLOOD_GET_VIEW`) — không phát sinh API mới khi in.
 
 ## 8. Changelog
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 01/07/2026 | huannh | YC3: Bổ sung cột "Số serial" (`SERIAL_NUMBER`) ngay bên phải cột "Số lô" ở tab **Yêu cầu vật tư** (`gridColumnRequestMaterialSerial`) và tab **Duyệt vật tư** (`gridColumnApprovalMaterialSerial`). Dữ liệu lấy từ `V_HIS_EXP_MEST_MATERIAL_1.SERIAL_NUMBER` (API `GetView1`). Bổ sung `SERIAL_NUMBER` vào điều kiện GroupBy trong `GroupExpMestMaterial()` (cả 2 nhánh KHÁC và thường) → mỗi dòng ứng đúng 1 serial, không gộp sai thông tin serial. Vị trí cột ép runtime `VisibleIndex = <Số lô>.VisibleIndex + 1` trong `SetCaptionByLanguageKey`. Caption đa ngôn ngữ vi/en. |
+| 26/08/2026 | nampp | Việc 44751 (BV Nguyễn Thị Thập): `InPhieuXuatKhac()` truyền thêm `_ExpMestBloods_Print` vào constructor mới 4 tham số của `Mps000165PDO` → "Phiếu xuất khác" (MPS000165) tại kho máu in được dòng máu (trước đây bảng trống vì PDO chỉ nhận thuốc/vật tư). 1 dòng sửa; **phải deploy kèm `MPS.Processor.Mps000165.PDO.dll` mới**. Xem `docs/MPS.Processor.Mps000165.md`. |
 
 ## 9. Test Cases
 
 - [ ] Mở chi tiết 1 phiếu xuất chuyển kho có vật tư gắn serial → tab Yêu cầu vật tư & Duyệt vật tư hiển thị cột "Số serial" ngay sau "Số lô".
 - [ ] Vật tư nhiều serial cùng loại → cột serial hiển thị danh sách serial cách nhau dấu phẩy, không trùng.
 - [ ] Vật tư không có serial → ô serial trống, không lỗi.
+- [ ] Phiếu xuất KHÁC tại kho lẻ máu → In ấn → "Phiếu xuất khác" (MPS000165): bảng có dòng máu (tên loại máu, ĐVT, số lô, hạn, SL = số đơn vị, đơn giá), tổng tiền / bằng chữ đúng; giống phiếu in từ màn Xuất khác.
+- [ ] Phiếu xuất KHÁC tại kho thuốc → "Phiếu xuất khác" in y hệt trước (hồi quy).

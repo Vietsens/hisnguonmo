@@ -20,7 +20,6 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Plugins.DepositRequest.Config;
 using HIS.Desktop.Plugins.DepositRequest.DepositRequest;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utility;
@@ -171,10 +170,6 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 if (!dxValidationProvider.Validate())
                     return;
 
-                //Viec 54923: dong bo so tien tam ung vua sua vao yeu cau truoc khi tao giao dich
-                if (!ProcessUpdateDepositReqAmount())
-                    return;
-
                 this.hisDepositSDO = null;
                 UpdateDataFormTransactionDepositToDTO(ref this.hisDepositSDO, currentdepositReq);
 
@@ -291,17 +286,23 @@ namespace HIS.Desktop.Plugins.DepositRequest
                         valid = false;
                     }
 
-                if (valid && this.hisDepositSDO.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK
+                var payFormCheck = GetCurrentPayForm();
+                if (valid && payFormCheck != null && (payFormCheck.PAY_FORM_CODE == "03" || payFormCheck.PAY_FORM_CODE == "06")
                     && spinTransferAmount.EditValue != null && spinTransferAmount.Value > this.hisDepositSDO.Transaction.AMOUNT)
                 {
-                    decimal amountTransaction = this.hisDepositSDO.Transaction.AMOUNT;
+                    string msg = payFormCheck.PAY_FORM_CODE == "03"
+                        ? "Số tiền chuyển khoản lớn hơn số tiền thanh toán của bệnh nhân"
+                        : "Số tiền quẹt thẻ lớn hơn số tiền thanh toán của bệnh nhân";
                     WaitingManager.Hide();
-                    MessageManager.Show(String.Format("Số tiền chuyển khoản [{0}] lớn hơn số tiền tạm ứng [{1}]",
-                        Inventec.Common.Number.Convert.NumberToString(spinTransferAmount.Value, ConfigApplications.NumberSeperator),
-                        Inventec.Common.Number.Convert.NumberToString(amountTransaction, ConfigApplications.NumberSeperator)));
+                    dxErrorProvider.SetError(spinTransferAmount, msg, DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                    MessageBox.Show(msg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     spinTransferAmount.Focus();
                     spinTransferAmount.SelectAll();
                     valid = false;
+                }
+                else
+                {
+                    dxErrorProvider.SetError(spinTransferAmount, string.Empty);
                 }
             }
             catch (Exception ex)
@@ -309,69 +310,6 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return valid;
-        }
-
-        /// <summary>
-        /// Viec 54923: thu ngan sua o "Số tiền" thi cap nhat lai HIS_DEPOSIT_REQ TRUOC khi tao giao dich.
-        /// Backend chan Transaction.AMOUNT khac depositReq.AMOUNT (HisTransactionDepositCreate) nen phai dong bo truoc.
-        /// </summary>
-        private bool ProcessUpdateDepositReqAmount()
-        {
-            bool result = true;
-            try
-            {
-                if (!HisConfigCFG.IsAllowEditAmount) return true;
-                if (this.currentdepositReq == null) return true;
-                if (this.currentdepositReq.DEPOSIT_ID != null) return true;
-
-                decimal amountNew = 0;
-                if (!TryGetEditAmount(out amountNew))
-                {
-                    MessageManager.Show("Số tiền tạm ứng không hợp lệ");
-                    txtAmount.Focus();
-                    txtAmount.SelectAll();
-                    return false;
-                }
-
-                //Khong sua gi thi giu nguyen luong cu, khong goi API
-                if (amountNew == this.currentdepositReq.AMOUNT) return true;
-
-                if (amountNew <= 0)
-                {
-                    MessageManager.Show("Số tiền tạm ứng phải lớn hơn 0");
-                    txtAmount.Focus();
-                    txtAmount.SelectAll();
-                    return false;
-                }
-
-                CommonParam param = new CommonParam();
-                HIS_DEPOSIT_REQ dataUpdate = NewDepositReqForUpdate(this.currentdepositReq, amountNew);
-
-                WaitingManager.Show();
-                var dataResult = new BackendAdapter(param).Post<HIS_DEPOSIT_REQ>(HisRequestUriStore.HIS_DEPOSIT_REQ_UPDATE, ApiConsumers.MosConsumer, dataUpdate, param);
-                WaitingManager.Hide();
-
-                if (dataResult == null)
-                {
-                    MessageManager.Show(this.ParentForm, param, false);
-                    SessionManager.ProcessTokenLost(param);
-                    txtAmount.Focus();
-                    txtAmount.SelectAll();
-                    return false;
-                }
-
-                this.currentdepositReq.AMOUNT = dataResult.AMOUNT;
-                this.currentdepositReq.MODIFY_TIME = dataResult.MODIFY_TIME;
-                this.currentdepositReq.MODIFIER = dataResult.MODIFIER;
-                txtAmount.EditValue = this.currentdepositReq.AMOUNT;
-            }
-            catch (Exception ex)
-            {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                result = false;
-            }
-            return result;
         }
 
         /// <summary>
@@ -400,35 +338,6 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Viec 54923: dung ban ghi HIS_DEPOSIT_REQ day du de goi api/HisDepositReq/Update (API cap nhat toan bo entity).
-        /// </summary>
-        private HIS_DEPOSIT_REQ NewDepositReqForUpdate(V_HIS_DEPOSIT_REQ data, decimal amount)
-        {
-            HIS_DEPOSIT_REQ result = new HIS_DEPOSIT_REQ();
-            result.ID = data.ID;
-            result.CREATE_TIME = data.CREATE_TIME;
-            result.MODIFY_TIME = data.MODIFY_TIME;
-            result.CREATOR = data.CREATOR;
-            result.MODIFIER = data.MODIFIER;
-            result.APP_CREATOR = data.APP_CREATOR;
-            result.APP_MODIFIER = data.APP_MODIFIER;
-            result.IS_ACTIVE = data.IS_ACTIVE;
-            result.IS_DELETE = data.IS_DELETE;
-            result.GROUP_CODE = data.GROUP_CODE;
-            result.DEPOSIT_REQ_CODE = data.DEPOSIT_REQ_CODE;
-            result.TREATMENT_ID = data.TREATMENT_ID;
-            result.AMOUNT = amount;
-            result.REQUEST_ROOM_ID = data.REQUEST_ROOM_ID;
-            result.REQUEST_DEPARTMENT_ID = data.REQUEST_DEPARTMENT_ID;
-            result.REQUEST_LOGINNAME = data.REQUEST_LOGINNAME;
-            result.REQUEST_USERNAME = data.REQUEST_USERNAME;
-            result.DESCRIPTION = data.DESCRIPTION;
-            result.DEPOSIT_ID = data.DEPOSIT_ID;
-            result.TRANS_REQ_ID = data.TRANS_REQ_ID;
-            return result;
         }
 
         private void UpdateDataFormTransactionDepositToDTO(ref HisTransactionDepositSDO transactionData, V_HIS_DEPOSIT_REQ depo)
@@ -466,11 +375,20 @@ namespace HIS.Desktop.Plugins.DepositRequest
                     transactionData.Transaction.PAY_FORM_ID = (Inventec.Common.TypeConvert.Parse.ToInt64((cboPayForm.EditValue ?? "").ToString()));
                 }
 
-                //Viec 54923: luu so tien chuyen khoan khi hinh thuc thanh toan la "Tien mat/Chuyen khoan"
+                //Viec 54923: luu so tien chuyen khoan / quet the theo hinh thuc - flow chuan man Xuat hoa don ban thuoc (MedicineSaleBill)
                 transactionData.Transaction.TRANSFER_AMOUNT = null;
-                if (transactionData.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK && spinTransferAmount.EditValue != null)
+                transactionData.Transaction.SWIPE_AMOUNT = null;
+                var payFormSave = GetCurrentPayForm();
+                if (payFormSave != null && spinTransferAmount.Enabled && spinTransferAmount.EditValue != null)
                 {
-                    transactionData.Transaction.TRANSFER_AMOUNT = spinTransferAmount.Value;
+                    if (payFormSave.PAY_FORM_CODE == "03")
+                    {
+                        transactionData.Transaction.TRANSFER_AMOUNT = spinTransferAmount.Value;
+                    }
+                    else if (payFormSave.PAY_FORM_CODE == "06")
+                    {
+                        transactionData.Transaction.SWIPE_AMOUNT = spinTransferAmount.Value;
+                    }
                 }
 
                 if (depo != null)

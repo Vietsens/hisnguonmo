@@ -230,6 +230,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.btnSaveSignPrint = new DevExpress.XtraEditors.SimpleButton();
+            this.lciSaveSignPrint = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciExpMestCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -410,6 +412,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSaveSignPrint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExpMestCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
@@ -513,6 +516,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControl1.Controls.Add(this.panel1);
             this.layoutControl1.Controls.Add(this.txtAddress);
             this.layoutControl1.Controls.Add(this.btnSavePrint);
+            this.layoutControl1.Controls.Add(this.btnSaveSignPrint);
             this.layoutControl1.Controls.Add(this.ddBtnPrint);
             this.layoutControl1.Controls.Add(this.btnNew);
             this.layoutControl1.Controls.Add(this.btnSave);
@@ -2171,6 +2175,18 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.btnSavePrint.Text = "Lưu in (Ctrl I)";
             this.btnSavePrint.Click += new System.EventHandler(this.btnSavePrint_Click);
             // 
+            // btnSaveSignPrint (viec 3082)
+            // 
+            this.btnSaveSignPrint.Enabled = false;
+            this.btnSaveSignPrint.Location = new System.Drawing.Point(683, 617);
+            this.btnSaveSignPrint.Name = "btnSaveSignPrint";
+            this.btnSaveSignPrint.Size = new System.Drawing.Size(106, 22);
+            this.btnSaveSignPrint.StyleController = this.layoutControl1;
+            this.btnSaveSignPrint.TabIndex = 95;
+            this.btnSaveSignPrint.Text = "Lưu ký in (Ctrl E)";
+            this.btnSaveSignPrint.ToolTip = "Lưu phiếu (tạo bill) > Phát hành/ký hóa đơn điện tử > Tự động duyệt + thực xuất > In hóa đơn. Chỉ bấm được khi tick \"Xuất biên lai/hóa đơn\"";
+            this.btnSaveSignPrint.Click += new System.EventHandler(this.btnSaveSignPrint_Click);
+            // 
             // ddBtnPrint
             // 
             this.ddBtnPrint.Location = new System.Drawing.Point(1100, 617);
@@ -2658,6 +2674,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem24,
             this.layoutControlItem25,
             this.layoutControlItem4,
+            this.lciSaveSignPrint,
             this.layoutControlItem7,
             this.lciExpMestCode,
             this.layoutControlItem20,
@@ -2779,7 +2796,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem23
             // 
             this.layoutControlItem23.Control = this.btnSave;
-            this.layoutControlItem23.Location = new System.Drawing.Point(815, 615);
+            this.layoutControlItem23.Location = new System.Drawing.Point(868, 615);
             this.layoutControlItem23.Name = "layoutControlItem23";
             this.layoutControlItem23.Size = new System.Drawing.Size(68, 26);
             this.layoutControlItem23.TextSize = new System.Drawing.Size(0, 0);
@@ -2788,16 +2805,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem24
             // 
             this.layoutControlItem24.Control = this.btnNew;
-            this.layoutControlItem24.Location = new System.Drawing.Point(883, 615);
+            this.layoutControlItem24.Location = new System.Drawing.Point(936, 615);
             this.layoutControlItem24.Name = "layoutControlItem24";
-            this.layoutControlItem24.Size = new System.Drawing.Size(118, 26);
+            this.layoutControlItem24.Size = new System.Drawing.Size(84, 26);
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
             // layoutControlItem25
             // 
             this.layoutControlItem25.Control = this.ddBtnPrint;
-            this.layoutControlItem25.Location = new System.Drawing.Point(1098, 615);
+            this.layoutControlItem25.Location = new System.Drawing.Point(1110, 615);
             this.layoutControlItem25.Name = "layoutControlItem25";
             this.layoutControlItem25.Size = new System.Drawing.Size(58, 26);
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
@@ -2806,11 +2823,21 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnSavePrint;
-            this.layoutControlItem4.Location = new System.Drawing.Point(738, 615);
+            this.layoutControlItem4.Location = new System.Drawing.Point(791, 615);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(77, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
+            // 
+            // lciSaveSignPrint (viec 3082)
+            // 
+            this.lciSaveSignPrint.Control = this.btnSaveSignPrint;
+            this.lciSaveSignPrint.CustomizationFormText = "Lưu ký in";
+            this.lciSaveSignPrint.Location = new System.Drawing.Point(681, 615);
+            this.lciSaveSignPrint.Name = "lciSaveSignPrint";
+            this.lciSaveSignPrint.Size = new System.Drawing.Size(110, 26);
+            this.lciSaveSignPrint.TextSize = new System.Drawing.Size(0, 0);
+            this.lciSaveSignPrint.TextVisible = false;
             // 
             // layoutControlItem7
             // 
@@ -2856,9 +2883,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem26
             // 
             this.layoutControlItem26.Control = this.btnSaleBill;
-            this.layoutControlItem26.Location = new System.Drawing.Point(1204, 615);
+            this.layoutControlItem26.Location = new System.Drawing.Point(1216, 615);
             this.layoutControlItem26.Name = "layoutControlItem26";
-            this.layoutControlItem26.Size = new System.Drawing.Size(130, 26);
+            this.layoutControlItem26.Size = new System.Drawing.Size(122, 26);
             this.layoutControlItem26.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem26.TextVisible = false;
             // 
@@ -3035,9 +3062,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnNewExpMest;
-            this.layoutControlItem3.Location = new System.Drawing.Point(1001, 615);
+            this.layoutControlItem3.Location = new System.Drawing.Point(1020, 615);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(97, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(90, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -3168,7 +3195,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem2.Control = this.chkPrintNow;
-            this.layoutControlItem2.Location = new System.Drawing.Point(513, 615);
+            this.layoutControlItem2.Location = new System.Drawing.Point(456, 615);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(130, 26);
             this.layoutControlItem2.Text = "Xem trước khi in:";
@@ -3179,16 +3206,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.btnDebt;
-            this.layoutControlItem18.Location = new System.Drawing.Point(1334, 615);
+            this.layoutControlItem18.Location = new System.Drawing.Point(1338, 615);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(86, 26);
+            this.layoutControlItem18.Size = new System.Drawing.Size(82, 26);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.btnCancelExport;
-            this.layoutControlItem1.Location = new System.Drawing.Point(643, 615);
+            this.layoutControlItem1.Location = new System.Drawing.Point(586, 615);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Size = new System.Drawing.Size(95, 26);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -3197,7 +3224,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem31
             // 
             this.layoutControlItem31.Control = this.chkAutoShow;
-            this.layoutControlItem31.Location = new System.Drawing.Point(104, 615);
+            this.layoutControlItem31.Location = new System.Drawing.Point(47, 615);
             this.layoutControlItem31.Name = "layoutControlItem31";
             this.layoutControlItem31.Size = new System.Drawing.Size(224, 26);
             this.layoutControlItem31.Text = "Tự động hiển thị tồn kho các nhà thuốc";
@@ -3376,7 +3403,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem50
             // 
             this.layoutControlItem50.Control = this.btnQr;
-            this.layoutControlItem50.Location = new System.Drawing.Point(1156, 615);
+            this.layoutControlItem50.Location = new System.Drawing.Point(1168, 615);
             this.layoutControlItem50.Name = "layoutControlItem50";
             this.layoutControlItem50.Size = new System.Drawing.Size(48, 26);
             this.layoutControlItem50.TextSize = new System.Drawing.Size(0, 0);
@@ -3448,7 +3475,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem55.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem55.Control = this.chkSign;
             this.layoutControlItem55.CustomizationFormText = "Ký đơn nhà thuốc";
-            this.layoutControlItem55.Location = new System.Drawing.Point(328, 615);
+            this.layoutControlItem55.Location = new System.Drawing.Point(271, 615);
             this.layoutControlItem55.Name = "layoutControlItem55";
             this.layoutControlItem55.Size = new System.Drawing.Size(185, 26);
             this.layoutControlItem55.Text = "Ký đơn nhà thuốc";
@@ -3461,7 +3488,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 615);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(104, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(47, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem56
@@ -3619,6 +3646,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSaveSignPrint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExpMestCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
@@ -3721,6 +3749,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider_Save;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider_Add;
         private DevExpress.XtraEditors.SimpleButton btnSavePrint;
+        private DevExpress.XtraEditors.SimpleButton btnSaveSignPrint;
+        private DevExpress.XtraLayout.LayoutControlItem lciSaveSignPrint;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraEditors.TextEdit txtAddress;

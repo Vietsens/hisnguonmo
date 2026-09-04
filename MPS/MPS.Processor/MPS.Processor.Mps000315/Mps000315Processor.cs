@@ -312,6 +312,32 @@ namespace MPS.Processor.Mps000315
                 {
                     SetSingleKey((new KeyValue(Mps000315ExtendSingleKey.DHST_LOGINNAME, rdo._KSK_Dhsts.FirstOrDefault().EXECUTE_LOGINNAME)));
                 }
+                // Kết luận theo bệnh (ICD-10) — 3 cờ "x" phái sinh từ HIS_KSK_GENERAL.CONCLUSION_ICD_TYPE
+                SetConclusionIcdFlagKeys();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Kết luận theo bệnh (ICD-10) — dữ liệu ở HIS_KSK_GENERAL (UC dùng chung mọi tab KSK).
+        /// Key thô CONCLUSION_ICD_TYPE/_CODE/_NAME đã có sẵn qua AddObjectKeyIntoListkey&lt;HIS_KSK_GENERAL&gt;;
+        /// hàm này bổ sung 3 cờ "x" cho biểu mẫu tick ô (khuôn theo Mps000516):
+        /// 1=Chưa phát hiện bất thường, 2=Chẩn đoán sơ bộ, 3=Chẩn đoán xác định.
+        /// </summary>
+        private void SetConclusionIcdFlagKeys()
+        {
+            try
+            {
+                HIS_KSK_GENERAL kskGeneral = (rdo._KskGeneral != null && rdo._KskGeneral.Count > 0)
+                    ? rdo._KskGeneral[0] : null;
+                long? icdType = (kskGeneral != null && kskGeneral.CONCLUSION_ICD_TYPE != null)
+                    ? (long?)kskGeneral.CONCLUSION_ICD_TYPE.Value : null;
+                SetSingleKey(new KeyValue(Mps000315ExtendSingleKey.CONCLUSION_ICD_NONE_X, icdType == 1 ? "x" : ""));
+                SetSingleKey(new KeyValue(Mps000315ExtendSingleKey.CONCLUSION_ICD_PRELIM_X, icdType == 2 ? "x" : ""));
+                SetSingleKey(new KeyValue(Mps000315ExtendSingleKey.CONCLUSION_ICD_FINAL_X, icdType == 3 ? "x" : ""));
             }
             catch (Exception ex)
             {

@@ -34,6 +34,14 @@ namespace HIS.Desktop.Plugins.ImportDepartment.ADO
         public string TheoryPatientCountStr { get; set; }
         public string Error { get; set; }
 
+        // TT12 - MAU_01 (DMBOPHANCHUYENMON)
+        public string ExamDeskCountStr { get; set; }
+        public string RealityPatientCountStr { get; set; }
+        public string IcuBedCountStr { get; set; }
+        public string ErResusBedCountStr { get; set; }
+        public string FromTimeStr { get; set; }
+        public string ToTimeStr { get; set; }
+
         public string AllowTreatmentTypeCodes { get; set; }
         public string ALLOW_TREATMENT_TYPE_NAMEs { get; set; }
     }

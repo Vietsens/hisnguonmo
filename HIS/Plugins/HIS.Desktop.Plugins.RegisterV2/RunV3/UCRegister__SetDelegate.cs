@@ -435,6 +435,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			{
 				this.ucPatientRaw1.SetDelegateCheckTT(CheckTTFull);
 				this.ucHeinInfo1.SetDelegateCheckTT(CheckTTFull);
+				this.ucHeinInfo1.SetDelegateCheckTienMCCT(CheckTienMCCTManual);
 				this.ucPatientRaw1.SetIsReadQrCode(SetIsReadQrCode);
 			}
 			catch (Exception ex)

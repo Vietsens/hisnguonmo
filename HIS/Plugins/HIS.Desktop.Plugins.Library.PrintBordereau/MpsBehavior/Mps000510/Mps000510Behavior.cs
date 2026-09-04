@@ -138,15 +138,12 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000510
                 }
                 var hisConfigValue = new MPS.Processor.Mps000510.PDO.Config.HisConfigValue();
                 hisConfigValue.IsGroupHeinServiceByUseTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(SdaConfigKey.ConfigKey_IsGroupHeinServiceByUseTime) == 1;
-                if (isShowMedicineLine == 1 || hisConfigValue.IsGroupHeinServiceByUseTime)
-                {
-                    HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
-                    serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
-                    serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };
-                    serviceReqs = new BackendAdapter(param)
-                    .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
-
-                }
+                
+                HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
+                serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
+                serviceReqs = new BackendAdapter(param)
+                .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
+                
                 MPS.Processor.Mps000510.PDO.Mps000510PDO rdo = null;
                 rdo = new MPS.Processor.Mps000510.PDO.Mps000510PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees,
                     heinServiceType, patientTypeCFG, sereServView2, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services,

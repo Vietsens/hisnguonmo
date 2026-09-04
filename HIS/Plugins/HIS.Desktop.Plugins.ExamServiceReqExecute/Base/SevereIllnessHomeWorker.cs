@@ -33,11 +33,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Base
 {
     /// <summary>
     /// 2608 - Bệnh nặng xin về.
-    /// Helper trigger popup HIS.Desktop.Plugins.HisDeathInfo khi BS chọn Loại ra viện thuộc config.
+    /// Helper trigger popup HIS.Desktop.Plugins.InformationAllowGoHome khi BS chọn Loại ra viện thuộc config.
+    /// Dùng chung popup với chức năng Kết thúc điều trị (TreatmentFinish) - KHÔNG dùng popup
+    /// HisDeathInfo (Thông tin tử vong) vì popup đó lưu HIS_SEVERE_ILLNESS_INFO.IS_DEATH = 1.
     /// </summary>
     internal static class SevereIllnessHomeWorker
     {
-        private const string MODULE_LINK__HIS_DEATH_INFO = "HIS.Desktop.Plugins.HisDeathInfo";
+        private const string MODULE_LINK__INFORMATION_ALLOW_GO_HOME = "HIS.Desktop.Plugins.InformationAllowGoHome";
 
         /// <summary>
         /// Kiểm tra TREATMENT_END_TYPE_ID hiện tại có thuộc danh sách config không.
@@ -65,9 +67,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Base
         }
 
         /// <summary>
-        /// Mở popup HisDeathInfo qua MEF PluginInstance. Truyền Module + treatmentId.
+        /// Mở popup InformationAllowGoHome qua MEF PluginInstance.
+        /// Truyền args giống TreatmentFinish: treatmentId, thời gian ra (outTime), isSave = true,
+        /// callback nhận lại thời gian xin về để gán vào SDO khi lưu.
         /// </summary>
-        internal static void OpenPopup(Module currentModule, long treatmentId)
+        internal static void OpenPopup(Module currentModule, long treatmentId, long outTime, Action<long?> deathTimeResult)
         {
             try
             {
@@ -77,21 +81,25 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Base
                     return;
                 }
 
-                Module hisDeathInfoModule = GlobalVariables.currentModuleRaws
-                    .FirstOrDefault(o => o.ModuleLink == MODULE_LINK__HIS_DEATH_INFO);
+                Module goHomeModule = GlobalVariables.currentModuleRaws
+                    .FirstOrDefault(o => o.ModuleLink == MODULE_LINK__INFORMATION_ALLOW_GO_HOME);
 
-                if (hisDeathInfoModule == null || !hisDeathInfoModule.IsPlugin || hisDeathInfoModule.ExtensionInfo == null)
+                if (goHomeModule == null || !goHomeModule.IsPlugin || goHomeModule.ExtensionInfo == null)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("SevereIllnessHomeWorker.OpenPopup: HisDeathInfo module not registered");
+                    Inventec.Common.Logging.LogSystem.Warn("SevereIllnessHomeWorker.OpenPopup: InformationAllowGoHome module not registered");
                     return;
                 }
 
                 List<object> listArgs = new List<object>();
                 listArgs.Add(treatmentId);
+                listArgs.Add(outTime);
+                listArgs.Add(true);
+                if (deathTimeResult != null)
+                    listArgs.Add(deathTimeResult);
 
                 Module resolvedModule = currentModule != null
-                    ? PluginInstance.GetModuleWithWorkingRoom(hisDeathInfoModule, currentModule.RoomId, currentModule.RoomTypeId)
-                    : hisDeathInfoModule;
+                    ? PluginInstance.GetModuleWithWorkingRoom(goHomeModule, currentModule.RoomId, currentModule.RoomTypeId)
+                    : goHomeModule;
 
                 var instance = PluginInstance.GetPluginInstance(resolvedModule, listArgs);
                 if (instance == null)
@@ -124,6 +132,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Base
                 CommonParam param = new CommonParam();
                 HisSevereIllnessInfoFilter filter = new HisSevereIllnessInfoFilter();
                 filter.TREATMENT_ID = treatmentId;
+                //Chi tinh ban ghi benh nang xin ve (IS_DEATH = 0), khong tinh ban ghi tu vong
+                filter.IS_DEATH = false;
 
                 var data = new BackendAdapter(param).Get<List<HIS_SEVERE_ILLNESS_INFO>>(
                     "api/HisSevereIllnessInfo/Get", ApiConsumers.MosConsumer, filter, param);

@@ -64,6 +64,7 @@
             this.gridColumnIcdName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnIcdSubCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnIcdText = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.memLine = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
@@ -137,6 +138,7 @@
             this.xtraTabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memLine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.xtraTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcCDHA)).BeginInit();
@@ -406,6 +408,8 @@
             this.gridControl1.MainView = this.gridViewTreatment;
             this.gridControl1.MenuManager = this.barManager1;
             this.gridControl1.Name = "gridControl1";
+            this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.memLine});
             this.gridControl1.Size = new System.Drawing.Size(719, 424);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -436,12 +440,20 @@
             this.gridColumnDateTime.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnDateTime.Caption = "Ngày giờ";
             this.gridColumnDateTime.FieldName = "DatetimeFormatted";
+            this.gridColumnDateTime.ColumnEdit = this.memLine;
             this.gridColumnDateTime.Name = "gridColumnDateTime";
             this.gridColumnDateTime.OptionsColumn.AllowEdit = false;
             this.gridColumnDateTime.OptionsColumn.ReadOnly = true;
             this.gridColumnDateTime.Visible = true;
             this.gridColumnDateTime.VisibleIndex = 0;
             this.gridColumnDateTime.Width = 95;
+            // 
+            // memLine
+            // 
+            this.memLine.Appearance.Options.UseTextOptions = true;
+            this.memLine.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+            this.memLine.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.memLine.Name = "memLine";
             // 
             // gridColumnDoctor
             // 
@@ -450,6 +462,7 @@
             this.gridColumnDoctor.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnDoctor.Caption = "Bác sĩ";
             this.gridColumnDoctor.FieldName = "UserName";
+            this.gridColumnDoctor.ColumnEdit = this.memLine;
             this.gridColumnDoctor.Name = "gridColumnDoctor";
             this.gridColumnDoctor.OptionsColumn.AllowEdit = false;
             this.gridColumnDoctor.OptionsColumn.ReadOnly = true;
@@ -464,6 +477,7 @@
             this.gridColumnProgress.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnProgress.Caption = "Diễn biến";
             this.gridColumnProgress.FieldName = "Content";
+            this.gridColumnProgress.ColumnEdit = this.memLine;
             this.gridColumnProgress.Name = "gridColumnProgress";
             this.gridColumnProgress.OptionsColumn.AllowEdit = false;
             this.gridColumnProgress.OptionsColumn.ReadOnly = true;
@@ -478,6 +492,7 @@
             this.gridColumnMedicalOrder.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnMedicalOrder.Caption = "Y lệnh";
             this.gridColumnMedicalOrder.FieldName = "Medical_order";
+            this.gridColumnMedicalOrder.ColumnEdit = this.memLine;
             this.gridColumnMedicalOrder.Name = "gridColumnMedicalOrder";
             this.gridColumnMedicalOrder.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicalOrder.OptionsColumn.ReadOnly = true;
@@ -491,6 +506,7 @@
             this.gridColumnIcdCode.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
             this.gridColumnIcdCode.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnIcdCode.Caption = "Mã chẩn đoán chính";
+            this.gridColumnIcdCode.ColumnEdit = this.memLine;
             this.gridColumnIcdCode.Name = "gridColumnIcdCode";
             this.gridColumnIcdCode.OptionsColumn.AllowEdit = false;
             this.gridColumnIcdCode.OptionsColumn.ReadOnly = true;
@@ -500,8 +516,12 @@
             // 
             // gridColumnIcdName
             // 
+            this.gridColumnIcdName.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnIcdName.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+            this.gridColumnIcdName.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnIcdName.Caption = "Tên chẩn đoán chính";
             this.gridColumnIcdName.FieldName = "ICD_NAME";
+            this.gridColumnIcdName.ColumnEdit = this.memLine;
             this.gridColumnIcdName.Name = "gridColumnIcdName";
             this.gridColumnIcdName.OptionsColumn.AllowEdit = false;
             this.gridColumnIcdName.OptionsColumn.ReadOnly = true;
@@ -511,8 +531,12 @@
             // 
             // gridColumnIcdSubCode
             // 
+            this.gridColumnIcdSubCode.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnIcdSubCode.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+            this.gridColumnIcdSubCode.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnIcdSubCode.Caption = "Mã chẩn đoán phụ";
             this.gridColumnIcdSubCode.FieldName = "ICD_SUB_CODE";
+            this.gridColumnIcdSubCode.ColumnEdit = this.memLine;
             this.gridColumnIcdSubCode.Name = "gridColumnIcdSubCode";
             this.gridColumnIcdSubCode.OptionsColumn.AllowEdit = false;
             this.gridColumnIcdSubCode.OptionsColumn.ReadOnly = true;
@@ -522,8 +546,12 @@
             // 
             // gridColumnIcdText
             // 
+            this.gridColumnIcdText.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnIcdText.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+            this.gridColumnIcdText.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnIcdText.Caption = "Tên chẩn đoán phụ";
             this.gridColumnIcdText.FieldName = "ICD_TEXT";
+            this.gridColumnIcdText.ColumnEdit = this.memLine;
             this.gridColumnIcdText.Name = "gridColumnIcdText";
             this.gridColumnIcdText.OptionsColumn.AllowEdit = false;
             this.gridColumnIcdText.OptionsColumn.ReadOnly = true;
@@ -1096,6 +1124,7 @@
             this.xtraTabControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memLine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.xtraTabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pcCDHA)).EndInit();
@@ -1213,6 +1242,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnIcdName;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnIcdSubCode;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnIcdText;
+        private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit memLine;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditorInfo;
         private DevExpress.XtraEditors.PanelControl pcCDHA;
         private DevExpress.XtraEditors.PanelControl pcXN;

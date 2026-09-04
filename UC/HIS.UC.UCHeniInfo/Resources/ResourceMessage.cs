@@ -282,5 +282,89 @@ namespace HIS.UC.UCHeniInfo
                 return "";
             }
         }
+
+        #region Tra cuu tien cung chi tra / mien cung chi tra tren cong BHXH
+
+        /// <summary>Cùng chi trả lũy kế trên cổng BHXH: {0}   (hiện tại: {1})</summary>
+        internal static string CungChiTraLuyKeTrenCongBHXH
+        {
+            get { return GetMessageValue("CungChiTraLuyKeTrenCongBHXH"); }
+        }
+
+        /// <summary>Đã cùng chi trả 6 tháng lương cơ sở: {0}</summary>
+        internal static string DaCungChiTra06ThangLuongCoSo
+        {
+            get { return GetMessageValue("DaCungChiTra06ThangLuongCoSo"); }
+        }
+
+        /// <summary>Thời điểm miễn cùng chi trả trên cổng: {0}   (hiện tại: {1})</summary>
+        internal static string ThoiDiemMienCungChiTraTrenCong
+        {
+            get { return GetMessageValue("ThoiDiemMienCungChiTraTrenCong"); }
+        }
+
+        /// <summary>Bạn có muốn lấy thông tin từ cổng BHXH?</summary>
+        internal static string BanCoMuonLayThongTinTuCongBHXHKhong
+        {
+            get { return GetMessageValue("BanCoMuonLayThongTinTuCongBHXHKhong"); }
+        }
+
+        /// <summary>
+        /// Lũy kế đã vượt ngưỡng nhưng cổng không trả về ngày ra viện của đợt vượt ngưỡng
+        /// nên không suy được thời điểm miễn cùng chi trả.
+        /// </summary>
+        internal static string KhongXacDinhDuocThoiDiemMienCungChiTra
+        {
+            get { return GetMessageValue("KhongXacDinhDuocThoiDiemMienCungChiTra"); }
+        }
+
+        /// <summary>Số tiền lũy kế cùng chi trả bắt đầu vượt 06 tháng lương cơ sở...</summary>
+        internal static string SoTienLuyKeCungChiTraVuot06ThangLuongCoSo
+        {
+            get { return GetMessageValue("SoTienLuyKeCungChiTraVuot06ThangLuongCoSo"); }
+        }
+
+        /// <summary>Có</summary>
+        internal static string Co
+        {
+            get { return GetMessageValue("Co"); }
+        }
+
+        /// <summary>Không</summary>
+        internal static string Khong
+        {
+            get { return GetMessageValue("Khong"); }
+        }
+
+        /// <summary>Không xác định</summary>
+        internal static string KhongXacDinh
+        {
+            get { return GetMessageValue("KhongXacDinh"); }
+        }
+
+        /// <summary>đang để trống</summary>
+        internal static string DangDeTrong
+        {
+            get { return GetMessageValue("DangDeTrong"); }
+        }
+
+        /// <summary>
+        /// Đọc một câu thông báo theo ngôn ngữ hiện tại.
+        /// Trả về chuỗi rỗng thay vì ném lỗi, để thiếu key không làm vỡ giao diện.
+        /// </summary>
+        private static string GetMessageValue(string key)
+        {
+            try
+            {
+                return Inventec.Common.Resource.Get.Value(key, languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
+        }
+
+        #endregion
     }
 }

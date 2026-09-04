@@ -72,8 +72,11 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
         private int positionHandle;
         private bool IsPrintNow = false;
 
-        //So id dot dieu tri toi da cho moi lan goi api tra cuu ma benh nhan
-        private const int MAX_TREATMENT_ID_PER_CALL = 500;
+        //Ma benh nhan da tra cuu duoc, theo dot dieu tri. Song theo vong doi man hinh.
+        //Ma benh nhan cua mot dot dieu tri khong doi, ma LoadListDataSource chay lai o ca 3 duong
+        //(mo man hinh, nut Tai lai, timer tu dong moi N giay) -> khong nho lai thi moi tick lai hoi
+        //API dung nhung ID vua hoi xong, chinh la nguon qua tai.
+        private Dictionary<long, string> dicPatientCodeByTreatment = new Dictionary<long, string>();
 
         //Lan quet gan nhat khop theo ma benh nhan hay ma dieu tri, de LoadTab3 focus lai dung o
         private bool isScanByPatientCode = false;
@@ -204,8 +207,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
         }
 
         /// <summary>
-        /// Bo sung ma benh nhan cho cac phieu khong co TDL_PATIENT_CODE, lay theo dot dieu tri. 
-        /// Chi goi api khi thuc su co phieu thieu ma.
+        /// Bo sung ma benh nhan cho cac phieu khong co TDL_PATIENT_CODE, lay theo dot dieu tri.
+        /// Chi goi api cho nhung dot dieu tri CHUA TRA CUU LAN NAO (phan con lai doc tu
+        /// dicPatientCodeByTreatment), va goi theo lo 100 ID chay goi dau nhau — xem TreatmentBatchLoader.
+        /// Chay tren luong UI (LoadListDataSource) nen dicPatientCodeByTreatment khong can khoa.
         /// </summary>
         private void FillMissingPatientCode()
         {
@@ -213,6 +218,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             {
                 if (lstAll == null || lstAll.Count == 0) return;
 
+                int missingCount = lstAll.Count(o => string.IsNullOrEmpty(o.TDL_PATIENT_CODE) && o.TDL_TREATMENT_ID.HasValue);
                 List<long> treatmentIds = lstAll
                     .Where(o => string.IsNullOrEmpty(o.TDL_PATIENT_CODE) && o.TDL_TREATMENT_ID.HasValue)
                     .Select(o => o.TDL_TREATMENT_ID.Value)
@@ -220,33 +226,84 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                     .ToList();
                 if (treatmentIds.Count == 0) return;
 
-                Dictionary<long, string> dicPatientCode = new Dictionary<long, string>();
-                for (int i = 0; i < treatmentIds.Count; i += MAX_TREATMENT_ID_PER_CALL)
+                if (dicPatientCodeByTreatment == null)
+                    dicPatientCodeByTreatment = new Dictionary<long, string>();
+
+                List<long> needFetch = treatmentIds.Where(id => !dicPatientCodeByTreatment.ContainsKey(id)).ToList();
+                Inventec.Common.Logging.LogSystem.Debug("BO SUNG MA BENH NHAN ___ BAT DAU: phieu thieu ma=" + missingCount
+                    + ", dot dieu tri can ma=" + treatmentIds.Count
+                    + ", lay tu bo nho dem=" + (treatmentIds.Count - needFetch.Count)
+                    + ", phai goi API=" + needFetch.Count);
+
+                if (needFetch.Count > 0)
                 {
-                    CommonParam param = new CommonParam();
-                    HisTreatmentFilter filter = new HisTreatmentFilter();
-                    filter.IDs = treatmentIds.Skip(i).Take(MAX_TREATMENT_ID_PER_CALL).ToList();
-                    var treatments = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param);
-                    if (treatments == null) continue;
+                    List<HIS_TREATMENT> treatments = TreatmentBatchLoader.GetByIds("BoSungMaBenhNhan", needFetch, null);
                     foreach (var treatment in treatments)
                     {
-                        if (!dicPatientCode.ContainsKey(treatment.ID))
-                            dicPatientCode.Add(treatment.ID, treatment.TDL_PATIENT_CODE);
+                        if (treatment != null)
+                            dicPatientCodeByTreatment[treatment.ID] = treatment.TDL_PATIENT_CODE;
                     }
+
+                    //Dot nao API khong tra ve thi ghi rong vao bo nho dem, neu khong moi tick timer lai
+                    //hoi lai dung nhung ID khong bao gio co ket qua. Doi lai: phai mo lai man hinh moi hoi lai.
+                    int notFound = 0;
+                    foreach (long id in needFetch)
+                    {
+                        if (!dicPatientCodeByTreatment.ContainsKey(id))
+                        {
+                            dicPatientCodeByTreatment[id] = string.Empty;
+                            notFound++;
+                        }
+                    }
+                    if (notFound > 0)
+                        Inventec.Common.Logging.LogSystem.Warn("BO SUNG MA BENH NHAN ___ " + notFound + "/" + needFetch.Count
+                            + " dot dieu tri KHONG tra cuu duoc ma benh nhan (xem cac dong HIS_TREATMENT_GET phia tren de biet lo nao loi)");
                 }
 
+                int filled = 0;
                 foreach (var expMest in lstAll)
                 {
                     if (!string.IsNullOrEmpty(expMest.TDL_PATIENT_CODE) || !expMest.TDL_TREATMENT_ID.HasValue) continue;
                     string patientCode;
-                    if (dicPatientCode.TryGetValue(expMest.TDL_TREATMENT_ID.Value, out patientCode))
+                    if (dicPatientCodeByTreatment.TryGetValue(expMest.TDL_TREATMENT_ID.Value, out patientCode)
+                        && !string.IsNullOrEmpty(patientCode))
+                    {
                         expMest.TDL_PATIENT_CODE = patientCode;
+                        filled++;
+                    }
                 }
-                Inventec.Common.Logging.LogSystem.Debug("BO SUNG MA BENH NHAN ___ so dot dieu tri phai tra cuu: " + treatmentIds.Count);
+                Inventec.Common.Logging.LogSystem.Debug("BO SUNG MA BENH NHAN ___ KET QUA: da dien ma cho " + filled + "/" + missingCount
+                    + " phieu, con trong=" + (missingCount - filled)
+                    + ", bo nho dem dang giu=" + dicPatientCodeByTreatment.Count + " dot dieu tri");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Xoa khoi bo nho dem nhung dot dieu tri tra cuu KHONG RA ma benh nhan, de lan tai lai sau hoi lai API.
+        /// Chi goi khi nguoi dung tu bam Tai lai — timer tu dong thi khong, neu khong lai quay ve canh moi tick
+        /// hoi lai dung nhung ID that su khong co ket qua.
+        /// </summary>
+        private void ForgetFailedPatientCodeLookup()
+        {
+            try
+            {
+                if (dicPatientCodeByTreatment == null || dicPatientCodeByTreatment.Count == 0) return;
+                List<long> failedIds = dicPatientCodeByTreatment.Where(o => string.IsNullOrEmpty(o.Value)).Select(o => o.Key).ToList();
+                foreach (long id in failedIds)
+                {
+                    dicPatientCodeByTreatment.Remove(id);
+                }
+                if (failedIds.Count > 0)
+                    Inventec.Common.Logging.LogSystem.Debug("BO SUNG MA BENH NHAN ___ TAI LAI: bo " + failedIds.Count
+                        + " dot dieu tri tra cuu khong ra de hoi lai API");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -655,6 +712,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                 if (!dxValidationProvider1.Validate())
                     return;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProvider1, dxErrorProvider1);
+                ForgetFailedPatientCodeLookup();
                 LoadListDataSource();
                 LoadAllTab();
             }

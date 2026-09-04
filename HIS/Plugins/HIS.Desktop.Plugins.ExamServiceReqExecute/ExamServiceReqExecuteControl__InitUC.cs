@@ -287,7 +287,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 DXPopupMenu menu = btnPrint_ExamService.DropDownControl as DXPopupMenu;
                 DXMenuItem itemKhamThem = new DXMenuItem("Yêu cầu khám thêm", new EventHandler(onClickInPhieuKhamBenh));
-                itemKhamThem.Tag = PrintType.YEU_CAU_KHAM_THEM;
+                itemKhamThem.Tag = PrintType.YEU_CAU_KHAM;
                 menu.Items.Add(itemKhamThem);
                 btnPrint_ExamService.DropDownControl = menu;
             }

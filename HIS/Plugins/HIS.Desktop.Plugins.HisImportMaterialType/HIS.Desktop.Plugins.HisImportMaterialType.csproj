@@ -71,7 +71,7 @@
       <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.UCRelativeInfo\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+      <HintPath>..\..\HIS.Desktop.LocalStorage.Location\bin\$(Configuration)\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>

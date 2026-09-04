@@ -98,6 +98,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_TtThau = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_BidTypeCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GcBid_BidFormCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_NationalName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_ManufactureName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_ActiveIngrBhytCode = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -341,6 +342,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn7,
             this.GcBid_TtThau,
             this.GcBid_BidTypeCode,
+            this.GcBid_BidFormCode,
             this.GcBid_NationalName,
             this.GcBid_ManufactureName,
             this.GcBid_ActiveIngrBhytCode,
@@ -649,6 +651,16 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidTypeCode.Visible = true;
             this.GcBid_BidTypeCode.VisibleIndex = 26;
             this.GcBid_BidTypeCode.Width = 87;
+            // 
+            // GcBid_BidFormCode
+            // 
+            this.GcBid_BidFormCode.Caption = "Hình thức thầu";
+            this.GcBid_BidFormCode.FieldName = "BID_FORM_NAME";
+            this.GcBid_BidFormCode.Name = "GcBid_BidFormCode";
+            this.GcBid_BidFormCode.OptionsColumn.AllowEdit = false;
+            this.GcBid_BidFormCode.Visible = true;
+            this.GcBid_BidFormCode.VisibleIndex = 27;
+            this.GcBid_BidFormCode.Width = 120;
             // 
             // GcBid_NationalName
             // 
@@ -961,6 +973,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
         private DevExpress.XtraGrid.Columns.GridColumn GcBid_BidGroupCode;
         private DevExpress.XtraGrid.Columns.GridColumn GcBid_BidYear;
         private DevExpress.XtraGrid.Columns.GridColumn GcBid_BidTypeCode;
+        private DevExpress.XtraGrid.Columns.GridColumn GcBid_BidFormCode;
         private DevExpress.XtraEditors.SimpleButton BtnExportError;
         private DevExpress.XtraLayout.LayoutControlItem LblBtnExportError;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;

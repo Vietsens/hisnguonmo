@@ -48,13 +48,44 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         private const string SaveSignPrintAutoExportKey = "HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport";
 
         /// <summary>
-        /// = 1: hien checkbox "In" — tick thi nut Luu ky tu dong duyet/thuc xuat phieu va in thang hoa don (viec 3082)
+        /// = 1: hien checkbox "In" — tick thi nut Luu ky: kiem tra ton -> tao bill + phat hanh HDDT
+        /// -> tu dong duyet/thuc xuat phieu (neu chua hoan thanh) -> in thang hoa don (viec 3082).
+        /// Man Xuat ban (ExpMestSaleCreate) cung dung key nay de hien checkbox "In" canh nut Luu in.
         /// </summary>
         internal static bool IsSaveSignPrintAutoExport
         {
             get
             {
                 return (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SaveSignPrintAutoExportKey) == "1");
+            }
+        }
+
+        /// <summary>
+        /// Viec 3082: marker man Xuat ban truyen vao args (List&lt;string&gt;) de form tu chay
+        /// Luu ky + duyet/thuc xuat + in hoa don roi tu dong (nut "Luu in" + tick "In" tai man Xuat ban).
+        /// Chuoi nay phai trung voi hang so ben HIS.Desktop.Plugins.ExpMestSaleCreate.
+        /// </summary>
+        internal const string AUTO_ACTION__SAVE_SIGN_PRINT = "AUTO_SAVE_SIGN_PRINT";
+
+        /// <summary>
+        /// Viec 3082 (29/08/2026): man Xuat ban da tao bill ngay khi luu (tick "Xuat bien lai/hoa don") -> form chi
+        /// phat hanh HDDT cho bill do + duyet/thuc xuat + in roi tu dong. Kem tham so "TRANSACTION_ID=&lt;id&gt;".
+        /// </summary>
+        internal const string AUTO_ACTION__ISSUE_EXISTING_BILL = "AUTO_ISSUE_EXISTING_BILL";
+        internal const string AUTO_PARAM__TRANSACTION_ID = "TRANSACTION_ID=";
+
+        private const string AutoSelectAccountBookIfHasOneKey = "HIS.Desktop.Plugins.TransactionBill.AutoSelectAccountBookIfHasOne";
+
+        /// <summary>
+        /// = 1: neu thu ngan chi duoc gan dung 1 so thu chi thi tu dong chon so do ngay tu lan mo man dau tien
+        /// (khong phai doi den khi user tu chon 1 lan). Dung chung key voi cac man
+        /// TransactionBill / ExpMestSaleCreate / AdjustmentTransaction / EInvoiceCreate.
+        /// </summary>
+        internal static bool IsAutoSelectAccountBookIfHasOne
+        {
+            get
+            {
+                return (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AutoSelectAccountBookIfHasOneKey) == "1");
             }
         }
 

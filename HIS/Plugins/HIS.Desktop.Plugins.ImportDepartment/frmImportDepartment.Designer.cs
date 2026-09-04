@@ -76,6 +76,12 @@ namespace HIS.Desktop.Plugins.ImportDepartment
             this.repositoryItemSpinEditNumBed = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colExamDeskCount = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colRealityPatientCount = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colIcuBedCount = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colErResusBedCount = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colFromTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colToTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colSTTUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colDELETEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colBRANCH_CODEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -273,6 +279,12 @@ namespace HIS.Desktop.Plugins.ImportDepartment
             this.gridColumn11,
             this.gridColumn6,
             this.gridColumn12,
+            this.colExamDeskCount,
+            this.colRealityPatientCount,
+            this.colIcuBedCount,
+            this.colErResusBedCount,
+            this.colFromTime,
+            this.colToTime,
             this.colSTTUnb,
             this.colDELETEUnb,
             this.colBRANCH_CODEUnb,
@@ -468,6 +480,66 @@ namespace HIS.Desktop.Plugins.ImportDepartment
             this.gridColumn12.Visible = true;
             this.gridColumn12.VisibleIndex = 11;
             this.gridColumn12.Width = 150;
+            //
+            // colExamDeskCount
+            //
+            this.colExamDeskCount.Caption = "Số bàn khám";
+            this.colExamDeskCount.FieldName = "EXAM_DESK_COUNT";
+            this.colExamDeskCount.Name = "colExamDeskCount";
+            this.colExamDeskCount.OptionsColumn.AllowEdit = false;
+            this.colExamDeskCount.Visible = true;
+            this.colExamDeskCount.VisibleIndex = 12;
+            this.colExamDeskCount.Width = 100;
+            //
+            // colRealityPatientCount
+            //
+            this.colRealityPatientCount.Caption = "Số giường thực kê";
+            this.colRealityPatientCount.FieldName = "REALITY_PATIENT_COUNT";
+            this.colRealityPatientCount.Name = "colRealityPatientCount";
+            this.colRealityPatientCount.OptionsColumn.AllowEdit = false;
+            this.colRealityPatientCount.Visible = true;
+            this.colRealityPatientCount.VisibleIndex = 13;
+            this.colRealityPatientCount.Width = 130;
+            //
+            // colIcuBedCount
+            //
+            this.colIcuBedCount.Caption = "Số giường HSTC";
+            this.colIcuBedCount.FieldName = "ICU_BED_COUNT";
+            this.colIcuBedCount.Name = "colIcuBedCount";
+            this.colIcuBedCount.OptionsColumn.AllowEdit = false;
+            this.colIcuBedCount.Visible = true;
+            this.colIcuBedCount.VisibleIndex = 14;
+            this.colIcuBedCount.Width = 120;
+            //
+            // colErResusBedCount
+            //
+            this.colErResusBedCount.Caption = "Số giường HSCC";
+            this.colErResusBedCount.FieldName = "ER_RESUS_BED_COUNT";
+            this.colErResusBedCount.Name = "colErResusBedCount";
+            this.colErResusBedCount.OptionsColumn.AllowEdit = false;
+            this.colErResusBedCount.Visible = true;
+            this.colErResusBedCount.VisibleIndex = 15;
+            this.colErResusBedCount.Width = 120;
+            //
+            // colFromTime
+            //
+            this.colFromTime.Caption = "Từ ngày";
+            this.colFromTime.FieldName = "FromTimeStr";
+            this.colFromTime.Name = "colFromTime";
+            this.colFromTime.OptionsColumn.AllowEdit = false;
+            this.colFromTime.Visible = true;
+            this.colFromTime.VisibleIndex = 16;
+            this.colFromTime.Width = 100;
+            //
+            // colToTime
+            //
+            this.colToTime.Caption = "Đến ngày";
+            this.colToTime.FieldName = "ToTimeStr";
+            this.colToTime.Name = "colToTime";
+            this.colToTime.OptionsColumn.AllowEdit = false;
+            this.colToTime.Visible = true;
+            this.colToTime.VisibleIndex = 17;
+            this.colToTime.Width = 100;
             // 
             // colSTTUnb
             // 
@@ -728,6 +800,12 @@ namespace HIS.Desktop.Plugins.ImportDepartment
         private DevExpress.XtraGrid.Columns.GridColumn colTHEORY_PATIENT_COUNTUnb;
         private DevExpress.XtraGrid.Columns.GridColumn colG_CODEUnb;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
+        private DevExpress.XtraGrid.Columns.GridColumn colExamDeskCount;
+        private DevExpress.XtraGrid.Columns.GridColumn colRealityPatientCount;
+        private DevExpress.XtraGrid.Columns.GridColumn colIcuBedCount;
+        private DevExpress.XtraGrid.Columns.GridColumn colErResusBedCount;
+        private DevExpress.XtraGrid.Columns.GridColumn colFromTime;
+        private DevExpress.XtraGrid.Columns.GridColumn colToTime;
         private DevExpress.XtraGrid.Columns.GridColumn colUnb;
         private DevExpress.XtraGrid.Columns.GridColumn colALLOW_TREATMENT_TYPE_NAMEsUnb;
     }

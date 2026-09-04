@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             try
             {
-                return PickByBranch(BackendDataWorker.Get<HIS_CONFIG>(), key);
+                return PickByBranch(BackendDataWorker.Get<HIS_CONFIG>(), key, "CACHE");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
@@ -95,27 +95,70 @@ namespace HIS.Desktop.Plugins.KskSyncList
             try
             {
                 List<HIS_CONFIG> list = BackendDataWorker.Get<HIS_CONFIG>(false, true, false, false);
-                if (list == null || list.Count == 0) list = BackendDataWorker.Get<HIS_CONFIG>();
-                return PickByBranch(list, key);
+                bool fromSource = (list != null && list.Count > 0);
+                if (!fromSource) list = BackendDataWorker.Get<HIS_CONFIG>();
+                return PickByBranch(list, key, fromSource ? "FRESH" : "FRESH->CACHE");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
-        /// <summary>Chọn bản ghi đúng chi nhánh, không có thì lấy bản dùng chung (BRANCH_ID null).</summary>
-        private static string PickByBranch(List<HIS_CONFIG> source, string key)
+        /// <summary>
+        /// Chọn bản ghi đúng chi nhánh, không có thì lấy bản dùng chung (BRANCH_ID null).
+        /// Ghi log Info (marker <c>KskBranchConfig:</c>) để soi vì sao lấy/không lấy được cấu hình:
+        /// chi nhánh đang làm việc, tổng số dòng cùng KEY trong nguồn (kể cả cơ sở khác), dòng được chọn.
+        /// KHÔNG log VALUE — chuỗi này chứa mật khẩu và khóa bí mật.
+        /// </summary>
+        private static string PickByBranch(List<HIS_CONFIG> source, string key, string sourceName)
         {
-            if (source == null || string.IsNullOrWhiteSpace(key)) return null;
+            if (source == null || string.IsNullOrWhiteSpace(key))
+            {
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "KskBranchConfig: [{0}] KEY='{1}' -> nguon rong hoac key rong.", sourceName, key));
+                return null;
+            }
 
             long branchId = CurrentBranchId();
 
-            List<HIS_CONFIG> configs = source
-                .Where(o => o != null && o.KEY == key && (!o.BRANCH_ID.HasValue || o.BRANCH_ID.Value == branchId))
+            List<HIS_CONFIG> allOfKey = source.Where(o => o != null && o.KEY == key).ToList();
+
+            List<HIS_CONFIG> configs = allOfKey
+                .Where(o => !o.BRANCH_ID.HasValue || o.BRANCH_ID.Value == branchId)
                 .ToList();
 
             HIS_CONFIG cfg = configs.FirstOrDefault(o => o.BRANCH_ID.HasValue && o.BRANCH_ID.Value == branchId)
                           ?? configs.FirstOrDefault(o => !o.BRANCH_ID.HasValue);
 
+            LogPick(sourceName, key, branchId, allOfKey, cfg);
+
             return (cfg != null) ? cfg.VALUE : null;
+        }
+
+        /// <summary>Ghi log Info kết quả chọn cấu hình (không lộ VALUE — chỉ độ dài).</summary>
+        private static void LogPick(string sourceName, string key, long branchId,
+            List<HIS_CONFIG> allOfKey, HIS_CONFIG picked)
+        {
+            try
+            {
+                string branchesInDb = (allOfKey.Count == 0) ? "(khong co dong nao)"
+                    : string.Join(", ", allOfKey
+                        .Select(o => o.BRANCH_ID.HasValue ? o.BRANCH_ID.Value.ToString() : "NULL")
+                        .ToArray());
+
+                string chosen;
+                if (picked == null)
+                    chosen = "KHONG CHON DUOC (khong co dong dung chi nhanh, cung khong co dong dung chung)";
+                else if (picked.BRANCH_ID.HasValue)
+                    chosen = "dong CHI NHANH " + picked.BRANCH_ID.Value;
+                else
+                    chosen = "dong DUNG CHUNG (BRANCH_ID null)";
+
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "KskBranchConfig: [{0}] KEY='{1}' | chi nhanh dang lam viec={2} ({3}) | so dong cung KEY={4}"
+                    + " [BRANCH_ID: {5}] | chon: {6} | do dai VALUE={7}",
+                    sourceName, key, branchId, CurrentBranchCode(), allOfKey.Count, branchesInDb, chosen,
+                    (picked != null && picked.VALUE != null) ? picked.VALUE.Length : 0));
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
         /// <summary>

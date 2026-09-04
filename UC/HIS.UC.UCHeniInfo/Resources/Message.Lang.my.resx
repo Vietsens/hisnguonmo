@@ -153,4 +153,34 @@
   <data name="TheBHYTDaHetHanSuDungBanCoMuonTiepTucKhong" xml:space="preserve">
     <value>ကျန်းမာရေးအကျိုးခံစားခွင့်ကဒ် သက်တမ်းကုန်ဆုံးပြီးဖြစ်သည်။ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
   </data>
+  <data name="CungChiTraLuyKeTrenCongBHXH" xml:space="preserve">
+    <value>Accumulated co-payment on the BHXH portal: {0}   (current: {1})</value>
+  </data>
+  <data name="DaCungChiTra06ThangLuongCoSo" xml:space="preserve">
+    <value>Co-payment reached 6 months of base salary: {0}</value>
+  </data>
+  <data name="ThoiDiemMienCungChiTraTrenCong" xml:space="preserve">
+    <value>Co-payment exemption date on the portal: {0}   (current: {1})</value>
+  </data>
+  <data name="BanCoMuonLayThongTinTuCongBHXHKhong" xml:space="preserve">
+    <value>Do you want to take the information from the BHXH portal?</value>
+  </data>
+  <data name="KhongXacDinhDuocThoiDiemMienCungChiTra" xml:space="preserve">
+    <value>The accumulated co-payment has passed 6 months of base salary, but the BHXH portal did not return the discharge date of the episode that crossed the threshold. Please enter the exemption date from the co-payment exemption certificate.</value>
+  </data>
+  <data name="Co" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Khong" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="KhongXacDinh" xml:space="preserve">
+    <value>Undetermined</value>
+  </data>
+  <data name="DangDeTrong" xml:space="preserve">
+    <value>empty</value>
+  </data>
+  <data name="SoTienLuyKeCungChiTraVuot06ThangLuongCoSo" xml:space="preserve">
+    <value>The accumulated co-payment has started to exceed 6 months of base salary. Please add the exemption date and tick the 6-month box</value>
+  </data>
 </root>

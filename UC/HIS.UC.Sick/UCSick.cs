@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
  * GNU General Public License for more details.
  *  
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Data;
@@ -325,6 +325,8 @@ namespace HIS.UC.Sick
         /// Khi HIS_CONFIG "...SickLeave.RequireCccdNumber" = 1: caption 2 ô đỏ (Maroon) + bắt buộc;
         /// GetValue gọi dxValidationProvider1.Validate() nên tự chặn lưu + hiện cảnh báo trên ô.
         /// Mặc định (=0 hoặc thiếu key): giữ nguyên hành vi cũ.
+        /// Ngoại lệ: bệnh nhân được đánh dấu không có CCCD (HIS_TREATMENT.TDL_PATIENT_IS_NO_CHECK_CCCD = 1)
+        /// thì bỏ qua kiểm tra, cho phép để trống "Số CCCD/HC" và "Ngày cấp"; khác 1 thì giữ nguyên như hiện tại.
         /// </summary>
         private void ApplyRequireCccdConfig()
         {
@@ -333,6 +335,14 @@ namespace HIS.UC.Sick
                 isRequireCccdNumber = HisConfigs.Get<int>(RequireCccdNumberConfigKey) == 1;
                 if (!isRequireCccdNumber)
                     return;
+
+                //Benh nhan da duoc danh dau khong co CCCD tu man tiep don => bo qua kiem tra CCCD
+                if (IsPatientNoCheckCccd())
+                {
+                    isRequireCccdNumber = false;
+                    Inventec.Common.Logging.LogSystem.Debug("ApplyRequireCccdConfig: TDL_PATIENT_IS_NO_CHECK_CCCD = 1 => bo qua kiem tra CCCD. TreatmentId = " + (this.hisTreatment != null ? this.hisTreatment.ID.ToString() : ""));
+                    return;
+                }
 
                 lciCccd.AppearanceItemCaption.ForeColor = Color.Maroon;
                 lciCccd.AppearanceItemCaption.Options.UseForeColor = true;
@@ -345,6 +355,24 @@ namespace HIS.UC.Sick
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Benh nhan duoc danh dau khong co CCCD o man tiep don (check "Khong CCCD" => HIS_PATIENT.IS_NO_CHECK_CCCD = 1,
+        /// duoc dong bo sang HIS_TREATMENT.TDL_PATIENT_IS_NO_CHECK_CCCD).
+        /// Moi truong hop khac (null, 0, khong doc duoc du lieu) => giu nguyen kiem tra nhu hien tai.
+        /// </summary>
+        private bool IsPatientNoCheckCccd()
+        {
+            try
+            {
+                return this.hisTreatment != null && this.hisTreatment.TDL_PATIENT_IS_NO_CHECK_CCCD == 1;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
 

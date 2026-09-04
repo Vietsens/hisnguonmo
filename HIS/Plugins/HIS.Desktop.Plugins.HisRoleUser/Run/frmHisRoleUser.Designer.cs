@@ -66,6 +66,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.btnSaveTemp = new DevExpress.XtraEditors.SimpleButton();
             this.btnPrintV2 = new DevExpress.XtraEditors.DropDownButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
+            this.chkAutoSign = new DevExpress.XtraEditors.CheckEdit();
             this.gridControlRoleUser = new DevExpress.XtraGrid.GridControl();
             this.gridViewRoleUser = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -86,6 +87,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciChkAutoSign = new DevExpress.XtraLayout.LayoutControlItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -114,6 +116,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoSign.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkAutoSign)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -125,6 +129,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.layoutControl1.Controls.Add(this.btnSaveTemp);
             this.layoutControl1.Controls.Add(this.btnPrintV2);
             this.layoutControl1.Controls.Add(this.btnSave);
+            this.layoutControl1.Controls.Add(this.chkAutoSign);
             this.layoutControl1.Controls.Add(this.gridControlRoleUser);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
@@ -246,6 +251,18 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Lưu (Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // chkAutoSign
+            // 
+            this.chkAutoSign.Location = new System.Drawing.Point(404, 521);
+            this.chkAutoSign.MenuManager = this.barManager1;
+            this.chkAutoSign.Name = "chkAutoSign";
+            this.chkAutoSign.Properties.Caption = "Tự động tạo thiết lập ký theo HĐKN";
+            this.chkAutoSign.Size = new System.Drawing.Size(211, 19);
+            this.chkAutoSign.StyleController = this.layoutControl1;
+            this.chkAutoSign.TabIndex = 4;
+            this.chkAutoSign.ToolTip = "Tự động tạo thiết lập ký theo hội đồng kiểm nhập";
+            this.chkAutoSign.CheckedChanged += new System.EventHandler(this.chkAutoSign_CheckedChanged);
             // 
             // gridControlRoleUser
             // 
@@ -371,7 +388,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.layoutControlItem6,
             this.layoutControlItem5,
             this.layoutControlItem7,
-            this.emptySpaceItem2});
+            this.emptySpaceItem2,
+            this.lciChkAutoSign});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -401,7 +419,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(392, 519);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(225, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(10, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
@@ -472,6 +490,16 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(426, 91);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // lciChkAutoSign
+            // 
+            this.lciChkAutoSign.Control = this.chkAutoSign;
+            this.lciChkAutoSign.Location = new System.Drawing.Point(402, 519);
+            this.lciChkAutoSign.Name = "lciChkAutoSign";
+            this.lciChkAutoSign.OptionsToolTip.ToolTip = "Tự động tạo thiết lập ký theo hội đồng kiểm nhập";
+            this.lciChkAutoSign.Size = new System.Drawing.Size(215, 26);
+            this.lciChkAutoSign.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChkAutoSign.TextVisible = false;
             // 
             // barDockControlTop
             // 
@@ -548,6 +576,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoSign.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkAutoSign)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -593,5 +623,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
+        private DevExpress.XtraEditors.CheckEdit chkAutoSign;
+        private DevExpress.XtraLayout.LayoutControlItem lciChkAutoSign;
     }
 }

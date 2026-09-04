@@ -69,6 +69,15 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
         V_HIS_IMP_MEST impMest;
         Inventec.Desktop.Common.Modules.Module moduleData;
 
+        ////Trang thai check "Tu dong tao thiet lap ky theo HDKN". Dung chung MODULE_LINK voi chuc nang
+        ////Chi tiet phieu nhap (HIS.Desktop.Plugins.ImpMestViewDetail) de 2 chuc nang dong bo trang thai.
+        internal const string CONTROL_STATE__MODULE_LINK__AUTO_SIGN = "HIS.Desktop.Plugins.HisRoleUser";
+        internal const string CONTROL_STATE__KEY__AUTO_SIGN = "chkAutoSignByImpMestUser";
+
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> listControlState;
+        bool isLoadingControlState = false;
+
         internal List<HIS_EXECUTE_ROLE> listExecuteRole = new List<HIS_EXECUTE_ROLE>();
         internal List<HIS_EXECUTE_ROLE_USER> listExecuteRoleUser = new List<HIS_EXECUTE_ROLE_USER>();
         internal List<HIS_IMP_USER_TEMP> listImpUserTemp = new List<HIS_IMP_USER_TEMP>();
@@ -78,7 +87,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             string printTypeCode,
             string fileName,
             object data,
-            MPS.ProcessorBase.PrintConfig.PreviewType previewType)
+            MPS.ProcessorBase.PrintConfig.PreviewType previewType,
+            List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO> signerConfigs = null)
         {
             bool result = false;
             try
@@ -94,11 +104,18 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                     data,
                     ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : previewType,
                     printerName);
-                printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
                     treatmentCode,
                     printTypeCode,
                     this.currentModule != null ?
                     this.currentModule.RoomId : 0);
+                if (signerConfigs != null && signerConfigs.Count > 0)
+                {
+                    ////Truyen san danh sach nguoi ky theo hoi dong kiem nhap + tich "Ky song song"
+                    inputADO.SignerConfigs = signerConfigs;
+                    inputADO.IsMultiSign = true;
+                }
+                printData.EmrInputADO = inputADO;
                 WaitingManager.Hide();
                 result = MPS.MpsPrinter.Run(printData);
             }
@@ -208,6 +225,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 InitMenuToButtonPrint();
                 LoadDataToCombo();
                 InitData();
+                InitControlState();
             }
             catch (Exception ex)
             {
@@ -475,6 +493,130 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void InitControlState()
+        {
+            try
+            {
+                this.isLoadingControlState = true;
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.listControlState = this.controlStateWorker.GetData(CONTROL_STATE__MODULE_LINK__AUTO_SIGN);
+                if (this.listControlState != null && this.listControlState.Count > 0)
+                {
+                    var state = this.listControlState.FirstOrDefault(o => o.KEY == CONTROL_STATE__KEY__AUTO_SIGN);
+                    if (state != null)
+                    {
+                        chkAutoSign.Checked = state.VALUE == "1";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.isLoadingControlState = false;
+            }
+        }
+
+        private void chkAutoSign_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ////Khong ghi lai trang thai khi dang doc trang thai luc mo form
+                if (this.controlStateWorker == null || this.isLoadingControlState)
+                    return;
+
+                if (this.listControlState == null)
+                    this.listControlState = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var state = this.listControlState.FirstOrDefault(o => o.KEY == CONTROL_STATE__KEY__AUTO_SIGN);
+                if (state == null)
+                {
+                    state = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    state.KEY = CONTROL_STATE__KEY__AUTO_SIGN;
+                    state.MODULE_LINK = CONTROL_STATE__MODULE_LINK__AUTO_SIGN;
+                    this.listControlState.Add(state);
+                }
+                state.VALUE = (chkAutoSign.Checked ? "1" : "");
+                this.controlStateWorker.SetData(this.listControlState);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Sinh du lieu thiet lap ky tu danh sach hoi dong kiem nhap.
+        /// Thu tu ky giu nguyen thu tu cua danh sach hoi dong kiem nhap.
+        /// </summary>
+        private List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO> ProcessSignerConfigs(List<V_HIS_IMP_MEST_USER> impMestUsers)
+        {
+            List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO> result = null;
+            try
+            {
+                if (impMestUsers == null || impMestUsers.Count == 0)
+                    return null;
+
+                result = new List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO>();
+                long numOrder = 1;
+                foreach (var impMestUser in impMestUsers.OrderBy(o => o.ID).ToList())
+                {
+                    if (String.IsNullOrWhiteSpace(impMestUser.LOGINNAME))
+                        continue;
+                    if (result.Exists(o => o.Loginname == impMestUser.LOGINNAME))
+                        continue;
+
+                    Inventec.Common.SignLibrary.DTO.SignerConfigDTO signerConfig = new Inventec.Common.SignLibrary.DTO.SignerConfigDTO();
+                    signerConfig.Loginname = impMestUser.LOGINNAME;
+                    signerConfig.NumOrder = numOrder;
+                    result.Add(signerConfig);
+                    numOrder++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = null;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Khi tich "Tu dong tao thiet lap ky theo HDKN" ma khong co hoi dong kiem nhap
+        /// thi canh bao xac nhan truoc khi in.
+        /// </summary>
+        private bool AllowPrintWithAutoSign(List<V_HIS_IMP_MEST_USER> impMestUsers, out List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO> signerConfigs)
+        {
+            signerConfigs = null;
+            try
+            {
+                if (!chkAutoSign.Checked)
+                    return true;
+
+                if (impMestUsers == null || impMestUsers.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    bool isContinue = DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Không có thông tin hội đồng kiểm nhập để tự động tạo thiết lập ký. Bạn có muốn tiếp tục?",
+                        "Thông báo",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == DialogResult.Yes;
+                    if (isContinue)
+                        WaitingManager.Show();
+                    return isContinue;
+                }
+
+                signerConfigs = ProcessSignerConfigs(impMestUsers);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -881,6 +1023,9 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                     "/api/HisImpMestUser/GetView", ApiConsumers.MosConsumer, userFilter, param);
                 impMestUsers = impMestUsers.OrderBy(o => o.ID).ToList();
 
+                List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO> signerConfigs = null;
+                if (!AllowPrintWithAutoSign(impMestUsers, out signerConfigs))
+                    return;
 
                 // Lấy thông tin phiếu nhập như mã phiếu, ngày nhập, trạng thái, ...
                 MOS.Filter.HisImpMestViewFilter impMestViewFilter = new HisImpMestViewFilter();
@@ -898,11 +1043,13 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                     null, // Không có dữ liệu vật tư
                     null,
                     null,
-                    impMestBloods
+                    impMestBloods,
+                    null, // Phiếu máu không có thuốc nên không có medicine paty
+                    null  // Phiếu máu không có vật tư nên không có material paty
                 );
 
                 WaitingManager.Hide();
-                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, signerConfigs);
             }
             catch (Exception ex)
             {
@@ -982,7 +1129,9 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 //WaitingManager.Show();
                 MPS.Processor.Mps000145.PDO.Mps000145PDO pdo = new MPS.Processor.Mps000145.PDO.Mps000145PDO(
                  this.impMest,
-                 this.impMestMedicines
+                 this.impMestMedicines,
+                 null, // materialTypes: chuc nang nay khong load danh muc vat tu
+                 null  // medicineTypes: chuc nang nay khong load danh muc thuoc
                 );
                 result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
@@ -1044,7 +1193,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                     if (keyPrintType == 1)
                     {
                         mps000143Key.KEY_NAME_TITLES = "";
-                        MPS.Processor.Mps000143.PDO.Mps000143PDO rdo = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, this.impMestMedicines, this.impMestMaterials, mps000143Key, ConfigApplications.NumberSeperator);
+                        MPS.Processor.Mps000143.PDO.Mps000143PDO rdo = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, this.impMestMedicines, this.impMestMaterials, mps000143Key, ConfigApplications.NumberSeperator, null, null);
                         PrintData(printTypeCode, fileName, rdo, false, inputADO, ref result);
                     }
                     else
@@ -1082,7 +1231,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                         if (_ImpMestMedi_Ts != null && _ImpMestMedi_Ts.Count > 0)
                         {
                             mps000143Key.KEY_NAME_TITLES = "THUỐC THƯỜNG";
-                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_Ts = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_Ts, null, mps000143Key, ConfigApplications.NumberSeperator);
+                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_Ts = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_Ts, null, mps000143Key, ConfigApplications.NumberSeperator, null, null);
                             PrintData(printTypeCode, fileName, rdo_Ts, false, inputADO, ref result);
                         }
                         #endregion
@@ -1106,7 +1255,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                                 }
 
                                 mps000143Key.KEY_NAME_TITLES = "GÂY NGHIỆN, HƯỚNG THẦN";
-                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_GNHTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, DataGroups, null, mps000143Key, ConfigApplications.NumberSeperator);
+                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_GNHTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, DataGroups, null, mps000143Key, ConfigApplications.NumberSeperator, null, null);
                                 PrintData(printTypeCode, fileName, rdo_GNHTs, false, inputADO, ref result);
                             }
                             else
@@ -1114,14 +1263,14 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                                 if (_ImpMestMedi_GNs != null && _ImpMestMedi_GNs.Count > 0)
                                 {
                                     mps000143Key.KEY_NAME_TITLES = "GÂY NGHIỆN";
-                                    MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_GNs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_GNs, null, mps000143Key, ConfigApplications.NumberSeperator);
+                                    MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_GNs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_GNs, null, mps000143Key, ConfigApplications.NumberSeperator, null, null);
                                     PrintData(printTypeCode, fileName, rdo_GNs, false, inputADO, ref result);
                                 }
 
                                 if (_ImpMestMedi_HTs != null && _ImpMestMedi_HTs.Count > 0)
                                 {
                                     mps000143Key.KEY_NAME_TITLES = "HƯỚNG THẦN";
-                                    MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_HTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_HTs, null, mps000143Key, ConfigApplications.NumberSeperator);
+                                    MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_HTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_HTs, null, mps000143Key, ConfigApplications.NumberSeperator, null, null);
                                     PrintData(printTypeCode, fileName, rdo_HTs, false, inputADO, ref result);
                                 }
                             }
@@ -1132,7 +1281,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                         if (_ImpMestMedi_TDs != null && _ImpMestMedi_TDs.Count > 0)
                         {
                             mps000143Key.KEY_NAME_TITLES = "ĐỘC";
-                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_TDs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_TDs, null, mps000143Key, ConfigApplications.NumberSeperator);
+                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_TDs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_TDs, null, mps000143Key, ConfigApplications.NumberSeperator, null, null);
                             PrintData(printTypeCode, fileName, rdo_TDs, false, inputADO, ref result);
                         }
                         #endregion
@@ -1141,7 +1290,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                         if (_ImpMestMedi_PXs != null && _ImpMestMedi_PXs.Count > 0)
                         {
                             mps000143Key.KEY_NAME_TITLES = "PHÓNG XẠ";
-                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_PXs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_PXs, null, mps000143Key, ConfigApplications.NumberSeperator);
+                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_PXs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_PXs, null, mps000143Key, ConfigApplications.NumberSeperator, null, null);
                             PrintData(printTypeCode, fileName, rdo_PXs, false, inputADO, ref result);
                         }
                         #endregion
@@ -1150,7 +1299,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                         if (_ImpMestMedi_Others != null && _ImpMestMedi_Others.Count > 0)
                         {
                             mps000143Key.KEY_NAME_TITLES = "KHÁC";
-                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_Ks = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_Others, null, mps000143Key, ConfigApplications.NumberSeperator);
+                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_Ks = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_Others, null, mps000143Key, ConfigApplications.NumberSeperator, null, null);
                             PrintData(printTypeCode, fileName, rdo_Ks, false, inputADO, ref result);
                         }
                         #endregion
@@ -1159,7 +1308,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                         if (this.impMestMaterials != null && this.impMestMaterials.Count > 0)
                         {
                             mps000143Key.KEY_NAME_TITLES = "VẬT TƯ";
-                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_VTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, null, this.impMestMaterials, mps000143Key, ConfigApplications.NumberSeperator);
+                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_VTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, null, this.impMestMaterials, mps000143Key, ConfigApplications.NumberSeperator, null, null);
                             PrintData(printTypeCode, fileName, rdo_VTs, false, inputADO, ref result);
                         }
                         #endregion
@@ -1299,6 +1448,10 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 var rs = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>("/api/HisImpMestUser/GetView", ApiConsumers.MosConsumer, userFilter, param);
                 rs = rs.OrderBy(p => p.ID).ToList();
 
+                List<Inventec.Common.SignLibrary.DTO.SignerConfigDTO> signerConfigs = null;
+                if (!AllowPrintWithAutoSign(rs, out signerConfigs))
+                    return;
+
                 V_HIS_IMP_MEST impMests = new V_HIS_IMP_MEST();
                 MOS.Filter.HisImpMestViewFilter impMestViewFilter = new HisImpMestViewFilter();
                 impMestViewFilter.ID = this.ImpMestId;
@@ -1345,7 +1498,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                  _Supplier
                   );
                 WaitingManager.Hide();
-                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, mps0000085RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, mps0000085RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, signerConfigs);
             }
             catch (Exception ex)
             {

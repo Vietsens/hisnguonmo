@@ -460,7 +460,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             TOM_TAT_Y_LENH_PTTT_VA_DON_THUOC,
             PHIEU_THU_THANH_TOAN,
             PHIEU_CHAN_DOAN_NGUYEN_NHAN_TU_VONG,
-            IN_THE_BN
+            IN_THE_BN,
+            IN_TO_DIEU_TRI,
+            YEU_CAU_KHAM
         }
 
         private void onClickInQRThanhToan(object sender, EventArgs e)
@@ -572,6 +574,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         break;
                     case "Mps000178":
                         ProcessPrintMps000178(printTypeCode, fileName, ref result);
+                        break;
+                    case PrintTypeCodeWorker.PRINT_TYPE_CODE__BIEUMAU__IN_TO_DIEU_TRI__MPS000062:
+                        Mps000062(printTypeCode, fileName, ref result);
                         break;
                     default:
                         break;
@@ -728,6 +733,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         break;
                     case PrintType.PHIEU_THU_THANH_TOAN:
                         richEditorMain.RunPrintTemplate("Mps000111", DelegateRunPrinter);
+                        break;
+                    case PrintType.YEU_CAU_KHAM:
+                        InPhieuYeuCauDichVu(PrintTypeCodeWorker.PRINT_TYPE_CODE__BIEUMAU__YEU_CAU_KHAM__MPS000001);
+                        break;
+                    case PrintType.IN_TO_DIEU_TRI:
+                        // Dung PrintProcess62 (tu tao RichEditorStore + isUseWordTemplate = true)
+                        // de khong phu thuoc field richEditorMain va chay duoc ca mau .doc/.docx
+                        PrintProcess62(PrintType.IN_TO_DIEU_TRI);
                         break;
                     default:
                         break;

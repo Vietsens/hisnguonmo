@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         public const string frmRegisteredExam = "frmRegisteredExam";
         public const string frmChooseObject = "frmChooseObject";
         public const string frmInformationObject = "frmInformationObject";
+        public const string frmSelectedExamList = "frmSelectedExamList";
         public static void CloseAllForm()
         {
             try
@@ -50,6 +51,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 lsNameForm.Add(NameForm.frmRegisteredExam);
                 lsNameForm.Add(NameForm.frmChooseObject);
                 lsNameForm.Add(NameForm.frmInformationObject);
+                lsNameForm.Add(NameForm.frmSelectedExamList);
                 foreach (var item in lsNameForm)
                 {
                     Form fc = Application.OpenForms[item];
@@ -79,6 +81,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 lsNameForm.Add(NameForm.frmRegisteredExam);
                 lsNameForm.Add(NameForm.frmChooseObject);
                 lsNameForm.Add(NameForm.frmInformationObject);
+                lsNameForm.Add(NameForm.frmSelectedExamList);
                 foreach (var item in lsNameForm)
                 {
                     Form fc = Application.OpenForms[item];

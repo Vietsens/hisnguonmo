@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -5074,12 +5074,24 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         if (listServiceReq != null && listServiceReq.Count > 0)
                         {
                             CommonParam param = new CommonParam();
-                            if (CheckListServiceReq(listServiceReq, param))
+                            //Vien co khai bao config PrintTypeCodeChiDinhTongHop = Mps190001 thi in mau rieng, con lai giu nguyen Mps000037.
+                            bool isPrintMps190001 = String.Equals(GetPrintTypeCodeChiDinhTongHop(), PRINT_TYPE_CODE__MPS190001, StringComparison.OrdinalIgnoreCase);
+
+                            //Mau Mps190001 in duoc y lenh cua nhieu ho so dieu tri nen khong kiem tra dieu kien cung ho so.
+                            if (CheckListServiceReq(listServiceReq, param, !isPrintMps190001))
                             {
                                 MessageManager.Show(this, param, false);
                                 return;
                             }
-                            InPhieuYeuCauChiDinhTongHop(MPS000037);
+
+                            if (isPrintMps190001)
+                            {
+                                InPhieuChiDinhTongHopMps190001();
+                            }
+                            else
+                            {
+                                InPhieuYeuCauChiDinhTongHop(MPS000037);
+                            }
                         }
                     }
                     else
@@ -5094,7 +5106,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             }
         }
 
-        private bool CheckListServiceReq(List<ADO.ServiceReqADO> listServiceReq, CommonParam param)
+        private bool CheckListServiceReq(List<ADO.ServiceReqADO> listServiceReq, CommonParam param, bool checkSameTreatment)
         {
             bool result = false;
             try
@@ -5131,7 +5143,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     {
                         param.Messages.Add(String.Format(Resources.ResourceMessage.DichVuLaThuoc, serviceCode));
                     }
-                    else if (dicServiceReqByTreatment.Count > 1)
+                    else if (checkSameTreatment && dicServiceReqByTreatment.Count > 1)
                     {
                         param.Messages.Add(Resources.ResourceMessage.DichVuKhongCungHoSoDieuTri);
                     }

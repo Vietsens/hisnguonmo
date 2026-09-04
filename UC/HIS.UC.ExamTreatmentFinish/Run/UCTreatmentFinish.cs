@@ -420,6 +420,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 this.chkIsExpXml4210Collinear.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkIsExpXml4210Collinear.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkPrintHosTransfer.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkPrintHosTransfer.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkPrintPrescription.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkPrintPrescription.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkSignPrescription.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkSignPrescription.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnICDInformation.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.btnICDInformation.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnICDInformation.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.btnICDInformation.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkKyPhieuTrichLuc.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkKyPhieuTrichLuc.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -645,6 +646,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                         if (item.KEY == chkPrintPrescription.Name)
                         {
                             chkPrintPrescription.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == chkSignPrescription.Name)
+                        {
+                            chkSignPrescription.Checked = item.VALUE == "1";
                         }
                         if (item.KEY == chkPrintHosTransfer.Name)
                         {
@@ -2206,6 +2211,40 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkSignPrescription_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignPrescription.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkSignPrescription.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkSignPrescription.Name;
+                    csAddOrUpdate.VALUE = (chkSignPrescription.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

@@ -131,7 +131,11 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.ADO
         public int IDENTITY_MANAGEMEN_ERROR { get; set; }
         public string NOT_EXPEND { get; set; }
         public int NOT_EXPEND_ERROR { get; set; }      
-        public int TT_THAU_ERROR { get; set; }   
-        public int BYT_NUM_ORDER_ERROR { get; set; } 
+        public int TT_THAU_ERROR { get; set; }
+        public int BYT_NUM_ORDER_ERROR { get; set; }
+
+        // TT12 - MAU_04 (DM_TBYT): DINH_MUC = so lan tai su dung toi da
+        public string MAX_REUSE_COUNT_STR { get; set; }
+        public int MAX_REUSE_COUNT_STR_ERROR { get; set; }
     }
 }

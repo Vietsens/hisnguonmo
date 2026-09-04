@@ -151,7 +151,9 @@ namespace MPS.Processor.Mps000062
                 if (_ExpMestADOs != null && _ExpMestADOs.Count > 0)
                 {
                     _ExpMestMedicinesAll = new List<HIS_EXP_MEST_MEDICINE>();
-                    var ExpMests = _ExpMestADOs.OrderBy(p => p.TDL_INTRUCTION_DATE).ThenBy(o => o.USE_TIME).ToList();
+                    // Sắp xếp theo ngày dùng thuốc thực tế (USE_TIME nếu là đơn dự trù, ngược lại TDL_INTRUCTION_DATE) để khớp với khóa đếm số ngày bên dưới.
+                    // Trước đây sắp theo TDL_INTRUCTION_DATE trước → đơn dự trù (chỉ định 23/01, dùng 26/01) bị duyệt trước ngày 24, 25 nên nhận số nhỏ hơn.
+                    var ExpMests = _ExpMestADOs.OrderBy(p => p.USE_TIME ?? p.TDL_INTRUCTION_DATE).ThenBy(p => p.TDL_INTRUCTION_DATE).ThenBy(o => o.USE_TIME).ToList();
                     var ExpMestGroups = ExpMests.GroupBy(o => new { o.TDL_INTRUCTION_DATE, o.USE_TIME }).ToList();//group lại theo ngày chỉ định và ngày dự trù
                     int num = 1;
                     foreach (var itemGroups in ExpMestGroups)
@@ -440,7 +442,8 @@ namespace MPS.Processor.Mps000062
             {
                 if (rdo._DicServiceReqs != null && rdo._DicServiceReqs.Count > 0)
                 {
-                    var ServiceReqs = rdo._DicServiceReqs.Values.OrderBy(p => p.INTRUCTION_DATE).ThenBy(o => o.USE_TIME).ToList();
+                    // Sắp xếp theo ngày dùng thuốc thực tế (USE_TIME ?? INTRUCTION_DATE) — cùng lý do với CheckSTTByMedicineGroup.
+                    var ServiceReqs = rdo._DicServiceReqs.Values.OrderBy(p => p.USE_TIME ?? p.INTRUCTION_DATE).ThenBy(p => p.INTRUCTION_DATE).ThenBy(o => o.USE_TIME).ToList();
                     var ServiceReqGroups = ServiceReqs.GroupBy(o => new { o.INTRUCTION_DATE, o.USE_TIME }).ToList();//group lại theo ngày chỉ định và ngày dự trù
                     int num = 1;
                     foreach (var itemGroups in ServiceReqGroups)
