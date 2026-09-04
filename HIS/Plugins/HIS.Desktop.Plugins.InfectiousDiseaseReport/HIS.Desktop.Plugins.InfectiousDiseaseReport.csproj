@@ -187,6 +187,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <!-- Message.Lang.resx (neutral, tiếng Việt) nhúng vào DLL chính -> luôn có mặt dù satellite vi/ không được deploy. -->
+    <EmbeddedResource Include="Resources\Message.Lang.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
   </ItemGroup>

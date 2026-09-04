@@ -89,66 +89,67 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             var dto = new EcdsDiseaseCaseDto();
             try
             {
-                dto.Id = this.ecdsCaseId;   // đẩy lại -> update
+                dto.Id = this.ecdsCaseId;   // đẩy lại -> update ca cổng
 
-                // ---- Ca bệnh ----
-                dto.BenhChuanDoanId = GetLookupLong(cboBenh) ?? 0;
-                dto.CapDoBenhId = GetLookupLong(cboCapDoBenh);
-                dto.PhanLoaiChuanDoan = GetLookupInt(cboLoaiChanDoan, (int)EcdsPhanLoaiChuanDoan.XacDinh);
-                dto.TinhTrangHienNay = GetLookupInt(cboTinhTrang, (int)EcdsTinhTrangHienNay.NgoaiTru);
-                dto.NgayKhoiPhat = ToIso(dteNgayKhoiPhat);
-                dto.NgayNhapVien = ToIso(dteNgayNhapVien);
-                dto.NgayRaVien = ToIso(dteNgayRaVien);
-                dto.NgayTuVong = ToIso(dteNgayTuVong);
-                dto.TinhTrangKhac = txtTinhTrangKhac.Text;
-                dto.BenhVienChuyenToiId = GetLookupLong(cboBenhVienChuyenToi);
-                dto.ChanDoanRaVien = txtChanDoanRaVien.Text;
-                dto.BenhChuanDoanPhu = txtSubDiagnosis.Text;
-                dto.ChuanDoanBienChung = txtComplication.Text;
-                dto.GhiChu = txtGhiChu.Text;
+                // ---- Bệnh / chẩn đoán ----
+                // Cổng nhận MÃ ICD-10 (string), KHÔNG phải ID danh mục -> fix "bạn phải chọn bệnh".
+                dto.MaIcd10Benh = PrimaryIcdCode(GetSelectedBenhMa());
+                dto.MaPhanLoaiLamSang = GetSelectedMa(cboCapDoBenh);
+                dto.LoaiChanDoan = GetLookupInt(cboLoaiChanDoan, (int)EcdsPhanLoaiChuanDoan.XacDinh);
+                dto.TrangThaiCaBenh = (int)EcdsTrangThaiCaBenh.MacDinh;      // = 1 (theo ví dụ cổng)
+                dto.TrangThaiLuu = (int)EcdsTrangThaiLuu.LuuChinhThuc;       // = 2 (đẩy chính thức)
 
-                // ---- Hành chính ----
-                dto.HoTen = txtHoTen.Text;
-                dto.NgaySinh = ToIso(dteNgaySinh);
-                dto.GioiTinh = GetLookupInt(cboGioiTinh, (int)EcdsGioiTinh.Nam);
-                dto.IsMangThai = chkMangThai.Checked ? (int)EcdsMangThai.Co : (int)EcdsMangThai.Khong;
-                dto.Cccd = txtCccd.Text;
-                dto.DienThoai = txtDienThoai.Text;
-                // Combo giữ MÃ SDA -> đẩy cổng cần ID cổng: đối chiếu mã -> ID (best-effort).
-                dto.DanTocId = ResolveEcdsIdStatic(EcdsCatalogCache.DM_DANTOC, GetLookupString(cboDanToc));
-                dto.NgheNghiepId = ResolveEcdsIdStatic(EcdsCatalogCache.DM_NGHENGHIEP, GetLookupString(cboNgheNghiep));
+                // ---- Hành chính bệnh nhân ----
+                dto.HoVaTen = txtHoTen.Text;
+                dto.NgaySinh = ToPortalDate(dteNgaySinh);
+                dto.Tuoi = (spnTuoi.EditValue != null) ? (int?)Convert.ToInt32(spnTuoi.Value) : null;
+                dto.MaGioiTinh = (GetLookupLong(cboGioiTinh) == (long)EcdsGioiTinh.Nam) ? "M" : "F";
+                dto.DangMangThai = chkMangThai.Checked;
+                dto.MaDanToc = ResolveEcdsMa(EcdsCatalogCache.DM_DANTOC, GetLookupString(cboDanToc));
+                // cboNgheNghiep bind THẲNG danh mục cổng (ValueMember = ma) -> lấy mã cổng trực tiếp.
+                dto.MaNgheNghiep = GetLookupString(cboNgheNghiep);
                 dto.NoiLamViec = txtNoiLamViec.Text;
-                dto.TinhId = ResolveEcdsIdStatic(EcdsCatalogCache.DM_TINH, GetLookupString(cboTinh));
-                dto.XaId = ResolveEcdsIdXa(GetLookupString(cboTinh), GetLookupString(cboXa));
-                // Thôn/ấp: combo đã nạp từ danh mục cổng (cascade theo xã) -> ValueMember là ID cổng.
-                dto.ThonId = GetLookupLong(cboThon);
-                dto.DiaChi = txtDiaChi.Text;
-                dto.TinhIdThuongTru = ResolveEcdsIdStatic(EcdsCatalogCache.DM_TINH, GetLookupString(cboTinhTru));
-                dto.XaIdThuongTru = ResolveEcdsIdXa(GetLookupString(cboTinhTru), GetLookupString(cboXaTru));
-                dto.DiaChiThuongTru = txtDiaChiTru.Text;
+                dto.SoCccdCmnd = txtCccd.Text;
+                dto.SoDienThoai = txtDienThoai.Text;
 
-                // ---- Triệu chứng & XN ----
+                // ---- Địa bàn hiện nay (BẮT BUỘC) — trống thì lấy từ địa chỉ THƯỜNG TRÚ ----
+                // Mã xã: dùng thẳng mã hành chính (GSO) đang chọn — cổng nhận trực tiếp.
+                string maXa = GetLookupString(cboXa);
+                dto.MaXaHienNay = !string.IsNullOrEmpty(maXa) ? maXa : GetLookupString(cboXaTru);
+                dto.MaThonHienNay = GetSelectedMa(cboThon);
+                dto.DiaChiChiTietHienNay = !string.IsNullOrEmpty(txtDiaChi.Text) ? txtDiaChi.Text : txtDiaChiTru.Text;
+                dto.MaXaPhuongQuanLy = Config.EcdsConfigCFG.MaDonVi;
+
+                // ---- Diễn biến ca bệnh ----
+                dto.TinhTrangHienTai = GetLookupInt(cboTinhTrang, (int)EcdsTinhTrangHienNay.NgoaiTru);
+                dto.MaHinhThucDieuTri = GetLookupString(cboHinhThucDieuTri);   // "1"=Nội trú, "2"=Ngoại trú
+                dto.NgayKhoiPhat = ToPortalDate(dteNgayKhoiPhat);
+                dto.NgayNhapVien = ToPortalDate(dteNgayNhapVien);
+                dto.NgayRaVien = ToPortalDate(dteNgayRaVien);
+                dto.ChanDoanRaVien = txtChanDoanRaVien.Text;
+                dto.ThongTinTiemVacXin = ToNullableInt(GetLookupLong(cboSuDungVacXin));
+                dto.BenhKemTheo = txtSubDiagnosis.Text;      // chẩn đoán phụ/kèm theo
+                dto.BienChung = txtComplication.Text;
+                dto.GhiChuChung = txtGhiChu.Text;
                 dto.TienSuDichTe = txtTienSuDichTe.Text;
-                dto.SuDungVacXin = ToNullableInt(GetLookupLong(cboSuDungVacXin));
-                dto.SoLanSuDung = (spnSoLan.EditValue != null) ? (int?)Convert.ToInt32(spnSoLan.Value) : null;
-                dto.LayMauXetNghiem = ToNullableInt(GetLookupLong(cboLayMau));
-                dto.LoaiXetNghiem = ToNullableInt(GetLookupLong(cboLoaiXN));
-                dto.LoaiXetNghiemKhac = txtLoaiXNKhac.Text;
-                dto.KetQuaXetNghiem = ToNullableInt(GetLookupLong(cboKetQuaXN));
-                dto.NgayThucHienXn = ToIso(dteNgayThucHienXN);
-                dto.NgayTraKetQuaXn = ToIso(dteNgayTraKQ);
-                dto.DonViThucHienXn = GetLookupLong(cboDonViXN);
-                dto.LoaiPhatHien = GetLookupInt(cboLoaiPhatHien, (int)EcdsLoaiPhatHien.Khac);
-                dto.CoSoDieuTri = lblCoSoDieuTriVal.Text;
-                // Tình trạng ra viện: đẩy mã HIS_TREATMENT_END_TYPE (best-effort — QĐ 4039 chưa liệt kê enum cổng).
-                dto.TinhTrangRaVien = ToNullableInt(GetLookupLong(cboTinhTrangRaVien));
-                // Tên bệnh viện chuyển tới: lấy theo tên đang hiển thị trên combo.
-                dto.BenhVienChuyenToi = (cboBenhVienChuyenToi.EditValue != null) ? cboBenhVienChuyenToi.Text : null;
 
-                // ---- Người báo cáo ----
-                dto.NguoiBaoCao = txtNguoiBaoCao.Text;
-                dto.DienThoaiNguoiBaoCao = txtDienThoaiBaoCao.Text;
+                // ---- Xét nghiệm ----
+                long? layMau = GetLookupLong(cboLayMau);
+                dto.CoLayMauXetNghiem = layMau.HasValue ? (bool?)(layMau.Value == (long)EcdsLayMauXetNghiem.Co) : null;
+                dto.TenXetNghiem = txtLoaiXNKhac.Text;
+                dto.LoaiXetNghiemChung = ToNullableInt(GetLookupLong(cboLoaiXN));
+                dto.KetQuaXetNghiemChung = ToNullableInt(GetLookupLong(cboKetQuaXN));
+                dto.NgayLayMau = ToPortalDate(dteNgayThucHienXN);
+                dto.NgayTraKetQua = ToPortalDate(dteNgayTraKQ);
+                dto.MaDonViXetNghiem = GetSelectedMa(cboDonViXN);
+
+                // ---- Cơ sở điều trị + người báo cáo ----
+                dto.MaCoSoDieuTri = !string.IsNullOrEmpty(Config.EcdsConfigCFG.MaCoSoDieuTri)
+                    ? Config.EcdsConfigCFG.MaCoSoDieuTri : Config.EcdsConfigCFG.MaDonVi;
+                dto.HoTenNguoiBaoCao = txtNguoiBaoCao.Text;
+                dto.SoDienThoaiNguoiBaoCao = txtDienThoaiBaoCao.Text;
                 dto.EmailNguoiBaoCao = txtEmailBaoCao.Text;
+                dto.MaDonViNguoiBaoCao = Config.EcdsConfigCFG.MaDonVi;
 
                 Inventec.Common.Logging.LogSystem.Debug(
                     Inventec.Common.Logging.LogUtil.TraceData(
@@ -161,9 +162,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             return dto;
         }
 
-        private string ToIso(DevExpress.XtraEditors.DateEdit dte)
+        private string ToPortalDate(DevExpress.XtraEditors.DateEdit dte)
         {
-            return DiseaseCaseMapper.ToIsoDate(GetDateLong(dte));
+            return DiseaseCaseMapper.ToPortalDate(GetDateLong(dte));
         }
 
         private int? ToNullableInt(long? value)
@@ -171,26 +172,34 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             return value.HasValue ? (int?)value.Value : null;
         }
 
-        /// <summary>Đối chiếu MÃ (SDA/HIS) -> ID danh mục cổng (tĩnh). Null nếu không có/không thấy.</summary>
-        private long? ResolveEcdsIdStatic(string danhMuc, string code)
+        /// <summary>
+        /// Lấy MÃ cổng đang chọn của combo bind từ danh mục cổng (ValueMember = id, DataSource là List&lt;DanhMucItemDto&gt;).
+        /// VD cboCapDoBenh, cboThon, cboDonViXN. Null nếu chưa chọn.
+        /// </summary>
+        private string GetSelectedMa(LookUpEdit cbo)
         {
             try
             {
-                if (string.IsNullOrEmpty(code) || catalogCache == null) return null;
-                return catalogCache.FindIdByMa(catalogCache.GetStatic(danhMuc), code);
+                long? id = GetLookupLong(cbo);
+                if (!id.HasValue || cbo == null) return null;
+                var list = cbo.Properties.DataSource as System.Collections.Generic.IEnumerable<DanhMucItemDto>;
+                if (list == null) return null;
+                var item = list.FirstOrDefault(o => o != null && o.id == id.Value);
+                return item != null ? item.ma : null;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
-        /// <summary>Đối chiếu mã xã -> ID xã cổng (cascade theo mã tỉnh). Best-effort.</summary>
-        private long? ResolveEcdsIdXa(string provinceCode, string communeCode)
+        /// <summary>
+        /// Đối chiếu MÃ nội bộ (SDA/HIS) -> MÃ cổng (danh mục tĩnh). Trả null nếu không đối chiếu được
+        /// -> trường optional bị bỏ khỏi payload (tránh gửi mã sai khiến cổng từ chối cả ca).
+        /// </summary>
+        private string ResolveEcdsMa(string danhMuc, string code)
         {
             try
             {
-                if (string.IsNullOrEmpty(communeCode) || catalogCache == null) return null;
-                var list = catalogCache.GetCascade(EcdsCatalogCache.DM_XA,
-                    new SearchDanhMucFastDto { maTinh = provinceCode }, provinceCode ?? "");
-                return catalogCache.FindIdByMa(list, communeCode);
+                if (string.IsNullOrEmpty(code) || catalogCache == null) return null;
+                return catalogCache.FindMaByMa(catalogCache.GetStatic(danhMuc), code);
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }

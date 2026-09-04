@@ -99,6 +99,14 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                     new KeyValueADO((long)EcdsLoaiPhatHien.Khac, "Khác"),
                 });
 
+                // Hình thức điều trị (maHinhThucDieuTri) — cổng BẮT BUỘC, không có danh mục/enum công bố.
+                // Dùng mã "1" = Nội trú, "2" = Ngoại trú (ví dụ cổng dùng "2"). Xác nhận thêm khi có tài liệu.
+                BindEnumCombo(cboHinhThucDieuTri, new List<KeyValueADO>
+                {
+                    new KeyValueADO(1, "Nội trú"),
+                    new KeyValueADO(2, "Ngoại trú"),
+                });
+
                 // Tình trạng ra viện (TINHTRANGRAVIEN): QĐ 4039 KHÔNG liệt kê enum -> tạm dùng
                 // danh mục HIS_TREATMENT_END_TYPE (Khỏi/Đỡ/Không đổi/Nặng/Tử vong). Xác nhận mã cổng khi có tài liệu.
                 InitDischargeStateCombo();
@@ -123,6 +131,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 SetupLookup(cboBenh, catalogCache.GetStatic(EcdsCatalogCache.DM_BENH), "id", "ten");
                 SetupLookup(cboDonViXN, catalogCache.GetStatic(EcdsCatalogCache.DM_COSO), "id", "ten");
                 SetupLookup(cboBenhVienChuyenToi, catalogCache.GetStatic(EcdsCatalogCache.DM_COSO), "id", "ten");
+                // Nghề nghiệp: bind THẲNG danh mục cổng (nghe-nghiep, mã "TT"/"CN"/"HSSV"...) — ValueMember = ma
+                // -> chọn là ra đúng mã cổng, KHÔNG cần đối chiếu mã HIS (mã HIS khác hệ mã cổng).
+                SetupLookup(cboNgheNghiep, catalogCache.GetStatic(EcdsCatalogCache.DM_NGHENGHIEP), "ma", "ten");
                 WaitingManager.Hide();
             }
             catch (Exception ex)
