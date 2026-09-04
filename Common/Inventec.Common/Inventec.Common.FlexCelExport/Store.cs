@@ -54,6 +54,8 @@ namespace Inventec.Common.FlexCellExport
         const string TFlexCelUFEmployeeInfo = "FlFuncEmployeeInfo";
         const string TFlexCelUFMergeData = "FlFuncMergeData";
         public Dictionary<string, object> DictionaryTemplateKey { get; set; }
+        const string WORKBOOK_ENTRY_NAME = "xl/workbook.xml";
+        const string INVALID_WORKBOOK_NODE_PATTERN = @"<xr:revisionPtr\b[^>]*/>";
 
         /// <summary>
         /// Maps list/table name → registered enumerable (List&lt;T&gt; or DataTable).
@@ -277,6 +279,95 @@ namespace Inventec.Common.FlexCellExport
             return PaperSizeDefault;
         }
 
+        /// <summary>
+        /// FlexCel 5.7.6 keeps unknown Excel 2016+ elements (xr:revisionPtr) when it
+        /// rewrites a template, but emits them after &lt;definedNames&gt; in xl/workbook.xml.
+        /// That position is invalid for CT_Workbook, so Excel refuses to open the file
+        /// and asks the user to repair it. Strip the element from the saved package.
+        /// </summary>
+        /// <param name="path">Path of the workbook produced by XlsFile.Save.</param>
+        private void RemoveInvalidWorkbookNodes(string path)
+        {
+            try
+            {
+                if (System.String.IsNullOrWhiteSpace(path) || !System.IO.File.Exists(path)) return;
+
+                using (var zip = System.IO.Compression.ZipFile.Open(
+                    path, System.IO.Compression.ZipArchiveMode.Update))
+                {
+                    CleanWorkbookEntry(zip);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("RemoveInvalidWorkbookNodes that bai."
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => path), path), ex);
+            }
+        }
+
+        /// <summary>
+        /// Stream overload of <see cref="RemoveInvalidWorkbookNodes(string)"/>.
+        /// Leaves the stream open and rewound so the caller can keep using it.
+        /// </summary>
+        /// <param name="stream">Workbook stream produced by XlsFile.Save.</param>
+        private void RemoveInvalidWorkbookNodes(MemoryStream stream)
+        {
+            try
+            {
+                if (stream == null || stream.Length == 0) return;
+
+                stream.Position = 0;
+                // leaveOpen: true - the caller still owns this stream.
+                using (var zip = new System.IO.Compression.ZipArchive(
+                    stream, System.IO.Compression.ZipArchiveMode.Update, true))
+                {
+                    CleanWorkbookEntry(zip);
+                }
+                stream.Position = 0;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("RemoveInvalidWorkbookNodes(stream) that bai.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Removes the misplaced xr:revisionPtr node from xl/workbook.xml of an open package.
+        /// </summary>
+        /// <param name="zip">Package opened in Update mode.</param>
+        private void CleanWorkbookEntry(System.IO.Compression.ZipArchive zip)
+        {
+            try
+            {
+                var entry = zip.GetEntry(WORKBOOK_ENTRY_NAME);
+                if (entry == null) return;
+
+                string content;
+                using (var reader = new StreamReader(entry.Open(), Encoding.UTF8))
+                {
+                    content = reader.ReadToEnd();
+                }
+
+                string cleaned = System.Text.RegularExpressions.Regex.Replace(
+                    content, INVALID_WORKBOOK_NODE_PATTERN, "");
+                if (cleaned == content) return;
+
+                byte[] preamble = new UTF8Encoding(true).GetPreamble();
+                byte[] body = Encoding.UTF8.GetBytes(cleaned);
+                using (var entryStream = entry.Open())
+                {
+                    entryStream.SetLength(0);
+                    entryStream.Write(preamble, 0, preamble.Length);
+                    entryStream.Write(body, 0, body.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("CleanWorkbookEntry that bai.", ex);
+            }
+        }
+
         public bool OutFile(string path)
         {
             bool result = false;
@@ -331,6 +422,7 @@ namespace Inventec.Common.FlexCellExport
                     }
                     LoadPaperSizes(xls);
                     xls.Save(SavePath);
+                    RemoveInvalidWorkbookNodes(SavePath);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SavePath), SavePath));
                     using (FileStream checkStream = System.IO.File.OpenRead(SavePath))
                     {
@@ -413,6 +505,7 @@ namespace Inventec.Common.FlexCellExport
                     }
                     LoadPaperSizes(xls);
                     xls.Save(SavePath);
+                    RemoveInvalidWorkbookNodes(SavePath);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SavePath), SavePath));
                     using (FileStream checkStream = System.IO.File.OpenRead(SavePath))
                     {
@@ -640,7 +733,13 @@ namespace Inventec.Common.FlexCellExport
                         xls.SheetVisible = FlexCel.Core.TXlsSheetVisible.Visible;
                     }
                     LoadPaperSizes(xls);
+
+                    // FlexCel leaves the stream position in the middle of the buffer
+                    // after Open, so Save would append instead of overwrite.
+                    result.SetLength(0);
+                    result.Position = 0;
                     xls.Save(result);
+                    RemoveInvalidWorkbookNodes(result);
                 }
                 else
                 {
