@@ -37,10 +37,21 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.Worker
         {
             // .NET 4.5 mặc định chưa bật TLS 1.2
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+
+            // Kiểm tra BaseUrl là URL http/https hợp lệ TRƯỚC khi tạo client -> tránh UriFormatException
+            // khó hiểu ("hostname could not be parsed") khi cấu hình sai; báo lỗi rõ, chỉ đúng key config.
+            Uri baseUri;
+            if (!Uri.TryCreate(EcdsConfigCFG.BaseUrl, UriKind.Absolute, out baseUri)
+                || (baseUri.Scheme != Uri.UriSchemeHttp && baseUri.Scheme != Uri.UriSchemeHttps))
+            {
+                throw new InvalidOperationException(
+                    "ECDS BaseUrl không hợp lệ: '" + (EcdsConfigCFG.BaseUrl ?? "") + "'. Kiểm tra cấu hình "
+                    + EcdsConfigCFG.CONFIG_KEY + " — phần BaseUrl phải là URL đầy đủ (VD https://daotao-gs.vadp.gov.vn).");
+            }
+
             var client = new HttpClient();
             client.Timeout = TimeSpan.FromSeconds(EcdsConfigCFG.TimeoutSecond);
-            if (!string.IsNullOrEmpty(EcdsConfigCFG.BaseUrl))
-                client.BaseAddress = new Uri(EcdsConfigCFG.BaseUrl);
+            client.BaseAddress = baseUri;
             return client;
         }
 
@@ -93,38 +104,55 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.Worker
             }
         }
 
-        /// <summary>[3] Đẩy 1 ca bệnh.</summary>
+        /// <summary>[3] Đẩy 1 ca bệnh (POST /ca-benh/cap-nhat). Có log request + response.</summary>
         internal KetQuaEcdsDto<CaBenhResultDto> DayCaBenh(EcdsDiseaseCaseDto dto)
         {
             try
             {
                 if (!EnsureLogin()) return null;
-                return PostRaw<CaBenhResultDto>(PushPath(), dto);
+                string url = PushPath();
+                Inventec.Common.Logging.LogSystem.Info(
+                    "ECDS DayCaBenh -> POST " + url + " ___req:" + JsonConvert.SerializeObject(dto));
+                var result = PostRaw<CaBenhResultDto>(url, dto, needAuth: true, logRaw: true);
+                Inventec.Common.Logging.LogSystem.Info("ECDS DayCaBenh <- " + DescribeResult(result));
+                return result;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("ECDS DayCaBenh lỗi.", ex);
                 return null;
             }
         }
 
-        /// <summary>[3'] Đẩy nhiều ca bệnh (batch).</summary>
-        internal KetQuaEcdsDto<object> DayNhieuCaBenh(List<EcdsDiseaseCaseDto> list)
+        /// <summary>[3'] Đẩy nhiều ca bệnh 1 lần (POST /ca-benh/cap-nhat-nhieu — body là MẢNG THÔ DTO). Có log.</summary>
+        internal KetQuaEcdsDto<DayNhieuKetQuaDto> DayNhieuCaBenh(List<EcdsDiseaseCaseDto> list)
         {
             try
             {
                 if (!EnsureLogin()) return null;
-                return PostRaw<object>(PATH_CASE_UPSERT_MANY, list);
+                Inventec.Common.Logging.LogSystem.Info(
+                    "ECDS DayNhieuCaBenh -> POST " + PATH_CASE_UPSERT_MANY
+                    + " (" + (list != null ? list.Count : 0) + " ca) ___req:" + JsonConvert.SerializeObject(list));
+                var result = PostRaw<DayNhieuKetQuaDto>(PATH_CASE_UPSERT_MANY, list, needAuth: true, logRaw: true);
+                Inventec.Common.Logging.LogSystem.Info("ECDS DayNhieuCaBenh <- " + DescribeResult(result));
+                return result;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("ECDS DayNhieuCaBenh lỗi.", ex);
                 return null;
             }
         }
 
+        /// <summary>Tóm tắt kết quả trả về cổng để ghi log.</summary>
+        private static string DescribeResult<T>(KetQuaEcdsDto<T> r)
+        {
+            if (r == null) return "null response (không có phản hồi từ cổng)";
+            return "thanhCong=" + r.thanhCong + " maLoi=" + r.maLoi + " thongDiep=" + r.thongDiep;
+        }
+
         // ---- Core: POST JSON + Bearer, deserialize KetQuaEcdsDto<T> ----
-        private KetQuaEcdsDto<T> PostRaw<T>(string path, object body, bool needAuth = true)
+        private KetQuaEcdsDto<T> PostRaw<T>(string path, object body, bool needAuth = true, bool logRaw = false)
         {
             using (var client = CreateClient())
             {
@@ -141,17 +169,38 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.Worker
                 string respStr = System.Threading.Tasks.Task.Run(() => resp.Content.ReadAsStringAsync())
                     .GetAwaiter().GetResult();
 
+                if (logRaw)
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "ECDS RESP " + path + " (HTTP " + (int)resp.StatusCode + ") ___resp:" + respStr);
+
                 if (string.IsNullOrEmpty(respStr)) return null;
                 return JsonConvert.DeserializeObject<KetQuaEcdsDto<T>>(respStr);
             }
         }
     }
 
-    /// <summary>Dữ liệu trả về khi đẩy ca bệnh (mã ca bệnh cổng).</summary>
+    /// <summary>Dữ liệu trả về khi đẩy 1 ca bệnh (duLieu của /ca-benh/cap-nhat).</summary>
     public class CaBenhResultDto
     {
         public string maCaBenh { get; set; }
         public string id { get; set; }
+    }
+
+    /// <summary>duLieu của /ca-benh/cap-nhat-nhieu — tổng hợp + chi tiết từng ca theo chỉ số.</summary>
+    public class DayNhieuKetQuaDto
+    {
+        public int? tongSo { get; set; }
+        public int? soThanhCong { get; set; }
+        public int? soLoi { get; set; }
+        public List<ChiTietCaBenhDto> chiTiet { get; set; }
+    }
+
+    /// <summary>1 phần tử chiTiet — kết quả đẩy của ca ở vị trí chiSo trong mảng gửi lên.</summary>
+    public class ChiTietCaBenhDto
+    {
+        public int chiSo { get; set; }
+        public bool thanhCong { get; set; }
+        public string idCaBenh { get; set; }
     }
 
     /// <summary>duLieu của API danh mục — object phân trang, danh sách nằm trong danhSach.</summary>

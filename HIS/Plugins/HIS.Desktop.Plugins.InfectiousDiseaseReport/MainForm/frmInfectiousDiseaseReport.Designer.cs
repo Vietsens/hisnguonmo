@@ -26,11 +26,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         private LabelControl lblTreatmentCodeVal, lblPatientNameVal, lblDobVal, lblGenderVal, lblIcdVal, lblDepartmentVal, lblPushStatus;
         #endregion
 
-        #region Declare — tabs (2 tab theo QĐ 4039: Đối tượng mắc bệnh + Trường hợp bệnh)
+        #region Declare — thân form (1 TRANG, 2 CỘT: trái = Đối tượng + Chẩn đoán, phải = Diễn biến/XN/Báo cáo)
         private PanelControl pnlBody, pnlFooter;
-        private XtraTabControl tabMain;
-        private XtraTabPage tabDoiTuong, tabTruongHop;
-        private LayoutControl lcDoiTuong, lcTruongHop;
+        private LayoutControl lcLeft, lcRight;
         #endregion
 
         #region Declare — Đối tượng mắc bệnh (DOI_TUONG_MAC_BENH)
@@ -42,7 +40,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         #endregion
 
         #region Declare — Trường hợp bệnh (TRUONG_HOP_BENH) — chẩn đoán + xét nghiệm + diễn biến + người báo cáo
-        private LookUpEdit cboBenh, cboCapDoBenh, cboLoaiChanDoan, cboTinhTrang, cboTinhTrangRaVien, cboBenhVienChuyenToi;
+        private LookUpEdit cboBenh, cboCapDoBenh, cboLoaiChanDoan, cboTinhTrang, cboTinhTrangRaVien, cboBenhVienChuyenToi, cboHinhThucDieuTri;
         private DateEdit dteNgayKhoiPhat, dteNgayNhapVien, dteNgayRaVien, dteNgayTuVong;
         private MemoEdit txtChanDoanRaVien, txtSubDiagnosis, txtComplication, txtGhiChu, txtTienSuDichTe;
         private TextEdit txtTinhTrangKhac, txtLoaiXNKhac;
@@ -128,7 +126,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             grpHeader = new GroupControl();
             grpHeader.Text = "Thông tin bệnh nhân & điều trị";
             grpHeader.Dock = DockStyle.Top;
-            grpHeader.Height = 156;   // đủ cho 3 dòng x 2 cột + dòng trạng thái đẩy
+            grpHeader.Height = 138;   // 3 dòng x 2 cột + dòng trạng thái đẩy (dòng gọn 22px)
 
             var lc = new LayoutControl();
             lc.Dock = DockStyle.Fill;
@@ -171,36 +169,39 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         }
         #endregion
 
-        #region Tabs
+        #region Body (1 TRANG, 2 CỘT — không cuộn)
         private void BuildTabs()
         {
             pnlBody = new PanelControl();
             pnlBody.Dock = DockStyle.Fill;
             pnlBody.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
 
-            tabMain = new XtraTabControl();
-            tabMain.Dock = DockStyle.Fill;
-            pnlBody.Controls.Add(tabMain);
+            // 2 CỘT thật (TableLayoutPanel 50/50) -> toàn bộ nhóm nằm trên 1 trang, KHÔNG cuộn dọc.
+            var tlp = new TableLayoutPanel();
+            tlp.Dock = DockStyle.Fill;
+            tlp.ColumnCount = 2;
+            tlp.RowCount = 1;
+            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlp.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            pnlBody.Controls.Add(tlp);
 
-            // 2 tab tương ứng 2 object CHUẨN ĐỊNH DẠNG DỮ LIỆU (QĐ 4039/2025/BYT).
-            tabDoiTuong = new XtraTabPage() { Text = "Đối tượng mắc bệnh" };
-            tabTruongHop = new XtraTabPage() { Text = "Trường hợp bệnh" };
-            tabMain.TabPages.AddRange(new XtraTabPage[] { tabDoiTuong, tabTruongHop });
+            lcLeft = new LayoutControl();
+            lcLeft.Dock = DockStyle.Fill;
+            lcLeft.Root.GroupBordersVisible = false;
+            lcRight = new LayoutControl();
+            lcRight.Dock = DockStyle.Fill;
+            lcRight.Root.GroupBordersVisible = false;
+            tlp.Controls.Add(lcLeft, 0, 0);
+            tlp.Controls.Add(lcRight, 1, 0);
 
-            BuildTabDoiTuong();
-            BuildTabTruongHop();
+            // Cột TRÁI: Đối tượng mắc bệnh + Chẩn đoán. Cột PHẢI: Diễn biến/Xét nghiệm/Người báo cáo.
+            secLc = lcLeft;
+            BuildSectionsDoiTuong();
+            BuildSectionsTruongHop();   // tự chuyển secLc -> lcRight sau nhóm "Chẩn đoán"
         }
 
-        private LayoutControl NewTabLayout(XtraTabPage page)
-        {
-            var lc = new LayoutControl();
-            lc.Dock = DockStyle.Fill;
-            lc.Root.GroupBordersVisible = false;
-            page.Controls.Add(lc);
-            return lc;
-        }
-
-        /// <summary>Mở 1 nhóm có tiêu đề (group box) trong tab; các field thêm sau sẽ vào nhóm này.</summary>
+        /// <summary>Mở 1 nhóm có tiêu đề (group box) trong màn; các field thêm sau sẽ vào nhóm này.</summary>
         private void BeginSection(string title)
         {
             var root = secLc.Root;
@@ -210,6 +211,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             secGroup.GroupBordersVisible = true;
             secGroup.AppearanceGroup.Font = new Font("Tahoma", 9F, FontStyle.Bold);
             secGroup.AppearanceGroup.Options.UseFont = true;
+            // Khoảng đệm trong nhóm (content không dính viền) + tách nhóm phía trên.
+            secGroup.Padding = new DevExpress.XtraLayout.Utils.Padding(8, 4, 8, 5);
+            secGroup.Spacing = new DevExpress.XtraLayout.Utils.Padding(0, 4, 0, 0);
             secPendingLeft = null;
             secIdx = 0;
         }
@@ -238,10 +242,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             secIdx = 0;
         }
 
-        /// <summary>Tab 1 — Đối tượng mắc bệnh (DOI_TUONG_MAC_BENH).</summary>
-        private void BuildTabDoiTuong()
+        /// <summary>Nhóm — Đối tượng mắc bệnh (DOI_TUONG_MAC_BENH). Thêm vào lcMain.</summary>
+        private void BuildSectionsDoiTuong()
         {
-            secLc = lcDoiTuong = NewTabLayout(tabDoiTuong);
             txtHoTen = new TextEdit();
             dteNgaySinh = NewDate();
             spnTuoi = new SpinEdit();
@@ -288,10 +291,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             F("Địa chỉ chi tiết:", txtDiaChiTru);
         }
 
-        /// <summary>Tab 2 — Trường hợp bệnh (TRUONG_HOP_BENH): chẩn đoán + xét nghiệm + diễn biến + người báo cáo.</summary>
-        private void BuildTabTruongHop()
+        /// <summary>Nhóm — Trường hợp bệnh (TRUONG_HOP_BENH): chẩn đoán + xét nghiệm + diễn biến + người báo cáo. Thêm vào lcMain.</summary>
+        private void BuildSectionsTruongHop()
         {
-            secLc = lcTruongHop = NewTabLayout(tabTruongHop);
             // Chẩn đoán
             cboBenh = new LookUpEdit();
             cboCapDoBenh = new LookUpEdit();
@@ -299,6 +301,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             cboTinhTrang = new LookUpEdit();
             cboTinhTrangRaVien = new LookUpEdit();
             cboBenhVienChuyenToi = new LookUpEdit();
+            cboHinhThucDieuTri = new LookUpEdit();
             dteNgayKhoiPhat = NewDate();
             dteNgayNhapVien = NewDate();
             dteNgayRaVien = NewDate();
@@ -338,10 +341,14 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             FFull("Chẩn đoán phụ:", txtSubDiagnosis, 40);
             FFull("Chẩn đoán biến chứng:", txtComplication, 40);
 
+            // ---- Sang CỘT PHẢI ----
+            secLc = lcRight;
+
             BeginSection("Diễn biến & Ra viện");
             F("Ngày khởi phát:", dteNgayKhoiPhat);
             F("Ngày nhập viện (*):", dteNgayNhapVien);
             F("Tình trạng hiện nay (*):", cboTinhTrang);
+            F("Hình thức điều trị (*):", cboHinhThucDieuTri);
             F("Tình trạng khác:", txtTinhTrangKhac);
             F("Ngày ra viện:", dteNgayRaVien);
             F("Tình trạng ra viện:", cboTinhTrangRaVien);
@@ -506,16 +513,19 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         /// Thêm 1 dòng label-editor vào LayoutControlGroup.
         /// Label căn phải, rộng cố định để các cột thẳng hàng; trường bắt buộc "(*)" tô màu maroon.
         /// </summary>
-        private LayoutControlItem AddRow(LayoutControlGroup group, string caption, Control ctrl, int height = 24)
+        private LayoutControlItem AddRow(LayoutControlGroup group, string caption, Control ctrl, int height = 22)
         {
             if (ctrl.Height < height) ctrl.Height = height;
             LayoutControlItem lci = group.AddItem();
             lci.Control = ctrl;
             lci.Text = caption;
             lci.TextLocation = DevExpress.Utils.Locations.Left;
-            lci.TextSize = new Size(150, 20);
+            // Cột nhãn 120px -> gọn, mọi editor bắt đầu cùng 1 mốc (thẳng hàng).
+            lci.TextSize = new Size(120, 20);
             lci.TextAlignMode = TextAlignModeItem.CustomSize;
             lci.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            lci.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            lci.AppearanceItemCaption.Options.UseTextOptions = true;
 
             if (string.IsNullOrEmpty(caption))
                 lci.TextVisible = false;
@@ -527,8 +537,10 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 lci.AppearanceItemCaption.Options.UseForeColor = true;
             }
 
-            // KHÔNG cap bề rộng: item lấp đầy nửa hàng (2 cột) hoặc trọn hàng (full) -> cân đối, không hụt.
-            lci.MinSize = new Size(320, ctrl.Height);
+            // Khoảng đệm quanh mỗi dòng (gọn) -> nhịp dọc đều, các ô không dính sát nhau.
+            lci.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 1, 4, 2);
+            // MinSize nhỏ -> 2 field vừa 1 hàng trong CỘT nửa form (2*200 < ~500px ở 1366), editor không quá rộng.
+            lci.MinSize = new Size(200, ctrl.Height);
             return lci;
         }
         #endregion

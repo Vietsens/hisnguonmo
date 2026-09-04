@@ -106,5 +106,65 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
                 return null;
             }
         }
+
+        /// <summary>Tra MÃ cổng theo ID danh mục cổng (dùng khi combo giữ ValueMember = id). Null nếu không thấy.</summary>
+        internal string FindMaById(List<DanhMucItemDto> list, long? id)
+        {
+            try
+            {
+                if (list == null || !id.HasValue) return null;
+                var item = list.Find(o => o != null && o.id == id.Value);
+                return item != null ? item.ma : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Đối chiếu MÃ nội bộ (HIS/SDA) -> MÃ cổng tương ứng trong danh mục.
+        /// Khớp theo cả chuỗi hoặc 1 token (item.ma có thể là danh sách nhiều mã).
+        /// KHÔNG thấy -> trả lại maHis (giả định mã trùng chuẩn quốc gia).
+        /// </summary>
+        internal string FindMaByMa(List<DanhMucItemDto> list, string maHis)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(maHis) || list == null) return null;
+                string key = maHis.Trim();
+                long keyNum; bool keyIsNum = long.TryParse(key, out keyNum);
+
+                foreach (var item in list)
+                {
+                    if (item == null || string.IsNullOrEmpty(item.ma)) continue;
+                    string ma = item.ma.Trim();
+                    if (string.Equals(ma, key, StringComparison.OrdinalIgnoreCase))
+                        return item.ma;                                   // trùng cả chuỗi
+                    // Khớp theo SỐ (bỏ số 0 ở đầu): HIS "01" == cổng "1".
+                    long maNum;
+                    if (keyIsNum && long.TryParse(ma, out maNum) && maNum == keyNum)
+                        return item.ma;
+                    // item.ma có thể là danh sách nhiều mã.
+                    var toks = item.ma.Split(MaSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var tok in toks)
+                    {
+                        string t = tok.Trim();
+                        if (string.Equals(t, key, StringComparison.OrdinalIgnoreCase))
+                            return item.ma;
+                        long tNum;
+                        if (keyIsNum && long.TryParse(t, out tNum) && tNum == keyNum)
+                            return item.ma;
+                    }
+                }
+                return null;   // KHÔNG đối chiếu được -> caller bỏ trường (optional), tránh gửi mã sai làm cổng từ chối
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
     }
 }

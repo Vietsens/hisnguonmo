@@ -105,6 +105,28 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList
         Khac = 3
     }
 
+    /// <summary>
+    /// Trạng thái ca bệnh — trường trangThaiCaBenh (Swagger DiseaseCaseFastDto).
+    /// Giá trị mặc định theo ví dụ cổng (=1). Cần xác nhận nghĩa chi tiết với cổng.
+    /// </summary>
+    public enum EcdsTrangThaiCaBenh
+    {
+        /// <summary>Mặc định khi đẩy (theo ví dụ cổng = 1)</summary>
+        MacDinh = 1
+    }
+
+    /// <summary>
+    /// Trạng thái lưu — trường trangThaiLuu (Swagger DiseaseCaseFastDto).
+    /// 1 = Nháp, 2 = Lưu chính thức (theo ví dụ cổng).
+    /// </summary>
+    public enum EcdsTrangThaiLuu
+    {
+        /// <summary>Nháp</summary>
+        Nhap = 1,
+        /// <summary>Lưu chính thức (đẩy chính thức lên cổng)</summary>
+        LuuChinhThuc = 2
+    }
+
     /// <summary>Trạng thái đẩy nội bộ HIS (cột PUSH_STATE của HIS_ECDS_DISEASE_CASE).</summary>
     public enum EcdsPushState
     {

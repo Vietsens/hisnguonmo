@@ -37,10 +37,21 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
         {
             // .NET 4.5 mặc định chưa bật TLS 1.2
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+
+            // Kiểm tra BaseUrl là URL http/https hợp lệ TRƯỚC khi tạo client -> tránh UriFormatException
+            // khó hiểu ("hostname could not be parsed") khi cấu hình sai; báo lỗi rõ, chỉ đúng key config.
+            Uri baseUri;
+            if (!Uri.TryCreate(EcdsConfigCFG.BaseUrl, UriKind.Absolute, out baseUri)
+                || (baseUri.Scheme != Uri.UriSchemeHttp && baseUri.Scheme != Uri.UriSchemeHttps))
+            {
+                throw new InvalidOperationException(
+                    "ECDS BaseUrl không hợp lệ: '" + (EcdsConfigCFG.BaseUrl ?? "") + "'. Kiểm tra cấu hình "
+                    + EcdsConfigCFG.CONFIG_KEY + " — phần BaseUrl phải là URL đầy đủ (VD https://daotao-gs.vadp.gov.vn).");
+            }
+
             var client = new HttpClient();
             client.Timeout = TimeSpan.FromSeconds(EcdsConfigCFG.TimeoutSecond);
-            if (!string.IsNullOrEmpty(EcdsConfigCFG.BaseUrl))
-                client.BaseAddress = new Uri(EcdsConfigCFG.BaseUrl);
+            client.BaseAddress = baseUri;
             return client;
         }
 
