@@ -102,6 +102,16 @@ namespace MPS.Processor.Mps000062.PDO
         public string ICD_TEXT_TRACKING { get; set; }
 
         public long NUMBER_DAYS_TREATMENT { get; set; }
+
+        /// <summary>
+        /// Khoa hoi chan - ma khoa cua bien ban hoi chan gan voi to dieu tri nay.
+        /// </summary>
+        public string DEBATE_DEPARTMENT_CODE { get; set; }
+
+        /// <summary>
+        /// Khoa hoi chan - ten khoa cua bien ban hoi chan gan voi to dieu tri nay.
+        /// </summary>
+        public string DEBATE_DEPARTMENT_NAME { get; set; }
     }
 
     public class Mps000062ExtADO : V_HIS_TRACKING
@@ -182,7 +192,20 @@ namespace MPS.Processor.Mps000062.PDO
 
             this.ICD_TEXT_TRACKING = mps000062ADO.ICD_TEXT_TRACKING;
             this.NUMBER_DAYS_TREATMENT = mps000062ADO.NUMBER_DAYS_TREATMENT;
+
+            this.DEBATE_DEPARTMENT_CODE = mps000062ADO.DEBATE_DEPARTMENT_CODE;
+            this.DEBATE_DEPARTMENT_NAME = mps000062ADO.DEBATE_DEPARTMENT_NAME;
         }
+
+        /// <summary>
+        /// Khoa hoi chan - ma khoa cua bien ban hoi chan gan voi to dieu tri nay.
+        /// </summary>
+        public string DEBATE_DEPARTMENT_CODE { get; set; }
+
+        /// <summary>
+        /// Khoa hoi chan - ten khoa cua bien ban hoi chan gan voi to dieu tri nay.
+        /// </summary>
+        public string DEBATE_DEPARTMENT_NAME { get; set; }
         public string IS_T7_OR_CN { get; set; }
         public string TRACKING_TIME_STR { get; set; }
         public string TRACKING_DATE_STR { get; set; }

@@ -361,6 +361,18 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         .FirstOrDefault();
                 }
 
+                #region Khoa hội chẩn
+                List<V_HIS_DEBATE> debates = new List<V_HIS_DEBATE>();
+                MOS.Filter.HisDebateViewFilter debateViewFilter = new MOS.Filter.HisDebateViewFilter();
+                debateViewFilter.TREATMENT_ID = treatmentId;
+                var debateViews = new BackendAdapter(param).Get<List<V_HIS_DEBATE>>("api/HisDebate/GetView", ApiConsumers.MosConsumer, debateViewFilter, param);
+                if (debateViews != null && debateViews.Count > 0)
+                {
+                    List<long> trackingIdPrints = (_TrackingPrintsProcesss != null) ? _TrackingPrintsProcesss.Select(o => o.ID).ToList() : new List<long>();
+                    debates = debateViews.Where(o => o.TRACKING_ID != null && trackingIdPrints.Contains(o.TRACKING_ID ?? 0)).ToList();
+                }
+                #endregion
+
                 MPS.Processor.Mps000062.PDO.Mps000062PDO mps000062RDO = new MPS.Processor.Mps000062.PDO.Mps000062PDO(
                 _Treatment,
                 _TreatmentBedRooms,
@@ -394,6 +406,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 listDosage,
                 selectedBedLog
                 );
+                mps000062RDO._Debates = debates;
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
 

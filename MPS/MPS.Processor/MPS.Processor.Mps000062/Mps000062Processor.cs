@@ -659,6 +659,37 @@ namespace MPS.Processor.Mps000062
             }
         }
 
+        /// <summary>
+        /// Gan khoa hoi chan (bien ban hoi chan gan nhat gan voi to dieu tri) vao du lieu in.
+        /// </summary>
+        private void SetDebateDepartment(Mps000062ADO trackingADO, V_HIS_TRACKING tracking)
+        {
+            try
+            {
+                if (trackingADO == null || tracking == null)
+                    return;
+
+                if (rdo._Debates == null || rdo._Debates.Count <= 0)
+                    return;
+
+                var debate = rdo._Debates
+                    .Where(o => o.TRACKING_ID == tracking.ID && (o.IS_DELETE == null || o.IS_DELETE == 0))
+                    .OrderByDescending(o => o.DEBATE_TIME)
+                    .ThenByDescending(o => o.ID)
+                    .FirstOrDefault();
+
+                if (debate == null)
+                    return;
+
+                trackingADO.DEBATE_DEPARTMENT_CODE = debate.DEPARTMENT_CODE;
+                trackingADO.DEBATE_DEPARTMENT_NAME = debate.DEPARTMENT_NAME;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void ProcessorDataPrint()
         {
             try
@@ -741,6 +772,10 @@ namespace MPS.Processor.Mps000062
                         var User = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == itemTracking.CREATOR);
 
                         _service.TRACKING_USERNAME = User != null ? User.USERNAME : "";
+
+                        #region Khoa hoi chan
+                        SetDebateDepartment(_service, itemTracking);
+                        #endregion
 
                         keyTamThan.TRACKING_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(itemTracking.TRACKING_TIME);
                         if (!string.IsNullOrEmpty(itemTracking.MEDICAL_INSTRUCTION) && itemTracking.MEDICAL_INSTRUCTION.Length > 100)

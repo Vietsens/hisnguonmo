@@ -64,6 +64,11 @@ namespace MPS.Processor.Mps000062.PDO
         public List<HIS_DOSAGE_FORM> DosageForm { get; set; }
         public V_HIS_BED_LOG BedLog { get; set; }
 
+        /// <summary>
+        /// Danh sach bien ban hoi chan cua dot dieu tri (dung de lay khoa hoi chan theo tung to dieu tri qua TRACKING_ID).
+        /// </summary>
+        public List<V_HIS_DEBATE> _Debates { get; set; }
+
         #region -------------
         //public Mps000062PDO(
         //    HIS_TREATMENT _treatment,
