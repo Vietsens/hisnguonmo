@@ -47,7 +47,8 @@ namespace HIS.Desktop.Plugins.HisBhytBlacklist.HisBhytBlacklist
                 {
                     string currentValue = txtSoThe.Text.Replace(" ", "").ToUpper();
                     string heincardNumber = TrimHeinCardNumber(currentValue);
-                    valid = valid && (heincardNumber.Length == 15);
+                    //So the BHYT: 15 ky tu (mau cu) hoac 17 ky tu (mau moi)
+                    valid = valid && (heincardNumber.Length == 15 || heincardNumber.Length == 17);
                     if (!valid)
                     {
                         this.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.NguoiDungNhapSoTheBHYTKhongHopLe);

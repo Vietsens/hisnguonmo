@@ -68,7 +68,7 @@ namespace His.UC.UCHein.ControlProcess
                         chhai = HEIN_CARD_NUMBER.Substring(3, 2);
                         chba = HEIN_CARD_NUMBER.Substring(5, 2);
                         chbon = HEIN_CARD_NUMBER.Substring(7, 3);
-                        chnam = HEIN_CARD_NUMBER.Substring(10, 5);
+                        chnam = HEIN_CARD_NUMBER.Substring(10);
                     }
                     catch (Exception exx)
                     {

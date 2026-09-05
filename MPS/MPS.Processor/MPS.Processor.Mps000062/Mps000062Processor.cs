@@ -663,7 +663,8 @@ namespace MPS.Processor.Mps000062
         }
 
         /// <summary>
-        /// Gan khoa hoi chan (bien ban hoi chan gan nhat gan voi to dieu tri) vao du lieu in.
+        /// Gan "Khoa phong moi hoi chan" (HIS_SPECIALIST_EXAM.EXAM_EXECUTE_DEPARMENT_ID, INVITE_TYPE = 2)
+        /// vao du lieu in cua to dieu tri tuong ung. Moi hoi chan nhieu khoa thi gop lai, cach nhau dau phay.
         /// </summary>
         private void SetDebateDepartment(Mps000062ADO trackingADO, V_HIS_TRACKING tracking)
         {
@@ -672,20 +673,36 @@ namespace MPS.Processor.Mps000062
                 if (trackingADO == null || tracking == null)
                     return;
 
-                if (rdo._Debates == null || rdo._Debates.Count <= 0)
+                if (rdo._SpecialistExams == null || rdo._SpecialistExams.Count <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("Mps000062.SetDebateDepartment: khong co du lieu moi hoi chan (rdo._SpecialistExams rong)");
                     return;
+                }
 
-                var debate = rdo._Debates
-                    .Where(o => o.TRACKING_ID == tracking.ID && (o.IS_DELETE == null || o.IS_DELETE == 0))
-                    .OrderByDescending(o => o.DEBATE_TIME)
-                    .ThenByDescending(o => o.ID)
-                    .FirstOrDefault();
+                var invites = rdo._SpecialistExams
+                    .Where(o => o != null
+                        && (o.IS_DELETE == null || o.IS_DELETE == 0)
+                        && o.INVITE_TYPE == 2
+                        && (o.TRACKING_ID == tracking.ID || o.EXAM_EXECUTE_TRACKING_ID == tracking.ID))
+                    .OrderBy(o => o.INVITE_TIME)
+                    .ThenBy(o => o.ID)
+                    .ToList();
 
-                if (debate == null)
+                if (invites.Count <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format("Mps000062.SetDebateDepartment: khong tim thay phieu moi hoi chan cho TRACKING_ID = {0}. Tong so phieu = {1}",
+                        tracking.ID, rdo._SpecialistExams.Count));
                     return;
+                }
 
-                trackingADO.DEBATE_DEPARTMENT_CODE = debate.DEPARTMENT_CODE;
-                trackingADO.DEBATE_DEPARTMENT_NAME = debate.DEPARTMENT_NAME;
+                trackingADO.DEBATE_DEPARTMENT_CODE = string.Join(", ", invites
+                    .Select(o => o.EXAM_EXECUTE_DEPARTMENT_CODE)
+                    .Where(o => !string.IsNullOrWhiteSpace(o))
+                    .Distinct());
+                trackingADO.DEBATE_DEPARTMENT_NAME = string.Join(", ", invites
+                    .Select(o => o.EXAM_EXECUTE_DEPARTMENT_NAME)
+                    .Where(o => !string.IsNullOrWhiteSpace(o))
+                    .Distinct());
             }
             catch (Exception ex)
             {

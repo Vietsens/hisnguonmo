@@ -128,7 +128,7 @@ namespace MPS.Processor.Mps000433
                         SetSingleKey(new KeyValue(Mps000433ExtendSingleKey.HEIN_CARD_NUMBER_3, rdo.PatientTypeAlter.HEIN_CARD_NUMBER.Substring(3, 2)));
                         SetSingleKey(new KeyValue(Mps000433ExtendSingleKey.HEIN_CARD_NUMBER_4, rdo.PatientTypeAlter.HEIN_CARD_NUMBER.Substring(5, 2)));
                         SetSingleKey(new KeyValue(Mps000433ExtendSingleKey.HEIN_CARD_NUMBER_5, rdo.PatientTypeAlter.HEIN_CARD_NUMBER.Substring(7, 3)));
-                        SetSingleKey(new KeyValue(Mps000433ExtendSingleKey.HEIN_CARD_NUMBER_6, rdo.PatientTypeAlter.HEIN_CARD_NUMBER.Substring(10, 5)));
+                        SetSingleKey(new KeyValue(Mps000433ExtendSingleKey.HEIN_CARD_NUMBER_6, rdo.PatientTypeAlter.HEIN_CARD_NUMBER.Substring(10)));
                         SetSingleKey(new KeyValue(Mps000433ExtendSingleKey.STR_HEIN_CARD_FROM_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString((rdo.PatientTypeAlter.HEIN_CARD_FROM_TIME ?? 0))));
                         SetSingleKey(new KeyValue(Mps000433ExtendSingleKey.STR_HEIN_CARD_TO_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString((rdo.PatientTypeAlter.HEIN_CARD_TO_TIME ?? 0))));
                         SetSingleKey(new KeyValue(Mps000433ExtendSingleKey.HEIN_ADDRESS, rdo.PatientTypeAlter.ADDRESS));
@@ -255,10 +255,10 @@ namespace MPS.Processor.Mps000433
                 string result = "";
                 try
                 {
-                    if (!String.IsNullOrWhiteSpace(heinCardNumber) && heinCardNumber.Length == 15)
+                    if (!String.IsNullOrWhiteSpace(heinCardNumber) && (heinCardNumber.Length == 15 || heinCardNumber.Length == 17))
                     {
                         string separateSymbol = "-";
-                        result = new StringBuilder().Append(heinCardNumber.Substring(0, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(2, 1)).Append(separateSymbol).Append(heinCardNumber.Substring(3, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(5, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(7, 3)).Append(separateSymbol).Append(heinCardNumber.Substring(10, 5)).ToString();
+                        result = heinCardNumber.Length == 17 ? new StringBuilder().Append(heinCardNumber.Substring(0, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(2, 1)).Append(separateSymbol).Append(heinCardNumber.Substring(3, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(5)).ToString() : new StringBuilder().Append(heinCardNumber.Substring(0, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(2, 1)).Append(separateSymbol).Append(heinCardNumber.Substring(3, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(5, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(7, 3)).Append(separateSymbol).Append(heinCardNumber.Substring(10, 5)).ToString();
                     }
                     else
                     {

@@ -42,15 +42,12 @@ namespace HIS.Desktop.Plugins.InfantInformation.Validate
                     this.ErrorType = ErrorType.Warning;
                     return valid;
                 }
-                if (!String.IsNullOrEmpty(txtHeinCardTmp.Text) && Inventec.Common.String.CountVi.Count(txtHeinCardTmp.Text) < maxLength)
+                //So the BHYT: 15 ky tu (mau cu) hoac 17 ky tu (mau moi)
+                int lengthNew = 17;
+                int currentLength = Inventec.Common.String.CountVi.Count(txtHeinCardTmp.Text) ?? 0;
+                if (!String.IsNullOrEmpty(txtHeinCardTmp.Text) && currentLength != maxLength && currentLength != lengthNew)
                 {
-                    this.ErrorText = "Trường dữ liệu phải có độ dài đúng " + maxLength + " ký tự";
-                    this.ErrorType = ErrorType.Warning;
-                    return valid;
-                }
-                if (!String.IsNullOrEmpty(txtHeinCardTmp.Text) && Inventec.Common.String.CountVi.Count(txtHeinCardTmp.Text) > maxLength)
-                {
-                    this.ErrorText = "Trường dữ liệu vượt quá " + maxLength + " ký tự";
+                    this.ErrorText = "Trường dữ liệu phải có độ dài đúng " + maxLength + " hoặc " + lengthNew + " ký tự";
                     this.ErrorType = ErrorType.Warning;
                     return valid;
                 }

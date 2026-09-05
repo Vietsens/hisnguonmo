@@ -85,13 +85,28 @@ namespace HIS.Desktop.Plugins.KioskInformation
                     lblGenderName.Text = kioskInform.GenderName;
                     if (kioskInform.HeinCardNumber != null)
                     {
-                        string s1 = kioskInform.HeinCardNumber.Substring(0, 2) + "-";
-                        string s2 = kioskInform.HeinCardNumber.Substring(2, 1) + "-";
-                        string s3 = kioskInform.HeinCardNumber.Substring(3, 2) + "-";
-                        string s4 = kioskInform.HeinCardNumber.Substring(5, 2) + "-";
-                        string s5 = kioskInform.HeinCardNumber.Substring(7, 3) + "-";
-                        string s6 = kioskInform.HeinCardNumber.Substring(10, 5);
-                        lblHeinCardNumber.Text = s1 + s2 + s3 + s4 + s5 + s6;
+                        //So the BHYT: 15 ky tu (mau cu) tach 2-1-2-2-3-5; 17 ky tu (mau moi) tach 2-1-2-12
+                        string heinCardNumber = kioskInform.HeinCardNumber;
+                        if (heinCardNumber.Length == 15)
+                        {
+                            lblHeinCardNumber.Text = heinCardNumber.Substring(0, 2) + "-"
+                                + heinCardNumber.Substring(2, 1) + "-"
+                                + heinCardNumber.Substring(3, 2) + "-"
+                                + heinCardNumber.Substring(5, 2) + "-"
+                                + heinCardNumber.Substring(7, 3) + "-"
+                                + heinCardNumber.Substring(10, 5);
+                        }
+                        else if (heinCardNumber.Length == 17)
+                        {
+                            lblHeinCardNumber.Text = heinCardNumber.Substring(0, 2) + "-"
+                                + heinCardNumber.Substring(2, 1) + "-"
+                                + heinCardNumber.Substring(3, 2) + "-"
+                                + heinCardNumber.Substring(5);
+                        }
+                        else
+                        {
+                            lblHeinCardNumber.Text = heinCardNumber;
+                        }
                     }
                     lblHeinMediOrgName.Text = kioskInform.HeinMediOrgName;
                     lblPatientName.Text = kioskInform.PatientName;

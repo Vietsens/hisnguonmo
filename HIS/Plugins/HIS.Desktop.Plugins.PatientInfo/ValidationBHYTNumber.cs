@@ -43,7 +43,8 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 {
                     string currentValue = txtSoThe.Text.Replace(" ", "").ToUpper();
                     string heincardNumber = HeinUtils.TrimHeinCardNumber(currentValue);
-                    valid = valid && (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().IsValidHeinCardNumber(heincardNumber) && heincardNumber.Length == 15);
+                    //So the BHYT: 15 ky tu (mau cu) hoac 17 ky tu (mau moi)
+                    valid = valid && (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().IsValidHeinCardNumber(heincardNumber) && (heincardNumber.Length == 15 || heincardNumber.Length == 17));
                     if (!valid)
                     {
                         this.ErrorText = "Số thẻ BHYT không hợp lệ";

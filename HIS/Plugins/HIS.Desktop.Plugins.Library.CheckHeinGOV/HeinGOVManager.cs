@@ -1488,7 +1488,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
         /// Valid lengths of a health insurance card number accepted by the co-payment service,
         /// measured after whitespace and separators have been removed.
         /// </summary>
-        static readonly int[] MCCT_VALID_CARD_LENGTHS = new int[] { 10, 12, 15 };
+        static readonly int[] MCCT_VALID_CARD_LENGTHS = new int[] { 10, 12, 15, 17 };
 
         /// <summary>
         /// Build marker written at the head of every co-payment log line.

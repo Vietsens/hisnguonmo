@@ -783,7 +783,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                             {
                                 filter.VIR_HEIN_CARD_PREFIX__EXACT = code;
                             }
-                            else if (code.Length == 15)
+                            else if (code.Length == 15 || code.Length == 17) //so the BHYT mau cu 15, mau moi 17
                             {
                                 filter.TDL_HEIN_CARD_NUMBER__EXACT = code;
                             }

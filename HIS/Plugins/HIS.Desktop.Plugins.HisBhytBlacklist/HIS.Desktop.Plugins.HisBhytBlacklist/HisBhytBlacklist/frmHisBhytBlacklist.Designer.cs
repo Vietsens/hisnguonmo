@@ -415,7 +415,7 @@ namespace HIS.Desktop.Plugins.HisBhytBlacklist.HisBhytBlacklist
             this.txtHeinCardNumber.EnterMoveNextControl = true;
             this.txtHeinCardNumber.Location = new System.Drawing.Point(97, 47);
             this.txtHeinCardNumber.Name = "txtHeinCardNumber";
-            this.txtHeinCardNumber.Properties.MaxLength = 15;
+            this.txtHeinCardNumber.Properties.MaxLength = 17;
             this.txtHeinCardNumber.Size = new System.Drawing.Size(158, 20);
             this.txtHeinCardNumber.StyleController = this.lcEditorInfo;
             this.txtHeinCardNumber.TabIndex = 0;

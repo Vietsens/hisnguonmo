@@ -697,7 +697,7 @@ namespace HIS.UC.Sick
                     {
                         txtHeinCard.Enabled = true;
                     }
-                    txtSocialInsuranceNumber.Text = currentTreatmentFinishSDO.TDL_SOCIAL_INSURANCE_NUMBER ?? (!string.IsNullOrEmpty(currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER) && currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length >= 10 ? currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Substring(currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length - 10, 10) : null);
+                    txtSocialInsuranceNumber.Text = currentTreatmentFinishSDO.TDL_SOCIAL_INSURANCE_NUMBER ?? (!string.IsNullOrEmpty(currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER) && (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 15 || currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 17) ? (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 10 ? currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER : (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 15 ? currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Substring(5, 10) : "")) : (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length >= 10 ? (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 10 ? currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER : (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 15 ? currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Substring(5, 10) : "")) : null));
                     chkIsPregnancyTermination.Checked = currentTreatmentFinishSDO.IS_PREGNANCY_TERMINATION == 1;
                     txtGestationAge.Text = currentTreatmentFinishSDO.GESTATIONAL_AGE != null ? currentTreatmentFinishSDO.GESTATIONAL_AGE.ToString() : "";
                     memPregnancyTerminationReason.Text = currentTreatmentFinishSDO.PREGNANCY_TERMINATION_REASON;
@@ -1559,7 +1559,7 @@ namespace HIS.UC.Sick
                     heinCardNumber = HeinCardHelper.TrimHeinCardNumber(heinCardNumber.Replace(" ", "").Replace("  ", "").ToUpper().Trim());
                     if (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().IsValidHeinCardNumber(heinCardNumber))
                     {
-                        txtSocialInsuranceNumber.Text = heinCardNumber.Substring(heinCardNumber.Length - 10, 10);
+                        txtSocialInsuranceNumber.Text = (heinCardNumber.Length == 10 ? heinCardNumber : (heinCardNumber.Length == 15 ? heinCardNumber.Substring(5, 10) : ""));
                     }
                 }
 

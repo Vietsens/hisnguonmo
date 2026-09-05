@@ -715,7 +715,7 @@ namespace HIS.UC.UCHeniInfo
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
             this.txtSoThe.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtSoThe.Properties.Mask.EditMask = "\\w{2}-\\d{1}-\\w{2}-\\w{2}-\\w{3}-\\w{5}";
+            this.txtSoThe.Properties.Mask.EditMask = "(\\w{2}-\\d{1}-\\w{2}-\\w{2}-\\w{3}-\\w{5})|(\\w{2}-\\d{1}-\\w{2}-\\w{12})";
             this.txtSoThe.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
             this.txtSoThe.Properties.Mask.UseMaskAsDisplayFormat = true;
             this.txtSoThe.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtSoThe_Properties_ButtonClick);

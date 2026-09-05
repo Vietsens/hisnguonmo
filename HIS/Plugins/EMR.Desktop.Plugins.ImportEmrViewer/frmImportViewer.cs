@@ -400,7 +400,8 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
 
                     if (!string.IsNullOrWhiteSpace(item.HEIN_CARD_NUMBER))
                     {
-                        if (Inventec.Common.String.CountVi.Count(item.HEIN_CARD_NUMBER) > 15)
+                        //So the BHYT mau moi dai 17 ky tu
+                        if (Inventec.Common.String.CountVi.Count(item.HEIN_CARD_NUMBER) > 17)
                         {
                             error += string.Format(Message.ResourceLanguageManager.Maxlength, item.HEIN_CARD_NUMBER);
                         }

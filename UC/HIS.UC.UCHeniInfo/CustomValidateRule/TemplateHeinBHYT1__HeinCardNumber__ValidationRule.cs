@@ -62,7 +62,8 @@ namespace HIS.UC.UCHeniInfo.CustomValidateRule
                             {
                                 string currentValue = txtSoThe.Text.Replace(" ", "").ToUpper();
                                 string heincardNumber = HeinUtils.TrimHeinCardNumber(currentValue);
-                                valid = valid && (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().IsValidHeinCardNumber(heincardNumber) && !Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(heincardNumber, 15));
+                                //So the BHYT mau moi dai 17 ky tu
+                                valid = valid && (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().IsValidHeinCardNumber(heincardNumber) && !Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(heincardNumber, 17));
                                 if (!valid)
                                 {
                                     this.ErrorText = MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.NguoiDungNhapSoTheBHYTKhongHopLe);

@@ -527,7 +527,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                             }
                             else
                             {
-                                txtMaBHXH.Text = hisTreatment.SICK_HEIN_CARD_NUMBER.Substring(5, 10); ;
+                                txtMaBHXH.Text = (hisTreatment.SICK_HEIN_CARD_NUMBER.Length == 10 ? hisTreatment.SICK_HEIN_CARD_NUMBER : (hisTreatment.SICK_HEIN_CARD_NUMBER.Length == 15 ? hisTreatment.SICK_HEIN_CARD_NUMBER.Substring(5, 10) : "")); ;
                             }
                         }
                     }
@@ -542,7 +542,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                             }
                             else
                             {
-                                txtMaBHXH.Text = hisTreatment.TDL_HEIN_CARD_NUMBER.Substring(5, 10); ;
+                                txtMaBHXH.Text = (hisTreatment.TDL_HEIN_CARD_NUMBER.Length == 10 ? hisTreatment.TDL_HEIN_CARD_NUMBER : (hisTreatment.TDL_HEIN_CARD_NUMBER.Length == 15 ? hisTreatment.TDL_HEIN_CARD_NUMBER.Substring(5, 10) : "")); ;
                             }
                         }
                     }
@@ -937,7 +937,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                         }
                         else
                         {
-                            txtMaBHXH.Text = sdo.SickHeinCardNumber.Substring(5, 10); ;
+                            txtMaBHXH.Text = (sdo.SickHeinCardNumber.Length == 15 ? sdo.SickHeinCardNumber.Substring(5, 10) : "");
                         }
 
                         sdo.SocialInsuranceNumber = txtMaBHXH.Text;

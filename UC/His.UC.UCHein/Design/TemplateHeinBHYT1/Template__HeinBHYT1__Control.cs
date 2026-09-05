@@ -933,7 +933,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                             chhai = item.HEIN_CARD_NUMBER.Substring(3, 2);
                             chba = item.HEIN_CARD_NUMBER.Substring(5, 2);
                             chbon = item.HEIN_CARD_NUMBER.Substring(7, 3);
-                            chnam = item.HEIN_CARD_NUMBER.Substring(10, 5);
+                            chnam = item.HEIN_CARD_NUMBER.Substring(10);
                         }
                         catch (Exception exx)
                         {

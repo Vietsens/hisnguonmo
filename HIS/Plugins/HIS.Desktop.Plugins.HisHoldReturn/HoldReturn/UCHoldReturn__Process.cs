@@ -279,8 +279,9 @@ namespace HIS.Desktop.Plugins.HisHoldReturn.HoldReturn
                 ReadQrCodeHeinCard readQrCode = new ReadQrCodeHeinCard();
                 dataHein = readQrCode.ReadDataQrCode(qrCode);
 
-                if (dataHein.HeinCardNumber.Length > 15)
-                    dataHein.HeinCardNumber = dataHein.HeinCardNumber.Substring(0, 15);
+                //So the BHYT: 15 ky tu (mau cu) hoac 17 ky tu (mau moi)
+                if (dataHein.HeinCardNumber.Length > 17)
+                    dataHein.HeinCardNumber = dataHein.HeinCardNumber.Substring(0, 17);
 
                 BhytHeinProcessor _BhytHeinProcessor = new BhytHeinProcessor();
                 if (!_BhytHeinProcessor.IsValidHeinCardNumber(dataHein.HeinCardNumber))
@@ -324,7 +325,8 @@ namespace HIS.Desktop.Plugins.HisHoldReturn.HoldReturn
         {
             try
             {
-                this.currentTreatmentId = patientSDO.TreatmentId;
+                //TreatmentId trong HisPatientSDO la long? -> quy uoc 0 = chua co dot dieu tri (giong dong reset ben duoi)
+                this.currentTreatmentId = patientSDO.TreatmentId ?? 0;
                 this.currentPatientId = patientSDO.ID;
                 this.txtPatientCodeForAdd.Text = patientSDO.PATIENT_CODE;
                 this.lblPatientName.Text = patientSDO.VIR_PATIENT_NAME;
