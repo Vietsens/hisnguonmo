@@ -133,7 +133,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 // --- Danh mục nghiệp vụ ECDS (bệnh, cơ sở) lấy từ CỔNG (chỉ khi đã cấu hình) ---
                 if (!EcdsConfigCFG.IsValid()) return;
                 WaitingManager.Show();
-                SetupLookup(cboBenh, catalogCache.GetStatic(EcdsCatalogCache.DM_BENH), "id", "MaTen");
+                // Danh mục bệnh cổng gộp mã -> TÁCH thành từng mã riêng; combo giữ ValueMember = "ma".
+                SetupLookup(cboBenh, catalogCache.GetBenhExpanded(), "ma", "MaTen");
                 SetupLookup(cboDonViXN, catalogCache.GetStatic(EcdsCatalogCache.DM_COSO), "id", "MaTen");
                 SetupLookup(cboBenhVienChuyenToi, catalogCache.GetStatic(EcdsCatalogCache.DM_COSO), "id", "MaTen");
                 // Nghề nghiệp: bind THẲNG danh mục cổng (nghe-nghiep, mã "TT"/"CN"/"HSSV"...) — ValueMember = ma

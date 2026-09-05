@@ -33,7 +33,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         #endregion
 
         #region Declare — Đối tượng mắc bệnh (DOI_TUONG_MAC_BENH)
-        private TextEdit txtHoTen, txtCccd, txtDienThoai, txtNoiLamViec, txtDiaChi, txtDiaChiTru, txtNgheNghiepHoSo;
+        private TextEdit txtHoTen, txtCccd, txtDienThoai, txtNoiLamViec, txtDiaChi, txtDiaChiTru, txtNgheNghiepHoSo, txtBenhHoSo;
         private DateEdit dteNgaySinh;
         private SpinEdit spnTuoi;
         private GridLookUpEdit cboGioiTinh, cboDanToc, cboNgheNghiep, cboTinh, cboXa, cboThon, cboTinhTru, cboXaTru;
@@ -276,8 +276,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             F("Số CCCD/CMND (*):", txtCccd);
             F("Số điện thoại (*):", txtDienThoai);
             F("Dân tộc (*):", cboDanToc);
-            F("Nghề nghiệp (hồ sơ):", txtNgheNghiepHoSo);
-            F("Nghề nghiệp (cổng):", cboNgheNghiep);
+            F("NN (hồ sơ):", txtNgheNghiepHoSo);
+            F("NN (cổng):", cboNgheNghiep);
             F("Nơi làm việc:", txtNoiLamViec);
             F("", chkMangThai);
 
@@ -298,6 +298,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         {
             // Chẩn đoán
             cboBenh = new GridLookUpEdit();
+            txtBenhHoSo = new TextEdit();
+            txtBenhHoSo.Properties.ReadOnly = true;   // mã bệnh gốc của hồ sơ — chỉ đọc
             cboCapDoBenh = new GridLookUpEdit();
             cboLoaiChanDoan = new GridLookUpEdit();
             cboTinhTrang = new GridLookUpEdit();
@@ -336,7 +338,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             cboBenh.EditValueChanged += cboBenh_EditValueChanged;
 
             BeginSection("Chẩn đoán");
-            FFull("Bệnh (ICD-10) (*):", cboBenh);       // bệnh lên trên cùng, chiếm trọn chiều ngang
+            FFull("Bệnh (hồ sơ):", txtBenhHoSo);        // mã bệnh gốc hồ sơ (chỉ đọc)
+            FFull("Bệnh (ICD-10) (*):", cboBenh);       // bệnh chọn đẩy cổng, chiếm trọn chiều ngang
             F("Phân độ bệnh:", cboCapDoBenh);
             F("Phân loại chẩn đoán (*):", cboLoaiChanDoan);
             FFull("Chẩn đoán ra viện:", txtChanDoanRaVien, 40);
