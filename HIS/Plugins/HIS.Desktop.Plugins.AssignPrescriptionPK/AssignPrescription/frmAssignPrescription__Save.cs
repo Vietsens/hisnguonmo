@@ -1898,8 +1898,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             var medicineType = this.mediMatyTypeADOs.Where(o => TypeAcinMedicineType.Contains(o.ID)).ToList();
                             var ExpMestId = ListExpMestMedicineAntibioticRequired.Where(o => TypeAcinMedicineType.Exists
                                 (p => p == o.TDL_MEDICINE_TYPE_ID)).Select(o => o.EXP_MEST_ID).Distinct().ToList();
-                            foreach (var em in ExpMestId)
+
+                            //PT-55625: khi ke don nhieu ngay, danh sach nay duoc chot mot lan luc luu don.
+                            //Sau khi bac si tao phieu cho ngay dau voi pham vi ngay dieu tri bao trum ca dot ke,
+                            //backend da gan phieu cho cac don con lai -> phai lay lai trang thai de khong hoi lai.
+                            List<long> expMestIdsHadRequest = new List<long>();
+                            for (int idxExpMest = 0; idxExpMest < ExpMestId.Count; idxExpMest++)
                             {
+                                var em = ExpMestId[idxExpMest];
+                                if (em.HasValue && expMestIdsHadRequest.Contains(em.Value)) continue;
+
                                 List<HIS_ANTIBIOTIC_NEW_REG> NewRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
                                 var medicineTypeExpMest = medicineType.Where(o => ListExpMestMedicineAntibioticRequired.Where(p => p.EXP_MEST_ID == em).ToList().Exists(p => p.TDL_MEDICINE_TYPE_ID == o.ID)).ToList();
                                 foreach (var item in medicineTypeExpMest)
@@ -1911,7 +1919,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                         HIS_ANTIBIOTIC_NEW_REG NewReg = new HIS_ANTIBIOTIC_NEW_REG();
                                         NewReg.DOSAGE = item.TUTORIAL;
                                         NewReg.USE_FORM = item.MEDICINE_USE_FORM_NAME;
-                                        NewReg.USE_DAY = item.UseDays;
+                                        //PT-55625: UseDays la so ngay dung khai bao tren dong thuoc, khong phai so ngay ke.
+                                        //Phieu phai phu it nhat toan bo dot ke thi cac ngay sau moi khong bi hoi lai.
+                                        NewReg.USE_DAY = GetUseDayForNewReg(item.UseDays);
                                         NewReg.ACTIVE_INGREDIENT_ID = iAcin != null ? iAcin.ACTIVE_INGREDIENT_ID : 0;
                                         NewReg.CONCENTRA = item.CONCENTRA;
 
@@ -1935,7 +1945,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                     ado.NewRegimen = NewRegimen;
                                     ado.ExpMestId = em ?? 0;
                                     ado.processType = HIS.Desktop.ADO.AntibioticRequestADO.ProcessType.Request;
-                                    ado.InstructionDate = this.intructionTimeSelecteds.OrderByDescending(o => o).Last();
+                                    //PT-55625: lay ngay cua chinh don dang xu ly, khong lay ngay dau cua ca dot ke
+                                    ado.InstructionDate = GetInstructionDateOfExpMest(em);
 
                                 }
                                 else if (actionType == GlobalVariables.ActionEdit)
@@ -1955,7 +1966,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                     ado.NewRegimen = NewRegimen;
                                     ado.ExpMestId = em ?? 0;
                                     ado.processType = HIS.Desktop.ADO.AntibioticRequestADO.ProcessType.Request;
-                                    ado.InstructionDate = this.intructionTimeSelecteds.OrderByDescending(o => o).Last();
+                                    //PT-55625: lay ngay cua chinh don dang xu ly, khong lay ngay dau cua ca dot ke
+                                    ado.InstructionDate = GetInstructionDateOfExpMest(em);
                                 }
 
                                 List<object> listArgs = new List<object>();
@@ -1963,6 +1975,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, GetRoomId(), GetRoomTypeId()), listArgs);
                                 if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");
                                 ((Form)extenceInstance).ShowDialog();
+
+                                //PT-55625: bac si co the vua tao phieu bao trum nhieu ngay -> cap nhat lai truoc khi hoi don ke tiep.
+                                //Neu bac si bam Huy thi khong co don nao duoc gan, vong lap van hoi tiep nhu cu.
+                                if (idxExpMest < ExpMestId.Count - 1)
+                                {
+                                    expMestIdsHadRequest = GetExpMestIdsHadAntibioticRequest();
+                                }
                             }
                         }
                     }
@@ -1972,6 +1991,84 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// PT-55625 - Lay danh sach id phieu xuat cua ho so dieu tri hien tai da duoc gan phieu yeu cau su dung khang sinh.
+        /// Dung de bo qua cac ngay da nam trong pham vi dot dieu tri cua phieu vua tao.
+        /// </summary>
+        private List<long> GetExpMestIdsHadAntibioticRequest()
+        {
+            List<long> result = new List<long>();
+            try
+            {
+                CommonParam paramGet = new CommonParam();
+                MOS.Filter.HisExpMestFilter filter = new MOS.Filter.HisExpMestFilter();
+                filter.TDL_TREATMENT_ID = this.treatmentId;
+                var expMests = new BackendAdapter(paramGet).Get<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST>>(
+                    "api/HisExpMest/Get", ApiConsumers.MosConsumer, filter, paramGet);
+                if (expMests != null && expMests.Count > 0)
+                {
+                    result = expMests.Where(o => o.ANTIBIOTIC_REQUEST_ID.HasValue).Select(o => o.ID).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Khong lay duoc trang thai thi giu nguyen hanh vi cu: van hoi tao phieu
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// PT-55625 - Ngay mac dinh cua phieu yeu cau: ngay cua chinh don thuoc dang xu ly.
+        /// Neu khong tra cuu duoc thi lui ve ngay dau cua dot ke nhu truoc day.
+        /// </summary>
+        private long GetInstructionDateOfExpMest(long? expMestId)
+        {
+            long defaultDate = this.intructionTimeSelecteds.OrderByDescending(o => o).Last();
+            try
+            {
+                if (expMestId.HasValue && ListExpMestResult != null)
+                {
+                    var expMest = ListExpMestResult.FirstOrDefault(o => o.ID == expMestId.Value);
+                    if (expMest != null)
+                    {
+                        if (expMest.TDL_USE_TIME.HasValue && expMest.TDL_USE_TIME.Value > 0)
+                        {
+                            return expMest.TDL_USE_TIME.Value;
+                        }
+                        if (expMest.TDL_INTRUCTION_TIME.HasValue && expMest.TDL_INTRUCTION_TIME.Value > 0)
+                        {
+                            return expMest.TDL_INTRUCTION_TIME.Value;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return defaultDate;
+        }
+
+        /// <summary>
+        /// PT-55625 - So ngay dieu tri mac dinh tren phieu: phai phu it nhat toan bo dot ke,
+        /// nhung khong duoc nho hon so ngay dung da khai bao tren dong thuoc.
+        /// </summary>
+        private decimal? GetUseDayForNewReg(decimal? useDayOfMedicine)
+        {
+            try
+            {
+                int dayCount = this.intructionTimeSelecteds != null ? this.intructionTimeSelecteds.Select(o => o - o % 1000000).Distinct().Count() : 0;
+                if (dayCount <= 0) return useDayOfMedicine;
+                if (!useDayOfMedicine.HasValue || useDayOfMedicine.Value < dayCount) return dayCount;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return useDayOfMedicine;
         }
 
         private void CallPortI3()
