@@ -33,6 +33,11 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
 
         // Bệnh nhân (V_HIS_PATIENT) — nạp khi Load
         private V_HIS_PATIENT patient;
+
+        // ControlState — nhớ Người báo cáo (tên/SĐT/email) qua các lần dùng, giữa các bệnh nhân/phiên.
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker reporterStateWorker;
+        private System.Collections.Generic.List<HIS.Desktop.Library.CacheClient.ControlStateRDO> reporterStateRDO;
+        private const string ReporterModuleLink = "HIS.Desktop.Plugins.InfectiousDiseaseReport";
         #endregion
 
         // Toàn bộ control + code dựng UI nằm ở frmInfectiousDiseaseReport.Designer.cs (InitializeComponent).
@@ -78,19 +83,42 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             }
         }
 
-        /// <summary>Bind LookUpEdit từ danh mục ECDS (id/ten).</summary>
-        private void SetupLookup(LookUpEdit cbo, System.Collections.IList data, string valueMember, string displayMember)
+        /// <summary>
+        /// Bind GridLookUpEdit từ danh mục — GIỐNG combo giới tính của HisIcd:
+        /// gõ thẳng vào ô (không cần ô tìm riêng) -> popup mở ngay (ImmediatePopup) và nhảy tới dòng khớp.
+        /// displayMember="MaTen" nên ô hiển thị "Mã - Tên" và gõ MÃ hoặc TÊN đều định vị được.
+        /// </summary>
+        private void SetupLookup(GridLookUpEdit cbo, System.Collections.IList data, string valueMember, string displayMember)
         {
             try
             {
+                // GridLookUpEdit tạo runtime -> đảm bảo có GridView cho popup.
+                var view = cbo.Properties.View;
+                if (view == null)
+                {
+                    view = new DevExpress.XtraGrid.Views.Grid.GridView();
+                    cbo.Properties.View = view;
+                }
+                view.OptionsBehavior.AutoPopulateColumns = false;   // KHÔNG tự sinh mọi cột (id/ma/ten/...)
+
                 cbo.Properties.DataSource = data;
                 cbo.Properties.ValueMember = valueMember;
                 cbo.Properties.DisplayMember = displayMember;
                 cbo.Properties.NullText = "";
-                cbo.Properties.ShowHeader = false;
-                cbo.Properties.Columns.Clear();
-                cbo.Properties.Columns.Add(
-                    new DevExpress.XtraEditors.Controls.LookUpColumnInfo(displayMember));
+
+                // Gõ trực tiếp vào ô -> mở popup ngay và LỌC theo Contains (như HisIcd).
+                // Contains trên cột "Mã - Tên" => gõ MÃ hoặc TÊN (ở giữa chuỗi) đều lọc được.
+                cbo.Properties.ImmediatePopup = true;
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+
+                // Popup 1 cột gọn (hiển thị "Mã - Tên").
+                view.Columns.Clear();
+                var col = view.Columns.AddVisible(displayMember);
+                col.Caption = "Nội dung";
+                view.OptionsView.ShowColumnHeaders = false;
+                view.OptionsView.ShowGroupPanel = false;
+                view.OptionsView.ShowIndicator = false;
             }
             catch (Exception ex)
             {
@@ -98,8 +126,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             }
         }
 
-        /// <summary>Bind LookUpEdit từ danh sách enum (KeyValueADO).</summary>
-        private void BindEnumCombo(LookUpEdit cbo, List<KeyValueADO> items)
+        /// <summary>Bind GridLookUpEdit từ danh sách enum (KeyValueADO) — hiển thị + tìm theo Tên.</summary>
+        private void BindEnumCombo(GridLookUpEdit cbo, List<KeyValueADO> items)
         {
             SetupLookup(cbo, items, "Value", "Text");
         }
@@ -130,7 +158,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        private long? GetLookupLong(LookUpEdit cbo)
+        private long? GetLookupLong(GridLookUpEdit cbo)
         {
             try
             {
@@ -142,14 +170,14 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
-        private int GetLookupInt(LookUpEdit cbo, int defaultValue)
+        private int GetLookupInt(GridLookUpEdit cbo, int defaultValue)
         {
             long? v = GetLookupLong(cbo);
             return v.HasValue ? (int)v.Value : defaultValue;
         }
 
         /// <summary>Lấy MÃ (chuỗi) đang chọn của combo có ValueMember là mã (SDA). Null nếu trống.</summary>
-        private string GetLookupString(LookUpEdit cbo)
+        private string GetLookupString(GridLookUpEdit cbo)
         {
             try { return (cbo != null && cbo.EditValue != null) ? cbo.EditValue.ToString() : null; }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
