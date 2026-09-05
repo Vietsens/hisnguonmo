@@ -276,13 +276,13 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        private void SetLookupDec(LookUpEdit cbo, decimal? v)
+        private void SetLookupDec(GridLookUpEdit cbo, decimal? v)
         {
             try { if (v.HasValue) cbo.EditValue = (long)v.Value; }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        private void SetLookupShort(LookUpEdit cbo, short? v)
+        private void SetLookupShort(GridLookUpEdit cbo, short? v)
         {
             try { if (v.HasValue) cbo.EditValue = (long)v.Value; }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
@@ -298,7 +298,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                     Worker.EcdsCatalogCache.DM_CAPDOBENH,
                     new SearchDanhMucFastDto { maIcd10Benh = icdCode },
                     icdCode);
-                SetupLookup(cboCapDoBenh, list, "id", "ten", "ma");
+                SetupLookup(cboCapDoBenh, list, "id", "MaTen");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -362,14 +362,14 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             {
                 if (string.IsNullOrEmpty(xaCode) || catalogCache == null || !Config.EcdsConfigCFG.IsValid())
                 {
-                    SetupLookup(cboThon, new System.Collections.Generic.List<DanhMucItemDto>(), "id", "ten", "ma");
+                    SetupLookup(cboThon, new System.Collections.Generic.List<DanhMucItemDto>(), "id", "MaTen");
                     return;
                 }
                 var list = catalogCache.GetCascade(
                     Worker.EcdsCatalogCache.DM_THON,
                     new SearchDanhMucFastDto { maXa = xaCode },
                     xaCode);
-                SetupLookup(cboThon, list, "id", "ten", "ma");
+                SetupLookup(cboThon, list, "id", "MaTen");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -474,7 +474,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         }
 
         /// <summary>Chọn combo theo mã (ValueMember là mã chuỗi); rỗng thì bỏ qua.</summary>
-        private void SetLookupStr(LookUpEdit cbo, string code)
+        private void SetLookupStr(GridLookUpEdit cbo, string code)
         {
             try { if (cbo != null && !string.IsNullOrEmpty(code)) cbo.EditValue = code; }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
@@ -484,12 +484,20 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         {
             try
             {
-                txtNguoiBaoCao.Text = Inventec.UC.Login.Base.ClientTokenManagerStore
-                    .ClientTokenManager.GetUserName() ?? "";
+                // Người báo cáo (tên/SĐT/email) lấy từ TÀI KHOẢN nhân viên đang đăng nhập (HIS_EMPLOYEE theo LOGINNAME).
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                string userName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName() ?? "";
+                var emp = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == loginName);
+                txtNguoiBaoCao.Text = (emp != null && !string.IsNullOrEmpty(emp.TDL_USERNAME)) ? emp.TDL_USERNAME : userName;
+                txtDienThoaiBaoCao.Text = emp != null ? (emp.TDL_MOBILE ?? "") : "";
+                txtEmailBaoCao.Text = emp != null ? (emp.TDL_EMAIL ?? "") : "";
                 lblMaDonViVal.Text = Config.EcdsConfigCFG.MaDonVi ?? "";
 
                 var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault();
                 lblCoSoDieuTriVal.Text = branch != null ? branch.BRANCH_NAME : "";
+
+                // Ghi đè bằng Người báo cáo đã lưu (ControlState) — bớt nhập lại mỗi bệnh nhân.
+                RestoreReporterFromState();
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }

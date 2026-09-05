@@ -17,5 +17,11 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.ADO
 
         /// <summary>Mã cha (nếu là danh mục phân cấp: xã theo tỉnh, thôn theo xã...).</summary>
         public string maCha { get; set; }
+
+        /// <summary>Hiển thị gộp "Mã - Tên" — dùng làm DisplayMember để gõ tìm được cả MÃ lẫn TÊN.</summary>
+        public string MaTen
+        {
+            get { return string.IsNullOrEmpty(ma) ? ten : (ma + " - " + ten); }
+        }
     }
 }

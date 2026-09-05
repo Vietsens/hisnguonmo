@@ -176,7 +176,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         /// Lấy MÃ cổng đang chọn của combo bind từ danh mục cổng (ValueMember = id, DataSource là List&lt;DanhMucItemDto&gt;).
         /// VD cboCapDoBenh, cboThon, cboDonViXN. Null nếu chưa chọn.
         /// </summary>
-        private string GetSelectedMa(LookUpEdit cbo)
+        private string GetSelectedMa(GridLookUpEdit cbo)
         {
             try
             {

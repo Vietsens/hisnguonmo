@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
 
         #region Declare — thân form (1 TRANG, 2 CỘT: trái = Đối tượng + Chẩn đoán, phải = Diễn biến/XN/Báo cáo)
         private PanelControl pnlBody, pnlFooter;
+        private SplitContainerControl splitBody;
         private LayoutControl lcLeft, lcRight;
         #endregion
 
@@ -35,20 +36,20 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         private TextEdit txtHoTen, txtCccd, txtDienThoai, txtNoiLamViec, txtDiaChi, txtDiaChiTru, txtNgheNghiepHoSo;
         private DateEdit dteNgaySinh;
         private SpinEdit spnTuoi;
-        private LookUpEdit cboGioiTinh, cboDanToc, cboNgheNghiep, cboTinh, cboXa, cboThon, cboTinhTru, cboXaTru;
+        private GridLookUpEdit cboGioiTinh, cboDanToc, cboNgheNghiep, cboTinh, cboXa, cboThon, cboTinhTru, cboXaTru;
         private CheckEdit chkMangThai;
         #endregion
 
         #region Declare — Trường hợp bệnh (TRUONG_HOP_BENH) — chẩn đoán + xét nghiệm + diễn biến + người báo cáo
-        private LookUpEdit cboBenh, cboCapDoBenh, cboLoaiChanDoan, cboTinhTrang, cboTinhTrangRaVien, cboBenhVienChuyenToi, cboHinhThucDieuTri;
+        private GridLookUpEdit cboBenh, cboCapDoBenh, cboLoaiChanDoan, cboTinhTrang, cboTinhTrangRaVien, cboBenhVienChuyenToi, cboHinhThucDieuTri;
         private DateEdit dteNgayKhoiPhat, dteNgayNhapVien, dteNgayRaVien, dteNgayTuVong;
         private MemoEdit txtChanDoanRaVien, txtSubDiagnosis, txtComplication, txtGhiChu, txtTienSuDichTe;
         private TextEdit txtTinhTrangKhac, txtLoaiXNKhac;
-        private LookUpEdit cboSuDungVacXin, cboLayMau, cboLoaiXN, cboKetQuaXN, cboDonViXN;
+        private GridLookUpEdit cboSuDungVacXin, cboLayMau, cboLoaiXN, cboKetQuaXN, cboDonViXN;
         private SpinEdit spnSoLan;
         private DateEdit dteNgayThucHienXN, dteNgayTraKQ;
         private TextEdit txtNguoiBaoCao, txtDienThoaiBaoCao, txtEmailBaoCao;
-        private LookUpEdit cboLoaiPhatHien;
+        private GridLookUpEdit cboLoaiPhatHien;
         private LabelControl lblCoSoDieuTriVal, lblMaDonViVal;
         #endregion
 
@@ -176,15 +177,13 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             pnlBody.Dock = DockStyle.Fill;
             pnlBody.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
 
-            // 2 CỘT thật (TableLayoutPanel 50/50) -> toàn bộ nhóm nằm trên 1 trang, KHÔNG cuộn dọc.
-            var tlp = new TableLayoutPanel();
-            tlp.Dock = DockStyle.Fill;
-            tlp.ColumnCount = 2;
-            tlp.RowCount = 1;
-            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlp.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            pnlBody.Controls.Add(tlp);
+            // 2 CỘT thật bằng DevExpress SplitContainerControl (chia dọc). FixedPanel=None -> co giãn theo tỷ lệ.
+            splitBody = new SplitContainerControl();
+            splitBody.Dock = DockStyle.Fill;
+            splitBody.Horizontal = true;
+            splitBody.FixedPanel = DevExpress.XtraEditors.SplitFixedPanel.None;
+            splitBody.PanelVisibility = DevExpress.XtraEditors.SplitPanelVisibility.Both;
+            pnlBody.Controls.Add(splitBody);
 
             lcLeft = new LayoutControl();
             lcLeft.Dock = DockStyle.Fill;
@@ -192,8 +191,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             lcRight = new LayoutControl();
             lcRight.Dock = DockStyle.Fill;
             lcRight.Root.GroupBordersVisible = false;
-            tlp.Controls.Add(lcLeft, 0, 0);
-            tlp.Controls.Add(lcRight, 1, 0);
+            splitBody.Panel1.Controls.Add(lcLeft);
+            splitBody.Panel2.Controls.Add(lcRight);
 
             // Cột TRÁI: Đối tượng mắc bệnh + Chẩn đoán. Cột PHẢI: Diễn biến/Xét nghiệm/Người báo cáo.
             secLc = lcLeft;
@@ -248,22 +247,22 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             txtHoTen = new TextEdit();
             dteNgaySinh = NewDate();
             spnTuoi = new SpinEdit();
-            cboGioiTinh = new LookUpEdit();
+            cboGioiTinh = new GridLookUpEdit();
             chkMangThai = new CheckEdit() { Text = "Đang mang thai" };
             txtCccd = new TextEdit();
             txtDienThoai = new TextEdit();
-            cboDanToc = new LookUpEdit();
-            cboNgheNghiep = new LookUpEdit();
+            cboDanToc = new GridLookUpEdit();
+            cboNgheNghiep = new GridLookUpEdit();
             txtNgheNghiepHoSo = new TextEdit();
             txtNgheNghiepHoSo.Properties.ReadOnly = true;   // nghề nghiệp gốc của hồ sơ — chỉ đọc
             txtNoiLamViec = new TextEdit();
-            cboTinh = new LookUpEdit();
-            cboXa = new LookUpEdit();
-            cboThon = new LookUpEdit();
+            cboTinh = new GridLookUpEdit();
+            cboXa = new GridLookUpEdit();
+            cboThon = new GridLookUpEdit();
             cboThon.Properties.NullText = "";   // tránh hiển thị "[EditValue is null]" khi chưa nạp danh mục
             txtDiaChi = new TextEdit();
-            cboTinhTru = new LookUpEdit();
-            cboXaTru = new LookUpEdit();
+            cboTinhTru = new GridLookUpEdit();
+            cboXaTru = new GridLookUpEdit();
             txtDiaChiTru = new TextEdit();
 
             // Đổi xã hiện nay -> nạp lại danh sách thôn theo xã (cascade cổng: danh mục "thon").
@@ -298,13 +297,13 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         private void BuildSectionsTruongHop()
         {
             // Chẩn đoán
-            cboBenh = new LookUpEdit();
-            cboCapDoBenh = new LookUpEdit();
-            cboLoaiChanDoan = new LookUpEdit();
-            cboTinhTrang = new LookUpEdit();
-            cboTinhTrangRaVien = new LookUpEdit();
-            cboBenhVienChuyenToi = new LookUpEdit();
-            cboHinhThucDieuTri = new LookUpEdit();
+            cboBenh = new GridLookUpEdit();
+            cboCapDoBenh = new GridLookUpEdit();
+            cboLoaiChanDoan = new GridLookUpEdit();
+            cboTinhTrang = new GridLookUpEdit();
+            cboTinhTrangRaVien = new GridLookUpEdit();
+            cboBenhVienChuyenToi = new GridLookUpEdit();
+            cboHinhThucDieuTri = new GridLookUpEdit();
             dteNgayKhoiPhat = NewDate();
             dteNgayNhapVien = NewDate();
             dteNgayRaVien = NewDate();
@@ -316,17 +315,17 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             txtTienSuDichTe = NewMemo();
             txtGhiChu = NewMemo();
             // Vắc xin & xét nghiệm
-            cboSuDungVacXin = new LookUpEdit();
+            cboSuDungVacXin = new GridLookUpEdit();
             spnSoLan = new SpinEdit();
-            cboLayMau = new LookUpEdit();
-            cboLoaiXN = new LookUpEdit();
+            cboLayMau = new GridLookUpEdit();
+            cboLoaiXN = new GridLookUpEdit();
             txtLoaiXNKhac = new TextEdit();
-            cboKetQuaXN = new LookUpEdit();
+            cboKetQuaXN = new GridLookUpEdit();
             dteNgayThucHienXN = NewDate();
             dteNgayTraKQ = NewDate();
-            cboDonViXN = new LookUpEdit();
+            cboDonViXN = new GridLookUpEdit();
             // Người báo cáo
-            cboLoaiPhatHien = new LookUpEdit();
+            cboLoaiPhatHien = new GridLookUpEdit();
             lblCoSoDieuTriVal = NewValueLabel();
             txtNguoiBaoCao = new TextEdit();
             txtDienThoaiBaoCao = new TextEdit();
