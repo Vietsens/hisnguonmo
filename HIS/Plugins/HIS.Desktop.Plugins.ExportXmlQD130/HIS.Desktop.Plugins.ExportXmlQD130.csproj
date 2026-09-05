@@ -72,13 +72,13 @@
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML12\His.Bhyt.ExportXml.XML130.XML12.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML13">
-      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130\His.Bhyt.ExportXml.XML130.XML13.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML13.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML14">
-      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130\His.Bhyt.ExportXml.XML130.XML14.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML14.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML15">
-      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130\His.Bhyt.ExportXml.XML130.XML15.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML15.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML2">
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130.XML2\His.Bhyt.ExportXml.XML130.XML2.dll</HintPath>
@@ -112,7 +112,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.LibraryMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.WorkPlace\HIS.Desktop.LibraryMessage.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LibraryMessage.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData">
       <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
