@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HIS.Desktop.ApiConsumer;
@@ -91,6 +91,7 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 profile.AgeYear = ageYear;
                 profile.IsPregnant = isPregnant;
                 profile.PregnancyMonth = record.PREGNANT_MONTH.HasValue ? (int?)record.PREGNANT_MONTH.Value : null;
+                profile.PregnancyWeek = record.PREGNANT_WEEK.HasValue ? (int?)record.PREGNANT_WEEK.Value : null;
                 profile.IsNursing = isNursing;
                 return profile;
             }

@@ -1,4 +1,4 @@
-// ...existing code...
+﻿// ...existing code...
 using System.Collections.Generic;
 using System.Text;
 using HIS.Desktop.MIMS.Integration.Models;
@@ -166,7 +166,7 @@ namespace HIS.Desktop.MIMS.Integration.Core
         }
 
         /// <summary>
-        /// Sinh khối &lt;PatientProfile&gt; (Gender / Pregnancy.Month / Age.Year / Nursing)
+        /// Sinh khối &lt;PatientProfile&gt; (Gender / Pregnancy.Month / Pregnancy.Week / Age.Year / Nursing)
         /// kích hoạt module Drug Pregnancy + Drug Lactation của MIMS.
         /// Không sinh gì khi profile null hoặc không có cờ nào được tick —
         /// đảm bảo request không đổi 1 byte so với hiện tại (tối ưu hiệu năng).
@@ -181,10 +181,15 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 sb.AppendLine(string.Format("<Gender>{0}</Gender>", profile.GenderCode));
             if (profile.IsPregnant)
             {
-                if (profile.PregnancyMonth != null && profile.PregnancyMonth > 0)
+                bool hasMonth = profile.PregnancyMonth != null && profile.PregnancyMonth > 0;
+                bool hasWeek = profile.PregnancyWeek != null && profile.PregnancyWeek > 0;
+                if (hasMonth || hasWeek)
                 {
                     sb.AppendLine("<Pregnancy>");
-                    sb.AppendLine(string.Format("<Month>{0}</Month>", profile.PregnancyMonth.Value));
+                    if (hasMonth)
+                        sb.AppendLine(string.Format("<Month>{0}</Month>", profile.PregnancyMonth.Value));
+                    if (hasWeek)
+                        sb.AppendLine(string.Format("<Week>{0}</Week>", profile.PregnancyWeek.Value));
                     sb.AppendLine("</Pregnancy>");
                 }
                 else
