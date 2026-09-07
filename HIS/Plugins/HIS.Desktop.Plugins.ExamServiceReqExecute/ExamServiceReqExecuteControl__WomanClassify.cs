@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  * All rights reserved.
@@ -25,6 +25,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         DevExpress.XtraEditors.LabelControl lblMimsPregnantMonth;
         DevExpress.XtraEditors.SpinEdit spinMimsPregnantMonth;
         DevExpress.XtraEditors.LabelControl lblMimsPregnantMonthUnit;
+        DevExpress.XtraEditors.LabelControl lblMimsPregnantWeek;
+        DevExpress.XtraEditors.SpinEdit spinMimsPregnantWeek;
+        DevExpress.XtraEditors.LabelControl lblMimsPregnantWeekUnit;
         DevExpress.XtraEditors.CheckEdit chkMimsLactating;
         DevExpress.XtraEditors.LabelControl lblMimsLactatingMonth;
         DevExpress.XtraEditors.SpinEdit spinMimsLactatingMonth;
@@ -88,22 +91,39 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.lblMimsPregnantMonthUnit.Text = "(tháng)";
                 this.lblMimsPregnantMonthUnit.Location = new System.Drawing.Point(248, 44);
 
+                this.lblMimsPregnantWeek = new DevExpress.XtraEditors.LabelControl();
+                this.lblMimsPregnantWeek.Text = GetWomanClassifyLangText(
+                    "ExamServiceReqExecuteControl.lblMimsPregnantWeek.Text", "Tuần tuổi thai:");
+                this.lblMimsPregnantWeek.Location = new System.Drawing.Point(30, 76);
+
+                this.spinMimsPregnantWeek = new DevExpress.XtraEditors.SpinEdit();
+                this.spinMimsPregnantWeek.Name = "spinMimsPregnantWeek";
+                this.spinMimsPregnantWeek.Bounds = new System.Drawing.Rectangle(180, 73, 62, 20);
+                this.spinMimsPregnantWeek.Properties.IsFloatValue = false;
+                this.spinMimsPregnantWeek.Properties.MinValue = 0;
+                this.spinMimsPregnantWeek.Properties.MaxValue = 42;
+                this.spinMimsPregnantWeek.Enabled = false;
+
+                this.lblMimsPregnantWeekUnit = new DevExpress.XtraEditors.LabelControl();
+                this.lblMimsPregnantWeekUnit.Text = "(tuần)";
+                this.lblMimsPregnantWeekUnit.Location = new System.Drawing.Point(248, 76);
+
                 this.chkMimsLactating = new DevExpress.XtraEditors.CheckEdit();
                 this.chkMimsLactating.Name = "chkMimsLactating";
                 this.chkMimsLactating.Properties.Caption = GetWomanClassifyLangText(
                     "ExamServiceReqExecuteControl.chkMimsLactating.Text", "Phụ nữ cho con bú");
                 this.chkMimsLactating.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-                this.chkMimsLactating.Bounds = new System.Drawing.Rectangle(8, 76, 250, 20);
+                this.chkMimsLactating.Bounds = new System.Drawing.Rectangle(8, 108, 250, 20);
                 this.chkMimsLactating.CheckedChanged += new EventHandler(chkMimsLactating_CheckedChanged);
 
                 this.lblMimsLactatingMonth = new DevExpress.XtraEditors.LabelControl();
                 this.lblMimsLactatingMonth.Text = GetWomanClassifyLangText(
                     "ExamServiceReqExecuteControl.lblMimsLactatingMonth.Text", "Con bú bao nhiêu tháng:");
-                this.lblMimsLactatingMonth.Location = new System.Drawing.Point(30, 106);
+                this.lblMimsLactatingMonth.Location = new System.Drawing.Point(30, 138);
 
                 this.spinMimsLactatingMonth = new DevExpress.XtraEditors.SpinEdit();
                 this.spinMimsLactatingMonth.Name = "spinMimsLactatingMonth";
-                this.spinMimsLactatingMonth.Bounds = new System.Drawing.Rectangle(180, 103, 62, 20);
+                this.spinMimsLactatingMonth.Bounds = new System.Drawing.Rectangle(180, 135, 62, 20);
                 this.spinMimsLactatingMonth.Properties.IsFloatValue = false;
                 this.spinMimsLactatingMonth.Properties.MinValue = 0;
                 this.spinMimsLactatingMonth.Properties.MaxValue = 48;
@@ -111,12 +131,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 this.lblMimsLactatingMonthUnit = new DevExpress.XtraEditors.LabelControl();
                 this.lblMimsLactatingMonthUnit.Text = "(tháng)";
-                this.lblMimsLactatingMonthUnit.Location = new System.Drawing.Point(248, 106);
+                this.lblMimsLactatingMonthUnit.Location = new System.Drawing.Point(248, 138);
 
                 this.xtraTabPageWomanClassify.Controls.Add(this.chkMimsPregnant);
                 this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantMonth);
                 this.xtraTabPageWomanClassify.Controls.Add(this.spinMimsPregnantMonth);
                 this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantMonthUnit);
+                this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantWeek);
+                this.xtraTabPageWomanClassify.Controls.Add(this.spinMimsPregnantWeek);
+                this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantWeekUnit);
                 this.xtraTabPageWomanClassify.Controls.Add(this.chkMimsLactating);
                 this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsLactatingMonth);
                 this.xtraTabPageWomanClassify.Controls.Add(this.spinMimsLactatingMonth);
@@ -160,9 +183,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (this.isWomanClassifyFilling) return;
                 this.spinMimsPregnantMonth.Enabled = this.chkMimsPregnant.Checked;
+                this.spinMimsPregnantWeek.Enabled = this.chkMimsPregnant.Checked;
                 if (!this.chkMimsPregnant.Checked)
+                {
                     this.spinMimsPregnantMonth.Value = 0;
+                    this.spinMimsPregnantWeek.Value = 0;
+                }
                 this.spinMimsPregnantMonth.ErrorText = "";
+                this.spinMimsPregnantWeek.ErrorText = "";
                 // Mang thai / cho con bú loại trừ nhau: tick bên này thì bên kia bỏ tick + disable
                 if (this.chkMimsPregnant.Checked)
                 {
@@ -249,6 +277,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.chkMimsPregnant.Checked = isPregnant;
                 this.spinMimsPregnantMonth.Value = (record != null && record.PREGNANT_MONTH != null) ? record.PREGNANT_MONTH.Value : 0;
                 this.spinMimsPregnantMonth.Enabled = isPregnant;
+                this.spinMimsPregnantWeek.Value = (record != null && record.PREGNANT_WEEK != null) ? record.PREGNANT_WEEK.Value : 0;
+                this.spinMimsPregnantWeek.Enabled = isPregnant;
                 this.chkMimsLactating.Checked = isLactating;
                 this.spinMimsLactatingMonth.Value = (record != null && record.LACTATING_MONTH != null) ? record.LACTATING_MONTH.Value : 0;
                 this.spinMimsLactatingMonth.Enabled = isLactating;
@@ -274,6 +304,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             short uiPregnant = (short)(this.chkMimsPregnant.Checked ? 1 : 0);
             short uiLactating = (short)(this.chkMimsLactating.Checked ? 1 : 0);
             short uiPregnantMonth = (short)this.spinMimsPregnantMonth.Value;
+            short uiPregnantWeek = (short)this.spinMimsPregnantWeek.Value;
             short uiLactatingMonth = (short)this.spinMimsLactatingMonth.Value;
 
             var record = this.mimsPatientProfileRecord;
@@ -283,11 +314,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             return (record.IS_PREGNANT ?? 0) != uiPregnant
                 || (record.IS_LACTATING ?? 0) != uiLactating
                 || (record.PREGNANT_MONTH ?? 0) != uiPregnantMonth
+                || (record.PREGNANT_WEEK ?? 0) != uiPregnantWeek
                 || (record.LACTATING_MONTH ?? 0) != uiLactatingMonth;
         }
 
         /// <summary>
-        /// Validate tab trước khi lưu ca khám: tick "Phụ nữ mang thai" thì bắt buộc nhập số tháng 1..9.
+        /// Validate tab trước khi lưu ca khám: tick "Phụ nữ mang thai" thì bắt buộc nhập
+        /// số tháng 1..9 và tuần tuổi thai 1..42.
         /// Trả về false + báo lỗi tại control khi không hợp lệ.
         /// </summary>
         private bool ValidWomanClassify()
@@ -303,6 +336,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     return false;
                 }
                 this.spinMimsPregnantMonth.ErrorText = "";
+                if (this.chkMimsPregnant.Checked && (this.spinMimsPregnantWeek.Value < 1 || this.spinMimsPregnantWeek.Value > 42))
+                {
+                    this.xtraTabControlInfo.SelectedTabPage = this.xtraTabPageWomanClassify;
+                    this.spinMimsPregnantWeek.ErrorText = "Nhập tuần tuổi thai (1-42)";
+                    this.spinMimsPregnantWeek.Focus();
+                    return false;
+                }
+                this.spinMimsPregnantWeek.ErrorText = "";
                 return true;
             }
             catch (Exception ex)
@@ -323,10 +364,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (this.xtraTabPageWomanClassify == null || this.treatment == null) return;
                 if (!IsWomanClassifyChanged()) return;
-                if (this.chkMimsPregnant.Checked && (this.spinMimsPregnantMonth.Value < 1 || this.spinMimsPregnantMonth.Value > 9))
+                if (this.chkMimsPregnant.Checked
+                    && ((this.spinMimsPregnantMonth.Value < 1 || this.spinMimsPregnantMonth.Value > 9)
+                        || (this.spinMimsPregnantWeek.Value < 1 || this.spinMimsPregnantWeek.Value > 42)))
                 {
                     // ExamUpdate đã lưu xong — chỉ cảnh báo phần phân loại chưa được ghi nhận
-                    Inventec.Common.Logging.LogSystem.Warn("SaveWomanClassify: thiếu số tháng mang thai, bỏ qua lưu HIS_MIMS_PATIENT_PROFILE");
+                    Inventec.Common.Logging.LogSystem.Warn("SaveWomanClassify: thieu so thang / tuan tuoi thai, bo qua luu HIS_MIMS_PATIENT_PROFILE");
                     return;
                 }
 
@@ -337,6 +380,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 record.TREATMENT_ID = this.treatmentId;
                 record.IS_PREGNANT = (short)(this.chkMimsPregnant.Checked ? 1 : 0);
                 record.PREGNANT_MONTH = this.chkMimsPregnant.Checked ? (short?)this.spinMimsPregnantMonth.Value : null;
+                record.PREGNANT_WEEK = this.chkMimsPregnant.Checked ? (short?)this.spinMimsPregnantWeek.Value : null;
                 record.IS_LACTATING = (short)(this.chkMimsLactating.Checked ? 1 : 0);
                 record.LACTATING_MONTH = (this.chkMimsLactating.Checked && this.spinMimsLactatingMonth.Value > 0)
                     ? (short?)this.spinMimsLactatingMonth.Value : null;

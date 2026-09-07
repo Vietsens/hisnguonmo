@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -455,6 +455,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 lblMimsPregnantMonth = null;
                 spinMimsPregnantMonth = null;
                 lblMimsPregnantMonthUnit = null;
+                lblMimsPregnantWeek = null;
+                spinMimsPregnantWeek = null;
+                lblMimsPregnantWeekUnit = null;
                 chkMimsLactating = null;
                 lblMimsLactatingMonth = null;
                 spinMimsLactatingMonth = null;
