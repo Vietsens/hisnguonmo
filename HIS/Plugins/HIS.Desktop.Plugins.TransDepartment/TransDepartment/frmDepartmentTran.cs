@@ -931,6 +931,12 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 if (!vali)//!dxValidationProvider1.Validate() || !IsValiICD())
                     return;
 
+                // Chan chuyen khoa khi con dich vu chua hoan thanh thuoc loai dich vu bi chan.
+                // Dat truoc cac popup Yes/No phia duoi de khong hoi nguoi dung khi da chac chan
+                // khong cho luu.
+                if (!IsAllowTransByRequiredService())
+                    return;
+
                 //minhnq
                 HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                 serviceReqFilter.TREATMENT_ID = treatmentId;
@@ -952,7 +958,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                     treatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, null);
                 }
 
-                //Kiểm tra bệnh nhân còn đợt điều trị
+                //Kiểm tra bệnh nhân còn đợt điều trị 
                 if (ConfigKey.AllowManyOpeningOption == "6")
                 {
                     if (treatment != null && treatment.Count > 0)
@@ -1055,7 +1061,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                             }
                         }
                         //Nampp yêu cầu
-                    }                 
+                    }
                 }
 
                 WaitingManager.Show();
