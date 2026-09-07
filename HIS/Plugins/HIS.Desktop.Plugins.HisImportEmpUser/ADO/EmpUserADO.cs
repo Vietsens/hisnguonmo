@@ -80,7 +80,8 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.ADO
 
         public short? GENDER_ID { get; set; }
         public long? CAREER_TITLE_ID { get; set; }
-        public short? POSITION { get; set; }
+        // Nhiều vị trí: chuỗi mã phân tách ';' (khớp kiểu HIS_EMPLOYEE.POSITION)
+        public string POSITION { get; set; }
         public short? TYPE_OF_TIME { get; set; }
         // TG hiệu lực từ/đến: đọc dạng chuỗi dd/MM/yyyy từ Excel, validate rồi convert sang long khi lưu
         public string FROM_TIME { get; set; }
