@@ -177,4 +177,13 @@
   <data name="KskConcluder.Caption" xml:space="preserve">
     <value>Người khám:</value>
   </data>
+  <data name="frmEnterKskInfomantionVer2.lciAccompanyName3.Text" xml:space="preserve">
+    <value>Họ tên người đi cùng trẻ:</value>
+  </data>
+  <data name="frmEnterKskInfomantionVer2.lciAccompanyRel3.Text" xml:space="preserve">
+    <value>Mối quan hệ với trẻ</value>
+  </data>
+  <data name="frmEnterKskInfomantionVer2.lciAccompanyOther3.Text" xml:space="preserve">
+    <value>Ghi rõ (quan hệ khác):</value>
+  </data>
 </root>
