@@ -1265,7 +1265,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.InvoiceTransaction.BUYER_NAME = txtBuyerName2.Text;
                     billTwoBookSDO.InvoiceTransaction.BUYER_ADDRESS = txtBuyerAddress2.Text;
-                    billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = txtBuyerOrganization2.Text;
+                    billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = chkOther2.Checked ? txtBuyerOrganization2.Text : cboBuyerOrganization2.Text;
                     billTwoBookSDO.InvoiceTransaction.BUYER_TAX_CODE = txtBuyerTaxCode2.Text;
 
                     billTwoBookSDO.InvoiceTransaction.BUYER_TYPE = 2;
