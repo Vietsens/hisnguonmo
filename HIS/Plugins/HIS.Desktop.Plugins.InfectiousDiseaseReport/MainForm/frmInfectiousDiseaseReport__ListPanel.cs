@@ -36,6 +36,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             public string TREATMENT_CODE { get; set; }
             public string PATIENT_NAME { get; set; }
             public string ICD_CODE { get; set; }
+            /// <summary>Trạng thái đẩy cổng: 0 chưa đẩy, 1 đã đẩy, 2 đẩy lỗi (đối soát V_HIS_ECDS_DISEASE_CASE).</summary>
+            public int PushState { get; set; }
             public V_HIS_TREATMENT Source { get; set; }
         }
         #endregion
@@ -149,7 +151,62 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                     Source = o
                 });
             }
+            ReconcilePushState(rows);   // đối soát trạng thái đẩy cổng -> tô màu dòng đã đẩy
             return rows;
+        }
+
+        /// <summary>
+        /// Đối soát trạng thái đẩy cổng cho danh sách: GetView V_HIS_ECDS_DISEASE_CASE theo mã điều trị,
+        /// map PUSH_STATE (bản ghi mới nhất theo LAST_PUSH_TIME) vào từng dòng. Best-effort (không chặn UI).
+        /// </summary>
+        private void ReconcilePushState(List<ListRowADO> rows)
+        {
+            try
+            {
+                if (rows == null || rows.Count == 0) return;
+                var codes = rows.Select(r => r.TREATMENT_CODE).Where(c => !string.IsNullOrEmpty(c)).Distinct().ToList();
+                if (codes.Count == 0) return;
+
+                var param = new CommonParam();
+                var filter = new HisEcdsDiseaseCaseViewFilter { TREATMENT_CODES = codes };
+                var recs = new BackendAdapter(param).Get<List<V_HIS_ECDS_DISEASE_CASE>>(
+                    HisRequestUriStore.HIS_ECDS_GET_VIEW, ApiConsumers.MosConsumer, filter, param);
+                SessionManager.ProcessTokenLost(param);
+                if (recs == null || recs.Count == 0) return;
+
+                var map = recs.Where(o => o != null)
+                    .GroupBy(o => o.TREATMENT_ID)
+                    .ToDictionary(g => g.Key, g => g.OrderByDescending(x => x.LAST_PUSH_TIME ?? 0).First());
+                foreach (var r in rows)
+                {
+                    V_HIS_ECDS_DISEASE_CASE rec;
+                    if (map.TryGetValue(r.ID, out rec) && rec != null)
+                        r.PushState = (int)(rec.PUSH_STATE ?? 0);
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Tô màu dòng theo trạng thái đẩy cổng: đã đẩy -> xanh, đẩy lỗi -> đỏ.</summary>
+        private void gvList_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+        {
+            try
+            {
+                if (e.RowHandle < 0) return;
+                var row = gvList.GetRow(e.RowHandle) as ListRowADO;
+                if (row == null) return;
+                if (row.PushState == (int)EcdsPushState.DaDay)          // đã đẩy cổng
+                {
+                    e.Appearance.BackColor = Color.FromArgb(220, 245, 225);
+                    e.Appearance.ForeColor = Color.FromArgb(0, 120, 50);
+                }
+                else if (row.PushState == (int)EcdsPushState.Loi)        // đẩy lỗi
+                {
+                    e.Appearance.BackColor = Color.FromArgb(250, 226, 226);
+                    e.Appearance.ForeColor = Color.FromArgb(190, 30, 30);
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
         /// <summary>Tập mã ICD bệnh truyền nhiễm (IS_INFECTIOUS=1, IS_ACTIVE=1) từ cache V_HIS_ICD.</summary>

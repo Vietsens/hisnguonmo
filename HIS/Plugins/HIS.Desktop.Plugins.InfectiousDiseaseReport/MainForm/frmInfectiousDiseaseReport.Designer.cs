@@ -464,6 +464,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             GridColumn cName = gvList.Columns.AddVisible("PATIENT_NAME"); cName.Caption = "Bệnh nhân"; cName.Width = 140;
             GridColumn cIcd = gvList.Columns.AddVisible("ICD_CODE"); cIcd.Caption = "ICD"; cIcd.Width = 60;
             gvList.Click += gvList_Click;
+            gvList.RowStyle += gvList_RowStyle;   // tô màu dòng đã đẩy cổng
 
             grpList.Controls.Add(grdList);       // Fill (thêm trước -> nằm dưới)
             grpList.Controls.Add(lcSearch);      // Top
@@ -525,8 +526,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             lci.Control = ctrl;
             lci.Text = caption;
             lci.TextLocation = DevExpress.Utils.Locations.Left;
-            // Cột nhãn 120px -> gọn, mọi editor bắt đầu cùng 1 mốc (thẳng hàng).
-            lci.TextSize = new Size(120, 20);
+            // Cột nhãn rộng 165px -> tiêu đề dài không bị cắt; ô nhập hẹp lại tương ứng (~1/5).
+            lci.TextSize = new Size(165, 20);
             lci.TextAlignMode = TextAlignModeItem.CustomSize;
             lci.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             lci.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;

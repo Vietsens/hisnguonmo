@@ -154,10 +154,20 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 string icdText = (t != null) ? t.ICD_TEXT : null;
                 string icdPrimary = PrimaryIcdCode(icdCode);   // ICD_CODE có thể là chuỗi nhiều mã -> lấy mã chính
 
-                // Mã bệnh của HỒ SƠ (chỉ đọc): mã ICD + tên từ hồ sơ điều trị.
-                txtBenhHoSo.Text = (icdCode ?? "") + (string.IsNullOrEmpty(icdName) ? "" : " - " + icdName);
+                // ICD (hồ sơ) chỉ đọc: ưu tiên (các) ICD ĐƯỢC TÍCH là bệnh truyền nhiễm (HIS_ICD.IS_INFECTIOUS=1);
+                // dùng chính ICD truyền nhiễm đó để tự chọn bệnh cổng + cascade phân độ.
+                var infectious = GetInfectiousDiagnoses(t);
+                if (infectious.Count > 0)
+                {
+                    txtBenhHoSo.Text = string.Join("; ", infectious.Select(kv => kv.Key + " - " + kv.Value));
+                    icdPrimary = infectious[0].Key;
+                }
+                else
+                {
+                    txtBenhHoSo.Text = (icdCode ?? "") + (string.IsNullOrEmpty(icdName) ? "" : " - " + icdName);
+                }
 
-                // Bệnh (ICD-10): combo cổng (đã tách mã) tự chọn TOKEN khớp MÃ ICD CHÍNH của hồ sơ.
+                // Bệnh (ICD-10): combo cổng (đã tách mã) tự chọn TOKEN khớp MÃ ICD truyền nhiễm của hồ sơ.
                 if (cboBenh.Properties.DataSource != null && !string.IsNullOrEmpty(icdPrimary))
                 {
                     string benhToken = catalogCache.FindBenhTokenByIcd(icdPrimary);
@@ -233,6 +243,50 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 return first;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return icd; }
+        }
+
+        /// <summary>Tách chuỗi ICD nhiều mã thành từng token, thêm vào danh sách.</summary>
+        private static void AddIcdTokens(List<string> outList, string icd)
+        {
+            if (outList == null || string.IsNullOrEmpty(icd)) return;
+            var parts = icd.Split(new[] { ',', ';', ' ', '/', '|' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var p in parts) { var s = p.Trim(); if (s.Length > 0) outList.Add(s); }
+        }
+
+        /// <summary>
+        /// (Các) ICD trong CHẨN ĐOÁN CHÍNH của hồ sơ ĐƯỢC TÍCH là bệnh truyền nhiễm
+        /// (HIS_ICD.IS_INFECTIOUS=1, IS_ACTIVE=1). Trả list (mã, tên). Rỗng nếu không có.
+        /// </summary>
+        private List<KeyValuePair<string, string>> GetInfectiousDiagnoses(V_HIS_TREATMENT t)
+        {
+            var result = new List<KeyValuePair<string, string>>();
+            try
+            {
+                var tokens = new List<string>();
+                // Chẩn đoán CHÍNH (ICD_CODE) + PHỤ (ICD_SUB_CODE) — bệnh truyền nhiễm có thể nằm ở phụ.
+                AddIcdTokens(tokens, (t != null && !string.IsNullOrEmpty(t.ICD_CODE)) ? t.ICD_CODE
+                    : (treatment != null ? treatment.ICD_CODE : null));
+                if (t != null) AddIcdTokens(tokens, t.ICD_SUB_CODE);
+                if (tokens.Count == 0) return result;
+
+                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var o in BackendDataWorker.Get<V_HIS_ICD>())   // duyệt 1 lần
+                {
+                    if (o == null || string.IsNullOrEmpty(o.ICD_CODE)) continue;
+                    if (o.IS_INFECTIOUS != 1 || o.IS_ACTIVE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE) continue;
+                    for (int i = 0; i < tokens.Count; i++)
+                    {
+                        if (string.Equals(tokens[i], o.ICD_CODE, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (seen.Add(o.ICD_CODE))
+                                result.Add(new KeyValuePair<string, string>(o.ICD_CODE, o.ICD_NAME ?? ""));
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return result;
         }
 
         /// <summary>

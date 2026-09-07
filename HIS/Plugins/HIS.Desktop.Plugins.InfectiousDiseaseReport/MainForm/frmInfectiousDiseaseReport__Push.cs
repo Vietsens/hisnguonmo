@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                     PersistToHis(dto, result.duLieu.maCaBenh, result.duLieu.id, (int)EcdsPushState.DaDay, "");
 
                     if (dlgRefresh != null) dlgRefresh();
+                    try { if (listInited) LoadListSync(); } catch { }   // tô lại màu dòng vừa đẩy
 
                     Inventec.Common.Logging.LogUtil.LogActionSuccess(
                         "InfectiousDiseaseReport", "Push",
