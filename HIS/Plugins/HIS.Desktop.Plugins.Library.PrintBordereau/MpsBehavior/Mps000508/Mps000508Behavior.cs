@@ -141,11 +141,12 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000508
                 }
                 HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                 serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
+                serviceReqFilter.IS_ACTIVE = 1;
                 serviceReqs = new BackendAdapter(param)
                 .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
 
                 MPS.Processor.Mps000508.PDO.Mps000508PDO rdo = null;
-                rdo = new MPS.Processor.Mps000508.PDO.Mps000508PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, medicineTypes, materialTypes, medicineLines, serviceReqs, departments, singleValue, hisConfigValue, servuceUnit, diimTypes, mediOrg, otherPaySource, this.transReq, this.lstConfig);
+                rdo = new MPS.Processor.Mps000508.PDO.Mps000508PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, medicineTypes, materialTypes, medicineLines, serviceReqs.Where(o => o.IS_DELETE != 1).ToList(), departments, singleValue, hisConfigValue, servuceUnit, diimTypes, mediOrg, otherPaySource, this.transReq, this.lstConfig);
                 #region Run Print
 
                 rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656
