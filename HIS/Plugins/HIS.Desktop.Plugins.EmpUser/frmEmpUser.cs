@@ -107,6 +107,9 @@ namespace HIS.Desktop.Plugins.EmpUser
         string[] mediOrgNew;
         List<HIS_DEPARTMENT> departmentSeleteds;
         string[] departmentNew;
+        List<ObjectCombo> positionSelecteds; 
+        // Chặn đệ quy khi handler tự bỏ bớt tick lúc vượt quá số vị trí cho phép 
+        private bool isPositionSelectionChanging;
         #region function
         private void FillDataToGridControl()
         {
@@ -303,8 +306,9 @@ namespace HIS.Desktop.Plugins.EmpUser
                 updateDTOEmployee.CAREER_TITLE_ID = Int16.Parse(cboCareerTitle.EditValue.ToString());
             else
                 updateDTOEmployee.CAREER_TITLE_ID = null;
-            if (cboPostion.EditValue != null)
-                updateDTOEmployee.POSITION = Int16.Parse(cboPostion.EditValue.ToString());
+            // Nhiều vị trí lưu thành chuỗi mã phân tách ';', cùng quy ước với SPECIALITY_CODES/MEDI_ORG_CODES
+            if (positionSelecteds != null && positionSelecteds.Count > 0)
+                updateDTOEmployee.POSITION = string.Join(";", positionSelecteds.Select(o => o.id.ToString()).ToList());
             else
                 updateDTOEmployee.POSITION = null;
 
@@ -864,7 +868,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                     txtDiplomaPlace.Text = currentDataEmp.DIPLOMA_PLACE;
                     txtIdentificationNumber.Text = currentDataEmp.IDENTIFICATION_NUMBER;
                     cboCareerTitle.EditValue = currentDataEmp.CAREER_TITLE_ID;
-                    cboPostion.EditValue = currentDataEmp.POSITION;
+                    SetValuePosition(this.cboPostion, currentDataEmp.POSITION);
                     // Phạm vi CMBS
                     txtCMBS.Text = currentDataEmp.PRACTICE_SCOPE_DECISION;
 
@@ -962,6 +966,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 specialitySeleteds = new List<HIS_SPECIALITY>();
                 mediOrgSeleteds = new List<HIS_MEDI_ORG>();
                 departmentSeleteds = new List<HIS_DEPARTMENT>();
+                positionSelecteds = new List<ObjectCombo>();
                 foreach (DevExpress.XtraLayout.BaseLayoutItem item in lcEditInfo.Items)
                 {
                     DevExpress.XtraLayout.LayoutControlItem lci = item as DevExpress.XtraLayout.LayoutControlItem;
@@ -994,6 +999,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 cboDefaultMediStockIds.Reset();
                 SetValueMediStock(this.cboDefaultMediStockIds, this.mediStockSeleteds, BackendDataWorker.Get<HIS_MEDI_STOCK>());
                 cboDefaultMediStockIds.Focus();
+                SetValuePosition(this.cboPostion, null);
                 chkAllowUpdateOtherSclinical.Checked = false;
                 chkAllowBlockConcurrentCLS.Checked = false;
                 spinMaxBhytServiceReqPerDay.Reset();
@@ -1014,7 +1020,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 txtDiplomaPlace.Text = null;
                 txtIdentificationNumber.Text = null;
                 cboCareerTitle.EditValue = null;
-                cboPostion.EditValue = null;
+                SetValuePosition(this.cboPostion, null);
                 cboSpecialityCodes.Reset();
                 SetValueSpeciality(this.cboSpecialityCodes, this.specialitySeleteds, BackendDataWorker.Get<HIS_SPECIALITY>());
                 cboSpecialityCodes.Focus();
@@ -1905,6 +1911,151 @@ namespace HIS.Desktop.Plugins.EmpUser
             }
         }
 
+        private void SelectionGrid__Position(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isPositionSelectionChanging)
+                    return;
+
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                if (gridCheckMark == null)
+                    return;
+
+                // Vượt quá 3 vị trí thì bỏ tick chính dòng vừa chọn rồi báo cho người dùng
+                bool isOverLimit = gridCheckMark.Selection.Count > 3;
+                if (isOverLimit)
+                {
+                    isPositionSelectionChanging = true;
+                    try
+                    {
+                        while (gridCheckMark.Selection.Count > 3)
+                        {
+                            int countBefore = gridCheckMark.Selection.Count;
+                            UnselectPositionRow(gridCheckMark, gridCheckMark.Selection[countBefore - 1] as ObjectCombo);
+                            if (gridCheckMark.Selection.Count >= countBefore)
+                            {
+                                // Không gỡ được qua SelectRow thì cắt thẳng, tránh lặp vô hạn
+                                gridCheckMark.Selection.RemoveAt(gridCheckMark.Selection.Count - 1);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        isPositionSelectionChanging = false;
+                    }
+                }
+
+                StringBuilder sb = new StringBuilder();
+                List<ObjectCombo> positionSelectedNews = new List<ObjectCombo>();
+                foreach (ObjectCombo rv in gridCheckMark.Selection)
+                {
+                    if (rv != null)
+                    {
+                        if (sb.ToString().Length > 0)
+                        {
+                            sb.Append("; ");
+                        }
+                        sb.Append(rv.name);
+                        positionSelectedNews.Add(rv);
+                    }
+                }
+                this.positionSelecteds = new List<ObjectCombo>();
+                this.positionSelecteds.AddRange(positionSelectedNews);
+                this.cboPostion.Text = sb.ToString();
+
+                if (isOverLimit)
+                {
+                    XtraMessageBox.Show("Chỉ được chọn tối đa 3 vị trí.", "Thông báo");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void UnselectPositionRow(GridCheckMarksSelection gridCheckMark, ObjectCombo item)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.GridView view = cboPostion.Properties.View;
+                if (item == null || view == null)
+                    return;
+
+                for (int i = 0; i < view.DataRowCount; i++)
+                {
+                    ObjectCombo row = view.GetRow(i) as ObjectCombo;
+                    if (row != null && row.id == item.id)
+                    {
+                        gridCheckMark.SelectRow(view, i, false);
+                        return;
+                    }
+                }
+                gridCheckMark.Selection.Remove(item);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Hiển thị tên các vị trí đang tích trên combo Vị trí.</summary>
+        private void cboPostion_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                if (this.positionSelecteds != null)
+                {
+                    foreach (ObjectCombo item in this.positionSelecteds)
+                    {
+                        if (item == null || string.IsNullOrWhiteSpace(item.name)) continue;
+                        if (sb.Length > 0) sb.Append("; ");
+                        sb.Append(item.name.Trim());
+                    }
+                }
+                e.DisplayText = sb.ToString();
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private void SetValuePosition(GridLookUpEdit grdLookUpEdit, string positionValue)
+        {
+            try
+            {
+                // Nạp hết mã hợp lệ đang lưu, KHÔNG cắt còn 3 — giới hạn 3 chỉ áp cho thao tác tích chọn,
+                // cắt ở đây sẽ âm thầm làm mất dữ liệu cũ khi người dùng bấm lưu lại
+                this.positionSelecteds = new List<ObjectCombo>();
+                if (!string.IsNullOrWhiteSpace(positionValue) && lstPosition != null)
+                {
+                    foreach (string code in positionValue.Split(';'))
+                    {
+                        int id;
+                        if (!Int32.TryParse(code.Trim(), out id))
+                            continue;
+
+                        ObjectCombo selected = lstPosition.FirstOrDefault(o => o.id == id);
+                        if (selected != null && !this.positionSelecteds.Contains(selected))
+                            this.positionSelecteds.Add(selected);
+                    }
+                }
+
+                grdLookUpEdit.Properties.DataSource = lstPosition;
+                GridCheckMarksSelection gridCheckMark = grdLookUpEdit.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.Selection.Clear();
+                    gridCheckMark.Selection.AddRange(this.positionSelecteds);
+                }
+                grdLookUpEdit.Text = string.Join("; ", this.positionSelecteds.Select(o => o.name));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private async Task LoadPosition()
         {
             try
@@ -1917,13 +2068,10 @@ namespace HIS.Desktop.Plugins.EmpUser
                     new ObjectCombo() { id = 5, name = "Người hành nghề được giao phụ trách khoa trong trường hợp không có trưởng khoa" },
                     new ObjectCombo() { id = 6, name = "Người được ủy quyền chịu trách nhiệm chuyên môn kỹ thuật theo khoản 11 Điều 27 Nghị định số 96/2023/NĐCP" }
                 };
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("id", "Mã", 100, 1));
-                columnInfos.Add(new ColumnInfo("name", "Tên", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("name", "id", columnInfos, false, 350);
-                ControlEditorLoader.Load(cboPostion, lstPosition, controlEditorADO);
-                cboPostion.Properties.ImmediatePopup = true;
-                cboPostion.Properties.PopupFormSize = new Size(350, cboPostion.Properties.PopupFormSize.Height);
+                // Tích chọn nhiều vị trí, tối đa 3 (xem SelectionGrid__Position)
+                InitComboMediStock(cboPostion, lstPosition, "id", "name", "id");
+                InitCheck(cboPostion, SelectionGrid__Position);
+                positionSelecteds = new List<ObjectCombo>();
             }
             catch (Exception ex)
             {
@@ -3585,7 +3733,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
-                    cboPostion.EditValue = null;
+                    SetValuePosition(this.cboPostion, null);
                 }
             }
             catch (Exception ex)
@@ -3701,7 +3849,8 @@ namespace HIS.Desktop.Plugins.EmpUser
                     xml.CHUCDANH_NN = "";
                     if (lstCareer != null && lstCareer.Count > 0)
                         xml.CHUCDANH_NN = currentData.CAREER_TITLE_ID != null ? (lstCareer.FirstOrDefault(o => o.ID == currentData.CAREER_TITLE_ID.Value) != null ? lstCareer.FirstOrDefault(o => o.ID == currentData.CAREER_TITLE_ID.Value).CAREER_TITLE_CODE : "") : "";
-                    xml.VI_TRI = currentData.POSITION != null ? currentData.POSITION.Value.ToString() : "";
+                    // Nhiều vị trí: chuẩn hoá chuỗi mã như các trường đa giá trị khác (trim, bỏ rỗng, lọc trùng)
+                    xml.VI_TRI = MergeCodesDistinct(currentData.POSITION, string.Empty);
                     xml.MA_CCHN = this.ConvertStringToXmlDocument(currentData.DIPLOMA ?? "");
                     xml.NGAYCAP_CCHN = currentData.DIPLOMA_DATE != null ? (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentData.DIPLOMA_DATE ?? 0) ?? DateTime.MinValue).ToString("yyyyMMdd") : "";
                     xml.NOICAP_CCHN = this.ConvertStringToXmlDocument(currentData.DIPLOMA_PLACE ?? "");
@@ -4353,10 +4502,8 @@ namespace HIS.Desktop.Plugins.EmpUser
                         ? (careerTitle.CAREER_TITLE_CODE ?? string.Empty)
                         : string.Empty;
 
-                    // 8. VI_TRI
-                    xmlTT12.VI_TRI = employee.POSITION.HasValue
-                        ? employee.POSITION.Value.ToString()
-                        : string.Empty;
+                    // 8. VI_TRI: nhiều vị trí, chuẩn hoá giống MA_KHOA/TEN_KHOA (trim, bỏ rỗng, lọc trùng, nối ';')
+                    xmlTT12.VI_TRI = MergeCodesDistinct(employee.POSITION, string.Empty);
 
                     // 9. MACCHN
                     xmlTT12.MACCHN = employee.DIPLOMA ?? string.Empty;

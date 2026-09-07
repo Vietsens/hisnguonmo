@@ -548,17 +548,29 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                         }
                     }
 
-                    // VI_TRI: 1..6 theo danh sach vi tri hanh nghe
-                    if (!string.IsNullOrEmpty(item.POSITION_STR))
+                    // VI_TRI: ma 1..6, nhieu vi tri ngan cach bang dau ; toi da 3
+                    if (!string.IsNullOrEmpty(item.POSITION_STR)) 
                     {
-                        short position;
-                        if (Int16.TryParse(item.POSITION_STR.Trim(), out position) && position >= 1 && position <= 6)
+                        string invalidPositions = this.GetInvalidCodes(item.POSITION_STR,
+                            new List<string>() { "1", "2", "3", "4", "5", "6" });
+                        if (!string.IsNullOrEmpty(invalidPositions))
                         {
-                            serAdo.POSITION = position;
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Vị trí (" + invalidPositions + ")");
                         }
                         else
                         {
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Vị trí (nhập 1-6)");
+                            List<string> positionCodes = new List<string>();
+                            foreach (string code in item.POSITION_STR.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                string value = code.Trim();
+                                if (!string.IsNullOrEmpty(value) && !positionCodes.Contains(value))
+                                    positionCodes.Add(value);
+                            }
+
+                            if (positionCodes.Count > 3)
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Vị trí (tối đa 3 vị trí)");
+                            else if (positionCodes.Count > 0)
+                                serAdo.POSITION = string.Join(";", positionCodes);
                         }
                     }
 

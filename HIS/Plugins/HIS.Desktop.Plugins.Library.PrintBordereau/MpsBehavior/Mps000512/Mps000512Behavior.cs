@@ -124,18 +124,19 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000512
                 List<HIS_MEDI_ORG> mediOrg = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDI_ORG>();
                 List<HIS_PATIENT_TYPE> patientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PATIENT_TYPE>();
 
-                //
+                // 
                 List<HIS_SERVICE_REQ> serviceReqs = null;
 
                 HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                 serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
+                serviceReqFilter.IS_ACTIVE = 1;
                 serviceReqs = new BackendAdapter(param)
                 .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
 
                 MPS.Processor.Mps000512.PDO.Mps000512PDO rdo = new MPS.Processor.Mps000512.PDO.Mps000512PDO(this.CurrentPatientTypeAlter, patientTypeAlters,
                     DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes,
                     Rooms, Services, treatmentTypes, branch, materialTypes, departments, singleValue, hisConfigValue, servuceUnit, mediOrg, patientType,
-                    this.SereServBills, this.SereServDeposits, this.SeseDepoRepays, this.transReq, this.lstConfig, serviceReqs);
+                    this.SereServBills, this.SereServDeposits, this.SeseDepoRepays, this.transReq, this.lstConfig, serviceReqs.Where(o => o.IS_DELETE != 1).ToList());
                 rdo.ListTransactionBill = transactions;
                 #region Run Print
 
