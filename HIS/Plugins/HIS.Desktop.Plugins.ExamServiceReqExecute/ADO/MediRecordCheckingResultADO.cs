@@ -38,7 +38,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.ADO
     }
 
     /// <summary>
-    /// Mot van ban chua hoan thanh trong ket qua kiem tra ho so benh an.
+    /// Mot van ban EMR (V_EMR_DOCUMENT). Dung cho ca ket qua "api/EmrDocument/MediRecordChecking"
+    /// va "api/EmrDocument/GetView" vi hai api tra ve cung kieu phan tu.
     /// Chi khai bao cac truong duoc su dung; cac truong con lai cua V_EMR_DOCUMENT bi bo qua khi deserialize.
     /// </summary>
     public class MediRecordCheckingDocumentADO
