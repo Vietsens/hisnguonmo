@@ -1058,30 +1058,12 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         {
             try
             {
-                // Viec 3082: tick "In" (key bat) -> Luu in = luu phieu -> mo form Xuat hoa don tu dong
-                // (kiem tra ton -> Luu ky HDDT -> duyet/thuc xuat -> in hoa don). Luot nay KHONG in phieu xuat ban.
-                if (IsSavePrintInvoiceMode())
-                {
-                    this.savePrintInvoice = true;
-                    this.savePrint = false;
-                }
-                else
-                {
-                    this.savePrint = true;
-                }
-                try
-                {
-                    btnSave_Click(null, null);
-                }
-                finally
-                {
-                    // Validate fail (ProcessSave khong chay) thi khong de flag lot sang luot Luu ke tiep
-                    this.savePrintInvoice = false;
-                }
+                // Nut Luu in giu nguyen luong cu; chuoi HDDT (viec 3082) nam o nut rieng btnSaveSignPrint
+                this.savePrint = true;
+                btnSave_Click(null, null);
             }
             catch (Exception ex)
             {
-                this.savePrintInvoice = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

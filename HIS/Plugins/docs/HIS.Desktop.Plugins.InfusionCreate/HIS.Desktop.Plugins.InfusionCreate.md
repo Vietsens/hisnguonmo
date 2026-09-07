@@ -231,6 +231,23 @@ cboTimeType.SelectedIndex = 0;  // Mặc định: "Thời gian chỉ định"
 | V_HIS_EXP_MEST_MEDICINE_6 bổ sung field `TDL_USE_TIME`, `TDL_USE_DATE` | View DB cần thêm cột |
 | api/HisExpMestMedicine/GetView6 hỗ trợ filter `TDL_USE_DATE_FROM/TO`, `TDL_USE_TIME_FROM/TO` | Backend filter mới |
 
+### 6.2. Việc 31875: Tách cấu hình in gộp phiếu truyền dịch khỏi tờ điều trị
+
+**Ngày:** 2026-09-04
+
+**Yêu cầu:** Cấu hình gộp/không gộp phiếu chăm sóc, truyền dịch không được ảnh hưởng đến cấu hình gộp/không gộp tờ điều trị.
+
+**Hiện trạng:** In phiếu truyền dịch (Mps000146, gán `InputADO.MergeCode` khi ký EMR) đọc chung key `HIS.Desktop.Plugins.EmrDocument.IsPrintMerge` với tờ điều trị (plugin TrackingCreate) — bật/tắt gộp phiếu truyền dịch kéo theo tờ điều trị.
+
+**Nội dung sửa:**
+
+| File | Nội dung |
+|------|----------|
+| `Config\HisConfigCFG.cs` | Thêm key mới `HIS.Desktop.Plugins.Infusion.IsPrintMerge` + hàm `GetKeyPrintMerge()`: đọc key mới trước, nếu rỗng/chưa cấu hình thì fallback về key cũ `HIS.Desktop.Plugins.EmrDocument.IsPrintMerge` (tương thích ngược) |
+| `frmInfusionCreate.cs` | 2 vị trí đọc key in gộp (in khi tạo phiếu + in từ danh sách) đổi sang gọi `HisConfigCFG.GetKeyPrintMerge()` |
+
+**DB:** thêm key `HIS.Desktop.Plugins.Infusion.IsPrintMerge` vào HIS_CONFIG, DEFAULT_VALUE rỗng (script `PTTK\31875_insert_his_config.sql`). Tài liệu thiết kế: `PTTK\31875 - Thiet ke - Tach cau hinh in gop phieu cham soc truyen dich.md`.
+
 ---
 
 ## 7. Ghi chú kỹ thuật

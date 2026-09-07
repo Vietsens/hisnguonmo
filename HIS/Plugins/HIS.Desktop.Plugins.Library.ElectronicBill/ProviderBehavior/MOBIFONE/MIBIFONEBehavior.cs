@@ -266,6 +266,43 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// Lay ma dot dieu tri de gui len truong the khac (ttruong = mdtri) cua hoa don MobiFone
+        /// </summary>
+        private string GetTreatmentCode()
+        {
+            string result = "";
+            try
+            {
+                if (ElectronicBillDataInput == null)
+                    return result;
+
+                if (ElectronicBillDataInput.Transaction != null && !String.IsNullOrWhiteSpace(ElectronicBillDataInput.Transaction.TDL_TREATMENT_CODE))
+                {
+                    result = ElectronicBillDataInput.Transaction.TDL_TREATMENT_CODE;
+                }
+                else if (ElectronicBillDataInput.ListTransaction != null && ElectronicBillDataInput.ListTransaction.Count > 0)
+                {
+                    var tran = ElectronicBillDataInput.ListTransaction.FirstOrDefault(o => !String.IsNullOrWhiteSpace(o.TDL_TREATMENT_CODE));
+                    if (tran != null)
+                        result = tran.TDL_TREATMENT_CODE;
+                }
+
+                if (String.IsNullOrWhiteSpace(result) && ElectronicBillDataInput.Treatment != null)
+                {
+                    result = ElectronicBillDataInput.Treatment.TREATMENT_CODE;
+                }
+
+                if (!String.IsNullOrWhiteSpace(result))
+                    result = result.Trim();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
         private HoaDon78Init DataHoaDon78Init(int editMode)
         {
             HoaDon78Init obj = null;
@@ -326,15 +363,36 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                 hd78data.hoadon68_khac = new List<HoaDon78Khac>();
                 HoaDon78Khac kh = new HoaDon78Khac();
                 kh.data = new List<HoaDon78KhacData>();
-                //
+                //Truong the khac: ma dot dieu tri
+                string treatmentCode = GetTreatmentCode();
+                if (!String.IsNullOrWhiteSpace(treatmentCode))
+                {
+                    kh.data.Add(new HoaDon78KhacData()
+                    {
+                        ttruong = "mdtri",
+                        kdlieu = "string",
+                        dlieu = treatmentCode
+                    });
+                    hd78data.hoadon68_khac.Add(kh);
+                }
 
                 hd78data.hoadon68_phi = new List<HoaDon78Phi>();
                 HoaDon78Phi ph = new HoaDon78Phi();
                 ph.data = new List<HoaDon78PhiData>();
                 obj.data = new List<HoaDon78Data>() { hd78data };
 
-                hd78data.cmndmua = inv.BuyerIdentityNumber;
-                hd78data.cmnd = inv.BuyerIdentityNumber;
+                //MobiFone chi co truong CMND/CCCD (cmndmua, cmnd), khong co truong ho chieu.
+                //Neu la ho chieu (loai giay to = 3) thi khong gui len, neu khong server bao
+                //"Can cuoc cong dan khong dung dinh dang".
+                if (inv.BuyerIdentityType == "3")
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Nguoi mua dung ho chieu, MobiFone khong ho tro truong ho chieu nen khong gui so giay to len hoa don dien tu.");
+                }
+                else
+                {
+                    hd78data.cmndmua = inv.BuyerIdentityNumber;
+                    hd78data.cmnd = inv.BuyerIdentityNumber;
+                }
             }
             catch (Exception ex)
             {

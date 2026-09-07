@@ -133,6 +133,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         private string ConnectPacsByFss = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ServiceExecuteCFG.ConnectPacsByFss);
         private string ConnectImageOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ServiceExecuteCFG.ConnectImageOption);
 
+        //ten cot checkbox chon dong do DevExpress tu sinh khi MultiSelectMode = CheckBoxRowSelect
+        private const string CHECKBOX_SELECTOR_COLUMN_NAME = "DX$CheckboxSelectorColumn";
+
         private const int SERVICE_CODE__MAX_LENGTH = 6;
         private const int SERVICE_REQ_CODE__MAX_LENGTH = 9;
         private const string tempFolder = @"Img\Temp";
@@ -141,6 +144,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         private List<HIS_MACHINE> ListMachine { get; set; }
         private List<HIS_SERVICE_MACHINE> ListServiceMachine { get; set; }
         private Dictionary<long, string> dicAllMachineName = null;
+        private List<HisMachineCounterSDO> checkedMachines = null;//cac may dang duoc tich tren popup may
+        private bool isRestoreCheckedMachine = false;//dang tich lai theo du lieu dong dich vu, khong phai nguoi dung thao tac
+        private ADO.ServiceADO machinePopupRow = null;//dong dich vu ma popup may dang lam viec (chup luc mo popup)
+        private List<long> machinePopupOriginIds = null;//may cua dong do truoc khi mo popup, de Esc con hoan tac
 
         private int positionHandle = -1;
         private bool? isExecuter = null, isReadResult = null;
@@ -1311,6 +1318,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             {
                                 ado.MACHINE_ID = ext.MACHINE_ID.Value;
                             }
+                            //khoi phuc danh sach may da tich tu CSDL, neu khong thi mo lai man hinh roi bam Luu
+                            //se ghi de MACHINE_IDS con dung 1 may du nguoi dung khong dung gi den may
+                            ado.MACHINE_IDs = ParseMachineIds(ext.MACHINE_IDS);
                             if (!String.IsNullOrWhiteSpace(ext.NOTE) || !String.IsNullOrWhiteSpace(ext.CONCLUDE) || ext.BEGIN_TIME != null)
                             {
                                 ado.IsProcessed = true;
@@ -2204,94 +2214,55 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
-        private void FillDataMachineCombo(ADO.ServiceADO data, GridLookUpEdit editor)
+        private void FillDataMachineCombo(ADO.ServiceADO data, GridLookUpEdit editor) 
         {
             try
             {
-                if (editor != null && ListMachine != null && ListServiceMachine != null && ListServiceMachine.Count > 0)
+                if (data == null || editor == null || ListMachine == null
+                    || ListServiceMachine == null || ListServiceMachine.Count == 0) return;
+
+                //chi dung so ca da xu ly khi khong bat cau hinh theo doi tuong, hoac benh nhan dung BHYT
+                bool allowUseCounter = AppConfigKeys.IsPatientTypeOption != "1"
+                    || data.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT;
+
+                //Option 1: may cau hinh cho dich vu, KHONG loc theo phong lam viec
+                if (AppConfigKeys.MachineShowOption == "1")
                 {
-                    List<long> allowMachineIds = new List<long>();
-                    if (AppConfigKeys.MachineShowOption == "1")
-                    {
-                        allowMachineIds = ListServiceMachine.Where(k => k.SERVICE_ID == data.SERVICE_ID).Select(o => o.MACHINE_ID).ToList();
+                    List<long> machineIds = ListServiceMachine
+                        .Where(o => o.SERVICE_ID == data.SERVICE_ID)
+                        .Select(o => o.MACHINE_ID).ToList();
 
-                        List<HisMachineCounterSDO> dataCombo = new List<HisMachineCounterSDO>();
+                    //may co the khong gan cho phong lam viec nen phai lay tu danh muc may day du
+                    var allMachines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
+                    List<HIS_MACHINE> machines = allMachines != null
+                        ? allMachines.Where(o => o.IS_ACTIVE == 1).ToList()
+                        : ListMachine;
 
-                        bool allowUseCounter =
-                            ((AppConfigKeys.IsPatientTypeOption == "1" && data.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT)
-                              || AppConfigKeys.IsPatientTypeOption != "1");
-
-                        if (allowUseCounter
-                            && GlobalVariables.MachineCounterSdos != null
-                            && GlobalVariables.MachineCounterSdos.Count > 0
-                            && allowMachineIds.Count > 0)
-                        {
-                            var allowSet = new HashSet<long>(allowMachineIds);
-
-                            dataCombo = GlobalVariables.MachineCounterSdos
-                                .Where(o => allowSet.Contains(o.ID))
-                                .ToList();
-                        }
-
-                        //GlobalVariables.MachineCounterSdos chi duoc nap o man Phong thuc hien va chi khi bat key
-                        //MAX_SERVICE_PER_DAY.WARNING_OPTION = 1|2, phong khong phai phong kham/phau thuat/kiosk.
-                        //Neu khong co counter (hoac benh nhan khong thuoc dien dung counter) van phai hien thi
-                        //danh sach may theo thiet lap Dich vu - May, neu khong combo se trong hoan toan.
-                        if (dataCombo.Count == 0 && allowMachineIds.Count > 0)
-                        {
-                            var allMachines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
-                            if (allMachines != null)
-                            {
-                                var allowSetNoCounter = new HashSet<long>(allowMachineIds);
-                                foreach (var item in allMachines.Where(o => o.IS_ACTIVE == 1 && allowSetNoCounter.Contains(o.ID)))
-                                {
-                                    var sdo = new HisMachineCounterSDO();
-                                    Inventec.Common.Mapper.DataObjectMapper.Map<HisMachineCounterSDO>(sdo, item);
-                                    dataCombo.Add(sdo);
-                                }
-                            }
-                        }
-
-                        InitComboExecuteRoom(editor, dataCombo);
-                        return;
-                    }
-                    else if (AppConfigKeys.MachineShowOption == "2")
-                    {
-                        long roomId = data.TDL_EXECUTE_ROOM_ID;
-                        if(roomId > 0)
-                        {
-                            var machinesByRoom = ListMachine
-                            .Where(m => ("," + (m.ROOM_IDS ?? "") + ",").Contains("," + roomId + ","))
-                            .ToList();
-
-                            allowMachineIds = machinesByRoom.Select(m => m.ID).ToList();
-                        }    
-                    }
-                    else
-                    {
-                        allowMachineIds = ListServiceMachine.Where(o => o.SERVICE_ID == data.SERVICE_ID).Select(o => o.MACHINE_ID).ToList();
-                    } 
-                        
-                        List<HisMachineCounterSDO> dataCombo2 = new List<HisMachineCounterSDO>();
-
-                    if (((AppConfigKeys.IsPatientTypeOption == "1" && data.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) || AppConfigKeys.IsPatientTypeOption != "1")
-                        && GlobalVariables.MachineCounterSdos != null && GlobalVariables.MachineCounterSdos.Count > 0)
-                    {
-                        dataCombo2 = GlobalVariables.MachineCounterSdos.Where(o => allowMachineIds.Contains(o.ID) && ListMachine.Select(s => s.ID).Contains(o.ID)).ToList();
-                    }
-                    else if (allowMachineIds != null && allowMachineIds.Count > 0)
-                    {
-                        var machines = ListMachine.Where(o => allowMachineIds.Contains(o.ID)).ToList();
-                        foreach (var item in machines)
-                        {
-                            var sdo = new HisMachineCounterSDO();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HisMachineCounterSDO>(sdo, item);
-                            dataCombo2.Add(sdo);
-                        }
-                    }
-
-                    InitComboExecuteRoom(editor, dataCombo2);
+                    InitComboExecuteRoom(editor, BuildMachineComboData(machineIds, machines, allowUseCounter));
+                    return;
                 }
+
+                //Option 2: may cua phong thuc hien (theo HIS_MACHINE.ROOM_IDS)
+                if (AppConfigKeys.MachineShowOption == "2")
+                {
+                    long roomId = data.TDL_EXECUTE_ROOM_ID;
+                    List<long> machineIds = roomId > 0
+                        ? ListMachine.Where(o => ("," + (o.ROOM_IDS ?? "") + ",").Contains("," + roomId + ","))
+                                     .Select(o => o.ID).ToList()
+                        : new List<long>();
+
+                    InitComboExecuteRoom(editor, BuildMachineComboData(machineIds, ListMachine, allowUseCounter));
+                    return;
+                }
+
+                //Mac dinh: may cau hinh cho dich vu, chi lay may thuoc phong lam viec
+                List<long> roomMachineIds = ListMachine.Select(o => o.ID).ToList();
+                List<long> serviceMachineIds = ListServiceMachine
+                    .Where(o => o.SERVICE_ID == data.SERVICE_ID)
+                    .Select(o => o.MACHINE_ID)
+                    .Where(id => roomMachineIds.Contains(id)).ToList();
+
+                InitComboExecuteRoom(editor, BuildMachineComboData(serviceMachineIds, ListMachine, allowUseCounter));
             }
             catch (Exception ex)
             {
@@ -2299,7 +2270,40 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
-        private void InitComboExecuteRoom(GridLookUpEdit editor, object dataCombo)
+        /// <summary>
+        /// Dung du lieu cho combo may tu danh sach ID may duoc phep chon.
+        /// Uu tien ban ghi co so ca da xu ly (MachineCounterSdos) de con hien 2 cot "Da xu ly"/"Toi da";
+        /// khong co du lieu dem thi dung tu danh muc may truyen vao, de combo van co du dong cho nguoi dung chon.
+        /// </summary>
+        private List<HisMachineCounterSDO> BuildMachineComboData(List<long> machineIds, List<HIS_MACHINE> machineCatalog, bool allowUseCounter)
+        {
+            List<HisMachineCounterSDO> result = new List<HisMachineCounterSDO>();
+            try
+            {
+                if (machineIds == null || machineIds.Count == 0) return result;
+
+                if (allowUseCounter && GlobalVariables.MachineCounterSdos != null && GlobalVariables.MachineCounterSdos.Count > 0)
+                {
+                    return GlobalVariables.MachineCounterSdos.Where(o => machineIds.Contains(o.ID)).ToList();
+                }
+
+                if (machineCatalog == null) return result;
+
+                foreach (var machine in machineCatalog.Where(o => machineIds.Contains(o.ID)))
+                {
+                    var sdo = new HisMachineCounterSDO();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HisMachineCounterSDO>(sdo, machine);
+                    result.Add(sdo);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private void InitComboExecuteRoom(GridLookUpEdit editor, object dataCombo) 
         {
             try
             {
@@ -2311,6 +2315,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 ControlEditorADO controlEditorADO = new ControlEditorADO("MACHINE_NAME", "ID", columnInfos, true, 250);
                 ControlEditorLoader.Load(editor, dataCombo, controlEditorADO);
 
+                //Khong can bat MultiSelect o day: Designer da dat tren gridView1 va RepositoryItem.Assign copy
+                //nguyen ca View sang editor tai cho, ke ca cot checkbox chon dong (cot do khong nam trong view.Columns
+                //nen ControlEditorLoader.Load goi Columns.Clear() cung khong xoa mat).
                 GridView view = editor.Properties.View;
                 view.OptionsView.ColumnAutoWidth = false;
                 view.BestFitMaxRowCount = -1;
@@ -2322,13 +2329,382 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     int num = (from GridColumn c in view2.Columns
                                where c.Visible
                                select c).Sum((GridColumn c) => c.Width);
-                    int width = Math.Min(num + 50, 1000);
+                    //cong bu cho cot checkbox chon dong (cot do khong nam trong view2.Columns nen vong tren khong tinh)
+                    //va cho thanh cuon doc; dat san be rong toi thieu de popup khong bi chat
+                    int width = Math.Max(760, Math.Min(num + 120, 1200));
                     editor.Properties.PopupFormSize = new Size(width, editor.Properties.PopupFormSize.Height);
                 };
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Danh sach may dang duoc tich tren popup, theo dung thu tu dong hien thi.
+        /// </summary>
+        private List<HisMachineCounterSDO> GetCheckedMachines(GridView view)
+        {
+            List<HisMachineCounterSDO> result = new List<HisMachineCounterSDO>();
+            try
+            {
+                if (view == null) return result;
+
+                int[] rowHandles = view.GetSelectedRows();
+                if (rowHandles == null || rowHandles.Length == 0) return result;
+
+                bool anyCast = false;
+                foreach (int rowHandle in rowHandles.OrderBy(o => o))
+                {
+                    var machine = view.GetRow(rowHandle) as HisMachineCounterSDO;
+                    if (machine == null) continue;
+                    anyCast = true;
+                    if (machine.ID <= 0) continue;
+                    if (result.Any(o => o.ID == machine.ID)) continue;
+                    result.Add(machine);
+                }
+
+                //co dong duoc chon ma khong doc duoc dong nao => DataSource khong phai HisMachineCounterSDO.
+                //Tra null (khong ket luan duoc gi) chu khong tra list rong, vi list rong se bi hieu la "bo tich het".
+                if (!anyCast) return null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Cac may da chon cua 1 dong dich vu: uu tien danh sach tich nhieu may, neu chua co thi lay may don.
+        /// </summary>
+        private List<long> GetMachineIdsOfRow(ADO.ServiceADO data)
+        {
+            List<long> result = new List<long>();
+            try
+            {
+                if (data == null) return result;
+
+                if (data.MACHINE_IDs != null && data.MACHINE_IDs.Count > 0)
+                {
+                    result.AddRange(data.MACHINE_IDs.Where(o => o > 0));
+                }
+                else if (data.MACHINE_ID.HasValue && data.MACHINE_ID.Value > 0)
+                {
+                    result.Add(data.MACHINE_ID.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Tach chuoi ID may (vd "12;15") thanh danh sach. Chap nhan ca dau phay de doc duoc du lieu luu truoc day.
+        /// </summary>
+        private List<long> ParseMachineIds(string machineIds)
+        {
+            List<long> result = new List<long>();
+            try
+            {
+                if (String.IsNullOrWhiteSpace(machineIds)) return result;
+
+                //nhan ca dau phay de con doc duoc du lieu da luu truoc khi doi sang dau cham phay
+                foreach (var item in machineIds.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    long id = Inventec.Common.TypeConvert.Parse.ToInt64(item.Trim());
+                    if (id > 0 && !result.Contains(id)) result.Add(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Dong bo danh sach may cua dong luoi sau khi API luu tra ve.
+        /// Neu server KHONG echo lai MACHINE_IDS (chuoi rong) trong khi client vua gui chuoi co du lieu
+        /// thi dat lai theo dung chuoi da gui - khong duoc de list rong ghi de, nhu vay se xoa trang
+        /// lua chon cua nguoi dung ngay sau khi bam Luu.
+        /// </summary>
+        private void SyncSavedMachineIds(ADO.ServiceADO savedRow, List<long> savedMachineIds, string sentMachineIds)
+        {
+            try
+            {
+                if (savedRow == null) return;
+
+                if (savedMachineIds != null && savedMachineIds.Count > 0)
+                {
+                    savedRow.MACHINE_IDs = savedMachineIds;
+                    return;
+                }
+
+                if (String.IsNullOrWhiteSpace(sentMachineIds))
+                {
+                    savedRow.MACHINE_IDs = new List<long>();//that su khong con may nao
+                    return;
+                }
+
+                savedRow.MACHINE_IDs = ParseMachineIds(sentMachineIds);
+                Inventec.Common.Logging.LogSystem.Warn("Server khong tra ve MACHINE_IDS (client da gui: " + sentMachineIds + ")");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chuoi ten may cho key in, chi tra ve khi co tu 2 may tro len; 1 may thi de luong cu xu ly.
+        /// </summary>
+        private string BuildMachineNames(List<long> machineIds)
+        {
+            try
+            {
+                if (machineIds == null || machineIds.Count <= 1) return null;
+
+                List<string> names = new List<string>();
+                foreach (long machineId in machineIds)
+                {
+                    var machine = GetMachineById(machineId);
+                    if (machine == null) continue;
+                    names.Add(machine.MACHINE_NAME ?? "");
+                }
+                return names.Count > 1 ? String.Join(", ", names) : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Tra ve dung dong trong listServiceADO (dong ma popup may ghi MACHINE_IDs vao) theo ID cua dong dang luu.
+        /// Thuong la cung 1 tham chieu, ham nay chi de phong truong hop this.sereServ la ban sao cu.
+        /// KHONG duoc thay bang gridViewSereServ.GetFocusedRow(): dong focus co the khac dong dang luu.
+        /// </summary>
+        private ADO.ServiceADO GetServiceADOForSave(ADO.ServiceADO data)
+        {
+            try
+            {
+                if (data == null) return null;
+                if (listServiceADO == null) return data;
+
+                var row = listServiceADO.FirstOrDefault(o => o != null && o.ID == data.ID);
+                return row ?? data;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Gan may xu ly vao ext truoc khi kiem tra (api/HisSereServExt/CheckData) va luu:
+        /// MACHINE_ID/MACHINE_CODE = may DAU TIEN (giu nguyen y nghia cu, cac noi khac van doc 1 may),
+        /// MACHINE_IDS/MACHINE_CODES = ca danh sach may da tich, ngan cach bang dau cham phay.
+        /// Gan VO DIEU KIEN ke ca khi khong con may nao: ext duoc dung lai tu dicSereServExt hoac tu server tra ve,
+        /// neu chi gan trong nhanh "co may" thi chuoi may cu se dong lai vinh vien.
+        /// Tra ve chuoi TEN may khi tich tu 2 may tro len (de dua vao key in), nguoc lai tra ve null.  
+        /// </summary>
+        private string ApplyMachinesToExt(HIS_SERE_SERV_EXT ext, ADO.ServiceADO data)
+        {
+            try
+            {
+                if (ext == null) return null;
+
+                List<long> validIds = new List<long>();
+                List<string> codes = new List<string>();
+                List<string> names = new List<string>();
+                foreach (long machineId in GetMachineIdsOfRow(data))
+                {
+                    var machine = GetMachineById(machineId);
+                    if (machine == null) continue;//bo may khong resolve duoc de 2 chuoi luon cung so phan tu
+                    validIds.Add(machine.ID);
+                    codes.Add(machine.MACHINE_CODE ?? "");
+                    names.Add(machine.MACHINE_NAME ?? "");
+                }
+
+                ext.MACHINE_ID = validIds.Count > 0 ? (long?)validIds[0] : (data != null ? data.MACHINE_ID : null);
+                ext.MACHINE_CODE = codes.Count > 0 ? codes[0] : null;
+                ext.MACHINE_IDS = validIds.Count > 0 ? String.Join(";", validIds) : null;
+                ext.MACHINE_CODES = codes.Count > 0 ? String.Join(";", codes) : null;
+
+                Inventec.Common.Logging.LogSystem.Debug("ApplyMachinesToExt: MACHINE_IDS=" + (ext.MACHINE_IDS ?? "")
+                    + ", MACHINE_CODES=" + (ext.MACHINE_CODES ?? ""));
+
+                return names.Count > 1 ? String.Join(", ", names) : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Ap dung danh sach may nguoi dung tich tren popup vao dong dich vu dang chon.
+        /// CSDL chi luu duoc 1 may (HIS_SERE_SERV_EXT.MACHINE_ID) nen EditValue/MACHINE_ID nhan may dau tien,
+        /// cac may con lai chi de hien thi tren luoi va dua vao key in MACHINE_NAME/MACHINE_NAMES.
+        /// Tra ve chuoi ten may khi tich tu 2 may tro len, nguoc lai tra ve null.
+        /// </summary>
+        private string ApplyCheckedMachines(GridLookUpEdit cbo, ADO.ServiceADO data)
+        {
+            try
+            {
+                var machines = this.checkedMachines;
+                this.checkedMachines = null;//tieu thu 1 lan, popup mo lai se ghi nhan lai tu dau
+                if (machines == null) return null;//popup khong o che do tich nhieu may
+
+                if (data != null)
+                {
+                    data.MACHINE_IDs = machines.Select(o => o.ID).ToList();
+                }
+
+                if (cbo != null)
+                {
+                    cbo.EditValue = machines.Count > 0 ? (object)machines[0].ID : null;
+                }
+
+                if (machines.Count <= 1) return null;
+
+                return String.Join(", ", machines.Select(o => o.MACHINE_NAME).ToArray());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Khi mo popup may: tich lai dung cac may dang chon cua dong dich vu.
+        /// Phai lam o su kien Popup vi luc mo popup DevExpress moi set dong focus theo gia tri hien tai,
+        /// neu tich truoc do (luc do du lieu combo) thi se bi xoa.
+        /// </summary>
+        private void repositoryItemMachineId_Popup(object sender, EventArgs e)
+        {
+            try
+            {
+                GridLookUpEdit cbo = sender as GridLookUpEdit;
+                if (cbo == null || cbo.Properties == null || this.repositoryItemMachineId == null) return;
+
+                //Editor tai cho cua luoi dung BAN SAO cua repository item (RepositoryItem.Assign copy ca View,
+                //ca Name va ca event - vi vay handler nay van chay). Tuyet doi KHONG so sanh tham chieu voi
+                //this.gridView1 / this.repositoryItemMachineId: luon khac nhau, guard se chan sach ham.
+                GridView view = cbo.Properties.View;
+                if (view == null) return;
+                if (cbo.Properties.Name != this.repositoryItemMachineId.Name) return;
+
+                this.machinePopupRow = gridViewSereServ.GetFocusedRow() as ADO.ServiceADO;
+                List<long> machineIds = GetMachineIdsOfRow(this.machinePopupRow);
+                this.machinePopupOriginIds = new List<long>(machineIds);//anh chup de Esc con tra lai duoc
+
+                this.isRestoreCheckedMachine = true;
+                try
+                {
+                    view.BeginSelection();
+                    view.ClearSelection();
+                    for (int rowHandle = 0; rowHandle < view.RowCount; rowHandle++)
+                    {
+                        var machine = view.GetRow(rowHandle) as HisMachineCounterSDO;
+                        if (machine == null || !machineIds.Contains(machine.ID)) continue;
+                        view.SelectRow(rowHandle);
+                    }
+                    view.EndSelection();
+                }
+                finally
+                {
+                    this.isRestoreCheckedMachine = false;
+                }
+
+                var restored = GetCheckedMachines(view);
+                //dong dang co may nhung khong tich lai duoc dong nao (may da luu bi loc khoi combo theo phong/dich vu,
+                //hoac combo dang bind sai kieu) => coi nhu KHONG co phien tich, tuyet doi khong de
+                //ApplyCheckedMachines hieu thanh "nguoi dung da bo tich het" roi xoa trang may dang co
+                this.checkedMachines = (restored != null && restored.Count == 0 && machineIds.Count > 0) ? null : restored;
+
+                Inventec.Common.Logging.LogSystem.Debug("MACHINE popup mo: view=" + view.Name
+                    + ", dong=" + (this.machinePopupRow != null ? this.machinePopupRow.ID.ToString() : "?")
+                    + ", may cua dong=" + machineIds.Count
+                    + ", tich lai duoc=" + (restored == null ? -1 : restored.Count));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Giu nguyen thao tac cu: click vao 1 dong may la chon may do va dong popup.
+        /// Khi bat MultiSelect, DevExpress khong tu dong popup khi click dong nua (GridRegularRowNavigator.OnMouseUp),
+        /// nen phai tu dong o day; rieng click vao cot checkbox thi giu popup de con tich tiep may khac.
+        /// </summary>
+        private void gridView1_MouseUp(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (e.Button != MouseButtons.Left) return;
+
+                GridView view = sender as GridView;
+                if (view == null) return;
+
+                GridHitInfo hitInfo = view.CalcHitInfo(e.Location);
+                if (hitInfo == null || !hitInfo.InRowCell || !view.IsDataRow(hitInfo.RowHandle)) return;
+                if (hitInfo.Column == null) return;
+                if (hitInfo.Column.Name == CHECKBOX_SELECTOR_COLUMN_NAME
+                    || hitInfo.Column.FieldName == CHECKBOX_SELECTOR_COLUMN_NAME) return;//dang tich chon nhieu may, giu popup
+
+                //dang tich tu 2 may tro len thi chi dong popup, khong duoc pha lua chon cua nguoi dung
+                int[] selected = view.GetSelectedRows();
+                if (selected == null || selected.Length <= 1)
+                {
+                    view.BeginSelection();
+                    view.ClearSelection();
+                    view.SelectRow(hitInfo.RowHandle);
+                    view.EndSelection();
+                }
+
+                //repositoryItemMachineId.OwnerEdit LUON null voi editor tai cho, phai lay tu ActiveEditor cua luoi
+                var cbo = gridViewSereServ != null ? gridViewSereServ.ActiveEditor as GridLookUpEdit : null;
+                if (cbo != null) cbo.ClosePopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ghi trang thai tich vao NGAY dong dich vu da chup luc mo popup.
+        /// Phai ghi ngay tai day chu khong doi den Closed: do thuc te cho thay bam sang dong khac hoac
+        /// dong editor deu tra ve CloseMode = Cancel, neu doi den Closed thi ca phien tich bi vut di.
+        /// Esc van hoan tac duoc nho anh chup machinePopupOriginIds.
+        /// </summary>
+        private void gridView1_SelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (this.isRestoreCheckedMachine) return;
+
+                var machines = GetCheckedMachines(sender as GridView);
+                this.checkedMachines = machines;
+
+                if (machines != null && this.machinePopupRow != null)
+                {
+                    this.machinePopupRow.MACHINE_IDs = machines.Select(o => o.ID).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -2430,6 +2806,15 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     if (ado == null) continue;
                     if (savedSereServIds != null && savedSereServIds.Contains(ado.ID)) continue;
                     if (!ado.MACHINE_ID.HasValue || ado.MACHINE_ID.Value <= 0) continue;
+
+                    //api/HisSereServ/UpdateMachine chi nhan 1 MachineId (HisSereServUpdateMachineSDO) nen cac dong KHAC
+                    //dong dang xu ly chi luu duoc may dau tien; ghi log de biet dong nao bi bo bot may
+                    if (ado.MACHINE_IDs != null && ado.MACHINE_IDs.Count > 1)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("SaveMachineForOtherSereServ: SereServID=" + ado.ID
+                            + " tich " + ado.MACHINE_IDs.Count + " may (" + String.Join(";", ado.MACHINE_IDs)
+                            + ") nhung api UpdateMachine chi luu duoc may dau tien.");
+                    }
 
                     var ext = (dicSereServExt != null && dicSereServExt.ContainsKey(ado.ID)) ? dicSereServExt[ado.ID] : null;
                     if (ext != null && ext.MACHINE_ID == ado.MACHINE_ID) continue;//may khong doi
@@ -3186,14 +3571,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     if (editor != null)
                     {
                         this.FillDataMachineCombo(data, editor);
-                        if (editor.Name == repositoryItemMachineHideDelete.Name)
-                        {
-                            this.FillDataMachineCombo(data, repositoryItemMachineId.OwnerEdit);
-                        }
-                        else
-                        {
-                            this.FillDataMachineCombo(data, repositoryItemMachineHideDelete.OwnerEdit);
-                        }
+                        ShowMachinePopupOnFirstClick(editor);
                     }
                 }
             }
@@ -3203,7 +3581,42 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
-        private void gridView_DoubleClick(object sender, EventArgs e) 
+        /// <summary>
+        /// Mo popup chon may ngay o lan bam dau tien.
+        /// ControlEditorLoader dat TextEditStyle = Standard (de con go chu tim may) nen DevExpress hien o nhap chu,
+        /// va bo qua nhanh mo popup bang 1 click => nguoi dung phai bam lan 2 vao nut mui ten.
+        /// BAT BUOC qua BeginInvoke: goi ShowPopup() dong bo se bi chinh cu mouse dang xu ly dong popup lai ngay.
+        /// </summary>
+        private void ShowMachinePopupOnFirstClick(GridLookUpEdit editor)
+        {
+            try
+            {
+                if (editor == null || !this.IsHandleCreated) return;
+
+                this.BeginInvoke(new MethodInvoker(delegate
+                {
+                    try
+                    {
+                        if (editor.IsDisposed) return;
+                        //trong luc cho, nguoi dung co the da chuyen sang o khac hoac popup da mo san
+                        if (gridViewSereServ == null || !ReferenceEquals(gridViewSereServ.ActiveEditor, editor)) return;
+                        if (editor.IsPopupOpen) return;
+
+                        editor.ShowPopup();
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridView_DoubleClick(object sender, EventArgs e)
         {
             try
             {
@@ -3658,6 +4071,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         if (serviceADOEdit != null)
                         {
                             serviceADOEdit.MACHINE_ID = this.sereServExt.MACHINE_ID;
+                            //form thong tin CLS chi chon duoc 1 may => lay lai danh sach theo ext, tranh giu chuoi may cu
+                            serviceADOEdit.MACHINE_IDs = ParseMachineIds(this.sereServExt.MACHINE_IDS);
                         }
                         gridControlSereServ.RefreshDataSource();
                     }
@@ -4856,7 +5271,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     foreach (var service in listServiceADOForAllInOne)
                     {
                         if (service == null) continue;
-                        if (!service.MACHINE_ID.HasValue) continue;
+                        //tich nhieu may: hoi trung lich cho TUNG may. Moi ConflictDetailSDO tra ve chi mo ta 1 may
+                        //(MachineId/MachineName) nen khong the gui 1 ban ghi voi chuoi MACHINE_IDS.
+                        List<long> machineIds = GetMachineIdsOfRow(service);
+                        if (machineIds.Count == 0) continue;
 
                         HIS_SERE_SERV_EXT ext = null;
                         if (dicSereServExt != null && dicSereServExt.ContainsKey(service.ID))
@@ -4864,17 +5282,17 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             ext = dicSereServExt[service.ID];
                         }
 
-
-                        inputs.Add(new HIS_SERE_SERV_EXT
+                        foreach (long machineId in machineIds)
                         {
-                            ID = (ext != null && ext.ID > 0) ? (long)ext.ID : 0,
-                            MACHINE_ID = service.MACHINE_ID,
-                            TDL_SERVICE_REQ_ID = currentServiceReq.ID,
-                            BEGIN_TIME = beginTime,
-                            END_TIME = endTime
-                        });
-
-
+                            inputs.Add(new HIS_SERE_SERV_EXT
+                            {
+                                ID = (ext != null && ext.ID > 0) ? (long)ext.ID : 0,
+                                MACHINE_ID = machineId,
+                                TDL_SERVICE_REQ_ID = currentServiceReq.ID,
+                                BEGIN_TIME = beginTime,
+                                END_TIME = endTime
+                            });
+                        }
                     }
                 }
                 else
@@ -4884,7 +5302,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         return inputs;
                     }
 
-                    if (!sereServ.MACHINE_ID.HasValue)
+                    //tich nhieu may: hoi trung lich cho TUNG may (xem giai thich o nhanh all-in-one)
+                    List<long> machineIds = GetMachineIdsOfRow(GetServiceADOForSave(sereServ));
+                    if (machineIds.Count == 0)
                     {
                         return inputs;
                     }
@@ -4897,24 +5317,24 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         ext = dicSereServExt[sereServ.ID];
                     }
 
-
-                    inputs.Add(new HIS_SERE_SERV_EXT
+                    foreach (long machineId in machineIds)
                     {
-                        ID = (ext != null && ext.ID > 0) ? (long)ext.ID : 0,
-                        MACHINE_ID = sereServ.MACHINE_ID,
-                        TDL_SERVICE_REQ_ID = currentServiceReq.ID,
-                        BEGIN_TIME = beginTime,
-                        END_TIME = endTime
-                    });
-
-
-                  
+                        inputs.Add(new HIS_SERE_SERV_EXT
+                        {
+                            ID = (ext != null && ext.ID > 0) ? (long)ext.ID : 0,
+                            MACHINE_ID = machineId,
+                            TDL_SERVICE_REQ_ID = currentServiceReq.ID,
+                            BEGIN_TIME = beginTime,
+                            END_TIME = endTime
+                        });
+                    }
                 }
 
-                
+                //khu trung theo CA may VA ext.ID: khi nhieu dich vu cung chon 1 may, gom theo rieng may
+                //se lam mat ID cua cac dich vu con lai (ID la thu server dung de loai tru ban ghi hien tai)
                 inputs = inputs
                     .Where(o => o != null && o.MACHINE_ID.HasValue)
-                    .GroupBy(o => o.MACHINE_ID.Value)
+                    .GroupBy(o => new { MachineId = o.MACHINE_ID.Value, o.ID })
                     .Select(g => g.First())
                     .ToList();
             }
@@ -5181,6 +5601,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     Inventec.Common.Logging.LogSystem.Debug("MACHINE_ID: " + sereServ.MACHINE_ID);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListMachine), ListMachine));
                 }
+
+                //tich nhieu may: ghi ca danh sach xuong ext de api CheckData va api luu deu nhan duoc.
+                //Phai nam SAU nhanh ke tieu hao o tren vi nhanh do thay hoan toan object this.sereServExt.
+                string machineNamesForPrint = ApplyMachinesToExt(this.sereServExt, GetServiceADOForSave(sereServ));
+                string sentMachineIds = this.sereServExt.MACHINE_IDS;//giu lai de doi chieu voi chuoi server tra ve
+                this.MachineIdChoose = this.sereServExt.MACHINE_ID;
+                this.MachineNamesChoose = machineNamesForPrint;//phai gan sau MachineIdChoose vi setter cua no xoa chuoi ten may
+
                 ProcessDescriptionContent();
                 if (dtBeginTime.EditValue != null)
                     this.sereServExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
@@ -5266,6 +5694,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     LoadSuim(true);
                     this.sereServExt = apiResult.SereServExt;
                     this.MachineIdChoose = this.sereServExt.MACHINE_ID;
+                    //dong bo lai danh sach may theo chuoi server tra ve (setter MachineIdChoose vua xoa chuoi ten may)
+                    List<long> savedMachineIds = ParseMachineIds(this.sereServExt.MACHINE_IDS);
+                    this.MachineNamesChoose = BuildMachineNames(savedMachineIds);
+                    var savedRow = GetServiceADOForSave(this.sereServ);
+                    if (savedRow != null) SyncSavedMachineIds(savedRow, savedMachineIds, sentMachineIds);
                     if (dicSereServExt.ContainsKey(apiResult.SereServExt.SERE_SERV_ID))
                     {
                         this.sereServ.NUMBER_OF_FILM = apiResult.SereServExt.NUMBER_OF_FILM;
@@ -5468,19 +5901,28 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     if ((Config.AppConfigKeys.IsMachineWarningOption == "1" || Config.AppConfigKeys.IsMachineWarningOption == "2") && ((AppConfigKeys.IsPatientTypeOption == "1" && sereServ.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) || AppConfigKeys.IsPatientTypeOption != "1") && GlobalVariables.MachineCounterSdos != null && GlobalVariables.MachineCounterSdos.Count > 0)
                     {
-                        var machine = GlobalVariables.MachineCounterSdos.FirstOrDefault(o => o.ID == sereServ.MACHINE_ID);
-
                         HIS_SERE_SERV_EXT ext = dicSereServExt != null && dicSereServExt.ContainsKey(sereServ.ID) ? dicSereServExt[sereServ.ID] : null;
-                        if (machine != null && (ext == null || (ext != null && ext.MACHINE_ID != machine.ID)) &&
-                            machine.MAX_SERVICE_PER_DAY.HasValue && machine.TOTAL_PROCESSED_SERVICE.HasValue &&
-                            machine.TOTAL_PROCESSED_SERVICE.Value >= machine.MAX_SERVICE_PER_DAY.Value)
+                        List<long> extMachineIds = ParseMachineIds(ext != null ? ext.MACHINE_IDS : null);
+
+                        //tich nhieu may: canh bao vuot so luong xu ly phai xet TUNG may da tich, khong chi may dau tien
+                        foreach (long machineId in GetMachineIdsOfRow(GetServiceADOForSave(sereServ)))
                         {
-                            string mess = string.Format(ResourceMessage.BanCoMuonTiepTucKhong, string.Format(ResourceMessage.CanhBaoMayVuotQuaSoluongXuLy, machine.MACHINE_NAME, machine.MAX_SERVICE_PER_DAY));
-                            if (Config.AppConfigKeys.IsMachineWarningOption == "2")
-                                mess = string.Format(ResourceMessage.CanhBaoMayVuotQuaSoluongXuLy, machine.MACHINE_NAME, machine.MAX_SERVICE_PER_DAY);
-                            if ((Config.AppConfigKeys.IsMachineWarningOption == "1" && DevExpress.XtraEditors.XtraMessageBox.Show(mess, ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) || (Config.AppConfigKeys.IsMachineWarningOption == "2" && DevExpress.XtraEditors.XtraMessageBox.Show(mess, ResourceMessage.ThongBao, MessageBoxButtons.OK) == DialogResult.OK))
+                            var machine = GlobalVariables.MachineCounterSdos.FirstOrDefault(o => o.ID == machineId);
+
+                            //may da luu san tren ext thi khong canh bao lai (giu dung y nghia gate cu)
+                            bool machineAlreadySaved = (ext != null && ext.MACHINE_ID == machineId) || extMachineIds.Contains(machineId);
+                            if (machine != null && !machineAlreadySaved &&
+                                machine.MAX_SERVICE_PER_DAY.HasValue && machine.TOTAL_PROCESSED_SERVICE.HasValue &&
+                                machine.TOTAL_PROCESSED_SERVICE.Value >= machine.MAX_SERVICE_PER_DAY.Value)
                             {
-                                result = false;
+                                string mess = string.Format(ResourceMessage.BanCoMuonTiepTucKhong, string.Format(ResourceMessage.CanhBaoMayVuotQuaSoluongXuLy, machine.MACHINE_NAME, machine.MAX_SERVICE_PER_DAY));
+                                if (Config.AppConfigKeys.IsMachineWarningOption == "2")
+                                    mess = string.Format(ResourceMessage.CanhBaoMayVuotQuaSoluongXuLy, machine.MACHINE_NAME, machine.MAX_SERVICE_PER_DAY);
+                                if ((Config.AppConfigKeys.IsMachineWarningOption == "1" && DevExpress.XtraEditors.XtraMessageBox.Show(mess, ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) || (Config.AppConfigKeys.IsMachineWarningOption == "2" && DevExpress.XtraEditors.XtraMessageBox.Show(mess, ResourceMessage.ThongBao, MessageBoxButtons.OK) == DialogResult.OK))
+                                {
+                                    result = false;
+                                    break;//nguoi dung da tu choi, khong hoi tiep cac may con lai
+                                }
                             }
                         }
                     }
@@ -5590,6 +6032,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         sereServExt.MACHINE_ID = machine.ID;
                     }
 
+                    //tich nhieu may: ghi ca danh sach xuong ext de api CheckData va api luu deu nhan duoc
+                    ApplyMachinesToExt(sereServExt, GetServiceADOForSave(sereServ));
+                    string sentMachineIds = sereServExt.MACHINE_IDS;//giu lai de doi chieu voi chuoi server tra ve
+
                     string xmlDescriptionLocation = "";
                     string description = "";
                     string descriptionInFrmClsInfo = "";
@@ -5663,6 +6109,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         this.sereServExt = apiResult.SereServExt;
                         this.MachineIdChoose = this.sereServExt.MACHINE_ID;
+                        //dong bo lai danh sach may theo chuoi server tra ve cho dung dong vua luu
+                        List<long> savedMachineIds = ParseMachineIds(apiResult.SereServExt.MACHINE_IDS);
+                        this.MachineNamesChoose = BuildMachineNames(savedMachineIds);
+                        var savedRow = GetServiceADOForSave(sereServ);
+                        if (savedRow != null) SyncSavedMachineIds(savedRow, savedMachineIds, sentMachineIds);
                         if (dicSereServExt.ContainsKey(apiResult.SereServExt.SERE_SERV_ID))
                         {
                             sereServ.NUMBER_OF_FILM = apiResult.SereServExt.NUMBER_OF_FILM;
@@ -6897,12 +7348,45 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                 }
 
+                //tich nhieu may: hien thi day du ten cac may da tich (CSDL chi luu may dau tien)
+                var dataRow = GetSereServRowByListSourceIndex(sender, e.ListSourceRowIndex);
+                if (dataRow != null && dataRow.MACHINE_IDs != null && dataRow.MACHINE_IDs.Count > 1)
+                {
+                    e.DisplayText = String.Join(", ", dataRow.MACHINE_IDs
+                        .Where(o => dicAllMachineName.ContainsKey(o))
+                        .Select(o => dicAllMachineName[o]).ToArray());
+                    return;
+                }
+
                 e.DisplayText = dicAllMachineName.ContainsKey(machineId) ? dicAllMachineName[machineId] : "";
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Lay dong dich vu theo chi so cua DataSource (dung cho cac su kien muc du lieu nhu CustomColumnDisplayText,
+        /// o do e.ListSourceRowIndex la chi so trong DataSource chu khong phai rowHandle). 
+        /// </summary>
+        private ADO.ServiceADO GetSereServRowByListSourceIndex(object sender, int listSourceRowIndex)
+        {
+            try
+            {
+                var view = sender as BaseView;
+                if (view == null || listSourceRowIndex < 0) return null;
+
+                var dataSource = view.DataSource as IList;
+                if (dataSource == null || listSourceRowIndex >= dataSource.Count) return null;
+
+                return dataSource[listSourceRowIndex] as ADO.ServiceADO;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
         }
 
         private void toolTipController1_GetActiveObjectInfo(object sender, DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs e)
@@ -7253,12 +7737,20 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                Inventec.Common.Logging.LogSystem.Debug("MACHINE popup dong: mode=" + e.CloseMode
+                    + ", da tich=" + (this.checkedMachines == null ? -1 : this.checkedMachines.Count));
+
+                //Do thuc te tren DevExpress 15.2: bam nut mui ten de dong => ButtonClick, Alt+Down => CloseUpKey,
+                //bam ra ngoai / bam nut Luu => Immediate, ClosePopup() => Normal. Chi Esc va bam sang dong khac moi ra Cancel.
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate
+                    || e.CloseMode == PopupCloseMode.ButtonClick || e.CloseMode == PopupCloseMode.CloseUpKey)
                 {
-                    var asereServ = (ADO.ServiceADO)gridViewSereServ.GetFocusedRow();
+                    var asereServ = this.machinePopupRow ?? gridViewSereServ.GetFocusedRow() as ADO.ServiceADO;
                     var cbo = sender as GridLookUpEdit;
+                    string machineNames = ApplyCheckedMachines(cbo, asereServ);//tich nhieu may: EditValue nhan may dau tien
                     long machineId = Inventec.Common.TypeConvert.Parse.ToInt64((cbo.EditValue ?? "0").ToString());
                     this.MachineIdChoose = machineId;
+                    this.MachineNamesChoose = machineNames;//phai gan sau MachineIdChoose vi setter cua no xoa chuoi ten may
                     ProcessDicExecuteRoomMachine(machineId);
                     if ((Config.AppConfigKeys.IsMachineWarningOption == "1" || Config.AppConfigKeys.IsMachineWarningOption == "2") && ((AppConfigKeys.IsPatientTypeOption == "1" && asereServ.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) || AppConfigKeys.IsPatientTypeOption != "1") && GlobalVariables.MachineCounterSdos != null && GlobalVariables.MachineCounterSdos.Count > 0)
                     {
@@ -7276,12 +7768,25 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             {
                                 cbo.EditValue = null;
                                 this.MachineIdChoose = null;
+                                if (asereServ != null) asereServ.MACHINE_IDs = null;
                                 cbo.ShowPopup();
                             }
                         }
                     }
                     ProcessDescriptionContent();
                 }
+                else if (e.CloseMode == PopupCloseMode.Cancel)
+                {
+                    //Esc: tra dong dich vu ve dung trang thai truoc khi mo popup (SelectionChanged da ghi thang vao dong)
+                    if (this.machinePopupRow != null && this.machinePopupOriginIds != null)
+                    {
+                        this.machinePopupRow.MACHINE_IDs = new List<long>(this.machinePopupOriginIds);
+                    }
+                    this.checkedMachines = null;
+                }
+
+                this.machinePopupRow = null;
+                this.machinePopupOriginIds = null;
             }
             catch (Exception ex)
             {
@@ -8643,6 +9148,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     var edit = sender as GridLookUpEdit;
                     edit.EditValue = null;
                     this.MachineIdChoose = null;
+
+                    //bo luon danh sach may da tich cua dong dang chon
+                    var asereServ = gridViewSereServ.GetFocusedRow() as ADO.ServiceADO;
+                    if (asereServ != null) asereServ.MACHINE_IDs = null;
+                    this.checkedMachines = null;
 
                     ProcessDescriptionContent();
                 }

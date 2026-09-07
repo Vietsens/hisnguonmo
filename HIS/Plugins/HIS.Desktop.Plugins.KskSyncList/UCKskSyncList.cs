@@ -1012,9 +1012,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 lciBtnVlgStatus.Visibility = vlgConfigAvailable
                     ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                     : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                emptyFilterTop.Visibility = vlgConfigAvailable
-                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
-                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                // (26/08 Designer dong bo tu may dev da bo EmptySpaceItem "emptyFilterTop" va them btnClsMap — khong con swap cap.)
                 if (!sytConfigAvailable) syncTarget.SyncSytHcm = false;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }

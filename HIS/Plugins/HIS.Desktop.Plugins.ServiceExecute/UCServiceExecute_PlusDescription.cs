@@ -46,7 +46,26 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         private DocumentRange[] RangeAllService;
         private string ViewPacsUrlFormat = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ServiceExecuteCFG.ViewPacsUrlFormat);
         private string ViewPacsSecretKey = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ServiceExecuteCFG.ViewPacsSecretKey);
-        private long? MachineIdChoose = null;
+        private long? machineIdChoose = null;
+
+        /// <summary>
+        /// May dang chon cua dong dich vu dang xu ly (may dau tien khi tich nhieu may).
+        /// Set lai gia tri nay dong nghia voi viec chon lai may don => xoa chuoi ten nhieu may.
+        /// </summary>
+        private long? MachineIdChoose
+        {
+            get { return this.machineIdChoose; }
+            set
+            {
+                this.machineIdChoose = value;
+                this.MachineNamesChoose = null;
+            }
+        }
+
+        /// <summary>
+        /// Ten cac may duoc tich chon, ngan cach bang dau phay. Chi co gia tri khi nguoi dung tich nhieu may.
+        /// </summary>
+        private string MachineNamesChoose = null;
 
         private void ProcessChoiceSereServTempl(MOS.EFMODEL.DataModels.HIS_SERE_SERV_TEMP data)
         {
@@ -599,6 +618,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         item.conclude = sereServ.conclude;
                         item.note = sereServ.note;
                         item.MACHINE_ID = sereServ.MACHINE_ID;
+                        item.MACHINE_IDs = sereServ.MACHINE_IDs;//giu dong bo khi list con giu object cu sau ReLoadSereServ
                         item.NUMBER_OF_FILM = sereServ.NUMBER_OF_FILM;
                         break;
                     }
@@ -851,17 +871,27 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     dicParam[ServiceExecuteCFG.SingleKeyAllInOne] = this.sereServ.TDL_SERVICE_NAME;
                 }
                 dicParam["MACHINE_NAME"] = currentServiceReq.MACHINE_NAMES;
-                if (this.MachineIdChoose.HasValue)
+                if (!String.IsNullOrWhiteSpace(this.MachineNamesChoose))
                 {
-                    var machine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>().FirstOrDefault(o => o.ID == MachineIdChoose.Value);
+                    //nguoi dung tich nhieu may tren combo may => in day du ten cac may da tich
+                    dicParam["MACHINE_NAME"] = this.MachineNamesChoose;
+                    dicParam["MACHINE_NAMES"] = this.MachineNamesChoose;
+                    Inventec.Common.Logging.LogSystem.Info("MachineNamesChoose: " + this.MachineNamesChoose);
+                }
+                else if (this.MachineIdChoose.HasValue)
+                {
+                    var allMachines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
+                    var machine = allMachines != null ? allMachines.FirstOrDefault(o => o.ID == MachineIdChoose.Value) : null;
 
                     Inventec.Common.Logging.LogSystem.Info(MachineIdChoose + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => machine), machine));
                     if (machine != null)
                     {
                         dicParam["MACHINE_NAME"] = machine.MACHINE_NAME;
                         dicParam["MACHINE_NAMES"] = machine.MACHINE_NAME;
+                        //log nay truoc day nam ngoai guard => NRE khi may khong co trong BackendData,
+                        //nuot ca cac key duoc set sau do vi ProcessDicParam bat het exception
+                        Inventec.Common.Logging.LogSystem.Info(machine.MACHINE_NAME);
                     }
-                    Inventec.Common.Logging.LogSystem.Info(machine.MACHINE_NAME );
                 }
                 if (this.sereServExt != null)
                 {

@@ -46,7 +46,7 @@ namespace His.UC.UCHein.Base
                         chhai = data.HEIN_CARD_NUMBER.Substring(3, 2);
                         chba = data.HEIN_CARD_NUMBER.Substring(5, 2);
                         chbon = data.HEIN_CARD_NUMBER.Substring(7, 3);
-                        chnam = data.HEIN_CARD_NUMBER.Substring(10, 5);
+                        chnam = data.HEIN_CARD_NUMBER.Substring(10);
                     }
                     catch (Exception exx)
                     {

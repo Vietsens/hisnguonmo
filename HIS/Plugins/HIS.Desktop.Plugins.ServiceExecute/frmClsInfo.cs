@@ -2304,11 +2304,17 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         sereServExt.MACHINE_ID = (long)cboMachine.EditValue;
                         sereServExt.MACHINE_CODE = this.txtMachineCode.Text;
+                        //form nay chi chon duoc 1 may: phai ghi lai ca 2 truong danh sach, neu khong ext se o trang thai
+                        //MACHINE_ID may moi + MACHINE_IDS danh sach cu (ext la chinh instance nam trong dicSereServExt)
+                        sereServExt.MACHINE_IDS = sereServExt.MACHINE_ID.ToString();
+                        sereServExt.MACHINE_CODES = this.txtMachineCode.Text;
                     }
                     else
                     {
                         sereServExt.MACHINE_ID = null;
                         sereServExt.MACHINE_CODE = "";
+                        sereServExt.MACHINE_IDS = null;
+                        sereServExt.MACHINE_CODES = null;
                     }
                     sereServExt.INSTRUCTION_NOTE = txtIntructionNote.Text;
                     sereServExt.DESCRIPTION = txtDescription.Text;

@@ -114,7 +114,7 @@ namespace MPS.Processor.Mps000311
                     SetSingleKey(new KeyValue(Mps000311ExtendSingleKey.HEIN_CARD_NUMBER_3, rdo.SereServ.HEIN_CARD_NUMBER.Substring(3, 2)));
                     SetSingleKey(new KeyValue(Mps000311ExtendSingleKey.HEIN_CARD_NUMBER_4, rdo.SereServ.HEIN_CARD_NUMBER.Substring(5, 2)));
                     SetSingleKey(new KeyValue(Mps000311ExtendSingleKey.HEIN_CARD_NUMBER_5, rdo.SereServ.HEIN_CARD_NUMBER.Substring(7, 3)));
-                    SetSingleKey(new KeyValue(Mps000311ExtendSingleKey.HEIN_CARD_NUMBER_6, rdo.SereServ.HEIN_CARD_NUMBER.Substring(10, 5)));
+                    SetSingleKey(new KeyValue(Mps000311ExtendSingleKey.HEIN_CARD_NUMBER_6, rdo.SereServ.HEIN_CARD_NUMBER.Substring(10)));
                 }
                 SetSingleKey(new KeyValue(Mps000311ExtendSingleKey.ICD_NAME, rdo.Treatment.ICD_NAME));
                 SetSingleKey(new KeyValue(Mps000311ExtendSingleKey.PATIENT_TYPE_NAME, (rdo.PatientType.FirstOrDefault(o => o.ID == rdo.SereServ.PATIENT_TYPE_ID) ?? new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE()).PATIENT_TYPE_NAME));

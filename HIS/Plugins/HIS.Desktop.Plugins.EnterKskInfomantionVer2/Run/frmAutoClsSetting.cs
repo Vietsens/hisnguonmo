@@ -36,10 +36,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmAutoClsSetting : DevExpress.XtraEditors.XtraForm
     {
-        private const string MODULE_LINK = "HIS.Desktop.Plugins.EnterKskInfomantionVer2";
-        private const string KEY_BLOOD = "AutoCls_Blood";
-        private const string KEY_URINE = "AutoCls_Urine";
-        private const string KEY_DIIM = "AutoCls_Diim";
+        internal const string MODULE_LINK = "HIS.Desktop.Plugins.EnterKskInfomantionVer2";
+
+        // Key ControlState của 11 dòng "Tự động lấy CLS" — form nhập KSK đọc lại đúng các key này
+        // (việc 56156 mở rộng từ 3 dòng Máu/Nước tiểu/CĐHA lên đủ các mục 1a→KSK định kỳ).
+        internal const string KEY_BLOOD = "AutoCls_Blood";                     // 1a. Công thức máu
+        internal const string KEY_BLOOD_GLUCO = "AutoCls_BloodGluco";          // 1b. Đường máu
+        internal const string KEY_BLOOD_URE = "AutoCls_BloodUre";              // 1b. Urê
+        internal const string KEY_BLOOD_CREATININ = "AutoCls_BloodCreatinin";  // 1b. Creatinin
+        internal const string KEY_BLOOD_ASAT = "AutoCls_BloodAsat";            // 1b. ASAT (GOT)
+        internal const string KEY_BLOOD_ALAT = "AutoCls_BloodAlat";            // 1b. ALAT (GPT)
+        internal const string KEY_BLOOD_OTHER = "AutoCls_BloodOther";          // 1c. XN máu - Khác
+        internal const string KEY_URINE = "AutoCls_Urine";                     // 2. XN nước tiểu
+        internal const string KEY_DIIM = "AutoCls_Diim";                       // 3. Chẩn đoán hình ảnh
+        internal const string KEY_OTHER_PARACLINICAL = "AutoCls_OtherPara";    // 4. KQ khám CLS khác
+        internal const string KEY_PERIODIC = "AutoCls_Periodic";               // KSK định kỳ - Kết quả
+
+        /// <summary>1 dòng cấu hình: combo + key ControlState + key trong file JSON xuất/nhập.</summary>
+        private class AutoClsComboDef
+        {
+            public GridLookUpEdit Cbo;
+            public string StateKey;
+            public string JsonKey;
+        }
+
+        // 11 dòng cấu hình — Init/Load/Save/Export/Import đều chạy vòng lặp trên danh sách này.
+        private List<AutoClsComboDef> comboDefs;
 
         // Danh sách dịch vụ đang tick theo từng combo (giống objectSelecteds ở cboObject).
         private readonly Dictionary<GridLookUpEdit, List<V_HIS_SERVICE>> selecteds = new Dictionary<GridLookUpEdit, List<V_HIS_SERVICE>>();
@@ -93,7 +115,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             catch (Exception ex) { LogSystem.Error(ex); }
         }
 
-        /// <summary>Gán datasource V_HIS_SERVICE theo loại + bật chọn nhiều cho 3 combo.</summary>
+        /// <summary>Gán datasource V_HIS_SERVICE theo loại + bật chọn nhiều cho 11 combo (việc 56156).</summary>
         private void InitCombos()
         {
             var all = BackendDataWorker.Get<V_HIS_SERVICE>();
@@ -101,10 +123,38 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         .OrderBy(o => o.SERVICE_NAME).ToList();
             var cdha = all.Where(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA && o.IS_ACTIVE == 1)
                         .OrderBy(o => o.SERVICE_NAME).ToList();
+            // "KQ khám CLS khác" + "KSK định kỳ" có thể là bất kỳ loại CLS nào → gộp XN + CĐHA + TDCN.
+            var allCls = all.Where(o => (o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
+                                      || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA
+                                      || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN)
+                                     && o.IS_ACTIVE == 1)
+                        .OrderBy(o => o.SERVICE_NAME).ToList();
 
-            SetupMultiCombo(this.cboBlood, xn);
-            SetupMultiCombo(this.cboUrine, xn.ToList());   // Máu & Nước tiểu cùng loại XN (user tự chọn)
-            SetupMultiCombo(this.cboDiim, cdha);
+            // JsonKey BLOOD/URINE/DIIM giữ nguyên tên cũ để file JSON đã xuất trước đây vẫn nhập được.
+            this.comboDefs = new List<AutoClsComboDef>()
+            {
+                new AutoClsComboDef() { Cbo = this.cboBlood,          StateKey = KEY_BLOOD,              JsonKey = "BLOOD" },
+                new AutoClsComboDef() { Cbo = this.cboBloodGluco,     StateKey = KEY_BLOOD_GLUCO,        JsonKey = "BLOOD_GLUCO" },
+                new AutoClsComboDef() { Cbo = this.cboBloodUre,       StateKey = KEY_BLOOD_URE,          JsonKey = "BLOOD_URE" },
+                new AutoClsComboDef() { Cbo = this.cboBloodCreatinin, StateKey = KEY_BLOOD_CREATININ,    JsonKey = "BLOOD_CREATININ" },
+                new AutoClsComboDef() { Cbo = this.cboBloodAsat,      StateKey = KEY_BLOOD_ASAT,         JsonKey = "BLOOD_ASAT" },
+                new AutoClsComboDef() { Cbo = this.cboBloodAlat,      StateKey = KEY_BLOOD_ALAT,         JsonKey = "BLOOD_ALAT" },
+                new AutoClsComboDef() { Cbo = this.cboBloodOther,     StateKey = KEY_BLOOD_OTHER,        JsonKey = "BLOOD_OTHER" },
+                new AutoClsComboDef() { Cbo = this.cboUrine,          StateKey = KEY_URINE,              JsonKey = "URINE" },
+                new AutoClsComboDef() { Cbo = this.cboDiim,           StateKey = KEY_DIIM,               JsonKey = "DIIM" },
+                new AutoClsComboDef() { Cbo = this.cboOtherPara,      StateKey = KEY_OTHER_PARACLINICAL, JsonKey = "OTHER_PARACLINICAL" },
+                new AutoClsComboDef() { Cbo = this.cboPeriodic,       StateKey = KEY_PERIODIC,           JsonKey = "PERIODIC" },
+            };
+
+            foreach (var def in this.comboDefs)
+            {
+                // Mỗi combo 1 bản copy datasource riêng để filter/sort của combo này không dính combo kia.
+                List<V_HIS_SERVICE> ds;
+                if (def.Cbo == this.cboDiim) ds = cdha.ToList();
+                else if (def.Cbo == this.cboOtherPara || def.Cbo == this.cboPeriodic) ds = allCls.ToList();
+                else ds = xn.ToList();
+                SetupMultiCombo(def.Cbo, ds);
+            }
         }
 
         /// <summary>Cấu hình 1 GridLookUpEdit thành combo chọn nhiều (GridCheckMarksSelection) — nhái cboObject.</summary>
@@ -256,9 +306,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// <summary>Đọc CSV ID đã lưu và tick lại trên từng combo.</summary>
         private void LoadSavedSelection()
         {
-            ApplySavedToCombo(this.cboBlood, GetStateValue(KEY_BLOOD));
-            ApplySavedToCombo(this.cboUrine, GetStateValue(KEY_URINE));
-            ApplySavedToCombo(this.cboDiim, GetStateValue(KEY_DIIM));
+            if (this.comboDefs == null) return;
+            foreach (var def in this.comboDefs)
+                ApplySavedToCombo(def.Cbo, GetStateValue(def.StateKey));
         }
 
         private void ApplySavedToCombo(GridLookUpEdit cbo, string csvIds)
@@ -310,11 +360,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// </summary>
         private void SaveAll()
         {
-            if (this.controlStateWorker != null && this.currentControlStateRDO != null)
+            if (this.controlStateWorker != null && this.currentControlStateRDO != null && this.comboDefs != null)
             {
-                SetStateValue(KEY_BLOOD, GetCsvIds(this.cboBlood));
-                SetStateValue(KEY_URINE, GetCsvIds(this.cboUrine));
-                SetStateValue(KEY_DIIM, GetCsvIds(this.cboDiim));
+                foreach (var def in this.comboDefs)
+                    SetStateValue(def.StateKey, GetCsvIds(def.Cbo));
                 controlStateWorker.SetData(currentControlStateRDO);
             }
 
@@ -530,7 +579,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 KskSettingFileADO data = BuildSettingFile();
                 int rowCount = data.ROWS.Count;
-                int svCount = data.AUTO_CLS_BLOOD.Count + data.AUTO_CLS_URINE.Count + data.AUTO_CLS_DIIM.Count;
+                int svCount = data.AUTO_CLS.Values.Sum(o => o == null ? 0 : o.Count);
                 if (rowCount == 0 && svCount == 0)
                 {
                     XtraMessageBox.Show("Cả 2 tab đều chưa có thiết lập nào để xuất.", "Thông báo",
@@ -570,9 +619,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private KskSettingFileADO BuildSettingFile()
         {
             var data = new KskSettingFileADO();
-            data.AUTO_CLS_BLOOD = ToServiceRefs(this.cboBlood);
-            data.AUTO_CLS_URINE = ToServiceRefs(this.cboUrine);
-            data.AUTO_CLS_DIIM = ToServiceRefs(this.cboDiim);
+            if (this.comboDefs != null)
+            {
+                foreach (var def in this.comboDefs)
+                    data.AUTO_CLS[def.JsonKey] = ToServiceRefs(def.Cbo);
+            }
             if (this.defaultRows != null)
             {
                 data.ROWS = BuildDefaultRows();
@@ -626,14 +677,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     // ===== Tab 1: Tự động lấy CLS =====
                     if (data.HasAutoCls)
                     {
-                        int okBlood, okUrine, okDiim, missBlood, missUrine, missDiim;
-                        ImportServices(this.cboBlood, data.AUTO_CLS_BLOOD, out okBlood, out missBlood);
-                        ImportServices(this.cboUrine, data.AUTO_CLS_URINE, out okUrine, out missUrine);
-                        ImportServices(this.cboDiim, data.AUTO_CLS_DIIM, out okDiim, out missDiim);
-                        report.Append("Tự động lấy CLS: nhận ")
-                              .Append(okBlood + okUrine + okDiim).Append(" dịch vụ");
-                        int miss = missBlood + missUrine + missDiim;
-                        if (miss > 0) report.Append(", bỏ ").Append(miss).Append(" dịch vụ không có trong danh mục máy này");
+                        // CHỈ nhập các phần có trong file — phần thiếu giữ nguyên thiết lập máy này
+                        // (file xuất từ bản cũ chỉ có BLOOD/URINE/DIIM vẫn dùng được).
+                        int okTotal = 0, missTotal = 0;
+                        if (this.comboDefs != null)
+                        {
+                            foreach (var def in this.comboDefs)
+                            {
+                                List<KskServiceRefADO> refs;
+                                if (!data.AUTO_CLS.TryGetValue(def.JsonKey, out refs) || refs == null || refs.Count == 0) continue;
+                                int ok, miss;
+                                ImportServices(def.Cbo, refs, out ok, out miss);
+                                okTotal += ok;
+                                missTotal += miss;
+                            }
+                        }
+                        report.Append("Tự động lấy CLS: nhận ").Append(okTotal).Append(" dịch vụ");
+                        if (missTotal > 0) report.Append(", bỏ ").Append(missTotal).Append(" dịch vụ không có trong danh mục máy này");
                         report.Append("\r\n");
                     }
                     else

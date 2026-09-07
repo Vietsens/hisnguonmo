@@ -431,16 +431,30 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
                 var worker = new BackgroundWorker();
                 worker.DoWork += (s, e) =>
                 {
+                    // Khung kết quả theo thứ tự hàng gửi lên (chiSo của cổng = index này).
                     var results = new List<EcdsSyncResultADO>();
-                    int stt = 0;
-                    apiWorker.EnsureLogin();
-                    foreach (var v in rowsLocal)
+                    for (int i = 0; i < rowsLocal.Count; i++)
                     {
-                        stt++;
-                        var r = new EcdsSyncResultADO { Stt = stt, TreatmentId = v.ID, TreatmentCode = v.TREATMENT_CODE, PatientName = v.TDL_PATIENT_NAME, IcdCode = v.ICD_CODE };
+                        var v = rowsLocal[i];
+                        results.Add(new EcdsSyncResultADO
+                        {
+                            Stt = i + 1,
+                            TreatmentId = v.ID,
+                            TreatmentCode = v.TREATMENT_CODE,
+                            PatientName = v.TDL_PATIENT_NAME,
+                            IcdCode = v.ICD_CODE
+                        });
+                    }
+
+                    apiWorker.EnsureLogin();
+
+                    if (rowsLocal.Count == 1)
+                    {
+                        // 1 ca -> POST /ca-benh/cap-nhat (trả maCaBenh đầy đủ).
+                        var r = results[0];
                         try
                         {
-                            var dto = BuildDtoFromTreatment(v, reporter);
+                            var dto = BuildDtoFromTreatment(rowsLocal[0], reporter);
                             var result = apiWorker.DayCaBenh(dto);
                             if (result != null && result.thanhCong && result.duLieu != null)
                             {
@@ -457,8 +471,47 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
                             r.Success = false; r.StatusText = "Lỗi"; r.Message = exRow.Message;
                             Inventec.Common.Logging.LogSystem.Error(exRow);
                         }
-                        results.Add(r);
                     }
+                    else
+                    {
+                        // Nhiều ca -> POST /ca-benh/cap-nhat-nhieu (1 request cho cả danh sách).
+                        try
+                        {
+                            var dtos = rowsLocal.Select(v => BuildDtoFromTreatment(v, reporter)).ToList();
+                            var batch = apiWorker.DayNhieuCaBenh(dtos);
+                            if (batch != null && batch.thanhCong && batch.duLieu != null && batch.duLieu.chiTiet != null)
+                            {
+                                foreach (var ct in batch.duLieu.chiTiet)
+                                {
+                                    if (ct.chiSo >= 0 && ct.chiSo < results.Count)
+                                    {
+                                        var r = results[ct.chiSo];
+                                        r.Success = ct.thanhCong;
+                                        r.StatusText = ct.thanhCong ? "Đã đẩy" : "Lỗi";
+                                        // Batch chỉ trả idCaBenh (UUID), KHÔNG có maCaBenh -> để mã ca trống.
+                                        if (!ct.thanhCong) r.Message = "Cổng từ chối ca này.";
+                                    }
+                                }
+                                // Hàng không có trong chiTiet -> đánh dấu lỗi.
+                                foreach (var r in results.Where(x => x.StatusText == null))
+                                {
+                                    r.Success = false; r.StatusText = "Lỗi";
+                                    r.Message = "Cổng không trả kết quả cho ca này.";
+                                }
+                            }
+                            else
+                            {
+                                string msg = batch != null ? batch.thongDiep : "Không có phản hồi từ cổng.";
+                                foreach (var r in results) { r.Success = false; r.StatusText = "Lỗi"; r.Message = msg; }
+                            }
+                        }
+                        catch (Exception exBatch)
+                        {
+                            foreach (var r in results) { r.Success = false; r.StatusText = "Lỗi"; r.Message = exBatch.Message; }
+                            Inventec.Common.Logging.LogSystem.Error(exBatch);
+                        }
+                    }
+
                     // Lưu danh sách kết quả đẩy vào HIS (§21 UpdatePushResultList)
                     PersistPushResults(results);
                     e.Result = results;
@@ -517,27 +570,50 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
             }
         }
 
+        /// <summary>
+        /// Dựng DTO đẩy nhanh từ 1 điều trị (đẩy hàng loạt/tự động). Chỉ đủ trường cốt lõi;
+        /// dữ liệu đầy đủ (hành chính, XN...) đẩy qua form chi tiết InfectiousDiseaseReport.
+        /// Cổng nhận MÃ ICD-10 (string) trực tiếp -> KHÔNG cần đối chiếu ID danh mục.
+        /// </summary>
         private EcdsDiseaseCaseDto BuildDtoFromTreatment(V_HIS_TREATMENT v, string reporter)
         {
             var dto = new EcdsDiseaseCaseDto();
             try
             {
-                dto.HoTen = v.TDL_PATIENT_NAME;
-                dto.NgaySinh = DiseaseCaseMapper.ToIsoDate(v.TDL_PATIENT_DOB);
+                dto.MaIcd10Benh = PrimaryIcdCode(v.ICD_CODE);
+                dto.HoVaTen = v.TDL_PATIENT_NAME;
+                dto.NgaySinh = DiseaseCaseMapper.ToPortalDate(v.TDL_PATIENT_DOB);
                 bool isMale = v.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE;
-                dto.GioiTinh = isMale ? (int)EcdsGioiTinh.Nam : (int)EcdsGioiTinh.Nu;
-                dto.NgayNhapVien = DiseaseCaseMapper.ToIsoDate(v.IN_TIME);
-                dto.NgayRaVien = DiseaseCaseMapper.ToIsoDate(v.OUT_TIME);
+                dto.MaGioiTinh = isMale ? "M" : "F";
+                dto.NgayNhapVien = DiseaseCaseMapper.ToPortalDate(v.IN_TIME);
+                dto.NgayRaVien = DiseaseCaseMapper.ToPortalDate(v.OUT_TIME);
                 dto.ChanDoanRaVien = v.ICD_NAME;
-                long? benhId = catalogCache.FindIdByMa(catalogCache.GetStatic(EcdsCatalogCache.DM_BENH), v.ICD_CODE);
-                if (benhId.HasValue) dto.BenhChuanDoanId = benhId.Value;
-                dto.PhanLoaiChuanDoan = (int)EcdsPhanLoaiChuanDoan.XacDinh;
-                dto.TinhTrangHienNay = (int)EcdsTinhTrangHienNay.NoiTru;
-                dto.LoaiPhatHien = (int)EcdsLoaiPhatHien.Khac;
-                dto.NguoiBaoCao = reporter;
+                dto.LoaiChanDoan = (int)EcdsPhanLoaiChuanDoan.XacDinh;
+                dto.TinhTrangHienTai = (int)EcdsTinhTrangHienNay.NoiTru;
+                dto.TrangThaiCaBenh = (int)EcdsTrangThaiCaBenh.MacDinh;
+                dto.TrangThaiLuu = (int)EcdsTrangThaiLuu.LuuChinhThuc;
+                dto.MaCoSoDieuTri = !string.IsNullOrEmpty(EcdsConfigCFG.MaCoSoDieuTri)
+                    ? EcdsConfigCFG.MaCoSoDieuTri : EcdsConfigCFG.MaDonVi;
+                dto.MaXaPhuongQuanLy = EcdsConfigCFG.MaDonVi;
+                dto.HoTenNguoiBaoCao = reporter;
+                dto.MaDonViNguoiBaoCao = EcdsConfigCFG.MaDonVi;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
             return dto;
+        }
+
+        /// <summary>Mã ICD chính (token đầu). ICD_CODE có thể là chuỗi nhiều mã ("A00, A00.0"). Cắt tối đa 10 ký tự.</summary>
+        private static string PrimaryIcdCode(string icd)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(icd)) return icd;
+                var parts = icd.Split(new[] { ',', ';', ' ', '/', '|' }, StringSplitOptions.RemoveEmptyEntries);
+                string first = (parts.Length > 0 ? parts[0] : icd).Trim();
+                if (first.Length > 10) first = first.Substring(0, 10);
+                return first;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return icd; }
         }
 
         /// <summary>

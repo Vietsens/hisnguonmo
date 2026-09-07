@@ -432,7 +432,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                                 }
                                 else if (!string.IsNullOrEmpty(data.TDL_HEIN_CARD_NUMBER))
                                 {
-                                    e.Value = data.TDL_HEIN_CARD_NUMBER.Length >= 10 ? data.TDL_HEIN_CARD_NUMBER.Substring(data.TDL_HEIN_CARD_NUMBER.Length - 10) : null;
+                                    e.Value = (data.TDL_HEIN_CARD_NUMBER.Length == 10 ? data.TDL_HEIN_CARD_NUMBER : (data.TDL_HEIN_CARD_NUMBER.Length == 15 ? data.TDL_HEIN_CARD_NUMBER.Substring(5, 10) : ""));
                                 }
                             }
                             catch (Exception ex)

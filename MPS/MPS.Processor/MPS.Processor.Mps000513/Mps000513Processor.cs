@@ -71,6 +71,15 @@ namespace MPS.Processor.Mps000513
                     SetSingleKey(new KeyValue(Mps000513ExtendSingleKey.INVITE_DEPARTMENT_NAME, rdo.currentExam.INVITE_DEPARTMENT_NAME));
                     SetSingleKey(new KeyValue(Mps000513ExtendSingleKey.IS_EXAM_ANESTHESIA, rdo.currentExam.IS_EXAM_ANESTHESIA));
                     SetSingleKey(new KeyValue(Mps000513ExtendSingleKey.IS__EXAM_BED, rdo.currentExam.IS__EXAM_BED));
+
+                    if (rdo.currentExam.INVITE_TIME != null)
+                    {
+                        SetSingleKey(new KeyValue(Mps000513ExtendSingleKey.INTRUCTION_TIME, Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)rdo.currentExam.INVITE_TIME)));
+                    }
+                    if (rdo.currentExam.EXAM_TIME != null)
+                    {
+                        SetSingleKey(new KeyValue(Mps000513ExtendSingleKey.EXAM_TIME, Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)rdo.currentExam.EXAM_TIME)));
+                    }
                 }
             }
             catch (Exception ex)

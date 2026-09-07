@@ -260,6 +260,15 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 }
                 #endregion
 
+                #region Khoa hội chẩn
+                List<V_HIS_DEBATE> debates = new List<V_HIS_DEBATE>();
+                MOS.Filter.HisDebateViewFilter debateViewFilter = new MOS.Filter.HisDebateViewFilter();
+                debateViewFilter.TREATMENT_ID = treatmentId;
+                var debateViews = new BackendAdapter(param).Get<List<V_HIS_DEBATE>>("api/HisDebate/GetView", ApiConsumers.MosConsumer, debateViewFilter, param);
+                if (debateViews != null && debateViews.Count > 0)
+                    debates = debateViews.Where(o => o.TRACKING_ID != null && trackingIds.Contains(o.TRACKING_ID ?? 0)).ToList();
+                #endregion
+
                 #region Mps000062
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_Treatment != null ? _Treatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
 
@@ -331,6 +340,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 listDosage,
                 selectedBedLog
                 );
+                mps000062RDO._Debates = debates;
                 Inventec.Common.Logging.LogSystem.Debug("KT ------------Truyen data MPS======-------------");
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;

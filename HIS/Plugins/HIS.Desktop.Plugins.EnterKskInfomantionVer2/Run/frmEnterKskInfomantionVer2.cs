@@ -1839,8 +1839,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// </summary>
         /// <summary>
         /// Tự động lấy kết quả CLS theo cấu hình dịch vụ đã lưu (frmAutoClsSetting, ControlState local):
-        /// với mỗi nhóm (Máu/Nước tiểu/CĐHA) truyền chuỗi serviceIds sang ContentSubclinical (headless),
-        /// nó lấy toàn bộ dịch vụ con CÓ KẾT QUẢ của các service đó và trả chuỗi (giống nhấn "+") -> điền ô.
+        /// với mỗi dòng cấu hình truyền chuỗi serviceIds sang ContentSubclinical (headless), nó lấy toàn bộ
+        /// dịch vụ con CÓ KẾT QUẢ của các service đó và trả chuỗi (giống nhấn "+") -> điền ô tương ứng.
+        /// Việc 56156: mở rộng từ 3 ô memo lên đủ các mục 1a/1b/1c/2/3/4/KSK định kỳ của tab Khám cận lâm sàng.
+        /// Chạy SAU cơ chế nhóm chỉ số cũ nên dòng nào có cấu hình dịch vụ thì kết quả theo dịch vụ ghi đè.
         /// </summary>
         private void AutoGetTestIndexByGroup()
         {
@@ -1848,21 +1850,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (currentServiceReq == null) return;
                 var csw = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
-                var states = csw.GetData("HIS.Desktop.Plugins.EnterKskInfomantionVer2")
+                var states = csw.GetData(frmAutoClsSetting.MODULE_LINK)
                     ?? new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
 
-                string bloodIds = GetAutoClsStateValue(states, "AutoCls_Blood");
-                string urineIds = GetAutoClsStateValue(states, "AutoCls_Urine");
-                string diimIds = GetAutoClsStateValue(states, "AutoCls_Diim");
-                Inventec.Common.Logging.LogSystem.Debug("AutoCls.Open: blood=[" + bloodIds + "] urine=[" + urineIds + "] diim=[" + diimIds + "]");
-
-                // (1) Ô RIÊNG (đường máu/ure/cre/BC/TC/GOT/GPT...) — vẫn dùng cơ chế nhóm chỉ số cũ.
+                // (1) Ô RIÊNG (đường máu/ure/cre/BC/TC/GOT/GPT...) — cơ chế nhóm chỉ số cũ giữ làm fallback
+                //     (chỉ điền ô trống); phải chạy TRƯỚC để cấu hình theo dịch vụ (nếu có) ghi đè được.
                 OpenTestIndexGroupHeadless();
 
-                // (2) 3 ô MEMO (công thức máu / nước tiểu / CĐHA) — cơ chế mới theo dịch vụ đã cấu hình.
-                OpenClsByServiceIds(bloodIds, txtTestBloodFormula2);
-                OpenClsByServiceIds(urineIds, txtTestUrineFormula2);
-                OpenClsByServiceIds(diimIds, txtResultDiim2);
+                // (2) Các ô theo dịch vụ đã cấu hình (key nào chưa cấu hình -> OpenClsByServiceIds tự bỏ qua).
+                var autoClsTargets = new[]
+                {
+                    new { Key = frmAutoClsSetting.KEY_BLOOD,              Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodFormula2 },   // 1a. Công thức máu
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_GLUCO,        Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodGluco2 },     // 1b. Đường máu
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_URE,          Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodUre2 },       // 1b. Urê
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_CREATININ,    Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodCreatinin2 }, // 1b. Creatinin
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_ASAT,         Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodAsat2 },      // 1b. ASAT (GOT)
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_ALAT,         Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodAlat2 },      // 1b. ALAT (GPT)
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_OTHER,        Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodOther2 },     // 1c. XN máu - Khác
+                    new { Key = frmAutoClsSetting.KEY_URINE,              Target = (DevExpress.XtraEditors.BaseEdit)txtTestUrineFormula2 },   // 2. XN nước tiểu
+                    new { Key = frmAutoClsSetting.KEY_DIIM,               Target = (DevExpress.XtraEditors.BaseEdit)txtResultDiim2 },         // 3. CĐHA - Kết quả
+                    new { Key = frmAutoClsSetting.KEY_OTHER_PARACLINICAL, Target = (DevExpress.XtraEditors.BaseEdit)txtResultSubclinical2 },  // 4. KQ khám CLS khác
+                    new { Key = frmAutoClsSetting.KEY_PERIODIC,           Target = (DevExpress.XtraEditors.BaseEdit)txtResultSubclinical2_2 },// KSK định kỳ - Kết quả
+                };
+                foreach (var item in autoClsTargets)
+                {
+                    string serviceIds = GetAutoClsStateValue(states, item.Key);
+                    Inventec.Common.Logging.LogSystem.Debug("AutoCls.Open: key=" + item.Key + " serviceIds=[" + serviceIds + "]");
+                    OpenClsByServiceIds(serviceIds, item.Target);
+                }
             }
             catch (Exception ex)
             {
@@ -1872,7 +1887,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         private string GetAutoClsStateValue(List<HIS.Desktop.Library.CacheClient.ControlStateRDO> states, string key)
         {
-            var it = states.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == "HIS.Desktop.Plugins.EnterKskInfomantionVer2");
+            var it = states.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == frmAutoClsSetting.MODULE_LINK);
             return it != null ? it.VALUE : null;
         }
 

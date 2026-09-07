@@ -1076,6 +1076,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             public Action<object, object> Set;
             public bool IsCData;
+            // Chỉ tiêu khai báo kiểu số (int/long/decimal…) cần đổi chuỗi trong thẻ XML sang đúng kiểu
+            // trước khi gán. null = giữ nguyên văn chuỗi (string).
+            public Func<string, object> Convert;
         }
 
         // Tra theo TÊN THẺ để mỗi dòng chỉ duyệt danh sách thẻ con đúng 1 lượt
@@ -1102,7 +1105,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     if (setMethod == null) continue;
 
                     bool isCData = prop.PropertyType == typeof(XmlCDataSection);
-                    if (!isCData && prop.PropertyType != typeof(string)) continue;
+
+                    // vCong46659 chỉ nhận string + CDATA nên MỌI chỉ tiêu khai báo kiểu số bị bỏ qua,
+                    // không bao giờ được gán → ô Excel ra giá trị mặc định của kiểu (0 hoặc rỗng):
+                    //   XML1: STT (int), SO_NGAY_DTRI (long)   XML3: STT (int), MA_PTTT (int)
+                    //   XML4/XML5: STT (int)                   XML6: 4 chỉ tiêu long?
+                    //   XML7: SO_NGAY_NGHI (int)
+                    // Bổ sung converter để các chỉ tiêu này đọc đúng giá trị trong thẻ XML.
+                    Func<string, object> convert = null;
+                    if (!isCData && prop.PropertyType != typeof(string))
+                    {
+                        convert = BuildRawConverter(prop.PropertyType);
+                        if (convert == null) continue;
+                    }
                     if (setters.ContainsKey(prop.Name)) continue;
 
                     var objParam = Expression.Parameter(typeof(object), "obj");
@@ -1115,11 +1130,34 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     setters.Add(prop.Name, new RawSetter
                     {
                         Set = Expression.Lambda<Action<object, object>>(body, objParam, valParam).Compile(),
-                        IsCData = isCData
+                        IsCData = isCData,
+                        Convert = convert
                     });
                 }
                 return setters;
             });
+        }
+
+        // Đổi nguyên văn chuỗi trong thẻ XML sang kiểu khai báo của property.
+        // Trả null khi thẻ rỗng hoặc không đổi được → giữ giá trị mặc định, KHÔNG ném exception
+        // để 1 thẻ sai định dạng không làm hỏng cả dòng.
+        private static Func<string, object> BuildRawConverter(Type propType)
+        {
+            Type target = Nullable.GetUnderlyingType(propType) ?? propType;
+            if (!typeof(IConvertible).IsAssignableFrom(target)) return null;
+
+            return text =>
+            {
+                if (string.IsNullOrWhiteSpace(text)) return null;
+                try
+                {
+                    return System.Convert.ChangeType(text.Trim(), target, CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    return null;
+                }
+            };
         }
 
         private static Func<object> GetRawFactory(Type t)
@@ -1221,7 +1259,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     alreadyAdvanced = true;
                 }
 
-                setter.Set(row, setter.IsCData ? (object)MakeCData(text) : text);
+                object value;
+                if (setter.IsCData) value = MakeCData(text);
+                else if (setter.Convert != null) value = setter.Convert(text);
+                else value = text;
+
+                // Chỉ tiêu số có thẻ rỗng/sai định dạng → bỏ qua, giữ giá trị mặc định của kiểu
+                if (value != null) setter.Set(row, value);
 
                 if (maLk == null && text.Length > 0
                     && string.Equals(name, "MA_LK", StringComparison.Ordinal))
