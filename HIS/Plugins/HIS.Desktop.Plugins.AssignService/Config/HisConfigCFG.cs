@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -113,6 +113,13 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         /// Khác 1 (hoặc không có key): giữ hành vi hiện tại (1 cột tích, phiếu được tích thì vừa ký vừa in)
         /// </summary>
         private const string CONFIG_KEY__IsSeparateSignAndPrint = "HIS.Desktop.Plugins.AssignService.IsSeparateSignAndPrint";
+
+        /// <summary>
+        /// In tem barcode truc tiep qua BarTender Engine.
+        /// 1: bang thiet lap in co them dong "In tem barcode" (gridView7_5) - tich chon thi khi luu in tem XN (Mps000423), GPBL (Mps000425).
+        /// Khac 1 (hoac khong khai bao): khong hien dong nay, giu nguyen hanh vi hien tai.
+        /// </summary>
+        internal const string CONFIG_KEY__IsPrintTemBarcodeBartender = "HIS.Desktop.Plugins.IsPrintTemBarcodeBartender";
 
         /// <summary>
         /// Hien thi thong bao xac nhan phong xu ly khi luu chi dinh dich vu ky thuat.
@@ -237,6 +244,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
 
         internal static string SuggestAssignServicesInfo;
         internal static bool IsSeparateSignAndPrint;
+        internal static bool IsPrintTemBarcodeBartender;
         internal static string IsWarningOption;
         internal static string UsageCheckInterval;
         internal static string ServicePatyForServicePackage;
@@ -348,6 +356,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 AllowAssignOxygen = GetValue(CONFIG_KEY_ALLOW_ASSIGN_OXYGEN) == GlobalVariables.CommonStringTrue;
                 SuggestAssignServicesInfo = GetValue(CONFIG_KEY__SuggestAssignServicesInfo);
                 IsSeparateSignAndPrint = GetValue(CONFIG_KEY__IsSeparateSignAndPrint) == GlobalVariables.CommonStringTrue;
+                IsPrintTemBarcodeBartender = GetValue(CONFIG_KEY__IsPrintTemBarcodeBartender) == GlobalVariables.CommonStringTrue;
                 IsConfirmExecuteRoomWhenSave = GetValue(CONFIG_KEY__ConfirmExecuteRoomWhenSave) == GlobalVariables.CommonStringTrue;
 
                 IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);

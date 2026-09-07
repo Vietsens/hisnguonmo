@@ -2276,6 +2276,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                         DelegateRunPrinter(PrintTypeCodeStore.PRINT_TYPE_CODE__IN__PHIEU_YEU_CAU_CHI_DINH_TONG_HOP__MPS000037, isSaveAndShow, previewTypeTH);
                                     }
                                 }
+
+                                // In tem barcode qua BarTender: hanh dong in thuan tuy, tich o cot Ky hoac In deu in ngay
+                                var phieuTemBarcode = this.lstLoaiPhieu.FirstOrDefault(o => (o.Check || o.Print) && o.ID == "gridView7_5");
+                                if (phieuTemBarcode != null)
+                                {
+                                    InTemBarcodeXN();
+                                    InTemBarcodeGpbl();
+                                }
                             }
                             else
                             {
@@ -2311,6 +2319,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     //if (chkSign.Checked == true) previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
                                     if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                     DelegateRunPrinter(PrintTypeCodeStore.PRINT_TYPE_CODE__IN__PHIEU_YEU_CAU_CHI_DINH_TONG_HOP__MPS000037, isSaveAndShow, previewType);
+                                }
+
+                                var checkTemBarcode = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_5");
+                                if (checkTemBarcode != null)
+                                {
+                                    InTemBarcodeXN();
+                                    InTemBarcodeGpbl();
                                 }
                             }
                         }

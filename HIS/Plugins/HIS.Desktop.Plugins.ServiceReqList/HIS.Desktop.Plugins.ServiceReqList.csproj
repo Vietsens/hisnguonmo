@@ -45,6 +45,15 @@
     <Reference Include="Bartender.PrintClient">
       <HintPath>..\..\..\..\LIB\WCF\BartenderClient\Bartender.PrintClient.dll</HintPath>
     </Reference>
+    <Reference Include="Bartender.PrintTemBloodServiceReq">
+      <HintPath>..\..\HIS.Desktop\bin\Debug\ReferencedAssemblies\Bartender.PrintTemBloodServiceReq.dll</HintPath>
+    </Reference>
+    <Reference Include="Bartender.PrintTemGpblServiceReq">
+      <HintPath>..\..\HIS.Desktop\bin\Debug\ReferencedAssemblies\Bartender.PrintTemGpblServiceReq.dll</HintPath>
+    </Reference>
+    <Reference Include="Bartender.PrintTemTestServiceReq">
+      <HintPath>..\..\HIS.Desktop\bin\Debug\ReferencedAssemblies\Bartender.PrintTemTestServiceReq.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Office.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -379,6 +388,9 @@
     </Compile>
     <Compile Include="frmTutorial.Designer.cs">
       <DependentUpon>frmTutorial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmServiceReqList__Plus__PrintTemBarcode.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="HisConfigCFG.cs" />
     <Compile Include="ModuleLinkString.cs" />
