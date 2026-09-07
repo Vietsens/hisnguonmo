@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
  * GNU General Public License for more details.
  *  
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using ACS.EFMODEL.DataModels;
@@ -340,9 +340,12 @@ namespace HIS.Desktop.Plugins.EmpUser
             else
                 updateDTOEmployee.DEPARTMENT_CODES = null;
 
-            // Việc 2965 - Khoa TT12 (ô text mới): lưu DEPARTMENT_CODES_XML12 = mã gõ tay, phân cách ';'
-            if (!string.IsNullOrWhiteSpace(cboDepartmentTT12.Text))
-                updateDTOEmployee.DEPARTMENT_CODES_XML12 = cboDepartmentTT12.Text.Trim();
+            // Việc 2965 - Khoa TT12: lưu DEPARTMENT_CODES_XML12 = mã gõ tay + mã BHYT của khoa đang tích ở combo.
+            // Tính lại bằng BuildDepartmentTT12Codes chứ KHÔNG đọc ô text: ô đó hiện TÊN khoa, và tích khoa ở combo
+            // mà ô text chưa kịp hiện chữ thì trước đây lưu ra null (tích xong bấm lưu vẫn không có gì trong cột).
+            string departmentCodesXml12 = BuildDepartmentTT12Codes();
+            if (!string.IsNullOrWhiteSpace(departmentCodesXml12))
+                updateDTOEmployee.DEPARTMENT_CODES_XML12 = departmentCodesXml12.Trim();
             else
                 updateDTOEmployee.DEPARTMENT_CODES_XML12 = null;
 
@@ -368,11 +371,22 @@ namespace HIS.Desktop.Plugins.EmpUser
             else
                 updateDTOEmployee.OTHER_SERVICE_CODES = null;
 
-            // Việc 2965 - Dịch vụ khác (ô text mới): lưu OTHER_SERVICE_CODES_XML12 = mã gõ tay, phân cách ';'
-            if (!string.IsNullOrWhiteSpace(cboOtherService.Text))
-                updateDTOEmployee.OTHER_SERVICE_CODES_XML12 = cboOtherService.Text.Trim();
+            // Việc 2965 - Dịch vụ khác: lưu OTHER_SERVICE_CODES_XML12 = mã gõ tay + mã BHYT của dịch vụ đang tích
+            string otherServiceCodesXml12 = BuildOtherServiceTT12Codes();
+            if (!string.IsNullOrWhiteSpace(otherServiceCodesXml12))
+                updateDTOEmployee.OTHER_SERVICE_CODES_XML12 = otherServiceCodesXml12.Trim();
             else
                 updateDTOEmployee.OTHER_SERVICE_CODES_XML12 = null;
+
+            // Việc 2965 - log đúng giá trị gửi lên API: nếu 2 cột XML12 dưới đây có mã mà DB vẫn rỗng thì lỗi ở backend/DB
+            Inventec.Common.Logging.LogSystem.Debug("Viec2965_Luu: LOGINNAME=" + txtLoginName.Text.Trim()
+                + ", SoKhoaTich=" + (deptCodesSeleteds == null ? 0 : deptCodesSeleteds.Count)
+                + ", SoDichVuTich=" + (srvCodesSeleteds == null ? 0 : srvCodesSeleteds.Count)
+                + ", O_KhoaTT12='" + (cboDepartmentTT12.Text ?? "") + "', O_DichVuKhac='" + (cboOtherService.Text ?? "") + "'"
+                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTOEmployee.DEPARTMENT_CODES), updateDTOEmployee.DEPARTMENT_CODES)
+                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTOEmployee.DEPARTMENT_CODES_XML12), updateDTOEmployee.DEPARTMENT_CODES_XML12)
+                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTOEmployee.OTHER_SERVICE_CODES), updateDTOEmployee.OTHER_SERVICE_CODES)
+                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTOEmployee.OTHER_SERVICE_CODES_XML12), updateDTOEmployee.OTHER_SERVICE_CODES_XML12));
 
             // Văn bản phân công
             if (!string.IsNullOrWhiteSpace(txtVBPC.Text))
@@ -877,13 +891,22 @@ namespace HIS.Desktop.Plugins.EmpUser
                     Inventec.Common.Logging.LogSystem.Debug(
                         "Viec2965_ChangedDataRow: LOGINNAME=" + (currentDataEmp.LOGINNAME ?? "") + ", EMPLOYEE_CODE=" + (currentDataEmp.EMPLOYEE_CODE ?? "")
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentDataEmp.DEPARTMENT_CODES_XML12), currentDataEmp.DEPARTMENT_CODES_XML12)
-                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentDataEmp.OTHER_SERVICE_CODES_XML12), currentDataEmp.OTHER_SERVICE_CODES_XML12));
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentDataEmp.OTHER_SERVICE_CODES_XML12), currentDataEmp.OTHER_SERVICE_CODES_XML12)
+                        // 2 cột của combo danh mục + khoa chính: để biết mã khoa/dịch vụ đang nằm ở cột nào khi 2 ô trên form trống.
+                        // KHÔNG gọi GetDepartmentTt12Source()/GetOtherServiceSource() ở đây: lần đầu là gọi API khoa
+                        // + lọc cả danh mục dịch vụ, chỉ để in log thì mỗi lần click nhân viên đầu tiên là chờ.
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentDataEmp.DEPARTMENT_CODES), currentDataEmp.DEPARTMENT_CODES)
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentDataEmp.OTHER_SERVICE_CODES), currentDataEmp.OTHER_SERVICE_CODES)
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentDataEmp.DEPARTMENT_ID), currentDataEmp.DEPARTMENT_ID)
+                        + ", SoKhoaDanhMuc=" + (_deptTt12Source == null ? "chua nap" : _deptTt12Source.Count.ToString())
+                        + ", SoDichVuDanhMuc=" + (_otherServiceSource == null ? "chua nap" : _otherServiceSource.Count.ToString()));
                     // === Hết log chứng minh ===
 
-                    // Việc 2965 - Dịch vụ khác (combobox cũ): nạp SERVICE_CODE từ OTHER_SERVICE_CODES
-                    filldatatocboSrvCodes(currentDataEmp);
-                    // Việc 2965 - Dịch vụ khác (ô text mới): nạp mã từ OTHER_SERVICE_CODES_XML12
+                    // Việc 2965 - Dịch vụ khác (ô text): nạp mã từ OTHER_SERVICE_CODES_XML12.
+                    // Phải gán TRƯỚC filldatatocboSrvCodes vì hàm đó đọc ô này rồi mới hiện tên dịch vụ đang tích.
                     cboOtherService.Text = currentDataEmp.OTHER_SERVICE_CODES_XML12 ?? string.Empty;
+                    // Việc 2965 - Dịch vụ khác (combobox): tích từ OTHER_SERVICE_CODES + OTHER_SERVICE_CODES_XML12
+                    filldatatocboSrvCodes(currentDataEmp);
 
                     // Văn bản phân công
                     txtVBPC.Text = currentDataEmp.ASSIGNMENT_DOCUMENT;
@@ -926,10 +949,11 @@ namespace HIS.Desktop.Plugins.EmpUser
                     cboBranch.EditValue = currentDataEmp.BRANCH_ID;
                     SetValueMediOrgCodes(this.cboMediOrgCodes, this.mediOrgSeleteds, BackendDataWorker.Get<HIS_MEDI_ORG>());
                     filldatatocboMediOrgCodes(currentDataEmp);
-                    // Việc 2965 - Khoa TT12 (combobox cũ): nạp DEPARTMENT_CODE từ DEPARTMENT_CODES
-                    filldatatocboDeptCodes(currentDataEmp);
-                    // Việc 2965 - Khoa TT12 (ô text mới): nạp mã từ DEPARTMENT_CODES_XML12
+                    // Việc 2965 - Khoa TT12 (ô text): nạp mã từ DEPARTMENT_CODES_XML12.
+                    // Phải gán TRƯỚC filldatatocboDeptCodes vì hàm đó đọc ô này rồi mới hiện tên khoa đang tích.
                     cboDepartmentTT12.Text = currentDataEmp.DEPARTMENT_CODES_XML12 ?? string.Empty;
+                    // Việc 2965 - Khoa TT12 (combobox): tích từ DEPARTMENT_CODES + DEPARTMENT_CODES_XML12
+                    filldatatocboDeptCodes(currentDataEmp);
 
                 }
                 txtLoginName.Focus();
@@ -1451,6 +1475,10 @@ namespace HIS.Desktop.Plugins.EmpUser
                 AddBhytColumn(cboPickerOtherService, "HEIN_SERVICE_BHYT_CODE", "Mã BHYT");
                 InitCheck(cboPickerOtherService, SelectionGrid__SrvCodes);
 
+                // 2 ô hiện TÊN khoa/dịch vụ: gõ tay xong rời ô thì tra về danh mục để tích lại combo (mã lưu DB lấy từ đó)
+                cboDepartmentTT12.Leave += new EventHandler(cboDepartmentTT12_Leave);
+                cboOtherService.Leave += new EventHandler(cboOtherService_Leave);
+
                 Inventec.Common.Logging.LogSystem.Debug("Viec2965_SourceCount: dept=" + GetDepartmentTt12Source().Count + ", service=" + GetOtherServiceSource().Count);
 
                 // Cơ sở KCB CGKT (single-select)
@@ -1614,6 +1642,145 @@ namespace HIS.Desktop.Plugins.EmpUser
                     this.deptCodesSeleteds.AddRange(sgSelectedNews);
                 }
                 this.cboPickerDepartmentTT12.Text = sb.ToString();
+                // Combo này là công cụ chọn nhanh: tích khoa thì hiện tên khoa sang ô "Khoa TT12"
+                SyncPickerToDepartmentTT12Text();
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>
+        /// Hiện TÊN khoa lên ô "Khoa TT12": tên khoa đang tích ở combo danh mục + chữ gõ tay không tra được khoa nào.
+        /// Ô này chỉ để đọc cho dễ; mã BHYT lưu xuống DEPARTMENT_CODES_XML12 do BuildDepartmentTT12Codes tính riêng.
+        /// </summary>
+        private void SyncPickerToDepartmentTT12Text()
+        {
+            try
+            {
+                var listAll = GetDepartmentTt12Source();
+                List<string> result = new List<string>();
+                HashSet<string> seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                // Chữ gõ tay không tra được khoa nào -> giữ nguyên, không làm mất cái người dùng đã nhập
+                foreach (var raw in (cboDepartmentTT12.Text ?? string.Empty).Split(';'))
+                {
+                    string text = raw.Trim();
+                    if (text.Length == 0) continue;
+                    if (FindDepartmentByCodeOrName(text, listAll) != null) continue;
+                    if (seen.Add(text)) result.Add(text);
+                }
+
+                foreach (var dept in this.deptCodesSeleteds ?? new List<HIS_DEPARTMENT>())
+                {
+                    if (dept == null) continue;
+                    string name = (dept.DEPARTMENT_NAME ?? string.Empty).Trim();
+                    // Khoa không có tên trong danh mục thì đành hiện mã, còn hơn để trống
+                    if (name.Length == 0) name = (dept.DEPARTMENT_CODE ?? string.Empty).Trim();
+                    if (name.Length == 0) continue;
+                    if (seen.Add(name)) result.Add(name);
+                }
+
+                cboDepartmentTT12.Text = string.Join(";", result);
+                this.lastRenderedDeptTT12Text = cboDepartmentTT12.Text;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>
+        /// Dựng chuỗi mã lưu vào DEPARTMENT_CODES_XML12 = mã gõ tay ở ô "Khoa TT12" (chữ không tra được trong danh mục)
+        /// + BHYT_CODE của khoa đang tích ở combo danh mục (khoa chưa có mã BHYT thì lấy DEPARTMENT_CODE), lọc trùng.
+        /// Lúc lưu gọi lại hàm này thay vì đọc ô text, vì ô text hiện TÊN khoa còn cột DB phải là MÃ.
+        /// </summary>
+        private string BuildDepartmentTT12Codes()
+        {
+            try
+            {
+                var listAll = GetDepartmentTt12Source();
+                List<string> result = new List<string>();
+                HashSet<string> seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                // Ô "Khoa TT12" hiện TÊN khoa nên chỉ tách bằng ';' (tên khoa có thể chứa dấu ',').
+                // Chữ tra được khoa (theo tên hoặc mã) -> lấy mã BHYT ở vòng dưới; tra không được -> giữ nguyên chữ.
+                foreach (var raw in (cboDepartmentTT12.Text ?? string.Empty).Split(';'))
+                {
+                    string code = raw.Trim();
+                    if (code.Length == 0) continue;
+                    if (FindDepartmentByCodeOrName(code, listAll) != null) continue;
+                    if (seen.Add(code)) result.Add(code);
+                }
+
+                if (this.deptCodesSeleteds != null)
+                {
+                    foreach (var dept in this.deptCodesSeleteds)
+                    {
+                        if (dept == null) continue;
+                        string code = !string.IsNullOrWhiteSpace(dept.BHYT_CODE)
+                            ? dept.BHYT_CODE.Trim()
+                            : (dept.DEPARTMENT_CODE ?? string.Empty).Trim();
+                        if (code.Length == 0) continue;
+                        if (seen.Add(code)) result.Add(code);
+                    }
+                }
+
+                return string.Join(";", result);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return cboDepartmentTT12.Text == null ? string.Empty : cboDepartmentTT12.Text.Trim();
+            }
+        }
+
+        /// <summary>
+        /// Tra khoa theo chữ trong ô "Khoa TT12": DEPARTMENT_CODE, rồi BHYT_CODE, rồi DEPARTMENT_NAME.
+        /// Cần tra được cả tên vì ô đó hiện tên khoa, người dùng vẫn có thể gõ mã.
+        /// </summary>
+        private HIS_DEPARTMENT FindDepartmentByCodeOrName(string text, List<HIS_DEPARTMENT> departments)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(text) || departments == null) return null;
+                string trimmed = text.Trim();
+
+                var dept = FindDepartmentByAnyCode(trimmed, departments);
+                if (dept != null) return dept;
+
+                return departments.FirstOrDefault(o => o.DEPARTMENT_NAME != null
+                    && string.Equals(o.DEPARTMENT_NAME.Trim(), trimmed, StringComparison.OrdinalIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>Gõ tay vào ô "Khoa TT12" rồi rời ô: tra tên/mã về danh mục để tích lại combo, sau đó hiện lại tên.</summary>
+        private void cboDepartmentTT12_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                // Leave nổ cả khi chỉ Tab/click đi qua ô. Chữ không đổi thì không tra lại danh mục,
+                // không tích lại combo -> khỏi làm lại việc nặng mỗi lần con trỏ rời ô.
+                string currentText = cboDepartmentTT12.Text ?? string.Empty;
+                if (string.Equals(currentText, this.lastRenderedDeptTT12Text ?? string.Empty, StringComparison.Ordinal))
+                    return;
+
+                var listAll = GetDepartmentTt12Source();
+                List<HIS_DEPARTMENT> selecteds = new List<HIS_DEPARTMENT>();
+                HashSet<string> seenId = new HashSet<string>();
+
+                foreach (var raw in currentText.Split(';'))
+                {
+                    string text = raw.Trim();
+                    if (text.Length == 0) continue;
+                    var dept = FindDepartmentByCodeOrName(text, listAll);
+                    if (dept == null || !seenId.Add(dept.ID.ToString())) continue;
+                    selecteds.Add(dept);
+                }
+
+                this.deptCodesSeleteds = selecteds;
+                SetValueDeptCodes(this.cboPickerDepartmentTT12, this.deptCodesSeleteds, listAll);
+                SyncPickerToDepartmentTT12Text();
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
         }
@@ -1643,19 +1810,165 @@ namespace HIS.Desktop.Plugins.EmpUser
                     this.srvCodesSeleteds.AddRange(sgSelectedNews);
                 }
                 this.cboPickerOtherService.Text = sb.ToString();
+                // Tích dịch vụ thì hiện tên dịch vụ sang ô "Dịch vụ khác"
+                SyncPickerToOtherServiceText();
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
         }
+
+        /// <summary>
+        /// Hiện TÊN dịch vụ lên ô "Dịch vụ khác" + chữ gõ tay không tra được dịch vụ nào.
+        /// Mã BHYT lưu xuống OTHER_SERVICE_CODES_XML12 do BuildOtherServiceTT12Codes tính riêng.
+        /// </summary>
+        private void SyncPickerToOtherServiceText()
+        {
+            try
+            {
+                var listAll = GetOtherServiceSource();
+                List<string> result = new List<string>();
+                HashSet<string> seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var raw in (cboOtherService.Text ?? string.Empty).Split(';'))
+                {
+                    string text = raw.Trim();
+                    if (text.Length == 0) continue;
+                    if (FindServiceByCodeOrName(text, listAll) != null) continue;
+                    if (seen.Add(text)) result.Add(text);
+                }
+
+                foreach (var srv in this.srvCodesSeleteds ?? new List<HIS_SERVICE>())
+                {
+                    if (srv == null) continue;
+                    string name = (srv.SERVICE_NAME ?? string.Empty).Trim();
+                    if (name.Length == 0) name = (srv.SERVICE_CODE ?? string.Empty).Trim();
+                    if (name.Length == 0) continue;
+                    if (seen.Add(name)) result.Add(name);
+                }
+
+                cboOtherService.Text = string.Join(";", result);
+                this.lastRenderedOtherServiceText = cboOtherService.Text;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>
+        /// Dựng chuỗi mã lưu vào OTHER_SERVICE_CODES_XML12 = mã gõ tay ở ô "Dịch vụ khác" (chữ không tra được trong
+        /// danh mục) + HEIN_SERVICE_BHYT_CODE của dịch vụ đang tích (chưa có mã BHYT thì lấy SERVICE_CODE), lọc trùng.
+        /// </summary>
+        private string BuildOtherServiceTT12Codes()
+        {
+            try
+            {
+                var listAll = GetOtherServiceSource();
+                List<string> result = new List<string>();
+                HashSet<string> seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                // Ô "Dịch vụ khác" hiện TÊN dịch vụ nên chỉ tách bằng ';' (tên dịch vụ hay có dấu ',')
+                foreach (var raw in (cboOtherService.Text ?? string.Empty).Split(';'))
+                {
+                    string code = raw.Trim();
+                    if (code.Length == 0) continue;
+                    if (FindServiceByCodeOrName(code, listAll) != null) continue;
+                    if (seen.Add(code)) result.Add(code);
+                }
+
+                if (this.srvCodesSeleteds != null)
+                {
+                    foreach (var srv in this.srvCodesSeleteds)
+                    {
+                        if (srv == null) continue;
+                        string code = !string.IsNullOrWhiteSpace(srv.HEIN_SERVICE_BHYT_CODE)
+                            ? srv.HEIN_SERVICE_BHYT_CODE.Trim()
+                            : (srv.SERVICE_CODE ?? string.Empty).Trim();
+                        if (code.Length == 0) continue;
+                        if (seen.Add(code)) result.Add(code);
+                    }
+                }
+
+                return string.Join(";", result);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return cboOtherService.Text == null ? string.Empty : cboOtherService.Text.Trim();
+            }
+        }
+
+        /// <summary>
+        /// Tra dịch vụ theo chữ trong ô "Dịch vụ khác": SERVICE_CODE, rồi HEIN_SERVICE_BHYT_CODE, rồi SERVICE_NAME.
+        /// </summary>
+        private HIS_SERVICE FindServiceByCodeOrName(string text, List<HIS_SERVICE> services)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(text) || services == null) return null;
+                string trimmed = text.Trim();
+
+                var srv = services.FirstOrDefault(o => o.SERVICE_CODE != null
+                    && string.Equals(o.SERVICE_CODE.Trim(), trimmed, StringComparison.OrdinalIgnoreCase));
+                if (srv != null) return srv;
+
+                srv = services.FirstOrDefault(o => o.HEIN_SERVICE_BHYT_CODE != null
+                    && string.Equals(o.HEIN_SERVICE_BHYT_CODE.Trim(), trimmed, StringComparison.OrdinalIgnoreCase));
+                if (srv != null) return srv;
+
+                return services.FirstOrDefault(o => o.SERVICE_NAME != null
+                    && string.Equals(o.SERVICE_NAME.Trim(), trimmed, StringComparison.OrdinalIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>Gõ tay vào ô "Dịch vụ khác" rồi rời ô: tra tên/mã về danh mục để tích lại combo, sau đó hiện lại tên.</summary>
+        private void cboOtherService_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                // Chữ không đổi thì bỏ qua: danh mục dịch vụ rất lớn, tra lại + tích lại combo là chậm thấy rõ
+                string currentText = cboOtherService.Text ?? string.Empty;
+                if (string.Equals(currentText, this.lastRenderedOtherServiceText ?? string.Empty, StringComparison.Ordinal))
+                    return;
+
+                var listAll = GetOtherServiceSource();
+                List<HIS_SERVICE> selecteds = new List<HIS_SERVICE>();
+                HashSet<string> seenId = new HashSet<string>();
+
+                foreach (var raw in currentText.Split(';'))
+                {
+                    string text = raw.Trim();
+                    if (text.Length == 0) continue;
+                    var srv = FindServiceByCodeOrName(text, listAll);
+                    if (srv == null || !seenId.Add(srv.ID.ToString())) continue;
+                    selecteds.Add(srv);
+                }
+
+                this.srvCodesSeleteds = selecteds;
+                SetValueSrvCodes(this.cboPickerOtherService, this.srvCodesSeleteds, listAll);
+                SyncPickerToOtherServiceText();
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        // Chữ cuối cùng đã hiện lên 2 ô, để handler Leave biết người dùng có sửa gì không mà bỏ qua việc nặng
+        private string lastRenderedDeptTT12Text;
+        private string lastRenderedOtherServiceText;
 
         /// <summary>Nạp DataSource + tích chọn sẵn khoa cho combo Khoa TT12.</summary>
         private void SetValueDeptCodes(GridLookUpEdit cbo, List<HIS_DEPARTMENT> listSelect, List<HIS_DEPARTMENT> listAll)
         {
             try
             {
+                List<HIS_DEPARTMENT> selectFilter = new List<HIS_DEPARTMENT>();
                 if (listSelect != null)
                 {
-                    cbo.Properties.DataSource = listAll;
-                    var selectFilter = listAll.Where(o => listSelect.Exists(p => o.ID == p.ID)).ToList();
+                    // Chỉ gán DataSource khi đổi danh sách (xem chú thích ở SetValueSrvCodes)
+                    if (!ReferenceEquals(cbo.Properties.DataSource, listAll))
+                        cbo.Properties.DataSource = listAll;
+                    HashSet<long> selectedIds = new HashSet<long>(listSelect.Select(o => o.ID));
+                    selectFilter = listAll.Where(o => selectedIds.Contains(o.ID)).ToList();
                     GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
                     if (gridCheckMark != null)
                     {
@@ -1663,7 +1976,11 @@ namespace HIS.Desktop.Plugins.EmpUser
                         gridCheckMark.Selection.AddRange(selectFilter);
                     }
                 }
-                cbo.Text = null;
+                // Hiện lại mã khoa đang tích. Trước đây gán Text = null nên hàm này gọi sau filldatatocboDeptCodes
+                // (dòng 2603 sau ChangedDataRow) là xoá sạch chữ vừa hiện -> combo Khoa TT12 trông như trống.
+                cbo.Text = string.Join(";", selectFilter
+                    .Where(o => !string.IsNullOrWhiteSpace(o.DEPARTMENT_CODE))
+                    .Select(o => o.DEPARTMENT_CODE.Trim()));
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -1673,10 +1990,16 @@ namespace HIS.Desktop.Plugins.EmpUser
         {
             try
             {
+                List<HIS_SERVICE> selectFilter = new List<HIS_SERVICE>();
                 if (listSelect != null)
                 {
-                    cbo.Properties.DataSource = listAll;
-                    var selectFilter = listAll.Where(o => listSelect.Exists(p => o.ID == p.ID)).ToList();
+                    // Danh mục dịch vụ vài chục nghìn dòng: chỉ gán DataSource khi thật sự đổi danh sách,
+                    // gán lại là DevExpress bind lại cả lưới -> mỗi lần mở/rời ô là treo vài giây
+                    if (!ReferenceEquals(cbo.Properties.DataSource, listAll))
+                        cbo.Properties.DataSource = listAll;
+                    // Lọc theo HashSet ID thay cho listSelect.Exists lồng trong Where (O(n*m) -> O(n))
+                    HashSet<long> selectedIds = new HashSet<long>(listSelect.Select(o => o.ID));
+                    selectFilter = listAll.Where(o => selectedIds.Contains(o.ID)).ToList();
                     GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
                     if (gridCheckMark != null)
                     {
@@ -1684,7 +2007,10 @@ namespace HIS.Desktop.Plugins.EmpUser
                         gridCheckMark.Selection.AddRange(selectFilter);
                     }
                 }
-                cbo.Text = null;
+                // Hiện lại mã dịch vụ đang tích (dòng 2604 gọi sau filldatatocboSrvCodes, gán null là xoá sạch chữ)
+                cbo.Text = string.Join(";", selectFilter
+                    .Where(o => !string.IsNullOrWhiteSpace(o.SERVICE_CODE))
+                    .Select(o => o.SERVICE_CODE.Trim()));
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -1697,29 +2023,45 @@ namespace HIS.Desktop.Plugins.EmpUser
                 var listAll = GetDepartmentTt12Source();
                 deptCodesSeleteds = new List<HIS_DEPARTMENT>();
                 cboPickerDepartmentTT12.Text = "";
-                // Việc 2965: combobox nạp lại từ cột cũ DEPARTMENT_CODES (độc lập với ô text XML12)
+                List<string> displayText = new List<string>();
+                HashSet<string> seenId = new HashSet<string>();
+
+                // Việc 2965: combobox nạp lại từ cột cũ DEPARTMENT_CODES
                 if (data != null && !string.IsNullOrWhiteSpace(data.DEPARTMENT_CODES))
                 {
-                    List<string> displayText = new List<string>();
-                    HashSet<string> seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                     foreach (var code in data.DEPARTMENT_CODES.Split(';'))
                     {
                         string trimmed = code.Trim();
-                        if (trimmed.Length == 0 || !seen.Add(trimmed)) continue;
-                        var dept = listAll.FirstOrDefault(o => o.DEPARTMENT_CODE != null && o.DEPARTMENT_CODE.Trim() == trimmed);
-                        if (dept != null)
-                        {
-                            deptCodesSeleteds.Add(dept);
-                            displayText.Add(trimmed);
-                        }
+                        if (trimmed.Length == 0) continue;
+                        // Không phân biệt hoa/thường, giống đường tra cứu lúc xuất XML TT12
+                        var dept = listAll.FirstOrDefault(o => o.DEPARTMENT_CODE != null
+                            && string.Equals(o.DEPARTMENT_CODE.Trim(), trimmed, StringComparison.OrdinalIgnoreCase));
+                        if (dept == null || !seenId.Add(dept.ID.ToString())) continue;
+                        deptCodesSeleteds.Add(dept);
+                        displayText.Add((dept.DEPARTMENT_CODE ?? string.Empty).Trim());
                     }
-                    SetValueDeptCodes(this.cboPickerDepartmentTT12, this.deptCodesSeleteds, listAll);
-                    cboPickerDepartmentTT12.Text = string.Join(";", displayText);
                 }
-                else
+
+                // Nạp thêm khoa gõ ở ô "Khoa TT12" (DEPARTMENT_CODES_XML12) để combo hiện đúng khoa mà XML TT12 xuất ra.
+                // Nhân viên tạo bằng Nhập khẩu chỉ có cột này (không có DEPARTMENT_CODES) nên trước đây combo luôn trống.
+                if (data != null && !string.IsNullOrWhiteSpace(data.DEPARTMENT_CODES_XML12))
                 {
-                    SetValueDeptCodes(this.cboPickerDepartmentTT12, this.deptCodesSeleteds, listAll);
+                    foreach (var code in data.DEPARTMENT_CODES_XML12.Split(new[] { ';', ',', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        string trimmed = code.Trim();
+                        if (trimmed.Length == 0) continue;
+                        var dept = FindDepartmentByCodeOrName(trimmed, listAll);
+                        if (dept == null || !seenId.Add(dept.ID.ToString())) continue;
+                        deptCodesSeleteds.Add(dept);
+                        displayText.Add((dept.DEPARTMENT_CODE ?? string.Empty).Trim());
+                    }
                 }
+
+                SetValueDeptCodes(this.cboPickerDepartmentTT12, this.deptCodesSeleteds, listAll);
+                cboPickerDepartmentTT12.Text = string.Join(";", displayText);
+                // Khoa chọn bằng combo được lưu ở DEPARTMENT_CODES, ô "Khoa TT12" chỉ đọc DEPARTMENT_CODES_XML12
+                // nên trước đây mở nhân viên lên là ô trống dù XML TT12 vẫn có khoa. Hiện tên khoa đang tích vào ô.
+                SyncPickerToDepartmentTT12Text();
             }
             catch (Exception ex) { LogSystem.Error(ex); }
         }
@@ -1732,29 +2074,44 @@ namespace HIS.Desktop.Plugins.EmpUser
                 var listAll = GetOtherServiceSource();
                 srvCodesSeleteds = new List<HIS_SERVICE>();
                 cboPickerOtherService.Text = "";
-                // Việc 2965: combobox nạp lại từ cột cũ OTHER_SERVICE_CODES (độc lập với ô text XML12)
+                List<string> displayText = new List<string>();
+                HashSet<string> seenId = new HashSet<string>();
+
+                // Việc 2965: combobox nạp lại từ cột cũ OTHER_SERVICE_CODES
                 if (data != null && !string.IsNullOrWhiteSpace(data.OTHER_SERVICE_CODES))
                 {
-                    List<string> displayText = new List<string>();
-                    HashSet<string> seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                     foreach (var code in data.OTHER_SERVICE_CODES.Split(';'))
                     {
                         string trimmed = code.Trim();
-                        if (trimmed.Length == 0 || !seen.Add(trimmed)) continue;
-                        var srv = listAll.FirstOrDefault(o => o.SERVICE_CODE != null && o.SERVICE_CODE.Trim() == trimmed);
-                        if (srv != null)
-                        {
-                            srvCodesSeleteds.Add(srv);
-                            displayText.Add(trimmed);
-                        }
+                        if (trimmed.Length == 0) continue;
+                        var srv = listAll.FirstOrDefault(o => o.SERVICE_CODE != null
+                            && string.Equals(o.SERVICE_CODE.Trim(), trimmed, StringComparison.OrdinalIgnoreCase));
+                        if (srv == null || !seenId.Add(srv.ID.ToString())) continue;
+                        srvCodesSeleteds.Add(srv);
+                        displayText.Add((srv.SERVICE_CODE ?? string.Empty).Trim());
                     }
-                    SetValueSrvCodes(this.cboPickerOtherService, this.srvCodesSeleteds, listAll);
-                    cboPickerOtherService.Text = string.Join(";", displayText);
                 }
-                else
+
+                // Nạp thêm dịch vụ gõ ở ô "Dịch vụ khác" (OTHER_SERVICE_CODES_XML12): tra theo SERVICE_CODE,
+                // không thấy thì tra theo HEIN_SERVICE_BHYT_CODE (ô này chứa mã BHYT theo mẫu TT12)
+                if (data != null && !string.IsNullOrWhiteSpace(data.OTHER_SERVICE_CODES_XML12))
                 {
-                    SetValueSrvCodes(this.cboPickerOtherService, this.srvCodesSeleteds, listAll);
+                    foreach (var code in data.OTHER_SERVICE_CODES_XML12.Split(new[] { ';', ',', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        string trimmed = code.Trim();
+                        if (trimmed.Length == 0) continue;
+                        var srv = FindServiceByCodeOrName(trimmed, listAll);
+                        if (srv == null || !seenId.Add(srv.ID.ToString())) continue;
+                        srvCodesSeleteds.Add(srv);
+                        displayText.Add((srv.SERVICE_CODE ?? string.Empty).Trim());
+                    }
                 }
+
+                SetValueSrvCodes(this.cboPickerOtherService, this.srvCodesSeleteds, listAll);
+                cboPickerOtherService.Text = string.Join(";", displayText);
+                // Dịch vụ chọn bằng combo được lưu ở OTHER_SERVICE_CODES, ô "Dịch vụ khác" chỉ đọc OTHER_SERVICE_CODES_XML12
+                // nên trước đây mở nhân viên lên là ô trống. Hiện tên dịch vụ đang tích vào ô.
+                SyncPickerToOtherServiceText();
             }
             catch (Exception ex) { LogSystem.Error(ex); }
         }
@@ -1810,6 +2167,8 @@ namespace HIS.Desktop.Plugins.EmpUser
                     if (gridCheckMark != null) gridCheckMark.ClearSelection(cboPickerDepartmentTT12.Properties.View);
                     this.deptCodesSeleteds = new List<HIS_DEPARTMENT>();
                     cboPickerDepartmentTT12.EditValue = null;
+                    // Bỏ hết tick thì tên các khoa đó cũng phải rời khỏi ô "Khoa TT12"
+                    SyncPickerToDepartmentTT12Text();
                     cboPickerDepartmentTT12.Focus();
                 }
             }
@@ -1827,6 +2186,8 @@ namespace HIS.Desktop.Plugins.EmpUser
                     if (gridCheckMark != null) gridCheckMark.ClearSelection(cboPickerOtherService.Properties.View);
                     this.srvCodesSeleteds = new List<HIS_SERVICE>();
                     cboPickerOtherService.EditValue = null;
+                    // Bỏ hết tick thì tên các dịch vụ đó cũng phải rời khỏi ô "Dịch vụ khác"
+                    SyncPickerToOtherServiceText();
                     cboPickerOtherService.Focus();
                 }
             }
@@ -4407,7 +4768,10 @@ namespace HIS.Desktop.Plugins.EmpUser
                             for (int j = parts.Length - 1; j >= idx; j--)
                             {
                                 string candidate = string.Join(";", parts, idx, j - idx + 1).Trim();
-                                var dept = departments.FirstOrDefault(o => o.DEPARTMENT_CODE == candidate);
+                                // So khớp giống đường nạp combo: Trim cả 2 phía + không phân biệt hoa/thường,
+                                // nếu không khoa có mã thừa khoảng trắng/khác hoa-thường bị bỏ âm thầm (mất cả mã và tên)
+                                var dept = departments.FirstOrDefault(o => o.DEPARTMENT_CODE != null
+                                    && string.Equals(o.DEPARTMENT_CODE.Trim(), candidate, StringComparison.OrdinalIgnoreCase));
                                 if (dept != null)
                                 {
                                     employeeDepartments.Add(dept);
@@ -4416,7 +4780,12 @@ namespace HIS.Desktop.Plugins.EmpUser
                                     break;
                                 }
                             }
-                            if (!found) idx++;
+                            if (!found)
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn("XuatXmlTT12: ma khoa '" + (parts[idx] ?? string.Empty).Trim()
+                                    + "' trong DEPARTMENT_CODES khong co trong danh muc khoa (nhan vien " + (employee.TDL_USERNAME ?? string.Empty) + ")");
+                                idx++;
+                            }
                         }
                     }
                     var branch = branches.FirstOrDefault(o => o.ID == employee.BRANCH_ID);
@@ -4427,43 +4796,58 @@ namespace HIS.Desktop.Plugins.EmpUser
                     // 1. STT
                     xmlTT12.STT = count;
 
-                    // 2. MA_KHOA: BHYT_CODE (HIS_DEPARTMENT theo DEPARTMENT_CODES) + ";" + DEPARTMENT_CODES_XML12, lọc trùng mã.
-                    //    Nếu không có cả DEPARTMENT_CODES và DEPARTMENT_CODES_XML12 thì dùng DEPARTMENT_ID.
+                    // 2 + 3. MA_KHOA / TEN_KHOA: gom thành từng CẶP (mã, tên) rồi lọc trùng MỘT LẦN theo mã.
+                    //    => 2 thẻ luôn cùng số phần tử và cùng thứ tự: khoa thứ n của MA_KHOA ứng với tên thứ n của TEN_KHOA.
+                    //    Trước đây MA_KHOA lọc trùng theo mã còn TEN_KHOA lọc trùng theo tên, và mã không tra được
+                    //    thì MA_KHOA giữ nguyên nhưng TEN_KHOA bỏ qua -> sinh ra lỗi "có mã khoa mà không có tên khoa".
+                    List<string> maKhoaList = new List<string>();
+                    List<string> tenKhoaList = new List<string>();
+                    HashSet<string> maKhoaSeen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
                     bool hasDepartmentCodes = !string.IsNullOrWhiteSpace(employee.DEPARTMENT_CODES);
                     bool hasDepartmentCodesXml12 = !string.IsNullOrWhiteSpace(employee.DEPARTMENT_CODES_XML12);
                     if (!hasDepartmentCodes && !hasDepartmentCodesXml12)
                     {
+                        // Không nhập khoa nào ở 2 ô Khoa TT12 -> lấy khoa chính của nhân viên (DEPARTMENT_ID)
                         var deptById = departments.FirstOrDefault(o => o.ID == employee.DEPARTMENT_ID);
                         if (deptById != null)
+                        {
                             employeeDepartments.Add(deptById);
-                        xmlTT12.MA_KHOA = deptById != null ? (deptById.BHYT_CODE ?? string.Empty) : string.Empty;
+                            AddDepartmentCodeName(maKhoaList, tenKhoaList, maKhoaSeen, deptById, null);
+                        }
                     }
                     else
                     {
-                        // BHYT_CODE (theo DEPARTMENT_CODES) + ";" + Khoa TT12 (tra danh mục -> BHYT nếu khớp, không thì giữ nguyên), lọc trùng.
-                        // Khoa nào có mã BHYT -> lấy mã BHYT; khoa chưa có mã BHYT -> giữ nguyên DEPARTMENT_CODE (KHÔNG rớt khoa).
-                        string bhytCodeFromDepartments = string.Join(";", employeeDepartments
-                            .Select(o => !string.IsNullOrWhiteSpace(o.BHYT_CODE) ? o.BHYT_CODE : (o.DEPARTMENT_CODE ?? string.Empty))
-                            .Where(c => !string.IsNullOrWhiteSpace(c)));
-                        xmlTT12.MA_KHOA = MergeCodesDistinct(bhytCodeFromDepartments,
-                            ResolveDepartmentCodesToBhyt(employee.DEPARTMENT_CODES_XML12, departments));
-                    }
+                        // Khoa tích chọn từ combo (DEPARTMENT_CODES): đã tra được bản ghi khoa nên có sẵn mã BHYT + tên
+                        foreach (var deptItem in employeeDepartments)
+                        {
+                            AddDepartmentCodeName(maKhoaList, tenKhoaList, maKhoaSeen, deptItem, null);
+                        }
 
-                    // 3. TEN_KHOA: tên khoa từ combo (DEPARTMENT_CODES) + tên khoa khớp danh mục từ ô Khoa TT12 (DEPARTMENT_CODES_XML12), lọc trùng.
-                    List<string> tenKhoaList = new List<string>();
-                    foreach (var deptItem in employeeDepartments)
-                    {
-                        string name = deptItem.DEPARTMENT_NAME ?? string.Empty;
-                        if (!string.IsNullOrWhiteSpace(name)
-                            && !tenKhoaList.Any(x => string.Equals(x, name, StringComparison.OrdinalIgnoreCase)))
-                            tenKhoaList.Add(name);
+                        // Khoa gõ tay ở ô "Khoa TT12" (DEPARTMENT_CODES_XML12): tra danh mục theo DEPARTMENT_CODE,
+                        // không thấy thì tra tiếp theo BHYT_CODE (người dùng/nhập khẩu thường gõ mã BHYT theo mẫu TT12)
+                        foreach (var raw in (employee.DEPARTMENT_CODES_XML12 ?? string.Empty)
+                            .Split(new[] { ';', ',', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            string code = raw.Trim();
+                            if (code.Length == 0) continue;
+
+                            var dept = FindDepartmentByAnyCode(code, departments);
+                            if (dept != null)
+                            {
+                                AddDepartmentCodeName(maKhoaList, tenKhoaList, maKhoaSeen, dept, null);
+                            }
+                            else
+                            {
+                                // Không tra được trong danh mục: giữ nguyên mã đã nhập (KHÔNG rớt khoa) và ghi log để sửa danh mục
+                                AddDepartmentCodeName(maKhoaList, tenKhoaList, maKhoaSeen, null, code);
+                                Inventec.Common.Logging.LogSystem.Warn("XuatXmlTT12: khong tra duoc ten khoa cho ma '" + code
+                                    + "' (nhan vien " + (employee.TDL_USERNAME ?? string.Empty)
+                                    + "), kiem tra DEPARTMENT_CODE/BHYT_CODE trong danh muc khoa.");
+                            }
+                        }
                     }
-                    foreach (var name in ResolveDepartmentCodesToNames(employee.DEPARTMENT_CODES_XML12, departments))
-                    {
-                        if (!string.IsNullOrWhiteSpace(name)
-                            && !tenKhoaList.Any(x => string.Equals(x, name, StringComparison.OrdinalIgnoreCase)))
-                            tenKhoaList.Add(name);
-                    }
+                    xmlTT12.MA_KHOA = string.Join(";", maKhoaList);
                     xmlTT12.TEN_KHOA = string.Join(";", tenKhoaList);
 
                     // 4. HO_TEN
@@ -4620,57 +5004,64 @@ namespace HIS.Desktop.Plugins.EmpUser
         /// Ví dụ: "K01;K02" + "K02;K03" => "K01;K02;K03".
         /// </summary>
         /// <summary>
-        /// Lấy tên khoa (DEPARTMENT_NAME) cho các mã khoa khớp danh mục (theo DEPARTMENT_CODE).
-        /// Mã không khớp danh mục -> bỏ qua (không có tên). Dùng cho TEN_KHOA.
+        /// Tra khoa trong danh mục theo mã người dùng nhập ở ô "Khoa TT12": ưu tiên DEPARTMENT_CODE,
+        /// không thấy thì tra theo BHYT_CODE (mẫu TT12 dùng mã khoa BHYT nên người dùng hay gõ mã BHYT).
+        /// So sánh Trim 2 phía + không phân biệt hoa/thường.
         /// </summary>
-        private List<string> ResolveDepartmentCodesToNames(string departmentCodes, List<HIS_DEPARTMENT> departments)
+        private HIS_DEPARTMENT FindDepartmentByAnyCode(string code, List<HIS_DEPARTMENT> departments)
         {
-            List<string> result = new List<string>();
             try
             {
-                if (string.IsNullOrWhiteSpace(departmentCodes) || departments == null) return result;
-                foreach (var raw in departmentCodes.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    string code = raw.Trim();
-                    if (code.Length == 0) continue;
-                    var dept = departments.FirstOrDefault(o => o.DEPARTMENT_CODE == code);
-                    if (dept != null && !string.IsNullOrWhiteSpace(dept.DEPARTMENT_NAME))
-                        result.Add(dept.DEPARTMENT_NAME);
-                }
+                if (string.IsNullOrWhiteSpace(code) || departments == null) return null;
+                string trimmed = code.Trim();
+
+                var dept = departments.FirstOrDefault(o => o.DEPARTMENT_CODE != null
+                    && string.Equals(o.DEPARTMENT_CODE.Trim(), trimmed, StringComparison.OrdinalIgnoreCase));
+                if (dept != null) return dept;
+
+                return departments.FirstOrDefault(o => o.BHYT_CODE != null
+                    && string.Equals(o.BHYT_CODE.Trim(), trimmed, StringComparison.OrdinalIgnoreCase));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
-            return result;
         }
 
         /// <summary>
-        /// Khoa TT12 (DEPARTMENT_CODES_XML12): mỗi mã nếu khớp DEPARTMENT_CODE trong danh mục và khoa có BHYT_CODE
-        /// thì đổi sang BHYT_CODE; không tra được (không khớp / khoa không có mã BHYT) thì giữ nguyên mã đã nhập.
+        /// Thêm 1 cặp (mã khoa, tên khoa) vào 2 danh sách MA_KHOA/TEN_KHOA, lọc trùng theo mã.
+        /// Truyền dept khi tra được trong danh mục; truyền rawCode khi không tra được (giữ mã, tên để rỗng
+        /// để 2 thẻ vẫn khớp vị trí với nhau).
         /// </summary>
-        private string ResolveDepartmentCodesToBhyt(string departmentCodes, List<HIS_DEPARTMENT> departments)
+        private void AddDepartmentCodeName(List<string> maKhoaList, List<string> tenKhoaList,
+            HashSet<string> maKhoaSeen, HIS_DEPARTMENT dept, string rawCode)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(departmentCodes) || departments == null)
-                    return departmentCodes ?? string.Empty;
-                List<string> result = new List<string>();
-                foreach (var raw in departmentCodes.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                string code;
+                string name;
+                if (dept != null)
                 {
-                    string code = raw.Trim();
-                    if (code.Length == 0) continue;
-                    var dept = departments.FirstOrDefault(o => o.DEPARTMENT_CODE == code);
-                    result.Add(dept != null && !string.IsNullOrWhiteSpace(dept.BHYT_CODE)
-                        ? dept.BHYT_CODE
-                        : code);
+                    // Khoa có mã BHYT -> lấy mã BHYT; khoa chưa có mã BHYT -> giữ DEPARTMENT_CODE (KHÔNG rớt khoa)
+                    code = !string.IsNullOrWhiteSpace(dept.BHYT_CODE) ? dept.BHYT_CODE.Trim() : (dept.DEPARTMENT_CODE ?? string.Empty).Trim();
+                    name = (dept.DEPARTMENT_NAME ?? string.Empty).Trim();
                 }
-                return string.Join(";", result);
+                else
+                {
+                    code = (rawCode ?? string.Empty).Trim();
+                    name = string.Empty;
+                }
+
+                if (code.Length == 0) return;
+                if (!maKhoaSeen.Add(code)) return;
+
+                maKhoaList.Add(code);
+                tenKhoaList.Add(name);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return departmentCodes ?? string.Empty;
             }
         }
 
