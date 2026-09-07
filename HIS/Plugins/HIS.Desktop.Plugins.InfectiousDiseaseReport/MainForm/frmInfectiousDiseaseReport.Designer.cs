@@ -284,7 +284,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             BeginSection("Địa chỉ hiện nay");
             F("Tỉnh/TP:", cboTinh);
             F("Xã/Phường:", cboXa);
-            F("Thôn/Ấp:", cboThon);
+            // Thôn/Ấp: bỏ ô nhập theo yêu cầu (cboThon vẫn khai báo nhưng không đưa lên giao diện).
             F("Địa chỉ chi tiết:", txtDiaChi);
 
             BeginSection("Địa chỉ thường trú");
@@ -340,7 +340,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             BeginSection("Chẩn đoán");
             FFull("Bệnh (hồ sơ):", txtBenhHoSo);        // mã bệnh gốc hồ sơ (chỉ đọc)
             FFull("Bệnh (ICD-10) (*):", cboBenh);       // bệnh chọn đẩy cổng, chiếm trọn chiều ngang
-            F("Phân độ bệnh:", cboCapDoBenh);
+            // Phân độ bệnh: bỏ khỏi giao diện theo yêu cầu (cboCapDoBenh vẫn khai báo, không hiển thị).
             F("Phân loại chẩn đoán (*):", cboLoaiChanDoan);
             FFull("Chẩn đoán ra viện:", txtChanDoanRaVien, 40);
             FFull("Chẩn đoán phụ:", txtSubDiagnosis, 40);
@@ -437,19 +437,21 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
 
             var lcSearch = new LayoutControl();
             lcSearch.Dock = DockStyle.Top;
-            lcSearch.Height = 112;
+            lcSearch.Height = 100;
             var root = lcSearch.Root;
             root.GroupBordersVisible = false;
 
-            AddListRow(root, "", txtListKeyword);   // không nhãn — dùng NullValuePrompt hint
-            var liFrom = AddListRow(root, "Từ ngày:", dteListFrom);
-            AddListRow(root, "Đến ngày:", dteListTo).Move(liFrom, InsertType.Right);
+            // Hàng 1 + 2: mỗi ngày 1 hàng full-width -> ô nhập ngày rộng rãi.
+            AddListRow(root, "Từ ngày:", dteListFrom);
+            AddListRow(root, "Đến ngày:", dteListTo);
+            // Hàng 3: từ khóa (co giãn) + nút Tìm nhỏ bên phải.
+            var liKw = AddListRow(root, "", txtListKeyword);
             var liBtn = AddListRow(root, "", btnListSearch, 26);
+            liBtn.Move(liKw, InsertType.Right);
             liBtn.TextVisible = false;
             liBtn.SizeConstraintsType = SizeConstraintsType.Custom;
-            liBtn.MinSize = new Size(90, 28);
-            liBtn.MaxSize = new Size(90, 28);
-            root.Add(new EmptySpaceItem());   // hút phần trống còn lại -> nút Tìm không bị kéo giãn
+            liBtn.MinSize = new Size(72, 26);
+            liBtn.MaxSize = new Size(72, 26);
 
             // --- Grid ---
             grdList = new GridControl() { Dock = DockStyle.Fill };

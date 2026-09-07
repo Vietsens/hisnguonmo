@@ -187,7 +187,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        /// <summary>Tô màu dòng theo trạng thái đẩy cổng: đã đẩy -> xanh, đẩy lỗi -> đỏ.</summary>
+        /// <summary>Tô màu CHỮ theo trạng thái đẩy cổng: đã đẩy -> xanh, đẩy lỗi -> đỏ (không đổi nền dòng).</summary>
         private void gvList_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
         {
             try
@@ -195,15 +195,15 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 if (e.RowHandle < 0) return;
                 var row = gvList.GetRow(e.RowHandle) as ListRowADO;
                 if (row == null) return;
-                if (row.PushState == (int)EcdsPushState.DaDay)          // đã đẩy cổng
+                if (row.PushState == (int)EcdsPushState.DaDay)          // đã đẩy cổng -> chữ xanh
                 {
-                    e.Appearance.BackColor = Color.FromArgb(220, 245, 225);
-                    e.Appearance.ForeColor = Color.FromArgb(0, 120, 50);
+                    e.Appearance.Options.UseForeColor = true;
+                    e.Appearance.ForeColor = Color.FromArgb(0, 130, 55);
                 }
-                else if (row.PushState == (int)EcdsPushState.Loi)        // đẩy lỗi
+                else if (row.PushState == (int)EcdsPushState.Loi)        // đẩy lỗi -> chữ đỏ
                 {
-                    e.Appearance.BackColor = Color.FromArgb(250, 226, 226);
-                    e.Appearance.ForeColor = Color.FromArgb(190, 30, 30);
+                    e.Appearance.Options.UseForeColor = true;
+                    e.Appearance.ForeColor = Color.FromArgb(200, 30, 30);
                 }
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }

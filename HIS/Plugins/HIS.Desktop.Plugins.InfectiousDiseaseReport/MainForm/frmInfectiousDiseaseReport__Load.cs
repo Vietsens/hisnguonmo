@@ -137,9 +137,12 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 SetupLookup(cboBenh, catalogCache.GetBenhExpanded(), "ma", "MaTen");
                 SetupLookup(cboDonViXN, catalogCache.GetStatic(EcdsCatalogCache.DM_COSO), "id", "MaTen");
                 SetupLookup(cboBenhVienChuyenToi, catalogCache.GetStatic(EcdsCatalogCache.DM_COSO), "id", "MaTen");
-                // Nghề nghiệp: bind THẲNG danh mục cổng (nghe-nghiep, mã "TT"/"CN"/"HSSV"...) — ValueMember = ma
-                // -> chọn là ra đúng mã cổng, KHÔNG cần đối chiếu mã HIS (mã HIS khác hệ mã cổng).
-                SetupLookup(cboNgheNghiep, catalogCache.GetStatic(EcdsCatalogCache.DM_NGHENGHIEP), "ma", "MaTen");
+                // Nghề nghiệp: bind THẲNG danh mục cổng (nghe-nghiep) — ValueMember = ma.
+                // LOẠI dòng mã RỖNG và TRÙNG mã: mã rỗng/trùng làm GridLookUpEdit chọn xong bị rỗng (không resolve được).
+                var ngheList = catalogCache.GetStatic(EcdsCatalogCache.DM_NGHENGHIEP)
+                    .Where(o => o != null && !string.IsNullOrEmpty(o.ma))
+                    .GroupBy(o => o.ma).Select(g => g.First()).ToList();
+                SetupLookup(cboNgheNghiep, ngheList, "ma", "MaTen");
                 WaitingManager.Hide();
             }
             catch (Exception ex)

@@ -361,11 +361,17 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         {
             try
             {
-                if (string.IsNullOrEmpty(icdCode) || catalogCache == null || !Config.EcdsConfigCFG.IsValid()) return;
-                var list = catalogCache.GetCascade(
-                    Worker.EcdsCatalogCache.DM_CAPDOBENH,
-                    new SearchDanhMucFastDto { maIcd10Benh = icdCode },
-                    icdCode);
+                if (catalogCache == null || !Config.EcdsConfigCFG.IsValid()) return;
+                // Ưu tiên phân loại lâm sàng THEO ICD (cascade cổng).
+                var list = !string.IsNullOrEmpty(icdCode)
+                    ? catalogCache.GetCascade(
+                        Worker.EcdsCatalogCache.DM_CAPDOBENH,
+                        new SearchDanhMucFastDto { maIcd10Benh = icdCode },
+                        icdCode)
+                    : null;
+                // Fallback: cổng KHÔNG có phân loại riêng theo ICD -> nạp TOÀN BỘ danh mục để vẫn chọn được.
+                if (list == null || list.Count == 0)
+                    list = catalogCache.GetStatic(Worker.EcdsCatalogCache.DM_CAPDOBENH);
                 SetupLookup(cboCapDoBenh, list, "id", "MaTen");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
