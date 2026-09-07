@@ -10,14 +10,16 @@
  *    dưới 18 tuổi (cboObject3/cboPaymentSource3), trẻ em dưới 6 tuổi (cboObject8/cboPaymentSource8).
  *    Chỉ kiểm tra cặp combo của TAB ĐANG LƯU (mỗi lần Lưu chỉ gửi dữ liệu 1 tab).
  *  - "Lý do khám" (txtLyDoKham): bắt buộc nhập ở MỨC FORM (mọi tab) + giới hạn độ dài.
- *  - Tab trên 18 tuổi (index 1) thêm "Phân loại sức khỏe" (cboHealthExamRank2 —
- *    ô "Phân loại:" ở mục kết luận, cột HIS_KSK_OVER_EIGHTEEN.HEALTH_EXAM_RANK_ID).
  *  - Mục KẾT LUẬN của 3 tab (trên 18, dưới 18, trẻ dưới 6 tuổi): "Phân loại" và "Người khám"
  *    là MỘT CẶP — bắt buộc đủ cả hai khi:
- *      + đã nhập MỘT thông tin kết luận của tab (HasConclusionInput), HOẬC
- *      + đã nhập MỘT trong hai ô của chính cặp đó (nhập Phân loại thì phải có Người khám
- *        và ngược lại)
- *    -> xem IsConclusionPairRequired / ValidateRequiredConclusion.
+ *      + Tab trên 18 / dưới 18 tuổi (mục kết luận nằm trong sub-tab "Kết luận"):
+ *        ĐANG MỞ sub-tab "Kết luận", HOẶC đã nhập MỘT thông tin kết luận của tab
+ *        (HasConclusionInput). Các sub-tab còn lại (Khám thể lực / Khám lâm sàng /
+ *        Khám cận lâm sàng) KHÔNG bắt nhập — "Phân loại" thuộc mục kết luận, không liên quan.
+ *      + Tab trẻ em dưới 6 tuổi (không có sub-tab): đã nhập MỘT thông tin kết luận, HOẶC
+ *        đã nhập MỘT trong hai ô của chính cặp đó (nhập Phân loại thì phải có Người khám
+ *        và ngược lại).
+ *    -> xem IsConclusionPairRequired / IsConclusionSubTabSelected / ValidateRequiredConclusion.
  *  - Huyết áp (các tab có sinh hiệu): đã nhập 1 ô thì phải nhập đủ CẢ tâm thu + tâm trương
  *    -> xem ValidateBloodPressure.
  *
@@ -107,6 +109,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Đổi tab -> bỏ cảnh báo của tab cũ (cảnh báo chỉ có nghĩa với tab đang lưu).
                 this.xtraTabControl1.SelectedPageChanged
                     += new DevExpress.XtraTab.TabPageChangedEventHandler(RequiredValidation_TabChanged);
+                // Đổi SUB-TAB của tab trên 18 / dưới 18 tuổi -> tính lại điều kiện bắt buộc của
+                // mục kết luận (chỉ sub-tab "Kết luận" mới bắt nhập Phân loại + Người khám).
+                if (this.xtraTabControl2 != null)
+                    this.xtraTabControl2.SelectedPageChanged
+                        += new DevExpress.XtraTab.TabPageChangedEventHandler(RequiredValidation_TabChanged);
+                if (this.xtraTabControl3 != null)
+                    this.xtraTabControl3.SelectedPageChanged
+                        += new DevExpress.XtraTab.TabPageChangedEventHandler(RequiredValidation_TabChanged);
 
                 UpdateRequiredHighlight();
             }
@@ -185,8 +195,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// Tính cho CẢ 3 tab (không chỉ tab đang xem) vì người dùng chuyển tab liên tục; caption tab
         /// ẩn không vẽ nên không tốn gì.
         ///
-        /// "Phân loại" tab trên 18 tuổi (layoutControlItem185) bắt buộc VÔ ĐIỀU KIỆN nên
-        /// đã Maroon sẵn trong Designer — KHÔNG đổi ở đây.
+        /// "Phân loại" tab trên 18 tuổi (layoutControlItem185) TRƯỚC ĐÂY bắt buộc VÔ ĐIỀU KIỆN
+        /// (Maroon cứng trong Designer); nay theo cùng điều kiện với cặp kết luận nên được tô
+        /// ĐỘNG ở đây — Designer vẫn giữ ForeColor Maroon, chỉ bật/tắt UseForeColor.
         /// </summary>
         private void UpdateRequiredHighlight()
         {
@@ -196,6 +207,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 bool conc2 = IsConclusionPairRequired(2);
                 bool conc7 = IsConclusionPairRequired(7);
 
+                SetCaptionRequired(layoutControlItem185, conc1);   // "Phân loại" tab trên 18 tuổi
                 SetCaptionRequired(lciKskConcluder1, conc1);
                 SetCaptionRequired(lciHealthExamRank3, conc2);
                 SetCaptionRequired(lciKskConcluder2, conc2);
@@ -295,18 +307,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 // 2. Đối tượng + Nguồn chi trả của tab đang lưu.
                 int tabIndex = xtraTabControl1.SelectedTabPageIndex;
+                // "Phân loại" (HEALTH_EXAM_RANK_ID) của tab trên 18 tuổi KHÔNG còn bắt buộc VÔ
+                // ĐIỀU KIỆN: ô này thuộc mục kết luận nên chỉ bắt nhập theo ValidateRequiredConclusion
+                // (đang mở sub-tab "Kết luận" hoặc đã nhập nội dung kết luận).
                 if (tabIndex == 1) // KSK trên 18 tuổi
-                {
                     ValidateObjectAndPaySource(cboObject, GetKskObjectValue(), cboPaymentSource, messages);
-                    // "Phân loại sức khỏe" (mục kết luận) — HEALTH_EXAM_RANK_ID.
-                    if (cboHealthExamRank2 != null
-                        && (cboHealthExamRank2.EditValue == null || cboHealthExamRank2.EditValue == DBNull.Value))
-                    {
-                        string msgRank = "Phân loại sức khỏe bắt buộc chọn.";
-                        SetRequiredError(cboHealthExamRank2, msgRank);
-                        messages.Add(msgRank);
-                    }
-                }
                 else if (tabIndex == 2) // KSK dưới 18 tuổi
                     ValidateObjectAndPaySource(cboObject3, GetObjectValueExt(cboObject3), cboPaymentSource3, messages);
                 else if (tabIndex == 7) // Trẻ em dưới 6 tuổi
@@ -402,15 +407,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 bool hasConcluder = HasLookUpValue(cboConcluder);
                 if (!IsConclusionPairRequired(tabIndex)) return;
 
-                // Nêu rõ LÝ DO bắt buộc: do ô còn lại của cặp đã nhập, hay do đã nhập nội dung kết luận.
+                // Nêu rõ LÝ DO bắt buộc: do ô còn lại của cặp đã nhập, do đã nhập nội dung kết luận,
+                // hay do đang mở sub-tab "Kết luận" (tab trên 18 / dưới 18 tuổi).
+                string reason = HasConclusionInput(tabIndex)
+                    ? " khi đã nhập thông tin kết luận."
+                    : " ở mục kết luận.";
                 if (!hasRank)
                     AddRequiredError(cboRank, hasConcluder
                         ? "Phân loại bắt buộc chọn khi đã nhập Người khám."
-                        : "Phân loại bắt buộc chọn khi đã nhập thông tin kết luận.", messages);
+                        : "Phân loại bắt buộc chọn" + reason, messages);
                 if (!hasConcluder)
                     AddRequiredError(cboConcluder, hasRank
                         ? "Người khám bắt buộc chọn khi đã nhập Phân loại."
-                        : "Người khám bắt buộc chọn khi đã nhập thông tin kết luận.", messages);
+                        : "Người khám bắt buộc chọn" + reason, messages);
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
@@ -418,8 +427,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// <summary>
         /// Cặp "Phân loại" + "Người khám" của tab đang bắt buộc đủ cả hai chưa.
         ///
-        /// Đúng khi: đã nhập một thông tin kết luận của tab, HOẬC đã nhập một trong hai ô của
-        /// chính cặp (đã chọn Phân loại thì phải có Người khám và ngược lại).
+        /// Tab trên 18 / dưới 18 tuổi (mục kết luận nằm trong sub-tab "Kết luận") — đúng khi:
+        /// ĐANG MỞ sub-tab "Kết luận", HOẶC đã nhập một thông tin kết luận của tab.
+        /// KHÔNG xét việc cặp đã có sẵn giá trị: "Phân loại" / "Người khám" được NẠP TỪ BẢN GHI CŨ
+        /// lúc Load (cboHealthExamRank2/3 = HEALTH_EXAM_RANK_ID, cboConcluderLoginName2/3 =
+        /// HIS_KSK_GENERAL.CONCLUDER_LOGINNAME) nên nếu xét sẽ bắt nhập nhầm khi người dùng đang
+        /// làm việc ở sub-tab Khám thể lực / Khám lâm sàng / Khám cận lâm sàng.
+        ///
+        /// Tab trẻ em dưới 6 tuổi (mục kết luận nằm ngay trên tab, không có sub-tab) — GIỮ NGUYÊN:
+        /// đã nhập một thông tin kết luận, HOẶC đã nhập một trong hai ô của chính cặp
+        /// (đã chọn Phân loại thì phải có Người khám và ngược lại).
         ///
         /// Dùng CHUNG cho việc chặn Lưu và việc tô màu động — màu và cảnh báo không thể lệch nhau.
         /// </summary>
@@ -432,9 +449,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 GetConclusionControls(tabIndex, out cboRank, out cboConcluder);
                 if (cboRank == null && cboConcluder == null) return false;
 
+                if (tabIndex == 1 || tabIndex == 2)
+                    return IsConclusionSubTabSelected(tabIndex) || HasConclusionInput(tabIndex);
+
                 return HasConclusionInput(tabIndex)
                     || HasLookUpValue(cboRank)
                     || HasLookUpValue(cboConcluder);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); return false; }
+        }
+
+        /// <summary>
+        /// Đang mở sub-tab "Kết luận" của tab trên 18 / dưới 18 tuổi hay không.
+        /// Mục kết luận của 2 tab này nằm trong một XtraTabControl lồng bên trong:
+        ///   tab 1 (trên 18 tuổi)  -> xtraTabControl2, sub-tab "Kết luận" = xtraTabPage12
+        ///   tab 2 (dưới 18 tuổi) -> xtraTabControl3, sub-tab "Kết luận" = xtraTabPage16
+        /// Các tab khác (kể cả trẻ em dưới 6 tuổi) không có sub-tab -> luôn false.
+        /// </summary>
+        private bool IsConclusionSubTabSelected(int tabIndex)
+        {
+            try
+            {
+                if (tabIndex == 1)
+                    return xtraTabControl2 != null && xtraTabControl2.SelectedTabPage == xtraTabPage12;
+                if (tabIndex == 2)
+                    return xtraTabControl3 != null && xtraTabControl3.SelectedTabPage == xtraTabPage16;
+                return false;
             }
             catch (Exception ex) { LogSystem.Warn(ex); return false; }
         }

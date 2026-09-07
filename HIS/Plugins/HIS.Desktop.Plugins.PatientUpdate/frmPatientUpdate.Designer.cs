@@ -1442,7 +1442,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             this.txtSocialInsuranceNumber.Location = new System.Drawing.Point(642, 126);
             this.txtSocialInsuranceNumber.MenuManager = this.barManager1;
             this.txtSocialInsuranceNumber.Name = "txtSocialInsuranceNumber";
-            this.txtSocialInsuranceNumber.Properties.MaxLength = 10;
+            this.txtSocialInsuranceNumber.Properties.MaxLength = 12;
             this.txtSocialInsuranceNumber.Size = new System.Drawing.Size(192, 20);
             this.txtSocialInsuranceNumber.StyleController = this.layoutControl2;
             this.txtSocialInsuranceNumber.TabIndex = 44;

@@ -426,6 +426,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         .FirstOrDefault();
                 }
 
+                #region Khoa hội chẩn
+                // Khoa phong moi hoi chan luu o HIS_SPECIALIST_EXAM (INVITE_TYPE = 2), cot EXAM_EXECUTE_DEPARMENT_ID.
+                List<V_HIS_SPECIALIST_EXAM> specialistExams = new List<V_HIS_SPECIALIST_EXAM>();
+                MOS.Filter.HisSpecialistExamViewFilter specialistExamViewFilter = new MOS.Filter.HisSpecialistExamViewFilter();
+                specialistExamViewFilter.TREATMENT_CODE = (treatment != null ? treatment.TREATMENT_CODE : "");
+                specialistExamViewFilter.INVITE_TYPE = 2;
+                var specialistExamViews = new BackendAdapter(param).Get<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, specialistExamViewFilter, param);
+                if (specialistExamViews != null && specialistExamViews.Count > 0)
+                    specialistExams = specialistExamViews;
+                #endregion
+
                 Inventec.Common.Logging.LogSystem.Debug("begin Mps000062PDO");
                 MPS.Processor.Mps000062.PDO.Mps000062PDO mps000062RDO = new MPS.Processor.Mps000062.PDO.Mps000062PDO(
                     treatment,
@@ -460,6 +471,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     listDosage,
                     selectedBedLog
                     );
+                mps000062RDO._SpecialistExams = specialistExams;
                 Inventec.Common.Logging.LogSystem.Debug("End Mps000062PDO");
 
                 WaitingManager.Hide();
