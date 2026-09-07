@@ -4698,6 +4698,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                //Ghi lai dich vu dang duoc loc phong, de SetDefaultExcuteRoom/SetPriorityRequired
+                //tra dung phong MOS da phan cho dich vu nay (2 ham do chi nhan danh sach phong,
+                //khong nhan service_id). Xem frmAssignService__SuggestRoom.cs
+                this.suggestRoomCurrentServiceId = data != null ? data.SERVICE_ID : 0;
+
                 var serviceRoomViews = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToArray();
                 if (this.allDataExecuteRooms != null && serviceRoomViews != null && serviceRoomViews.Count() > 0)
                 {

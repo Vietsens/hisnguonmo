@@ -103,6 +103,25 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.UC
             }
         }
 
+        /// <summary>
+        /// Lay them trang thai 2 o chon "lay them". Tra ve null khi khong tick
+        /// de backend hieu la giu nguyen hanh vi cu (khong gui tham so len).
+        /// </summary>
+        public void GetValue(ref long timeFrom, ref long timeTo, ref bool? includeUnfinished, ref bool? includeExported)
+        {
+            try
+            {
+                GetValue(ref timeFrom, ref timeTo);
+
+                includeUnfinished = chkIncludeUnfinished.Checked ? (bool?)true : null;
+                includeExported = chkIncludeExported.Checked ? (bool?)true : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public bool ValidateUc()
         {
             positionHandle = -1;
