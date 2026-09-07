@@ -282,7 +282,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.1");
+                Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.1"); 
                 if (!Directory.Exists(FolderSaveImage))
                     Directory.CreateDirectory(FolderSaveImage);
 
@@ -2322,18 +2322,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 view.OptionsView.ColumnAutoWidth = false;
                 view.BestFitMaxRowCount = -1;
                 view.BestFitColumns();
-                editor.Popup += delegate (object s, EventArgs e)
-                {
-                    GridView view2 = editor.Properties.View;
-                    view2.BestFitColumns();
-                    int num = (from GridColumn c in view2.Columns
-                               where c.Visible
-                               select c).Sum((GridColumn c) => c.Width);
-                    //cong bu cho cot checkbox chon dong (cot do khong nam trong view2.Columns nen vong tren khong tinh)
-                    //va cho thanh cuon doc; dat san be rong toi thieu de popup khong bi chat
-                    int width = Math.Max(760, Math.Min(num + 120, 1200));
-                    editor.Properties.PopupFormSize = new Size(width, editor.Properties.PopupFormSize.Height);
-                };
+
+                //Tinh be rong NGAY TAI DAY, truoc khi popup hien ra. Truoc day viec nay lam trong su kien Popup
+                //- ma su kien do chi ban SAU khi popup da ve len man hinh - nen popup hien o be rong cu
+                //(250 do ControlEditorLoader.Load dat) roi moi gian ra, nhin thay ro mot cai nhay.
+                int columnsWidth = (from GridColumn c in view.Columns
+                                    where c.Visible
+                                    select c).Sum((GridColumn c) => c.Width);
+                //cong bu cho cot checkbox chon dong (cot do khong nam trong view.Columns nen vong tren khong tinh)
+                //va cho thanh cuon doc; dat san be rong toi thieu de popup khong bi chat
+                int popupWidth = Math.Max(760, Math.Min(columnsWidth + 120, 1200));
+                editor.Properties.PopupFormWidth = popupWidth;
+                editor.Properties.PopupFormSize = new Size(popupWidth, editor.Properties.PopupFormSize.Height);
             }
             catch (Exception ex)
             {
@@ -7320,7 +7320,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         /// DevExpress lay text cua cell tu DataSource cua repositoryItemMachineId (danh sach may da loc theo phong lam viec),
         /// con danh sach trong combo lai duoc gan tren instance editor cua tung dong (loc theo dich vu/cau hinh MachineShowOption).
         /// Neu may nguoi dung chon khong nam trong DataSource cua repository item thi cell hien thi rong.
-        /// => Tu resolve ten may theo MACHINE_ID tu danh sach may day du.
+        /// => Tu resolve ten may theo MACHINE_ID tu danh sach may day du. 
         /// </summary>
         private void gridViewSereServ_CustomColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e)
         {

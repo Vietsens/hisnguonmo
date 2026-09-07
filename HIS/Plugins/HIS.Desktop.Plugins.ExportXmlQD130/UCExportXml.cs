@@ -1563,6 +1563,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 var totalIcdData = BackendDataWorker.Get<HIS_ICD>();
                 var totalServiceData = BackendDataWorker.Get<V_HIS_SERVICE>();
                 var totalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                var totalMachineData = BackendDataWorker.Get<HIS_MACHINE>();
                 var totalDepartmentData = HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1"
                     ? BackendDataWorker.Get<HIS_DEPARTMENT>()
                     : null;
@@ -1656,6 +1657,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     ado.TotalIcdData = totalIcdData;
                     ado.TotalSericeData = totalServiceData;
                     ado.TotalEmployeeData = totalEmployeeData;
+                    ado.TotalMachineData = totalMachineData;
                     var usedList = new List<HIS_EXP_MEDIMATE_USED>();
 
                     if (ado.ListSereServ != null && ado.ListSereServ.Count > 0)
@@ -2046,6 +2048,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
                 ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                 ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                ado.TotalMachineData = BackendDataWorker.Get<HIS_MACHINE>();
                 ado.ListExpMedimateUsed = ListExpMedimateUsed ?? new List<HIS_EXP_MEDIMATE_USED>();
                 if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
                 {
@@ -4865,6 +4868,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
                             ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                             ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                            ado.TotalMachineData = BackendDataWorker.Get<HIS_MACHINE>();
                             var usedList = new List<HIS_EXP_MEDIMATE_USED>();
 
                             if (ado.ListSereServ != null && ado.ListSereServ.Count > 0)
@@ -5984,6 +5988,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 input3.vHisSereServTeins = HisSereServTeins != null
                                     ? HisSereServTeins.Where(o => o.TDL_TREATMENT_ID == treatment.ID).ToList()
                                     : new List<V_HIS_SERE_SERV_TEIN>();
+                                input3.Machines = BackendDataWorker.Get<HIS_MACHINE>();
                                 input3.IS_3176 = true;
 
                                 var data3 = new His.Bhyt.ExportXml.XML130.XML3.Xml3Processor(input3).GenerateXml3Data();
