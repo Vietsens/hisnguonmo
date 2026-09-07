@@ -340,7 +340,7 @@ namespace HIS.UC.Sick
             // 
             this.txtSocialInsuranceNumber.Location = new System.Drawing.Point(344, 95);
             this.txtSocialInsuranceNumber.Name = "txtSocialInsuranceNumber";
-            this.txtSocialInsuranceNumber.Properties.MaxLength = 10;
+            this.txtSocialInsuranceNumber.Properties.MaxLength = 12;
             this.txtSocialInsuranceNumber.Size = new System.Drawing.Size(113, 20);
             this.txtSocialInsuranceNumber.StyleController = this.layoutControl1;
             this.txtSocialInsuranceNumber.TabIndex = 19;
