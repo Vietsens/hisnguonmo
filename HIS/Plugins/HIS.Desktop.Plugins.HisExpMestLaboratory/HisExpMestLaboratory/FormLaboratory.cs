@@ -524,7 +524,9 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
                 {
                     long timeFrom = 0;
                     long timeTo = 0;
-                    UcTest.GetValue(ref timeFrom, ref timeTo);
+                    bool? includeUnfinished = null;
+                    bool? includeExported = null;
+                    UcTest.GetValue(ref timeFrom, ref timeTo, ref includeUnfinished, ref includeExported);
 
                     List<MaterialTypeADO> listDataSource = new List<MaterialTypeADO>();
                     CommonParam param = new CommonParam();
@@ -532,6 +534,9 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
                     filter.FINISH_TIME_FROM = timeFrom;
                     filter.FINISH_TIME_TO = timeTo;
                     filter.EXECUTE_ROOM_ID = moduleData.RoomId;
+                    //Chi gui khi nguoi dung tick, de trong thi backend giu nguyen hanh vi cu
+                    filter.IS_INCLUDE_UNFINISHED = includeUnfinished;
+                    filter.IS_INCLUDE_EXPORTED = includeExported;
                     TestMaterialByNormationCollectionSDO listMaterial = new BackendAdapter(param).Get<TestMaterialByNormationCollectionSDO>("/api/HisSereServTein/GetMaterialAmountByNormation", ApiConsumers.MosConsumer, filter, param);
                     if (listMaterial != null)
                     {
@@ -549,11 +554,11 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
                                         var material = listMaterialInstock.FirstOrDefault(o => o.Id == materialType.ID);
                                         if (material != null)
                                         {
-                                            listDataSource.Add(new MaterialTypeADO(material, lst.NORMATION_AMOUNT ?? 0));
+                                            listDataSource.Add(new MaterialTypeADO(material, lst.NORMATION_AMOUNT ?? 0, lst.UNFINISHED_COUNT, lst.EXPORTED_COUNT));
                                         }
                                         else
                                         {
-                                            listDataSource.Add(new MaterialTypeADO(materialType, lst.NORMATION_AMOUNT ?? 0));
+                                            listDataSource.Add(new MaterialTypeADO(materialType, lst.NORMATION_AMOUNT ?? 0, lst.UNFINISHED_COUNT, lst.EXPORTED_COUNT));
                                         }
                                     }
                                 
@@ -684,6 +689,12 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
                 decimal availableAmount = Inventec.Common.TypeConvert.Parse.ToDecimal((vw.GetRowCellValue(e.RowHandle, "AVAILABLE_AMOUNT") ?? "").ToString());
                 if (amount > availableAmount)
                     e.Appearance.ForeColor = System.Drawing.Color.Red;
+
+                //To nen dong duoc lay them (y lenh chua hoan thanh hoac da xuat) de nguoi dung nhan ra ngay.
+                //Dung BackColor nen khong xung dot voi ForeColor do o tren.
+                string noteReason = (vw.GetRowCellValue(e.RowHandle, "NOTE_REASON") ?? "").ToString();
+                if (!string.IsNullOrEmpty(noteReason))
+                    e.Appearance.BackColor = System.Drawing.Color.FromArgb(255, 246, 204);
             }
             catch (Exception ex)
             {

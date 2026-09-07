@@ -40,6 +40,8 @@ namespace HIS.Desktop.Plugins.AssignService
         public const string HIS_SERVICE_REQ_GET = "api/HisServiceReq/Get";
         public const string HIS_SERVICE_REQ_GETVIEW_6 = "api/HisServiceReq/GetView6";
         public const string HIS_SERVICE_REQ__ASSIGN_SERVICE = "api/HisServiceReq/AssignServiceByInstructionTimes";
+        //Hoi truoc phong xu ly du kien cho ca nhom dich vu dang tick (chi doc, khong tao y lenh)
+        public const string HIS_SERVICE_REQ__GET_SUGGEST_ROOM = "api/HisServiceReq/GetSuggestRoom";
         public const string HIS_PATIENT__GET_CARD_BALANCE = "api/HisPatient/GetCardBalance";
 
         public const string HIS_PATIENT_PACKAGE_GET = "api/HisPatientPackage/Get";

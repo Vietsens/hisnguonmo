@@ -91,9 +91,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
                 }
 
-                // Vien bat co che he thong tu phan phong xu ly: cot Phong xu ly de trong la dung thiet ke,
-                // khong liet ke de tranh canh bao nhieu moi lan luu.
-                if (HisConfigCFG.IsAssignRoomByLoadBalance) serviceNamesWithoutRoom.Clear();
+                // Truoc day khi bat can bang tai thi cot Phong xu ly de trong la dung thiet ke,
+                // nen nhanh cu xoa het canh bao "dich vu chua co phong" de khong bao nhieu moi lan luu.
+                // NAY KHAC: FE da hoi truoc MOS va dien phong ngay luc tick chon dich vu
+                // (xem frmAssignService__SuggestRoom.cs), nen o trong KHONG con la chu y nua ma la
+                // dau hieu that su khong co phong nao lam duoc dich vu do => phai canh bao nhu binh thuong.
+                // Vi vay KHONG xoa serviceNamesWithoutRoom nua.
 
                 if (roomConfirms.Count == 0 && serviceNamesWithoutRoom.Count == 0) return true;
 
