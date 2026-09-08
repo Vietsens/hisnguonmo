@@ -340,10 +340,10 @@ namespace MPS.Processor.Mps000222
                                                         foreach (var sereServTein in dicSereServTeins[sese.ID])
                                                         {
                                                             // Kháng sinh đồ trả kết quả ở SRI_CODE, VALUE (MIC) có thể trống
-                                                            // -> chỉ bỏ dòng khi không có bất kỳ loại kết quả nào
+                                                            // -> chỉ bỏ dòng khi chưa có kết quả nào. BACTERIUM_NAME không tính là kết quả:
+                                                            // dòng kháng sinh chưa nhập kết quả vẫn mang sẵn tên vi khuẩn
                                                             if (String.IsNullOrEmpty(sereServTein.VALUE)
-                                                                && String.IsNullOrEmpty(sereServTein.SRI_CODE)
-                                                                && String.IsNullOrEmpty(sereServTein.BACTERIUM_NAME)) continue;
+                                                                && String.IsNullOrEmpty(sereServTein.SRI_CODE)) continue;
                                                             Mps000222ADO exeSereServTein = new Mps000222ADO();
                                                             exeSereServTein.SERVICE_ID = serviceParent.ID;
                                                             exeSereServTein.SERVICE_REQ_ID = ReqAndParentSv.SERVICE_REQ_ID;
