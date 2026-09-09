@@ -41,9 +41,9 @@ namespace HIS.Desktop.Plugins.PregnancyRest.Validation
                     base.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return success;
                 }
-                if (!string.IsNullOrEmpty(txtControl.Text) && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) < minLength)
+                if (!string.IsNullOrEmpty(txtControl.Text) && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) != 10 && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) != 12)
                 {
-                    base.ErrorText = "Mã BHXH phải nhập đủ 10 ký tự";
+                    base.ErrorText = "Mã BHXH phải nhập đủ 10 hoặc 12 ký tự";
                     base.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return success;
                 }

@@ -221,8 +221,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 SetBloodGroupRhEnabled();
                 LoadConfigHisAcc();
                 ValidationClassify();
-                ValidationBHXH(txtBhxhFather, 10, 10);
-                ValidationBHXH(txtBhxhMother, 10, 10);
+                ValidationBHXH(txtBhxhFather, 12, 10);
+                ValidationBHXH(txtBhxhMother, 12, 10);
                 ValidationProvince();
                 ValidateDistricts();
                 ValidateCommune();

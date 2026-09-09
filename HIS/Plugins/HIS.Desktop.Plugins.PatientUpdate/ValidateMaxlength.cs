@@ -40,7 +40,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     this.ErrorText = "Trường dữ liệu vượt quá ký tự cho phép";
                     return valid;
                 }
-                else if (txt != null && !string.IsNullOrEmpty(txt.Text) && txt.Text.Length < exactLength)
+                else if (txt != null && !string.IsNullOrEmpty(txt.Text) && txt.Text.Length != 10 && txt.Text.Length != 12)
                 {
                     return valid;
                 }
