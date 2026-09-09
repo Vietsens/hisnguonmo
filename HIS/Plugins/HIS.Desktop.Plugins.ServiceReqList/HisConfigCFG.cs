@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -47,6 +47,10 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         // Khac "1" hoac khong khai bao = giu nguyen cach cu (to mau chu toan luoi theo muc phan loai).
         private const string CONFIG_KEY__EMERGENCY_CLASSIFY_COLUMN = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY_COLUMN";
         private const string CONFIG_KEY__DeleteServiceReqAndChild = "HIS.Desktop.Plugins.ServiceReqList.DeleteServiceReqAndChild";
+        // "1" = nut In tem (F7) in tem barcode xet nghiem truc tiep qua BarTender Engine
+        // theo cac y lenh xet nghiem da tich chon (mau Tmp/TempBartend/Mps000423).
+        // Khac "1" hoac khong khai bao = giu co che cu (in y lenh dau tien qua app Bartender.Print.exe).
+        internal const string CONFIG_KEY__IsPrintTemBarcodeBartender = "HIS.Desktop.Plugins.IsPrintTemBarcodeBartender";
 
 
         internal static bool IsShowPresAmount;
@@ -63,6 +67,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal static bool IsEmergencyClassifyEnabled;
         /// <summary>Bat nhan trang thai co mau thay cho to mau chu toan luoi (MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY_COLUMN = 1)</summary>
         internal static bool IsEmergencyClassifyColumnEnabled;
+        /// <summary>In tem barcode truc tiep qua BarTender (HIS.Desktop.Plugins.IsPrintTemBarcodeBartender = 1)</summary>
+        internal static bool IsPrintTemBarcodeBartender;
 
         internal static void LoadConfig()
         {
@@ -82,6 +88,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 IsEmergencyClassifyEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY) == "1";
                 IsEmergencyClassifyColumnEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY_COLUMN) == "1";
                 ServiceReqAndChild = GetValue(CONFIG_KEY__DeleteServiceReqAndChild);
+                IsPrintTemBarcodeBartender = GetValue(CONFIG_KEY__IsPrintTemBarcodeBartender) == GlobalVariables.CommonStringTrue;
             }
             catch (Exception ex)
             {

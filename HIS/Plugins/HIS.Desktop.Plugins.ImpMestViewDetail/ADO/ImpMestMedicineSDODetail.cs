@@ -43,6 +43,8 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ADO
         public long? EXPIRED_DATE_EDIT { get; set; }
         public decimal? TEMPERATURE_OLD { get; set; }
         public decimal? HEIN_LIMIT_PRICE { get; set; }
+        public string MEDICINE_TYPE_DESCRIPTION { get; set; }
+        public decimal? HEIN_LIMIT_RATIO_100 { get; set; }
 
         public ImpMestMedicineSDODetail(V_HIS_IMP_MEST_MEDICINE _data)
         {

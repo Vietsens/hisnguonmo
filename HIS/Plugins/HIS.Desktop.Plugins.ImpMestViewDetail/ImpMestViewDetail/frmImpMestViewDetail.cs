@@ -664,9 +664,17 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                     }
                 }
 
+                // Ghi chu + Ti le BHYT lay theo gia tri hien tai cua danh muc loai thuoc
+                Dictionary<long, V_HIS_MEDICINE_TYPE> medicineTypeDic = new Dictionary<long, V_HIS_MEDICINE_TYPE>();
+                if (impMestMedicineAPIs != null && impMestMedicineAPIs.Count > 0)
+                {
+                    HashSet<long> medicineTypeIds = new HashSet<long>(impMestMedicineAPIs.Select(o => o.MEDICINE_TYPE_ID));
+                    medicineTypeDic = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => medicineTypeIds.Contains(o.ID)).ToDictionary(o => o.ID);
+                }
+
                 foreach (var item in impMestMedicineAPIs)
                 {
-                    //Don gia ban bhyt và VP 
+                    //Don gia ban bhyt và VP
                     ImpMestMedicineSDODetail impMestMedicine = new ImpMestMedicineSDODetail(item);
                     var datamedi = this.Medicines.FirstOrDefault<HIS_MEDICINE>(o => o.ID == item.MEDICINE_ID);
                     if (datamedi != null && datamedi.IS_SALE_EQUAL_IMP_PRICE != 1)
@@ -710,6 +718,17 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                         }
                     }
                     impMestMedicine.HEIN_LIMIT_PRICE = datamedi?.HEIN_LIMIT_PRICE;
+
+                    V_HIS_MEDICINE_TYPE mediType = null;
+                    medicineTypeDic.TryGetValue(item.MEDICINE_TYPE_ID, out mediType);
+                    if (mediType != null)
+                    {
+                        impMestMedicine.MEDICINE_TYPE_DESCRIPTION = mediType.DESCRIPTION;
+                        if (mediType.HEIN_LIMIT_RATIO.HasValue)
+                        {
+                            impMestMedicine.HEIN_LIMIT_RATIO_100 = Inventec.Common.Number.Get.RoundCurrency(mediType.HEIN_LIMIT_RATIO.Value * 100, 2);
+                        }
+                    }
                     impMestMedicines.Add(impMestMedicine);
                 }
 
@@ -796,6 +815,14 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                         this.MaterialPaty = new BackendAdapter(paramMaterPaty).Get<List<HIS_MATERIAL_PATY>>("/api/HisMaterialPaty/Get", ApiConsumers.MosConsumer, filterMaterPaty, paramMaterPaty);
                     }
                 }
+                // Ghi chu + Ti le BHYT lay theo gia tri hien tai cua danh muc loai vat tu
+                Dictionary<long, V_HIS_MATERIAL_TYPE> materialTypeDic = new Dictionary<long, V_HIS_MATERIAL_TYPE>();
+                if (impMestMaterialAPIs != null && impMestMaterialAPIs.Count > 0)
+                {
+                    HashSet<long> materialTypeIds = new HashSet<long>(impMestMaterialAPIs.Select(o => o.MATERIAL_TYPE_ID));
+                    materialTypeDic = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o => materialTypeIds.Contains(o.ID)).ToDictionary(o => o.ID);
+                }
+
                 foreach (var item in impMestMaterialAPIs)
                 {
                     ImpMestMaterialSDODetail ImpMestMaterialSDODetail = new ImpMestMaterialSDODetail(item);
@@ -841,6 +868,17 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                         }
                     }
                     ImpMestMaterialSDODetail.HEIN_LIMIT_PRICE = dataMater?.HEIN_LIMIT_PRICE;
+
+                    V_HIS_MATERIAL_TYPE materType = null;
+                    materialTypeDic.TryGetValue(item.MATERIAL_TYPE_ID, out materType);
+                    if (materType != null)
+                    {
+                        ImpMestMaterialSDODetail.MATERIAL_TYPE_DESCRIPTION = materType.DESCRIPTION;
+                        if (materType.HEIN_LIMIT_RATIO.HasValue)
+                        {
+                            ImpMestMaterialSDODetail.HEIN_LIMIT_RATIO_100 = Inventec.Common.Number.Get.RoundCurrency(materType.HEIN_LIMIT_RATIO.Value * 100, 2);
+                        }
+                    }
                     impMestMaterials.Add(ImpMestMaterialSDODetail);
                 }
 

@@ -195,6 +195,8 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.colTEMPERATUREUnb1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colMeHEIN_LIMIT_PRICE = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colHEIN_LIMIT_PRICEUnb1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMeMEDICINE_TYPE_DESCRIPTION = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMeHEIN_LIMIT_RATIO_100 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.CheckEdit_IsExpend = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemPictureEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.ItemGridLookUpEdit_MedicineName = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
@@ -251,6 +253,8 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.colPROFIT_RATIO_STRUnb1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colHEIN_LIMIT_PRICE = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colHEIN_LIMIT_PRICEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMaMATERIAL_TYPE_DESCRIPTION = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMaHEIN_LIMIT_RATIO_100 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemPictureEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.ItemSpinEdit_MaterialImpVAT = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.ItemGridLookUpEdit_MaterialName = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
@@ -1465,7 +1469,9 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.colPROFIT_RATIO_STRUnb2,
             this.colTEMPERATUREUnb1,
             this.colMeHEIN_LIMIT_PRICE,
-            this.colHEIN_LIMIT_PRICEUnb1});
+            this.colHEIN_LIMIT_PRICEUnb1,
+            this.colMeMEDICINE_TYPE_DESCRIPTION,
+            this.colMeHEIN_LIMIT_RATIO_100});
             this.gridViewMedicine.GridControl = this.gridControlMedicine;
             this.gridViewMedicine.Name = "gridViewMedicine";
             this.gridViewMedicine.OptionsView.ColumnAutoWidth = false;
@@ -2023,10 +2029,32 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.colMeHEIN_LIMIT_PRICE.Width = 95;
             // 
             // colHEIN_LIMIT_PRICEUnb1
-            // 
+            //
             this.colHEIN_LIMIT_PRICEUnb1.FieldName = "HEIN_LIMIT_PRICEUnb";
             this.colHEIN_LIMIT_PRICEUnb1.Name = "colHEIN_LIMIT_PRICEUnb1";
             this.colHEIN_LIMIT_PRICEUnb1.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            //
+            // colMeMEDICINE_TYPE_DESCRIPTION
+            //
+            this.colMeMEDICINE_TYPE_DESCRIPTION.Caption = "Ghi chú";
+            this.colMeMEDICINE_TYPE_DESCRIPTION.FieldName = "MEDICINE_TYPE_DESCRIPTION";
+            this.colMeMEDICINE_TYPE_DESCRIPTION.Name = "colMeMEDICINE_TYPE_DESCRIPTION";
+            this.colMeMEDICINE_TYPE_DESCRIPTION.OptionsColumn.AllowEdit = false;
+            this.colMeMEDICINE_TYPE_DESCRIPTION.Visible = true;
+            this.colMeMEDICINE_TYPE_DESCRIPTION.VisibleIndex = 19;
+            this.colMeMEDICINE_TYPE_DESCRIPTION.Width = 150;
+            //
+            // colMeHEIN_LIMIT_RATIO_100
+            //
+            this.colMeHEIN_LIMIT_RATIO_100.Caption = "Tỷ lệ BHYT";
+            this.colMeHEIN_LIMIT_RATIO_100.DisplayFormat.FormatString = "#,##0.##";
+            this.colMeHEIN_LIMIT_RATIO_100.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.colMeHEIN_LIMIT_RATIO_100.FieldName = "HEIN_LIMIT_RATIO_100";
+            this.colMeHEIN_LIMIT_RATIO_100.Name = "colMeHEIN_LIMIT_RATIO_100";
+            this.colMeHEIN_LIMIT_RATIO_100.OptionsColumn.AllowEdit = false;
+            this.colMeHEIN_LIMIT_RATIO_100.Visible = true;
+            this.colMeHEIN_LIMIT_RATIO_100.VisibleIndex = 20;
+            this.colMeHEIN_LIMIT_RATIO_100.Width = 80;
             // 
             // CheckEdit_IsExpend
             // 
@@ -2145,7 +2173,9 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.colIMP_PRICEUnb2,
             this.colPROFIT_RATIO_STRUnb1,
             this.colHEIN_LIMIT_PRICE,
-            this.colHEIN_LIMIT_PRICEUnb});
+            this.colHEIN_LIMIT_PRICEUnb,
+            this.colMaMATERIAL_TYPE_DESCRIPTION,
+            this.colMaHEIN_LIMIT_RATIO_100});
             this.gridViewMaterial.GridControl = this.gridControlMaterial;
             this.gridViewMaterial.Name = "gridViewMaterial";
             this.gridViewMaterial.OptionsView.ColumnAutoWidth = false;
@@ -2621,10 +2651,32 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.colHEIN_LIMIT_PRICE.Width = 95;
             // 
             // colHEIN_LIMIT_PRICEUnb
-            // 
+            //
             this.colHEIN_LIMIT_PRICEUnb.FieldName = "HEIN_LIMIT_PRICEUnb";
             this.colHEIN_LIMIT_PRICEUnb.Name = "colHEIN_LIMIT_PRICEUnb";
             this.colHEIN_LIMIT_PRICEUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            //
+            // colMaMATERIAL_TYPE_DESCRIPTION
+            //
+            this.colMaMATERIAL_TYPE_DESCRIPTION.Caption = "Ghi chú";
+            this.colMaMATERIAL_TYPE_DESCRIPTION.FieldName = "MATERIAL_TYPE_DESCRIPTION";
+            this.colMaMATERIAL_TYPE_DESCRIPTION.Name = "colMaMATERIAL_TYPE_DESCRIPTION";
+            this.colMaMATERIAL_TYPE_DESCRIPTION.OptionsColumn.AllowEdit = false;
+            this.colMaMATERIAL_TYPE_DESCRIPTION.Visible = true;
+            this.colMaMATERIAL_TYPE_DESCRIPTION.VisibleIndex = 18;
+            this.colMaMATERIAL_TYPE_DESCRIPTION.Width = 150;
+            //
+            // colMaHEIN_LIMIT_RATIO_100
+            //
+            this.colMaHEIN_LIMIT_RATIO_100.Caption = "Tỷ lệ BHYT";
+            this.colMaHEIN_LIMIT_RATIO_100.DisplayFormat.FormatString = "#,##0.##";
+            this.colMaHEIN_LIMIT_RATIO_100.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.colMaHEIN_LIMIT_RATIO_100.FieldName = "HEIN_LIMIT_RATIO_100";
+            this.colMaHEIN_LIMIT_RATIO_100.Name = "colMaHEIN_LIMIT_RATIO_100";
+            this.colMaHEIN_LIMIT_RATIO_100.OptionsColumn.AllowEdit = false;
+            this.colMaHEIN_LIMIT_RATIO_100.Visible = true;
+            this.colMaHEIN_LIMIT_RATIO_100.VisibleIndex = 19;
+            this.colMaHEIN_LIMIT_RATIO_100.Width = 80;
             // 
             // repositoryItemPictureEdit2
             // 
@@ -3160,6 +3212,10 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
         private DevExpress.XtraGrid.Columns.GridColumn colHEIN_LIMIT_PRICEUnb;
         private DevExpress.XtraGrid.Columns.GridColumn colMeHEIN_LIMIT_PRICE;
         private DevExpress.XtraGrid.Columns.GridColumn colHEIN_LIMIT_PRICEUnb1;
+        private DevExpress.XtraGrid.Columns.GridColumn colMeMEDICINE_TYPE_DESCRIPTION;
+        private DevExpress.XtraGrid.Columns.GridColumn colMeHEIN_LIMIT_RATIO_100;
+        private DevExpress.XtraGrid.Columns.GridColumn colMaMATERIAL_TYPE_DESCRIPTION;
+        private DevExpress.XtraGrid.Columns.GridColumn colMaHEIN_LIMIT_RATIO_100;
         private DevExpress.XtraEditors.SpinEdit SpDocumentVatPrice;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
     }

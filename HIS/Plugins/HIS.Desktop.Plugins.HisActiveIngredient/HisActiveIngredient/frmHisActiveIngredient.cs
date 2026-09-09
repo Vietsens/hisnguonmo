@@ -482,6 +482,18 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
                             LogSystem.Warn(ex);
                         }
                     }
+                    else if (e.Column.FieldName == "APPROVAL_REQUIRED_LEVEL_STR")
+                    {
+                        try
+                        {
+                            e.Value = pData.APPROVAL_REQUIRED_LEVEL == 1 ? "Chặn" : pData.APPROVAL_REQUIRED_LEVEL == 2 ? "Cảnh báo" : "";
+                        }
+                        catch (Exception ex)
+                        {
+
+                            LogSystem.Warn(ex);
+                        }
+                    }
 
                     gridControlFormList.RefreshDataSource();
                 }
@@ -568,6 +580,8 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
                     txtHisActiveIngredientName.Text = data.ACTIVE_INGREDIENT_NAME;
                     ChkConsulation.Checked = data.IS_CONSULTATION_REQUIRED == 1 ? true : false;
                     chkDS.Checked = data.IS_APPROVAL_REQUIRED == 1 ? true : false;
+                    chkBlock.Checked = chkDS.Checked && data.APPROVAL_REQUIRED_LEVEL == 1;
+                    chkWarning.Checked = chkDS.Checked && data.APPROVAL_REQUIRED_LEVEL == 2;
                     txtNote.Text = data.NOTE;
                 }
             }
@@ -897,10 +911,13 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
                 if (chkDS.Checked)
                 {
                     currentDTO.IS_APPROVAL_REQUIRED = 1;
+                    //Muc do: 1 = Chan (bat buoc tao phieu yeu cau), 2 = Canh bao (chi nhac), trong = xu ly nhu Canh bao
+                    currentDTO.APPROVAL_REQUIRED_LEVEL = chkBlock.Checked ? (short?)1 : chkWarning.Checked ? (short?)2 : null;
                 }
                 else
                 {
                     currentDTO.IS_APPROVAL_REQUIRED = null;
+                    currentDTO.APPROVAL_REQUIRED_LEVEL = null;
                 }
 
 
@@ -1367,8 +1384,100 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+                    if (chkBlock.Enabled)
+                    {
+                        chkBlock.Focus();
+                    }
+                    else
+                    {
+                        txtNote.Focus();
+                        txtNote.SelectAll();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkBlock_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkWarning.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkWarning_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
                     txtNote.Focus();
                     txtNote.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Muc do "Chan"/"Canh bao" chi co y nghia khi hoat chat da tick "KS can phe duyet":
+        /// bo tick thi xoa muc do va khoa 2 checkbox
+        /// </summary>
+        private void chkDS_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                bool enable = chkDS.Checked;
+                chkBlock.Enabled = enable;
+                chkWarning.Enabled = enable;
+                if (!enable)
+                {
+                    chkBlock.Checked = false;
+                    chkWarning.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkBlock_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                //Hai muc do loai tru nhau — moi hoat chat chi mang mot muc tai mot thoi diem
+                if (chkBlock.Checked)
+                {
+                    chkWarning.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkWarning_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkWarning.Checked)
+                {
+                    chkBlock.Checked = false;
                 }
             }
             catch (Exception ex)

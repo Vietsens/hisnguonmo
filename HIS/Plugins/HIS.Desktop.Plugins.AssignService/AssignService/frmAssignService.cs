@@ -9142,6 +9142,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     new LoaiPhieuInADO("gridView7_4", "Phiếu yêu cầu tổng hợp")
                 };
 
+                if (HisConfigCFG.IsPrintTemBarcodeBartender)
+                {
+                    // In tem barcode xet nghiem qua BarTender ngay khi luu (chi hien khi bat config)
+                    lstLoaiPhieu.Add(new LoaiPhieuInADO("gridView7_5", "In tem barcode"));
+                }
+
                 if (HisConfigCFG.IsSeparateSignAndPrint)
                 {
                     // Mặc định lần đầu: cột In tích theo cột Ký
@@ -10704,6 +10710,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (checkQR != null)
                     {
                         InYeuCauThanhToanQR(chkPrint.Checked, false, true);
+                    }
+
+                    var checkTemBarcode = this.lstLoaiPhieu.FirstOrDefault(o => (isSeparate ? o.Print : o.Check) == true && o.ID == "gridView7_5");
+                    if (checkTemBarcode != null)
+                    {
+                        InTemBarcodeXN();
                     }
                 }
 

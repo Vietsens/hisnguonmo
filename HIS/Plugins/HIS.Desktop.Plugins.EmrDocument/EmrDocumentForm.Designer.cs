@@ -163,7 +163,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.checkGroupType = new DevExpress.XtraEditors.CheckEdit();
             this.checkIncludeDelete = new DevExpress.XtraEditors.CheckEdit();
             this.chkMergeDoc = new DevExpress.XtraEditors.CheckEdit();
-            this.chkMergeColumn = new DevExpress.XtraEditors.CheckEdit();
             this.btnAttack = new DevExpress.XtraEditors.SimpleButton();
             this.cboStatus = new DevExpress.XtraEditors.ComboBoxEdit();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
@@ -184,7 +183,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIncludeDelete = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciMergeColumn = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -250,7 +248,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.checkGroupType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkIncludeDelete.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMergeDoc.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkMergeColumn.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboStatus.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
@@ -269,7 +266,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIncludeDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciMergeColumn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
@@ -479,7 +475,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControl2.Controls.Add(this.checkGroupType);
             this.layoutControl2.Controls.Add(this.checkIncludeDelete);
             this.layoutControl2.Controls.Add(this.chkMergeDoc);
-            this.layoutControl2.Controls.Add(this.chkMergeColumn);
             this.layoutControl2.Controls.Add(this.btnAttack);
             this.layoutControl2.Controls.Add(this.cboStatus);
             this.layoutControl2.Controls.Add(this.btnSearch);
@@ -1182,17 +1177,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.chkMergeDoc.StyleController = this.layoutControl2;
             this.chkMergeDoc.TabIndex = 13;
             this.chkMergeDoc.CheckedChanged += new System.EventHandler(this.chkMergeDoc_CheckedChanged);
-            //
-            // chkMergeColumn
-            //
-            this.chkMergeColumn.Location = new System.Drawing.Point(529, 74);
-            this.chkMergeColumn.MenuManager = this.barManager1;
-            this.chkMergeColumn.Name = "chkMergeColumn";
-            this.chkMergeColumn.Properties.Caption = "";
-            this.chkMergeColumn.Size = new System.Drawing.Size(19, 19);
-            this.chkMergeColumn.StyleController = this.layoutControl2;
-            this.chkMergeColumn.TabIndex = 14;
-            this.chkMergeColumn.CheckedChanged += new System.EventHandler(this.chkMergeColumn_CheckedChanged);
             // 
             // btnAttack
             // 
@@ -1273,7 +1257,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControlItem22,
             this.layoutControlItem23,
             this.layoutControlItem25,
-            this.lciMergeColumn,
+            this.emptySpaceItem4,
             this.layoutControlItem26,
             this.layoutControlItem27,
             this.layoutControlItem21,
@@ -1454,20 +1438,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControlItem22.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem22.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem22.TextToControlDistance = 5;
-            //
-            // lciMergeColumn
-            //
-            this.lciMergeColumn.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciMergeColumn.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciMergeColumn.Control = this.chkMergeColumn;
-            this.lciMergeColumn.Location = new System.Drawing.Point(432, 72);
-            this.lciMergeColumn.Name = "lciMergeColumn";
-            this.lciMergeColumn.OptionsToolTip.ToolTip = "Gộp các phiếu đã chọn thành một tờ, mỗi phiếu một cột (áp dụng cho phiếu cùng một mẫu)";
-            this.lciMergeColumn.Size = new System.Drawing.Size(118, 22);
-            this.lciMergeColumn.Text = "In gộp ngang:";
-            this.lciMergeColumn.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciMergeColumn.TextSize = new System.Drawing.Size(90, 20);
-            this.lciMergeColumn.TextToControlDistance = 5;
             // 
             // layoutControlItem23
             // 
@@ -1736,7 +1706,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.checkGroupType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkIncludeDelete.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMergeDoc.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkMergeColumn.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboStatus.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
@@ -1755,7 +1724,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIncludeDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciMergeColumn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
@@ -1824,7 +1792,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         private DevExpress.XtraEditors.SimpleButton btnAttack;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.CheckEdit chkMergeDoc;
-        private DevExpress.XtraEditors.CheckEdit chkMergeColumn;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraEditors.CheckEdit checkIncludeDelete;
         private DevExpress.XtraLayout.LayoutControlItem lciIncludeDelete;
@@ -1887,7 +1854,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repNull;
         private DevExpress.XtraEditors.CheckEdit chkMerge;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
-        private DevExpress.XtraLayout.LayoutControlItem lciMergeColumn;
         private DevExpress.XtraEditors.CheckEdit chkNotFillZero;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
         private DevExpress.XtraEditors.CheckEdit chkAddPatientSign;
