@@ -2282,7 +2282,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 if (phieuTemBarcode != null)
                                 {
                                     InTemBarcodeXN();
-                                    InTemBarcodeGpbl();
                                 }
                             }
                             else
@@ -2325,7 +2324,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 if (checkTemBarcode != null)
                                 {
                                     InTemBarcodeXN();
-                                    InTemBarcodeGpbl();
                                 }
                             }
                         }

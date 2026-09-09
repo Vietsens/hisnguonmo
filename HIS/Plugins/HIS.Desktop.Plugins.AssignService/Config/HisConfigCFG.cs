@@ -116,7 +116,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
 
         /// <summary>
         /// In tem barcode truc tiep qua BarTender Engine.
-        /// 1: bang thiet lap in co them dong "In tem barcode" (gridView7_5) - tich chon thi khi luu in tem XN (Mps000423), GPBL (Mps000425).
+        /// 1: bang thiet lap in co them dong "In tem barcode" (gridView7_5) - tich chon thi khi luu in tem xet nghiem (Mps000423).
         /// Khac 1 (hoac khong khai bao): khong hien dong nay, giu nguyen hanh vi hien tai.
         /// </summary>
         internal const string CONFIG_KEY__IsPrintTemBarcodeBartender = "HIS.Desktop.Plugins.IsPrintTemBarcodeBartender";

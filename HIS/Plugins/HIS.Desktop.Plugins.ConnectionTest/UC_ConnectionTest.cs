@@ -1842,6 +1842,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         lisSampleFilter.SAMPLE_STT_ID = IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN;
                     }
+                    //Từ chối mẫu: chỉ lấy mẫu đang ở trạng thái từ chối (lọc phía server, độc lập với chkKhongHienThiChuaLayMau)
+                    else if ((long)cboFind.EditValue == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
+                    {
+                        lisSampleFilter.SAMPLE_STT_ID = IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI;
+                    }
                     //Tất cả
                     else
                     {
@@ -1971,6 +1976,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 status.Add(new HIS.Desktop.Plugins.ConnectionTest.ComboADO(998, "Có kết quả và chưa duyệt"));
                 status.Add(new HIS.Desktop.Plugins.ConnectionTest.ComboADO(IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ, "Trả kết quả"));
                 status.Add(new HIS.Desktop.Plugins.ConnectionTest.ComboADO(IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN, "Chấp nhận mẫu"));
+                status.Add(new HIS.Desktop.Plugins.ConnectionTest.ComboADO(IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI, "Từ chối mẫu"));
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("statusName", "Trạng thái", 50, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("statusName", "id", columnInfos, true, 50);

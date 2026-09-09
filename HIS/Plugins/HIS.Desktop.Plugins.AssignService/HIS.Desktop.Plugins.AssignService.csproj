@@ -40,9 +40,6 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="Bartender.PrintTemGpblServiceReq">
-      <HintPath>..\..\HIS.Desktop\bin\Debug\ReferencedAssemblies\Bartender.PrintTemGpblServiceReq.dll</HintPath>
-    </Reference>
     <Reference Include="Bartender.PrintTemTestServiceReq">
       <HintPath>..\..\HIS.Desktop\bin\Debug\ReferencedAssemblies\Bartender.PrintTemTestServiceReq.dll</HintPath>
     </Reference>

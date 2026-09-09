@@ -47,8 +47,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         // Khac "1" hoac khong khai bao = giu nguyen cach cu (to mau chu toan luoi theo muc phan loai).
         private const string CONFIG_KEY__EMERGENCY_CLASSIFY_COLUMN = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY_COLUMN";
         private const string CONFIG_KEY__DeleteServiceReqAndChild = "HIS.Desktop.Plugins.ServiceReqList.DeleteServiceReqAndChild";
-        // "1" = nut In tem (F7) in tem barcode truc tiep qua BarTender Engine theo cac y lenh da tich chon
-        // (mau Tmp/TempBartend/Mps000423 - XN, Mps000424 - Mau, Mps000425 - GPBL).
+        // "1" = nut In tem (F7) in tem barcode xet nghiem truc tiep qua BarTender Engine
+        // theo cac y lenh xet nghiem da tich chon (mau Tmp/TempBartend/Mps000423).
         // Khac "1" hoac khong khai bao = giu co che cu (in y lenh dau tien qua app Bartender.Print.exe).
         internal const string CONFIG_KEY__IsPrintTemBarcodeBartender = "HIS.Desktop.Plugins.IsPrintTemBarcodeBartender";
 

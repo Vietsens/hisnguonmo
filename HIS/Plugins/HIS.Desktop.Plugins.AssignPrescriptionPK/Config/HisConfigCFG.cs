@@ -167,6 +167,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_AllowOverMaxExpendService = "HIS.Desktop.Plugins.AssignPrescription.AllowOverMaxExpendService";
         private const string CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
         private const string CONFIG_KEY__IS_CHECK_PHARMACOLOGY = "HIS.Desktop.Plugins.IsCheckPharmacology";
+        private const string CONFIG_KEY__ANTIBIOTIC_REQUEST_POLICY_OPTION = "MOS.HIS_ANTIBIOTIC_REQUEST.POLICY_OPTION";
+        private const string CONFIG_KEY__ANTIBIOTIC_REQ_GET_BY_DATE = "MOS.HIS_ANTIBIOTIC_REQ.GET_BY_DATE";
 
         internal static string AllowKidneyPresOutPatient;
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
@@ -195,6 +197,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string HisIcdServiceHasRequirePatientBhyt;
         internal static string GuaranteeConnectionInfo;
         internal static string IsCheckPharmacology;
+
+        /// <summary>
+        /// Cach quan ly phieu yeu cau su dung khang sinh: 1 - theo don, 2 - theo dot dieu tri.
+        /// Muc "Chan" (bat buoc tao phieu truoc khi luu don) chi kich hoat kiem tra truoc-luu khi = 2
+        /// </summary>
+        internal static string AntibioticRequestPolicyOption;
+
+        /// <summary>
+        /// MOS.HIS_ANTIBIOTIC_REQ.GET_BY_DATE: 1 - doi chieu pham vi phieu theo ngay du tru (neu co), khac - theo ngay y lenh
+        /// </summary>
+        internal static string AntibioticReqGetByDate;
 
         /// <summary>
         /// :Có tự động focus vào ô lời dặn không. 1-có, 0-không
@@ -509,6 +522,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
             try
             {
                 IsCheckPharmacology = GetValue(CONFIG_KEY__IS_CHECK_PHARMACOLOGY);
+                AntibioticRequestPolicyOption = GetValue(CONFIG_KEY__ANTIBIOTIC_REQUEST_POLICY_OPTION);
+                AntibioticReqGetByDate = GetValue(CONFIG_KEY__ANTIBIOTIC_REQ_GET_BY_DATE);
                 GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
                 AllowOverMaxExpendService = GetValue(KEY_AllowOverMaxExpendService);
                 CheckPreviousPrescriptionDetail = GetValue(CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION_DETAIL);

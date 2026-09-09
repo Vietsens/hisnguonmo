@@ -9125,7 +9125,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 if (HisConfigCFG.IsPrintTemBarcodeBartender)
                 {
-                    // In tem barcode XN/GPBL qua BarTender ngay khi luu (chi hien khi bat config)
+                    // In tem barcode xet nghiem qua BarTender ngay khi luu (chi hien khi bat config)
                     lstLoaiPhieu.Add(new LoaiPhieuInADO("gridView7_5", "In tem barcode"));
                 }
 
@@ -10697,7 +10697,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (checkTemBarcode != null)
                     {
                         InTemBarcodeXN();
-                        InTemBarcodeGpbl();
                     }
                 }
 

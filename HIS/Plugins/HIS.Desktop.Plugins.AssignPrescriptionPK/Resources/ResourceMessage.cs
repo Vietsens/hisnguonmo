@@ -2582,6 +2582,54 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Resources
             }
         }
 
+        internal static string KhangSinhMucChanBatBuocTaoPhieuYeuCau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhangSinhMucChanBatBuocTaoPhieuYeuCau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string KhangSinhNhacTaoPhieuYeuCau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhangSinhNhacTaoPhieuYeuCau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string KhangSinhMucChanVanChuaCoPhieuYeuCau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhangSinhMucChanVanChuaCoPhieuYeuCau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string CanhBaoThuocKeVuotQuaSoNGaySuDung
         {
             get

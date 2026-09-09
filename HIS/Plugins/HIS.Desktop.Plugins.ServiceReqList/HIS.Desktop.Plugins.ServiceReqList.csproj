@@ -45,12 +45,6 @@
     <Reference Include="Bartender.PrintClient">
       <HintPath>..\..\..\..\LIB\WCF\BartenderClient\Bartender.PrintClient.dll</HintPath>
     </Reference>
-    <Reference Include="Bartender.PrintTemBloodServiceReq">
-      <HintPath>..\..\HIS.Desktop\bin\Debug\ReferencedAssemblies\Bartender.PrintTemBloodServiceReq.dll</HintPath>
-    </Reference>
-    <Reference Include="Bartender.PrintTemGpblServiceReq">
-      <HintPath>..\..\HIS.Desktop\bin\Debug\ReferencedAssemblies\Bartender.PrintTemGpblServiceReq.dll</HintPath>
-    </Reference>
     <Reference Include="Bartender.PrintTemTestServiceReq">
       <HintPath>..\..\HIS.Desktop\bin\Debug\ReferencedAssemblies\Bartender.PrintTemTestServiceReq.dll</HintPath>
     </Reference>
