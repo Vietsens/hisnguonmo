@@ -1149,6 +1149,9 @@
   <data name="ExamServiceReqExecuteControl.lblMimsPregnantMonth.Text" xml:space="preserve">
     <value>Months of pregnancy:</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.lblMimsPregnantWeek.Text" xml:space="preserve">
+    <value>Gestational age (weeks):</value>
+  </data>
   <data name="ExamServiceReqExecuteControl.chkMimsLactating.Text" xml:space="preserve">
     <value>Breastfeeding woman</value>
   </data>

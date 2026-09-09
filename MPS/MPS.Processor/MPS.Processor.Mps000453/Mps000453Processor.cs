@@ -34,6 +34,16 @@ namespace MPS.Processor.Mps000453
     {
         Mps000453PDO rdo;
         TreatmentAdo TreatmentAdos { get; set; }
+
+        /// <summary>Mã "Khác" của cột ACCOMPANY_RELATIONSHIP — chọn giá trị này mới ghép phần ghi rõ.</summary>
+        private const short ACCOMPANY_RELATIONSHIP__OTHER = 6;
+
+        /// <summary>Mối quan hệ với trẻ (ACCOMPANY_RELATIONSHIP) — mã sang text hiển thị trên phiếu.</summary>
+        private static readonly Dictionary<short, string> MAP_ACCOMPANY_RELATION = new Dictionary<short, string>
+        {
+            { 1, "Cha" }, { 2, "Mẹ" }, { 3, "Ông/bà" },
+            { 4, "Anh/chị" }, { 5, "Họ hàng" }, { ACCOMPANY_RELATIONSHIP__OTHER, "Khác" }
+        };
         public Mps000453Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -65,6 +75,8 @@ namespace MPS.Processor.Mps000453
                 SetSingleKey();
                 // Kết luận theo bệnh (ICD-10) của lượt khám — lấy từ HIS_KSK_GENERAL
                 SetConclusionIcdKeysFromGeneral();
+                // Người đưa trẻ đi khám (mục hành chính)
+                SetAccompanyKeysFromKskUnderEighteen();
                 SetSignatureKeyImageByCFG();
 
                 if (rdo.lstUneiVaty == null)
@@ -116,6 +128,89 @@ namespace MPS.Processor.Mps000453
                     (kskGeneral != null ? kskGeneral.CONCLUSION_ICD_CODE : null) ?? ""));
                 SetSingleKey(new KeyValue(Mps000453ExtendSingleKey.CONCLUSION_ICD_NAME,
                     (kskGeneral != null ? kskGeneral.CONCLUSION_ICD_NAME : null) ?? ""));
+
+                // Mã ICD tiền sử (nhập ở cụm chọn ICD trên tab KSK dưới 18 tuổi, lưu tại HIS_KSK_GENERAL).
+                // Mỗi nhóm sinh 3 key: _CODE, _NAME, _FULL để biểu mẫu dùng ô ghép sẵn.
+                SetIcdKeyGroup(
+                    Mps000453ExtendSingleKey.HISTORY_FAMILY_ICD_CODE,
+                    Mps000453ExtendSingleKey.HISTORY_FAMILY_ICD_NAME,
+                    Mps000453ExtendSingleKey.HISTORY_FAMILY_ICD_FULL,
+                    kskGeneral != null ? kskGeneral.FAMILY_HISTORY_ICD_CODE : null,
+                    kskGeneral != null ? kskGeneral.FAMILY_HISTORY_ICD_NAME : null);
+                SetIcdKeyGroup(
+                    Mps000453ExtendSingleKey.HISTORY_PERSONAL_ICD_CODE,
+                    Mps000453ExtendSingleKey.HISTORY_PERSONAL_ICD_NAME,
+                    Mps000453ExtendSingleKey.HISTORY_PERSONAL_ICD_FULL,
+                    kskGeneral != null ? kskGeneral.PERSONAL_HISTORY_ICD_CODE : null,
+                    kskGeneral != null ? kskGeneral.PERSONAL_HISTORY_ICD_NAME : null);
+                SetIcdKeyGroup(
+                    Mps000453ExtendSingleKey.OBSTETRIC_ICD_CODE,
+                    Mps000453ExtendSingleKey.OBSTETRIC_ICD_NAME,
+                    Mps000453ExtendSingleKey.OBSTETRIC_ICD_FULL,
+                    kskGeneral != null ? kskGeneral.OBSTETRIC_DISEASE_ICD_CODE : null,
+                    kskGeneral != null ? kskGeneral.OBSTETRIC_DISEASE_ICD_NAME : null);
+                SetIcdKeyGroup(
+                    Mps000453ExtendSingleKey.TREATING_ICD_CODE,
+                    Mps000453ExtendSingleKey.TREATING_ICD_NAME,
+                    Mps000453ExtendSingleKey.TREATING_ICD_FULL,
+                    kskGeneral != null ? kskGeneral.TREATING_DISEASE_ICD_CODE : null,
+                    kskGeneral != null ? kskGeneral.TREATING_DISEASE_ICD_NAME : null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Sinh 3 key cho 1 nhóm mã ICD: mã, tên và chuỗi ghép "mã - tên".
+        /// Giá trị rỗng vẫn phải đổ key để biểu mẫu không hiện tag thô.
+        /// </summary>
+        private void SetIcdKeyGroup(string keyCode, string keyName, string keyFull, string code, string name)
+        {
+            try
+            {
+                code = code ?? "";
+                name = name ?? "";
+                string full = string.IsNullOrEmpty(code)
+                    ? name
+                    : (string.IsNullOrEmpty(name) ? code : code + " - " + name);
+                SetSingleKey(new KeyValue(keyCode, code));
+                SetSingleKey(new KeyValue(keyName, name));
+                SetSingleKey(new KeyValue(keyFull, full));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Người đưa trẻ đi khám: chuyển mã quan hệ sang text ({ACCOMPANY_RELATIONSHIP_STR})
+        /// và bản đầy đủ ({ACCOMPANY_RELATIONSHIP_FULL}) — chọn "Khác" thì ghép phần ghi rõ.
+        /// Họ tên người đi cùng dùng key thô {ACCOMPANY_PERSON_NAME} (sinh sẵn từ cột của bảng).
+        /// </summary>
+        private void SetAccompanyKeysFromKskUnderEighteen()
+        {
+            try
+            {
+                HIS_KSK_UNDER_EIGHTEEN k = rdo.HisKskUnderEighteen;
+                string relation = "";
+                if (k != null && k.ACCOMPANY_RELATIONSHIP != null
+                    && MAP_ACCOMPANY_RELATION.ContainsKey(k.ACCOMPANY_RELATIONSHIP.Value))
+                {
+                    relation = MAP_ACCOMPANY_RELATION[k.ACCOMPANY_RELATIONSHIP.Value];
+                }
+                string relationFull = relation;
+                if (k != null && k.ACCOMPANY_RELATIONSHIP == ACCOMPANY_RELATIONSHIP__OTHER
+                    && !string.IsNullOrEmpty(k.ACCOMPANY_RELATIONSHIP_OTHER))
+                {
+                    relationFull = string.IsNullOrEmpty(relation)
+                        ? k.ACCOMPANY_RELATIONSHIP_OTHER
+                        : relation + ": " + k.ACCOMPANY_RELATIONSHIP_OTHER;
+                }
+                SetSingleKey(new KeyValue(Mps000453ExtendSingleKey.ACCOMPANY_RELATIONSHIP_STR, relation));
+                SetSingleKey(new KeyValue(Mps000453ExtendSingleKey.ACCOMPANY_RELATIONSHIP_FULL, relationFull));
             }
             catch (Exception ex)
             {

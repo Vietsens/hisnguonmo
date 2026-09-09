@@ -41,6 +41,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         internal static bool EnableTreatmentPrescription;
         private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
         private const string CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION = "HIS.Desktop.Mims.IsCheckPregnancyLactation";
+
+        #region Việc 52540 — kiểm tra tương tác thuốc giữa các đơn khác nhau của hồ sơ
+        private const string CONFIG_KEY__MIMS_INTERACTION_SCOPE_OPTION = "HIS.Desktop.Mims.InteractionScopeOption";
+        private const string CONFIG_KEY__MIMS_PREVIOUS_PRESCRIPTION_DAY_RANGE = "HIS.Desktop.Mims.PreviousPrescriptionDayRange";
+        private const string CONFIG_KEY__MIMS_CROSS_PRESCRIPTION_REQUEST_MODE = "HIS.Desktop.Mims.CrossPrescriptionRequestMode";
+        #endregion
         private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION = "MOS.HIS_SERVICE_REQ.MANY_DAYS_PRESCRIPTION_OPTION";
         private const string CONFIG_KEY__IsAllowAssignPresByPackage = "HIS.Desktop.Plugins.IsAllowAssignPresByPackage";
@@ -226,6 +232,50 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         /// </summary>
         internal static string IsCheckMimsPregnancyLactation;
 
+        #region Việc 52540 — kiểm tra tương tác thuốc giữa các đơn khác nhau của hồ sơ
+
+        /// <summary>Giá trị phạm vi: chỉ đơn đang kê (mặc định — hành vi như trước việc 52540).</summary>
+        internal const string MIMS_INTERACTION_SCOPE__CURRENT_PRESCRIPTION = "1";
+
+        /// <summary>Giá trị phạm vi: thêm thuốc còn hiệu lực của các đơn khác trong CÙNG hồ sơ điều trị.</summary>
+        internal const string MIMS_INTERACTION_SCOPE__TREATMENT = "2";
+
+        /// <summary>Giá trị phạm vi: thêm thuốc còn hiệu lực toàn lịch sử bệnh nhân.</summary>
+        internal const string MIMS_INTERACTION_SCOPE__PATIENT = "3";
+
+        /// <summary>Số ngày lùi mặc định khi thuốc đơn khác không có USE_TIME_TO.</summary>
+        internal const int MIMS_PREVIOUS_PRESCRIPTION_DAY_RANGE_DEFAULT = 30;
+
+        /// <summary>Số thuốc tối đa lấy từ các đơn khác để gửi MIMS (chống phình request).</summary>
+        internal const int MIMS_PREVIOUS_PRESCRIPTION_MAX_DRUG = 30;
+
+        /// <summary>
+        /// Phạm vi kiểm tra tương tác thuốc bằng MIMS (việc 52540).
+        /// rỗng/"1" = chỉ đơn đang kê · "2" = + đơn khác cùng hồ sơ điều trị · "3" = + toàn lịch sử bệnh nhân.
+        /// </summary>
+        internal static string MimsInteractionScopeOption;
+
+        /// <summary>Số ngày lùi khi thuốc đơn khác không có thời gian dùng đến. Mặc định 30.</summary>
+        internal static int MimsPreviousPrescriptionDayRange = MIMS_PREVIOUS_PRESCRIPTION_DAY_RANGE_DEFAULT;
+
+        /// <summary>
+        /// Cách gửi thuốc đơn khác tới MIMS: 1 = gộp vào Prescribing (mặc định), 2 = khối Prescribed.
+        /// </summary>
+        internal static int MimsCrossPrescriptionRequestMode =
+            HIS.Desktop.MIMS.Integration.Models.MimsCrossPrescriptionOption.REQUEST_MODE__MERGE_PRESCRIBING;
+
+        /// <summary>true khi phạm vi kiểm tra vượt ra ngoài đơn đang kê.</summary>
+        internal static bool IsCheckMimsCrossPrescription
+        {
+            get
+            {
+                return MimsInteractionScopeOption == MIMS_INTERACTION_SCOPE__TREATMENT
+                    || MimsInteractionScopeOption == MIMS_INTERACTION_SCOPE__PATIENT;
+            }
+        }
+
+        #endregion
+
         internal static string IsCheckPharmacology;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
@@ -265,6 +315,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
                 IsCheckPharmacology = GetValue(CONFIG_KEY__IS_CHECK_PHARMACOLOGY);
                 ConnectDrugInterventionInfo = GetValue(CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO);
                 IsCheckMimsPregnancyLactation = GetValue(CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION);
+
+                // Việc 52540 — phạm vi kiểm tra tương tác chéo đơn
+                MimsInteractionScopeOption = GetValue(CONFIG_KEY__MIMS_INTERACTION_SCOPE_OPTION);
+                int mimsDayRange = Inventec.Common.TypeConvert.Parse.ToInt32(
+                    GetValue(CONFIG_KEY__MIMS_PREVIOUS_PRESCRIPTION_DAY_RANGE));
+                MimsPreviousPrescriptionDayRange = mimsDayRange > 0
+                    ? mimsDayRange
+                    : MIMS_PREVIOUS_PRESCRIPTION_DAY_RANGE_DEFAULT;
+                MimsCrossPrescriptionRequestMode =
+                    Inventec.Common.TypeConvert.Parse.ToInt32(GetValue(CONFIG_KEY__MIMS_CROSS_PRESCRIPTION_REQUEST_MODE))
+                        == HIS.Desktop.MIMS.Integration.Models.MimsCrossPrescriptionOption.REQUEST_MODE__PRESCRIBED_BLOCK
+                    ? HIS.Desktop.MIMS.Integration.Models.MimsCrossPrescriptionOption.REQUEST_MODE__PRESCRIBED_BLOCK
+                    : HIS.Desktop.MIMS.Integration.Models.MimsCrossPrescriptionOption.REQUEST_MODE__MERGE_PRESCRIBING;
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
                 //qtcode
                 AllowSignaturePrintModuleLinks = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);

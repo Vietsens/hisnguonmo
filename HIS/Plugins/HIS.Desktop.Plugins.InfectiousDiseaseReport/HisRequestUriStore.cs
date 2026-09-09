@@ -11,6 +11,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport
         internal const string HIS_ECDS_UPDATE = "api/HisEcdsDiseaseCase/Update";
         /// <summary>Lấy bản ghi theo điều trị (đối soát khi mở form).</summary>
         internal const string HIS_ECDS_GET = "api/HisEcdsDiseaseCase/Get";
+        /// <summary>Lấy view ca bệnh (V_HIS_ECDS_DISEASE_CASE) để đối soát trạng thái đẩy của danh sách.</summary>
+        internal const string HIS_ECDS_GET_VIEW = "api/HisEcdsDiseaseCase/GetView";
         /// <summary>Lấy đầy đủ ca bệnh theo TREATMENT_CODE: cha + 2 danh sách con (§20b).</summary>
         internal const string HIS_ECDS_GET_FULL = "api/HisEcdsDiseaseCase/GetFull";
         /// <summary>Lấy thông tin hành chính bệnh nhân (V_HIS_PATIENT) để điền tab Hành chính.</summary>

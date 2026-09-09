@@ -1,4 +1,5 @@
-// ...existing code...
+﻿// ...existing code...
+using System;
 using System.Collections.Generic;
 using System.Text;
 using HIS.Desktop.MIMS.Integration.Models;
@@ -120,7 +121,27 @@ namespace HIS.Desktop.MIMS.Integration.Core
             List<string> icd10Codes, bool checkDuplicateDrug = false, bool checkAllergy = false,
             MimsPatientProfile patientProfile = null)
         {
+            return BuildDrugHealthAlertRequest(drugs, allergies, icd10Codes, checkDuplicateDrug,
+                checkAllergy, patientProfile, null, MimsCrossPrescriptionOption.REQUEST_MODE__MERGE_PRESCRIBING);
+        }
+
+        /// <summary>
+        /// Overload MỚI (việc 52540) — kèm thuốc các đơn KHÁC còn hiệu lực trong hồ sơ.
+        /// requestMode = 1: gộp previousDrugs vào &lt;Prescribing&gt; — đúng chú thích
+        ///   "Current and Past Medications" của MIMS API Guide cho Drug-Health / Duplicate Alert.
+        /// requestMode = 2: sinh khối &lt;Prescribed&gt; riêng (hợp lệ theo Request55.xsd, dùng dự phòng).
+        /// previousDrugs null/rỗng → XML sinh ra GIỐNG HOÀN TOÀN bản không có tham số này.
+        /// </summary>
+        public static string BuildDrugHealthAlertRequest(
+            List<DrugItem> drugs, List<AllergyItem> allergies,
+            List<string> icd10Codes, bool checkDuplicateDrug, bool checkAllergy,
+            MimsPatientProfile patientProfile, List<DrugItem> previousDrugs, int requestMode)
+        {
             var sb = new StringBuilder();
+
+            bool hasPreviousDrugs = previousDrugs != null && previousDrugs.Count > 0;
+            bool mergePrevious = hasPreviousDrugs
+                && requestMode != MimsCrossPrescriptionOption.REQUEST_MODE__PRESCRIBED_BLOCK;
 
             sb.AppendLine("<Request>");
             sb.AppendLine("<Interaction>");
@@ -134,7 +155,26 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 }
             }
 
+            if (mergePrevious)
+            {
+                foreach (var d in previousDrugs)
+                {
+                    sb.AppendLine(BuildDrugTag(d));
+                }
+            }
+
             sb.AppendLine("</Prescribing>");
+
+            // <Prescribed> — thẻ hợp lệ theo Request55.xsd (Interaction là xsd:all nên thứ tự tự do).
+            if (hasPreviousDrugs && !mergePrevious)
+            {
+                sb.AppendLine("<Prescribed>");
+                foreach (var d in previousDrugs)
+                {
+                    sb.AppendLine(BuildDrugTag(d));
+                }
+                sb.AppendLine("</Prescribed>");
+            }
 
             if (icd10Codes != null && icd10Codes.Count > 0)
             {
@@ -166,7 +206,7 @@ namespace HIS.Desktop.MIMS.Integration.Core
         }
 
         /// <summary>
-        /// Sinh khối &lt;PatientProfile&gt; (Gender / Pregnancy.Month / Age.Year / Nursing)
+        /// Sinh khối &lt;PatientProfile&gt; (Gender / Pregnancy.Month / Pregnancy.Week / Age.Year / Nursing)
         /// kích hoạt module Drug Pregnancy + Drug Lactation của MIMS.
         /// Không sinh gì khi profile null hoặc không có cờ nào được tick —
         /// đảm bảo request không đổi 1 byte so với hiện tại (tối ưu hiệu năng).
@@ -181,10 +221,15 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 sb.AppendLine(string.Format("<Gender>{0}</Gender>", profile.GenderCode));
             if (profile.IsPregnant)
             {
-                if (profile.PregnancyMonth != null && profile.PregnancyMonth > 0)
+                bool hasMonth = profile.PregnancyMonth != null && profile.PregnancyMonth > 0;
+                bool hasWeek = profile.PregnancyWeek != null && profile.PregnancyWeek > 0;
+                if (hasMonth || hasWeek)
                 {
                     sb.AppendLine("<Pregnancy>");
-                    sb.AppendLine(string.Format("<Month>{0}</Month>", profile.PregnancyMonth.Value));
+                    if (hasMonth)
+                        sb.AppendLine(string.Format("<Month>{0}</Month>", profile.PregnancyMonth.Value));
+                    if (hasWeek)
+                        sb.AppendLine(string.Format("<Week>{0}</Week>", profile.PregnancyWeek.Value));
                     sb.AppendLine("</Pregnancy>");
                 }
                 else
@@ -235,6 +280,39 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 }
             }
             sb.AppendLine("</Allergies>");
+        }
+
+        /// <summary>
+        /// Sinh giá trị tham số form "alertfilterbydrug" (việc 52540):
+        /// &lt;GUIDS&gt;&lt;GUID&gt;{...}&lt;/GUID&gt;...&lt;/GUIDS&gt;
+        /// MIMS chỉ trả về cảnh báo liên quan tới các GUID này — dùng GUID thuốc ĐANG KÊ
+        /// để loại cảnh báo giữa hai thuốc đều thuộc đơn khác.
+        /// Trả về null khi không có GUID nào (khi đó KHÔNG gửi tham số).
+        /// </summary>
+        public static string BuildAlertFilterByDrug(List<DrugItem> drugs)
+        {
+            if (drugs == null || drugs.Count == 0)
+                return null;
+
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var sb = new StringBuilder();
+            sb.Append("<GUIDS>");
+
+            foreach (var drug in drugs)
+            {
+                if (drug == null || string.IsNullOrEmpty(drug.MimsGuid))
+                    continue;
+
+                var guid = drug.MimsGuid.Trim('{', '}');
+                if (guid.Length == 0 || !seen.Add(guid))
+                    continue;
+
+                sb.Append("<GUID>{").Append(guid).Append("}</GUID>");
+            }
+
+            sb.Append("</GUIDS>");
+
+            return seen.Count > 0 ? sb.ToString() : null;
         }
 
         public static string BuildVnContraindicationRequest(

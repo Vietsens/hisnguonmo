@@ -33,7 +33,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         #endregion
 
         #region Declare — Đối tượng mắc bệnh (DOI_TUONG_MAC_BENH)
-        private TextEdit txtHoTen, txtCccd, txtDienThoai, txtNoiLamViec, txtDiaChi, txtDiaChiTru, txtNgheNghiepHoSo;
+        private TextEdit txtHoTen, txtCccd, txtDienThoai, txtNoiLamViec, txtDiaChi, txtDiaChiTru, txtNgheNghiepHoSo, txtBenhHoSo;
         private DateEdit dteNgaySinh;
         private SpinEdit spnTuoi;
         private GridLookUpEdit cboGioiTinh, cboDanToc, cboNgheNghiep, cboTinh, cboXa, cboThon, cboTinhTru, cboXaTru;
@@ -276,15 +276,15 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             F("Số CCCD/CMND (*):", txtCccd);
             F("Số điện thoại (*):", txtDienThoai);
             F("Dân tộc (*):", cboDanToc);
-            F("Nghề nghiệp (hồ sơ):", txtNgheNghiepHoSo);
-            F("Nghề nghiệp (cổng):", cboNgheNghiep);
+            F("NN (hồ sơ):", txtNgheNghiepHoSo);
+            F("NN (cổng):", cboNgheNghiep);
             F("Nơi làm việc:", txtNoiLamViec);
             F("", chkMangThai);
 
             BeginSection("Địa chỉ hiện nay");
             F("Tỉnh/TP:", cboTinh);
             F("Xã/Phường:", cboXa);
-            F("Thôn/Ấp:", cboThon);
+            // Thôn/Ấp: bỏ ô nhập theo yêu cầu (cboThon vẫn khai báo nhưng không đưa lên giao diện).
             F("Địa chỉ chi tiết:", txtDiaChi);
 
             BeginSection("Địa chỉ thường trú");
@@ -298,6 +298,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         {
             // Chẩn đoán
             cboBenh = new GridLookUpEdit();
+            txtBenhHoSo = new TextEdit();
+            txtBenhHoSo.Properties.ReadOnly = true;   // mã bệnh gốc của hồ sơ — chỉ đọc
             cboCapDoBenh = new GridLookUpEdit();
             cboLoaiChanDoan = new GridLookUpEdit();
             cboTinhTrang = new GridLookUpEdit();
@@ -336,8 +338,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             cboBenh.EditValueChanged += cboBenh_EditValueChanged;
 
             BeginSection("Chẩn đoán");
-            FFull("Bệnh (ICD-10) (*):", cboBenh);       // bệnh lên trên cùng, chiếm trọn chiều ngang
-            F("Phân độ bệnh:", cboCapDoBenh);
+            FFull("Bệnh (hồ sơ):", txtBenhHoSo);        // mã bệnh gốc hồ sơ (chỉ đọc)
+            FFull("Bệnh (ICD-10) (*):", cboBenh);       // bệnh chọn đẩy cổng, chiếm trọn chiều ngang
+            // Phân độ bệnh: bỏ khỏi giao diện theo yêu cầu (cboCapDoBenh vẫn khai báo, không hiển thị).
             F("Phân loại chẩn đoán (*):", cboLoaiChanDoan);
             FFull("Chẩn đoán ra viện:", txtChanDoanRaVien, 40);
             FFull("Chẩn đoán phụ:", txtSubDiagnosis, 40);
@@ -434,19 +437,21 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
 
             var lcSearch = new LayoutControl();
             lcSearch.Dock = DockStyle.Top;
-            lcSearch.Height = 112;
+            lcSearch.Height = 100;
             var root = lcSearch.Root;
             root.GroupBordersVisible = false;
 
-            AddListRow(root, "", txtListKeyword);   // không nhãn — dùng NullValuePrompt hint
-            var liFrom = AddListRow(root, "Từ ngày:", dteListFrom);
-            AddListRow(root, "Đến ngày:", dteListTo).Move(liFrom, InsertType.Right);
+            // Hàng 1 + 2: mỗi ngày 1 hàng full-width -> ô nhập ngày rộng rãi.
+            AddListRow(root, "Từ ngày:", dteListFrom);
+            AddListRow(root, "Đến ngày:", dteListTo);
+            // Hàng 3: từ khóa (co giãn) + nút Tìm nhỏ bên phải.
+            var liKw = AddListRow(root, "", txtListKeyword);
             var liBtn = AddListRow(root, "", btnListSearch, 26);
+            liBtn.Move(liKw, InsertType.Right);
             liBtn.TextVisible = false;
             liBtn.SizeConstraintsType = SizeConstraintsType.Custom;
-            liBtn.MinSize = new Size(90, 28);
-            liBtn.MaxSize = new Size(90, 28);
-            root.Add(new EmptySpaceItem());   // hút phần trống còn lại -> nút Tìm không bị kéo giãn
+            liBtn.MinSize = new Size(72, 26);
+            liBtn.MaxSize = new Size(72, 26);
 
             // --- Grid ---
             grdList = new GridControl() { Dock = DockStyle.Fill };
@@ -461,6 +466,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             GridColumn cName = gvList.Columns.AddVisible("PATIENT_NAME"); cName.Caption = "Bệnh nhân"; cName.Width = 140;
             GridColumn cIcd = gvList.Columns.AddVisible("ICD_CODE"); cIcd.Caption = "ICD"; cIcd.Width = 60;
             gvList.Click += gvList_Click;
+            gvList.RowStyle += gvList_RowStyle;   // tô màu dòng đã đẩy cổng
 
             grpList.Controls.Add(grdList);       // Fill (thêm trước -> nằm dưới)
             grpList.Controls.Add(lcSearch);      // Top
@@ -522,8 +528,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             lci.Control = ctrl;
             lci.Text = caption;
             lci.TextLocation = DevExpress.Utils.Locations.Left;
-            // Cột nhãn 120px -> gọn, mọi editor bắt đầu cùng 1 mốc (thẳng hàng).
-            lci.TextSize = new Size(120, 20);
+            // Cột nhãn rộng 165px -> tiêu đề dài không bị cắt; ô nhập hẹp lại tương ứng (~1/5).
+            lci.TextSize = new Size(165, 20);
             lci.TextAlignMode = TextAlignModeItem.CustomSize;
             lci.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             lci.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;

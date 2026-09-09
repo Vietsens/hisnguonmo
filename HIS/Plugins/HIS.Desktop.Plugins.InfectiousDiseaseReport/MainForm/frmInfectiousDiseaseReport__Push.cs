@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                     PersistToHis(dto, result.duLieu.maCaBenh, result.duLieu.id, (int)EcdsPushState.DaDay, "");
 
                     if (dlgRefresh != null) dlgRefresh();
+                    try { if (listInited) LoadListSync(); } catch { }   // tô lại màu dòng vừa đẩy
 
                     Inventec.Common.Logging.LogUtil.LogActionSuccess(
                         "InfectiousDiseaseReport", "Push",
@@ -93,7 +94,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
 
                 // ---- Bệnh / chẩn đoán ----
                 // Cổng nhận MÃ ICD-10 (string), KHÔNG phải ID danh mục -> fix "bạn phải chọn bệnh".
-                dto.MaIcd10Benh = PrimaryIcdCode(GetSelectedBenhMa());
+                // Combo bệnh đã tách -> EditValue chính là 1 mã ICD hợp lệ cổng biết.
+                dto.MaIcd10Benh = GetSelectedBenhMa();
                 dto.MaPhanLoaiLamSang = GetSelectedMa(cboCapDoBenh);
                 dto.LoaiChanDoan = GetLookupInt(cboLoaiChanDoan, (int)EcdsPhanLoaiChuanDoan.XacDinh);
                 dto.TrangThaiCaBenh = (int)EcdsTrangThaiCaBenh.MacDinh;      // = 1 (theo ví dụ cổng)
@@ -308,8 +310,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 c.IS_DELETE = 0;
 
                 // ---- Ca bệnh ----
-                c.REPORTED_DISEASE_ID = toDec(GetLookupLong(cboBenh));
-                c.REPORTED_ICD_CODE = PrimaryIcdCode(GetSelectedBenhMa());   // chỉ mã chính (cột DB tối đa 10 ký tự)
+                c.REPORTED_DISEASE_ID = toDec(GetSelectedBenhId());
+                c.REPORTED_ICD_CODE = GetSelectedBenhMa();   // 1 mã ICD (cột DB ≤10 ký tự)
                 c.DISEASE_SEVERITY_ID = toDec(GetLookupLong(cboCapDoBenh));
                 c.DIAGNOSIS_TYPE = (short)GetLookupInt(cboLoaiChanDoan, (int)EcdsPhanLoaiChuanDoan.XacDinh);
                 c.CURRENT_STATE = (decimal)GetLookupInt(cboTinhTrang, (int)EcdsTinhTrangHienNay.NgoaiTru);

@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
             this.gc_Amount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemSpAmount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.gc_ServiceUnitName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gc_NoteReason = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControl = new DevExpress.XtraLayout.LayoutControl();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.btnAccept = new DevExpress.XtraEditors.SimpleButton();
@@ -186,13 +187,13 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
             // 
             // gridControl
             // 
-            this.gridControl.Location = new System.Drawing.Point(2, 76);
+            this.gridControl.Location = new System.Drawing.Point(2, 100);
             this.gridControl.MainView = this.gridView;
             this.gridControl.Name = "gridControl";
             this.gridControl.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemBtnDelete,
             this.repositoryItemSpAmount});
-            this.gridControl.Size = new System.Drawing.Size(876, 428);
+            this.gridControl.Size = new System.Drawing.Size(876, 404);
             this.gridControl.TabIndex = 11;
             this.gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView});
@@ -207,7 +208,8 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
             this.gc_ManufacturerName,
             this.gc_AvailableAmount,
             this.gc_Amount,
-            this.gc_ServiceUnitName});
+            this.gc_ServiceUnitName,
+            this.gc_NoteReason});
             this.gridView.GridControl = this.gridControl;
             this.gridView.Name = "gridView";
             this.gridView.OptionsView.ColumnAutoWidth = false;
@@ -313,13 +315,23 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
             this.gc_ServiceUnitName.Visible = true;
             this.gc_ServiceUnitName.VisibleIndex = 7;
             this.gc_ServiceUnitName.Width = 70;
+            //
+            // gc_NoteReason
+            //
+            this.gc_NoteReason.Caption = "Ghi chú";
+            this.gc_NoteReason.FieldName = "NOTE_REASON";
+            this.gc_NoteReason.Name = "gc_NoteReason";
+            this.gc_NoteReason.OptionsColumn.AllowEdit = false;
+            this.gc_NoteReason.Visible = true;
+            this.gc_NoteReason.VisibleIndex = 8;
+            this.gc_NoteReason.Width = 220;
             // 
             // layoutControl
             // 
             this.layoutControl.Location = new System.Drawing.Point(330, 48);
             this.layoutControl.Name = "layoutControl";
             this.layoutControl.Root = this.Root;
-            this.layoutControl.Size = new System.Drawing.Size(440, 26);
+            this.layoutControl.Size = new System.Drawing.Size(440, 50);
             this.layoutControl.TabIndex = 10;
             this.layoutControl.Text = "layoutControl2";
             // 
@@ -330,7 +342,7 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(440, 26);
+            this.Root.Size = new System.Drawing.Size(440, 50);
             this.Root.TextVisible = false;
             // 
             // btnAccept
@@ -495,7 +507,10 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
             this.lciMachine.Control = this.cboMachine;
             this.lciMachine.Location = new System.Drawing.Point(0, 48);
             this.lciMachine.Name = "lciMachine";
-            this.lciMachine.Size = new System.Drawing.Size(330, 26);
+            this.lciMachine.Size = new System.Drawing.Size(330, 50);
+            this.lciMachine.MaxSize = new System.Drawing.Size(0, 26);
+            this.lciMachine.MinSize = new System.Drawing.Size(120, 26);
+            this.lciMachine.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciMachine.Text = "Máy:";
             this.lciMachine.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciMachine.TextSize = new System.Drawing.Size(90, 20);
@@ -506,7 +521,10 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
             this.layoutControlItem6.Control = this.btnAccept;
             this.layoutControlItem6.Location = new System.Drawing.Point(770, 48);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem6.Size = new System.Drawing.Size(110, 50);
+            this.layoutControlItem6.MaxSize = new System.Drawing.Size(110, 26);
+            this.layoutControlItem6.MinSize = new System.Drawing.Size(110, 26);
+            this.layoutControlItem6.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -516,16 +534,19 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
             this.lciGenUc.Location = new System.Drawing.Point(330, 48);
             this.lciGenUc.Name = "lciGenUc";
             this.lciGenUc.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lciGenUc.Size = new System.Drawing.Size(440, 26);
+            this.lciGenUc.Size = new System.Drawing.Size(440, 50);
+            this.lciGenUc.MaxSize = new System.Drawing.Size(0, 50);
+            this.lciGenUc.MinSize = new System.Drawing.Size(120, 50);
+            this.lciGenUc.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciGenUc.TextSize = new System.Drawing.Size(0, 0);
             this.lciGenUc.TextVisible = false;
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.gridControl;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 74);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 98);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(880, 432);
+            this.layoutControlItem8.Size = new System.Drawing.Size(880, 408);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -752,6 +773,7 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.HisExpMestLaboratory
         private DevExpress.XtraGrid.Columns.GridColumn gc_AvailableAmount;
         private DevExpress.XtraGrid.Columns.GridColumn gc_Amount;
         private DevExpress.XtraGrid.Columns.GridColumn gc_ServiceUnitName;
+        private DevExpress.XtraGrid.Columns.GridColumn gc_NoteReason;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpAmount;
         private DevExpress.XtraBars.BarManager barManager1;
         private DevExpress.XtraBars.Bar bar1;

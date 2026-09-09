@@ -83,6 +83,21 @@ namespace HIS.Desktop.MIMS.Integration.Models
 		/// </summary>
 		public string ErrorMessage { get; set; }
 
+		/// <summary>
+		/// Việc 52540 — số thuốc của các đơn KHÁC đã map MimsGuid và đưa vào request.
+		/// </summary>
+		public int PreviousDrugCount { get; set; }
+
+		/// <summary>
+		/// Việc 52540 — danh sách MimsGuid của thuốc các đơn khác, phân tách bằng ";".
+		/// </summary>
+		public string PreviousDrugGuids { get; set; }
+
+		/// <summary>
+		/// Việc 52540 — true nếu request có gửi tham số form "alertfilterbydrug".
+		/// </summary>
+		public bool IsAlertFilteredByDrug { get; set; }
+
 		public MimsResult()
 		{
 			Alerts = new List<string>();

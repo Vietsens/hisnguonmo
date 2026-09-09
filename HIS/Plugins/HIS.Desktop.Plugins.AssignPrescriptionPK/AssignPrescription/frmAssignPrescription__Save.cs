@@ -1899,14 +1899,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             var ExpMestId = ListExpMestMedicineAntibioticRequired.Where(o => TypeAcinMedicineType.Exists
                                 (p => p == o.TDL_MEDICINE_TYPE_ID)).Select(o => o.EXP_MEST_ID).Distinct().ToList();
 
-                            //PT-55625: khi ke don nhieu ngay, danh sach nay duoc chot mot lan luc luu don.
-                            //Sau khi bac si tao phieu cho ngay dau voi pham vi ngay dieu tri bao trum ca dot ke,
-                            //backend da gan phieu cho cac don con lai -> phai lay lai trang thai de khong hoi lai.
+                            //PT-55625: danh sach don duoc chot mot lan luc luu don va KHONG theo thu tu ngay.
+                            //Hoi lan luot theo don co ngay som nhat, sau moi lan tao phieu thi lay lai trang thai
+                            //de bo qua cac ngay da nam trong pham vi dot dieu tri cua phieu vua tao.
                             List<long> expMestIdsHadRequest = new List<long>();
-                            for (int idxExpMest = 0; idxExpMest < ExpMestId.Count; idxExpMest++)
+                            List<long> expMestIdsAsked = new List<long>();
+                            while (true)
                             {
-                                var em = ExpMestId[idxExpMest];
-                                if (em.HasValue && expMestIdsHadRequest.Contains(em.Value)) continue;
+                                long? em = GetNextExpMestIdToAsk(ExpMestId, expMestIdsHadRequest, expMestIdsAsked);
+                                if (!em.HasValue) break;
+                                expMestIdsAsked.Add(em.Value);
 
                                 List<HIS_ANTIBIOTIC_NEW_REG> NewRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
                                 var medicineTypeExpMest = medicineType.Where(o => ListExpMestMedicineAntibioticRequired.Where(p => p.EXP_MEST_ID == em).ToList().Exists(p => p.TDL_MEDICINE_TYPE_ID == o.ID)).ToList();
@@ -1977,11 +1979,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 ((Form)extenceInstance).ShowDialog();
 
                                 //PT-55625: bac si co the vua tao phieu bao trum nhieu ngay -> cap nhat lai truoc khi hoi don ke tiep.
-                                //Neu bac si bam Huy thi khong co don nao duoc gan, vong lap van hoi tiep nhu cu.
-                                if (idxExpMest < ExpMestId.Count - 1)
-                                {
-                                    expMestIdsHadRequest = GetExpMestIdsHadAntibioticRequest();
-                                }
+                                //Neu bac si bam Huy thi khong co don nao duoc gan, don do da danh dau "da hoi" nen
+                                //vong lap chuyen sang ngay tiep theo chu khong hoi lai vo tan.
+                                expMestIdsHadRequest = GetExpMestIdsHadAntibioticRequest();
                             }
                         }
                     }
@@ -1991,6 +1991,40 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// PT-55625 - Chon don thuoc tiep theo can hoi tao phieu: don co NGAY SOM NHAT trong so cac don
+        /// chua duoc gan phieu va chua tung hoi. Danh sach don tra ve tu backend khong theo thu tu ngay,
+        /// neu hoi theo dung thu tu do thi bac si se dung don cua ngay cuoi de tao phieu cho ngay dau,
+        /// va ngay cuoi se khong bao gio duoc hoi nua.
+        /// </summary>
+        private long? GetNextExpMestIdToAsk(List<long?> allExpMestIds, List<long> expMestIdsHadRequest, List<long> expMestIdsAsked)
+        {
+            long? result = null;
+            long resultDate = 0;
+            try
+            {
+                if (allExpMestIds == null) return null;
+                foreach (var id in allExpMestIds)
+                {
+                    if (!id.HasValue) continue;
+                    if (expMestIdsHadRequest.Contains(id.Value)) continue;
+                    if (expMestIdsAsked.Contains(id.Value)) continue;
+
+                    long date = GetInstructionDateOfExpMest(id);
+                    if (!result.HasValue || date < resultDate)
+                    {
+                        result = id;
+                        resultDate = date;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         /// <summary>

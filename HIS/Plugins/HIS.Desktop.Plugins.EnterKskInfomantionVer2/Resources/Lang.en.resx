@@ -177,4 +177,13 @@
   <data name="KskConcluder.Caption" xml:space="preserve">
     <value>Examiner:</value>
   </data>
+  <data name="frmEnterKskInfomantionVer2.lciAccompanyName3.Text" xml:space="preserve">
+    <value>Accompanying person:</value>
+  </data>
+  <data name="frmEnterKskInfomantionVer2.lciAccompanyRel3.Text" xml:space="preserve">
+    <value>Relationship to child</value>
+  </data>
+  <data name="frmEnterKskInfomantionVer2.lciAccompanyOther3.Text" xml:space="preserve">
+    <value>Specify (other relationship):</value>
+  </data>
 </root>

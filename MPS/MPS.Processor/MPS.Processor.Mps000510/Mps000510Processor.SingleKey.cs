@@ -332,11 +332,11 @@ namespace MPS.Processor.Mps000510
                 return;
              
             if (rdo.ServiceReqs != null &&
-                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList() != null &&
-                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList().Count > 0)
+                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && o.START_TIME != null).ToList() != null &&
+                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && o.START_TIME != null).ToList().Count > 0)
             {
-                var ServiceReqsKh = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList();
-                long startTime = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList().OrderBy(o => o.START_TIME ?? 0).FirstOrDefault().START_TIME ?? 0;
+                var ServiceReqsKh = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && o.START_TIME != null).ToList();
+                long startTime = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && o.START_TIME != null).ToList().OrderBy(o => o.START_TIME ?? 0).FirstOrDefault().START_TIME ?? 0;
                 SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.SERVICE_REQ_START_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(startTime)));
             }
 

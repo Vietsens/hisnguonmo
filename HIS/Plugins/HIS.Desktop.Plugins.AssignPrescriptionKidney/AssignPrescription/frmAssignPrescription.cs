@@ -431,6 +431,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 this.LoadDataTracking();
                 this.LoadAllergenic(currentTreatmentWithPatientType.PATIENT_ID);
                 this.PrefetchMimsPatientProfile();
+                // Việc 52540: prefetch thuốc các đơn khác còn hiệu lực trong hồ sơ
+                this.PrefetchMimsCrossPrescription();
                 this.LoadDataDhstToControl();
                 LogSystem.Debug("Loaded end");
                 WaitingManager.Hide();

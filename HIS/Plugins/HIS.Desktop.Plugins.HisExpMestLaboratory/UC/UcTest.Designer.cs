@@ -49,9 +49,13 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.UC
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.dtTo = new DevExpress.XtraEditors.DateEdit();
             this.dtFrom = new DevExpress.XtraEditors.DateEdit();
+            this.chkIncludeUnfinished = new DevExpress.XtraEditors.CheckEdit();
+            this.chkIncludeExported = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciFrom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTo = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciIncludeUnfinished = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciIncludeExported = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -59,21 +63,27 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.UC
             ((System.ComponentModel.ISupportInitialize)(this.dtTo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFrom.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFrom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIncludeUnfinished.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIncludeExported.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIncludeUnfinished)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIncludeExported)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // layoutControl1
-            // 
+            //
             this.layoutControl1.Controls.Add(this.dtTo);
             this.layoutControl1.Controls.Add(this.dtFrom);
+            this.layoutControl1.Controls.Add(this.chkIncludeUnfinished);
+            this.layoutControl1.Controls.Add(this.chkIncludeExported);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(440, 26);
+            this.layoutControl1.Size = new System.Drawing.Size(440, 50);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -112,18 +122,38 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.UC
             this.dtFrom.Size = new System.Drawing.Size(141, 20);
             this.dtFrom.StyleController = this.layoutControl1;
             this.dtFrom.TabIndex = 4;
-            // 
+            //
+            // chkIncludeUnfinished
+            //
+            this.chkIncludeUnfinished.Location = new System.Drawing.Point(2, 26);
+            this.chkIncludeUnfinished.Name = "chkIncludeUnfinished";
+            this.chkIncludeUnfinished.Properties.Caption = "Lấy cả y lệnh chưa hoàn thành";
+            this.chkIncludeUnfinished.Size = new System.Drawing.Size(216, 20);
+            this.chkIncludeUnfinished.StyleController = this.layoutControl1;
+            this.chkIncludeUnfinished.TabIndex = 6;
+            //
+            // chkIncludeExported
+            //
+            this.chkIncludeExported.Location = new System.Drawing.Point(222, 26);
+            this.chkIncludeExported.Name = "chkIncludeExported";
+            this.chkIncludeExported.Properties.Caption = "Lấy cả y lệnh đã xuất";
+            this.chkIncludeExported.Size = new System.Drawing.Size(216, 20);
+            this.chkIncludeExported.StyleController = this.layoutControl1;
+            this.chkIncludeExported.TabIndex = 7;
+            //
             // layoutControlGroup1
-            // 
+            //
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lciFrom,
-            this.lciTo});
+            this.lciTo,
+            this.lciIncludeUnfinished,
+            this.lciIncludeExported});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(440, 26);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(440, 50);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // lciFrom
@@ -155,9 +185,31 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.UC
             this.lciTo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTo.TextSize = new System.Drawing.Size(70, 20);
             this.lciTo.TextToControlDistance = 5;
-            // 
+            //
+            // lciIncludeUnfinished
+            //
+            this.lciIncludeUnfinished.Control = this.chkIncludeUnfinished;
+            this.lciIncludeUnfinished.Location = new System.Drawing.Point(0, 26);
+            this.lciIncludeUnfinished.Name = "lciIncludeUnfinished";
+            this.lciIncludeUnfinished.Size = new System.Drawing.Size(220, 24);
+            //Thut le trai 75px de thang hang voi o nhap cua "Tu:" (nhan 70 + khoang cach 5)
+            this.lciIncludeUnfinished.Padding = new DevExpress.XtraLayout.Utils.Padding(77, 0, 0, 0);
+            this.lciIncludeUnfinished.TextSize = new System.Drawing.Size(0, 0);
+            this.lciIncludeUnfinished.TextVisible = false;
+            //
+            // lciIncludeExported
+            //
+            this.lciIncludeExported.Control = this.chkIncludeExported;
+            this.lciIncludeExported.Location = new System.Drawing.Point(220, 26);
+            this.lciIncludeExported.Name = "lciIncludeExported";
+            this.lciIncludeExported.Size = new System.Drawing.Size(220, 24);
+            //Thut le trai 75px de thang hang voi o nhap cua "Den:" (nhan 70 + khoang cach 5)
+            this.lciIncludeExported.Padding = new DevExpress.XtraLayout.Utils.Padding(77, 0, 0, 0);
+            this.lciIncludeExported.TextSize = new System.Drawing.Size(0, 0);
+            this.lciIncludeExported.TextVisible = false;
+            //
             // dxValidationProvider1
-            // 
+            //
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
             // 
             // UcTest
@@ -166,7 +218,8 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.UC
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
             this.Name = "UcTest";
-            this.Size = new System.Drawing.Size(440, 26);
+            this.Size = new System.Drawing.Size(440, 50);
+            this.MinimumSize = new System.Drawing.Size(0, 50);
             this.Load += new System.EventHandler(this.UcTest_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
@@ -174,9 +227,13 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.UC
             ((System.ComponentModel.ISupportInitialize)(this.dtTo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFrom.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFrom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIncludeUnfinished.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIncludeExported.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciFrom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIncludeUnfinished)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIncludeExported)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
 
@@ -190,6 +247,10 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.UC
         private DevExpress.XtraEditors.DateEdit dtFrom;
         private DevExpress.XtraLayout.LayoutControlItem lciFrom;
         private DevExpress.XtraLayout.LayoutControlItem lciTo;
+        private DevExpress.XtraEditors.CheckEdit chkIncludeUnfinished;
+        private DevExpress.XtraEditors.CheckEdit chkIncludeExported;
+        private DevExpress.XtraLayout.LayoutControlItem lciIncludeUnfinished;
+        private DevExpress.XtraLayout.LayoutControlItem lciIncludeExported;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
     }
 }

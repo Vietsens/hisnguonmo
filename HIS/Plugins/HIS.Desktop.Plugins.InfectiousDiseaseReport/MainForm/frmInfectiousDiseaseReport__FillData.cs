@@ -98,6 +98,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                     cboSuDungVacXin.EditValue = (long)EcdsSuDungVacXin.KhongRo;   // Không rõ
                 if (cboLayMau.EditValue == null)
                     cboLayMau.EditValue = (long)EcdsLayMauXetNghiem.Khong;        // Không lấy mẫu
+                if (cboLoaiPhatHien.EditValue == null)
+                    cboLoaiPhatHien.EditValue = (long)EcdsLoaiPhatHien.YTeCoQuan; // mặc định Y tế cơ quan
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -152,12 +154,24 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 string icdText = (t != null) ? t.ICD_TEXT : null;
                 string icdPrimary = PrimaryIcdCode(icdCode);   // ICD_CODE có thể là chuỗi nhiều mã -> lấy mã chính
 
-                // Bệnh (ICD-10): combo cổng tự chọn theo MÃ ICD CHÍNH (giữ combo)
+                // ICD (hồ sơ) chỉ đọc: ưu tiên (các) ICD ĐƯỢC TÍCH là bệnh truyền nhiễm (HIS_ICD.IS_INFECTIOUS=1);
+                // dùng chính ICD truyền nhiễm đó để tự chọn bệnh cổng + cascade phân độ.
+                var infectious = GetInfectiousDiagnoses(t);
+                if (infectious.Count > 0)
+                {
+                    txtBenhHoSo.Text = string.Join("; ", infectious.Select(kv => kv.Key + " - " + kv.Value));
+                    icdPrimary = infectious[0].Key;
+                }
+                else
+                {
+                    txtBenhHoSo.Text = (icdCode ?? "") + (string.IsNullOrEmpty(icdName) ? "" : " - " + icdName);
+                }
+
+                // Bệnh (ICD-10): combo cổng (đã tách mã) tự chọn TOKEN khớp MÃ ICD truyền nhiễm của hồ sơ.
                 if (cboBenh.Properties.DataSource != null && !string.IsNullOrEmpty(icdPrimary))
                 {
-                    long? benhId = catalogCache.FindIdByMa(
-                        catalogCache.GetStatic(Worker.EcdsCatalogCache.DM_BENH), icdPrimary);
-                    if (benhId.HasValue) cboBenh.EditValue = benhId.Value;
+                    string benhToken = catalogCache.FindBenhTokenByIcd(icdPrimary);
+                    if (!string.IsNullOrEmpty(benhToken)) cboBenh.EditValue = benhToken;
                 }
 
                 // Phân độ bệnh: nạp danh mục cổng "phan-loai-lam-sang" theo mã ICD chính (cascade)
@@ -188,21 +202,30 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        /// <summary>Mã ICD của bệnh đang chọn trên combo (fallback ICD hồ sơ nếu chưa chọn).</summary>
+        /// <summary>Mã ICD (token) của bệnh đang chọn trên combo (ValueMember = "ma"). Fallback ICD hồ sơ.</summary>
         private string GetSelectedBenhMa()
         {
             try
             {
-                long? id = GetLookupLong(cboBenh);
-                if (id.HasValue && catalogCache != null)
+                if (cboBenh.EditValue != null)
                 {
-                    var item = catalogCache.GetStatic(Worker.EcdsCatalogCache.DM_BENH)
-                        .FirstOrDefault(o => o.id == id.Value);
-                    if (item != null && !string.IsNullOrEmpty(item.ma)) return item.ma;
+                    string s = cboBenh.EditValue.ToString();
+                    if (!string.IsNullOrEmpty(s)) return s;
                 }
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
             return treatment != null ? PrimaryIcdCode(treatment.ICD_CODE) : null;
+        }
+
+        /// <summary>ID cổng của bệnh đang chọn (map token -> id trong danh mục đã tách). Null nếu chưa chọn.</summary>
+        private long? GetSelectedBenhId()
+        {
+            try
+            {
+                if (catalogCache != null) return catalogCache.FindBenhIdByToken(GetSelectedBenhMa());
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return null;
         }
 
         /// <summary>
@@ -222,6 +245,50 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return icd; }
         }
 
+        /// <summary>Tách chuỗi ICD nhiều mã thành từng token, thêm vào danh sách.</summary>
+        private static void AddIcdTokens(List<string> outList, string icd)
+        {
+            if (outList == null || string.IsNullOrEmpty(icd)) return;
+            var parts = icd.Split(new[] { ',', ';', ' ', '/', '|' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var p in parts) { var s = p.Trim(); if (s.Length > 0) outList.Add(s); }
+        }
+
+        /// <summary>
+        /// (Các) ICD trong CHẨN ĐOÁN CHÍNH của hồ sơ ĐƯỢC TÍCH là bệnh truyền nhiễm
+        /// (HIS_ICD.IS_INFECTIOUS=1, IS_ACTIVE=1). Trả list (mã, tên). Rỗng nếu không có.
+        /// </summary>
+        private List<KeyValuePair<string, string>> GetInfectiousDiagnoses(V_HIS_TREATMENT t)
+        {
+            var result = new List<KeyValuePair<string, string>>();
+            try
+            {
+                var tokens = new List<string>();
+                // Chẩn đoán CHÍNH (ICD_CODE) + PHỤ (ICD_SUB_CODE) — bệnh truyền nhiễm có thể nằm ở phụ.
+                AddIcdTokens(tokens, (t != null && !string.IsNullOrEmpty(t.ICD_CODE)) ? t.ICD_CODE
+                    : (treatment != null ? treatment.ICD_CODE : null));
+                if (t != null) AddIcdTokens(tokens, t.ICD_SUB_CODE);
+                if (tokens.Count == 0) return result;
+
+                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var o in BackendDataWorker.Get<V_HIS_ICD>())   // duyệt 1 lần
+                {
+                    if (o == null || string.IsNullOrEmpty(o.ICD_CODE)) continue;
+                    if (o.IS_INFECTIOUS != 1 || o.IS_ACTIVE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE) continue;
+                    for (int i = 0; i < tokens.Count; i++)
+                    {
+                        if (string.Equals(tokens[i], o.ICD_CODE, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (seen.Add(o.ICD_CODE))
+                                result.Add(new KeyValuePair<string, string>(o.ICD_CODE, o.ICD_NAME ?? ""));
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return result;
+        }
+
         /// <summary>
         /// Map form từ ca bệnh ĐÃ LƯU (V_HIS_ECDS_DISEASE_CASE) — dùng khi GetFull có dữ liệu.
         /// Ca bệnh + Triệu chứng & XN + Người báo cáo. (Hành chính lấy từ V_HIS_PATIENT riêng.)
@@ -236,7 +303,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 string icdCode = !string.IsNullOrEmpty(c.REPORTED_ICD_CODE) ? c.REPORTED_ICD_CODE
                     : (treatment != null ? PrimaryIcdCode(treatment.ICD_CODE) : null);
                 LoadCapDoBenhByIcd(icdCode);                       // nạp danh sách phân độ theo ICD trước
-                SetLookupDec(cboBenh, c.REPORTED_DISEASE_ID);      // (kéo cascade phân độ qua event)
+                // Combo bệnh giữ ValueMember = "ma" -> chọn theo MÃ ICD đã lưu (kéo cascade phân độ qua event).
+                if (!string.IsNullOrEmpty(icdCode)) cboBenh.EditValue = icdCode.Trim();
                 SetLookupDec(cboCapDoBenh, c.DISEASE_SEVERITY_ID);
                 SetLookupShort(cboLoaiChanDoan, c.DIAGNOSIS_TYPE);
                 SetLookupDec(cboTinhTrang, c.CURRENT_STATE);
@@ -293,11 +361,17 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         {
             try
             {
-                if (string.IsNullOrEmpty(icdCode) || catalogCache == null || !Config.EcdsConfigCFG.IsValid()) return;
-                var list = catalogCache.GetCascade(
-                    Worker.EcdsCatalogCache.DM_CAPDOBENH,
-                    new SearchDanhMucFastDto { maIcd10Benh = icdCode },
-                    icdCode);
+                if (catalogCache == null || !Config.EcdsConfigCFG.IsValid()) return;
+                // Ưu tiên phân loại lâm sàng THEO ICD (cascade cổng).
+                var list = !string.IsNullOrEmpty(icdCode)
+                    ? catalogCache.GetCascade(
+                        Worker.EcdsCatalogCache.DM_CAPDOBENH,
+                        new SearchDanhMucFastDto { maIcd10Benh = icdCode },
+                        icdCode)
+                    : null;
+                // Fallback: cổng KHÔNG có phân loại riêng theo ICD -> nạp TOÀN BỘ danh mục để vẫn chọn được.
+                if (list == null || list.Count == 0)
+                    list = catalogCache.GetStatic(Worker.EcdsCatalogCache.DM_CAPDOBENH);
                 SetupLookup(cboCapDoBenh, list, "id", "MaTen");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }

@@ -29,6 +29,36 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.ADO
         public decimal AMOUNT { get; set; }
         public decimal AVAILABLE_AMOUNT { get; set; }
 
+        /// <summary>
+        /// So y lenh chua hoan thanh trong nhom hoa chat nay
+        /// </summary>
+        public int UNFINISHED_COUNT { get; set; }
+
+        /// <summary>
+        /// So y lenh da gan phieu xuat truoc do trong nhom hoa chat nay
+        /// </summary>
+        public int EXPORTED_COUNT { get; set; }
+
+        /// <summary>
+        /// Ly do dong nay truoc day bi bo sot. Rong = dong binh thuong
+        /// </summary>
+        public string NOTE_REASON
+        {
+            get
+            {
+                List<string> reasons = new List<string>();
+                if (this.UNFINISHED_COUNT > 0)
+                {
+                    reasons.Add(string.Format("{0} y lệnh chưa hoàn thành", this.UNFINISHED_COUNT));
+                }
+                if (this.EXPORTED_COUNT > 0)
+                {
+                    reasons.Add(string.Format("{0} y lệnh đã xuất", this.EXPORTED_COUNT));
+                }
+                return string.Join("; ", reasons);
+            }
+        }
+
         public MaterialTypeADO(V_HIS_MATERIAL_TYPE data, decimal amount)
         {
             if (data != null)
@@ -37,6 +67,20 @@ namespace HIS.Desktop.Plugins.HisExpMestLaboratory.ADO
             }
 
             this.AMOUNT = amount;
+        }
+
+        public MaterialTypeADO(V_HIS_MATERIAL_TYPE data, decimal amount, int unfinishedCount, int exportedCount)
+            : this(data, amount)
+        {
+            this.UNFINISHED_COUNT = unfinishedCount;
+            this.EXPORTED_COUNT = exportedCount;
+        }
+
+        public MaterialTypeADO(MOS.SDO.HisMaterialTypeInStockSDO item, decimal amount, int unfinishedCount, int exportedCount)
+            : this(item, amount)
+        {
+            this.UNFINISHED_COUNT = unfinishedCount;
+            this.EXPORTED_COUNT = exportedCount;
         }
 
         public MaterialTypeADO(MOS.SDO.HisMaterialTypeInStockSDO item, decimal amount)

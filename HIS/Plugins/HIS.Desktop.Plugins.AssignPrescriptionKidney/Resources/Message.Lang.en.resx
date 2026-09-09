@@ -246,4 +246,10 @@
   <data name="TongChiPhiVuot15PhanTramLuongCoBan" xml:space="preserve">
     <value>Patient's total cost ({0}) has exceeded 15% of the base salary ({1}). Do you want to continue?</value>
   </data>
+  <data name="ThuocDangDungTuDonKhacTrongHoSo" xml:space="preserve">
+    <value>Medications from other prescriptions in this record (included in the interaction check):</value>
+  </data>
+  <data name="DonNgayDungDenNgay" xml:space="preserve">
+    <value>prescribed on {0}, until {1}</value>
+  </data>
 </root>

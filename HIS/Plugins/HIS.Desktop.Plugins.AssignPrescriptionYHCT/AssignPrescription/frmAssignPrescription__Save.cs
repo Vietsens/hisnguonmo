@@ -1510,7 +1510,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                     // PN mang thai / cho con bú: null khi không tick -> request MIMS giữ nguyên như cũ
                     var mimsProfile = BuildMimsPatientProfile();
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog, patientProfile: mimsProfile);
+
+                    // Việc 52540: thuốc còn hiệu lực của các đơn KHÁC trong hồ sơ.
+                    // Danh sách rỗng khi tắt cấu hình -> thư viện chạy đúng nhánh như trước.
+                    List<MimsPreviousDrugInfo> previousDrugInfos;
+                    var previousDrugItems = BuildCrossPrescriptionDrugItems(lstMediMatyTypeADOs, out previousDrugInfos);
+
+                    check = service.CheckAndAlert(lstDrugItem, null, lstICD, mimsInteractionLog,
+                        this.currentTreatmentWithPatientType != null ? (long?)this.currentTreatmentWithPatientType.ID : null,
+                        null,
+                        this.currentTreatmentWithPatientType != null ? (long?)this.currentTreatmentWithPatientType.PATIENT_ID : null,
+                        mimsProfile, previousDrugItems, previousDrugInfos,
+                        BuildMimsCrossPrescriptionOption());
                 }
 
                 return check;

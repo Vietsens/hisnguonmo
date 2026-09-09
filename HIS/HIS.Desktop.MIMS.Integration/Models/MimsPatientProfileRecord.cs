@@ -1,4 +1,4 @@
-namespace HIS.Desktop.MIMS.Integration.Models
+﻿namespace HIS.Desktop.MIMS.Integration.Models
 {
     /// <summary>
     /// Bản ghi HIS_MIMS_PATIENT_PROFILE (trạng thái mang thai / cho con bú của bệnh nhân).
@@ -38,6 +38,11 @@ namespace HIS.Desktop.MIMS.Integration.Models
         /// Số tháng mang thai (1..9) — bắt buộc khi IS_PREGNANT = 1.
         /// </summary>
         public short? PREGNANT_MONTH { get; set; }
+
+        /// <summary>
+        /// Tuần tuổi thai (1..42) — bắt buộc khi IS_PREGNANT = 1.
+        /// </summary>
+        public short? PREGNANT_WEEK { get; set; }
 
         /// <summary>
         /// 1 = đang cho con bú.
