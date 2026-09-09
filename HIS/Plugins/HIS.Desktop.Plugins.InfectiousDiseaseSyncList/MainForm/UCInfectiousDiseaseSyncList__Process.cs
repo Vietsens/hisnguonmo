@@ -121,12 +121,26 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
             }
         }
 
+        /// <summary>Pad 0 bên trái đủ độ dài chuẩn (chỉ khi toàn chữ số và ngắn hơn). VD "123" + 12 -> "000000000123".</summary>
+        private static string PadNumericCode(string code, int length)
+        {
+            if (string.IsNullOrEmpty(code)) return code;
+            if (code.Length < length && code.All(char.IsDigit))
+                return code.PadLeft(length, '0');
+            return code;
+        }
+
         private void SetListFilter(ref HisTreatmentViewFilter filter)
         {
             try
             {
-                string treatmentCode = (txtSearchTreatmentCode.Text ?? "").Trim();
-                string patientCode = (txtSearchPatientCode.Text ?? "").Trim();
+                // Mã ĐT tự điền 0 đủ 12 số, mã BN đủ 10 số (chỉ khi toàn chữ số) -> khớp mã đầy đủ trong DB.
+                string treatmentCode = PadNumericCode((txtSearchTreatmentCode.Text ?? "").Trim(), 12);
+                string patientCode = PadNumericCode((txtSearchPatientCode.Text ?? "").Trim(), 10);
+                if (txtSearchTreatmentCode.Text != null && treatmentCode != txtSearchTreatmentCode.Text.Trim())
+                    txtSearchTreatmentCode.Text = treatmentCode;   // hiển thị lại mã đã pad
+                if (txtSearchPatientCode.Text != null && patientCode != txtSearchPatientCode.Text.Trim())
+                    txtSearchPatientCode.Text = patientCode;
 
                 if (!string.IsNullOrEmpty(treatmentCode))
                 {

@@ -45,6 +45,14 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
 
                 if (mappedFromSaved)
                 {
+                    // "Bệnh (hồ sơ)" LUÔN lấy từ hồ sơ HIS (ca đã lưu/đẩy vẫn hiển thị mã bệnh của hồ sơ).
+                    string icdHoSo = FillBenhHoSoField();
+                    // Ca lưu thiếu mã bệnh -> mặc định chọn bệnh cổng theo ICD truyền nhiễm của hồ sơ.
+                    if (cboBenh.EditValue == null && catalogCache != null && !string.IsNullOrEmpty(icdHoSo))
+                    {
+                        string benhToken = catalogCache.FindBenhTokenByIcd(icdHoSo);
+                        if (!string.IsNullOrEmpty(benhToken)) cboBenh.EditValue = benhToken;
+                    }
                     FillHanhChinhTab();   // Hành chính vẫn lấy từ V_HIS_PATIENT (dữ liệu gốc BN)
                 }
                 else
@@ -69,13 +77,55 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         /// </summary>
         private bool TryLoadAndMapSavedCase()
         {
+            // ƯU TIÊN GetView (V_HIS_ECDS_DISEASE_CASE) — ổn định, không phụ thuộc MOS.SDO.
+            try
+            {
+                var rec = LoadSavedCaseView();
+                if (rec != null)
+                {
+                    this.hisEcdsCaseId = rec.ID;                 // để Update (không tạo trùng) khi lưu lại
+                    this.ecdsCaseId = rec.ECDS_CASE_ID;
+                    this.ecdsCaseCode = rec.ECDS_CASE_CODE;
+                    MapFromSavedCase(rec);
+                    return true;
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+
+            // Fallback GetFull (giữ tương thích cũ).
             var full = LoadEcdsCaseFull();
             if (full != null && full.DiseaseCase != null)
             {
-                MapFromSavedCase(full.DiseaseCase);   // Ca bệnh + Triệu chứng + Người báo cáo từ ca đã lưu
+                MapFromSavedCase(full.DiseaseCase);
                 return true;
             }
             return false;
+        }
+
+        /// <summary>Lấy bản ghi ca bệnh đã lưu MỚI NHẤT theo mã điều trị (GetView V_HIS_ECDS_DISEASE_CASE). Null nếu chưa có.</summary>
+        private V_HIS_ECDS_DISEASE_CASE LoadSavedCaseView()
+        {
+            try
+            {
+                if (treatment == null || string.IsNullOrEmpty(treatment.TREATMENT_CODE)) return null;
+                CommonParam param = new CommonParam();
+                var filter = new MOS.Filter.HisEcdsDiseaseCaseViewFilter
+                {
+                    TREATMENT_CODES = new List<string> { treatment.TREATMENT_CODE }
+                };
+                var list = new BackendAdapter(param).Get<List<V_HIS_ECDS_DISEASE_CASE>>(
+                    HisRequestUriStore.HIS_ECDS_GET_VIEW, ApiConsumers.MosConsumer, filter, param);
+                SessionManager.ProcessTokenLost(param);
+                if (list == null || list.Count == 0) return null;
+                // Đúng điều trị + bản mới nhất (theo lần đẩy / ID).
+                var byTreatment = list.Where(o => o != null && o.TREATMENT_ID == treatment.ID).ToList();
+                var pick = (byTreatment.Count > 0 ? byTreatment : list)
+                    .OrderByDescending(o => o.LAST_PUSH_TIME ?? 0)
+                    .ThenByDescending(o => o.ID)
+                    .FirstOrDefault();
+                return pick;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
         /// <summary>
@@ -144,18 +194,22 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        private void FillCaBenhTab()
+        /// <summary>
+        /// Điền ô "Bệnh (hồ sơ)" (chỉ đọc) LUÔN từ hồ sơ HIS — kể cả khi ca đã lưu/đẩy.
+        /// Ưu tiên (các) ICD ĐƯỢC TÍCH truyền nhiễm (HIS_ICD.IS_INFECTIOUS=1); trả về mã ICD chính để tự chọn bệnh cổng.
+        /// </summary>
+        private string FillBenhHoSoField()
         {
+            string icdPrimary = null;
             try
             {
-                var t = vTreatment;   // view đầy đủ (có thể null -> fallback treatment)
-                string icdCode = (t != null && !string.IsNullOrEmpty(t.ICD_CODE)) ? t.ICD_CODE : treatment.ICD_CODE;
-                string icdName = (t != null && !string.IsNullOrEmpty(t.ICD_NAME)) ? t.ICD_NAME : treatment.ICD_NAME;
-                string icdText = (t != null) ? t.ICD_TEXT : null;
-                string icdPrimary = PrimaryIcdCode(icdCode);   // ICD_CODE có thể là chuỗi nhiều mã -> lấy mã chính
+                var t = vTreatment;
+                string icdCode = (t != null && !string.IsNullOrEmpty(t.ICD_CODE)) ? t.ICD_CODE
+                    : (treatment != null ? treatment.ICD_CODE : null);
+                string icdName = (t != null && !string.IsNullOrEmpty(t.ICD_NAME)) ? t.ICD_NAME
+                    : (treatment != null ? treatment.ICD_NAME : null);
+                icdPrimary = PrimaryIcdCode(icdCode);
 
-                // ICD (hồ sơ) chỉ đọc: ưu tiên (các) ICD ĐƯỢC TÍCH là bệnh truyền nhiễm (HIS_ICD.IS_INFECTIOUS=1);
-                // dùng chính ICD truyền nhiễm đó để tự chọn bệnh cổng + cascade phân độ.
                 var infectious = GetInfectiousDiagnoses(t);
                 if (infectious.Count > 0)
                 {
@@ -166,6 +220,21 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 {
                     txtBenhHoSo.Text = (icdCode ?? "") + (string.IsNullOrEmpty(icdName) ? "" : " - " + icdName);
                 }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return icdPrimary;
+        }
+
+        private void FillCaBenhTab()
+        {
+            try
+            {
+                var t = vTreatment;   // view đầy đủ (có thể null -> fallback treatment)
+                string icdName = (t != null && !string.IsNullOrEmpty(t.ICD_NAME)) ? t.ICD_NAME : treatment.ICD_NAME;
+                string icdText = (t != null) ? t.ICD_TEXT : null;
+
+                // ICD (hồ sơ) chỉ đọc + trả về mã ICD truyền nhiễm chính để tự chọn bệnh cổng.
+                string icdPrimary = FillBenhHoSoField();
 
                 // Bệnh (ICD-10): combo cổng (đã tách mã) tự chọn TOKEN khớp MÃ ICD truyền nhiễm của hồ sơ.
                 if (cboBenh.Properties.DataSource != null && !string.IsNullOrEmpty(icdPrimary))
