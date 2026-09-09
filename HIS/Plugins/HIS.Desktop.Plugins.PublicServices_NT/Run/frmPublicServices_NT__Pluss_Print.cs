@@ -379,6 +379,23 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                             sereServPrint.TypeExpend = group.Key.IS_EXPEND ?? 0;
                             sereServPrint.PATIENT_TYPE_ID = group.Key.PATIENT_TYPE_ID;
                             sereServPrint.PRICE = group.Key.PRICE ?? 0;
+                            //Thanh tien BHYT tra / BN tra: cong don theo nhom giong AMOUNT, khong lay First()
+                            sereServPrint.VIR_TOTAL_HEIN_PRICE = group.Any(o => o.TOTAL_HEIN_PRICE.HasValue)
+                                ? group.Sum(o => o.TOTAL_HEIN_PRICE ?? 0)
+                                : (decimal?)null;
+                            sereServPrint.VIR_TOTAL_PATIENT_PRICE = group.Any(o => o.TOTAL_PATIENT_PRICE.HasValue)
+                                ? group.Sum(o => o.TOTAL_PATIENT_PRICE ?? 0)
+                                : (decimal?)null;
+                            //Cong khai thuc hien: khong cong duoc, lay moc muon nhat trong nhom roi doi sang chuoi
+                            long? executePublicTime = group
+                                .Where(o => o.EXECUTE_PUBLIC_TIME.HasValue && o.EXECUTE_PUBLIC_TIME.Value > 0)
+                                .Select(o => o.EXECUTE_PUBLIC_TIME)
+                                .OrderByDescending(o => o)
+                                .FirstOrDefault();
+                            sereServPrint.EXECUTE_PUBLIC_TIME = executePublicTime;
+                            sereServPrint.EXECUTE_PUBLIC_TIME_STR = executePublicTime.HasValue && executePublicTime.Value > 0
+                                ? Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(executePublicTime.Value)
+                                : "";
                             List<string> lstInstructionNote = group.Select(o => o.INSTRUCTION_NOTE).Distinct().ToList();
                             if (lstInstructionNote != null && lstInstructionNote.Count > 0)
                             {

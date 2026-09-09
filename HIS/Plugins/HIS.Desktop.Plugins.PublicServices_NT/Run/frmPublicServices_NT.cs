@@ -57,6 +57,10 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
 
         Dictionary<long, HIS_EXP_MEST> dicExpMest = new Dictionary<long, HIS_EXP_MEST>();
         Dictionary<long, HIS_SERVICE_REQ> dicServiceReq = new Dictionary<long, HIS_SERVICE_REQ>();
+        //Tien BHYT tra / BN tra cua dong thuoc - vat tu, key = V_HIS_EXP_MEST_MEDICINE.ID / V_HIS_EXP_MEST_MATERIAL.ID
+        //Gom tu sere_serv truoc khi bi loai bo khoi _SereServs (don thuoc DONK/DONM/DONDT/DONTT)
+        Dictionary<long, V_HIS_SERE_SERV> dicSereServByExpMedicine = new Dictionary<long, V_HIS_SERE_SERV>();
+        Dictionary<long, V_HIS_SERE_SERV> dicSereServByExpMaterial = new Dictionary<long, V_HIS_SERE_SERV>();
 
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -320,6 +324,8 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                 this._Datas = new List<Service_NT_ADO>();
                 dicExpMest = new Dictionary<long, HIS_EXP_MEST>();
                 dicServiceReq = new Dictionary<long, HIS_SERVICE_REQ>();
+                dicSereServByExpMedicine = new Dictionary<long, V_HIS_SERE_SERV>();
+                dicSereServByExpMaterial = new Dictionary<long, V_HIS_SERE_SERV>();
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
 
@@ -403,7 +409,22 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                         var _SereServs = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW, ApiConsumers.MosConsumer, _ssFiler, param);
                         if (_SereServs != null && _SereServs.Count > 0)
                         {
-                            _SereServs = _SereServs.Where(o 
+                            //Gom tien BHYT tra / BN tra cua thuoc - vat tu TRUOC khi loc bo dong don thuoc.
+                            //Filter tren server chi co TREATMENT_ID nen response da chua san dong thuoc/VT,
+                            //neu de sau Where() thi cac dong nay bi nem di va mat luon so tien.
+                            foreach (var ss in _SereServs)
+                            {
+                                if (ss.EXP_MEST_MEDICINE_ID.HasValue && !dicSereServByExpMedicine.ContainsKey(ss.EXP_MEST_MEDICINE_ID.Value))
+                                {
+                                    dicSereServByExpMedicine[ss.EXP_MEST_MEDICINE_ID.Value] = ss;
+                                }
+                                if (ss.EXP_MEST_MATERIAL_ID.HasValue && !dicSereServByExpMaterial.ContainsKey(ss.EXP_MEST_MATERIAL_ID.Value))
+                                {
+                                    dicSereServByExpMaterial[ss.EXP_MEST_MATERIAL_ID.Value] = ss;
+                                }
+                            }
+
+                            _SereServs = _SereServs.Where(o
                                 => _serviceReqId_SVs.Contains(o.SERVICE_REQ_ID ?? 0)
                                 && (chkServiceIsNoExecute.Checked ? true : o.IS_NO_EXECUTE != 1)
                                 ).ToList();
@@ -427,6 +448,13 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                                 ado.AMOUNT = item.AMOUNT;
                                 ado.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                                 ado.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
+                                //Thanh tien BHYT tra, BN tra: VIR_TOTAL_* la tien da nhan so luong, khong nhan lai
+                                ado.TOTAL_HEIN_PRICE = item.VIR_TOTAL_HEIN_PRICE;
+                                ado.TOTAL_PATIENT_PRICE = item.VIR_TOTAL_PATIENT_PRICE;
+                                //Cong khai thuc hien: FINISH_TIME nam tren HIS_SERVICE_REQ, khong co tren V_HIS_SERE_SERV
+                                ado.EXECUTE_PUBLIC_TIME = dicServiceReq.ContainsKey(item.SERVICE_REQ_ID ?? 0)
+                                    ? dicServiceReq[item.SERVICE_REQ_ID ?? 0].FINISH_TIME
+                                    : null;
 
                                 if (_SereServsExt != null && _SereServsExt.Count > 0)
                                 {

@@ -68,6 +68,20 @@ namespace MPS.Processor.Mps000225.PDO
         public string AMOUNT_STRING { get; set; }
         public string INSTRUCTION_NOTE { get; set; }
 
+        /// <summary>
+        /// Cot CONG KHAI THUC HIEN da dinh dang san (dich vu: FINISH_TIME, thuoc/vat tu: USED_TIME).
+        /// Phai la chuoi vi thoi gian Inventec luu 14 so, in truc tiep se ra 20260909143000.
+        /// Tien BHYT tra / BN tra dung VIR_TOTAL_HEIN_PRICE / VIR_TOTAL_PATIENT_PRICE ke thua tu V_HIS_SERE_SERV.
+        /// </summary>
+        public string EXECUTE_PUBLIC_TIME_STR { get; set; }
+
+        /// <summary>
+        /// Moc thoi gian dang so 14 chu so, chi dung de so sanh/sap xep khi gom nhom.
+        /// Khong in ra phieu (in thi dung EXECUTE_PUBLIC_TIME_STR), vi chuoi dd/MM/yyyy
+        /// sap xep theo ky tu se sai thu tu thoi gian.
+        /// </summary>
+        public long? EXECUTE_PUBLIC_TIME { get; set; }
+
         #region ---Day---
         public string Day1 { get; set; }
         public string Day2 { get; set; }
