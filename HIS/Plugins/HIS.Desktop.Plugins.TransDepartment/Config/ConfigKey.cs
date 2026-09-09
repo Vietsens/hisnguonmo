@@ -31,12 +31,23 @@ namespace HIS.Desktop.Plugins.TransDepartment.Config
     class ConfigKey
     {
         public const string KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION = "MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION";
+        public const string KEY__CHECK_REQUIRED_SERVICE = "HIS.Desktop.Plugins.TransDepartment.CheckRequiredService";
         internal static string AllowManyOpeningOption;
+
+        //// Danh sach SERVICE_TYPE_CODE (VD: XN|CDHA|PT) chan chuyen khoa khi benh nhan con dich vu
+        //// thuoc loai do chua hoan thanh. Khong khai bao/de trong -> khong kiem tra.
+        internal static string CheckRequiredService;
+        internal static List<string> CheckRequiredServiceTypeCodes = new List<string>();
+
         internal static void GetConfigKey()
         {
             try
             {
                 AllowManyOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION);
+                CheckRequiredService = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__CHECK_REQUIRED_SERVICE);
+                CheckRequiredServiceTypeCodes = string.IsNullOrWhiteSpace(CheckRequiredService)
+                    ? new List<string>()
+                    : CheckRequiredService.Split('|').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).Distinct().ToList();
             }
             catch (Exception ex)
             {

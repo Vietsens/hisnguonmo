@@ -58,6 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\EMR\EMR.SDO.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
@@ -193,6 +196,9 @@
     <Compile Include="TransDepartment\Validate\frmDepartmentTran_Validate.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TransDepartment\Validate\frmDepartmentTran__CheckRequiredService.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TransDepartment\Validate\ValidationRule\DepartmentTran__DepartmentValidationRule.cs" />
     <Compile Include="TransDepartment\Validate\ValidationRule\DepartmentTran__TreatmentLogTimeValidationRule.cs" />
   </ItemGroup>
@@ -236,10 +242,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
       <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
-      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
-      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{56704e98-959c-4d0a-9a42-11cdc04cfac1}</Project>

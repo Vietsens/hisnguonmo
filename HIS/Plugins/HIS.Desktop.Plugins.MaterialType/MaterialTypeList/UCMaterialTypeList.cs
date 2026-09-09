@@ -306,7 +306,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 virTotalImpPriceCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.MaterialTypeColumns.Add(virTotalImpPriceCol);
 
-                //Column hãng giá xuất 
+                //Column hãng giá xuất  
                 MaterialTypeColumn virTotalExpPriceCol = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MATERIAL_TYPE__TREE_MATERIAL_TYPE__COLUMN_EXPORT_PRICE", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "EXPORT_PRICE", 120, false);
                 virTotalExpPriceCol.VisibleIndex = 8;
                 virTotalExpPriceCol.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MATERIAL_TYPE__COLUMN_TOOLTIP2", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
@@ -328,29 +328,42 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 tenBHYT.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.MaterialTypeColumns.Add(tenBHYT);
 
+                //Column Tỷ lệ BHYT 
+                MaterialTypeColumn tyLeBHYT = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MATERIAL_TYPE__COLUMN_TY_LE_BHYT", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "HeinLimitVatRatio100", 120, false);
+                tyLeBHYT.VisibleIndex = 11;
+                tyLeBHYT.Format = new DevExpress.Utils.FormatInfo();
+                tyLeBHYT.Format.FormatType = DevExpress.Utils.FormatType.Custom;
+                ado.MaterialTypeColumns.Add(tyLeBHYT);
+                //Column Giá trần BHYT
+                MaterialTypeColumn giaTranBHYT = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MATERIAL_TYPE__COLUMN_GIA_TRAN_BHYT", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "HEIN_LIMIT_PRICE", 120, false);
+                giaTranBHYT.VisibleIndex = 12;
+                giaTranBHYT.Format = new DevExpress.Utils.FormatInfo();
+                giaTranBHYT.Format.FormatType = DevExpress.Utils.FormatType.Custom;
+                ado.MaterialTypeColumns.Add(giaTranBHYT);
+
                 //Column số đăng ký
                 MaterialTypeColumn registerNumberCol = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MATERIAL_TYPE__TREE_MATERIAL_TYPE__COLUMN_REGISTER_NUMBER", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "REGISTER_NUMBER", 120, false);
-                registerNumberCol.VisibleIndex = 11;
+                registerNumberCol.VisibleIndex = 13;
                 registerNumberCol.Format = new DevExpress.Utils.FormatInfo();
                 registerNumberCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.MaterialTypeColumns.Add(registerNumberCol);
 
                 //Column Model
                 MaterialTypeColumn Model = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MATERIAL_TYPE__TREE_MATERIAL_TYPE__COLUMN_MODEL", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MODEL_CODE", 120, false);
-                Model.VisibleIndex = 12;
+                Model.VisibleIndex = 14;
                 Model.Format = new DevExpress.Utils.FormatInfo();
                 Model.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.MaterialTypeColumns.Add(Model);
 
                 //Column Ngày tạo (format từ long sang string)
                 MaterialTypeColumn createTimeCol = new MaterialTypeColumn("Ngày tạo", "CREATE_TIME_STR", 130, false);
-                createTimeCol.VisibleIndex = 13;
+                createTimeCol.VisibleIndex = 15;
                 createTimeCol.UnboundColumnType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
                 ado.MaterialTypeColumns.Add(createTimeCol);
 
                 //Column Người tạo
                 MaterialTypeColumn creatorCol = new MaterialTypeColumn("Người tạo", "CREATOR", 100, false);
-                creatorCol.VisibleIndex = 14;
+                creatorCol.VisibleIndex = 16;
                 ado.MaterialTypeColumns.Add(creatorCol);
 
                 //Column Giá tiền
@@ -931,7 +944,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 List<MaterialTypeADO> listDataSources = getdata.ToList();
                 List<V_HIS_MATERIAL_TYPE> listMedicines = new List<V_HIS_MATERIAL_TYPE>();
                 var listLeaf = listDataSources.Where(o => o.IS_LEAF == 1).ToList();
-                AutoMapper.Mapper.CreateMap<MaterialTypeADO, V_HIS_MATERIAL_TYPE>();
+                AutoMapper.Mapper.CreateMap<MaterialTypeADO, V_HIS_MATERIAL_TYPE>(); 
 
                 listMedicines = AutoMapper.Mapper.Map<List<V_HIS_MATERIAL_TYPE>>(listDataSources);
 
