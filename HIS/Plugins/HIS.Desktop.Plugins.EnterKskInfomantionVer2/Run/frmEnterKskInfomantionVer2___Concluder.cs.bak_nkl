@@ -19,7 +19,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
     {
-        /// <summary>Combo "Người khám" (kết luận) bổ sung theo tab (1=trên 18, 2=dưới 18, 3=lái xe).</summary>
+        /// <summary>Combo "Người khám" (kết luận) bổ sung theo tab (1=trên 18, 2=dưới 18).</summary>
         private readonly Dictionary<int, GridLookUpEdit> dicConcluderCboExt = new Dictionary<int, GridLookUpEdit>();
 
         /// <summary>
@@ -32,7 +32,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 RegisterConcluderCombo(1, this.cboConcluderLoginName2); // Ksk trên 18 tuổi
                 RegisterConcluderCombo(2, this.cboConcluderLoginName3); // Ksk dưới 18 tuổi
-                RegisterConcluderCombo(3, this.cboConcluderLoginName4); // Ksk lái xe
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }

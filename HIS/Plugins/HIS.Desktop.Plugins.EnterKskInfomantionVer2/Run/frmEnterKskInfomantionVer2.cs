@@ -1346,7 +1346,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         SetKskTypeIdValue(sdo.KskGeneral.HisKskGeneral, kskTypeId.Value);
                     else
                         SetKskTypeIdToGeneral(sdo.KskGeneral.HisKskGeneral); // không xác định được → giữ giá trị hiện có
-                    // Người khám kết luận (tab trên/dưới 18 tuổi) → HIS_KSK_GENERAL
+                    // Người kết luận (tab trên/dưới 18 tuổi + lái xe) → HIS_KSK_GENERAL
                     FillConcluderExtToGeneral(sdo.KskGeneral.HisKskGeneral);
                 }
                 // Ngày kết luận theo tab đang lưu → HIS_KSK_GENERAL.CONCLUSION_TIME (tạo GENERAL nếu chưa có).

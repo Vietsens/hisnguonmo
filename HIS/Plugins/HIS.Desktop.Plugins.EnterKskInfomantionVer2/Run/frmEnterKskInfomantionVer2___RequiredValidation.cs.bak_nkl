@@ -73,12 +73,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 WireRequiredClearEvent(cboObject8);
                 WireRequiredClearEvent(cboPaymentSource8);
                 WireRequiredClearEvent(txtLyDoKham);
-                // Mục kết luận — Phân loại + Người kết luận (tab lái xe chỉ có Người kết luận).
+                // Mục kết luận 3 tab — Phân loại + Người kết luận.
                 WireRequiredClearEvent(cboHealthExamRank2);
                 WireRequiredClearEvent(cboConcluderLoginName2);
                 WireRequiredClearEvent(cboHealthExamRank3);
                 WireRequiredClearEvent(cboConcluderLoginName3);
-                WireRequiredClearEvent(cboConcluderLoginName4);
                 WireRequiredClearEvent(cboHealthExamRank8);
                 WireRequiredClearEvent(cboConcluder8);
                 // Huyết áp 4 tab: định kỳ / trên 18 / dưới 18 / nghề nghiệp.

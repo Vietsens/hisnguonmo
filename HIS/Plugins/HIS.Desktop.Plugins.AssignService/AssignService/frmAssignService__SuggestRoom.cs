@@ -1,4 +1,5 @@
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.Plugins.AssignService.Config;
 using Inventec.Common.Adapter;
@@ -68,10 +69,25 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         }
 
         /// <summary>
-        /// Danh dau nguoi dung tu chon phong cho 1 dich vu, de lan lam moi sau khong ghi de
+        /// Dang o trong lan tu dien phong cua chuong trinh (khong phai bac si chon).
+        /// Su kien CellValueChanged cua cot phong NO CA KHI chuong trinh gan gia tri, nen phai
+        /// co co nay de khong ghi nham "bac si tu chon" cho dong do.
+        /// BUG da gap 08/09/2026: thieu co nay thi ngay sau khi chuong trinh dien phong, dich vu
+        /// bi danh dau la user picked => bo tich roi tich lai thi khong duoc phan phong theo nhom
+        /// nua, roi xuong nhanh lay phong DAU DANH SACH (hien SA08).
+        /// </summary>
+        private bool isFillingSuggestRoom = false;
+
+        /// <summary>
+        /// Danh dau nguoi dung tu chon phong cho 1 dich vu, de lan lam moi sau khong ghi de.
+        /// Bo qua khi chinh chuong trinh dang dien phong.
         /// </summary>
         private void MarkUserPickedRoom(long serviceId)
         {
+            if (this.isFillingSuggestRoom)
+            {
+                return;
+            }
             if (serviceId > 0)
             {
                 this.suggestRoomUserPicked.Add(serviceId);
@@ -115,13 +131,65 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                return this.GetSuggestedRoomId(this.suggestRoomCurrentServiceId);
+                long serviceId = this.suggestRoomCurrentServiceId;
+                long roomId = this.GetSuggestedRoomId(serviceId);
+                if (roomId <= 0)
+                {
+                    return 0;
+                }
+
+                //CHAN CHEO DICH VU: hai ham goi vao day chi nhan danh sach phong, khong nhan
+                //service_id, nen phai dua vao suggestRoomCurrentServiceId. Bien do co the con
+                //giu gia tri cua dich vu TRUOC (co cho goi khong di qua FilterExecuteRoom).
+                //BUG da gap 08/09/2026: SIE5858 chi duoc cau hinh 4 phong (SA08/SA09/VR03/TM11)
+                //nhung lai duoc gan Phong Sieu Am So 12 - la phong cua dich vu khac trong cache.
+                //=> phai kiem phong tra ve co ĐUNG la phong duoc cau hinh cho dich vu nay khong.
+                //Dung HIS_SERVICE_ROOM (nguon cau hinh dich vu-phong) chu KHONG dung excuteRoomList
+                //cua form: danh sach do bi form loc chat hon MOS (them IS_PAUSE) nen se loai oan
+                //phong MOS da phan - dung loi da gap 07/09/2026.
+                if (!this.IsRoomConfiguredForService(serviceId, roomId))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("GetSuggestRoom: phong tra ve khong thuoc cau hinh cua dich vu, bo qua."
+                        + Inventec.Common.Logging.LogUtil.TraceData("serviceId", serviceId)
+                        + Inventec.Common.Logging.LogUtil.TraceData("roomId", roomId));
+                    return 0;
+                }
+                return roomId;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return 0;
+        }
+
+        /// <summary>
+        /// Phong co duoc cau hinh lam duoc dich vu nay khong (bang HIS_SERVICE_ROOM, ban IS_ACTIVE).
+        /// Day la nguon RONG - khong ap them cac bo loc rieng cua form.
+        /// </summary>
+        private bool IsRoomConfiguredForService(long serviceId, long roomId)
+        {
+            try
+            {
+                if (serviceId <= 0 || roomId <= 0)
+                {
+                    return false;
+                }
+                var serviceRooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>();
+                if (serviceRooms == null)
+                {
+                    //Khong doc duoc cau hinh thi khong chan, de MOS quyet dinh
+                    return true;
+                }
+                return serviceRooms.Any(o => o.SERVICE_ID == serviceId
+                    && o.ROOM_ID == roomId
+                    && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
         }
 
         /// <summary>
@@ -151,9 +219,23 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 if (String.IsNullOrEmpty(key))
                 {
-                    //Bo tick het thi xoa cache, khong can goi API
+                    //Bo tick het thi xoa cache va xoa luon danh sach bac si tu chon:
+                    //tick lai la bat dau lai, khong giu lua chon cu.
                     this.suggestRoomCache.Clear();
+                    this.suggestRoomUserPicked.Clear();
                     return;
+                }
+
+                //Dich vu vua bi bo tick thi bo khoi danh sach "bac si tu chon", de neu tick lai
+                //thi duoc phan phong theo nhom nhu binh thuong.
+                if (checkeds != null)
+                {
+                    List<long> stillChecked = checkeds.Select(o => o.SERVICE_ID).ToList();
+                    List<long> dropped = this.suggestRoomUserPicked.Where(o => !stillChecked.Contains(o)).ToList();
+                    foreach (long id in dropped)
+                    {
+                        this.suggestRoomUserPicked.Remove(id);
+                    }
                 }
 
                 if (this.suggestRoomTimer == null)
@@ -257,6 +339,25 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 this.ApplySuggestRoomToGrid(checkeds);
             }
+            catch (TypeLoadException ex)
+            {
+                //LECH PHIEN BAN DLL, khong phai loi nghiep vu. Ghi muc Error de nhin thay ngay.
+                //Da gap 08/09/2026: MOS.SDO.dll o ReferencedAssemblies la ban cu, thieu 2 kieu
+                //SuggestRoomSDO/SuggestRoomResultSDO => TypeLoadException ngay khi JIT vao ham nay
+                //=> API khong bao gio duoc goi, o "Phong xu ly" trong, log chi co Warn khong ai de y.
+                //Cach xu ly: dong bo MOS.SDO.dll (ban co 2 kieu tren) roi TAT HAN va mo lai HIS.Desktop.
+                this.suggestRoomLastKey = null;
+                Inventec.Common.Logging.LogSystem.Error(
+                    "RefreshSuggestRoom: lech phien ban MOS.SDO.dll (thieu kieu du lieu). "
+                    + "Can dong bo lai MOS.SDO.dll o thu muc ReferencedAssemblies va khoi dong lai HIS.Desktop.", ex);
+            }
+            catch (MissingMethodException ex)
+            {
+                //Cung ho lech phien ban DLL: thieu phuong thuc thay vi thieu kieu
+                this.suggestRoomLastKey = null;
+                Inventec.Common.Logging.LogSystem.Error(
+                    "RefreshSuggestRoom: lech phien ban DLL (thieu phuong thuc). Can dong bo lai DLL.", ex);
+            }
             catch (Exception ex)
             {
                 //Khong chen ngang nguoi dung: loi lay phong du kien khong lam hong nghiep vu chi dinh.
@@ -279,23 +380,33 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 }
 
                 bool changed = false;
-                foreach (SereServADO item in checkeds)
+                //Bat co trong suot lan dien: su kien CellValueChanged se nO nhung khong duoc
+                //ghi nhan la "bac si tu chon phong"
+                this.isFillingSuggestRoom = true;
+                try
                 {
-                    if (item == null || this.suggestRoomUserPicked.Contains(item.SERVICE_ID))
+                    foreach (SereServADO item in checkeds)
                     {
-                        continue;
+                        if (item == null || this.suggestRoomUserPicked.Contains(item.SERVICE_ID))
+                        {
+                            continue;
+                        }
+                        long roomId = this.GetSuggestedRoomId(item.SERVICE_ID);
+                        if (roomId > 0 && item.TDL_EXECUTE_ROOM_ID != roomId)
+                        {
+                            item.TDL_EXECUTE_ROOM_ID = roomId;
+                            changed = true;
+                        }
                     }
-                    long roomId = this.GetSuggestedRoomId(item.SERVICE_ID);
-                    if (roomId > 0 && item.TDL_EXECUTE_ROOM_ID != roomId)
+
+                    if (changed)
                     {
-                        item.TDL_EXECUTE_ROOM_ID = roomId;
-                        changed = true;
+                        this.gridViewServiceProcess.RefreshData();
                     }
                 }
-
-                if (changed)
+                finally
                 {
-                    this.gridViewServiceProcess.RefreshData();
+                    this.isFillingSuggestRoom = false;
                 }
             }
             catch (Exception ex)
