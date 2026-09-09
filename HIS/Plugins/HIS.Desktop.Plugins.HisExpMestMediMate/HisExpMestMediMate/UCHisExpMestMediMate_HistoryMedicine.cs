@@ -374,19 +374,21 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                         var _ExpType = glstHisExpMestType.FirstOrDefault(p => p.ID == item.EXP_MEST_TYPE_ID);
                         if (_ExpType != null)
                         {
-                            var _ExpMest = expMest.FirstOrDefault(p => p.ID == item.EXP_MEST_ID);
-                            if (_ExpMest != null)
+                            if (item.EXP_MEST_ID != null && item.EXP_MEST_TYPE_ID == 3)//loại xuất chuyển kho
                             {
-                                if (_ExpMest.CHMS_TYPE_ID == null)
-                                    ado.MEST_TYPE = "Xuất chuyển kho";
-                                if (_ExpMest.CHMS_TYPE_ID == 1)
-                                    ado.MEST_TYPE = "Bổ sung cơ số";
-                                if (_ExpMest.CHMS_TYPE_ID == 2)
-                                    ado.MEST_TYPE = "Thu hồi cơ số";
+                                var _ExpMest = expMest.FirstOrDefault(p => p.ID == item.EXP_MEST_ID);
+                                if (_ExpMest != null)
+                                {
+                                    if (_ExpMest.CHMS_TYPE_ID == null)
+                                        ado.MEST_TYPE = "Xuất chuyển kho";
+                                    if (_ExpMest.CHMS_TYPE_ID == 1)
+                                        ado.MEST_TYPE = "Bổ sung cơ số";
+                                    if (_ExpMest.CHMS_TYPE_ID == 2)
+                                        ado.MEST_TYPE = "Thu hồi cơ số";
+                                }
                             }
                             else
                                 ado.MEST_TYPE = _ExpType != null ? _ExpType.EXP_MEST_TYPE_NAME : "";
-
                         }
                         var patientType = this.lstPatientType.FirstOrDefault(p => p.ID == item.PATIENT_TYPE_ID);
                         ado.PATIENT_TYPE_NAME = patientType != null ? patientType.PATIENT_TYPE_NAME : "";
