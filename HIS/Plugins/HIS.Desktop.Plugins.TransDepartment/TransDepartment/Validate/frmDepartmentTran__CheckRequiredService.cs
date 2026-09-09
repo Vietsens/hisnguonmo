@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -81,7 +82,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
             string serviceNames = string.Join(", ", unfinisheds.Select(o => o.TDL_SERVICE_NAME).Where(o => !string.IsNullOrEmpty(o)).Distinct().ToList());
             string serviceReqCodes = string.Join(", ", unfinisheds.Select(o => o.TDL_SERVICE_REQ_CODE).Where(o => !string.IsNullOrEmpty(o)).Distinct().ToList());
 
-            MessageBox.Show(
+            XtraMessageBox.Show(
                 string.Format("Dịch vụ {0} (mã y lệnh: {1}) chưa hoàn thành. Không cho phép thực hiện chuyển khoa", serviceNames, serviceReqCodes),
                 "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;
