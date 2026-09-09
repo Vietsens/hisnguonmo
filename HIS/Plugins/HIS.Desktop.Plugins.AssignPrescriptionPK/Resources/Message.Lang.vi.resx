@@ -689,6 +689,15 @@
   <data name="TongChiPhiVuot15PhanTramLuongCoBan" xml:space="preserve">
     <value>Tổng chi phí của bệnh nhân ({0} đồng) đã vượt 15% mức lương cơ bản ({1} đồng). Bạn có muốn tiếp tục?</value>
   </data>
+  <data name="KhangSinhMucChanBatBuocTaoPhieuYeuCau" xml:space="preserve">
+    <value>Các kháng sinh sau bắt buộc tạo phiếu yêu cầu sử dụng trước khi lưu đơn: {0}.{1} Bạn có muốn tạo phiếu yêu cầu ngay không? Nếu chọn Cancel, đơn sẽ KHÔNG được lưu.</value>
+  </data>
+  <data name="KhangSinhNhacTaoPhieuYeuCau" xml:space="preserve">
+    <value> Các kháng sinh sau thuộc diện nhắc tạo phiếu yêu cầu (không bắt buộc): {0}.</value>
+  </data>
+  <data name="KhangSinhMucChanVanChuaCoPhieuYeuCau" xml:space="preserve">
+    <value>Chưa có phiếu yêu cầu sử dụng phủ các kháng sinh bắt buộc: {0}. Đơn không được lưu, dữ liệu đã nhập vẫn giữ nguyên trên màn hình.</value>
+  </data>
   <data name="ThuocDangDungTuDonKhacTrongHoSo" xml:space="preserve">
     <value>Thuốc đang dùng từ đơn khác trong hồ sơ (đã đưa vào kiểm tra tương tác):</value>
   </data>
