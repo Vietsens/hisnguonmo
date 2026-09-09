@@ -48,5 +48,13 @@ namespace HIS.Desktop.Plugins.PublicServices_NT.ADO
         public string INSTRUCTION_NOTE { get; set; }
 
         public long PATIENT_TYPE_ID { get; set; }
+
+        //Bo sung cot thanh tien BHYT tra, BN tra cua tung dich vu
+        public decimal? TOTAL_HEIN_PRICE { get; set; }
+        public decimal? TOTAL_PATIENT_PRICE { get; set; }
+
+        //Cot CONG KHAI THUC HIEN: dich vu lay FINISH_TIME, thuoc/vat tu lay USED_TIME
+        //Luu nguyen 14 so YYYYMMDDHHmmss, khong dung ConvertToOutputFormat (ham do cat gio ve 000000)
+        public long? EXECUTE_PUBLIC_TIME { get; set; }
     }
 }
