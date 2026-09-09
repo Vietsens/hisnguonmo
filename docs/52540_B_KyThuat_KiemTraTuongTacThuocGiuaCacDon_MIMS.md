@@ -847,10 +847,10 @@ Thêm property tương ứng trong `Resources/ResourceMessage.cs` của **cả 4
 | `HIS.Desktop.MIMS.Integration` | **Build sạch** (chỉ còn 1 warning `ConfigurationSettings.AppSettings` có từ trước) |
 | `HIS.Desktop.Plugins.AssignPrescriptionPK` | **Build sạch** |
 | `HIS.Desktop.Plugins.AssignPrescriptionCLS` | **Build sạch** |
-| `HIS.Desktop.Plugins.AssignPrescriptionKidney` | **Chưa build được tại máy dev** — 20 lỗi thiếu assembly, HintPath trỏ ổ `F:` của máy dev khác (`HIS.UC.Icd`, `HIS.UC.DateEditor`, `HIS.UC.PeriousExpMestList`, `Library.*`). Lỗi có từ trước, **không** nằm ở file nào của việc 52540 |
-| `HIS.Desktop.Plugins.AssignPrescriptionYHCT` | **Chưa build được tại máy dev** — 36 lỗi thiếu assembly (`HIS.UC.PatientSelect`, `HIS.UC.TreatmentFinish`, `HIS.UC.MenuPrint`, `Library.CheckIcd`, `Library.PrintServiceReq`, `HIS.Desktop.LocalStorage.LocalData`). Lỗi có từ trước, **không** nằm ở file nào của việc 52540 |
+| `HIS.Desktop.Plugins.AssignPrescriptionKidney` | **Build sạch** — phải build bằng `ReferencePath` (mục 14.6) vì csproj còn HintPath trỏ ổ `F:` của máy dev khác (`HIS.UC.Icd`, `HIS.UC.DateEditor`, `HIS.UC.PeriousExpMestList`, `Library.*`) |
+| `HIS.Desktop.Plugins.AssignPrescriptionYHCT` | **Build sạch** — phải build bằng `ReferencePath` (mục 14.6) vì máy dev thiếu DLL tham chiếu (`HIS.UC.PatientSelect`, `HIS.UC.TreatmentFinish`, `HIS.UC.MenuPrint`, `Library.CheckIcd`, `Library.PrintServiceReq`, `HIS.Desktop.LocalStorage.LocalData`) |
 
-> Kidney và YHCT dùng **cùng một** file partial và **cùng một** đoạn sửa `CheckMIMS` / menu chuột phải với PK và CLS (đã build sạch), tên biến đã đối chiếu trùng khớp (`InstructionTime`, `oldServiceReq`, `currentTreatmentWithPatientType`, `mediMatyTypeADOs`, `MediMatyTypeInformationEvluation`, `ProcessLostToken`, `HisRequestUriStore.HIS_EXP_MEST_MEDICINE_GETVIEW`, namespace `...AssignPrescription{X}.ADO`). Cần build lại 2 plugin này trên máy có đủ bộ DLL tham chiếu.
+> Cả 4 plugin dùng **cùng một** file partial và **cùng một** đoạn sửa `CheckMIMS` / menu chuột phải, tên biến đã đối chiếu trùng khớp (`InstructionTime`, `oldServiceReq`, `currentTreatmentWithPatientType`, `mediMatyTypeADOs`, `MediMatyTypeInformationEvluation`, `ProcessLostToken`, `HisRequestUriStore.HIS_EXP_MEST_MEDICINE_GETVIEW`, namespace `...AssignPrescription{X}.ADO`).
 
 ## 14.4 File đã thay đổi
 
@@ -880,9 +880,42 @@ Thêm property tương ứng trong `Resources/ResourceMessage.cs` của **cả 4
 
 **Cấu hình**: `docs/SQL_52540_Config_KiemTraTuongTacThuocGiuaCacDon_MIMS.sql` — 3 câu `INSERT` theo mẫu chuẩn, có sẵn đoạn kiểm tra, đoạn bật tính năng và đoạn rollback.
 
-## 14.5 Việc còn lại trước khi nghiệm thu
+## 14.5 Cách deploy DLL
 
-1. Build lại **Kidney** và **YHCT** trên máy có đủ DLL tham chiếu (mục 14.3).
+Repo deploy: `E:\IVT TEST\histest` (`gitlab.vietsens.vn/ivt-test/histest`), branch **`Test`** — repo track binary.
+`git pull --ff-only origin Test` TRƯỚC khi copy, sau đó commit + `git push origin Test`.
+
+| Đường dẫn trong repo | File |
+|---|---|
+| `x64/ReferencedAssemblies/` | `HIS.Desktop.MIMS.Integration.dll` |
+| `x64/Plugins/Module/` | `HIS.Desktop.Plugins.AssignPrescription{PK,CLS,Kidney,YHCT}.dll` |
+| `x64/vi/`, `x64/en/` | `HIS.Desktop.Plugins.AssignPrescription{PK,CLS,Kidney,YHCT}.resources.dll` |
+| `x64/my/` | `HIS.Desktop.Plugins.AssignPrescriptionPK.resources.dll` (chỉ PK có satellite `my`) |
+
+Tổng 14 file. Quên satellite là lệch resource với DLL chính → khối HTML "Thuốc đang dùng từ đơn khác"
+rơi về chuỗi mặc định trong thư viện.
+
+## 14.6 Build 2 plugin có HintPath hỏng
+
+`AssignPrescriptionKidney` và `AssignPrescriptionYHCT` có csproj trỏ HintPath sang ổ `F:` của máy dev khác.
+Không sửa csproj — build bằng `ReferencePath` trỏ vào chính bộ DLL của môi trường chạy:
+
+```
+$env:ReferencePath = "E:\IVT TEST\histest\x64\ReferencedAssemblies;E:\IVT TEST\histest\x64\Plugins\Module;E:\IVT TEST\histest\x64"
+msbuild HIS.Desktop.Plugins.AssignPrescriptionKidney.csproj /t:Build /p:Configuration=Debug ^
+        /p:TargetFrameworkVersion=v4.5.2
+```
+
+MSBuild đặt `$(ReferencePath)` **trước** `{HintPathFromItem}` trong `AssemblySearchPaths`, nên các HintPath
+hỏng được bỏ qua và assembly lấy từ bộ deploy. Truyền qua **biến môi trường**, không dùng `/p:ReferencePath=...`
+trên dòng lệnh — dấu `;` làm MSBuild báo `MSB1006: Property is not valid`.
+
+Hệ quả cần biết: cách này build **toàn bộ** reference theo bộ deploy (kể cả DevExpress, `MOS.EFMODEL`),
+tức là đúng bộ đang chạy thật — không phải bộ trong `lib/` của máy dev.
+
+## 14.7 Việc còn lại trước khi nghiệm thu
+
+1. Đã build và deploy đủ 4 plugin + thư viện (mục 14.5, 14.6).
 2. Chạy SQL 3 config, để **giá trị trống** — xác nhận hệ thống chạy y như trước (TC-02).
 3. Thử nghiệm trên môi trường **MIMS trial**: xác nhận `alertfilterbydrug` lọc đúng (TC-06) và đối chứng `CrossPrescriptionRequestMode` 1 so với 2 (TC-14) — đây là điểm chặn RR-02 / RR-03.
 4. Bật `InteractionScopeOption = 2` cho 1 khoa nội trú, theo dõi `HIS_MIMS_INTERACTION_LOG` và số lượng popup.
