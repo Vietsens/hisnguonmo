@@ -182,7 +182,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             {
                                 lstICD.AddRange(txtIcdSubCode.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                             }
-                            service.ShowResultAsync(lstDrugItem, lstICD, BuildMimsPatientProfile());
+                            // Việc 52540: tính cả thuốc còn hiệu lực của các đơn khác trong hồ sơ
+                            List<HIS.Desktop.MIMS.Integration.Models.MimsPreviousDrugInfo> previousDrugInfos;
+                            var previousDrugItems = BuildCrossPrescriptionDrugItems(
+                                MediMatyTypeInformationEvluation, out previousDrugInfos);
+
+                            service.ShowResultAsync(lstDrugItem, lstICD, BuildMimsPatientProfile(),
+                                previousDrugItems, previousDrugInfos, BuildMimsCrossPrescriptionOption());
                         }
                         break;
                     default:

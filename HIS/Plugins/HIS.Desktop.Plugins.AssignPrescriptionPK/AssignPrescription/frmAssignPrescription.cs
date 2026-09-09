@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -1235,6 +1235,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     this.GetHisExpMestMedicine();
                 }
+
+                // Viec 52540: prefetch thuoc cac don khac con hieu luc trong ho so
+                this.PrefetchMimsCrossPrescription();
 
                 if (HisConfigCFG.IsTrackingRequired == "2" || HisConfigCFG.IsTrackingRequired == "4")
                 {
@@ -10968,6 +10971,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 {
                     this.GetHisExpMestMedicine();
                 }
+
+                // Viec 52540: prefetch thuoc cac don khac con hieu luc trong ho so
+                this.PrefetchMimsCrossPrescription();
             }
             catch (Exception ex)
             {
@@ -13407,6 +13413,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 {
                     this.GetHisExpMestMedicine();
                 }
+
+                // Viec 52540: prefetch thuoc cac don khac con hieu luc trong ho so
+                this.PrefetchMimsCrossPrescription();
             }
             catch (Exception ex)
             {
@@ -14192,7 +14201,18 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                     // PN mang thai / cho con bú: null khi không tick -> request MIMS giữ nguyên như cũ
                     var mimsProfile = BuildMimsPatientProfile();
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog, patientProfile: mimsProfile);
+
+                    // Việc 52540: thuốc còn hiệu lực của các đơn KHÁC trong hồ sơ.
+                    // Danh sách rỗng khi tắt cấu hình -> thư viện chạy đúng nhánh như trước.
+                    List<MimsPreviousDrugInfo> previousDrugInfos;
+                    var previousDrugItems = BuildCrossPrescriptionDrugItems(lstMediMatyTypeADOs, out previousDrugInfos);
+
+                    check = service.CheckAndAlert(lstDrugItem, null, lstICD, mimsInteractionLog,
+                        this.VHistreatment != null ? (long?)this.VHistreatment.ID : null,
+                        null,
+                        this.VHistreatment != null ? (long?)this.VHistreatment.PATIENT_ID : null,
+                        mimsProfile, previousDrugItems, previousDrugInfos,
+                        BuildMimsCrossPrescriptionOption());
                 }
 
                 return check;
