@@ -973,7 +973,10 @@ namespace MPS.Processor.Mps000508
             string log = "";
             try
             {
-                log = "Mã điều trị: " + rdo.Treatment.TREATMENT_CODE;
+                if (rdo != null && rdo.Treatment != null)
+                {
+                    log = String.Format("HIS_TREATMENT: {0}", rdo.Treatment.TREATMENT_CODE);
+                }
             }
             catch (Exception ex)
             {
@@ -990,12 +993,15 @@ namespace MPS.Processor.Mps000508
             {
                 if (rdo != null && rdo.Treatment != null)
                 {
-                    string printTypeCode = printData.printTypeCode;
+                    //doi ten bien: printTypeCode trung ten field cua AbstractProcessor -> de doc nham.
+                    //hoa/thuong phai khop printData.printTypeCode (= "MPS000508") vi UNIQUE_CODE__EXACT
+                    //loc phan biet hoa thuong khi dem so ban in.
+                    string uniquePrintTypeCode = printData.printTypeCode;
                     if (rdo.Treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
                     {
-                        printTypeCode = "Mps000509";
+                        uniquePrintTypeCode = "MPS000509";
                     }
-                    result = String.Format("{0} TREATMENT_CODE:{1}", printTypeCode, rdo.Treatment.TREATMENT_CODE);
+                    result = String.Format("{0} TREATMENT_CODE:{1}", uniquePrintTypeCode, rdo.Treatment.TREATMENT_CODE);
                 }
 
             }
