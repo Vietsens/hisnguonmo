@@ -3333,7 +3333,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 isClickSaveFinish = false;
                 if (this.requiredControl != null && this.requiredControl == 1 && string.IsNullOrEmpty(this.txtPathologicalProcess.Text.Trim()))
                 {
-                    MessageBox.Show("Quá trình bệnh lý bạn nhập không hợp lệ", ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    XtraMessageBox.Show("Quá trình bệnh lý bạn nhập không hợp lệ", ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     lblCaptionPathologicalProcess.AppearanceItemCaption.ForeColor = Color.Maroon;
                     ValidationRequired(txtPathologicalProcess);
                     return;
@@ -3469,7 +3469,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     if (hisServiceReqSDO.ExamAdditionSDO != null && hisServiceReqSDO.ExamAdditionSDO.IsNotUseBhyt)
                     {
-                        if (MessageBox.Show("Bệnh nhân không được hưởng BHYT các chi phí phát sinh tại phòng khám thêm. Bạn có muốn tiếp tục?",
+                        if (XtraMessageBox.Show("Bệnh nhân không được hưởng BHYT các chi phí phát sinh tại phòng khám thêm. Bạn có muốn tiếp tục?",
                                             "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
                             if (!isCheckMustFinishAllServices && !CheckMustFinishAllServices(HisServiceReqView.ID)) return;
@@ -3585,7 +3585,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         return s.SERVICE_REQ_CODE + " (" + roomName + ")";
                     }));
 
-                    var result = MessageBox.Show(
+                    var result = XtraMessageBox.Show(
                         "Các phiếu chỉ định sau chưa kết thúc. " + warningText + ". Bạn có muốn tiếp tục không?",
                         "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
@@ -4217,7 +4217,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 }
                 if (!finishTime.HasValue)
                 {
-                    MessageBox.Show("Chưa nhập thời gian kết thúc khám", "Thông báo", MessageBoxButtons.OK);
+                    XtraMessageBox.Show("Chưa nhập thời gian kết thúc khám", "Thông báo", MessageBoxButtons.OK);
                     return;
                 }
                 HisServiceReqView.FINISH_TIME = finishTime;
@@ -4453,7 +4453,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         }
                         note += String.Format("Phòng yêu cầu: {0}, HSDT: {1}, Mã YC: {2}:\n {3} ", requestRoomNames, treatmentCode, serviceReqCode, String.Join(";\n", medicines));
                     }
-                    DialogResult myResult = MessageBox.Show(String.Format(ResourceMessage.DonThuocLanKhamTruoc, note), ResourceMessage.ThongBao, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                    DialogResult myResult = XtraMessageBox.Show(String.Format(ResourceMessage.DonThuocLanKhamTruoc, note), ResourceMessage.ThongBao, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
                     if (myResult == DialogResult.Cancel)
                         return;
@@ -4578,7 +4578,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         var serviceReqExamChild = serviceReqDons.Where(o => o.PARENT_ID.HasValue && o.PARENT_ID == HisServiceReqView.ID).ToList();
                         if (serviceReqExamChild != null && serviceReqExamChild.Count > 0)
                         {
-                            DialogResult myResult = MessageBox.Show(ResourceMessage.DaCoDonThuocBanCoMuonTiepTucKhong, ResourceMessage.ThongBao, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                            DialogResult myResult = XtraMessageBox.Show(ResourceMessage.DaCoDonThuocBanCoMuonTiepTucKhong, ResourceMessage.ThongBao, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                             if (myResult == DialogResult.Cancel)
                                 return;
                         }
@@ -4850,7 +4850,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         }
                         note += String.Format("Phòng yêu cầu: {0}, HSDT: {1}, Mã YC: {2} ({3}) ", requestRoomNames, treatmentCode, serviceReqCode, userTimeTo);
                     }
-                    DialogResult myResult = MessageBox.Show(String.Format(ResourceMessage.DonThuocLanKhamTruoc, note), ResourceMessage.ThongBao, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                    DialogResult myResult = XtraMessageBox.Show(String.Format(ResourceMessage.DonThuocLanKhamTruoc, note), ResourceMessage.ThongBao, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
                     if (myResult == DialogResult.Cancel)
                         return;
@@ -4932,7 +4932,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         var serviceReqExamChild = serviceReqDons.Where(o => o.PARENT_ID.HasValue && o.PARENT_ID == HisServiceReqView.ID).ToList();
                         if (serviceReqExamChild != null && serviceReqExamChild.Count > 0)
                         {
-                            DialogResult myResult = MessageBox.Show(ResourceMessage.DaCoDonThuocBanCoMuonTiepTucKhong, ResourceMessage.ThongBao, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                            DialogResult myResult = XtraMessageBox.Show(ResourceMessage.DaCoDonThuocBanCoMuonTiepTucKhong, ResourceMessage.ThongBao, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                             if (myResult == DialogResult.Cancel)
                                 return;
                         }
@@ -8910,7 +8910,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (this.requiredControl != null && this.requiredControl == 1 && string.IsNullOrEmpty(this.txtPathologicalProcess.Text.Trim()))
                 {
-                    MessageBox.Show("Quá trình bệnh lý bạn nhập không hợp lệ", ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    XtraMessageBox.Show("Quá trình bệnh lý bạn nhập không hợp lệ", ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
