@@ -48,6 +48,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.ADO
 
         public string DOCUMENT_CODE { get; set; }
 
+        /// <summary>
+        /// Ma nghiep vu ben HIS ma van ban gan vao, dang ghep chuoi - vi du
+        /// "SERVICE_REQ_CODE:000123 SER_SERV_ID:456". Dung de biet van ban thuoc y lenh nao.
+        /// </summary>
+        public string HIS_CODE { get; set; }
+
+        /// <summary>
+        /// Co xoa mem. Tren V_EMR_DOCUMENT day la NUMBER nullable (short?), KHONG phai boolean:
+        /// van ban binh thuong de NULL chu khong phai 0, nen "chua xoa" = khac 1.
+        /// </summary>
+        public short? IS_DELETE { get; set; }
+
         public string DOCUMENT_NAME { get; set; }
 
         /// <summary>Khoa ngoai toi EMR_DOCUMENT_TYPE, dung de tra cuu IS_HOSPITALIZATION.</summary>
@@ -62,5 +74,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.ADO
 
         /// <summary>Danh sach tai khoan chua ky.</summary>
         public string UN_SIGNERS { get; set; }
+
+        /// <summary>
+        /// Tai khoan den luot phai ky. Con gia tri = van ban chua ky xong.
+        /// Doi ung voi filter EmrDocumentViewFilter.HAS_NEXT_SIGNER cua EMR.
+        /// </summary>
+        public string NEXT_SIGNER { get; set; }
+
+        /// <summary>Tai khoan da tu choi ky. Con gia tri = van ban khong hop le, coi nhu chua hoan thanh.</summary>
+        public string REJECTER { get; set; }
     }
 }
