@@ -158,8 +158,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
 
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
                 BILL_TWO_BOOK__OPTION = HisConfigs.Get<int>(CFG_TRANSACTION_BILL_TWO_BOOK__OPTION);
-                COPAY_AFTER_TREATMENT_FINISH = Get(GetValue(CFG_BILL_TWO_BOOK__COPAY_AFTER_TREATMENT_FINISH));
                 ALLOW_COLLECT_SHORTFALL = Get(GetValue(CFG_BILL_TWO_BOOK__ALLOW_COLLECT_SHORTFALL));
+                //COPAY_AFTER_TREATMENT_FINISH PHỤ THUỘC CỨNG vào ALLOW_COLLECT_SHORTFALL — phải khớp
+                //HisTransactionCFG.COPAY_AFTER_TREATMENT_FINISH bên MOS (lệch là giao dịch bị từ chối).
+                //Hoãn thu đồng chi trả làm số tiền chứng từ nhỏ hơn tiền BN phải trả; nếu shortfall tắt thì
+                //backend chặn ngay hóa đơn đầu tiên, và phần đã hoãn sau đó không thu lại được.
+                COPAY_AFTER_TREATMENT_FINISH = Get(GetValue(CFG_BILL_TWO_BOOK__COPAY_AFTER_TREATMENT_FINISH))
+                    && ALLOW_COLLECT_SHORTFALL;
                 OLD_SYSTEM__OPTION = GetValue(INTEGRATION_TYPE_CFG);
 
                 HcmPoorFund__Vcn = GetListValue(VCN_ACCEPTED_SERVICE_CODE_CFG);
