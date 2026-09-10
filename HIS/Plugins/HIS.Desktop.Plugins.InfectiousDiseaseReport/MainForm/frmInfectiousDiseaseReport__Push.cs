@@ -242,6 +242,12 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 if (ok) this.hisEcdsCaseId = saved.ID;
                 SessionManager.ProcessTokenLost(param);
 
+                // Chẩn đoán lưu/đối soát: ghi ID + mã điều trị để soi khi "lưu xong mở lại không thấy".
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "ECDS Save uri={0} savedId={1} treatmentId={2} treatmentCode={3} ok={4}",
+                    uri, saved != null ? saved.ID : 0, c.TREATMENT_ID,
+                    treatment != null ? treatment.TREATMENT_CODE : "", ok));
+
                 if (ok)
                 {
                     Inventec.Common.Logging.LogUtil.LogActionSuccess(
