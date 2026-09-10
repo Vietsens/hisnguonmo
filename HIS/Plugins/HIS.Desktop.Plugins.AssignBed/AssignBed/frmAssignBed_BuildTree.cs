@@ -64,6 +64,29 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     // ============= CHỈ LẤY DỊCH VỤ GIƯỜNG =============
                     this.ServiceIsleafADOs = serviceComboADO.ServiceIsleafADOs.Where(o => serviceIdHasFilters.ContainsKey(o.ID) && o.SERVICE_TYPE_ID == SERVICE_TYPE_ID_GIUONG).ToList();
 
+                    // ============= CHỈ LẤY DỊCH VỤ GIƯỜNG CON CO GIUONG CHUA BI KHOA =============
+                    // dicBedByServiceId chi chua cac giuong co IS_ACTIVE = 1 thuoc khoa hien tai.
+                    // Dich vu giuong khong con giuong nao chua bi khoa thi khong hien thi tren luoi dich vu.
+                    if (this.dicBedByServiceId == null)
+                    {
+                        this.LoadAllBedData();
+                    }
+                    if (this.dicBedByServiceId != null)
+                    {
+                        List<SereServADO> serviceIsleafHasActiveBeds = new List<SereServADO>();
+                        foreach (var serviceIsleaf in this.ServiceIsleafADOs)
+                        {
+                            List<V_HIS_BED> bedActives = null;
+                            if (this.dicBedByServiceId.TryGetValue(serviceIsleaf.ID, out bedActives)
+                                && bedActives != null && bedActives.Count > 0)
+                            {
+                                serviceIsleafHasActiveBeds.Add(serviceIsleaf);
+                            }
+                        }
+                        this.ServiceIsleafADOs = serviceIsleafHasActiveBeds;
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug("count of ServiceIsleafADOs sau khi loc dich vu giuong con giuong chua bi khoa:" + this.ServiceIsleafADOs.Count());
+
                     #region ============= BỎ PHẦN THÊM OXY (COMMENT LẠI) =============
                     //thêm oxy vào danh sách dịch vụ
                     //if (Config.HisConfigCFG.AllowAssignOxygen)
