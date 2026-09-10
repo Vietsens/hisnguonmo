@@ -924,11 +924,11 @@ namespace MPS.Processor.Mps000049
                     {
                         var Groups = query.GroupBy(g => new { g.MATERIAL_ID, g.IS_CHEMICAL_SUBSTANCE }).Select(p => p.ToList()).ToList();
                         dataMates.AddRange(from r in Groups
-                                           select new Mps000049ADO(rdo.AggrExpMest,
+                                           select SetPackingTypeName(new Mps000049ADO(rdo.AggrExpMest,
                                                r,
                                                rdo.ConfigMps49._ExpMestSttId__Approved,
                                                rdo.ConfigMps49._ExpMestSttId__Exported,
-                                               rdo.ConfigMps49.PatientTypeId__BHYT));
+                                               rdo.ConfigMps49.PatientTypeId__BHYT), r));
 
                         foreach (var gr in Groups)
                         {
@@ -940,6 +940,7 @@ namespace MPS.Processor.Mps000049
                                 {
                                     var lst = gr.Where(o => item.Select(s => s.ID).Contains(o.EXP_MEST_ID ?? 0)).ToList();
                                     ExpMestADO ado = new ExpMestADO(rdo.AggrExpMest, lst, rdo.ConfigMps49._ExpMestSttId__Approved, rdo.ConfigMps49._ExpMestSttId__Exported, rdo.ConfigMps49.PatientTypeId__BHYT, item.First());
+                                    SetPackingTypeName(ado, lst);
                                     ExpMestADOs.Add(ado);
                                 }
                             }
@@ -949,11 +950,11 @@ namespace MPS.Processor.Mps000049
                     {
                         var Groups = query.GroupBy(g => new { g.MATERIAL_TYPE_ID, g.IS_CHEMICAL_SUBSTANCE }).Select(p => p.ToList()).ToList();
                         dataMates.AddRange(from r in Groups
-                                           select new Mps000049ADO(rdo.AggrExpMest,
+                                           select SetPackingTypeName(new Mps000049ADO(rdo.AggrExpMest,
                                                r,
                                                rdo.ConfigMps49._ExpMestSttId__Approved,
                                                rdo.ConfigMps49._ExpMestSttId__Exported,
-                                               rdo.ConfigMps49.PatientTypeId__BHYT));
+                                               rdo.ConfigMps49.PatientTypeId__BHYT), r));
 
                         foreach (var gr in Groups)
                         {
@@ -965,6 +966,7 @@ namespace MPS.Processor.Mps000049
                                 {
                                     var lst = gr.Where(o => item.Select(s => s.ID).Contains(o.EXP_MEST_ID ?? 0)).ToList();
                                     ExpMestADO ado = new ExpMestADO(rdo.AggrExpMest, lst, rdo.ConfigMps49._ExpMestSttId__Approved, rdo.ConfigMps49._ExpMestSttId__Exported, rdo.ConfigMps49.PatientTypeId__BHYT, item.First());
+                                    SetPackingTypeName(ado, lst);
                                     ExpMestADOs.Add(ado);
                                 }
                             }
@@ -991,11 +993,11 @@ namespace MPS.Processor.Mps000049
 
                     var GroupsSplit = query.GroupBy(g => new { g.MATERIAL_ID, g.IS_CHEMICAL_SUBSTANCE }).Select(p => p.ToList()).ToList();
                     ExpMestADOsSplit.AddRange(from r in GroupsSplit
-                                              select new Mps000049ADO(rdo.AggrExpMest,
+                                              select SetPackingTypeName(new Mps000049ADO(rdo.AggrExpMest,
                                            r,
                                            rdo.ConfigMps49._ExpMestSttId__Approved,
                                            rdo.ConfigMps49._ExpMestSttId__Exported,
-                                           rdo.ConfigMps49.PatientTypeId__BHYT));
+                                           rdo.ConfigMps49.PatientTypeId__BHYT), r));
 
                     if (ExpMestADOsSplit != null && ExpMestADOsSplit.Count > 0)
                     {
@@ -1037,6 +1039,32 @@ namespace MPS.Processor.Mps000049
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Gán key "Quy cách đóng gói" (PACKING_TYPE_NAME) cho dòng vật tư/hóa chất.
+        /// View V_HIS_EXP_MEST_MATERIAL không có cột này nên phải lookup danh mục V_HIS_MATERIAL_TYPE.
+        /// Dòng thuốc đã được gán sẵn trong Mps000049ADO từ rdo._MedicineTypes.
+        /// </summary>
+        T SetPackingTypeName<T>(T ado, List<V_HIS_EXP_MEST_MATERIAL> materials) where T : Mps000049ADO
+        {
+            try
+            {
+                if (ado != null && materials != null && materials.Count > 0)
+                {
+                    var materialType = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>()
+                        .FirstOrDefault(o => o.ID == materials[0].MATERIAL_TYPE_ID);
+                    if (materialType != null)
+                    {
+                        ado.PACKING_TYPE_NAME = materialType.PACKING_TYPE_NAME;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return ado;
         }
 
         bool Check(V_HIS_EXP_MEST_MEDICINE _expMestMedicine)

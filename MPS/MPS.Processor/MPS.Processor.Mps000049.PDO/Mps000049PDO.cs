@@ -153,6 +153,13 @@ namespace MPS.Processor.Mps000049.PDO
         public string SERVICE_UNIT_CODE { get; set; }
         public string SERVICE_UNIT_NAME { get; set; }
         public string PACKAGE_NUMBER { get; set; }
+
+        /// <summary>
+        /// Quy cách đóng gói — lookup từ danh mục: V_HIS_MEDICINE_TYPE.PACKING_TYPE_NAME (dòng thuốc)
+        /// hoặc V_HIS_MATERIAL_TYPE.PACKING_TYPE_NAME (dòng vật tư/hóa chất).
+        /// View V_HIS_EXP_MEST_MEDICINE/V_HIS_EXP_MEST_MATERIAL không có cột này.
+        /// </summary>
+        public string PACKING_TYPE_NAME { get; set; }
         public string DESCRIPTION { get; set; }
         public string REGISTER_NUMBER { get; set; }
         public string IS_EXPEND_DISPLAY { get; set; }
@@ -325,6 +332,8 @@ namespace MPS.Processor.Mps000049.PDO
                             this.MEDICINE_PARENT_NAME = MedicineType.PARENT_NAME;
 
                             this.USED_PART = MedicineType.USED_PART;
+                            // Quy cách đóng gói của thuốc — chỉ có trên danh mục, không có trên view phiếu xuất
+                            this.PACKING_TYPE_NAME = MedicineType.PACKING_TYPE_NAME;
                             // Key danh sách "Loại thuốc" — tổng hợp từ 14 cờ phân loại
                             this.MEDICINE_CLASSIFY_NAME = BuildMedicineClassifyName(MedicineType);
                             // Ưu tiên cờ TPCN trên danh mục (đầy đủ hơn), fallback đã set từ exp_mest_medicine ở trên
