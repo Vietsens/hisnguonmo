@@ -436,12 +436,12 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 tenBHYT.VisibleIndex = 7;
                 ado.MedicineTypeColumns.Add(tenBHYT);
 
-                //Column Tỷ lệ BHYT 
-                MedicineTypeColumn tyLeBHYT = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TY_LE_BHYT", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "HeinLimitVatRatio100", 120, false);
-                tyLeBHYT.VisibleIndex = 8;
-                tyLeBHYT.Format = new DevExpress.Utils.FormatInfo();
-                tyLeBHYT.Format.FormatType = DevExpress.Utils.FormatType.Custom;
-                ado.MedicineTypeColumns.Add(tyLeBHYT);
+                ////Column Tỷ lệ BHYT 
+                //MedicineTypeColumn tyLeBHYT = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TY_LE_BHYT", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "HeinLimitVatRatio100", 120, false);
+                //tyLeBHYT.VisibleIndex = 8;
+                //tyLeBHYT.Format = new DevExpress.Utils.FormatInfo();
+                //tyLeBHYT.Format.FormatType = DevExpress.Utils.FormatType.Custom;
+                //ado.MedicineTypeColumns.Add(tyLeBHYT);
 
                 //Column mã đường dùng
                 MedicineTypeColumn medicineUseCodeCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_MEDICINE_USE_FORM_CODE", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MEDICINE_USE_FORM_CODE", 100, false);
