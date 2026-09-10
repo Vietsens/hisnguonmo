@@ -132,8 +132,12 @@ namespace HIS.UC.UCHeniInfo
         {
             try
             {
+                // Xóa ghi chú của lần tra cứu trước, tránh để lại thông báo cũ gây nhầm.
+                this.HideMcctGovNote();
+
                 if (resultMcct == null)
                 {
+                    this.ShowMcctGovNote(null);
                     return;
                 }
 
@@ -145,12 +149,18 @@ namespace HIS.UC.UCHeniInfo
                         "SetCoPaidAccumulateFromGov: cong BHXH khong tra ve du lieu cung chi tra, giu nguyen gia tri tren form."
                         + Inventec.Common.Logging.LogUtil.TraceData(
                             Inventec.Common.Logging.LogUtil.GetMemberName(() => resultMcct.MaKetQua), resultMcct.MaKetQua));
+
+                    // Hiện đúng chữ cổng trả về ngay dưới ô lũy kế: không có dữ liệu
+                    // trông giống hệt tra cứu thất bại nếu không nói rõ.
+                    this.ShowMcctGovNote(resultMcct);
                     return;
                 }
 
                 CoPaidMcctADO ado = this.CalculateCoPaidMcct(resultMcct);
                 if (ado == null || !ado.HasAccumulate)
                 {
+                    // Cổng trả 200 nhưng không có số lũy kế dùng được.
+                    this.ShowMcctGovNote(resultMcct);
                     return;
                 }
 
@@ -195,6 +205,114 @@ namespace HIS.UC.UCHeniInfo
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Hiện nội dung cổng BHXH trả về ngay dưới ô "Cùng chi trả lũy kế".
+        ///
+        /// Chỉ dùng cho trường hợp không có dữ liệu hoặc cổng báo lỗi. Trước đây các
+        /// nhánh này thoát im lặng, người dùng thấy ô số không đổi mà không biết vì sao —
+        /// không phân biệt được "cổng nói không có" với "tra cứu thất bại".
+        /// Ghi chú của cổng thường dài hơn bề ngang label nên đặt cả vào tooltip.
+        /// </summary>
+        private void ShowMcctGovNote(ResultMCCTADO resultMcct)
+        {
+            try
+            {
+                string note = this.BuildMcctGovNote(resultMcct);
+                if (String.IsNullOrWhiteSpace(note))
+                {
+                    this.HideMcctGovNote();
+                    return;
+                }
+
+                this.lblMcctGovNote.Text = note;
+                this.lblMcctGovNote.ToolTip = note;
+                this.lciMcctGovNote.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                Inventec.Common.Logging.LogSystem.Info("ShowMcctGovNote: " + note);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ẩn ghi chú và thu lại khoảng trống. Gọi ở đầu mỗi lần tra cứu để ghi chú
+        /// của lần trước không đọng lại trên form.
+        /// </summary>
+        private void HideMcctGovNote()
+        {
+            try
+            {
+                this.lblMcctGovNote.Text = "";
+                this.lblMcctGovNote.ToolTip = "";
+                this.lciMcctGovNote.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ghép nội dung hiển thị: ưu tiên đúng chữ cổng trả về (GhiChu), kèm mã kết quả
+        /// để đối chiếu với log. Khi cổng không kèm ghi chú thì diễn giải theo mã,
+        /// vì một dòng trống thì vô nghĩa với người dùng.
+        /// </summary>
+        private string BuildMcctGovNote(ResultMCCTADO resultMcct)
+        {
+            string detail = "";
+            string code = "";
+            try
+            {
+                if (resultMcct == null)
+                {
+                    return String.Format("{0} {1}",
+                        ResourceMessage.KetQuaTuCongBHXH, ResourceMessage.KhongGoiDuocCongBHXH);
+                }
+
+                code = (resultMcct.MaKetQua ?? "").Trim();
+                detail = (resultMcct.GhiChu ?? "").Trim();
+
+                if (String.IsNullOrEmpty(detail))
+                {
+                    if (resultMcct.IsBlockedLocally)
+                    {
+                        detail = ResourceMessage.ChuaTraCuuDuocThieuThongTinTheHoacCauHinh;
+                    }
+                    else if (code == ResultMCCTLDO.MaKetQuaStore.NO_DATA)
+                    {
+                        detail = ResourceMessage.CongBHXHKhongCoDuLieuCungChiTra;
+                    }
+                    else if (code == ResultMCCTLDO.MaKetQuaStore.INVALID_PARAM)
+                    {
+                        detail = ResourceMessage.CongBHXHBaoDuLieuGuiLenKhongHopLe;
+                    }
+                    else if (code == ResultMCCTLDO.MaKetQuaStore.ERROR)
+                    {
+                        detail = ResourceMessage.CongBHXHDangLoiHoacTuChoiTruyCap;
+                    }
+                    else
+                    {
+                        detail = ResourceMessage.KhongGoiDuocCongBHXH;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            if (String.IsNullOrEmpty(detail))
+            {
+                return "";
+            }
+
+            return String.IsNullOrEmpty(code)
+                ? String.Format("{0} {1}", ResourceMessage.KetQuaTuCongBHXH, detail)
+                : String.Format("{0} [{1}] {2}", ResourceMessage.KetQuaTuCongBHXH, code, detail);
         }
 
         /// <summary>

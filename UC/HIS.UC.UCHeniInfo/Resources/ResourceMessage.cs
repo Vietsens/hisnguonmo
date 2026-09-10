@@ -366,5 +366,41 @@ namespace HIS.UC.UCHeniInfo
         }
 
         #endregion
-    }
+    
+        /// <summary>Cổng BHXH:</summary>
+        internal static string KetQuaTuCongBHXH
+        {
+            get { return GetMessageValue("KetQuaTuCongBHXH"); }
+        }
+
+        /// <summary>Cổng BHXH không có dữ liệu cùng chi trả cho thẻ này.</summary>
+        internal static string CongBHXHKhongCoDuLieuCungChiTra
+        {
+            get { return GetMessageValue("CongBHXHKhongCoDuLieuCungChiTra"); }
+        }
+
+        /// <summary>Cổng BHXH báo dữ liệu gửi lên không hợp lệ.</summary>
+        internal static string CongBHXHBaoDuLieuGuiLenKhongHopLe
+        {
+            get { return GetMessageValue("CongBHXHBaoDuLieuGuiLenKhongHopLe"); }
+        }
+
+        /// <summary>Cổng BHXH đang lỗi hoặc từ chối truy cập.</summary>
+        internal static string CongBHXHDangLoiHoacTuChoiTruyCap
+        {
+            get { return GetMessageValue("CongBHXHDangLoiHoacTuChoiTruyCap"); }
+        }
+
+        /// <summary>Chưa tra cứu được: thiếu thông tin thẻ hoặc cấu hình kết nối cổng.</summary>
+        internal static string ChuaTraCuuDuocThieuThongTinTheHoacCauHinh
+        {
+            get { return GetMessageValue("ChuaTraCuuDuocThieuThongTinTheHoacCauHinh"); }
+        }
+
+        /// <summary>Không gọi được cổng BHXH.</summary>
+        internal static string KhongGoiDuocCongBHXH
+        {
+            get { return GetMessageValue("KhongGoiDuocCongBHXH"); }
+        }
+}
 }

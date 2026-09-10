@@ -183,4 +183,22 @@
   <data name="SoTienLuyKeCungChiTraVuot06ThangLuongCoSo" xml:space="preserve">
     <value>The accumulated co-payment has started to exceed 6 months of base salary. Please add the exemption date and tick the 6-month box</value>
   </data>
+  <data name="KetQuaTuCongBHXH" xml:space="preserve">
+    <value>BHXH portal:</value>
+  </data>
+  <data name="CongBHXHKhongCoDuLieuCungChiTra" xml:space="preserve">
+    <value>The BHXH portal holds no co-payment record for this card.</value>
+  </data>
+  <data name="CongBHXHBaoDuLieuGuiLenKhongHopLe" xml:space="preserve">
+    <value>The BHXH portal rejected the request data as invalid.</value>
+  </data>
+  <data name="CongBHXHDangLoiHoacTuChoiTruyCap" xml:space="preserve">
+    <value>The BHXH portal returned an error or denied access.</value>
+  </data>
+  <data name="ChuaTraCuuDuocThieuThongTinTheHoacCauHinh" xml:space="preserve">
+    <value>Lookup not performed: card details or portal configuration are missing.</value>
+  </data>
+  <data name="KhongGoiDuocCongBHXH" xml:space="preserve">
+    <value>Could not reach the BHXH portal.</value>
+  </data>
 </root>

@@ -131,6 +131,8 @@ namespace HIS.UC.UCHeniInfo
             this.lciIsTt46 = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtCoPaidAccumulate = new DevExpress.XtraEditors.ButtonEdit();
             this.lciCoPaidAccumulate = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lblMcctGovNote = new DevExpress.XtraEditors.LabelControl();
+            this.lciMcctGovNote = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciNote = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -196,6 +198,7 @@ namespace HIS.UC.UCHeniInfo
             ((System.ComponentModel.ISupportInitialize)(this.lciFreeCoPainTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCoPaidAccumulate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCoPaidAccumulate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciMcctGovNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHasWorkingLetter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsBhytHolded)).BeginInit();
@@ -217,6 +220,7 @@ namespace HIS.UC.UCHeniInfo
             this.layoutControl1.Controls.Add(this.btnCheckInfoBHYT);
             this.layoutControl1.Controls.Add(this.txtNote);
             this.layoutControl1.Controls.Add(this.txtCoPaidAccumulate);
+            this.layoutControl1.Controls.Add(this.lblMcctGovNote);
             this.layoutControl1.Controls.Add(this.chkIsTt46);
             this.layoutControl1.Controls.Add(this.chkHasAbsentLetter);
             this.layoutControl1.Controls.Add(this.chkIsBhytHolded);
@@ -796,11 +800,12 @@ namespace HIS.UC.UCHeniInfo
             this.layoutControlItem2,
             this.lci5Y,
             this.lciHeinPatientType,
-            this.lciCoPaidAccumulate});
+            this.lciCoPaidAccumulate,
+            this.lciMcctGovNote});
             this.gboxHeinCardInformation.Location = new System.Drawing.Point(0, 0);
             this.gboxHeinCardInformation.Name = "Root";
             this.gboxHeinCardInformation.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.gboxHeinCardInformation.Size = new System.Drawing.Size(438, 263);
+            this.gboxHeinCardInformation.Size = new System.Drawing.Size(438, 285);
             this.gboxHeinCardInformation.Text = "BHYT (F3)";
             // 
             // lciHasDobCertificate
@@ -1073,6 +1078,33 @@ namespace HIS.UC.UCHeniInfo
             this.lciCoPaidAccumulate.MaxSize = new System.Drawing.Size(0, 24);
             this.lciCoPaidAccumulate.MinSize = new System.Drawing.Size(200, 24);
             this.lciCoPaidAccumulate.Text = "Cùng chi trả lũy kế:";
+            //
+            // lblMcctGovNote
+            //
+            this.lblMcctGovNote.Appearance.ForeColor = System.Drawing.Color.Maroon;
+            this.lblMcctGovNote.Appearance.Options.UseForeColor = true;
+            this.lblMcctGovNote.Appearance.Options.UseTextOptions = true;
+            this.lblMcctGovNote.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
+            this.lblMcctGovNote.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblMcctGovNote.Location = new System.Drawing.Point(133, 244);
+            this.lblMcctGovNote.Name = "lblMcctGovNote";
+            this.lblMcctGovNote.Size = new System.Drawing.Size(303, 18);
+            this.lblMcctGovNote.StyleController = this.layoutControl1;
+            this.lblMcctGovNote.TabIndex = 62;
+            //
+            // lciMcctGovNote
+            //
+            this.lciMcctGovNote.Control = this.lblMcctGovNote;
+            this.lciMcctGovNote.Location = new System.Drawing.Point(0, 242);
+            this.lciMcctGovNote.Name = "lciMcctGovNote";
+            this.lciMcctGovNote.Size = new System.Drawing.Size(436, 22);
+            this.lciMcctGovNote.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciMcctGovNote.MaxSize = new System.Drawing.Size(0, 22);
+            this.lciMcctGovNote.MinSize = new System.Drawing.Size(200, 22);
+            this.lciMcctGovNote.TextSize = new System.Drawing.Size(130, 20);
+            this.lciMcctGovNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciMcctGovNote.TextVisible = false;
+            this.lciMcctGovNote.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             this.lciCoPaidAccumulate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciCoPaidAccumulate.TextSize = new System.Drawing.Size(128, 20);
             this.lciCoPaidAccumulate.TextToControlDistance = 5;
@@ -1218,6 +1250,7 @@ namespace HIS.UC.UCHeniInfo
             ((System.ComponentModel.ISupportInitialize)(this.lciFreeCoPainTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCoPaidAccumulate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCoPaidAccumulate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciMcctGovNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHasWorkingLetter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsBhytHolded)).EndInit();
@@ -1293,6 +1326,8 @@ namespace HIS.UC.UCHeniInfo
         private DevExpress.XtraLayout.LayoutControlItem lciIsTt46;
         internal DevExpress.XtraEditors.ButtonEdit txtCoPaidAccumulate;
         private DevExpress.XtraLayout.LayoutControlItem lciCoPaidAccumulate;
+        private DevExpress.XtraEditors.LabelControl lblMcctGovNote;
+        private DevExpress.XtraLayout.LayoutControlItem lciMcctGovNote;
         private DevExpress.XtraLayout.LayoutControlItem lciNote;
 		private DevExpress.XtraEditors.SimpleButton btnCheckInfoBHYT;
 		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
