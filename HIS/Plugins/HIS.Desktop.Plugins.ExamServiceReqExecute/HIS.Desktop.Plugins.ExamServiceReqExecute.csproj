@@ -100,7 +100,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.MIMS.Integration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.MIMS.Integration.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.MIMS.Integration\HIS.Desktop.MIMS.Integration.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
@@ -169,7 +169,8 @@
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Utility">
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.DHST, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -212,10 +213,16 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreeSereServ7\HIS.UC.TreeSereServ7.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCTransPati">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TranPati\HIS.UC.UCTransPati.dll</HintPath>
+      <!-- Thu muc dung la HIS.UC.UCTransPati, khong phai HIS.UC.TranPati -->
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.UCTransPati\HIS.UC.UCTransPati.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <!-- EMR_DOCUMENT_TYPE.ID__SERVICE_ASSIGN: dung o
+         ExamServiceReqExecuteControl__CheckDocumentHospitalize.cs de nhan dien loai "Phieu chi dinh". -->
+    <Reference Include="IMSys.DbConfig.EMR_RS">
+      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.EMR_RS\IMSys.DbConfig.EMR_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
@@ -319,7 +326,8 @@
       <HintPath>..\..\..\..\LIB\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Fss.Client">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.ExamTreatmentFinish\Inventec.Fss.Client.dll</HintPath>
+      <!-- HIS.UC.ExamTreatmentFinish khong chua dll nay; lay o thu muc rieng cua Inventec.Fss.Client -->
+      <HintPath>..\..\..\..\LIB\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
       <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
@@ -404,7 +412,9 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000033.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000062.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000062.PDO.dll</HintPath>
+      <!-- Ban trong LIB\MPSv2\MPS.PDO da cu (thieu Mps000062PDO._SpecialistExams) nen tro sang
+           ReferencedAssemblies giong MPS.Processor.Mps000007.PDO o tren. -->
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000062.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000111.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000111.PDO.dll</HintPath>
@@ -657,6 +667,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ExamServiceReqExecuteControl__CheckDocumentHospitalize.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__CheckRequiredService.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ADO\MediRecordCheckingResultADO.cs" />

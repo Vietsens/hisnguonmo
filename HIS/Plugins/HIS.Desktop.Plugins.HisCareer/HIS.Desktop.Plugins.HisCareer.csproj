@@ -133,6 +133,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CareerLevelWorker.cs" />
     <Compile Include="HisCareerProcessor.cs" />
     <Compile Include="HisCareer\frmHisCareer.cs">
       <SubType>Form</SubType>
@@ -152,7 +153,6 @@
     <EmbeddedResource Include="HisCareer\frmHisCareer.resx">
       <DependentUpon>frmHisCareer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -188,7 +188,7 @@ namespace HIS.Desktop.Plugins.BloodList
                 InitComboDefault("ID", "IMP_SOURCE_NAME", "IMP_SOURCE_CODE", BackendDataWorker.Get<HIS_IMP_SOURCE>(), cboImpSource);
                 InitComboDefault("ID", "SUPPLIER_NAME", "SUPPLIER_CODE", BackendDataWorker.Get<HIS_SUPPLIER>(), cboSupplier);
                 InitComboDefault("ID", "WORK_PLACE_NAME", "WORK_PLACE_CODE", BackendDataWorker.Get<HIS_WORK_PLACE>(), cboWorkPlace);
-                InitComboDefault("ID", "CAREER_NAME", "CAREER_CODE", BackendDataWorker.Get<HIS_CAREER>(), cboCareer);
+                InitComboCareer(BackendDataWorker.Get<HIS_CAREER>(), cboCareer);
                 InitComboDefault("NATIONAL_CODE", "NATIONAL_NAME", "NATIONAL_CODE", BackendDataWorker.Get<SDA_NATIONAL>(), cboNational);
                 if (!toggleCheck.IsOn)
                 {
@@ -412,6 +412,43 @@ namespace HIS.Desktop.Plugins.BloodList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        /// <summary>
+        /// Init combo nghe nghiep: Ma + Ten + Nhom cap 2/3/4 theo key cau hinh
+        /// MOS.HIS_CAREER.IS_SHOW_LEVEL_2/3/4 (rong/khac 1 = an, mac dinh an nhu cu)
+        /// </summary>
+        private void InitComboCareer(object data, object control)
+        {
+            try
+            {
+                int popupWidth = 350;
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("CAREER_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("CAREER_NAME", "", 250, 2));
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_2") == "1")
+                {
+                    columnInfos.Add(new ColumnInfo("LEVEL2_NAME", "", 180, 3));
+                    popupWidth += 180;
+                }
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_3") == "1")
+                {
+                    columnInfos.Add(new ColumnInfo("LEVEL3_NAME", "", 180, 4));
+                    popupWidth += 180;
+                }
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_4") == "1")
+                {
+                    columnInfos.Add(new ColumnInfo("LEVEL4_NAME", "", 180, 5));
+                    popupWidth += 180;
+                }
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, false, popupWidth);
+                controlEditorADO.ImmediatePopup = true;
+                ControlEditorLoader.Load(control, data, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void InitCombo(string valueMember, string displayMember, object data, object control)

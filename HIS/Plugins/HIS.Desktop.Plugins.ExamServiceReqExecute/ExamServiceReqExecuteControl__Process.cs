@@ -733,7 +733,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 var PatientTypeCode = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == this.treatment.TDL_PATIENT_TYPE_ID).PATIENT_TYPE_CODE;
                 if ((hospitalizationReasonRequired == 1 && String.IsNullOrEmpty(txtHospitalizationReason.Text.Trim())) || (String.IsNullOrEmpty(txtHospitalizationReason.Text.Trim()) && !string.IsNullOrEmpty(HisConfigCFG.HospitalizationReasonRequiredByPatientCode) && HisConfigCFG.HospitalizationReasonRequiredByPatientCode.Split(',').ToList().Contains(PatientTypeCode)))
                 {
-                    if (MessageBox.Show("Bắt buộc nhập lý do khám", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
+                    if (XtraMessageBox.Show("Bắt buộc nhập lý do khám", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
                         txtHospitalizationReason.Focus();
                         txtHospitalizationReason.SelectAll();
@@ -867,7 +867,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 }
                 if (!string.IsNullOrEmpty(errror_string))
                 {
-                    if (isSave) MessageBox.Show(this, errror_string, "Thông báo", MessageBoxButtons.OK);
+                    if (isSave) XtraMessageBox.Show(this, errror_string, "Thông báo", MessageBoxButtons.OK);
                     isWarning = true;
                     valid = false;
                 }
@@ -888,7 +888,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (HisConfigCFG.RequiredAddressOption && treatment != null && (String.IsNullOrEmpty(treatment.TDL_PATIENT_PROVINCE_CODE) || String.IsNullOrEmpty(treatment.TDL_PATIENT_COMMUNE_CODE)))
                 {
-                    MessageBox.Show("Bệnh nhân chưa nhập tỉnh - xã. Vui lòng bổ sung.", ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    XtraMessageBox.Show("Bệnh nhân chưa nhập tỉnh - xã. Vui lòng bổ sung.", ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     valid = false;
                 }
             }
@@ -965,7 +965,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         Inventec.Common.Logging.LogSystem.Debug("ValidForSave 3");
                         txtIcdCode.DoValidate();
-                        MessageBox.Show("Mã ICD bạn nhập không hợp lệ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        XtraMessageBox.Show("Mã ICD bạn nhập không hợp lệ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         valid = false;
                         return valid;
                     }
@@ -989,7 +989,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         if (textICD.StartsWith(this._TextIcdName) == false)
                         {
                             txtIcdMainText.DoValidate();
-                            MessageBox.Show(ResourceMessage.CanhbaoKhongChoSuaICDName, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            XtraMessageBox.Show(ResourceMessage.CanhbaoKhongChoSuaICDName, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             valid = false;
                             return valid;
                         }
@@ -1148,7 +1148,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 result = ValidateFinishTime(hisServiceReqSDO, ref error);
                 if (result == false)
                 {
-                    MessageBox.Show(error, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    XtraMessageBox.Show(error, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
             }
@@ -1219,7 +1219,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     }
                     if (result == false)
                     {
-                        MessageBox.Show(error, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        XtraMessageBox.Show(error, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
@@ -1257,7 +1257,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     var validateFinisTime = ValidateFinishTime(hisServiceReqSDO, ref error);
                     if (validateFinisTime == false)
                     {
-                        MessageBox.Show(error, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        XtraMessageBox.Show(error, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
 
@@ -1722,7 +1722,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         ProcessExamServiceReqDTO(ref examServiceReqUpdateSDO);
                         valid = valid && ProcessExamAddition(ref examServiceReqUpdateSDO, HisServiceReqWithOrderSDO);
-                        ProcessHospitalize(ref examServiceReqUpdateSDO);
+                        valid = valid && ProcessHospitalize(ref examServiceReqUpdateSDO);
                         valid = valid && ProcessTreatmentFinish(ref examServiceReqUpdateSDO);
                         ProcessExamFinish(ref examServiceReqUpdateSDO);
                         ProcessExamSereIcdDTO(ref examServiceReqUpdateSDO);
@@ -1952,6 +1952,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     ExamServiceAddADO hisServiceReqExamAdditionSDO = this.examServiceAddProcessor.GetValueV2(this.ucExamAddition) as ExamServiceAddADO;
                     if (hisServiceReqExamAdditionSDO != null)
                     {
+                        // Kham them CO tich chuyen khoa: luu xong backend se chuyen khoa, nen chan
+                        // dich vu chua hoan thanh giong het form Chuyen khoa (plugin TransDepartment).
+                        if (hisServiceReqExamAdditionSDO.IsChangeDepartment && !IsAllowTransByRequiredService())
+                        {
+                            serviceReqUpdateSDO.ExamAdditionSDO = null;
+                            return false;
+                        }
+
                         List<long> serviceIds = new List<long>();
                         if (hisServiceReqExamAdditionSDO.AdditionServiceId.HasValue)
                         {
@@ -1967,7 +1975,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 sereServMinDurationStr += item.TDL_SERVICE_CODE + " - " + item.TDL_SERVICE_NAME + "; ";
                             }
 
-                            if (MessageBox.Show(string.Format("Các dịch vụ sau có thời gian chỉ định nằm trong khoảng thời gian không cho phép: {0} .Bạn có muốn tiếp tục?", sereServMinDurationStr), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            if (XtraMessageBox.Show(string.Format("Các dịch vụ sau có thời gian chỉ định nằm trong khoảng thời gian không cho phép: {0} .Bạn có muốn tiếp tục?", sereServMinDurationStr), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                             {
                                 serviceReqUpdateSDO.ExamAdditionSDO = null;
                                 return false;
@@ -2026,7 +2034,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             return true;
         }
 
-        void ProcessHospitalize(ref HisServiceReqExamUpdateSDO serviceReqUpdateSDO)
+        bool ProcessHospitalize(ref HisServiceReqExamUpdateSDO serviceReqUpdateSDO)
         {
             try
             {
@@ -2035,6 +2043,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     HospitalizeExamADO hisDepartmentTranHospitalizeSDO = this.hospitalizeProcessor.GetValue(this.ucHospitalize) as HospitalizeExamADO;
                     if (hisDepartmentTranHospitalizeSDO != null)
                     {
+                        // Nhap vien sang khoa khac khoa hien tai la co chuyen khoa: chan dich vu chua
+                        // hoan thanh giong het form Chuyen khoa (plugin TransDepartment).
+                        if (hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO != null
+                            && IsChangeDepartmentWhenHospitalize(hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.DepartmentId)
+                            && !IsAllowTransByRequiredService())
+                        {
+                            serviceReqUpdateSDO.HospitalizeSDO = null;
+                            return false;
+                        }
+
                         serviceReqUpdateSDO.HospitalizeSDO = new HisDepartmentTranHospitalizeSDO();
                         SetIsGenerateNewInCodeIfSupported(serviceReqUpdateSDO.HospitalizeSDO, hisDepartmentTranHospitalizeSDO.IsGenerateNewInCode);
                         if (hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO != null)
@@ -2107,8 +2125,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
             catch (Exception ex)
             {
+                // return false giong ProcessExamAddition: nuot loi roi van luu thi HospitalizeSDO co the
+                // thieu du lieu, va check chan chuyen khoa o tren cung bi vo hieu am tham.
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
+            return true;
         }
 
         /// <summary>
@@ -2168,7 +2190,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         {
                             if (treatmentFinish.TreatmentFinishSDO.SickLeaveDay == null || treatmentFinish.TreatmentFinishSDO.SickLeaveDay <= 0)
                             {
-                                MessageBox.Show("Thông tin nghỉ hưởng BHXH thiếu số ngày nghỉ. Vui lòng kiểm tra lại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                XtraMessageBox.Show("Thông tin nghỉ hưởng BHXH thiếu số ngày nghỉ. Vui lòng kiểm tra lại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 return false;
                             }
                             //HIS_PATIENT patient = GetPatientByID(treatment.PATIENT_ID);
@@ -2186,7 +2208,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                                     if (!hasFather && !hasMother && !hasRelative)
                                     {
-                                        MessageBox.Show("Thông tin nghỉ hưởng BHXH thiếu thông tin bố mẹ/người thân. Vui lòng kiểm tra lại!",
+                                        XtraMessageBox.Show("Thông tin nghỉ hưởng BHXH thiếu thông tin bố mẹ/người thân. Vui lòng kiểm tra lại!",
                                                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                         return false;
                                     }
@@ -2197,7 +2219,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         {
                             if (treatmentFinish.TreatmentFinishSDO.SickLeaveDay == null || treatmentFinish.TreatmentFinishSDO.SickLeaveDay <= 0)
                             {
-                                MessageBox.Show("Thông tin nghỉ dưỡng thai thiếu số ngày nghỉ. Vui lòng kiểm tra lại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                XtraMessageBox.Show("Thông tin nghỉ dưỡng thai thiếu số ngày nghỉ. Vui lòng kiểm tra lại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 return false;
                             }
                         }
@@ -2447,7 +2469,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             {
                                 if (!icd.Exists(o => o.ICD_CODE == item))
                                 {
-                                    MessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
+                                    XtraMessageBox.Show("Chẩn đoán YHCT phụ không có trong danh mục");
                                     return false;
                                 }
                             }
@@ -3249,7 +3271,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     if (WarningOption == 1 && this.treatment != null && this.treatment.PROGRAM_ID != null && this.treatment.EMR_COVER_TYPE_ID == null)
                     {
-                        if (MessageBox.Show(ResourceMessage.ChuaDuocTaoVoBenhAn, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        if (XtraMessageBox.Show(ResourceMessage.ChuaDuocTaoVoBenhAn, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
                             VoBenhAn();
                         }

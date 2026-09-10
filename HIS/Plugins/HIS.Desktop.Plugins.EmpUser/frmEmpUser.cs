@@ -2740,7 +2740,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                         }
                         else
                         {
-                            if (MessageBox.Show("Tài khoản này chưa có tài khoản đăng nhập. Bạn có muốn tạo tài khoản đăng nhập để tiếp tục xử lý không?",
+                            if (XtraMessageBox.Show("Tài khoản này chưa có tài khoản đăng nhập. Bạn có muốn tạo tài khoản đăng nhập để tiếp tục xử lý không?",
                       "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                             {
                                 bool success = false;
@@ -2858,7 +2858,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 {
                     ChangedDataRow(rowData);
                     bool notHandler = false;
-                    if (MessageBox.Show("Bạn có muốn bỏ khóa dữ liệu không?",
+                    if (XtraMessageBox.Show("Bạn có muốn bỏ khóa dữ liệu không?",
                       "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         WaitingManager.Show();
@@ -2881,7 +2881,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 }
                 else
                 {
-                    if (MessageBox.Show("Tài khoản này chưa có tài khoản đăng nhập. Bạn có muốn tạo tài khoản đăng nhập để tiếp tục xử lý không?",
+                    if (XtraMessageBox.Show("Tài khoản này chưa có tài khoản đăng nhập. Bạn có muốn tạo tài khoản đăng nhập để tiếp tục xử lý không?",
                       "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         ChangedDataRow(rowData);
@@ -2925,7 +2925,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 {
                     ChangedDataRow(rowData);
                     bool notHandler = false;
-                    if (MessageBox.Show("Bạn có muốn khóa dữ liệu không?",
+                    if (XtraMessageBox.Show("Bạn có muốn khóa dữ liệu không?",
                       "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         WaitingManager.Show();
@@ -2949,7 +2949,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 }
                 else
                 {
-                    if (MessageBox.Show("Tài khoản này chưa có tài khoản đăng nhập. Bạn có muốn tạo tài khoản đăng nhập để tiếp tục xử lý không?",
+                    if (XtraMessageBox.Show("Tài khoản này chưa có tài khoản đăng nhập. Bạn có muốn tạo tài khoản đăng nhập để tiếp tục xử lý không?",
                       "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         ChangedDataRow(rowData);
@@ -3012,7 +3012,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 if (currentDataUser != null)
                 {
                     ChangedDataRow(rowData);
-                    if (MessageBox.Show("Bạn có muốn reset mật khẩu không?",
+                    if (XtraMessageBox.Show("Bạn có muốn reset mật khẩu không?",
                       "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         WaitingManager.Show();
@@ -3047,7 +3047,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 }
                 else
                 {
-                    if (MessageBox.Show("Tài khoản này chưa có tài khoản đăng nhập. Bạn có muốn tạo tài khoản đăng nhập để tiếp tục xử lý không?",
+                    if (XtraMessageBox.Show("Tài khoản này chưa có tài khoản đăng nhập. Bạn có muốn tạo tài khoản đăng nhập để tiếp tục xử lý không?",
                       "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         ChangedDataRow(rowData);
@@ -3095,7 +3095,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 }
                 else
                 {
-                    if (MessageBox.Show("Tài khoản này chưa có tài khoản đăng nhập. Bạn có muốn tạo tài khoản đăng nhập để tiếp tục xử lý không?",
+                    if (XtraMessageBox.Show("Tài khoản này chưa có tài khoản đăng nhập. Bạn có muốn tạo tài khoản đăng nhập để tiếp tục xử lý không?",
                       "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         ChangedDataRow(rowData);
@@ -4033,7 +4033,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             {
                 if (SettingSignADO == null || (SettingSignADO != null && string.IsNullOrEmpty(SettingSignADO.SerialNumber)))
                 {
-                    MessageBox.Show("Không có thông tin Usb Token ký số");
+                    XtraMessageBox.Show("Không có thông tin Usb Token ký số");
                     return false;
                 }
                 else
@@ -4454,14 +4454,12 @@ namespace HIS.Desktop.Plugins.EmpUser
                     foreach (var deptItem in employeeDepartments)
                     {
                         string name = deptItem.DEPARTMENT_NAME ?? string.Empty;
-                        if (!string.IsNullOrWhiteSpace(name)
-                            && !tenKhoaList.Any(x => string.Equals(x, name, StringComparison.OrdinalIgnoreCase)))
+                        if (!string.IsNullOrWhiteSpace(name))
                             tenKhoaList.Add(name);
                     }
                     foreach (var name in ResolveDepartmentCodesToNames(employee.DEPARTMENT_CODES_XML12, departments))
                     {
-                        if (!string.IsNullOrWhiteSpace(name)
-                            && !tenKhoaList.Any(x => string.Equals(x, name, StringComparison.OrdinalIgnoreCase)))
+                        if (!string.IsNullOrWhiteSpace(name))
                             tenKhoaList.Add(name);
                     }
                     xmlTT12.TEN_KHOA = string.Join(";", tenKhoaList);

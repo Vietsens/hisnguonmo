@@ -804,11 +804,16 @@ namespace HIS.Desktop.Plugins.InfusionSumByTreatment
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
 
-                //long keyPrintMerge = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.CONFIG_KEY__HIS_DESKTOP_PLUGINS_EMR_DOCUMENT_IS_PRINT_MERGE));
-                //if (keyPrintMerge == 1)
-                //{
-                //    inputADO.MergeCode = String.Format("{0}_{1}_{2}", printTypeCode, "", (this.treatment != null ? this.treatment.TREATMENT_CODE : ""));
-                //}
+                long keyPrintMerge = HisConfigCFG.GetKeyPrintMerge();
+                if (keyPrintMerge == 1)
+                {
+                    inputADO.MergeCode = String.Format("{0}_{1}_{2}", printTypeCode, "", (this.treatment != null ? this.treatment.TREATMENT_CODE : ""));
+                    if (listData != null && listData.Count > 0)
+                    {
+                        inputADO.DocumentTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(listData.Min(o => o.START_TIME) ?? 0);
+                    }
+                }
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.MergeCode), inputADO.MergeCode));
                 List<HIS_MIXED_MEDICINE> lstMixedMedicine = new List<HIS_MIXED_MEDICINE>();
 
                 if (listData != null && listData.Count() > 0)

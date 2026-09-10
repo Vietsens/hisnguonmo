@@ -65,17 +65,17 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
             // --- Tìm kiếm ---
             pnlSearch = new PanelControl() { Dock = DockStyle.Top, Height = 76 };
             pnlSearch.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            var searchFont = new Font("Tahoma", 9.75F);
-            AddLabel("Mã điều trị:", 6, 11);
-            txtSearchTreatmentCode = new TextEdit() { Location = new Point(84, 7), Size = new Size(160, 26) };
+            var searchFont = new Font("Tahoma", 11F);
+            AddLabel("Mã điều trị:", 6, 12);
+            txtSearchTreatmentCode = new TextEdit() { Location = new Point(84, 6), Size = new Size(170, 28), Font = searchFont };
             txtSearchTreatmentCode.Properties.Appearance.Font = searchFont;
             txtSearchTreatmentCode.Properties.Appearance.Options.UseFont = true;
-            AddLabel("Mã BN:", 254, 11);
-            txtSearchPatientCode = new TextEdit() { Location = new Point(310, 7), Size = new Size(140, 26) };
+            AddLabel("Mã BN:", 264, 12);
+            txtSearchPatientCode = new TextEdit() { Location = new Point(320, 6), Size = new Size(150, 28), Font = searchFont };
             txtSearchPatientCode.Properties.Appearance.Font = searchFont;
             txtSearchPatientCode.Properties.Appearance.Options.UseFont = true;
-            AddLabel("Tên bệnh nhân:", 462, 11);
-            txtSearchPatientName = new TextEdit() { Location = new Point(554, 7), Size = new Size(200, 26) };
+            AddLabel("Tên bệnh nhân:", 482, 12);
+            txtSearchPatientName = new TextEdit() { Location = new Point(574, 6), Size = new Size(210, 28), Font = searchFont };
             txtSearchPatientName.Properties.Appearance.Font = searchFont;
             txtSearchPatientName.Properties.Appearance.Options.UseFont = true;
 
@@ -108,7 +108,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
 
             AddGridCol("STT", "STT", 40);
             AddGridCol("TREATMENT_CODE", "Mã điều trị", 110);
-            AddGridCol("PATIENT_CODE", "Mã BN", 90);
+            AddGridCol("PATIENT_CODE", "Mã BN", 130);
             AddGridCol("PATIENT_NAME", "Bệnh nhân", 160);
             AddGridCol("ICD_CODE", "ICD", 60);
             AddGridCol("IN_TIME_STR", "Thời gian vào", 110);

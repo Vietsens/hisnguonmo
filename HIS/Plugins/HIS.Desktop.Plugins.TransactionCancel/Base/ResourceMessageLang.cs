@@ -151,5 +151,56 @@ namespace HIS.Desktop.Plugins.TransactionCancel.Base
                 return "";
             }
         }
+
+        /// <summary>Máy POS đang cấu hình không hỗ trợ hủy giao dịch tự động — phải hủy trên máy POS trước.</summary>
+        internal static string MayPosKhongHoTroHuyGiaoDich
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionDepositCancel__MayPosKhongHoTroHuyGiaoDich", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Nhập mã giao dịch hủy (hoặc số biên lai hủy) in trên máy POS.</summary>
+        internal static string NhapMaHuyTrenMayPos
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionDepositCancel__NhapMaHuyTrenMayPos", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Chưa nhập mã hủy lấy từ máy POS nên không thể tiếp tục hủy giao dịch.</summary>
+        internal static string ChuaNhapMaHuyTrenMayPos
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionDepositCancel__ChuaNhapMaHuyTrenMayPos", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

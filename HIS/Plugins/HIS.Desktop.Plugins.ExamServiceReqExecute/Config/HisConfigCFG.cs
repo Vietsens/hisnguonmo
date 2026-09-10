@@ -154,6 +154,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal const string KEY_CheckDepaDocumentHospitalization = "HIS.Desktop.Plugins.ExamServiceReqExecute.CheckDepaDocument.Hospitalization";
         internal static List<string> CheckDepaDocumentHospitalizationCodes = new List<string>();
 
+        // Chan chuyen khoa khi con dich vu chua hoan thanh: danh sach SERVICE_TYPE_CODE (VD: XN|CDHA|PT),
+        // phan tach boi "|". Dung CHUNG key voi plugin HIS.Desktop.Plugins.TransDepartment de 2 duong
+        // chuyen khoa (form Chuyen khoa va "kham them + chuyen khoa" o day) chan giong nhau.
+        // Khong khai bao/de trong -> khong kiem tra.
+        internal const string KEY_TransDepartmentCheckRequiredService = "HIS.Desktop.Plugins.TransDepartment.CheckRequiredService";
+        internal static string TransDepartmentCheckRequiredService;
+        internal static List<string> TransDepartmentCheckRequiredServiceTypeCodes = new List<string>();
+
         /// <summary>
         /// Cấu hình: HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION
         /// - BẬT (= 1): cho phép kê đơn điều trị -> hiển thị mục "Kê đơn điều trị" trong menu Khác
@@ -174,6 +182,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 CheckDepaDocumentHospitalizationCodes = string.IsNullOrWhiteSpace(rawCheckDepaDocHospitalize)
                     ? new List<string>()
                     : rawCheckDepaDocHospitalize.Split('|').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).ToList();
+
+                TransDepartmentCheckRequiredService = GetValue(KEY_TransDepartmentCheckRequiredService);
+                TransDepartmentCheckRequiredServiceTypeCodes = string.IsNullOrWhiteSpace(TransDepartmentCheckRequiredService)
+                    ? new List<string>()
+                    : TransDepartmentCheckRequiredService.Split('|').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).Distinct().ToList();
 
                 EnableTreatmentPrescription = GetValue(CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION) == GlobalVariables.CommonStringTrue;
 

@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\CareerADO.cs" />
+    <Compile Include="ADO\CareerImportDTO.cs" />
     <Compile Include="frmImportCareer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,7 +125,6 @@
     <EmbeddedResource Include="frmImportCareer.resx">
       <DependentUpon>frmImportCareer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

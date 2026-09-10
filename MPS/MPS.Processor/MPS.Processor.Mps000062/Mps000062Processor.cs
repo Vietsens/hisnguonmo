@@ -948,6 +948,9 @@ namespace MPS.Processor.Mps000062
                             _service.NUMBER_DAYS_TREATMENT = (long)((TimeSpan)(TrackingTime.Date - ClinicalInTime.Date)).TotalDays + 1;
                         }
 
+                        //Viec 26771: tieu de khoi thuoc cap ve, chi set khi to dieu tri co thuoc mang ve
+                        _service.HOME_PRES_TITLE = (_ExpMestMetyReqADOs != null && _ExpMestMetyReqADOs.Exists(o => o.TRACKING_ID == itemTracking.ID && o.IS_HOME_PRES == 1)) ? "Thuốc cấp về:" : "";
+
                         _Mps000062ADOs.Add(_service);
 
                         this.ProcessMedicineLine();
@@ -1100,6 +1103,13 @@ namespace MPS.Processor.Mps000062
                         {
                             ExpMestMetyReqADO group = new ExpMestMetyReqADO(itemExpMestMetyReq[0]);
                             group.TRACKING_ID = _tracking.ID;
+
+                            //Viec 26771: nhan dien thuoc cap ve (mang don ve) theo don -> phieu xuat -> dong thuoc (giong Mps000262)
+                            bool isHomePres = itemServiceReq.IS_HOME_PRES == 1
+                                || itemExpMest.IS_HOME_PRES == 1
+                                || itemExpMestMetyReq.Exists(o => o.IS_HOME_PRES_LINE == 1);
+                            group.IS_HOME_PRES = isHomePres ? 1 : 0;
+                            group.HOME_PRES_STR = isHomePres ? "(Mang về)" : "";
 
                             DateTime? dtIntructionTime = null;
 
@@ -4169,10 +4179,19 @@ namespace MPS.Processor.Mps000062
                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("thuốc pha truyền THDT: ", _MediInfusionTHDT));
 
 
-                objectTag.AddObjectData(store, "Medicines", ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOCommons) ?? new List<ExpMestMetyReqADO>());
+                var _MedicinesSorted = ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOCommons) ?? new List<ExpMestMetyReqADO>();
+                var _MedicinesDuTruSorted = ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOCommonsDuTru) ?? new List<ExpMestMetyReqADO>();
+
+                objectTag.AddObjectData(store, "Medicines", _MedicinesSorted);
                 objectTag.AddObjectData(store, "MedicinesInfusion", ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOCommonsMix) ?? new List<ExpMestMetyReqADO>());
-                objectTag.AddObjectData(store, "MedicinesDuTru", ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOCommonsDuTru) ?? new List<ExpMestMetyReqADO>());
+                objectTag.AddObjectData(store, "MedicinesDuTru", _MedicinesDuTruSorted);
                 objectTag.AddObjectData(store, "MedicinesTHDT", ProcessSortListExpMestMetyReq(_ExpMestMetyReqADOCommonsTHDT) ?? new List<ExpMestMetyReqADO>());
+
+                //Viec 26771: tach thuoc dieu tri / thuoc cap ve (mang don ve) cho template, giu nguyen thu tu sap xep
+                objectTag.AddObjectData(store, "MedicinesTreatment", _MedicinesSorted.Where(o => o.IS_HOME_PRES != 1).ToList());
+                objectTag.AddObjectData(store, "MedicinesHomePres", _MedicinesSorted.Where(o => o.IS_HOME_PRES == 1).ToList());
+                objectTag.AddObjectData(store, "MedicinesDuTruTreatment", _MedicinesDuTruSorted.Where(o => o.IS_HOME_PRES != 1).ToList());
+                objectTag.AddObjectData(store, "MedicinesDuTruHomePres", _MedicinesDuTruSorted.Where(o => o.IS_HOME_PRES == 1).ToList());
                 objectTag.AddObjectData(store, "MediInfusionDutru", ProcessSortListExpMestMetyReq(_MediInfusionDutru) ?? new List<ExpMestMetyReqADO>());
                 objectTag.AddObjectData(store, "MediInfusionTHDT", ProcessSortListExpMestMetyReq(_MediInfusionTHDT) ?? new List<ExpMestMetyReqADO>());
 
@@ -4262,6 +4281,20 @@ namespace MPS.Processor.Mps000062
                 objectTag.AddRelationship(store, "TrackingADOs", "MedicinesTHDT", "ID", "USED_FOR_TRACKING_ID");
                 objectTag.AddRelationship(store, "TrackingADOs", "MaterialsTHDT", "ID", "USED_FOR_TRACKING_ID");
                 objectTag.AddRelationship(store, "TrackingADOs", "MediInfusionTHDT", "ID", "USED_FOR_TRACKING_ID");
+
+                //Viec 26771: relationship cho cac bang tach thuoc dieu tri / thuoc cap ve (mirror cua Medicines va MedicinesDuTru)
+                objectTag.AddRelationship(store, "MedicineLines", "MedicinesTreatment", "ID", "MEDICINE_LINE_ID");
+                objectTag.AddRelationship(store, "MedicineLines", "MedicinesHomePres", "ID", "MEDICINE_LINE_ID");
+                objectTag.AddRelationship(store, "RemedyCount", "MedicinesTreatment", "EXP_MEST_ID", "EXP_MEST_ID");
+                objectTag.AddRelationship(store, "RemedyCount", "MedicinesHomePres", "EXP_MEST_ID", "EXP_MEST_ID");
+                objectTag.AddRelationship(store, "ServiceReq", "MedicinesTreatment", "ID", "TDL_SERVICE_REQ_ID");
+                objectTag.AddRelationship(store, "ServiceReq", "MedicinesHomePres", "ID", "TDL_SERVICE_REQ_ID");
+                objectTag.AddRelationship(store, "ServiceReqDuTru", "MedicinesDuTruTreatment", "ID", "TDL_SERVICE_REQ_ID");
+                objectTag.AddRelationship(store, "ServiceReqDuTru", "MedicinesDuTruHomePres", "ID", "TDL_SERVICE_REQ_ID");
+                objectTag.AddRelationship(store, "TrackingADOs", "MedicinesTreatment", "ID", "TRACKING_ID");
+                objectTag.AddRelationship(store, "TrackingADOs", "MedicinesHomePres", "ID", "TRACKING_ID");
+                objectTag.AddRelationship(store, "TrackingADOs", "MedicinesDuTruTreatment", "ID", "TRACKING_ID");
+                objectTag.AddRelationship(store, "TrackingADOs", "MedicinesDuTruHomePres", "ID", "TRACKING_ID");
 
                 objectTag.AddRelationship(store, "TrackingADOs", "MedicalInstruction", "ID", "TRACKING_ID");
 
@@ -4653,6 +4686,15 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_MERGE_HTU___DATA = "";
                         item.MEDICINES_MERGE_DATE___DATA = "";
                         item.MEDICINES_MERGE_DATE_HTU___DATA = "";
+                        //Viec 26771: tach thuoc dieu tri / thuoc cap ve cho field merge HTU
+                        item.MEDICINES_MERGE_HTU_TREATMENT___DATA = "";
+                        item.MEDICINES_MERGE_HTU_HOME_PRES___DATA = "";
+                        long intructionTimeMergeTreatment26771 = 0;
+                        long intructionTimeMergeHomePres26771 = 0;
+                        int demMergeTreatment26771 = 0;
+                        int demMergeHomePres26771 = 0;
+                        int countMergeTreatment26771 = medicine_Merges.Count(o => o.IS_HOME_PRES != 1);
+                        int countMergeHomePres26771 = medicine_Merges.Count(o => o.IS_HOME_PRES == 1);
                         int dem = 0;
                         long IntructionTime = 0;
 
@@ -4743,6 +4785,61 @@ namespace MPS.Processor.Mps000062
                                     item.MEDICINES_MERGE_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
                             }
+                            #region Viec 26771 - tach thuoc cap ve / thuoc dieu tri (format giong MEDICINES_MERGE_HTU___DATA)
+                            string rowMergeHtu26771 = String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0} {1}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{2}</td></tr></table>", s1, medi.CONCENTRA, s2);
+                            if (medi.IS_HOME_PRES == 1)
+                            {
+                                if (string.IsNullOrEmpty(item.MEDICINES_MERGE_HTU_HOME_PRES___DATA))
+                                {
+                                    item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Thuốc cấp về (BN mang về):", FontStyle.Bold);
+                                    item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                }
+                                if (intructionTimeMergeHomePres26771 != medi.INTRUCTION_TIME)
+                                {
+                                    intructionTimeMergeHomePres26771 = medi.INTRUCTION_TIME;
+                                    item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(medi.INTRUCTION_TIME), FontStyle.Bold);
+                                }
+                                item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += rowMergeHtu26771;
+                                if ((medi.REMEDY_COUNT ?? 0) <= 0)
+                                {
+                                    item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += medi.TUTORIAL;
+                                    if (!string.IsNullOrEmpty(medi.HTU_TEXT))
+                                    {
+                                        item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                        item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += medi.HTU_TEXT;
+                                    }
+                                    if (demMergeHomePres26771 < countMergeHomePres26771 - 1)
+                                    {
+                                        item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                    }
+                                }
+                                demMergeHomePres26771++;
+                            }
+                            else
+                            {
+                                if (intructionTimeMergeTreatment26771 != medi.INTRUCTION_TIME)
+                                {
+                                    intructionTimeMergeTreatment26771 = medi.INTRUCTION_TIME;
+                                    item.MEDICINES_MERGE_HTU_TREATMENT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(medi.INTRUCTION_TIME), FontStyle.Bold);
+                                }
+                                item.MEDICINES_MERGE_HTU_TREATMENT___DATA += rowMergeHtu26771;
+                                if ((medi.REMEDY_COUNT ?? 0) <= 0)
+                                {
+                                    item.MEDICINES_MERGE_HTU_TREATMENT___DATA += medi.TUTORIAL;
+                                    if (!string.IsNullOrEmpty(medi.HTU_TEXT))
+                                    {
+                                        item.MEDICINES_MERGE_HTU_TREATMENT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                        item.MEDICINES_MERGE_HTU_TREATMENT___DATA += medi.HTU_TEXT;
+                                    }
+                                    if (demMergeTreatment26771 < countMergeTreatment26771 - 1 || countMergeHomePres26771 > 0)
+                                    {
+                                        item.MEDICINES_MERGE_HTU_TREATMENT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                    }
+                                }
+                                demMergeTreatment26771++;
+                            }
+                            #endregion
+
                             MMDataSort.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, USING_COUNT_NUMBER = medi.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx, HTU_TEXT = medi.HTU_TEXT });
                             dem++;
                         }
@@ -4781,6 +4878,15 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_TAY___DATA = "";
                         item.MEDICINES_NO_CONCENTRA__DATA = "";
                         item.MEDICINES_HTU___DATA = "";
+                        //Viec 26771: tach thuoc dieu tri / thuoc cap ve (mang don ve) cho mau repx
+                        item.MEDICINES_TREATMENT___DATA3 = "";
+                        item.MEDICINES_HOME_PRES___DATA3 = "";
+                        long intructionDateTreatment26771 = 0;
+                        long intructionDateHomePres26771 = 0;
+                        int demTreatment26771 = 0;
+                        int demHomePres26771 = 0;
+                        int countTreatment26771 = medicines.Count(o => o.IS_HOME_PRES != 1);
+                        int countHomePres26771 = medicines.Count(o => o.IS_HOME_PRES == 1);
                         int dem = 0;
 
 
@@ -4908,6 +5014,51 @@ namespace MPS.Processor.Mps000062
                                     item.MEDICINES_NO_CONCENTRA__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
                             }
+
+                            #region Viec 26771 - tach thuoc dieu tri / thuoc cap ve (format giong MEDICINES___DATA3)
+                            string rowMedi26771 = String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0} {1}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{2}</td></tr></table>", s1, ActiveIngrBhytName, s2);
+                            if (medi.IS_HOME_PRES == 1)
+                            {
+                                if (string.IsNullOrEmpty(item.MEDICINES_HOME_PRES___DATA3))
+                                {
+                                    item.MEDICINES_HOME_PRES___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Thuốc cấp về (BN mang về):", FontStyle.Bold);
+                                    item.MEDICINES_HOME_PRES___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                }
+                                if (medi.INTRUCTION_DATE != intructionDateHomePres26771)
+                                {
+                                    intructionDateHomePres26771 = medi.INTRUCTION_DATE;
+                                    item.MEDICINES_HOME_PRES___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(medi.INTRUCTION_DATE), FontStyle.Bold);
+                                }
+                                item.MEDICINES_HOME_PRES___DATA3 += rowMedi26771;
+                                if ((medi.REMEDY_COUNT ?? 0) <= 0)
+                                {
+                                    item.MEDICINES_HOME_PRES___DATA3 += medi.TUTORIAL;
+                                    if (demHomePres26771 < countHomePres26771 - 1)
+                                    {
+                                        item.MEDICINES_HOME_PRES___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                    }
+                                }
+                                demHomePres26771++;
+                            }
+                            else
+                            {
+                                if (medi.INTRUCTION_DATE != intructionDateTreatment26771)
+                                {
+                                    intructionDateTreatment26771 = medi.INTRUCTION_DATE;
+                                    item.MEDICINES_TREATMENT___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(medi.INTRUCTION_DATE), FontStyle.Bold);
+                                }
+                                item.MEDICINES_TREATMENT___DATA3 += rowMedi26771;
+                                if ((medi.REMEDY_COUNT ?? 0) <= 0)
+                                {
+                                    item.MEDICINES_TREATMENT___DATA3 += medi.TUTORIAL;
+                                    if (demTreatment26771 < countTreatment26771 - 1 || countHomePres26771 > 0)
+                                    {
+                                        item.MEDICINES_TREATMENT___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                    }
+                                }
+                                demTreatment26771++;
+                            }
+                            #endregion
 
                             if (!String.IsNullOrEmpty(medi.MEDICINE_TYPE_CODE) && rdo._WorkPlaceSDO.UsedDayCountingOutStockOption == 1)
                             {
@@ -5201,7 +5352,7 @@ namespace MPS.Processor.Mps000062
                                     }
 
                                     item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
-                                    MMDuTruDataSort.Add(new ExpMestMetyReqADO() { USE_TIME = ReqDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, USING_COUNT_NUMBER = medi.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx, HTU_TEXT = medi.HTU_TEXT });
+                                    MMDuTruDataSort.Add(new ExpMestMetyReqADO() { USE_TIME = ReqDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, USING_COUNT_NUMBER = medi.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx, HTU_TEXT = medi.HTU_TEXT, IS_HOME_PRES = ((ReqDT.IS_HOME_PRES == 1 || medi.IS_HOME_PRES == 1) ? 1 : 0) });
                                     dem++;
                                 }
                             }
@@ -5435,7 +5586,7 @@ namespace MPS.Processor.Mps000062
                                     }
                                     item.MEDICINE_TYPE_ID = medi.MEDICINE_TYPE_ID;
 
-                                    MMDuTruDataSort.Add(new ExpMestMetyReqADO() { USE_TIME = ReqDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.NUM_ORDER_MEDICINE_GROUP, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_MEDICINE_USE_FORM ?? 0, TDL_SERVICE_REQ_ID = medi.SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_BY_GROUP, USING_COUNT_NUMBER = null, TDL_MEDICINE_TYPE_ID = medi.MEDICINE_TYPE_ID, DATA_REPX = dataRepx });
+                                    MMDuTruDataSort.Add(new ExpMestMetyReqADO() { USE_TIME = ReqDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.NUM_ORDER_MEDICINE_GROUP, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_MEDICINE_USE_FORM ?? 0, TDL_SERVICE_REQ_ID = medi.SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_BY_GROUP, USING_COUNT_NUMBER = null, TDL_MEDICINE_TYPE_ID = medi.MEDICINE_TYPE_ID, DATA_REPX = dataRepx, IS_HOME_PRES = (ReqDT.IS_HOME_PRES == 1 ? 1 : 0) });
                                     dem++;
                                 }
                             }
@@ -5464,6 +5615,32 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_MERGE_DATE_DUTRU_HTU___DATA += string.Join("", DataMedicineGroupByUseTime_Merge(gut.ToList()).Select(o => o.DATA_REPX + (string.IsNullOrEmpty(o.HTU_TEXT) ? "" : (o.HTU_TEXT + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br)))));
 
                     }
+
+                    #region Viec 26771 - tach don du tru cap ve / dieu tri (format giong MEDICINES_MERGE_DATE_DUTRU_HTU___DATA)
+                    item.MEDICINES_MERGE_DATE_DUTRU_HTU_TREATMENT___DATA = "";
+                    item.MEDICINES_MERGE_DATE_DUTRU_HTU_HOME_PRES___DATA = "";
+                    foreach (var gut in groupUseTime)
+                    {
+                        var gutTreatment26771 = gut.Where(o => o.IS_HOME_PRES != 1).ToList();
+                        var gutHomePres26771 = gut.Where(o => o.IS_HOME_PRES == 1).ToList();
+                        if (gutTreatment26771.Count > 0)
+                        {
+                            if (gut.Key != null)
+                            {
+                                item.MEDICINES_MERGE_DATE_DUTRU_HTU_TREATMENT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Đơn thuốc dự trù ngày " + gut.Key, FontStyle.Bold);
+                            }
+                            item.MEDICINES_MERGE_DATE_DUTRU_HTU_TREATMENT___DATA += string.Join("", DataMedicineGroupByUseTime_Merge(gutTreatment26771).Select(o => o.DATA_REPX + (string.IsNullOrEmpty(o.HTU_TEXT) ? "" : (o.HTU_TEXT + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br)))));
+                        }
+                        if (gutHomePres26771.Count > 0)
+                        {
+                            if (gut.Key != null)
+                            {
+                                item.MEDICINES_MERGE_DATE_DUTRU_HTU_HOME_PRES___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Đơn thuốc dự trù ngày " + gut.Key + " (Thuốc cấp về - BN mang về)", FontStyle.Bold);
+                            }
+                            item.MEDICINES_MERGE_DATE_DUTRU_HTU_HOME_PRES___DATA += string.Join("", DataMedicineGroupByUseTime_Merge(gutHomePres26771).Select(o => o.DATA_REPX + (string.IsNullOrEmpty(o.HTU_TEXT) ? "" : (o.HTU_TEXT + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br)))));
+                        }
+                    }
+                    #endregion
                     #endregion
                     #endregion
 

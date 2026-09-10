@@ -219,4 +219,40 @@
   <data name="frmHisCareer.Text" xml:space="preserve">
     <value>Danh mục</value>
   </data>
+  <data name="frmHisCareer.grdColLevel2Code.Caption" xml:space="preserve">
+    <value>Mã cấp 2</value>
+  </data>
+  <data name="frmHisCareer.grdColLevel2Name.Caption" xml:space="preserve">
+    <value>Tên cấp 2</value>
+  </data>
+  <data name="frmHisCareer.grdColLevel3Code.Caption" xml:space="preserve">
+    <value>Mã cấp 3</value>
+  </data>
+  <data name="frmHisCareer.grdColLevel3Name.Caption" xml:space="preserve">
+    <value>Tên cấp 3</value>
+  </data>
+  <data name="frmHisCareer.grdColLevel4Code.Caption" xml:space="preserve">
+    <value>Mã cấp 4</value>
+  </data>
+  <data name="frmHisCareer.grdColLevel4Name.Caption" xml:space="preserve">
+    <value>Tên cấp 4</value>
+  </data>
+  <data name="frmHisCareer.lciLevel2Code.Text" xml:space="preserve">
+    <value>Mã cấp 2:</value>
+  </data>
+  <data name="frmHisCareer.lciLevel2Name.Text" xml:space="preserve">
+    <value>Tên cấp 2:</value>
+  </data>
+  <data name="frmHisCareer.lciLevel3Code.Text" xml:space="preserve">
+    <value>Mã cấp 3:</value>
+  </data>
+  <data name="frmHisCareer.lciLevel3Name.Text" xml:space="preserve">
+    <value>Tên cấp 3:</value>
+  </data>
+  <data name="frmHisCareer.lciLevel4Code.Text" xml:space="preserve">
+    <value>Mã cấp 4:</value>
+  </data>
+  <data name="frmHisCareer.lciLevel4Name.Text" xml:space="preserve">
+    <value>Tên cấp 4:</value>
+  </data>
 </root>

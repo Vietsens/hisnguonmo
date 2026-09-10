@@ -38,7 +38,7 @@ namespace MPS.Processor.Mps000160
                 sereServADOTemps.AddRange(from r in rdo.SereServs
                                           select new SereServADO(r, rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, rdo.MaterialTypes));
 
-                //SereServ FEE
+                //SereServ FEE - hao phi (IS_EXPEND = 1) cua benh nhan vien phi (mau in NGOAI_TRU_VIENPHI__HAO_PHI)
                 List<SereServADO> sereServAdoFees = this.SereServFeePayment(sereServADOTemps);
                 if (sereServAdoFees != null && sereServAdoFees.Count > 0)
                 {
@@ -111,17 +111,19 @@ namespace MPS.Processor.Mps000160
                 if (sereServs != null && sereServs.Count > 0)
                 {
                     sereServAdos = new List<SereServADO>();
+                    // Mau in "Bang ke ngoai tru vien phi - HAO PHI": chi lay dong hao phi (IS_EXPEND = 1),
+                    // gia/tien lay cot *_NO_EXPEND (theo Old\Core\Mps000160RDO va Mps000162).
                     var sereServGroups = sereServs
                     .Where(o =>
                         o.AMOUNT > 0
                         && o.PATIENT_TYPE_ID == rdo.PatientTypeCFG.PATIENT_TYPE__FEE
                         && o.IS_NO_EXECUTE != 1
-                        && o.IS_EXPEND != 1)
+                        && o.IS_EXPEND == 1)
                     .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999)
                     .GroupBy(o => new
                     {
                         o.SERVICE_ID,
-                        o.VIR_PRICE,
+                        o.VIR_PRICE_NO_EXPEND,
                         o.IS_EXPEND
                     }).ToList();
 
@@ -132,6 +134,7 @@ namespace MPS.Processor.Mps000160
                         sereServ.VIR_TOTAL_HEIN_PRICE = sereServGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE);
                         sereServ.VIR_TOTAL_PATIENT_PRICE = sereServGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE);
                         sereServ.VIR_TOTAL_PRICE = sereServGroup.Sum(o => o.VIR_TOTAL_PRICE);
+                        sereServ.VIR_TOTAL_PRICE_NO_EXPEND = sereServGroup.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
                         sereServAdos.Add(sereServ);
                     }
                 }
@@ -165,7 +168,7 @@ namespace MPS.Processor.Mps000160
                         heinServiceType.HEIN_SERVICE_TYPE_NAME = "Khác";
                     }
 
-                    heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PRICE);
+                    heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
                     heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE.Value);
                     heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE);
                     heinServiceTypeADOs.Add(heinServiceType);

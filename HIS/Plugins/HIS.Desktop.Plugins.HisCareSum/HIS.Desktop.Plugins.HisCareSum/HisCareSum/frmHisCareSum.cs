@@ -1470,7 +1470,7 @@ namespace HIS.Desktop.Plugins.HisCareSum
                         Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((Treatment != null ? Treatment.TREATMENT_CODE : ""), printTypeCode, this.moduleData.RoomId);
 
 
-                        long keyPrintMerge = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.CONFIG_KEY__HIS_DESKTOP_PLUGINS_CARE_IS_PRINT_MERGE));
+                        long keyPrintMerge = HisConfigCFG.GetKeyPrintMerge();
                         if (keyPrintMerge == 1)
                         {
                             string uniqueTime = "";// (_TrackingPrints != null && _TrackingPrints.Count > 0) ? _TrackingPrints[0].TRACKING_TIME + "" : "";
@@ -1618,7 +1618,7 @@ namespace HIS.Desktop.Plugins.HisCareSum
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_TreatmentBedRoom != null ? _TreatmentBedRoom.FirstOrDefault().TREATMENT_CODE : ""), printTypeCode);
 
 
-                long keyPrintMerge = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.CONFIG_KEY__HIS_DESKTOP_PLUGINS_CARE_IS_PRINT_MERGE));
+                long keyPrintMerge = HisConfigCFG.GetKeyPrintMerge();
                 if (keyPrintMerge == 1)
                 {
                     string uniqueTime = "";// (_TrackingPrints != null && _TrackingPrints.Count > 0) ? _TrackingPrints[0].TRACKING_TIME + "" : "";
@@ -2160,7 +2160,7 @@ namespace HIS.Desktop.Plugins.HisCareSum
 
                 if (listCares.Count >= 1 && listCares != null)
                 {
-                    long keyPrintMerge = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.CONFIG_KEY__HIS_DESKTOP_PLUGINS_CARE_IS_PRINT_MERGE));
+                    long keyPrintMerge = HisConfigCFG.GetKeyPrintMerge();
                     if (keyPrintMerge == 1 && listCares.Count != 1)
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show("Khi bật cấu hình in gộp phiếu chăm sóc chỉ được phép chọn 1 bản ghi phiếu chăm sóc để in", "Thông báo");
@@ -2633,7 +2633,7 @@ namespace HIS.Desktop.Plugins.HisCareSum
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_Treatment != null ? _Treatment.TREATMENT_CODE : ""), printTypeCode);
 
-                long keyPrintMerge = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.CONFIG_KEY__HIS_DESKTOP_PLUGINS_CARE_IS_PRINT_MERGE));
+                long keyPrintMerge = HisConfigCFG.GetKeyPrintMerge();
                 if (keyPrintMerge == 1)
                 {
                     string uniqueTime = "";// (_TrackingPrints != null && _TrackingPrints.Count > 0) ? _TrackingPrints[0].TRACKING_TIME + "" : "";

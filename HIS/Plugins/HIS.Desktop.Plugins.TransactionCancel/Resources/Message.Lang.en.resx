@@ -144,4 +144,13 @@
   <data name="Plugins_TransactionDepositCancel__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Requirement field</value>
   </data>
+  <data name="Plugins_TransactionDepositCancel__MayPosKhongHoTroHuyGiaoDich" xml:space="preserve">
+    <value>The configured POS device does not support automatic void. Please cancel the transaction on the POS device or the bank Merchant Portal FIRST, then enter the void code to confirm.</value>
+  </data>
+  <data name="Plugins_TransactionDepositCancel__NhapMaHuyTrenMayPos" xml:space="preserve">
+    <value>Enter the void transaction code (or void receipt number) printed on the POS device:</value>
+  </data>
+  <data name="Plugins_TransactionDepositCancel__ChuaNhapMaHuyTrenMayPos" xml:space="preserve">
+    <value>The void code from the POS device has not been entered, so the transaction cannot be cancelled. This prevents reconciliation mismatches between the software and the bank.</value>
+  </data>
 </root>

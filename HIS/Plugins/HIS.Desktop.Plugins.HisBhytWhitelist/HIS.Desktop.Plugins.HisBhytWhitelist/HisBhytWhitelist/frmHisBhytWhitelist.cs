@@ -272,10 +272,27 @@ namespace HIS.Desktop.Plugins.HisBhytWhitelist.HisBhytWhitelist
             try
             {
                 listCareer = BackendDataWorker.Get<HIS_CAREER>();
+                int popupWidth = 350;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("CAREER_CODE", "", 100, 1));
                 columnInfos.Add(new ColumnInfo("CAREER_NAME", "", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, false, 350);
+                // Bo sung cot nhom cap 2/3/4 theo key cau hinh MOS.HIS_CAREER.IS_SHOW_LEVEL_2/3/4 (rong = an, mac dinh nhu cu)
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_2") == "1")
+                {
+                    columnInfos.Add(new ColumnInfo("LEVEL2_NAME", "", 180, 3));
+                    popupWidth += 180;
+                }
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_3") == "1")
+                {
+                    columnInfos.Add(new ColumnInfo("LEVEL3_NAME", "", 180, 4));
+                    popupWidth += 180;
+                }
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_4") == "1")
+                {
+                    columnInfos.Add(new ColumnInfo("LEVEL4_NAME", "", 180, 5));
+                    popupWidth += 180;
+                }
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, false, popupWidth);
                 ControlEditorLoader.Load(cboCareer, listCareer, controlEditorADO);
             }
             catch (Exception ex)

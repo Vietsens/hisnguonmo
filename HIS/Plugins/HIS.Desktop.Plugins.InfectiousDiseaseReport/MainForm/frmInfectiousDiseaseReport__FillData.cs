@@ -116,6 +116,10 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 var list = new BackendAdapter(param).Get<List<V_HIS_ECDS_DISEASE_CASE>>(
                     HisRequestUriStore.HIS_ECDS_GET_VIEW, ApiConsumers.MosConsumer, filter, param);
                 SessionManager.ProcessTokenLost(param);
+                // Chẩn đoán đối soát: số bản ghi GetView trả về theo mã điều trị.
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "ECDS LoadSavedCaseView code={0} treatmentId={1} count={2}",
+                    treatment.TREATMENT_CODE, treatment.ID, list != null ? list.Count : -1));
                 if (list == null || list.Count == 0) return null;
                 // Đúng điều trị + bản mới nhất (theo lần đẩy / ID).
                 var byTreatment = list.Where(o => o != null && o.TREATMENT_ID == treatment.ID).ToList();

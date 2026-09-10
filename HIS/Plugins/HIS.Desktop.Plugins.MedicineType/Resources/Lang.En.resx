@@ -246,6 +246,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_NAME_BHYT" xml:space="preserve">
     <value>Health insurance name</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TY_LE_BHYT" xml:space="preserve">
+    <value>Hein limit ratio</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TOOLTIP1" xml:space="preserve">
     <value>Entry price of the latest lot</value>
   </data>

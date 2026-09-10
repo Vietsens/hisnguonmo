@@ -50,7 +50,9 @@ Section 10 ("Nghề, công việc trước đây") trong tab General gồm:
 
 ## 6. Dependencies
 
-Không có inter-plugin trực tiếp.
+| Plugin đích | Khi nào mở | Args truyền |
+|-------------|-----------|-------------|
+| HIS.Desktop.Plugins.ContentSubclinical | Nút "+" chọn kết quả CLS; và chạy ẨN khi tích "Tự động lấy kết quả CLS" (theo nhóm chỉ số + theo serviceIds đã cấu hình ở `frmAutoClsSetting`) | `long treatmentId`, `DelegateSelectData` (hoặc `DelegateSelectTestIndexGroupData`), `string serviceIds` (có serviceIds → headless) |
 
 ## 7. Print
 
@@ -68,6 +70,7 @@ MPS printers (xem `frmEnterKskInfomantionVer2___PrintMPS.cs`).
 | 02/07/2026 | huannh | Fix combo "Người khám" mới: (1) gán `GridView` cho GridLookUpEdit tạo runtime (thiếu View nên popup không chọn được ở tab trên 18); (2) đổi anchor tab dưới 18 từ `panel3` (container) sang `txtProblemHealth3` (ô kết luận "Sức khỏe có vấn đề" ở V. KẾT LUẬN) để combo hiển thị đúng chỗ. Thêm nút Combo/Delete + `ClearData_ButtonClick`. |
 | 03/07/2026 | huannh | Đổi cách nhúng cụm ICD tiền sử + combo Người khám: KHÔNG chèn runtime vào LayoutControl (làm vỡ layout bố cục cố định) → nhúng vào **PanelControl host đặt sẵn trong Designer**, tìm theo tên bằng `Controls.Find` (`EmbedHistoryIcdIntoPanel`/`EmbedConcluderComboIntoPanel` + `FindHostControl`) rồi `panel.Controls.Add(uc/cbo); Dock=Fill`. Panel chưa đặt → bỏ qua an toàn (compile được, không lỗi). Tên panel: `pnlKskIcd{Family/Personal/Occupational/Obstetric}{tabIndex}` (tab 0/1/2/6/7) + `pnlKskConcluder1`, `pnlKskConcluder2`. CẦN đặt các panel này trong Designer để control hiển thị. |
 | 02/07/2026 | huannh | (HIS_KSK_SYNC) Chốt: khi lưu KSK V2, việc tạo bản ghi `HIS_KSK_SYNC` (lấy `KSK_TYPE_ID` = loại mẫu, set `SYNC_RESULT_TYPE = 0` = chưa gửi đồng bộ) do **BE tự sinh từ `HIS_KSK_GENERAL`** — FE KHÔNG phát sinh code mới, chỉ cần đảm bảo `HIS_KSK_GENERAL.KSK_TYPE_ID` được gửi kèm (đã có qua `SetKskTypeIdToGeneral`). |
+| 04/09/2026 | nampp | (Việc 56156) Mở rộng "Tự động lấy kết quả CLS" tab Khám cận lâm sàng (Ksk >18t) từ 3 lên **11 dòng cấu hình dịch vụ** trong `frmAutoClsSetting` (tab "Tự động lấy CLS"): thêm 1b Đường máu/Urê/Creatinin/ASAT/ALAT (`AutoCls_BloodGluco/BloodUre/BloodCreatinin/BloodAsat/BloodAlat` → `txtTestBloodGluco2/Ure2/Creatinin2/Asat2/Alat2`), 1c XN máu-Khác (`AutoCls_BloodOther` → `txtTestBloodOther2`), 4 KQ khám CLS khác (`AutoCls_OtherPara` → `txtResultSubclinical2`), KSK định kỳ-Kết quả (`AutoCls_Periodic` → `txtResultSubclinical2_2`). 2 dòng cuối đổ danh mục XN+CĐHA+TDCN, còn lại XN. `AutoGetTestIndexByGroup` chạy cơ chế nhóm chỉ số cũ trước (fallback điền ô trống) rồi 11 dòng theo dịch vụ (ghi đè nếu có cấu hình). Refactor: 11 combo gom vào `comboDefs` (combo–StateKey–JsonKey) để Init/Load/Save/Export/Import chạy vòng lặp; `KskSettingFileADO.AUTO_CLS` đổi từ 3 list sang Dictionary (key BLOOD/URINE/DIIM giữ nguyên → file JSON cũ vẫn nhập được, JSON_VERSION 2→3); key hằng chuyển `internal` để form chính dùng chung. Không đổi DB/BE — cấu hình lưu ControlState local. |
 
 ## 9. Test Cases
 
@@ -78,3 +81,11 @@ MPS printers (xem `frmEnterKskInfomantionVer2___PrintMPS.cs`).
 - [ ] Bỏ trống cả 2 ô công việc → Lưu → load lại → cột RECENT_WORK_ONE/TWO = NULL
 - [ ] Layout: section "12. Tiền sử bản thân" và các sections phía sau hiển thị đúng vị trí mới
 - [ ] Tab order: focus chạy đúng thứ tự từ tên công việc → thời gian → ngày
+
+### Việc 56156 — Tự động lấy kết quả CLS (11 dòng cấu hình)
+- [ ] Mở ⚙ Thiết lập → tab "Tự động lấy CLS" hiện đủ 11 dòng; cấu hình → Lưu → mở lại giữ nguyên
+- [ ] BN có kết quả XN/CĐHA/TDCN: tích "Tự động lấy kết quả CLS" → 1a/1b/1c/2/3/4/KSK định kỳ tự điền đúng ô theo cấu hình
+- [ ] Sửa tay giá trị vừa lấy → Lưu → mở lại thấy giá trị đã sửa
+- [ ] Dòng không cấu hình → ô không bị động chạm (fallback nhóm chỉ số cũ vẫn điền ô trống nếu viện có khai nhóm)
+- [ ] BN không có kết quả → ô giữ nguyên, không lỗi
+- [ ] Xuất JSON → Nhập lại → đủ 11 phần; file JSON bản cũ (BLOOD/URINE/DIIM) nhập vẫn nhận, 8 phần mới giữ nguyên

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -252,6 +252,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                             lcicheckPOS.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         }
                     }
+                    ApplyPosVoidRestriction();
                     if (this.transaction.SWIPE_AMOUNT == null)
                     {
                         lcicheckQT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -563,6 +564,25 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                 {
                     if (HisConfigCFG.TransactionBill__Select == "1")
                     {
+                        // Hang POS dang cau hinh co huy duoc giao dich da thanh toan qua ECR hay khong.
+                        if (!PosDeviceConfigReader.IsVoidSupported())
+                        {
+                            // Khong huy tu dong duoc: bat thu ngan huy tren may POS truoc va nhap ma huy,
+                            // de HIS va ngan hang khong lech doi soat.
+                            WaitingManager.Hide();
+
+                            string posVoidRef;
+                            if (!ConfirmManualPosVoid(out posVoidRef))
+                            {
+                                success = false;
+                                return;
+                            }
+
+                            ApplyManualPosVoid(sdo, posVoidRef);
+                            success = true;
+                        }
+                        else
+                        {
                         OpenAppPOS();
                         WcfRequest wc = new WcfRequest(); // Khởi tạo data
                         if (transaction.SWIPE_AMOUNT != null && transaction.SWIPE_AMOUNT != 0)
@@ -603,6 +623,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                             }
                             success = false;
                             return;
+                        }
                         }
                     }
                 }
@@ -887,6 +908,184 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         if (rsItem != null && item.ID != TransactionCancelResult.ID) listTranPrint.Add(item);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bao truoc cho thu ngan khi may POS dang cau hinh khong huy tu dong duoc.
+        /// Hien tai la may Techcombank: chi co lenh "ocan" huy thao tac dang cho o man hinh quet the,
+        /// khong huy duoc giao dich da duoc ngan hang duyet.
+        /// KHONG khoa o tich - viec huy van phai lam, nhung se di qua buoc xac nhan thu cong.
+        /// </summary>
+        private void ApplyPosVoidRestriction()
+        {
+            try
+            {
+                if (PosDeviceConfigReader.IsVoidSupported())
+                {
+                    return;
+                }
+
+                chkConnectionPOS.ToolTip = ResourceMessageLang.MayPosKhongHoTroHuyGiaoDich;
+
+                Inventec.Common.Logging.LogSystem.Info(String.Format(
+                    "TransactionCancel: hang POS {0} khong huy tu dong duoc, se yeu cau xac nhan thu cong.",
+                    PosDeviceConfigReader.GetBankName()));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Yeu cau thu ngan huy giao dich tren may POS truoc, roi nhap ma huy de xac nhan.
+        /// Khong nhap duoc ma thi khong cho huy - de HIS va ngan hang khong lech doi soat.
+        /// </summary>
+        /// <param name="posVoidRef">Ma giao dich huy / so bien lai huy lay tu may POS.</param>
+        /// <returns>true khi thu ngan da xac nhan va nhap ma hop le.</returns>
+        private bool ConfirmManualPosVoid(out string posVoidRef)
+        {
+            posVoidRef = "";
+
+            try
+            {
+                string detail = String.Format(
+                    "{0}{1}{1}Số hóa đơn POS: {2}{1}Số thẻ: {3}{1}Chủ thẻ: {4}",
+                    ResourceMessageLang.MayPosKhongHoTroHuyGiaoDich,
+                    Environment.NewLine,
+                    this.transaction.POS_INVOICE ?? "",
+                    this.transaction.POS_PAN ?? "",
+                    this.transaction.POS_CARD_HOLDER ?? "");
+
+                if (MessageBox.Show(detail, ResourceMessageLang.TieuDeThongBao,
+                        System.Windows.Forms.MessageBoxButtons.OKCancel,
+                        System.Windows.Forms.MessageBoxIcon.Warning) != System.Windows.Forms.DialogResult.OK)
+                {
+                    return false;
+                }
+
+                string input = ShowPosVoidRefInputDialog(
+                    ResourceMessageLang.NhapMaHuyTrenMayPos,
+                    ResourceMessageLang.TieuDeThongBao);
+
+                if (String.IsNullOrWhiteSpace(input))
+                {
+                    MessageBox.Show(ResourceMessageLang.ChuaNhapMaHuyTrenMayPos,
+                        ResourceMessageLang.TieuDeThongBao,
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                posVoidRef = input.Trim();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Hop thoai nhap ma huy lay tu may POS.
+        /// Dung mot form dung tai cho vi DevExpress 15.2 khong co XtraInputBox.
+        /// </summary>
+        /// <returns>Chuoi nguoi dung nhap, hoac chuoi rong neu bam Huy.</returns>
+        private string ShowPosVoidRefInputDialog(string prompt, string caption)
+        {
+            Form dialog = new Form();
+            try
+            {
+                DevExpress.XtraEditors.LabelControl lblPrompt = new DevExpress.XtraEditors.LabelControl();
+                DevExpress.XtraEditors.TextEdit txtVoidRef = new DevExpress.XtraEditors.TextEdit();
+                DevExpress.XtraEditors.SimpleButton btnOk = new DevExpress.XtraEditors.SimpleButton();
+                DevExpress.XtraEditors.SimpleButton btnCancel = new DevExpress.XtraEditors.SimpleButton();
+
+                dialog.SuspendLayout();
+
+                lblPrompt.Text = prompt;
+                lblPrompt.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+                lblPrompt.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+                lblPrompt.Location = new System.Drawing.Point(12, 12);
+                lblPrompt.Size = new System.Drawing.Size(400, 32);
+
+                txtVoidRef.Location = new System.Drawing.Point(12, 50);
+                txtVoidRef.Size = new System.Drawing.Size(400, 20);
+                txtVoidRef.Properties.MaxLength = 50;
+
+                btnOk.Text = "Đồng ý";
+                btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+                btnOk.Location = new System.Drawing.Point(256, 82);
+                btnOk.Size = new System.Drawing.Size(75, 24);
+
+                btnCancel.Text = "Hủy bỏ";
+                btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                btnCancel.Location = new System.Drawing.Point(337, 82);
+                btnCancel.Size = new System.Drawing.Size(75, 24);
+
+                dialog.Text = caption;
+                dialog.ClientSize = new System.Drawing.Size(424, 118);
+                dialog.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+                dialog.MaximizeBox = false;
+                dialog.MinimizeBox = false;
+                dialog.ShowInTaskbar = false;
+                dialog.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+                dialog.Controls.AddRange(new Control[] { lblPrompt, txtVoidRef, btnOk, btnCancel });
+                dialog.AcceptButton = btnOk;
+                dialog.CancelButton = btnCancel;
+
+                dialog.ResumeLayout(false);
+
+                if (dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                {
+                    return txtVoidRef.Text;
+                }
+
+                return "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return "";
+            }
+            finally
+            {
+                dialog.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Ghi nhan viec huy thu cong tren may POS.
+        /// Ma huy duoc gan vao ly do huy vi HisTransactionCancelSDO chua co truong rieng cho thong tin POS
+        /// (POS_RESULT_JSON khong gui len duoc qua api/HisTransaction/Cancel).
+        /// </summary>
+        private void ApplyManualPosVoid(HisTransactionCancelSDO sdo, string posVoidRef)
+        {
+            try
+            {
+                string bankName = PosDeviceConfigReader.GetBankName();
+                string note = String.Format("[Hủy trên máy {0} - mã hủy: {1}]", bankName, posVoidRef);
+
+                sdo.CancelReason = String.IsNullOrWhiteSpace(sdo.CancelReason)
+                    ? note
+                    : sdo.CancelReason.Trim() + " " + note;
+
+                // Giu lai tren doi tuong hien thi/in tai cho.
+                // Backend chua nhan truong nay khi huy nen tai khoan thuc hien do backend tu ghi vao CANCEL_LOGINNAME.
+                this.transaction.POS_RESULT_JSON = String.Format(
+                    "{{\"void_mode\":\"MANUAL\",\"bank\":\"{0}\",\"void_ref\":\"{1}\",\"pos_invoice\":\"{2}\",\"void_time\":{3}}}",
+                    bankName, posVoidRef, this.transaction.POS_INVOICE ?? "",
+                    DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+                Inventec.Common.Logging.LogAction.Info(String.Format(
+                    "TransactionCancel.ManualPosVoid____TransactionId={0}____Bank={1}____PosInvoice={2}____VoidRef={3}",
+                    this.transaction.ID, bankName, this.transaction.POS_INVOICE ?? "", posVoidRef));
             }
             catch (Exception ex)
             {

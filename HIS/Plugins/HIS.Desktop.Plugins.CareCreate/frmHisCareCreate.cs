@@ -1779,6 +1779,13 @@ namespace HIS.Desktop.Plugins.CareCreate
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((Treatment != null ? Treatment.TREATMENT_CODE : ""), printTypeCode, this.Module.RoomId);
 
+                long keyPrintMerge = SdaConfigKeys.GetKeyPrintMerge();
+                if (keyPrintMerge == 1)
+                {
+                    inputADO.MergeCode = String.Format("{0}_{1}_{2}", printTypeCode, "", (Treatment != null ? Treatment.TREATMENT_CODE : ""));
+                }
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.MergeCode), inputADO.MergeCode));
+
                 MPS.Processor.Mps000427.PDO.Mps000427PDO mps000427RDO = new MPS.Processor.Mps000427.PDO.Mps000427PDO(
                    this.currentCare,
                    Treatment,
@@ -2379,6 +2386,13 @@ namespace HIS.Desktop.Plugins.CareCreate
 
                 mps000229ADO.DEPARTMENT_NAME = WorkPlace.WorkPlaceSDO.SingleOrDefault(p => p.RoomId == this.Module.RoomId).DepartmentName;
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_Treatment != null ? _Treatment.TREATMENT_CODE : ""), printTypeCode, this.Module.RoomId);
+
+                long keyPrintMerge = SdaConfigKeys.GetKeyPrintMerge();
+                if (keyPrintMerge == 1)
+                {
+                    inputADO.MergeCode = String.Format("{0}_{1}_{2}", printTypeCode, "", (_Treatment != null ? _Treatment.TREATMENT_CODE : ""));
+                }
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.MergeCode), inputADO.MergeCode));
 
                 MPS.Processor.Mps000229.PDO.Mps000229PDO mps000229RDO = new MPS.Processor.Mps000229.PDO.Mps000229PDO(
                   _Treatment,
