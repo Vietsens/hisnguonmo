@@ -191,10 +191,10 @@ Nếu về sau đối soát theo TID thành nhu cầu thường xuyên: thêm c�
 |----------|--------------|----------------|-----------|
 | Protocol | **HTTPS** + SSL self-signed cert | HTTP | Phải bypass/pin cert |
 | URL Sale | `https://{ip}/ecr?rqt={requestId}\|{clientId}&cmd=sale\|{amount}` | `http://{ip}/ecr?rqt=…&cmd=sale\|…` | Cùng họ ECR |
-| Header | `x-api-key`, `x-api-id` | không có | **Bổ sung** |
+| Header | `x-api-key`, `x-api-id` (tuỳ chọn) | không có | Không dùng — máy BV không bật xác thực |
 | Body | `{"merchInfo":{ … }}` (thông tin đối soát) | không có | **Bổ sung** |
 | Hủy thao tác | `cmd=ocan`, **PORT KHÁC** (TCB cấp sau) | `cmd=void\|{invoice}` | **Khác bản chất** — xem §3.3 |
-| Thanh toán QR | `cmd=qr_p` (POS tự sinh QR) / `cmd=qr_d` (ECR đẩy QR data base64) | không có | Giai đoạn 2 |
+| Thanh toán QR | `cmd=qr_p` / `cmd=qr_d` | không có | Không triển khai — hợp đồng chỉ quẹt thẻ |
 | Truy vấn | COMING SOON | không có | Chưa có |
 | Response | `{requestId, clientId, command, status, transInfo, qrTransInfo}` | `{requestId, clientId, command, status, transInfo}` | Thêm `qrTransInfo` |
 | Thành công | `status = DONE` **và** `transInfo.returnCode = "00"` **và** `transStatus = APPROVE` | cùng logic | Giữ nguyên |
@@ -367,9 +367,8 @@ public string Sale(string data)
      amount    = request.AMOUNT      (VNĐ, KHÔNG thêm 00)
 
 2. Header:
-   x-api-key: {ApiKeyTcb}
-   x-api-id : {ApiIdTcb}
    Content-Type: application/json; charset=UTF-8
+   (KHÔNG gửi x-api-key / x-api-id — 10 máy của bệnh viện không bật xác thực)
 
 3. Body:
    {"merchInfo":{"bill_number":"{billId}","cashier":"{creator}","hospital_code":"{MerchInfoHospitalCode}"}}
@@ -409,8 +408,6 @@ Thu ngân        Plugin viện phí        WCF.exe/PosDeviceTcb        SmartPOS 
 | `ipTCB` | string(15) | IP máy POS TCB | ✔ |
 | `portTCB` | string | Port ECR (mặc định 443) | |
 | `portOcanTCB` | string | Port riêng cho lệnh `ocan` (TCB cấp sau) | |
-| `apiKeyTCB` | string(500) | `x-api-key` — bỏ trống nếu POS không yêu cầu xác thực | |
-| `apiIdTCB` | string(500) | `x-api-id` — bỏ trống nếu POS không yêu cầu xác thực | |
 | `certThumbprintTCB` | string | Vân tay chứng thư self-signed để pin. Bỏ trống ⇒ chấp nhận mọi chứng thư + ghi `Warn` (chỉ dùng khi tích hợp thử) | PROD |
 | `merchInfoTCB` | json | Mẫu `merchInfo` bổ sung (mã bệnh viện, mã quầy) | |
 | `httpMethodTCB` | string | Phương thức HTTP của lệnh sale. Mặc định `POST`; đổi sang `GET` được mà không phải build lại — phục vụ điểm cần chốt §7.5 | |
@@ -493,7 +490,10 @@ Không cần sửa backend. Nếu về sau muốn tách riêng, chỉ tốn 2 d�
 
 **Khi TCB cấp API void thật** → hiện thực `PosDeviceTcb.Void()` trả `RESPONSE_CODE = "00"` và bỏ chặn trong `PosDeviceConfigReader.IsVoidSupported()`; luồng tự chuyển sang tự động, giao diện không phải sửa.
 
-### 5.7 Giai đoạn 2 — thanh toán QR trên POS TCB
+### 5.7 Thanh toán QR — KHÔNG triển khai
+
+**Hợp đồng chốt bệnh viện chỉ dùng quẹt thẻ.** Máy TCB có sẵn chức năng QR động nhưng không đưa vào phạm vi; `PosDeviceTcb` chỉ phát lệnh `sale`. Phần dưới giữ lại làm tham chiếu nếu sau này mở rộng.
+
 
 Máy TCB sinh QR động (`cmd=qr_p`) hoặc nhận QR từ HIS (`cmd=qr_d`). Để dùng cần **mở rộng `IService1`**:
 
@@ -512,15 +512,18 @@ DTO `qrTransInfoTCB` đã khai báo sẵn trong `WCF.Data.TCB.cs` nên giai đo�
 | Hạng mục | Trạng thái |
 |----------|-----------|
 | Tách Strategy `IPosDevice` + 4 thiết bị | Xong |
-| `PosDeviceTcb` — HTTPS, `x-api-key`/`x-api-id`, `merchInfo`, pin chứng thư, ánh xạ `transInfo` | Xong |
+| `PosDeviceTcb` — HTTPS, `merchInfo`, pin chứng thư, ánh xạ `transInfo` | Xong |
 | `PosDeviceTcb.Void` trả mã 998 (không hỗ trợ) | Xong — theo §3.3 phương án B+ |
 | Gửi `ocan` tự động khi Sale hết thời gian chờ (giải phóng máy POS) | Xong |
-| `ConnectConfig` — 8 khóa TCB + gộp Get/Set | Xong |
-| `FormConnect` — thêm TCB, 5 ô nhập, nút "Kiểm tra kết nối", hiện/ẩn theo hãng | Xong |
+| `ConnectConfig` — 6 khóa TCB + gộp Get/Set | Xong |
+| `FormConnect` — thêm TCB, 3 ô nhập, nút "Kiểm tra kết nối", hiện/ẩn theo hãng | Xong |
 | `TransactionCancel` — bắt xác nhận + nhập mã hủy lấy từ máy POS (B+) | Xong |
 | Lưu mã hủy vào `CANCEL_REASON` + `LogAction` | Xong — đã kiểm chứng backend ghi xuống DB, không cần sửa backend (§5.6a) |
 | Lưu TID/MID trong `POS_RESULT_JSON`, không thêm cột riêng | Đã chốt — thống nhất với MB/SHB/BIDV (§2.3) |
-| Chạy thử với máy POS Techcombank | **Chưa** — chờ `x-api-key`, chứng thư (§7) |
+| Bỏ `x-api-key` / `x-api-id` khỏi cấu hình và giao diện | Xong |
+| Chỉ phát lệnh `sale`, không dùng QR | Xong — theo hợp đồng (§5.7) |
+| Build `WCF.exe` bản .NET Framework 4.5.0 | Xong — 289 KB, `bin\Debug\WCF.exe` |
+| Chạy thử với máy POS Techcombank | **Chưa** — chỉ còn chờ IP máy POS |
 
 **Điều chỉnh hành vi so với bản cũ** — cần lưu ý khi hồi quy MB/SHB/BIDV:
 
@@ -542,7 +545,7 @@ DTO `qrTransInfoTCB` đã khai báo sẵn trong `WCF.Data.TCB.cs` nên giai đo�
 | 2 | Khách bấm Cancel trên POS | `status=CANCELED` ⇒ HIS KHÔNG tạo phiếu, hiện mã lỗi |
 | 3 | Thẻ không đủ số dư (`returnCode=51`) | HIS KHÔNG tạo phiếu, hiển thị đúng diễn giải từ bảng mã lỗi |
 | 4 | Rút dây mạng POS giữa giao dịch | Timeout đúng `PortConfig.TimeOutSecond`, HIS không treo |
-| 5 | Sai `x-api-key` | Trả lỗi rõ ràng, không tạo phiếu |
+| 5 | Máy POS yêu cầu xác thực (nếu TCB bật sau này) | Trả lỗi rõ ràng, không tạo phiếu — khi đó phải bổ sung lại header |
 | 6 | Chứng thư không khớp thumbprint | Từ chối kết nối, ghi log |
 | 7 | Đối chiếu `AMOUNT` trả về với số tiền gửi | Đúng sau khi chia 100 |
 | 8 | 2 quầy thu ngân giao dịch đồng thời trên 2 máy POS | Không lẫn dữ liệu (`WcfRequest` cục bộ) |
@@ -559,7 +562,7 @@ DTO `qrTransInfoTCB` đã khai báo sẵn trong `WCF.Data.TCB.cs` nên giai đo�
 1. **API void/refund** theo `receiptNo` — hiện đang phải hủy thủ công trên POS/Portal rồi nhập mã hủy vào HIS (§3.3, §5.6a).
 2. Port riêng cho lệnh `ocan`.
 3. File chứng thư self-signed + thumbprint. Không chặn quẹt thử: `certThumbprintTCB` để trống thì chấp nhận mọi chứng thư và ghi `Warn`. **Trước khi lên PROD bắt buộc phải điền** để tránh bị giả mạo thiết bị.
-4. `x-api-key` / `x-api-id` — tài liệu ghi **có thể bỏ qua nếu POS không yêu cầu xác thực**. Cần TCB xác nhận 10 máy này có bật xác thực không, và có khác nhau giữa TEST/PROD không. Không chặn việc quẹt thử: để trống thì không gửi header, máy trả 401/403 mới là cần.
+4. ~~`x-api-key` / `x-api-id`~~ — **đã bỏ khỏi phạm vi**: 10 máy của bệnh viện không bật xác thực, tài liệu TCB cho phép bỏ qua tham số này.
 5. Phương thức HTTP chính xác của lệnh Sale (tài liệu ghi URL dạng query nhưng có BODY ⇒ POST hay GET-with-body?).
 6. `amount` trong response có luôn kèm 2 số 00 hay không (ảnh hưởng phép chia 100).
 7. Độ dài tối đa thực tế của `requestId` (12) — tài khoản thu ngân HIS có thể dài hơn ⇒ quy tắc cắt.
@@ -589,7 +592,9 @@ DTO `qrTransInfoTCB` đã khai báo sẵn trong `WCF.Data.TCB.cs` nên giai đo�
 | 2026-09-09 | Khởi tạo — phân tích hiện trạng POS.WCFService, liệt kê 6 chức năng sử dụng, thiết kế bổ sung POS Techcombank | khainq |
 | 2026-09-10 | Hiện thực: tách Strategy `IPosDevice` (MB/SHB/BIDV/TCB), thêm `PosDeviceTcb` + `PosGateway` + `PosDeviceBase`, 8 khóa cấu hình TCB, `FormConnect` hỗ trợ TCB. Sửa kèm các lỗi CRITICAL/HIGH/MEDIUM ở mục 4 | khainq |
 | 2026-09-10 | Đổi hướng xử lý hủy giao dịch từ khóa cứng sang **B+**: bắt thu ngân hủy trên máy POS rồi nhập mã hủy thì HIS mới cho hủy, tránh lệch đối soát. Ghi mã hủy vào `CANCEL_REASON` + `LogAction` | khainq |
+| 2026-09-10 | Bỏ hẳn `x-api-key`/`x-api-id` khỏi cấu hình, giao diện và mã nguồn; chốt chỉ quẹt thẻ không dùng QR; build `WCF.exe` bản .NET 4.5.0 | khainq |
 | 2026-09-10 | Hạ `x-api-key`/`x-api-id`/chứng thư từ điều kiện chặn xuống tuỳ chọn — tài liệu TCB cho phép bỏ qua khi POS không yêu cầu xác thực; chỉ cần IP máy POS là quẹt thử được | khainq |
 | 2026-09-10 | Chốt lưu TID/MID trong `POS_RESULT_JSON` như các hãng MB/SHB/BIDV, không thêm cột `POS_TID`/`POS_MID` | khainq |
 | 2026-09-10 | `PosDeviceMb` đọc cả `TERMINAL_ID` lẫn `TERMINAL _ID` — bản gốc chỉ đọc biến thể có dấu cách, nghi TID máy MB xưa nay bị rỗng | khainq |
 | 2026-09-10 | Kiểm chứng trên source backend MOS: xác nhận `POS_*` xuống DB ở luồng thanh toán, `CANCEL_REASON` xuống DB ở luồng hủy, TID/MID nằm sẵn trong `POS_RESULT_JSON`. Bổ sung §2.3 | khainq |
+| 2026-09-10 | Build + deploy `HIS.Desktop.Plugins.TransactionCancel`: nhánh hủy theo máy POS Techcombank, `Base/PosDeviceConfigReader.cs` đọc `Integrate\POS.WCFService\WCF.exe.config` khóa `namebank`, 3 thông báo mới. DLL build ở **.NET 4.5.0** (x64) cho khớp `WCF.exe` — bản deploy 4.5.2 trước đó đã được ghi đè | khainq |
