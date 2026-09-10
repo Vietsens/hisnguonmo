@@ -289,7 +289,13 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             F("NN (cổng):", cboNgheNghiep);
             F("Nơi làm việc:", txtNoiLamViec);
             F("", chkMangThai);
-            FFull("", btnPatientUpdate, 28);   // nút cập nhật thông tin bệnh nhân — chiếm trọn chiều ngang nhóm
+            // Nút cập nhật BN — nhỏ gọn (không chiếm trọn chiều ngang), canh trái, bắt đầu hàng mới.
+            secPendingLeft = null; secIdx = 0;
+            var lciBtnPatientUpdate = AddRow(secGroup, "", btnPatientUpdate, 24);
+            lciBtnPatientUpdate.TextVisible = false;
+            lciBtnPatientUpdate.SizeConstraintsType = SizeConstraintsType.Custom;
+            lciBtnPatientUpdate.MinSize = new Size(200, 24);
+            lciBtnPatientUpdate.MaxSize = new Size(200, 24);
 
             BeginSection("Địa chỉ hiện nay");
             F("Tỉnh/TP:", cboTinh);
