@@ -155,6 +155,9 @@
     <Compile Include="MainForm\frmInfectiousDiseaseReport__ListPanel.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MainForm\frmInfectiousDiseaseReport__PatientUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">

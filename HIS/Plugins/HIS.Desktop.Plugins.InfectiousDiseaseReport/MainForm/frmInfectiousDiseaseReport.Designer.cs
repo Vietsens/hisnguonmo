@@ -55,6 +55,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
 
         #region Declare — footer
         private SimpleButton btnSave, btnPush, btnNew;
+        // Nút mở chức năng cập nhật thông tin bệnh nhân (đặt trong nhóm "Thông tin cá nhân").
+        private SimpleButton btnPatientUpdate;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErr;
         #endregion
 
@@ -250,7 +252,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             cboGioiTinh = new GridLookUpEdit();
             chkMangThai = new CheckEdit() { Text = "Đang mang thai" };
             txtCccd = new TextEdit();
+            txtCccd.Properties.ReadOnly = true;      // CCCD/CMND chỉ đọc — sửa qua chức năng "Cập nhật thông tin bệnh nhân"
             txtDienThoai = new TextEdit();
+            txtDienThoai.Properties.ReadOnly = true; // SĐT chỉ đọc — sửa qua chức năng "Cập nhật thông tin bệnh nhân"
             cboDanToc = new GridLookUpEdit();
             cboNgheNghiep = new GridLookUpEdit();
             txtNgheNghiepHoSo = new TextEdit();
@@ -264,6 +268,11 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             cboTinhTru = new GridLookUpEdit();
             cboXaTru = new GridLookUpEdit();
             txtDiaChiTru = new TextEdit();
+
+            // Nút mở chức năng cập nhật thông tin bệnh nhân (HIS.Desktop.Plugins.PatientUpdate).
+            btnPatientUpdate = new SimpleButton() { Text = "Cập nhật thông tin bệnh nhân" };
+            btnPatientUpdate.ToolTip = "Mở chức năng cập nhật thông tin bệnh nhân";
+            btnPatientUpdate.Click += btnPatientUpdate_Click;
 
             // Đổi xã hiện nay -> nạp lại danh sách thôn theo xã (cascade cổng: danh mục "thon").
             cboXa.EditValueChanged += cboXa_EditValueChanged;
@@ -280,6 +289,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             F("NN (cổng):", cboNgheNghiep);
             F("Nơi làm việc:", txtNoiLamViec);
             F("", chkMangThai);
+            FFull("", btnPatientUpdate, 28);   // nút cập nhật thông tin bệnh nhân — chiếm trọn chiều ngang nhóm
 
             BeginSection("Địa chỉ hiện nay");
             F("Tỉnh/TP:", cboTinh);
