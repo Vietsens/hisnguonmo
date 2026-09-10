@@ -38,6 +38,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit.Config
 
         private const string CONFIG_KEY__USING_SERVER_TIME = "MOS.IS_USING_SERVER_TIME";
         private const string CONFIG_KEY_CheckDepartmentInTimeWhenPresOrAssign = "HIS.Desktop.Plugins.IsCheckDepartmentInTimeWhenPresOrAssign";
+        private const string CONFIG_KEY__AMOUNT_DECIMAL_NUMBER = "HIS.Desktop.AmountDecimalNumber";
         public static bool IsSereServMinDurationAlert { get; set; }
         internal static string IcdServiceHasCheck;
         internal static string IcdServiceAllowUpdate;
@@ -47,6 +48,11 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit.Config
 
         internal static string IsUsingServerTime;
         internal static bool IsCheckDepartmentInTimeWhenPresOrAssign;
+        /// <summary>
+        /// So chu so thap phan duoc phep nhap o o "So luong".
+        /// Null = key khong khai bao (hoac khong phai so nguyen 0..9) -> khong chan, giu nguyen nhu cu.
+        /// </summary>
+        internal static int? AmountDecimalNumber;
 
         internal static void LoadConfig()
         {
@@ -60,10 +66,36 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit.Config
                 IsSetPrimaryPatientType = GetValue(CONFIG_KEY__IS_SET_PRIMARY_PATIENT_TYPE);
                 PatientTypeId__BHYT = GetPatientTypeByCode(GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT)).ID;
                 PatientTypeId__VP = GetPatientTypeByCode(GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__VP)).ID;
+                AmountDecimalNumber = GetAmountDecimalNumber();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doc HIS.Desktop.AmountDecimalNumber -> so chu so thap phan duoc phep nhap o o "So luong".
+        /// Tra ve null khi key khong khai bao hoac gia tri khong phai so nguyen 0..9.
+        /// </summary>
+        private static int? GetAmountDecimalNumber()
+        {
+            try
+            {
+                string configValue = GetValue(CONFIG_KEY__AMOUNT_DECIMAL_NUMBER);
+                if (String.IsNullOrWhiteSpace(configValue))
+                    return null;
+
+                int decimalNumber;
+                if (!int.TryParse(configValue.Trim(), out decimalNumber) || decimalNumber < 0 || decimalNumber > 9)
+                    return null;
+
+                return decimalNumber;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return null;
             }
         }
 

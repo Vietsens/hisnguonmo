@@ -234,6 +234,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 isNotLoadWhileChangeControlStateInFirst = true;
                 SetCaptionByLanguageKey();
                 HisConfigCFG.LoadConfig();
+                ApplyAmountDecimalNumber();
                 this.currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
                 if (treatment != null)
                 {
@@ -302,6 +303,32 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 {
                     gridColSerSevPresAmount.VisibleIndex = -1;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lam tron hien thi cac cot so luong theo cau hinh HIS.Desktop.AmountDecimalNumber.
+        /// Key khong khai bao -> AmountFormatString = null -> giu nguyen hien thi cu.
+        /// Cot "SL ke don" la cot unbound tra ve chuoi nen duoc format trong grdViewSereServServiceReq_CustomUnboundColumnData.
+        /// </summary>
+        private void ApplyAmountDecimalNumber()
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(HisConfigCFG.AmountFormatString))
+                    return;
+
+                //So luong
+                gridColSerSevAmount.DisplayFormat.FormatString = HisConfigCFG.AmountFormatString;
+                gridColSerSevAmount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+
+                //So luong quy doi
+                gridColSerSevConvertAmount.DisplayFormat.FormatString = HisConfigCFG.AmountFormatString;
+                gridColSerSevConvertAmount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             }
             catch (Exception ex)
             {
@@ -3492,7 +3519,15 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         }
                         else if (e.Column.FieldName == "PRES_AMOUNT_DISPLAY")
                         {
-                            e.Value = data.PRES_AMOUNT.ToString();
+                            //Cot tra ve chuoi nen DisplayFormat cua cot khong co tac dung, phai format tai day
+                            if (!String.IsNullOrEmpty(HisConfigCFG.AmountFormatString) && data.PRES_AMOUNT.HasValue)
+                            {
+                                e.Value = data.PRES_AMOUNT.Value.ToString(HisConfigCFG.AmountFormatString);
+                            }
+                            else
+                            {
+                                e.Value = data.PRES_AMOUNT.ToString();
+                            }
                         }
                     }
                 }

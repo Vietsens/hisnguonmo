@@ -177,6 +177,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 InitPaymentNoteColumn();
                 InitConsultNoteColumn();
                 InitRestoreLayoutGrid();
+                ApplyAmountDecimalNumber();
                 InitControlState();
                 LoadCurrentTreatmentData();
                 this.Icon = Icon.ExtractAssociatedIcon(System.IO.Path.Combine(Inventec.Desktop.Common.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]));

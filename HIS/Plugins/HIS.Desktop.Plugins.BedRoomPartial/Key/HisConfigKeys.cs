@@ -35,5 +35,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
         /// "1" = bat, rong/khac = tat (mac dinh).
         /// </summary>
         internal const string HIS_CONFIG_KEY__ShowAnticipatePresByUseDate = "HIS.Desktop.Plugins.BedRoomPartial.ShowAnticipatePresByUseDate";
+        /// <summary>
+        /// So chu so thap phan hien thi cua cot so luong. Khong khai bao = giu nguyen hien thi cu.
+        /// </summary>
+        internal const string HIS_CONFIG_KEY__AmountDecimalNumber = "HIS.Desktop.AmountDecimalNumber";
     }
 }

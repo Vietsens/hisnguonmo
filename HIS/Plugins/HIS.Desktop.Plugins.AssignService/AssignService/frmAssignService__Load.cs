@@ -3143,6 +3143,46 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         }
 
         /// <summary>
+        /// Chan chi cho phep nhap N chu so thap phan o o "So luong" theo cau hinh HIS.Desktop.AmountDecimalNumber.
+        /// Key khong khai bao -> AmountDecimalNumber = null -> bo qua, giu nguyen nhu cu.
+        /// Mask Numeric chan tai ban phim; DisplayFormat set kem de o hien thi dung so chu so cho phep nhap.
+        /// Luu y: repositoryItemSpinAmount_TabService dung chung cho cot "So luong" va cot "Lan thu"
+        /// (xem gridViewServiceProcess_CustomRowCellEdit) nen cot "Lan thu" cung bi chan theo.
+        /// </summary>
+        private void ApplyAmountDecimalNumber()
+        {
+            try
+            {
+                if (!HisConfigCFG.AmountDecimalNumber.HasValue)
+                    return;
+
+                int decimalNumber = HisConfigCFG.AmountDecimalNumber.Value;
+                string formatString = decimalNumber > 0 ? "#,##0." + new string('0', decimalNumber) : "#,##0";
+
+                //O nhap duoc: mask chan ban phim khong cho go qua N chu so thap phan
+                this.repositoryItemSpinAmount_TabService.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+                this.repositoryItemSpinAmount_TabService.Mask.EditMask = "n" + decimalNumber;
+                this.repositoryItemSpinAmount_TabService.DisplayFormat.FormatString = formatString;
+                this.repositoryItemSpinAmount_TabService.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                this.repositoryItemSpinAmount_TabService.EditFormat.FormatString = formatString;
+                this.repositoryItemSpinAmount_TabService.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+
+                //O chi doc: khong go duoc nen chi can dong bo hien thi
+                this.repositoryItemSpinAmount__Disable_TabService.DisplayFormat.FormatString = formatString;
+                this.repositoryItemSpinAmount__Disable_TabService.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                this.repositoryItemSpinAmount__Disable_TabService.EditFormat.FormatString = formatString;
+                this.repositoryItemSpinAmount__Disable_TabService.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+
+                this.grcAmount_TabService.DisplayFormat.FormatString = formatString;
+                this.grcAmount_TabService.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
         /// Kiểm tra cấu hình phần mềm ẩn hiện cột chi phí ngoài gói, cột hao phí, cột giá gói, cột không tính chênh lệch
         /// </summary>
         private void VisibleColumnInGridControlService()
