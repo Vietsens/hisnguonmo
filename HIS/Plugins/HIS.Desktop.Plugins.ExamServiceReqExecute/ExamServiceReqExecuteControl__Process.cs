@@ -1722,7 +1722,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         ProcessExamServiceReqDTO(ref examServiceReqUpdateSDO);
                         valid = valid && ProcessExamAddition(ref examServiceReqUpdateSDO, HisServiceReqWithOrderSDO);
-                        ProcessHospitalize(ref examServiceReqUpdateSDO);
+                        valid = valid && ProcessHospitalize(ref examServiceReqUpdateSDO);
                         valid = valid && ProcessTreatmentFinish(ref examServiceReqUpdateSDO);
                         ProcessExamFinish(ref examServiceReqUpdateSDO);
                         ProcessExamSereIcdDTO(ref examServiceReqUpdateSDO);
@@ -1952,6 +1952,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     ExamServiceAddADO hisServiceReqExamAdditionSDO = this.examServiceAddProcessor.GetValueV2(this.ucExamAddition) as ExamServiceAddADO;
                     if (hisServiceReqExamAdditionSDO != null)
                     {
+                        // Kham them CO tich chuyen khoa: luu xong backend se chuyen khoa, nen chan
+                        // dich vu chua hoan thanh giong het form Chuyen khoa (plugin TransDepartment).
+                        if (hisServiceReqExamAdditionSDO.IsChangeDepartment && !IsAllowTransByRequiredService())
+                        {
+                            serviceReqUpdateSDO.ExamAdditionSDO = null;
+                            return false;
+                        }
+
                         List<long> serviceIds = new List<long>();
                         if (hisServiceReqExamAdditionSDO.AdditionServiceId.HasValue)
                         {
@@ -2026,7 +2034,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             return true;
         }
 
-        void ProcessHospitalize(ref HisServiceReqExamUpdateSDO serviceReqUpdateSDO)
+        bool ProcessHospitalize(ref HisServiceReqExamUpdateSDO serviceReqUpdateSDO)
         {
             try
             {
@@ -2035,6 +2043,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     HospitalizeExamADO hisDepartmentTranHospitalizeSDO = this.hospitalizeProcessor.GetValue(this.ucHospitalize) as HospitalizeExamADO;
                     if (hisDepartmentTranHospitalizeSDO != null)
                     {
+                        // Nhap vien sang khoa khac khoa hien tai la co chuyen khoa: chan dich vu chua
+                        // hoan thanh giong het form Chuyen khoa (plugin TransDepartment).
+                        if (hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO != null
+                            && IsChangeDepartmentWhenHospitalize(hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.DepartmentId)
+                            && !IsAllowTransByRequiredService())
+                        {
+                            serviceReqUpdateSDO.HospitalizeSDO = null;
+                            return false;
+                        }
+
                         serviceReqUpdateSDO.HospitalizeSDO = new HisDepartmentTranHospitalizeSDO();
                         SetIsGenerateNewInCodeIfSupported(serviceReqUpdateSDO.HospitalizeSDO, hisDepartmentTranHospitalizeSDO.IsGenerateNewInCode);
                         if (hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO != null)
@@ -2107,8 +2125,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
             catch (Exception ex)
             {
+                // return false giong ProcessExamAddition: nuot loi roi van luu thi HospitalizeSDO co the
+                // thieu du lieu, va check chan chuyen khoa o tren cung bi vo hieu am tham.
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
+            return true;
         }
 
         /// <summary>

@@ -669,6 +669,9 @@
     <Compile Include="ExamServiceReqExecuteControl__CheckDocumentHospitalize.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__CheckRequiredService.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ADO\MediRecordCheckingResultADO.cs" />
     <Compile Include="Sda\SdaEventLogCreate.cs" />
     <Compile Include="Validate\ValidateRule\BenhPhuValidationRule.cs" />
