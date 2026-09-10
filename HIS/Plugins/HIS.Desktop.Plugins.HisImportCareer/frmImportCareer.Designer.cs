@@ -63,6 +63,14 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             this.repositoryItemButton_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel2Code = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel2Name = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel3Code = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel3Name = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel4Code = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel4Name = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.lblStatistic = new DevExpress.XtraEditors.LabelControl();
+            this.layoutControlItemStat = new DevExpress.XtraLayout.LayoutControlItem();
             this.repositoryItemCheck = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemButton_ER = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -90,6 +98,7 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemStat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
@@ -103,6 +112,7 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             this.layoutControl1.Controls.Add(this.btnChooseFile);
             this.layoutControl1.Controls.Add(this.btnImport);
             this.layoutControl1.Controls.Add(this.btnDownLoadFile);
+            this.layoutControl1.Controls.Add(this.lblStatistic);
             this.layoutControl1.Controls.Add(this.gridControlData);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
@@ -174,7 +184,13 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             this.gridColumn6,
             this.gridColumn3,
             this.gridColumn1,
-            this.gridColumn2});
+            this.gridColumn2,
+            this.grdColLevel2Code,
+            this.grdColLevel2Name,
+            this.grdColLevel3Code,
+            this.grdColLevel3Name,
+            this.grdColLevel4Code,
+            this.grdColLevel4Name});
             this.gridViewData.GridControl = this.gridControlData;
             this.gridViewData.Name = "gridViewData";
             this.gridViewData.OptionsView.ShowGroupPanel = false;
@@ -245,7 +261,88 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 4;
-            this.gridColumn2.Width = 600;
+            this.gridColumn2.Width = 300;
+            //
+            // grdColLevel2Code
+            //
+            this.grdColLevel2Code.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColLevel2Code.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.grdColLevel2Code.Caption = "Mã cấp 2";
+            this.grdColLevel2Code.FieldName = "LEVEL2_CODE";
+            this.grdColLevel2Code.Name = "grdColLevel2Code";
+            this.grdColLevel2Code.OptionsColumn.AllowEdit = false;
+            this.grdColLevel2Code.Visible = true;
+            this.grdColLevel2Code.VisibleIndex = 5;
+            this.grdColLevel2Code.Width = 60;
+            //
+            // grdColLevel2Name
+            //
+            this.grdColLevel2Name.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColLevel2Name.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.grdColLevel2Name.Caption = "Tên cấp 2";
+            this.grdColLevel2Name.FieldName = "LEVEL2_NAME";
+            this.grdColLevel2Name.Name = "grdColLevel2Name";
+            this.grdColLevel2Name.OptionsColumn.AllowEdit = false;
+            this.grdColLevel2Name.Visible = true;
+            this.grdColLevel2Name.VisibleIndex = 6;
+            this.grdColLevel2Name.Width = 150;
+            //
+            // grdColLevel3Code
+            //
+            this.grdColLevel3Code.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColLevel3Code.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.grdColLevel3Code.Caption = "Mã cấp 3";
+            this.grdColLevel3Code.FieldName = "LEVEL3_CODE";
+            this.grdColLevel3Code.Name = "grdColLevel3Code";
+            this.grdColLevel3Code.OptionsColumn.AllowEdit = false;
+            this.grdColLevel3Code.Visible = true;
+            this.grdColLevel3Code.VisibleIndex = 7;
+            this.grdColLevel3Code.Width = 60;
+            //
+            // grdColLevel3Name
+            //
+            this.grdColLevel3Name.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColLevel3Name.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.grdColLevel3Name.Caption = "Tên cấp 3";
+            this.grdColLevel3Name.FieldName = "LEVEL3_NAME";
+            this.grdColLevel3Name.Name = "grdColLevel3Name";
+            this.grdColLevel3Name.OptionsColumn.AllowEdit = false;
+            this.grdColLevel3Name.Visible = true;
+            this.grdColLevel3Name.VisibleIndex = 8;
+            this.grdColLevel3Name.Width = 150;
+            //
+            // grdColLevel4Code
+            //
+            this.grdColLevel4Code.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColLevel4Code.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.grdColLevel4Code.Caption = "Mã cấp 4";
+            this.grdColLevel4Code.FieldName = "LEVEL4_CODE";
+            this.grdColLevel4Code.Name = "grdColLevel4Code";
+            this.grdColLevel4Code.OptionsColumn.AllowEdit = false;
+            this.grdColLevel4Code.Visible = true;
+            this.grdColLevel4Code.VisibleIndex = 9;
+            this.grdColLevel4Code.Width = 60;
+            //
+            // grdColLevel4Name
+            //
+            this.grdColLevel4Name.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColLevel4Name.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.grdColLevel4Name.Caption = "Tên cấp 4";
+            this.grdColLevel4Name.FieldName = "LEVEL4_NAME";
+            this.grdColLevel4Name.Name = "grdColLevel4Name";
+            this.grdColLevel4Name.OptionsColumn.AllowEdit = false;
+            this.grdColLevel4Name.Visible = true;
+            this.grdColLevel4Name.VisibleIndex = 10;
+            this.grdColLevel4Name.Width = 150;
+            //
+            // lblStatistic
+            //
+            this.lblStatistic.Location = new System.Drawing.Point(464, 7);
+            this.lblStatistic.Name = "lblStatistic";
+            this.lblStatistic.Size = new System.Drawing.Size(452, 13);
+            this.lblStatistic.StyleController = this.layoutControl1;
+            this.lblStatistic.TabIndex = 9;
+            this.lblStatistic.Text = "";
             // 
             // repositoryItemCheck
             // 
@@ -267,7 +364,7 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem1,
-            this.emptySpaceItem2,
+            this.layoutControlItemStat,
             this.layoutControlItem5,
             this.layoutControlItem2,
             this.layoutControlItem4,
@@ -289,11 +386,12 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             // 
             // emptySpaceItem2
             // 
-            this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(460, 0);
-            this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(460, 26);
-            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemStat.Control = this.lblStatistic;
+            this.layoutControlItemStat.Location = new System.Drawing.Point(460, 0);
+            this.layoutControlItemStat.Name = "layoutControlItemStat";
+            this.layoutControlItemStat.Size = new System.Drawing.Size(460, 26);
+            this.layoutControlItemStat.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemStat.TextVisible = false;
             // 
             // layoutControlItem5
             // 
@@ -421,6 +519,7 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemStat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
@@ -448,6 +547,14 @@ namespace HIS.Desktop.Plugins.HisImportCareer
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel2Code;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel2Name;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel3Code;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel3Name;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel4Code;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel4Name;
+        private DevExpress.XtraEditors.LabelControl lblStatistic;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItemStat;
         private DevExpress.XtraEditors.SimpleButton btnShowLineError;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheck;

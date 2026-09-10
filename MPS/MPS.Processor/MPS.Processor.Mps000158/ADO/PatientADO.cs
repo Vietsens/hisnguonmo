@@ -21,19 +21,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.HisImportCareer.ADO
+namespace MPS.Processor.Mps000158.ADO
 {
-    /// <summary>
-    /// Dong doc tu file excel danh muc nghe nghiep theo QD 34/2020/QD-TTg
-    /// (cot Cap 1 -> Cap 5 + Ten goi). Dong co CAREER_CODE (Cap 5) la nghe chi tiet;
-    /// dong chi co LEVEL2/3/4_CODE la dong ten nhom cap cha tuong ung.
-    /// LEVEL2/3/4_CODE + LEVEL2/3/4_NAME dung property cua base HIS_CAREER (EFMODEL moi)
-    /// </summary>
-    public class CareerADO : MOS.EFMODEL.DataModels.HIS_CAREER
+    public class PatientADO
     {
-        public string ERROR { get; set; }
-
-        /// <summary>Cot Cap 1 trong file chuan (chi de phan loai dong, khong luu)</summary>
-        public string LEVEL1_CODE { get; set; }
+        public string VIR_ADDRESS { get; set; }
+        public string VIR_PATIENT_NAME { get; set; }
+        public long DOB { get; set; }
+        public string AGE { get; set; }
+        public string DOB_STR { get; set; }
+        public string CMND_DATE_STR { get; set; }
+        public string DOB_YEAR { get; set; }
+        public string GENDER_MALE { get; set; }
+        public string GENDER_FEMALE { get; set; }
+        public string GENDER_NAME { get; set; }
     }
 }

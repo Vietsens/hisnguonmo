@@ -28,8 +28,15 @@ Chỉ hiện khi config `HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoE
 - Thanh toán QR (pay form 8): mở module QR như cũ, không tự thực xuất/in tại bước này.
 - Vì sao phải đọc trạng thái mới: theo cấu hình viện (kho `IS_AUTO_APPROVE/IS_AUTO_EXECUTE`, `MOS.EXP_MEST.EXPORT_SALE.MUST_BILL`, `MOS.TRANSACTION.EXP_MEST_SALE.IS_AUTO_EXPORT`) phiếu bán có thể đã HOÀN THÀNH ngay khi lưu, hoặc chỉ ĐÃ DUYỆT/YÊU CẦU; `MUST_BILL` = 1 thì BE chặn Approve/Export khi chưa có bill → bill phải tạo trước, thực xuất sau.
 
-### Chế độ tự động từ màn Xuất bán (việc 3082 — v3)
-Màn Xuất bán (`HIS.Desktop.Plugins.ExpMestSaleCreate`, tick "In" + **Lưu in**) mở form này qua `PluginInstance` với args `(Module, List<long> expMestIds, DelegateSelectData, List<string> { Config.AUTO_ACTION__SAVE_SIGN_PRINT })`. Behavior parse `List<string>` → constructor `_autoActions` → đăng ký `Shown` → `RunAutoSaveSignPrint()` (BeginInvoke):
+### Chế độ tự động từ màn Xuất bán (việc 3082 — v3.2 29/08/2026)
+Màn Xuất bán (`HIS.Desktop.Plugins.ExpMestSaleCreate`, tick "Xuất biên lai/hóa đơn" + nút **Lưu ký in (Ctrl E / F11)**) mở form này qua `PluginInstance` với args `(Module, List<long> expMestIds, DelegateSelectData, List<string> autoActions)`. Behavior parse `List<string>` → constructor `_autoActions` → đăng ký `Shown`. Hai chế độ:
+
+**(a) `AUTO_ISSUE_EXISTING_BILL` + `TRANSACTION_ID=<id>` — bill đã tạo lúc lưu phiếu (mặc định khi tick "Xuất biên lai/hóa đơn")** → `RunAutoIssueExistingBill()`:
+- `LoadExpMest` **không lọc HAS_BILL_ID**; tải `V_HIS_TRANSACTION` theo ID (`api/HisTransaction/GetView`); đồng bộ `cboAccountBook`/`cboPayFrom` theo bill (mẫu số/ký hiệu lấy từ sổ của bill); QR → đóng form.
+- `CheckStockBeforeExport` → `IssueElectronicInvoiceForExistingBill()` (bỏ qua nếu bill đã có INVOICE_CODE): `TaoHoaDonDienTuBenThu3CungCap` + `api/HisTransaction/UpdateInvoiceInfo` → `AutoApproveExportExpMests` → `PrintInvoiceNow` → `delegateSelectData(transaction)` → `DialogResult.OK` + đóng.
+- Form ở chế độ này không thao tác thủ công được (Lưu ký sẽ báo phiếu đã thanh toán) → mọi lỗi: thông báo rồi **đóng form**, xử lý tiếp tại Danh sách giao dịch / Thực xuất thuốc.
+
+**(b) `AUTO_SAVE_SIGN_PRINT` — phiếu chưa có bill (fallback khi BE không trả Transaction)** → `RunAutoSaveSignPrint()` (BeginInvoke):
 - Kiểm tra: key bật, nút Lưu ký hiện/enabled, có phiếu, không phải QR, `dxValidationProviderEditorInfo.Validate()` (thiếu sổ/hình thức → popup hướng dẫn, form giữ mở), confirm hóa đơn thay thế như luồng thủ công.
 - Chạy `ProcessSaveSignPrintCore(true)`: **Success** → `DialogResult.OK` + đóng form; **StockLack** → `DialogResult.Cancel` + đóng form (chưa làm gì, về màn Xuất bán sửa phiếu); **Failed** → giữ form mở để xử lý thủ công (bổ sung rồi Lưu ký, hoặc In > In hóa đơn điện tử).
 - Callback `delegateSelectData` vẫn được gọi trong `SaveProcess` → màn Xuất bán khóa nút Lưu/Lưu in như sau F10.
@@ -94,7 +101,7 @@ Hàng nút đáy form: Ngoài giờ | Không hiển thị HĐ ĐT | **In (chkAut
 | Plugin gọi | Khi nào | Args truyền |
 |-----------|---------|-------------|
 | HIS.Desktop.Plugins.ExpMestSaleCreate (nút Xuất hóa đơn F10) | Thủ công | Module, List<long> expMestIds, DelegateSelectData |
-| HIS.Desktop.Plugins.ExpMestSaleCreate (Lưu in + tick "In", việc 3082 v3) | Tự động sau khi lưu phiếu | Module, List<long> expMestIds (chưa có bill), DelegateSelectData, **List<string> { "AUTO_SAVE_SIGN_PRINT" }** → form tự chạy Lưu ký + duyệt/thực xuất + in rồi tự đóng |
+| HIS.Desktop.Plugins.ExpMestSaleCreate (nút "Lưu ký in" khi tick "Xuất biên lai/hóa đơn", việc 3082 v3.2) | Tự động sau khi lưu phiếu (bill đã tạo) | Module, List<long> expMestIds, DelegateSelectData, **List<string> { "AUTO_ISSUE_EXISTING_BILL", "TRANSACTION_ID=<id>" }** → form phát hành HĐĐT cho bill + duyệt/thực xuất + in rồi tự đóng; không có bill → `{ "AUTO_SAVE_SIGN_PRINT" }` (form tự tạo bill) |
 
 ## 7. Print
 
@@ -104,6 +111,8 @@ In HĐĐT: link PDF từ nhà cung cấp → DocumentViewerManager (viewer khi L
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 29/08/2026 | nampp | Việc 3082 v3.2 (bổ sung): chế độ tự động chạy **ẨN** (constructor: `Opacity = 0`, `ShowInTaskbar = false`, vị trí ngoài màn hình) — người dùng chỉ thấy WaitingManager + popup lỗi; mọi nhánh của `RunAutoSaveSignPrint`/`RunAutoIssueExistingBill` đều đóng form qua `CloseAutoForm()` (kể cả `finally`) để không kẹt form ẩn dạng modal. |
+| 29/08/2026 | nampp | Việc 3082 **v3.2**: thêm chế độ tự động `AUTO_ISSUE_EXISTING_BILL` + `TRANSACTION_ID=` (Config) cho bill đã tạo lúc lưu phiếu (màn Xuất bán tick "Xuất biên lai/hóa đơn" + Lưu ký in): `IsAutoIssueExistingBill`, `GetAutoTransactionId`, `LoadExpMest` không lọc HAS_BILL_ID, `RunAutoIssueExistingBill` (tải giao dịch → đồng bộ sổ/hình thức → check tồn → `IssueElectronicInvoiceForExistingBill` → Approve/Export → in → đóng), `IssueElectronicInvoiceForExistingBill` (tách từ khối phát hành trong `SaveProcess`). |
 | 25/08/2026 | nampp | Việc 3082 **v3** (tài liệu 3082 cập nhật 25/08: checkbox "In" đặt tại màn Xuất bán, nút Lưu in chạy cả chuỗi). Form nhận thêm `List<string> autoActions` (Behavior parse + constructor `_autoActions`); marker `Config.AUTO_ACTION__SAVE_SIGN_PRINT` → `Shown` → `RunAutoSaveSignPrint()`: tự Lưu ký + duyệt/thực xuất + in rồi tự đóng (thiếu tồn → đóng; fail khác → giữ mở). Tách `ProcessSaveSignPrintCore(autoExportPrint)` dùng chung cho nút Lưu ký và chế độ tự động, trả `SaveSignPrintResult`. **Khôi phục** `CheckStockBeforeExport` + `AutoApproveExportExpMests` từ commit 95ad34d8a (đã bỏ 07/08) theo hướng "tự thích nghi": `GetExpMestsFresh()` đọc trạng thái mới nhất, bỏ qua phiếu HOÀN THÀNH (kho tự thực xuất khi lưu / BE tự xuất khi tạo bill), sau Approve đọc `ExpMest.EXP_MEST_STT_ID` trả về để không gọi Export thừa. `PrintInvoiceNow()` trả `bool`. Không tick In → luồng cũ 100%. |
 | 08/08/2026 | nampp | Việc 3082 — thu hẹp tiếp: **chỉ nút Lưu ký được làm việc với HĐĐT**. `btnSavePrint_Click` (Lưu In) không gọi `onClickInHoaDonDienTu` khi config 3082 bật (trước đó nhánh `Config.PrintNowMps == "Mps000339"` vẫn tải HĐĐT → lỗi ERR:6 vì bill chưa phát hành). Sửa điều kiện chặn trong `onClickInHoaDonDienTu` từ `&&` thành `||` (bug cũ, còn gây nguy cơ NullReferenceException khi `transactionBillResult == null`). Giữ (và bổ sung cho bản V1 đang thiếu) phần khóa checkbox "Xuất biên lai/hóa đơn" ở 2 màn Xuất bán: đây là điều kiện để form hóa đơn tìm thấy phiếu, không phải nhiệm vụ của tick "In". Gỡ entry `licenses.licx` rỗng trong csproj ExpMestSaleCreate (chặn lc.exe trên máy build). |
 | 07/08/2026 | nampp | Việc 3082 — thu hẹp phạm vi màn thanh toán theo chốt với TUTM: checkbox "In" **chỉ còn nhiệm vụ in HĐĐT**. Bỏ `CheckStockBeforeExport()` và `AutoApproveExportExpMests()` (xóa hẳn 2 hàm) vì phần mềm đã tự thực xuất phiếu khi lưu ở màn Xuất bán; giữ lại `PrintInvoiceNow()`. Phần hủy hóa đơn (hoàn kho + về Yêu cầu) nằm ở các plugin danh sách, không đổi. |
@@ -123,11 +132,11 @@ In HĐĐT: link PDF từ nhà cung cấp → DocumentViewerManager (viewer khi L
 - [ ] Config bật + `PrintNow` = `Mps000339`: bấm **Lưu In** → chỉ in phiếu xuất bán, KHÔNG hiện popup lỗi hóa đơn điện tử.
 - [ ] Config bật: bấm **Lưu** (Ctrl S) → không đụng gì tới HĐĐT.
 - [ ] Config tắt + `PrintNow` = `Mps000339`: nút Lưu In giữ nguyên luồng cũ (vẫn tải HĐĐT).
-- [ ] Config bật, cả 2 màn Xuất bán (V1 + V2): checkbox "Xuất biên lai/hóa đơn" bị bỏ tick + khóa, có tooltip giải thích.
-- [ ] Config tắt, cả 2 màn Xuất bán: checkbox "Xuất biên lai/hóa đơn" dùng bình thường như cũ.
+- [ ] Cả 2 màn Xuất bán (V1 + V2): checkbox "Xuất biên lai/hóa đơn" dùng bình thường như code gốc (khóa 08/08 đã gỡ 29/08); màn V1 bấm "Lưu ký in" khi đang tick → cảnh báo, không chạy.
 
 ### Việc 3082 v3 (25/08/2026)
-- [ ] Màn Xuất bán tick "In" + Lưu in, đủ tồn: form F10 hiện & tự chạy → HĐĐT có INVOICE_CODE → phiếu HOÀN THÀNH (tồn giảm) → in thẳng → form tự đóng; màn Xuất bán khóa Lưu/Lưu in.
+- [ ] Chế độ bill đã có: màn Xuất bán tick "Xuất biên lai/hóa đơn" + Lưu ký in → form tải giao dịch, phát hành HĐĐT cho bill (INVOICE_CODE cập nhật), thực xuất, in, đóng; bill đã có INVOICE_CODE → bỏ qua phát hành; lỗi bất kỳ → popup + đóng form.
+- [ ] Chế độ phiếu chưa có bill (fallback): màn Xuất bán không trả Transaction + Lưu ký in, đủ tồn: form F10 hiện & tự chạy → HĐĐT có INVOICE_CODE → phiếu HOÀN THÀNH (tồn giảm) → in thẳng → form tự đóng; màn Xuất bán khóa Lưu/Lưu in.
 - [ ] Thiếu tồn (kho bị lấy giữa chừng): popup "Không đủ tồn kho… cần X, tồn Y"; không bill/HĐĐT; kho không đổi; form đóng.
 - [ ] Phát hành HĐĐT fail: bill tạo, báo lỗi, không thực xuất/in; form giữ mở.
 - [ ] Thực xuất fail sau phát hành (khóa lô sau khi phát hành): popup lý do API + hướng dẫn; không in; form giữ mở; thực xuất thủ công rồi In > In HĐĐT OK.

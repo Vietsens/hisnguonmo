@@ -253,4 +253,40 @@
     <value>Keyword</value>
     <comment>Từ khóa tìm kiếm</comment>
   </data>
+  <data name="frmHisCareer.grdColLevel2Code.Caption" xml:space="preserve">
+    <value>Level 2 code</value>
+  </data>
+  <data name="frmHisCareer.grdColLevel2Name.Caption" xml:space="preserve">
+    <value>Level 2 name</value>
+  </data>
+  <data name="frmHisCareer.grdColLevel3Code.Caption" xml:space="preserve">
+    <value>Level 3 code</value>
+  </data>
+  <data name="frmHisCareer.grdColLevel3Name.Caption" xml:space="preserve">
+    <value>Level 3 name</value>
+  </data>
+  <data name="frmHisCareer.grdColLevel4Code.Caption" xml:space="preserve">
+    <value>Level 4 code</value>
+  </data>
+  <data name="frmHisCareer.grdColLevel4Name.Caption" xml:space="preserve">
+    <value>Level 4 name</value>
+  </data>
+  <data name="frmHisCareer.lciLevel2Code.Text" xml:space="preserve">
+    <value>Level 2 code:</value>
+  </data>
+  <data name="frmHisCareer.lciLevel2Name.Text" xml:space="preserve">
+    <value>Level 2 name:</value>
+  </data>
+  <data name="frmHisCareer.lciLevel3Code.Text" xml:space="preserve">
+    <value>Level 3 code:</value>
+  </data>
+  <data name="frmHisCareer.lciLevel3Name.Text" xml:space="preserve">
+    <value>Level 3 name:</value>
+  </data>
+  <data name="frmHisCareer.lciLevel4Code.Text" xml:space="preserve">
+    <value>Level 4 code:</value>
+  </data>
+  <data name="frmHisCareer.lciLevel4Name.Text" xml:space="preserve">
+    <value>Level 4 name:</value>
+  </data>
 </root>

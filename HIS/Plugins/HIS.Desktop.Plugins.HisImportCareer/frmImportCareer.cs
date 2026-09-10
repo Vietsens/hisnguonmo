@@ -184,16 +184,25 @@ namespace HIS.Desktop.Plugins.HisImportCareer
                             foreach (var item in hisServiceImport)
                             {
                                 bool checkNull = string.IsNullOrEmpty(item.CAREER_CODE)
-                                    && string.IsNullOrEmpty(item.CAREER_NAME);
+                                    && string.IsNullOrEmpty(item.CAREER_NAME)
+                                    && string.IsNullOrEmpty(item.LEVEL1_CODE)
+                                    && string.IsNullOrEmpty(item.LEVEL2_CODE)
+                                    && string.IsNullOrEmpty(item.LEVEL3_CODE)
+                                    && string.IsNullOrEmpty(item.LEVEL4_CODE);
 
                                 if (!checkNull)
                                 {
                                     listAfterRemove.Add(item);
                                 }
                             }
+
+                            // Dong khong co ma cap 5 nhung co ma cap 2/3/4 -> dong ten nhom cap cha (QD 34/2020/QD-TTg)
+                            BuildLevelNameDictionaries(listAfterRemove);
+
                             WaitingManager.Hide();
 
-                            this._CurrentAdos = listAfterRemove;
+                            // Chi cac dong co ma cap 5 la nghe nghiep chi tiet duoc import
+                            this._CurrentAdos = listAfterRemove.Where(o => !string.IsNullOrEmpty(o.CAREER_CODE)).ToList();
 
                             if (this._CurrentAdos != null && this._CurrentAdos.Count > 0)
                             {
@@ -205,6 +214,10 @@ namespace HIS.Desktop.Plugins.HisImportCareer
                                 Inventec.Common.Logging.LogSystem.Debug("+++++++++++++++ lần 2 ++++++++++" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this._CareerAdos), this._CareerAdos));
                                 SetDataSource(this._CareerAdos);
                             }
+
+                            lblStatistic.Text = string.Format("Cấp 2: {0} | Cấp 3: {1} | Cấp 4: {2} | Nghề cấp 5: {3} dòng",
+                                _dicLevel2Name.Count, _dicLevel3Name.Count, _dicLevel4Name.Count,
+                                (this._CurrentAdos != null ? this._CurrentAdos.Count : 0));
 
                             //btnSave.Enabled = true;
                         }
@@ -227,8 +240,71 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             }
         }
 
+        #region Level dictionaries (QD 34/2020/QD-TTg)
+        /// <summary>Ma cap 2 -> ten nhom cap 2 (doc tu cac dong cap 2 trong file)</summary>
+        Dictionary<string, string> _dicLevel2Name = new Dictionary<string, string>();
+        /// <summary>Ma cap 3 -> ten nhom cap 3</summary>
+        Dictionary<string, string> _dicLevel3Name = new Dictionary<string, string>();
+        /// <summary>Ma cap 4 -> ten nhom cap 4</summary>
+        Dictionary<string, string> _dicLevel4Name = new Dictionary<string, string>();
+
         /// <summary>
-        /// 
+        /// Gom cac dong ten nhom cap 2/3/4 (dong khong co ma cap 5) thanh dictionary ma -> ten.
+        /// Ma trung thi lay ten dong sau cung (ghi de theo ban chuan moi nhat)
+        /// </summary>
+        private void BuildLevelNameDictionaries(List<CareerADO> rows)
+        {
+            try
+            {
+                _dicLevel2Name = new Dictionary<string, string>();
+                _dicLevel3Name = new Dictionary<string, string>();
+                _dicLevel4Name = new Dictionary<string, string>();
+                if (rows == null) return;
+                foreach (var item in rows.Where(o => string.IsNullOrEmpty(o.CAREER_CODE)))
+                {
+                    if (!string.IsNullOrEmpty(item.LEVEL4_CODE))
+                    {
+                        _dicLevel4Name[item.LEVEL4_CODE.Trim()] = item.CAREER_NAME;
+                    }
+                    else if (!string.IsNullOrEmpty(item.LEVEL3_CODE))
+                    {
+                        _dicLevel3Name[item.LEVEL3_CODE.Trim()] = item.CAREER_NAME;
+                    }
+                    else if (!string.IsNullOrEmpty(item.LEVEL2_CODE))
+                    {
+                        _dicLevel2Name[item.LEVEL2_CODE.Trim()] = item.CAREER_NAME;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Suy ma cap tu ma nghe cap 5 (level ky tu dau, chi khi ma du 5 ky tu)
+        /// </summary>
+        private static string GetLevelCode(string careerCode, int level)
+        {
+            string result = "";
+            try
+            {
+                if (!string.IsNullOrEmpty(careerCode) && careerCode.Trim().Length == 5)
+                {
+                    result = careerCode.Trim().Substring(0, level);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+        #endregion
+
+        /// <summary>
+        ///
         /// </summary>
         /// <param name="_service"></param>
         private void addServiceToProcessList(List<CareerADO> _service, ref List<CareerADO> _careerRoomRef)
@@ -256,13 +332,8 @@ namespace HIS.Desktop.Plugins.HisImportCareer
                     {
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã nghề nghiệp");
                     }
-                   
-                    var checkTrung12 = BackendDataWorker.Get<HIS_CAREER>().Where(p => p.CAREER_CODE == item.CAREER_CODE).ToList();
-                    if (checkTrung12 != null && checkTrung12.Count > 0)
-                    {
-                        error += string.Format(Message.MessageImport.FileImportDaTonTai, item.CAREER_CODE);
-                    }
 
+                    // Ma trung voi ma da co: cho phep ghi de (upsert), khong bao loi trung
 
                     if (!string.IsNullOrEmpty(item.CAREER_NAME))
                     {
@@ -275,7 +346,17 @@ namespace HIS.Desktop.Plugins.HisImportCareer
                     {
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "Tên nghề nghiệp");
                     }
-                    
+
+                    // Suy ma cap 2/3/4 tu ma nghe + tra ten nhom tu cac dong cap cha trong file.
+                    // Khong tim thay ten -> de trong (theo quy tac NEU/THI viec 2841)
+                    serAdo.LEVEL2_CODE = GetLevelCode(serAdo.CAREER_CODE, 2);
+                    serAdo.LEVEL3_CODE = GetLevelCode(serAdo.CAREER_CODE, 3);
+                    serAdo.LEVEL4_CODE = GetLevelCode(serAdo.CAREER_CODE, 4);
+                    string levelName = "";
+                    serAdo.LEVEL2_NAME = (!string.IsNullOrEmpty(serAdo.LEVEL2_CODE) && _dicLevel2Name.TryGetValue(serAdo.LEVEL2_CODE, out levelName)) ? levelName : "";
+                    serAdo.LEVEL3_NAME = (!string.IsNullOrEmpty(serAdo.LEVEL3_CODE) && _dicLevel3Name.TryGetValue(serAdo.LEVEL3_CODE, out levelName)) ? levelName : "";
+                    serAdo.LEVEL4_NAME = (!string.IsNullOrEmpty(serAdo.LEVEL4_CODE) && _dicLevel4Name.TryGetValue(serAdo.LEVEL4_CODE, out levelName)) ? levelName : "";
+
                     serAdo.ERROR = error;
                     serAdo.ID = i;
                     _careerRoomRef.Add(serAdo);
@@ -423,15 +504,21 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             {
                 bool success = false;
                 WaitingManager.Show();
-                List<HIS_CAREER> datas = new List<HIS_CAREER>();
+                List<CareerImportDTO> datas = new List<CareerImportDTO>();
 
                 if (this._CareerAdos != null && this._CareerAdos.Count > 0)
                 {
                     foreach (var item in this._CareerAdos)
                     {
-                        HIS_CAREER ado = new HIS_CAREER();
+                        CareerImportDTO ado = new CareerImportDTO();
                         ado.CAREER_CODE = item.CAREER_CODE;
                         ado.CAREER_NAME = item.CAREER_NAME;
+                        ado.LEVEL2_CODE = item.LEVEL2_CODE;
+                        ado.LEVEL2_NAME = item.LEVEL2_NAME;
+                        ado.LEVEL3_CODE = item.LEVEL3_CODE;
+                        ado.LEVEL3_NAME = item.LEVEL3_NAME;
+                        ado.LEVEL4_CODE = item.LEVEL4_CODE;
+                        ado.LEVEL4_NAME = item.LEVEL4_NAME;
                         datas.Add(ado);
                     }
                 }
@@ -443,12 +530,13 @@ namespace HIS.Desktop.Plugins.HisImportCareer
                 }
 
                 CommonParam param = new CommonParam();
-                var dataImports = new BackendAdapter(param).Post<List<HIS_CAREER>>("api/HisCareer/CreateList", ApiConsumers.MosConsumer, datas, param);
+                var dataImports = new BackendAdapter(param).Post<List<HIS_CAREER>>("api/HisCareer/ImportList", ApiConsumers.MosConsumer, datas, param);
                 WaitingManager.Hide();
                 if (dataImports != null && dataImports.Count > 0)
                 {
                     success = true;
                     btnImport.Enabled = false;
+                    BackendDataWorker.Reset<HIS_CAREER>();
                     LoadDataBed();
                     if (this.delegateRefresh != null)
                     {

@@ -126,6 +126,18 @@ namespace HIS.Desktop.Plugins.HisCareer
                 this.grdColCode.ToolTip = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColCode.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColName.Caption = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColName.ToolTip = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColName.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColLevel2Code.Caption = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColLevel2Code.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColLevel2Name.Caption = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColLevel2Name.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColLevel3Code.Caption = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColLevel3Code.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColLevel3Name.Caption = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColLevel3Name.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColLevel4Code.Caption = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColLevel4Code.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColLevel4Name.Caption = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColLevel4Name.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciLevel2Code.Text = Inventec.Common.Resource.Get.Value("frmHisCareer.lciLevel2Code.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciLevel2Name.Text = Inventec.Common.Resource.Get.Value("frmHisCareer.lciLevel2Name.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciLevel3Code.Text = Inventec.Common.Resource.Get.Value("frmHisCareer.lciLevel3Code.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciLevel3Name.Text = Inventec.Common.Resource.Get.Value("frmHisCareer.lciLevel3Name.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciLevel4Code.Text = Inventec.Common.Resource.Get.Value("frmHisCareer.lciLevel4Code.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciLevel4Name.Text = Inventec.Common.Resource.Get.Value("frmHisCareer.lciLevel4Name.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmHisCareer.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColCreateTime.Caption = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColCreateTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColCreateTime.ToolTip = Inventec.Common.Resource.Get.Value("frmHisCareer.grdColCreateTime.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -458,6 +470,30 @@ namespace HIS.Desktop.Plugins.HisCareer
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
+                    else if (e.Column.FieldName == "L2_CODE")
+                    {
+                        e.Value = CareerLevelWorker.GetProp(pData, "LEVEL2_CODE");
+                    }
+                    else if (e.Column.FieldName == "L2_NAME")
+                    {
+                        e.Value = CareerLevelWorker.GetProp(pData, "LEVEL2_NAME");
+                    }
+                    else if (e.Column.FieldName == "L3_CODE")
+                    {
+                        e.Value = CareerLevelWorker.GetProp(pData, "LEVEL3_CODE");
+                    }
+                    else if (e.Column.FieldName == "L3_NAME")
+                    {
+                        e.Value = CareerLevelWorker.GetProp(pData, "LEVEL3_NAME");
+                    }
+                    else if (e.Column.FieldName == "L4_CODE")
+                    {
+                        e.Value = CareerLevelWorker.GetProp(pData, "LEVEL4_CODE");
+                    }
+                    else if (e.Column.FieldName == "L4_NAME")
+                    {
+                        e.Value = CareerLevelWorker.GetProp(pData, "LEVEL4_NAME");
+                    }
                 }
 
                 gridControlFormList.RefreshDataSource();
@@ -558,8 +594,86 @@ namespace HIS.Desktop.Plugins.HisCareer
                     txtCareerCode.Text = data.CAREER_CODE;
                     txtCareerName.Text = data.CAREER_NAME;
                     //spMaxCapacity.EditValue = data.MAX_CAPACITY;
-
+                    FillLevelInfoFromData(data);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hien thi ma/ten cap 2/3/4 tu ban ghi. Truong hop ban ghi chua co du lieu cap
+        /// (chua duoc BE fill) nhung ma du 5 ky tu thi tu suy ma cap + ten cap tu danh muc
+        /// </summary>
+        private void FillLevelInfoFromData(MOS.EFMODEL.DataModels.HIS_CAREER data)
+        {
+            try
+            {
+                txtLevel2Code.Text = CareerLevelWorker.GetProp(data, "LEVEL2_CODE");
+                txtLevel2Name.Text = CareerLevelWorker.GetProp(data, "LEVEL2_NAME");
+                txtLevel3Code.Text = CareerLevelWorker.GetProp(data, "LEVEL3_CODE");
+                txtLevel3Name.Text = CareerLevelWorker.GetProp(data, "LEVEL3_NAME");
+                txtLevel4Code.Text = CareerLevelWorker.GetProp(data, "LEVEL4_CODE");
+                txtLevel4Name.Text = CareerLevelWorker.GetProp(data, "LEVEL4_NAME");
+                if (String.IsNullOrEmpty(txtLevel2Code.Text) && String.IsNullOrEmpty(txtLevel3Code.Text) && String.IsNullOrEmpty(txtLevel4Code.Text))
+                {
+                    FillLevelInfoByCareerCode(data.CAREER_CODE);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tu dong dien ma cap (2/3/4 ky tu dau, khong cho sua) + ten cap (tra tu danh muc) theo ma nghe nhap vao.
+        /// Ten cap cho phep nguoi dung sua/nhap tay: chi tu dien khi ma cap thay doi hoac o ten dang trong,
+        /// khong de mat ten nguoi dung da go. Ma khong du 5 ky tu (bo ma cu) -> de trong cac o cap
+        /// </summary>
+        private void FillLevelInfoByCareerCode(string careerCode)
+        {
+            try
+            {
+                FillOneLevel(careerCode, 2, txtLevel2Code, txtLevel2Name);
+                FillOneLevel(careerCode, 3, txtLevel3Code, txtLevel3Name);
+                FillOneLevel(careerCode, 4, txtLevel4Code, txtLevel4Name);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void FillOneLevel(string careerCode, int level, TextEdit txtCode, TextEdit txtName)
+        {
+            try
+            {
+                string newCode = CareerLevelWorker.GetLevelCode(careerCode, level);
+                bool codeChanged = (txtCode.Text ?? "") != newCode;
+                txtCode.Text = newCode;
+                if (codeChanged || String.IsNullOrEmpty(txtName.Text))
+                {
+                    string foundName = CareerLevelWorker.FindLevelName(newCode, level);
+                    if (codeChanged || !String.IsNullOrEmpty(foundName))
+                    {
+                        txtName.Text = foundName;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtCareerCode_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                FillLevelInfoByCareerCode(txtCareerCode.Text);
             }
             catch (Exception ex)
             {
@@ -865,6 +979,13 @@ namespace HIS.Desktop.Plugins.HisCareer
             {
                 currentDTO.CAREER_CODE = txtCareerCode.Text.Trim();
                 currentDTO.CAREER_NAME = txtCareerName.Text.Trim();
+                // Ma cap tu tach tu ma nghe (khong cho sua); ten cap cho phep nguoi dung nhap/sua
+                currentDTO.LEVEL2_CODE = txtLevel2Code.Text.Trim();
+                currentDTO.LEVEL2_NAME = txtLevel2Name.Text.Trim();
+                currentDTO.LEVEL3_CODE = txtLevel3Code.Text.Trim();
+                currentDTO.LEVEL3_NAME = txtLevel3Name.Text.Trim();
+                currentDTO.LEVEL4_CODE = txtLevel4Code.Text.Trim();
+                currentDTO.LEVEL4_NAME = txtLevel4Name.Text.Trim();
                 //currentDTO.MAX_CAPACITY = (long)spMaxCapacity.Value;
 
             }
@@ -883,6 +1004,9 @@ namespace HIS.Desktop.Plugins.HisCareer
             {
                 ValidateTextEdit(txtCareerCode, 5);
                 ValidateTextEdit(txtCareerName, 1000);
+                ValidateTextEdit(txtLevel2Name, 1000);
+                ValidateTextEdit(txtLevel3Name, 1000);
+                ValidateTextEdit(txtLevel4Name, 1000);
 
             }
             catch (Exception ex)

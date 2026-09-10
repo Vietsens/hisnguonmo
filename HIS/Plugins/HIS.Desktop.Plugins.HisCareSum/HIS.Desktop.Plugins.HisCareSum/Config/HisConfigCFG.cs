@@ -30,9 +30,35 @@ namespace HIS.Desktop.Plugins.HisCareSum.Config
     class HisConfigCFG
     {
         private const string CONFIG_KEY__ALLOW_UPDATING_AFTER_LOCKING_TREATMENT = "MOS.HIS_CARE_SUM.ALLOW_UPDATING_AFTER_LOCKING_TREATMENT";
-        public const string CONFIG_KEY__HIS_DESKTOP_PLUGINS_CARE_IS_PRINT_MERGE = "HIS.Desktop.Plugins.EmrDocument.IsPrintMerge";
+        public const string CONFIG_KEY__HIS_DESKTOP_PLUGINS_CARE_IS_PRINT_MERGE = "HIS.Desktop.Plugins.Care.IsPrintMerge";
+        public const string CONFIG_KEY__HIS_DESKTOP_PLUGINS_EMR_DOCUMENT_IS_PRINT_MERGE = "HIS.Desktop.Plugins.EmrDocument.IsPrintMerge";
 
         internal static string AllowUpdatingAfterLockingTreatment;
+
+        /// <summary>
+        /// Merge-print flag for care sheets. Reads the dedicated key first;
+        /// falls back to the legacy shared key (EmrDocument.IsPrintMerge) when not configured,
+        /// so hospitals without the new key keep the current behavior.
+        /// </summary>
+        public static long GetKeyPrintMerge()
+        {
+            long result = 0;
+            try
+            {
+                string value = HisConfigs.Get<string>(CONFIG_KEY__HIS_DESKTOP_PLUGINS_CARE_IS_PRINT_MERGE);
+                if (String.IsNullOrWhiteSpace(value))
+                {
+                    value = HisConfigs.Get<string>(CONFIG_KEY__HIS_DESKTOP_PLUGINS_EMR_DOCUMENT_IS_PRINT_MERGE);
+                }
+                result = Inventec.Common.TypeConvert.Parse.ToInt64(value);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                result = 0;
+            }
+            return result;
+        }
 
         internal static void LoadConfig()
         {

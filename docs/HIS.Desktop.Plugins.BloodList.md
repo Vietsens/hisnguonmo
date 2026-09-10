@@ -85,6 +85,8 @@ Không có chức năng in trực tiếp trong plugin.
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 09/09/2026 | nampp (Claude) | Việc 2841 (bổ sung): thêm key `MOS.HIS_CAREER.IS_SHOW_LEVEL_2` — cột Tên nhóm cấp 2 trên combo nghề nghiệp cũng bật/tắt theo key như cấp 3/4 (mặc định rỗng = ẨN, combo giữ nguyên như trước khi update; phù hợp viện chưa thiết lập danh mục cấp). |
+| 07/09/2026 | nampp (Claude) | **Việc 2841 — Danh mục nghề nghiệp cấp 2/3/4 (QĐ 34/2020/QĐ-TTg)** Combo chọn nghề nghiệp bổ sung cột "Tên cấp 2" (LEVEL2_NAME, luôn hiển thị) + cột cấp 3/cấp 4 theo key cấu hình `MOS.HIS_CAREER.IS_SHOW_LEVEL_3` / `IS_SHOW_LEVEL_4` (1 = hiện; mặc định ẩn). Cột bind theo FieldName string nên tương thích cả MOS.EFMODEL cũ (hiện trống) lẫn mới. Files: `frmBloodUpdate.cs` (InitComboDefault → InitComboCareer riêng cho cboCareer), `.csproj` (thêm ProjectReference HIS.Desktop.LocalStorage.HisConfig, xóa licenses.licx stale). |
 | 09/05/2026 | dangth | **Mục 2.7 PTTK 2562 (việc 43980)** — Thêm trường "CSKCB chuyển" (TRANSFER_MEDI_ORG_CODE) vào form `frmBloodUpdate`. ButtonEdit có nút "+" mở `HIS.UC.MediOrgPicker`. Auto-fill khi load lô máu. Validate realtime + chặn lưu khi vượt 10 ký tự. Lưu vào `HIS_BLOOD.TRANSFER_MEDI_ORG_CODE` qua `api/HisBlood/Update`. Thêm Resources đa ngôn ngữ vi/en. |
 
 ## 9. Test Cases

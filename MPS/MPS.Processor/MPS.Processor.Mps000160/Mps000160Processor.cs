@@ -263,7 +263,7 @@ namespace MPS.Processor.Mps000160
                         }
                     }
 
-                    thanhtien_tong = sereServADOs.Sum(o => o.VIR_TOTAL_PRICE) ?? 0;
+                    thanhtien_tong = sereServADOs.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND) ?? 0; // hao phi: tong theo cot NO_EXPEND (Old\Core\Mps000160RDO)
                     bhytthanhtoan_tong = sereServADOs.Sum(o => o.VIR_TOTAL_HEIN_PRICE) ?? 0;
                     bnthanhtoan_tong = sereServADOs.Sum(o => o.VIR_TOTAL_PATIENT_PRICE) ?? 0;
                     nguonkhac_tong = 0;

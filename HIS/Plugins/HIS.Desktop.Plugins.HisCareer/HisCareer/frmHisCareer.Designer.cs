@@ -75,6 +75,12 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.btnGEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.grdColCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel2Code = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel2Name = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel3Code = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel3Name = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel4Code = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLevel4Name = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColCreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColCreator = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -96,11 +102,23 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
             this.txtCareerCode = new DevExpress.XtraEditors.TextEdit();
             this.txtCareerName = new DevExpress.XtraEditors.TextEdit();
+            this.txtLevel2Code = new DevExpress.XtraEditors.TextEdit();
+            this.txtLevel2Name = new DevExpress.XtraEditors.TextEdit();
+            this.txtLevel3Code = new DevExpress.XtraEditors.TextEdit();
+            this.txtLevel3Name = new DevExpress.XtraEditors.TextEdit();
+            this.txtLevel4Code = new DevExpress.XtraEditors.TextEdit();
+            this.txtLevel4Name = new DevExpress.XtraEditors.TextEdit();
             this.dnNavigation = new DevExpress.XtraEditors.DataNavigator();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBedTypeCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBedTypeName = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciLevel2Code = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciLevel2Name = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciLevel3Code = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciLevel3Name = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciLevel4Code = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciLevel4Name = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -144,10 +162,22 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.lcEditorInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtCareerCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCareerName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel2Code.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel2Name.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel3Code.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel3Name.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel4Code.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel4Name.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBedTypeCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBedTypeName)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel2Code)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel2Name)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel3Code)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel3Name)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel4Code)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel4Name)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
@@ -235,6 +265,12 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.gridColumnEdit,
             this.grdColCode,
             this.grdColName,
+            this.grdColLevel2Code,
+            this.grdColLevel2Name,
+            this.grdColLevel3Code,
+            this.grdColLevel3Name,
+            this.grdColLevel4Code,
+            this.grdColLevel4Name,
             this.gridColumn2,
             this.grdColCreateTime,
             this.grdColCreator,
@@ -242,6 +278,7 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.grdColModifier});
             this.gridviewFormList.GridControl = this.gridControlFormList;
             this.gridviewFormList.Name = "gridviewFormList";
+            this.gridviewFormList.OptionsView.ColumnAutoWidth = false;
             this.gridviewFormList.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
             this.gridviewFormList.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.True;
             this.gridviewFormList.OptionsFind.AllowFindPanel = false;
@@ -330,6 +367,78 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.grdColName.Visible = true;
             this.grdColName.VisibleIndex = 4;
             this.grdColName.Width = 222;
+            //
+            // grdColLevel2Code
+            //
+            this.grdColLevel2Code.Caption = "Mã cấp 2";
+            this.grdColLevel2Code.FieldName = "L2_CODE";
+            this.grdColLevel2Code.Name = "grdColLevel2Code";
+            this.grdColLevel2Code.OptionsColumn.AllowEdit = false;
+            this.grdColLevel2Code.ToolTip = "LEVEL2_CODE";
+            this.grdColLevel2Code.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.grdColLevel2Code.Visible = true;
+            this.grdColLevel2Code.VisibleIndex = 5;
+            this.grdColLevel2Code.Width = 65;
+            //
+            // grdColLevel2Name
+            //
+            this.grdColLevel2Name.Caption = "Tên cấp 2";
+            this.grdColLevel2Name.FieldName = "L2_NAME";
+            this.grdColLevel2Name.Name = "grdColLevel2Name";
+            this.grdColLevel2Name.OptionsColumn.AllowEdit = false;
+            this.grdColLevel2Name.ToolTip = "LEVEL2_NAME";
+            this.grdColLevel2Name.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.grdColLevel2Name.Visible = true;
+            this.grdColLevel2Name.VisibleIndex = 6;
+            this.grdColLevel2Name.Width = 180;
+            //
+            // grdColLevel3Code
+            //
+            this.grdColLevel3Code.Caption = "Mã cấp 3";
+            this.grdColLevel3Code.FieldName = "L3_CODE";
+            this.grdColLevel3Code.Name = "grdColLevel3Code";
+            this.grdColLevel3Code.OptionsColumn.AllowEdit = false;
+            this.grdColLevel3Code.ToolTip = "LEVEL3_CODE";
+            this.grdColLevel3Code.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.grdColLevel3Code.Visible = true;
+            this.grdColLevel3Code.VisibleIndex = 7;
+            this.grdColLevel3Code.Width = 65;
+            //
+            // grdColLevel3Name
+            //
+            this.grdColLevel3Name.Caption = "Tên cấp 3";
+            this.grdColLevel3Name.FieldName = "L3_NAME";
+            this.grdColLevel3Name.Name = "grdColLevel3Name";
+            this.grdColLevel3Name.OptionsColumn.AllowEdit = false;
+            this.grdColLevel3Name.ToolTip = "LEVEL3_NAME";
+            this.grdColLevel3Name.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.grdColLevel3Name.Visible = true;
+            this.grdColLevel3Name.VisibleIndex = 8;
+            this.grdColLevel3Name.Width = 180;
+            //
+            // grdColLevel4Code
+            //
+            this.grdColLevel4Code.Caption = "Mã cấp 4";
+            this.grdColLevel4Code.FieldName = "L4_CODE";
+            this.grdColLevel4Code.Name = "grdColLevel4Code";
+            this.grdColLevel4Code.OptionsColumn.AllowEdit = false;
+            this.grdColLevel4Code.ToolTip = "LEVEL4_CODE";
+            this.grdColLevel4Code.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.grdColLevel4Code.Visible = true;
+            this.grdColLevel4Code.VisibleIndex = 9;
+            this.grdColLevel4Code.Width = 65;
+            //
+            // grdColLevel4Name
+            //
+            this.grdColLevel4Name.Caption = "Tên cấp 4";
+            this.grdColLevel4Name.FieldName = "L4_NAME";
+            this.grdColLevel4Name.Name = "grdColLevel4Name";
+            this.grdColLevel4Name.OptionsColumn.AllowEdit = false;
+            this.grdColLevel4Name.ToolTip = "LEVEL4_NAME";
+            this.grdColLevel4Name.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.grdColLevel4Name.Visible = true;
+            this.grdColLevel4Name.VisibleIndex = 10;
+            this.grdColLevel4Name.Width = 180;
             // 
             // gridColumn2
             // 
@@ -339,7 +448,7 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 5;
+            this.gridColumn2.VisibleIndex = 11;
             this.gridColumn2.Width = 77;
             // 
             // grdColCreateTime
@@ -351,7 +460,7 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.grdColCreateTime.ToolTip = "CREATE_TIME";
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 6;
+            this.grdColCreateTime.VisibleIndex = 12;
             this.grdColCreateTime.Width = 118;
             // 
             // grdColCreator
@@ -362,7 +471,7 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.grdColCreator.OptionsColumn.AllowEdit = false;
             this.grdColCreator.ToolTip = "CREATOR";
             this.grdColCreator.Visible = true;
-            this.grdColCreator.VisibleIndex = 7;
+            this.grdColCreator.VisibleIndex = 13;
             this.grdColCreator.Width = 90;
             // 
             // grdColModifyTime
@@ -374,7 +483,7 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.grdColModifyTime.ToolTip = "MODIFY_TIME";
             this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifyTime.Visible = true;
-            this.grdColModifyTime.VisibleIndex = 8;
+            this.grdColModifyTime.VisibleIndex = 14;
             this.grdColModifyTime.Width = 118;
             // 
             // grdColModifier
@@ -385,7 +494,7 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.grdColModifier.OptionsColumn.AllowEdit = false;
             this.grdColModifier.ToolTip = "MODIFIER";
             this.grdColModifier.Visible = true;
-            this.grdColModifier.VisibleIndex = 9;
+            this.grdColModifier.VisibleIndex = 15;
             this.grdColModifier.Width = 90;
             // 
             // btnGunLock
@@ -491,6 +600,12 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.lcEditorInfo.Controls.Add(this.btnEdit);
             this.lcEditorInfo.Controls.Add(this.txtCareerCode);
             this.lcEditorInfo.Controls.Add(this.txtCareerName);
+            this.lcEditorInfo.Controls.Add(this.txtLevel2Code);
+            this.lcEditorInfo.Controls.Add(this.txtLevel2Name);
+            this.lcEditorInfo.Controls.Add(this.txtLevel3Code);
+            this.lcEditorInfo.Controls.Add(this.txtLevel3Name);
+            this.lcEditorInfo.Controls.Add(this.txtLevel4Code);
+            this.lcEditorInfo.Controls.Add(this.txtLevel4Name);
             this.lcEditorInfo.Controls.Add(this.dnNavigation);
             this.lcEditorInfo.Location = new System.Drawing.Point(902, 2);
             this.lcEditorInfo.Name = "lcEditorInfo";
@@ -538,6 +653,7 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.txtCareerCode.Size = new System.Drawing.Size(233, 20);
             this.txtCareerCode.StyleController = this.lcEditorInfo;
             this.txtCareerCode.TabIndex = 0;
+            this.txtCareerCode.Leave += new System.EventHandler(this.txtCareerCode_Leave);
             // 
             // txtCareerName
             // 
@@ -547,6 +663,63 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.txtCareerName.Size = new System.Drawing.Size(233, 20);
             this.txtCareerName.StyleController = this.lcEditorInfo;
             this.txtCareerName.TabIndex = 1;
+            //
+            // txtLevel2Code
+            //
+            this.txtLevel2Code.Location = new System.Drawing.Point(97, 73);
+            this.txtLevel2Code.Name = "txtLevel2Code";
+            this.txtLevel2Code.Properties.ReadOnly = true;
+            this.txtLevel2Code.Size = new System.Drawing.Size(233, 20);
+            this.txtLevel2Code.StyleController = this.lcEditorInfo;
+            this.txtLevel2Code.TabIndex = 2;
+            this.txtLevel2Code.TabStop = false;
+            //
+            // txtLevel2Name
+            //
+            this.txtLevel2Name.EnterMoveNextControl = true;
+            this.txtLevel2Name.Location = new System.Drawing.Point(97, 97);
+            this.txtLevel2Name.Name = "txtLevel2Name";
+            this.txtLevel2Name.Size = new System.Drawing.Size(233, 20);
+            this.txtLevel2Name.StyleController = this.lcEditorInfo;
+            this.txtLevel2Name.TabIndex = 3;
+            //
+            // txtLevel3Code
+            //
+            this.txtLevel3Code.Location = new System.Drawing.Point(97, 121);
+            this.txtLevel3Code.Name = "txtLevel3Code";
+            this.txtLevel3Code.Properties.ReadOnly = true;
+            this.txtLevel3Code.Size = new System.Drawing.Size(233, 20);
+            this.txtLevel3Code.StyleController = this.lcEditorInfo;
+            this.txtLevel3Code.TabIndex = 4;
+            this.txtLevel3Code.TabStop = false;
+            //
+            // txtLevel3Name
+            //
+            this.txtLevel3Name.EnterMoveNextControl = true;
+            this.txtLevel3Name.Location = new System.Drawing.Point(97, 145);
+            this.txtLevel3Name.Name = "txtLevel3Name";
+            this.txtLevel3Name.Size = new System.Drawing.Size(233, 20);
+            this.txtLevel3Name.StyleController = this.lcEditorInfo;
+            this.txtLevel3Name.TabIndex = 5;
+            //
+            // txtLevel4Code
+            //
+            this.txtLevel4Code.Location = new System.Drawing.Point(97, 169);
+            this.txtLevel4Code.Name = "txtLevel4Code";
+            this.txtLevel4Code.Properties.ReadOnly = true;
+            this.txtLevel4Code.Size = new System.Drawing.Size(233, 20);
+            this.txtLevel4Code.StyleController = this.lcEditorInfo;
+            this.txtLevel4Code.TabIndex = 6;
+            this.txtLevel4Code.TabStop = false;
+            //
+            // txtLevel4Name
+            //
+            this.txtLevel4Name.EnterMoveNextControl = true;
+            this.txtLevel4Name.Location = new System.Drawing.Point(97, 193);
+            this.txtLevel4Name.Name = "txtLevel4Name";
+            this.txtLevel4Name.Size = new System.Drawing.Size(233, 20);
+            this.txtLevel4Name.StyleController = this.lcEditorInfo;
+            this.txtLevel4Name.TabIndex = 7;
             // 
             // dnNavigation
             // 
@@ -572,6 +745,12 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.layoutControlItem8,
             this.lciBedTypeCode,
             this.lciBedTypeName,
+            this.lciLevel2Code,
+            this.lciLevel2Name,
+            this.lciLevel3Code,
+            this.lciLevel3Name,
+            this.lciLevel4Code,
+            this.lciLevel4Name,
             this.emptySpaceItem1,
             this.layoutControlItem6,
             this.layoutControlItem7,
@@ -621,19 +800,97 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.lciBedTypeName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBedTypeName.TextSize = new System.Drawing.Size(90, 20);
             this.lciBedTypeName.TextToControlDistance = 5;
+            //
+            // lciLevel2Code
+            //
+            this.lciLevel2Code.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciLevel2Code.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciLevel2Code.Control = this.txtLevel2Code;
+            this.lciLevel2Code.Location = new System.Drawing.Point(0, 71);
+            this.lciLevel2Code.Name = "lciLevel2Code";
+            this.lciLevel2Code.Size = new System.Drawing.Size(332, 24);
+            this.lciLevel2Code.Text = "Mã cấp 2:";
+            this.lciLevel2Code.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciLevel2Code.TextSize = new System.Drawing.Size(90, 20);
+            this.lciLevel2Code.TextToControlDistance = 5;
+            //
+            // lciLevel2Name
+            //
+            this.lciLevel2Name.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciLevel2Name.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciLevel2Name.Control = this.txtLevel2Name;
+            this.lciLevel2Name.Location = new System.Drawing.Point(0, 95);
+            this.lciLevel2Name.Name = "lciLevel2Name";
+            this.lciLevel2Name.Size = new System.Drawing.Size(332, 24);
+            this.lciLevel2Name.Text = "Tên cấp 2:";
+            this.lciLevel2Name.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciLevel2Name.TextSize = new System.Drawing.Size(90, 20);
+            this.lciLevel2Name.TextToControlDistance = 5;
+            //
+            // lciLevel3Code
+            //
+            this.lciLevel3Code.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciLevel3Code.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciLevel3Code.Control = this.txtLevel3Code;
+            this.lciLevel3Code.Location = new System.Drawing.Point(0, 119);
+            this.lciLevel3Code.Name = "lciLevel3Code";
+            this.lciLevel3Code.Size = new System.Drawing.Size(332, 24);
+            this.lciLevel3Code.Text = "Mã cấp 3:";
+            this.lciLevel3Code.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciLevel3Code.TextSize = new System.Drawing.Size(90, 20);
+            this.lciLevel3Code.TextToControlDistance = 5;
+            //
+            // lciLevel3Name
+            //
+            this.lciLevel3Name.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciLevel3Name.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciLevel3Name.Control = this.txtLevel3Name;
+            this.lciLevel3Name.Location = new System.Drawing.Point(0, 143);
+            this.lciLevel3Name.Name = "lciLevel3Name";
+            this.lciLevel3Name.Size = new System.Drawing.Size(332, 24);
+            this.lciLevel3Name.Text = "Tên cấp 3:";
+            this.lciLevel3Name.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciLevel3Name.TextSize = new System.Drawing.Size(90, 20);
+            this.lciLevel3Name.TextToControlDistance = 5;
+            //
+            // lciLevel4Code
+            //
+            this.lciLevel4Code.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciLevel4Code.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciLevel4Code.Control = this.txtLevel4Code;
+            this.lciLevel4Code.Location = new System.Drawing.Point(0, 167);
+            this.lciLevel4Code.Name = "lciLevel4Code";
+            this.lciLevel4Code.Size = new System.Drawing.Size(332, 24);
+            this.lciLevel4Code.Text = "Mã cấp 4:";
+            this.lciLevel4Code.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciLevel4Code.TextSize = new System.Drawing.Size(90, 20);
+            this.lciLevel4Code.TextToControlDistance = 5;
+            //
+            // lciLevel4Name
+            //
+            this.lciLevel4Name.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciLevel4Name.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciLevel4Name.Control = this.txtLevel4Name;
+            this.lciLevel4Name.Location = new System.Drawing.Point(0, 191);
+            this.lciLevel4Name.Name = "lciLevel4Name";
+            this.lciLevel4Name.Size = new System.Drawing.Size(332, 24);
+            this.lciLevel4Name.Text = "Tên cấp 4:";
+            this.lciLevel4Name.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciLevel4Name.TextSize = new System.Drawing.Size(90, 20);
+            this.lciLevel4Name.TextToControlDistance = 5;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 97);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 241);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(332, 381);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(332, 237);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnEdit;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 71);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 215);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(112, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -642,7 +899,7 @@ namespace HIS.Desktop.Plugins.HisCareer
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(112, 71);
+            this.layoutControlItem7.Location = new System.Drawing.Point(112, 215);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(111, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -651,7 +908,7 @@ namespace HIS.Desktop.Plugins.HisCareer
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnRefresh;
-            this.layoutControlItem9.Location = new System.Drawing.Point(223, 71);
+            this.layoutControlItem9.Location = new System.Drawing.Point(223, 215);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(109, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -839,10 +1096,22 @@ namespace HIS.Desktop.Plugins.HisCareer
             this.lcEditorInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtCareerCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCareerName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel2Code.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel2Name.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel3Code.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel3Name.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel4Code.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLevel4Name.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBedTypeCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBedTypeName)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel2Code)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel2Name)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel3Code)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel3Name)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel4Code)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLevel4Name)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
@@ -874,6 +1143,24 @@ namespace HIS.Desktop.Plugins.HisCareer
         private DevExpress.XtraLayout.LayoutControlItem lciBedTypeCode;
         private DevExpress.XtraEditors.TextEdit txtCareerName;
         private DevExpress.XtraLayout.LayoutControlItem lciBedTypeName;
+        private DevExpress.XtraEditors.TextEdit txtLevel2Code;
+        private DevExpress.XtraEditors.TextEdit txtLevel2Name;
+        private DevExpress.XtraEditors.TextEdit txtLevel3Code;
+        private DevExpress.XtraEditors.TextEdit txtLevel3Name;
+        private DevExpress.XtraEditors.TextEdit txtLevel4Code;
+        private DevExpress.XtraEditors.TextEdit txtLevel4Name;
+        private DevExpress.XtraLayout.LayoutControlItem lciLevel2Code;
+        private DevExpress.XtraLayout.LayoutControlItem lciLevel2Name;
+        private DevExpress.XtraLayout.LayoutControlItem lciLevel3Code;
+        private DevExpress.XtraLayout.LayoutControlItem lciLevel3Name;
+        private DevExpress.XtraLayout.LayoutControlItem lciLevel4Code;
+        private DevExpress.XtraLayout.LayoutControlItem lciLevel4Name;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel2Code;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel2Name;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel3Code;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel3Name;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel4Code;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLevel4Name;
 
         private DevExpress.XtraGrid.Columns.GridColumn grdColCode;
         private DevExpress.XtraGrid.Columns.GridColumn grdColName;

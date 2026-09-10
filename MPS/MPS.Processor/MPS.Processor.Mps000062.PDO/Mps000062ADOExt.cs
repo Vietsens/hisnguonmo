@@ -102,6 +102,18 @@ namespace MPS.Processor.Mps000062.PDO
         public string ICD_TEXT_TRACKING { get; set; }
 
         public long NUMBER_DAYS_TREATMENT { get; set; }
+
+        public string HOME_PRES_TITLE { get; set; } //Viec 26771: "Thuốc cấp về:" khi to dieu tri co thuoc mang ve
+
+        /// <summary>
+        /// Khoa hoi chan - ma khoa cua bien ban hoi chan gan voi to dieu tri nay.
+        /// </summary>
+        public string DEBATE_DEPARTMENT_CODE { get; set; }
+
+        /// <summary>
+        /// Khoa hoi chan - ten khoa cua bien ban hoi chan gan voi to dieu tri nay.
+        /// </summary>
+        public string DEBATE_DEPARTMENT_NAME { get; set; }
     }
 
     public class Mps000062ExtADO : V_HIS_TRACKING
@@ -182,7 +194,20 @@ namespace MPS.Processor.Mps000062.PDO
 
             this.ICD_TEXT_TRACKING = mps000062ADO.ICD_TEXT_TRACKING;
             this.NUMBER_DAYS_TREATMENT = mps000062ADO.NUMBER_DAYS_TREATMENT;
+
+            this.DEBATE_DEPARTMENT_CODE = mps000062ADO.DEBATE_DEPARTMENT_CODE;
+            this.DEBATE_DEPARTMENT_NAME = mps000062ADO.DEBATE_DEPARTMENT_NAME;
         }
+
+        /// <summary>
+        /// Khoa hoi chan - ma khoa cua bien ban hoi chan gan voi to dieu tri nay.
+        /// </summary>
+        public string DEBATE_DEPARTMENT_CODE { get; set; }
+
+        /// <summary>
+        /// Khoa hoi chan - ten khoa cua bien ban hoi chan gan voi to dieu tri nay.
+        /// </summary>
+        public string DEBATE_DEPARTMENT_NAME { get; set; }
         public string IS_T7_OR_CN { get; set; }
         public string TRACKING_TIME_STR { get; set; }
         public string TRACKING_DATE_STR { get; set; }
@@ -257,6 +282,18 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINES___DATA2 { get; set; }
 
         public string MEDICINES___DATA3 { get; set; }
+
+        /// <summary>
+        /// Viec 26771: thuoc DIEU TRI (khong mang ve) - format giong MEDICINES___DATA3.
+        /// </summary>
+        public string MEDICINES_TREATMENT___DATA3 { get; set; }
+
+        /// <summary>
+        /// Viec 26771: thuoc CAP VE (mang don ve) - format giong MEDICINES___DATA3,
+        /// mo dau bang tieu de dam "Thuốc cấp về (BN mang về):" khi co du lieu.
+        /// </summary>
+        public string MEDICINES_HOME_PRES___DATA3 { get; set; }
+
         public string MEDICINES_ACIN___DATA { get; set; }
 
         public string MEDICINES_TAY___DATA { get; set; } //thuốc tây y
@@ -319,12 +356,34 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINES_MERGE___DATA { get; set; } // thuốc pha truyền và thuốc không pha truyền
         public string MEDICINES_MERGE_DATE___DATA { get; set; }
         public string MEDICINES_MERGE_DATE_HTU___DATA { get; set; }
-        public string MEDICINES_MERGE_HTU___DATA { get; set; } 
+        public string MEDICINES_MERGE_HTU___DATA { get; set; }
+
+        /// <summary>
+        /// Viec 26771: thuoc DIEU TRI (khong mang ve) - format giong MEDICINES_MERGE_HTU___DATA.
+        /// </summary>
+        public string MEDICINES_MERGE_HTU_TREATMENT___DATA { get; set; }
+
+        /// <summary>
+        /// Viec 26771: thuoc CAP VE (mang don ve) - format giong MEDICINES_MERGE_HTU___DATA,
+        /// mo dau bang tieu de dam "Thuốc cấp về (BN mang về):" khi co du lieu.
+        /// </summary>
+        public string MEDICINES_MERGE_HTU_HOME_PRES___DATA { get; set; }
+
         public string MEDICINES_MERGE_DUTRU___DATA { get; set; } // thuốc dự trù pha truyền và thuốc dự trù không pha truyền
         public string MEDICINES_MERGE_DUTRU_HTU___DATA { get; set; }
 
         public string MEDICINES_MERGE_DATE_DUTRU___DATA { get; set; }
         public string MEDICINES_MERGE_DATE_DUTRU_HTU___DATA { get; set; }
+
+        /// <summary>
+        /// Viec 26771: don thuoc du tru DIEU TRI (khong mang ve) - format giong MEDICINES_MERGE_DATE_DUTRU_HTU___DATA.
+        /// </summary>
+        public string MEDICINES_MERGE_DATE_DUTRU_HTU_TREATMENT___DATA { get; set; }
+
+        /// <summary>
+        /// Viec 26771: don thuoc du tru CAP VE (mang don ve) - header tung ngay kem nhan "(Mang về)".
+        /// </summary>
+        public string MEDICINES_MERGE_DATE_DUTRU_HTU_HOME_PRES___DATA { get; set; }
         public string MEDICINES_MERGE_DATE_THDT___DATA { get; set; }
         public string MEDICINES_MERGE_DATE_THDT_HTU___DATA { get; set; }
         public string SERVICE_MERGE_X01___DATA1 { get; set; }
@@ -720,6 +779,10 @@ namespace MPS.Processor.Mps000062.PDO
         public string DATA_DAY_HTU_FULL_REPX { get; set; }
         public long? ASSIGN_TIME_TO { get; set; }
         public string ADVISE { get; set; }
+
+        public long IS_HOME_PRES { get; set; } //Viec 26771: 1 = thuoc cap ve (mang don ve), 0 = thuoc dieu tri
+        public string HOME_PRES_STR { get; set; } //Viec 26771: "(Mang về)" khi IS_HOME_PRES = 1
+
         public ExpMestMetyReqADO() { }
         public ExpMestMetyReqADO(HIS_EXP_MEST_MEDICINE data)
         {

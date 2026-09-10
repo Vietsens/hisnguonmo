@@ -16,24 +16,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.HisImportCareer.ADO
 {
     /// <summary>
-    /// Dong doc tu file excel danh muc nghe nghiep theo QD 34/2020/QD-TTg
-    /// (cot Cap 1 -> Cap 5 + Ten goi). Dong co CAREER_CODE (Cap 5) la nghe chi tiet;
-    /// dong chi co LEVEL2/3/4_CODE la dong ten nhom cap cha tuong ung.
-    /// LEVEL2/3/4_CODE + LEVEL2/3/4_NAME dung property cua base HIS_CAREER (EFMODEL moi)
+    /// DTO gui api/HisCareer/ImportList (upsert theo CAREER_CODE).
+    /// Khai bao rieng (khong ke thua HIS_CAREER) de gui du 6 truong cap 2/3/4
+    /// ma khong phu thuoc phien ban MOS.EFMODEL phia client
     /// </summary>
-    public class CareerADO : MOS.EFMODEL.DataModels.HIS_CAREER
+    public class CareerImportDTO
     {
-        public string ERROR { get; set; }
-
-        /// <summary>Cot Cap 1 trong file chuan (chi de phan loai dong, khong luu)</summary>
-        public string LEVEL1_CODE { get; set; }
+        public string CAREER_CODE { get; set; }
+        public string CAREER_NAME { get; set; }
+        public string LEVEL2_CODE { get; set; }
+        public string LEVEL2_NAME { get; set; }
+        public string LEVEL3_CODE { get; set; }
+        public string LEVEL3_NAME { get; set; }
+        public string LEVEL4_CODE { get; set; }
+        public string LEVEL4_NAME { get; set; }
     }
 }
