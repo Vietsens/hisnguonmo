@@ -80,6 +80,35 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
             }
         }
 
+        /// <summary>
+        /// Format hien thi cua cot so luong (HIS.Desktop.AmountDecimalNumber = N so thap phan).
+        /// Tra ve null khi key khong khai bao (hoac khong phai so nguyen 0..9): giu nguyen hien thi cu.
+        /// </summary>
+        internal static string AmountFormatString
+        {
+            get
+            {
+                try
+                {
+                    string configValue = HisConfigs.Get<string>(
+                        Key.HisConfigKeys.HIS_CONFIG_KEY__AmountDecimalNumber);
+                    if (String.IsNullOrWhiteSpace(configValue))
+                        return null;
+
+                    int decimalNumber;
+                    if (!int.TryParse(configValue.Trim(), out decimalNumber) || decimalNumber < 0 || decimalNumber > 9)
+                        return null;
+
+                    return decimalNumber > 0 ? "#,##0." + new string('0', decimalNumber) : "#,##0";
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                    return null;
+                }
+            }
+        }
+
         internal static string IsShowResultWhenReqComplete
         {
             get

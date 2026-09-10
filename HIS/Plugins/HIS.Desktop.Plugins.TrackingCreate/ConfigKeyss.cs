@@ -48,5 +48,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         public const string DBCODE__MOS_HIS_TRACKING_IS_READ_ONLY_SHEET_ORDER = "MOS.HIS_TRACKING.IS_READ_ONLY_SHEET_ORDER";
         public const string HIS_DESKTOP_AI_CONNECTIONINFO = "HIS.Desktop.AI.ConnectionInfo";
         public const string ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
+        // So chu so thap phan hien thi cua cot so luong. Khong khai bao = giu nguyen hien thi cu.
+        public const string HIS_DESKTOP_AMOUNT_DECIMAL_NUMBER = "HIS.Desktop.AmountDecimalNumber";
     }
 }

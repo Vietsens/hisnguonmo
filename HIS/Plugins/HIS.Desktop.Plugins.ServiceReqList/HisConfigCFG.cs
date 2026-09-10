@@ -51,6 +51,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         // theo cac y lenh xet nghiem da tich chon (mau Tmp/TempBartend/Mps000423).
         // Khac "1" hoac khong khai bao = giu co che cu (in y lenh dau tien qua app Bartender.Print.exe).
         internal const string CONFIG_KEY__IsPrintTemBarcodeBartender = "HIS.Desktop.Plugins.IsPrintTemBarcodeBartender";
+        // So chu so thap phan hien thi cua cac cot so luong. Khong khai bao = giu nguyen hien thi cu.
+        private const string CONFIG_KEY__AmountDecimalNumber = "HIS.Desktop.AmountDecimalNumber";
 
 
         internal static bool IsShowPresAmount;
@@ -69,6 +71,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal static bool IsEmergencyClassifyColumnEnabled;
         /// <summary>In tem barcode truc tiep qua BarTender (HIS.Desktop.Plugins.IsPrintTemBarcodeBartender = 1)</summary>
         internal static bool IsPrintTemBarcodeBartender;
+        /// <summary>
+        /// Format hien thi cua cac cot so luong (HIS.Desktop.AmountDecimalNumber = N so thap phan).
+        /// Null khi key khong khai bao: giu nguyen hien thi cu.
+        /// </summary>
+        internal static string AmountFormatString;
 
         internal static void LoadConfig()
         {
@@ -89,10 +96,36 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 IsEmergencyClassifyColumnEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY_COLUMN) == "1";
                 ServiceReqAndChild = GetValue(CONFIG_KEY__DeleteServiceReqAndChild);
                 IsPrintTemBarcodeBartender = GetValue(CONFIG_KEY__IsPrintTemBarcodeBartender) == GlobalVariables.CommonStringTrue;
+                AmountFormatString = GetAmountFormatString();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doc HIS.Desktop.AmountDecimalNumber -> format hien thi cua cot so luong.
+        /// Tra ve null khi key khong khai bao (hoac khong phai so nguyen 0..9).
+        /// </summary>
+        private static string GetAmountFormatString()
+        {
+            try
+            {
+                string configValue = GetValue(CONFIG_KEY__AmountDecimalNumber);
+                if (String.IsNullOrWhiteSpace(configValue))
+                    return null;
+
+                int decimalNumber;
+                if (!int.TryParse(configValue.Trim(), out decimalNumber) || decimalNumber < 0 || decimalNumber > 9)
+                    return null;
+
+                return decimalNumber > 0 ? "#,##0." + new string('0', decimalNumber) : "#,##0";
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return null;
             }
         }
 

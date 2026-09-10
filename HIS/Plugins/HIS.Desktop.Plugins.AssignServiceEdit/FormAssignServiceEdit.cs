@@ -145,6 +145,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 isNotLoadWhileChangeInstructionTimeInFirst = true;
                 UcDateInit();
                 HisConfigCFG.LoadConfig();
+                ApplyAmountDecimalNumber();
                 SetIcon();
                 LoadHisServiceFromRam();
                 LoadKeysFromlanguage();
@@ -421,6 +422,36 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chan chi cho phep nhap N chu so thap phan o o "So luong" theo cau hinh HIS.Desktop.AmountDecimalNumber.
+        /// Key khong khai bao -> AmountDecimalNumber = null -> bo qua, giu nguyen nhu cu.
+        /// Mask Numeric chan tai ban phim; DisplayFormat cua cot set kem de o hien thi dung so chu so cho phep nhap.
+        /// Luu y: repositoryItemSpinAmount dung chung cho cot "So luong" va cot "Lan thu"
+        /// (xem GridViewService_CustomRowCellEdit) nen cot "Lan thu" cung bi chan theo.
+        /// KHONG set DisplayFormat cua repository item vi cot "Lan thu" khong co format rieng,
+        /// set vao la cot do bi hien thi thanh so thap phan.
+        /// </summary>
+        private void ApplyAmountDecimalNumber()
+        {
+            try
+            {
+                if (!HisConfigCFG.AmountDecimalNumber.HasValue)
+                    return;
+
+                int decimalNumber = HisConfigCFG.AmountDecimalNumber.Value;
+
+                this.repositoryItemSpinAmount.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+                this.repositoryItemSpinAmount.Mask.EditMask = "n" + decimalNumber;
+
+                this.Gc_Amount.DisplayFormat.FormatString = decimalNumber > 0 ? "#,##0." + new string('0', decimalNumber) : "#,##0";
+                this.Gc_Amount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

@@ -3252,7 +3252,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (!ValidIcd(true)) return;
                 if (!ValidForSave())
                 {
-                    //MessageBox.Show(ResourceMessage.ChuaNhapDayDuThongTinBatBuoc, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //XtraMessageBox.Show(ResourceMessage.ChuaNhapDayDuThongTinBatBuoc, ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -3560,7 +3560,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     //if (hisServiceReqSDO.ExamAdditionSDO != null && hisServiceReqSDO.ExamAdditionSDO.IsNotUseBhyt)
                     //{
-                    //    if (MessageBox.Show("Bệnh nhân không được hưởng bhyt các chi phí phát sinh tại phòng khám thêm. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    //    if (XtraMessageBox.Show("Bệnh nhân không được hưởng bhyt các chi phí phát sinh tại phòng khám thêm. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     //    {
                     //        SaveExamServiceReq(hisServiceReqSDO);
                     //    }

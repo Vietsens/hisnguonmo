@@ -1222,6 +1222,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 CreateThreadLoadDataForPrint();
 
                 this.InitConfig();
+                this.ApplyAmountDecimalNumber();
                 this.LoadSampleType();
                 this.LoadDataToCashierRoom();
                 this.LoadDataToAssignRoom();

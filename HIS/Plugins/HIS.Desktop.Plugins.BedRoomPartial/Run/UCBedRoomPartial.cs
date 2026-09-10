@@ -72,6 +72,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
     public partial class UCBedRoomPartial : UserControlBase
     {
         private int assignBedOption;
+        /// <summary>Format hien thi so luong — doc 1 lan trong Load, null = giu nguyen hien thi cu.</summary>
+        private string amountFormatString;
         internal Inventec.Desktop.Common.Modules.Module currentModule { get; set; }
         internal long treatmentId;
         internal string treatmentCode;
@@ -208,6 +210,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 assignBedOption = HisConfigCFG.AssignBedOption;
                 // Doc 1 lan — KHONG goi HisConfigs.Get trong vong lap dung cay (QT-11)
                 this.isShowAnticipateByUseDate = HisConfigCFG.ShowAnticipatePresByUseDate;
+                this.amountFormatString = HisConfigCFG.AmountFormatString;
                 SetAnticipateColumnsVisible();
                 InitUiByConfig();
                 InitSubclinicalResultButton();
@@ -216,6 +219,19 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Hiển thị số lượng theo cấu hình HIS.Desktop.AmountDecimalNumber (N số thập phân).
+        /// Cột "Số lượng" trên cây dịch vụ là chuỗi "số lượng - đơn vị" nên DisplayFormat của cột
+        /// không có tác dụng, phải làm tròn ngay khi dựng chuỗi.
+        /// </summary>
+        private string FormatAmount(decimal? amount)
+        {
+            if (String.IsNullOrEmpty(this.amountFormatString) || !amount.HasValue)
+                return amount.ToString();
+
+            return amount.Value.ToString(this.amountFormatString);
         }
 
         /// <summary>
@@ -2100,7 +2116,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                     {
                                         ado.NOTE_ADO = string.Format("{0}", item.INSTRUCTION_NOTE);
                                     }
-                                    ado.AMOUNT_SER = string.Format("{0} - {1}", item.AMOUNT, item.SERVICE_UNIT_NAME);
+                                    ado.AMOUNT_SER = string.Format("{0} - {1}", FormatAmount(item.AMOUNT), item.SERVICE_UNIT_NAME);
                                     ado.IS_TEMPORARY_PRES = IsTemporaryPres;
                                     // Dòng thuốc kế thừa cờ đánh dấu từ đơn cha để cả đơn cùng tô màu (QT-08)
                                     ado.IS_ANTICIPATE = ssRootSety.IS_ANTICIPATE;
@@ -2335,7 +2351,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                     ado.NOTE_ADO = string.Format("{0}", item.INSTRUCTION_NOTE);
                                 }
 
-                                ado.AMOUNT_SER = string.Format("{0} - {1}", item.AMOUNT, item.SERVICE_UNIT_NAME);
+                                ado.AMOUNT_SER = string.Format("{0} - {1}", FormatAmount(item.AMOUNT), item.SERVICE_UNIT_NAME);
                                 // Dòng thuốc kế thừa cờ đánh dấu từ đơn cha để cả đơn cùng tô màu (QT-08)
                                 ado.IS_ANTICIPATE = ssRootSety.IS_ANTICIPATE;
                                 ado.INSTRUCTION_DATE_STR = ssRootSety.INSTRUCTION_DATE_STR;

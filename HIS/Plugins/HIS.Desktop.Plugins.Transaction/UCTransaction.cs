@@ -175,7 +175,8 @@ namespace HIS.Desktop.Plugins.Transaction
                 SereServTreeColumn amountCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_TRANSACTION__TREE_SERE_SERV__COLUMN_AMOUNT", Base.ResourceLangManager.LanguageUCTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "AMOUNT_PLUS", 40, false);
                 amountCol.VisibleIndex = 1;
                 amountCol.Format = new DevExpress.Utils.FormatInfo();
-                amountCol.Format.FormatString = "#,##0.00";
+                //Cau hinh HIS.Desktop.AmountDecimalNumber quyet dinh so chu so thap phan, khong khai bao thi giu 2 chu so nhu cu
+                amountCol.Format.FormatString = HisConfigCFG.AmountFormatString ?? "#,##0.00";
                 amountCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.SereServTreeColumns.Add(amountCol);
 

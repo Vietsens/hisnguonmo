@@ -129,6 +129,13 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string CONFIG_KEY__ConfirmExecuteRoomWhenSave = "HIS.Desktop.Plugins.AssignService.ConfirmExecuteRoomWhenSave";
         internal static bool IsConfirmExecuteRoomWhenSave;
 
+        private const string CONFIG_KEY__AMOUNT_DECIMAL_NUMBER = "HIS.Desktop.AmountDecimalNumber";
+        /// <summary>
+        /// So chu so thap phan duoc phep nhap o o "So luong".
+        /// Null = key khong khai bao (hoac khong phai so nguyen 0..9) -> khong chan, giu nguyen nhu cu.
+        /// </summary>
+        internal static int? AmountDecimalNumber;
+
         private const string CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
         private const string CONFIG_KEY__ICD_SUB_MAX_COUNT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
         internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
@@ -370,6 +377,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 {
                     IcdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
                 }
+
+                AmountDecimalNumber = GetAmountDecimalNumber();
             }
             catch (Exception ex)
             {
@@ -390,6 +399,31 @@ namespace HIS.Desktop.Plugins.AssignService.Config
             }
 
             return result ?? new MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE();
+        }
+
+        /// <summary>
+        /// Doc HIS.Desktop.AmountDecimalNumber -> so chu so thap phan duoc phep nhap o o "So luong".
+        /// Tra ve null khi key khong khai bao hoac gia tri khong phai so nguyen 0..9.
+        /// </summary>
+        private static int? GetAmountDecimalNumber()
+        {
+            try
+            {
+                string configValue = GetValue(CONFIG_KEY__AMOUNT_DECIMAL_NUMBER);
+                if (String.IsNullOrWhiteSpace(configValue))
+                    return null;
+
+                int decimalNumber;
+                if (!int.TryParse(configValue.Trim(), out decimalNumber) || decimalNumber < 0 || decimalNumber > 9)
+                    return null;
+
+                return decimalNumber;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
         }
 
         private static string GetValue(string code)

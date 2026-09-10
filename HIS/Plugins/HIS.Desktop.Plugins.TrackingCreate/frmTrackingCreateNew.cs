@@ -635,6 +635,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 BloodPresOption = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.BloodPresOption") == "1");
                 this.ServiceReqIcdOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_TRACKING_SERVICE_REQ_ICD_OPTION);
                 this.AIConnectionInfo = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.HIS_DESKTOP_AI_CONNECTIONINFO);
+                ApplyAmountDecimalNumber();
 
                 var IsMine = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_IS_MINE_CHECKED_BY_DEFAULT));
 

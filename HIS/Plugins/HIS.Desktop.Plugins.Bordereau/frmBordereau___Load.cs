@@ -1289,6 +1289,57 @@ namespace HIS.Desktop.Plugins.Bordereau
         }
 
         /// <summary>
+        /// Doc cau hinh HIS.Desktop.AmountDecimalNumber -> format hien thi cua cot so luong.
+        /// Tra ve null khi key khong khai bao (hoac khong phai so nguyen 0..9): giu nguyen format thiet ke.
+        /// </summary>
+        private string GetAmountFormatString()
+        {
+            try
+            {
+                string configValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKeys.AMOUNT_DECIMAL_NUMBER);
+                if (String.IsNullOrWhiteSpace(configValue))
+                    return null;
+
+                int decimalNumber;
+                if (!int.TryParse(configValue.Trim(), out decimalNumber) || decimalNumber < 0 || decimalNumber > 9)
+                    return null;
+
+                return decimalNumber > 0 ? "#,##0." + new string('0', decimalNumber) : "#,##0";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Lam tron hien thi cac cot so luong theo cau hinh HIS.Desktop.AmountDecimalNumber.
+        /// Goi trong frmBordereau_Load SAU InitRestoreLayoutGrid vi khoi phuc layout tu XML ghi de DisplayFormat.
+        /// </summary>
+        private void ApplyAmountDecimalNumber()
+        {
+            try
+            {
+                string formatString = GetAmountFormatString();
+                if (String.IsNullOrEmpty(formatString))
+                    return;
+
+                //SL
+                this.gridColumn5.DisplayFormat.FormatString = formatString;
+                this.gridColumn5.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+
+                //So luong tam tinh
+                this.gridColumn16.DisplayFormat.FormatString = formatString;
+                this.gridColumn16.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
         /// Load combo người trả kết quả và giá trị mặc định là người dùng đăng nhập
         /// </summary>
         private void LoadPeopleReturnResult()

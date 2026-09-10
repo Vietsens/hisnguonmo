@@ -44,6 +44,7 @@ namespace HIS.Desktop.Plugins.Transaction.Config
         private const string CONFIG_KEY__CALL_PATIENT_FORMAT = "HIS.TRANSACTION_ROOM.CALL_PATIENT_FORMAT";
         private const string CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT = "HIS.Desktop.Plugins.Transaction.ShowBtnTransactionDebt";
         private const string CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT_COLLECT = "HIS.Desktop.Plugins.Transaction.ShowBtnTransactionDebtCollect";
+        private const string CONFIG_KEY__AMOUNT_DECIMAL_NUMBER = "HIS.Desktop.AmountDecimalNumber";
 
         internal static string CallPatientFormat;
         internal static string ShowBtnTransactionDebt;
@@ -76,6 +77,35 @@ namespace HIS.Desktop.Plugins.Transaction.Config
         }
 
         internal static string UNLOCK_FEE_OPTION;
+
+        /// <summary>
+        /// Format hien thi cua cot so luong theo cau hinh HIS.Desktop.AmountDecimalNumber (N so thap phan).
+        /// Tra ve null khi key khong khai bao (hoac khong phai so nguyen 0..9): giu nguyen format thiet ke.
+        /// Doc truc tiep (khong qua LoadConfig) vi cay dich vu duoc khoi tao ngay trong constructor cua UCTransaction.
+        /// </summary>
+        internal static string AmountFormatString
+        {
+            get
+            {
+                try
+                {
+                    string configValue = GetValue(CONFIG_KEY__AMOUNT_DECIMAL_NUMBER);
+                    if (String.IsNullOrWhiteSpace(configValue))
+                        return null;
+
+                    int decimalNumber;
+                    if (!int.TryParse(configValue.Trim(), out decimalNumber) || decimalNumber < 0 || decimalNumber > 9)
+                        return null;
+
+                    return decimalNumber > 0 ? "#,##0." + new string('0', decimalNumber) : "#,##0";
+                }
+                catch (Exception ex)
+                {
+                    LogSystem.Warn(ex);
+                    return null;
+                }
+            }
+        }
 
         internal static void LoadConfig()
         {

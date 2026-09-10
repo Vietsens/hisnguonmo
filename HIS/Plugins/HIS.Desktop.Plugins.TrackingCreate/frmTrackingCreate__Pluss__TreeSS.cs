@@ -315,6 +315,36 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             }
         }
 
+        /// <summary>
+        /// Lam tron hien thi cot so luong tren 2 cay dich vu theo cau hinh HIS.Desktop.AmountDecimalNumber.
+        /// Key khong khai bao (hoac khong phai so nguyen 0..9) -> bo qua, giu nguyen hien thi cu.
+        /// </summary>
+        private void ApplyAmountDecimalNumber()
+        {
+            try
+            {
+                string configValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.HIS_DESKTOP_AMOUNT_DECIMAL_NUMBER);
+                if (String.IsNullOrWhiteSpace(configValue))
+                    return;
+
+                int decimalNumber;
+                if (!int.TryParse(configValue.Trim(), out decimalNumber) || decimalNumber < 0 || decimalNumber > 9)
+                    return;
+
+                string formatString = decimalNumber > 0 ? "#,##0." + new string('0', decimalNumber) : "#,##0";
+
+                this.treeListColumn3.Format.FormatString = formatString;
+                this.treeListColumn3.Format.FormatType = DevExpress.Utils.FormatType.Custom;
+
+                this.treeListColumn3_Preventive.Format.FormatString = formatString;
+                this.treeListColumn3_Preventive.Format.FormatType = DevExpress.Utils.FormatType.Custom;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void treeListServiceReq_CustomUnboundColumnData(object sender, DevExpress.XtraTreeList.TreeListCustomColumnDataEventArgs e)
         {
             try
