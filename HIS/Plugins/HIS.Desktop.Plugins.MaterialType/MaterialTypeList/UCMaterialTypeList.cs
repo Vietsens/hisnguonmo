@@ -115,7 +115,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                     if (rs == null) rs = new List<DevExpress.Utils.Menu.DXMenuItem>();
                     DevExpress.Utils.Menu.DXMenuItem itemViewStock = new DevExpress.Utils.Menu.DXMenuItem();
                     itemViewStock.Caption = "Xem tồn kho theo kho";
-                    // Gán icon nếu cần, vd: itemViewStock.Image = Properties.Resources.<ten_icon>;
+                    // Gán icon nếu cần, vd: itemViewStock.Image = Properties.Resources.<ten_icon>; 
                     itemViewStock.Click += OnViewStockByWarehouse;
                     rs.Add(itemViewStock);
                 }
@@ -154,9 +154,9 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
         {
             try
             {
-                if (this.currentRightClick == null) return;
+                if (this.currentRightClick == null) return; 
 
-                var data = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(p => p.ID == this.currentRightClick.ID);
+                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(p => p.ID == this.currentRightClick.ID);
                 if (data == null) return;
 
                 long roomId = this.moduleData != null ? this.moduleData.RoomId : 0;
@@ -326,7 +326,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 tenBHYT.VisibleIndex = 10;
                 tenBHYT.Format = new DevExpress.Utils.FormatInfo();
                 tenBHYT.Format.FormatType = DevExpress.Utils.FormatType.Custom;
-                ado.MaterialTypeColumns.Add(tenBHYT);
+                ado.MaterialTypeColumns.Add(tenBHYT); 
 
                 //Column Tỷ lệ BHYT 
                 MaterialTypeColumn tyLeBHYT = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MATERIAL_TYPE__COLUMN_TY_LE_BHYT", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "HeinLimitVatRatio100", 120, false);
@@ -768,7 +768,8 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 List<String> ColnParams = new List<string> {"ID", "MATERIAL_TYPE_CODE", "MATERIAL_TYPE_NAME", "SERVICE_UNIT_NAME", "CONCENTRA",
                 "NATIONAL_NAME", "MANUFACTURER_NAME", "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO","LAST_EXP_PRICE","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME", "LAST_EXP_VAT_RATIO",
                 "IS_LEAF", "PARENT_ID", "IS_ACTIVE", "REGISTER_NUMBER","IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE",
-                "LOCKING_REASON", "IS_STOP_IMP", "IS_REUSABLE", "MODEL_CODE", "CREATE_TIME", "CREATOR"};
+                "LOCKING_REASON", "IS_STOP_IMP", "IS_REUSABLE", "MODEL_CODE", "CREATE_TIME", "CREATOR", 
+                "HEIN_LIMIT_RATIO", "HEIN_LIMIT_PRICE"};
 
                 filter.ColumnParams = ColnParams;
                 this.materialTypes = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUri.HIS_MATERIAL_TYPE_GETVIEWDynamic, ApiConsumers.MosConsumer, filter, param);
