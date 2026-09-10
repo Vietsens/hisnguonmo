@@ -40,9 +40,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Validation
                 {
 
                 }
-                if(isBHXH && !String.IsNullOrEmpty(memoEdit.Text) && Encoding.UTF8.GetByteCount(memoEdit.Text) < maxLength)
+                if(isBHXH && !String.IsNullOrEmpty(memoEdit.Text) && Encoding.UTF8.GetByteCount(memoEdit.Text) != 10 && Encoding.UTF8.GetByteCount(memoEdit.Text) != 12)
 				{
-                    ErrorText = "Mã BHXH phải nhập đủ 10 ký tự";
+                    ErrorText = "Mã BHXH phải nhập đủ 10 hoặc 12 ký tự";
                     ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }                    

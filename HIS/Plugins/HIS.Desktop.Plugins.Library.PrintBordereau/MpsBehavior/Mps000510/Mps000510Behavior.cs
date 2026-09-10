@@ -141,13 +141,14 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000510
                 
                 HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                 serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
+                serviceReqFilter.IS_ACTIVE = 1;
                 serviceReqs = new BackendAdapter(param)
                 .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
                 
                 MPS.Processor.Mps000510.PDO.Mps000510PDO rdo = null;
                 rdo = new MPS.Processor.Mps000510.PDO.Mps000510PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees,
                     heinServiceType, patientTypeCFG, sereServView2, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services,
-                    treatmentTypes, branch, medicineTypes, materialTypes, medicineLines, serviceReqs, departments, singleValue, servuceUnit, mediOrg,
+                    treatmentTypes, branch, medicineTypes, materialTypes, medicineLines, serviceReqs.Where(o => o.IS_DELETE != 1).ToList(), departments, singleValue, servuceUnit, mediOrg,
                     otherPaySource, this.transReq, this.lstConfig,
                     hisConfigValue
                     );

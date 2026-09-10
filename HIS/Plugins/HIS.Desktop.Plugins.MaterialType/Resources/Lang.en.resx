@@ -201,6 +201,12 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MATERIAL_TYPE__COLUMN_TEN_BHYT" xml:space="preserve">
     <value>Hein service code</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MATERIAL_TYPE__COLUMN_TY_LE_BHYT" xml:space="preserve">
+    <value>Hein limit ratio</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MATERIAL_TYPE__COLUMN_GIA_TRAN_BHYT" xml:space="preserve">
+    <value>Hein limit price</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_MATERIAL_TYPE__TREE_MATERIAL_TYPE__COLUMN_IMP_PRICE" xml:space="preserve">
     <value>Price</value>
   </data>

@@ -1208,7 +1208,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, true),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Nhập số thẻ mới", null, null, true)});
             this.txtSoThe.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtSoThe.Properties.Mask.EditMask = "\\w{2}-\\d{1}-\\w{2}-\\w{2}-\\w{3}-\\w{5}";
+            this.txtSoThe.Properties.Mask.EditMask = "(\\w{2}-\\d{1}-\\w{2}-\\w{2}-\\w{3}-\\w{5})|(\\w{2}-\\d{1}-\\w{2}-\\w{12})";
             this.txtSoThe.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
             this.txtSoThe.Properties.Mask.UseMaskAsDisplayFormat = true;
             this.txtSoThe.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtSoThe_Properties_ButtonClick);

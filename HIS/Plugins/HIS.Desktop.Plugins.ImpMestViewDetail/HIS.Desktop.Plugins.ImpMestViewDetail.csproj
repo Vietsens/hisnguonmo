@@ -417,6 +417,10 @@
       <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
       <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

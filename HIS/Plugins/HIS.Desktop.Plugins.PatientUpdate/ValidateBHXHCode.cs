@@ -34,9 +34,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             bool success = false;
             try
             {
-                if (!string.IsNullOrEmpty(txtControl.Text) && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) < minLength)
+                if (!string.IsNullOrEmpty(txtControl.Text) && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) != 10 && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) != 12)
                 {
-                    base.ErrorText = "Mã BHXH phải nhập đủ 10 ký tự";
+                    base.ErrorText = "Mã BHXH phải nhập đủ 10 hoặc 12 ký tự";
                     base.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return success;
                 }

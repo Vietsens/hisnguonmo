@@ -2101,13 +2101,19 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.repositoryItemMachineId.View = this.gridView1;
             this.repositoryItemMachineId.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.repositoryItemMachineId_Closed);
             this.repositoryItemMachineId.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemMachineId_ButtonClick_1);
+            this.repositoryItemMachineId.Popup += new System.EventHandler(this.repositoryItemMachineId_Popup);
             // 
             // gridView1
             // 
             this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView1.OptionsSelection.MultiSelect = true;
+            this.gridView1.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+            this.gridView1.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
             this.gridView1.OptionsView.ShowGroupPanel = false;
+            this.gridView1.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.gridView1_SelectionChanged);
+            this.gridView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gridView1_MouseUp);
             // 
             // Gc_CreateTime
             // 

@@ -527,7 +527,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                             }
                             else
                             {
-                                txtMaBHXH.Text = hisTreatment.SICK_HEIN_CARD_NUMBER.Substring(5, 10); ;
+                                txtMaBHXH.Text = (hisTreatment.SICK_HEIN_CARD_NUMBER.Length == 10 ? hisTreatment.SICK_HEIN_CARD_NUMBER : (hisTreatment.SICK_HEIN_CARD_NUMBER.Length == 15 ? hisTreatment.SICK_HEIN_CARD_NUMBER.Substring(5, 10) : "")); ;
                             }
                         }
                     }
@@ -542,7 +542,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                             }
                             else
                             {
-                                txtMaBHXH.Text = hisTreatment.TDL_HEIN_CARD_NUMBER.Substring(5, 10); ;
+                                txtMaBHXH.Text = (hisTreatment.TDL_HEIN_CARD_NUMBER.Length == 10 ? hisTreatment.TDL_HEIN_CARD_NUMBER : (hisTreatment.TDL_HEIN_CARD_NUMBER.Length == 15 ? hisTreatment.TDL_HEIN_CARD_NUMBER.Substring(5, 10) : "")); ;
                             }
                         }
                     }
@@ -937,7 +937,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                         }
                         else
                         {
-                            txtMaBHXH.Text = sdo.SickHeinCardNumber.Substring(5, 10); ;
+                            txtMaBHXH.Text = (sdo.SickHeinCardNumber.Length == 15 ? sdo.SickHeinCardNumber.Substring(5, 10) : "");
                         }
 
                         sdo.SocialInsuranceNumber = txtMaBHXH.Text;
@@ -1739,7 +1739,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                     {
                         lciPregnantAge.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         lciCboDocumentBookId.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                        ValidationBHXH(this.txtMaBHXH, 10, 10);
+                        ValidationBHXH(this.txtMaBHXH, 12, 10);
                     }
                     else if (typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM || typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_DUONG_THAI)
                     {
@@ -1750,7 +1750,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                             ValidateWorkPlace();
                             ValidateTime();
                         }
-                        ValidationBHXH(this.txtMaBHXH, 10, 10, true);
+                        ValidationBHXH(this.txtMaBHXH, 12, 10, true);
                         this.lciMaBHXH.AppearanceItemCaption.ForeColor = Color.Maroon;
                     }
 

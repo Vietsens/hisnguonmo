@@ -302,7 +302,8 @@ namespace MPS.Processor.Mps000125
                 // PTTK 2656 - muc 4.2.8
                 decimal totalSurcharge = (rdo.SurchargePayforms != null) ? rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).Sum(o => o.SURCHARGE_AMOUNT ?? 0) : 0;
                 int surchargeCount = (rdo.SurchargePayforms != null) ? rdo.SurchargePayforms.Count(o => (o.SURCHARGE_AMOUNT ?? 0) > 0) : 0;
-                int surchargeSectionNo = (heinServiceTypeADOs != null ? heinServiceTypeADOs.Count : 0) + 1;
+                //heinServiceTypeADOs khong con ton tai (commit 234cf8c66) -> lay danh sach nhom quyen loi tu RDO
+                int surchargeSectionNo = (rdo.HeinServiceTypes != null ? rdo.HeinServiceTypes.Count : 0) + 1;
                 thanhtien_tong += totalSurcharge;
                 bnthanhtoan_tong += totalSurcharge;
                 SetSingleKey(new KeyValue(Mps000125ExtendSingleKey.TOTAL_SURCHARGE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalSurcharge, 0)));

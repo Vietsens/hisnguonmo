@@ -448,6 +448,20 @@ namespace MPS.Processor.Mps000225
                         ado.AMOUNT = itemGroup.Sum(p => p.AMOUNT);
                         ado.AMOUNT_STRING = itemGroup.Where(o => o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).Sum(p => p.AMOUNT).ToString();//so luong khong hao phi
                         ado.INSTRUCTION_NOTE = string.Join(", ", itemGroup.Select(s => s.INSTRUCTION_NOTE).Distinct().ToList());
+                        //Thanh tien BHYT tra / BN tra: cong don theo nhom giong AMOUNT
+                        ado.VIR_TOTAL_HEIN_PRICE = itemGroup.Any(o => o.VIR_TOTAL_HEIN_PRICE.HasValue)
+                            ? itemGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0)
+                            : (decimal?)null;
+                        ado.VIR_TOTAL_PATIENT_PRICE = itemGroup.Any(o => o.VIR_TOTAL_PATIENT_PRICE.HasValue)
+                            ? itemGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0)
+                            : (decimal?)null;
+                        //Cong khai thuc hien: lay moc muon nhat trong nhom (khong cong duoc thoi gian)
+                        var lastExecuteTotal = itemGroup
+                            .Where(o => o.EXECUTE_PUBLIC_TIME.HasValue && o.EXECUTE_PUBLIC_TIME.Value > 0)
+                            .OrderByDescending(o => o.EXECUTE_PUBLIC_TIME.Value)
+                            .FirstOrDefault();
+                        ado.EXECUTE_PUBLIC_TIME = lastExecuteTotal != null ? lastExecuteTotal.EXECUTE_PUBLIC_TIME : null;
+                        ado.EXECUTE_PUBLIC_TIME_STR = lastExecuteTotal != null ? lastExecuteTotal.EXECUTE_PUBLIC_TIME_STR : "";
 
                         PropertyInfo[] ps = Inventec.Common.Repository.Properties.Get<MPS.Processor.Mps000225.PDO.Mps000225BySereServ>();
                         foreach (var item in itemGroup)
@@ -499,6 +513,20 @@ namespace MPS.Processor.Mps000225
                     ado.PATIENT_TYPE_ID = itemGroup.FirstOrDefault().PATIENT_TYPE_ID;
                     ado.PATIENT_TYPE_CODE = itemGroup.FirstOrDefault().PATIENT_TYPE_CODE;
                     ado.PATIENT_TYPE_NAME = itemGroup.FirstOrDefault().PATIENT_TYPE_NAME;
+                    //Thanh tien BHYT tra / BN tra: cong don theo nhom giong AMOUNT
+                    ado.VIR_TOTAL_HEIN_PRICE = itemGroup.Any(o => o.VIR_TOTAL_HEIN_PRICE.HasValue)
+                        ? itemGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0)
+                        : (decimal?)null;
+                    ado.VIR_TOTAL_PATIENT_PRICE = itemGroup.Any(o => o.VIR_TOTAL_PATIENT_PRICE.HasValue)
+                        ? itemGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0)
+                        : (decimal?)null;
+                    //Cong khai thuc hien: lay moc muon nhat trong nhom (khong cong duoc thoi gian)
+                    var lastExecute = itemGroup
+                        .Where(o => o.EXECUTE_PUBLIC_TIME.HasValue && o.EXECUTE_PUBLIC_TIME.Value > 0)
+                        .OrderByDescending(o => o.EXECUTE_PUBLIC_TIME.Value)
+                        .FirstOrDefault();
+                    ado.EXECUTE_PUBLIC_TIME = lastExecute != null ? lastExecute.EXECUTE_PUBLIC_TIME : null;
+                    ado.EXECUTE_PUBLIC_TIME_STR = lastExecute != null ? lastExecute.EXECUTE_PUBLIC_TIME_STR : "";
 
                     PropertyInfo[] ps = Inventec.Common.Repository.Properties.Get<MPS.Processor.Mps000225.PDO.Mps000225BySereServ>();
                     foreach (var item in itemGroup)

@@ -185,8 +185,14 @@
       <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
       <Name>HIS.Desktop.ModuleExt</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <!-- Message.Lang.resx (neutral, tiếng Việt) nhúng vào DLL chính -> luôn có mặt dù satellite vi/ không được deploy. -->
+    <EmbeddedResource Include="Resources\Message.Lang.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
   </ItemGroup>

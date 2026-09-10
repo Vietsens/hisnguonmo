@@ -72,6 +72,10 @@ namespace MPS.Processor.Mps000116.PDO
         public short? EVENING_IS_USED { get; set; }
         /// <summary>Cach dung (duong dung) cua y lenh — lay tu HTU_TEXT.</summary>
         public string HTU_TEXT { get; set; }
+        /// <summary>Ten duong dung cua thuoc. Vat tu khong co duong dung nen luon rong.</summary>
+        public string MEDICINE_USE_FORM_NAME { get; set; }
+        /// <summary>Ma duong dung cua thuoc. Vat tu khong co duong dung nen luon rong.</summary>
+        public string MEDICINE_USE_FORM_CODE { get; set; }
         /// <summary>
         /// Toc do truyen da kem don vi, dung cho tag tren mau in. Rong khi y lenh khong nhap
         /// (vat tu luon rong) de mau in khong tro lai chu don vi o dong trong.
@@ -122,6 +126,8 @@ namespace MPS.Processor.Mps000116.PDO
                     this.MEDICINE_USE_FORM_NUM_ORDER = datas[0].MEDICINE_USE_FORM_NUM_ORDER;
                     this.NUM_ORDER = datas[0].NUM_ORDER;
                     this.HTU_TEXT = !String.IsNullOrEmpty(datas[0].HTU_TEXT) ? datas[0].HTU_TEXT : datas[0].HTU_NAME;
+                    this.MEDICINE_USE_FORM_NAME = datas[0].MEDICINE_USE_FORM_NAME;
+                    this.MEDICINE_USE_FORM_CODE = datas[0].MEDICINE_USE_FORM_CODE;
                     this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                 }
             }

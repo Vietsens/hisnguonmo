@@ -34,5 +34,7 @@ namespace MPS.Processor.Mps000513
         internal const string INVITE_DEPARTMENT_NAME = "INVITE_DEPARTMENT_NAME";
         internal const string IS_EXAM_ANESTHESIA = "IS_EXAM_ANESTHESIA";
         internal const string IS__EXAM_BED = "IS__EXAM_BED";
+        internal const string INTRUCTION_TIME = "INTRUCTION_TIME";
+        internal const string EXAM_TIME = "EXAM_TIME";
     }
 }

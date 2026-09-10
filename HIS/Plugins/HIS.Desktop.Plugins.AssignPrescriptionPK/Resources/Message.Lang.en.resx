@@ -129,6 +129,15 @@
   <data name="BanCoMuonTaoYeuCauKhong" xml:space="preserve">
     <value>Need to create a request form for antibiotics: {0}. Do you want to perform request generation?</value>
   </data>
+  <data name="KhangSinhMucChanBatBuocTaoPhieuYeuCau" xml:space="preserve">
+    <value>The following antibiotics require an antibiotic using request before saving the prescription: {0}.{1} Do you want to create the request now? If you choose Cancel, the prescription will NOT be saved.</value>
+  </data>
+  <data name="KhangSinhNhacTaoPhieuYeuCau" xml:space="preserve">
+    <value> The following antibiotics are reminder-only (not mandatory): {0}.</value>
+  </data>
+  <data name="KhangSinhMucChanVanChuaCoPhieuYeuCau" xml:space="preserve">
+    <value>The mandatory antibiotics are still not covered by any antibiotic using request: {0}. The prescription is not saved; entered data remains on the screen.</value>
+  </data>
   <data name="BanCoMuonTiepTuc" xml:space="preserve">
     <value>{0} {1}. Do you want to continued?</value>
   </data>
@@ -655,5 +664,11 @@
   </data>
   <data name="TongChiPhiVuot15PhanTramLuongCoBan" xml:space="preserve">
     <value>Patient's total cost ({0}) has exceeded 15% of the base salary ({1}). Do you want to continue?</value>
+  </data>
+  <data name="ThuocDangDungTuDonKhacTrongHoSo" xml:space="preserve">
+    <value>Medications from other prescriptions in this record (included in the interaction check):</value>
+  </data>
+  <data name="DonNgayDungDenNgay" xml:space="preserve">
+    <value>prescribed on {0}, until {1}</value>
   </data>
 </root>

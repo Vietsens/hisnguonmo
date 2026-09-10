@@ -7065,6 +7065,13 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             {
                 if (!btnPrintTemBarcode.Enabled) return;
 
+                if (HisConfigCFG.IsPrintTemBarcodeBartender)
+                {
+                    // In tem barcode truc tiep qua BarTender Engine theo cac y lenh da tich chon (theo cau hinh)
+                    PrintTemBarcodeBartender();
+                    return;
+                }
+
                 List<ServiceReqADO> datas = gridControlServiceReq.DataSource as List<ServiceReqADO>;
                 if (datas == null || datas.Count <= 0)
                 {

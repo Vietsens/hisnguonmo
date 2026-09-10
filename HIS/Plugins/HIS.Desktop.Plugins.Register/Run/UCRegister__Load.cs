@@ -1371,9 +1371,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                 if (dataHein == null) throw new ArgumentNullException("ProcessQrCodeData => dataHein is null");
                 if (!String.IsNullOrEmpty(dataHein.HeinCardNumber))
                 {
-                    if (dataHein.HeinCardNumber.Length > 15)
-                        dataHein.HeinCardNumber = dataHein.HeinCardNumber.Substring(0, 15);
-                    else if (dataHein.HeinCardNumber.Length < 15 && dataHein.HeinCardNumber.Length != 12)
+                    //So the BHYT: 15 ky tu (mau cu) hoac 17 ky tu (mau moi); 12 ky tu la so CCCD
+                    if (dataHein.HeinCardNumber.Length > 17)
+                        dataHein.HeinCardNumber = dataHein.HeinCardNumber.Substring(0, 17);
+                    else if (dataHein.HeinCardNumber.Length != 15 && dataHein.HeinCardNumber.Length != 17 && dataHein.HeinCardNumber.Length != 12)
                         LogSystem.Debug("Do dai so the bhyt cua benh nhan khong hop le. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentHeincardNumber), currentHeincardNumber));
                     else
                         LogSystem.Info("Kiem tra Patient theo CCCD: " + dataHein.HeinCardNumber);

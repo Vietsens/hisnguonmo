@@ -26,31 +26,30 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         private LabelControl lblTreatmentCodeVal, lblPatientNameVal, lblDobVal, lblGenderVal, lblIcdVal, lblDepartmentVal, lblPushStatus;
         #endregion
 
-        #region Declare — tabs (2 tab theo QĐ 4039: Đối tượng mắc bệnh + Trường hợp bệnh)
+        #region Declare — thân form (1 TRANG, 2 CỘT: trái = Đối tượng + Chẩn đoán, phải = Diễn biến/XN/Báo cáo)
         private PanelControl pnlBody, pnlFooter;
-        private XtraTabControl tabMain;
-        private XtraTabPage tabDoiTuong, tabTruongHop;
-        private LayoutControl lcDoiTuong, lcTruongHop;
+        private SplitContainerControl splitBody;
+        private LayoutControl lcLeft, lcRight;
         #endregion
 
         #region Declare — Đối tượng mắc bệnh (DOI_TUONG_MAC_BENH)
-        private TextEdit txtHoTen, txtCccd, txtDienThoai, txtNoiLamViec, txtDiaChi, txtDiaChiTru;
+        private TextEdit txtHoTen, txtCccd, txtDienThoai, txtNoiLamViec, txtDiaChi, txtDiaChiTru, txtNgheNghiepHoSo, txtBenhHoSo;
         private DateEdit dteNgaySinh;
         private SpinEdit spnTuoi;
-        private LookUpEdit cboGioiTinh, cboDanToc, cboNgheNghiep, cboTinh, cboXa, cboThon, cboTinhTru, cboXaTru;
+        private GridLookUpEdit cboGioiTinh, cboDanToc, cboNgheNghiep, cboTinh, cboXa, cboThon, cboTinhTru, cboXaTru;
         private CheckEdit chkMangThai;
         #endregion
 
         #region Declare — Trường hợp bệnh (TRUONG_HOP_BENH) — chẩn đoán + xét nghiệm + diễn biến + người báo cáo
-        private LookUpEdit cboBenh, cboCapDoBenh, cboLoaiChanDoan, cboTinhTrang, cboTinhTrangRaVien, cboBenhVienChuyenToi;
+        private GridLookUpEdit cboBenh, cboCapDoBenh, cboLoaiChanDoan, cboTinhTrang, cboTinhTrangRaVien, cboBenhVienChuyenToi, cboHinhThucDieuTri;
         private DateEdit dteNgayKhoiPhat, dteNgayNhapVien, dteNgayRaVien, dteNgayTuVong;
         private MemoEdit txtChanDoanRaVien, txtSubDiagnosis, txtComplication, txtGhiChu, txtTienSuDichTe;
         private TextEdit txtTinhTrangKhac, txtLoaiXNKhac;
-        private LookUpEdit cboSuDungVacXin, cboLayMau, cboLoaiXN, cboKetQuaXN, cboDonViXN;
+        private GridLookUpEdit cboSuDungVacXin, cboLayMau, cboLoaiXN, cboKetQuaXN, cboDonViXN;
         private SpinEdit spnSoLan;
         private DateEdit dteNgayThucHienXN, dteNgayTraKQ;
         private TextEdit txtNguoiBaoCao, txtDienThoaiBaoCao, txtEmailBaoCao;
-        private LookUpEdit cboLoaiPhatHien;
+        private GridLookUpEdit cboLoaiPhatHien;
         private LabelControl lblCoSoDieuTriVal, lblMaDonViVal;
         #endregion
 
@@ -128,7 +127,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             grpHeader = new GroupControl();
             grpHeader.Text = "Thông tin bệnh nhân & điều trị";
             grpHeader.Dock = DockStyle.Top;
-            grpHeader.Height = 156;   // đủ cho 3 dòng x 2 cột + dòng trạng thái đẩy
+            grpHeader.Height = 138;   // 3 dòng x 2 cột + dòng trạng thái đẩy (dòng gọn 22px)
 
             var lc = new LayoutControl();
             lc.Dock = DockStyle.Fill;
@@ -171,36 +170,37 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         }
         #endregion
 
-        #region Tabs
+        #region Body (1 TRANG, 2 CỘT — không cuộn)
         private void BuildTabs()
         {
             pnlBody = new PanelControl();
             pnlBody.Dock = DockStyle.Fill;
             pnlBody.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
 
-            tabMain = new XtraTabControl();
-            tabMain.Dock = DockStyle.Fill;
-            pnlBody.Controls.Add(tabMain);
+            // 2 CỘT thật bằng DevExpress SplitContainerControl (chia dọc). FixedPanel=None -> co giãn theo tỷ lệ.
+            splitBody = new SplitContainerControl();
+            splitBody.Dock = DockStyle.Fill;
+            splitBody.Horizontal = true;
+            splitBody.FixedPanel = DevExpress.XtraEditors.SplitFixedPanel.None;
+            splitBody.PanelVisibility = DevExpress.XtraEditors.SplitPanelVisibility.Both;
+            pnlBody.Controls.Add(splitBody);
 
-            // 2 tab tương ứng 2 object CHUẨN ĐỊNH DẠNG DỮ LIỆU (QĐ 4039/2025/BYT).
-            tabDoiTuong = new XtraTabPage() { Text = "Đối tượng mắc bệnh" };
-            tabTruongHop = new XtraTabPage() { Text = "Trường hợp bệnh" };
-            tabMain.TabPages.AddRange(new XtraTabPage[] { tabDoiTuong, tabTruongHop });
+            lcLeft = new LayoutControl();
+            lcLeft.Dock = DockStyle.Fill;
+            lcLeft.Root.GroupBordersVisible = false;
+            lcRight = new LayoutControl();
+            lcRight.Dock = DockStyle.Fill;
+            lcRight.Root.GroupBordersVisible = false;
+            splitBody.Panel1.Controls.Add(lcLeft);
+            splitBody.Panel2.Controls.Add(lcRight);
 
-            BuildTabDoiTuong();
-            BuildTabTruongHop();
+            // Cột TRÁI: Đối tượng mắc bệnh + Chẩn đoán. Cột PHẢI: Diễn biến/Xét nghiệm/Người báo cáo.
+            secLc = lcLeft;
+            BuildSectionsDoiTuong();
+            BuildSectionsTruongHop();   // tự chuyển secLc -> lcRight sau nhóm "Chẩn đoán"
         }
 
-        private LayoutControl NewTabLayout(XtraTabPage page)
-        {
-            var lc = new LayoutControl();
-            lc.Dock = DockStyle.Fill;
-            lc.Root.GroupBordersVisible = false;
-            page.Controls.Add(lc);
-            return lc;
-        }
-
-        /// <summary>Mở 1 nhóm có tiêu đề (group box) trong tab; các field thêm sau sẽ vào nhóm này.</summary>
+        /// <summary>Mở 1 nhóm có tiêu đề (group box) trong màn; các field thêm sau sẽ vào nhóm này.</summary>
         private void BeginSection(string title)
         {
             var root = secLc.Root;
@@ -210,6 +210,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             secGroup.GroupBordersVisible = true;
             secGroup.AppearanceGroup.Font = new Font("Tahoma", 9F, FontStyle.Bold);
             secGroup.AppearanceGroup.Options.UseFont = true;
+            // Khoảng đệm trong nhóm (content không dính viền) + tách nhóm phía trên.
+            secGroup.Padding = new DevExpress.XtraLayout.Utils.Padding(8, 4, 8, 5);
+            secGroup.Spacing = new DevExpress.XtraLayout.Utils.Padding(0, 4, 0, 0);
             secPendingLeft = null;
             secIdx = 0;
         }
@@ -238,27 +241,28 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             secIdx = 0;
         }
 
-        /// <summary>Tab 1 — Đối tượng mắc bệnh (DOI_TUONG_MAC_BENH).</summary>
-        private void BuildTabDoiTuong()
+        /// <summary>Nhóm — Đối tượng mắc bệnh (DOI_TUONG_MAC_BENH). Thêm vào lcMain.</summary>
+        private void BuildSectionsDoiTuong()
         {
-            secLc = lcDoiTuong = NewTabLayout(tabDoiTuong);
             txtHoTen = new TextEdit();
             dteNgaySinh = NewDate();
             spnTuoi = new SpinEdit();
-            cboGioiTinh = new LookUpEdit();
+            cboGioiTinh = new GridLookUpEdit();
             chkMangThai = new CheckEdit() { Text = "Đang mang thai" };
             txtCccd = new TextEdit();
             txtDienThoai = new TextEdit();
-            cboDanToc = new LookUpEdit();
-            cboNgheNghiep = new LookUpEdit();
+            cboDanToc = new GridLookUpEdit();
+            cboNgheNghiep = new GridLookUpEdit();
+            txtNgheNghiepHoSo = new TextEdit();
+            txtNgheNghiepHoSo.Properties.ReadOnly = true;   // nghề nghiệp gốc của hồ sơ — chỉ đọc
             txtNoiLamViec = new TextEdit();
-            cboTinh = new LookUpEdit();
-            cboXa = new LookUpEdit();
-            cboThon = new LookUpEdit();
+            cboTinh = new GridLookUpEdit();
+            cboXa = new GridLookUpEdit();
+            cboThon = new GridLookUpEdit();
             cboThon.Properties.NullText = "";   // tránh hiển thị "[EditValue is null]" khi chưa nạp danh mục
             txtDiaChi = new TextEdit();
-            cboTinhTru = new LookUpEdit();
-            cboXaTru = new LookUpEdit();
+            cboTinhTru = new GridLookUpEdit();
+            cboXaTru = new GridLookUpEdit();
             txtDiaChiTru = new TextEdit();
 
             // Đổi xã hiện nay -> nạp lại danh sách thôn theo xã (cascade cổng: danh mục "thon").
@@ -272,14 +276,15 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             F("Số CCCD/CMND (*):", txtCccd);
             F("Số điện thoại (*):", txtDienThoai);
             F("Dân tộc (*):", cboDanToc);
-            F("Nghề nghiệp:", cboNgheNghiep);
+            F("NN (hồ sơ):", txtNgheNghiepHoSo);
+            F("NN (cổng):", cboNgheNghiep);
             F("Nơi làm việc:", txtNoiLamViec);
             F("", chkMangThai);
 
             BeginSection("Địa chỉ hiện nay");
             F("Tỉnh/TP:", cboTinh);
             F("Xã/Phường:", cboXa);
-            F("Thôn/Ấp:", cboThon);
+            // Thôn/Ấp: bỏ ô nhập theo yêu cầu (cboThon vẫn khai báo nhưng không đưa lên giao diện).
             F("Địa chỉ chi tiết:", txtDiaChi);
 
             BeginSection("Địa chỉ thường trú");
@@ -288,17 +293,19 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             F("Địa chỉ chi tiết:", txtDiaChiTru);
         }
 
-        /// <summary>Tab 2 — Trường hợp bệnh (TRUONG_HOP_BENH): chẩn đoán + xét nghiệm + diễn biến + người báo cáo.</summary>
-        private void BuildTabTruongHop()
+        /// <summary>Nhóm — Trường hợp bệnh (TRUONG_HOP_BENH): chẩn đoán + xét nghiệm + diễn biến + người báo cáo. Thêm vào lcMain.</summary>
+        private void BuildSectionsTruongHop()
         {
-            secLc = lcTruongHop = NewTabLayout(tabTruongHop);
             // Chẩn đoán
-            cboBenh = new LookUpEdit();
-            cboCapDoBenh = new LookUpEdit();
-            cboLoaiChanDoan = new LookUpEdit();
-            cboTinhTrang = new LookUpEdit();
-            cboTinhTrangRaVien = new LookUpEdit();
-            cboBenhVienChuyenToi = new LookUpEdit();
+            cboBenh = new GridLookUpEdit();
+            txtBenhHoSo = new TextEdit();
+            txtBenhHoSo.Properties.ReadOnly = true;   // mã bệnh gốc của hồ sơ — chỉ đọc
+            cboCapDoBenh = new GridLookUpEdit();
+            cboLoaiChanDoan = new GridLookUpEdit();
+            cboTinhTrang = new GridLookUpEdit();
+            cboTinhTrangRaVien = new GridLookUpEdit();
+            cboBenhVienChuyenToi = new GridLookUpEdit();
+            cboHinhThucDieuTri = new GridLookUpEdit();
             dteNgayKhoiPhat = NewDate();
             dteNgayNhapVien = NewDate();
             dteNgayRaVien = NewDate();
@@ -310,17 +317,17 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             txtTienSuDichTe = NewMemo();
             txtGhiChu = NewMemo();
             // Vắc xin & xét nghiệm
-            cboSuDungVacXin = new LookUpEdit();
+            cboSuDungVacXin = new GridLookUpEdit();
             spnSoLan = new SpinEdit();
-            cboLayMau = new LookUpEdit();
-            cboLoaiXN = new LookUpEdit();
+            cboLayMau = new GridLookUpEdit();
+            cboLoaiXN = new GridLookUpEdit();
             txtLoaiXNKhac = new TextEdit();
-            cboKetQuaXN = new LookUpEdit();
+            cboKetQuaXN = new GridLookUpEdit();
             dteNgayThucHienXN = NewDate();
             dteNgayTraKQ = NewDate();
-            cboDonViXN = new LookUpEdit();
+            cboDonViXN = new GridLookUpEdit();
             // Người báo cáo
-            cboLoaiPhatHien = new LookUpEdit();
+            cboLoaiPhatHien = new GridLookUpEdit();
             lblCoSoDieuTriVal = NewValueLabel();
             txtNguoiBaoCao = new TextEdit();
             txtDienThoaiBaoCao = new TextEdit();
@@ -331,17 +338,22 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             cboBenh.EditValueChanged += cboBenh_EditValueChanged;
 
             BeginSection("Chẩn đoán");
-            FFull("Bệnh (ICD-10) (*):", cboBenh);       // bệnh lên trên cùng, chiếm trọn chiều ngang
-            F("Phân độ bệnh:", cboCapDoBenh);
+            FFull("Bệnh (hồ sơ):", txtBenhHoSo);        // mã bệnh gốc hồ sơ (chỉ đọc)
+            FFull("Bệnh (ICD-10) (*):", cboBenh);       // bệnh chọn đẩy cổng, chiếm trọn chiều ngang
+            // Phân độ bệnh: bỏ khỏi giao diện theo yêu cầu (cboCapDoBenh vẫn khai báo, không hiển thị).
             F("Phân loại chẩn đoán (*):", cboLoaiChanDoan);
             FFull("Chẩn đoán ra viện:", txtChanDoanRaVien, 40);
             FFull("Chẩn đoán phụ:", txtSubDiagnosis, 40);
             FFull("Chẩn đoán biến chứng:", txtComplication, 40);
 
+            // ---- Sang CỘT PHẢI ----
+            secLc = lcRight;
+
             BeginSection("Diễn biến & Ra viện");
             F("Ngày khởi phát:", dteNgayKhoiPhat);
             F("Ngày nhập viện (*):", dteNgayNhapVien);
             F("Tình trạng hiện nay (*):", cboTinhTrang);
+            F("Hình thức điều trị (*):", cboHinhThucDieuTri);
             F("Tình trạng khác:", txtTinhTrangKhac);
             F("Ngày ra viện:", dteNgayRaVien);
             F("Tình trạng ra viện:", cboTinhTrangRaVien);
@@ -425,19 +437,21 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
 
             var lcSearch = new LayoutControl();
             lcSearch.Dock = DockStyle.Top;
-            lcSearch.Height = 112;
+            lcSearch.Height = 100;
             var root = lcSearch.Root;
             root.GroupBordersVisible = false;
 
-            AddListRow(root, "", txtListKeyword);   // không nhãn — dùng NullValuePrompt hint
-            var liFrom = AddListRow(root, "Từ ngày:", dteListFrom);
-            AddListRow(root, "Đến ngày:", dteListTo).Move(liFrom, InsertType.Right);
+            // Hàng 1 + 2: mỗi ngày 1 hàng full-width -> ô nhập ngày rộng rãi.
+            AddListRow(root, "Từ ngày:", dteListFrom);
+            AddListRow(root, "Đến ngày:", dteListTo);
+            // Hàng 3: từ khóa (co giãn) + nút Tìm nhỏ bên phải.
+            var liKw = AddListRow(root, "", txtListKeyword);
             var liBtn = AddListRow(root, "", btnListSearch, 26);
+            liBtn.Move(liKw, InsertType.Right);
             liBtn.TextVisible = false;
             liBtn.SizeConstraintsType = SizeConstraintsType.Custom;
-            liBtn.MinSize = new Size(90, 28);
-            liBtn.MaxSize = new Size(90, 28);
-            root.Add(new EmptySpaceItem());   // hút phần trống còn lại -> nút Tìm không bị kéo giãn
+            liBtn.MinSize = new Size(72, 26);
+            liBtn.MaxSize = new Size(72, 26);
 
             // --- Grid ---
             grdList = new GridControl() { Dock = DockStyle.Fill };
@@ -452,6 +466,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             GridColumn cName = gvList.Columns.AddVisible("PATIENT_NAME"); cName.Caption = "Bệnh nhân"; cName.Width = 140;
             GridColumn cIcd = gvList.Columns.AddVisible("ICD_CODE"); cIcd.Caption = "ICD"; cIcd.Width = 60;
             gvList.Click += gvList_Click;
+            gvList.RowStyle += gvList_RowStyle;   // tô màu dòng đã đẩy cổng
 
             grpList.Controls.Add(grdList);       // Fill (thêm trước -> nằm dưới)
             grpList.Controls.Add(lcSearch);      // Top
@@ -506,16 +521,19 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         /// Thêm 1 dòng label-editor vào LayoutControlGroup.
         /// Label căn phải, rộng cố định để các cột thẳng hàng; trường bắt buộc "(*)" tô màu maroon.
         /// </summary>
-        private LayoutControlItem AddRow(LayoutControlGroup group, string caption, Control ctrl, int height = 24)
+        private LayoutControlItem AddRow(LayoutControlGroup group, string caption, Control ctrl, int height = 22)
         {
             if (ctrl.Height < height) ctrl.Height = height;
             LayoutControlItem lci = group.AddItem();
             lci.Control = ctrl;
             lci.Text = caption;
             lci.TextLocation = DevExpress.Utils.Locations.Left;
-            lci.TextSize = new Size(150, 20);
+            // Cột nhãn rộng 165px -> tiêu đề dài không bị cắt; ô nhập hẹp lại tương ứng (~1/5).
+            lci.TextSize = new Size(165, 20);
             lci.TextAlignMode = TextAlignModeItem.CustomSize;
             lci.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            lci.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            lci.AppearanceItemCaption.Options.UseTextOptions = true;
 
             if (string.IsNullOrEmpty(caption))
                 lci.TextVisible = false;
@@ -527,8 +545,10 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 lci.AppearanceItemCaption.Options.UseForeColor = true;
             }
 
-            // KHÔNG cap bề rộng: item lấp đầy nửa hàng (2 cột) hoặc trọn hàng (full) -> cân đối, không hụt.
-            lci.MinSize = new Size(320, ctrl.Height);
+            // Khoảng đệm quanh mỗi dòng (gọn) -> nhịp dọc đều, các ô không dính sát nhau.
+            lci.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 1, 4, 2);
+            // MinSize nhỏ -> 2 field vừa 1 hàng trong CỘT nửa form (2*200 < ~500px ở 1366), editor không quá rộng.
+            lci.MinSize = new Size(200, ctrl.Height);
             return lci;
         }
         #endregion

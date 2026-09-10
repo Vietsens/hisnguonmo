@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -22,6 +23,17 @@ namespace HIS.Desktop.MIMS.Integration.Core
         /// </summary>
         public static string PostXml(string url, string xml, out bool isTimeoutOrConnectionError)
         {
+            return PostXml(url, xml, null, out isTimeoutOrConnectionError);
+        }
+
+        /// <summary>
+        /// Gửi request tới MIMS kèm các tham số form tuỳ chọn của FT Web Service
+        /// ("alertfilterbydrug", "alertfilterbyseverity" — việc 52540).
+        /// extraFormParams null/rỗng → post y hệt như trước, không đổi 1 byte.
+        /// </summary>
+        public static string PostXml(string url, string xml,
+            Dictionary<string, string> extraFormParams, out bool isTimeoutOrConnectionError)
+        {
             isTimeoutOrConnectionError = false;
             var sw = System.Diagnostics.Stopwatch.StartNew();
 
@@ -44,9 +56,29 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 request.Timeout = 15000;         // 15s cho kết nối
                 request.ReadWriteTimeout = 15000; // 15s cho đọc/ghi
 
-                var postData =
-                    "prescriptionquery=" + HttpUtility.UrlEncode(xml) +
-                    "&responsetype=xml";
+                var postDataBuilder = new StringBuilder();
+                postDataBuilder.Append("prescriptionquery=").Append(HttpUtility.UrlEncode(xml));
+                postDataBuilder.Append("&responsetype=xml");
+
+                if (extraFormParams != null && extraFormParams.Count > 0)
+                {
+                    foreach (var param in extraFormParams)
+                    {
+                        if (string.IsNullOrEmpty(param.Key) || string.IsNullOrEmpty(param.Value))
+                            continue;
+
+                        postDataBuilder.Append("&")
+                            .Append(param.Key)
+                            .Append("=")
+                            .Append(HttpUtility.UrlEncode(param.Value));
+                    }
+
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "MimsClient.PostXml - extraFormParams: {0}",
+                        string.Join(", ", extraFormParams.Keys)));
+                }
+
+                var postData = postDataBuilder.ToString();
 
                 using (var stream = request.GetRequestStream())
                 {

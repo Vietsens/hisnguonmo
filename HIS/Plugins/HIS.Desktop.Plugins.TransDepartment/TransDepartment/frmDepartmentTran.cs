@@ -595,7 +595,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 if (sereservs != null && sereservs.Count() > 0)
                 {
                     var sereservscode = sereservs.Select(o => o.TDL_SERVICE_REQ_CODE).Distinct().ToList();
-                    if (MessageBox.Show("Các y lệnh " + string.Join(", ", sereservscode) + " có thời gian y lệnh lớn hơn thời gian hiện tại. Bạn có muốn chuyển khoa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (XtraMessageBox.Show("Các y lệnh " + string.Join(", ", sereservscode) + " có thời gian y lệnh lớn hơn thời gian hiện tại. Bạn có muốn chuyển khoa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
                         TranslateDepartment(ref success, param);
                         Inventec.Desktop.Common.Message.MessageManager.Show(this, param, success);
@@ -617,7 +617,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
         {
             try
             {
-                if (MessageBox.Show("Bạn chưa chỉ định dịch vụ Phẫu thuật. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (XtraMessageBox.Show("Bạn chưa chỉ định dịch vụ Phẫu thuật. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     TranslateDepartment(ref success, param);
                     Inventec.Desktop.Common.Message.MessageManager.Show(this, param, success);
@@ -684,7 +684,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 if (sereservsIntruction != null && sereservsIntruction.Count() > 0)
                 {
                     var sereservscodeA = sereservs.Select(o => o.TDL_SERVICE_REQ_CODE).Distinct().ToList();
-                    if (MessageBox.Show("Các y lệnh " + string.Join(", ", sereservscodeA) + " có thời gian y lệnh lớn hơn thời gian hiện tại. Bạn có muốn chuyển khoa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (XtraMessageBox.Show("Các y lệnh " + string.Join(", ", sereservscodeA) + " có thời gian y lệnh lớn hơn thời gian hiện tại. Bạn có muốn chuyển khoa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
 
                         ConditionBplus(ref success, ref param, IsWarningWhenIsNoSurg);
@@ -728,12 +728,12 @@ namespace HIS.Desktop.Plugins.TransDepartment
                         var sereservscode = servicereq12.Select(o => o.SERVICE_REQ_CODE).Distinct().ToList();
                         if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1)
                         {
-                            MessageBox.Show("Các y lệnh " + string.Join(", ", sereservscode) + " chưa gắn tờ điều trị.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2);
+                            XtraMessageBox.Show("Các y lệnh " + string.Join(", ", sereservscode) + " chưa gắn tờ điều trị.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2);
                             return;
                         }
                         else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 2)
                         {
-                            if (MessageBox.Show("Các y lệnh " + string.Join(", ", sereservscode) + " chưa gắn tờ điều trị. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                            if (XtraMessageBox.Show("Các y lệnh " + string.Join(", ", sereservscode) + " chưa gắn tờ điều trị. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                             {
                                 if (IsWarningWhenIsNoSurg)
                                 {
@@ -763,7 +763,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                                 else
                                     serviceReqCode.Add(item.SERVICE_REQ_CODE);
                             }
-                            if (serviceReqCode == null || serviceReqCode.Count == 0 || MessageBox.Show("Các y lệnh " + string.Join(", ", serviceReqCode) + " chưa gắn tờ điều trị. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                            if (serviceReqCode == null || serviceReqCode.Count == 0 || XtraMessageBox.Show("Các y lệnh " + string.Join(", ", serviceReqCode) + " chưa gắn tờ điều trị. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                             {
                                 if (IsWarningWhenIsNoSurg)
                                 {
@@ -831,12 +831,12 @@ namespace HIS.Desktop.Plugins.TransDepartment
 
                             if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1)
                             {
-                                MessageBox.Show("Các y lệnh " + string.Join(", ", sereservscode) + " chưa gắn tờ điều trị.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2);
+                                XtraMessageBox.Show("Các y lệnh " + string.Join(", ", sereservscode) + " chưa gắn tờ điều trị.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2);
                                 return;
                             }
                             else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 2)
                             {
-                                if (MessageBox.Show("Các y lệnh " + string.Join(", ", sereservscode) + " chưa gắn tờ điều trị. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                                if (XtraMessageBox.Show("Các y lệnh " + string.Join(", ", sereservscode) + " chưa gắn tờ điều trị. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                                 {
                                     if (IsWarningWhenIsNoSurg)
                                     {
@@ -866,7 +866,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                                     else
                                         serviceReqCode.Add(item.SERVICE_REQ_CODE);
                                 }
-                                if (serviceReqCode == null || serviceReqCode.Count == 0 || MessageBox.Show("Các y lệnh " + string.Join(", ", serviceReqCode) + " chưa gắn tờ điều trị. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                                if (serviceReqCode == null || serviceReqCode.Count == 0 || XtraMessageBox.Show("Các y lệnh " + string.Join(", ", serviceReqCode) + " chưa gắn tờ điều trị. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                                 {
                                     if (IsWarningWhenIsNoSurg)
                                     {
@@ -931,6 +931,12 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 if (!vali)//!dxValidationProvider1.Validate() || !IsValiICD())
                     return;
 
+                // Chan chuyen khoa khi con dich vu chua hoan thanh thuoc loai dich vu bi chan.
+                // Dat truoc cac popup Yes/No phia duoi de khong hoi nguoi dung khi da chac chan
+                // khong cho luu.
+                if (!IsAllowTransByRequiredService())
+                    return;
+
                 //minhnq
                 HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                 serviceReqFilter.TREATMENT_ID = treatmentId;
@@ -941,7 +947,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 var lstServiceReq = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, null);
                 if (lstServiceReq != null && lstServiceReq.Count() > 0)
                 {
-                    if (MessageBox.Show("Các y lệnh " + string.Join(", ", string.Join(",", lstServiceReq.Select(o => o.SERVICE_REQ_CODE).ToList())) + " có thời gian y lệnh lớn hơn thời gian chuyển khoa. Bạn có muốn chuyển khoa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    if (XtraMessageBox.Show("Các y lệnh " + string.Join(", ", string.Join(",", lstServiceReq.Select(o => o.SERVICE_REQ_CODE).ToList())) + " có thời gian y lệnh lớn hơn thời gian chuyển khoa. Bạn có muốn chuyển khoa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                         return;
                 }
                 List<V_HIS_TREATMENT> treatment = new List<V_HIS_TREATMENT>();
@@ -952,7 +958,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                     treatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, null);
                 }
 
-                //Kiểm tra bệnh nhân còn đợt điều trị
+                //Kiểm tra bệnh nhân còn đợt điều trị 
                 if (ConfigKey.AllowManyOpeningOption == "6")
                 {
                     if (treatment != null && treatment.Count > 0)
@@ -1031,13 +1037,13 @@ namespace HIS.Desktop.Plugins.TransDepartment
                             if (IsShowUnsignedDocument == 1)
                             {
                                 message += "Vui lòng hoàn thiện chữ ký trước khi chuyển khoa!";
-                                MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
                             }
                             else if (IsShowUnsignedDocument == 2)
                             {
                                 message += "Bạn có muốn thực hiện ký không?";
-                                if (MessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                if (XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                                 {
                                     Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.EmrDocument").FirstOrDefault();
                                     if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.EmrDocument");
@@ -1055,7 +1061,7 @@ namespace HIS.Desktop.Plugins.TransDepartment
                             }
                         }
                         //Nampp yêu cầu
-                    }                 
+                    }
                 }
 
                 WaitingManager.Show();

@@ -683,11 +683,11 @@ namespace MPS.Processor.Mps000508
                 }
 
                 if (rdo.ServiceReqs != null &&
-                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList() != null &&
-                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList().Count > 0)
+                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && o.START_TIME != null).ToList() != null &&
+                    rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && o.START_TIME != null).ToList().Count > 0) 
                 {
-                    var ServiceReqsKh = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList();
-                    long startTime = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).ToList().OrderBy(o => o.START_TIME ?? 0).FirstOrDefault().START_TIME ?? 0;
+                    var ServiceReqsKh = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && o.START_TIME != null).ToList();
+                    long startTime = rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && o.START_TIME != null).ToList().OrderBy(o => o.START_TIME ?? 0).FirstOrDefault().START_TIME ?? 0;
                     SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.SERVICE_REQ_START_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(startTime)));
                 }
 
@@ -973,7 +973,10 @@ namespace MPS.Processor.Mps000508
             string log = "";
             try
             {
-                log = "Mã điều trị: " + rdo.Treatment.TREATMENT_CODE;
+                if (rdo != null && rdo.Treatment != null)
+                {
+                    log = String.Format("HIS_TREATMENT: {0}", rdo.Treatment.TREATMENT_CODE);
+                }
             }
             catch (Exception ex)
             {
@@ -990,12 +993,15 @@ namespace MPS.Processor.Mps000508
             {
                 if (rdo != null && rdo.Treatment != null)
                 {
-                    string printTypeCode = printData.printTypeCode;
+                    //doi ten bien: printTypeCode trung ten field cua AbstractProcessor -> de doc nham.
+                    //hoa/thuong phai khop printData.printTypeCode (= "MPS000508") vi UNIQUE_CODE__EXACT
+                    //loc phan biet hoa thuong khi dem so ban in.
+                    string uniquePrintTypeCode = printData.printTypeCode;
                     if (rdo.Treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
                     {
-                        printTypeCode = "Mps000509";
+                        uniquePrintTypeCode = "MPS000509";
                     }
-                    result = String.Format("{0} TREATMENT_CODE:{1}", printTypeCode, rdo.Treatment.TREATMENT_CODE);
+                    result = String.Format("{0} TREATMENT_CODE:{1}", uniquePrintTypeCode, rdo.Treatment.TREATMENT_CODE);
                 }
 
             }

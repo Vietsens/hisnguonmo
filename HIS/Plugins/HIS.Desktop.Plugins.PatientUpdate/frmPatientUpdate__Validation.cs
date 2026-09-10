@@ -141,7 +141,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 ValidateMaxlength validRule = new ValidateMaxlength();
                 validRule.txt = txt;
                 validRule.exactLength = exactLength;
-                validRule.ErrorText = "Mã BHXH phải nhập đủ 10 ký tự";
+                validRule.ErrorText = "Mã BHXH phải nhập đủ 10 hoặc 12 ký tự";
                 validRule.ErrorType = ErrorType.Warning;
                 dxValidationProvider1.SetValidationRule(txt, validRule);
             }

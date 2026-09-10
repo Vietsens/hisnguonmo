@@ -2746,6 +2746,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             sereServADO.IsGuarantee = false;
                         }
                     }
+                    //Bac si TU chon phong xu ly: ghi nhan de nhung lan lay phong du kien sau
+                    //khong ghi de lua chon cua bac si. Xem frmAssignService__SuggestRoom.cs
+                    if (e.Column.FieldName == this.gridColumnExecuteRoomName__TabService.FieldName)
+                    {
+                        this.MarkUserPickedRoom(sereServADO.SERVICE_ID);
+                    }
+
                     if (e.Column.FieldName == this.grcChecked_TabService.FieldName
                         || e.Column.FieldName == this.grcExpend_TabService.FieldName
                         || e.Column.FieldName == this.grcAmount_TabService.FieldName
@@ -3093,12 +3100,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             long sereServADO = 0;
             try
             {
-                //Co che phan phong theo can bang tai: KHONG tu dien phong thuc hien, de trong cho BE tu phan.
-                //Logic tu dien ben duoi (cung phong lam viec -> cung khoa -> cung chi nhanh) khong xet tai,
-                //neu van dien thi BE hieu la "nguoi dung tu chon" va bo qua toan bo co che tu phan.
+                //Co che phan phong theo can bang tai: KHONG dung logic tu dien ben duoi
+                //(cung phong lam viec -> cung khoa -> cung chi nhanh) vi no khong xet tai.
+                //Lay phong du kien do MOS phan cho CA NHOM dich vu dang tick, xem
+                //frmAssignService__SuggestRoom.cs. Chua co ket qua thi tra 0 (de o trong),
+                //luc Luu MOS van tu phan phong nen phieu khong bi thieu phong.
                 if (HisConfigCFG.IsAssignRoomByLoadBalance)
                 {
-                    return 0;
+                    return this.GetSuggestedRoomIdByExecuteRooms(excuteRoomList);
                 }
 
                 if (HisConfigCFG.ShowDefaultExecuteRoom == "2")
@@ -3155,12 +3164,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             long roomId = 0;
             try
             {
-                //Co che phan phong theo can bang tai: de trong cho BE tu phan.
-                //BE da xet phong uu tien bat buoc o vi tri thu 2 (tren ca can bang tai) nen ket qua khong doi,
-                //nhung phai de trong de BE con gom duoc cac dich vu cung loai vao 1 phong.
+                //Co che phan phong theo can bang tai: khong tu chon phong uu tien nua.
+                //MOS da xet phong uu tien bat buoc o vi tri thu 2 (tren ca can bang tai) roi,
+                //nen chi lay lai ket qua MOS da phan cho ca nhom dich vu dang tick.
+                //Xem frmAssignService__SuggestRoom.cs
                 if (HisConfigCFG.IsAssignRoomByLoadBalance)
                 {
-                    return 0;
+                    return this.GetSuggestedRoomIdByExecuteRooms(excuteRoomList);
                 }
 
                 if (excuteRoomList != null && excuteRoomList.Count > 0)
@@ -3233,6 +3243,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             //data.TDL_EXECUTE_ROOM_ID = executeRoomDefault;
                             if (data != null && data.TDL_EXECUTE_ROOM_ID <= 0)
                             {
+                                //Caller nay KHONG di qua FilterExecuteRoom nen phai tu ghi lai dich vu dang xu ly,
+                                //neu khong SetDefaultExcuteRoom se tra phong cua dich vu khac.
+                                //Xem frmAssignService__SuggestRoom.cs
+                                this.suggestRoomCurrentServiceId = data.SERVICE_ID;
                                 long executeRoomId = SetDefaultExcuteRoom(dataSource);
                                 editor.EditValue = executeRoomId;
                             }
@@ -3959,6 +3973,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                //Diem hoi tu: ham nay chay moi khi danh sach dich vu duoc tick thay doi.
+                //Hen lam moi phong xu ly du kien tu MOS (chi chay khi bat can bang tai).
+                //Xem frmAssignService__SuggestRoom.cs
+                this.ScheduleRefreshSuggestRoom();
+
                 if (this.actionType == GlobalVariables.ActionAdd)
                 {
                     List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
@@ -9123,6 +9142,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     new LoaiPhieuInADO("gridView7_4", "Phiếu yêu cầu tổng hợp")
                 };
 
+                if (HisConfigCFG.IsPrintTemBarcodeBartender)
+                {
+                    // In tem barcode xet nghiem qua BarTender ngay khi luu (chi hien khi bat config)
+                    lstLoaiPhieu.Add(new LoaiPhieuInADO("gridView7_5", "In tem barcode"));
+                }
+
                 if (HisConfigCFG.IsSeparateSignAndPrint)
                 {
                     // Mặc định lần đầu: cột In tích theo cột Ký
@@ -10685,6 +10710,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (checkQR != null)
                     {
                         InYeuCauThanhToanQR(chkPrint.Checked, false, true);
+                    }
+
+                    var checkTemBarcode = this.lstLoaiPhieu.FirstOrDefault(o => (isSeparate ? o.Print : o.Check) == true && o.ID == "gridView7_5");
+                    if (checkTemBarcode != null)
+                    {
+                        InTemBarcodeXN();
                     }
                 }
 

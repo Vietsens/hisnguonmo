@@ -235,7 +235,7 @@ namespace MPS.Processor.Mps000049
                 // ===== DIAGNOSTIC 2778: TẠM TẮT toàn bộ relationship để khoanh vùng lỗi FlexCel DeleteRange 1048577 =====
                 // Nếu in được sau khi tắt -> quan hệ master-detail thiếu band master trong template là nguyên nhân.
                 // Nếu vẫn lỗi -> do cấu trúc band/template. ĐÂY LÀ TEST TẠM, sẽ khôi phục sau.
-                /*
+                
                 objectTag.AddRelationship(store, "ExpMestAggregates", "ExpMests", new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" }, new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" });
                 objectTag.AddRelationship(store, "ExpMestAggregates1", "ExpMests", new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" }, new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" });
 
@@ -260,7 +260,7 @@ namespace MPS.Processor.Mps000049
                 objectTag.AddRelationship(store, "MedicineParent", "ExpMestAggregates1", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
 
                 objectTag.AddRelationship(store, "MedicineParent", "ExpMests", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
-                */
+                
                 // ===== HẾT phần tạm tắt =====
 
                 // 2778: Khi cấu hình BẬT → loại "Sản phẩm không phải là thuốc" (IS_FUNCTIONAL_FOOD = 1)

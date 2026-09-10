@@ -344,8 +344,51 @@ obj.EXAM_XXX_LOGINNAME = cboExamXxxLoginName4.EditValue != null
 
 ---
 
+## 9b. Tab 3 — KSK dưới 18 tuổi: Người đưa trẻ đi khám (việc 55884)
+
+Cụm nhập bổ sung ở mục hành chính khu trái (`layoutControl9`), đặt ngay trên "I. TIỀN SỬ BỆNH TẬT".
+Nghiệp vụ **không bắt buộc nhập** — để trống vẫn lưu bình thường (khác tab trẻ dưới 6 tuổi đang bắt buộc).
+
+| Control | Kiểu | LayoutControlItem | Cột DB (HIS_KSK_UNDER_EIGHTEEN) |
+|---------|------|-------------------|----------------------------------|
+| txtAccompanyPersonName3 | TextEdit (MaxLength 200) | lciAccompanyName3 — "Họ tên người đi cùng trẻ:" | ACCOMPANY_PERSON_NAME (VARCHAR2 200) |
+| rdoAccompanyRelationship3 | RadioGroup 6 cột | lciAccompanyRel3 — "Mối quan hệ với trẻ" | ACCOMPANY_RELATIONSHIP (NUMBER(2,0)) |
+| txtAccompanyRelationshipOther3 | TextEdit (MaxLength 500) | lciAccompanyOther3 — "Ghi rõ (quan hệ khác):" | ACCOMPANY_RELATIONSHIP_OTHER (VARCHAR2 500) |
+
+Mã mối quan hệ: `1=Cha, 2=Mẹ, 3=Ông/bà, 4=Anh/chị, 5=Họ hàng, 6=Khác`.
+Ô "Ghi rõ" chỉ bật khi chọn "Khác" (`UpdateAccompanyRelationshipOtherState3`), bỏ chọn thì tự xoá nội dung.
+
+**Luồng xử lý** (`frmEnterKskInfomantionVer2___UnderEight.cs`):
+
+| Bước | Hàm | Xử lý |
+|------|-----|-------|
+| Mở tab | `FillDataPageUnderEighteen` → `SetCaptionAccompanyUnderEighteen` | Nạp caption từ `Resources/Lang.{vi,en}.resx` |
+| Nạp dữ liệu | `FillDataUnderEighteen` | Đổ 3 cột từ bản ghi, gọi lại `UpdateAccompanyRelationshipOtherState3` |
+| Lưu | `GetValueUnderEighteen` | `NullIfEmpty` cho 2 ô text, `ToShort(GetRadioValue(...))` cho radio |
+| Reset | `ResetControlUnderEight` | Xoá 3 ô, tắt ô "Ghi rõ" |
+
+Lưu qua `api/HisServiceReq/KskExecuteV2` như các trường khác của tab (entity gửi nguyên bản, backend không cần sửa logic).
+
+**Key mới trên mẫu in Mps000453** (`Mps000453ExtendSingleKey` + `Mps000453Processor`):
+
+| Key | Nguồn |
+|-----|-------|
+| `{ACCOMPANY_PERSON_NAME}` | Cột thô của HIS_KSK_UNDER_EIGHTEEN (tự sinh) |
+| `{ACCOMPANY_RELATIONSHIP_STR}` | Mã quan hệ → text |
+| `{ACCOMPANY_RELATIONSHIP_FULL}` | Text quan hệ, chọn "Khác" thì ghép `: <ghi rõ>` |
+| `{HISTORY_FAMILY_ICD_CODE|_NAME|_FULL}` | HIS_KSK_GENERAL.FAMILY_HISTORY_ICD_CODE/NAME |
+| `{HISTORY_PERSONAL_ICD_CODE|_NAME|_FULL}` | HIS_KSK_GENERAL.PERSONAL_HISTORY_ICD_CODE/NAME |
+| `{OBSTETRIC_ICD_CODE|_NAME|_FULL}` | HIS_KSK_GENERAL.OBSTETRIC_DISEASE_ICD_CODE/NAME |
+| `{TREATING_ICD_CODE|_NAME|_FULL}` | HIS_KSK_GENERAL.TREATING_DISEASE_ICD_CODE/NAME |
+
+`_FULL` = `"mã - tên"` (thiếu một vế thì lấy vế còn lại) để biểu mẫu chỉ cần 1 ô.
+Bộ key kết luận ICD (`CONCLUSION_ICD_*`) đã có từ trước, giữ nguyên.
+
+---
+
 ## 10. Changelog
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 03/09/2026 | khainq | **Việc 55884** — Tab KSK dưới 18 tuổi: bổ sung nhập "Họ tên người đi cùng trẻ", "Mối quan hệ với trẻ", "Ghi rõ (quan hệ khác)" (không bắt buộc nhập), lưu vào 3 cột mới của HIS_KSK_UNDER_EIGHTEEN. Mẫu in Mps000453: thêm key ICD tiền sử (gia đình/bản thân/sản khoa/bệnh đang điều trị, mỗi nhóm 3 key _CODE/_NAME/_FULL) và key người đưa trẻ đi khám (ACCOMPANY_RELATIONSHIP_STR/_FULL). SQL: docs/SQL_55884_HisKskUnderEighteen_Accompany.sql |
 | 14/04/2026 | tuanln | Bổ sung 6 combobox Người khám cho Tab 4 KSK lái xe: Tâm thần (cboExamMentalLoginName4), Thần kinh (cboExamNeurologicalLoginName4), Hô hấp (cboExamRespiratoryLoginName4), Cơ xương khớp (cboExamMuscleBoneLoginName4), Nội tiết (cboExamOendLoginName4), Thai sản (cboExamMaternityLoginName4). Thu nhỏ Kết luận 513→292px và dịch Xếp loại từ X=1634→X=1413 cho 6 mục để chứa Người khám cùng dòng. DB fields: EXAM_RESPIRATORY_LOGINNAME, EXAM_NEUROLOGICAL_LOGINNAME, EXAM_MUSCLE_BONE_LOGINNAME, EXAM_MENTAL_LOGINNAME, EXAM_OEND_LOGINNAME, EXAM_MATERNITY_LOGINNAME |

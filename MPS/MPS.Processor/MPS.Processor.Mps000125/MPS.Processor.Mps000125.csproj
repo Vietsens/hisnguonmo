@@ -102,43 +102,43 @@
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Product\HIS2.0\2.5.1\Portable\ReferencedAssemblies\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Product\HIS2.0\2.5.1\Portable\ReferencedAssemblies\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Product\HIS2.0\2.5.1\Portable\ReferencedAssemblies\MOS.LibraryHein.Bhyt.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Product\HIS2.0\2.5.1\Portable\ReferencedAssemblies\MOS.LibraryHein.Common.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Common.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Factory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Product\HIS2.0\2.5.1\Portable\ReferencedAssemblies\MOS.LibraryHein.Factory.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Factory.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.HcmPoorFund, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Product\HIS2.0\2.5.1\Portable\ReferencedAssemblies\MOS.LibraryHein.HcmPoorFund.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.HcmPoorFund.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Ksk, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Product\HIS2.0\2.5.1\Portable\ReferencedAssemblies\MOS.LibraryHein.Ksk.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Ksk.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Product\HIS2.0\2.5.1\Portable\ReferencedAssemblies\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.ServicePaty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Product\HIS2.0\2.5.1\Portable\ReferencedAssemblies\MOS.ServicePaty.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.ServicePaty.dll</HintPath>
     </Reference>
     <Reference Include="MOS.TDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Product\HIS2.0\2.5.1\Portable\ReferencedAssemblies\MOS.TDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
     <Reference Include="SAR.EFMODEL">
       <HintPath>..\..\..\..\LIB\SAR\SAR.EFMODEL.dll</HintPath>

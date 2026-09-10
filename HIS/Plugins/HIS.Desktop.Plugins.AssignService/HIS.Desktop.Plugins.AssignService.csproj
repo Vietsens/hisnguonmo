@@ -40,6 +40,9 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Bartender.PrintTemTestServiceReq">
+      <HintPath>..\..\HIS.Desktop\bin\Debug\ReferencedAssemblies\Bartender.PrintTemTestServiceReq.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.Data.v15.2.dll</HintPath>
@@ -350,6 +353,9 @@
     <Compile Include="AssignService\frmAssignService__Save.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AssignService\frmAssignService__SuggestRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AssignService\frmAssignService__UcIcdCause.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -407,6 +413,9 @@
     <Compile Include="AssignServiceProcessor.cs" />
     <Compile Include="AssignService\AssignServiceBehavior.cs" />
     <Compile Include="AssignService\AssignServiceFactory.cs" />
+    <Compile Include="AssignService\frmAssignService__PrintTemBarcode.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AssignService\frmAssignService__Print_v2.cs">
       <SubType>Form</SubType>
     </Compile>

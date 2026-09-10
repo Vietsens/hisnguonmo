@@ -96,13 +96,13 @@
     </Reference>
     <Reference Include="Inventec.Common.FlexCelExport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>F:\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelExport.dll</HintPath>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelExport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FlexCelPrint">
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.JsonExport">
-      <HintPath>F:\histest\x64\ReferencedAssemblies\Inventec.Common.JsonExport.dll</HintPath>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.JsonExport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>

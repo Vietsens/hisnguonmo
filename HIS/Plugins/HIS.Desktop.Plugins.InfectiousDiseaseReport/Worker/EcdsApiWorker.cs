@@ -37,10 +37,21 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
         {
             // .NET 4.5 mặc định chưa bật TLS 1.2
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+
+            // Kiểm tra BaseUrl là URL http/https hợp lệ TRƯỚC khi tạo client -> tránh UriFormatException
+            // khó hiểu ("hostname could not be parsed") khi cấu hình sai; báo lỗi rõ, chỉ đúng key config.
+            Uri baseUri;
+            if (!Uri.TryCreate(EcdsConfigCFG.BaseUrl, UriKind.Absolute, out baseUri)
+                || (baseUri.Scheme != Uri.UriSchemeHttp && baseUri.Scheme != Uri.UriSchemeHttps))
+            {
+                throw new InvalidOperationException(
+                    "ECDS BaseUrl không hợp lệ: '" + (EcdsConfigCFG.BaseUrl ?? "") + "'. Kiểm tra cấu hình "
+                    + EcdsConfigCFG.CONFIG_KEY + " — phần BaseUrl phải là URL đầy đủ (VD https://daotao-gs.vadp.gov.vn).");
+            }
+
             var client = new HttpClient();
             client.Timeout = TimeSpan.FromSeconds(EcdsConfigCFG.TimeoutSecond);
-            if (!string.IsNullOrEmpty(EcdsConfigCFG.BaseUrl))
-                client.BaseAddress = new Uri(EcdsConfigCFG.BaseUrl);
+            client.BaseAddress = baseUri;
             return client;
         }
 
@@ -75,22 +86,37 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
             }
         }
 
-        /// <summary>[2] Lấy 1 danh mục ECDS.</summary>
+        /// <summary>[2] Lấy 1 danh mục ECDS — LẶP HẾT CÁC TRANG (API phân trang, mặc định 20/trang).</summary>
         internal List<DanhMucItemDto> LayDanhMuc(string tenDanhMuc, SearchDanhMucFastDto filter)
         {
+            var all = new List<DanhMucItemDto>();
             try
             {
-                if (!EnsureLogin()) return new List<DanhMucItemDto>();
-                // duLieu là object phân trang { danhSach:[...], tongSo, trangSo... } -> lấy danhSach.
-                var result = PostRaw<DanhMucPageDto>(PATH_DANHMUC + tenDanhMuc, filter ?? new SearchDanhMucFastDto());
-                return (result != null && result.duLieu != null && result.duLieu.danhSach != null)
-                    ? result.duLieu.danhSach : new List<DanhMucItemDto>();
+                if (!EnsureLogin()) return all;
+                var f = filter ?? new SearchDanhMucFastDto();
+                if (!f.kichThuocTrang.HasValue || f.kichThuocTrang.Value <= 0)
+                    f.kichThuocTrang = 500;   // xin trang lớn để giảm số lần gọi
+                int page = (f.trangSo.HasValue && f.trangSo.Value > 0) ? f.trangSo.Value : 0;
+                int totalPages = 1, guard = 0;
+                do
+                {
+                    f.trangSo = page;
+                    // duLieu là object phân trang { danhSach:[...], tongSoTrang... } -> gộp danhSach mọi trang.
+                    var result = PostRaw<DanhMucPageDto>(PATH_DANHMUC + tenDanhMuc, f);
+                    if (result == null || result.duLieu == null) break;
+                    if (result.duLieu.danhSach != null && result.duLieu.danhSach.Count > 0)
+                        all.AddRange(result.duLieu.danhSach);
+                    totalPages = (result.duLieu.tongSoTrang.HasValue && result.duLieu.tongSoTrang.Value > 0)
+                        ? result.duLieu.tongSoTrang.Value : 1;
+                    page++; guard++;
+                }
+                while (page < totalPages && guard < 200);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return new List<DanhMucItemDto>();
             }
+            return all;
         }
 
         /// <summary>[3] Đẩy 1 ca bệnh. Có log đầy đủ request + response (để trace đẩy cổng).</summary>

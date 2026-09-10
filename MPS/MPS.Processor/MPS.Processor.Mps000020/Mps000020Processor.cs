@@ -156,7 +156,7 @@ namespace MPS.Processor.Mps000020
                     SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_CARD_NUMBER_3, rdo.patyAlterBhyt.HEIN_CARD_NUMBER.Substring(3, 2))));
                     SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_CARD_NUMBER_4, rdo.patyAlterBhyt.HEIN_CARD_NUMBER.Substring(5, 2))));
                     SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_CARD_NUMBER_5, rdo.patyAlterBhyt.HEIN_CARD_NUMBER.Substring(7, 3))));
-                    SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_CARD_NUMBER_6, rdo.patyAlterBhyt.HEIN_CARD_NUMBER.Substring(10, 5))));
+                    SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_CARD_NUMBER_6, rdo.patyAlterBhyt.HEIN_CARD_NUMBER.Substring(10))));
                     SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.STR_HEIN_CARD_FROM_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString((rdo.patyAlterBhyt.HEIN_CARD_FROM_TIME ?? 0)))));
                     SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.STR_HEIN_CARD_TO_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString((rdo.patyAlterBhyt.HEIN_CARD_TO_TIME ?? 0)))));
                     SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_MEDI_ORG_CODE, rdo.patyAlterBhyt.HEIN_MEDI_ORG_CODE)));

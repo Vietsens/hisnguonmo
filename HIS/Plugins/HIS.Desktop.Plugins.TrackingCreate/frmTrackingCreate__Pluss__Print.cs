@@ -361,6 +361,17 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         .FirstOrDefault();
                 }
 
+                #region Khoa hội chẩn
+                // Khoa phong moi hoi chan luu o HIS_SPECIALIST_EXAM (INVITE_TYPE = 2), cot EXAM_EXECUTE_DEPARMENT_ID.
+                List<V_HIS_SPECIALIST_EXAM> specialistExams = new List<V_HIS_SPECIALIST_EXAM>();
+                MOS.Filter.HisSpecialistExamViewFilter specialistExamViewFilter = new MOS.Filter.HisSpecialistExamViewFilter();
+                specialistExamViewFilter.TREATMENT_CODE = (_Treatment != null ? _Treatment.TREATMENT_CODE : "");
+                specialistExamViewFilter.INVITE_TYPE = 2;
+                var specialistExamViews = new BackendAdapter(param).Get<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, specialistExamViewFilter, param);
+                if (specialistExamViews != null && specialistExamViews.Count > 0)
+                    specialistExams = specialistExamViews;
+                #endregion
+
                 MPS.Processor.Mps000062.PDO.Mps000062PDO mps000062RDO = new MPS.Processor.Mps000062.PDO.Mps000062PDO(
                 _Treatment,
                 _TreatmentBedRooms,
@@ -394,6 +405,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 listDosage,
                 selectedBedLog
                 );
+                mps000062RDO._SpecialistExams = specialistExams;
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
 

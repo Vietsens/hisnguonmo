@@ -143,6 +143,15 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                                     expMedi.AFTERNOON = itemGroups.Sum(s => FormatSessionOfDay(s.AFTERNOON)).ToString();
                                     expMedi.NOON = itemGroups.Sum(s => FormatSessionOfDay(s.NOON)).ToString();
                                     expMedi.PATIENT_TYPE_ID = itemGroups[0].PATIENT_TYPE_ID ?? 0;
+                                    //Cong khai thuc hien cua thuoc: USED_TIME (thoi gian dung) tren tung dong xuat kho.
+                                    //Lay lan dung muon nhat trong nhom; nhom nao chua ghi dung thi de trong.
+                                    expMedi.EXECUTE_PUBLIC_TIME = itemGroups
+                                        .Where(o => o.USED_TIME.HasValue && o.USED_TIME.Value > 0)
+                                        .Select(o => o.USED_TIME)
+                                        .OrderByDescending(o => o)
+                                        .FirstOrDefault();
+                                    //Thanh tien BHYT tra / BN tra: doi chieu sang sere_serv theo id dong xuat kho
+                                    SetHeinPatientPriceByExpMedicine(expMedi, itemGroups.Select(o => o.ID).ToList());
                                     _Datas.Add(expMedi);
                                 }
                             }
@@ -232,6 +241,14 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                                     {
                                         expMate.CONCENTRA = concentra.CONCENTRA;
                                     }
+                                    //Cong khai thuc hien cua vat tu: USED_TIME tren tung dong xuat kho
+                                    expMate.EXECUTE_PUBLIC_TIME = itemGroups
+                                        .Where(o => o.USED_TIME.HasValue && o.USED_TIME.Value > 0)
+                                        .Select(o => o.USED_TIME)
+                                        .OrderByDescending(o => o)
+                                        .FirstOrDefault();
+                                    //Thanh tien BHYT tra / BN tra: doi chieu sang sere_serv theo id dong xuat kho
+                                    SetHeinPatientPriceByExpMaterial(expMate, itemGroups.Select(o => o.ID).ToList());
                                     _Datas.Add(expMate);
                                 }
                             }
@@ -317,6 +334,57 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// Cong tien BHYT tra / BN tra cua cac dong xuat kho thuoc trong nhom.
+        /// VIR_TOTAL_* la tien cua ca dong (da nhan so luong) nen cong don, khong nhan lai voi AMOUNT.
+        /// </summary>
+        private void SetHeinPatientPriceByExpMedicine(Service_NT_ADO ado, List<long> expMestMedicineIds)
+        {
+            SetHeinPatientPrice(ado, expMestMedicineIds, this.dicSereServByExpMedicine);
+        }
+
+        /// <summary>
+        /// Cong tien BHYT tra / BN tra cua cac dong xuat kho vat tu trong nhom.
+        /// </summary>
+        private void SetHeinPatientPriceByExpMaterial(Service_NT_ADO ado, List<long> expMestMaterialIds)
+        {
+            SetHeinPatientPrice(ado, expMestMaterialIds, this.dicSereServByExpMaterial);
+        }
+
+        private void SetHeinPatientPrice(Service_NT_ADO ado, List<long> expMestIds, Dictionary<long, V_HIS_SERE_SERV> dicSereServ)
+        {
+            try
+            {
+                if (ado == null || expMestIds == null || expMestIds.Count <= 0 || dicSereServ == null || dicSereServ.Count <= 0)
+                    return;
+
+                decimal? totalHein = null;
+                decimal? totalPatient = null;
+                foreach (var expMestId in expMestIds)
+                {
+                    V_HIS_SERE_SERV sereServ = null;
+                    if (!dicSereServ.TryGetValue(expMestId, out sereServ) || sereServ == null)
+                        continue;
+
+                    if (sereServ.VIR_TOTAL_HEIN_PRICE.HasValue)
+                    {
+                        totalHein = (totalHein ?? 0) + sereServ.VIR_TOTAL_HEIN_PRICE.Value;
+                    }
+                    if (sereServ.VIR_TOTAL_PATIENT_PRICE.HasValue)
+                    {
+                        totalPatient = (totalPatient ?? 0) + sereServ.VIR_TOTAL_PATIENT_PRICE.Value;
+                    }
+                }
+
+                ado.TOTAL_HEIN_PRICE = totalHein;
+                ado.TOTAL_PATIENT_PRICE = totalPatient;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public long? ConvertToOutputFormat(long? input)
         {
             long? outputLong = null;

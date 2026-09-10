@@ -79,7 +79,7 @@ namespace MPS.Processor.Mps000224
                             patyAlterBhytADO.HEIN_CARD_NUMBER_3 = item.HEIN_CARD_NUMBER.Substring(3, 2);
                             patyAlterBhytADO.HEIN_CARD_NUMBER_4 = item.HEIN_CARD_NUMBER.Substring(5, 2);
                             patyAlterBhytADO.HEIN_CARD_NUMBER_5 = item.HEIN_CARD_NUMBER.Substring(7, 3);
-                            patyAlterBhytADO.HEIN_CARD_NUMBER_6 = item.HEIN_CARD_NUMBER.Substring(10, 5);
+                            patyAlterBhytADO.HEIN_CARD_NUMBER_6 = item.HEIN_CARD_NUMBER.Substring(10);
                         }
                         patyAlterBhytADO.STR_HEIN_CARD_FROM_TIME = Inventec.Common.DateTime.Convert.TimeNumberToDateString((item.HEIN_CARD_FROM_TIME ?? 0));
                         patyAlterBhytADO.STR_HEIN_CARD_TO_TIME = Inventec.Common.DateTime.Convert.TimeNumberToDateString((item.HEIN_CARD_TO_TIME ?? 0));
@@ -124,10 +124,10 @@ namespace MPS.Processor.Mps000224
             string result = "";
             try
             {
-                if (!String.IsNullOrWhiteSpace(heinCardNumber) && heinCardNumber.Length == 15)
+                if (!String.IsNullOrWhiteSpace(heinCardNumber) && (heinCardNumber.Length == 15 || heinCardNumber.Length == 17))
                 {
                     string separateSymbol = "-";
-                    result = new StringBuilder().Append(heinCardNumber.Substring(0, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(2, 1)).Append(separateSymbol).Append(heinCardNumber.Substring(3, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(5, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(7, 3)).Append(separateSymbol).Append(heinCardNumber.Substring(10, 5)).ToString();
+                    result = heinCardNumber.Length == 17 ? new StringBuilder().Append(heinCardNumber.Substring(0, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(2, 1)).Append(separateSymbol).Append(heinCardNumber.Substring(3, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(5)).ToString() : new StringBuilder().Append(heinCardNumber.Substring(0, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(2, 1)).Append(separateSymbol).Append(heinCardNumber.Substring(3, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(5, 2)).Append(separateSymbol).Append(heinCardNumber.Substring(7, 3)).Append(separateSymbol).Append(heinCardNumber.Substring(10, 5)).ToString();
                 }
                 else
                 {

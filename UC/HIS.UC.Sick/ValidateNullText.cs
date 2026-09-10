@@ -40,9 +40,9 @@ namespace HIS.UC.Sick
                     this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }
-                if (!String.IsNullOrEmpty(txt.Text.Trim()) && txt.Text.Trim().Length < 10)
+                if (!String.IsNullOrEmpty(txt.Text.Trim()) && txt.Text.Trim().Length != 10 && txt.Text.Trim().Length != 12)
                 {
-                    this.ErrorText = "Độ dài không hợp lệ phải đủ 10 ký tự";
+                    this.ErrorText = "Độ dài không hợp lệ, phải đủ 10 hoặc 12 ký tự";
                     this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }

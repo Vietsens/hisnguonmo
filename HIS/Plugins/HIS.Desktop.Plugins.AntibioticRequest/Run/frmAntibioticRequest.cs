@@ -715,6 +715,8 @@ namespace HIS.Desktop.Plugins.AntibioticRequest.Run
 
                     if (this.currentAntibioticRequest.ExpMestId > 0)
                         sdo.ExpMestId = this.currentAntibioticRequest.ExpMestId;
+                    else if (this.currentAntibioticRequest.TreatmentId.HasValue && this.currentAntibioticRequest.TreatmentId.Value > 0)
+                        sdo.TreatmentId = this.currentAntibioticRequest.TreatmentId; //Tao phieu theo dot dieu tri — chua co don nguon
 
                     Inventec.Common.Logging.LogSystem.Debug("INPUT____Request" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                     resultRequest = new BackendAdapter(param).Post<HisAntibioticRequestResultSDO>("api/HisAntibioticRequest/Request", ApiConsumers.MosConsumer, sdo, param);

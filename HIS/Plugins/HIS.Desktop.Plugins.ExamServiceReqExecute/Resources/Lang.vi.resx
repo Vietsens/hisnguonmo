@@ -1151,6 +1151,9 @@
   <data name="ExamServiceReqExecuteControl.lblMimsPregnantMonth.Text" xml:space="preserve">
     <value>Mang thai bao nhiêu tháng:</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.lblMimsPregnantWeek.Text" xml:space="preserve">
+    <value>Tuần tuổi thai:</value>
+  </data>
   <data name="ExamServiceReqExecuteControl.chkMimsLactating.Text" xml:space="preserve">
     <value>Phụ nữ cho con bú</value>
   </data>

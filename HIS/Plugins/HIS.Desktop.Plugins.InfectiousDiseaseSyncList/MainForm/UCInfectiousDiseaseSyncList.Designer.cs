@@ -65,12 +65,19 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
             // --- Tìm kiếm ---
             pnlSearch = new PanelControl() { Dock = DockStyle.Top, Height = 76 };
             pnlSearch.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            AddLabel("Mã điều trị:", 6, 10);
-            txtSearchTreatmentCode = new TextEdit() { Location = new Point(84, 8), Size = new Size(150, 22) };
-            AddLabel("Mã BN:", 244, 10);
-            txtSearchPatientCode = new TextEdit() { Location = new Point(300, 8), Size = new Size(120, 22) };
-            AddLabel("Tên bệnh nhân:", 432, 10);
-            txtSearchPatientName = new TextEdit() { Location = new Point(524, 8), Size = new Size(180, 22) };
+            var searchFont = new Font("Tahoma", 9.75F);
+            AddLabel("Mã điều trị:", 6, 11);
+            txtSearchTreatmentCode = new TextEdit() { Location = new Point(84, 7), Size = new Size(160, 26) };
+            txtSearchTreatmentCode.Properties.Appearance.Font = searchFont;
+            txtSearchTreatmentCode.Properties.Appearance.Options.UseFont = true;
+            AddLabel("Mã BN:", 254, 11);
+            txtSearchPatientCode = new TextEdit() { Location = new Point(310, 7), Size = new Size(140, 26) };
+            txtSearchPatientCode.Properties.Appearance.Font = searchFont;
+            txtSearchPatientCode.Properties.Appearance.Options.UseFont = true;
+            AddLabel("Tên bệnh nhân:", 462, 11);
+            txtSearchPatientName = new TextEdit() { Location = new Point(554, 7), Size = new Size(200, 26) };
+            txtSearchPatientName.Properties.Appearance.Font = searchFont;
+            txtSearchPatientName.Properties.Appearance.Options.UseFont = true;
 
             AddLabel("Từ ngày:", 6, 42);
             dteSearchFrom = NewDate(); dteSearchFrom.Location = new Point(84, 40); dteSearchFrom.Size = new Size(110, 22); dteSearchFrom.DateTime = DateTime.Now;

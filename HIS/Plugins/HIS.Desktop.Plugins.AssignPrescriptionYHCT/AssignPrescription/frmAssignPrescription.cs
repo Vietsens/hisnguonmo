@@ -672,6 +672,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 
                 Task.Run(() => this.LoadAllergenic(currentTreatmentWithPatientType.PATIENT_ID));
                 this.PrefetchMimsPatientProfile();
+                // Việc 52540: prefetch thuốc các đơn khác còn hiệu lực trong hồ sơ
+                this.PrefetchMimsCrossPrescription();
                 LogSystem.Debug("Loaded end");
                 this.AddBarManager(this.barManager1);
 

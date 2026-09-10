@@ -73,6 +73,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboExamLoginName(cboExamSubclinicalLoginName3);
                 SetDataCboExamLoginName(cboExamStomatologyLoginName3);
                 InitComboObstetricAbnormal3();
+                SetCaptionAccompanyUnderEighteen();
                 FillDataUnderEighteen();
             }
             catch (Exception ex)
@@ -122,6 +123,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     {
                         currentKskUnderEight = data.First();
                         FillKskRank3();   // Phân loại ở mục V. KẾT LUẬN
+                        // Người đưa trẻ đi khám — mục hành chính
+                        txtAccompanyPersonName3.Text = currentKskUnderEight.ACCOMPANY_PERSON_NAME;
+                        rdoAccompanyRelationship3.EditValue = currentKskUnderEight.ACCOMPANY_RELATIONSHIP != null
+                            ? (object)(long)currentKskUnderEight.ACCOMPANY_RELATIONSHIP.Value : null;
+                        txtAccompanyRelationshipOther3.Text = currentKskUnderEight.ACCOMPANY_RELATIONSHIP_OTHER;
+                        UpdateAccompanyRelationshipOtherState3();
                         txtPathologicalHistoryFamily3.Text = currentKskUnderEight.PATHOLOGICAL_HISTORY_FAMILY;
                         txtPathologicalHistory3.Text = currentKskUnderEight.PATHOLOGICAL_HISTORY;
                         txtMedicineUsing3.Text = currentKskUnderEight.MEDICINE_USING;
@@ -311,7 +318,70 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 spnBloodPressureMax3.EditValue = null;
                 spnBloodPressureMin3.EditValue = null;
                 gridLookUpEdit1.EditValue = null;
+                // Người đưa trẻ đi khám
+                txtAccompanyPersonName3.Text = "";
+                rdoAccompanyRelationship3.EditValue = null;
+                txtAccompanyRelationshipOther3.Text = "";
+                txtAccompanyRelationshipOther3.Enabled = false;
 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chỉ bật ô "Ghi rõ (quan hệ khác)" khi chọn "Khác" (6) — giống tab trẻ dưới 6 tuổi.
+        /// </summary>
+        private void UpdateAccompanyRelationshipOtherState3()
+        {
+            try
+            {
+                bool isOther = (GetRadioValue(this.rdoAccompanyRelationship3) == 6);
+                this.txtAccompanyRelationshipOther3.Enabled = isOther;
+                if (!isOther) this.txtAccompanyRelationshipOther3.Text = "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void rdoAccompanyRelationship3_EditValueChanged(object sender, EventArgs e)
+        {
+            UpdateAccompanyRelationshipOtherState3();
+        }
+
+        /// <summary>
+        /// Đặt tên hiển thị (đa ngôn ngữ) cho cụm "Người đưa trẻ đi khám" của tab KSK dưới 18 tuổi.
+        /// Gọi trong FillDataPageUnderEighteen — key nằm ở Resources/Lang.{vi|en}.resx.
+        /// </summary>
+        private void SetCaptionAccompanyUnderEighteen()
+        {
+            try
+            {
+                if (Resources.ResourceLanguageManager.LanguageResource == null)
+                {
+                    Resources.ResourceLanguageManager.LanguageResource = new System.Resources.ResourceManager(
+                        "HIS.Desktop.Plugins.EnterKskInfomantionVer2.Resources.Lang",
+                        typeof(frmEnterKskInfomantionVer2).Assembly);
+                }
+
+                this.lciAccompanyName3.Text = Inventec.Common.Resource.Get.Value(
+                    "frmEnterKskInfomantionVer2.lciAccompanyName3.Text",
+                    Resources.ResourceLanguageManager.LanguageResource,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+
+                this.lciAccompanyRel3.Text = Inventec.Common.Resource.Get.Value(
+                    "frmEnterKskInfomantionVer2.lciAccompanyRel3.Text",
+                    Resources.ResourceLanguageManager.LanguageResource,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+
+                this.lciAccompanyOther3.Text = Inventec.Common.Resource.Get.Value(
+                    "frmEnterKskInfomantionVer2.lciAccompanyOther3.Text",
+                    Resources.ResourceLanguageManager.LanguageResource,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -537,6 +607,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (currentKskUnderEight != null)
                     obj.ID = currentKskUnderEight.ID;
                 obj.HEALTH_EXAM_RANK_ID = GetKskRank3Value();   // Phân loại ở mục V. KẾT LUẬN
+                // Người đưa trẻ đi khám (không bắt buộc nhập) — mục hành chính
+                obj.ACCOMPANY_PERSON_NAME = NullIfEmpty(txtAccompanyPersonName3.Text);
+                obj.ACCOMPANY_RELATIONSHIP = ToShort(GetRadioValue(rdoAccompanyRelationship3));
+                obj.ACCOMPANY_RELATIONSHIP_OTHER = NullIfEmpty(txtAccompanyRelationshipOther3.Text);
                 obj.PATHOLOGICAL_HISTORY_FAMILY = txtPathologicalHistoryFamily3.Text;
                 obj.PATHOLOGICAL_HISTORY = txtPathologicalHistory3.Text;
                 obj.MEDICINE_USING = txtMedicineUsing3.Text;

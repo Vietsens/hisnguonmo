@@ -100,6 +100,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         bool isAutoSaveSignPrintStarted = false;
         List<ReplaceTransactionADO> replaceTransactionADOs = null;
         private string selectedRadio = null;
+        /// <summary>Dang set thong tin nguoi mua tu du lieu benh nhan: chan handler cua combo Don vi ghi de Dia chi</summary>
+        private bool isSettingBuyerInfo = false;
+        /// <summary>Danh muc don vi (HIS_WORK_PLACE) da nap cho 2 combo Don vi</summary>
+        private List<HIS_WORK_PLACE> workPlaces = null;
         private decimal totalPrice = 0;
         private decimal transferAmount = 0;
 
@@ -270,6 +274,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             {
                 var workPlaceFilter = new HisWorkPlaceFilter();
                 var workPlaces = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, workPlaceFilter, null);
+                this.workPlaces = workPlaces;
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("WORK_PLACE_NAME", "Tên đơn vị", 200, 1));
@@ -1084,6 +1089,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         {
             try
             {
+                if (this.workPlaces != null)
+                {
+                    var cached = this.workPlaces.FirstOrDefault(o => o.ID == id);
+                    if (cached != null)
+                        return cached;
+                }
+
                 var filter = new HisWorkPlaceFilter { ID = id };
                 var list = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, filter, null);
                 return list != null ? list.FirstOrDefault() : null;
@@ -1098,6 +1110,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         {
             try
             {
+                isSettingBuyerInfo = true;
                 if (this.ExpMests == null || this.ExpMests.Count == 0)
                     return;
 
@@ -1238,12 +1251,44 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                             txtAddress.Text = patientTypeAlter.ADDRESS ?? txtAddress.Text;
                     }
 
+                    // Nguoi mua la co quan: uu tien dia chi cua don vi da chon
+                    if (!chkKhac1.Checked)
+                        SetAddressByWorkPlace(cboBuyerOrganization1.EditValue);
+
                     txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0) ?? "";
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi định dạng dữ liệu đầu vào hoặc dữ liệu không hợp lệ!\n" + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                isSettingBuyerInfo = false;
+            }
+        }
+
+        /// <summary>
+        /// Nap Dia chi theo don vi (HIS_WORK_PLACE.ADDRESS). Khong ghi de neu don vi khong co dia chi.
+        /// </summary>
+        private void SetAddressByWorkPlace(object workPlaceEditValue)
+        {
+            try
+            {
+                if (workPlaceEditValue == null)
+                    return;
+
+                long workPlaceId = 0;
+                if (!long.TryParse(workPlaceEditValue.ToString(), out workPlaceId) || workPlaceId <= 0)
+                    return;
+
+                var workPlace = GetWorkPlaceById(workPlaceId);
+                if (workPlace != null && !string.IsNullOrWhiteSpace(workPlace.ADDRESS))
+                    txtAddress.Text = workPlace.ADDRESS;
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -4015,6 +4060,12 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     {
                         txtBudRelUnitCode.Text = "";
                     }
+
+                    // Nguoi dung chu dong chon don vi: nap Dia chi cua don vi
+                    if (!isSettingBuyerInfo && !string.IsNullOrWhiteSpace(workPlace.ADDRESS))
+                    {
+                        txtAddress.Text = workPlace.ADDRESS;
+                    }
                 }
             }
             catch (Exception ex)
@@ -4080,6 +4131,12 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     else
                     {
                         txtBudRelUnitCode1.Text = "";
+                    }
+
+                    // Nguoi dung chu dong chon don vi: nap Dia chi cua don vi
+                    if (!isSettingBuyerInfo && !string.IsNullOrWhiteSpace(workPlace.ADDRESS))
+                    {
+                        txtAddress.Text = workPlace.ADDRESS;
                     }
                 }
             }

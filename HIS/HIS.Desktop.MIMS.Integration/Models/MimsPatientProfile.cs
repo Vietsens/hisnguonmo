@@ -1,4 +1,4 @@
-namespace HIS.Desktop.MIMS.Integration.Models
+﻿namespace HIS.Desktop.MIMS.Integration.Models
 {
     /// <summary>
     /// Thông tin bệnh nhân gửi kèm request MIMS (khối &lt;PatientProfile&gt;)
@@ -26,6 +26,11 @@ namespace HIS.Desktop.MIMS.Integration.Models
         /// Số tháng mang thai (1..9) — MIMS tự suy trimester từ giá trị này.
         /// </summary>
         public int? PregnancyMonth { get; set; }
+
+        /// <summary>
+        /// Tuần tuổi thai (1..42) — sinh &lt;Pregnancy&gt;&lt;Week&gt; khi có giá trị.
+        /// </summary>
+        public int? PregnancyWeek { get; set; }
 
         /// <summary>
         /// Đang cho con bú — khi true thì sinh &lt;Nursing&gt;true&lt;/Nursing&gt;.

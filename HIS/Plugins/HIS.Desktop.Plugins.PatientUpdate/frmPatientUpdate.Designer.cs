@@ -957,7 +957,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             this.txtBhxhMother.Location = new System.Drawing.Point(862, 26);
             this.txtBhxhMother.MenuManager = this.barManager1;
             this.txtBhxhMother.Name = "txtBhxhMother";
-            this.txtBhxhMother.Properties.MaxLength = 10;
+            this.txtBhxhMother.Properties.MaxLength = 12;
             this.txtBhxhMother.Size = new System.Drawing.Size(165, 20);
             this.txtBhxhMother.StyleController = this.layoutControl3;
             this.txtBhxhMother.TabIndex = 55;
@@ -969,7 +969,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             this.txtBhxhFather.Location = new System.Drawing.Point(862, 2);
             this.txtBhxhFather.MenuManager = this.barManager1;
             this.txtBhxhFather.Name = "txtBhxhFather";
-            this.txtBhxhFather.Properties.MaxLength = 10;
+            this.txtBhxhFather.Properties.MaxLength = 12;
             this.txtBhxhFather.Size = new System.Drawing.Size(165, 20);
             this.txtBhxhFather.StyleController = this.layoutControl3;
             this.txtBhxhFather.TabIndex = 54;
@@ -1442,7 +1442,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             this.txtSocialInsuranceNumber.Location = new System.Drawing.Point(642, 126);
             this.txtSocialInsuranceNumber.MenuManager = this.barManager1;
             this.txtSocialInsuranceNumber.Name = "txtSocialInsuranceNumber";
-            this.txtSocialInsuranceNumber.Properties.MaxLength = 10;
+            this.txtSocialInsuranceNumber.Properties.MaxLength = 12;
             this.txtSocialInsuranceNumber.Size = new System.Drawing.Size(192, 20);
             this.txtSocialInsuranceNumber.StyleController = this.layoutControl2;
             this.txtSocialInsuranceNumber.TabIndex = 44;

@@ -55,6 +55,9 @@
     <Reference Include="HIS.Desktop.LibraryMessage">
       <HintPath>..\..\HIS.Desktop\bin\Debug\HIS.Desktop.LibraryMessage.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Desktop.CustomControl">
+      <HintPath>..\..\..\..\lib\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData">
       <HintPath>..\..\HIS.Desktop\bin\Debug\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
     </Reference>

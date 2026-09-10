@@ -249,6 +249,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_NAME_BHYT" xml:space="preserve">
     <value>Tên BHYT</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TY_LE_BHYT" xml:space="preserve">
+    <value>Tỷ lệ BHYT</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TOOLTIP1" xml:space="preserve">
     <value>Giá nhập của lô mới nhất</value>
   </data>

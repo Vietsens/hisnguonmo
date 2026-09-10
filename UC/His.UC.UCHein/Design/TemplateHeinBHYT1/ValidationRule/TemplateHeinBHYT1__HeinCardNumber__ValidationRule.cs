@@ -61,7 +61,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1.ValidationRule
                             string heincardNumber = His.UC.UCHein.Utils.HeinUtils.TrimHeinCardNumber(currentValue);
                             // Inventec.Common.Logging.LogSystem.Error("IsValidHeinCardNumber >>>>>>>>>>>:" + new MOS.LibraryHein.Bhyt.BhytHeinProcessor().IsValidHeinCardNumber(heincardNumber));
                             //Inventec.Common.Logging.LogSystem.Error("IsOverMaxLengthUTF8 >>>>>>>>>>>:" + !Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(heincardNumber, 16));
-                            valid = valid && (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().IsValidHeinCardNumber(heincardNumber)) && !Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(heincardNumber, 15);
+                            //So the BHYT mau moi dai 17 ky tu
+                            valid = valid && (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().IsValidHeinCardNumber(heincardNumber)) && !Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(heincardNumber, 17);
                             if (!valid)
                             {
                                 this.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.NguoiDungNhapSoTheBHYTKhongHopLe);

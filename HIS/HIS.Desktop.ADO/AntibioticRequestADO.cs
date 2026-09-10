@@ -38,6 +38,7 @@ namespace HIS.Desktop.ADO
 		public string IcdSubCode { get; set; }
 		public string IcdText { get; set; }
 		public long ExpMestId { get; set; }
+		public long? TreatmentId { get; set; } //Tao phieu theo dot dieu tri (khi chua co don — ExpMestId = 0)
 		public long InstructionDate { get; set; }
 		public List<HIS_ANTIBIOTIC_NEW_REG> NewRegimen { get; set; }
 

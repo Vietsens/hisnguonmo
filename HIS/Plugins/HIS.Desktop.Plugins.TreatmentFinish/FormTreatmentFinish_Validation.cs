@@ -74,7 +74,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
                 
                 ValidationMaxLength(txtSurgery, 3000);
-                ValidationMaxLength(txtMaBHXH, 10, true);
+                ValidationMaxLength(txtMaBHXH, 12, true);
                 ValidationComboProgram();
                 MOS.EFMODEL.DataModels.HIS_TREATMENT_END_TYPE data = this.hisTreatmentEndTypes.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? 0).ToString()));
                 if ((data != null && data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN) || (cboTreatmentEndType.EditValue != null && Int64.Parse(cboTreatmentEndType.EditValue.ToString()) == 2))
