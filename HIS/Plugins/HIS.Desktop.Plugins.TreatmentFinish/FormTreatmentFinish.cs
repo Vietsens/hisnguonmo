@@ -2408,7 +2408,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         causeOfDeathADO.ListEventsCausesDeath = GetListEventsCausesDeath(severeIllnessInfo.ID);
                     }
                     causeResult = null;
-                    FormDeath = new CloseTreatment.FormDeath(currentHisTreatment, causeOfDeathADO, this.module, ActionGetCauseResult, TranPatiDataTreatmentFinish);
+                    FormDeath = new CloseTreatment.FormDeath(currentHisTreatment, causeOfDeathADO, this.module, ActionGetCauseResult, KeepMethodDataTreatmentFinish);
                     FormDeath.Form = this;
                     FormDeath.ShowDialog();
                     txtMethod.Enabled = false;
@@ -2455,7 +2455,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     long dtTreatmentEnd = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
                     FormAppointment = new CloseTreatment.FormAppointment(this.module, dtTreatmentEnd, dataRoom.IS_BLOCK_NUM_ORDER == 1 ? true : false);
-                    FormAppointment.MyGetData = new CloseTreatment.FormAppointment.GetString(TranPatiDataTreatmentFinish);
+                    FormAppointment.MyGetData = new CloseTreatment.FormAppointment.GetString(KeepMethodDataTreatmentFinish);
                     FormAppointment.Form = this;
                     FormAppointment.ShowDialog();
                     cboTTExt.EditValue = null;
@@ -5110,7 +5110,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 var dataRoom = this.hisRooms.FirstOrDefault(o => o.ID == this.module.RoomId);
                 long dtTreatmentEnd = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
                 FormAppointment = new CloseTreatment.FormAppointment(this.module, dtTreatmentEnd, dataRoom.IS_BLOCK_NUM_ORDER == 1 ? true : false);
-                FormAppointment.MyGetData = new CloseTreatment.FormAppointment.GetString(TranPatiDataTreatmentFinish);
+                FormAppointment.MyGetData = new CloseTreatment.FormAppointment.GetString(KeepMethodDataTreatmentFinish);
                 FormAppointment.Form = this;
                 FormAppointment.ShowDialog();
                 cboTTExt.EditValue = null;

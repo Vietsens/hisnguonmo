@@ -249,11 +249,32 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
         internal void TranPatiDataTreatmentFinish(MOS.SDO.HisTreatmentFinishSDO treatmentFinish)
         {
+            ProcessDataFromEndTypePopup(treatmentFinish, true);
+        }
+
+        /// <summary>
+        /// Callback cho cac popup loai ra vien KHONG co o nhap phuong phap dieu tri
+        /// (hen kham lai, tu vong): giu nguyen PPDT dang nhap tren form chinh.
+        /// </summary>
+        internal void KeepMethodDataTreatmentFinish(MOS.SDO.HisTreatmentFinishSDO treatmentFinish)
+        {
+            ProcessDataFromEndTypePopup(treatmentFinish, false);
+        }
+
+        private void ProcessDataFromEndTypePopup(MOS.SDO.HisTreatmentFinishSDO treatmentFinish, bool allowOverwriteTreatmentMethod)
+        {
             try
             {
+                if (treatmentFinish == null)
+                    return;
+
+                //Popup khong nhap PPDT thi khong duoc xoa trang gia tri nguoi dung da nhap
+                if (!allowOverwriteTreatmentMethod && String.IsNullOrEmpty(treatmentFinish.TreatmentMethod))
+                    treatmentFinish.TreatmentMethod = txtMethod.Text;
+
                 //hisTreatmentFinishSDO = treatmentFinish; // Sửa để gán vào hisTreatmentFinishSDO
                 hisTreatmentFinishSDO_process = treatmentFinish;
-                txtMethod.Text = treatmentFinish.TreatmentMethod; 
+                txtMethod.Text = treatmentFinish.TreatmentMethod;
             }
             catch (Exception ex)
             {
@@ -440,7 +461,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                                 XtraMessageBox.Show(ResourceMessage.ChuaNhapThoiGianHenKham);
                                 long dtTreatmentEnd = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
                                 this.FormAppointment = new CloseTreatment.FormAppointment(this.module, dtTreatmentEnd, dataRoom.IS_BLOCK_NUM_ORDER == 1 ? true : false);
-                                this.FormAppointment.MyGetData = new CloseTreatment.FormAppointment.GetString(this.TranPatiDataTreatmentFinish);
+                                this.FormAppointment.MyGetData = new CloseTreatment.FormAppointment.GetString(this.KeepMethodDataTreatmentFinish);
                                 this.FormAppointment.Form = this;
                                 this.FormAppointment.ShowDialog();
                             }
@@ -449,7 +470,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     else if (hisTreatmentFinishSDO_process.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET)
                     {
                         XtraMessageBox.Show(ResourceMessage.ChuaNhapThongTinTuVong);
-                        this.FormDeath = new CloseTreatment.FormDeath(currentHisTreatment, this.module, TranPatiDataTreatmentFinish);
+                        this.FormDeath = new CloseTreatment.FormDeath(currentHisTreatment, this.module, KeepMethodDataTreatmentFinish);
 
                         this.FormDeath.Form = this;
                         this.FormDeath.ShowDialog();
