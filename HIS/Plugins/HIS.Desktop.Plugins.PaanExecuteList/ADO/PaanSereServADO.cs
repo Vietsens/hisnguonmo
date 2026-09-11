@@ -49,6 +49,13 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.ADO
         /// <summary>Cot 4: Ngay ket thuc da dinh dang.</summary>
         public string END_TIME_DISPLAY { get; set; }
 
+        /// <summary>
+        /// Ngay ket qua da dinh dang (viec 52795).
+        /// Nguon: HIS_SERE_SERV_EXT.RESULT_READ_TIME - chinh la o "Ngay KQ"
+        /// tren man Tra ket qua.
+        /// </summary>
+        public string RESULT_READ_TIME_DISPLAY { get; set; }
+
         public PaanSereServADO() { }
 
         public PaanSereServADO(V_HIS_SERE_SERV_GPBL data)
@@ -76,6 +83,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.ADO
                         data.BEGIN_TIME.HasValue ? (long?)data.BEGIN_TIME.Value : null);
 
                     this.END_TIME_DISPLAY = FormatTime(data.END_TIME);
+                    this.RESULT_READ_TIME_DISPLAY = FormatTime(data.RESULT_READ_TIME);
                 }
             }
             catch (Exception ex)

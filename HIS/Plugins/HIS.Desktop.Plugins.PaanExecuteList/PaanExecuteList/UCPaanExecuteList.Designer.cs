@@ -49,6 +49,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colIntructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colBeginTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colEndTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colResultReadTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colGpblStoreCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colPatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colTreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -309,6 +310,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colIntructionTime,
             this.colBeginTime,
             this.colEndTime,
+            this.colResultReadTime,
             this.colGpblStoreCode,
             this.colPatientCode,
             this.colTreatmentCode,
@@ -373,6 +375,18 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colEndTime.VisibleIndex = 3;
             this.colEndTime.Width = 125;
             //
+            // colResultReadTime   (Ngay ket qua - viec 52795)
+            // Nguon: HIS_SERE_SERV_EXT.RESULT_READ_TIME, chinh la o "Ngay KQ"
+            // tren man Tra ket qua.
+            //
+            this.colResultReadTime.Caption = "Ngày kết quả";
+            this.colResultReadTime.FieldName = "RESULT_READ_TIME_DISPLAY";
+            this.colResultReadTime.Name = "colResultReadTime";
+            this.colResultReadTime.OptionsColumn.AllowEdit = false;
+            this.colResultReadTime.Visible = true;
+            this.colResultReadTime.VisibleIndex = 4;
+            this.colResultReadTime.Width = 125;
+            //
             // colGpblStoreCode   (cot 5)
             //
             this.colGpblStoreCode.Caption = "Số GPBL";
@@ -380,7 +394,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colGpblStoreCode.Name = "colGpblStoreCode";
             this.colGpblStoreCode.OptionsColumn.AllowEdit = false;
             this.colGpblStoreCode.Visible = true;
-            this.colGpblStoreCode.VisibleIndex = 4;
+            this.colGpblStoreCode.VisibleIndex = 5;
             this.colGpblStoreCode.Width = 100;
             //
             // colPatientCode   (cot 6)
@@ -390,7 +404,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colPatientCode.Name = "colPatientCode";
             this.colPatientCode.OptionsColumn.AllowEdit = false;
             this.colPatientCode.Visible = true;
-            this.colPatientCode.VisibleIndex = 5;
+            this.colPatientCode.VisibleIndex = 6;
             this.colPatientCode.Width = 100;
             //
             // colTreatmentCode   (cot 7)
@@ -400,7 +414,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colTreatmentCode.Name = "colTreatmentCode";
             this.colTreatmentCode.OptionsColumn.AllowEdit = false;
             this.colTreatmentCode.Visible = true;
-            this.colTreatmentCode.VisibleIndex = 6;
+            this.colTreatmentCode.VisibleIndex = 7;
             this.colTreatmentCode.Width = 110;
             //
             // colPatientName   (cot 8)
@@ -410,7 +424,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colPatientName.Name = "colPatientName";
             this.colPatientName.OptionsColumn.AllowEdit = false;
             this.colPatientName.Visible = true;
-            this.colPatientName.VisibleIndex = 7;
+            this.colPatientName.VisibleIndex = 8;
             this.colPatientName.Width = 170;
             //
             // colAge   (cot 9)
@@ -420,7 +434,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colAge.Name = "colAge";
             this.colAge.OptionsColumn.AllowEdit = false;
             this.colAge.Visible = true;
-            this.colAge.VisibleIndex = 8;
+            this.colAge.VisibleIndex = 9;
             this.colAge.Width = 50;
             //
             // colDob   (cot 10)
@@ -430,7 +444,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colDob.Name = "colDob";
             this.colDob.OptionsColumn.AllowEdit = false;
             this.colDob.Visible = true;
-            this.colDob.VisibleIndex = 9;
+            this.colDob.VisibleIndex = 10;
             this.colDob.Width = 70;
             //
             // colGender   (cot 11)
@@ -440,7 +454,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colGender.Name = "colGender";
             this.colGender.OptionsColumn.AllowEdit = false;
             this.colGender.Visible = true;
-            this.colGender.VisibleIndex = 10;
+            this.colGender.VisibleIndex = 11;
             this.colGender.Width = 70;
             //
             // colResultUser   (cot 12)
@@ -450,7 +464,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colResultUser.Name = "colResultUser";
             this.colResultUser.OptionsColumn.AllowEdit = false;
             this.colResultUser.Visible = true;
-            this.colResultUser.VisibleIndex = 11;
+            this.colResultUser.VisibleIndex = 12;
             this.colResultUser.Width = 160;
             //
             // colConclude   (cot 13)
@@ -460,7 +474,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colConclude.Name = "colConclude";
             this.colConclude.OptionsColumn.AllowEdit = false;
             this.colConclude.Visible = true;
-            this.colConclude.VisibleIndex = 12;
+            this.colConclude.VisibleIndex = 13;
             this.colConclude.Width = 220;
             //
             // colDepartment   (cot 14)
@@ -470,7 +484,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colDepartment.Name = "colDepartment";
             this.colDepartment.OptionsColumn.AllowEdit = false;
             this.colDepartment.Visible = true;
-            this.colDepartment.VisibleIndex = 13;
+            this.colDepartment.VisibleIndex = 14;
             this.colDepartment.Width = 160;
             //
             // colRoom   (cot 15)
@@ -480,7 +494,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colRoom.Name = "colRoom";
             this.colRoom.OptionsColumn.AllowEdit = false;
             this.colRoom.Visible = true;
-            this.colRoom.VisibleIndex = 14;
+            this.colRoom.VisibleIndex = 15;
             this.colRoom.Width = 150;
             //
             // colPatientType   (cot 16)
@@ -490,7 +504,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colPatientType.Name = "colPatientType";
             this.colPatientType.OptionsColumn.AllowEdit = false;
             this.colPatientType.Visible = true;
-            this.colPatientType.VisibleIndex = 15;
+            this.colPatientType.VisibleIndex = 16;
             this.colPatientType.Width = 100;
             //
             // colServiceName   (cot 17)
@@ -500,7 +514,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.colServiceName.Name = "colServiceName";
             this.colServiceName.OptionsColumn.AllowEdit = false;
             this.colServiceName.Visible = true;
-            this.colServiceName.VisibleIndex = 16;
+            this.colServiceName.VisibleIndex = 17;
             this.colServiceName.Width = 260;
             //
             // panelBottom
@@ -800,6 +814,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
         private DevExpress.XtraGrid.Columns.GridColumn colIntructionTime;
         private DevExpress.XtraGrid.Columns.GridColumn colBeginTime;
         private DevExpress.XtraGrid.Columns.GridColumn colEndTime;
+        private DevExpress.XtraGrid.Columns.GridColumn colResultReadTime;
         private DevExpress.XtraGrid.Columns.GridColumn colGpblStoreCode;
         private DevExpress.XtraGrid.Columns.GridColumn colPatientCode;
         private DevExpress.XtraGrid.Columns.GridColumn colTreatmentCode;
