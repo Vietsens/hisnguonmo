@@ -171,4 +171,22 @@
   <data name="DangDeTrong" xml:space="preserve">
     <value>đang để trống</value>
   </data>
+  <data name="KetQuaTuCongBHXH" xml:space="preserve">
+    <value>Cổng BHXH:</value>
+  </data>
+  <data name="CongBHXHKhongCoDuLieuCungChiTra" xml:space="preserve">
+    <value>Cổng BHXH không có dữ liệu cùng chi trả cho thẻ này.</value>
+  </data>
+  <data name="CongBHXHBaoDuLieuGuiLenKhongHopLe" xml:space="preserve">
+    <value>Cổng BHXH báo dữ liệu gửi lên không hợp lệ.</value>
+  </data>
+  <data name="CongBHXHDangLoiHoacTuChoiTruyCap" xml:space="preserve">
+    <value>Cổng BHXH đang lỗi hoặc từ chối truy cập.</value>
+  </data>
+  <data name="ChuaTraCuuDuocThieuThongTinTheHoacCauHinh" xml:space="preserve">
+    <value>Chưa tra cứu được: thiếu thông tin thẻ hoặc cấu hình kết nối cổng.</value>
+  </data>
+  <data name="KhongGoiDuocCongBHXH" xml:space="preserve">
+    <value>Không gọi được cổng BHXH.</value>
+  </data>
 </root>

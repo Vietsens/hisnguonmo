@@ -73,8 +73,13 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
+                // Drop the note left by the previous lookup, so a stale message
+                // is never read as belonging to the current card.
+                this.HideMcctGovNote();
+
                 if (resultMcct == null)
                 {
+                    this.ShowMcctGovNote(null);
                     return;
                 }
 
@@ -85,12 +90,18 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         "SetCoPaidAccumulateFromGov: cong BHXH khong tra ve du lieu cung chi tra, giu nguyen gia tri tren form."
                         + Inventec.Common.Logging.LogUtil.TraceData(
                             Inventec.Common.Logging.LogUtil.GetMemberName(() => resultMcct.MaKetQua), resultMcct.MaKetQua));
+
+                    // Surface what the gateway actually said: "no record" looks exactly
+                    // like "lookup failed" if the field simply stays unchanged.
+                    this.ShowMcctGovNote(resultMcct);
                     return;
                 }
 
                 CoPaidMcctADO ado = this.CalculateCoPaidMcct(resultMcct);
                 if (ado == null || !ado.HasAccumulate)
                 {
+                    // Gateway answered 200 but carried no usable accumulated figure.
+                    this.ShowMcctGovNote(resultMcct);
                     return;
                 }
 
@@ -135,6 +146,114 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Shows what the gateway returned, directly under the accumulated co-payment field.
+        ///
+        /// Only for the no-data and error paths. These used to return in silence, leaving the
+        /// user with an unchanged field and no way to tell "the gateway says there is nothing"
+        /// apart from "the lookup failed". Gateway notes are routinely wider than the label,
+        /// so the full text also goes into the tooltip.
+        /// </summary>
+        private void ShowMcctGovNote(ResultMCCTADO resultMcct)
+        {
+            try
+            {
+                string note = this.BuildMcctGovNote(resultMcct);
+                if (String.IsNullOrWhiteSpace(note))
+                {
+                    this.HideMcctGovNote();
+                    return;
+                }
+
+                this.lblMcctGovNote.Text = note;
+                this.lblMcctGovNote.ToolTip = note;
+                this.lciMcctGovNote.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                Inventec.Common.Logging.LogSystem.Info("ShowMcctGovNote: " + note);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hides the note and lets the layout collapse back. Called at the start of every
+        /// lookup so the previous answer never lingers on the form.
+        /// </summary>
+        private void HideMcctGovNote()
+        {
+            try
+            {
+                this.lblMcctGovNote.Text = "";
+                this.lblMcctGovNote.ToolTip = "";
+                this.lciMcctGovNote.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Builds the text to display: the gateway's own wording (GhiChu) first, prefixed with
+        /// its result code so a screenshot can be matched against the log. When the gateway
+        /// sends no note, the code is spelled out - a blank line tells the user nothing.
+        /// </summary>
+        private string BuildMcctGovNote(ResultMCCTADO resultMcct)
+        {
+            string detail = "";
+            string code = "";
+            try
+            {
+                if (resultMcct == null)
+                {
+                    return String.Format("{0} {1}",
+                        ResourceMessage.KetQuaTuCongBHXH, ResourceMessage.KhongGoiDuocCongBHXH);
+                }
+
+                code = (resultMcct.MaKetQua ?? "").Trim();
+                detail = (resultMcct.GhiChu ?? "").Trim();
+
+                if (String.IsNullOrEmpty(detail))
+                {
+                    if (resultMcct.IsBlockedLocally)
+                    {
+                        detail = ResourceMessage.ChuaTraCuuDuocThieuThongTinTheHoacCauHinh;
+                    }
+                    else if (code == ResultMCCTLDO.MaKetQuaStore.NO_DATA)
+                    {
+                        detail = ResourceMessage.CongBHXHKhongCoDuLieuCungChiTra;
+                    }
+                    else if (code == ResultMCCTLDO.MaKetQuaStore.INVALID_PARAM)
+                    {
+                        detail = ResourceMessage.CongBHXHBaoDuLieuGuiLenKhongHopLe;
+                    }
+                    else if (code == ResultMCCTLDO.MaKetQuaStore.ERROR)
+                    {
+                        detail = ResourceMessage.CongBHXHDangLoiHoacTuChoiTruyCap;
+                    }
+                    else
+                    {
+                        detail = ResourceMessage.KhongGoiDuocCongBHXH;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            if (String.IsNullOrEmpty(detail))
+            {
+                return "";
+            }
+
+            return String.IsNullOrEmpty(code)
+                ? String.Format("{0} {1}", ResourceMessage.KetQuaTuCongBHXH, detail)
+                : String.Format("{0} [{1}] {2}", ResourceMessage.KetQuaTuCongBHXH, code, detail);
         }
 
         /// <summary>

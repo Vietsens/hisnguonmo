@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -185,6 +185,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.lciKhongKTHSD = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciFreeCoPainTime = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciCoPaidAccumulate = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lblMcctGovNote = new DevExpress.XtraEditors.LabelControl();
+            this.lciMcctGovNote = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciInCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciHNCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcichkJoin5Year = new DevExpress.XtraLayout.LayoutControlItem();
@@ -300,6 +302,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             ((System.ComponentModel.ISupportInitialize)(this.lciKhongKTHSD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciFreeCoPainTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCoPaidAccumulate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciMcctGovNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciInCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHNCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcichkJoin5Year)).BeginInit();
@@ -445,6 +448,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.layoutControl1.Controls.Add(this.txtInCode);
             this.layoutControl1.Controls.Add(this.txtHNCode);
             this.layoutControl1.Controls.Add(this.txtCoPaidAccumulate);
+            this.layoutControl1.Controls.Add(this.lblMcctGovNote);
             this.layoutControl1.Controls.Add(this.checkKhongKTHSD);
             this.layoutControl1.Controls.Add(this.rdoRightRoute);
             this.layoutControl1.Controls.Add(this.chkPaid6Month);
@@ -477,7 +481,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsFocus.EnableAutoTabOrder = false;
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1320, 127);
+            this.layoutControl1.Size = new System.Drawing.Size(1320, 149);
             this.layoutControl1.TabIndex = 146;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -1312,11 +1316,12 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.layoutControlItem7,
             this.lblHeincardMediOrg,
             this.lciTempQN,
-            this.lblCaptionHasDobCertificate});
+            this.lblCaptionHasDobCertificate,
+            this.lciMcctGovNote});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1320, 127);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1320, 149);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // lblHeincardNumber
@@ -1649,6 +1654,34 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.lciCoPaidAccumulate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciCoPaidAccumulate.TextSize = new System.Drawing.Size(115, 20);
             this.lciCoPaidAccumulate.TextToControlDistance = 5;
+            //
+            // lblMcctGovNote
+            //
+            this.lblMcctGovNote.Appearance.ForeColor = System.Drawing.Color.Maroon;
+            this.lblMcctGovNote.Appearance.Options.UseForeColor = true;
+            this.lblMcctGovNote.Appearance.Options.UseTextOptions = true;
+            this.lblMcctGovNote.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
+            this.lblMcctGovNote.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblMcctGovNote.Location = new System.Drawing.Point(1032, 129);
+            this.lblMcctGovNote.Name = "lblMcctGovNote";
+            this.lblMcctGovNote.Size = new System.Drawing.Size(283, 18);
+            this.lblMcctGovNote.StyleController = this.layoutControl1;
+            this.lblMcctGovNote.TabIndex = 63;
+            //
+            // lciMcctGovNote
+            //
+            this.lciMcctGovNote.Control = this.lblMcctGovNote;
+            this.lciMcctGovNote.Location = new System.Drawing.Point(912, 127);
+            this.lciMcctGovNote.Name = "lciMcctGovNote";
+            this.lciMcctGovNote.Size = new System.Drawing.Size(408, 22);
+            this.lciMcctGovNote.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciMcctGovNote.MaxSize = new System.Drawing.Size(0, 22);
+            this.lciMcctGovNote.MinSize = new System.Drawing.Size(200, 22);
+            this.lciMcctGovNote.TextSize = new System.Drawing.Size(115, 20);
+            this.lciMcctGovNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciMcctGovNote.TextToControlDistance = 5;
+            this.lciMcctGovNote.TextVisible = false;
+            this.lciMcctGovNote.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // lciInCode
             // 
@@ -1925,7 +1958,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.AutoSize = true;
             this.Controls.Add(this.layoutControl1);
             this.Name = "Template__HeinBHYT1";
-            this.Size = new System.Drawing.Size(1320, 127);
+            this.Size = new System.Drawing.Size(1320, 149);
             this.Load += new System.EventHandler(this.Template__HeinBHYT1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.txtHeinCardToTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHeinCardFromTime.Properties)).EndInit();
@@ -2020,6 +2053,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             ((System.ComponentModel.ISupportInitialize)(this.lciKhongKTHSD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciFreeCoPainTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCoPaidAccumulate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciMcctGovNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciInCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHNCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcichkJoin5Year)).EndInit();
@@ -2119,6 +2153,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         private DevExpress.XtraLayout.LayoutControlItem lciHNCode;
         internal DevExpress.XtraEditors.ButtonEdit txtCoPaidAccumulate;
         private DevExpress.XtraLayout.LayoutControlItem lciCoPaidAccumulate;
+        private DevExpress.XtraEditors.LabelControl lblMcctGovNote;
+        private DevExpress.XtraLayout.LayoutControlItem lciMcctGovNote;
         internal DevExpress.XtraEditors.TextEdit txtInCode;
         private DevExpress.XtraLayout.LayoutControlItem lciInCode;
         private DevExpress.XtraEditors.ButtonEdit txtFreeCoPainTime;

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -55,7 +55,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     emptySpaceItem3.Visibility = LayoutVisibility.Always;
                     layoutControlItem8.Visibility = LayoutVisibility.Always;
                     btnSave.Size = new Size(110, btnSave.Height);
-                    this.Size = new Size(this.Width, 410);
+                    this.Size = new Size(this.Width, 432);
 
                     panelControlImageBHYT.Controls.Clear();
                     panelControlImageBHYT.Update();

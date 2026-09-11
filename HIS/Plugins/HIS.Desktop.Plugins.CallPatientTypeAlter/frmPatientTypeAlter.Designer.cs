@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -197,14 +197,14 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(82, 38, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1371, 262);
+            this.layoutControl1.Size = new System.Drawing.Size(1371, 284);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // btnPrint
             // 
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(926, 238);
+            this.btnPrint.Location = new System.Drawing.Point(926, 260);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(151, 22);
             this.btnPrint.StyleController = this.layoutControl1;
@@ -215,7 +215,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             // 
             // chkAutoUpdateType
             // 
-            this.chkAutoUpdateType.Location = new System.Drawing.Point(769, 238);
+            this.chkAutoUpdateType.Location = new System.Drawing.Point(769, 260);
             this.chkAutoUpdateType.MenuManager = this.barManager1;
             this.chkAutoUpdateType.Name = "chkAutoUpdateType";
             this.chkAutoUpdateType.Properties.Caption = "Tự động cập nhật ĐTTT";
@@ -446,7 +446,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             // panelControlImageBHYT
             // 
             this.panelControlImageBHYT.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlImageBHYT.Location = new System.Drawing.Point(1151, 135);
+            this.panelControlImageBHYT.Location = new System.Drawing.Point(1151, 157);
             this.panelControlImageBHYT.Name = "panelControlImageBHYT";
             this.panelControlImageBHYT.Size = new System.Drawing.Size(220, 127);
             this.panelControlImageBHYT.TabIndex = 13;
@@ -521,12 +521,12 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             // 
             this.xclHeinCardInformation.Location = new System.Drawing.Point(2, 50);
             this.xclHeinCardInformation.Name = "xclHeinCardInformation";
-            this.xclHeinCardInformation.Size = new System.Drawing.Size(1367, 83);
+            this.xclHeinCardInformation.Size = new System.Drawing.Size(1367, 105);
             this.xclHeinCardInformation.TabIndex = 7;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(1081, 238);
+            this.btnSave.Location = new System.Drawing.Point(1081, 260);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(68, 22);
             this.btnSave.StyleController = this.layoutControl1;
@@ -577,7 +577,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1371, 262);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1371, 284);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem4
@@ -585,14 +585,14 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             this.layoutControlItem4.Control = this.xclHeinCardInformation;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(1371, 87);
+            this.layoutControlItem4.Size = new System.Drawing.Size(1371, 109);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 236);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 258);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(767, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -667,7 +667,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSave;
-            this.layoutControlItem3.Location = new System.Drawing.Point(1079, 236);
+            this.layoutControlItem3.Location = new System.Drawing.Point(1079, 258);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(72, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -676,7 +676,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 135);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 157);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
             this.emptySpaceItem3.Size = new System.Drawing.Size(1151, 101);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -684,7 +684,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.panelControlImageBHYT;
-            this.layoutControlItem8.Location = new System.Drawing.Point(1151, 135);
+            this.layoutControlItem8.Location = new System.Drawing.Point(1151, 157);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlItem8.Size = new System.Drawing.Size(220, 127);
@@ -815,7 +815,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.chkAutoUpdateType;
-            this.layoutControlItem14.Location = new System.Drawing.Point(767, 236);
+            this.layoutControlItem14.Location = new System.Drawing.Point(767, 258);
             this.layoutControlItem14.Name = "layoutControlItem14";
             this.layoutControlItem14.Size = new System.Drawing.Size(157, 26);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
@@ -824,7 +824,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.btnPrint;
-            this.layoutControlItem15.Location = new System.Drawing.Point(924, 236);
+            this.layoutControlItem15.Location = new System.Drawing.Point(924, 258);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Size = new System.Drawing.Size(155, 26);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
@@ -842,7 +842,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1371, 284);
+            this.ClientSize = new System.Drawing.Size(1371, 306);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
