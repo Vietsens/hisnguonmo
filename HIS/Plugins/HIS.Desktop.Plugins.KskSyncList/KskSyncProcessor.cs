@@ -2280,10 +2280,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         + " — tiếp đón cần chọn loại điều trị 'Khám sức khỏe định kỳ' (mã 15)"
                         + " hoặc 'Khám sàng lọc' (mã 16) thay vì Khám + đối tượng KSK");
 
+                // Đặc tả trường SO_CCCD cho phép người nước ngoài ghi SỐ HỘ CHIẾU, nên chỉ chặn
+                // khi bệnh nhân không có cả hai. Việc điền hộ chiếu vào SO_CCCD do thư viện QĐ 2062
+                // lo (Qd1551KskMapper) — ở đây chỉ cần đừng chặn nhầm.
                 string cccd = input.Patient.CCCD_NUMBER;
                 if (string.IsNullOrWhiteSpace(cccd))
-                    reasons.Add("bệnh nhân chưa có Số CCCD (cổng bắt buộc SO_CCCD)"
-                        + " — bổ sung ở thông tin hành chính bệnh nhân");
+                    cccd = input.Patient.PASSPORT_NUMBER;
+                if (string.IsNullOrWhiteSpace(cccd))
+                    reasons.Add("bệnh nhân chưa có Số CCCD, cũng chưa có Số hộ chiếu"
+                        + " (cổng bắt buộc SO_CCCD) — bổ sung ở thông tin hành chính bệnh nhân;"
+                        + " người nước ngoài thì nhập Số hộ chiếu");
 
                 if (input.ServiceReq == null)
                 {
