@@ -2106,7 +2106,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             try
             {
                 var arrayCode = code.Split('|').ToList();
-                if (arrayCode[0].Length == 10 || arrayCode[0].Length == 15)
+                //So the BHYT: 10 ky tu (chi in 10 so), 15 ky tu (mau cu) hoac 17 ky tu (mau moi)
+                if (arrayCode[0].Length == 10 || arrayCode[0].Length == 15 || arrayCode[0].Length == 17)
                 {
                     return GetDataQrCodeHeinCard(code);
                 }

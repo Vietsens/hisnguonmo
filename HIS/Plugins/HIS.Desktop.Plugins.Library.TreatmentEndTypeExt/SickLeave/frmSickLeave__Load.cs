@@ -164,8 +164,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                     {
                         var soThe = txtSoThe.Text.Replace("-", "");
                         //So the BHYT 15 ky tu -> 10 so cuoi; 17 ky tu -> 12 so dinh danh (deu bat dau tu vi tri 5)
-                        if (soThe.Length == 15 || soThe.Length == 17) txtBhxhCode.Text = (soThe.Length == 10 ? soThe : (soThe.Length == 15 ? soThe.Substring(5, 10) : ""));
-                        else if (soThe.Length > 10) txtBhxhCode.Text = (soThe.Length == 10 ? soThe : (soThe.Length == 15 ? soThe.Substring(5, 10) : ""));
+                        txtBhxhCode.Text = GetBhxhCodeFromHeinCard(soThe);
                     }
 
                     spinSickLeaveDay.EditValue = this.treatment.SICK_LEAVE_DAY;

@@ -432,7 +432,12 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                                 }
                                 else if (!string.IsNullOrEmpty(data.TDL_HEIN_CARD_NUMBER))
                                 {
-                                    e.Value = (data.TDL_HEIN_CARD_NUMBER.Length == 10 ? data.TDL_HEIN_CARD_NUMBER : (data.TDL_HEIN_CARD_NUMBER.Length == 15 ? data.TDL_HEIN_CARD_NUMBER.Substring(5, 10) : ""));
+                                    //The 15 ky tu lay 10 so cuoi; the 17 ky tu lay 12 so dinh danh tu vi tri thu 5
+                                    string heinCardNumber = data.TDL_HEIN_CARD_NUMBER.Trim();
+                                    if (heinCardNumber.Length == 10) e.Value = heinCardNumber;
+                                    else if (heinCardNumber.Length == 15) e.Value = heinCardNumber.Substring(5, 10);
+                                    else if (heinCardNumber.Length == 17) e.Value = heinCardNumber.Substring(5, 12);
+                                    else e.Value = "";
                                 }
                             }
                             catch (Exception ex)

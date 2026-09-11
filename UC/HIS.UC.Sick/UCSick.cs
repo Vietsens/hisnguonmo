@@ -697,7 +697,19 @@ namespace HIS.UC.Sick
                     {
                         txtHeinCard.Enabled = true;
                     }
-                    txtSocialInsuranceNumber.Text = currentTreatmentFinishSDO.TDL_SOCIAL_INSURANCE_NUMBER ?? (!string.IsNullOrEmpty(currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER) && (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 15 || currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 17) ? (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 10 ? currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER : (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 15 ? currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Substring(5, 10) : "")) : (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length >= 10 ? (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 10 ? currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER : (currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Length == 15 ? currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER.Substring(5, 10) : "")) : null));
+                    //Uu tien gia tri ma BHXH da luu tren ho so. Chi khi ho so chua co thi moi suy ra tu so the BHYT.
+                    //Truoc day doan nay luon suy tu so the nen ghi de mat gia tri 12 chu so da luu.
+                    if (!string.IsNullOrWhiteSpace(currentTreatmentFinishSDO.TDL_SOCIAL_INSURANCE_NUMBER))
+                    {
+                        txtSocialInsuranceNumber.Text = currentTreatmentFinishSDO.TDL_SOCIAL_INSURANCE_NUMBER;
+                        this.autoFilledSocialInsuranceNumber = null;
+                    }
+                    else
+                    {
+                        string socialInsuranceNumber = GetSocialInsuranceNumberFromHeinCard(currentTreatmentFinishSDO.TDL_HEIN_CARD_NUMBER);
+                        txtSocialInsuranceNumber.Text = socialInsuranceNumber;
+                        this.autoFilledSocialInsuranceNumber = socialInsuranceNumber;
+                    }
                     chkIsPregnancyTermination.Checked = currentTreatmentFinishSDO.IS_PREGNANCY_TERMINATION == 1;
                     txtGestationAge.Text = currentTreatmentFinishSDO.GESTATIONAL_AGE != null ? currentTreatmentFinishSDO.GESTATIONAL_AGE.ToString() : "";
                     memPregnancyTerminationReason.Text = currentTreatmentFinishSDO.PREGNANCY_TERMINATION_REASON;
@@ -1548,6 +1560,55 @@ namespace HIS.UC.Sick
             }
         }
 
+        /// <summary>
+        /// Gia tri ma BHXH do co che tu dien sinh ra lan gan nhat.
+        /// Dung de phan biet gia tri may tu dien voi gia tri nguoi dung tu go.
+        /// </summary>
+        private string autoFilledSocialInsuranceNumber = null;
+
+        /// <summary>
+        /// Suy ra ma dinh danh y te tu so the BHYT.
+        /// The 15 ky tu: lay 10 so cuoi, chinh la ma so BHXH.
+        /// The 17 ky tu (mau moi): lay 12 so dinh danh tu vi tri thu 5.
+        /// The chi in 10 so: lay nguyen. Cac truong hop khac tra ve rong.
+        /// </summary>
+        private string GetSocialInsuranceNumberFromHeinCard(string heinCardNumber)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(heinCardNumber)) return null;
+                heinCardNumber = heinCardNumber.Trim();
+                if (heinCardNumber.Length == 10) return heinCardNumber;
+                if (heinCardNumber.Length == 15) return heinCardNumber.Substring(5, 10);
+                if (heinCardNumber.Length == 17) return heinCardNumber.Substring(5, 12);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Chi cho phep tu dien khi o ma BHXH dang trong, hoac dang giu dung gia tri
+        /// do lan tu dien truoc sinh ra. Tranh ghi de gia tri nguoi dung da chu dong nhap.
+        /// </summary>
+        private bool CanFillSocialInsuranceNumber()
+        {
+            try
+            {
+                string current = txtSocialInsuranceNumber.Text == null ? "" : txtSocialInsuranceNumber.Text.Trim();
+                if (string.IsNullOrEmpty(current)) return true;
+                return current == this.autoFilledSocialInsuranceNumber;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
         private void txtHeinCard_Leave(object sender, EventArgs e)
         {
             try
@@ -1559,7 +1620,14 @@ namespace HIS.UC.Sick
                     heinCardNumber = HeinCardHelper.TrimHeinCardNumber(heinCardNumber.Replace(" ", "").Replace("  ", "").ToUpper().Trim());
                     if (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().IsValidHeinCardNumber(heinCardNumber))
                     {
-                        txtSocialInsuranceNumber.Text = (heinCardNumber.Length == 10 ? heinCardNumber : (heinCardNumber.Length == 15 ? heinCardNumber.Substring(5, 10) : ""));
+                        //Chi tu dien khi o ma BHXH con trong hoac dang giu gia tri do chinh co che nay sinh ra.
+                        //Nguoi dung da tu go gia tri khac (vi du so CCCD 12 chu so) thi giu nguyen, khong ghi de.
+                        string socialInsuranceNumber = GetSocialInsuranceNumberFromHeinCard(heinCardNumber);
+                        if (CanFillSocialInsuranceNumber())
+                        {
+                            txtSocialInsuranceNumber.Text = socialInsuranceNumber;
+                            this.autoFilledSocialInsuranceNumber = socialInsuranceNumber;
+                        }
                     }
                 }
 
