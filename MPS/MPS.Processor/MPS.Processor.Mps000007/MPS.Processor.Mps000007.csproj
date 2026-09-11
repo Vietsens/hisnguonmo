@@ -153,6 +153,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\ClsByRoomADO.cs" />
     <Compile Include="ADO\ExpMestBloods.cs" />
     <Compile Include="AgeUtil.cs" />
     <Compile Include="DhstNameUtil.cs" />

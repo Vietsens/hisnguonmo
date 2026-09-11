@@ -825,6 +825,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 //yeu cau kham
 
                 V_HIS_SERVICE_REQ currentHisVExamServiceReq = null;
+                //Danh sach y lenh kham cua dot - de mau in chon dung lan kham cua khoa hien tai
+                List<V_HIS_SERVICE_REQ> examServiceReqList = null;
                 var dhst = new HIS_DHST();
                 var sereServViexView = new V_HIS_SERE_SERV_VIEX();
                 Task tsServiceReq = Task.Factory.StartNew(() =>
@@ -847,6 +849,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         {
                             currentHisVExamServiceReq = examServiceReqs.OrderBy(o => o.INTRUCTION_TIME).FirstOrDefault();
                         }
+
+                        examServiceReqList = examServiceReqs;
                     }
 
                     if (currentHisVExamServiceReq != null && currentHisVExamServiceReq.DHST_ID.HasValue)
@@ -933,6 +937,13 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 singleKeyValue.Icd_Name = currentTreatment.ICD_NAME;
                 singleKeyValue.HospitalizeDepartmentCode = hospitalizeDepartment != null ? hospitalizeDepartment.DEPARTMENT_CODE : "";
                 singleKeyValue.HospitalizeDepartmentName = hospitalizeDepartment != null ? hospitalizeDepartment.DEPARTMENT_NAME : ""; ;
+                //Ma khoa cua phong dang dang nhap - dung cho 2 key CLS loc theo khoa
+                var currentWorkPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO
+                    .FirstOrDefault(o => o.RoomId == (this.currentModule != null ? this.currentModule.RoomId : 0));
+                if (currentWorkPlace != null)
+                {
+                    singleKeyValue.CurrentDepartmentId = currentWorkPlace.DepartmentId;
+                }
                 WaitingManager.Hide();
 
                 var ExamRoomList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(o => o.IS_EXAM == 1).ToList();
@@ -1026,6 +1037,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     ExpMestMaterialList,
                     sereServViexView
                     );
+                mps000007RDO.ExamServiceReqs = examServiceReqList;
 
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
