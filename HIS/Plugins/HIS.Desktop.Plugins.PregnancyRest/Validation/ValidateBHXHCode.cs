@@ -41,12 +41,10 @@ namespace HIS.Desktop.Plugins.PregnancyRest.Validation
                     base.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return success;
                 }
-                if (!string.IsNullOrEmpty(txtControl.Text) && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) != 10 && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) != 12)
-                {
-                    base.ErrorText = "Mã BHXH phải nhập đủ 10 hoặc 12 ký tự";
-                    base.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                    return success;
-                }
+                //Bo chan do dai ma BHXH theo yeu cau nghiep vu.
+                //Trong thoi gian chuyen doi sang so dinh danh ca nhan, ma dinh danh y te co the la
+                //10 chu so (ma so BHXH cu) hoac 12 chu so (so CCCD), nen khong rang buoc do dai nua.
+                //Van giu kiem tra vuot qua do dai toi da de khong tran cot du lieu.
                 if (!string.IsNullOrEmpty(txtControl.Text) && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) > maxLength)
                 {
                     base.ErrorText = "Trường dữ liệu vượt quá ký tự cho phép";

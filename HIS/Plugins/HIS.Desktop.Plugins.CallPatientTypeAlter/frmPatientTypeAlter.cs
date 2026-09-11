@@ -2609,7 +2609,8 @@ listTL, lstSereServResult, DelegateSuccess);
                         bool IsCccd = false;
                         HeinCardData heinCardData = null;
                         var strValueSplit = strValue.Split('|');
-                        if (strValueSplit[0].Length == 10 || strValueSplit[0].Length == 15)
+                        //So the BHYT: 10 ky tu (the chi in 10 so), 15 ky tu (mau cu) hoac 17 ky tu (mau moi)
+                        if (strValueSplit[0].Length == 10 || strValueSplit[0].Length == 15 || strValueSplit[0].Length == 17)
                             heinCardData = GetDataQrCodeHeinCard(strValue);
                         else if (strValueSplit[0].Length == 12)
                         {

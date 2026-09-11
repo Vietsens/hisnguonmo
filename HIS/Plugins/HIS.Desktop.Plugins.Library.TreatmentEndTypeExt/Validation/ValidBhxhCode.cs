@@ -39,12 +39,9 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.Validation
                     this.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
                     return valid;
                 }
-                else if (bhxhCode.Text.Length != 10 && bhxhCode.Text.Length != 12)
-                {
-                    this.ErrorText = "BHXH bắt buộc phải nhập 10 hoặc 12 ký tự";
-                    return valid;
-                }
-
+                //Bo chan do dai ma BHXH theo yeu cau nghiep vu.
+                //Trong thoi gian chuyen doi sang so dinh danh ca nhan, ma dinh danh y te co the la
+                //10 chu so (ma so BHXH cu) hoac 12 chu so (so CCCD), nen khong rang buoc do dai nua.
                 valid = true;
             }
             catch (Exception ex)
