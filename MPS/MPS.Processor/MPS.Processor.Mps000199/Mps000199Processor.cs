@@ -47,6 +47,8 @@ namespace MPS.Processor.Mps000199
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
                 SetSingleKey();
+                SetImpSourceKey();
+                SetSaleExpMestKey();
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 singleTag.ProcessData(store, singleValueDictionary);
                 objectTag.AddObjectData(store, "ListMediMate", _ListAdo);
@@ -173,6 +175,113 @@ namespace MPS.Processor.Mps000199
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Nguon nhap cua lo thuoc/vat tu trong phieu nhap
+        /// </summary>
+        private void SetImpSourceKey()
+        {
+            try
+            {
+                string impSourceCode = "";
+                string impSourceName = "";
+                if (rdo._ImpSources != null && rdo._ImpSources.Count > 0)
+                {
+                    impSourceCode = String.Join(", ", rdo._ImpSources.Where(o => !String.IsNullOrWhiteSpace(o.IMP_SOURCE_CODE)).Select(o => o.IMP_SOURCE_CODE).Distinct().ToList());
+                    impSourceName = String.Join(", ", rdo._ImpSources.Where(o => !String.IsNullOrWhiteSpace(o.IMP_SOURCE_NAME)).Select(o => o.IMP_SOURCE_NAME).Distinct().ToList());
+                }
+                SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.IMP_SOURCE_CODE, impSourceCode));
+                SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.IMP_SOURCE_NAME, impSourceName));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Thong tin phieu xuat ban goc khi nhap lai thuoc benh nhan da su dung:
+        /// benh nhan tra thuoc, bac si ke don, ngay ban
+        /// </summary>
+        private void SetSaleExpMestKey()
+        {
+            try
+            {
+                string patientCode = "";
+                string patientName = "";
+                string reqLoginname = "";
+                string reqUsername = "";
+                string doctor = "";
+                string expMestCode = "";
+                string saleDateStr = "";
+                string saleTimeStr = "";
+
+                if (rdo._SaleExpMests != null && rdo._SaleExpMests.Count > 0)
+                {
+                    patientCode = JoinDistinct(rdo._SaleExpMests.Select(o => o.TDL_PATIENT_CODE).ToList());
+                    patientName = JoinDistinct(rdo._SaleExpMests.Select(o => o.TDL_PATIENT_NAME).ToList());
+                    reqLoginname = JoinDistinct(rdo._SaleExpMests.Select(o => o.REQ_LOGINNAME).ToList());
+                    reqUsername = JoinDistinct(rdo._SaleExpMests.Select(o => o.REQ_USERNAME).ToList());
+                    doctor = JoinDistinct(rdo._SaleExpMests.Select(o => DisplayUser(o.REQ_LOGINNAME, o.REQ_USERNAME)).ToList());
+                    expMestCode = JoinDistinct(rdo._SaleExpMests.Select(o => o.EXP_MEST_CODE).ToList());
+                    saleDateStr = JoinDistinct(rdo._SaleExpMests.Where(o => o.FINISH_TIME.HasValue)
+                        .Select(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.FINISH_TIME.Value)).ToList());
+                    saleTimeStr = JoinDistinct(rdo._SaleExpMests.Where(o => o.FINISH_TIME.HasValue)
+                        .Select(o => Inventec.Common.DateTime.Convert.TimeNumberToTimeString(o.FINISH_TIME.Value)).ToList());
+                }
+
+                SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.SALE_PATIENT_CODE, patientCode));
+                SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.SALE_PATIENT_NAME, patientName));
+                SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.SALE_REQ_LOGINNAME, reqLoginname));
+                SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.SALE_REQ_USERNAME, reqUsername));
+                SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.SALE_DOCTOR, doctor));
+                SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.SALE_EXP_MEST_CODE, expMestCode));
+                SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.SALE_DATE_STR, saleDateStr));
+                SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.SALE_TIME_STR, saleTimeStr));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private string JoinDistinct(List<string> values)
+        {
+            string result = "";
+            try
+            {
+                if (values != null && values.Count > 0)
+                {
+                    result = String.Join(", ", values.Where(o => !String.IsNullOrWhiteSpace(o)).Distinct().ToList());
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private string DisplayUser(string loginname, string username)
+        {
+            string result = "";
+            try
+            {
+                if (!String.IsNullOrWhiteSpace(loginname) && !String.IsNullOrWhiteSpace(username))
+                    result = loginname + " - " + username;
+                else if (!String.IsNullOrWhiteSpace(username))
+                    result = username;
+                else if (!String.IsNullOrWhiteSpace(loginname))
+                    result = loginname;
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
     }
 }

@@ -140,6 +140,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         long _ImpSourceId = 0;
 
+        //phieu xuat ban goc duoc chon khi nhap lai thuoc benh nhan da su dung, dung de in MPS199
+        internal List<long> _SaleExpMestIds = new List<long>();
+
         int theRequiredWidth = 500, theRequiredHeight = 150;
         bool isShowContainerSupplier = false;
         bool isShowContainerSupplierForChoose = false;
@@ -1242,6 +1245,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                     if (listServiceADO == null)
                         listServiceADO = new List<VHisServiceADO>();
+
+                    //giu lai phieu xuat ban goc de mau in MPS199 lay duoc benh nhan, bac si ke don, ngay ban
+                    if (this._SaleExpMestIds == null)
+                        this._SaleExpMestIds = new List<long>();
+                    this._SaleExpMestIds.AddRange(_Medicines.Select(p => p.EXP_MEST_ID ?? 0).ToList());
+                    this._SaleExpMestIds.AddRange(_Materials.Select(p => p.EXP_MEST_ID ?? 0).ToList());
+                    this._SaleExpMestIds = this._SaleExpMestIds.Where(p => p > 0).Distinct().ToList();
 
                     List<long> _serviceId = new List<long>();
                     _serviceId.AddRange(_Medicines.Select(p => p.SERVICE_ID).Distinct().ToList());

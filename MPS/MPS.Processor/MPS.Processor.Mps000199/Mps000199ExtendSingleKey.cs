@@ -34,5 +34,19 @@ namespace MPS.Processor.Mps000199
         internal static string Titles = "Titles";
         internal static string TOTAL_PRICE = "TOTAL_PRICE";
         internal static string TOTAL_PRICE_SEPARATE = "TOTAL_PRICE_SEPARATE";
+
+        //nguon nhap cua lo thuoc/vat tu
+        internal static string IMP_SOURCE_CODE = "IMP_SOURCE_CODE";
+        internal static string IMP_SOURCE_NAME = "IMP_SOURCE_NAME";
+
+        //thong tin lay tu phieu xuat ban goc khi nhap lai thuoc benh nhan da su dung
+        internal static string SALE_PATIENT_CODE = "SALE_PATIENT_CODE";
+        internal static string SALE_PATIENT_NAME = "SALE_PATIENT_NAME";
+        internal static string SALE_REQ_LOGINNAME = "SALE_REQ_LOGINNAME";
+        internal static string SALE_REQ_USERNAME = "SALE_REQ_USERNAME";
+        internal static string SALE_DOCTOR = "SALE_DOCTOR";
+        internal static string SALE_EXP_MEST_CODE = "SALE_EXP_MEST_CODE";
+        internal static string SALE_DATE_STR = "SALE_DATE_STR";
+        internal static string SALE_TIME_STR = "SALE_TIME_STR";
     }
 }

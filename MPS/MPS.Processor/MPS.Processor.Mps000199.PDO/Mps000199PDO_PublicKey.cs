@@ -36,6 +36,11 @@ namespace MPS.Processor.Mps000199.PDO
         public List<V_HIS_IMP_MEST_USER> _ListIpmMestUser = null;
         public List<MedicalContractADO> _ListMedicalContract = null;
 
+        //nguon nhap cua lo thuoc/vat tu trong phieu nhap
+        public List<HIS_IMP_SOURCE> _ImpSources = null;
+        //phieu xuat ban goc cua don nhap lai thuoc benh nhan da su dung
+        public List<V_HIS_EXP_MEST> _SaleExpMests = null;
+
         public class MedicalContractADO : V_HIS_MEDICAL_CONTRACT
         {
             public long MEDICINE_ID { get; set; }
