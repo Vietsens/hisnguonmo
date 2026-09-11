@@ -57,5 +57,8 @@ namespace MPS.Processor.Mps000352
         internal static string MOBA_IMP_MEST_COUNT = "MOBA_IMP_MEST_COUNT";
         internal static string NUM_ORDER = "NUM_ORDER";
 
+        internal static string ICD_CODE = "ICD_CODE";
+        internal static string ICD_NAME = "ICD_NAME";
+
     }
 }
