@@ -39,6 +39,9 @@ namespace MPS.Processor.Mps000007.PDO
         public List<V_HIS_EXP_MEST_MEDICINE> ExpMestMedicineList { get; set; }
         public List<V_HIS_EXP_MEST_MATERIAL> ExpMestMaterialList { get; set; }
         public V_HIS_SERE_SERV_VIEX SereServViex { get; set; }
+        //Danh sach y lenh kham cua dot dieu tri - phuc vu key tom tat KQ CLS theo khoa.
+        //Khong bat buoc: chuc nang in nao khong gan thi key do se lay tu ExamServiceReq.
+        public List<V_HIS_SERVICE_REQ> ExamServiceReqs { get; set; }
     }
 
     public class PatientADO : V_HIS_PATIENT

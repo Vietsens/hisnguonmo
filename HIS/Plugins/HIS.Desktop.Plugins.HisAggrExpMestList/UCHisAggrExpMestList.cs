@@ -1705,7 +1705,9 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                                             if (success)
                                             {
                                                 Inventec.Common.Logging.LogSystem.Debug("INPHIEU_AUTOPRINT: ThucXuat thanh cong, ExpMestId=" + ExpMestData.ID);
-                                                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST expMestForPrint = ExpMestData;
+                                                // ExpMestData la anh chup dong luoi TRUOC khi thuc xuat: trang thai van la Dang xu ly,
+                                                // chua co thoi gian thuc xuat. Phai nap lai phieu linh thi phieu in moi co du key.
+                                                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST expMestForPrint = ReloadAggrExpMestForPrint(ExpMestData);
                                                 if (this.IsHandleCreated)
                                                     this.BeginInvoke(new System.Windows.Forms.MethodInvoker(delegate { ProcessAutoPrintAfterExport(expMestForPrint); }));
                                                 else
@@ -1960,6 +1962,40 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Nap lai phieu linh tong hop sau khi thuc xuat, de phieu in lay dung
+        /// trang thai Hoan thanh va thoi gian thuc xuat.
+        /// Nap that bai thi tra ve ban cu de van in duoc nhu truoc.
+        /// </summary>
+        private MOS.EFMODEL.DataModels.V_HIS_EXP_MEST ReloadAggrExpMestForPrint(MOS.EFMODEL.DataModels.V_HIS_EXP_MEST expMest)
+        {
+            try
+            {
+                if (expMest == null || expMest.ID <= 0)
+                    return expMest;
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisExpMestViewFilter expMestViewFilter = new HisExpMestViewFilter();
+                expMestViewFilter.ID = expMest.ID;
+
+                var data = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumer.ApiConsumers.MosConsumer, expMestViewFilter, param);
+                if (data != null && data.Count > 0 && data.FirstOrDefault() != null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("INPHIEU_AUTOPRINT: da nap lai phieu linh, ExpMestId=" + expMest.ID
+                        + ", SttId=" + data.FirstOrDefault().EXP_MEST_STT_ID
+                        + ", LastExpTime=" + (data.FirstOrDefault().LAST_EXP_TIME ?? 0));
+                    return data.FirstOrDefault();
+                }
+
+                Inventec.Common.Logging.LogSystem.Warn("INPHIEU_AUTOPRINT: khong nap lai duoc phieu linh, dung ban cu. ExpMestId=" + expMest.ID);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return expMest;
         }
 
         private void InPhieuCongKhaiTheoBN(long aggExpMestId)

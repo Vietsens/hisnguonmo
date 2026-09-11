@@ -40,6 +40,7 @@ namespace MPS.Processor.Mps000007
         List<V_HIS_EXP_MEST_MATERIAL> ExpMestMaterials { get; set; }
         List<ExpMestBloods> ExpMestBloods { get; set; }
         V_HIS_SERE_SERV_VIEX SereServViex { get; set; }
+        List<ClsByRoomADO> ClsByRooms { get; set; }
 
         Mps000007PDO rdo;
         public Mps000007Processor(CommonParam param, PrintData printData)
@@ -90,6 +91,7 @@ namespace MPS.Processor.Mps000007
                 objectTag.AddObjectData(store, "ExpMestMedicines", this.ExpMestMedicines);
                 objectTag.AddObjectData(store, "ExpMestMaterials", this.ExpMestMaterials);
                 objectTag.AddObjectData(store, "ExpMesBloods", this.ExpMestBloods);
+                objectTag.AddObjectData(store, "ClsByRooms", this.ClsByRooms);
                 result = true;
             }
             catch (Exception ex)
@@ -99,6 +101,107 @@ namespace MPS.Processor.Mps000007
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Dung vung lap ClsByRooms: moi dong la MOT PHONG thuoc khoa dang in,
+        /// kem cac dich vu CLS phong do chi dinh va tom tat KQ CLS cua lan kham tai phong do.
+        /// Hai key gom chung CLS_NAMES va SUBCLINICAL giu nguyen, khong bi anh huong.
+        /// </summary>
+        private void BuildClsByRooms()
+        {
+            this.ClsByRooms = new List<ClsByRoomADO>();
+            try
+            {
+                long currentDepartmentId = 0;
+                if (rdo.SingleKeyValue != null && rdo.SingleKeyValue.CurrentDepartmentId.HasValue)
+                {
+                    currentDepartmentId = rdo.SingleKeyValue.CurrentDepartmentId.Value;
+                }
+                if (currentDepartmentId <= 0)
+                {
+                    return;
+                }
+
+                //Dich vu CLS do cac phong cua khoa dang in chi dinh
+                //Giu nguyen moc thoi gian cua key gom chung
+                List<HIS_SERE_SERV> clsOfDepartment = new List<HIS_SERE_SERV>();
+                if (rdo.SereServs != null)
+                {
+                    clsOfDepartment = rdo.SereServs
+                        .Where(o => o.TDL_REQUEST_DEPARTMENT_ID == currentDepartmentId).ToList();
+                    if (rdo.Treatment != null && rdo.Treatment.CLINICAL_IN_TIME.HasValue)
+                    {
+                        clsOfDepartment = clsOfDepartment
+                            .Where(o => o.TDL_INTRUCTION_TIME <= rdo.Treatment.CLINICAL_IN_TIME.Value).ToList();
+                    }
+                }
+
+                //Y lenh kham THUC HIEN tai cac phong cua khoa dang in
+                List<V_HIS_SERVICE_REQ> examOfDepartment = new List<V_HIS_SERVICE_REQ>();
+                if (rdo.ExamServiceReqs != null && rdo.ExamServiceReqs.Count > 0)
+                {
+                    examOfDepartment = rdo.ExamServiceReqs
+                        .Where(o => o.EXECUTE_DEPARTMENT_ID == currentDepartmentId).ToList();
+                }
+                else if (rdo.ExamServiceReq != null
+                    && rdo.ExamServiceReq.EXECUTE_DEPARTMENT_ID == currentDepartmentId)
+                {
+                    examOfDepartment.Add(rdo.ExamServiceReq);
+                }
+
+                //Tap phong = hop cua phong chi dinh CLS va phong kham
+                List<long> roomIds = clsOfDepartment.Select(o => o.TDL_REQUEST_ROOM_ID).ToList();
+                roomIds.AddRange(examOfDepartment.Select(o => o.EXECUTE_ROOM_ID));
+                roomIds = roomIds.Where(o => o > 0).Distinct().ToList();
+                if (roomIds.Count == 0)
+                {
+                    return;
+                }
+
+                List<V_HIS_ROOM> rooms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>();
+
+                foreach (long roomId in roomIds)
+                {
+                    ClsByRoomADO ado = new ClsByRoomADO();
+                    ado.ROOM_ID = roomId;
+
+                    //Nhieu lan kham tai cung phong thi lay lan moi nhat
+                    V_HIS_SERVICE_REQ examOfRoom = examOfDepartment
+                        .Where(o => o.EXECUTE_ROOM_ID == roomId)
+                        .OrderByDescending(o => o.INTRUCTION_TIME)
+                        .FirstOrDefault();
+
+                    if (examOfRoom != null && !String.IsNullOrWhiteSpace(examOfRoom.EXECUTE_ROOM_NAME))
+                    {
+                        ado.ROOM_NAME = examOfRoom.EXECUTE_ROOM_NAME;
+                    }
+                    else
+                    {
+                        V_HIS_ROOM room = rooms != null ? rooms.FirstOrDefault(o => o.ID == roomId) : null;
+                        ado.ROOM_NAME = room != null ? room.ROOM_NAME : "";
+                    }
+
+                    //Loai trung theo CAP (ma, ten) de hai chuoi cung thu tu va cung so luong
+                    var clsOfRoom = clsOfDepartment
+                        .Where(o => o.TDL_REQUEST_ROOM_ID == roomId)
+                        .Select(o => new { o.TDL_SERVICE_CODE, o.TDL_SERVICE_NAME })
+                        .Distinct().ToList();
+                    ado.CLS_CODES = string.Join("; ", clsOfRoom.Select(o => o.TDL_SERVICE_CODE).ToList());
+                    ado.CLS_NAMES = string.Join("; ", clsOfRoom.Select(o => o.TDL_SERVICE_NAME).ToList());
+
+                    ado.SUBCLINICAL = (examOfRoom != null && !String.IsNullOrWhiteSpace(examOfRoom.SUBCLINICAL))
+                        ? examOfRoom.SUBCLINICAL : "";
+
+                    this.ClsByRooms.Add(ado);
+                }
+
+                this.ClsByRooms = this.ClsByRooms.OrderBy(o => o.ROOM_NAME).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         void ProcessSingleKey()
@@ -122,6 +225,8 @@ namespace MPS.Processor.Mps000007
 
                     SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.CLS_NAMES, string.Join("; ", clsName.Select(o => o.TDL_SERVICE_NAME).Distinct().ToList())));
                 }
+
+                this.BuildClsByRooms();
 
                 if (rdo.Treatment != null)
                 {

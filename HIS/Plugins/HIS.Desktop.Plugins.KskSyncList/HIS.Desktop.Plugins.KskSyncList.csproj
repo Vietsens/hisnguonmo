@@ -140,6 +140,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.ExcelImport">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.ExcelImport\Inventec.Common.ExcelImport.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
@@ -169,6 +172,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\KskSyncResultADO.cs" />
+    <Compile Include="ADO\KskTreatmentCodeImportADO.cs" />
+    <Compile Include="UCKskSyncList___ImportFilter.cs" />
     <Compile Include="ADO\KskSyncTargetADO.cs" />
     <Compile Include="ADO\KskTypeADO.cs" />
     <Compile Include="KskSyncList\IKskSyncList.cs" />

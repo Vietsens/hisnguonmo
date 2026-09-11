@@ -62,6 +62,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.txtPatientCode = new DevExpress.XtraEditors.TextEdit();
             this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
             this.txtKeyWord = new DevExpress.XtraEditors.TextEdit();
+            this.btnImportFilter = new DevExpress.XtraEditors.SimpleButton();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.chkSign = new DevExpress.XtraEditors.CheckEdit();
@@ -105,10 +106,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciChkSign = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnPreview = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnSync = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnImportFilter = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnExportPath = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnClsMap = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciGrid = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPaging = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -143,10 +144,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.lciChkSign)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSync)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnImportFilter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnExportPath)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnClsMap)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).BeginInit();
             this.SuspendLayout();
@@ -233,6 +234,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.layoutControl1.Controls.Add(this.txtPatientCode);
             this.layoutControl1.Controls.Add(this.txtTreatmentCode);
             this.layoutControl1.Controls.Add(this.txtKeyWord);
+            this.layoutControl1.Controls.Add(this.btnImportFilter);
             this.layoutControl1.Controls.Add(this.btnSearch);
             this.layoutControl1.Controls.Add(this.btnRefresh);
             this.layoutControl1.Controls.Add(this.chkSign);
@@ -253,7 +255,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
             this.btnSettings.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnSettings.Location = new System.Drawing.Point(891, 32);
+            this.btnSettings.Location = new System.Drawing.Point(803, 32);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(24, 22);
             this.btnSettings.StyleController = this.layoutControl1;
@@ -265,7 +267,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             this.btnExportPath.Image = ((System.Drawing.Image)(resources.GetObject("btnExportPath.Image")));
             this.btnExportPath.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnExportPath.Location = new System.Drawing.Point(919, 32);
+            this.btnExportPath.Location = new System.Drawing.Point(831, 32);
             this.btnExportPath.Name = "btnExportPath";
             this.btnExportPath.Size = new System.Drawing.Size(24, 22);
             this.btnExportPath.StyleController = this.layoutControl1;
@@ -275,9 +277,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             // btnClsMap
             // 
-            this.btnClsMap.Location = new System.Drawing.Point(1070, 6);
+            this.btnClsMap.Location = new System.Drawing.Point(950, 6);
             this.btnClsMap.Name = "btnClsMap";
-            this.btnClsMap.Size = new System.Drawing.Size(108, 22);
+            this.btnClsMap.Size = new System.Drawing.Size(110, 22);
             this.btnClsMap.StyleController = this.layoutControl1;
             this.btnClsMap.TabIndex = 18;
             this.btnClsMap.Text = "Nối chỉ số CLS HCM";
@@ -293,14 +295,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.cboKskType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboKskType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboKskType.Size = new System.Drawing.Size(157, 20);
+            this.cboKskType.Size = new System.Drawing.Size(133, 20);
             this.cboKskType.StyleController = this.layoutControl1;
             this.cboKskType.TabIndex = 1;
             // 
             // dtConclusionFrom
             // 
             this.dtConclusionFrom.EditValue = null;
-            this.dtConclusionFrom.Location = new System.Drawing.Point(345, 6);
+            this.dtConclusionFrom.Location = new System.Drawing.Point(321, 6);
             this.dtConclusionFrom.MenuManager = this.barManager1;
             this.dtConclusionFrom.Name = "dtConclusionFrom";
             this.dtConclusionFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -311,14 +313,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.dtConclusionFrom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtConclusionFrom.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dtConclusionFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtConclusionFrom.Size = new System.Drawing.Size(171, 20);
+            this.dtConclusionFrom.Size = new System.Drawing.Size(143, 20);
             this.dtConclusionFrom.StyleController = this.layoutControl1;
             this.dtConclusionFrom.TabIndex = 3;
             // 
             // dtConclusionTo
             // 
             this.dtConclusionTo.EditValue = null;
-            this.dtConclusionTo.Location = new System.Drawing.Point(566, 6);
+            this.dtConclusionTo.Location = new System.Drawing.Point(514, 6);
             this.dtConclusionTo.MenuManager = this.barManager1;
             this.dtConclusionTo.Name = "dtConclusionTo";
             this.dtConclusionTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -329,13 +331,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.dtConclusionTo.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtConclusionTo.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dtConclusionTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtConclusionTo.Size = new System.Drawing.Size(175, 20);
+            this.dtConclusionTo.Size = new System.Drawing.Size(153, 20);
             this.dtConclusionTo.StyleController = this.layoutControl1;
             this.dtConclusionTo.TabIndex = 5;
             // 
             // cboSyncStatus
             // 
-            this.cboSyncStatus.Location = new System.Drawing.Point(846, 6);
+            this.cboSyncStatus.Location = new System.Drawing.Point(772, 6);
             this.cboSyncStatus.MenuManager = this.barManager1;
             this.cboSyncStatus.Name = "cboSyncStatus";
             this.cboSyncStatus.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -346,7 +348,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             "Đã đồng bộ",
             "Thất bại"});
             this.cboSyncStatus.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboSyncStatus.Size = new System.Drawing.Size(67, 20);
+            this.cboSyncStatus.Size = new System.Drawing.Size(50, 20);
             this.cboSyncStatus.StyleController = this.layoutControl1;
             this.cboSyncStatus.TabIndex = 7;
             // 
@@ -357,40 +359,51 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.txtPatientCode.Name = "txtPatientCode";
             this.txtPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân";
             this.txtPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtPatientCode.Size = new System.Drawing.Size(167, 20);
+            this.txtPatientCode.Size = new System.Drawing.Size(150, 20);
             this.txtPatientCode.StyleController = this.layoutControl1;
             this.txtPatientCode.TabIndex = 8;
             this.txtPatientCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txt_PreviewKeyDown);
             // 
             // txtTreatmentCode
             // 
-            this.txtTreatmentCode.Location = new System.Drawing.Point(177, 32);
+            this.txtTreatmentCode.Location = new System.Drawing.Point(160, 32);
             this.txtTreatmentCode.MenuManager = this.barManager1;
             this.txtTreatmentCode.Name = "txtTreatmentCode";
             this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
             this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtTreatmentCode.Size = new System.Drawing.Size(167, 20);
+            this.txtTreatmentCode.Size = new System.Drawing.Size(150, 20);
             this.txtTreatmentCode.StyleController = this.layoutControl1;
             this.txtTreatmentCode.TabIndex = 9;
             this.txtTreatmentCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txt_PreviewKeyDown);
             // 
             // txtKeyWord
             // 
-            this.txtKeyWord.Location = new System.Drawing.Point(348, 32);
+            this.txtKeyWord.Location = new System.Drawing.Point(314, 32);
             this.txtKeyWord.MenuManager = this.barManager1;
             this.txtKeyWord.Name = "txtKeyWord";
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa (tên BN, mã y lệnh...)";
             this.txtKeyWord.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtKeyWord.Size = new System.Drawing.Size(238, 20);
+            this.txtKeyWord.Size = new System.Drawing.Size(214, 20);
             this.txtKeyWord.StyleController = this.layoutControl1;
             this.txtKeyWord.TabIndex = 10;
             this.txtKeyWord.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txt_PreviewKeyDown);
             // 
+            // btnImportFilter
+            // 
+            this.btnImportFilter.Location = new System.Drawing.Point(1064, 6);
+            this.btnImportFilter.Name = "btnImportFilter";
+            this.btnImportFilter.Size = new System.Drawing.Size(114, 22);
+            this.btnImportFilter.StyleController = this.layoutControl1;
+            this.btnImportFilter.TabIndex = 13;
+            this.btnImportFilter.Text = "NK điều kiện lọc";
+            this.btnImportFilter.ToolTip = "Nhập khẩu danh sách mã điều trị từ tệp Excel (cột A) để lọc danh sách";
+            this.btnImportFilter.Click += new System.EventHandler(this.btnImportFilter_Click);
+            // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(590, 32);
+            this.btnSearch.Location = new System.Drawing.Point(532, 32);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(127, 22);
+            this.btnSearch.Size = new System.Drawing.Size(114, 22);
             this.btnSearch.StyleController = this.layoutControl1;
             this.btnSearch.TabIndex = 11;
             this.btnSearch.Text = "Tìm kiếm (Ctrl F)";
@@ -398,9 +411,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(721, 32);
+            this.btnRefresh.Location = new System.Drawing.Point(650, 32);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(96, 22);
+            this.btnRefresh.Size = new System.Drawing.Size(86, 22);
             this.btnRefresh.StyleController = this.layoutControl1;
             this.btnRefresh.TabIndex = 12;
             this.btnRefresh.Text = "Làm lại";
@@ -408,20 +421,20 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             // chkSign
             // 
-            this.chkSign.Location = new System.Drawing.Point(821, 32);
+            this.chkSign.Location = new System.Drawing.Point(740, 32);
             this.chkSign.MenuManager = this.barManager1;
             this.chkSign.Name = "chkSign";
             this.chkSign.Properties.Caption = "Ký số";
-            this.chkSign.Size = new System.Drawing.Size(66, 19);
+            this.chkSign.Size = new System.Drawing.Size(59, 19);
             this.chkSign.StyleController = this.layoutControl1;
             this.chkSign.TabIndex = 13;
             this.chkSign.CheckedChanged += new System.EventHandler(this.chkSign_CheckedChanged);
             // 
             // btnPreview
             // 
-            this.btnPreview.Location = new System.Drawing.Point(947, 32);
+            this.btnPreview.Location = new System.Drawing.Point(859, 32);
             this.btnPreview.Name = "btnPreview";
-            this.btnPreview.Size = new System.Drawing.Size(100, 22);
+            this.btnPreview.Size = new System.Drawing.Size(84, 22);
             this.btnPreview.StyleController = this.layoutControl1;
             this.btnPreview.TabIndex = 14;
             this.btnPreview.Text = "Xuất XML";
@@ -430,9 +443,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // btnSync
             // 
             this.btnSync.Enabled = false;
-            this.btnSync.Location = new System.Drawing.Point(1051, 32);
+            this.btnSync.Location = new System.Drawing.Point(947, 32);
             this.btnSync.Name = "btnSync";
-            this.btnSync.Size = new System.Drawing.Size(127, 22);
+            this.btnSync.Size = new System.Drawing.Size(113, 22);
             this.btnSync.StyleController = this.layoutControl1;
             this.btnSync.TabIndex = 15;
             this.btnSync.Text = "Đồng bộ lên cổng  (0)";
@@ -441,9 +454,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             // btnVlgStatus
             // 
-            this.btnVlgStatus.Location = new System.Drawing.Point(917, 6);
+            this.btnVlgStatus.Location = new System.Drawing.Point(826, 6);
             this.btnVlgStatus.Name = "btnVlgStatus";
-            this.btnVlgStatus.Size = new System.Drawing.Size(139, 22);
+            this.btnVlgStatus.Size = new System.Drawing.Size(120, 22);
             this.btnVlgStatus.StyleController = this.layoutControl1;
             this.btnVlgStatus.TabIndex = 18;
             this.btnVlgStatus.Text = "Cập nhật KQ cổng VLg";
@@ -746,10 +759,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciChkSign,
             this.lciBtnPreview,
             this.lciBtnSync,
+            this.lciBtnImportFilter,
             this.layoutControlItem1,
             this.lciBtnExportPath,
-            this.lciBtnClsMap,
-            this.emptySpaceItem1});
+            this.lciBtnClsMap});
             this.grpFilter.Location = new System.Drawing.Point(0, 0);
             this.grpFilter.Name = "grpFilter";
             this.grpFilter.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -763,7 +776,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciKskType.Control = this.cboKskType;
             this.lciKskType.Location = new System.Drawing.Point(0, 0);
             this.lciKskType.Name = "lciKskType";
-            this.lciKskType.Size = new System.Drawing.Size(240, 26);
+            this.lciKskType.Size = new System.Drawing.Size(216, 26);
             this.lciKskType.Text = "Loại KSK:";
             this.lciKskType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciKskType.TextSize = new System.Drawing.Size(74, 13);
@@ -774,9 +787,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciConclusionFrom.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConclusionFrom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConclusionFrom.Control = this.dtConclusionFrom;
-            this.lciConclusionFrom.Location = new System.Drawing.Point(240, 0);
+            this.lciConclusionFrom.Location = new System.Drawing.Point(216, 0);
             this.lciConclusionFrom.Name = "lciConclusionFrom";
-            this.lciConclusionFrom.Size = new System.Drawing.Size(274, 26);
+            this.lciConclusionFrom.Size = new System.Drawing.Size(246, 26);
             this.lciConclusionFrom.Text = "Ngày kết luận từ:";
             this.lciConclusionFrom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciConclusionFrom.TextSize = new System.Drawing.Size(94, 13);
@@ -787,9 +800,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciConclusionTo.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConclusionTo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConclusionTo.Control = this.dtConclusionTo;
-            this.lciConclusionTo.Location = new System.Drawing.Point(514, 0);
+            this.lciConclusionTo.Location = new System.Drawing.Point(462, 0);
             this.lciConclusionTo.Name = "lciConclusionTo";
-            this.lciConclusionTo.Size = new System.Drawing.Size(225, 26);
+            this.lciConclusionTo.Size = new System.Drawing.Size(203, 26);
             this.lciConclusionTo.Text = "đến:";
             this.lciConclusionTo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciConclusionTo.TextSize = new System.Drawing.Size(41, 13);
@@ -800,9 +813,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciSyncStatus.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSyncStatus.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSyncStatus.Control = this.cboSyncStatus;
-            this.lciSyncStatus.Location = new System.Drawing.Point(739, 0);
+            this.lciSyncStatus.Location = new System.Drawing.Point(665, 0);
             this.lciSyncStatus.Name = "lciSyncStatus";
-            this.lciSyncStatus.Size = new System.Drawing.Size(172, 26);
+            this.lciSyncStatus.Size = new System.Drawing.Size(155, 26);
             this.lciSyncStatus.Text = "Trạng thái đẩy:";
             this.lciSyncStatus.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSyncStatus.TextSize = new System.Drawing.Size(96, 13);
@@ -811,9 +824,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // lciBtnVlgStatus
             // 
             this.lciBtnVlgStatus.Control = this.btnVlgStatus;
-            this.lciBtnVlgStatus.Location = new System.Drawing.Point(911, 0);
+            this.lciBtnVlgStatus.Location = new System.Drawing.Point(820, 0);
             this.lciBtnVlgStatus.Name = "lciBtnVlgStatus";
-            this.lciBtnVlgStatus.Size = new System.Drawing.Size(143, 26);
+            this.lciBtnVlgStatus.Size = new System.Drawing.Size(124, 26);
             this.lciBtnVlgStatus.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnVlgStatus.TextVisible = false;
             this.lciBtnVlgStatus.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -823,77 +836,86 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciPatientCode.Control = this.txtPatientCode;
             this.lciPatientCode.Location = new System.Drawing.Point(0, 26);
             this.lciPatientCode.Name = "lciPatientCode";
-            this.lciPatientCode.Size = new System.Drawing.Size(171, 26);
+            this.lciPatientCode.Size = new System.Drawing.Size(154, 26);
             this.lciPatientCode.TextSize = new System.Drawing.Size(0, 0);
             this.lciPatientCode.TextVisible = false;
             // 
             // lciTreatmentCode
             // 
             this.lciTreatmentCode.Control = this.txtTreatmentCode;
-            this.lciTreatmentCode.Location = new System.Drawing.Point(171, 26);
+            this.lciTreatmentCode.Location = new System.Drawing.Point(154, 26);
             this.lciTreatmentCode.Name = "lciTreatmentCode";
-            this.lciTreatmentCode.Size = new System.Drawing.Size(171, 26);
+            this.lciTreatmentCode.Size = new System.Drawing.Size(154, 26);
             this.lciTreatmentCode.TextSize = new System.Drawing.Size(0, 0);
             this.lciTreatmentCode.TextVisible = false;
             // 
             // lciKeyWord
             // 
             this.lciKeyWord.Control = this.txtKeyWord;
-            this.lciKeyWord.Location = new System.Drawing.Point(342, 26);
+            this.lciKeyWord.Location = new System.Drawing.Point(308, 26);
             this.lciKeyWord.Name = "lciKeyWord";
-            this.lciKeyWord.Size = new System.Drawing.Size(242, 26);
+            this.lciKeyWord.Size = new System.Drawing.Size(218, 26);
             this.lciKeyWord.TextSize = new System.Drawing.Size(0, 0);
             this.lciKeyWord.TextVisible = false;
             // 
             // lciBtnSearch
             // 
             this.lciBtnSearch.Control = this.btnSearch;
-            this.lciBtnSearch.Location = new System.Drawing.Point(584, 26);
+            this.lciBtnSearch.Location = new System.Drawing.Point(526, 26);
             this.lciBtnSearch.Name = "lciBtnSearch";
-            this.lciBtnSearch.Size = new System.Drawing.Size(131, 26);
+            this.lciBtnSearch.Size = new System.Drawing.Size(118, 26);
             this.lciBtnSearch.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnSearch.TextVisible = false;
             // 
             // lciBtnRefresh
             // 
             this.lciBtnRefresh.Control = this.btnRefresh;
-            this.lciBtnRefresh.Location = new System.Drawing.Point(715, 26);
+            this.lciBtnRefresh.Location = new System.Drawing.Point(644, 26);
             this.lciBtnRefresh.Name = "lciBtnRefresh";
-            this.lciBtnRefresh.Size = new System.Drawing.Size(100, 26);
+            this.lciBtnRefresh.Size = new System.Drawing.Size(90, 26);
             this.lciBtnRefresh.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnRefresh.TextVisible = false;
             // 
             // lciChkSign
             // 
             this.lciChkSign.Control = this.chkSign;
-            this.lciChkSign.Location = new System.Drawing.Point(815, 26);
+            this.lciChkSign.Location = new System.Drawing.Point(734, 26);
             this.lciChkSign.Name = "lciChkSign";
-            this.lciChkSign.Size = new System.Drawing.Size(70, 26);
+            this.lciChkSign.Size = new System.Drawing.Size(63, 26);
             this.lciChkSign.TextSize = new System.Drawing.Size(0, 0);
             this.lciChkSign.TextVisible = false;
             // 
             // lciBtnPreview
             // 
             this.lciBtnPreview.Control = this.btnPreview;
-            this.lciBtnPreview.Location = new System.Drawing.Point(941, 26);
+            this.lciBtnPreview.Location = new System.Drawing.Point(853, 26);
             this.lciBtnPreview.Name = "lciBtnPreview";
-            this.lciBtnPreview.Size = new System.Drawing.Size(104, 26);
+            this.lciBtnPreview.Size = new System.Drawing.Size(88, 26);
             this.lciBtnPreview.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnPreview.TextVisible = false;
             // 
             // lciBtnSync
             // 
             this.lciBtnSync.Control = this.btnSync;
-            this.lciBtnSync.Location = new System.Drawing.Point(1045, 26);
+            this.lciBtnSync.Location = new System.Drawing.Point(941, 26);
             this.lciBtnSync.Name = "lciBtnSync";
-            this.lciBtnSync.Size = new System.Drawing.Size(131, 26);
+            this.lciBtnSync.Size = new System.Drawing.Size(117, 26);
             this.lciBtnSync.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnSync.TextVisible = false;
+            // 
+            // lciBtnImportFilter
+            // 
+            this.lciBtnImportFilter.Control = this.btnImportFilter;
+            this.lciBtnImportFilter.Location = new System.Drawing.Point(1058, 0);
+            this.lciBtnImportFilter.Name = "lciBtnImportFilter";
+            this.lciBtnImportFilter.Size = new System.Drawing.Size(118, 52);
+            this.lciBtnImportFilter.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnImportFilter.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.btnSettings;
-            this.layoutControlItem1.Location = new System.Drawing.Point(885, 26);
+            this.layoutControlItem1.Location = new System.Drawing.Point(797, 26);
             this.layoutControlItem1.MaxSize = new System.Drawing.Size(28, 26);
             this.layoutControlItem1.MinSize = new System.Drawing.Size(28, 26);
             this.layoutControlItem1.Name = "layoutControlItem1";
@@ -907,7 +929,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // lciBtnExportPath
             // 
             this.lciBtnExportPath.Control = this.btnExportPath;
-            this.lciBtnExportPath.Location = new System.Drawing.Point(913, 26);
+            this.lciBtnExportPath.Location = new System.Drawing.Point(825, 26);
             this.lciBtnExportPath.MaxSize = new System.Drawing.Size(28, 26);
             this.lciBtnExportPath.MinSize = new System.Drawing.Size(28, 26);
             this.lciBtnExportPath.Name = "lciBtnExportPath";
@@ -921,21 +943,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // lciBtnClsMap
             // 
             this.lciBtnClsMap.Control = this.btnClsMap;
-            this.lciBtnClsMap.Location = new System.Drawing.Point(1064, 0);
+            this.lciBtnClsMap.Location = new System.Drawing.Point(944, 0);
             this.lciBtnClsMap.Name = "lciBtnClsMap";
-            this.lciBtnClsMap.Size = new System.Drawing.Size(112, 26);
+            this.lciBtnClsMap.Size = new System.Drawing.Size(114, 26);
             this.lciBtnClsMap.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBtnClsMap.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnClsMap.TextToControlDistance = 0;
             this.lciBtnClsMap.TextVisible = false;
-            // 
-            // emptySpaceItem1
-            // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(1054, 0);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(10, 26);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciGrid
             // 
@@ -999,10 +1013,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.lciChkSign)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSync)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnImportFilter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnExportPath)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnClsMap)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).EndInit();
             this.ResumeLayout(false);
@@ -1066,6 +1080,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraLayout.LayoutControlItem lciPatientCode;
         private DevExpress.XtraLayout.LayoutControlItem lciTreatmentCode;
         private DevExpress.XtraLayout.LayoutControlItem lciKeyWord;
+        private DevExpress.XtraEditors.SimpleButton btnImportFilter;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnImportFilter;
         private DevExpress.XtraLayout.LayoutControlItem lciBtnSearch;
         private DevExpress.XtraLayout.LayoutControlItem lciBtnRefresh;
         private DevExpress.XtraLayout.LayoutControlItem lciChkSign;
@@ -1079,6 +1095,5 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraLayout.LayoutControlItem lciBtnExportPath;
         private DevExpress.XtraEditors.SimpleButton btnClsMap;
         private DevExpress.XtraLayout.LayoutControlItem lciBtnClsMap;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
     }
 }

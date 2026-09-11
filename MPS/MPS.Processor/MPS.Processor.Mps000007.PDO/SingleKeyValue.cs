@@ -33,5 +33,7 @@ namespace MPS.Processor.Mps000007.PDO
         public string LoginName { get; set; }
         public string HospitalizeDepartmentCode { get; set; }
         public string HospitalizeDepartmentName { get; set; }
+        //Ma khoa cua phong dang dang nhap - dung de loc 2 key CLS theo khoa
+        public long? CurrentDepartmentId { get; set; }
     }
 }

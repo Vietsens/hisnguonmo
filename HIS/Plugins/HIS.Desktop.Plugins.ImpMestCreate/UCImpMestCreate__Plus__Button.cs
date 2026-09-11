@@ -2044,6 +2044,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         _ImpMestUser,
                         MedicalContractADO);
 
+                    //nguon nhap cua lo thuoc/vat tu + phieu xuat ban goc (nhap lai thuoc benh nhan da su dung)
+                    Mps000199RDO._ImpSources = GetImpSources(medicines, materials);
+                    Mps000199RDO._SaleExpMests = GetSaleExpMests();
+
                     if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                     {
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000199RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "") { EmrInputADO = inputADO };
@@ -2489,6 +2493,60 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Nguon nhap cua cac lo thuoc/vat tu thuoc phieu nhap dang in
+        /// </summary>
+        private List<HIS_IMP_SOURCE> GetImpSources(List<HIS_MEDICINE> medicines, List<HIS_MATERIAL> materials)
+        {
+            List<HIS_IMP_SOURCE> result = new List<HIS_IMP_SOURCE>();
+            try
+            {
+                List<long> impSourceIds = new List<long>();
+                if (medicines != null && medicines.Count > 0)
+                    impSourceIds.AddRange(medicines.Where(o => o.IMP_SOURCE_ID.HasValue).Select(o => o.IMP_SOURCE_ID.Value).ToList());
+                if (materials != null && materials.Count > 0)
+                    impSourceIds.AddRange(materials.Where(o => o.IMP_SOURCE_ID.HasValue).Select(o => o.IMP_SOURCE_ID.Value).ToList());
+
+                impSourceIds = impSourceIds.Distinct().ToList();
+                if (impSourceIds.Count > 0)
+                {
+                    result = BackendDataWorker.Get<HIS_IMP_SOURCE>().Where(o => impSourceIds.Contains(o.ID)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = new List<HIS_IMP_SOURCE>();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Phieu xuat ban goc da chon khi nhap lai thuoc benh nhan da su dung.
+        /// Dung de mau in lay benh nhan tra thuoc, bac si ke don, ngay ban.
+        /// </summary>
+        private List<V_HIS_EXP_MEST> GetSaleExpMests()
+        {
+            List<V_HIS_EXP_MEST> result = new List<V_HIS_EXP_MEST>();
+            try
+            {
+                if (this._SaleExpMestIds == null || this._SaleExpMestIds.Count <= 0)
+                    return result;
+
+                CommonParam param = new CommonParam();
+                HisExpMestViewFilter filter = new HisExpMestViewFilter();
+                filter.IDs = this._SaleExpMestIds;
+                result = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, filter, param)
+                    ?? new List<V_HIS_EXP_MEST>();
+            }
+            catch (Exception ex)
+            {
+                result = new List<V_HIS_EXP_MEST>();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
     }
 }

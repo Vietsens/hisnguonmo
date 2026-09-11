@@ -166,12 +166,16 @@ namespace MPS.Processor.Mps000352
                     if (exp != null)
                     {
                         SetSingleKey(new KeyValue(Mps000352ExtendSingleKey.PATIENT_NAME, exp.TDL_PATIENT_NAME));
+                        SetSingleKey(new KeyValue(Mps000352ExtendSingleKey.ICD_CODE, exp.ICD_CODE));
+                        SetSingleKey(new KeyValue(Mps000352ExtendSingleKey.ICD_NAME, exp.ICD_NAME));
                         AddObjectKeyIntoListkey(exp, false);
                     }
                     else
                     {
                         SetSingleKey(new KeyValue(Mps000352ExtendSingleKey.PATIENT_NAME, this.rdo._SaleExpMests.FirstOrDefault().TDL_PATIENT_NAME));
                         SetSingleKey(new KeyValue(Mps000352ExtendSingleKey.VIR_PATIENT_NAME, this.rdo._SaleExpMests.FirstOrDefault().TDL_PATIENT_NAME));
+                        SetSingleKey(new KeyValue(Mps000352ExtendSingleKey.ICD_CODE, this.rdo._SaleExpMests.FirstOrDefault().ICD_CODE));
+                        SetSingleKey(new KeyValue(Mps000352ExtendSingleKey.ICD_NAME, this.rdo._SaleExpMests.FirstOrDefault().ICD_NAME));
                         AddObjectKeyIntoListkey(this.rdo._SaleExpMests.FirstOrDefault(), false);
                     }
                     SetSingleKey(new KeyValue(Mps000352ExtendSingleKey.EXP_MEST_CODES, String.Join(",", this.rdo._SaleExpMests.Select(s => s.EXP_MEST_CODE).ToList())));
