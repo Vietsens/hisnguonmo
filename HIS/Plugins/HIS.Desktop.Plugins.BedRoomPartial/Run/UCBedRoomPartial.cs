@@ -1635,11 +1635,19 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             {
                 List<HIS_TRACKING> ListTracking = null;
                 CommonParam param = new CommonParam();
-                var rs = new BackendAdapter(param).Get<List<HisServiceReqGroupByDateSDO>>(HisRequestUriStore.HIS_SERVICE_REQ_GET_GROUP_BY_DATE, ApiConsumers.MosConsumer, treatmentId, param).OrderByDescending(p => p.InstructionDate).Distinct().ToList();
+                // API tra ve Data:null khi dot dieu tri khong co y lenh nao (StatusCode 200, Success true).
+                // Nối .OrderByDescending() thẳng vào kết quả Get<>() là ArgumentNullException (source null),
+                // bị catch cuối hàm nuốt -> LoadDataSereServByTreatmentId không chạy, lưới dịch vụ trắng
+                // và cây ngày vẫn giữ dữ liệu của bệnh nhân trước. Phải chặn TRƯỚC khi gọi LINQ.
+                List<HisServiceReqGroupByDateSDO> rsRaw = new BackendAdapter(param).Get<List<HisServiceReqGroupByDateSDO>>(HisRequestUriStore.HIS_SERVICE_REQ_GET_GROUP_BY_DATE, ApiConsumers.MosConsumer, treatmentId, param);
+                List<HisServiceReqGroupByDateSDO> rs = (rsRaw != null
+                    ? rsRaw.OrderByDescending(p => p.InstructionDate).Distinct().ToList()
+                    : new List<HisServiceReqGroupByDateSDO>());
                 treeListDateTime.DataSource = null;
                 this.rowClickByDate = new ServiceReqGroupByDateADO();
                 this.IsLoadTreeListDateTime = false;
-                if (rs != null)
+                // Count > 0 chứ không phải != null: rs rỗng thì rs.FirstOrDefault().TreatmentId ngay dưới là NullReferenceException
+                if (rs.Count > 0)
                 {
                     HisTrackingFilter filter = new HisTrackingFilter();
                     filter.TREATMENT_ID = rs.FirstOrDefault().TreatmentId;

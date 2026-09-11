@@ -519,45 +519,23 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 // Doc1: khong lay CD YHCT tu kham chinh sang kham them khi key IsAutoFillInformationAndIcdExam khac "1"
                 if (IsNotAutoFillExamInfoFromMainExam())
                     return;
-                if (HisServiceReqView != null && !string.IsNullOrEmpty(HisServiceReqView.TRADITIONAL_ICD_CODE))
+                // BN kham 2 phong (phong 1 kham chinh chi dinh kham them phong 2): khi phong 2 ket thuc kham,
+                // backend chi don CD YHCT cua y lenh kham them vao TRADITIONAL_ICD_SUB_CODE/TRADITIONAL_ICD_TEXT
+                // cua ho so (HisTreatmentUpdate.SetIcd), con TRADITIONAL_ICD_CODE cua ho so van la cua kham chinh
+                // - rong neu phong 1 khong nhap CD YHCT. Truoc day chi xet TRADITIONAL_ICD_CODE => ca hai nhanh
+                // deu truot, quay ve phong 1 khong thay CD YHCT nao. Xet them CD phu de giong CD thuong
+                // (LoadDataFromTreatment/LoadDataToIcdSub).
+                if (HisServiceReqView != null
+                    && (!string.IsNullOrEmpty(HisServiceReqView.TRADITIONAL_ICD_CODE) || !string.IsNullOrEmpty(HisServiceReqView.TRADITIONAL_ICD_SUB_CODE)))
                 {
-                    HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
-                    Icd.ICD_CODE = HisServiceReqView.TRADITIONAL_ICD_CODE;
-                    Icd.ICD_NAME = HisServiceReqView.TRADITIONAL_ICD_NAME;
-
-                    if (ucIcdYHCT != null)
-                    {
-                        icdProcessorYHCT.Reload(ucIcdYHCT, Icd);
-                    }
-
-                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subIcd = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
-                    subIcd.ICD_SUB_CODE = HisServiceReqView.TRADITIONAL_ICD_SUB_CODE;
-                    subIcd.ICD_TEXT = HisServiceReqView.TRADITIONAL_ICD_TEXT;
-
-                    if (ucSecondaryIcdYHCT != null)
-                    {
-                        subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcd);
-                    }
+                    LoadIcdToControlIcdYHCT(HisServiceReqView.TRADITIONAL_ICD_CODE, HisServiceReqView.TRADITIONAL_ICD_NAME,
+                        HisServiceReqView.TRADITIONAL_ICD_SUB_CODE, HisServiceReqView.TRADITIONAL_ICD_TEXT);
                 }
-                else if (treatment != null && !string.IsNullOrEmpty(treatment.TRADITIONAL_ICD_CODE))
+                else if (treatment != null
+                    && (!string.IsNullOrEmpty(treatment.TRADITIONAL_ICD_CODE) || !string.IsNullOrEmpty(treatment.TRADITIONAL_ICD_SUB_CODE)))
                 {
-                    HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
-                    Icd.ICD_CODE = treatment.TRADITIONAL_ICD_CODE;
-                    Icd.ICD_NAME = treatment.TRADITIONAL_ICD_NAME;
-
-                    if (ucIcdYHCT != null)
-                    {
-                        icdProcessorYHCT.Reload(ucIcdYHCT, Icd);
-                    }
-
-                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subIcd = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
-                    subIcd.ICD_SUB_CODE = treatment.TRADITIONAL_ICD_SUB_CODE;
-                    subIcd.ICD_TEXT = treatment.TRADITIONAL_ICD_TEXT;
-
-                    if (ucSecondaryIcdYHCT != null)
-                    {
-                        subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcd);
-                    }
+                    LoadIcdToControlIcdYHCT(treatment.TRADITIONAL_ICD_CODE, treatment.TRADITIONAL_ICD_NAME,
+                        treatment.TRADITIONAL_ICD_SUB_CODE, treatment.TRADITIONAL_ICD_TEXT);
                 }
             }
             catch (Exception ex)

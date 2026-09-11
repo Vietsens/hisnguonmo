@@ -1707,7 +1707,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex); 
             }
         }
 
@@ -2307,11 +2307,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                //ColumnAutoWidth = true nen day la TY LE chia be rong popup, khong phai so pixel co dinh.
+                //Ma may va ten may can cho, con "Da xu ly"/"Toi da" chi hien mot vai chu so nen bop nho lai.
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("MACHINE_CODE", "Mã máy", 150, 1));
-                columnInfos.Add(new ColumnInfo("MACHINE_NAME", "Tên máy", 250, 2));
-                columnInfos.Add(new ColumnInfo("TOTAL_PROCESSED_SERVICE", "Đã xử lý", 100, 3));
-                columnInfos.Add(new ColumnInfo("MAX_SERVICE_PER_DAY", "Tối đa", 100, 4));
+                columnInfos.Add(new ColumnInfo("MACHINE_CODE", "Mã máy", 260, 1));
+                columnInfos.Add(new ColumnInfo("MACHINE_NAME", "Tên máy", 330, 2));
+                columnInfos.Add(new ColumnInfo("TOTAL_PROCESSED_SERVICE", "Đã xử lý", 70, 3));
+                columnInfos.Add(new ColumnInfo("MAX_SERVICE_PER_DAY", "Tối đa", 70, 4));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("MACHINE_NAME", "ID", columnInfos, true, 250);
                 ControlEditorLoader.Load(editor, dataCombo, controlEditorADO);
 
@@ -2319,19 +2321,35 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 //nguyen ca View sang editor tai cho, ke ca cot checkbox chon dong (cot do khong nam trong view.Columns
                 //nen ControlEditorLoader.Load goi Columns.Clear() cung khong xoa mat).
                 GridView view = editor.Properties.View;
-                view.OptionsView.ColumnAutoWidth = false;
-                view.BestFitMaxRowCount = -1;
-                view.BestFitColumns();
 
-                //Tinh be rong NGAY TAI DAY, truoc khi popup hien ra. Truoc day viec nay lam trong su kien Popup
-                //- ma su kien do chi ban SAU khi popup da ve len man hinh - nen popup hien o be rong cu
-                //(250 do ControlEditorLoader.Load dat) roi moi gian ra, nhin thay ro mot cai nhay.
+                //GIU NGUYEN ColumnAutoWidth = true ma ControlEditorLoader.Load da dat: cac cot chia nhau be rong
+                //popup, ten may dai thi TU XUONG DONG - Load dat RowAutoHeight = true (loader.cs:140) con
+                //ApplyMemoEdit dat WordWrap.Wrap + Trimming.Word cho tung cot (loader.cs:153-163).
+                //Truoc day cho nay tat ColumnAutoWidth roi goi BestFitColumns, hau qua la: cot co lai vua DUNG
+                //MOT DONG nen ten dai bi cat, phai keo rong cot moi doc duoc; va tong be rong cot khong lap day
+                //popup nen thua mot khoang xam ben phai.
+
+                //MA MAY thuong la mot cum lien KHONG co dau cach, ma ApplyMemoEdit dat Trimming.Word - tuc chi
+                //duoc ngat theo TU - nen ma dai khong co cho nao de xuong dong, bi cat cut, phai keo rong cot
+                //moi doc duoc. Ngat theo KY TU thi ma dai tu tran xuong dong duoi. Ten may co dau cach nen
+                //giu nguyen ngat theo tu cho de doc.
+                GridColumn machineCodeColumn = view.Columns.ColumnByFieldName("MACHINE_CODE");
+                if (machineCodeColumn != null)
+                {
+                    machineCodeColumn.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Character;
+                    var machineCodeEdit = machineCodeColumn.ColumnEdit as DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit;
+                    if (machineCodeEdit != null)
+                    {
+                        machineCodeEdit.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.Character;
+                    }
+                }
+
+                //Be rong popup tinh tu be rong khai bao cua cac cot (260+330+70+70), cong bu cho cot checkbox
+                //chon dong (cot do khong nam trong view.Columns nen vong duoi khong tinh) va cho thanh cuon doc.
                 int columnsWidth = (from GridColumn c in view.Columns
                                     where c.Visible
                                     select c).Sum((GridColumn c) => c.Width);
-                //cong bu cho cot checkbox chon dong (cot do khong nam trong view.Columns nen vong tren khong tinh)
-                //va cho thanh cuon doc; dat san be rong toi thieu de popup khong bi chat
-                int popupWidth = Math.Max(760, Math.Min(columnsWidth + 120, 1200));
+                int popupWidth = Math.Max(560, Math.Min(columnsWidth + 90, 1000));
                 editor.Properties.PopupFormWidth = popupWidth;
                 editor.Properties.PopupFormSize = new Size(popupWidth, editor.Properties.PopupFormSize.Height);
             }
