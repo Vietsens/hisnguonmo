@@ -61,6 +61,8 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
         //Gom tu sere_serv truoc khi bi loai bo khoi _SereServs (don thuoc DONK/DONM/DONDT/DONTT)
         Dictionary<long, V_HIS_SERE_SERV> dicSereServByExpMedicine = new Dictionary<long, V_HIS_SERE_SERV>();
         Dictionary<long, V_HIS_SERE_SERV> dicSereServByExpMaterial = new Dictionary<long, V_HIS_SERE_SERV>();
+        //Tien cua dong mau, key = BLOOD_ID (V_HIS_SERE_SERV khong co cot EXP_MEST_BLOOD_ID)
+        Dictionary<long, V_HIS_SERE_SERV> dicSereServByBlood = new Dictionary<long, V_HIS_SERE_SERV>();
 
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -326,6 +328,7 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                 dicServiceReq = new Dictionary<long, HIS_SERVICE_REQ>();
                 dicSereServByExpMedicine = new Dictionary<long, V_HIS_SERE_SERV>();
                 dicSereServByExpMaterial = new Dictionary<long, V_HIS_SERE_SERV>();
+                dicSereServByBlood = new Dictionary<long, V_HIS_SERE_SERV>();
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
 
@@ -396,39 +399,51 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
 
                     _serviceReqId_T_VTs = _currentServiceReqs.Where(p => !_serviceReqId_SVs.Exists(e => e == p.ID)).Select(p => p.ID).ToList();
 
+                    //Lay TOAN BO sere_serv cua ho so, KHONG dat trong dieu kien co y lenh dich vu.
+                    //Ho so chi co don thuoc thi _serviceReqId_SVs rong, neu de trong dieu kien do
+                    //thi khong nap duoc bang tra va toan bo tien thuoc/vat tu se trong.
+                    MOS.Filter.HisSereServViewFilter _ssFiler = new HisSereServViewFilter();
+                    _ssFiler.TREATMENT_ID = this._treatmentId;
+                    //_ssFiler.SERVICE_REQ_IDs = _serviceReqId_SVs;
+                    _ssFiler.PATIENT_TYPE_IDs = this.patientTypeHasSelecteds.Select(o => o.ID).ToList();
+                    if (!chkHaoPhi.Checked)
+                    {
+                        _ssFiler.IS_EXPEND = false;
+                    }
+                    var _AllSereServs = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW, ApiConsumers.MosConsumer, _ssFiler, param);
+
+                    //Gom tien BHYT tra / BN tra cua thuoc - vat tu - mau TRUOC khi loc bo dong don thuoc.
+                    //Filter tren server chi co TREATMENT_ID nen response da chua san cac dong nay,
+                    //neu de sau Where() thi chung bi nem di va mat luon so tien.
+                    if (_AllSereServs != null)
+                    {
+                        foreach (var ss in _AllSereServs)
+                        {
+                            if (ss.EXP_MEST_MEDICINE_ID.HasValue && !dicSereServByExpMedicine.ContainsKey(ss.EXP_MEST_MEDICINE_ID.Value))
+                            {
+                                dicSereServByExpMedicine[ss.EXP_MEST_MEDICINE_ID.Value] = ss;
+                            }
+                            if (ss.EXP_MEST_MATERIAL_ID.HasValue && !dicSereServByExpMaterial.ContainsKey(ss.EXP_MEST_MATERIAL_ID.Value))
+                            {
+                                dicSereServByExpMaterial[ss.EXP_MEST_MATERIAL_ID.Value] = ss;
+                            }
+                            //Dong mau nam o don DONM nen cung bi loai boi Where() phia sau
+                            if (ss.BLOOD_ID.HasValue && !dicSereServByBlood.ContainsKey(ss.BLOOD_ID.Value))
+                            {
+                                dicSereServByBlood[ss.BLOOD_ID.Value] = ss;
+                            }
+                        }
+                    }
+
                     if (_serviceReqId_SVs != null && _serviceReqId_SVs.Count > 0)
                     {
-                        MOS.Filter.HisSereServViewFilter _ssFiler = new HisSereServViewFilter();
-                        _ssFiler.TREATMENT_ID = this._treatmentId;
-                        //_ssFiler.SERVICE_REQ_IDs = _serviceReqId_SVs;
-                        _ssFiler.PATIENT_TYPE_IDs = this.patientTypeHasSelecteds.Select(o => o.ID).ToList();
-                        if (!chkHaoPhi.Checked)
+                        //Danh sach dich vu dung rieng mot bien, khong loc de lai tren _AllSereServs
+                        var _SereServs = (_AllSereServs ?? new List<V_HIS_SERE_SERV>()).Where(o
+                            => _serviceReqId_SVs.Contains(o.SERVICE_REQ_ID ?? 0)
+                            && (chkServiceIsNoExecute.Checked ? true : o.IS_NO_EXECUTE != 1)
+                            ).ToList();
+                        if (_SereServs.Count > 0)
                         {
-                            _ssFiler.IS_EXPEND = false;
-                        }
-                        var _SereServs = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW, ApiConsumers.MosConsumer, _ssFiler, param);
-                        if (_SereServs != null && _SereServs.Count > 0)
-                        {
-                            //Gom tien BHYT tra / BN tra cua thuoc - vat tu TRUOC khi loc bo dong don thuoc.
-                            //Filter tren server chi co TREATMENT_ID nen response da chua san dong thuoc/VT,
-                            //neu de sau Where() thi cac dong nay bi nem di va mat luon so tien.
-                            foreach (var ss in _SereServs)
-                            {
-                                if (ss.EXP_MEST_MEDICINE_ID.HasValue && !dicSereServByExpMedicine.ContainsKey(ss.EXP_MEST_MEDICINE_ID.Value))
-                                {
-                                    dicSereServByExpMedicine[ss.EXP_MEST_MEDICINE_ID.Value] = ss;
-                                }
-                                if (ss.EXP_MEST_MATERIAL_ID.HasValue && !dicSereServByExpMaterial.ContainsKey(ss.EXP_MEST_MATERIAL_ID.Value))
-                                {
-                                    dicSereServByExpMaterial[ss.EXP_MEST_MATERIAL_ID.Value] = ss;
-                                }
-                            }
-
-                            _SereServs = _SereServs.Where(o
-                                => _serviceReqId_SVs.Contains(o.SERVICE_REQ_ID ?? 0)
-                                && (chkServiceIsNoExecute.Checked ? true : o.IS_NO_EXECUTE != 1)
-                                ).ToList();
-
                             List<HIS_SERE_SERV_EXT> _SereServsExt = GetSsExtBySsId(_SereServs.Select(o => o.ID).ToList());
 
                             foreach (var item in _SereServs)

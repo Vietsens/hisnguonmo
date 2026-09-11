@@ -61,21 +61,33 @@ namespace His.UC.UCHein.ControlProcess
                 if (HEIN_CARD_NUMBER != null)
                 {
                     string chkhong = "", chmot = "", chhai = "", chba = "", chbon = "", chnam = "";
+                    //The 17 ky tu (mau moi) tach theo khuon 2-1-2-12: ma doi tuong, muc huong,
+                    //ma tinh, roi 12 so dinh danh ca nhan. The 15 ky tu (mau cu) tach 2-1-2-2-3-5.
+                    bool isNewCard = HEIN_CARD_NUMBER.Length == 17;
                     try
                     {
                         chkhong = HEIN_CARD_NUMBER.Substring(0, 2);
                         chmot = HEIN_CARD_NUMBER.Substring(2, 1);
                         chhai = HEIN_CARD_NUMBER.Substring(3, 2);
-                        chba = HEIN_CARD_NUMBER.Substring(5, 2);
-                        chbon = HEIN_CARD_NUMBER.Substring(7, 3);
-                        chnam = HEIN_CARD_NUMBER.Substring(10);
+                        if (isNewCard)
+                        {
+                            chba = HEIN_CARD_NUMBER.Substring(5);
+                        }
+                        else
+                        {
+                            chba = HEIN_CARD_NUMBER.Substring(5, 2);
+                            chbon = HEIN_CARD_NUMBER.Substring(7, 3);
+                            chnam = HEIN_CARD_NUMBER.Substring(10);
+                        }
                     }
                     catch (Exception exx)
                     {
                         LogSystem.Warn("Gan chuoi RENDERER_HEIN_CARD_NUMBER the BHYT loi", exx);
                     }
 
-                    rs = string.Format("{0}-{1}-{2}-{3}-{4}-{5}", chkhong, chmot, chhai, chba, chbon, chnam);
+                    rs = isNewCard
+                        ? string.Format("{0}-{1}-{2}-{3}", chkhong, chmot, chhai, chba)
+                        : string.Format("{0}-{1}-{2}-{3}-{4}-{5}", chkhong, chmot, chhai, chba, chbon, chnam);
                 }
             }
             catch (Exception ex)

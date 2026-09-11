@@ -847,6 +847,11 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
         /// The 15 ky tu: lay 10 so cuoi. The 17 ky tu: lay 12 so dinh danh tu vi tri thu 5.
         /// The chi in 10 so: lay nguyen. Cac truong hop khac tra ve rong.
         /// </summary>
+        /// <summary>
+        /// Suy ma BHXH tu so the BHYT.
+        /// The 15 ky tu: lay 10 so cuoi. The 17 ky tu: lay 12 so dinh danh tu vi tri thu 5.
+        /// The chi in 10 so: lay nguyen. Cac truong hop khac tra ve rong.
+        /// </summary>
         private string GetBhxhCodeFromHeinCard(string heinCardNumber)
         {
             try

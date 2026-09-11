@@ -143,15 +143,23 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                                     expMedi.AFTERNOON = itemGroups.Sum(s => FormatSessionOfDay(s.AFTERNOON)).ToString();
                                     expMedi.NOON = itemGroups.Sum(s => FormatSessionOfDay(s.NOON)).ToString();
                                     expMedi.PATIENT_TYPE_ID = itemGroups[0].PATIENT_TYPE_ID ?? 0;
-                                    //Cong khai thuc hien cua thuoc: USED_TIME (thoi gian dung) tren tung dong xuat kho.
-                                    //Lay lan dung muon nhat trong nhom; nhom nao chua ghi dung thi de trong.
-                                    expMedi.EXECUTE_PUBLIC_TIME = itemGroups
+                                    //Cong khai thuc hien cua thuoc: uu tien USED_TIME (thoi gian dung).
+                                    //USED_TIME chi duoc ghi khi dieu duong danh dau da dung tren man hinh rieng,
+                                    //nen phai lui ve EXP_TIME (thoi diem xuat kho) de cot khong bi trong.
+                                    long? usedTimeMedi = itemGroups
                                         .Where(o => o.USED_TIME.HasValue && o.USED_TIME.Value > 0)
-                                        .Select(o => o.USED_TIME)
-                                        .OrderByDescending(o => o)
-                                        .FirstOrDefault();
+                                        .Max(o => o.USED_TIME);
+                                    if (!usedTimeMedi.HasValue)
+                                    {
+                                        usedTimeMedi = itemGroups
+                                            .Where(o => o.EXP_TIME.HasValue && o.EXP_TIME.Value > 0)
+                                            .Max(o => o.EXP_TIME);
+                                    }
+                                    expMedi.EXECUTE_PUBLIC_TIME = usedTimeMedi;
                                     //Thanh tien BHYT tra / BN tra: doi chieu sang sere_serv theo id dong xuat kho
-                                    SetHeinPatientPriceByExpMedicine(expMedi, itemGroups.Select(o => o.ID).ToList());
+                                    SetHeinPatientPriceByExpMedicine(expMedi, itemGroups
+                                        .Select(o => new ExpLineForPrice { Id = o.ID, Amount = o.AMOUNT, ThAmount = o.TH_AMOUNT ?? 0 })
+                                        .ToList());
                                     _Datas.Add(expMedi);
                                 }
                             }
@@ -241,14 +249,21 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                                     {
                                         expMate.CONCENTRA = concentra.CONCENTRA;
                                     }
-                                    //Cong khai thuc hien cua vat tu: USED_TIME tren tung dong xuat kho
-                                    expMate.EXECUTE_PUBLIC_TIME = itemGroups
+                                    //Cong khai thuc hien cua vat tu: uu tien USED_TIME, lui ve EXP_TIME
+                                    long? usedTimeMate = itemGroups
                                         .Where(o => o.USED_TIME.HasValue && o.USED_TIME.Value > 0)
-                                        .Select(o => o.USED_TIME)
-                                        .OrderByDescending(o => o)
-                                        .FirstOrDefault();
+                                        .Max(o => o.USED_TIME);
+                                    if (!usedTimeMate.HasValue)
+                                    {
+                                        usedTimeMate = itemGroups
+                                            .Where(o => o.EXP_TIME.HasValue && o.EXP_TIME.Value > 0)
+                                            .Max(o => o.EXP_TIME);
+                                    }
+                                    expMate.EXECUTE_PUBLIC_TIME = usedTimeMate;
                                     //Thanh tien BHYT tra / BN tra: doi chieu sang sere_serv theo id dong xuat kho
-                                    SetHeinPatientPriceByExpMaterial(expMate, itemGroups.Select(o => o.ID).ToList());
+                                    SetHeinPatientPriceByExpMaterial(expMate, itemGroups
+                                        .Select(o => new ExpLineForPrice { Id = o.ID, Amount = o.AMOUNT, ThAmount = o.TH_AMOUNT ?? 0 })
+                                        .ToList());
                                     _Datas.Add(expMate);
                                 }
                             }
@@ -322,6 +337,15 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                                     expMate.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU;
                                     expMate.AMOUNT = _AMOUNT;
                                     expMate.PATIENT_TYPE_ID = itemGroups[0].PATIENT_TYPE_ID ?? 0;
+                                    //Cong khai thuc hien cua mau: view mau chi co EXP_TIME, khong co USED_TIME
+                                    expMate.EXECUTE_PUBLIC_TIME = itemGroups
+                                        .Where(o => o.EXP_TIME.HasValue && o.EXP_TIME.Value > 0)
+                                        .Max(o => o.EXP_TIME);
+                                    //Thanh tien BHYT tra / BN tra: doi chieu sang sere_serv theo BLOOD_ID.
+                                    //Mau khong co TH_AMOUNT nen moi tui tinh tron so tien (ty le = 1).
+                                    SetHeinPatientPriceByBlood(expMate, itemGroups
+                                        .Select(o => new ExpLineForPrice { Id = o.BLOOD_ID, Amount = 1, ThAmount = 0 })
+                                        .ToList());
                                     _Datas.Add(expMate);
                                 }
                             }
@@ -335,44 +359,74 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             }
         }
         /// <summary>
-        /// Cong tien BHYT tra / BN tra cua cac dong xuat kho thuoc trong nhom.
-        /// VIR_TOTAL_* la tien cua ca dong (da nhan so luong) nen cong don, khong nhan lai voi AMOUNT.
+        /// Mot dong xuat kho dung cho viec doi chieu tien: id dong, so da xuat, so da tra lai.
         /// </summary>
-        private void SetHeinPatientPriceByExpMedicine(Service_NT_ADO ado, List<long> expMestMedicineIds)
+        private class ExpLineForPrice
         {
-            SetHeinPatientPrice(ado, expMestMedicineIds, this.dicSereServByExpMedicine);
+            public long Id { get; set; }
+            public decimal Amount { get; set; }
+            public decimal ThAmount { get; set; }
+        }
+
+        /// <summary>
+        /// Cong tien BHYT tra / BN tra cua cac dong xuat kho thuoc trong nhom.
+        /// </summary>
+        private void SetHeinPatientPriceByExpMedicine(Service_NT_ADO ado, List<ExpLineForPrice> expLines)
+        {
+            SetHeinPatientPrice(ado, expLines, this.dicSereServByExpMedicine);
         }
 
         /// <summary>
         /// Cong tien BHYT tra / BN tra cua cac dong xuat kho vat tu trong nhom.
         /// </summary>
-        private void SetHeinPatientPriceByExpMaterial(Service_NT_ADO ado, List<long> expMestMaterialIds)
+        private void SetHeinPatientPriceByExpMaterial(Service_NT_ADO ado, List<ExpLineForPrice> expLines)
         {
-            SetHeinPatientPrice(ado, expMestMaterialIds, this.dicSereServByExpMaterial);
+            SetHeinPatientPrice(ado, expLines, this.dicSereServByExpMaterial);
         }
 
-        private void SetHeinPatientPrice(Service_NT_ADO ado, List<long> expMestIds, Dictionary<long, V_HIS_SERE_SERV> dicSereServ)
+        /// <summary>
+        /// Cong tien BHYT tra / BN tra cua dong mau trong nhom.
+        /// </summary>
+        private void SetHeinPatientPriceByBlood(Service_NT_ADO ado, List<ExpLineForPrice> expLines)
+        {
+            SetHeinPatientPrice(ado, expLines, this.dicSereServByBlood);
+        }
+
+        /// <summary>
+        /// VIR_TOTAL_* la tien cua ca dong (da nhan so luong) nen cong don, khong nhan lai voi AMOUNT.
+        /// Rieng truong hop tra lai hang: so luong in ra da tru TH_AMOUNT nen tien cung phai
+        /// tinh theo ty le phan con lai, neu khong se in so luong it ma tien nhieu.
+        /// </summary>
+        private void SetHeinPatientPrice(Service_NT_ADO ado, List<ExpLineForPrice> expLines, Dictionary<long, V_HIS_SERE_SERV> dicSereServ)
         {
             try
             {
-                if (ado == null || expMestIds == null || expMestIds.Count <= 0 || dicSereServ == null || dicSereServ.Count <= 0)
+                if (ado == null || expLines == null || expLines.Count <= 0 || dicSereServ == null || dicSereServ.Count <= 0)
                     return;
 
                 decimal? totalHein = null;
                 decimal? totalPatient = null;
-                foreach (var expMestId in expMestIds)
+                foreach (var line in expLines)
                 {
-                    V_HIS_SERE_SERV sereServ = null;
-                    if (!dicSereServ.TryGetValue(expMestId, out sereServ) || sereServ == null)
+                    if (line == null)
                         continue;
+
+                    V_HIS_SERE_SERV sereServ = null;
+                    if (!dicSereServ.TryGetValue(line.Id, out sereServ) || sereServ == null)
+                        continue;
+
+                    //Ty le phan con lai sau khi tra hang. Xuat 10 tra 4 thi chi tinh 6/10 so tien.
+                    decimal gross = line.Amount;
+                    decimal net = line.Amount - line.ThAmount;
+                    decimal factor = gross > 0 ? (net / gross) : 0;
 
                     if (sereServ.VIR_TOTAL_HEIN_PRICE.HasValue)
                     {
-                        totalHein = (totalHein ?? 0) + sereServ.VIR_TOTAL_HEIN_PRICE.Value;
+                        totalHein = (totalHein ?? 0) + sereServ.VIR_TOTAL_HEIN_PRICE.Value * factor;
                     }
                     if (sereServ.VIR_TOTAL_PATIENT_PRICE.HasValue)
                     {
-                        totalPatient = (totalPatient ?? 0) + sereServ.VIR_TOTAL_PATIENT_PRICE.Value;
+                        totalPatient = (totalPatient ?? 0) + sereServ.VIR_TOTAL_PATIENT_PRICE.Value * factor;
                     }
                 }
 

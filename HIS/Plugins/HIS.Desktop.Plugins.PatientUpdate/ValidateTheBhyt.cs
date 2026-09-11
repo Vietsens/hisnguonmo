@@ -38,9 +38,11 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 if (!String.IsNullOrWhiteSpace(theBhyt.Text))
                 {
                     string bhytNumber = theBhyt.Text.Trim();
-                    if (Inventec.Common.String.CountVi.Count(bhytNumber) != 15)
+                    //So the BHYT: 15 ky tu (mau cu) hoac 17 ky tu (mau moi theo so dinh danh ca nhan)
+                    int? bhytLength = Inventec.Common.String.CountVi.Count(bhytNumber);
+                    if (bhytLength != 15 && bhytLength != 17)
                     {
-                        ErrorText = "Mã BHYT phải nhập đủ 15 kí tự";
+                        ErrorText = "Mã BHYT phải nhập đủ 15 hoặc 17 kí tự";
                         ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                         return valid;
                     }

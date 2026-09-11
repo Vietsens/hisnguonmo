@@ -331,39 +331,39 @@ namespace MPS.Processor.Mps000225
                 _ADO_XNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN).ToList());
                 _ADO_ANs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN).ToList());
                 //them co hao phi
-                _ADO_HP_CDHAs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_Gs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_GPBLs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_KHs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_KHACs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KHAC && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_MAUs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_NSs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_PHCNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PHCN && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_PTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_SAs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_TDCNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_THUOCs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_TTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_VTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_XNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_HP_ANs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
+                _ADO_HP_CDHAs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_Gs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_GPBLs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_KHs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_KHACs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KHAC && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_MAUs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_NSs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_PHCNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PHCN && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_PTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_SAs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_TDCNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_THUOCs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_TTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_VTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_XNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_HP_ANs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN && o.TypeExpend == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
                 //them khong hao phi
-                _ADO_NHP_CDHAs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_Gs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_GPBLs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_KHs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_KHACs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KHAC && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_MAUs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_NSs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_PHCNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PHCN && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_PTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_SAs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_TDCNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_THUOCs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_TTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_VTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_XNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                _ADO_NHP_ANs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
+                _ADO_NHP_CDHAs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_Gs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_GPBLs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_KHs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_KHACs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KHAC && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_MAUs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_NSs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_PHCNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PHCN && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_PTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_SAs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_TDCNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_THUOCs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_TTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_VTs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_XNs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
+                _ADO_NHP_ANs = GroupByService(rdo._Mps000225BySereServs.Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN && o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), true);
 
                 ProcessDataGroupPatyType();
 
@@ -455,6 +455,14 @@ namespace MPS.Processor.Mps000225
                         ado.VIR_TOTAL_PATIENT_PRICE = itemGroup.Any(o => o.VIR_TOTAL_PATIENT_PRICE.HasValue)
                             ? itemGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0)
                             : (decimal?)null;
+                        //Cap tien chi tinh phan khong hao phi, de khop voi AMOUNT_STRING o tren
+                        var noExpendTotal = itemGroup.Where(o => o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                        ado.TOTAL_HEIN_PRICE_NO_EXPEND = noExpendTotal.Any(o => o.VIR_TOTAL_HEIN_PRICE.HasValue)
+                            ? noExpendTotal.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0)
+                            : (decimal?)null;
+                        ado.TOTAL_PATIENT_PRICE_NO_EXPEND = noExpendTotal.Any(o => o.VIR_TOTAL_PATIENT_PRICE.HasValue)
+                            ? noExpendTotal.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0)
+                            : (decimal?)null;
                         //Cong khai thuc hien: lay moc muon nhat trong nhom (khong cong duoc thoi gian)
                         var lastExecuteTotal = itemGroup
                             .Where(o => o.EXECUTE_PUBLIC_TIME.HasValue && o.EXECUTE_PUBLIC_TIME.Value > 0)
@@ -493,12 +501,22 @@ namespace MPS.Processor.Mps000225
             }
         }
 
-        private List<Mps000225BySereServ> GroupByService(List<Mps000225BySereServ> _Mps000225BySereServs)
+        /// <summary>
+        /// Gom nhom theo dich vu.
+        /// splitByPatientType = true thi tach rieng theo doi tuong benh nhan, dung cho cac danh sach
+        /// co hao phi / khong hao phi vi chung duoc noi voi PatientType tren mau in. Neu khong tach,
+        /// tien cua hai doi tuong bi cong gop vao mot dong ma cot doi tuong lai lay tu dong dau tien.
+        /// splitByPatientType = false giu nguyen hanh vi cu cho cac danh sach theo loai dich vu,
+        /// vi chung khong noi voi PatientType, tach ra se lam doi so dong tren mau dang chay dung.
+        /// </summary>
+        private List<Mps000225BySereServ> GroupByService(List<Mps000225BySereServ> _Mps000225BySereServs, bool splitByPatientType = false)
         {
             List<MPS.Processor.Mps000225.PDO.Mps000225BySereServ> result = new List<MPS.Processor.Mps000225.PDO.Mps000225BySereServ>();
             if (_Mps000225BySereServs != null && _Mps000225BySereServs.Count > 0)
             {
-                var rsGroup = _Mps000225BySereServs.GroupBy(p => new { p.SERVICE_ID, p.PRICE, p.Service_Type_Id, p.CONCENTRA }).ToList();
+                var rsGroup = splitByPatientType
+                    ? _Mps000225BySereServs.GroupBy(p => new { p.SERVICE_ID, p.PRICE, p.Service_Type_Id, p.CONCENTRA, p.PATIENT_TYPE_ID }).ToList()
+                    : _Mps000225BySereServs.GroupBy(p => new { p.SERVICE_ID, p.PRICE, p.Service_Type_Id, p.CONCENTRA, PATIENT_TYPE_ID = 0L }).ToList();
                 foreach (var itemGroup in rsGroup)
                 {
                     MPS.Processor.Mps000225.PDO.Mps000225BySereServ ado = new MPS.Processor.Mps000225.PDO.Mps000225BySereServ();
@@ -519,6 +537,14 @@ namespace MPS.Processor.Mps000225
                         : (decimal?)null;
                     ado.VIR_TOTAL_PATIENT_PRICE = itemGroup.Any(o => o.VIR_TOTAL_PATIENT_PRICE.HasValue)
                         ? itemGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0)
+                        : (decimal?)null;
+                    //Cap tien chi tinh phan khong hao phi, de khop voi AMOUNT_STRING o tren
+                    var noExpend = itemGroup.Where(o => o.TypeExpend != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                    ado.TOTAL_HEIN_PRICE_NO_EXPEND = noExpend.Any(o => o.VIR_TOTAL_HEIN_PRICE.HasValue)
+                        ? noExpend.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0)
+                        : (decimal?)null;
+                    ado.TOTAL_PATIENT_PRICE_NO_EXPEND = noExpend.Any(o => o.VIR_TOTAL_PATIENT_PRICE.HasValue)
+                        ? noExpend.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0)
                         : (decimal?)null;
                     //Cong khai thuc hien: lay moc muon nhat trong nhom (khong cong duoc thoi gian)
                     var lastExecute = itemGroup

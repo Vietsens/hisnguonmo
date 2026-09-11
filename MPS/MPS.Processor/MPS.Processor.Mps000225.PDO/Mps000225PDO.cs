@@ -82,6 +82,14 @@ namespace MPS.Processor.Mps000225.PDO
         /// </summary>
         public long? EXECUTE_PUBLIC_TIME { get; set; }
 
+        /// <summary>
+        /// Tien BHYT tra / BN tra chi tinh phan KHONG hao phi, de khop voi AMOUNT_STRING
+        /// (cot so luong khong hao phi). Dung cap nay khi mau in dung AMOUNT_STRING;
+        /// con mau dung AMOUNT thi dung VIR_TOTAL_HEIN_PRICE / VIR_TOTAL_PATIENT_PRICE.
+        /// </summary>
+        public decimal? TOTAL_HEIN_PRICE_NO_EXPEND { get; set; }
+        public decimal? TOTAL_PATIENT_PRICE_NO_EXPEND { get; set; }
+
         #region ---Day---
         public string Day1 { get; set; }
         public string Day2 { get; set; }
