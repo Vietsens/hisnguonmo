@@ -441,6 +441,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                 _filterAdos.Add(new FilterADO(2, "Null", "Chưa chốt"));
                 _filterAdos.Add(new FilterADO(3, "1", "Đã chốt"));
                 _filterAdos.Add(new FilterADO(4, "2", "Bị từ chối"));
+                _filterAdos.Add(new FilterADO(6, "", "Đã từng bị từ chối"));
                 _filterAdos.Add(new FilterADO(5, "", "tất cả"));
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
@@ -588,6 +589,12 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                     else if ((long)this.cboApprovalStoreSttID.EditValue == 3)
                     {
                         filter.APPROVAL_STORE_STT_ID = 1;
+                    }
+                    else if ((long)this.cboApprovalStoreSttID.EditValue == 6)
+                    {
+                        //Da tung bi tu choi: ho so con luu ly do tu choi nhung hien khong con o trang thai Tu choi.
+                        //Khong gan them cac truong loc trang thai khac, tranh hai dieu kien chong nhau ra ket qua rong.
+                        filter.IS_EVER_REJECT_STORE = true;
                     }
                 }
 

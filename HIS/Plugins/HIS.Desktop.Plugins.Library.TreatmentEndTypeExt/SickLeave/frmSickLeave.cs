@@ -842,6 +842,29 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             }
         }
 
+        /// <summary>
+        /// Suy ma BHXH tu so the BHYT.
+        /// The 15 ky tu: lay 10 so cuoi. The 17 ky tu: lay 12 so dinh danh tu vi tri thu 5.
+        /// The chi in 10 so: lay nguyen. Cac truong hop khac tra ve rong.
+        /// </summary>
+        private string GetBhxhCodeFromHeinCard(string heinCardNumber)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(heinCardNumber)) return "";
+                heinCardNumber = heinCardNumber.Trim();
+                if (heinCardNumber.Length == 10) return heinCardNumber;
+                if (heinCardNumber.Length == 15) return heinCardNumber.Substring(5, 10);
+                if (heinCardNumber.Length == 17) return heinCardNumber.Substring(5, 12);
+                return "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return "";
+            }
+        }
+
         private void txtSoThe_Leave(object sender, EventArgs e)
         {
             try
@@ -850,8 +873,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 {
                     var soThe = txtSoThe.Text.Replace("-", "");
                     //So the BHYT 15 ky tu -> 10 so cuoi; 17 ky tu -> 12 so dinh danh (deu bat dau tu vi tri 5)
-                    if (soThe.Length == 15 || soThe.Length == 17) txtBhxhCode.Text = (soThe.Length == 10 ? soThe : (soThe.Length == 15 ? soThe.Substring(5, 10) : ""));
-                    else if (soThe.Length > 10) txtBhxhCode.Text = (soThe.Length == 10 ? soThe : (soThe.Length == 15 ? soThe.Substring(5, 10) : ""));
+                    txtBhxhCode.Text = GetBhxhCodeFromHeinCard(soThe);
                 }
             }
             catch (Exception ex)
