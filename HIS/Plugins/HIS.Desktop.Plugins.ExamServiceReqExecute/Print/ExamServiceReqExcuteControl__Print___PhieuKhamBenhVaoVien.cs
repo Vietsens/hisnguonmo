@@ -101,6 +101,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 singleKeyValue.Username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
                 singleKeyValue.HospitalizeDepartmentCode = hospitalizeDepartmentCode;
                 singleKeyValue.HospitalizeDepartmentName = hospitalizeDepartmentName;
+
+                //Ma khoa cua phong dang dang nhap - dung cho bang ClsByRooms tren mau in
+                var currentWorkPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO
+                    .FirstOrDefault(o => o.RoomId == this.moduleData.RoomId);
+                if (currentWorkPlace != null)
+                {
+                    singleKeyValue.CurrentDepartmentId = currentWorkPlace.DepartmentId;
+                }
                 if (treatment.ICD_NAME != null)
                 {
                     singleKeyValue.Icd_Name = treatment.ICD_NAME;
@@ -146,6 +154,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 var sereServViexViews = new BackendAdapter(paramViex).Get<List<V_HIS_SERE_SERV_VIEX>>
                     (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, filterViexView, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramViex)?.OrderByDescending(o => o.VISION_TEST_TIME.HasValue ? o.VISION_TEST_TIME.Value : 0).FirstOrDefault();
 
+                //Danh sach y lenh kham cua dot - de bang ClsByRooms co du cac phong cua khoa dang in
+                CommonParam paramExamList = new CommonParam();
+                MOS.Filter.HisServiceReqViewFilter examListFilter = new MOS.Filter.HisServiceReqViewFilter();
+                examListFilter.TREATMENT_ID = treatment.ID;
+                examListFilter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
+                examListFilter.HAS_EXECUTE = true;
+                var examServiceReqList = new BackendAdapter(paramExamList)
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>("api/HisServiceReq/GetView", ApiConsumers.MosConsumer, examListFilter, paramExamList);
+
                 MPS.Processor.Mps000007.PDO.Mps000007PDO rdo = new MPS.Processor.Mps000007.PDO.Mps000007PDO(
                     patient,
                     patientTypeAlter,
@@ -161,6 +178,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     ExpMestMaterialList,
                     sereServViexViews
                     );
+                rdo.ExamServiceReqs = examServiceReqList;
 
                 MPS.ProcessorBase.PrintConfig.PreviewType PreviewType;
                 if (chkTreatmentFinish.Checked && IsActionButtonSave)
