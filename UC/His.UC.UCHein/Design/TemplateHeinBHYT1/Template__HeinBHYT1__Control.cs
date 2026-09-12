@@ -1666,11 +1666,18 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.ChangecboHeinRightRoute();
                 else
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER__CHOICE_RIGHT__DELETE_CHOICE_TYPE, false);
+                // O "GCT/Giay hen" (txtInCode) dung chung cho SO GIAY CHUYEN TUYEN va SO HEN KHAM LAI.
+                // - Hen kham lai (APPOINTMENT): mo o nay.
+                // - Cac truong hop con lai: KHONG ep khoa o day, de SetEnableControlHein/ResetValueByDTCC
+                //   ben tren quyet dinh (dung tuyen gioi thieu -> DTGT -> mo o nhap so giay chuyen tuyen).
+                //   Truoc day nhanh else khoa vo dieu kien nen chon "Dung tuyen gioi thieu" tu combo
+                //   la o GCT bi khoa ngay sau khi ChangecboHeinRightRoute() vua mo ra.
+                // - Chi khoa khi nguoi dung xoa trang "Truong hop".
                 if (cboHeinRightRoute.EditValue != null && cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT)
                 {
                     txtInCode.Enabled = true;
                 }
-                else
+                else if (cboHeinRightRoute.EditValue == null)
                 {
                     txtInCode.Enabled = false;
                 }
