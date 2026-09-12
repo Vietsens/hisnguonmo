@@ -130,7 +130,8 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
 
                 InitEnableControl();
 
-                // Can nhom nut ben phai theo chieu rong that cua man hinh.
+                // Can lai bo cuc theo chieu rong that cua man hinh.
+                LayoutFilterControls();
                 LayoutRightButtons();
             }
             catch (Exception ex)
@@ -152,6 +153,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                 List<ComboADO> data = new List<ComboADO>();
                 data.Add(new ComboADO(TIME_TYPE__MONTH, "Tháng"));
                 data.Add(new ComboADO(TIME_TYPE__DATE, "Ngày"));
+                data.Add(new ComboADO(TIME_TYPE__YEAR, "Năm"));
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("name", "Kiểu thời gian", 80, 1));
@@ -160,6 +162,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
 
                 cboTimeType.EditValue = TIME_TYPE__MONTH;
                 dtTime.DateTime = DateTime.Now;
+                ApplyTimeMask();
             }
             catch (Exception ex)
             {
@@ -385,6 +388,14 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                 {
                     filter.INTRUCTION_DATE__EQUAL = Convert.ToInt64(selected.ToString("yyyyMMdd"));
                 }
+                else if (timeType == TIME_TYPE__YEAR)
+                {
+                    // Loc ca nam: tu 01/01 00:00:00 den 31/12 23:59:59.
+                    // Dung INTRUCTION_TIME_FROM/TO co san o Backend, khong can
+                    // them dieu kien loc moi.
+                    filter.INTRUCTION_TIME_FROM = Convert.ToInt64(selected.ToString("yyyy") + "0101000000");
+                    filter.INTRUCTION_TIME_TO = Convert.ToInt64(selected.ToString("yyyy") + "1231235959");
+                }
                 else
                 {
                     filter.INTRUCTION_MONTH__EQUAL = Convert.ToInt64(selected.ToString("yyyyMM"));
@@ -513,6 +524,53 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                         combo.EditValue = null;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doi dinh dang o chon thoi gian theo kieu loc dang chon.
+        /// Chon "Nam" thi chi hien nam cho do roi mat.
+        /// </summary>
+        private void ApplyTimeMask()
+        {
+            try
+            {
+                long timeType = GetComboValue(cboTimeType) ?? TIME_TYPE__MONTH;
+
+                if (timeType == TIME_TYPE__DATE)
+                {
+                    dtTime.Properties.Mask.EditMask = "dd/MM/yyyy";
+                }
+                else if (timeType == TIME_TYPE__YEAR)
+                {
+                    dtTime.Properties.Mask.EditMask = "yyyy";
+                }
+                else
+                {
+                    dtTime.Properties.Mask.EditMask = "MM/yyyy";
+                }
+
+                dtTime.Properties.Mask.UseMaskAsDisplayFormat = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Doi kieu loc thoi gian -> doi dinh dang o chon roi nap lai luoi.</summary>
+        private void cboTimeType_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ApplyTimeMask();
+
+                if (isLoadingControl) return;
+                FillDataToGridControl();
             }
             catch (Exception ex)
             {
@@ -660,6 +718,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
 
         private const long TIME_TYPE__MONTH = 1;
         private const long TIME_TYPE__DATE = 2;
+        private const long TIME_TYPE__YEAR = 3;
 
         private const long STATUS__NOT_FINISHED = 1;
         private const long STATUS__ALL = 2;
