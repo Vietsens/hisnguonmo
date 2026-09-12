@@ -92,6 +92,7 @@
             this.txtPatientcode = new DevExpress.XtraEditors.TextEdit();
             this.txtTreatmentcode = new DevExpress.XtraEditors.TextEdit();
             this.cboStatus = new DevExpress.XtraEditors.LookUpEdit();
+            this.cboUrgency = new DevExpress.XtraEditors.LookUpEdit();
             this.cboExecuteDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -108,6 +109,7 @@
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btnNoEnabled = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnUrgency = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -139,6 +141,7 @@
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciUrgency = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -158,6 +161,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientcode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentcode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboStatus.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboUrgency.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExecuteDepartment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).BeginInit();
@@ -187,6 +191,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgency)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
@@ -219,6 +224,7 @@
             this.layoutControl3.Controls.Add(this.txtPatientcode);
             this.layoutControl3.Controls.Add(this.txtTreatmentcode);
             this.layoutControl3.Controls.Add(this.cboStatus);
+            this.layoutControl3.Controls.Add(this.cboUrgency);
             this.layoutControl3.Controls.Add(this.cboExecuteDepartment);
             this.layoutControl3.Controls.Add(this.cboDepartment);
             this.layoutControl3.Controls.Add(this.dtTimeTo);
@@ -362,9 +368,24 @@
             this.cboStatus.StyleController = this.layoutControl3;
             this.cboStatus.TabIndex = 9;
             this.cboStatus.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboStatus_CustomDisplayText);
-            // 
+            //
+            // cboUrgency
+            //
+            this.cboUrgency.Location = new System.Drawing.Point(848, 26);
+            this.cboUrgency.MenuManager = this.barManager1;
+            this.cboUrgency.Name = "cboUrgency";
+            this.cboUrgency.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboUrgency.Properties.NullText = "";
+            this.cboUrgency.Properties.NullValuePrompt = "Tất cả";
+            this.cboUrgency.Properties.NullValuePromptShowForEmptyValue = true;
+            this.cboUrgency.Size = new System.Drawing.Size(141, 20);
+            this.cboUrgency.StyleController = this.layoutControl3;
+            this.cboUrgency.TabIndex = 10;
+            this.cboUrgency.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboUrgency_CustomDisplayText);
+            //
             // cboExecuteDepartment
-            // 
+            //
             this.cboExecuteDepartment.Location = new System.Drawing.Point(853, 2);
             this.cboExecuteDepartment.MenuManager = this.barManager1;
             this.cboExecuteDepartment.Name = "cboExecuteDepartment";
@@ -476,6 +497,7 @@
             this.gridColumn3,
             this.gridColumn4,
             this.gridColumn5,
+            this.gridColumnUrgency,
             this.gridColumn6,
             this.gridColumn7,
             this.gridColumn8,
@@ -591,6 +613,15 @@
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 8;
+            //
+            // gridColumnUrgency
+            //
+            this.gridColumnUrgency.Caption = "Mức độ";
+            this.gridColumnUrgency.FieldName = "URGENCY_LEVEL_CUS";
+            this.gridColumnUrgency.Name = "gridColumnUrgency";
+            this.gridColumnUrgency.OptionsColumn.AllowEdit = false;
+            this.gridColumnUrgency.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnUrgency.Visible = false;
             this.gridColumn5.Width = 146;
             // 
             // gridColumn6
@@ -840,6 +871,7 @@
             this.layoutControlItem6,
             this.layoutControlItem7,
             this.layoutControlItem8,
+            this.lciUrgency,
             this.layoutControlItem9,
             this.layoutControlItem10,
             this.layoutControlItem11,
@@ -926,6 +958,20 @@
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem8.TextToControlDistance = 5;
+            //
+            // lciUrgency
+            //
+            this.lciUrgency.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciUrgency.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciUrgency.Control = this.cboUrgency;
+            this.lciUrgency.Location = new System.Drawing.Point(746, 24);
+            this.lciUrgency.Name = "lciUrgency";
+            this.lciUrgency.Size = new System.Drawing.Size(245, 26);
+            this.lciUrgency.Text = "Mức độ:";
+            this.lciUrgency.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciUrgency.TextSize = new System.Drawing.Size(90, 20);
+            this.lciUrgency.TextToControlDistance = 5;
+            this.lciUrgency.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem9
             // 
@@ -1011,9 +1057,9 @@
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(746, 24);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(991, 24);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(565, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(320, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // frmApprovaleDebateList
@@ -1044,6 +1090,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientcode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentcode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboStatus.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboUrgency.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExecuteDepartment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).EndInit();
@@ -1073,6 +1120,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgency)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
@@ -1104,6 +1152,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnUrgency;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
@@ -1126,6 +1175,7 @@
         private DevExpress.XtraEditors.TextEdit txtPatientcode;
         private DevExpress.XtraEditors.TextEdit txtTreatmentcode;
         private DevExpress.XtraEditors.LookUpEdit cboStatus;
+        private DevExpress.XtraEditors.LookUpEdit cboUrgency;
         private DevExpress.XtraEditors.GridLookUpEdit cboExecuteDepartment;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit2View;
         private DevExpress.XtraEditors.GridLookUpEdit cboDepartment;
@@ -1137,6 +1187,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
+        private DevExpress.XtraLayout.LayoutControlItem lciUrgency;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;

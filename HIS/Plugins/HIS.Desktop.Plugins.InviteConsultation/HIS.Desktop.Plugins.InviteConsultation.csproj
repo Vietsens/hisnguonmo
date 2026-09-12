@@ -95,6 +95,7 @@
     <Compile Include="ADO\DepartmentADO.cs" />
     <Compile Include="ADO\EmployeeADO.cs" />
     <Compile Include="ADO\ICDADO.cs" />
+    <Compile Include="EnumUrgencyLevel.cs" />
     <Compile Include="InviteConsultationProcessor.cs" />
     <Compile Include="InviteConsultation\frmInviteConsultation.cs">
       <SubType>Form</SubType>
