@@ -192,6 +192,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
         ContainerClick currentContainerClick = ContainerClick.None;
         DateTime currentTimer = DateTime.Now;
+        //Dong ho chay doc lap dung cho timer1: chi cap nhat cac o thoi gian ma nguoi dung chua sua tay.
+        //Tach khoi currentTimer de gia tri nguoi dung nhap o mot o khong keo theo o con lai.
+        DateTime clockTimer = DateTime.MinValue;
+        //Nguoi dung da sua tay "Thoi gian ket thuc" / "Ngay KQ" => timer khong duoc ghi de nua
+        bool isEndTimeUserEdited = false;
+        bool isResultTimeUserEdited = false;
+        //Dang gan gia tri bang code (load du lieu, timer) => bo qua EditValueChanged, khong coi la nguoi dung sua
+        bool isSettingTimeByCode = false;
         TimerSDO timeSync { get; set; }
         bool? WarningConfig;
         List<V_HIS_SERVICE> lstService { get; set; }
@@ -1227,9 +1235,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 txtSereServTempCode.Text = "";
                 cboSereServTemp.EditValue = null;
                 cboSereServTemp.Properties.Buttons[1].Visible = false;
+                //Reset trang thai sua tay 2 o thoi gian khi dat lai gia tri mac dinh cho man hinh
+                isSettingTimeByCode = true;
                 dtEndTime.EditValue = null;
                 dtBeginTime.EditValue = null;
                 dtResult.EditValue = null;
+                isEndTimeUserEdited = false;
+                isResultTimeUserEdited = false;
+                isSettingTimeByCode = false;
                 ClearDocument();
                 txtSereServTempCode.Focus();
                 txtSereServTempCode.SelectAll();
@@ -1782,6 +1795,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                //Chuyen sang dich vu khac: coi nhu chua co thao tac sua tay nao tren 2 o thoi gian
+                isEndTimeUserEdited = false;
+                isResultTimeUserEdited = false;
+                isSettingTimeByCode = true;
                 DateTime safeNow = (currentTimer == DateTime.MinValue) ? DateTime.Now : currentTimer;
                 try { dtBeginTime.DateTime = safeNow; } catch (Exception ex0) { Inventec.Common.Logging.LogSystem.Warn(ex0); }
                 try { dtEndTime.DateTime = safeNow; } catch (Exception ex0) { Inventec.Common.Logging.LogSystem.Warn(ex0); }
@@ -1925,6 +1942,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                isSettingTimeByCode = false;
             }
         }
         List<SereServFileADO> currentSsPdf = new List<SereServFileADO>();
@@ -9382,6 +9403,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 dtResult.Closed += dtResult_Closed;
                 dtResult.Leave -= dtResult_Leave;
                 dtResult.Leave += dtResult_Leave;
+                dtResult.EditValueChanged -= dtResult_EditValueChanged;
+                dtResult.EditValueChanged += dtResult_EditValueChanged;
+                if (dtEndTime != null)
+                {
+                    dtEndTime.EditValueChanged -= dtEndTime_EditValueChanged;
+                    dtEndTime.EditValueChanged += dtEndTime_EditValueChanged;
+                }
             }
             catch (Exception ex)
             {
@@ -9417,12 +9445,46 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
+        /// <summary>
+        /// Danh dau nguoi dung da sua tay "Thoi gian ket thuc". Tu thoi diem nay timer1 khong
+        /// ghi de o nay nua, tranh truong hop gio ket thuc bi keo bang gio tra ket qua khi luu.
+        /// </summary>
+        private void dtEndTime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isSettingTimeByCode) return;
+                isEndTimeUserEdited = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Danh dau nguoi dung da sua tay "Ngay KQ" (thoi gian doc ket qua).
+        /// </summary>
+        private void dtResult_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isSettingTimeByCode) return;
+                isResultTimeUserEdited = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void GetTimeSystem()
         {
             try
             {
                 timeSync = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam());
                 currentTimer = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(timeSync.LocalTime) ?? DateTime.Now;
+                clockTimer = currentTimer;
                 Inventec.Common.Logging.LogSystem.Debug("currentTimer________" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => timeSync), timeSync));
                 Inventec.Common.Logging.LogSystem.Debug("DATETIME________" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)), Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now)));
 
@@ -9444,13 +9506,25 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 else
                 {
                     currentTimer = currentTimer.AddSeconds(1);
-                    if (sereServExt != null && !sereServExt.END_TIME.HasValue || sereServExt == null)
+                    if (clockTimer == DateTime.MinValue) clockTimer = DateTime.Now;
+                    clockTimer = clockTimer.AddSeconds(1);
+
+                    //Chi tu cap nhat o ma nguoi dung chua sua tay. O da sua tay phai giu nguyen gia tri nguoi dung nhap.
+                    isSettingTimeByCode = true;
+                    try
                     {
-                        dtEndTime.DateTime = currentTimer;
+                        if (!isEndTimeUserEdited && (sereServExt == null || !sereServExt.END_TIME.HasValue))
+                        {
+                            dtEndTime.DateTime = clockTimer;
+                        }
+                        if (!isResultTimeUserEdited && (sereServExt == null || !sereServExt.RESULT_READ_TIME.HasValue))
+                        {
+                            dtResult.DateTime = clockTimer;
+                        }
                     }
-                    if (sereServExt != null && !sereServExt.RESULT_READ_TIME.HasValue || sereServExt == null)
+                    finally
                     {
-                        dtResult.DateTime = currentTimer;
+                        isSettingTimeByCode = false;
                     }
                 }
             }

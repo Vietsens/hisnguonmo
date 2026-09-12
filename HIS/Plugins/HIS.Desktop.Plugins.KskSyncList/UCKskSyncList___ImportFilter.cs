@@ -71,6 +71,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// <summary>Mã điều trị của HIS dài 12 chữ số; tệp thường ghi thiếu số 0 ở đầu.</summary>
         private const int IMPORT_FILTER__CODE_LEN = 12;
 
+        /// <summary>Ngan hon ngan nay thi khong coi la ma dieu tri — xem NormalizeTreatmentCode.</summary>
+        private const int IMPORT_FILTER__CODE_MIN_LEN = 6;
+
         /// <summary>
         /// Số mã gửi trong MỘT lượt gọi.
         ///
@@ -129,30 +132,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 WaitingManager.Show();
 
-                var import = new Inventec.Common.ExcelImport.Import();
-                if (!import.ReadFileExcel(ofd.FileName))
-                {
-                    WaitingManager.Hide();
-                    XtraMessageBoxShow("Không đọc được tệp Excel này.");
-                    return null;
-                }
-
-                List<KskTreatmentCodeImportADO> raw = import.GetWithCheck<KskTreatmentCodeImportADO>(0);
-                WaitingManager.Hide();
-                if (raw == null) return new List<string>();
-
                 int boQua = 0;
                 List<string> codes = new List<string>();
-                foreach (KskTreatmentCodeImportADO item in raw)
+                foreach (string raw in ReadCellsFromXlsx(ofd.FileName))
                 {
-                    string code = NormalizeTreatmentCode(item != null ? item.TREATMENT_CODE : null);
+                    string code = NormalizeTreatmentCode(raw);
                     if (code == null) { boQua++; continue; }
                     if (!codes.Contains(code)) codes.Add(code);      // trùng mã thì chỉ hỏi một lần
                 }
 
-                if (boQua > 0)
-                    Inventec.Common.Logging.LogSystem.Info(
-                        "KskSync/NK: bo qua " + boQua + " dong khong phai ma dieu tri (dong tieu de, o trong...)");
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Info("KskSync/NK: doc tep xong — "
+                    + codes.Count + " ma dieu tri, bo qua " + boQua
+                    + " o khong phai ma (tieu de, dong danh dau, o trong...)");
 
                 return codes;
             }
@@ -163,6 +155,94 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 XtraMessageBoxShow("Không đọc được tệp Excel này.");
                 return null;
             }
+        }
+
+
+        /// <summary>
+        /// Đọc MỌI ô của trang tính đầu tiên trong tệp .xlsx, trả về giá trị thô.
+        ///
+        /// VÌ SAO KHÔNG DÙNG THƯ VIỆN ĐỌC EXCEL DÙNG CHUNG: thư viện đó ghép cột theo dòng đánh dấu
+        /// `{%IMPORT%}.{TÊN_THUỘC_TÍNH}` và trả về danh sách rỗng với tệp chỉ có MỘT cột, dù tệp
+        /// đúng hình dạng. Việc ở đây chỉ cần một danh sách mã nên đọc thẳng tệp gọn và chắc hơn —
+        /// người dùng KHÔNG phải theo tệp mẫu nào cả.
+        ///
+        /// Nhờ đọc mọi ô nên tệp thế nào cũng nhận: có hay không dòng tiêu đề, có hay không dòng
+        /// đánh dấu, mã nằm ở cột nào cũng được. Ô không phải mã điều trị thì NormalizeTreatmentCode
+        /// loại ra.
+        ///
+        /// Tệp .xlsx thực chất là tệp nén chứa XML nên chỉ cần đọc hai phần: bảng chuỗi dùng chung
+        /// và trang tính đầu tiên. Định dạng .xls cũ KHÔNG đọc được — báo để người dùng lưu lại.
+        /// </summary>
+        private List<string> ReadCellsFromXlsx(string path)
+        {
+            var values = new List<string>();
+            try
+            {
+                using (var zip = System.IO.Compression.ZipFile.OpenRead(path))
+                {
+                    // Bảng chuỗi dùng chung: ô kiểu chữ chỉ lưu CHỈ SỐ trỏ vào bảng này.
+                    var shared = new List<string>();
+                    var ssEntry = zip.GetEntry("xl/sharedStrings.xml");
+                    if (ssEntry != null)
+                    {
+                        using (var st = ssEntry.Open())
+                        {
+                            var doc = System.Xml.Linq.XDocument.Load(st);
+                            foreach (var si in doc.Root.Elements())
+                                shared.Add(string.Concat(si.Descendants()
+                                    .Where(e => e.Name.LocalName == "t").Select(e => e.Value)));
+                        }
+                    }
+
+                    var sheet = zip.GetEntry("xl/worksheets/sheet1.xml");
+                    if (sheet == null)
+                        foreach (var e in zip.Entries)
+                            if (e.FullName.StartsWith("xl/worksheets/") && e.FullName.EndsWith(".xml"))
+                            { sheet = e; break; }
+
+                    if (sheet == null)
+                    {
+                        XtraMessageBoxShow("Tệp không có trang tính nào đọc được.");
+                        return values;
+                    }
+
+                    using (var st = sheet.Open())
+                    {
+                        var doc = System.Xml.Linq.XDocument.Load(st);
+                        foreach (var c in doc.Descendants().Where(e => e.Name.LocalName == "c"))
+                        {
+                            var tAttr = c.Attribute("t");
+                            string type = (tAttr != null) ? tAttr.Value : null;
+
+                            if (type == "inlineStr")
+                            {
+                                values.Add(string.Concat(c.Descendants()
+                                    .Where(e => e.Name.LocalName == "t").Select(e => e.Value)));
+                                continue;
+                            }
+
+                            var v = c.Descendants().FirstOrDefault(e => e.Name.LocalName == "v");
+                            if (v == null) continue;
+
+                            if (type == "s")
+                            {
+                                int idx;
+                                if (int.TryParse(v.Value, out idx) && idx >= 0 && idx < shared.Count)
+                                    values.Add(shared[idx]);
+                            }
+                            else values.Add(v.Value);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                XtraMessageBoxShow("Không đọc được tệp này."
+                    + "\r\n\r\nChỉ đọc được tệp Excel dạng .xlsx."
+                    + " Nếu tệp đang là .xls thì mở Excel rồi lưu lại thành .xlsx.");
+            }
+            return values;
         }
 
         /// <summary>
@@ -179,6 +259,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             string code = raw.Trim();
             foreach (char c in code)
                 if (!char.IsDigit(c)) return null;
+
+            // Chot an toan: ma dieu tri that dai 12 chu so. Chuoi qua ngan (0, 1, 2...) thuong la
+            // chi so tro vao bang chuoi cua Excel loc ra nham, dem 0 vao se thanh ma gia.
+            if (code.Length < IMPORT_FILTER__CODE_MIN_LEN) return null;
 
             if (code.Length < IMPORT_FILTER__CODE_LEN)
             {
