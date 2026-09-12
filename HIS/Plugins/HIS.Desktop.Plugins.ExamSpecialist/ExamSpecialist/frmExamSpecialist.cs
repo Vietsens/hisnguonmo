@@ -41,6 +41,16 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         List<HIS_DEPARTMENT> lstDepartment = new List<HIS_DEPARTMENT>();
         // Toàn bộ dữ liệu đã lọc quyền xem — nguồn để phân trang phía client
         List<V_HIS_SPECIALIST_EXAM> lstDataFiltered = new List<V_HIS_SPECIALIST_EXAM>();
+
+        /// <summary>
+        /// Cau hinh bat/tat muc do Thuong/Khan. Bang "1" = bat, khac "1" hoac de trong = tat.
+        /// </summary>
+        const string CONFIG_KEY__IS_USE_URGENCY = "HIS.Desktop.Plugins.SpecialistExam.IsUseUrgency";
+
+        /// <summary>
+        /// Cau hinh muc do dang bat hay khong — doc 1 lan khi mo man hinh.
+        /// </summary>
+        bool isUseUrgency = false;
         #endregion
         private Inventec.Desktop.Common.Modules.Module currentModule;
         public frmExamSpecialist()
@@ -72,6 +82,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 this.KeyPreview = true;
                 LoadComboHisDepartment();
                 SetDefaultValueControl();
+                InitUrgencyControls();
                 InitRightClickMenu();
                 FillDataToGrid();
             }
@@ -128,6 +139,112 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             }
         }
 
+        /// <summary>
+        /// Hien/an truong loc va cot "Muc do" theo cau hinh.
+        /// Cau hinh tat thi khong hien truong loc, khong hien cot, khong ap dieu kien loc muc do.
+        /// </summary>
+        private void InitUrgencyControls()
+        {
+            try
+            {
+                isUseUrgency = HIS.Desktop.LocalStorage.HisConfig.HisConfigs
+                    .Get<string>(CONFIG_KEY__IS_USE_URGENCY) == "1";
+
+                lciUrgency.Visibility = isUseUrgency
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                gridColumnUrgency.Visible = isUseUrgency;
+                if (isUseUrgency)
+                {
+                    // Cot "Muc do" dung ngay sau cot "Trang thai"
+                    gridColumnUrgency.VisibleIndex = gridColumn_Status.VisibleIndex + 1;
+                    InitUrgencyCombo();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nap 3 lua chon cho truong loc muc do, mac dinh "Tat ca".
+        /// </summary>
+        private void InitUrgencyCombo()
+        {
+            try
+            {
+                List<UrgencyModel> urgencyList = new List<UrgencyModel>
+                {
+                    new UrgencyModel { Value = null, Display = "Tất cả" },
+                    new UrgencyModel { Value = (short)EnumUrgencyLevel.Normal, Display = "Thường" },
+                    new UrgencyModel { Value = (short)EnumUrgencyLevel.Emergency, Display = "Khẩn" }
+                };
+
+                cboUrgency.Properties.DataSource = urgencyList;
+                cboUrgency.Properties.DisplayMember = "Display";
+                cboUrgency.Properties.ValueMember = "Value";
+                cboUrgency.Properties.ShowHeader = false;
+                cboUrgency.Properties.PopulateColumns();
+                cboUrgency.Properties.Columns["Value"].Visible = false;
+                cboUrgency.EditValue = urgencyList[0].Value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Muc do dang chon o truong loc. "Tat ca" tra null — khong ap dieu kien loc.
+        /// </summary>
+        private short? GetUrgencyFilter()
+        {
+            try
+            {
+                if (!isUseUrgency || cboUrgency.EditValue == null) return null;
+                return Convert.ToInt16(cboUrgency.EditValue);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Kiem tra 1 yeu cau moi co thoa dieu kien loc muc do dang chon hay khong.
+        /// Loc "Thuong" lay ca yeu cau chua chon muc do; loc "Khan" chi lay yeu cau tich Khan.
+        /// </summary>
+        private bool IsMatchUrgencyFilter(short? urgencyLevel, short? urgencyFilter)
+        {
+            if (!urgencyFilter.HasValue) return true;
+
+            if (urgencyFilter.Value == (short)EnumUrgencyLevel.Normal)
+                return !urgencyLevel.HasValue || urgencyLevel.Value == (short)EnumUrgencyLevel.Normal;
+
+            return urgencyLevel.HasValue && urgencyLevel.Value == urgencyFilter.Value;
+        }
+
+        /// <summary>
+        /// Hien "Tat ca" khi truong loc muc do de trong.
+        /// </summary>
+        private void cboUrgency_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (e.Value == null)
+                {
+                    e.DisplayText = "Tất cả";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             FillDataToGrid();
@@ -173,11 +290,15 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     string userName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     long? currentDepartmentId = GetCurrentDepartmentId();
 
+                    // Dieu kien loc muc do dat cung cho loc quyen xem: backend chua ho tro loc theo URGENCY_LEVEL
+                    short? urgencyFilter = GetUrgencyFilter();
+
                     lstDataFiltered = result.Data.Where(x => x.IS_ACTIVE == 1 && x.IS_DELETE != 1 && x.INVITE_TYPE == 1 &&
                     ((!string.IsNullOrEmpty(x.EXAM_EXECUTE_LOGINNAME) && x.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(userName))
                     || (string.IsNullOrEmpty(x.EXAM_EXECUTE_LOGINNAME) && x.EXAM_EXECUTE_DEPARMENT_ID != null && currentDepartmentId != null && x.EXAM_EXECUTE_DEPARMENT_ID == currentDepartmentId)
                     || (currentDepartmentId != null && x.INVITE_DEPARMENT_ID == currentDepartmentId)
-                    || (x.INVITE_DOCTOR_LOGINNAME == userName))).ToList();
+                    || (x.INVITE_DOCTOR_LOGINNAME == userName))
+                    && IsMatchUrgencyFilter(x.URGENCY_LEVEL, urgencyFilter)).ToList();
 
                     dataTotal = lstDataFiltered.Count;
                     Inventec.Common.Logging.LogSystem.Debug(string.Format("FillDataToGrid: server tra ve {0} dong, sau loc quyen xem con {1} dong, departmentId = {2}",
@@ -492,6 +613,15 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                                 e.Value = "Đã duyệt";
                             else if (data.IS_APPROVAL == 2)
                                 e.Value = "Từ chối duyệt";
+                        }
+                        else if (e.Column.FieldName == "URGENCY_LEVEL_STR")
+                        {
+                            if (data.URGENCY_LEVEL == (short)EnumUrgencyLevel.Normal)
+                                e.Value = "Thường";
+                            else if (data.URGENCY_LEVEL == (short)EnumUrgencyLevel.Emergency)
+                                e.Value = "Khẩn";
+                            else
+                                e.Value = "";
                         }
                         else if (e.Column.FieldName == "CREATE_TIME_STR")
                         {

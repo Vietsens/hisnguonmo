@@ -52,6 +52,16 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
         internal UserControl ucSecondaryInIcd;
         string AutoCheckIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<String>("HIS.Desktop.Plugins.AutoCheckIcd");
 
+        /// <summary>
+        /// Cau hinh bat/tat muc do Thuong/Khan. Bang "1" = bat, khac "1" hoac de trong = tat.
+        /// </summary>
+        const string CONFIG_KEY__IS_USE_URGENCY = "HIS.Desktop.Plugins.SpecialistExam.IsUseUrgency";
+
+        /// <summary>
+        /// Chan handler CheckedChanged fire cheo khi code tu bo tich o con lai.
+        /// </summary>
+        bool isProcessUrgencyChanged = false;
+
         public frmInviteSpecialistExam(Inventec.Desktop.Common.Modules.Module module, L_HIS_TREATMENT_BED_ROOM lBedRoom, HIS_SPECIALIST_EXAM hisExam, bool isEdit) : base(module)
         {
             try
@@ -79,6 +89,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 //LoadComboICD();
                 InitUcIcd();
                 InitUcSecondaryIcd();
+                InitUrgencyControls();
                 LoadData();
                 ValidationControl();
                 btnThem.Enabled = !isEditMode;
@@ -95,6 +106,119 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
             }
         }
 
+
+        /// <summary>
+        /// Hien/an 2 o tich muc do theo cau hinh. Cau hinh tat thi 2 o tich khong xuat hien
+        /// va khong duoc gan gia tri khi luu.
+        /// </summary>
+        private void InitUrgencyControls()
+        {
+            try
+            {
+                bool isUseUrgency = HIS.Desktop.LocalStorage.HisConfig.HisConfigs
+                    .Get<string>(CONFIG_KEY__IS_USE_URGENCY) == "1";
+
+                lciUrgencyNormal.Visibility = isUseUrgency
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciUrgencyEmergency.Visibility = isUseUrgency
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                if (!isUseUrgency)
+                {
+                    isProcessUrgencyChanged = true;
+                    chkUrgencyNormal.Checked = false;
+                    chkUrgencyEmergency.Checked = false;
+                    isProcessUrgencyChanged = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                isProcessUrgencyChanged = false;
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tich "Thuong" thi tu bo tich "Khan" — 2 o loai tru nhau.
+        /// </summary>
+        private void chkUrgencyNormal_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isProcessUrgencyChanged) return;
+            try
+            {
+                if (chkUrgencyNormal.Checked)
+                {
+                    isProcessUrgencyChanged = true;
+                    chkUrgencyEmergency.Checked = false;
+                    isProcessUrgencyChanged = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                isProcessUrgencyChanged = false;
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tich "Khan" thi tu bo tich "Thuong" — 2 o loai tru nhau.
+        /// </summary>
+        private void chkUrgencyEmergency_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isProcessUrgencyChanged) return;
+            try
+            {
+                if (chkUrgencyEmergency.Checked)
+                {
+                    isProcessUrgencyChanged = true;
+                    chkUrgencyNormal.Checked = false;
+                    isProcessUrgencyChanged = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                isProcessUrgencyChanged = false;
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Muc do dang chon tren form. Khong tich o nao thi tra null (chua chon muc do).
+        /// </summary>
+        private short? GetUrgencyLevel()
+        {
+            try
+            {
+                if (chkUrgencyEmergency.Checked) return (short)EnumUrgencyLevel.Emergency;
+                if (chkUrgencyNormal.Checked) return (short)EnumUrgencyLevel.Normal;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Dat trang thai 2 o tich theo muc do dang luu cua yeu cau moi.
+        /// </summary>
+        private void SetUrgencyLevel(short? urgencyLevel)
+        {
+            try
+            {
+                isProcessUrgencyChanged = true;
+                chkUrgencyNormal.Checked = urgencyLevel == (short)EnumUrgencyLevel.Normal;
+                chkUrgencyEmergency.Checked = urgencyLevel == (short)EnumUrgencyLevel.Emergency;
+                isProcessUrgencyChanged = false;
+            }
+            catch (Exception ex)
+            {
+                isProcessUrgencyChanged = false;
+                LogSystem.Warn(ex);
+            }
+        }
 
         private void InitUcIcd()
         {
@@ -233,6 +357,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                     memContent.Text = specialistExam.INVITE_CONTENT;
                     chkExamInBed.Checked = specialistExam.IS__EXAM_BED == 1 ? true : false;
                     chkIsExamAnesthesia.Checked = specialistExam.IS_EXAM_ANESTHESIA == 1;
+                    SetUrgencyLevel(specialistExam.URGENCY_LEVEL);
                     cboBacSiKham.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.EXAM_EXECUTE_LOGINNAME)?.ID;
                     cboBacSi.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.INVITE_DOCTOR_LOGINNAME)?.ID;                    
                 }
@@ -527,6 +652,8 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 hIS_SPECIALIST_EXAM.IS_EXAM_ANESTHESIA = chkIsExamAnesthesia.Checked ? 1 : (short?)null;
                 hIS_SPECIALIST_EXAM.INVITE_CONTENT = memContent.Text;
                 hIS_SPECIALIST_EXAM.INVITE_TYPE = 1;
+                // Muc do khong bat buoc: khong tich o nao thi ghi null (xoa duoc muc do da chon)
+                hIS_SPECIALIST_EXAM.URGENCY_LEVEL = GetUrgencyLevel();
                 if (bedRoom != null)
                 {
                     hIS_SPECIALIST_EXAM.TREATMENT_CODE = bedRoom.TREATMENT_CODE;    
@@ -662,6 +789,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 cboPhongKham.EditValue = null;
                 cboBacSiKham.EditValue = null;
                 chkExamInBed.Checked = false;
+                SetUrgencyLevel(null);
                 HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
                 {
                     ICD_CODE = null,

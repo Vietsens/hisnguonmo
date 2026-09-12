@@ -80,6 +80,10 @@
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.chkIsExamAnesthesia = new DevExpress.XtraEditors.CheckEdit();
             this.lciIsExamAnesthesia = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkUrgencyNormal = new DevExpress.XtraEditors.CheckEdit();
+            this.chkUrgencyEmergency = new DevExpress.XtraEditors.CheckEdit();
+            this.lciUrgencyNormal = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciUrgencyEmergency = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -122,6 +126,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsExamAnesthesia.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsExamAnesthesia)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkUrgencyNormal.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkUrgencyEmergency.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgencyNormal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgencyEmergency)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -138,6 +146,8 @@
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.chkIsExamAnesthesia);
+            this.layoutControl2.Controls.Add(this.chkUrgencyNormal);
+            this.layoutControl2.Controls.Add(this.chkUrgencyEmergency);
             this.layoutControl2.Controls.Add(this.panelSubIcd);
             this.layoutControl2.Controls.Add(this.panelIcd);
             this.layoutControl2.Controls.Add(this.btnLamLai);
@@ -215,7 +225,7 @@
             this.chkExamInBed.Location = new System.Drawing.Point(127, 163);
             this.chkExamInBed.Name = "chkExamInBed";
             this.chkExamInBed.Properties.Caption = "";
-            this.chkExamInBed.Size = new System.Drawing.Size(201, 19);
+            this.chkExamInBed.Size = new System.Drawing.Size(96, 19);
             this.chkExamInBed.StyleController = this.layoutControl2;
             this.chkExamInBed.TabIndex = 9;
             // 
@@ -325,7 +335,9 @@
             this.layoutControlItem16,
             this.emptySpaceItem5,
             this.emptySpaceItem6,
-            this.lciIsExamAnesthesia});
+            this.lciIsExamAnesthesia,
+            this.lciUrgencyNormal,
+            this.lciUrgencyEmergency});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Size = new System.Drawing.Size(661, 410);
@@ -392,7 +404,7 @@
             this.layoutControlItem7.Control = this.chkExamInBed;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 161);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(330, 23);
+            this.layoutControlItem7.Size = new System.Drawing.Size(225, 23);
             this.layoutControlItem7.Text = "Khám tại giường:";
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(120, 0);
@@ -631,23 +643,65 @@
             // 
             // chkIsExamAnesthesia
             // 
-            this.chkIsExamAnesthesia.Location = new System.Drawing.Point(424, 163);
+            this.chkIsExamAnesthesia.Location = new System.Drawing.Point(319, 163);
             this.chkIsExamAnesthesia.MenuManager = this.barManager1;
             this.chkIsExamAnesthesia.Name = "chkIsExamAnesthesia";
             this.chkIsExamAnesthesia.Properties.Caption = "";
             this.chkIsExamAnesthesia.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsExamAnesthesia.Size = new System.Drawing.Size(235, 19);
+            this.chkIsExamAnesthesia.Size = new System.Drawing.Size(136, 19);
             this.chkIsExamAnesthesia.StyleController = this.layoutControl2;
             this.chkIsExamAnesthesia.TabIndex = 19;
-            // 
+            //
             // lciIsExamAnesthesia
-            // 
+            //
             this.lciIsExamAnesthesia.Control = this.chkIsExamAnesthesia;
-            this.lciIsExamAnesthesia.Location = new System.Drawing.Point(330, 161);
+            this.lciIsExamAnesthesia.Location = new System.Drawing.Point(225, 161);
             this.lciIsExamAnesthesia.Name = "lciIsExamAnesthesia";
-            this.lciIsExamAnesthesia.Size = new System.Drawing.Size(331, 23);
+            this.lciIsExamAnesthesia.Size = new System.Drawing.Size(230, 23);
             this.lciIsExamAnesthesia.Text = "Khám tiền gây mê:";
             this.lciIsExamAnesthesia.TextSize = new System.Drawing.Size(89, 13);
+            //
+            // chkUrgencyNormal
+            //
+            this.chkUrgencyNormal.Location = new System.Drawing.Point(457, 163);
+            this.chkUrgencyNormal.MenuManager = this.barManager1;
+            this.chkUrgencyNormal.Name = "chkUrgencyNormal";
+            this.chkUrgencyNormal.Properties.Caption = "Thường";
+            this.chkUrgencyNormal.Size = new System.Drawing.Size(99, 19);
+            this.chkUrgencyNormal.StyleController = this.layoutControl2;
+            this.chkUrgencyNormal.TabIndex = 20;
+            this.chkUrgencyNormal.CheckedChanged += new System.EventHandler(this.chkUrgencyNormal_CheckedChanged);
+            //
+            // chkUrgencyEmergency
+            //
+            this.chkUrgencyEmergency.Location = new System.Drawing.Point(560, 163);
+            this.chkUrgencyEmergency.MenuManager = this.barManager1;
+            this.chkUrgencyEmergency.Name = "chkUrgencyEmergency";
+            this.chkUrgencyEmergency.Properties.Caption = "Khẩn";
+            this.chkUrgencyEmergency.Size = new System.Drawing.Size(99, 19);
+            this.chkUrgencyEmergency.StyleController = this.layoutControl2;
+            this.chkUrgencyEmergency.TabIndex = 21;
+            this.chkUrgencyEmergency.CheckedChanged += new System.EventHandler(this.chkUrgencyEmergency_CheckedChanged);
+            //
+            // lciUrgencyNormal
+            //
+            this.lciUrgencyNormal.Control = this.chkUrgencyNormal;
+            this.lciUrgencyNormal.Location = new System.Drawing.Point(455, 161);
+            this.lciUrgencyNormal.Name = "lciUrgencyNormal";
+            this.lciUrgencyNormal.Size = new System.Drawing.Size(103, 23);
+            this.lciUrgencyNormal.TextSize = new System.Drawing.Size(0, 0);
+            this.lciUrgencyNormal.TextVisible = false;
+            this.lciUrgencyNormal.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //
+            // lciUrgencyEmergency
+            //
+            this.lciUrgencyEmergency.Control = this.chkUrgencyEmergency;
+            this.lciUrgencyEmergency.Location = new System.Drawing.Point(558, 161);
+            this.lciUrgencyEmergency.Name = "lciUrgencyEmergency";
+            this.lciUrgencyEmergency.Size = new System.Drawing.Size(103, 23);
+            this.lciUrgencyEmergency.TextSize = new System.Drawing.Size(0, 0);
+            this.lciUrgencyEmergency.TextVisible = false;
+            this.lciUrgencyEmergency.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // frmInviteSpecialistExam
             // 
@@ -710,6 +764,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsExamAnesthesia.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsExamAnesthesia)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkUrgencyNormal.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkUrgencyEmergency.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgencyNormal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgencyEmergency)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -768,5 +826,9 @@
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem6;
         private DevExpress.XtraEditors.CheckEdit chkIsExamAnesthesia;
         private DevExpress.XtraLayout.LayoutControlItem lciIsExamAnesthesia;
+        private DevExpress.XtraEditors.CheckEdit chkUrgencyNormal;
+        private DevExpress.XtraEditors.CheckEdit chkUrgencyEmergency;
+        private DevExpress.XtraLayout.LayoutControlItem lciUrgencyNormal;
+        private DevExpress.XtraLayout.LayoutControlItem lciUrgencyEmergency;
     }
 }

@@ -121,6 +121,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Pint = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEditPrint = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn_Status = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnUrgency = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Patient_Code = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Treatment_Code = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Patient_Name = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -147,6 +148,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.repositoryItemButtonEditApprovalDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButtonEditPrintDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.cboExamSpecialistStt = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.cboUrgency = new DevExpress.XtraEditors.LookUpEdit();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboExamExcuteDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -157,6 +159,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.lciIntructionTimeTo = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciExamExcuteDepartment = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciStatus = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciUrgency = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -211,7 +214,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.lciIntructionTimeFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIntructionTimeTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExamExcuteDepartment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboUrgency.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgency)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
@@ -247,6 +252,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.layoutControl2.Controls.Add(this.dtIntructionTimeFrom);
             this.layoutControl2.Controls.Add(this.gridControlExamSpecialist);
             this.layoutControl2.Controls.Add(this.cboExamSpecialistStt);
+            this.layoutControl2.Controls.Add(this.cboUrgency);
             this.layoutControl2.Controls.Add(this.cboExamExcuteDepartment);
             this.layoutControl2.HiddenItems.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem8});
@@ -406,6 +412,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Pint,
             this.gridColumn_MedicalRecorDetails,
             this.gridColumn_Status,
+            this.gridColumnUrgency,
             this.gridColumn_Patient_Code,
             this.gridColumn_Treatment_Code,
             this.gridColumn_Patient_Name,
@@ -604,9 +611,20 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.repositoryItemButtonEditPrint.Name = "repositoryItemButtonEditPrint";
             this.repositoryItemButtonEditPrint.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEditPrint.Click += new System.EventHandler(this.repositoryItemButtonEditPrint_Click);
-            // 
+            //
+            // gridColumnUrgency
+            //
+            this.gridColumnUrgency.Caption = "Mức độ";
+            this.gridColumnUrgency.FieldName = "URGENCY_LEVEL_STR";
+            this.gridColumnUrgency.Name = "gridColumnUrgency";
+            this.gridColumnUrgency.OptionsColumn.AllowEdit = false;
+            this.gridColumnUrgency.OptionsColumn.FixedWidth = true;
+            this.gridColumnUrgency.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnUrgency.Visible = false;
+            this.gridColumnUrgency.Width = 80;
+            //
             // gridColumn_Status
-            // 
+            //
             this.gridColumn_Status.Caption = "Trạng thái";
             this.gridColumn_Status.FieldName = "IS_APPROVAL_STR";
             this.gridColumn_Status.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
@@ -883,6 +901,20 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.cboExamSpecialistStt.Size = new System.Drawing.Size(129, 20);
             this.cboExamSpecialistStt.StyleController = this.layoutControl2;
             this.cboExamSpecialistStt.TabIndex = 9;
+            //
+            // cboUrgency
+            //
+            this.cboUrgency.Location = new System.Drawing.Point(832, 26);
+            this.cboUrgency.Name = "cboUrgency";
+            this.cboUrgency.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboUrgency.Properties.NullText = "";
+            this.cboUrgency.Properties.NullValuePrompt = "Tất cả";
+            this.cboUrgency.Properties.NullValuePromptShowForEmptyValue = true;
+            this.cboUrgency.Size = new System.Drawing.Size(133, 20);
+            this.cboUrgency.StyleController = this.layoutControl2;
+            this.cboUrgency.TabIndex = 10;
+            this.cboUrgency.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboUrgency_CustomDisplayText);
             // 
             // gridView2
             // 
@@ -934,6 +966,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.lciIntructionTimeTo,
             this.lciExamExcuteDepartment,
             this.lciStatus,
+            this.lciUrgency,
             this.layoutControlItem9,
             this.layoutControlItem10,
             this.layoutControlItem11,
@@ -1006,6 +1039,20 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.lciStatus.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciStatus.TextSize = new System.Drawing.Size(60, 20);
             this.lciStatus.TextToControlDistance = 5;
+            //
+            // lciUrgency
+            //
+            this.lciUrgency.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciUrgency.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciUrgency.Control = this.cboUrgency;
+            this.lciUrgency.Location = new System.Drawing.Point(770, 24);
+            this.lciUrgency.Name = "lciUrgency";
+            this.lciUrgency.Size = new System.Drawing.Size(200, 26);
+            this.lciUrgency.Text = "Mức độ:";
+            this.lciUrgency.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciUrgency.TextSize = new System.Drawing.Size(60, 20);
+            this.lciUrgency.TextToControlDistance = 5;
+            this.lciUrgency.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem9
             // 
@@ -1046,9 +1093,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(770, 24);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(970, 24);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(527, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(327, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
@@ -1161,7 +1208,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.lciIntructionTimeFrom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIntructionTimeTo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExamExcuteDepartment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboUrgency.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgency)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
@@ -1197,6 +1246,8 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         private DevExpress.XtraLayout.LayoutControlItem lciIntructionTimeTo;
         private DevExpress.XtraLayout.LayoutControlItem lciExamExcuteDepartment;
         private DevExpress.XtraLayout.LayoutControlItem lciStatus;
+        private DevExpress.XtraLayout.LayoutControlItem lciUrgency;
+        private DevExpress.XtraEditors.LookUpEdit cboUrgency;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
@@ -1211,6 +1262,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Approval;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Reject_Approval;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Status;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnUrgency;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Treatment_Code;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Patient_Name;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Invite_Time;
