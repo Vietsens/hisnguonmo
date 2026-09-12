@@ -115,6 +115,8 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
         DelegateSelectData delegateSelectData = null;
 
         string AllowExportBloodOverRequestCFG = "";
+        //54361: 0/rong = khong kiem tra Rh; 1 = canh bao van cho bo sung; khac 0,1 = chan
+        string CheckBloodRhOptionCFG = "";
         HisExpMestResultSDO rsSave = null;
         CabinetBaseResultSDO cabinetBaseResultSDO = null;
         V_HIS_EXP_MEST_4 expMest;
@@ -1632,6 +1634,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             try
             {
                 this.AllowExportBloodOverRequestCFG = HisConfigs.Get<string>("HIS.Desktop.Plugins.BrowseExportTicket.AllowExportBloodOverRequest");
+                this.CheckBloodRhOptionCFG = HisConfigs.Get<string>("HIS.Desktop.Plugins.BrowseExportTicket.CheckBloodRhOption");
             }
             catch (Exception ex)
             {

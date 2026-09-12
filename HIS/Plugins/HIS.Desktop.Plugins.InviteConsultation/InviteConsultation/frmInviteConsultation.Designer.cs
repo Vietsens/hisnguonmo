@@ -37,6 +37,8 @@
             this.btnSua = new DevExpress.XtraEditors.SimpleButton();
             this.memContent = new DevExpress.XtraEditors.MemoEdit();
             this.chkExamInBed = new DevExpress.XtraEditors.CheckEdit();
+            this.chkUrgencyNormal = new DevExpress.XtraEditors.CheckEdit();
+            this.chkUrgencyEmergency = new DevExpress.XtraEditors.CheckEdit();
             this.dteNgayMoi = new DevExpress.XtraEditors.DateEdit();
             this.cboPhongKham = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
@@ -61,6 +63,8 @@
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciUrgencyNormal = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciUrgencyEmergency = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -88,6 +92,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.panelIcd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memContent.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkExamInBed.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkUrgencyNormal.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkUrgencyEmergency.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteNgayMoi.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteNgayMoi.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPhongKham.Properties)).BeginInit();
@@ -104,6 +110,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgencyNormal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgencyEmergency)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
@@ -145,6 +153,8 @@
             this.layoutControl2.Controls.Add(this.btnSua);
             this.layoutControl2.Controls.Add(this.memContent);
             this.layoutControl2.Controls.Add(this.chkExamInBed);
+            this.layoutControl2.Controls.Add(this.chkUrgencyNormal);
+            this.layoutControl2.Controls.Add(this.chkUrgencyEmergency);
             this.layoutControl2.Controls.Add(this.dteNgayMoi);
             this.layoutControl2.Controls.Add(this.cboPhongKham);
             this.layoutControl2.Controls.Add(this.cboDepartment);
@@ -216,9 +226,29 @@
             this.chkExamInBed.Location = new System.Drawing.Point(127, 172);
             this.chkExamInBed.Name = "chkExamInBed";
             this.chkExamInBed.Properties.Caption = "";
-            this.chkExamInBed.Size = new System.Drawing.Size(468, 19);
+            this.chkExamInBed.Size = new System.Drawing.Size(218, 19);
             this.chkExamInBed.StyleController = this.layoutControl2;
             this.chkExamInBed.TabIndex = 9;
+            //
+            // chkUrgencyNormal
+            //
+            this.chkUrgencyNormal.Location = new System.Drawing.Point(349, 172);
+            this.chkUrgencyNormal.Name = "chkUrgencyNormal";
+            this.chkUrgencyNormal.Properties.Caption = "Thường";
+            this.chkUrgencyNormal.Size = new System.Drawing.Size(121, 19);
+            this.chkUrgencyNormal.StyleController = this.layoutControl2;
+            this.chkUrgencyNormal.TabIndex = 20;
+            this.chkUrgencyNormal.CheckedChanged += new System.EventHandler(this.chkUrgencyNormal_CheckedChanged);
+            //
+            // chkUrgencyEmergency
+            //
+            this.chkUrgencyEmergency.Location = new System.Drawing.Point(474, 172);
+            this.chkUrgencyEmergency.Name = "chkUrgencyEmergency";
+            this.chkUrgencyEmergency.Properties.Caption = "Khẩn";
+            this.chkUrgencyEmergency.Size = new System.Drawing.Size(121, 19);
+            this.chkUrgencyEmergency.StyleController = this.layoutControl2;
+            this.chkUrgencyEmergency.TabIndex = 21;
+            this.chkUrgencyEmergency.CheckedChanged += new System.EventHandler(this.chkUrgencyEmergency_CheckedChanged);
             // 
             // dteNgayMoi
             // 
@@ -428,6 +458,8 @@
             this.layoutControlItem4,
             this.layoutControlItem5,
             this.layoutControlItem7,
+            this.lciUrgencyNormal,
+            this.lciUrgencyEmergency,
             this.layoutControlItem8,
             this.layoutControlItem10,
             this.emptySpaceItem1,
@@ -496,11 +528,31 @@
             this.layoutControlItem7.Control = this.chkExamInBed;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 170);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(597, 23);
+            this.layoutControlItem7.Size = new System.Drawing.Size(347, 23);
             this.layoutControlItem7.Text = "Khám tại giường:";
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(120, 0);
             this.layoutControlItem7.TextToControlDistance = 5;
+            //
+            // lciUrgencyNormal
+            //
+            this.lciUrgencyNormal.Control = this.chkUrgencyNormal;
+            this.lciUrgencyNormal.Location = new System.Drawing.Point(347, 170);
+            this.lciUrgencyNormal.Name = "lciUrgencyNormal";
+            this.lciUrgencyNormal.Size = new System.Drawing.Size(125, 23);
+            this.lciUrgencyNormal.TextSize = new System.Drawing.Size(0, 0);
+            this.lciUrgencyNormal.TextVisible = false;
+            this.lciUrgencyNormal.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //
+            // lciUrgencyEmergency
+            //
+            this.lciUrgencyEmergency.Control = this.chkUrgencyEmergency;
+            this.lciUrgencyEmergency.Location = new System.Drawing.Point(472, 170);
+            this.lciUrgencyEmergency.Name = "lciUrgencyEmergency";
+            this.lciUrgencyEmergency.Size = new System.Drawing.Size(125, 23);
+            this.lciUrgencyEmergency.TextSize = new System.Drawing.Size(0, 0);
+            this.lciUrgencyEmergency.TextVisible = false;
+            this.lciUrgencyEmergency.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem8
             // 
@@ -690,6 +742,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.panelIcd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memContent.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkExamInBed.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkUrgencyNormal.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkUrgencyEmergency.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteNgayMoi.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteNgayMoi.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPhongKham.Properties)).EndInit();
@@ -706,6 +760,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgencyNormal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciUrgencyEmergency)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
@@ -740,12 +796,16 @@
         private DevExpress.XtraEditors.SimpleButton btnSua;
         private DevExpress.XtraEditors.MemoEdit memContent;
         private DevExpress.XtraEditors.CheckEdit chkExamInBed;
+        private DevExpress.XtraEditors.CheckEdit chkUrgencyNormal;
+        private DevExpress.XtraEditors.CheckEdit chkUrgencyEmergency;
         private DevExpress.XtraEditors.DateEdit dteNgayMoi;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
+        private DevExpress.XtraLayout.LayoutControlItem lciUrgencyNormal;
+        private DevExpress.XtraLayout.LayoutControlItem lciUrgencyEmergency;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;

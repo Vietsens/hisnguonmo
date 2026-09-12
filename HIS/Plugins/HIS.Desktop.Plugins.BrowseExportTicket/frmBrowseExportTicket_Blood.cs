@@ -1403,6 +1403,11 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         return;
                     }
 
+                    if (!IsAllowAddBloodByRh(blood))
+                    {
+                        return;
+                    }
+
                     WaitingManager.Show();
                     VHisBloodADO ado = new VHisBloodADO(blood);
                     ado.PATIENT_TYPE_ID = this.currentBlty.PATIENT_TYPE_ID;
@@ -1522,6 +1527,12 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         //}
                     }
 
+                    if (!IsAllowAddBloodByRh(blood))
+                    {
+                        WaitingManager.Hide();
+                        return;
+                    }
+
                     WaitingManager.Show();
                     VHisBloodADO ado = new VHisBloodADO(blood);
                     ado.PATIENT_TYPE_ID = this.currentBlty.PATIENT_TYPE_ID;
@@ -1549,6 +1560,63 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// 54361: Doi chieu nhom Rh cua tui mau voi Rh da ke tren dong che pham dang chon.
+        /// Cau hinh CheckBloodRhOption: "0"/rong = khong kiem tra (giu nguyen hanh vi cu);
+        /// "1" = canh bao nhung van cho bo sung; khac "0","1" = chan khong cho bo sung.
+        /// Thieu Rh o dong ke hoac o tui mau thi bo qua kiem tra.
+        /// Tra ve true neu duoc phep bo sung tui mau.
+        /// </summary>
+        private bool IsAllowAddBloodByRh(V_HIS_BLOOD blood)
+        {
+            try
+            {
+                string option = (this.CheckBloodRhOptionCFG ?? "").Trim();
+                if (string.IsNullOrEmpty(option) || option == "0")
+                {
+                    return true;
+                }
+
+                if (blood == null || this.currentBlty == null)
+                {
+                    return true;
+                }
+
+                //Thieu du lieu Rh o mot trong hai ve -> khong canh bao, khong chan
+                if (!this.currentBlty.BLOOD_RH_ID.HasValue || this.currentBlty.BLOOD_RH_ID.Value <= 0
+                    || !blood.BLOOD_RH_ID.HasValue || blood.BLOOD_RH_ID.Value <= 0)
+                {
+                    return true;
+                }
+
+                if (blood.BLOOD_RH_ID.Value == this.currentBlty.BLOOD_RH_ID.Value)
+                {
+                    return true;
+                }
+
+                if (option == "1")
+                {
+                    return DevExpress.XtraEditors.XtraMessageBox.Show(
+                        String.Format("Túi máu {0} có Rh {1} khác với Rh {2} đã kê cho bệnh nhân. Bạn có muốn tiếp tục bổ sung?",
+                            blood.BLOOD_CODE, blood.BLOOD_RH_CODE, this.currentBlty.BLOOD_RH_CODE),
+                        MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+                }
+
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    String.Format("Túi máu {0} có Rh {1} khác với Rh {2} đã kê cho bệnh nhân. Không được phép bổ sung túi máu này.",
+                        blood.BLOOD_CODE, blood.BLOOD_RH_CODE, this.currentBlty.BLOOD_RH_CODE),
+                    MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao));
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                //Loi khi doi chieu -> giu nguyen hanh vi cu, khong chan nguoi dung
+                return true;
             }
         }
 

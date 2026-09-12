@@ -209,6 +209,7 @@
       <DependentUpon>frmReject.cs</DependentUpon>
     </Compile>
     <Compile Include="ExamSpecialist\IExamSpecialist.cs" />
+    <Compile Include="EnumUrgencyLevel.cs" />
     <Compile Include="HisExamSpecialistProcessor.cs" />
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -246,6 +247,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709A9C-A149-4EBB-A817-1BF8F4F4BC07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{D1E5461B-8A8E-46F7-9AEE-5C1B327E5F2B}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
       <Project>{E036EDF5-788C-4892-8D8F-6B1C16DCBD21}</Project>

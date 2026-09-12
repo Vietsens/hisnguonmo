@@ -135,7 +135,8 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             this.panelFilter.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelFilter.Location = new System.Drawing.Point(0, 0);
             this.panelFilter.Name = "panelFilter";
-            this.panelFilter.Size = new System.Drawing.Size(1100, 96);
+            this.panelFilter.Size = new System.Drawing.Size(1100, 66);
+            this.panelFilter.Resize += new System.EventHandler(this.panelFilter_Resize);
             this.panelFilter.TabIndex = 0;
             //
             // lblTime
@@ -154,7 +155,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboTimeType.Size = new System.Drawing.Size(80, 20);
             this.cboTimeType.TabIndex = 1;
-            this.cboTimeType.EditValueChanged += new System.EventHandler(this.cboFilter_EditValueChanged);
+            this.cboTimeType.EditValueChanged += new System.EventHandler(this.cboTimeType_EditValueChanged);
             //
             // dtTime
             //

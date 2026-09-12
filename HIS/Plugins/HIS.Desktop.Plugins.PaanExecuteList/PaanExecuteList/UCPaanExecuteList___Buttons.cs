@@ -607,6 +607,120 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
         #region Tien ich chung
 
         /// <summary>
+        /// Can lai cac o loc moi khi panel doi kich thuoc.
+        ///
+        /// LY DO: dat toa do co dinh thi tren man hinh rong (1900px) cac o loc
+        /// dung lai o x=1089, de thua mot mang trang lon ben phai nhin rat xau.
+        /// Ham nay chia deu be rong con lai cho cac o chon va o nhap.
+        /// </summary>
+        private void panelFilter_Resize(object sender, EventArgs e)
+        {
+            try
+            {
+                LayoutFilterControls();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Xep lai 2 hang o loc cho vua chieu rong thuc te.
+        ///
+        /// Hang 1: Thoi gian | [kieu] [ngay/thang] | Trang thai | [..] | Khoa chi dinh | [..] | Phong chi dinh | [..]
+        /// Hang 2: Doi tuong  | [..] | [tu khoa F2] | [ma chi dinh F3] | [ma BN F8] | [Tim]
+        /// </summary>
+        private void LayoutFilterControls()
+        {
+            try
+            {
+                if (panelFilter == null || btnSearch == null) return;
+
+                const int PAD = 8;      // le trai/phai
+                const int GAP = 6;      // khoang cach giua cac control
+                const int ROW1 = 9;     // toa do y hang 1
+                const int ROW2 = 39;    // toa do y hang 2
+                const int LBL_DY = 3;   // nhan can giua so voi o nhap
+                const int H = 20;       // chieu cao o nhap
+
+                int total = panelFilter.Width;
+                if (total < 700) return;   // qua hep thi giu nguyen, tranh am
+
+                // ---------- HANG 1 ----------
+                // Phan co dinh: 4 nhan + o kieu thoi gian + o ngay/thang.
+                int x = PAD;
+
+                lblTime.Location = new System.Drawing.Point(x, ROW1 + LBL_DY);
+                x += lblTime.Width + GAP;
+
+                cboTimeType.Location = new System.Drawing.Point(x, ROW1);
+                cboTimeType.Size = new System.Drawing.Size(80, H);
+                x += 80 + GAP;
+
+                dtTime.Location = new System.Drawing.Point(x, ROW1);
+                dtTime.Size = new System.Drawing.Size(110, H);
+                x += 110 + GAP * 2;
+
+                // Be rong con lai chia cho 3 o chon: Trang thai, Khoa, Phong.
+                int fixedRow1 = x + lblStatus.Width + lblDepartment.Width + lblRoom.Width
+                                + GAP * 6 + PAD;
+                int each1 = (total - fixedRow1) / 3;
+                if (each1 < 120) each1 = 120;
+
+                lblStatus.Location = new System.Drawing.Point(x, ROW1 + LBL_DY);
+                x += lblStatus.Width + GAP;
+                cboStatus.Location = new System.Drawing.Point(x, ROW1);
+                cboStatus.Size = new System.Drawing.Size(each1, H);
+                x += each1 + GAP * 2;
+
+                lblDepartment.Location = new System.Drawing.Point(x, ROW1 + LBL_DY);
+                x += lblDepartment.Width + GAP;
+                cboDepartment.Location = new System.Drawing.Point(x, ROW1);
+                cboDepartment.Size = new System.Drawing.Size(each1, H);
+                x += each1 + GAP * 2;
+
+                lblRoom.Location = new System.Drawing.Point(x, ROW1 + LBL_DY);
+                x += lblRoom.Width + GAP;
+                cboRoom.Location = new System.Drawing.Point(x, ROW1);
+                cboRoom.Size = new System.Drawing.Size(each1, H);
+
+                // ---------- HANG 2 ----------
+                // Nut Tim neo sat mep phai, phan con lai chia cho 4 o.
+                int btnW = 100;
+                btnSearch.Size = new System.Drawing.Size(btnW, 23);
+                btnSearch.Location = new System.Drawing.Point(total - PAD - btnW, ROW2 - 1);
+
+                int x2 = PAD;
+                lblPatientType.Location = new System.Drawing.Point(x2, ROW2 + LBL_DY);
+                x2 += lblPatientType.Width + GAP;
+
+                int fixedRow2 = x2 + btnW + PAD + GAP * 5;
+                int each2 = (total - fixedRow2) / 4;
+                if (each2 < 140) each2 = 140;
+
+                cboPatientType.Location = new System.Drawing.Point(x2, ROW2);
+                cboPatientType.Size = new System.Drawing.Size(each2, H);
+                x2 += each2 + GAP;
+
+                txtSearchKey.Location = new System.Drawing.Point(x2, ROW2);
+                txtSearchKey.Size = new System.Drawing.Size(each2, H);
+                x2 += each2 + GAP;
+
+                txtServiceReqCode.Location = new System.Drawing.Point(x2, ROW2);
+                txtServiceReqCode.Size = new System.Drawing.Size(each2, H);
+                x2 += each2 + GAP;
+
+                txtPatientCode.Location = new System.Drawing.Point(x2, ROW2);
+                txtPatientCode.Size = new System.Drawing.Size(each2, H);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
         /// Can lai nhom nut ben phai moi khi dai nut doi kich thuoc.
         ///
         /// LY DO PHAI TU CAN: dat toa do co dinh roi neo Anchor = Right thi khi
