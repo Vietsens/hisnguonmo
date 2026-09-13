@@ -40,12 +40,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Validation
                 {
 
                 }
-                if(isBHXH && !String.IsNullOrEmpty(memoEdit.Text) && Encoding.UTF8.GetByteCount(memoEdit.Text) != 10 && Encoding.UTF8.GetByteCount(memoEdit.Text) != 12)
-				{
-                    ErrorText = "Mã BHXH phải nhập đủ 10 hoặc 12 ký tự";
-                    ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                    return valid;
-                }                    
+                //Bo chan do dai co dinh cua ma BHXH: trong thoi gian chuyen doi, ma dinh danh y te
+                //co the la 10 so (ma so BHXH cu) hoac 12 so (so DDCN/CCCD); du lieu cu con ban ghi
+                //dai hon nen chi chan khi vuot do dai toi da cua cot.
                 if (!String.IsNullOrEmpty(memoEdit.Text) && Encoding.UTF8.GetByteCount(memoEdit.Text) > maxLength)
 				{
                     ErrorText = "Dữ liệu vượt quá độ dài cho phép";

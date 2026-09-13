@@ -526,7 +526,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             this.txtMaBHXH.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtMaBHXH.MenuManager = this.barManager1;
             this.txtMaBHXH.Name = "txtMaBHXH";
-            this.txtMaBHXH.Properties.MaxLength = 12;
+            this.txtMaBHXH.Properties.MaxLength = 20;
             this.txtMaBHXH.Size = new System.Drawing.Size(289, 22);
             this.txtMaBHXH.StyleController = this.layoutControl1;
             this.txtMaBHXH.TabIndex = 28;

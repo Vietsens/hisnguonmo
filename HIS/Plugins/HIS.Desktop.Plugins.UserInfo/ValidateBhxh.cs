@@ -32,9 +32,9 @@ namespace HIS.Desktop.Plugins.UserInfo
             bool valid = false;
             try
             {
-                if (!string.IsNullOrEmpty(txt.Text.Trim()) && Inventec.Common.String.CountVi.Count(txt.Text.Trim()) != 10 && Inventec.Common.String.CountVi.Count(txt.Text.Trim()) != 12)
+                if (!string.IsNullOrEmpty(txt.Text.Trim()) && Inventec.Common.String.CountVi.Count(txt.Text.Trim()) > 20)
                 {
-                    this.ErrorText = "Bắt buộc nhập 10 hoặc 12 kí tự";
+                    this.ErrorText = "Dữ liệu vượt quá độ dài cho phép 20 kí tự";
                     return valid;
                 }
                 valid = true;

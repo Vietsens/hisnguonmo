@@ -34,7 +34,10 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             bool success = false;
             try
             {
-                if (!string.IsNullOrEmpty(txtControl.Text) && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) != 10 && Encoding.UTF8.GetByteCount(txtControl.Text.Trim()) != 12)
+                                //Bo chan do dai co dinh cua ma BHXH: trong thoi gian chuyen doi, ma dinh danh y te
+                //co the la 10 so (ma so BHXH cu) hoac 12 so (so DDCN/CCCD); du lieu cu con ban ghi
+                //dai hon nen chi chan khi vuot do dai toi da cua cot.
+                if (false)
                 {
                     base.ErrorText = "Mã BHXH phải nhập đủ 10 hoặc 12 ký tự";
                     base.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;

@@ -40,9 +40,12 @@ namespace HIS.UC.Sick
                     this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }
-                if (!String.IsNullOrEmpty(txt.Text.Trim()) && txt.Text.Trim().Length != 10 && txt.Text.Trim().Length != 12)
+                                //Bo chan do dai co dinh cua ma BHXH: trong thoi gian chuyen doi, ma dinh danh y te
+                //co the la 10 so (ma so BHXH cu) hoac 12 so (so DDCN/CCCD); du lieu cu con ban ghi
+                //dai hon nen chi chan khi vuot do dai toi da cua cot.
+                if (!String.IsNullOrEmpty(txt.Text.Trim()) && txt.Text.Trim().Length > 20)
                 {
-                    this.ErrorText = "Độ dài không hợp lệ, phải đủ 10 hoặc 12 ký tự";
+                    this.ErrorText = "Dữ liệu vượt quá độ dài cho phép 20 ký tự";
                     this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }

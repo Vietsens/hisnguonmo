@@ -1763,7 +1763,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                     {
                         lciPregnantAge.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         lciCboDocumentBookId.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                        ValidationBHXH(this.txtMaBHXH, 12, 10);
+                        ValidationBHXH(this.txtMaBHXH, 20, 10);
                     }
                     else if (typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM || typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_DUONG_THAI)
                     {
@@ -1774,7 +1774,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                             ValidateWorkPlace();
                             ValidateTime();
                         }
-                        ValidationBHXH(this.txtMaBHXH, 12, 10, true);
+                        ValidationBHXH(this.txtMaBHXH, 20, 10, true);
                         this.lciMaBHXH.AppearanceItemCaption.ForeColor = Color.Maroon;
                     }
 
