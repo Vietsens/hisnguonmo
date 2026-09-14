@@ -91,16 +91,25 @@ namespace MPS.Processor.Mps000222.PDO
         }
     }
 
-    // Mức lọc cầu thận — nhân bản y hệt MLCTADO của Mps000517 / Mps000096.
-    // Giá trị đã kèm sẵn tên công thức (Cockcroft-Gault / MDRD-Jaffe / CKD-EPI 2021 / Schwartz)
-    // do Calculation.MucLocCauThanCrCleGFR trả về.
+    // Mức lọc cầu thận — mở rộng từ MLCTADO của Mps000517 / Mps000096 (4 trường đầu giữ nguyên tên
+    // để template cũ vẫn chạy được). Giá trị là SỐ trần, không kèm đơn vị.
+    //  - BN >= 17 tuổi: CRCL (Cockcroft-Gault) + EGFR (MDRD-Jaffe) + EGFR_CKDEPI (CKD-EPI 2021)
+    //  - BN <  17 tuổi: EGFR (Schwartz)
+    // Trường nào không đủ dữ liệu để tính thì để rỗng (không đưa số 0 ra phiếu).
     public class MLCTADO
     {
         public string EGFR { get; set; }
         public string CRCL { get; set; }
         public string UACR { get; set; }
         public string UPCR { get; set; }
-        // Ghi chú công thức đang tính ("Tính theo eGFR" / "Tính theo CrCl (độ thanh thải Creatinin)")
+        // eGFR theo CKD-EPI 2021 — chỉ có với BN >= 17 tuổi.
+        public string EGFR_CKDEPI { get; set; }
+        // Ghi chú công thức đang tính, liệt kê đúng các công thức thực sự có giá trị.
         public string FORMULA_NAME { get; set; }
+        // Cả dòng đã dựng sẵn (giá trị + đơn vị riêng của từng công thức + mốc tham chiếu).
+        // Rỗng khi không tính được -> ô trên phiếu trống hẳn, không còn chữ thừa.
+        public string MLCT_LINE { get; set; }
+        // Cả dòng "Cách tính mức lọc cầu thận: ..." — rỗng khi không tính được.
+        public string MLCT_FORMULA_LINE { get; set; }
     }
 }

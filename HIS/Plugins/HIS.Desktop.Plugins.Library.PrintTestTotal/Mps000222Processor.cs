@@ -45,6 +45,10 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
         private List<HIS_FUEX_TYPE> HisFuexType;
         private MPS.Processor.Mps000222.PDO.Mps000222SDO Mps000222SDO;
         private HIS_DHST hisDhst = new HIS_DHST();
+        // Toàn bộ sinh hiệu của hồ sơ — mức lọc cầu thận cần lấy cân nặng / chiều cao ở bản ghi
+        // gần nhất CÓ trường đó, không dùng chung bản ghi hisDhst (bản ghi này chỉ cần có bất kỳ
+        // chỉ số nào là được chọn, rất hay thiếu cân nặng / chiều cao).
+        private List<HIS_DHST> lstDhstAll = new List<HIS_DHST>();
         private bool BARCODE_NO_ZERO = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Library.Print.BacodeNoZero") == "1";
         private List<MPS.Processor.Mps000222.PDO.Mps000222PDO.ExpMestMedicineSDO> ListMedicine = new List<MPS.Processor.Mps000222.PDO.Mps000222PDO.ExpMestMedicineSDO>();
 
@@ -135,13 +139,45 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
         }
 
         /// <summary>
+        /// Bóc một giá trị mức lọc cầu thận ra khỏi chuỗi kết quả của Calculation.
+        /// Trả null khi không khớp hoặc khi giá trị &lt;= 0 (thiếu cân nặng / chiều cao thì công thức
+        /// phụ thuộc nó ra 0 — phải để trống chứ không in số 0 lên phiếu).
+        /// Số trả về luôn dùng dấu chấm, bỏ bớt số 0 thừa ở phần thập phân.
+        /// </summary>
+        private string MatchMlctNumber(string source, string pattern)
+        {
+            try
+            {
+                var m = System.Text.RegularExpressions.Regex.Match(source, pattern);
+                if (!m.Success)
+                {
+                    return null;
+                }
+                decimal value;
+                if (!Decimal.TryParse(m.Groups[1].Value.Replace(",", "."),
+                        System.Globalization.NumberStyles.Any,
+                        System.Globalization.CultureInfo.InvariantCulture, out value) || value <= 0)
+                {
+                    return null;
+                }
+                return value.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Tính mức lọc cầu thận (eGFR / CrCl) cho phiếu tóm tắt CLS.
         /// Nhân bản khối tính GFR của Mps000096 (UC_ConnectionTest_PlusPrint):
         ///  - Lấy chỉ số có cờ IS_TO_CALCULATE_EGFR = 1, nhân CONVERT_RATIO_MLCT.
-        ///  - Cân nặng / chiều cao lấy từ sinh hiệu (HIS_DHST) gần nhất.
-        ///  - Gọi Calculation.MucLocCauThanCrCleGFR (đã kèm sẵn tên công thức).
+        ///  - Cân nặng / chiều cao lấy ở bản ghi sinh hiệu (HIS_DHST) gần nhất CÓ trường đó.
+        ///  - Gọi Calculation.MucLocCauThan để lấy thẳng danh sách SỐ (không parse chuỗi hiển thị).
         /// KHÔNG tự tính công thức; chỉ đổ giá trị + nhãn công thức vào MLCTADO.
-        /// Thiếu dữ liệu (chỉ số / cân nặng / chiều cao) -> trả null -> phiếu để trống.
+        /// BN >= 17 tuổi ra cả CrCl (Cockcroft-Gault) và eGFR (MDRD-Jaffe, CKD-EPI 2021) — hiển thị đủ.
+        /// Công thức nào thiếu dữ liệu (ra 0) thì bỏ qua công thức đó; không còn giá trị nào -> trả null.
         /// </summary>
         private MPS.Processor.Mps000222.PDO.MLCTADO BuildMlctado(V_HIS_TREATMENT treatment)
         {
@@ -198,9 +234,22 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
                     return null;
                 }
 
-                decimal weight = this.hisDhst != null ? (this.hisDhst.WEIGHT ?? 0) : 0;
-                decimal height = this.hisDhst != null ? (this.hisDhst.HEIGHT ?? 0) : 0;
+                // Cân nặng / chiều cao lấy ở bản ghi sinh hiệu gần nhất CÓ trường đó (đúng cách Mps000096 làm).
+                decimal weight = 0;
+                decimal height = 0;
+                if (this.lstDhstAll != null && this.lstDhstAll.Count > 0)
+                {
+                    weight = (this.lstDhstAll.Where(o => o.WEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).ThenByDescending(o => o.ID).FirstOrDefault() ?? new HIS_DHST()).WEIGHT ?? 0;
+                    height = (this.lstDhstAll.Where(o => o.HEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).ThenByDescending(o => o.ID).FirstOrDefault() ?? new HIS_DHST()).HEIGHT ?? 0;
+                }
 
+                // Dùng bản trả về CHUỖI vì hàm này có ở mọi phiên bản Inventec.Common.Calculate đang lưu hành
+                // (bản cũ chỉ trả CrCl; bản mới trả CrCl + eGFR MDRD-Jaffe + eGFR CKD-EPI 2021).
+                // Chuỗi có thể là:
+                //   "CrCl: {0} ml/phút"                                                        (bản cũ, BN >= 17)
+                //   "CrCl: {0} ml/phút (Cockcroft-Gault); eGFR: {1} (MDRD-Jaffe); {2} (CKD-EPI 2021)"
+                //   "eGFR: {0} ml/phút/1.73m2 (Schwartz)"                                      (BN < 17)
+                // -> bóc TỪNG số một, giá trị nào có thì hiện giá trị đó, không bỏ sót eGFR của BN người lớn.
                 string mlct = Inventec.Common.Calculate.Calculation.MucLocCauThanCrCleGFR(
                     treatment.TDL_PATIENT_DOB,
                     weight,
@@ -209,27 +258,49 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
                     treatment.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE);
 
                 var mlctado = new MPS.Processor.Mps000222.PDO.MLCTADO();
+                var mlctParts = new List<string>();
+                var formulaParts = new List<string>();
 
-                // Tách SỐ riêng lẻ (không gộp chuỗi) + tên công thức (dòng "Cách tính") — để template tự format + ẩn khi rỗng.
-                // Chuỗi hàm trả về:
-                //  >=17 tuổi: "CrCl: {0} ml/phút (Cockcroft-Gault); eGFR: {1} (MDRD-Jaffe); {2} (CKD-EPI 2021)"
-                //  <17  tuổi: "eGFR: {0} ml/phút/1.73m2 (Schwartz)"
                 if (!String.IsNullOrEmpty(mlct))
                 {
-                    if (mlct.ToLower().Contains("crcl"))
+                    bool hasCrcl = mlct.ToLower().Contains("crcl");
+                    bool isSchwartz = mlct.IndexOf("Schwartz", StringComparison.OrdinalIgnoreCase) >= 0;
+
+                    // CrCl (Cockcroft-Gault) — cần cân nặng; thiếu cân nặng thì hàm trả 0 -> bỏ qua, không in "0".
+                    string crcl = MatchMlctNumber(mlct, @"CrCl:\s*([-+]?\d+(?:[.,]\d+)?)");
+                    if (crcl != null)
                     {
-                        // BN >= 17 tuổi: tính theo CrCl (Cockcroft-Gault)
-                        var mCrcl = System.Text.RegularExpressions.Regex.Match(mlct, @"CrCl:\s*([-+]?\d+(?:[.,]\d+)?)");
-                        if (mCrcl.Success) mlctado.CRCL = mCrcl.Groups[1].Value.Replace(",", ".");
-                        mlctado.FORMULA_NAME = "Tính theo CrCl (độ thanh thải Creatinin)";
+                        mlctado.CRCL = crcl;
+                        // CrCl không chuẩn hoá theo diện tích da -> đơn vị ml/phút, khác eGFR.
+                        mlctParts.Add("CrCl " + crcl + " ml/phút (Cockcroft-Gault)");
+                        formulaParts.Add("CrCl (Cockcroft-Gault)");
                     }
-                    else if (mlct.ToLower().Contains("egfr"))
+
+                    // eGFR: BN < 17 là Schwartz (cần chiều cao); BN >= 17 là MDRD-Jaffe.
+                    string egfr = MatchMlctNumber(mlct, @"eGFR:\s*([-+]?\d+(?:[.,]\d+)?)");
+                    if (egfr != null)
                     {
-                        // BN < 17 tuổi: tính theo eGFR (Schwartz)
-                        var mEg = System.Text.RegularExpressions.Regex.Match(mlct, @"eGFR:\s*([-+]?\d+(?:[.,]\d+)?)");
-                        if (mEg.Success) mlctado.EGFR = mEg.Groups[1].Value.Replace(",", ".");
-                        mlctado.FORMULA_NAME = "Tính theo eGFR";
+                        string egfrName = isSchwartz ? "Schwartz" : (hasCrcl ? "MDRD-Jaffe" : "eGFR");
+                        mlctado.EGFR = egfr;
+                        mlctParts.Add("eGFR " + egfr + " ml/phút/1.73m²" + (egfrName == "eGFR" ? "" : " (" + egfrName + ")"));
+                        formulaParts.Add(egfrName == "eGFR" ? "eGFR" : "eGFR (" + egfrName + ")");
                     }
+
+                    // eGFR theo CKD-EPI 2021 — chỉ bản mới của thư viện mới trả về.
+                    string ckdEpi = MatchMlctNumber(mlct, @"([-+]?\d+(?:[.,]\d+)?)\s*\(CKD-EPI");
+                    if (ckdEpi != null)
+                    {
+                        mlctado.EGFR_CKDEPI = ckdEpi;
+                        mlctParts.Add("eGFR " + ckdEpi + " ml/phút/1.73m² (CKD-EPI 2021)");
+                        formulaParts.Add("eGFR (CKD-EPI 2021)");
+                    }
+                }
+
+                if (mlctParts.Count > 0)
+                {
+                    mlctado.FORMULA_NAME = "Tính theo " + String.Join("; ", formulaParts);
+                    mlctado.MLCT_LINE = "Mức lọc cầu thận: " + String.Join("; ", mlctParts) + "   (Tham chiếu: 90 - 120)";
+                    mlctado.MLCT_FORMULA_LINE = "Cách tính mức lọc cầu thận: " + String.Join("; ", formulaParts);
                 }
 
                 // UACR / UPCR: tỉ lệ Albumin (hoặc Protein) niệu / Creatinin niệu — theo đúng logic biểu in Mps000096.
@@ -265,6 +336,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
 
                 // Không tính được giá trị nào -> trả null để phiếu tự ẩn dòng (không in trống).
                 if (String.IsNullOrEmpty(mlctado.CRCL) && String.IsNullOrEmpty(mlctado.EGFR)
+                    && String.IsNullOrEmpty(mlctado.EGFR_CKDEPI)
                     && String.IsNullOrEmpty(mlctado.UACR) && String.IsNullOrEmpty(mlctado.UPCR))
                 {
                     return null;
@@ -511,6 +583,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
                         var lstDhst = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumer.ApiConsumers.MosConsumer, dhstFilter, null);
                         if (lstDhst != null && lstDhst.Count > 0)
                         {
+                            this.lstDhstAll = lstDhst;
                             var data = CheckDhst(lstDhst);
                             if (data != null)
                             {

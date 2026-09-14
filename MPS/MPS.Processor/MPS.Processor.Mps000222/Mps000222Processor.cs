@@ -968,7 +968,8 @@ namespace MPS.Processor.Mps000222
                     AddObjectKeyIntoListkey<HIS_DHST>(rdo.HisDhst, false);
                 }
 
-                // Mức lọc cầu thận (eGFR / CrCl) — bơm ra key <EGFR>, <CRCL>, <UACR>, <UPCR>.
+                // Mức lọc cầu thận — bơm ra key <EGFR>, <CRCL>, <EGFR_CKDEPI>, <UACR>, <UPCR>,
+                // <FORMULA_NAME> và 2 key dòng dựng sẵn <MLCT_LINE>, <MLCT_FORMULA_LINE>.
                 // Thiếu dữ liệu -> mLCTADOs null -> không bơm key -> phiếu tự để trống.
                 if (rdo.mLCTADOs != null)
                 {
