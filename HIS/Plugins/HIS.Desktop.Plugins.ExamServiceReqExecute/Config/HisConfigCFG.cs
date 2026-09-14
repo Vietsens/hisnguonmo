@@ -149,7 +149,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
 
         // Chan nhap vien khi con van ban chua hoan thanh: danh sach DEPARTMENT_CODE ap dung, phan tach boi "|".
         // Khong khai bao/de trong -> khong kiem tra.
-        private const string KEY_CheckDepaDocumentHospitalization = "HIS.Desktop.Plugins.ExamServiceReqExecute.CheckDepaDocument.Hospitalization";
+        // internal de phep kiem tra chan nhap vien ghi duoc ten key nay vao log khi bo qua kiem tra.
+        internal const string KEY_CheckDepaDocumentHospitalization = "HIS.Desktop.Plugins.ExamServiceReqExecute.CheckDepaDocument.Hospitalization";
         internal static List<string> CheckDepaDocumentHospitalizationCodes = new List<string>();
 
         /// <summary>

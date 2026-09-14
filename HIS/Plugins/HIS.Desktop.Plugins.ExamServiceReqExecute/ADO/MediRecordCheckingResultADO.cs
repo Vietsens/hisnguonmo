@@ -38,7 +38,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.ADO
     }
 
     /// <summary>
-    /// Mot van ban chua hoan thanh trong ket qua kiem tra ho so benh an.
+    /// Mot van ban EMR (V_EMR_DOCUMENT). Dung cho ca ket qua "api/EmrDocument/MediRecordChecking"
+    /// va "api/EmrDocument/GetView" vi hai api tra ve cung kieu phan tu.
     /// Chi khai bao cac truong duoc su dung; cac truong con lai cua V_EMR_DOCUMENT bi bo qua khi deserialize.
     /// </summary>
     public class MediRecordCheckingDocumentADO
@@ -46,6 +47,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.ADO
         public long ID { get; set; }
 
         public string DOCUMENT_CODE { get; set; }
+
+        /// <summary>
+        /// Ma nghiep vu ben HIS ma van ban gan vao, dang ghep chuoi - vi du
+        /// "SERVICE_REQ_CODE:000123 SER_SERV_ID:456". Dung de biet van ban thuoc y lenh nao.
+        /// </summary>
+        public string HIS_CODE { get; set; }
+
+        /// <summary>
+        /// Co xoa mem. Tren V_EMR_DOCUMENT day la NUMBER nullable (short?), KHONG phai boolean:
+        /// van ban binh thuong de NULL chu khong phai 0, nen "chua xoa" = khac 1.
+        /// </summary>
+        public short? IS_DELETE { get; set; }
 
         public string DOCUMENT_NAME { get; set; }
 
@@ -61,5 +74,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.ADO
 
         /// <summary>Danh sach tai khoan chua ky.</summary>
         public string UN_SIGNERS { get; set; }
+
+        /// <summary>
+        /// Tai khoan den luot phai ky. Con gia tri = van ban chua ky xong.
+        /// Doi ung voi filter EmrDocumentViewFilter.HAS_NEXT_SIGNER cua EMR.
+        /// </summary>
+        public string NEXT_SIGNER { get; set; }
+
+        /// <summary>Tai khoan da tu choi ky. Con gia tri = van ban khong hop le, coi nhu chua hoan thanh.</summary>
+        public string REJECTER { get; set; }
     }
 }
