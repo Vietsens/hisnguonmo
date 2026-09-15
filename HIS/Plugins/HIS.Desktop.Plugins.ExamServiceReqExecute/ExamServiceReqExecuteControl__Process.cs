@@ -3097,7 +3097,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     if (HisServiceReqResult.AdditionExamResult != null)
                     {
-                        //chkExamServiceAdd.CheckState = CheckState.Unchecked;
+                        //chkExamServiceAdd.CheckState = CheckState.Unchecked; 
                         HisServiceReqResult.AdditionExamResult.ICD_CODE = this.HisServiceReqView.ICD_CODE;
                         HisServiceReqResult.AdditionExamResult.ICD_NAME = this.HisServiceReqView.ICD_NAME;
                         HisServiceReqResult.AdditionExamResult.ICD_CAUSE_CODE = this.HisServiceReqView.ICD_CAUSE_CODE;
@@ -3107,7 +3107,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         ReLoadPrintExamAddition();
                         if (this.isPrintExamServiceAdd || this.isSignExamServiceAdd)
                         {
-                            PrintProcess(PrintType.YEU_CAU_KHAM);
+                            if (HisConfigCFG.keyMps000001 == "1")
+                            {
+                                PrintProcess(PrintType.YEU_CAU_KHAM);
+                            }
+                            else
+                            {
+                                PrintProcess(PrintType.YEU_CAU_KHAM_THEM);
+                            }
+                            
                         }
                     }
 

@@ -45,7 +45,7 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.ApprovalExportPrescription
 {
-    public partial class FormApprovalExportPrescription : HIS.Desktop.Utility.FormBase
+    public partial class UCApprovalExportPrescription : HIS.Desktop.Utility.UserControlBase
     {
         #region Declare
         Inventec.Desktop.Common.Modules.Module moduleData = null;
@@ -80,13 +80,13 @@ namespace HIS.Desktop.Plugins.ApprovalExportPrescription
         #endregion
 
         #region Construct
-        public FormApprovalExportPrescription()
+        public UCApprovalExportPrescription()
             : this(null)
         {
 
         }
 
-        public FormApprovalExportPrescription(Inventec.Desktop.Common.Modules.Module module)
+        public UCApprovalExportPrescription(Inventec.Desktop.Common.Modules.Module module)
             : base(module)
         {
             try
@@ -103,7 +103,6 @@ namespace HIS.Desktop.Plugins.ApprovalExportPrescription
                     Inventec.Common.Logging.LogSystem.Error(ex);
                 }
                 this.moduleData = module;
-                this.Text = module.text;
             }
             catch (Exception ex)
             {
@@ -114,12 +113,10 @@ namespace HIS.Desktop.Plugins.ApprovalExportPrescription
 
         #region Private method
         #region load
-        private void FormApprovalExportPrescription_Load(object sender, EventArgs e)
+        private void UCApprovalExportPrescription_Load(object sender, EventArgs e)
         {
             try
             {
-                SetIcon();
-
                 LoadKeysFromlanguage();
 
                 SetDefaultValueControl();
@@ -138,18 +135,6 @@ namespace HIS.Desktop.Plugins.ApprovalExportPrescription
                 IsNotAutoApproval = autoApproval.Trim() == "1";
 
                 BtnApproval.Enabled = IsNotAutoApproval;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void SetIcon()
-        {
-            try
-            {
-                this.Icon = Icon.ExtractAssociatedIcon(System.IO.Path.Combine(LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]));
             }
             catch (Exception ex)
             {
