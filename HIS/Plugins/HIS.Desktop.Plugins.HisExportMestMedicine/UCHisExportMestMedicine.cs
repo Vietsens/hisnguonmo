@@ -155,6 +155,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 }
                 else
                     lciBloodCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                // Cot "Du tru mau" chi hien khi dang lam viec o kho mau.
+                this.gridColViewBloodRequest.Visible = (check != null && check.IS_BLOOD == 1);
             }
             catch (Exception ex)
             {
