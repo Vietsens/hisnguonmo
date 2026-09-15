@@ -24,16 +24,12 @@ using System.Threading.Tasks;
 namespace HIS.Desktop.Plugins.HisImportCareer.ADO
 {
     /// <summary>
-    /// Dong doc tu file excel danh muc nghe nghiep theo QD 34/2020/QD-TTg
-    /// (cot Cap 1 -> Cap 5 + Ten goi). Dong co CAREER_CODE (Cap 5) la nghe chi tiet;
-    /// dong chi co LEVEL2/3/4_CODE la dong ten nhom cap cha tuong ung.
+    /// Dong doc tu file excel danh muc nghe nghiep (dang phang, 8 cot theo thu tu man danh muc):
+    /// Ma nghe | Ten nghe | Ma cap 2 | Ten cap 2 | Ma cap 3 | Ten cap 3 | Ma cap 4 | Ten cap 4.
     /// LEVEL2/3/4_CODE + LEVEL2/3/4_NAME dung property cua base HIS_CAREER (EFMODEL moi)
     /// </summary>
     public class CareerADO : MOS.EFMODEL.DataModels.HIS_CAREER
     {
         public string ERROR { get; set; }
-
-        /// <summary>Cot Cap 1 trong file chuan (chi de phan loai dong, khong luu)</summary>
-        public string LEVEL1_CODE { get; set; }
     }
 }
