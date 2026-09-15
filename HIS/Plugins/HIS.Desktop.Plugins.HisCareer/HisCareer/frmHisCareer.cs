@@ -1004,9 +1004,10 @@ namespace HIS.Desktop.Plugins.HisCareer
             {
                 ValidateTextEdit(txtCareerCode, 5);
                 ValidateTextEdit(txtCareerName, 1000);
-                ValidateTextEdit(txtLevel2Name, 1000);
-                ValidateTextEdit(txtLevel3Name, 1000);
-                ValidateTextEdit(txtLevel4Name, 1000);
+                // Ten cap 2/3/4 KHONG bat buoc nhap (vien khong dung danh muc phan cap thi de trong)
+                ValidateTextEditAllowEmpty(txtLevel2Name, 1000);
+                ValidateTextEditAllowEmpty(txtLevel3Name, 1000);
+                ValidateTextEditAllowEmpty(txtLevel4Name, 1000);
 
             }
             catch (Exception ex)
@@ -1031,6 +1032,25 @@ namespace HIS.Desktop.Plugins.HisCareer
             }
         }
         
+        /// <summary>
+        /// Validate chi kiem tra do dai, CHO PHEP DE TRONG.
+        /// Dung cho ten cap 2/3/4 - khong bat buoc nhap
+        /// </summary>
+        private void ValidateTextEditAllowEmpty(TextEdit txt, long maxLength)
+        {
+            try
+            {
+                ValidMaxlengthAllowEmpty valid = new ValidMaxlengthAllowEmpty();
+                valid.textEdit = txt;
+                valid.maxLength = maxLength;
+                valid.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(txt, valid);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void ValidateLookupWithTextEdit(LookUpEdit cbo, TextEdit textEdit)
         {
             try
