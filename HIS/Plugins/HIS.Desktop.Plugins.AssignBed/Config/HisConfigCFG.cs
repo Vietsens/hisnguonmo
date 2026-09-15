@@ -59,6 +59,7 @@ namespace HIS.Desktop.Plugins.AssignBed.Config
         private const string CONFIG_KEY__IsAllowingChooseServiceWhichInAttachments = "HIS.Desktop.Plugins.AssignService.IsAllowingChooseServiceWhichInAttachments";
         internal const string CONFIG_KEY__AutoDeleteEmrDocumentWhenEditReq = "HIS.Desktop.Plugins.ServiceReqList.AutoDeleteEmrDocumentWhenEditReq";
         private const string CONFIG_KEY_CheckDepartmentInTimeWhenPresOrAssign = "HIS.Desktop.Plugins.IsCheckDepartmentInTimeWhenPresOrAssign";
+        private const string CONFIG_KEY__DefaultBedByLastAssigned = "MOS.HIS_SERVICE_REQ.DEFAULT_BED_BY_LAST_ASSIGNED";
 
         public static decimal WarningOverCeiling__Exam { get; set; }
         public static decimal WarningOverCeiling__Out { get; set; }
@@ -112,6 +113,8 @@ namespace HIS.Desktop.Plugins.AssignBed.Config
         internal static bool IsAllowingChooseServiceWhichInAttachments;
         internal static string AutoDeleteEmrDocumentWhenEditReq;
         internal static bool IsCheckDepartmentInTimeWhenPresOrAssign;
+        //Tu dong dien giuong duoc chi dinh gan nhat trong buong benh nhan dang nam
+        internal static bool DefaultBedByLastAssigned;
 
         /// <summary>
         /// Khoa cau hinh cua MOS: bat co che phan phong theo can bang tai + gom dich vu cung loai.
@@ -174,6 +177,7 @@ namespace HIS.Desktop.Plugins.AssignBed.Config
                 IsAllowingChooseServiceWhichInAttachments = GetValue(CONFIG_KEY__IsAllowingChooseServiceWhichInAttachments) == GlobalVariables.CommonStringTrue;
                 AutoDeleteEmrDocumentWhenEditReq = GetValue(CONFIG_KEY__AutoDeleteEmrDocumentWhenEditReq);
                 IsCheckDepartmentInTimeWhenPresOrAssign = GetValue(CONFIG_KEY_CheckDepartmentInTimeWhenPresOrAssign) == GlobalVariables.CommonStringTrue;
+                DefaultBedByLastAssigned = (GetValue(CONFIG_KEY__DefaultBedByLastAssigned) == "1");
             }
             catch (Exception ex)
             {

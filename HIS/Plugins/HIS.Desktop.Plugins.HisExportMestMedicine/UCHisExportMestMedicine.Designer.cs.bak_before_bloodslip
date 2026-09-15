@@ -215,8 +215,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn_CallPatient = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonViewDetail = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.gridColViewBloodRequest = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemButtonViewBloodRequest = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -444,7 +442,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonViewDetail)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonViewBloodRequest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Check_TruyenMau_Enable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonCopyExportMest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).BeginInit();
@@ -674,7 +671,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridControl.Name = "gridControl";
             this.gridControl.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonViewDetail,
-            this.repositoryItemButtonViewBloodRequest,
             this.repositoryItemPictureEdit1,
             this.ButtonEnableApproval,
             this.ButtonDisableApproval,
@@ -725,7 +721,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.STT,
             this.gridColumn_CallPatient,
             this.gridColumn1,
-            this.gridColViewBloodRequest,
             this.gridColumn15,
             this.gridColumn6,
             this.gridColumn3,
@@ -837,32 +832,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.repositoryItemButtonViewDetail.Name = "repositoryItemButtonViewDetail";
             this.repositoryItemButtonViewDetail.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonViewDetail.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonViewDetail_ButtonClick);
-            //
-            // gridColViewBloodRequest
-            //
-            this.gridColViewBloodRequest.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColViewBloodRequest.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColViewBloodRequest.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColViewBloodRequest.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColViewBloodRequest.Caption = "Dự trù máu";
-            this.gridColViewBloodRequest.ColumnEdit = this.repositoryItemButtonViewBloodRequest;
-            this.gridColViewBloodRequest.FieldName = "BLOOD_REQUEST_DISPLAY";
-            this.gridColViewBloodRequest.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
-            this.gridColViewBloodRequest.Name = "gridColViewBloodRequest";
-            this.gridColViewBloodRequest.OptionsColumn.ShowCaption = false;
-            this.gridColViewBloodRequest.Visible = true;
-            this.gridColViewBloodRequest.VisibleIndex = 11;
-            this.gridColViewBloodRequest.Width = 20;
-            //
-            // repositoryItemButtonViewBloodRequest
-            //
-            this.repositoryItemButtonViewBloodRequest.AutoHeight = false;
-            this.repositoryItemButtonViewBloodRequest.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonViewBloodRequest.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), new DevExpress.Utils.SerializableAppearanceObject(), new DevExpress.Utils.SerializableAppearanceObject(), new DevExpress.Utils.SerializableAppearanceObject(), new DevExpress.Utils.SerializableAppearanceObject(), "Xem chi tiết bệnh án", null, null, true)});
-            this.repositoryItemButtonViewBloodRequest.Name = "repositoryItemButtonViewBloodRequest";
-            this.repositoryItemButtonViewBloodRequest.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryItemButtonViewBloodRequest.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonViewBloodRequest_ButtonClick);
-            //
+            // 
             // gridColumn15
             // 
             this.gridColumn15.AppearanceCell.Options.UseTextOptions = true;
@@ -3495,7 +3465,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonViewDetail)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonViewBloodRequest)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Check_TruyenMau_Enable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonCopyExportMest)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).EndInit();
@@ -3679,8 +3648,6 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
         private Inventec.UC.Paging.UcPaging ucPaging;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonViewDetail;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColViewBloodRequest;
-        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonViewBloodRequest;
         private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit repositoryItemPictureEdit1;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit ButtonEnableApproval;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit ButtonDisableApproval;

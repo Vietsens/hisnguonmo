@@ -104,6 +104,12 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         private List<HIS_BED_BSTY> allHisBedBstys;
         private List<V_HIS_BED_ROOM> allBedRooms;
         private List<V_HIS_BED> allBeds;
+        // Danh sach buong benh nhan DANG nam (HIS_TREATMENT_BED_ROOM con mo) cua ho so dang thao tac.
+        // Khong dung lai allBedRooms vi bien do la toan bo danh muc buong, khong phai buong cua nguoi benh.
+        private List<V_HIS_TREATMENT_BED_ROOM> currentTreatmentBedRooms;
+        // Ban ghi nam giuong lay ve tu api/HisBedLog/TakeBedsInUse o lan nap combo giuong gan nhat.
+        // Giu lai de suy ra giuong duoc chi dinh gan nhat cua chinh ho so dang thao tac.
+        private List<HIS_BED_LOG> dataBedLogsInUse;
         #endregion
         HisTreatmentWithPatientTypeInfoSDO currentHisTreatment { get; set; }
         HIS.Desktop.ADO.AssignServiceADO workingAssignServiceADO;
@@ -327,6 +333,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     this.LoadDataDhst();
                     this.LoadDataToGridParticipants();
                     this.GetHisBedLog(this.treatmentId);
+                    this.LoadCurrentTreatmentBedRoom(this.treatmentId);
                 }   
 
                 this.InitComboUser();
@@ -377,6 +384,46 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return this.lstBedLog = null;
+            }
+        }
+
+        /// <summary>
+        /// Lay danh sach buong benh nhan DANG nam (ban ghi HIS_TREATMENT_BED_ROOM chua co REMOVE_TIME)
+        /// cua ho so dieu tri. Dung de gioi han danh sach giuong va tinh giuong mac dinh.
+        /// Goi that bai thi de bien rong, khong lam vo man hinh.
+        /// </summary>
+        private void LoadCurrentTreatmentBedRoom(long treatmentId)
+        {
+            this.currentTreatmentBedRooms = new List<V_HIS_TREATMENT_BED_ROOM>();
+            try
+            {
+                if (!HisConfigCFG.DefaultBedByLastAssigned)
+                    return;
+
+                if (treatmentId <= 0)
+                    return;
+
+                CommonParam param = new CommonParam();
+                // Khong dung api/HisTreatmentBedRoom/GetViewCurrentIn: endpoint do nhan MA SO BUONG
+                // chu khong phai ma ho so dieu tri, truyen treatmentId vao se loc nham buong.
+                MOS.Filter.HisTreatmentBedRoomViewFilter treatmentBedRoomFilter = new MOS.Filter.HisTreatmentBedRoomViewFilter();
+                treatmentBedRoomFilter.TREATMENT_ID = treatmentId;
+                treatmentBedRoomFilter.IS_IN_ROOM = true;
+
+                var treatmentBedRooms = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_TREATMENT_BED_ROOM>>("api/HisTreatmentBedRoom/GetView", ApiConsumer.ApiConsumers.MosConsumer, treatmentBedRoomFilter, param);
+
+                if (treatmentBedRooms == null || treatmentBedRooms.Count <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("LoadCurrentTreatmentBedRoom => khong lay duoc buong dang nam cua ho so dieu tri____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => treatmentId), treatmentId));
+                    return;
+                }
+
+                this.currentTreatmentBedRooms = treatmentBedRooms;
+            }
+            catch (Exception ex)
+            {
+                this.currentTreatmentBedRooms = new List<V_HIS_TREATMENT_BED_ROOM>();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         private static void EnableDoubleBuffering(Control control)
@@ -1056,6 +1103,19 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     return;
                 }
                 this.treatmentId = data.TREATMENT_ID;
+                this.LoadCurrentTreatmentBedRoom(this.treatmentId);
+                // Buong dang nam doi theo nguoi benh nen phai nap lai danh sach giuong theo buong moi.
+                if (HisConfigCFG.DefaultBedByLastAssigned)
+                {
+                    this.LoadAllBedData();
+
+                    // LoadBedDataByServiceId chi nap lai khi (ma dich vu, gio bat dau, gio ket thuc) thay doi,
+                    // doi nguoi benh khong lam doi ba gia tri nay nen phai xoa bo nho dem,
+                    // neu khong combo van giu danh sach giuong cua nguoi benh truoc do.
+                    this._lastLoadedBedServiceId = -1;
+                    this._lastLoadedTimeFrom = DateTime.MinValue;
+                    this._lastLoadedTimeTo = DateTime.MinValue;
+                }
                 this.LoadDataToCurrentTreatmentData(treatmentId, this.intructionTimeSelecteds.FirstOrDefault());
                 this.SetDateUc();
                 this.ProcessDataWithTreatmentWithPatientTypeInfo();
@@ -6844,6 +6904,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         sdo.BedId = long.Parse(item.BED_CODE);
                         sdo.BedFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(item.TIME_TO);
                         sdo.BedStartTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(item.TIME_FROM);
+                        // Co nhan vien da xac nhan chuyen sang giuong khac giuong duoc chi dinh gan nhat
+                        if (HisConfigCFG.DefaultBedByLastAssigned && item.IsConfirmedChangeBed)
+                            sdo.IsConfirmedChangeBed = 1;
                         sdo.IsNotUseBhyt = item.IsNotUseBhyt;
                         sdo.AssignNumOrder = item.AssignNumOrder;
                         sdo.PrimaryPatientTypeId = item.PRIMARY_PATIENT_TYPE_ID;
@@ -8553,6 +8616,29 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     row.IsChecked = true;
                     serviceProcessSelectedIds.Add(row.ID);
                     view.RefreshRow(rowHandleChanged);
+
+                    // Tu dong dien giuong duoc chi dinh gan nhat trong buong benh nhan dang nam.
+                    // Dat o nhanh them de doi xung voi nhanh bo tich (ClearServiceProcessRowData),
+                    // va hoan lai sau khi luoi nap xong combo giuong cua dong vua tich.
+                    if (HisConfigCFG.DefaultBedByLastAssigned
+                        && row.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
+                    {
+                        this.BeginInvoke((Action)(() =>
+                        {
+                            try
+                            {
+                                if (this.IsDisposed) return;
+                                if (!row.IsChecked) return;
+
+                                this.FillDefaultBedForRow(row);
+                                view.RefreshRow(rowHandleChanged);
+                            }
+                            catch (Exception exFill)
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn(exFill);
+                            }
+                        }));
+                    }
                 }
                 else if (e.Action == CollectionChangeAction.Remove)
                 {
@@ -8634,6 +8720,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 row.BedId = null;
                 row.BedStartTime = null;
                 row.BedFinishTime = null;
+                row.IsConfirmedChangeBed = false;
 
                 row.TIME_FROM = null;
                 row.TIME_TO = null;
@@ -8836,6 +8923,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         ssADO.BedId = null;
                         ssADO.BedStartTime = null;
                         ssADO.BedFinishTime = null;
+                        ssADO.IsConfirmedChangeBed = false;
 
                         if (this.gridViewServiceProcess.ActiveEditor is GridLookUpEdit activeEditor)
                         {
@@ -9115,6 +9203,45 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             {
                                 e.Cancel = true;
                                 ReopenBedLookupPopup();
+                            }
+                        }
+
+                        // Hoi xac nhan khi chon giuong KHAC giuong duoc chi dinh gan nhat.
+                        // Dat sau buoc chan giuong day va sau buoc hoi nam ghep: giuong day thi khong cho chon
+                        // nen khong can hoi tiep, con hoi nam ghep la cau hoi ve giuong dich, khac noi dung.
+                        if (!e.Cancel && HisConfigCFG.DefaultBedByLastAssigned)
+                        {
+                            long defaultBedId = this.GetDefaultBedIdByLastAssigned();
+                            if (defaultBedId > 0 && defaultBedId == bedId)
+                            {
+                                // Chon lai dung giuong mac dinh thi khong con la doi giuong nua
+                                var rowSameBed = this.gridViewServiceProcess.GetFocusedRow() as DataGridAdo;
+                                if (rowSameBed != null)
+                                    rowSameBed.IsConfirmedChangeBed = false;
+                            }
+                            else if (defaultBedId > 0 && defaultBedId != bedId)
+                            {
+                                var defaultBed = bedList != null ? bedList.FirstOrDefault(b => b.ID == defaultBedId) : null;
+                                string defaultBedName = defaultBed != null ? defaultBed.BED_NAME : defaultBedId.ToString();
+
+                                var dialogResultChangeBed = XtraMessageBox.Show(
+                                    string.Format("Người bệnh đang nằm giường {0}, xác nhận chuyển sang giường {1}?", defaultBedName, selectedBed.BED_NAME),
+                                    "Thông báo",
+                                    MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Question
+                                );
+
+                                if (dialogResultChangeBed == DialogResult.No)
+                                {
+                                    e.Cancel = true;
+                                    ReopenBedLookupPopup();
+                                    return;
+                                }
+
+                                // Ghi nhan de ProcessServiceReqSDO gui co xac nhan len Backend
+                                var rowChangeBed = this.gridViewServiceProcess.GetFocusedRow() as DataGridAdo;
+                                if (rowChangeBed != null)
+                                    rowChangeBed.IsConfirmedChangeBed = true;
                             }
                         }
                     }
@@ -9680,6 +9807,139 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Lay ma so giuong duoc chi dinh GAN NHAT cua chinh ho so dang thao tac, trong buong benh nhan dang nam.
+        /// Nguon du lieu: cac ban ghi nam giuong da lay ve qua api/HisBedLog/TakeBedsInUse,
+        /// loc theo cac ban ghi buong cua ho so (currentTreatmentBedRooms), roi lay ban ghi co START_TIME lon nhat.
+        /// Khong tim duoc thi tra ve 0 de goi y "de trong", tuyet doi khong tu chon mot giuong bat ky.
+        /// </summary>
+        private long GetDefaultBedIdByLastAssigned()
+        {
+            long bedId = 0;
+            try
+            {
+                if (!HisConfigCFG.DefaultBedByLastAssigned)
+                    return 0;
+
+                if (this.currentTreatmentBedRooms == null || this.currentTreatmentBedRooms.Count <= 0)
+                    return 0;
+
+                if (this.dataBedLogsInUse == null || this.dataBedLogsInUse.Count <= 0)
+                    return 0;
+
+                List<long> treatmentBedRoomIds = this.currentTreatmentBedRooms.Select(o => o.ID).Distinct().ToList();
+
+                HIS_BED_LOG lastBedLog = null;
+                foreach (var bedLog in this.dataBedLogsInUse)
+                {
+                    if (bedLog == null)
+                        continue;
+
+                    if (!treatmentBedRoomIds.Contains(bedLog.TREATMENT_BED_ROOM_ID))
+                        continue;
+
+                    if (lastBedLog == null || bedLog.START_TIME > lastBedLog.START_TIME)
+                        lastBedLog = bedLog;
+                }
+
+                if (lastBedLog != null)
+                    bedId = lastBedLog.BED_ID;
+            }
+            catch (Exception ex)
+            {
+                bedId = 0;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return bedId;
+        }
+
+        /// <summary>
+        /// Dien san giuong duoc chi dinh gan nhat vao dong dich vu giuong vua duoc tich chon.
+        /// Phai dien DU ca 3 truong ma buoc luu doc toi: BED_CODE (luoi + ProcessServiceReqSDO doc),
+        /// BedId (ValidSereServWithBed kiem tra bat buoc chon giuong) va 2 truong gio bat dau/ket thuc.
+        /// Luu y: BED_CODE tuy ten la ma giuong nhung gia tri that luu trong do la MA SO cua giuong.
+        /// </summary>
+        private void FillDefaultBedForRow(DataGridAdo row)
+        {
+            try
+            {
+                if (!HisConfigCFG.DefaultBedByLastAssigned)
+                    return;
+
+                if (row == null)
+                    return;
+
+                if (row.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
+                    return;
+
+                // Khong de len gia tri nhan vien da chon truoc do.
+                if (!string.IsNullOrWhiteSpace(row.BED_CODE))
+                    return;
+
+                long bedId = this.GetDefaultBedIdByLastAssigned();
+                if (bedId <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("FillDefaultBedForRow => khong tim duoc giuong duoc chi dinh gan nhat, de trong giuong. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.treatmentId), this.treatmentId));
+                    return;
+                }
+
+                // Dien bang code thi khong chay qua repositoryItemGridLookUpEditBed_EditValueChanging,
+                // nen phai tu kiem tra suc chua o day, khong duoc dien san mot giuong da day.
+                var bedList = this.repositoryItemGridLookUpEditBed != null ? this.repositoryItemGridLookUpEditBed.DataSource as List<HisBedADO> : null;
+                var defaultBed = bedList != null ? bedList.FirstOrDefault(b => b.ID == bedId) : null;
+                if (defaultBed != null)
+                {
+                    bool isFull = defaultBed.IsKey == 2;
+
+                    int? usedCount = null;
+                    int? maxCount = null;
+                    TryParseBedAmountStr(defaultBed.AMOUNT_STR, out usedCount, out maxCount);
+
+                    if (!isFull
+                        && usedCount.HasValue
+                        && maxCount.HasValue
+                        && maxCount.Value > 0
+                        && usedCount.Value >= maxCount.Value)
+                    {
+                        isFull = true;
+                    }
+
+                    if (isFull)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("FillDefaultBedForRow => giuong duoc chi dinh gan nhat da day, de trong giuong. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => bedId), bedId));
+                        return;
+                    }
+                }
+
+                DateTime intructTime = (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.intructionTimeSelecteds.FirstOrDefault()) ?? DateTime.Now);
+
+                row.BED_CODE = bedId.ToString();
+                row.BedId = bedId;
+
+                // Chi dien gio khi dong con trong de khong de len gio nhan vien da sua
+                // hoac gio mac dinh da duoc dat theo lan nam giuong truoc do.
+                if (!row.TIME_FROM.HasValue)
+                    row.TIME_FROM = intructTime;
+
+                // Gio ket thuc phai LON HON gio bat dau, neu khong Backend se tu choi luu.
+                // Tinh theo dung cong thuc mac dinh cua luoi: het ngay cuoi cung theo so luong.
+                if (!row.TIME_TO.HasValue && row.TIME_FROM.HasValue)
+                {
+                    int roundedQty = row.QUANTITY.HasValue ? (int)Math.Ceiling(row.QUANTITY.Value) : 1;
+                    int daysToAdd = Math.Max(0, roundedQty - 1);
+                    row.TIME_TO = row.TIME_FROM.Value.Date.AddDays(daysToAdd).AddHours(23).AddMinutes(59);
+                }
+
+                row.BedStartTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(row.TIME_FROM);
+                row.BedFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(row.TIME_TO);
+                row.IsConfirmedChangeBed = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void gridViewServiceProcess_ShowingEditor(object sender, CancelEventArgs e)
