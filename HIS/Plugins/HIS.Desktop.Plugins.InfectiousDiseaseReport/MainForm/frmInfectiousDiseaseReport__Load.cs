@@ -189,6 +189,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                     .OrderBy(o => o.ten).ToList();
                 SetupLookup(cboXa, communes, "ma", "MaTen");
                 SetupLookup(cboXaTru, communes, "ma", "MaTen");
+                SetupLookup(cboXaQuanLy, communes, "ma", "MaTen");   // xã/phường quản lý — cùng danh mục xã
             }
             catch (Exception ex)
             {

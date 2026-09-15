@@ -37,6 +37,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
         private DateEdit dteNgaySinh;
         private SpinEdit spnTuoi;
         private GridLookUpEdit cboGioiTinh, cboDanToc, cboNgheNghiep, cboTinh, cboXa, cboThon, cboTinhTru, cboXaTru;
+        // Xã/phường quản lý ca bệnh (mặc định = xã hiện nay, cho sửa) — đẩy cổng MaXaPhuongQuanLy.
+        private GridLookUpEdit cboXaQuanLy;
         private CheckEdit chkMangThai;
         #endregion
 
@@ -265,6 +267,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             cboThon = new GridLookUpEdit();
             cboThon.Properties.NullText = "";   // tránh hiển thị "[EditValue is null]" khi chưa nạp danh mục
             txtDiaChi = new TextEdit();
+            cboXaQuanLy = new GridLookUpEdit();
             cboTinhTru = new GridLookUpEdit();
             cboXaTru = new GridLookUpEdit();
             txtDiaChiTru = new TextEdit();
@@ -301,6 +304,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             F("Tỉnh/TP:", cboTinh);
             F("Xã/Phường:", cboXa);
             // Thôn/Ấp: bỏ ô nhập theo yêu cầu (cboThon vẫn khai báo nhưng không đưa lên giao diện).
+            F("Xã/phường quản lý (*):", cboXaQuanLy);   // đơn vị y tế xã theo dõi ca bệnh (mặc định = xã hiện nay)
             F("Địa chỉ chi tiết:", txtDiaChi);
 
             BeginSection("Địa chỉ thường trú");

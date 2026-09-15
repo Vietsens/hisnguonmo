@@ -33,6 +33,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                     new KeyValuePair<BaseEdit, string>(cboBenh, "Chọn bệnh chẩn đoán"),
                     new KeyValuePair<BaseEdit, string>(cboLoaiChanDoan, "Chọn phân loại chẩn đoán"),
                     new KeyValuePair<BaseEdit, string>(cboTinhTrang, "Chọn tình trạng hiện nay"),
+                    new KeyValuePair<BaseEdit, string>(cboXaQuanLy, "Chọn xã/phường quản lý"),
                     new KeyValuePair<BaseEdit, string>(dteNgayNhapVien, "Nhập ngày nhập viện"),
                     new KeyValuePair<BaseEdit, string>(cboLoaiPhatHien, "Chọn loại cơ sở điều trị"),
                     new KeyValuePair<BaseEdit, string>(txtNguoiBaoCao, "Nhập người báo cáo"),

@@ -120,7 +120,11 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 dto.MaXaHienNay = !string.IsNullOrEmpty(maXa) ? maXa : GetLookupString(cboXaTru);
                 dto.MaThonHienNay = GetSelectedMa(cboThon);
                 dto.DiaChiChiTietHienNay = !string.IsNullOrEmpty(txtDiaChi.Text) ? txtDiaChi.Text : txtDiaChiTru.Text;
-                dto.MaXaPhuongQuanLy = Config.EcdsConfigCFG.MaDonVi;
+                // Xã/phường quản lý = xã người dùng chọn (đơn vị y tế xã theo dõi ca bệnh);
+                // trống thì lấy xã hiện nay, cuối cùng mới fallback mã đơn vị báo cáo.
+                string maXaQuanLy = GetLookupString(cboXaQuanLy);
+                dto.MaXaPhuongQuanLy = !string.IsNullOrEmpty(maXaQuanLy) ? maXaQuanLy
+                    : (!string.IsNullOrEmpty(dto.MaXaHienNay) ? dto.MaXaHienNay : Config.EcdsConfigCFG.MaDonVi);
 
                 // ---- Diễn biến ca bệnh ----
                 dto.TinhTrangHienTai = GetLookupInt(cboTinhTrang, (int)EcdsTinhTrangHienNay.NgoaiTru);
