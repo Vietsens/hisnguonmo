@@ -169,6 +169,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         /// - TẮT (= 0 / null — mặc định): ẩn mục "Kê đơn điều trị", luồng kê đơn giữ nguyên hoàn toàn.
         /// </summary>
         private const string CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
+        private const string KEY_PrinMps000001 = "HIS.Desktop.Plugins.ExamServiceReqExecute.MPS000001_NGHE_AN";
+        internal static string keyMps000001;
+
+
         internal static bool EnableTreatmentPrescription;
 
         internal static void LoadConfig()
@@ -178,6 +182,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 // Doc som: LoadConfig dung chung mot try/catch, neu mot key phia sau nem loi
                 // thi cac key con lai se khong duoc doc -> tinh nang chan nhap vien bi tat am tham.
                 keyMps000062 = GetValue(KEY_PrinMps000062);
+                keyMps000001 = GetValue(KEY_PrinMps000001);
                 string rawCheckDepaDocHospitalize = GetValue(KEY_CheckDepaDocumentHospitalization);
                 CheckDepaDocumentHospitalizationCodes = string.IsNullOrWhiteSpace(rawCheckDepaDocHospitalize)
                     ? new List<string>()
