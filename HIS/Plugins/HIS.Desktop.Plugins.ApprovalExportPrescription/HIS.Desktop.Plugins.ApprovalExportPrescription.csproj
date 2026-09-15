@@ -148,11 +148,11 @@
     <Compile Include="ApprovalExportPrescription\ApprovalExportPrescriptionFactory.cs" />
     <Compile Include="ApprovalExportPrescription\IApprovalExportPrescription.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="FormApprovalExportPrescription.cs">
-      <SubType>Form</SubType>
+    <Compile Include="UCApprovalExportPrescription.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FormApprovalExportPrescription.Designer.cs">
-      <DependentUpon>FormApprovalExportPrescription.cs</DependentUpon>
+    <Compile Include="UCApprovalExportPrescription.Designer.cs">
+      <DependentUpon>UCApprovalExportPrescription.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestUriStore.cs" />
@@ -160,8 +160,8 @@
     <Compile Include="Resources\ResourceMessage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormApprovalExportPrescription.resx">
-      <DependentUpon>FormApprovalExportPrescription.cs</DependentUpon>
+    <EmbeddedResource Include="UCApprovalExportPrescription.resx">
+      <DependentUpon>UCApprovalExportPrescription.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />

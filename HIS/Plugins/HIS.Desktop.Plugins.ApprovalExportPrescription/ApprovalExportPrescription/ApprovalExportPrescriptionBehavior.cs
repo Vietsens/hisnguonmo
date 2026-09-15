@@ -60,7 +60,7 @@ namespace HIS.Desktop.Plugins.ApprovalExportPrescription.ApprovalExportPrescript
                 }
                 if (module != null)
                 {
-                    result = new FormApprovalExportPrescription(module);
+                    result = new UCApprovalExportPrescription(module);
                 }
                 else
                     result = null;
