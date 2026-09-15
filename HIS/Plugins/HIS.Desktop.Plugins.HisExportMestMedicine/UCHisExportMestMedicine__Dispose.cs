@@ -41,6 +41,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 _PatientTypeSelecteds = null;
                 _TypeSelecteds = null;
                 _StatusSelecteds = null;
+                _PayFormSelecteds = null;
                 rightClickData = null;
                 rooms = null;
                 medistocks = null;
@@ -115,6 +116,11 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 this.gridViewStatus.SelectionChanged -= new DevExpress.Data.SelectionChangedEventHandler(this.gridViewStatus_SelectionChanged);
                 this.gridViewStatus.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.gridViewStatus_KeyUp);
                 this.gridViewStatus.MouseDown -= new System.Windows.Forms.MouseEventHandler(this.gridViewStatus_MouseDown);
+                this.cboPayForm.CustomDisplayText -= new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboPayForm_CustomDisplayText);
+                this.cboPayForm.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.cboPayForm_KeyUp);
+                this.gridLookUpEdit1View.SelectionChanged -= new DevExpress.Data.SelectionChangedEventHandler(this.gridLookUpEdit1View_SelectionChanged);
+                this.gridLookUpEdit1View.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.gridLookUpEdit1View_KeyUp);
+                this.gridLookUpEdit1View.MouseDown -= new System.Windows.Forms.MouseEventHandler(this.gridLookUpEdit1View_MouseDown);
                 this.dtExpTimeFrom.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtExpTimeFrom_Closed);
                 this.dtExpTimeFrom.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.dtExpTimeFrom_KeyUp);
                 this.dtCreateTimeTo.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtCreateTimeTo_Closed);
@@ -134,6 +140,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 gridPatientType.GridControl.DataSource = null;
                 gridViewStatus.GridControl.DataSource = null;
                 gridViewType.GridControl.DataSource = null;
+                gridLookUpEdit1View.GridControl.DataSource = null;
                 gridView.GridControl.DataSource = null;
                 gridControl.DataSource = null;
                 gridColumn22 = null;
@@ -279,6 +286,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 cboStatus = null;
                 gridViewType = null;
                 cboType = null;
+                gridLookUpEdit1View = null;
+                cboPayForm = null;
+                layoutControlItem43 = null;
                 layoutControlItem10 = null;
                 layoutControlGroup4 = null;
                 layoutControl5 = null;
