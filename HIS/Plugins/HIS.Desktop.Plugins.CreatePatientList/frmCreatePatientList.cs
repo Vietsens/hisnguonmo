@@ -614,26 +614,26 @@ namespace HIS.Desktop.Plugins.CreatePatientList
                 cboJob.Properties.ValueMember = "ID";
                 cboJob.Properties.ForceInitialize();
                 cboJob.Properties.Columns.Clear();
-                cboJob.Properties.Columns.Add(new LookUpColumnInfo("CAREER_CODE", "", 50));
-                cboJob.Properties.Columns.Add(new LookUpColumnInfo("CAREER_NAME", "", 100));
+                cboJob.Properties.Columns.Add(new LookUpColumnInfo("CAREER_CODE", "Mã", 50));
+                cboJob.Properties.Columns.Add(new LookUpColumnInfo("CAREER_NAME", "Tên nghề nghiệp", 100));
                 int popupWidth = 300;
                 // Bo sung cot nhom cap 2/3/4 theo key cau hinh MOS.HIS_CAREER.IS_SHOW_LEVEL_2/3/4 (rong = an, mac dinh nhu cu)
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_2") == "1")
                 {
-                    cboJob.Properties.Columns.Add(new LookUpColumnInfo("LEVEL2_NAME", "", 180));
+                    cboJob.Properties.Columns.Add(new LookUpColumnInfo("LEVEL2_NAME", "Nhóm cấp 2", 180));
                     popupWidth += 180;
                 }
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_3") == "1")
                 {
-                    cboJob.Properties.Columns.Add(new LookUpColumnInfo("LEVEL3_NAME", "", 180));
+                    cboJob.Properties.Columns.Add(new LookUpColumnInfo("LEVEL3_NAME", "Nhóm cấp 3", 180));
                     popupWidth += 180;
                 }
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_4") == "1")
                 {
-                    cboJob.Properties.Columns.Add(new LookUpColumnInfo("LEVEL4_NAME", "", 180));
+                    cboJob.Properties.Columns.Add(new LookUpColumnInfo("LEVEL4_NAME", "Nhóm cấp 4", 180));
                     popupWidth += 180;
                 }
-                cboJob.Properties.ShowHeader = false;
+                cboJob.Properties.ShowHeader = true;
                 cboJob.Properties.ImmediatePopup = true;
                 cboJob.Properties.DropDownRows = 10;
                 cboJob.Properties.PopupWidth = popupWidth;
