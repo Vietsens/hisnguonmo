@@ -61,6 +61,7 @@ In tem barcode / phiếu YC khám qua `ProcessPrint()` + `LoadConfigHisAcc()` (S
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 16/09/2026 | nampp (Claude) | Việc 2841/56781 (phản hồi test chị Hân "Cập nhật thông tin BN không có cấp 2/3/4"): combo chọn nghề nghiệp `cboCareer` chuyển từ `FillDataToGridLookupedit` (2 cột, không tiêu đề) sang hàm mới `InitComboCareer` trong `frmPatientUpdate__LoadCombo.cs`: bật tiêu đề cột, caption "Mã" (100) / "Tên nghề nghiệp" (250), thêm cột "Nhóm cấp 2/3/4" (180 mỗi cột) theo key `MOS.HIS_CAREER.IS_SHOW_LEVEL_2/3/4` (rỗng = ẩn, mặc định như cũ), `PopupFormWidth` cộng dồn, giữ `ImmediatePopup = true`. Màn này trước đó bị bỏ sót ngoài 9 vị trí đã sửa. |
 | 29/07/2026 | nampp | **MIMS — Checklist PN mang thai / cho con bú** — Thêm nhóm control runtime vào group "Thông tin bệnh" (config `HIS.Desktop.Mims.IsCheckPregnancyLactation`, mặc định TẮT). Nữ mới enable; đổi giới tính → clear + disable; tick mang thai bắt buộc nhập số tháng 1-9 (chặn lưu); load async / lưu sau UpdateSdo thành công vào `HIS_MIMS_PATIENT_PROFILE` (dùng chung với màn Xử trí khám + 4 form kê đơn). Files: `frmPatientUpdate__Mims.cs` (MỚI), `frmPatientUpdate.cs` (gọi `InitMimsWomanClassify` sau `FillDataPatientToControl`), `frmPatientUpdate__Event.cs` (validate + save trong `btnSave_Click`), `Config.cs` (`IsCheckMimsPregnancyLactation`), csproj (+ ref `HIS.Desktop.MIMS.Integration`). |
 
 ## 9. Test Cases

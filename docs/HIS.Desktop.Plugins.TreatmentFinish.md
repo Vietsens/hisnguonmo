@@ -8,7 +8,7 @@
 | Loại | Form (FormBase) |
 | Mục đích | Kết thúc điều trị độc lập cho BN nội trú / ngoại trú / ban ngày (chọn KQĐT, nhập kết quả, in giấy ra viện/chuyển viện/báo tử) |
 | Người tạo | IVT |
-| Ngày cập nhật gần nhất | 14/05/2026 |
+| Ngày cập nhật gần nhất | 16/09/2026 |
 | Trạng thái | Bảo trì |
 
 ## 2. Quy Trình Nghiệp Vụ
@@ -129,6 +129,7 @@
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 16/09/2026 | nampp (Claude) | Việc 2841/56781 (phản hồi test chị Hân "kéo rộng form, không thấy mã"): nới combo nghề nghiệp trong `LoadDataToComboCareer` — cột "Mã" 50→100, "Tên nghề nghiệp" 150→250, popup cơ sở 200→350 (+180 mỗi cột cấp), đồng bộ với `HIS.UC.UCPatientRaw`. Cùng đợt nới: `HIS.UC.Hospitalize`, `HIS.UC.ExamTreatmentFinish`, `HIS.Desktop.Plugins.ImportBlood`; bổ sung cột cấp cho `HIS.Desktop.Plugins.PatientUpdate`. |
 | 16/09/2026 | nampp (Claude) | Việc 2841 (bổ sung theo phản hồi test): combo chọn nghề nghiệp **bật dòng tiêu đề cột** (`ShowHeader = true`) và đặt caption cho từng cột: "Mã", "Tên nghề nghiệp", "Nhóm cấp 2", "Nhóm cấp 3", "Nhóm cấp 4" — trước đây popup 2–5 cột không có tiêu đề nên người dùng không biết cột nào là gì. `PopupFormWidth` cộng dồn theo số cột thực hiện. File: `FormTreatmentFinish.cs` (`LoadDataToComboCareer` + `AddCareerLevelColumns`). Cùng đợt sửa 9 vị trí combo nghề nghiệp toàn hệ thống: `HIS.UC.UCPatientRaw` (Tiếp đón), `HIS.UC.Hospitalize`, `HIS.UC.TreatmentFinish`, `HIS.UC.ExamTreatmentFinish`, `HIS.Desktop.Plugins.BloodList`, `HIS.Desktop.Plugins.ImportBlood`, `HIS.Desktop.Plugins.HisBhytWhitelist`, `HIS.Desktop.Plugins.CreatePatientList`. |
 | 09/09/2026 | nampp (Claude) | Việc 2841 (bổ sung): thêm key `MOS.HIS_CAREER.IS_SHOW_LEVEL_2` — cột Tên nhóm cấp 2 trên combo nghề nghiệp cũng bật/tắt theo key như cấp 3/4 (mặc định rỗng = ẨN, combo giữ nguyên như trước khi update; phù hợp viện chưa thiết lập danh mục cấp). |
 | 07/09/2026 | nampp (Claude) | **Việc 2841 — Danh mục nghề nghiệp cấp 2/3/4 (QĐ 34/2020/QĐ-TTg)** Combo chọn nghề nghiệp bổ sung cột "Tên cấp 2" (LEVEL2_NAME, luôn hiển thị) + cột cấp 3/cấp 4 theo key cấu hình `MOS.HIS_CAREER.IS_SHOW_LEVEL_3` / `IS_SHOW_LEVEL_4` (1 = hiện; mặc định ẩn). Cột bind theo FieldName string nên tương thích cả MOS.EFMODEL cũ (hiện trống) lẫn mới. Files: `FormTreatmentFinish.cs` (LoadDataToComboCareer + AddCareerLevelColumns), `.csproj` (bỏ đổi — đã có ref HisConfig). Cùng đợt: `HIS.UC.TreatmentFinish`, `HIS.UC.ExamTreatmentFinish` (InitCarrer/LoadDataToComboCareer tương tự). |

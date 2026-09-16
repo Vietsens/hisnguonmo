@@ -93,10 +93,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             {
                 var careers = BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
 
-                int popupWidth = 200;
+                int popupWidth = 350;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("CAREER_CODE", "Mã", 50, 1));
-                columnInfos.Add(new ColumnInfo("CAREER_NAME", "Tên nghề nghiệp", 150, 2));
+                columnInfos.Add(new ColumnInfo("CAREER_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("CAREER_NAME", "Tên nghề nghiệp", 250, 2));
                 AddCareerLevelColumns(columnInfos, ref popupWidth);
                 ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, true, popupWidth);
                 ControlEditorLoader.Load(cboCareer, careers, controlEditorADO);
