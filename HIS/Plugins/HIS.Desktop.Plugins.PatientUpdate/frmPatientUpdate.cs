@@ -64,6 +64,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
     public partial class frmPatientUpdate : HIS.Desktop.Utility.FormBase
     {
         #region Declaration
+        private const int CMND_LENGTH = 9;
+        private const int CCCD_LENGTH = 12;
+
         int demAvatar = 0;
         int demBHYT = 0;
         bool isGKS = false;
@@ -1447,65 +1450,42 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 //patientDTO.UUID = txtUUID.Text.Trim();
                 if (!String.IsNullOrEmpty(txtCCCD_CMTNumber.Text))
                 {
-                    if (Inventec.Common.String.CountVi.Count(txtCCCD_CMTNumber.Text.Trim()) == 12)
-                    {
-                        Int64 k;
-                        bool isNumeric = Int64.TryParse(txtCCCD_CMTNumber.Text, out k);
-                        if (isNumeric)
-                        {
-                            if (!string.IsNullOrEmpty(txtCCCD_CMTDate.EditValue?.ToString()))
-                                patientDTO.CCCD_DATE = Convert.ToInt64(txtCCCD_CMTDate.DateTime.ToString("yyyyMMdd") + "000000");
-                            else
-                                patientDTO.CCCD_DATE = null;
-                            patientDTO.CCCD_NUMBER = txtCCCD_CMTNumber.Text.Trim();
-                            patientDTO.CCCD_PLACE = txtCCCD_CMTPlace.Text.Trim();
-                            patientDTO.CMND_DATE = null;
-                            patientDTO.CMND_NUMBER = "";
-                            patientDTO.CMND_PLACE = "";
+                    string identityNumber = txtCCCD_CMTNumber.Text.Trim();
+                    string identityPlace = txtCCCD_CMTPlace.Text.Trim();
+                    long? identityDate = null;
+                    if (!string.IsNullOrEmpty(txtCCCD_CMTDate.EditValue?.ToString()))
+                        identityDate = Convert.ToInt64(txtCCCD_CMTDate.DateTime.ToString("yyyyMMdd") + "000000");
 
-                            patientDTO.PASSPORT_DATE = null;
-                            patientDTO.PASSPORT_NUMBER = "";
-                            patientDTO.PASSPORT_PLACE = "";
-                        }
+                    Int64 k;
+                    bool isNumeric = Int64.TryParse(identityNumber, out k);
+
+                    patientDTO.CCCD_DATE = null;
+                    patientDTO.CCCD_NUMBER = "";
+                    patientDTO.CCCD_PLACE = "";
+                    patientDTO.CMND_DATE = null;
+                    patientDTO.CMND_NUMBER = "";
+                    patientDTO.CMND_PLACE = "";
+                    patientDTO.PASSPORT_DATE = null;
+                    patientDTO.PASSPORT_NUMBER = "";
+                    patientDTO.PASSPORT_PLACE = "";
+
+                    if (isNumeric && Inventec.Common.String.CountVi.Count(identityNumber) == CCCD_LENGTH)
+                    {
+                        patientDTO.CCCD_DATE = identityDate;
+                        patientDTO.CCCD_NUMBER = identityNumber;
+                        patientDTO.CCCD_PLACE = identityPlace;
+                    }
+                    else if (isNumeric && identityNumber.Length == CMND_LENGTH)
+                    {
+                        patientDTO.CMND_DATE = identityDate;
+                        patientDTO.CMND_NUMBER = identityNumber;
+                        patientDTO.CMND_PLACE = identityPlace;
                     }
                     else
                     {
-                        Int64 n;
-                        bool isNumeric = Int64.TryParse(txtCCCD_CMTNumber.Text, out n);
-                        if (isNumeric)
-                        {
-                            patientDTO.CCCD_DATE = null;
-                            patientDTO.CCCD_NUMBER = "";
-                            patientDTO.CCCD_PLACE = "";
-
-                            patientDTO.PASSPORT_DATE = null;
-                            patientDTO.PASSPORT_NUMBER = "";
-                            patientDTO.PASSPORT_PLACE = "";
-
-                            if (!string.IsNullOrEmpty(txtCCCD_CMTDate.EditValue?.ToString()))
-                                    patientDTO.CMND_DATE = Convert.ToInt64(txtCCCD_CMTDate.DateTime.ToString("yyyyMMdd") + "000000");
-                            else
-                                patientDTO.CMND_DATE = null;
-                            patientDTO.CMND_NUMBER = txtCCCD_CMTNumber.Text.Trim();
-                            patientDTO.CMND_PLACE = txtCCCD_CMTPlace.Text.Trim();
-                        }
-                        else
-                        {
-                            patientDTO.CCCD_DATE = null;
-                            patientDTO.CCCD_NUMBER = "";
-                            patientDTO.CCCD_PLACE = "";
-
-                            patientDTO.CMND_DATE = null;
-                            patientDTO.CMND_NUMBER = "";
-                            patientDTO.CMND_PLACE = "";
-
-                            if (!string.IsNullOrEmpty(txtCCCD_CMTDate.EditValue?.ToString()))
-                                patientDTO.PASSPORT_DATE = Convert.ToInt64(txtCCCD_CMTDate.DateTime.ToString("yyyyMMdd") + "000000");
-                            else
-                                patientDTO.PASSPORT_DATE = null;
-                            patientDTO.PASSPORT_NUMBER = txtCCCD_CMTNumber.Text.Trim();
-                            patientDTO.PASSPORT_PLACE = txtCCCD_CMTPlace.Text.Trim();
-                        }
+                        patientDTO.PASSPORT_DATE = identityDate;
+                        patientDTO.PASSPORT_NUMBER = identityNumber;
+                        patientDTO.PASSPORT_PLACE = identityPlace;
                     }
                 }
                 else

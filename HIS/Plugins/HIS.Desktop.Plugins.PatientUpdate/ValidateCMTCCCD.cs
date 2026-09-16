@@ -27,6 +27,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
 {
     class ValidateCMTCCCD : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
+        private const int MIN_LENGTH = 6;
+        private const int MAX_LENGTH = 12;
+
         internal DevExpress.XtraEditors.TextEdit txtCmndNumber;
 
         public override bool Validate(Control control, object value)
@@ -37,64 +40,30 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 if (txtCmndNumber == null) return valid;
                 if (!String.IsNullOrWhiteSpace(txtCmndNumber.Text))
                 {
+                    string cmndNumber = txtCmndNumber.Text.Trim();
                     Int64 k;
-                    bool isNumeric = Int64.TryParse(txtCmndNumber.Text, out k);
-                    if (isNumeric == false)
+                    bool isNumeric = Int64.TryParse(cmndNumber, out k);
+
+                    if (isNumeric == false && Regex.IsMatch(cmndNumber, @"^[\p{L}]+$"))
                     {
-                        string cmndNumber = txtCmndNumber.Text.Trim();
-                        if (cmndNumber.Length >9 )
-                        {
-                            ErrorText = "Hộ chiếu không được vượt quá 9 ký tự";
-                            ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                            return valid;
-                        }
-                        
-                        if (Regex.IsMatch(txtCmndNumber.Text, @"^[\p{L}]+$"))
-                        {
-                            ErrorText = "CMND/CCCD/Hộ chiếu không đúng định dạng";
-                            ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                            return valid;
-                        }
+                        ErrorText = "CMND/CCCD/Hộ chiếu không đúng định dạng";
+                        ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                        return valid;
                     }
-                    else
+
+                    if (isNumeric == false && !Regex.IsMatch(cmndNumber, @"^[0-9a-zA-Z]+$"))
                     {
-                        string cmndNumber = txtCmndNumber.Text.Trim();
-                        if (cmndNumber.Length > 9 &&  cmndNumber.Length < 12)
-                        {
-                            ErrorText = "CMND không được vượt quá 9 ký tự";
-                            ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                            return valid;
-                        }
-                        if (cmndNumber.Length > 12 )
-                        {
-                            ErrorText = "CCCD không được vượt quá 12 ký tự";
-                            ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                            return valid;
-                        }
-                        if (cmndNumber.Length < 9)
-                        {
-                            ErrorText = "CMNN không được nhỏ hơn 9 kí tự";
-                            ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                            return valid;
-                        }
+                        ErrorText = "CMND/CCCD/Hộ chiếu không đúng định dạng";
+                        ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                        return valid;
                     }
-                    
 
-
-
-                    //////////////////////////
-                    //if (Inventec.Common.String.CountVi.Count(txtCmndNumber.Text.Trim()) == 12)
-                    //{
-                    //    Int64 k;
-                    //    bool isNumeric = Int64.TryParse(txtCmndNumber.Text, out k);
-                    //    if (isNumeric == false)
-                    //    {
-                    //        ErrorText = "Trường CCCD chỉ cho phép nhập 12 ký tự số. Vui lòng nhập lại!";
-                    //        ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                    //        return valid;
-                    //    }
-                    //}
-
+                    if (cmndNumber.Length < MIN_LENGTH || cmndNumber.Length > MAX_LENGTH)
+                    {
+                        ErrorText = string.Format("CMND/CCCD/Hộ chiếu phải từ {0} đến {1} ký tự", MIN_LENGTH, MAX_LENGTH);
+                        ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                        return valid;
+                    }
                 }
                 valid = true;
             }
