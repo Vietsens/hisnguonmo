@@ -61,6 +61,43 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             }
 
         }
+        /// <summary>
+        /// Combo nghe nghiep: tieu de cot Ma / Ten nghe nghiep + cot Nhom cap 2/3/4 theo key cau hinh
+        /// MOS.HIS_CAREER.IS_SHOW_LEVEL_2/3/4 (rong/khac 1 = an, mac dinh an nhu cu) - viec 56781
+        /// </summary>
+        void InitComboCareer(DevExpress.XtraEditors.GridLookUpEdit cboEditor, object datasource)
+        {
+            try
+            {
+                int popupWidth = 350;
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("CAREER_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("CAREER_NAME", "Tên nghề nghiệp", 250, 2));
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_2") == "1")
+                {
+                    columnInfos.Add(new ColumnInfo("LEVEL2_NAME", "Nhóm cấp 2", 180, 3));
+                    popupWidth += 180;
+                }
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_3") == "1")
+                {
+                    columnInfos.Add(new ColumnInfo("LEVEL3_NAME", "Nhóm cấp 3", 180, 4));
+                    popupWidth += 180;
+                }
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_4") == "1")
+                {
+                    columnInfos.Add(new ColumnInfo("LEVEL4_NAME", "Nhóm cấp 4", 180, 5));
+                    popupWidth += 180;
+                }
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, true, popupWidth);
+                controlEditorADO.ImmediatePopup = true;
+                ControlEditorLoader.Load(cboEditor, datasource, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         void FillDataToGridLookupedit(DevExpress.XtraEditors.GridLookUpEdit cboEditor, string displayMember, string valueMember, string displayCodeMember, object datasource)
         {
             try

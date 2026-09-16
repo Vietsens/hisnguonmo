@@ -8,7 +8,7 @@
 | Loại | UC (UCImportBloodPlus) + Form host (FrmImportBlood) |
 | Mục đích | Nhập máu và chế phẩm máu vào kho máu (từ nhà cung cấp, đăng ký, kiểm kê, khác, hiến máu). Hỗ trợ nhập nhanh túi máu bằng cách quét mã QR theo tiêu chuẩn ISBT 128. |
 | Người tạo | Inventec |
-| Ngày cập nhật | 06/07/2026 |
+| Ngày cập nhật | 16/09/2026 |
 | Trạng thái | Bảo trì |
 
 ## 2. Quy Trình Nghiệp Vụ
@@ -99,6 +99,7 @@ Plugin có nhiều mẫu in phiếu nhập (biên bản kiểm nhập, phiếu n
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 16/09/2026 | nampp (Claude) | Việc 2841/56781: nới combo nghề nghiệp người hiến máu (`UCImportBloodPlus__Plus__BloodGiver.cs`) — cột "Mã" 50→100, "Tên nghề nghiệp" 150→250, popup cơ sở 200→350, đồng bộ độ rộng với các màn khác. |
 | 16/09/2026 | nampp (Claude) | Việc 2841 (bổ sung theo phản hồi test): combo chọn nghề nghiệp **bật dòng tiêu đề cột** (`ShowHeader = true`) và đặt caption cho từng cột: "Mã", "Tên nghề nghiệp", "Nhóm cấp 2", "Nhóm cấp 3", "Nhóm cấp 4" — trước đây popup 2–5 cột không có tiêu đề nên người dùng không biết cột nào là gì. `PopupFormWidth` cộng dồn theo số cột thực hiện. File: `UCImportBloodPlus__Plus__BloodGiver.cs` (`InitComboCareer`). |
 | 09/09/2026 | nampp (Claude) | Việc 2841 (bổ sung): thêm key `MOS.HIS_CAREER.IS_SHOW_LEVEL_2` — cột Tên nhóm cấp 2 trên combo nghề nghiệp cũng bật/tắt theo key như cấp 3/4 (mặc định rỗng = ẨN, combo giữ nguyên như trước khi update; phù hợp viện chưa thiết lập danh mục cấp). |
 | 07/09/2026 | nampp (Claude) | **Việc 2841 — Danh mục nghề nghiệp cấp 2/3/4 (QĐ 34/2020/QĐ-TTg)** Combo chọn nghề nghiệp bổ sung cột "Tên cấp 2" (LEVEL2_NAME, luôn hiển thị) + cột cấp 3/cấp 4 theo key cấu hình `MOS.HIS_CAREER.IS_SHOW_LEVEL_3` / `IS_SHOW_LEVEL_4` (1 = hiện; mặc định ẩn). Cột bind theo FieldName string nên tương thích cả MOS.EFMODEL cũ (hiện trống) lẫn mới. Files: `UCImportBloodPlus__Plus__BloodGiver.cs` (InitComboCareer), `.csproj` (thêm ProjectReference HIS.Desktop.LocalStorage.HisConfig, xóa licenses.licx stale). |
