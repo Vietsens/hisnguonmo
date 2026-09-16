@@ -91,6 +91,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
         List<HIS_EXP_MEST_STT> _StatusSelecteds;
         List<HIS_EXP_MEST_TYPE> _TypeSelecteds;
         List<HIS_PATIENT_TYPE> _PatientTypeSelecteds;
+        List<HIS_PAY_FORM> _PayFormSelecteds;
 
         List<HIS_IMP_MEST> listImpMest;
 
@@ -154,6 +155,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 }
                 else
                     lciBloodCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                // Cot "Du tru mau" chi hien khi dang lam viec o kho mau.
+                this.gridColViewBloodRequest.Visible = (check != null && check.IS_BLOOD == 1);
             }
             catch (Exception ex)
             {
@@ -195,6 +199,12 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 InitCombo(cboPatientType, BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "PATIENT_TYPE_NAME", "ID");
 
                 ResetComboPatientType(cboPatientType);
+
+                InitCheck(cboPayForm, SelectionGrid__PayForm);
+                InitCombo(cboPayForm, BackendDataWorker.Get<HIS_PAY_FORM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "PAY_FORM_NAME", "ID");
+
+                //Phieu xuat khong phai ban le co PAY_FORM_ID null, tich san het la loc mat het cac phieu do
+                ResetComboPatientType(cboPayForm);
 
                 if (expMestTypes != null && expMestTypes.Count > 0)
                 {
@@ -888,6 +898,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
 
                     SetFilterStatus(ref filter);
                     SetFilterPatientType(ref filter);
+                    SetFilterPayForm(ref filter);
 
                     if (medistock.IS_BUSINESS != 1 && _RoomSelecteds != null && _RoomSelecteds.Count > 0)
                     {
@@ -977,6 +988,21 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             }
         }
 
+        private void  SetFilterPayForm(ref MOS.Filter.HisExpMestView2Filter filter)
+        {
+            try
+            {
+                if (_PayFormSelecteds != null && _PayFormSelecteds.Count > 0)
+                {
+                    filter.PAY_FORM_IDS = _PayFormSelecteds.Select(o => o.ID).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void SetFilterType(ref MOS.Filter.HisExpMestViewFilter filter)
         {
             try
@@ -1040,6 +1066,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 ResetCombo(cboType);
                 ResetComboPatientType(CboRequestRoomIds);
                 ResetComboPatientType(cboPatientType);
+                ResetComboPatientType(cboPayForm);
                 SetDefaultValueControl();
                 RefreshData();
             }
@@ -2043,6 +2070,23 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             }
         }
 
+        private void SelectionGrid__PayForm(object sender, EventArgs e)
+        {
+            try
+            {
+                _PayFormSelecteds = new List<HIS_PAY_FORM>();
+                foreach (HIS_PAY_FORM rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        _PayFormSelecteds.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         #endregion
 
         #region Public method
@@ -2690,6 +2734,28 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             }
         }
 
+        private void cboPayForm_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string payFormName = "";
+                if (_PayFormSelecteds != null && _PayFormSelecteds.Count > 0)
+                {
+                    foreach (var item in _PayFormSelecteds)
+                    {
+                        payFormName += item.PAY_FORM_NAME + ", ";
+                    }
+                }
+
+                e.DisplayText = payFormName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void cboStatus_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
             try
@@ -2925,8 +2991,23 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+                    cboPayForm.Focus();
+                    cboPayForm.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboPayForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
                     btnSearch.Focus();
-                    //cboType.ShowPopup();
                 }
             }
             catch (Exception ex)
@@ -2983,6 +3064,18 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
         }
 
         private void gridViewType_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                PhimTatCombo(e);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridLookUpEdit1View_KeyUp(object sender, KeyEventArgs e)
         {
             try
             {
@@ -5410,6 +5503,56 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                     }
                 }
                 cboType.Text = Type;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridLookUpEdit1View_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                GridHitInfo info = view.CalcHitInfo(e.Location);
+                if (info.Column != null && info.HitTest == GridHitTest.Column && info.Column.FieldName == "CheckMarkSelection")
+                {
+                    string payForm = "";
+                    if (view != null)
+                    {
+                        int[] selectRow = view.GetSelectedRows();
+                        foreach (var item in selectRow)
+                        {
+                            var selectTex = (HIS_PAY_FORM)view.GetRow(item);
+                            payForm += selectTex.PAY_FORM_NAME + ", ";
+                        }
+                    }
+                    cboPayForm.Text = payForm;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridLookUpEdit1View_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                string payForm = "";
+                GridView grd = sender as GridView;
+                if (grd != null)
+                {
+                    int[] selectRow = grd.GetSelectedRows();
+                    foreach (var item in selectRow)
+                    {
+                        var selectTex = (HIS_PAY_FORM)grd.GetRow(item);
+                        payForm += selectTex.PAY_FORM_NAME + ", ";
+                    }
+                }
+                cboPayForm.Text = payForm;
             }
             catch (Exception ex)
             {

@@ -53,4 +53,33 @@ namespace HIS.Desktop.Plugins.HisCareer
             return valid;
         }
     }
+
+    /// <summary>
+    /// Chi kiem tra do dai toi da, CHO PHEP DE TRONG.
+    /// Dung cho cac truong khong bat buoc (ten cap 2/3/4 cua danh muc nghe nghiep):
+    /// vien khong su dung danh muc phan cap thi de trong, khong bi chan luu
+    /// </summary>
+    class ValidMaxlengthAllowEmpty : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
+    {
+        internal DevExpress.XtraEditors.TextEdit textEdit;
+        internal long maxLength;
+        public override bool Validate(System.Windows.Forms.Control control, object value)
+        {
+            bool valid = false;
+            try
+            {
+                if (!string.IsNullOrEmpty(textEdit.Text) && Inventec.Common.String.CountVi.Count(textEdit.Text) > maxLength)
+                {
+                    this.ErrorText = "Trường dữ liệu vượt quá " + maxLength + " ký tự.";
+                    return valid;
+                }
+                valid = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return valid;
+        }
+    }
 }

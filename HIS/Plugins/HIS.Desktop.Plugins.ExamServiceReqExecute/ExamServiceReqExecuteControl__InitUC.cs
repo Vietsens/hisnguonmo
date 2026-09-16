@@ -287,7 +287,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 DXPopupMenu menu = btnPrint_ExamService.DropDownControl as DXPopupMenu;
                 DXMenuItem itemKhamThem = new DXMenuItem("Yêu cầu khám thêm", new EventHandler(onClickInPhieuKhamBenh));
-                itemKhamThem.Tag = PrintType.YEU_CAU_KHAM;
+                if (HisConfigCFG.keyMps000001 == "1")
+                {
+                    itemKhamThem.Tag = PrintType.YEU_CAU_KHAM;
+                }
+                else
+                {
+                    itemKhamThem.Tag = PrintType.YEU_CAU_KHAM_THEM;
+                }
+                
                 menu.Items.Add(itemKhamThem);
                 btnPrint_ExamService.DropDownControl = menu;
             }

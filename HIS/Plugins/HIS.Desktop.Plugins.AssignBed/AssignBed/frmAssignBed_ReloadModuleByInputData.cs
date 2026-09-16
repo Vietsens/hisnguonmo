@@ -103,6 +103,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 if (this.treatmentId > 0)
                 {
                     this.FillAllPatientInfoSelectedInForm();
+                    // Phai nap buong benh nhan dang nam TRUOC khi BindTree goi LoadAllBedData,
+                    // neu khong thi khong tinh duoc giuong mac dinh va khong gioi han duoc danh sach giuong.
+                    this.LoadCurrentTreatmentBedRoom(this.treatmentId);
                 }
                 this.ProcessInitEventForGridServieProcess();
 
