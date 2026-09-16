@@ -860,7 +860,8 @@ namespace HIS.UC.UCPatientRaw
                         this.typeReceptionForm = ReceptionForm.NhapTayVSSID;
                         param = new CommonParam();
                         HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
-                        filter.HEIN_CARD_NUMBER__EXACT = strValue.Trim();
+                        // VSSID = ma so BHXH -> tim theo SOCIAL_INSURANCE_NUMBER__EXACT (truoc nham HEIN_CARD_NUMBER__EXACT = so the BHYT), phan hoi test 16/09/2026
+                        filter.SOCIAL_INSURANCE_NUMBER__EXACT = strValue.Trim();
                         var data = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
                         WaitingManager.Hide();
                         if (data != null && data.Count > 0)
