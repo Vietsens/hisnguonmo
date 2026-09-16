@@ -74,26 +74,26 @@ namespace HIS.UC.UCPatientRaw.ClassUCPatientRaw
             {
                 int popupWidth = 0;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("CAREER_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("CAREER_CODE", "Mã", 100, 1));
                 popupWidth += 100;
-                columnInfos.Add(new ColumnInfo("CAREER_NAME", "", 250, 2));
+                columnInfos.Add(new ColumnInfo("CAREER_NAME", "Tên nghề nghiệp", 250, 2));
                 popupWidth += 250;
                 if (CareerLevelConfig.IsShowLevel2)
                 {
-                    columnInfos.Add(new ColumnInfo("LEVEL2_NAME", "", 180, 3));
+                    columnInfos.Add(new ColumnInfo("LEVEL2_NAME", "Nhóm cấp 2", 180, 3));
                     popupWidth += 180;
                 }
                 if (CareerLevelConfig.IsShowLevel3)
                 {
-                    columnInfos.Add(new ColumnInfo("LEVEL3_NAME", "", 180, 4));
+                    columnInfos.Add(new ColumnInfo("LEVEL3_NAME", "Nhóm cấp 3", 180, 4));
                     popupWidth += 180;
                 }
                 if (CareerLevelConfig.IsShowLevel4)
                 {
-                    columnInfos.Add(new ColumnInfo("LEVEL4_NAME", "", 180, 5));
+                    columnInfos.Add(new ColumnInfo("LEVEL4_NAME", "Nhóm cấp 4", 180, 5));
                     popupWidth += 180;
                 }
-                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, false, popupWidth);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, true, popupWidth);
                 ControlEditorLoader.Load(cboEditor, data, controlEditorADO);
             }
             catch (Exception ex)

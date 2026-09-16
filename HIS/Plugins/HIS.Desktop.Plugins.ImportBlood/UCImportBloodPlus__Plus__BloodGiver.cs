@@ -2133,25 +2133,25 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 int popupWidth = 200;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("CAREER_CODE", "", 50, 1));
-                columnInfos.Add(new ColumnInfo("CAREER_NAME", "", 150, 2));
+                columnInfos.Add(new ColumnInfo("CAREER_CODE", "Mã", 50, 1));
+                columnInfos.Add(new ColumnInfo("CAREER_NAME", "Tên nghề nghiệp", 150, 2));
                 // Bo sung cot nhom cap 2/3/4 theo key cau hinh MOS.HIS_CAREER.IS_SHOW_LEVEL_2/3/4 (rong = an, mac dinh nhu cu)
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_2") == "1")
                 {
-                    columnInfos.Add(new ColumnInfo("LEVEL2_NAME", "", 180, 3));
+                    columnInfos.Add(new ColumnInfo("LEVEL2_NAME", "Nhóm cấp 2", 180, 3));
                     popupWidth += 180;
                 }
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_3") == "1")
                 {
-                    columnInfos.Add(new ColumnInfo("LEVEL3_NAME", "", 180, 4));
+                    columnInfos.Add(new ColumnInfo("LEVEL3_NAME", "Nhóm cấp 3", 180, 4));
                     popupWidth += 180;
                 }
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_4") == "1")
                 {
-                    columnInfos.Add(new ColumnInfo("LEVEL4_NAME", "", 180, 5));
+                    columnInfos.Add(new ColumnInfo("LEVEL4_NAME", "Nhóm cấp 4", 180, 5));
                     popupWidth += 180;
                 }
-                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, false, popupWidth);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, true, popupWidth);
                 var dataSource = BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 ControlEditorLoader.Load(cboCareer_BloodGiver, dataSource, controlEditorADO);
             }
