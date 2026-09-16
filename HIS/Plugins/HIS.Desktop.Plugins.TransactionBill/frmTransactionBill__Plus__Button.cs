@@ -1378,6 +1378,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         data.DepositNumOrder = (long)spnNumOrder.Value;
                     }
                 }
+
+                // MULTI_PAYFORM: so tien can thu co the con phan le duoi 1 dong ma luoi hinh thuc
+                // khong nhap duoc -> bu vao dong cuoi truoc khi gui, neu khong backend tu choi bill.
+                // Dat sau khi data.PayAmount da tinh xong (khoi chkCoKetChuyen o tren).
+                if (isMultiPayform && !this.AdjustPayformRemainder(data, param))
+                {
+                    return false;
+                }
                 Inventec.Common.Logging.LogSystem.Info("ProcessSave 1.6");
 
                 //thanh toán qua KEYPAY

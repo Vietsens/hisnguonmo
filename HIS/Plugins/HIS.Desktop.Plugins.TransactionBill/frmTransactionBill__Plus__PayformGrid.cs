@@ -35,7 +35,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         /// Goi trong timerInitForm_Tick (sau CalcuCanThu).
         /// </summary>
         // Doi BUILD_TAG moi lan sua de nhan biet dll dang chay co phai ban moi khong (grep trong LogSystem.txt)
-        private const string PAYFORM_BUILD_TAG = "MultiPayform-20260603-03";
+        private const string PAYFORM_BUILD_TAG = "MultiPayform-20260915-01";
 
         private void InitMultiPayformGrid()
         {
@@ -334,16 +334,93 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     });
                 }
 
-                // Set dong dau + tong vao Transaction don de tuong thich logic cu
+                // Set dong dau vao Transaction don de tuong thich logic cu.
+                // KHONG gan Transaction.AMOUNT theo tong cac hinh thuc: backend chan tuyet doi
+                // (HisTransactionBillCheck.IsValidAmount) khi AMOUNT khac tong PRICE cua SereServBills,
+                // trong khi tong cac hinh thuc chi la so tien CAN THU (da tru ket chuyen/mien giam/quy).
                 var first = rows[0];
                 data.Transaction.PAY_FORM_ID = first.PAY_FORM_ID;
                 data.Transaction.BANK_ID = first.BANK_ID;
-                data.Transaction.AMOUNT = rows.Sum(o => o.TOTAL_AMOUNT_VND);
 
                 Inventec.Common.Logging.LogSystem.Debug(
                     Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => data.PayformDetails), data.PayformDetails));
 
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Bu phan le cua so tien can thu vao dong hinh thuc thanh toan cuoi cung.
+        /// Backend (HisTransactionBillCreate.IsValidPayformDetails) chan bill khi tong TotalAmount
+        /// cac hinh thuc NHO HON PayAmount - so sanh tuyet doi, khong co dung sai.
+        /// Luoi hinh thuc chi nhap duoc so nguyen dong (repoSpinAmount format "#,##0"), trong khi
+        /// "can thu" van co the con phan thap phan (gia dich vu da gom VAT) => thu ngan khong the
+        /// nhap du, phai lam tron len 1 dong moi luu duoc (thu thua cua benh nhan).
+        /// - Thieu duoi 1 dong: bu vao dong cuoi (uu tien dong tien VND) de tong khop tuyet doi.
+        /// - Thieu tu 1 dong tro len: thu ngan nhap thieu that -> bao loi tai cho, khong goi API.
+        /// KHONG dung den Transaction.AMOUNT va SereServBills nen khong anh huong cac check khac.
+        /// Phai goi SAU khi data.PayAmount da duoc tinh xong, ngay truoc khi gui CreateBill.
+        /// </summary>
+        private bool AdjustPayformRemainder(MOS.SDO.HisTransactionBillSDO data, CommonParam param)
+        {
+            try
+            {
+                if (!isMultiPayform || data == null
+                    || data.PayformDetails == null || data.PayformDetails.Count == 0)
+                {
+                    return true;
+                }
+
+                decimal sumTotalAmount = data.PayformDetails.Sum(o => o.TotalAmount);
+                decimal missing = data.PayAmount - sumTotalAmount;
+                if (missing <= 0)
+                {
+                    return true;
+                }
+
+                if (missing >= 1)
+                {
+                    string message = string.Format(
+                        "Tổng thành tiền các hình thức thanh toán [{0}] chưa đủ số tiền cần thu [{1}]. Còn thiếu [{2}].",
+                        Inventec.Common.Number.Convert.NumberToStringRoundAuto(sumTotalAmount, 2),
+                        Inventec.Common.Number.Convert.NumberToStringRoundAuto(data.PayAmount, 2),
+                        Inventec.Common.Number.Convert.NumberToStringRoundAuto(missing, 2));
+                    if (param != null)
+                    {
+                        param.Messages.Add(message);
+                    }
+                    Inventec.Common.Logging.LogSystem.Warn("[MultiPayform] " + message);
+                    return false;
+                }
+
+                // Uu tien dong tien VND (ti gia rong hoac = 1): dong ngoai te co Amount theo don vi
+                // ngoai te, cong thang phan le VND vao Amount se sai don vi.
+                var target = data.PayformDetails.LastOrDefault(
+                    o => !o.ExchangeRate.HasValue || o.ExchangeRate.Value == 1);
+                if (target != null)
+                {
+                    target.Amount += missing;
+                    if (target.ForeignAmount.HasValue)
+                    {
+                        target.ForeignAmount = target.ForeignAmount.Value + missing;
+                    }
+                }
+                else
+                {
+                    // Chi co dong ngoai te: chi bu vao thanh tien VND - cot backend dung de doi chieu.
+                    target = data.PayformDetails[data.PayformDetails.Count - 1];
+                }
+                target.TotalAmount += missing;
+
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "[MultiPayform] Bu phan le vao hinh thuc thanh toan. PayAmount={0}, SumTotalAmount={1}, Missing={2}",
+                    data.PayAmount, sumTotalAmount, missing));
                 return true;
             }
             catch (Exception ex)
