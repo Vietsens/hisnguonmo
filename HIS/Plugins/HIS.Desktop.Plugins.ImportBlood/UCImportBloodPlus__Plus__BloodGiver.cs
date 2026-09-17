@@ -2131,10 +2131,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
-                int popupWidth = 200;
+                int popupWidth = 350;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("CAREER_CODE", "Mã", 50, 1));
-                columnInfos.Add(new ColumnInfo("CAREER_NAME", "Tên nghề nghiệp", 150, 2));
+                columnInfos.Add(new ColumnInfo("CAREER_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("CAREER_NAME", "Tên nghề nghiệp", 250, 2));
                 // Bo sung cot nhom cap 2/3/4 theo key cau hinh MOS.HIS_CAREER.IS_SHOW_LEVEL_2/3/4 (rong = an, mac dinh nhu cu)
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_2") == "1")
                 {
