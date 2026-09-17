@@ -1185,14 +1185,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     return;
                 }
 
-                //Hoạt chất KS mức "Chặn": bắt buộc có phiếu yêu cầu sử dụng kháng sinh phủ TRƯỚC khi lưu đơn.
-                //Chưa có -> không lưu, chuyển sang form tạo phiếu theo đợt điều trị; tạo xong mới lưu tiếp.
-                if (!this.CheckBlockLevelAntibioticBeforeSave())
-                {
-                    IsValidForSave = false;
-                    return;
-                }
-
 
                 bool isSaveAndPrint = (saveType == SAVETYPE.SAVE_PRINT_NOW);
                 //Tạm khóa các button lưu && lưu in lại khi đang xử lý
@@ -1875,163 +1867,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return result;
         }
 
-        /// <summary>
-        /// Hoat chat KS muc "Chan" (HIS_ACTIVE_INGREDIENT.APPROVAL_REQUIRED_LEVEL = 1): don bat buoc duoc
-        /// phieu yeu cau su dung khang sinh cua dot dieu tri PHU (hoat chat + ngay ke/du tru, phieu o trang thai
-        /// yeu cau/da duyet) truoc khi luu. Chua phu -> khong goi API luu, hoi va chuyen sang form tao phieu
-        /// theo dot dieu tri; tao xong kiem tra lai roi moi luu tiep. Nguoi dung tu choi/tao khong thanh cong
-        /// -> don khong duoc luu, du lieu tren man hinh giu nguyen.
-        /// Chi ap dung khi quan ly phieu theo dot dieu tri (MOS.HIS_ANTIBIOTIC_REQUEST.POLICY_OPTION = 2) —
-        /// dong bo voi kiem tra backend. Muc "Canh bao" (= 2 hoac chua chon) giu nguyen luong nhac sau luu.
-        /// </summary>
-        private bool CheckBlockLevelAntibioticBeforeSave()
-        {
-            try
-            {
-                if (HisConfigCFG.AntibioticRequestPolicyOption != "2") return true;
-                if (this.mediMatyTypeADOs == null || this.mediMatyTypeADOs.Count == 0) return true;
-
-                List<long> medicineTypeIds = this.mediMatyTypeADOs.Select(o => o.ID).ToList();
-                var medicineTypeAcinByMety = ValidAcinInteractiveWorker.GetMedicineTypeAcinByMedicineType(medicineTypeIds);
-                if (medicineTypeAcinByMety == null || medicineTypeAcinByMety.Count == 0) return true;
-
-                var acinIds = medicineTypeAcinByMety.Select(o => o.ACTIVE_INGREDIENT_ID).Distinct().ToList();
-                var approvalAcins = BackendDataWorker.Get<HIS_ACTIVE_INGREDIENT>()
-                    .Where(o => acinIds.Contains(o.ID) && o.IS_APPROVAL_REQUIRED == GlobalVariables.CommonNumberTrue).ToList();
-                var blockAcins = approvalAcins.Where(o => o.APPROVAL_REQUIRED_LEVEL == 1).ToList();
-                if (blockAcins.Count == 0) return true;
-
-                var uncoveredAcins = GetUncoveredBlockLevelAcins(blockAcins);
-                if (uncoveredAcins == null || uncoveredAcins.Count == 0) return true;
-
-                //Thong bao liet ke du 2 nhom: bat buoc (Chan) va chi nhac (Canh bao/chua chon muc)
-                var warnNames = approvalAcins.Where(o => o.APPROVAL_REQUIRED_LEVEL != 1).Select(o => o.ACTIVE_INGREDIENT_NAME).Distinct().ToList();
-                string warnPart = warnNames.Count > 0 ? string.Format(ResourceMessage.KhangSinhNhacTaoPhieuYeuCau, string.Join(", ", warnNames)) : "";
-                string blockNames = string.Join(", ", uncoveredAcins.Select(o => o.ACTIVE_INGREDIENT_NAME).Distinct());
-
-                if (XtraMessageBox.Show(string.Format(ResourceMessage.KhangSinhMucChanBatBuocTaoPhieuYeuCau, blockNames, warnPart),
-                    Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
-                    MessageBoxButtons.OKCancel) != DialogResult.OK)
-                {
-                    return false;
-                }
-
-                this.OpenAntibioticRequestFormByTreatment(uncoveredAcins, medicineTypeAcinByMety);
-
-                //Kiem tra lai do phu sau khi dong form tao phieu
-                uncoveredAcins = GetUncoveredBlockLevelAcins(blockAcins);
-                if (uncoveredAcins != null && uncoveredAcins.Count > 0)
-                {
-                    XtraMessageBox.Show(string.Format(ResourceMessage.KhangSinhMucChanVanChuaCoPhieuYeuCau,
-                        string.Join(", ", uncoveredAcins.Select(o => o.ACTIVE_INGREDIENT_NAME).Distinct())),
-                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                    return false;
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                //Loi kiem tra phia man hinh: cho luu tiep — backend van la chot chan cuoi
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Tra cac hoat chat muc "Chan" trong don CHUA duoc phieu yeu cau nao cua dot dieu tri phu.
-        /// Do phu: phieu o trang thai yeu cau/da duyet, cung hoat chat, [START_DATE, END_DATE] chua ngay ke.
-        /// Ngay doi chieu: ngay du tru khi GET_BY_DATE = 1 va co ngay du tru, nguoc lai ngay y lenh —
-        /// dung tieu chi backend dung khi gan don vao phieu.
-        /// </summary>
-        private List<HIS_ACTIVE_INGREDIENT> GetUncoveredBlockLevelAcins(List<HIS_ACTIVE_INGREDIENT> blockAcins)
-        {
-            List<HIS_ACTIVE_INGREDIENT> result = new List<HIS_ACTIVE_INGREDIENT>(blockAcins);
-            try
-            {
-                List<long> presTimes = HisConfigCFG.AntibioticReqGetByDate == "1" && this.UseTimeSelecteds != null && this.UseTimeSelecteds.Count > 0
-                    ? this.UseTimeSelecteds : this.intructionTimeSelecteds;
-                if (presTimes == null || presTimes.Count == 0) return result;
-                List<long> presDates = presTimes.Select(o => o - o % 1000000).Distinct().ToList();
-
-                CommonParam paramGet = new CommonParam();
-                MOS.Filter.HisAntibioticNewRegViewFilter filter = new MOS.Filter.HisAntibioticNewRegViewFilter();
-                filter.TREATMENT_ID = this.treatmentId;
-                filter.IS_ANTIBIOTIC_REQUEST_STT_REQ_APP = true;
-                var newRegs = new BackendAdapter(paramGet).Get<List<V_HIS_ANTIBIOTIC_NEW_REG>>(
-                    "api/HisAntibioticNewReg/GetView", ApiConsumers.MosConsumer, filter, paramGet);
-
-                result = blockAcins.Where(a => !presDates.All(d => newRegs != null && newRegs.Any(r => r.ACTIVE_INGREDIENT_ID == a.ID
-                    && r.START_DATE.HasValue && r.END_DATE.HasValue && r.START_DATE.Value <= d && r.END_DATE.Value >= d))).ToList();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Mo form tao phieu yeu cau su dung khang sinh theo DOT DIEU TRI (don chua luu — khong co don nguon),
-        /// dien san hoat chat muc "Chan" chua duoc phu + lieu dung/sinh hieu/chan doan tu man hinh ke don.
-        /// </summary>
-        private void OpenAntibioticRequestFormByTreatment(List<HIS_ACTIVE_INGREDIENT> uncoveredAcins, List<V_HIS_MEDICINE_TYPE_ACIN> medicineTypeAcinByMety)
-        {
-            try
-            {
-                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AntibioticRequest").FirstOrDefault();
-                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.AntibioticRequest'");
-                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.AntibioticRequest' is not plugins");
-
-                var uncoveredIds = uncoveredAcins.Select(o => o.ID).ToList();
-                var mediTypeIdsOfUncovered = medicineTypeAcinByMety.Where(o => uncoveredIds.Contains(o.ACTIVE_INGREDIENT_ID)).Select(o => o.MEDICINE_TYPE_ID).Distinct().ToList();
-                var medicineTypes = this.mediMatyTypeADOs.Where(o => mediTypeIdsOfUncovered.Contains(o.ID)).ToList();
-
-                List<HIS_ANTIBIOTIC_NEW_REG> newRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
-                foreach (var item in medicineTypes)
-                {
-                    var acinsOfMedicine = medicineTypeAcinByMety.Where(o => o.MEDICINE_TYPE_ID == item.ID && uncoveredIds.Contains(o.ACTIVE_INGREDIENT_ID)).ToList();
-                    foreach (var iAcin in acinsOfMedicine)
-                    {
-                        HIS_ANTIBIOTIC_NEW_REG newReg = new HIS_ANTIBIOTIC_NEW_REG();
-                        newReg.DOSAGE = item.TUTORIAL;
-                        newReg.USE_FORM = item.MEDICINE_USE_FORM_NAME;
-                        newReg.USE_DAY = GetUseDayForNewReg(item.UseDays);
-                        newReg.ACTIVE_INGREDIENT_ID = iAcin.ACTIVE_INGREDIENT_ID;
-                        newReg.CONCENTRA = item.CONCENTRA;
-                        newRegimen.Add(newReg);
-                    }
-                }
-
-                AntibioticRequestADO ado = new AntibioticRequestADO();
-                ado.PatientCode = currentTreatmentWithPatientType.TDL_PATIENT_CODE;
-                ado.PatientName = currentTreatmentWithPatientType.TDL_PATIENT_NAME;
-                ado.Dob = currentTreatmentWithPatientType.TDL_PATIENT_DOB;
-                ado.IsHasNotDayDob = currentTreatmentWithPatientType.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1;
-                ado.GenderName = currentTreatmentWithPatientType.TDL_PATIENT_GENDER_NAME;
-                ado.Temperature = (decimal?)spinTemperature.EditValue;
-                ado.Weight = (decimal?)spinWeight.EditValue;
-                ado.Height = (decimal?)spinHeight.EditValue;
-                ado.IcdSubCode = txtIcdSubCode.Text;
-                ado.IcdText = txtIcdText.Text;
-                ado.NewRegimen = newRegimen;
-                ado.ExpMestId = 0;
-                ado.TreatmentId = this.treatmentId; //Tao phieu theo dot dieu tri — don chua duoc luu
-                ado.processType = HIS.Desktop.ADO.AntibioticRequestADO.ProcessType.Request;
-                ado.InstructionDate = this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0
-                    ? this.intructionTimeSelecteds.OrderByDescending(o => o).Last() : 0;
-
-                List<object> listArgs = new List<object>();
-                listArgs.Add(ado);
-                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, GetRoomId(), GetRoomTypeId()), listArgs);
-                if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");
-                ((Form)extenceInstance).ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
         private void CreateRequestTicket(int actionType)
         {
             try
@@ -2048,8 +1883,32 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     if (acinIngredients != null && acinIngredients.Count > 0)
                     {
-                        var ActiveIngredientName = acinIngredients.Select(o => o.ACTIVE_INGREDIENT_NAME).ToList();
-                        if (XtraMessageBox.Show(string.Format(ResourceMessage.BanCoMuonTaoYeuCauKhong, string.Join(", ", ActiveIngredientName)), Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        //Muc do KS can phe duyet (HIS_ACTIVE_INGREDIENT.APPROVAL_REQUIRED_LEVEL): muc Chan (= 1) BAT BUOC tao phieu
+                        //yeu cau cho don vua luu -> hop thoai chi co nut OK (khong bo qua duoc), lap lai toi khi moi don co thuoc
+                        //muc Chan deu da duoc gan phieu. Muc Canh bao (= 2) hoac chua chon (trong) giu nguyen luong cu:
+                        //hoi OK/Cancel, co the bo qua.
+                        var blockAcins = acinIngredients.Where(o => o.APPROVAL_REQUIRED_LEVEL == 1).ToList();
+                        var warnAcins = acinIngredients.Where(o => o.APPROVAL_REQUIRED_LEVEL != 1).ToList();
+                        bool isMandatory = blockAcins.Count > 0;
+                        string messageTitle = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao);
+
+                        if (isMandatory)
+                        {
+                            string blockNames = string.Join(", ", blockAcins.Select(o => o.ACTIVE_INGREDIENT_NAME).Distinct());
+                            string warnPart = warnAcins.Count > 0
+                                ? string.Format(ResourceMessage.KhangSinhNhacTaoPhieuYeuCau, string.Join(", ", warnAcins.Select(o => o.ACTIVE_INGREDIENT_NAME).Distinct()))
+                                : "";
+                            XtraMessageBox.Show(string.Format(ResourceMessage.KhangSinhMucChanBatBuocTaoPhieuYeuCau, blockNames, warnPart), messageTitle, MessageBoxButtons.OK);
+                        }
+                        else
+                        {
+                            var ActiveIngredientName = acinIngredients.Select(o => o.ACTIVE_INGREDIENT_NAME).ToList();
+                            if (XtraMessageBox.Show(string.Format(ResourceMessage.BanCoMuonTaoYeuCauKhong, string.Join(", ", ActiveIngredientName)), messageTitle, MessageBoxButtons.OKCancel) != DialogResult.OK)
+                            {
+                                return;
+                            }
+                        }
+
                         {
                             Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AntibioticRequest").FirstOrDefault();
                             if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.AntibioticRequest'");
@@ -2057,11 +1916,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             AntibioticRequestADO ado = new AntibioticRequestADO();
 
-                            
+
                             var acinIngredientID = acinIngredients.Select(o => o.ID).ToList();
                             var TypeAcinMedicineType = medicineTypeAcinByMety.Where(o => acinIngredientID.Contains(o.ACTIVE_INGREDIENT_ID)).Select(p => p.MEDICINE_TYPE_ID).ToList();
                             var medicineType = this.mediMatyTypeADOs.Where(o => TypeAcinMedicineType.Contains(o.ID)).ToList();
                             var ExpMestId = ListExpMestMedicineAntibioticRequired.Where(o => TypeAcinMedicineType.Exists
+                                (p => p == o.TDL_MEDICINE_TYPE_ID)).Select(o => o.EXP_MEST_ID).Distinct().ToList();
+
+                            //Cac don co thuoc thuoc hoat chat muc Chan: bat buoc phai duoc gan phieu truoc khi ket thuc
+                            var blockAcinIds = blockAcins.Select(o => o.ID).ToList();
+                            var blockMedicineTypeIds = medicineTypeAcinByMety.Where(o => blockAcinIds.Contains(o.ACTIVE_INGREDIENT_ID)).Select(p => p.MEDICINE_TYPE_ID).ToList();
+                            var blockExpMestIds = ListExpMestMedicineAntibioticRequired.Where(o => blockMedicineTypeIds.Exists
                                 (p => p == o.TDL_MEDICINE_TYPE_ID)).Select(o => o.EXP_MEST_ID).Distinct().ToList();
 
                             //PT-55625: danh sach don duoc chot mot lan luc luu don va KHONG theo thu tu ngay.
@@ -2069,10 +1934,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             //de bo qua cac ngay da nam trong pham vi dot dieu tri cua phieu vua tao.
                             List<long> expMestIdsHadRequest = new List<long>();
                             List<long> expMestIdsAsked = new List<long>();
+                            //Vong dau hoi tat ca don co KS can phe duyet; cac vong nhac lai (bat buoc) chi hoi don co thuoc Chan chua gan phieu
+                            List<long?> expMestIdsToAsk = ExpMestId;
+                            bool canVerifyHadRequest = true;
                             while (true)
                             {
-                                long? em = GetNextExpMestIdToAsk(ExpMestId, expMestIdsHadRequest, expMestIdsAsked);
-                                if (!em.HasValue) break;
+                                long? em = GetNextExpMestIdToAsk(expMestIdsToAsk, expMestIdsHadRequest, expMestIdsAsked);
+                                if (!em.HasValue)
+                                {
+                                    if (!isMandatory || !canVerifyHadRequest) break;
+                                    //Bat buoc: con don co thuoc Chan chua gan phieu -> nhac lai va hoi tiep, khong cho bo qua
+                                    var uncoveredBlockExpMestIds = blockExpMestIds.Where(o => o.HasValue && !expMestIdsHadRequest.Contains(o.Value)).ToList();
+                                    if (uncoveredBlockExpMestIds.Count == 0) break;
+
+                                    var uncoveredMetyIds = ListExpMestMedicineAntibioticRequired.Where(o => uncoveredBlockExpMestIds.Contains(o.EXP_MEST_ID)).Select(o => o.TDL_MEDICINE_TYPE_ID).ToList();
+                                    var uncoveredAcinIds = medicineTypeAcinByMety.Where(o => uncoveredMetyIds.Contains(o.MEDICINE_TYPE_ID)).Select(o => o.ACTIVE_INGREDIENT_ID).ToList();
+                                    string uncoveredNames = string.Join(", ", blockAcins.Where(o => uncoveredAcinIds.Contains(o.ID)).Select(o => o.ACTIVE_INGREDIENT_NAME).Distinct());
+                                    XtraMessageBox.Show(string.Format(ResourceMessage.KhangSinhMucChanVanChuaCoPhieuYeuCau, uncoveredNames), messageTitle, MessageBoxButtons.OK);
+
+                                    expMestIdsToAsk = uncoveredBlockExpMestIds;
+                                    expMestIdsAsked = new List<long>();
+                                    continue;
+                                }
                                 expMestIdsAsked.Add(em.Value);
 
                                 List<HIS_ANTIBIOTIC_NEW_REG> NewRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
@@ -2146,7 +2029,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 //PT-55625: bac si co the vua tao phieu bao trum nhieu ngay -> cap nhat lai truoc khi hoi don ke tiep.
                                 //Neu bac si bam Huy thi khong co don nao duoc gan, don do da danh dau "da hoi" nen
                                 //vong lap chuyen sang ngay tiep theo chu khong hoi lai vo tan.
-                                expMestIdsHadRequest = GetExpMestIdsHadAntibioticRequest();
+                                var hadRequest = GetExpMestIdsHadAntibioticRequest();
+                                if (hadRequest == null)
+                                {
+                                    //Khong tra cuu duoc trang thai gan phieu -> khong the ep lap lai (tranh hoi vo tan), backend van la chot chan cuoi
+                                    canVerifyHadRequest = false;
+                                    hadRequest = new List<long>();
+                                }
+                                expMestIdsHadRequest = hadRequest;
                             }
                         }
                     }
@@ -2195,6 +2085,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         /// <summary>
         /// PT-55625 - Lay danh sach id phieu xuat cua ho so dieu tri hien tai da duoc gan phieu yeu cau su dung khang sinh.
         /// Dung de bo qua cac ngay da nam trong pham vi dot dieu tri cua phieu vua tao.
+        /// Tra ve null khi khong tra cuu duoc (loi API) de noi goi biet khong the xac minh trang thai.
         /// </summary>
         private List<long> GetExpMestIdsHadAntibioticRequest()
         {
@@ -2215,6 +2106,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 //Khong lay duoc trang thai thi giu nguyen hanh vi cu: van hoi tao phieu
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
             return result;
         }

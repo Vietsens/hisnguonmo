@@ -490,6 +490,23 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Resources
             }
         }
 
+        /// <summary>Dịch vụ {0} chưa có nội dung Mô tả. Vui lòng nhập Mô tả trước khi kết thúc xử lý. (PTTK_XXXXX)</summary>
+        internal static string DichVuChuaCoMoTaKhongChoKetThucXuLy
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("DichVuChuaCoMoTaKhongChoKetThucXuLy", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string UploadFileThatBaiVuiLongLienHeQuanTriheThongDeDuocHoTro
         {
             get

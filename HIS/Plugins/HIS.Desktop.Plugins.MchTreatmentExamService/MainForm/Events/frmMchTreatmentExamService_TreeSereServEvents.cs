@@ -109,7 +109,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     if (data.Baby != null && data.Baby.ID > 0)
                     {
-                        CopyBabyDataToChildTab(data.Baby); 
+                        // Bấm biểu tượng giấy chứng sinh trên cây dịch vụ: lấy cả Mẹ và Con, chuyển sang phần Con
+                        CopyBabyData(data.Baby, true, true);
                         return;
                     }
                     if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)

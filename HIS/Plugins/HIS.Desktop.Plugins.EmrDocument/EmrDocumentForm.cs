@@ -3491,8 +3491,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
         }
 
         /// <summary>
-        /// Dung PDF gop ngang cho mot nhom van ban cung MERGE_CODE: lay tat ca van ban cung ma gop,
-        /// da ky hoan tat, tai file ve roi ghep moi van ban mot cot. Tra ve null neu khong dung duoc.
+        /// Dung PDF gop ngang cho mot nhom van ban cung MERGE_CODE: ben vo (EMR) ky TUNG CHI TIET
+        /// (moi lan nhan dinh mot van ban 1 cot, mang chu ky rieng), ma gop danh dau cac cot thuoc cung
+        /// mot to phieu cha. Lay tat ca van ban da ky hoan tat trong nhom, tai file ve roi ghep moi van
+        /// ban mot cot thanh mot to. Tra ve null neu khong dung duoc.
         /// </summary>
         private byte[] BuildMergeColumnPdfByMergeCode(V_EMR_DOCUMENT representative, out string warning, out string error)
         {
@@ -3535,7 +3537,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     return null;
                 }
 
-                foreach (var file in files.Where(o => o.Extension != null && o.Extension.ToLower().Equals("pdf")))
+                foreach (var file in files.Where(o => o.Extension != null && o.Extension.ToLower().Equals("pdf") && !String.IsNullOrEmpty(o.Base64Data)))
                 {
                     string path = Utils.GenerateTempFileWithin();
                     Utils.ByteToFile(Convert.FromBase64String(file.Base64Data), path);
@@ -3548,7 +3550,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     return null;
                 }
 
-                //Chi mot van ban -> khong can gop, tra nguyen file
+                //Chi mot van ban -> khong can ghep, tra nguyen file
                 if (tempFiles.Count == 1)
                     return File.ReadAllBytes(tempFiles[0]);
 

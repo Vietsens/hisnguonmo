@@ -276,4 +276,7 @@
   <data name="LuuLuocDoThatBaiKhongTheLuuMau" xml:space="preserve">
     <value>Lưu lược đồ thất bại. Không thể lưu mẫu phẫu thuật/thủ thuật.</value>
   </data>
+  <data name="DichVuChuaCoMoTaKhongChoKetThucXuLy" xml:space="preserve">
+    <value>Dịch vụ {0} chưa có nội dung Mô tả. Vui lòng nhập Mô tả trước khi kết thúc xử lý.</value>
+  </data>
 </root>
