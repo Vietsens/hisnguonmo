@@ -62,6 +62,30 @@ namespace HIS.UC.UCPatientRaw
             this._dlgTransferData = _dlgTransferData;
         }
 
+        /// <summary>
+        /// Gan gia tri vao 1 truong cua filter QUA REFLECTION, khong phu thuoc compile-time (17/09/2026).
+        /// Ly do: DLL nay chay tren nhieu ban client; ban cu (vd 2.411 Nghe An) co MOS.Filter.dll chua co truong moi
+        /// -> goi thang property se nem MissingMethodException "Method not found: set_XXX" ngay khi vao nhanh do.
+        /// Co truong: dung truong moi. Khong co: chay fallback (giu nguyen hanh vi cu, khong lam nguoi dung van loi).
+        /// Tra ve true neu da gan duoc truong moi.
+        /// </summary>
+        static bool SetPatientFilterValue(object filter, string propertyName, string value, Action fallback)
+        {
+            try
+            {
+                var prop = filter != null ? filter.GetType().GetProperty(propertyName) : null;
+                if (prop != null && prop.CanWrite)
+                {
+                    prop.SetValue(filter, value, null);
+                    return true;
+                }
+                Inventec.Common.Logging.LogSystem.Warn("MOS.Filter ban cu khong co truong " + propertyName + " -> dung cach cu");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            try { if (fallback != null) fallback(); } catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return false;
+        }
+
         public bool checkKey6(long patientId)
         {
             bool rs = true;
@@ -860,8 +884,11 @@ namespace HIS.UC.UCPatientRaw
                         this.typeReceptionForm = ReceptionForm.NhapTayVSSID;
                         param = new CommonParam();
                         HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
-                        // VSSID = ma so BHXH -> tim theo SOCIAL_INSURANCE_NUMBER__EXACT (truoc nham HEIN_CARD_NUMBER__EXACT = so the BHYT), phan hoi test 16/09/2026
-                        filter.SOCIAL_INSURANCE_NUMBER__EXACT = strValue.Trim();
+                        // VSSID = ma so BHXH -> tim theo SOCIAL_INSURANCE_NUMBER__EXACT (truoc nham HEIN_CARD_NUMBER__EXACT = so the BHYT), phan hoi test 16/09/2026.
+                        // 17/09/2026: GAN QUA REFLECTION, khong goi thang property. Client ban cu (2.411 Nghe An...) co MOS.Filter.dll
+                        // CHUA co truong nay -> goi thang se nem MissingMethodException "Method not found: set_SOCIAL_INSURANCE_NUMBER__EXACT"
+                        // ngay khi vao nhanh nay (chi Han bao 17/09 08:48). Co truong thi dung truong moi, khong co thi giu cach cu.
+                        SetPatientFilterValue(filter, "SOCIAL_INSURANCE_NUMBER__EXACT", strValue.Trim(), () => filter.HEIN_CARD_NUMBER__EXACT = strValue.Trim());
                         var data = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
                         WaitingManager.Hide();
                         if (data != null && data.Count > 0)
