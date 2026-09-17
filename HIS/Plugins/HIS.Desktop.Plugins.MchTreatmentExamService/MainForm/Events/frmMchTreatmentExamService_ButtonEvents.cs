@@ -41,6 +41,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             ProcessSave();
         }
 
+        private void btnCopyFromBaby_Click(object sender, EventArgs e)
+        {
+            ProcessCopyFromBaby();
+        }
+
         #endregion
     }
 }

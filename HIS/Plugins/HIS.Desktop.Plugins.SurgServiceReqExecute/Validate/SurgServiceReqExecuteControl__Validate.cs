@@ -31,6 +31,7 @@ using MOS.Filter;
 using Inventec.Common.Adapter;
 using HIS.Desktop.ApiConsumer;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 {
@@ -210,6 +211,59 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             validate.ErrorText = Resources.ResourceMessage.TruongDuLieuBatBuoc;
             validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
             this.dxValidationProvider1.SetValidationRule(control, validate);
+        }
+
+        /// <summary>
+        /// Bat buoc co noi dung Mo ta truoc khi Ket thuc y lenh Phau thuat/Thu thuat.
+        /// Chi ap dung khi nguoi dung dang thao tac Ket thuc (Luu + tich "Kết thúc" hoac nut Kết thúc),
+        /// theo config HisConfigKeys.IsRequiredPtttDescriptionWhenFinish (0/trong = khong bat buoc,
+        /// 1 = bat buoc ca Phau thuat va Thu thuat, 2 = chi bat buoc Phau thuat).
+        /// PTTK_XXXXX_Bat_Buoc_Nhap_Mo_Ta_Truoc_Khi_Ket_Thuc_PTTT
+        /// </summary>
+        private bool ValidateRequiredDescriptionBeforeFinish()
+        {
+            try
+            {
+                string option = HisConfigKeys.IsRequiredPtttDescriptionWhenFinish;
+                if (option != "1" && option != "2")
+                {
+                    return true;
+                }
+                if (this.serviceReq == null)
+                {
+                    return true;
+                }
+
+                bool isPT = this.serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT;
+                bool isTT = this.serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TT;
+                if (!isPT && !isTT)
+                {
+                    return true;
+                }
+                if (option == "2" && !isPT)
+                {
+                    return true;
+                }
+                if (!string.IsNullOrWhiteSpace(txtDescription.Text))
+                {
+                    return true;
+                }
+
+                string serviceCode = this.sereServ != null ? this.sereServ.TDL_SERVICE_CODE : "";
+                XtraMessageBox.Show(string.Format(Resources.ResourceMessage.DichVuChuaCoMoTaKhongChoKetThucXuLy, serviceCode),
+                    Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (xtraTabControl1 != null && xtraTabPageMoTa != null)
+                {
+                    xtraTabControl1.SelectedTabPage = xtraTabPageMoTa;
+                }
+                txtDescription.Focus();
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true; // Loi nghiep vu kiem tra -> khong chan luu (fail-safe)
+            }
         }
     }
 }

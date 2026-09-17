@@ -90,8 +90,8 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
             this.chkDS = new DevExpress.XtraEditors.CheckEdit();
             this.chkBlock = new DevExpress.XtraEditors.CheckEdit();
-            this.chkWarning = new DevExpress.XtraEditors.CheckEdit();
             this.lciBlock = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkWarning = new DevExpress.XtraEditors.CheckEdit();
             this.lciWarning = new DevExpress.XtraLayout.LayoutControlItem();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
@@ -156,8 +156,8 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             this.lcEditorInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkDS.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBlock.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkWarning.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBlock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkWarning.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciWarning)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -468,11 +468,11 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             this.gridColumnApprovalLevel.FieldName = "APPROVAL_REQUIRED_LEVEL_STR";
             this.gridColumnApprovalLevel.Name = "gridColumnApprovalLevel";
             this.gridColumnApprovalLevel.OptionsColumn.AllowEdit = false;
-            this.gridColumnApprovalLevel.ToolTip = "Chặn: kê đơn bắt buộc tạo phiếu yêu cầu sử dụng kháng sinh. Cảnh báo: chỉ nhắc, có thể bỏ qua";
-            this.gridColumnApprovalLevel.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnApprovalLevel.ToolTip = "Chặn: kê đơn bắt buộc tạo phiếu yêu cầu; Cảnh báo / trống: chỉ nhắc";
+            this.gridColumnApprovalLevel.UnboundType = DevExpress.Data.UnboundColumnType.String;
             this.gridColumnApprovalLevel.Visible = true;
             this.gridColumnApprovalLevel.VisibleIndex = 6;
-            this.gridColumnApprovalLevel.Width = 120;
+            this.gridColumnApprovalLevel.Width = 110;
             //
             // repositoryItemCheckIS_APPROVAL_REQUIRED
             // 
@@ -747,10 +747,10 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             // 
             // layoutControl1
             // 
-            this.layoutControl1.Location = new System.Drawing.Point(2, 177);
+            this.layoutControl1.Location = new System.Drawing.Point(2, 201);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(295, 299);
+            this.layoutControl1.Size = new System.Drawing.Size(295, 275);
             this.layoutControl1.TabIndex = 10;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -1139,8 +1139,8 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             this.lcEditorInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkDS.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBlock.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkWarning.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBlock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkWarning.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciWarning)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
@@ -1248,8 +1248,8 @@ private DevExpress.XtraLayout.LayoutControlItem lciHisActiveIngredientName;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraEditors.CheckEdit chkDS;
         private DevExpress.XtraEditors.CheckEdit chkBlock;
-        private DevExpress.XtraEditors.CheckEdit chkWarning;
         private DevExpress.XtraLayout.LayoutControlItem lciBlock;
+        private DevExpress.XtraEditors.CheckEdit chkWarning;
         private DevExpress.XtraLayout.LayoutControlItem lciWarning;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnApprovalLevel;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;

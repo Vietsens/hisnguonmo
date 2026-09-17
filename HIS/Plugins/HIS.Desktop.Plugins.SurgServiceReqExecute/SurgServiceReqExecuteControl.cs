@@ -213,6 +213,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     lciIcdCmCode.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
                 }
+                // PTTK_XXXXX_Bat_Buoc_Nhap_Mo_Ta_Truoc_Khi_Ket_Thuc_PTTT: danh dau tab "Mo ta" bat buoc theo config
+                if (HisConfigKeys.IsRequiredPtttDescriptionWhenFinish == "1" || (HisConfigKeys.IsRequiredPtttDescriptionWhenFinish == "2" && this.serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT))
+                {
+                    xtraTabPageMoTa.Appearance.Header.ForeColor = System.Drawing.Color.Maroon;
+                    xtraTabPageMoTa.Appearance.Header.Options.UseForeColor = true;
+                }
                 timerInitForm.Enabled = true;
                 timerInitForm.Start();
                 isNotLoadWhileChangeControlStateInFirst = false;
@@ -1269,6 +1275,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         {
                             if (dtFinish.EditValue != null && chkKetThuc.Checked)
                             {
+                                if (!ValidateRequiredDescriptionBeforeFinish())
+                                {
+                                    return false;
+                                }
                                 hisSurgResultSDO.IsFinished = true;
                             }
                         }
@@ -1348,7 +1358,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         sdo.UpdateInstructionTimeByStartTime = hisSurgResultSDO.UpdateInstructionTimeByStartTime;
 
                         if (dtFinish.EditValue != null && chkKetThuc.Checked)
+                        {
+                            if (!ValidateRequiredDescriptionBeforeFinish())
+                            {
+                                return false;
+                            }
                             sdo.IsFinished = true;
+                        }
                         SaveSurgServiceReq(sdo, ref success, notShowMess);
                     }
                     if (success)
