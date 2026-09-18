@@ -4,7 +4,6 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.Plugins.AssignBed.ADO;
-using HIS.Desktop.Plugins.AssignBed.Config;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Core;
@@ -56,12 +55,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             {
                 allHisBedBstys = BackendDataWorker.Get<HIS_BED_BSTY>().Where(o => o.IS_ACTIVE == 1).ToList();
 
-                List<V_HIS_BED_ROOM> bedRooms = null;
-
-                // Giu nguyen cach lay giuong theo khoa lam viec: dicBedByServiceId con duoc BuildTree dung
-                // de loc DANH SACH DICH VU giuong tren cay, loc hep o day se lam bien mat ca dich vu.
-                // Viec gioi han theo buong benh nhan dang nam duoc lam rieng o buoc nap combo chon giuong.
-                bedRooms = BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == 1 && o.DEPARTMENT_ID == this.currentDepartment.ID).ToList();
+                var bedRooms = BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == 1 && o.DEPARTMENT_ID == this.currentDepartment.ID).ToList();
 
                 var hisBedIds = allHisBedBstys.Select(o => o.BED_ID).ToList();
 
@@ -72,36 +66,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        /// <summary>
-        /// Gioi han danh sach giuong cho chon theo dung buong benh nhan DANG nam.
-        /// Chi ap dung khi bat khoa cau hinh va lay duoc buong dang nam, con lai giu nguyen danh sach cu.
-        /// </summary>
-        private List<V_HIS_BED> FilterBedByCurrentBedRoom(List<V_HIS_BED> listBed)
-        {
-            try
-            {
-                if (!HisConfigCFG.DefaultBedByLastAssigned)
-                    return listBed;
-
-                if (listBed == null || listBed.Count <= 0)
-                    return listBed;
-
-                if (this.currentTreatmentBedRooms == null || this.currentTreatmentBedRooms.Count <= 0)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn("FilterBedByCurrentBedRoom => khong lay duoc buong benh nhan dang nam, giu nguyen danh sach giuong theo khoa lam viec.");
-                    return listBed;
-                }
-
-                List<long> currentBedRoomIds = this.currentTreatmentBedRooms.Select(o => o.BED_ROOM_ID).Distinct().ToList();
-                return listBed.Where(o => currentBedRoomIds.Contains(o.BED_ROOM_ID)).ToList();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return listBed;
             }
         }
 
@@ -138,7 +102,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 if (dicBedByServiceId != null && dicBedByServiceId.ContainsKey(serviceId))
                 {
                     listBed = dicBedByServiceId[serviceId];
-                    listBed = this.FilterBedByCurrentBedRoom(listBed);
                     this.dataBedADOs = ProcessDataBedAdo(listBed, timeFrom, timeTo);
                 }
                 else
@@ -194,9 +157,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     CommonParam param = new CommonParam();
                     Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api: HisBedLog/TakeBedsInUse. TakeBedsInUseSDO: " + Inventec.Common.Logging.LogUtil.TraceData("TakeBedsInUseSDO", sdo));
                     List<HIS_BED_LOG> dataBedLogs = new BackendAdapter(param).Post<List<HIS_BED_LOG>>("/api/HisBedLog/TakeBedsInUse", ApiConsumers.MosConsumer, sdo, param);
-
-                    // Giu lai de tinh giuong duoc chi dinh gan nhat cua ho so dang thao tac.
-                    this.dataBedLogsInUse = dataBedLogs;
 
                     if (dataBedLogs != null && dataBedLogs.Count > 0)
                     {

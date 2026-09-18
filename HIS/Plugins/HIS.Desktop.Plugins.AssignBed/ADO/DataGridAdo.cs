@@ -18,10 +18,6 @@ namespace HIS.Desktop.Plugins.AssignBed.ADO
         public long? PATIENT_TYPE_ID_STR { get; set; } = null;
         public string BED_CODE { get; set; }
 
-        // Co xac nhan nhan vien dong y chuyen sang giuong khac giuong mac dinh
-        // Dat rieng o DataGridAdo vi lop cha SereServADO nam trong thu vien dung chung, khong duoc sua
-        public bool IsConfirmedChangeBed { get; set; }
-
         public string TIME_FROM_STR => TIME_FROM?.ToString("dd/MM/yyyy HH:mm");
         public string TIME_TO_STR => TIME_TO?.ToString("dd/MM/yyyy HH:mm");
         public string QUANTITY_STR => QUANTITY?.ToString();
