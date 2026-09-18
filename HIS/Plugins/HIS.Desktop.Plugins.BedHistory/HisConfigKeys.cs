@@ -41,5 +41,7 @@ namespace HIS.Desktop.Plugins.BedHistory
         internal const string CONFIG_KEY__Simultaneity = ("MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION");
         // = "1" -> bật cột "Thời gian thực hiện" (UseTime) + cảnh báo cuối tuần + truyền UseTime khi lưu
         internal const string CONFIG_KEY__BED_HISTORY_USE_TIME = "HIS.Desktop.Plugins.BedHistory.UseTime";
+        //= "1" -> mac dinh giuong theo lan chi dinh gan nhat trong buong benh nhan dang nam. Khac "1" la tat
+        internal const string CONFIG_KEY__DEFAULT_BED_BY_LAST_ASSIGNED = "MOS.HIS_SERVICE_REQ.DEFAULT_BED_BY_LAST_ASSIGNED";
     }
 }

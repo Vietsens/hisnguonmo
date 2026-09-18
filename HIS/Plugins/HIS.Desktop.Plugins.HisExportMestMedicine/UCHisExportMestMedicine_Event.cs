@@ -65,6 +65,15 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 // Khac 1 hoac khong khai bao: giu nguyen hanh vi cu la mo man chi tiet benh an.
                 if (HisConfigCFG.ViewBloodSupplySlipOption == "1")
                 {
+                    // Phieu cung cap mau chi phat sinh tu DON MAU. Cac loai phieu khac trong kho mau
+                    // (chuyen kho, nhap tra, hao phi...) khong co phieu nay nen chan ngay tu dau,
+                    // khong goi API lay du lieu roi moi bao loi.
+                    if (rowData.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM)
+                    {
+                        MessageManager.Show("Phiếu này không phải đơn máu nên không có phiếu cung cấp máu và thành phần máu.");
+                        return;
+                    }
+
                     ShowBloodSupplySlip();
                     return;
                 }
@@ -109,6 +118,17 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 // Phai di qua RunPrintTemplate de lay TEN FILE MAU thuc te cua vien,
                 // vi cung mot ma Mps000108 moi vien dung mot file mau khac nhau.
                 // RunPrintTemplate se goi nguoc lai deletePrintTemplate kem printTypeCode + fileName.
+                // BUOC 1: tim van ban DA KY cua phieu nay trong EMR.
+                // Nghiep vu chot moi phieu chi co DUY NHAT ban ky cuoi cung co gia tri, nen da co
+                // ban ky thi phai mo dung ban do, KHONG dung lai phieu moi tu du lieu hien tai.
+                // Khong nho MPS lam viec nay duoc: moi che do PreviewType cua MPS (ke ca nhom Emr*)
+                // deu dung file MOI roi moi dua vao popup - da vap 3 lan ngay 17-18/09/2026.
+                if (ShowSignedBloodSupplySlip())
+                {
+                    return;
+                }
+
+                // BUOC 2: chua co ban ky thi dung phieu moi nhu cu.
                 Inventec.Common.RichEditor.RichEditorStore storeBloodSlip = new Inventec.Common.RichEditor.RichEditorStore(
                     ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
@@ -119,6 +139,103 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tim va mo van ban DA KY cua phieu (neo theo HIS_CODE = ma mau in + ma xuat).
+        /// Tra ve true neu da mo duoc ban da ky; false neu chua co ban ky nao.
+        /// Chep theo plugin EmrDocument: EmrDocumentForm.cs dong 1485-1495 va 1518-1558.
+        /// Diem chot: chi van ban co LAST_VERSION_URL moi la ban DA KY that.
+        /// </summary>
+        private bool ShowSignedBloodSupplySlip()
+        {
+            try
+            {
+                var rowData = gridView.GetFocusedRow() as V_HIS_EXP_MEST_2;
+                if (rowData == null || string.IsNullOrWhiteSpace(rowData.EXP_MEST_CODE))
+                    return false;
+
+                // HIS_CODE phai khop dung cong thuc ma Mps000108Processor.ProcessUniqueCodeData() sinh ra.
+                string hisCode = string.Format("{0}_{1}",
+                    HIS.Desktop.Print.PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000108,
+                    rowData.EXP_MEST_CODE);
+
+                CommonParam param = new CommonParam();
+
+                EMR.Filter.EmrDocumentViewFilter docFilter = new EMR.Filter.EmrDocumentViewFilter();
+                docFilter.HIS_CODE__EXACT = hisCode;
+                docFilter.IS_DELETE = false;
+                docFilter.ORDER_FIELD = "ID";
+                docFilter.ORDER_DIRECTION = "DESC";
+
+                var documents = new BackendAdapter(param).Get<List<EMR.EFMODEL.DataModels.V_EMR_DOCUMENT>>(
+                    "api/EmrDocument/GetView", ApiConsumers.EmrConsumer, docFilter, param);
+
+                if (documents == null || documents.Count == 0)
+                    return false;
+
+                // Ban ky cuoi cung: da sap ID giam dan nen lay ban DAU TIEN co LAST_VERSION_URL.
+                var signedDoc = documents.FirstOrDefault(o => !string.IsNullOrWhiteSpace(o.LAST_VERSION_URL));
+                if (signedDoc == null)
+                    return false;
+
+                WaitingManager.Show();
+
+                EMR.SDO.EmrDocumentDownloadFileSDO downloadSdo = new EMR.SDO.EmrDocumentDownloadFileSDO();
+                EMR.Filter.EmrDocumentViewFilter fileFilter = new EMR.Filter.EmrDocumentViewFilter();
+                fileFilter.ID = signedDoc.ID;
+                downloadSdo.EmrDocumentViewFilter = fileFilter;
+                downloadSdo.HisCode = hisCode;
+
+                var documentFiles = new BackendAdapter(param).Post<List<EMR.SDO.EmrDocumentFileSDO>>(
+                    "api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, downloadSdo, param);
+
+                WaitingManager.Hide();
+
+                if (documentFiles == null || documentFiles.Count == 0
+                    || string.IsNullOrWhiteSpace(documentFiles[0].Base64Data))
+                {
+                    // Co ban ghi van ban nhung khong tai duoc tep: bao cho nguoi dung biet,
+                    // KHONG am tham dung phieu moi vi se hien ra ban khac voi ban da ky.
+                    MessageManager.Show("Phiếu này đã có bản ký nhưng không tải được tệp. Vui lòng liên hệ quản trị.");
+                    return true;
+                }
+
+                // ShowPopup BAT BUOC phai co inputADO. Truyen null thi bi chan voi thong bao
+                // "Tinh nang chi danh cho benh an dien tu" (log WARN ngay 18/09/2026).
+                // Dung GenerateInputADO theo khuon EmrDocumentForm.cs dong 1456.
+                Inventec.Common.SignLibrary.ADO.InputADO viewInputADO =
+                    new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                        .GenerateInputADO(
+                            signedDoc.TREATMENT_CODE,
+                            signedDoc.DOCUMENT_CODE,
+                            signedDoc.DOCUMENT_NAME,
+                            this.currentModule.RoomId);
+
+                if (viewInputADO != null)
+                {
+                    // Man nay chi XEM ban da ky, khong ky va khong sua.
+                    viewInputADO.IsSign = false;
+                    viewInputADO.IsSave = false;
+                    viewInputADO.IsExport = false;
+                    viewInputADO.IsPrint = true;
+                    viewInputADO.IsShowPatientSign = true;
+                }
+
+                Inventec.Common.SignLibrary.SignLibraryGUIProcessor libraryProcessor =
+                    new Inventec.Common.SignLibrary.SignLibraryGUIProcessor();
+                libraryProcessor.ShowPopup(documentFiles[0].Base64Data,
+                    Inventec.Common.SignLibrary.FileType.Pdf, viewInputADO);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                // Loi khi tra ban da ky thi quay ve luong dung phieu moi, khong chan nguoi dung.
+                return false;
             }
         }
 
@@ -221,16 +338,41 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                     treatmentBedRooms,
                     sereServs);
 
+                // May in cau hinh san cho ma mau in nay, neu co.
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                // Du lieu ky so dien tu. Chep theo khuon Ke don mau:
+                // frmHisAssignBlood__Plus__Print.cs dong 156-158.
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO =
+                    new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                        .GenerateInputADOWithPrintTypeCode(
+                            (treatment != null ? treatment.TREATMENT_CODE : ""),
+                            printTypeCode,
+                            this.currentModule.RoomId);
+
                 WaitingManager.Hide();
 
-                // Mo o che do XEM TRUOC. Khuon goc ben Ke don mau dung PrintNow (in thang ra may in),
-                // o day doi sang ShowDialog vi khoa muon xem chu khong phai lan nao cung in.
+                // PHAI dung PreviewType.EmrShow.
+                // Enum PreviewType co 9 gia tri, chia 2 nhom:
+                //   - Nhom in thuong: Show=0, ShowDialog=1, PrintNow=2, SaveFile=3
+                //     -> chi dung file roi hien thi/in, KHONG he cham toi EMR.
+                //   - Nhom EMR: EmrShow=4, EmrSignNow=5, EmrSignAndPrintNow=6,
+                //     EmrCreateDocument=7, EmrSignAndPrintPreview=8
+                //     -> moi di qua popup EMR, noi goi VerifyHisCode de tra ra van ban DA KY.
+                // EmrShow goi EmrShowClick() (AbstractProcessor.cs:1270), truyen emrInputADO
+                // mang HisCode vao popup, popup tra ra ban da ky neu co; chua co thi cho ky.
+                // Da vap 2 lan: dung ShowDialog roi PrintNow, ca hai deu ra ban in moi chua ky
+                // vi khong thuoc nhom EMR (17/09/2026).
                 MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
                     printTypeCode,
                     fileName,
                     mps000108PDO,
-                    MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog,
-                    null));
+                    MPS.ProcessorBase.PrintConfig.PreviewType.EmrShow,
+                    printerName) { EmrInputADO = inputADO });
             }
             catch (Exception ex)
             {
