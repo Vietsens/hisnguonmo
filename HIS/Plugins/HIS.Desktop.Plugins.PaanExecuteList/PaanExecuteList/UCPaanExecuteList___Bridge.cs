@@ -116,6 +116,19 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                 HisServiceReqLViewFilter filter = new HisServiceReqLViewFilter();
                 filter.ID = serviceReqId;
 
+                // CHOT PHAM VI PHONG - DAY LA LOP CHAN CHUNG.
+                // Moi nut va moi muc menu chuot phai deu lay y lenh qua ham nay,
+                // nen chi can chan o day la ca 10 nut + 22 muc menu deu an toan,
+                // khong phai sua rai rac tung cho.
+                //
+                // Chan ca loi vao khac: o tim "Ma y lenh (F3)" / "Ma BN (F8)" tren
+                // luoi van co the go ma cua benh nhan phong khac.
+                long currentRoomId = GetRoomId();
+                if (currentRoomId > 0)
+                {
+                    filter.EXECUTE_ROOM_ID = currentRoomId;
+                }
+
                 var data = new BackendAdapter(param).Get<List<L_HIS_SERVICE_REQ>>(
                     PaanRequestUriStore.HIS_SERVICE_REQ_GET_LVIEW,
                     ApiConsumers.MosConsumer,
@@ -127,11 +140,16 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                 if (result == null)
                 {
                     Inventec.Common.Logging.LogSystem.Warn(
-                        "Khong lay duoc y lenh co ID = " + serviceReqId);
+                        "Khong lay duoc y lenh co ID = " + serviceReqId
+                        + " trong phong dang dung (EXECUTE_ROOM_ID = " + currentRoomId + ")");
                     if (showMessageIfNull)
                     {
+                        // Noi ro ly do, tranh nguoi dung tuong la mat du lieu.
                         System.Windows.Forms.MessageBox.Show(
-                            "Không lấy được thông tin y lệnh!", "Thông báo",
+                            "Không lấy được thông tin y lệnh."
+                            + Environment.NewLine
+                            + "Y lệnh này có thể thuộc phòng khác nên không thao tác được tại phòng đang làm việc.",
+                            "Thông báo",
                             System.Windows.Forms.MessageBoxButtons.OK,
                             System.Windows.Forms.MessageBoxIcon.Warning);
                     }

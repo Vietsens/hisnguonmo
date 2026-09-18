@@ -105,6 +105,13 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                     room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentModule.RoomId);
                 }
 
+                // Ghi lai phong dang dung: man nay CHI hien y lenh cua phong nay
+                // (xem BuildFilter - TDL_EXECUTE_ROOM_ID). Khi nguoi dung bao
+                // "thieu benh nhan" thi doi chieu dong log nay truoc tien.
+                Inventec.Common.Logging.LogSystem.Info(
+                    "UCPaanExecuteList: phong lam viec hien tai ID = " + GetRoomId()
+                    + ", ten phong = " + (room != null ? room.ROOM_NAME : "(khong tra duoc)"));
+
                 LoadComboTimeType();
                 LoadComboStatus();
                 LoadComboDepartment();
@@ -427,6 +434,22 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                     filter.SERVICE_REQ_STT_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT;
                 }
                 // status == STATUS__ALL: khong gan gi, lay tat ca.
+
+                #endregion
+
+                #region Phong thuc hien (CHOT PHAM VI - KHONG DUOC BO)
+
+                // Chi lay y lenh cua PHONG DANG DUNG, giong man
+                // "Xu ly yeu cau kham/cls/pttt" (UCExecuteRoom___Load.cs:418
+                // gan hisServiceReqFilter.EXECUTE_ROOM_ID = roomId vo dieu kien).
+                //
+                // Neu BO dong nay thi man se lay Giai phau benh TOAN VIEN: vien co
+                // nhieu phong GPB thi dung o phong A van thay benh nhan cua B, C.
+                //
+                // Luu y: day la phong THUC HIEN (TDL_EXECUTE_ROOM_ID), KHAC voi
+                // o loc "Phong chi dinh" ben duoi (TDL_REQUEST_ROOM_ID) la noi
+                // bac sy ra y lenh gui mau toi.
+                filter.TDL_EXECUTE_ROOM_ID = GetRoomId();
 
                 #endregion
 
