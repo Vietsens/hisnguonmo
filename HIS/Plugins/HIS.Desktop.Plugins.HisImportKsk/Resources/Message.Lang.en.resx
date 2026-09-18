@@ -98,4 +98,28 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+  <data name="KetQuaBenhNhanMoi" xml:space="preserve">
+    <value>New patient code created</value>
+  </data>
+  <data name="KetQuaGanVaoBenhNhanDaCo" xml:space="preserve">
+    <value>Attached to an existing patient code</value>
+  </data>
+  <data name="KetQuaTrungDongTrongFile" xml:space="preserve">
+    <value>Duplicated row in file - not accepted</value>
+  </data>
+  <data name="ThieuSoCccd" xml:space="preserve">
+    <value>Missing ID card number. Duplication will be checked by Full name + Gender + Date of birth + Work place</value>
+  </data>
+  <data name="TieuDeKetQuaImport" xml:space="preserve">
+    <value>Import result</value>
+  </data>
+  <data name="TongHopKetQuaImport" xml:space="preserve">
+    <value>Total rows in file: {0}&#xD;&#xA;New patient codes created: {1}&#xD;&#xA;Attached to existing patient codes: {2}&#xD;&#xA;Error rows: {3}&#xD;&#xA;Rows with warnings: {4}&#xD;&#xA;Duplicated rows in file (not accepted): {5}</value>
+  </data>
+  <data name="DanhSachMaBenhNhanDaGan" xml:space="preserve">
+    <value>Existing patient codes with a new examination attached: {0}</value>
+  </data>
+  <data name="CoDongCanhBaoCanRaSoat" xml:space="preserve">
+    <value>{0} row(s) have warnings. Please review the Warning column in the list or export the data to a file for checking.</value>
+  </data>
 </root>

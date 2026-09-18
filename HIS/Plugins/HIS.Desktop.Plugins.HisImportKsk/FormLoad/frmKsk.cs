@@ -367,6 +367,9 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         if (Encoding.UTF8.GetBytes(item.CMND_CCCD.Trim()).Count() == 9)
                         {
                             kskAdo.CMND_NUMBER = item.CMND_CCCD.Trim();
+                            // 57616 - CMND 9 so khong phai can cu dinh danh, kiem tra trung theo
+                            // Ho ten + Gioi tinh + Ngay sinh + Noi lam viec
+                            kskAdo.WARNING = Resources.ResourceMessage.ThieuSoCccd;
                         }
                         else if (Encoding.UTF8.GetBytes(item.CMND_CCCD.Trim()).Count() == 12)
                         {
@@ -376,6 +379,12 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         {
                             error += string.Format(Message.MessageImport.KhongHopLe, "CMND/CCCD");
                         }
+                    }
+                    else
+                    {
+                        // 57616 - khong chan dong thieu CCCD, chi canh bao de nguoi dung biet
+                        // phan mem se doi chieu theo thong tin hanh chinh
+                        kskAdo.WARNING = Resources.ResourceMessage.ThieuSoCccd;
                     }
 
                     if (!string.IsNullOrEmpty(item.KSK_ORDER_STR))
@@ -1087,14 +1096,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                                 WaitingManager.Hide();
                                 DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo");
 
-                                kskAdos = new List<KskImportADO>();
-                                foreach (var item in rs.Data.KskPatients)
-                                {
-                                    var ado = new KskImportADO(item, listKsk);
-                                    kskAdos.Add(ado);
-                                }
-
-                                SetDataSource(kskAdos);
+                                FillResultToGrid(rs.Data);
                             }
                         }
                     }
@@ -1102,6 +1104,10 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                     {
                         btnSave.Enabled = false;
                         GetData();
+
+                        // 57616 - do lai danh sach de nguoi dung doi chieu ket qua kiem tra trung benh nhan
+                        FillResultToGrid(rs.Data);
+
                         if (this.delegateRefresh != null)
                         {
                             this.delegateRefresh();
@@ -1113,6 +1119,9 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                     }
 
                     WaitingManager.Hide();
+
+                    // 57616 - bang tong hop sau khi import, hien ca khi thanh cong va khi co dong loi
+                    ShowImportSummary(rs.Data);
 
                     if (!checkSuccess)
                     {
@@ -1132,6 +1141,77 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        /// <summary>
+        /// 57616 - do ket qua backend tra ve len danh sach: cot Ket qua, Ma BN khop, Canh bao.
+        /// </summary>
+        private void FillResultToGrid(MOS.SDO.HisKskContractSDO data)
+        {
+            try
+            {
+                if (data == null || data.KskPatients == null || data.KskPatients.Count <= 0) return;
+
+                List<KskImportADO> adoList = new List<KskImportADO>();
+                foreach (var item in data.KskPatients)
+                {
+                    adoList.Add(new KskImportADO(item, listKsk));
+                }
+
+                kskAdos = adoList;
+                SetDataSource(kskAdos);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// 57616 - hien bang tong hop ket qua import de nguoi dung doi chieu.
+        /// </summary>
+        private void ShowImportSummary(MOS.SDO.HisKskContractSDO data)
+        {
+            try
+            {
+                if (data == null || data.ImportSummary == null) return;
+
+                var summary = data.ImportSummary;
+
+                StringBuilder message = new StringBuilder();
+                message.AppendFormat(Resources.ResourceMessage.TongHopKetQuaImport,
+                    summary.TotalRow,
+                    summary.NewPatientRow,
+                    summary.MergedPatientRow,
+                    summary.ErrorRow,
+                    summary.WarningRow,
+                    summary.DuplicatedInFileRow);
+
+                if (summary.MergedPatientCodes != null && summary.MergedPatientCodes.Count > 0)
+                {
+                    message.AppendLine();
+                    message.AppendLine();
+                    message.AppendFormat(Resources.ResourceMessage.DanhSachMaBenhNhanDaGan,
+                        string.Join(", ", summary.MergedPatientCodes));
+                }
+
+                if (summary.WarningRow > 0)
+                {
+                    message.AppendLine();
+                    message.AppendLine();
+                    message.AppendFormat(Resources.ResourceMessage.CoDongCanhBaoCanRaSoat, summary.WarningRow);
+                }
+
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    message.ToString(),
+                    Resources.ResourceMessage.TieuDeKetQuaImport,
+                    MessageBoxButtons.OK,
+                    summary.ErrorRow > 0 || summary.WarningRow > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void Btn_Show_Error_ButtonClick(object sender, ButtonPressedEventArgs e)
@@ -1759,7 +1839,12 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
 
                     if (this.kskAdos != null && this.kskAdos.Count > 0)
                     {
-                        var errorList = this.kskAdos.Where(o => !string.IsNullOrEmpty(o.ERROR)).ToList();
+                        // 57616 - xuat ca dong co canh bao de nguoi dung ra soat, khong chi dong loi.
+                        // Cot WARNING / IMPORT_RESULT / MATCHED_PATIENT_CODE da co tren ADO,
+                        // template EXPORT_KSK.xlsx can khai bao them tag tuong ung de hien thi.
+                        var errorList = this.kskAdos
+                            .Where(o => !string.IsNullOrEmpty(o.ERROR) || !string.IsNullOrEmpty(o.WARNING))
+                            .ToList();
                         if (errorList != null && errorList.Count > 0)
                         {
                             export = errorList;

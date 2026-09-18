@@ -43,6 +43,25 @@ namespace HIS.Desktop.Plugins.HisImportKsk.ADO
         public string ERROR { get; set; }
         public string BARCODE { get; set; }
 
+        #region Ket qua kiem tra trung benh nhan sau khi import (57616)
+
+        /// <summary>Canh bao cua dong import - KHONG lam dong import that bai</summary>
+        public string WARNING { get; set; }
+
+        /// <summary>Mo ta ket qua: sinh ma benh nhan moi hay gan vao ma benh nhan da co</summary>
+        public string IMPORT_RESULT { get; set; }
+
+        /// <summary>Ma benh nhan da co duoc gan them dot kham. Rong neu la benh nhan moi</summary>
+        public string MATCHED_PATIENT_CODE { get; set; }
+
+        /// <summary>True: dong import sinh ma benh nhan moi</summary>
+        public bool IsNewPatient { get; set; }
+
+        /// <summary>True: dong bi loai vi trung voi dong khac trong cung file import</summary>
+        public bool IsDuplicatedInFile { get; set; }
+
+        #endregion
+
         public string AdditionKskId_STR { get; set; }
         public long? AdditionKskId { get; set; }
 
@@ -99,6 +118,32 @@ namespace HIS.Desktop.Plugins.HisImportKsk.ADO
                     {
                         this.ERROR = string.Join(";", data.Descriptions);
                     }
+
+                    #region Ket qua kiem tra trung benh nhan (57616)
+
+                    if (data.Warnings != null && data.Warnings.Count > 0)
+                    {
+                        this.WARNING = string.Join(" ", data.Warnings);
+                    }
+
+                    this.IsNewPatient = data.IsNewPatient;
+                    this.IsDuplicatedInFile = data.IsDuplicatedInFile;
+                    this.MATCHED_PATIENT_CODE = data.MatchedPatientCode;
+
+                    if (data.IsDuplicatedInFile)
+                    {
+                        this.IMPORT_RESULT = Resources.ResourceMessage.KetQuaTrungDongTrongFile;
+                    }
+                    else if (!string.IsNullOrEmpty(data.MatchedPatientCode))
+                    {
+                        this.IMPORT_RESULT = Resources.ResourceMessage.KetQuaGanVaoBenhNhanDaCo;
+                    }
+                    else if (data.Descriptions == null || data.Descriptions.Count == 0)
+                    {
+                        this.IMPORT_RESULT = Resources.ResourceMessage.KetQuaBenhNhanMoi;
+                    }
+
+                    #endregion
                     if (hisKsk != null && hisKsk.Count > 0)
                     {
                         var ksk = hisKsk.FirstOrDefault(o => o.ID == data.KskId);
