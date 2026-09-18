@@ -136,6 +136,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnAssignAI = new DevExpress.XtraEditors.SimpleButton();
             this.txtDutruTime = new DevExpress.XtraEditors.ButtonEdit();
+            this.timeDutru = new DevExpress.XtraEditors.TimeSpanEdit();
             this.pnSubIcdTranditional = new System.Windows.Forms.Panel();
             this.pnIcdTranditional = new System.Windows.Forms.Panel();
             this.btnQRPay = new DevExpress.XtraEditors.SimpleButton();
@@ -511,6 +512,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciSubIcdTranditional = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItemDutru = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciTimeDutru = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem7 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciExecuteGroup = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciEmergency = new DevExpress.XtraLayout.LayoutControlItem();
@@ -540,6 +542,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintVBA.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDutruTime.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timeDutru.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkNotCheckService.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoCheckPDDT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlUCPanelRightTop)).BeginInit();
@@ -808,6 +811,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.lciSubIcdTranditional)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemDutru)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTimeDutru)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExecuteGroup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEmergency)).BeginInit();
@@ -844,6 +848,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lcEditorInfo.Controls.Add(this.chkPrintVBA);
             this.lcEditorInfo.Controls.Add(this.btnAssignAI);
             this.lcEditorInfo.Controls.Add(this.txtDutruTime);
+            this.lcEditorInfo.Controls.Add(this.timeDutru);
             this.lcEditorInfo.Controls.Add(this.pnSubIcdTranditional);
             this.lcEditorInfo.Controls.Add(this.pnIcdTranditional);
             this.lcEditorInfo.Controls.Add(this.btnQRPay);
@@ -1113,6 +1118,27 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.txtDutruTime.TabIndex = 149;
             this.txtDutruTime.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtDutruTime_ButtonClick);
             this.txtDutruTime.EditValueChanged += new System.EventHandler(this.txtDutruTime_EditValueChanged);
+            // 
+            // timeDutru
+            // 
+            this.timeDutru.EditValue = System.TimeSpan.Parse("00:00:00");
+            this.timeDutru.EnterMoveNextControl = true;
+            this.timeDutru.Location = new System.Drawing.Point(414, 102);
+            this.timeDutru.MenuManager = this.barManager1;
+            this.timeDutru.Name = "timeDutru";
+            this.timeDutru.Properties.AllowEditDays = false;
+            this.timeDutru.Properties.AllowEditSeconds = false;
+            this.timeDutru.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.timeDutru.Properties.DisplayFormat.FormatString = "HH:mm";
+            this.timeDutru.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.timeDutru.Properties.Mask.EditMask = "HH:mm";
+            this.timeDutru.Properties.Mask.UseMaskAsDisplayFormat = true;
+            this.timeDutru.Size = new System.Drawing.Size(83, 20);
+            this.timeDutru.StyleController = this.lcEditorInfo;
+            this.timeDutru.TabIndex = 152;
+            this.timeDutru.EditValueChanged += new System.EventHandler(this.timeDutru_EditValueChanged);
+            this.timeDutru.Leave += new System.EventHandler(this.timeDutru_Leave);
             // 
             // pnSubIcdTranditional
             // 
@@ -4692,6 +4718,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciSubIcdTranditional,
             this.layoutControlItem9,
             this.layoutControlItemDutru,
+            this.lciTimeDutru,
             this.emptySpaceItem7,
             this.lciExecuteGroup,
             this.lciEmergency,
@@ -5595,12 +5622,22 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControlItemDutru.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItemDutru.TextToControlDistance = 5;
             // 
+            // lciTimeDutru
+            // 
+            this.lciTimeDutru.Control = this.timeDutru;
+            this.lciTimeDutru.Location = new System.Drawing.Point(412, 100);
+            this.lciTimeDutru.Name = "lciTimeDutru";
+            this.lciTimeDutru.OptionsToolTip.ToolTip = "Giờ dự trù";
+            this.lciTimeDutru.Size = new System.Drawing.Size(87, 26);
+            this.lciTimeDutru.TextSize = new System.Drawing.Size(0, 0);
+            this.lciTimeDutru.TextVisible = false;
+            // 
             // emptySpaceItem7
             // 
             this.emptySpaceItem7.AllowHotTrack = false;
-            this.emptySpaceItem7.Location = new System.Drawing.Point(412, 100);
+            this.emptySpaceItem7.Location = new System.Drawing.Point(499, 100);
             this.emptySpaceItem7.Name = "emptySpaceItem7";
-            this.emptySpaceItem7.Size = new System.Drawing.Size(184, 26);
+            this.emptySpaceItem7.Size = new System.Drawing.Size(97, 26);
             this.emptySpaceItem7.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciExecuteGroup
@@ -5859,6 +5896,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintVBA.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDutruTime.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timeDutru.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkNotCheckService.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoCheckPDDT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlUCPanelRightTop)).EndInit();
@@ -6127,6 +6165,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.lciSubIcdTranditional)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemDutru)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTimeDutru)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExecuteGroup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEmergency)).EndInit();
@@ -6548,6 +6587,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private DevExpress.XtraLayout.LayoutControlItem lciSubIcdTranditional;
         private DevExpress.XtraEditors.ButtonEdit txtDutruTime;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItemDutru;
+        private DevExpress.XtraEditors.TimeSpanEdit timeDutru;
+        private DevExpress.XtraLayout.LayoutControlItem lciTimeDutru;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem7;
         private DevExpress.XtraBars.PopupControlContainer popupControlContainer4;
         private DevExpress.XtraLayout.LayoutControl layoutControl3;

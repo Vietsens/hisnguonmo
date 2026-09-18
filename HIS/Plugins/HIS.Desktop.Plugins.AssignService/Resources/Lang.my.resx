@@ -1110,4 +1110,7 @@
   <data name="frmConfirmExecuteRoom.btnDisagree.Text" xml:space="preserve">
     <value>Không đồng ý</value>
   </data>
+  <data name="frmAssignService.lciTimeDutru.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Giờ dự trù</value>
+  </data>
 </root>

@@ -234,6 +234,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.txtInstructionTime.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtInstructionTime_PreviewKeyDown);
                 this.timeIntruction.Leave -= new System.EventHandler(this.timeIntruction_Leave);
                 this.timeIntruction.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.timeIntruction_PreviewKeyDown);
+                this.timeDutru.EditValueChanged -= new System.EventHandler(this.timeDutru_EditValueChanged);
+                this.timeDutru.Leave -= new System.EventHandler(this.timeDutru_Leave);
                 this.chkMultiIntructionTime.CheckedChanged -= new System.EventHandler(this.chkMultiIntructionTime_CheckedChanged);
                 this.chkMultiIntructionTime.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkMultiIntructionTime_PreviewKeyDown);
                 this.txtIcdText.TextChanged -= new System.EventHandler(this.txtIcdText_TextChanged);
