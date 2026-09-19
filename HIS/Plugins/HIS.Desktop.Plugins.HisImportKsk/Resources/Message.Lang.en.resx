@@ -108,7 +108,7 @@
     <value>Duplicated row in file - not accepted</value>
   </data>
   <data name="ThieuSoCccd" xml:space="preserve">
-    <value>Missing ID card number. Duplication will be checked by Full name + Gender + Date of birth + Work place</value>
+    <value>Missing ID card number, so the row cannot be matched against existing patients. A new patient code will be created</value>
   </data>
   <data name="TieuDeKetQuaImport" xml:space="preserve">
     <value>Import result</value>

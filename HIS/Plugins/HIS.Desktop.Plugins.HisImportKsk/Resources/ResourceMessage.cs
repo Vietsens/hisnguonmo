@@ -46,7 +46,7 @@ namespace  HIS.Desktop.Plugins.HisImportKsk.Resources
             get { return Get("KetQuaTrungDongTrongFile"); }
         }
 
-        /// <summary>Thiếu số CCCD. Phần mềm sẽ kiểm tra trùng theo 4 thông tin hành chính</summary>
+        /// <summary>Thiếu số CCCD nên sẽ sinh mã bệnh nhân mới</summary>
         internal static string ThieuSoCccd
         {
             get { return Get("ThieuSoCccd"); }

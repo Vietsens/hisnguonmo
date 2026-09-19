@@ -367,8 +367,8 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         if (Encoding.UTF8.GetBytes(item.CMND_CCCD.Trim()).Count() == 9)
                         {
                             kskAdo.CMND_NUMBER = item.CMND_CCCD.Trim();
-                            // 57616 - CMND 9 so khong phai can cu dinh danh, kiem tra trung theo
-                            // Ho ten + Gioi tinh + Ngay sinh + Noi lam viec
+                            // 57616 - CMND 9 so khong phai can cu dinh danh benh nhan,
+                            // dong nay se duoc sinh ma benh nhan moi
                             kskAdo.WARNING = Resources.ResourceMessage.ThieuSoCccd;
                         }
                         else if (Encoding.UTF8.GetBytes(item.CMND_CCCD.Trim()).Count() == 12)
@@ -383,7 +383,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                     else
                     {
                         // 57616 - khong chan dong thieu CCCD, chi canh bao de nguoi dung biet
-                        // phan mem se doi chieu theo thong tin hanh chinh
+                        // dong nay khong doi chieu duoc nen se sinh ma benh nhan moi
                         kskAdo.WARNING = Resources.ResourceMessage.ThieuSoCccd;
                     }
 

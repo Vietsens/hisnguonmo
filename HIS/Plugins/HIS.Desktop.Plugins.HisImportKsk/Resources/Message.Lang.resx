@@ -133,7 +133,7 @@
     <value>Trùng dòng trong file - không nhận</value>
   </data>
   <data name="ThieuSoCccd" xml:space="preserve">
-    <value>Thiếu số CCCD. Phần mềm sẽ kiểm tra trùng theo Họ tên + Giới tính + Ngày tháng năm sinh + Nơi làm việc</value>
+    <value>Thiếu số CCCD nên không đối chiếu được với bệnh nhân đã có. Phần mềm sẽ sinh mã bệnh nhân mới</value>
   </data>
   <data name="TieuDeKetQuaImport" xml:space="preserve">
     <value>Kết quả import</value>
