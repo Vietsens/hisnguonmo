@@ -300,4 +300,181 @@ Hồ sơ chưa kiểm tra được cũng bị chặn vì chưa thể khẳng đ�
   <data name="TienGiamDinhXuatGhiChuCatBot" xml:space="preserve">
     <value>(Danh sách lỗi của hồ sơ này đã bị cắt bớt do vượt ngưỡng — có thể còn lỗi chưa được liệt kê)</value>
   </data>
+  <data name="MdInsightNutKiemTraLoi" xml:space="preserve">
+    <value>Kiểm tra lỗi XML</value>
+  </data>
+  <data name="MdInsightNutLayKetQua" xml:space="preserve">
+    <value>Lấy kết quả</value>
+  </data>
+  <data name="MdInsightNutHuy" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+  <data name="MdInsightTieuDeTienTrinh" xml:space="preserve">
+    <value>Đang kiểm tra lỗi hồ sơ XML</value>
+  </data>
+  <data name="MdInsightDangGui" xml:space="preserve">
+    <value>Đang gửi hồ sơ: {0}/{1}</value>
+  </data>
+  <data name="MdInsightDangLayKetQua" xml:space="preserve">
+    <value>Đang lấy kết quả: {0}/{1}</value>
+  </data>
+  <data name="MdInsightChuaChonHoSo" xml:space="preserve">
+    <value>Vui lòng chọn ít nhất một hồ sơ để kiểm tra.</value>
+  </data>
+  <data name="MdInsightXacNhanLoLon" xml:space="preserve">
+    <value>Bạn đã chọn {0} hồ sơ, thời gian dự kiến khoảng {1}. Tiếp tục?</value>
+  </data>
+  <data name="MdInsightXacNhanLoLonVuotHan" xml:space="preserve">
+    <value>Bạn đã chọn {0} hồ sơ, thời gian dự kiến khoảng {1} — có thể còn hồ sơ chưa có kết quả, bấm lại Kiểm tra lỗi XML sau ít phút. Tiếp tục?</value>
+  </data>
+  <data name="MdInsightHeNgoaiKhongPhanHoi" xml:space="preserve">
+    <value>Hệ thống soát lỗi không phản hồi. Chưa gửi hồ sơ nào.</value>
+  </data>
+  <data name="MdInsightKhongCoCoSoHopLe" xml:space="preserve">
+    <value>Không hồ sơ nào thuộc cơ sở khám chữa bệnh đã được khai tài khoản kết nối.</value>
+  </data>
+  <data name="MdInsightTrangThaiKhongLoi" xml:space="preserve">
+    <value>Không có lỗi</value>
+  </data>
+  <data name="MdInsightTrangThaiCanhBao" xml:space="preserve">
+    <value>Có cảnh báo</value>
+  </data>
+  <data name="MdInsightTrangThaiLoiNghiemTrong" xml:space="preserve">
+    <value>Có lỗi nghiêm trọng</value>
+  </data>
+  <data name="MdInsightTrangThaiChuaCoKetQua" xml:space="preserve">
+    <value>Chưa có kết quả</value>
+  </data>
+  <data name="MdInsightTrangThaiKhongKiemTraDuoc" xml:space="preserve">
+    <value>Không kiểm tra được</value>
+  </data>
+  <data name="MdInsightLyDoChuaKhaiTaiKhoan" xml:space="preserve">
+    <value>Cơ sở khám chữa bệnh của hồ sơ chưa được khai tài khoản kết nối.</value>
+  </data>
+  <data name="MdInsightLyDoKhongKetXuatDuoc" xml:space="preserve">
+    <value>Hồ sơ chưa đủ dữ liệu bắt buộc nên không kết xuất được tệp XML.</value>
+  </data>
+  <data name="MdInsightLyDoGuiThatBai" xml:space="preserve">
+    <value>Gửi tệp lên hệ thống soát lỗi không thành công.</value>
+  </data>
+  <data name="MdInsightLyDoSaiXacThuc" xml:space="preserve">
+    <value>Tài khoản kết nối của cơ sở này không đăng nhập được.</value>
+  </data>
+  <data name="MdInsightLyDoQuaHanGoi" xml:space="preserve">
+    <value>Quá thời gian chờ hệ thống soát lỗi trả lời.</value>
+  </data>
+  <data name="MdInsightLyDoHeNgoaiLoi" xml:space="preserve">
+    <value>Hệ thống soát lỗi báo lỗi trong quá trình xử lý.</value>
+  </data>
+  <data name="MdInsightLyDoChoKetQua" xml:space="preserve">
+    <value>Đã gửi, đang chờ hệ thống soát lỗi trả kết quả.</value>
+  </data>
+  <data name="MdInsightLyDoChuaDuThoiGian" xml:space="preserve">
+    <value>Chưa đủ thời gian giám định tối thiểu nên chưa kết luận được.</value>
+  </data>
+  <data name="MdInsightLyDoQuaHanChoKetQua" xml:space="preserve">
+    <value>Đã gửi quá thời hạn cho phép mà chưa có kết quả. Cần gửi lại.</value>
+  </data>
+  <data name="MdInsightConLoiChuaLuu" xml:space="preserve">
+    <value>Còn {0} lỗi nữa — bấm lại Kiểm tra lỗi XML để xem đầy đủ.</value>
+  </data>
+  <data name="MdInsightTongKetKetQua" xml:space="preserve">
+    <value>Đã kiểm tra {0} hồ sơ: {1} không lỗi, {2} có cảnh báo, {3} có lỗi nghiêm trọng, {4} chưa có kết quả, {5} không kiểm tra được.</value>
+  </data>
+  <data name="MdInsightCanhBaoDuLieuBenhNhan" xml:space="preserve">
+    <value>Tệp danh sách lỗi có chứa thông tin bệnh nhân. Bạn chịu trách nhiệm bảo mật tệp này. Tiếp tục xuất?</value>
+  </data>
+  <data name="MdInsightCotKetQua" xml:space="preserve">
+    <value>Kết quả soát lỗi</value>
+  </data>
+  <data name="MdInsightCotSoLoi" xml:space="preserve">
+    <value>Số lỗi</value>
+  </data>
+  <data name="MdInsightCotThoiDiem" xml:space="preserve">
+    <value>Thời điểm kiểm tra</value>
+  </data>
+  <data name="MdInsightDangCho" xml:space="preserve">
+    <value>Đang chờ hệ thống soát lỗi xử lý… còn {0} giây</value>
+  </data>
+  <data name="MdInsightDangKetXuat" xml:space="preserve">
+    <value>Đang kết xuất tệp: {0}/{1}</value>
+  </data>
+  <data name="MdInsightKhongCoDienGiai" xml:space="preserve">
+    <value>Bấm lại Kiểm tra lỗi XML để tra lại phần diễn giải đầy đủ.</value>
+  </data>
+  <data name="MdInsightTieuDeKetQua" xml:space="preserve">
+    <value>Kết quả soát lỗi hồ sơ XML</value>
+  </data>
+  <data name="MdInsightNutXuatDanhSach" xml:space="preserve">
+    <value>Xuất danh sách lỗi</value>
+  </data>
+  <data name="MdInsightNutDong" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="MdInsightNhomDanhSachHoSo" xml:space="preserve">
+    <value>Danh sách hồ sơ</value>
+  </data>
+  <data name="MdInsightNhomChiTietLoi" xml:space="preserve">
+    <value>Chi tiết lỗi</value>
+  </data>
+  <data name="MdInsightNhomDienGiai" xml:space="preserve">
+    <value>Diễn giải đầy đủ</value>
+  </data>
+  <data name="MdInsightCotMaDieuTri" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="MdInsightCotTenBenhNhan" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="MdInsightCotSoLoiNghiemTrong" xml:space="preserve">
+    <value>Số lỗi nghiêm trọng</value>
+  </data>
+  <data name="MdInsightCotLyDo" xml:space="preserve">
+    <value>Lý do</value>
+  </data>
+  <data name="MdInsightCotMucDo" xml:space="preserve">
+    <value>Mức độ</value>
+  </data>
+  <data name="MdInsightCotTepThanhPhan" xml:space="preserve">
+    <value>Tệp thành phần</value>
+  </data>
+  <data name="MdInsightCotTheDuLieu" xml:space="preserve">
+    <value>Thẻ dữ liệu</value>
+  </data>
+  <data name="MdInsightCotDongThuMay" xml:space="preserve">
+    <value>Dòng</value>
+  </data>
+  <data name="MdInsightCotGiaTriHienTai" xml:space="preserve">
+    <value>Giá trị hiện tại</value>
+  </data>
+  <data name="MdInsightCotNoiDungLoi" xml:space="preserve">
+    <value>Nội dung lỗi</value>
+  </data>
+  <data name="MdInsightMucDoNghiemTrong" xml:space="preserve">
+    <value>Nghiêm trọng</value>
+  </data>
+  <data name="MdInsightMucDoCanhBao" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="MdInsightXuatKhongCoDuLieu" xml:space="preserve">
+    <value>Không có hồ sơ nào còn lỗi để xuất.</value>
+  </data>
+  <data name="MdInsightXuatThanhCong" xml:space="preserve">
+    <value>Đã xuất danh sách lỗi ra tệp: {0}</value>
+  </data>
+  <data name="MdInsightXuatThatBai" xml:space="preserve">
+    <value>Không ghi được tệp danh sách lỗi. Kiểm tra lại quyền ghi của thư mục đã chọn.</value>
+  </data>
+  <data name="MdInsightChuaTungGui" xml:space="preserve">
+    <value>Có {0} hồ sơ chưa từng gửi kiểm tra nên không lấy được kết quả. Hãy bấm "Kiểm tra lỗi XML" cho những hồ sơ này trước.</value>
+  </data>
+  <data name="MdInsightLyDoKhaiNhamCoSo" xml:space="preserve">
+    <value>Tài khoản khai trong cấu hình không thuộc cơ sở khám chữa bệnh của hồ sơ. Liên hệ quản trị kiểm tra lại khai báo kết nối.</value>
+  </data>
+  <data name="MdInsightXacNhanGuiLai" xml:space="preserve">
+    <value>Trong số hồ sơ đã chọn có {0} hồ sơ đã có kết quả kiểm tra. Chọn "Có" để gửi kiểm tra lại — kết quả cũ sẽ bị xóa. Chọn "Không" để chỉ lấy lại kết quả đã có.</value>
+  </data>
+  <data name="MdInsightLyDoLechCoSo" xml:space="preserve">
+    <value>Mã cơ sở khám chữa bệnh của hồ sơ không khớp cơ sở của tài khoản đang dùng, nên hệ thống soát lỗi không xử lý được hồ sơ này.</value>
+  </data>
 </root>
