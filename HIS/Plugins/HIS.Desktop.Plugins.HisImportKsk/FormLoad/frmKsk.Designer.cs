@@ -426,7 +426,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumnImportResult.OptionsColumn.AllowEdit = false;
             this.gridColumnImportResult.ToolTip = "Kết quả kiểm tra trùng bệnh nhân sau khi lưu";
             this.gridColumnImportResult.Visible = true;
-            this.gridColumnImportResult.VisibleIndex = 3;
+            this.gridColumnImportResult.VisibleIndex = 35;
             this.gridColumnImportResult.Width = 150;
             // 
             // gridColumnMatchedPatientCode
@@ -437,7 +437,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumnMatchedPatientCode.OptionsColumn.AllowEdit = false;
             this.gridColumnMatchedPatientCode.ToolTip = "Mã bệnh nhân đã có trên hệ thống được gắn thêm đợt khám này";
             this.gridColumnMatchedPatientCode.Visible = true;
-            this.gridColumnMatchedPatientCode.VisibleIndex = 4;
+            this.gridColumnMatchedPatientCode.VisibleIndex = 36;
             this.gridColumnMatchedPatientCode.Width = 100;
             // 
             // gridColumnWarning
@@ -448,7 +448,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumnWarning.OptionsColumn.AllowEdit = false;
             this.gridColumnWarning.ToolTip = "Cảnh báo của dòng import. Dòng có cảnh báo vẫn được import";
             this.gridColumnWarning.Visible = true;
-            this.gridColumnWarning.VisibleIndex = 5;
+            this.gridColumnWarning.VisibleIndex = 37;
             this.gridColumnWarning.Width = 250;
             // 
             // gridColumn1
@@ -490,7 +490,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 8;
+            this.gridColumn4.VisibleIndex = 5;
             this.gridColumn4.Width = 106;
             // 
             // gridColumn5
@@ -500,7 +500,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 9;
+            this.gridColumn5.VisibleIndex = 6;
             this.gridColumn5.Width = 148;
             // 
             // gridColumn6
@@ -510,7 +510,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 10;
+            this.gridColumn6.VisibleIndex = 7;
             this.gridColumn6.Width = 57;
             // 
             // gridColumn7
@@ -521,7 +521,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 11;
+            this.gridColumn7.VisibleIndex = 8;
             this.gridColumn7.Width = 89;
             // 
             // gridColumn8
@@ -531,7 +531,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 12;
+            this.gridColumn8.VisibleIndex = 9;
             this.gridColumn8.Width = 61;
             // 
             // gridColumn24
@@ -541,7 +541,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn24.Name = "gridColumn24";
             this.gridColumn24.OptionsColumn.AllowEdit = false;
             this.gridColumn24.Visible = true;
-            this.gridColumn24.VisibleIndex = 13;
+            this.gridColumn24.VisibleIndex = 10;
             this.gridColumn24.Width = 100;
             // 
             // gridColumn9
@@ -551,7 +551,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 14;
+            this.gridColumn9.VisibleIndex = 11;
             this.gridColumn9.Width = 104;
             // 
             // gridColumn10
@@ -561,7 +561,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 15;
+            this.gridColumn10.VisibleIndex = 12;
             this.gridColumn10.Width = 104;
             // 
             // gridColumn32
@@ -571,7 +571,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn32.Name = "gridColumn32";
             this.gridColumn32.OptionsColumn.AllowEdit = false;
             this.gridColumn32.Visible = true;
-            this.gridColumn32.VisibleIndex = 16;
+            this.gridColumn32.VisibleIndex = 13;
             // 
             // gridColumn31
             // 
@@ -580,7 +580,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn31.Name = "gridColumn31";
             this.gridColumn31.OptionsColumn.AllowEdit = false;
             this.gridColumn31.Visible = true;
-            this.gridColumn31.VisibleIndex = 17;
+            this.gridColumn31.VisibleIndex = 14;
             // 
             // gridColumn30
             // 
@@ -589,7 +589,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn30.Name = "gridColumn30";
             this.gridColumn30.OptionsColumn.AllowEdit = false;
             this.gridColumn30.Visible = true;
-            this.gridColumn30.VisibleIndex = 18;
+            this.gridColumn30.VisibleIndex = 15;
             // 
             // gridColumn33
             // 
@@ -597,7 +597,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn33.FieldName = "NATIONAL_CODE_STR";
             this.gridColumn33.Name = "gridColumn33";
             this.gridColumn33.Visible = true;
-            this.gridColumn33.VisibleIndex = 19;
+            this.gridColumn33.VisibleIndex = 16;
             this.gridColumn33.Width = 80;
             // 
             // gridColumn11
@@ -607,7 +607,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 20;
+            this.gridColumn11.VisibleIndex = 17;
             this.gridColumn11.Width = 206;
             // 
             // gridColumn25
@@ -617,7 +617,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn25.Name = "gridColumn25";
             this.gridColumn25.OptionsColumn.AllowEdit = false;
             this.gridColumn25.Visible = true;
-            this.gridColumn25.VisibleIndex = 21;
+            this.gridColumn25.VisibleIndex = 18;
             this.gridColumn25.Width = 200;
             // 
             // gridColumn12
@@ -627,7 +627,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 22;
+            this.gridColumn12.VisibleIndex = 19;
             this.gridColumn12.Width = 139;
             // 
             // gridColumn13
@@ -637,7 +637,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 6;
+            this.gridColumn13.VisibleIndex = 3;
             this.gridColumn13.Width = 93;
             // 
             // gridColumn16
@@ -648,7 +648,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn16.OptionsColumn.AllowEdit = false;
             this.gridColumn16.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 23;
+            this.gridColumn16.VisibleIndex = 20;
             // 
             // gridColumn17
             // 
@@ -658,7 +658,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn17.OptionsColumn.AllowEdit = false;
             this.gridColumn17.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 24;
+            this.gridColumn17.VisibleIndex = 21;
             // 
             // gridColumn26
             // 
@@ -667,7 +667,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn26.Name = "gridColumn26";
             this.gridColumn26.OptionsColumn.AllowEdit = false;
             this.gridColumn26.Visible = true;
-            this.gridColumn26.VisibleIndex = 25;
+            this.gridColumn26.VisibleIndex = 22;
             // 
             // gridColumn27
             // 
@@ -676,7 +676,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn27.Name = "gridColumn27";
             this.gridColumn27.OptionsColumn.AllowEdit = false;
             this.gridColumn27.Visible = true;
-            this.gridColumn27.VisibleIndex = 26;
+            this.gridColumn27.VisibleIndex = 23;
             // 
             // gridColumn28
             // 
@@ -685,7 +685,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn28.Name = "gridColumn28";
             this.gridColumn28.OptionsColumn.AllowEdit = false;
             this.gridColumn28.Visible = true;
-            this.gridColumn28.VisibleIndex = 27;
+            this.gridColumn28.VisibleIndex = 24;
             // 
             // gridColumn29
             // 
@@ -694,7 +694,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn29.Name = "gridColumn29";
             this.gridColumn29.OptionsColumn.AllowEdit = false;
             this.gridColumn29.Visible = true;
-            this.gridColumn29.VisibleIndex = 28;
+            this.gridColumn29.VisibleIndex = 25;
             // 
             // gridColumn14
             // 
@@ -703,7 +703,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 29;
+            this.gridColumn14.VisibleIndex = 26;
             this.gridColumn14.Width = 129;
             // 
             // gridColumn15
@@ -713,7 +713,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 30;
+            this.gridColumn15.VisibleIndex = 27;
             // 
             // BARCODE
             // 
@@ -721,7 +721,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.BARCODE.FieldName = "BARCODE";
             this.BARCODE.Name = "BARCODE";
             this.BARCODE.Visible = true;
-            this.BARCODE.VisibleIndex = 31;
+            this.BARCODE.VisibleIndex = 28;
             // 
             // gridColumn18
             // 
@@ -731,7 +731,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn18.OptionsColumn.AllowEdit = false;
             this.gridColumn18.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn18.Visible = true;
-            this.gridColumn18.VisibleIndex = 32;
+            this.gridColumn18.VisibleIndex = 29;
             // 
             // gridColumn19
             // 
@@ -741,7 +741,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn19.OptionsColumn.AllowEdit = false;
             this.gridColumn19.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 33;
+            this.gridColumn19.VisibleIndex = 30;
             // 
             // gridColumn20
             // 
@@ -749,7 +749,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn20.FieldName = "WORK_PLACE";
             this.gridColumn20.Name = "gridColumn20";
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 34;
+            this.gridColumn20.VisibleIndex = 31;
             this.gridColumn20.Width = 200;
             // 
             // gridColumn21
@@ -759,7 +759,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn21.Name = "gridColumn21";
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 35;
+            this.gridColumn21.VisibleIndex = 32;
             // 
             // gridColumn22
             // 
@@ -768,7 +768,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.OptionsColumn.AllowEdit = false;
             this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 36;
+            this.gridColumn22.VisibleIndex = 33;
             // 
             // gridColumn23
             // 
@@ -777,7 +777,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.OptionsColumn.AllowEdit = false;
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 37;
+            this.gridColumn23.VisibleIndex = 34;
             this.gridColumn23.Width = 150;
             // 
             // Btn_ErrorLine
@@ -946,7 +946,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn34.Name = "gridColumn34";
             this.gridColumn34.OptionsColumn.AllowEdit = false;
             this.gridColumn34.Visible = true;
-            this.gridColumn34.VisibleIndex = 7;
+            this.gridColumn34.VisibleIndex = 4;
             this.gridColumn34.Width = 148;
             // 
             // frmKsk
