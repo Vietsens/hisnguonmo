@@ -9109,24 +9109,46 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 MOS.Filter.HisTrackingFilter trackingFilter = new HisTrackingFilter();
                 trackingFilter.TREATMENT_ID = treatment.ID;
                 var trackingOlds = new BackendAdapter(new CommonParam()).Get<List<HIS_TRACKING>>("api/HisTracking/Get", ApiConsumers.MosConsumer, trackingFilter, new CommonParam());
+
+                // Che do "1 to dieu tri / 1 phong kham": chi coi la "da co to dieu tri" khi to do dang gan
+                // voi chinh y lenh kham dang mo. Nho vay phong kham nay khong cap nhat de len to dieu tri
+                // cua phong kham khac tren cung ho so, va cung khong de len to cua ngay hom truoc.
+                if (HisConfigCFG.FastTrackingCreateByServiceReq && trackingOlds != null && trackingOlds.Count() > 0)
+                {
+                    long? trackingIdOfCurrentServiceReq = GetTrackingIdOfCurrentServiceReq();
+                    trackingOlds = trackingIdOfCurrentServiceReq.HasValue
+                        ? trackingOlds.Where(o => o.ID == trackingIdOfCurrentServiceReq.Value).ToList()
+                        : new List<HIS_TRACKING>();
+                    Inventec.Common.Logging.LogSystem.Debug("btnFastTrackingCreate_Click. FastTrackingCreateByServiceReq=1___trackingIdOfCurrentServiceReq="
+                        + (trackingIdOfCurrentServiceReq.HasValue ? trackingIdOfCurrentServiceReq.Value.ToString() : "<null>")
+                        + "___trackingOlds.Count=" + trackingOlds.Count);
+                }
+
                 if (trackingOlds != null && trackingOlds.Count() > 0)
                 {
                     sdo.Tracking = trackingOlds.FirstOrDefault();
-                    MOS.Filter.HisServiceReqFilter serviceReqOfTrackingFilter = new HisServiceReqFilter();
-                    serviceReqOfTrackingFilter.TRACKING_ID = sdo.Tracking.ID;
-                    var serviceReqOfTrackings = new BackendAdapter(paramTracking).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqOfTrackingFilter, paramTracking);
-                    if (serviceReqOfTrackings != null && serviceReqOfTrackings.Count > 0)
+                    if (HisConfigCFG.FastTrackingCreateByServiceReq)
                     {
-                        sdo.ServiceReqs = new List<TrackingServiceReq>();
-                        foreach (var item in serviceReqOfTrackings)
+                        sdo.ServiceReqs = BuildTrackingServiceReqsByRoom(sdo.Tracking.ID);
+                    }
+                    else
+                    {
+                        MOS.Filter.HisServiceReqFilter serviceReqOfTrackingFilter = new HisServiceReqFilter();
+                        serviceReqOfTrackingFilter.TRACKING_ID = sdo.Tracking.ID;
+                        var serviceReqOfTrackings = new BackendAdapter(paramTracking).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqOfTrackingFilter, paramTracking);
+                        if (serviceReqOfTrackings != null && serviceReqOfTrackings.Count > 0)
                         {
-                            TrackingServiceReq ado = new TrackingServiceReq();
-                            ado.ServiceReqId = item.ID;
-                            ado.IsNotShowMedicine = false;
-                            ado.IsNotShowMaterial = false;
-                            ado.IsNotShowOutMedi = false;
-                            ado.IsNotShowOutMate = false;
-                            sdo.ServiceReqs.Add(ado);
+                            sdo.ServiceReqs = new List<TrackingServiceReq>();
+                            foreach (var item in serviceReqOfTrackings)
+                            {
+                                TrackingServiceReq ado = new TrackingServiceReq();
+                                ado.ServiceReqId = item.ID;
+                                ado.IsNotShowMedicine = false;
+                                ado.IsNotShowMaterial = false;
+                                ado.IsNotShowOutMedi = false;
+                                ado.IsNotShowOutMate = false;
+                                sdo.ServiceReqs.Add(ado);
+                            }
                         }
                     }
                 }
@@ -9194,27 +9216,34 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     sdo.Tracking.CREATOR = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     trackingUri = "api/HisTracking/Create";
 
-                    //--ServiceReqs
-                    MOS.Filter.HisServiceReqFilter _reqFilter = new HisServiceReqFilter();
-                    _reqFilter.TREATMENT_ID = this.treatmentId;
-                    _reqFilter.INTRUCTION_DATE__EQUAL = Int64.Parse(Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now).ToString().Substring(0, 8) + "000000");
-                    _reqFilter.REQUEST_LOGINNAME__EXACT = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                    _reqFilter.HAS_EXECUTE = true;
-
-                    var dataReqs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, _reqFilter, param);
-                    dataReqs = dataReqs.Where(o => o.TRACKING_ID == null).ToList();
-                    if (dataReqs != null && dataReqs.Count > 0)
+                    if (HisConfigCFG.FastTrackingCreateByServiceReq)
                     {
-                        sdo.ServiceReqs = new List<TrackingServiceReq>();
-                        foreach (var item in dataReqs)
+                        sdo.ServiceReqs = BuildTrackingServiceReqsByRoom(null);
+                    }
+                    else
+                    {
+                        //--ServiceReqs
+                        MOS.Filter.HisServiceReqFilter _reqFilter = new HisServiceReqFilter();
+                        _reqFilter.TREATMENT_ID = this.treatmentId;
+                        _reqFilter.INTRUCTION_DATE__EQUAL = Int64.Parse(Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now).ToString().Substring(0, 8) + "000000");
+                        _reqFilter.REQUEST_LOGINNAME__EXACT = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                        _reqFilter.HAS_EXECUTE = true;
+
+                        var dataReqs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, _reqFilter, param);
+                        dataReqs = dataReqs.Where(o => o.TRACKING_ID == null).ToList();
+                        if (dataReqs != null && dataReqs.Count > 0)
                         {
-                            TrackingServiceReq ado = new TrackingServiceReq();
-                            ado.ServiceReqId = item.ID;
-                            ado.IsNotShowMedicine = false;
-                            ado.IsNotShowMaterial = false;
-                            ado.IsNotShowOutMedi = false;
-                            ado.IsNotShowOutMate = false;
-                            sdo.ServiceReqs.Add(ado);
+                            sdo.ServiceReqs = new List<TrackingServiceReq>();
+                            foreach (var item in dataReqs)
+                            {
+                                TrackingServiceReq ado = new TrackingServiceReq();
+                                ado.ServiceReqId = item.ID;
+                                ado.IsNotShowMedicine = false;
+                                ado.IsNotShowMaterial = false;
+                                ado.IsNotShowOutMedi = false;
+                                ado.IsNotShowOutMate = false;
+                                sdo.ServiceReqs.Add(ado);
+                            }
                         }
                     }
                 }
@@ -9243,7 +9272,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 }
 
                 #region Hien thi message thong bao
-                MessageManager.Show(param, success);
+                //Dung overload co owner nhu nut Luu: xu ly thanh cong thi hien alert tu tat,
+                //nguoi dung khong phai bam OK. Khi that bai van bung hop thoai nhu cu.
+                MessageManager.Show(this.ParentForm, param, success);
                 #endregion
 
                 #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
@@ -9255,6 +9286,141 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Doc lai tu may chu to dieu tri dang gan voi y lenh kham dang mo.
+        /// KHONG dung HisServiceReqView.TRACKING_ID vi gia tri do nap luc mo man hinh,
+        /// khong phan anh to dieu tri vua duoc tao trong chinh phien lam viec nay
+        /// -> bam lan 2 se khong tim thay to cu va tao to trung.
+        /// Tra ve null khi y lenh kham chua gan to nao hoac khi doc that bai
+        /// (coi nhu chua co to -> tao to moi, khong chan nguoi dung).
+        /// </summary>
+        private long? GetTrackingIdOfCurrentServiceReq()
+        {
+            try
+            {
+                if (this.HisServiceReqView == null)
+                {
+                    return null;
+                }
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisServiceReqFilter filter = new HisServiceReqFilter();
+                filter.ID = this.HisServiceReqView.ID;
+                var serviceReqs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                var currentServiceReq = serviceReqs != null ? serviceReqs.FirstOrDefault() : null;
+                return currentServiceReq != null ? currentServiceReq.TRACKING_ID : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gom danh sach y lenh gan vao to dieu tri khi bat che do "1 to dieu tri / 1 phong kham".
+        /// Gom 3 nhom:
+        ///   (1) Y lenh DANG GAN to dieu tri nay - bat buoc gui lai, vi api/HisTracking/Update coi
+        ///       danh sach gui len la danh sach CUOI CUNG: y lenh dang gan ma thieu se bi nha gan
+        ///       (UPDATE HIS_SERVICE_REQ SET TRACKING_ID = NULL).
+        ///   (2) Y lenh trong ngay cua CHINH PHONG KHAM dang lam viec ma chua gan to nao - de bam
+        ///       "Tao nhanh" lan 2 keo duoc dich vu moi phat sinh vao to, va khong vo y lenh cua
+        ///       phong kham khac (khac voi loc theo nguoi chi dinh cua luong cu). Rieng y lenh loai
+        ///       KHAM thi KHONG nhan bat ky y lenh nao ngoai y lenh kham dang mo - ke ca cong kham
+        ///       khac cua chinh phong nay - vi moi y lenh kham phai co to dieu tri rieng; gom chung
+        ///       thi lan bam "Tao nhanh" sau se Update de len to, lam mat Dien bien / Dien bien CLS.
+        ///   (3) Chinh y lenh kham dang mo - y lenh kham do tiep don chi dinh nen khong chac lot vao
+        ///       bo loc phong; thieu no thi TRACKING_ID khong duoc gan va lan bam sau tao to trung.
+        /// </summary>
+        /// <param name="currentTrackingId">Ma to dieu tri dang cap nhat, null khi dang tao to moi.</param>
+        private List<TrackingServiceReq> BuildTrackingServiceReqsByRoom(long? currentTrackingId)
+        {
+            List<TrackingServiceReq> result = new List<TrackingServiceReq>();
+            try
+            {
+                HashSet<long> serviceReqIds = new HashSet<long>();
+
+                //(1) Y lenh dang gan to dieu tri nay
+                if (currentTrackingId.HasValue)
+                {
+                    CommonParam paramLinked = new CommonParam();
+                    MOS.Filter.HisServiceReqFilter linkedFilter = new HisServiceReqFilter();
+                    linkedFilter.TRACKING_ID = currentTrackingId.Value;
+                    var linkedServiceReqs = new BackendAdapter(paramLinked).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, linkedFilter, paramLinked);
+                    if (linkedServiceReqs != null)
+                    {
+                        foreach (var item in linkedServiceReqs)
+                        {
+                            serviceReqIds.Add(item.ID);
+                        }
+                    }
+                }
+
+                //(2) Y lenh trong ngay cua chinh phong kham nay ma chua gan to nao
+                CommonParam paramRoom = new CommonParam();
+                MOS.Filter.HisServiceReqFilter roomFilter = new HisServiceReqFilter();
+                roomFilter.TREATMENT_ID = this.treatmentId;
+                roomFilter.REQUEST_ROOM_ID__OR__EXECUTE_ROOM_ID = moduleData.RoomId;
+                roomFilter.INTRUCTION_DATE__EQUAL = Int64.Parse(Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now).ToString().Substring(0, 8) + "000000");
+                roomFilter.HAS_EXECUTE = true;
+                var roomServiceReqs = new BackendAdapter(paramRoom).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, roomFilter, paramRoom);
+                if (roomServiceReqs != null)
+                {
+                    foreach (var item in roomServiceReqs)
+                    {
+                        if (item.TRACKING_ID != null)
+                        {
+                            continue;
+                        }
+
+                        //Moi y lenh KHAM co to dieu tri rieng - dung nhu ten cau hinh: xac dinh to
+                        //theo y lenh kham dang mo. Nen o day chi nhan DUNG y lenh kham dang mo, loai
+                        //moi y lenh kham khac, gom ca hai truong hop:
+                        //  - Cong kham khac cua chinh phong nay (1 phong co 2 cong kham tren cung ho so).
+                        //  - Y lenh kham them do phong nay chi dinh (REQUEST_ROOM_ID = phong nay nhung
+                        //    EXECUTE_ROOM_ID = phong khac) nen van lot bo loc phong o tren.
+                        //Neu de chung vao to nay thi cong/phong bam "Tao nhanh" sau se di nhanh Update
+                        //va ghi de len to -> mat Dien bien va Dien bien CLS da nhap truoc do.
+                        //Y lenh CLS/thuoc van gom theo phong chi dinh nhu cu.
+                        if (item.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH
+                            && (this.HisServiceReqView == null || item.ID != this.HisServiceReqView.ID))
+                        {
+                            continue;
+                        }
+
+                        serviceReqIds.Add(item.ID);
+                    }
+                }
+
+                //(3) Chinh y lenh kham dang mo
+                if (this.HisServiceReqView != null)
+                {
+                    serviceReqIds.Add(this.HisServiceReqView.ID);
+                }
+
+                foreach (long serviceReqId in serviceReqIds)
+                {
+                    TrackingServiceReq ado = new TrackingServiceReq();
+                    ado.ServiceReqId = serviceReqId;
+                    ado.IsNotShowMedicine = false;
+                    ado.IsNotShowMaterial = false;
+                    ado.IsNotShowOutMedi = false;
+                    ado.IsNotShowOutMate = false;
+                    result.Add(ado);
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug("BuildTrackingServiceReqsByRoom. currentTrackingId="
+                    + (currentTrackingId.HasValue ? currentTrackingId.Value.ToString() : "<null>")
+                    + "___roomId=" + moduleData.RoomId
+                    + "___serviceReqIds.Count=" + result.Count);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         private void ModuleList()

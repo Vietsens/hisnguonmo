@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -171,6 +171,33 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
         internal static bool EnableTreatmentPrescription;
 
+        /// <summary>
+        /// Cấu hình: HIS.Desktop.Plugins.ExamServiceReqExecute.FastTrackingCreateByServiceReq
+        /// - BẬT (= 1): nút "Tạo nhanh tờ điều trị" xác định tờ điều trị theo y lệnh khám đang mở.
+        ///   Y lệnh khám đã gắn tờ -> cập nhật đúng tờ đó; chưa gắn -> tạo tờ mới và gắn y lệnh khám
+        ///   đang mở vào tờ mới. Danh sách y lệnh gắn vào tờ lấy theo PHÒNG KHÁM đang làm việc
+        ///   thay vì theo người chỉ định -> mỗi phòng khám có tờ điều trị riêng, không đè lên nhau.
+        /// - TẮT (= 0 / null — mặc định): giữ nguyên hành vi cũ — coi cả hồ sơ điều trị chỉ có một tờ,
+        ///   tìm thấy tờ nào thì cập nhật tờ đó, y lệnh gắn vào tờ lấy theo người chỉ định.
+        /// </summary>
+        private const string CONFIG_KEY__FAST_TRACKING_CREATE_BY_SERVICE_REQ = "HIS.Desktop.Plugins.ExamServiceReqExecute.FastTrackingCreateByServiceReq";
+        internal static bool FastTrackingCreateByServiceReq;
+
+        /// <summary>
+        /// Cấu hình: MOS.HIS_SERVICE_REQ.NOT_COPY_PATHOLOGICAL_PROCESS_TO_ADDITION_EXAM
+        /// (dùng chung key với Backend — Backend chặn copy lúc tạo y lệnh, Frontend chặn copy lúc mở màn hình)
+        /// - BẬT (= 1): KHÔNG lấy Quá trình bệnh lý từ khám chính sang khám thêm. Bác sĩ phòng khám
+        ///   thêm mở màn hình thấy ô Quá trình bệnh lý trống, tự nhập nội dung của phòng mình.
+        /// - TẮT (= 0 / null — mặc định): giữ nguyên hành vi cũ, vẫn kế thừa từ khám chính.
+        /// </summary>
+
+        /// <summary>
+        /// Cấu hình: MOS.HIS_SERVICE_REQ.NOT_COPY_HOSPITALIZATION_REASON_TO_ADDITION_EXAM
+        /// (dùng chung key với Backend — Backend chặn chép lúc tạo y lệnh, Frontend chặn nhánh dự phòng lúc mở màn hình)
+        /// - BẬT (= 1): y lệnh khám thêm mở lên có ô Lý do khám trống, bác sĩ tự nhập.
+        /// - TẮT (= 0 / null — mặc định): giữ nguyên hành vi cũ.
+        /// </summary>
+
         internal static void LoadConfig()
         {
             try
@@ -189,6 +216,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                     : TransDepartmentCheckRequiredService.Split('|').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).Distinct().ToList();
 
                 EnableTreatmentPrescription = GetValue(CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION) == GlobalVariables.CommonStringTrue;
+                FastTrackingCreateByServiceReq = GetValue(CONFIG_KEY__FAST_TRACKING_CREATE_BY_SERVICE_REQ) == GlobalVariables.CommonStringTrue;
 
                 IsCheckValueMaxlengthOption = GetValue(KEY_IsCheckValueMaxlengthOption);
                 IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY_IsCheckServiceFollowWhenOut) == GlobalVariables.CommonStringTrue;
