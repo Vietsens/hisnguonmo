@@ -30,6 +30,8 @@ namespace MPS.Processor.Mps000008
 {
     public class Mps000008Processor : AbstractProcessor
     {
+        private const string ICD_SERVICE_SEPARATOR = " - ";
+
         Mps000008PDO rdo;
 
         public Mps000008Processor(CommonParam param, PrintData printData)
@@ -179,6 +181,9 @@ namespace MPS.Processor.Mps000008
                 AddObjectKeyIntoListkey<Mps000008ADO>(rdo.Mps000008ADO, false);
                 AddObjectKeyIntoListkey<HIS_APPOINTMENT_PERIOD>(appPeriod, false);
 
+                SetSingleKey(new KeyValue(Mps000008ExtendSingleKey.ICD10, MakeIcd10()));
+                SetSingleKey(new KeyValue(Mps000008ExtendSingleKey.SURG_SERVICE_NAME, MakeSurgServiceName()));
+
                 if (rdo.HisTracking != null)
                 {
                     SetSingleKey(new KeyValue("TRACKING_EYE_TENSION_LEFT", rdo.HisTracking.EYE_TENSION_LEFT));
@@ -218,6 +223,109 @@ namespace MPS.Processor.Mps000008
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Ghép chẩn đoán chính và các chẩn đoán kèm theo: "Tên bệnh (Mã ICD) - Tên bệnh (Mã ICD)"
+        /// </summary>
+        private string MakeIcd10()
+        {
+            string result = "";
+            try
+            {
+                if (rdo.currentTreatment == null) return result;
+
+                //Ưu tiên chẩn đoán hiển thị trên giấy ra viện (SHOW_ICD_*), không có thì lấy chẩn đoán ra viện
+                bool useShowIcd = !String.IsNullOrEmpty(rdo.currentTreatment.SHOW_ICD_CODE);
+                bool useShowSubIcd = !String.IsNullOrEmpty(rdo.currentTreatment.SHOW_ICD_SUB_CODE);
+
+                List<string> icds = new List<string>();
+
+                string mainIcd = useShowIcd
+                    ? MakeIcdItem(rdo.currentTreatment.SHOW_ICD_NAME, rdo.currentTreatment.SHOW_ICD_CODE)
+                    : MakeIcdItem(rdo.currentTreatment.ICD_NAME, rdo.currentTreatment.ICD_CODE);
+                if (!String.IsNullOrWhiteSpace(mainIcd)) icds.Add(mainIcd);
+
+                List<string> subCodes = SplitIcd(useShowSubIcd ? rdo.currentTreatment.SHOW_ICD_SUB_CODE : rdo.currentTreatment.ICD_SUB_CODE);
+                List<string> subNames = SplitIcd(useShowSubIcd ? rdo.currentTreatment.SHOW_ICD_TEXT : rdo.currentTreatment.ICD_TEXT);
+                int subCount = Math.Max(subCodes.Count, subNames.Count);
+                for (int i = 0; i < subCount; i++)
+                {
+                    string subIcd = MakeIcdItem(i < subNames.Count ? subNames[i] : "", i < subCodes.Count ? subCodes[i] : "");
+                    if (!String.IsNullOrWhiteSpace(subIcd)) icds.Add(subIcd);
+                }
+
+                result = String.Join(ICD_SERVICE_SEPARATOR, icds);
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private static List<string> SplitIcd(string data)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                if (String.IsNullOrWhiteSpace(data)) return result;
+
+                result = data.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(o => o.Trim())
+                    .Where(o => !String.IsNullOrWhiteSpace(o))
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                result = new List<string>();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private static string MakeIcdItem(string icdName, string icdCode)
+        {
+            if (String.IsNullOrWhiteSpace(icdName) && String.IsNullOrWhiteSpace(icdCode)) return "";
+            if (String.IsNullOrWhiteSpace(icdCode)) return icdName.Trim();
+            if (String.IsNullOrWhiteSpace(icdName)) return icdCode.Trim();
+            return String.Format("{0} ({1})", icdName.Trim(), icdCode.Trim());
+        }
+
+        /// <summary>
+        /// Ghép các dịch vụ phẫu thuật: "Tên BHYT (Tên dịch vụ) - Tên BHYT (Tên dịch vụ)"
+        /// </summary>
+        private string MakeSurgServiceName()
+        {
+            string result = "";
+            try
+            {
+                if (rdo.ListSurgService == null || rdo.ListSurgService.Count == 0) return result;
+
+                List<string> services = new List<string>();
+                foreach (var service in rdo.ListSurgService)
+                {
+                    if (service == null) continue;
+
+                    string heinName = (service.HEIN_SERVICE_BHYT_NAME ?? "").Trim();
+                    string serviceName = (service.SERVICE_NAME ?? "").Trim();
+
+                    if (String.IsNullOrWhiteSpace(heinName) && String.IsNullOrWhiteSpace(serviceName)) continue;
+
+                    if (String.IsNullOrWhiteSpace(heinName)) services.Add(serviceName);
+                    else if (String.IsNullOrWhiteSpace(serviceName)) services.Add(heinName);
+                    else services.Add(String.Format("{0} ({1})", heinName, serviceName));
+                }
+
+                result = String.Join(ICD_SERVICE_SEPARATOR, services);
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         public override string ProcessPrintLogData()

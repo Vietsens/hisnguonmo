@@ -32,6 +32,7 @@ namespace MPS.Processor.Mps000008.PDO
         public long timeIn { get; set; }
         public List<HIS_APPOINTMENT_PERIOD> ListAppointmentPeriod;
         public HIS_TRACKING HisTracking;
+        public List<V_HIS_SERVICE> ListSurgService;
 
         public Mps000008PDO() { }
 
@@ -80,6 +81,36 @@ namespace MPS.Processor.Mps000008.PDO
                 this.listEkipUser = _listEkipUser;
                 this.ListAppointmentPeriod = _listAppointmentPeriod;
                 this.HisTracking = tracking;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public Mps000008PDO(
+            PatientADO Patient,
+            V_HIS_PATIENT_TYPE_ALTER PatyAlterBhyt,
+            HIS_TREATMENT currentTreatment,
+            Mps000008ADO mps000008Ado,
+            long timeIn,
+            List<V_HIS_EKIP_USER> _listEkipUser,
+            List<HIS_APPOINTMENT_PERIOD> _listAppointmentPeriod,
+            HIS_TRACKING tracking,
+            List<V_HIS_SERVICE> _listSurgService
+            )
+        {
+            try
+            {
+                this.Patient = Patient;
+                this.PatyAlterBhyt = PatyAlterBhyt;
+                this.currentTreatment = currentTreatment;
+                this.timeIn = timeIn;
+                this.Mps000008ADO = mps000008Ado;
+                this.listEkipUser = _listEkipUser;
+                this.ListAppointmentPeriod = _listAppointmentPeriod;
+                this.HisTracking = tracking;
+                this.ListSurgService = _listSurgService;
             }
             catch (Exception ex)
             {
