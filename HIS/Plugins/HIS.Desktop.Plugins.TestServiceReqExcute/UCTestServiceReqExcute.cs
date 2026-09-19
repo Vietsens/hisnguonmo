@@ -1823,6 +1823,13 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                     return;
                 }
 
+                // Viec 3353 (PT-56272): dich vu bat co "Co thuoc, vat tu di kem" (HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1)
+                // nhung chua ke thuoc/vat tu di kem -> hoi Yes/No, khong chan.
+                if (!HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(lstSereServ))
+                {
+                    return;
+                }
+
                 CommonParam param = new CommonParam();
                 bool success = false;
                 WaitingManager.Show();
