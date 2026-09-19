@@ -50,6 +50,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 spnHeight2.EditValue = null;
                 spnPulse2.EditValue = null;
                 SetKskBreathRateValue(null);
+                SetKskBellyValue(null);
                 spnWeight2.EditValue = null;
                 spnBloodPressureMax2.EditValue = null;
                 spnBloodPressureMin2.EditValue = null;
@@ -418,6 +419,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 spnHeight2.EditValue = dhstOverEighteen.HEIGHT;
                                 spnPulse2.EditValue = dhstOverEighteen.PULSE;
                                 SetKskBreathRateValue(dhstOverEighteen.BREATH_RATE);
+                                SetKskBellyValue(dhstOverEighteen.BELLY);
                                 spnWeight2.EditValue = dhstOverEighteen.WEIGHT;
                                 spnBloodPressureMax2.EditValue = dhstOverEighteen.BLOOD_PRESSURE_MAX;
                                 spnBloodPressureMin2.EditValue = dhstOverEighteen.BLOOD_PRESSURE_MIN;
@@ -536,6 +538,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 spnBloodPressureMax2.EditValue = currentDhst.BLOOD_PRESSURE_MAX;
                                 spnBloodPressureMin2.EditValue = currentDhst.BLOOD_PRESSURE_MIN;
                                 SetKskBreathRateValue(currentDhst.BREATH_RATE);
+                                SetKskBellyValue(currentDhst.BELLY);
                                 //txtVirBmi.Text = currentDhst.VIR_BMI!=null ? currentDhst.VIR_BMI.ToString() : "";
                                 FillNoteBMI(spnHeight2, spnWeight2, txtVirBmi2);
                             }
@@ -752,6 +755,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     obj.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spnWeight2.Value, 2);
                 // Nhịp thở — ô thêm cho mẫu M3, lưu vào cột BREATH_RATE đã có sẵn.
                 obj.BREATH_RATE = GetKskBreathRateValue();
+                // Vòng bụng — ô thêm cho mẫu M4, lưu vào cột BELLY đã có sẵn.
+                obj.BELLY = GetKskBellyValue();
 
                 obj.EXECUTE_LOGINNAME = cboExecuteLoginName2.EditValue != null ? cboExecuteLoginName2.EditValue.ToString() : null;
                 obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME)?.TDL_USERNAME : null;
@@ -2063,6 +2068,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Ô "Nhịp thở" ở phần Khám thể lực (mẫu M3 Sở Y tế TP.HCM bắt buộc chỉ tiêu này).
                 try { InitBreathRateControl(); }
                 catch (Exception exBr) { Inventec.Common.Logging.LogSystem.Warn(exBr); }
+                // Ô "Vòng bụng" ở phần Khám thể lực (mẫu M4 Sở Y tế TP.HCM lấy chỉ tiêu này).
+                try { InitBellyControl(); }
+                catch (Exception exBl) { Inventec.Common.Logging.LogSystem.Warn(exBl); }
                 // Cụm "Đề nghị" ở tab Kết luận (mẫu M3 Sở Y tế TP.HCM).
                 try { InitConclusionSuggestControls(); }
                 catch (Exception exSug) { Inventec.Common.Logging.LogSystem.Warn(exSug); }

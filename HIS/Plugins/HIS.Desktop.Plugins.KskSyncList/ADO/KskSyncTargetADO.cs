@@ -14,7 +14,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
         public bool SyncHcc { get; set; }
         public bool SyncVlg { get; set; }
 
-        /// <summary>Liên thông KSK Sở Y tế TP.HCM (mẫu M3) — cổng thứ năm.</summary>
+        /// <summary>Liên thông KSK Sở Y tế TP.HCM (mẫu M3, M4) — cổng thứ năm.</summary>
         public bool SyncSytHcm { get; set; }
     }
 }

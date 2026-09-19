@@ -656,7 +656,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
                 using (SaveFileDialog dlg = new SaveFileDialog())
                 {
                     dlg.Filter = "Tệp JSON (*.json)|*.json";
-                    dlg.FileName = "NoiChiSoCanLamSang_SYT_HCM_M3.json";
+                    dlg.FileName = "NoiChiSoCanLamSang_SYT_HCM_M3_M4.json";
                     if (dlg.ShowDialog() != DialogResult.OK) return;
 
                     string json = Newtonsoft.Json.JsonConvert.SerializeObject(file, Newtonsoft.Json.Formatting.Indented);
@@ -722,7 +722,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
                 if (skipped > 0)
                 {
                     msg += Environment.NewLine + string.Format(
-                        "Bỏ qua {0} cặp vì mã chỉ tiêu không thuộc mẫu M3 hoặc mã chỉ số không có trong danh mục của viện.",
+                        "Bỏ qua {0} cặp vì mã chỉ tiêu không thuộc mẫu M3, M4 hoặc mã chỉ số không có trong danh mục của viện.",
                         skipped);
                 }
                 msg += Environment.NewLine + "Bấm Lưu để ghi khai báo cho máy trạm này.";
