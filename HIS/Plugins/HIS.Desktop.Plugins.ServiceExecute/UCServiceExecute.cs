@@ -4691,6 +4691,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     currentServiceReq.START_TIME = dicSereServExt.ToList().Min(o => o.Value.BEGIN_TIME);
                     currentServiceReq.FINISH_TIME = dicSereServExt.ToList().Max(o => o.Value.END_TIME);
                 }
+
+                // Viec 3353 (PT-56272): dich vu bat co "Co thuoc, vat tu di kem" (HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1)
+                // nhung chua ke thuoc/vat tu di kem -> hoi Yes/No, khong chan. No = dung lai de ke bo sung roi ket thuc lai.
+                if (!HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(listServiceADO))
+                {
+                    return;
+                }
+
                 var result = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>("api/HisServiceReq/FinishWithTime", ApiConsumer.ApiConsumers.MosConsumer, currentServiceReq, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                 if (result != null)
                 {

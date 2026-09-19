@@ -1604,6 +1604,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     return;
                 }
 
+                // Viec 3353 (PT-56272): dich vu bat co "Co thuoc, vat tu di kem" (HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1)
+                // nhung chua ke thuoc/vat tu di kem -> hoi Yes/No, khong chan. Dat sau btnSaveClick nen du lieu vua nhap da duoc luu.
+                List<V_HIS_SERE_SERV_5> sereServsToCheckMediMate = (this.sereServbyServiceReqs != null && this.sereServbyServiceReqs.Count > 0)
+                    ? this.sereServbyServiceReqs
+                    : (this.sereServ != null ? new List<V_HIS_SERE_SERV_5>() { this.sereServ } : null);
+                if (!HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(sereServsToCheckMediMate))
+                {
+                    return;
+                }
+
                 if (valid)
                 {
                     if (serviceReq != null)
