@@ -150,6 +150,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         decimal totalGuaranteePrice_1 = 0;
         Inventec.Desktop.Common.Modules.Module currentModule;
 
+        //Viec 57452: thu vien kiem tra dich vu khong duoc chi dinh dong thoi
+        private HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager checkServiceExclusiveManager;
+
+        //Viec 57452: thong diep canh bao mem theo SERVICE_ID, hien icon tren cot Ma dich vu
+        private Dictionary<long, string> dicServiceExclusiveWarning = new Dictionary<long, string>();
+
         Dictionary<long, List<V_HIS_SERVICE_PATY>> servicePatyInBranchs;
         Dictionary<long, V_HIS_SERVICE> dicServices;
         List<HIS_ICD_SERVICE> icdServicePhacDos { get; set; }
@@ -1195,6 +1201,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.IsFirstloadForm = true;
                 this.isInitTracking = true;
                 this.requestRoom = GetRequestRoom(this.currentModule.RoomId);
+                //Viec 57452: khoi tao thu vien kiem tra dich vu khong duoc chi dinh dong thoi
+                try
+                {
+                    this.checkServiceExclusiveManager = new HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager(this.currentModule);
+                    HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager.LoadData();
+                }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
                 this.IsFirstloadConditionService = true;
                 this.isNotLoadWhileChangeInstructionTimeInFirst = true;
                 gridViewServiceProcess.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;//ẩn panel filter editor mặc định của grid khi gõ tìm kiếm ở các ô
@@ -3319,7 +3332,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                if (e.ColumnName == "AMOUNT" || e.ColumnName == "PATIENT_TYPE_ID" || e.ColumnName == "TDL_SERVICE_NAME")
+                if (e.ColumnName == "AMOUNT" || e.ColumnName == "PATIENT_TYPE_ID" || e.ColumnName == "TDL_SERVICE_NAME"
+                    || e.ColumnName == "TDL_SERVICE_CODE")
                 {
                     this.gridViewServiceProcess_CustomRowError(sender, e);
                 }
@@ -3375,6 +3389,26 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         e.Info.ErrorType = (ErrorType)(row.ErrorTypeIsAssignDay);
                         e.Info.ErrorText = (string)(row.ErrorMessageIsAssignDay);
+                    }
+                    else
+                    {
+                        e.Info.ErrorType = (ErrorType)(ErrorType.None);
+                        e.Info.ErrorText = "";
+                    }
+                }
+                else if (e.ColumnName == "TDL_SERVICE_CODE")
+                {
+                    //Viec 57452: canh bao dich vu khong duoc chi dinh dong thoi
+                    string exclusiveWarning = null;
+                    if (row.IsChecked && this.dicServiceExclusiveWarning != null)
+                    {
+                        this.dicServiceExclusiveWarning.TryGetValue(row.SERVICE_ID, out exclusiveWarning);
+                    }
+
+                    if (!String.IsNullOrEmpty(exclusiveWarning))
+                    {
+                        e.Info.ErrorType = ErrorType.Warning;
+                        e.Info.ErrorText = exclusiveWarning;
                     }
                     else
                     {

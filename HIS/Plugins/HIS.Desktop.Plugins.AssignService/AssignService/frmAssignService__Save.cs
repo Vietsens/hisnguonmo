@@ -198,6 +198,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (lstIcd.Count > 0 || lstSubIcd.Count > 0)
                     isValid = isValid && checkContraindicated(lstIcd, lstSubIcd, icdServicePhacDos, serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug("Valid9__ValidSereServWithCondition:" + isValid);
+                isValid = isValid && CheckServiceExclusive(serviceCheckeds__Send);
+                Inventec.Common.Logging.LogSystem.Debug("Valid__CheckServiceExclusive:" + isValid);
                 isValid = isValid && ValidSereServWithOtherPaySource(serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug("Valid10__ValidSereServWithOtherPaySource:" + isValid);
                 isValid = isValid && ValidCheckTreatmentTypeBed(serviceCheckeds__Send, ref EmptyMessage);
@@ -1165,6 +1167,43 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private void CheckContinue(bool obj)
         {
             IsActionKey = obj;
+        }
+
+        /// <summary>
+        /// Viec 57452: kiem tra cac dich vu dang chi dinh co bi loai tru voi dich vu da chi dinh
+        /// trong lan dieu tri (hoac voi dich vu khac dang tich chon) hay khong.
+        /// </summary>
+        private bool CheckServiceExclusive(List<SereServADO> serviceCheckeds__Send)
+        {
+            bool result = true;
+            try
+            {
+                if (HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager.IsEmptyCatalog)
+                {
+                    return true;
+                }
+                if (serviceCheckeds__Send == null || serviceCheckeds__Send.Count == 0)
+                {
+                    return true;
+                }
+                if (this.checkServiceExclusiveManager == null)
+                {
+                    this.checkServiceExclusiveManager = new HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager(this.currentModule);
+                }
+
+                List<long> assigningServiceIds = serviceCheckeds__Send.Select(o => o.SERVICE_ID).Distinct().ToList();
+                List<long> assignedServiceIds = HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager
+                    .BuildAssignedServiceIds(this.sereServsInTreatmentRaw);
+
+                string messageError = "";
+                result = this.checkServiceExclusiveManager.ProcessCheck(assigningServiceIds, assignedServiceIds, ref messageError);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = true;   // loi ky thuat thi khong chan nguoi dung lam viec
+            }
+            return result;
         }
 
         private bool checkContraindicated(List<string> icd, List<string> icdSub, List<HIS_ICD_SERVICE> icdServices, List<SereServADO> serviceCheckeds__Send)

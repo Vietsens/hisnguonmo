@@ -206,6 +206,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqMain { get; set; }
         List<L_HIS_ROOM_COUNTER_1> hisRoomCounters;
         List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_SAME> currentServiceSames;
+        //Viec 57452: kiem tra dich vu khong duoc phep chi dinh dong thoi
+        private HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager checkServiceExclusiveManager;
         private bool IsFirstLoad = false;
         ToolTipControlInfo lastInfo = null;
         int lastRowHandle = -1;
@@ -314,6 +316,17 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             {
                 HisConfigCFG.LoadConfig();
                 EnableDoubleBuffering(this.gridControlServiceProcess);
+
+                //Viec 57452: khoi tao + nap truoc danh muc dich vu loai tru
+                try
+                {
+                    this.checkServiceExclusiveManager = new HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager(this.currentModule);
+                    HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager.LoadData();
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
 
                 this.LoadHisServiceFromRam();
                 this.requestRoom = GetRequestRoom(this.currentModule.RoomId);
@@ -6569,6 +6582,46 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             return null;
         }
 
+        /// <summary>
+        /// Viec 57452: kiem tra cac dich vu dang chi dinh co bi loai tru voi dich vu da chi dinh
+        /// trong lan dieu tri (hoac voi dich vu khac dang tich chon) hay khong.
+        /// </summary>
+        private bool CheckServiceExclusive(List<DataGridAdo> serviceCheckeds__Send)
+        {
+            bool result = true;
+            try
+            {
+                if (HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager.IsEmptyCatalog)
+                {
+                    return true;
+                }
+                if (serviceCheckeds__Send == null || serviceCheckeds__Send.Count == 0)
+                {
+                    return true;
+                }
+
+                List<long> assigningServiceIds = serviceCheckeds__Send.Select(o => o.SERVICE_ID).Distinct().ToList();
+
+                //Danh sach dich vu da chi dinh cua lan dieu tri: uu tien ban day du (sereServsInTreatmentRaw),
+                //neu chua nap duoc thi dung tam ban da loc theo ngay y lenh (sereServWithTreatment)
+                List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServSource = (this.sereServsInTreatmentRaw != null && this.sereServsInTreatmentRaw.Count > 0)
+                    ? this.sereServsInTreatmentRaw
+                    : this.sereServWithTreatment;
+
+                List<long> assignedServiceIds = HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager
+                    .BuildAssignedServiceIds(sereServSource);
+
+                string messageError = "";
+                result = this.checkServiceExclusiveManager.ProcessCheck(assigningServiceIds, assignedServiceIds, ref messageError);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = true;   // loi ky thuat thi khong chan nguoi dung lam viec
+            }
+            return result;
+        }
+
         private bool checkContraindicated(List<string> icd, List<string> icdSub, List<HIS_ICD_SERVICE> icdServices, List<DataGridAdo> serviceCheckeds__Send)
         {
 
@@ -8006,6 +8059,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 if (lstIcd.Count > 0 || lstSubIcd.Count > 0)
                     isValid = isValid && checkContraindicated(lstIcd, lstSubIcd, icdServicePhacDos, serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug("Valid9__ValidSereServWithCondition:" + isValid);
+                isValid = isValid && CheckServiceExclusive(serviceCheckeds__Send);
+                Inventec.Common.Logging.LogSystem.Debug("Valid__CheckServiceExclusive:" + isValid);
                 isValid = isValid && ValidSereServWithOtherPaySource(serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug("Valid10__ValidSereServWithOtherPaySource:" + isValid);
                 isValid = isValid && ValidCheckTreatmentTypeBed(serviceCheckeds__Send, ref EmptyMessage);
