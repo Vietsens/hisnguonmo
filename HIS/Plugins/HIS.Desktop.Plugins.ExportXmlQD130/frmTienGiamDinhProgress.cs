@@ -99,7 +99,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
-                this.progressBar.EditValue = done;
+                //Moi giai doan co tong khac nhau (so ho so ket xuat, so giay cho, so ho so tra).
+                //Khong cap nhat Maximum theo tung giai doan thi thanh chay giu tong cua giai doan
+                //truoc va hien day 100% ngay tu dau - nguoi dung tuong xong ma thuc ra dang cho.
+                int max = total <= 0 ? 1 : total;
+                if (this.progressBar.Properties.Maximum != max)
+                {
+                    this.progressBar.Properties.Maximum = max;
+                }
+
+                this.progressBar.EditValue = done < 0 ? 0 : (done > max ? max : done);
                 this.lblStatus.Text = statusText;
                 //Cho giao dien ve lai ngay - vong lap tra cuu dang chay tren cung luong UI
                 Application.DoEvents();
