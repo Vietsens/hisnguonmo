@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -648,7 +648,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: kham chinh ID=" + kc.ID);
 
                 // === Khoi 1: Thong tin benh nhan (LUON copy bat ke gia tri cua key - backend khong copy 2 truong nay) ===
-                if (needProcess && !string.IsNullOrEmpty(kc.PATHOLOGICAL_PROCESS))
+                // Qua trinh benh ly la noi dung "dien bien lam sang" cua rieng tung phong kham.
+                // Vien bat FastTrackingCreateByServiceReq thi KHONG copy sang kham them nua,
+                // de o Qua trinh benh ly cua phong kham them trong cho bac si tu nhap.
+                if (needProcess && !string.IsNullOrEmpty(kc.PATHOLOGICAL_PROCESS)
+                    && !HisConfigCFG.FastTrackingCreateByServiceReq)
                 {
                     this.HisServiceReqView.PATHOLOGICAL_PROCESS = kc.PATHOLOGICAL_PROCESS;
                     Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: COPIED PATHOLOGICAL_PROCESS");
@@ -949,13 +953,26 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     EnableButtonByServiceReq(this.HisServiceReqView.SERVICE_REQ_STT_ID);
                     Inventec.Common.Logging.LogSystem.Debug("this.HisServiceReqView.HOSPITALIZATION_REASON" + this.HisServiceReqView.HOSPITALIZATION_REASON);
                     Inventec.Common.Logging.LogSystem.Debug("this.treatment.HOSPITALIZATION_REASON" + this.treatment.HOSPITALIZATION_REASON);
-                    if (this.treatment != null)
+                    // Prioritize the hospitalization reason stored on the exam order being opened,
+                    // so each exam room keeps its own content and no room overwrites another.
+                    // Fall back to the treatment-level value only when this exam order has none yet.
+                    //
+                    // Khi bat FastTrackingCreateByServiceReq: y lenh kham them duoc tao
+                    // voi o Ly do kham rong (backend khong chep sang nua). Neu van chay nhanh du phong
+                    // thi lai nap gia tri dung chung cua ho so - chinh la noi dung cua phong kham truoc
+                    // -> o van khong trong. Vi vay voi kham them phai bo luon nhanh du phong.
+                    bool isAdditionExam = (this.HisServiceReqView.IS_MAIN_EXAM ?? 0) != 1;
+                    bool allowFallbackToTreatment =
+                        !(HisConfigCFG.FastTrackingCreateByServiceReq && isAdditionExam);
+
+                    if (!string.IsNullOrEmpty(this.HisServiceReqView.HOSPITALIZATION_REASON))
+                    {
+                        txtHospitalizationReason.Text = this.HisServiceReqView.HOSPITALIZATION_REASON;
+                    }
+                    else if (this.treatment != null && allowFallbackToTreatment)
                     {
                         refreshClick(this.treatment.ID);
                     }
-
-                    if (string.IsNullOrEmpty(txtHospitalizationReason.Text.Trim()) && !string.IsNullOrEmpty(this.HisServiceReqView.HOSPITALIZATION_REASON))
-                        txtHospitalizationReason.Text = this.HisServiceReqView.HOSPITALIZATION_REASON;
                     //else if (this.treatment != null && !string.IsNullOrEmpty(this.treatment.HOSPITALIZATION_REASON))
                     //{
                     //    txtHospitalizationReason.Text = this.treatment.HOSPITALIZATION_REASON;

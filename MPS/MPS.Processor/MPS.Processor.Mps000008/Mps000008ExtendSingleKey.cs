@@ -64,6 +64,9 @@ namespace MPS.Processor.Mps000008
         internal const string WORK_PLACE_NAME = "WORK_PLACE_NAME";
         internal const string SURG_DOCTOR_NAME = "SURG_DOCTOR_NAME";
 
+        internal const string ICD10 = "ICD10";
+        internal const string SURG_SERVICE_NAME = "SURG_SERVICE_NAME";
+
         internal const string END_DEPARTMENT_HEAD_LOGINNAME = "END_DEPARTMENT_HEAD_LOGINNAME";
         internal const string END_DEPARTMENT_HEAD_USERNAME = "END_DEPARTMENT_HEAD_USERNAME";
         internal const string HOSPITAL_DIRECTOR_LOGINNAME = "HOSPITAL_DIRECTOR_LOGINNAME";

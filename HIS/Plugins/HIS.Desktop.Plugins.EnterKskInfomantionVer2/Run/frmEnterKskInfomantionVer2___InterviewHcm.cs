@@ -19,8 +19,10 @@
  * Nhóm bị khoá thì XOÁ TRẮNG, vì theo mẫu đó là phần "bỏ qua", không được mang câu trả lời cũ.
  *
  * KHÁC BIỆT GIỮA MẪU IN VÀ BẢN TIN CỔNG (đã báo người yêu cầu, chờ Sở trả lời):
- *   - D3 tầm soát phổi tắc nghẽn mạn tính: mẫu in có 3 câu, bản tin cổng KHÔNG có nhóm tương ứng.
- *     Vẫn dựng đủ 3 ô để in được tờ giấy; tên trường tạm đặt tiền tố `bpq_`, chưa đẩy cổng.
+ *   - D3 tầm soát phổi tắc nghẽn mạn tính: đặc tả cổng nhận được lúc đầu KHÔNG có nhóm này nên
+ *     tên trường ở đây đặt theo mẫu in, tiền tố `bpq_`. Cổng thực tế BẮT BUỘC nhóm
+ *     `benh_phoi_tac_nghen` với tên `ptnmt_*`; phần đẩy cổng quy đổi tên, KHÔNG đổi tên khoá ở đây
+ *     để hồ sơ đã lưu không mất dữ liệu (xem HB__PHOI_TAC_NGHEN của KskSytHcmBodyBuilder).
  *   - Nhồi máu cơ tim và Đột quỵ: mẫu in KHÔNG có ô nơi điều trị, nên tab cũng không dựng, dù bản
  *     tin cổng có `benh_nhoimau_cskcb` / `benh_dotqui_cskcb`.
  *

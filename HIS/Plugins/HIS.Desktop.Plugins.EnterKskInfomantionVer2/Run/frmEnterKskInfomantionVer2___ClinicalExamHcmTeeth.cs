@@ -107,6 +107,79 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// </summary>
         private const int HCM_TOOTH_STATUS_DEFAULT = 1;
 
+        /// <summary>
+        /// Mã "Bình thường" THEO BẢNG MÃ ĐANG DÙNG — bảng của HIS trả 1, danh mục của cổng trả Id
+        /// thật (ví dụ 191).
+        ///
+        /// VÌ SAO PHẢI CÓ: trước đây mọi chỗ đều dùng thẳng hằng số 1. Khi cổng đã thay bảng mã thì
+        /// 1 KHÔNG còn nằm trong danh mục — sơ đồ vẫn vẽ đúng vì hàm tra mã hỏng thì lùi về mục đầu,
+        /// nên nhìn màn hình tưởng bình thường, nhưng thứ LƯU XUỐNG và ĐẨY LÊN CỔNG vẫn là 1. Bản
+        /// tin M4 gửi đi cả 32 chiếc đều bằng 1 chính là vì chỗ này.
+        /// </summary>
+        private static int HcmDefaultToothCode()
+        {
+            try
+            {
+                List<HcmToothStatus> all = HCM_TOOTH_STATUSES;
+                if (all == null || all.Count == 0) return HCM_TOOTH_STATUS_DEFAULT;
+
+                foreach (HcmToothStatus st in all)
+                {
+                    if (st != null && NormToothName(st.Name) == "binh thuong") return st.Code;
+                }
+                // Danh mục không có mục tên "Bình thường" -> lấy mục đầu, như chỗ vẽ sơ đồ vẫn làm.
+                return all[0].Code;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); return HCM_TOOTH_STATUS_DEFAULT; }
+        }
+
+        /// <summary>
+        /// Quy đổi một mã răng ĐÃ LƯU sang bảng mã đang dùng.
+        ///
+        /// Hồ sơ lưu bằng bản cũ ghi mã nội bộ của HIS (1..10). Khi cổng đã thay bảng mã thì những
+        /// mã đó không còn tra được. Quy đổi THEO TÊN qua bảng mã của HIS — "Sâu" vẫn ra "Sâu" —
+        /// chứ không dồn hết về "Bình thường", vì làm vậy là mất dữ liệu răng đã khám.
+        /// </summary>
+        private static int HcmConvertToothCode(int code)
+        {
+            try
+            {
+                if (FindHcmToothStatusOrNull(code) != null) return code;
+
+                string name = null;
+                foreach (HcmToothStatus st in HCM_TOOTH_STATUSES_HIS)
+                {
+                    if (st != null && st.Code == code) { name = st.Name; break; }
+                }
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    foreach (HcmToothStatus st in HCM_TOOTH_STATUSES)
+                    {
+                        if (st != null && NormToothName(st.Name) == NormToothName(name)) return st.Code;
+                    }
+                }
+                return HcmDefaultToothCode();
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); return HcmDefaultToothCode(); }
+        }
+
+        /// <summary>Bỏ dấu và về chữ thường để so tên trạng thái răng, tránh lệch vì dấu hay hoa thường.</summary>
+        private static string NormToothName(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return "";
+            string t = s.Trim().ToLowerInvariant().Normalize(System.Text.NormalizationForm.FormD);
+            var sb = new System.Text.StringBuilder();
+            foreach (char c in t)
+            {
+                if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c)
+                    != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(c == 'đ' ? 'd' : c);
+                }
+            }
+            return sb.ToString();
+        }
+
         /// <summary>4 phần hàm, mỗi phần 8 răng — mỗi phần chiếm 1 hàng để nút đủ rộng hiện chữ.</summary>
         private static readonly string[][] HCM_TOOTH_QUADRANTS = new string[][]
         {
@@ -245,7 +318,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
             panelHcmTeeth.Controls.Add(btn);
             hcmToothButtons[toothNo] = btn;
-            hcmToothStatus[toothNo] = HCM_TOOTH_STATUS_DEFAULT;
+            hcmToothStatus[toothNo] = HcmDefaultToothCode();
             PaintHcmTooth(toothNo);
         }
 
@@ -444,7 +517,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             CheckButton btn;
             if (!hcmToothButtons.TryGetValue(toothNo, out btn)) return;
 
-            int code = hcmToothStatus.ContainsKey(toothNo) ? hcmToothStatus[toothNo] : HCM_TOOTH_STATUS_DEFAULT;
+            int code = hcmToothStatus.ContainsKey(toothNo) ? hcmToothStatus[toothNo] : HcmDefaultToothCode();
             HcmToothStatus st = FindHcmToothStatus(code);
             if (st == null) return;   // danh mục trạng thái rỗng -> để nguyên nút, không vẽ
 
@@ -476,12 +549,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     if (cboHcmToothStatus.Properties.Items.Count > 0) cboHcmToothStatus.SelectedIndex = 0;
                 }
 
-                // Răng nào đang mang mã không còn trong danh mục mới -> đưa về mã đầu danh sách.
+                // Răng nào đang mang mã không còn trong danh mục mới -> quy đổi THEO TÊN, chứ
+                // không dồn hết về mục đầu danh sách: "Sâu" phải ra "Sâu", chỉ răng chưa ai sửa
+                // mới về "Bình thường".
                 List<string> keys = new List<string>(hcmToothStatus.Keys);
                 foreach (string toothNo in keys)
                 {
-                    if (FindHcmToothStatusOrNull(hcmToothStatus[toothNo]) == null)
-                        hcmToothStatus[toothNo] = HCM_TOOTH_STATUSES[0].Code;
+                    hcmToothStatus[toothNo] = HcmConvertToothCode(hcmToothStatus[toothNo]);
                     PaintHcmTooth(toothNo);
                 }
                 RefreshHcmToothLegend();
