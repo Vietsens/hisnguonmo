@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,28 +52,8 @@ namespace  HIS.Desktop.Plugins.HisImportKsk.Resources
             get { return Get("ThieuSoCccd"); }
         }
 
-        /// <summary>Kết quả import</summary>
-        internal static string TieuDeKetQuaImport
-        {
-            get { return Get("TieuDeKetQuaImport"); }
-        }
 
-        /// <summary>Bảng tổng hợp sau khi import - 6 tham số</summary>
-        internal static string TongHopKetQuaImport
-        {
-            get { return Get("TongHopKetQuaImport"); }
-        }
 
-        /// <summary>Danh sách mã bệnh nhân đã có được gắn thêm đợt khám - 1 tham số</summary>
-        internal static string DanhSachMaBenhNhanDaGan
-        {
-            get { return Get("DanhSachMaBenhNhanDaGan"); }
-        }
 
-        /// <summary>Có {0} dòng có cảnh báo, đề nghị rà soát</summary>
-        internal static string CoDongCanhBaoCanRaSoat
-        {
-            get { return Get("CoDongCanhBaoCanRaSoat"); }
-        }
     }
 }

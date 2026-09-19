@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -366,10 +366,8 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                     {
                         if (Encoding.UTF8.GetBytes(item.CMND_CCCD.Trim()).Count() == 9)
                         {
+                            // 57616 - CMND 9 so van la can cu dinh danh benh nhan, khong canh bao
                             kskAdo.CMND_NUMBER = item.CMND_CCCD.Trim();
-                            // 57616 - CMND 9 so khong phai can cu dinh danh benh nhan,
-                            // dong nay se duoc sinh ma benh nhan moi
-                            kskAdo.WARNING = Resources.ResourceMessage.ThieuSoCccd;
                         }
                         else if (Encoding.UTF8.GetBytes(item.CMND_CCCD.Trim()).Count() == 12)
                         {
@@ -382,7 +380,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                     }
                     else
                     {
-                        // 57616 - khong chan dong thieu CCCD, chi canh bao de nguoi dung biet
+                        // 57616 - thieu ca CCCD lan CMND: khong chan, chi canh bao de nguoi dung biet
                         // dong nay khong doi chieu duoc nen se sinh ma benh nhan moi
                         kskAdo.WARNING = Resources.ResourceMessage.ThieuSoCccd;
                     }
@@ -1120,9 +1118,6 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
 
                     WaitingManager.Hide();
 
-                    // 57616 - bang tong hop sau khi import, hien ca khi thanh cong va khi co dong loi
-                    ShowImportSummary(rs.Data);
-
                     if (!checkSuccess)
                     {
                         #region Hien thi message thong bao
@@ -1160,53 +1155,6 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
 
                 kskAdos = adoList;
                 SetDataSource(kskAdos);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// 57616 - hien bang tong hop ket qua import de nguoi dung doi chieu.
-        /// </summary>
-        private void ShowImportSummary(MOS.SDO.HisKskContractSDO data)
-        {
-            try
-            {
-                if (data == null || data.ImportSummary == null) return;
-
-                var summary = data.ImportSummary;
-
-                StringBuilder message = new StringBuilder();
-                message.AppendFormat(Resources.ResourceMessage.TongHopKetQuaImport,
-                    summary.TotalRow,
-                    summary.NewPatientRow,
-                    summary.MergedPatientRow,
-                    summary.ErrorRow,
-                    summary.WarningRow,
-                    summary.DuplicatedInFileRow);
-
-                if (summary.MergedPatientCodes != null && summary.MergedPatientCodes.Count > 0)
-                {
-                    message.AppendLine();
-                    message.AppendLine();
-                    message.AppendFormat(Resources.ResourceMessage.DanhSachMaBenhNhanDaGan,
-                        string.Join(", ", summary.MergedPatientCodes));
-                }
-
-                if (summary.WarningRow > 0)
-                {
-                    message.AppendLine();
-                    message.AppendLine();
-                    message.AppendFormat(Resources.ResourceMessage.CoDongCanhBaoCanRaSoat, summary.WarningRow);
-                }
-
-                DevExpress.XtraEditors.XtraMessageBox.Show(
-                    message.ToString(),
-                    Resources.ResourceMessage.TieuDeKetQuaImport,
-                    MessageBoxButtons.OK,
-                    summary.ErrorRow > 0 || summary.WarningRow > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {

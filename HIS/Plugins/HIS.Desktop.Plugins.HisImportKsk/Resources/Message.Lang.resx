@@ -135,16 +135,4 @@
   <data name="ThieuSoCccd" xml:space="preserve">
     <value>Thiếu số CCCD nên không đối chiếu được với bệnh nhân đã có. Phần mềm sẽ sinh mã bệnh nhân mới</value>
   </data>
-  <data name="TieuDeKetQuaImport" xml:space="preserve">
-    <value>Kết quả import</value>
-  </data>
-  <data name="TongHopKetQuaImport" xml:space="preserve">
-    <value>Tổng số dòng dữ liệu trong file: {0}&#xD;&#xA;Số bệnh nhân được sinh mã bệnh nhân mới: {1}&#xD;&#xA;Số bệnh nhân được gắn vào mã bệnh nhân đã có: {2}&#xD;&#xA;Số dòng lỗi: {3}&#xD;&#xA;Số dòng có cảnh báo: {4}&#xD;&#xA;Số dòng trùng trong file (không nhận): {5}</value>
-  </data>
-  <data name="DanhSachMaBenhNhanDaGan" xml:space="preserve">
-    <value>Mã bệnh nhân đã có được gắn thêm đợt khám: {0}</value>
-  </data>
-  <data name="CoDongCanhBaoCanRaSoat" xml:space="preserve">
-    <value>Có {0} dòng có cảnh báo. Đề nghị rà soát cột Cảnh báo trên danh sách hoặc xuất dữ liệu ra file để kiểm tra.</value>
-  </data>
 </root>
