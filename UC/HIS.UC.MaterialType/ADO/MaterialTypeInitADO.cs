@@ -42,6 +42,8 @@ namespace HIS.UC.MaterialType
         public bool? IsShowBid { get; set; }
         public bool? IsShowContract { get; set; }
         public bool? IsShowChkLock { get; set; }
+        /// <summary>vCong 53748 — hiện nhóm "Hiển thị: Tất cả / Ẩn dòng nhóm" cạnh ô Khóa. null/false = không hiện (mặc định, các màn dùng chung UC không đổi).</summary>
+        public bool? IsShowHideGroupOption { get; set; }
         public bool? IsHightLightFilter { get; set; }
         public bool? IsCheckGroupByMap { get; set; }
         public MaterialType_NodeCellStyle MaterialTypeNodeCellStyle { get; set; }
