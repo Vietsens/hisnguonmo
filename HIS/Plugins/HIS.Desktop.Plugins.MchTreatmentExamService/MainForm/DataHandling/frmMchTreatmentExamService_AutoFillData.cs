@@ -34,6 +34,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         /// <summary>Giấy chứng sinh gần nhất của lượt điều trị.</summary>
         private HIS_BABY latestBaby;
 
+        /// <summary>Toàn bộ giấy chứng sinh của lượt điều trị (sinh đôi, sinh ba có nhiều bản).</summary>
+        private List<HIS_BABY> listBaby;
+
         /// <summary>Đã tra cứu giấy chứng sinh hay chưa — bảo đảm chỉ gọi API một lần.</summary>
         private bool isBabyLoaded;
 
@@ -66,7 +69,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 latestDhst = null;
                 isDhstLoaded = false;
                 latestBaby = null;
+                listBaby = null;
                 isBabyLoaded = false;
+                UpdateCopyFromBabyButtonState();
                 isAutoFilledAntenatalVisit = false;
                 isAutoFilledChildUnder6 = false;
                 isAutoFilledBirthInfo = false;
@@ -269,13 +274,15 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 if (babies != null && babies.Count > 0)
                 {
-                    latestBaby = babies
+                    listBaby = babies
                         .OrderByDescending(o => o.BORN_TIME ?? 0)
                         .ThenByDescending(o => o.ID)
-                        .FirstOrDefault();
+                        .ToList();
+                    latestBaby = listBaby.FirstOrDefault();
                 }
                 else
                 {
+                    listBaby = new List<HIS_BABY>();
                     Inventec.Common.Logging.LogSystem.Debug(
                         "GetLatestBaby: Lượt điều trị chưa có giấy chứng sinh. TreatmentId=" + Treatment.ID);
                 }
@@ -285,7 +292,39 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            UpdateCopyFromBabyButtonState();
             return latestBaby;
+        }
+
+        /// <summary>
+        /// Toàn bộ giấy chứng sinh của lượt điều trị (sắp theo giờ sinh giảm dần).
+        /// Dùng chung kết quả tra cứu với GetLatestBaby.
+        /// </summary>
+        private List<HIS_BABY> GetBabies()
+        {
+            GetLatestBaby();
+            return listBaby;
+        }
+
+        /// <summary>
+        /// Nút "Lấy từ GCS": mờ khi đã tra cứu và lượt điều trị không có giấy chứng sinh.
+        /// Chưa tra cứu thì vẫn bật — bấm sẽ tra cứu.
+        /// </summary>
+        private void UpdateCopyFromBabyButtonState()
+        {
+            try
+            {
+                if (btnCopyFromBaby == null) return;
+                bool hasBaby = !isBabyLoaded || (listBaby != null && listBaby.Count > 0);
+                btnCopyFromBaby.Enabled = hasBaby;
+                btnCopyFromBaby.ToolTip = hasBaby
+                    ? "Lấy thông tin Mẹ và Con từ giấy chứng sinh của lượt điều trị"
+                    : "Lượt điều trị chưa có giấy chứng sinh";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         #endregion
@@ -372,8 +411,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         #region Mục Sinh đẻ
 
         /// <summary>
-        /// Mục Sinh đẻ: tự lấy thông tin hành chính nơi đẻ cho phần Mẹ
-        /// và thông tin trẻ sơ sinh từ giấy chứng sinh cho phần Con.
+        /// Mục Sinh đẻ: tự lấy thông tin Mẹ và Con từ giấy chứng sinh mới nhất (chỉ điền ô trống);
+        /// nơi đẻ của phần Mẹ không có trên giấy chứng sinh thì lấy theo địa chỉ người bệnh.
         /// </summary>
         private void AutoFillBirthInfo()
         {
@@ -381,19 +420,24 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             {
                 if (isAutoFilledBirthInfo) return;
 
-                AutoFillMotherBirthPlace();
-
                 HIS_BABY baby = GetLatestBaby();
 
                 // Tra cứu nguồn thất bại thì chưa đánh dấu để lần mở mục sau còn thử lại.
                 // AutoFillMotherBirthPlace chạy lại vẫn an toàn vì chỉ điền vào ô đang trống.
-                if (!isBabyLoaded) return;
+                if (!isBabyLoaded)
+                {
+                    AutoFillMotherBirthPlace();
+                    return;
+                }
 
                 isAutoFilledBirthInfo = true;
                 if (baby != null && baby.ID > 0)
                 {
-                    CopyBabyDataToChildTab(baby, true);
+                    CopyBabyData(baby, false, null);
                 }
+
+                // Địa chỉ người bệnh là phương án dự phòng khi giấy chứng sinh không có nơi sinh
+                AutoFillMotherBirthPlace();
             }
             catch (Exception ex)
             {

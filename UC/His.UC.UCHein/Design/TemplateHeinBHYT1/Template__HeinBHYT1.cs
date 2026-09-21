@@ -331,6 +331,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         rightRouteCode = "TT";
                     if (!string.IsNullOrEmpty(rightRouteCode))
                         heinList = heinData.Where(o => o.RIGHT_ROUTE_CODE == rightRouteCode).ToList();
+                    else
+                        // Chua chon Loai (Dung tuyen/Trai tuyen): chi xet ban ghi danh muc cung de trong Tuyen
+                        // (dung chung moi tuyen), khong suy doan cho ban ghi da gan cu the Dung/Trai tuyen.
+                        heinList = heinData.Where(o => string.IsNullOrEmpty(o.RIGHT_ROUTE_CODE)).ToList();
 
                     string rightRouteTypeCode = null;
                     if (cboHeinRightRoute.EditValue != null)

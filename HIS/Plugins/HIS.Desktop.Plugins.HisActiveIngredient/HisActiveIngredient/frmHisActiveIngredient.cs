@@ -486,7 +486,10 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
                     {
                         try
                         {
-                            e.Value = pData.APPROVAL_REQUIRED_LEVEL == 1 ? "Chặn" : pData.APPROVAL_REQUIRED_LEVEL == 2 ? "Cảnh báo" : "";
+                            //Muc do KS can phe duyet: 1 = Chan, 2 = Canh bao, trong = chua chon (xu ly nhu Canh bao)
+                            e.Value = pData.APPROVAL_REQUIRED_LEVEL == 1 ? "Chặn"
+                                : pData.APPROVAL_REQUIRED_LEVEL == 2 ? "Cảnh báo"
+                                : "";
                         }
                         catch (Exception ex)
                         {
@@ -911,8 +914,11 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
                 if (chkDS.Checked)
                 {
                     currentDTO.IS_APPROVAL_REQUIRED = 1;
-                    //Muc do: 1 = Chan (bat buoc tao phieu yeu cau), 2 = Canh bao (chi nhac), trong = xu ly nhu Canh bao
-                    currentDTO.APPROVAL_REQUIRED_LEVEL = chkBlock.Checked ? (short?)1 : chkWarning.Checked ? (short?)2 : null;
+                    //Muc do: 1 = Chan (sau khi luu don bat buoc tao phieu yeu cau), 2 = Canh bao (chi nhac, bo qua duoc),
+                    //trong = chua chon -> xu ly nhu Canh bao (hanh vi cu)
+                    currentDTO.APPROVAL_REQUIRED_LEVEL = chkBlock.Checked ? (short?)1
+                        : chkWarning.Checked ? (short?)2
+                        : null;
                 }
                 else
                 {
@@ -1433,7 +1439,7 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
         }
 
         /// <summary>
-        /// Muc do "Chan"/"Canh bao" chi co y nghia khi hoat chat da tick "KS can phe duyet":
+        /// Muc do "Chan" / "Canh bao" chi co y nghia khi hoat chat da tick "KS can phe duyet":
         /// bo tick thi xoa muc do va khoa 2 checkbox
         /// </summary>
         private void chkDS_CheckedChanged(object sender, EventArgs e)
@@ -1455,12 +1461,14 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             }
         }
 
+        /// <summary>
+        /// "Chan" va "Canh bao" loai tru nhau: moi hoat chat chi mang mot muc do tai mot thoi diem
+        /// </summary>
         private void chkBlock_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
-                //Hai muc do loai tru nhau — moi hoat chat chi mang mot muc tai mot thoi diem
-                if (chkBlock.Checked)
+                if (chkBlock.Checked && chkWarning.Checked)
                 {
                     chkWarning.Checked = false;
                 }
@@ -1475,7 +1483,7 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
         {
             try
             {
-                if (chkWarning.Checked)
+                if (chkWarning.Checked && chkBlock.Checked)
                 {
                     chkBlock.Checked = false;
                 }

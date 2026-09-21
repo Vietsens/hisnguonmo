@@ -204,6 +204,9 @@ namespace HIS.Desktop.Modules.Main
                     RunNotify();
                     RunCheckConnectServer();
                     InitSubscriber();//TODO
+                    //Kiem tra han doi mat khau TRUOC khi chon phong: InitDefaultSelectRoom mo modal
+                    //chon phong ngay trong Load nen phai chen truoc, neu khong canh bao se hien sau.
+                    CheckPasswordExpire();
                     InitDefaultSelectRoom();
                     InitWcfAssignPrescriptionByCFG();
                     DevExpress.XtraEditors.XtraMessageBox.AllowHtmlText = true;
@@ -1834,6 +1837,207 @@ namespace HIS.Desktop.Modules.Main
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        #region Canh bao den han doi mat khau
+
+        /// <summary>
+        /// Doc moc doi mat khau gan nhat cua tai khoan.
+        /// Cot PASSWORD_LAST_CHANGED do BE bo sung vao ACS_USER; chi bien dich duoc sau khi
+        /// cap nhat ACS.EFMODEL.dll moi. Neu BE tra moc theo duong khac (vi du kem trong token
+        /// luc dang nhap) thi chi sua duy nhat than ham nay.
+        /// </summary>
+        private long? GetPasswordLastChanged(ACS.EFMODEL.DataModels.ACS_USER user)
+        {
+            return user.PASSWORD_LAST_CHANGED;
+        }
+
+        /// <summary>
+        /// Kiem tra han doi mat khau khi vao phan mem, chay mot lan moi phien.
+        /// Cau hinh MOS.ACS_USER.PasswordExpire.WarningDays rong / 0 / khong phai so -> bo qua.
+        /// Moc null hoac 0 -> canh bao. So ngay (chi tinh ngay) >= cau hinh -> canh bao.
+        /// Chon Co -> mo man Doi mat khau o che do bat buoc. Chon Khong -> thoat phan mem.
+        /// </summary>
+        private void CheckPasswordExpire()
+        {
+            try
+            {
+                string cfg = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(
+                    HisConfigKeys.CONFIG_KEY__MOS_ACS_USER_PASSWORD_EXPIRE_WARNING_DAYS);
+                int warningDays;
+                if (!int.TryParse(cfg, out warningDays) || warningDays <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "CheckPasswordExpire: cau hinh khong hop le hoac bi tat. cfg=" + (cfg ?? "null"));
+                    return;
+                }
+
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                if (String.IsNullOrWhiteSpace(loginName)) return;
+
+                CommonParam param = new CommonParam();
+                ACS.Filter.AcsUserFilter filter = new ACS.Filter.AcsUserFilter();
+                filter.LOGINNAME = loginName;
+
+                var users = new BackendAdapter(param).Get<List<ACS.EFMODEL.DataModels.ACS_USER>>(
+                    "api/AcsUser/Get", ApiConsumers.AcsConsumer, filter, param);
+                var user = (users != null ? users.FirstOrDefault() : null); 
+                if (user == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "CheckPasswordExpire: khong lay duoc AcsUser. LOGINNAME=" + loginName);
+                    return;
+                }
+
+                long? lastChanged = GetPasswordLastChanged(user);
+
+                string message;
+                if (!lastChanged.HasValue || lastChanged.Value == 0)
+                {
+                    message = "Tài khoản của bạn chưa từng đổi mật khẩu."
+                        + Environment.NewLine + "Bạn có muốn đổi mật khẩu ngay bây giờ không?"
+                        + Environment.NewLine + "Chọn Không, phần mềm sẽ đóng lại."; 
+                }
+                else
+                {
+                    DateTime? last = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(lastChanged.Value);
+                    if (last == null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "CheckPasswordExpire: moc doi mat khau khong doc duoc. PASSWORD_LAST_CHANGED="
+                            + lastChanged.Value);
+                        return;
+                    }
+
+                    //Chi tinh ngay, bo gio phut giay
+                    int days = (int)(DateTime.Now.Date - last.Value.Date).TotalDays;
+                    if (days < warningDays) return;
+
+                    message = String.Format(
+                        "Mật khẩu của bạn đã {0} ngày chưa đổi, đã đến hạn đổi mật khẩu."
+                        + Environment.NewLine + "Bạn có muốn đổi mật khẩu ngay bây giờ không?"
+                        + Environment.NewLine + "Chọn Không, phần mềm sẽ đóng lại.", days);
+                }
+
+                //An man cho neu dang hien, neu khong hop thoai se nam duoi lop cho
+                WaitingManager.Hide();
+
+                //Bam X hoac Esc tra ve None/Cancel, khac Yes deu coi la tu choi
+                var answer = XtraMessageBox.Show(message,
+                    HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (answer == DialogResult.Yes)
+                    OpenChangePasswordForced();
+                else
+                    ForceExitApplication();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Mo man Doi mat khau o che do bat buoc: bo nut dong, chan moi lenh dong cua so
+        /// cho toi khi doi mat khau thanh cong. Khong dong duoc thi thoat phan mem.
+        /// Khong dung lai bbtnChangePassword_ItemClick vi can delegate rieng de biet da doi xong chua.
+        /// </summary>
+        private void OpenChangePasswordForced()
+        {
+            try
+            {
+                bool isChanged = false;
+
+                List<object> results = new List<object>();
+                results.Add(ApiConsumers.SdaConsumer);
+                results.Add((Inventec.UC.ChangePassword.HasExceptionApi)new PluginInstanceBehavior().HasExceptionApi);
+                results.Add("APP.ico");
+                results.Add((Inventec.Desktop.Plugins.ChangePassword.ChangePasswordSuccessDelegate)delegate
+                {
+                    //Phai dat co truoc: ProcessAfterChangePasswordSuccess dang dung lai man hinh chinh
+                    isChanged = true;
+                    ProcessAfterChangePasswordSuccess();
+                });
+                results.Add(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(
+                    HisConfigKeys.CONFIG_KEY__MOS_ACS_USER_PASSWORD_COMPLEXITY_REQUIRE) == "1");
+
+                var changePasswordProcessor = new Inventec.Desktop.Plugins.ChangePassword.ChangePasswordProcessor();
+                var frm = changePasswordProcessor.Run(results.ToArray()) as Form;
+                if (frm == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "OpenChangePasswordForced: khong khoi tao duoc man Doi mat khau. Thoat phan mem.");
+                    ForceExitApplication();
+                    return;
+                }
+
+                frm.ControlBox = false;
+                frm.MaximizeBox = false;
+                frm.MinimizeBox = false;
+                frm.CancelButton = null;
+                frm.FormClosing += delegate(object s, FormClosingEventArgs e)
+                {
+                    //Chi cho dong khi da doi thanh cong. Van cho qua khi Windows tat may.
+                    if (!isChanged && e.CloseReason != CloseReason.WindowsShutDown)
+                        e.Cancel = true;
+                };
+
+                frm.ShowDialog();
+
+                if (!isChanged) ForceExitApplication();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Thoat phan mem ngay, khong hien hop xac nhan cua frmMain_FormClosing.
+        /// Co isLogouter vua tat hop hoi vua tat luon khoi don dep trong frmMain_FormClosing,
+        /// nen phai tu chay lai dung trinh tu don dep cua luong thoat binh thuong truoc khi thoat.
+        /// </summary>
+        private void ForceExitApplication()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "Thoat HIS do nguoi dung tu choi doi mat khau da den han. LOGINNAME="
+                    + Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+
+                GlobalVariables.isLogouter = true;
+                GlobalVariables.IsLostToken = true;
+
+                ResetClientCacheFile();
+
+                long tuDongLogoutKhiTatPhanMem = ConfigApplicationWorker.Get<long>(
+                    AppConfigKeys.CONFIG_KEY__HIS_DESKTOP__AUTO_TOKEN_LOGOUT_WHILE_CLOSE_APPLICATION);
+                if (tuDongLogoutKhiTatPhanMem == 1)
+                {
+                    if (!Inventec.Desktop.Common.Token.TokenManager.Logout())
+                        Inventec.Common.Logging.LogSystem.Warn("ForceExitApplication: logout token that bai.");
+                }
+                else
+                {
+                    this.CallRemoveTokenData();
+                }
+
+                UnSubcribChanel();
+                HIS.Desktop.LocalStorage.PubSub.PubSubAction.DisposePubSub();
+                CloseAllApp.CloseAllApps();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                Application.Exit();
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
+        }
+
+        #endregion
 
         private void bbtnConfigApplication_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {

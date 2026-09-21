@@ -94,9 +94,6 @@
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
     </Reference>
@@ -181,9 +178,8 @@
     <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\..\..\..\histest\x64\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
@@ -206,16 +202,16 @@
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000453.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000454.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000454.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000454.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000455.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000455.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000455.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000464.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000464.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000464.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000499.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000499.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000499.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000516.PDO">
       <SpecificVersion>False</SpecificVersion>
@@ -223,6 +219,10 @@
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System" />

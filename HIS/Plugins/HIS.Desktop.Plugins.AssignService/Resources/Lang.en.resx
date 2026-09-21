@@ -1104,4 +1104,7 @@
   <data name="frmConfirmExecuteRoom.btnDisagree.Text" xml:space="preserve">
     <value>Disagree</value>
   </data>
+  <data name="frmAssignService.lciTimeDutru.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Reserve time</value>
+  </data>
 </root>

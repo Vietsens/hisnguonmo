@@ -337,7 +337,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     foreach (string toothNo in quadrant)
                     {
-                        hcmToothStatus[toothNo] = HCM_TOOTH_STATUS_DEFAULT;
+                        hcmToothStatus[toothNo] = HcmDefaultToothCode();
                         PaintHcmTooth(toothNo);
                     }
                 }
@@ -360,7 +360,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     {
                         long? v = GetSytHcmLong(d, "TOOTH_" + toothNo);
                         if (!v.HasValue) continue;
-                        hcmToothStatus[toothNo] = (int)v.Value;
+
+                        // Mã đã lưu KHÔNG còn trong bảng mã đang dùng -> đưa về "Bình thường" của
+                        // bảng mã hiện tại. Gặp ở hồ sơ lưu bằng bản cũ: lúc đó sơ đồ ghi mã nội bộ
+                        // của HIS (1..10) trong khi cổng dùng Id riêng, giữ nguyên thì đẩy lên cổng
+                        // là mã lạ.
+                        int code = HcmConvertToothCode((int)v.Value);
+                        if (code != (int)v.Value)
+                        {
+                            LogSystem.Warn("SytHcm: rang " + toothNo + " dang giu ma " + v.Value
+                                + " khong co trong danh muc tinh trang rang -> quy doi theo ten sang "
+                                + code);
+                        }
+                        hcmToothStatus[toothNo] = code;
                         PaintHcmTooth(toothNo);
                         any = true;
                     }
@@ -651,6 +663,93 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (spnKskBreathRate2 == null) return;
                 spnKskBreathRate2.EditValue = value.HasValue ? (object)value.Value : null;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Ô nhập vòng bụng, dựng bằng mã và chèn vào phần Khám thể lực (ngay dưới Cân nặng).
+        ///
+        /// VÌ SAO PHẢI THÊM: cột `HIS_DHST.BELLY` đã có sẵn và bản tin mẫu M4 lấy vòng bụng từ
+        /// chính cột đó, nhưng phần Khám thể lực của tab này KHÔNG có chỗ nhập -> luôn đẩy lên
+        /// trống.
+        ///
+        /// AN TOÀN ĐA VIỆN: chỉ dựng cho viện đã khai báo cấu hình cổng.
+        /// </summary>
+        private SpinEdit spnKskBelly2;
+
+        private bool bellyInited = false;
+
+        private void InitBellyControl()
+        {
+            try
+            {
+                if (bellyInited) return;
+                if (this.layoutControl18 == null || this.layoutControlItem116 == null) return;
+                if (!IsSytHcmDeclared())
+                {
+                    LogSystem.Debug("SytHcm: chua khai bao cau hinh cong -> KHONG dung o Vong bung");
+                    return;
+                }
+                bellyInited = true;
+
+                spnKskBelly2 = new SpinEdit();
+                spnKskBelly2.Name = "spnKskBelly2";
+                spnKskBelly2.Properties.MinValue = 0;
+                spnKskBelly2.Properties.MaxValue = 300;
+                spnKskBelly2.Properties.IsFloatValue = true;
+                spnKskBelly2.Properties.Mask.EditMask = "N1";
+                spnKskBelly2.EditValue = null;
+
+                this.layoutControl18.BeginUpdate();
+                try
+                {
+                    LayoutControlItem lci = (LayoutControlItem)this.layoutControl18.AddItem(
+                        "Vòng bụng (cm):", spnKskBelly2);
+                    lci.Name = "lciKskBelly2";
+                    // Canh nhãn y hệt ô Cân nặng để hai dòng thẳng cột.
+                    lci.AppearanceItemCaption.Options.UseTextOptions = true;
+                    lci.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+                    lci.TextAlignMode = TextAlignModeItem.CustomSize;
+                    lci.TextToControlDistance = this.layoutControlItem116.TextToControlDistance;
+                    lci.Move(this.layoutControlItem116, InsertType.Bottom);
+
+                    // Nhãn cột phải đang rộng 70 — vừa đủ "Cân nặng:" nhưng CẮT MẤT chữ "Vòng".
+                    // Nới cả cột phải lên 110 để ba nhãn Cân nặng / Huyết áp / Vòng bụng thẳng hàng
+                    // và ô nhập cùng lùi sang phải một chút.
+                    //
+                    // AN TOÀN ĐA VIỆN: chỉ chạy trong hàm này, mà hàm này chỉ chạy cho viện đã khai
+                    // báo cấu hình cổng -> viện khác giữ nguyên bề rộng nhãn cũ.
+                    System.Drawing.Size capSize = new System.Drawing.Size(110, 20);
+                    lci.TextSize = capSize;
+                    this.layoutControlItem116.TextSize = capSize;                       // Cân nặng
+                    if (this.layoutControlItem117 != null)
+                        this.layoutControlItem117.TextSize = capSize;                   // Huyết áp
+                }
+                finally { this.layoutControl18.EndUpdate(); }
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Vòng bụng đang nhập (null nếu để trống) — dùng khi lưu bản ghi sinh hiệu.</summary>
+        private decimal? GetKskBellyValue()
+        {
+            try
+            {
+                if (spnKskBelly2 == null || spnKskBelly2.EditValue == null) return null;
+                decimal v;
+                return decimal.TryParse(spnKskBelly2.Value.ToString(), out v) ? (decimal?)v : null;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); return null; }
+        }
+
+        /// <summary>Đổ vòng bụng đã lưu vào ô nhập.</summary>
+        private void SetKskBellyValue(decimal? value)
+        {
+            try
+            {
+                if (spnKskBelly2 == null) return;
+                spnKskBelly2.EditValue = value.HasValue ? (object)value.Value : null;
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }

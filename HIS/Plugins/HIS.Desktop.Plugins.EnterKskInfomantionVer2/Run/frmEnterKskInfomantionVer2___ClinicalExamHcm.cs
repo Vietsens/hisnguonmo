@@ -265,6 +265,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     ? "Từ chối khám sản khoa"
                     : "Từ chối khám phụ khoa";
                 row.ChkRefuse.Width = 330;
+                row.ChkRefuse.Tag = row;                   // để handler biết mục nào
+                row.ChkRefuse.CheckedChanged += ChkClinicalHcmRefuse_CheckedChanged;
                 HcmVisualRow vr = NewHcmRow(inner);
                 vr.StretchCells = false;                       // ô tích giữ bề rộng tự nhiên
                 vr.Cells.Add(NewHcmCell(null, 0, row.ChkRefuse));
@@ -376,16 +378,61 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 ClinicalExamHcmRow row = chk.Tag as ClinicalExamHcmRow;
                 if (row == null) return;
 
-                bool normal = chk.Checked;
-                SetHcmIcdEnabled(row.UcPreIcd, !normal);
-                SetHcmIcdEnabled(row.UcFinalIcd, !normal);
-                if (normal)
+                ApplyClinicalHcmRowEnabled(row);
+                if (chk.Checked)
                 {
                     SetHcmIcdValue(row.UcPreIcd, null, null);
                     SetHcmIcdValue(row.UcFinalIcd, null, null);
                 }
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Tích "Từ chối khám sản khoa / phụ khoa" -> KHÓA ô tích "Chưa phát hiện bất thường" và
+        /// hai ô chọn bệnh của mục đó, đồng thời xóa trống những gì đã nhập.
+        ///
+        /// VÌ SAO: không khám mục đó thì không thể kết luận "chưa phát hiện bất thường" hay ghi mã
+        /// bệnh cho mục đó — ví dụ người khám là nam thì không có phần sản phụ khoa.
+        /// </summary>
+        private void ChkClinicalHcmRefuse_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CheckEdit chk = sender as CheckEdit;
+                if (chk == null) return;
+                ClinicalExamHcmRow row = chk.Tag as ClinicalExamHcmRow;
+                if (row == null) return;
+
+                // Bỏ tích "chưa phát hiện bất thường" TRƯỚC, rồi mới tính lại trạng thái khóa —
+                // vì thao tác đó chạy handler kia và nó sẽ mở lại hai ô chọn bệnh.
+                if (chk.Checked && row.ChkNormal != null && row.ChkNormal.Checked)
+                    row.ChkNormal.Checked = false;
+
+                ApplyClinicalHcmRowEnabled(row);
+                if (chk.Checked)
+                {
+                    SetHcmIcdValue(row.UcPreIcd, null, null);
+                    SetHcmIcdValue(row.UcFinalIcd, null, null);
+                }
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Tính lại trạng thái khóa/mở của một mục theo hai ô tích của chính nó. Gọi từ cả hai
+        /// handler VÀ ngay sau khi dựng xong ô chọn bệnh — ô chọn bệnh dựng sau, lúc đó hai ô tích
+        /// có thể đã mang giá trị cũ đọc từ cơ sở dữ liệu.
+        /// </summary>
+        private void ApplyClinicalHcmRowEnabled(ClinicalExamHcmRow row)
+        {
+            if (row == null) return;
+            bool refused = (row.ChkRefuse != null && row.ChkRefuse.Checked);
+            bool normal = (row.ChkNormal != null && row.ChkNormal.Checked);
+
+            if (row.ChkNormal != null) row.ChkNormal.Enabled = !refused;
+            SetHcmIcdEnabled(row.UcPreIcd, !refused && !normal);
+            SetHcmIcdEnabled(row.UcFinalIcd, !refused && !normal);
         }
 
         private HcmVisualRow NewHcmRow(int indent)
@@ -775,11 +822,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     row.UcPreIcd = BuildHcmIcdEditor(row.PnlPreIcd, icdSource);
                     row.UcFinalIcd = BuildHcmIcdEditor(row.PnlFinalIcd, icdSource);
-                    if (row.ChkNormal != null && row.ChkNormal.Checked)
-                    {
-                        SetHcmIcdEnabled(row.UcPreIcd, false);
-                        SetHcmIcdEnabled(row.UcFinalIcd, false);
-                    }
+                    ApplyClinicalHcmRowEnabled(row);
                     if (row.CboRank != null) SetDataCboRank(row.CboRank);
                     if (row.CboLoginName != null) SetDataCboExamLoginName(row.CboLoginName);
                 }

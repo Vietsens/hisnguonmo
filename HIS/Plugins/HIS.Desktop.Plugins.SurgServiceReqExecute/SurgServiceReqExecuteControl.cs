@@ -213,6 +213,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     lciIcdCmCode.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
                 }
+                // PTTK_XXXXX_Bat_Buoc_Nhap_Mo_Ta_Truoc_Khi_Ket_Thuc_PTTT: danh dau tab "Mo ta" bat buoc theo config
+                if (HisConfigKeys.IsRequiredPtttDescriptionWhenFinish == "1" || (HisConfigKeys.IsRequiredPtttDescriptionWhenFinish == "2" && this.serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT))
+                {
+                    xtraTabPageMoTa.Appearance.Header.ForeColor = System.Drawing.Color.Maroon;
+                    xtraTabPageMoTa.Appearance.Header.Options.UseForeColor = true;
+                }
                 timerInitForm.Enabled = true;
                 timerInitForm.Start();
                 isNotLoadWhileChangeControlStateInFirst = false;
@@ -1269,6 +1275,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         {
                             if (dtFinish.EditValue != null && chkKetThuc.Checked)
                             {
+                                if (!ValidateRequiredDescriptionBeforeFinish())
+                                {
+                                    return false;
+                                }
                                 hisSurgResultSDO.IsFinished = true;
                             }
                         }
@@ -1348,7 +1358,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         sdo.UpdateInstructionTimeByStartTime = hisSurgResultSDO.UpdateInstructionTimeByStartTime;
 
                         if (dtFinish.EditValue != null && chkKetThuc.Checked)
+                        {
+                            if (!ValidateRequiredDescriptionBeforeFinish())
+                            {
+                                return false;
+                            }
                             sdo.IsFinished = true;
+                        }
                         SaveSurgServiceReq(sdo, ref success, notShowMess);
                     }
                     if (success)
@@ -1601,6 +1617,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (CheckLessTime(ref serviceCode))
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.DichVuChuaThucHienKhongChoKetThucXuLy, serviceCode));
+                    return;
+                }
+
+                // Viec 3353 (PT-56272): dich vu bat co "Co thuoc, vat tu di kem" (HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1)
+                // nhung chua ke thuoc/vat tu di kem -> hoi Yes/No, khong chan. Dat sau btnSaveClick nen du lieu vua nhap da duoc luu.
+                List<V_HIS_SERE_SERV_5> sereServsToCheckMediMate = (this.sereServbyServiceReqs != null && this.sereServbyServiceReqs.Count > 0)
+                    ? this.sereServbyServiceReqs
+                    : (this.sereServ != null ? new List<V_HIS_SERE_SERV_5>() { this.sereServ } : null);
+                if (!HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(sereServsToCheckMediMate))
+                {
                     return;
                 }
 

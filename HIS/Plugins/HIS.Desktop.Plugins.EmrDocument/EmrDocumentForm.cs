@@ -1358,7 +1358,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
         {
             try
             {
-                //Van ban thuoc ma loai duoc cau hinh GOP NGANG -> ghep moi van ban cung MERGE_CODE mot cot
+                //Van ban co khoa danh dau GOP NGANG -> lay van ban MOI NHAT da ky hoan tat cung MERGE_CODE
                 if (IsMergeColumnDocument(data))
                 {
                     LoadPdfMergeColumnViewer(data);
@@ -3491,14 +3491,14 @@ namespace HIS.Desktop.Plugins.EmrDocument
         }
 
         /// <summary>
-        /// Dung PDF gop ngang cho mot nhom van ban cung MERGE_CODE: lay tat ca van ban cung ma gop,
-        /// da ky hoan tat, tai file ve roi ghep moi van ban mot cot. Tra ve null neu khong dung duoc.
+        /// Lay PDF dai dien cho mot nhom van ban cung MERGE_CODE (gop ngang): trong cac van ban da ky
+        /// hoan tat cua nhom, lay dung MOT van ban - van ban duoc TAO SAU CUNG (CREATE_TIME lon nhat).
+        /// Khong ghep, khong noi trang. Tra ve null neu khong lay duoc.
         /// </summary>
         private byte[] BuildMergeColumnPdfByMergeCode(V_EMR_DOCUMENT representative, out string warning, out string error)
         {
             warning = "";
             error = "";
-            List<string> tempFiles = new List<string>();
             try
             {
                 CommonParam paramCommon = new CommonParam();
@@ -3511,7 +3511,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 filter.IS_DELETE = false;
                 filter.HAS_REJECTER = false;
                 filter.HAS_NEXT_SIGNER_OR_NOT_SIGNERS = false;   //chi lay van ban da ky hoan tat
-                filter.ORDER_FIELD = "DOCUMENT_TIME";
+                filter.ORDER_FIELD = "CREATE_TIME";
                 filter.ORDER_DIRECTION = "ASC";
 
                 List<V_EMR_DOCUMENT> documents = new BackendAdapter(paramCommon).Get<List<V_EMR_DOCUMENT>>(
@@ -3526,51 +3526,20 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     return null;
                 }
 
+                //Lay van ban duoc TAO SAU CUNG trong nhom (CREATE_TIME lon nhat) - khong dung DOCUMENT_TIME
+                //(gio nhan dinh) vi thu tu tao van ban moi phan anh dung ban moi nhat EMR gui sang.
+                V_EMR_DOCUMENT newest = documents.OrderBy(o => o.CREATE_TIME).Last();
+
                 int opt = 0; int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
                 bool showWatermark = (opt == 1);
-                var files = GetEmrDocumentFile(null, documents.Select(o => o.ID).ToList(), false, chkAddPatientSign.Checked, showWatermark);
-                if (files == null || files.Count == 0)
+                var files = GetEmrDocumentFile(null, new List<long> { newest.ID }, false, chkAddPatientSign.Checked, showWatermark);
+                var pdfFile = files != null ? files.FirstOrDefault(o => o.Extension != null && o.Extension.ToLower().Equals("pdf")) : null;
+                if (pdfFile == null || String.IsNullOrEmpty(pdfFile.Base64Data))
                 {
                     error = ResourceMessage.KhongLayDuocFile;
                     return null;
                 }
-
-                foreach (var file in files.Where(o => o.Extension != null && o.Extension.ToLower().Equals("pdf")))
-                {
-                    string path = Utils.GenerateTempFileWithin();
-                    Utils.ByteToFile(Convert.FromBase64String(file.Base64Data), path);
-                    tempFiles.Add(path);
-                }
-
-                if (tempFiles.Count == 0)
-                {
-                    error = ResourceMessage.KhongLayDuocFile;
-                    return null;
-                }
-
-                //Chi mot van ban -> khong can gop, tra nguyen file
-                if (tempFiles.Count == 1)
-                    return File.ReadAllBytes(tempFiles[0]);
-
-                if (tempFiles.Count > Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT)
-                {
-                    warning = String.Format("Nhóm có {0} văn bản, vượt quá {1} cột của một phiếu — chỉ gộp được {1} văn bản đầu.",
-                        tempFiles.Count, Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT);
-                    tempFiles = tempFiles.Take(Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT).ToList();
-                }
-
-                string mergeWarning;
-                byte[] merged = Worker.EmrDocumentMergeColumnsWorker.Merge(tempFiles, out mergeWarning);
-                if (!String.IsNullOrWhiteSpace(mergeWarning))
-                    warning = String.IsNullOrWhiteSpace(warning) ? mergeWarning : warning + " " + mergeWarning;
-
-                if (merged == null || merged.Length == 0)
-                {
-                    error = String.IsNullOrWhiteSpace(mergeWarning) ? "Không gộp ngang được các văn bản trong nhóm." : mergeWarning;
-                    warning = "";
-                    return null;
-                }
-                return merged;
+                return Convert.FromBase64String(pdfFile.Base64Data);
             }
             catch (Exception ex)
             {
@@ -3578,17 +3547,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 error = "Không gộp được văn bản. Vui lòng kiểm tra lại hoặc liên hệ quản trị hệ thống.";
                 return null;
             }
-            finally
-            {
-                foreach (string path in tempFiles)
-                {
-                    try { if (File.Exists(path)) File.Delete(path); } catch { }
-                }
-            }
         }
 
         /// <summary>
-        /// In cac nhom van ban gop NGANG: moi dong dai dien (mot MERGE_CODE) -> mot to gop; nhieu dong -> noi cac to.
+        /// In cac nhom van ban gop NGANG: moi dong dai dien (mot MERGE_CODE) -> van ban MOI NHAT da ky hoan tat cua nhom do; nhieu dong -> noi tiep cac nhom.
         /// </summary>
         private void PrintMergeColumnGroups(List<EmrDocumentADO> representatives)
         {

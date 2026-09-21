@@ -76,6 +76,9 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
         List<HisSereServADO> SereServAdditonSdos;
         Inventec.Desktop.Common.Modules.Module currentModule;
 
+        //Viec 57452: kiem tra cac dich vu khong duoc phep chi dinh dong thoi
+        private HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager checkServiceExclusiveManager;
+
         bool isCheckAll = true;
         HIS.Desktop.Common.RefeshReference RefeshReference;
         short IS_TRUE = 1;
@@ -145,6 +148,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 isNotLoadWhileChangeInstructionTimeInFirst = true;
                 UcDateInit();
                 HisConfigCFG.LoadConfig();
+                LoadDataCheckServiceExclusive();
                 ApplyAmountDecimalNumber();
                 SetIcon();
                 LoadHisServiceFromRam();
@@ -3043,6 +3047,8 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 valid = valid && CheckPatientTypeValidation(serviceReqUpdate.InsertServices, param);
                 valid = valid && CheckAmountValidation(serviceReqUpdate.InsertServices, serviceReqUpdate.UpdateServices, param);
                 valid = valid && VerifyCheckFeeWhileAssign();
+                valid = valid && CheckServiceExclusive(this.allSereServ != null ? this.allSereServ.Where(o => o.IsChecked == true).ToList() : null);
+                Inventec.Common.Logging.LogSystem.Debug("Valid__CheckServiceExclusive:" + valid);
                 if (!valid) return;
 
                 //Khong gui len backend lenh xoa/sua doi voi dich vu da thu tien/tam ung
@@ -3174,6 +3180,81 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
             }
         }
 
+        /// <summary>
+        /// Viec 57452: khoi tao doi tuong kiem tra + nap truoc danh muc dich vu loai tru vao RAM.
+        /// </summary>
+        private void LoadDataCheckServiceExclusive()
+        {
+            try
+            {
+                this.checkServiceExclusiveManager = new HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager(this.currentModule);
+                HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager.LoadData();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 57452: kiem tra cac dich vu dang chi dinh co bi loai tru voi dich vu da chi dinh
+        /// trong lan dieu tri (hoac voi dich vu khac dang tich chon) hay khong.
+        /// Rieng man SUA chi dinh: loai cac dich vu cua chinh phieu dang sua ra khoi tap "da duoc chi dinh".
+        /// </summary>
+        private bool CheckServiceExclusive(List<ADO.HisSereServADO> serviceCheckeds__Send)
+        {
+            bool result = true;
+            try
+            {
+                if (HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager.IsEmptyCatalog)
+                {
+                    return true;
+                }
+                if (serviceCheckeds__Send == null || serviceCheckeds__Send.Count == 0)
+                {
+                    return true;
+                }
+                if (this.checkServiceExclusiveManager == null)
+                {
+                    this.checkServiceExclusiveManager = new HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager(this.currentModule);
+                }
+
+                List<long> assigningServiceIds = serviceCheckeds__Send.Select(o => o.SERVICE_ID).Distinct().ToList();
+
+                //Phieu y lenh dang sua phai duoc loai khoi tap dich vu "da duoc chi dinh",
+                //neu khong phan mem se bao loi voi chinh no.
+                List<long> excludeServiceReqIds = new List<long>();
+                if (this.HisServiceReq != null && this.HisServiceReq.ID > 0)
+                {
+                    excludeServiceReqIds.Add(this.HisServiceReq.ID);
+                }
+                else if (this.serviceReqId > 0)
+                {
+                    excludeServiceReqIds.Add(this.serviceReqId);
+                }
+
+                //Khong dung this.sereServWithTreatment vi bien do da bi loc theo NGAY chi dinh
+                //va theo cung loai y lenh; pham vi kiem tra cua viec 57452 la CA LAN DIEU TRI.
+                List<long> assignedServiceIds = HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager
+                    .GetAssignedServiceIdsByTreatment(
+                        this.HisServiceReq != null ? this.HisServiceReq.TREATMENT_ID : 0,
+                        excludeServiceReqIds);
+
+                string messageError = "";
+                WaitingManager.Hide();
+                result = this.checkServiceExclusiveManager.ProcessCheck(assigningServiceIds, assignedServiceIds, ref messageError);
+                if (result)
+                {
+                    WaitingManager.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = true;   // loi ky thuat thi khong chan nguoi dung lam viec
+            }
+            return result;
+        }
         private bool CheckService(HisServiceReqUpdateSDO serviceReqUpdate)
         {
             bool valid = true;
