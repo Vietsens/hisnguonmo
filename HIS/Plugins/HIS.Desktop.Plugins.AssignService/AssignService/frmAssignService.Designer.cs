@@ -1128,6 +1128,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.timeDutru.Name = "timeDutru";
             this.timeDutru.Properties.AllowEditDays = false;
             this.timeDutru.Properties.AllowEditSeconds = false;
+            this.timeDutru.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.timeDutru.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.timeDutru.Properties.DisplayFormat.FormatString = "HH:mm";
@@ -1139,6 +1140,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.timeDutru.TabIndex = 152;
             this.timeDutru.EditValueChanged += new System.EventHandler(this.timeDutru_EditValueChanged);
             this.timeDutru.Leave += new System.EventHandler(this.timeDutru_Leave);
+            this.timeDutru.KeyDown += new System.Windows.Forms.KeyEventHandler(this.timeDutru_KeyDown);
             // 
             // pnSubIcdTranditional
             // 

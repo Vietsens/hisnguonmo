@@ -228,6 +228,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
 
                 }
+                //Viec 3352: gio du tru phai hop le (HH:mm 00:00 - 23:59) hoac de trong (du tru theo ngay)
+                if (isValid && !this.ValidDutruTimeBeforeSave())
+                {
+                    isValid = false;
+                    return;
+                }
                 if (HisConfigCFG.IsCheckDepartmentInTimeWhenPresOrAssign && this.currentWorkingRoom != null && currentWorkingRoom.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG)
                 {
                     isValid = isValid && CheckTimeInDepartment(this.intructionTimeSelecteds);

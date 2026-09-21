@@ -104,6 +104,7 @@ Không thay đổi.
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 21/09/2026 | sinhnt | Việc 3352 (PT-56263) — hoàn thiện ô **Giờ dự trù**: (1) mặc định lấy **giờ, phút lúc mở chức năng** (`SetDutruTimeDefault` gọi trong `SetDefaultData(isInit)`, lấy theo `timeIntruction`, fallback `DateTime.Now`) thay cho 00:00 cố định; (2) **cho để trống** ô giờ (`AllowNullInput` + `timeDutru_KeyDown` bắt Delete/Backspace) → `USE_TIME` quay về `yyyyMMdd000000` y như dữ liệu cũ; `GetDutruTimeOfDay()` đổi sang `TimeSpan?`; (3) **chặn Lưu khi giờ dở dang/không hợp lệ** bằng `ValidDutruTimeBeforeSave()` — cảnh báo, focus lại ô giờ; gọi ở cả `ProcessSaveData` (1 BN) và nhánh `assignMulti` (nhiều BN); (4) thêm message `frmAssignService.Message.GioDuTruKhongHopLe` và sửa tooltip ô giờ (vi/en/my). Không thêm key config, không sửa BE. |
 | 28/07/2026 | nampp | Ho\u00e0n thi\u1ec7n 46465 theo test th\u1ef1c t\u1ebf: (1) c\u1ea3nh b\u00e1o v\u01b0\u1ee3t t\u1ea1m \u1ee9ng ngo\u1ea1i tr\u00fa ch\u1ec9 n\u1ed5 1 l\u1ea7n l\u00fac m\u1edf form (guard theo treatmentId), kh\u00f4ng n\u1ed5 l\u1ea1i sau L\u01b0u; b\u1ea5m n\u00fat M\u1edbi th\u00ec reset guard \u0111\u1ec3 c\u1ea3nh b\u00e1o l\u1ea1i; (2) ti\u1ec1n trong popup format vi-VN d\u1ea5u ch\u1ea5m, l\u00e0m tr\u00f2n s\u1ed1 nguy\u00ean (#,##0); (3) YHCT/Kidney: fix cross-thread (b\u1ecdc Invoke) v\u00e0 chuy\u1ec3n g\u1ecdi check t\u1eeb Task.Run \u0111\u1ea7u lu\u1ed3ng Load xu\u1ed1ng cu\u1ed1i lu\u1ed3ng \u0111\u1ec3 c\u1ea3nh b\u00e1o vi\u1ec7n ph\u00ed n\u1ed5 SAU c\u00e1c c\u1ea3nh b\u00e1o d\u1ecbch v\u1ee5. |
 | 23/07/2026 | nampp | Việc 46465: bổ sung 2 cảnh báo viện phí theo config mới — (1) key `HIS.Desktop.WarningOverTotalPatientPrice__IsCheckOutpatient` = 1: mở rộng cảnh báo thiếu viện phí (vượt tạm ứng) cho BN **điều trị ngoại trú** (dùng chung ngưỡng `HIS.Desktop.WarningOverTotalPatientPrice`, ngưỡng trống coi như 0); (2) key `HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam` = 1: khi Lưu, cảnh báo BN **diện khám** nếu tổng chi phí (hồ sơ + đang kê) vượt 15% Lương cơ bản (`HIS_BHYT_PARAM.BASE_SALARY` theo hiệu lực FROM_TIME/TO_TIME) — hàm mới `ValidFee15PercentBaseSalaryForExam()`, message mới `TongChiPhiVuot15PhanTramLuongCoBan` (vi/en). Bỏ qua BN bảo lãnh; thiếu Tham số BHYT hoặc lỗi check thì cho đi tiếp (chỉ log). Mặc định 2 key tắt — không đổi hành vi hiện tại. |
 | 28/05/2026 | tuanln | Bổ sung tính năng **Gói bệnh nhân**: nút mở popup `frmPatientPackage` (gói trái + DV gói phải, loại trừ thuốc/VT/máu/suất ăn, cột "Lần này" mặc định 1), đưa DV được chọn ra grid chỉ định, thêm cột read-only "Gói bệnh nhân" (unbound) sau cột "Điều kiện". Thêm `PatientPackageDtADO`, filter POCO, 2 URI gói bệnh nhân. **Không** sửa file dùng chung `SereServADO` — dùng Dictionary theo `SERVICE_ID` + cột unbound trong plugin. Căn lại nhãn "Người tư vấn" cho cân (TextSize 90→75). Cột checkbox trong popup: Caption rỗng + AllowSort=False. |
@@ -116,6 +117,15 @@ Không thay đổi.
 | 18/09/2026 | sinhnt | Việc 57754 (TTMB-TK-56263): thêm ô **Giờ dự trù** (`timeDutru`, TimeSpanEdit mask `HH:mm`, sao y ô giờ của TG chỉ định) ngay bên phải ô Dự trù, layout item `lciTimeDutru` (412,100 / 87×26), `emptySpaceItem7` co còn 97px. `USE_TIME` gửi BE đổi từ `yyyyMMdd000000` thành `yyyyMMddHHmm00`, một giờ dùng chung cho mọi ngày dự trù đã chọn (`BuildDutruUseTimes`, gọi lại khi đổi giờ); **mặc định 00:00** nên không nhập giờ thì dữ liệu y như bản cũ. Ô giờ đồng bộ Enabled/Visibility với ô ngày (khóa khi tick Nhiều ngày, ẩn với diện Khám). Không sửa BE: `MakeServiceReq` lưu nguyên `useTime`, `VerifyUseTimeWithIntructionTime` chỉ so phần ngày. Thêm key tooltip `frmAssignService.lciTimeDutru.OptionsToolTip.ToolTip` (vi/en/my). |
 
 ## 9. Test Cases
+
+### Giờ dự trù — việc 3352 (bổ sung 21/09/2026)
+- [ ] Mở màn Chỉ định dịch vụ → ô giờ dự trù hiển thị sẵn **giờ hiện tại**, bằng ô giờ TG chỉ định.
+- [ ] Chọn ngày, để nguyên giờ, Lưu → `USE_TIME` mang đúng giờ đang hiện.
+- [ ] Chọn ngày, bấm Delete xoá trắng ô giờ, Lưu → `USE_TIME` = `yyyyMMdd000000` (giống dữ liệu cũ).
+- [ ] Gõ dở `1_:__` rồi Lưu → cảnh báo "Giờ dự trù không hợp lệ…", focus về ô giờ, KHÔNG lưu.
+- [ ] Chỉ định nhiều bệnh nhân với giờ dở dang → cũng bị chặn như luồng 1 bệnh nhân.
+- [ ] Dự trù 2 lần cùng ngày với `08:00` và `15:00` → 2 bản ghi, 2 khung giờ.
+- [ ] Lưu xong chỉ định tiếp trên cùng form → giờ dự trù giữ nguyên, không bị reset về giờ mở form.
 
 ### Giờ dự trù (57754)
 - [ ] BN nội trú: hàng Dự trù có ô giờ `00:00` ngay bên phải ô ngày, thẳng cột với ô giờ TG chỉ định.

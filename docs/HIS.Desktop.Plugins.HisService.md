@@ -117,6 +117,7 @@ Không có chức năng in. Có chức năng xuất Excel (`listVServiceExport`)
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 21/09/2026 | dangth2 | **Việc 3353 (PT-56272) — tick "Có thuốc, vật tư đi kèm".** Thêm mục 23 `CO_THUOC_VAT_TU_DI_KEM` vào danh sách `CauHinh` (ô Cấu hình, `UC_HisService.cs`), ánh xạ cột mới `HIS_SERVICE.IS_REQUIRE_MEDI_MATE` (lưu 1/NULL theo mẫu `IS_BLOCK_HOSPITALIZE`; mở sửa tick lại khi = 1). Cờ này được thư viện `HIS.Desktop.Plugins.Library.CheckRequireMediMate` đọc khi kết thúc thực hiện dịch vụ (ServiceExecute, SurgServiceReqExecute, ServiceExecuteGroup, TestServiceReqExcute) để cảnh báo "Dịch vụ chưa có thuốc, vật tư đi kèm". Cần `MOS.EFMODEL.dll` có property `IS_REQUIRE_MEDI_MATE` (BE 21/09/2026). |
 | 21/05/2026 | huannh | Fix bug tìm kiếm tại `LoaddataToTreeList()`: Bỏ hoàn toàn logic auto-add node cha/con khi tìm kiếm. Tìm node cha → chỉ ra cha, tìm node con → chỉ ra con. Node con "mồ côi" được set `PARENT_ID = null` để DevExpress TreeList hiển thị ở root level (flat). Đồng thời sửa luôn bug `chkLock` ("Ẩn DV bị khóa") vốn không hoạt động khi tìm kiếm (do bổ sung node tổ tiên từ cache mà không lọc IS_ACTIVE). |
 
 ## 9. Test Cases

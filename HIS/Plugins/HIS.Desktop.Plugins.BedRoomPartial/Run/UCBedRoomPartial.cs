@@ -2061,7 +2061,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                     && rootSety.First().USE_TIME.HasValue)
                                 {
                                     //qtcode
-                                    ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.Value));
+                                    ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", FormatUseTimeDisplay(rootSety.First().USE_TIME.Value, idSerReqType));
                                     //qtcode
                                 }
                                 ssRootSety.PARENT_ID__IN_SETY = ssRootType.CONCRETE_ID__IN_SETY;
@@ -2297,7 +2297,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                 && rootSety.First().USE_TIME.HasValue)
                             {
                                 //qtcode
-                                ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.Value));
+                                ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", FormatUseTimeDisplay(rootSety.First().USE_TIME.Value, idSerReqType));
                                 //qtcode
                             }
                             ssRootSety.TRACKING_TIME = rootSety.First().TRACKING_TIME;

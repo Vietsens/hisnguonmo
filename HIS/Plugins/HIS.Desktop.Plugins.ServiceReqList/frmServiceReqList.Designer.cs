@@ -2120,6 +2120,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridViewServiceReq.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewServiceReq_CustomRowCellEdit);
             this.gridViewServiceReq.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.gridViewServiceReq_PopupMenuShowing);
             this.gridViewServiceReq.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewServiceReq_CustomUnboundColumnData);
+            this.gridViewServiceReq.CustomColumnSort += new DevExpress.XtraGrid.Views.Base.CustomColumnSortEventHandler(this.gridViewServiceReq_CustomColumnSort);
             this.gridViewServiceReq.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewServiceReq_MouseDown);
             // 
             // gridColumn_ServiceReq_Choose
@@ -2467,10 +2468,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn12.FieldName = "USE_TIME_STR";
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowEdit = false;
+            this.gridColumn12.SortMode = DevExpress.XtraGrid.ColumnSortMode.Custom;
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
             this.gridColumn12.VisibleIndex = 17;
-            this.gridColumn12.Width = 100;
+            this.gridColumn12.Width = 115;
             // 
             // gridColumn_Request_Username
             // 

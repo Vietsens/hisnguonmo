@@ -89,6 +89,35 @@ namespace MPS.Processor.Mps000062
         List<HIS_EXP_MEST_MEDICINE> _ExpMestMedicinesAll = new List<HIS_EXP_MEST_MEDICINE>();
 
         internal List<HIS_SERVICE_REQ> _ServiceReqDuTrus { get; set; } // y lệnh dự trù
+        /// <summary>
+        /// Viec 3352: y lenh DICH VU co the mang gio phut trong USE_TIME (truoc day luon 000000).
+        /// Dich vu -> so o muc NGAY de y lenh du tru CUNG NGAY chi dinh van khong bi xep vao nhom du tru,
+        /// dung nhu hanh vi truoc khi man Chi dinh dich vu co o gio. Don thuoc giu nguyen phep so cu.
+        /// </summary>
+        private static bool IsAnticipateByUseTime3352(HIS_SERVICE_REQ req)
+        {
+            if (req == null || req.USE_TIME == null) return false;
+            //Don thuoc va y lenh GIUONG da mang gio phut trong USE_TIME tu truoc viec 3352 -> giu nguyen phep so cu.
+            if (req.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
+                || req.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT
+                || req.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
+                || req.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM
+                || req.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G)
+            {
+                return req.USE_TIME.Value > req.INTRUCTION_DATE;
+            }
+            return ((req.USE_TIME.Value / 1000000) * 1000000) > req.INTRUCTION_DATE;
+        }
+
+        /// <summary>
+        /// Viec 3352: khoa gom nhom khoi du tru theo NGAY du tru. Truoc day gom theo nguyen USE_TIME,
+        /// nay y lenh dich vu co gio nen 2 lan du tru cung ngay khac gio se sinh 2 khoi cung tieu de "Du tru ngay dd/MM/yyyy".
+        /// </summary>
+        private static long? ToUseDateKey3352(long? useTime)
+        {
+            if (useTime == null) return null;
+            return (useTime.Value / 1000000) * 1000000;
+        }
         internal List<HIS_SERVICE_REQ> _ServiceReqTHDT { get; set; } // y lệnh thực hiện dự trù
 
         //TH
@@ -869,7 +898,7 @@ namespace MPS.Processor.Mps000062
                                 lstServiceReqs.AddRange(ser.ToList());
                             }
 
-                            var serDuTru = rdo._DicServiceReqs.Values.Where(p => p.TRACKING_ID == itemTracking.ID && (p.USE_TIME ?? 0) > p.INTRUCTION_DATE && (p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN
+                            var serDuTru = rdo._DicServiceReqs.Values.Where(p => p.TRACKING_ID == itemTracking.ID && IsAnticipateByUseTime3352(p) && (p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN
                                         || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA
                                         || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TT
                                         || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN
@@ -884,7 +913,7 @@ namespace MPS.Processor.Mps000062
                                 _ServiceReqDuTrus = _ServiceReqDuTrus.OrderBy(o => o.INTRUCTION_TIME).ThenBy(p => p.USE_TIME).ThenBy(n => n.ID).ToList();
                             }
 
-                            var serTHDT = rdo._DicServiceReqs.Values.Where(p => p.USED_FOR_TRACKING_ID == itemTracking.ID && (p.USE_TIME ?? 0) > p.INTRUCTION_DATE && (p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN
+                            var serTHDT = rdo._DicServiceReqs.Values.Where(p => p.USED_FOR_TRACKING_ID == itemTracking.ID && IsAnticipateByUseTime3352(p) && (p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN
                                         || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA
                                         || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TT
                                         || p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN
@@ -5654,7 +5683,7 @@ namespace MPS.Processor.Mps000062
                         {
                             //_ServiceClsDuTru.ForEach(o => o.USE_TIME = _ServiceReqDuTrus.FirstOrDefault(ReqDT => o.SERVICE_REQ_ID == ReqDT.ID).USE_TIME);
                             //ServiceAll.AddRange(ClsDuTrus);
-                            var _ServiceClsDuTruGroupUseTime = _ServiceClsDuTru.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
+                            var _ServiceClsDuTruGroupUseTime = _ServiceClsDuTru.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => ToUseDateKey3352(o.USE_TIME)).ToList();
                             {
                                 foreach (var lstService in _ServiceClsDuTruGroupUseTime)
                                 {
@@ -5709,7 +5738,7 @@ namespace MPS.Processor.Mps000062
                         if (_ServiceTtDuTru != null && _ServiceTtDuTru.Count > 0 && _ServiceTtDuTru.Exists(o => o.TRACKING_ID == item.ID))
                         {
                             //ServiceAll.AddRange(TtDutrus);
-                            var _ServiceTtDuTruGroupUseTime = _ServiceTtDuTru.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
+                            var _ServiceTtDuTruGroupUseTime = _ServiceTtDuTru.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => ToUseDateKey3352(o.USE_TIME)).ToList();
                             {
                                 foreach (var lstService in _ServiceTtDuTruGroupUseTime)
                                 {
@@ -6085,7 +6114,7 @@ namespace MPS.Processor.Mps000062
                     if (_ServiceClsTHDT != null && _ServiceClsTHDT.Count > 0 && _ServiceClsTHDT.Exists(o => o.TRACKING_ID == item.ID))
                     {
                         //ServiceAll.AddRange(ClsDuTrus);
-                        var _ServiceClsTHDTGroupUseTime = _ServiceClsTHDT.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
+                        var _ServiceClsTHDTGroupUseTime = _ServiceClsTHDT.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => ToUseDateKey3352(o.USE_TIME)).ToList();
                         foreach (var lstService in _ServiceClsTHDTGroupUseTime)
                         {
                             string title = Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Thực hiện dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(lstService.Key ?? 0), FontStyle.Bold);
@@ -6139,7 +6168,7 @@ namespace MPS.Processor.Mps000062
                         //TtDutrus.ForEach(o => o.USE_TIME = _ServiceReqDuTrus.FirstOrDefault(ReqDT => o.SERVICE_REQ_ID == ReqDT.ID).USE_TIME);
                         //_TTServices = _TTServices.Where(o => !TtDutrus.Exists(p => p.SERVICE_ID == o.SERVICE_ID && p.SERVICE_REQ_ID == o.SERVICE_REQ_ID)).ToList();
                         //ServiceAll.AddRange(TtDutrus);
-                        var _ServiceTtTHDTGroupUseTime = _ServiceTtTHDT.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => o.USE_TIME).ToList();
+                        var _ServiceTtTHDTGroupUseTime = _ServiceTtTHDT.Where(o => o.TRACKING_ID == item.ID).OrderBy(o => o.USE_TIME).GroupBy(o => ToUseDateKey3352(o.USE_TIME)).ToList();
 
                         foreach (var lstService in _ServiceTtTHDTGroupUseTime)
                         {

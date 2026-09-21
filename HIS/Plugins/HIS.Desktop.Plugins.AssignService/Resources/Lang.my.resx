@@ -1111,6 +1111,9 @@
     <value>Không đồng ý</value>
   </data>
   <data name="frmAssignService.lciTimeDutru.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Giờ dự trù</value>
+    <value>Giờ dự trù (HH:mm). Để trống = dự trù theo ngày, không có giờ</value>
+  </data>
+  <data name="frmAssignService.Message.GioDuTruKhongHopLe" xml:space="preserve">
+    <value>Giờ dự trù không hợp lệ. Vui lòng nhập theo định dạng HH:mm trong khoảng 00:00 - 23:59, hoặc để trống để dự trù theo ngày.</value>
   </data>
 </root>

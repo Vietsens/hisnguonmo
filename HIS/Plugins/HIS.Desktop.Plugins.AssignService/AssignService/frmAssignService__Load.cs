@@ -3078,6 +3078,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     //ucDateProcessor.Reload(ucDate, dateInputADO);
                     //this.intructionTimeSelecteds = ucDateProcessor.GetValue(ucDate);
                 }
+                //Viec 3352: mac dinh gio du tru = gio phut luc mo chuc nang (giong TG chi dinh); chi dat khi khoi tao, khong reset sau moi lan Luu
+                if (isInit)
+                {
+                    this.SetDutruTimeDefault();
+                }
                 if (!isInit)
                 {
                     string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -3805,6 +3810,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     ip.Time = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.currentHisTreatment.SERVER_TIME).Value;
                     ip.Dates = new List<DateTime?>() { ip.Time.Date };
                     UcDateSetValue(ip);
+                    //Viec 3352: vien dung gio server thi gio du tru mac dinh phai bam theo gio server vua nap.
+                    //Chi ap dung luc mo form (IsFirstloadForm) de khong ghi de gio nguoi dung da nhap khi doi benh nhan.
+                    if (this.IsFirstloadForm)
+                    {
+                        this.SetDutruTimeDefault();
+                    }
                 }
             }
             catch (Exception ex)
