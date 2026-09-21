@@ -59,13 +59,50 @@ namespace HIS.Desktop.Utility
             }
         }
 
+        /// <summary>
+        /// Khoa cua tai khoan dang dang nhap, lay theo danh muc nhan vien (cau hinh tai khoan).
+        /// Doc tu cache BackendDataWorker de khong goi API moi lan go phim tat.
+        /// </summary>
+        private static long? GetLoginDepartmentId(string loginName)
+        {
+            try
+            {
+                if (String.IsNullOrWhiteSpace(loginName)) return null;
+                var employee = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>()
+                    .FirstOrDefault(o => o.LOGINNAME == loginName);
+                if (employee != null) return employee.DEPARTMENT_ID;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Cac mau tai khoan duoc phep su dung theo phim tat:
+        /// - Mau do chinh minh tao (CREATOR)
+        /// - Mau cong khai toan vien (IS_PUBLIC = 1)
+        /// - Mau cong khai theo khoa (IS_PUBLIC_IN_DEPARTMENT = 1) va dung khoa cua tai khoan
+        /// </summary>
+        private static List<HIS_TEXT_LIB> GetUsableTextLibs(string key, string loginName)
+        {
+            long? departmentId = GetLoginDepartmentId(loginName);
+            return BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>()
+                .Where(o => o.HOT_KEY == key
+                    && (o.CREATOR == loginName
+                        || o.IS_PUBLIC == 1
+                        || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && departmentId.HasValue && o.DEPARTMENT_ID == departmentId)))
+                .ToList();
+        }
+
         public static string ProcesseShortcutReplace(string key, ref string rtfRepValue)
         {
             string replaceKey = "";
             try
             {
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                var textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && (o.CREATOR == loginName || o.IS_PUBLIC == 1)).ToList();
+                var textLibs = GetUsableTextLibs(key, loginName);
                 if (textLibs != null && textLibs.Count > 0)
                 {
                     replaceKey = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLibs[0].CONTENT);
@@ -88,7 +125,7 @@ namespace HIS.Desktop.Utility
                 if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "1")
                 {
                     string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                    var textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && (o.CREATOR == loginName || o.IS_PUBLIC == 1)).ToList();
+                    var textLibs = GetUsableTextLibs(key, loginName);
                     if (textLibs != null && textLibs.Count > 0)
                     {
                         replaceKey = HIS.Desktop.Utility.TextLibHelper.BytesToStringGeneral(textLibs[0].CONTENT, libType);
@@ -134,41 +171,15 @@ namespace HIS.Desktop.Utility
             string replaceKey = "";
             try
             {
-                //TODO
-                long? departmentId = null;
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                CommonParam paramCo = new CommonParam();
-                HisEmployeeFilter hisFilter = new HisEmployeeFilter();
-                hisFilter.LOGINNAME__EXACT = loginName;
-                var employees = new Inventec.Common.Adapter.BackendAdapter
-                    (paramCo).Get<List<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>>
-                    ("api/HisEmployee/Get", ApiConsumer.ApiConsumers.MosConsumer, hisFilter, paramCo);
-                if (employees != null && employees.Count > 0)
-                {
-                    departmentId = employees.FirstOrDefault().DEPARTMENT_ID;
-                }
-                else
-                {
-                    departmentId = null;
-                }
                 List<HIS_TEXT_LIB> textLibs = new List<HIS_TEXT_LIB>();
 
                 if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "1")
                 {
-                    if (departmentId != null)
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug("textLibs 1");
-                        textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && (o.CREATOR == loginName || o.IS_PUBLIC == 1 || o.IS_PUBLIC_IN_DEPARTMENT == 1 || o.DEPARTMENT_ID == departmentId)).ToList();
-                    }
-                    else
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug("textLibs 2");
-                        textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && (o.CREATOR == loginName || o.IS_PUBLIC == 1 || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && o.DEPARTMENT_ID == departmentId))).ToList();
-                    }
+                    textLibs = GetUsableTextLibs(key, loginName);
                 }
                 else if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "2")
                 {
-                    Inventec.Common.Logging.LogSystem.Debug("textLibs 3");
                     textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && o.CREATOR == loginName).ToList();
                 }
 
