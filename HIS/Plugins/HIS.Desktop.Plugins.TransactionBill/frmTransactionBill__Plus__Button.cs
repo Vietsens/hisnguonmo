@@ -526,8 +526,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     reloadMenuBordereau.BordereauPrint = BordereauPrint.Type.MPS_BASE;
                     BordereauInitData bordereauInitData = new BordereauInitData();
 
-                    AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT_FEE, V_HIS_TREATMENT>();
-                    bordereauInitData.Treatment = AutoMapper.Mapper.Map<V_HIS_TREATMENT>(this.currentTreatment);
+                    bordereauInitData.Treatment = GetTreatmentViewForPrint();
                     AutoMapper.Mapper.CreateMap<V_HIS_SERE_SERV_5, HIS_SERE_SERV>();
                     var listHisSereServ = AutoMapper.Mapper.Map<List<HIS_SERE_SERV>>(this.ListSereServTranfer);
                     if (listHisSereServ != null)
