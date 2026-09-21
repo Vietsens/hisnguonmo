@@ -165,4 +165,31 @@
   <data name="UCServiceExclusive.cboServiceType.ColName" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="UCServiceExclusive.colChoose.Caption" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="UCServiceExclusive.lciHandleType.Text" xml:space="preserve">
+    <value>Handle type:</value>
+  </data>
+  <data name="UCServiceExclusive.lciNote.Text" xml:space="preserve">
+    <value>Note:</value>
+  </data>
+  <data name="UCServiceExclusive.chkIsActive.Text" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="UCServiceExclusive.chkOnlyDeclared.Text" xml:space="preserve">
+    <value>Declared only</value>
+  </data>
+  <data name="UCServiceExclusive.chkOnlyDeclared.ToolTip" xml:space="preserve">
+    <value>Show only services that already have a configuration record</value>
+  </data>
+  <data name="UCServiceExclusive.cboHandleType.Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="UCServiceExclusive.cboHandleType.Block" xml:space="preserve">
+    <value>Block</value>
+  </data>
+  <data name="UCServiceExclusive.txtNote.NullValuePrompt" xml:space="preserve">
+    <value>Reason for the exclusion (optional), shown together with the warning message</value>
+  </data>
 </root>

@@ -54,6 +54,7 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -81,13 +82,13 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             this.layoutControlRoot.Location = new System.Drawing.Point(0, 0);
             this.layoutControlRoot.Name = "layoutControlRoot";
             this.layoutControlRoot.Root = this.Root;
-            this.layoutControlRoot.Size = new System.Drawing.Size(757, 264);
+            this.layoutControlRoot.Size = new System.Drawing.Size(957, 264);
             this.layoutControlRoot.TabIndex = 4;
             this.layoutControlRoot.Text = "layoutControl1";
             //
             // btnY
             //
-            this.btnY.Location = new System.Drawing.Point(584, 240);
+            this.btnY.Location = new System.Drawing.Point(784, 240);
             this.btnY.Name = "btnY";
             this.btnY.Size = new System.Drawing.Size(82, 22);
             this.btnY.StyleController = this.layoutControlRoot;
@@ -97,7 +98,7 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             //
             // btnN
             //
-            this.btnN.Location = new System.Drawing.Point(670, 240);
+            this.btnN.Location = new System.Drawing.Point(870, 240);
             this.btnN.Name = "btnN";
             this.btnN.Size = new System.Drawing.Size(85, 22);
             this.btnN.StyleController = this.layoutControlRoot;
@@ -110,7 +111,7 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             this.gridControl1.Location = new System.Drawing.Point(2, 26);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(753, 210);
+            this.gridControl1.Size = new System.Drawing.Size(953, 210);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -121,7 +122,8 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             this.gridColumn1,
             this.gridColumn2,
             this.gridColumn3,
-            this.gridColumn4});
+            this.gridColumn4,
+            this.gridColumn5});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsView.ShowGroupPanel = false;
@@ -172,6 +174,16 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             this.gridColumn4.VisibleIndex = 3;
             this.gridColumn4.Width = 150;
             //
+            // gridColumn5
+            //
+            this.gridColumn5.Caption = "Ghi chú";
+            this.gridColumn5.FieldName = "NOTE";
+            this.gridColumn5.Name = "gridColumn5";
+            this.gridColumn5.OptionsColumn.AllowEdit = false;
+            this.gridColumn5.Visible = true;
+            this.gridColumn5.VisibleIndex = 4;
+            this.gridColumn5.Width = 200;
+            //
             // Root
             //
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -185,7 +197,7 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(757, 264);
+            this.Root.Size = new System.Drawing.Size(957, 264);
             this.Root.TextVisible = false;
             //
             // layoutControlItem1
@@ -193,7 +205,7 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             this.layoutControlItem1.Control = this.gridControl1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(757, 214);
+            this.layoutControlItem1.Size = new System.Drawing.Size(957, 214);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             //
@@ -202,7 +214,7 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(757, 24);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(957, 24);
             this.emptySpaceItem1.Spacing = new DevExpress.XtraLayout.Utils.Padding(10, 0, 0, 0);
             this.emptySpaceItem1.Text = "Các dịch vụ không được phép chỉ định đồng thời:";
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -211,7 +223,7 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             // layoutControlItem2
             //
             this.layoutControlItem2.Control = this.btnN;
-            this.layoutControlItem2.Location = new System.Drawing.Point(668, 238);
+            this.layoutControlItem2.Location = new System.Drawing.Point(868, 238);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(89, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -222,13 +234,13 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 238);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(582, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(782, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             //
             // layoutControlItem3
             //
             this.layoutControlItem3.Control = this.btnY;
-            this.layoutControlItem3.Location = new System.Drawing.Point(582, 238);
+            this.layoutControlItem3.Location = new System.Drawing.Point(782, 238);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(86, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -239,13 +251,13 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(757, 264);
+            this.ClientSize = new System.Drawing.Size(957, 264);
             this.Controls.Add(this.layoutControlRoot);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmServiceExclusive";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Dịch vụ không được phép chỉ định đồng thời";
+            this.Text = "Dịch vụ không chỉ định đồng thời";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmServiceExclusive_FormClosed);
             this.Load += new System.EventHandler(this.frmServiceExclusive_Load);
             this.Controls.SetChildIndex(this.layoutControlRoot, 0);
@@ -279,6 +291,7 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.Form
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
         private DevExpress.XtraEditors.SimpleButton btnY;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
     }

@@ -60,5 +60,8 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.ADO
 
         /// <summary>1 = Canh bao, 2 = Chan (xem HandleType)</summary>
         public short HANDLE_TYPE_ID { get; set; }
+
+        /// <summary>Ghi chu / dien giai ly do loai tru (tuy chon) - hien kem noi dung thong bao neu co (tai lieu 3342)</summary>
+        public string NOTE { get; set; }
     }
 }

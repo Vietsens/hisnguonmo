@@ -34,7 +34,7 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
     /// </summary>
     [ExtensionOf(typeof(DesktopRootExtensionPoint),
         "HIS.Desktop.Plugins.HisServiceExclusive",
-        "Dịch vụ không được chỉ định đồng thời",
+        "Dịch vụ không chỉ định đồng thời",
         "Common",
         62,
         "thiet-lap.png",

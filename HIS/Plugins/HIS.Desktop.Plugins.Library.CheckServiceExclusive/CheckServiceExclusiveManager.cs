@@ -382,6 +382,7 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive
                 ado.ASSIGNED_SERVICE_ID = assignedServiceId;
                 ado.ASSIGNING_SERVICE_ID = assigningServiceId;
                 ado.HANDLE_TYPE_ID = pair.HANDLE_TYPE_ID;
+                ado.NOTE = pair.NOTE;
                 ado.SOURCE = source;
 
                 // Ten dich vu lay thang tu view danh muc, khong phai tra lai BackendDataWorker
@@ -430,8 +431,9 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive
         }
 
         /// <summary>
-        /// Gom thong diep theo dich vu da co:
-        /// "Bệnh nhân đã được chỉ định dịch vụ A, không được phép chỉ định dịch vụ B, C"
+        /// Gom thong diep theo dich vu da co, dung tung chu theo tai lieu 3342:
+        /// "Bệnh nhân đã được chỉ định dịch vụ A không được phép chỉ định dịch vụ B, C"
+        /// Neu cap khai bao co Ghi chu thi hien kem sau cau thong bao.
         /// </summary>
         private string BuildMessage(List<ServiceExclusiveViolationADO> violations)
         {
@@ -447,8 +449,18 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive
                         builder.Append(Environment.NewLine);
                     }
                     builder.Append(String.Format(
-                        "Bệnh nhân đã được chỉ định dịch vụ {0}, không được phép chỉ định dịch vụ {1}",
+                        "Bệnh nhân đã được chỉ định dịch vụ {0} không được phép chỉ định dịch vụ {1}",
                         group.Key, assigningNames));
+
+                    List<string> notes = group
+                        .Where(o => !String.IsNullOrWhiteSpace(o.NOTE))
+                        .Select(o => o.NOTE.Trim())
+                        .Distinct()
+                        .ToList();
+                    if (notes.Count > 0)
+                    {
+                        builder.Append(". Ghi chú: ").Append(String.Join("; ", notes.ToArray()));
+                    }
                 }
             }
             catch (Exception ex)

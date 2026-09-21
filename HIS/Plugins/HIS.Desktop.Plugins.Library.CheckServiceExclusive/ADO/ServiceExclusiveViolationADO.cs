@@ -45,6 +45,9 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.ADO
         /// <summary>1 = Canh bao, 2 = Chan</summary>
         public short HANDLE_TYPE_ID { get; set; }
 
+        /// <summary>Ghi chu khai bao kem cap dich vu (co the rong)</summary>
+        public string NOTE { get; set; }
+
         public string HANDLE_TYPE_NAME
         {
             get

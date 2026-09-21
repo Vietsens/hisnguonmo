@@ -29,6 +29,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraEditors.Controls;
 using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
 using Inventec.Desktop.Common.LanguageManager;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Controls.Session;
@@ -41,14 +42,15 @@ using HIS.Desktop.Plugins.Library.CheckServiceExclusive.ADO;
 namespace HIS.Desktop.Plugins.HisServiceExclusive
 {
     /// <summary>
-    /// Man danh muc "Dich vu khong duoc chi dinh dong thoi" (viec 57452 / TTMB-TK-56258).
+    /// Man danh muc "Dich vu khong chi dinh dong thoi" (viec 57452 / tai lieu 3342 - PT-56258).
     ///
-    /// Luoi TRAI  : chon 1 dich vu goc bang radio.
-    /// Luoi PHAI  : tich cac dich vu khong duoc chi dinh cung dich vu goc, chon muc xu ly bang
-    ///              2 cot tick loai tru nhau san co cua HIS.UC.Service:
-    ///                 checkWarning        -> Canh bao (van cho chi dinh)
-    ///                 checkServiceNotUse  -> Chan (khong cho chi dinh)
-    /// Quan he la DOI XUNG: chi luu 1 ban ghi cho moi cap, luc doc thi tra 2 chieu.
+    /// Mo hinh BAN GHI CAU HINH theo tai lieu 3342: 1 dich vu goc + danh sach dich vu khong chi dinh dong thoi
+    /// + Muc xu ly (mac dinh Canh bao) + Trang thai (Con/Ngung su dung) + Ghi chu.
+    ///   - Luoi TRAI : chon 1 dich vu goc bang radio (tim theo ma/ten, loc loai dich vu, loc "Da khai bao").
+    ///   - Luoi PHAI : tich cac dich vu khong duoc chi dinh cung dich vu goc.
+    ///   - Panel duoi: Muc xu ly / Con su dung / Ghi chu ap dung cho CA ban ghi (moi cap cua dich vu goc).
+    /// Du lieu luu theo tung cap (HIS_SERVICE_EXCLUSIVE: SERVICE_ID, EXCLUSIVE_ID, HANDLE_TYPE_ID, IS_ACTIVE, NOTE);
+    /// quan he la DOI XUNG nen luc doc tra ca 2 chieu, khong bao gio tao cap nguoc trung.
     /// </summary>
     public partial class UCServiceExclusive : HIS.Desktop.Utility.UserControlBase
     {
@@ -76,10 +78,22 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
 
         bool isCheckAll;
 
-        /// <summary>Cac cap loai tru hien co cua dich vu goc dang chon (nen so diff khi Luu)</summary>
+        /// <summary>
+        /// Toan bo cac cap loai tru cua dich vu goc dang chon (tra 2 chieu, KHONG loc IS_ACTIVE
+        /// de con hien duoc ban ghi dang Ngung su dung). Nen so diff khi Luu.
+        /// </summary>
         List<HIS_SERVICE_EXCLUSIVE> serviceExclusivesByService { get; set; }
 
+        /// <summary>ID cac dich vu da co ban ghi cau hinh (dung cho bo loc "Da khai bao" o luoi trai)</summary>
+        List<long> declaredServiceIds;
+
         V_HIS_SERVICE currentService;
+
+        /// <summary>
+        /// Cot tick o luoi phai dung repository "checkWarning" cua HIS.UC.Service (caption doi thanh "Chon"):
+        /// handler cua no chi bat/tat co, KHONG tra cuu phong/gia nhu "checkService" nen nhe va khong tac dung phu.
+        /// </summary>
+        private const string EXCLUSIVE_CHECK_FIELD = "checkWarning";
         #endregion
 
         #region Constructor
@@ -129,8 +143,10 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                 WaitingManager.Show();
                 SetCaptionByLanguageKey();
                 LoadDataToCombo();
+                LoadComboHandleType();
                 InitUcgrid1();
                 InitUcgrid2();
+                ResetRecordPanel();
 
                 if (this.currentService == null)
                 {
@@ -168,8 +184,14 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                 this.btnSave.Text = GetLang("UCServiceExclusive.btnSave.Text");
                 this.layoutControlItem3.Text = GetLang("UCServiceExclusive.lciServiceType.Text");
                 this.layoutControlItem2.Text = GetLang("UCServiceExclusive.lciServiceType2.Text");
+                this.lciHandleType.Text = GetLang("UCServiceExclusive.lciHandleType.Text");
+                this.lciNote.Text = GetLang("UCServiceExclusive.lciNote.Text");
+                this.chkIsActive.Text = GetLang("UCServiceExclusive.chkIsActive.Text");
+                this.chkOnlyDeclared.Text = GetLang("UCServiceExclusive.chkOnlyDeclared.Text");
+                this.chkOnlyDeclared.ToolTip = GetLang("UCServiceExclusive.chkOnlyDeclared.ToolTip");
                 this.txtKeyword1.Properties.NullValuePrompt = GetLang("UCServiceExclusive.txtKeyword1.Properties.NullValuePrompt");
                 this.txtKeyword2.Properties.NullValuePrompt = GetLang("UCServiceExclusive.txtKeyword2.Properties.NullValuePrompt");
+                this.txtNote.Properties.NullValuePrompt = GetLang("UCServiceExclusive.txtNote.NullValuePrompt");
             }
             catch (Exception ex)
             {
@@ -204,6 +226,27 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                     .ToList();
                 LoadDataToComboServiceType(cboServiceType, serviceTypes);
                 LoadDataToComboServiceType(cboServiceType2, serviceTypes);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Combo Muc xu ly: 1 = Canh bao (mac dinh theo tai lieu 3342), 2 = Chan</summary>
+        private void LoadComboHandleType()
+        {
+            try
+            {
+                List<HandleTypeItem> data = new List<HandleTypeItem>();
+                data.Add(new HandleTypeItem((short)HandleType.Warning, GetLang("UCServiceExclusive.cboHandleType.Warning")));
+                data.Add(new HandleTypeItem((short)HandleType.Block, GetLang("UCServiceExclusive.cboHandleType.Block")));
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("NAME", "", 150, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("NAME", "ID", columnInfos, false, 170);
+                ControlEditorLoader.Load(cboHandleType, data, controlEditorADO);
+                cboHandleType.EditValue = (short)HandleType.Warning;
             }
             catch (Exception ex)
             {
@@ -285,10 +328,7 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
             }
         }
 
-        /// <summary>
-        /// Luoi PHAI: danh sach dich vu loai tru, tich bang 2 cot muc xu ly.
-        /// checkWarning = Canh bao, checkServiceNotUse = Chan (2 cot nay loai tru nhau san trong HIS.UC.Service).
-        /// </summary>
+        /// <summary>Luoi PHAI: danh sach dich vu loai tru, tich chon nhieu (1 cot "Chon")</summary>
         private void InitUcgrid2()
         {
             try
@@ -298,28 +338,22 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                 ado.ListServiceColumn = new List<HIS.UC.Service.ServiceColumn>();
                 ado.gridViewService_MouseDownMest = gridViewExclusive_MouseDown;
 
-                HIS.UC.Service.ServiceColumn colWarning = new HIS.UC.Service.ServiceColumn(GetLang("UCServiceExclusive.colWarning.Caption"), "checkWarning", 70, true);
-                colWarning.VisibleIndex = 0;
-                colWarning.image = imageCollectionRoom.Images[0];
-                colWarning.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
-                ado.ListServiceColumn.Add(colWarning);
-
-                HIS.UC.Service.ServiceColumn colBlock = new HIS.UC.Service.ServiceColumn(GetLang("UCServiceExclusive.colBlock.Caption"), "checkServiceNotUse", 70, true);
-                colBlock.VisibleIndex = 1;
-                colBlock.image = imageCollectionRoom.Images[0];
-                colBlock.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
-                ado.ListServiceColumn.Add(colBlock);
+                HIS.UC.Service.ServiceColumn colCheck = new HIS.UC.Service.ServiceColumn(GetLang("UCServiceExclusive.colChoose.Caption"), EXCLUSIVE_CHECK_FIELD, 50, true);
+                colCheck.VisibleIndex = 0;
+                colCheck.image = imageCollectionRoom.Images[0];
+                colCheck.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
+                ado.ListServiceColumn.Add(colCheck);
 
                 HIS.UC.Service.ServiceColumn colExclusiveCode = new HIS.UC.Service.ServiceColumn(GetLang("UCServiceExclusive.colExclusiveCode.Caption"), "SERVICE_CODE", 60, false);
-                colExclusiveCode.VisibleIndex = 2;
+                colExclusiveCode.VisibleIndex = 1;
                 ado.ListServiceColumn.Add(colExclusiveCode);
 
                 HIS.UC.Service.ServiceColumn colExclusiveName = new HIS.UC.Service.ServiceColumn(GetLang("UCServiceExclusive.colExclusiveName.Caption"), "SERVICE_NAME", 300, false);
-                colExclusiveName.VisibleIndex = 3;
+                colExclusiveName.VisibleIndex = 2;
                 ado.ListServiceColumn.Add(colExclusiveName);
 
                 HIS.UC.Service.ServiceColumn colExclusiveTypeName = new HIS.UC.Service.ServiceColumn(GetLang("UCServiceExclusive.colServiceTypeName.Caption"), "SERVICE_TYPE_NAME", 80, false);
-                colExclusiveTypeName.VisibleIndex = 4;
+                colExclusiveTypeName.VisibleIndex = 3;
                 ado.ListServiceColumn.Add(colExclusiveTypeName);
 
                 this.ucGridControlExclusive = (UserControl)exclusiveProcessor.Run(ado);
@@ -336,7 +370,7 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
         }
         #endregion
 
-        #region Check all (click header cot Chan)
+        #region Check all (click header cot Chon)
         private void gridViewExclusive_MouseDown(object sender, MouseEventArgs e)
         {
             try
@@ -352,11 +386,7 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                     return;
                 }
                 GridHitInfo hi = view.CalcHitInfo(e.Location);
-                if (hi.HitTest != GridHitTest.Column)
-                {
-                    return;
-                }
-                if (hi.Column.FieldName != "checkWarning" && hi.Column.FieldName != "checkServiceNotUse")
+                if (hi.HitTest != GridHitTest.Column || hi.Column.FieldName != EXCLUSIVE_CHECK_FIELD)
                 {
                     return;
                 }
@@ -367,13 +397,8 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                     return;
                 }
 
-                bool isWarningColumn = hi.Column.FieldName == "checkWarning";
-
                 WaitingManager.Show();
-                int checkedNum = isWarningColumn
-                    ? lstCheckAll.Count(o => o.checkWarning)
-                    : lstCheckAll.Count(o => o.checkServiceNotUse);
-
+                int checkedNum = lstCheckAll.Count(o => o.checkWarning);
                 if (checkedNum < lstCheckAll.Count)
                 {
                     isCheckAll = true;
@@ -387,24 +412,8 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
 
                 foreach (var item in lstCheckAll)
                 {
-                    // Khong tich chinh dich vu goc
-                    if (item.ID == serviceIdChecked)
-                    {
-                        item.checkWarning = false;
-                        item.checkServiceNotUse = false;
-                        continue;
-                    }
-
-                    if (isWarningColumn)
-                    {
-                        item.checkWarning = isCheckAll;
-                        if (isCheckAll) item.checkServiceNotUse = false;
-                    }
-                    else
-                    {
-                        item.checkServiceNotUse = isCheckAll;
-                        if (isCheckAll) item.checkWarning = false;
-                    }
+                    // Khong bao gio tich chinh dich vu goc
+                    item.checkWarning = isCheckAll && item.ID != serviceIdChecked;
                 }
                 isCheckAll = !isCheckAll;
 
@@ -419,10 +428,10 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
         }
         #endregion
 
-        #region Radio click -> load cac cap loai tru cua dich vu goc
+        #region Radio click -> nap ban ghi cau hinh cua dich vu goc
         /// <summary>
-        /// Tich radio 1 dich vu ben trai -> GET api/HisServiceExclusive/Get (2 chieu)
-        /// -> tich san muc xu ly tuong ung o luoi phai.
+        /// Tich radio 1 dich vu ben trai -> GET api/HisServiceExclusive/Get (2 chieu, moi trang thai)
+        /// -> tich san luoi phai + do Muc xu ly / Trang thai / Ghi chu cua ban ghi len panel.
         /// </summary>
         private void btn_Radio_Enable_Click1(V_HIS_SERVICE data)
         {
@@ -434,19 +443,10 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                 }
 
                 WaitingManager.Show();
-                CommonParam param = new CommonParam();
-                HisServiceExclusiveFilter filter = new HisServiceExclusiveFilter();
-                filter.SERVICE_ID__OR__EXCLUSIVE_ID = data.ID;
-                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 serviceIdChecked = data.ID;
-
-                serviceExclusivesByService = new BackendAdapter(param).Get<List<HIS_SERVICE_EXCLUSIVE>>(
-                    HisRequestUriStore.MOSHIS_SERVICE_EXCLUSIVE_GET,
-                    HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
-                    filter,
-                    param) ?? new List<HIS_SERVICE_EXCLUSIVE>();
-
+                LoadServiceExclusivesByService();
                 ApplyCheckedToExclusiveGrid();
+                FillRecordPanel();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -456,7 +456,66 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
             }
         }
 
-        /// <summary>Tich lai luoi phai theo danh sach cap loai tru dang co cua dich vu goc</summary>
+        private void LoadServiceExclusivesByService()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisServiceExclusiveFilter filter = new HisServiceExclusiveFilter();
+                filter.SERVICE_ID__OR__EXCLUSIVE_ID = serviceIdChecked;
+
+                serviceExclusivesByService = new BackendAdapter(param).Get<List<HIS_SERVICE_EXCLUSIVE>>(
+                    HisRequestUriStore.MOSHIS_SERVICE_EXCLUSIVE_GET,
+                    HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                    filter,
+                    param) ?? new List<HIS_SERVICE_EXCLUSIVE>();
+            }
+            catch (Exception ex)
+            {
+                serviceExclusivesByService = new List<HIS_SERVICE_EXCLUSIVE>();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Id dich vu doi ung cua 1 cap (quan he doi xung)</summary>
+        private long GetOtherServiceId(HIS_SERVICE_EXCLUSIVE pair)
+        {
+            return pair.SERVICE_ID == serviceIdChecked ? pair.EXCLUSIVE_ID : pair.SERVICE_ID;
+        }
+
+        /// <summary>Map: id dich vu doi ung -> cap loai tru dang co (2 chieu)</summary>
+        private Dictionary<long, HIS_SERVICE_EXCLUSIVE> BuildMappedDictionary()
+        {
+            Dictionary<long, HIS_SERVICE_EXCLUSIVE> result = new Dictionary<long, HIS_SERVICE_EXCLUSIVE>();
+            try
+            {
+                if (serviceExclusivesByService == null || serviceIdChecked <= 0)
+                {
+                    return result;
+                }
+
+                foreach (var item in serviceExclusivesByService)
+                {
+                    if (item.SERVICE_ID != serviceIdChecked && item.EXCLUSIVE_ID != serviceIdChecked)
+                    {
+                        continue;
+                    }
+                    long otherId = GetOtherServiceId(item);
+                    if (otherId == serviceIdChecked)
+                    {
+                        continue;
+                    }
+                    result[otherId] = item;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Tich lai luoi phai theo cac cap dang co cua dich vu goc</summary>
         private void ApplyCheckedToExclusiveGrid()
         {
             try
@@ -466,27 +525,16 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                     return;
                 }
 
-                Dictionary<long, short> mapped = BuildMappedDictionary();
+                Dictionary<long, HIS_SERVICE_EXCLUSIVE> mapped = BuildMappedDictionary();
 
                 foreach (var item in lstExclusiveADOs)
                 {
-                    short handleTypeId;
-                    if (item.ID != serviceIdChecked && mapped.TryGetValue(item.ID, out handleTypeId))
-                    {
-                        item.checkWarning = handleTypeId == (short)HandleType.Warning;
-                        item.checkServiceNotUse = handleTypeId == (short)HandleType.Block;
-                    }
-                    else
-                    {
-                        item.checkWarning = false;
-                        item.checkServiceNotUse = false;
-                    }
+                    item.checkWarning = item.ID != serviceIdChecked && mapped.ContainsKey(item.ID);
                     item.checkService = false;
+                    item.checkServiceNotUse = false;
                 }
 
-                lstExclusiveADOs = lstExclusiveADOs
-                    .OrderByDescending(p => p.checkServiceNotUse || p.checkWarning)
-                    .ToList();
+                lstExclusiveADOs = lstExclusiveADOs.OrderByDescending(p => p.checkWarning).ToList();
 
                 if (ucGridControlExclusive != null)
                 {
@@ -500,59 +548,55 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
         }
 
         /// <summary>
-        /// Quy doi danh sach cap loai tru thanh map: id dich vu doi ung -> muc xu ly.
-        /// Vi quan he doi xung nen phai xet ca 2 chieu.
+        /// Do thong tin ban ghi (Muc xu ly / Trang thai / Ghi chu) cua dich vu goc len panel.
+        /// Cac cap cua cung 1 dich vu goc duoc luu cung gia tri nen lay theo cap pho bien nhat.
         /// </summary>
-        private Dictionary<long, short> BuildMappedDictionary()
+        private void FillRecordPanel()
         {
-            Dictionary<long, short> result = new Dictionary<long, short>();
             try
             {
-                if (serviceExclusivesByService == null)
+                Dictionary<long, HIS_SERVICE_EXCLUSIVE> mapped = BuildMappedDictionary();
+                if (mapped.Count == 0)
                 {
-                    return result;
+                    ResetRecordPanel();
+                    return;
                 }
 
-                foreach (var item in serviceExclusivesByService)
-                {
-                    long otherId;
-                    if (item.SERVICE_ID == serviceIdChecked)
-                    {
-                        otherId = item.EXCLUSIVE_ID;
-                    }
-                    else if (item.EXCLUSIVE_ID == serviceIdChecked)
-                    {
-                        otherId = item.SERVICE_ID;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                List<HIS_SERVICE_EXCLUSIVE> pairs = mapped.Values.ToList();
 
-                    if (otherId == serviceIdChecked)
-                    {
-                        continue;
-                    }
-                    result[otherId] = item.HANDLE_TYPE_ID;
-                }
+                short handleTypeId = pairs
+                    .GroupBy(o => o.HANDLE_TYPE_ID)
+                    .OrderByDescending(g => g.Count())
+                    .Select(g => g.Key)
+                    .First();
+                cboHandleType.EditValue = handleTypeId == (short)HandleType.Block
+                    ? (short)HandleType.Block
+                    : (short)HandleType.Warning;
+
+                chkIsActive.Checked = pairs.Any(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+
+                HIS_SERVICE_EXCLUSIVE withNote = pairs.FirstOrDefault(o => !String.IsNullOrWhiteSpace(o.NOTE));
+                txtNote.Text = withNote != null ? withNote.NOTE : "";
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            return result;
         }
 
-        /// <summary>Tim ban ghi cap loai tru theo id dich vu doi ung (2 chieu)</summary>
-        private HIS_SERVICE_EXCLUSIVE FindPair(long otherServiceId)
+        /// <summary>Gia tri mac dinh cua ban ghi moi: Canh bao, Con su dung, khong ghi chu (tai lieu 3342)</summary>
+        private void ResetRecordPanel()
         {
-            if (serviceExclusivesByService == null)
+            try
             {
-                return null;
+                cboHandleType.EditValue = (short)HandleType.Warning;
+                chkIsActive.Checked = true;
+                txtNote.Text = "";
             }
-            return serviceExclusivesByService.FirstOrDefault(o =>
-                (o.SERVICE_ID == serviceIdChecked && o.EXCLUSIVE_ID == otherServiceId)
-                || (o.EXCLUSIVE_ID == serviceIdChecked && o.SERVICE_ID == otherServiceId));
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
         #endregion
 
@@ -562,6 +606,10 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
             try
             {
                 serviceIdChecked = 0;
+                serviceExclusivesByService = null;
+                ResetRecordPanel();
+                ApplyCheckedToExclusiveGrid();
+
                 int numPageSize;
                 if (ucPaging1.pagingGrid != null)
                 {
@@ -613,6 +661,35 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
             }
         }
 
+        /// <summary>
+        /// Bo loc "Da khai bao": chi hien cac dich vu da co ban ghi cau hinh (moi trang thai).
+        /// Lay id tu toan bo bang HIS_SERVICE_EXCLUSIVE (2 dau cua moi cap).
+        /// </summary>
+        private List<long> GetDeclaredServiceIds()
+        {
+            List<long> result = new List<long>();
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisServiceExclusiveFilter filter = new HisServiceExclusiveFilter();
+                List<HIS_SERVICE_EXCLUSIVE> all = new BackendAdapter(param).Get<List<HIS_SERVICE_EXCLUSIVE>>(
+                    HisRequestUriStore.MOSHIS_SERVICE_EXCLUSIVE_GET,
+                    HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                    filter,
+                    param) ?? new List<HIS_SERVICE_EXCLUSIVE>();
+
+                result = all.Select(o => o.SERVICE_ID)
+                    .Union(all.Select(o => o.EXCLUSIVE_ID))
+                    .Distinct()
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
         private void FillDataToGridService(object data)
         {
             try
@@ -630,6 +707,16 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                 if (cboServiceType.EditValue != null)
                 {
                     filter.SERVICE_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboServiceType.EditValue ?? "0").ToString());
+                }
+
+                if (chkOnlyDeclared.Checked)
+                {
+                    if (declaredServiceIds == null)
+                    {
+                        declaredServiceIds = GetDeclaredServiceIds();
+                    }
+                    // Khong co ban ghi nao -> truyen id khong ton tai de luoi rong (list rong se bi backend bo qua)
+                    filter.IDs = declaredServiceIds.Count > 0 ? declaredServiceIds : new List<long> { -1 };
                 }
 
                 var rs = new BackendAdapter(param).GetRO<List<V_HIS_SERVICE>>(
@@ -796,6 +883,14 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
         #endregion
 
         #region Save
+        /// <summary>
+        /// Luu BAN GHI cau hinh cua dich vu goc dang chon:
+        ///  - cap tich them   -> CreateList (Muc xu ly / Trang thai / Ghi chu theo panel)
+        ///  - cap bo tich     -> DeleteList (chi xet cac dong dang hien tren luoi phai)
+        ///  - cap giu lai     -> UpdateList neu Muc xu ly / Ghi chu / Trang thai khac panel
+        /// Doi trang thai di qua ChangeLock: backend khong cho Update ban ghi dang khoa (IsUnLock),
+        /// nen cap dang Ngung su dung phai mo khoa truoc roi moi cap nhat.
+        /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -807,43 +902,38 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
 
                 if (serviceIdChecked == 0)
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        Resources.ResourceMessage.ChuaChonDichVu,
-                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                    ShowInfo(Resources.ResourceMessage.ChuaChonDichVu);
                     return;
                 }
 
                 object exclusiveGridData = exclusiveProcessor.GetDataGridView(ucGridControlExclusive);
-                if (!(exclusiveGridData is List<ServiceADO>))
+                if (exclusiveGridData is List<ServiceADO>)
                 {
-                    return;
+                    lstExclusiveADOs = (List<ServiceADO>)exclusiveGridData;
                 }
-                lstExclusiveADOs = (List<ServiceADO>)exclusiveGridData;
-                if (lstExclusiveADOs == null || lstExclusiveADOs.Count == 0)
+                if (lstExclusiveADOs == null)
                 {
-                    return;
+                    lstExclusiveADOs = new List<ServiceADO>();
                 }
 
                 // Khong cho khai bao dich vu loai tru voi chinh no
-                if (lstExclusiveADOs.Any(o => o.ID == serviceIdChecked && (o.checkWarning || o.checkServiceNotUse)))
+                if (lstExclusiveADOs.Any(o => o.ID == serviceIdChecked && o.checkWarning))
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        Resources.ResourceMessage.KhongDuocChonChinhDichVuGoc,
-                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                    ShowInfo(Resources.ResourceMessage.KhongDuocChonChinhDichVuGoc);
                     return;
                 }
 
-                WaitingManager.Show();
-                if (serviceExclusivesByService == null)
-                {
-                    serviceExclusivesByService = new HIS_SERVICE_EXCLUSIVE[0].ToList();
-                }
+                short desiredHandleTypeId = GetSelectedHandleTypeId();
+                short desiredIsActive = chkIsActive.Checked
+                    ? IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    : IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE;
+                string desiredNote = String.IsNullOrWhiteSpace(txtNote.Text) ? null : txtNote.Text.Trim();
 
-                Dictionary<long, short> mapped = BuildMappedDictionary();
+                Dictionary<long, HIS_SERVICE_EXCLUSIVE> mapped = BuildMappedDictionary();
 
                 List<ServiceADO> dataCreates = new List<ServiceADO>();
-                List<ServiceADO> dataUpdates = new List<ServiceADO>();
-                List<ServiceADO> dataDeletes = new List<ServiceADO>();
+                List<long> deleteIds = new List<long>();
+                HashSet<long> deletedOtherIds = new HashSet<long>();
 
                 foreach (var item in lstExclusiveADOs)
                 {
@@ -851,114 +941,93 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                     {
                         continue;
                     }
-
-                    short newHandleTypeId = 0;
-                    if (item.checkServiceNotUse) newHandleTypeId = (short)HandleType.Block;
-                    else if (item.checkWarning) newHandleTypeId = (short)HandleType.Warning;
-
                     bool isMapped = mapped.ContainsKey(item.ID);
-
-                    if (newHandleTypeId == 0 && isMapped)
-                    {
-                        dataDeletes.Add(item);
-                    }
-                    else if (newHandleTypeId != 0 && !isMapped)
+                    if (item.checkWarning && !isMapped)
                     {
                         dataCreates.Add(item);
                     }
-                    else if (newHandleTypeId != 0 && isMapped && mapped[item.ID] != newHandleTypeId)
+                    else if (!item.checkWarning && isMapped)
                     {
-                        dataUpdates.Add(item);
+                        deleteIds.Add(mapped[item.ID].ID);
+                        deletedOtherIds.Add(item.ID);
                     }
                 }
 
-                if (dataCreates.Count == 0 && dataUpdates.Count == 0 && dataDeletes.Count == 0)
+                // Cac cap giu lai (ke ca cap khong hien tren trang luoi hien tai) nhan gia tri ban ghi tren panel
+                List<HIS_SERVICE_EXCLUSIVE> dataUpdates = mapped
+                    .Where(o => !deletedOtherIds.Contains(o.Key))
+                    .Select(o => o.Value)
+                    .Where(o => o.HANDLE_TYPE_ID != desiredHandleTypeId
+                             || (o.NOTE ?? "") != (desiredNote ?? "")
+                             || (o.IS_ACTIVE ?? IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE) != desiredIsActive)
+                    .ToList();
+
+                if (dataCreates.Count == 0 && deleteIds.Count == 0 && dataUpdates.Count == 0)
                 {
-                    WaitingManager.Hide();
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        Resources.ResourceMessage.KhongCoThayDoiDeLuu,
-                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                    if (mapped.Count == 0)
+                    {
+                        ShowInfo(Resources.ResourceMessage.ChuaChonDichVuLoaiTru);
+                    }
+                    else
+                    {
+                        ShowInfo(Resources.ResourceMessage.KhongCoThayDoiDeLuu);
+                    }
                     return;
                 }
 
+                WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 bool success = true;
-                bool hasCall = false;
 
                 // 1. Xoa cac cap bo tich
-                if (dataDeletes.Count > 0)
+                if (deleteIds.Count > 0)
                 {
-                    hasCall = true;
-                    List<long> deleteIds = new List<long>();
-                    foreach (var item in dataDeletes)
-                    {
-                        HIS_SERVICE_EXCLUSIVE pair = FindPair(item.ID);
-                        if (pair != null)
-                        {
-                            deleteIds.Add(pair.ID);
-                        }
-                    }
-
-                    if (deleteIds.Count > 0)
-                    {
-                        bool deleteResult = new BackendAdapter(param).Post<bool>(
-                            HisRequestUriStore.MOSHIS_SERVICE_EXCLUSIVE_DELETE_LIST,
-                            HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
-                            deleteIds,
-                            param);
-                        if (deleteResult)
-                        {
-                            serviceExclusivesByService = serviceExclusivesByService
-                                .Where(o => !deleteIds.Contains(o.ID)).ToList();
-                        }
-                        else
-                        {
-                            success = false;
-                        }
-                    }
+                    bool deleteResult = new BackendAdapter(param).Post<bool>(
+                        HisRequestUriStore.MOSHIS_SERVICE_EXCLUSIVE_DELETE_LIST,
+                        HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                        deleteIds,
+                        param);
+                    success = success && deleteResult;
                 }
 
-                // 2. Doi muc xu ly cac cap da co
-                if (dataUpdates.Count > 0)
+                // 2. Cap nhat Muc xu ly / Ghi chu / Trang thai cho cac cap giu lai
+                if (success && dataUpdates.Count > 0)
                 {
-                    hasCall = true;
-                    List<HIS_SERVICE_EXCLUSIVE> updates = new List<HIS_SERVICE_EXCLUSIVE>();
-                    foreach (var item in dataUpdates)
+                    // Cap dang Ngung su dung phai mo khoa truoc, backend khong cho Update ban ghi dang khoa
+                    foreach (var pair in dataUpdates.Where(o => o.IS_ACTIVE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE))
                     {
-                        HIS_SERVICE_EXCLUSIVE pair = FindPair(item.ID);
-                        if (pair == null)
-                        {
-                            continue;
-                        }
-                        pair.HANDLE_TYPE_ID = item.checkServiceNotUse ? (short)HandleType.Block : (short)HandleType.Warning;
-                        updates.Add(pair);
+                        success = success && ChangeLock(pair.ID, param);
                     }
 
-                    if (updates.Count > 0)
+                    if (success)
                     {
+                        foreach (var pair in dataUpdates)
+                        {
+                            pair.HANDLE_TYPE_ID = desiredHandleTypeId;
+                            pair.NOTE = desiredNote;
+                            pair.IS_ACTIVE = desiredIsActive;
+                        }
                         var updateResult = new BackendAdapter(param).Post<List<HIS_SERVICE_EXCLUSIVE>>(
                             HisRequestUriStore.MOSHIS_SERVICE_EXCLUSIVE_UPDATE_LIST,
                             HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
-                            updates,
+                            dataUpdates,
                             param);
-                        if (updateResult == null || updateResult.Count == 0)
-                        {
-                            success = false;
-                        }
+                        success = success && updateResult != null && updateResult.Count > 0;
                     }
                 }
 
                 // 3. Them cap moi
-                if (dataCreates.Count > 0)
+                if (success && dataCreates.Count > 0)
                 {
-                    hasCall = true;
                     List<HIS_SERVICE_EXCLUSIVE> creates = new List<HIS_SERVICE_EXCLUSIVE>();
                     foreach (var item in dataCreates)
                     {
                         HIS_SERVICE_EXCLUSIVE serviceExclusive = new HIS_SERVICE_EXCLUSIVE();
                         serviceExclusive.SERVICE_ID = serviceIdChecked;
                         serviceExclusive.EXCLUSIVE_ID = item.ID;
-                        serviceExclusive.HANDLE_TYPE_ID = item.checkServiceNotUse ? (short)HandleType.Block : (short)HandleType.Warning;
+                        serviceExclusive.HANDLE_TYPE_ID = desiredHandleTypeId;
+                        serviceExclusive.NOTE = desiredNote;
+                        serviceExclusive.IS_ACTIVE = desiredIsActive;
                         creates.Add(serviceExclusive);
                     }
 
@@ -967,32 +1036,86 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                         HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
                         creates,
                         param);
-                    if (createResult != null && createResult.Count > 0)
+                    success = success && createResult != null && createResult.Count > 0;
+
+                    // Ban ghi tao moi o trang thai Ngung su dung: backend co the ep IS_ACTIVE = 1 luc tao -> khoa lai
+                    if (success && desiredIsActive == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                     {
-                        serviceExclusivesByService.AddRange(createResult);
-                    }
-                    else
-                    {
-                        success = false;
+                        foreach (var created in createResult.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE))
+                        {
+                            success = success && ChangeLock(created.ID, param);
+                        }
                     }
                 }
 
-                if (hasCall)
-                {
-                    // Cac man chi dinh dang nap danh muc nay trong RAM -> xoa cache de lan sau lay ban moi
-                    CheckServiceExclusiveManager.ResetData();
+                // Cac man chi dinh dang nap danh muc nay trong RAM -> xoa cache de lan sau lay ban moi
+                CheckServiceExclusiveManager.ResetData();
+                declaredServiceIds = null;
 
-                    MessageManager.Show(this.ParentForm, param, success);
-                    SessionManager.ProcessTokenLost(param);
-                }
-
+                // Nap lai ban ghi tu backend de luoi + panel phan anh dung du lieu da luu
+                LoadServiceExclusivesByService();
                 ApplyCheckedToExclusiveGrid();
+                FillRecordPanel();
+
                 WaitingManager.Hide();
+                MessageManager.Show(this.ParentForm, param, success);
+                SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool ChangeLock(long id, CommonParam param)
+        {
+            bool result = false;
+            try
+            {
+                var lockResult = new BackendAdapter(param).Post<HIS_SERVICE_EXCLUSIVE>(
+                    HisRequestUriStore.MOSHIS_SERVICE_EXCLUSIVE_CHANGE_LOCK,
+                    HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                    id,
+                    param);
+                result = lockResult != null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private short GetSelectedHandleTypeId()
+        {
+            try
+            {
+                if (cboHandleType.EditValue != null
+                    && Inventec.Common.TypeConvert.Parse.ToInt64(cboHandleType.EditValue.ToString()) == (long)HandleType.Block)
+                {
+                    return (short)HandleType.Block;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return (short)HandleType.Warning;
+        }
+
+        private void ShowInfo(string message)
+        {
+            try
+            {
+                WaitingManager.Hide();
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    message,
+                    HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         #endregion
@@ -1021,6 +1144,20 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkOnlyDeclared_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                declaredServiceIds = null;
+                FillDataToGridService(this);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

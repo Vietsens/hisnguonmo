@@ -102,6 +102,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HandleTypeItem.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="ServiceExclusive.processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

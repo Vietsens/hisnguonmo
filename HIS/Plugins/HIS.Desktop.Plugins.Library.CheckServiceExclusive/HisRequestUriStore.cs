@@ -28,6 +28,9 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive
         public const string MOSHIS_SERVICE_EXCLUSIVE_UPDATE_LIST = "api/HisServiceExclusive/UpdateList";
         public const string MOSHIS_SERVICE_EXCLUSIVE_DELETE_LIST = "api/HisServiceExclusive/DeleteList";
 
+        /// <summary>Doi trang thai Con su dung / Ngung su dung cua 1 cap (ApiParam&lt;long&gt; = ID ban ghi)</summary>
+        public const string MOSHIS_SERVICE_EXCLUSIVE_CHANGE_LOCK = "api/HisServiceExclusive/ChangeLock";
+
         /// <summary>Dung o man danh muc de nap 2 luoi dich vu</summary>
         public const string MOSHIS_SERVICE_GET_VIEW = "api/HisService/GetView";
 

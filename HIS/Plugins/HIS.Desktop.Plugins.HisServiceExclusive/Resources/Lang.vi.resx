@@ -165,4 +165,31 @@
   <data name="UCServiceExclusive.cboServiceType.ColName" xml:space="preserve">
     <value>Tên</value>
   </data>
+  <data name="UCServiceExclusive.colChoose.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="UCServiceExclusive.lciHandleType.Text" xml:space="preserve">
+    <value>Mức xử lý:</value>
+  </data>
+  <data name="UCServiceExclusive.lciNote.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="UCServiceExclusive.chkIsActive.Text" xml:space="preserve">
+    <value>Còn sử dụng</value>
+  </data>
+  <data name="UCServiceExclusive.chkOnlyDeclared.Text" xml:space="preserve">
+    <value>Đã khai báo</value>
+  </data>
+  <data name="UCServiceExclusive.chkOnlyDeclared.ToolTip" xml:space="preserve">
+    <value>Chỉ hiện các dịch vụ đã có bản ghi cấu hình</value>
+  </data>
+  <data name="UCServiceExclusive.cboHandleType.Warning" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="UCServiceExclusive.cboHandleType.Block" xml:space="preserve">
+    <value>Chặn</value>
+  </data>
+  <data name="UCServiceExclusive.txtNote.NullValuePrompt" xml:space="preserve">
+    <value>Diễn giải lý do loại trừ (tùy chọn), hiển thị kèm nội dung thông báo</value>
+  </data>
 </root>
