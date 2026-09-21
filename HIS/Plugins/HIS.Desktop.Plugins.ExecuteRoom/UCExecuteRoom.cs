@@ -1004,7 +1004,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     }
                     if (e.Column.FieldName == "USE_TIME_DISPLAY")
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(dataRow.USE_TIME ?? 0);
+                        //Viec 3352: hien them gio phut khi y lenh du tru co gio
+                        e.Value = FormatUseTimeDisplay(dataRow.USE_TIME ?? 0, dataRow.SERVICE_REQ_TYPE_ID);
                     }
                     if (e.Column.FieldName == "REQUEST_USER_DISPLAY")
                     {
@@ -1177,6 +1178,66 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        /// <summary>
+        /// Viec 3352: hien thi thoi gian du tru cua y lenh dich vu.
+        /// USE_TIME co phan gio khac 000000 -> "dd/MM/yyyy HH:mm"; bang 000000 (du tru theo ngay, du lieu cu) -> "dd/MM/yyyy".
+        /// </summary>
+        /// <summary>
+        /// Loai y lenh ma USE_TIME DA mang gio phut tu truoc viec 3352 (don thuoc, y lenh giuong) -> giu nguyen hien thi cu.
+        /// Bo loc cua man nay da loai san cac loai do, day chi la chot chan de khong phu thuoc ngam vao bo loc.
+        /// </summary>
+        private static bool IsUseTimeWithHourBefore3352(long serviceReqTypeId)
+        {
+            return serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
+                || serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT
+                || serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
+                || serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM
+                || serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G;
+        }
+
+        private static string FormatUseTimeDisplay(long useTime, long serviceReqTypeId)
+        {
+            try
+            {
+                if (useTime <= 0) return null;
+                if (!IsUseTimeWithHourBefore3352(serviceReqTypeId) && useTime % 1000000 != 0)
+                {
+                    return Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(useTime);
+                }
+                return Inventec.Common.DateTime.Convert.TimeNumberToDateString(useTime);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return Inventec.Common.DateTime.Convert.TimeNumberToDateString(useTime);
+            }
+        }
+
+        /// <summary>
+        /// Viec 3352: cot Ngay du tru la cot unbound kieu Object nen mac dinh sort theo chuoi "dd/MM/yyyy".
+        /// Sort theo so USE_TIME (yyyyMMddHHmmss) de danh sach xep dung theo ngay roi den gio.
+        /// </summary>
+        private void gridViewServiceReq_CustomColumnSort(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnSortEventArgs e)
+        {
+            try
+            {
+                if (e.Column != null && e.Column.FieldName == "USE_TIME_DISPLAY" && e.ListSourceRowIndex1 >= 0 && e.ListSourceRowIndex2 >= 0)
+                {
+                    IList source = (IList)((BaseView)sender).DataSource;
+                    ServiceReqADO row1 = source[e.ListSourceRowIndex1] as ServiceReqADO;
+                    ServiceReqADO row2 = source[e.ListSourceRowIndex2] as ServiceReqADO;
+                    long value1 = (row1 != null && row1.USE_TIME.HasValue) ? row1.USE_TIME.Value : 0;
+                    long value2 = (row2 != null && row2.USE_TIME.HasValue) ? row2.USE_TIME.Value : 0;
+                    e.Result = value1.CompareTo(value2);
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void gridViewServiceReq_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)

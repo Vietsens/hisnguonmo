@@ -78,6 +78,7 @@ Không thay đổi trong phạm vi việc này. (Muốn in 5 chỉ số mới c�
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 21/09/2026 | sinhnt | Việc 3352 (PT-56263): y lệnh dịch vụ nay có thể mang giờ phút trong `USE_TIME`. Thêm `IsAnticipateByUseTime` + `FormatUseTimeDisplay` (`frmTrackingCreate__Pluss__Load.cs`): **phân loại** y lệnh dự trù so theo **NGÀY** với y lệnh dịch vụ (đơn thuốc DONDT/DONTT giữ nguyên phép so cũ `USE_TIME > INTRUCTION_DATE`) nên y lệnh dự trù **cùng ngày** chỉ định vẫn là y lệnh thường đúng như trước khi có ô giờ; **nhãn** "Dự trù ngày …" và node ngày ở cây tab 2 hiển thị thêm `HH:mm` khi y lệnh dịch vụ có giờ. `frmTrackingCreate__Pluss__Task.cs` không sửa vì chỉ lọc đơn thuốc DONDT. |
 | 19/06/2026 | huannh | Bổ sung 5 chỉ số O2, FiO2, GCS, Mức độ ý thức (LOC), AVPU vào màn hình DHST (UC `HIS.UC.DHST`), đặt liền dưới SpO2; map lưu/đọc `HIS_DHST` trong `frmTrackingCreateNew`; cập nhật `CheckCtorDhst`/`CheckDhst`; thêm validation GCS(3–15)/FiO2(0–100)/O2(≥0); đa ngôn ngữ vi/en/my |
 
 ## 9. Test Cases

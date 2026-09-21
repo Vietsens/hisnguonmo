@@ -326,6 +326,17 @@ namespace MPS.Processor.Mps000441.ADO
                     {
                         HIS_SERVICE_REQ sr = serviceReqs.FirstOrDefault(x => x.ID == this.SERVICE_REQ_ID.Value);
                         long useTime = (sr != null && sr.USE_TIME.HasValue) ? sr.USE_TIME.Value : 0;
+                        //Viec 3352: y lenh DICH VU co the mang gio phut trong USE_TIME, trong khi the BHYT luu theo NGAY.
+                        //So o muc NGAY cho y lenh dich vu de khong lech dung ngay cuoi hieu luc the; don thuoc giu nguyen phep so cu.
+                        if (sr != null && useTime > 0
+                            && sr.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
+                            && sr.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
+                            && sr.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM
+                            && sr.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT
+                               && sr.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G)
+                        {
+                            useTime = (useTime / 1000000) * 1000000;
+                        }
                         if (useTime > 0)
                         {
                             HIS_PATIENT_TYPE_ALTER ptaApplied = ListPta

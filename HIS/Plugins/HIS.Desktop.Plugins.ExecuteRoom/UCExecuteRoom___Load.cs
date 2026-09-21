@@ -391,6 +391,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             try
             {
                 InitRestoreLayoutGridViewFromXml(gridViewServiceReq);
+                //Viec 3352: file layout luoi da luu tu truoc khong co SortMode nen restore co the dua cot
+                //"Ngay du tru" ve sort theo chuoi -> dat lai Custom de sort dung theo so USE_TIME (ngay roi den gio).
+                if (this.gridColumn20 != null)
+                {
+                    this.gridColumn20.SortMode = DevExpress.XtraGrid.ColumnSortMode.Custom;
+                }
                 // Goi NGAY sau restore layout va NGOAI nhanh "co du lieu": restore co the dung lai cot
                 // "Muc CC" da luu trong file layout (file dung chung moi phong) nen phai go ca khi luoi rong.
                 EnsureEmergencyClassifyColumn();

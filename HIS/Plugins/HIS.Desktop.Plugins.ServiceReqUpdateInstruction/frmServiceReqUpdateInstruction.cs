@@ -1114,7 +1114,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 }
                 if (!CheckUseTime())
                 {
-                    XtraMessageBox.Show("Thời gian dự trù không được nhỏ hơn thời gian y lệnh.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    XtraMessageBox.Show("Ngày dự trù không được nhỏ hơn ngày y lệnh.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     dtUseTime.Focus();
                     return;
                 }
@@ -1291,7 +1291,9 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             {
                 if (dtUseTime.EditValue != null && dtUseTime.DateTime != DateTime.MinValue && dtTime.EditValue != null && dtTime.DateTime != DateTime.MinValue)
                 {
-                    if (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtUseTime.DateTime) < Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime))
+                    //Viec 3352: chi so phan NGAY, dong bo voi BE (HisServiceReqCheck.VerifyUseTimeWithIntructionTime chi so ngay).
+                    //Du tru CUNG NGAY chi dinh nhung gio som hon (vd chi dinh 10:00, du tru 08:00) la hop le, khong duoc chan.
+                    if (dtUseTime.DateTime.Date < dtTime.DateTime.Date)
                     {
                         return false;
                     }

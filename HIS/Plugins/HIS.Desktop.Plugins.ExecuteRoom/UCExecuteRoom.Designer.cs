@@ -3433,6 +3433,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridViewServiceReq.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewServiceReq_CustomRowCellEdit);
             this.gridViewServiceReq.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.gridViewServiceReq_PopupMenuShowing);
             this.gridViewServiceReq.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewServiceReq_CustomUnboundColumnData);
+            this.gridViewServiceReq.CustomColumnSort += new DevExpress.XtraGrid.Views.Base.CustomColumnSortEventHandler(this.gridViewServiceReq_CustomColumnSort);
             this.gridViewServiceReq.DoubleClick += new System.EventHandler(this.gridViewServiceReq_DoubleClick);
             // 
             // grdColTRANGTHAI_IMG
@@ -3800,6 +3801,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn20.Name = "gridColumn20";
             this.gridColumn20.OptionsColumn.AllowEdit = false;
             this.gridColumn20.OptionsColumn.ReadOnly = true;
+            this.gridColumn20.SortMode = DevExpress.XtraGrid.ColumnSortMode.Custom;
             this.gridColumn20.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             // 
             // gridColumn21

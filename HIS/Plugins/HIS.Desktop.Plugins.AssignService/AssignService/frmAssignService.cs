@@ -6207,6 +6207,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             ValidConsultationReqiured(serviceCheckeds__Send, item.TREATMENT_ID);
                             isValid = isValid && CheckMaxAmount(serviceCheckeds__Send, new List<long>() { item.TREATMENT_ID });
                         }
+                        //Viec 3352: gio du tru phai hop le (HH:mm 00:00 - 23:59) hoac de trong
+                        isValid = isValid && this.ValidDutruTimeBeforeSave();
                         if (isValid)
                         {
                             // Xac nhan danh sach phong xu ly truoc khi luu (chi chay khi cau hinh bat)
@@ -10993,28 +10995,29 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         }
 
         /// <summary>
-        /// Viec 57754: gio phut du tru lay tu o timeDutru. Loi hoac chua nhap -> 00:00 (giu du lieu nhu ban cu).
+        /// Viec 57754/3352: gio phut du tru lay tu o timeDutru. De trong -> null (luu theo ngay nhu ban cu, 000000).
+        /// Co gia tri hop le (00:00 - 23:59) -> gio:phut (bo giay). Gia tri loi -> null (ValidDutruTimeBeforeSave se chan Luu).
         /// </summary>
-        private TimeSpan GetDutruTimeOfDay()
+        private TimeSpan? GetDutruTimeOfDay()
         {
-            TimeSpan result = TimeSpan.Zero;
             try
             {
-                if (this.timeDutru != null && this.timeDutru.EditValue != null)
+                if (this.timeDutru == null || this.timeDutru.EditValue == null)
                 {
-                    TimeSpan ts = this.timeDutru.TimeSpan;
-                    if (ts.Ticks >= 0)
-                    {
-                        result = new TimeSpan(ts.Hours, ts.Minutes, 0);
-                    }
+                    return null;
                 }
+                TimeSpan ts = this.timeDutru.TimeSpan;
+                if (ts.Ticks < 0 || ts.TotalHours >= 24)
+                {
+                    return null;
+                }
+                return new TimeSpan(ts.Hours, ts.Minutes, 0);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-                result = TimeSpan.Zero;
+                return null;
             }
-            return result;
         }
 
         /// <summary>
@@ -11031,8 +11034,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     return;
                 }
-                TimeSpan timeOfDay = this.GetDutruTimeOfDay();
-                string timePart = String.Format("{0:00}{1:00}00", timeOfDay.Hours, timeOfDay.Minutes);
+                //Viec 3352: de trong o gio -> USE_TIME theo ngay (000000) nhu ban cu; co gio -> HHmm00
+                TimeSpan? timeOfDay = this.GetDutruTimeOfDay();
+                string timePart = timeOfDay.HasValue ? String.Format("{0:00}{1:00}00", timeOfDay.Value.Hours, timeOfDay.Value.Minutes) : "000000";
                 foreach (DateTime date in this.selectedDates)
                 {
                     try
@@ -11078,6 +11082,114 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (this.selectedDates != null && this.selectedDates.Count > 0)
                 {
                     this.BuildDutruUseTimes();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 3352: mac dinh gio du tru = gio phut tai thoi diem mo chuc nang Chi dinh dich vu (lay theo o gio TG chi dinh vua khoi tao).
+        /// Chi goi khi khoi tao form / doi benh nhan (SetDefaultData(isInit = true)); khong reset sau moi lan Luu de giu gio nguoi dung da nhap.
+        /// </summary>
+        private void SetDutruTimeDefault()
+        {
+            try
+            {
+                if (this.timeDutru == null) return;
+                object value = (this.timeIntruction != null && this.timeIntruction.EditValue != null)
+                    ? this.timeIntruction.EditValue
+                    : (object)DateTime.Now.ToString("HH:mm");
+                this.timeDutru.EditValue = value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 3352: o gio du tru dang de trong (khong co gia tri va khong go chu so nao).
+        /// </summary>
+        private bool IsDutruTimeBlank()
+        {
+            try
+            {
+                if (this.timeDutru == null) return true;
+                if (this.timeDutru.EditValue != null) return false;
+                string text = this.timeDutru.Text ?? "";
+                return !text.Any(c => Char.IsDigit(c));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Viec 3352: kiem tra gio du tru truoc khi Luu. Hop le khi: chua chon ngay du tru; hoac o gio de trong (du tru theo ngay);
+        /// hoac gio trong khoang 00:00 - 23:59. Khong hop le -> thong bao, focus o gio, tra ve false de chan Luu.
+        /// </summary>
+        private bool ValidDutruTimeBeforeSave()
+        {
+            bool valid = true;
+            try
+            {
+                if (this.selectedDates == null || this.selectedDates.Count == 0) return true;
+                if (this.timeDutru == null) return true;
+                if (this.IsDutruTimeBlank())
+                {
+                    this.BuildDutruUseTimes();
+                    return true;
+                }
+                if (this.timeDutru.EditValue != null)
+                {
+                    TimeSpan ts = this.timeDutru.TimeSpan;
+                    valid = ts.Ticks >= 0 && ts.TotalHours < 24;
+                }
+                else
+                {
+                    //co go chu so nhung khong thanh gio hop le (vd: 1_:__)
+                    valid = false;
+                }
+                if (valid)
+                {
+                    //dam bao USE_TIME mang dung gio cuoi cung truoc khi gui BE
+                    this.BuildDutruUseTimes();
+                }
+                else
+                {
+                    MessageBox.Show(this, Inventec.Common.Resource.Get.Value("frmAssignService.Message.GioDuTruKhongHopLe", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()));
+                    this.timeDutru.Focus();
+                    this.timeDutru.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                valid = true;
+            }
+            return valid;
+        }
+
+        private void timeDutru_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                //Viec 3352: Delete/Backspace khi dang chon toan bo (hoac o da rong) -> xoa trong o gio = du tru theo ngay, khong co gio
+                if ((e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back) && this.timeDutru != null)
+                {
+                    string text = this.timeDutru.Text ?? "";
+                    bool isSelectAll = this.timeDutru.SelectionLength > 0 && this.timeDutru.SelectionLength >= text.Length;
+                    if (isSelectAll || !text.Any(c => Char.IsDigit(c)))
+                    {
+                        this.timeDutru.EditValue = null;
+                        e.Handled = true;
+                        e.SuppressKeyPress = true;
+                    }
                 }
             }
             catch (Exception ex)

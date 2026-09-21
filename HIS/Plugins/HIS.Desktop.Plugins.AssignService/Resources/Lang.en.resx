@@ -1105,6 +1105,9 @@
     <value>Disagree</value>
   </data>
   <data name="frmAssignService.lciTimeDutru.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Reserve time</value>
+    <value>Reserve time (HH:mm). Leave blank to reserve by date only</value>
+  </data>
+  <data name="frmAssignService.Message.GioDuTruKhongHopLe" xml:space="preserve">
+    <value>Invalid reserve time. Please enter HH:mm between 00:00 and 23:59, or leave it blank to reserve by date only.</value>
   </data>
 </root>
