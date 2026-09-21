@@ -63,6 +63,9 @@ namespace HIS.Desktop.Plugins.TextLibrary
         HIS.Desktop.Common.DelegateDataTextLib dataTextLib;
         string creator = "";
         short IS_TRUE = 1;
+        // Khoa cua tai khoan dang dang nhap (lay tu HIS_EMPLOYEE.DEPARTMENT_ID - cung nguon voi luc luu mau).
+        // Dung de truyen PUBLIC_DEPARTMENT_ID cho API, backend moi tra ve cac mau tich "Chia se theo khoa".
+        long? myDepartmentId = null;
 
         HIS.Desktop.Plugins.TextLibrary.UC.UCPicture UcPicture = new UC.UCPicture();
         HIS.Desktop.Plugins.TextLibrary.UC.UCDocument UcDocument = new UC.UCDocument();
@@ -158,6 +161,8 @@ namespace HIS.Desktop.Plugins.TextLibrary
                 //LoadKeysFromlanguage();
 
                 SetDefaultValueControl();
+
+                LoadMyDepartmentId();
 
                 FillDataToGrid();
 
@@ -446,6 +451,31 @@ namespace HIS.Desktop.Plugins.TextLibrary
             }
         }
 
+        /// <summary>
+        /// Lay khoa cua tai khoan dang dang nhap tu danh muc nhan vien (cau hinh tai khoan).
+        /// Doc tu cache BackendDataWorker, goi 1 lan khi load form.
+        /// </summary>
+        private void LoadMyDepartmentId()
+        {
+            try
+            {
+                this.myDepartmentId = null;
+                if (String.IsNullOrWhiteSpace(this.creator)) return;
+
+                var employee = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>()
+                    .FirstOrDefault(o => o.LOGINNAME == this.creator);
+                if (employee != null)
+                {
+                    this.myDepartmentId = employee.DEPARTMENT_ID;
+                }
+                Inventec.Common.Logging.LogSystem.Debug("myDepartmentId: " + this.myDepartmentId);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void FillDataToGrid()
         {
             try
@@ -558,6 +588,9 @@ namespace HIS.Desktop.Plugins.TextLibrary
                 else filter.HASHTAGs = null;
 
                 filter.CAN_VIEW = true;
+                // Thieu dong nay thi backend chi tra ve mau cua chinh minh hoac mau "Chia se toan vien",
+                // cac mau tich "Chia se theo khoa" cua dong nghiep cung khoa se khong hien thi.
+                filter.PUBLIC_DEPARTMENT_ID = this.myDepartmentId;
 
                 //if (ChooseTextLib)
                 //{
