@@ -20,21 +20,18 @@ using System;
 namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive.ADO
 {
     /// <summary>
-    /// View V_HIS_SERVICE_EXCLUSIVE - bang goc kem ma/ten/loai cua ca 2 dau dich vu.
-    /// Lop CUC BO cua FE, xem ghi chu o HIS_SERVICE_EXCLUSIVE.
+    /// Muc xu ly khi phat hien 2 dich vu loai tru nhau (cot HANDLE_TYPE_ID cua HIS_SERVICE_EXCLUSIVE).
+    /// Rang buoc CSDL: HIS_SERVICE_EXCLUSIVE_CHK2 CHECK (HANDLE_TYPE_ID IN (1, 2)), mac dinh 1.
+    ///
+    /// LUU Y quy uoc 1/2 cua he thong KHONG nhat quan (SIMULTANEITY 1=chan/2=canh bao) nen
+    /// bang nay bam theo tai lieu 3342: 1 = Canh bao, 2 = Chan.
     /// </summary>
-    public class V_HIS_SERVICE_EXCLUSIVE : HIS_SERVICE_EXCLUSIVE
+    public enum HandleType : short
     {
-        public string SERVICE_CODE { get; set; }
-        public string SERVICE_NAME { get; set; }
-        public Nullable<long> SERVICE_TYPE_ID { get; set; }
-        public string SERVICE_TYPE_CODE { get; set; }
-        public string SERVICE_TYPE_NAME { get; set; }
+        /// <summary>Canh bao: nhac nguoi dung nhung van cho chi dinh</summary>
+        Warning = 1,
 
-        public string EXCLUSIVE_CODE { get; set; }
-        public string EXCLUSIVE_NAME { get; set; }
-        public Nullable<long> EXCLUSIVE_TYPE_ID { get; set; }
-        public string EXCLUSIVE_TYPE_CODE { get; set; }
-        public string EXCLUSIVE_TYPE_NAME { get; set; }
+        /// <summary>Chan: khong cho chi dinh</summary>
+        Block = 2
     }
 }

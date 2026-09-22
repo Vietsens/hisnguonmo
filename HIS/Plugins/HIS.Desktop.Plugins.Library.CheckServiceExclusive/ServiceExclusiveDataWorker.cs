@@ -15,9 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using HIS.Desktop.Plugins.Library.CheckServiceExclusive.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,11 +26,11 @@ using System.Linq;
 namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive
 {
     /// <summary>
-    /// Cache RAM danh muc "dich vu khong duoc chi dinh dong thoi".
+    /// Cache RAM danh muc "dich vu khong duoc chi dinh dong thoi" (bang HIS_SERVICE_EXCLUSIVE, backend ban giao 22/09/2026).
     ///
-    /// KHONG dung BackendDataWorker duoc vi type V_HIS_SERVICE_EXCLUSIVE nam trong assembly nay
-    /// (khong phai MOS.EFMODEL.DataModels) nen co che tu suy URI cua BackendDataWorker khong ap dung.
-    /// Vi vay tu giu cache tinh: nap 1 lan trong 1 phien lam viec, dung Reset() sau khi sua danh muc.
+    /// Tu giu cache tinh thay vi dung BackendDataWorker: day la bang rieng cua 1 tinh nang
+    /// (vien co the khong khai bao), khong nen nap chung voi bo danh muc dung chung luc dang nhap,
+    /// va can Reset() ngay sau khi sua o man Danh muc ma khong dung toi cache chung.
     /// </summary>
     public class ServiceExclusiveDataWorker
     {
@@ -71,7 +72,7 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive
                 try
                 {
                     CommonParam param = new CommonParam();
-                    HisServiceExclusiveFilter filter = new HisServiceExclusiveFilter();
+                    HisServiceExclusiveViewFilter filter = new HisServiceExclusiveViewFilter();
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
 
                     List<V_HIS_SERVICE_EXCLUSIVE> result = new BackendAdapter(param).Get<List<V_HIS_SERVICE_EXCLUSIVE>>(
