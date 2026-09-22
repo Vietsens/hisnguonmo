@@ -374,6 +374,25 @@ namespace HIS.Desktop.Plugins.Library.CheckServiceExclusive
                            + (Math.Max(assignedServiceId, assigningServiceId));
                 if (addedKeys.Contains(key))
                 {
+                    // Cung 1 cap nhung danh muc co nhieu ban ghi (vi du khai ca A->B lan B->A, muc khac nhau):
+                    // rang buoc UK1 cua bang chi chan trung THEO CHIEU nen truong hop nay van xay ra duoc.
+                    // Lay muc xu ly NANG NHAT (Chan thang Canh bao) de khong bo lot truong hop phai chan.
+                    ServiceExclusiveViolationADO existed = result.FirstOrDefault(o =>
+                        (Math.Min(o.ASSIGNED_SERVICE_ID, o.ASSIGNING_SERVICE_ID)) + "_"
+                        + (Math.Max(o.ASSIGNED_SERVICE_ID, o.ASSIGNING_SERVICE_ID)) == key);
+                    if (existed != null)
+                    {
+                        // Nang muc xu ly len muc nang nhat trong cac ban ghi cua cap
+                        if (pair.HANDLE_TYPE_ID > existed.HANDLE_TYPE_ID)
+                        {
+                            existed.HANDLE_TYPE_ID = pair.HANDLE_TYPE_ID;
+                        }
+                        // Ghi chu la thong tin bo sung: ban ghi nao co thi hien, khong phu thuoc muc xu ly
+                        if (String.IsNullOrWhiteSpace(existed.NOTE) && !String.IsNullOrWhiteSpace(pair.NOTE))
+                        {
+                            existed.NOTE = pair.NOTE;
+                        }
+                    }
                     return;
                 }
                 addedKeys.Add(key);
