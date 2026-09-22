@@ -33,8 +33,10 @@ namespace HIS.Desktop.Plugins.Library.CheckRequireMediMate
     /// Thu vien dung chung cho viec 3353 (PT-56272): canh bao "Dich vu chua co thuoc, vat tu di kem"
     /// khi KET THUC THUC HIEN dich vu da bat co HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1.
     ///
-    /// Muc NHAC, KHONG CHAN: hien hop thoai Yes/No (mac dinh No). Yes = tiep tuc ket thuc, No = dung lai de ke bo sung.
-    /// Loi ky thuat (mat mang, backend cu chua co cot...) -> ghi log va KHONG chan (fail-open).
+    /// Muc CHAN (chot 22/09/2026 theo chi dao anh Canh, khac muc 3.2/3.5 tai lieu 3353 ban dau la "canh bao khong chan"):
+    /// hien hop thong bao chi co OK va KHONG cho ket thuc chung nao dich vu chua co thuoc/vat tu di kem.
+    /// Chi chan dich vu da bat co HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1 nen vien khong khai co thi khong anh huong.
+    /// Loi ky thuat (mat mang, backend cu chua co cot...) -> ghi log va CHO QUA (fail-open) de khong khoa vien.
     ///
     /// Cach dung tai man ket thuc (dat SAU cac kiem tra san co, TRUOC loi goi api/HisServiceReq/Finish|FinishWithTime):
     ///   if (!CheckRequireMediMateManager.CheckBeforeFinish(listSereServ)) return;
@@ -50,7 +52,7 @@ namespace HIS.Desktop.Plugins.Library.CheckRequireMediMate
         #region API cong khai - moi man ket thuc chi goi 1 dong
 
         /// <summary>Dung cho man co danh sach HIS_SERE_SERV (ServiceExecute, TestServiceReqExcute...)</summary>
-        /// <returns>true = duoc phep ket thuc; false = nguoi dung chon dung lai de ke bo sung</returns>
+        /// <returns>true = duoc phep ket thuc; false = BI CHAN vi con dich vu chua co thuoc/vat tu di kem</returns>
         public static bool CheckBeforeFinish(IEnumerable<HIS_SERE_SERV> sereServs)
         {
             return CheckBeforeFinish(ConvertList(sereServs, SereServCheckADO.From));
@@ -105,7 +107,7 @@ namespace HIS.Desktop.Plugins.Library.CheckRequireMediMate
             }
             catch (Exception ex)
             {
-                // Loi ky thuat thi khong chan nguoi dung ket thuc (muc nhac)
+                // Loi ky thuat thi CHO QUA de khong khoa vien (fail-open), da ghi log de tra cuu
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return true;
             }
@@ -158,7 +160,7 @@ namespace HIS.Desktop.Plugins.Library.CheckRequireMediMate
                 HashSet<long> parentIdsHavingMediMate = GetParentIdsHavingMediMate(requires.Select(o => o.ID).Distinct().ToList());
                 if (parentIdsHavingMediMate == null)
                 {
-                    // Loi API -> khong ket luan duoc -> khong canh bao (fail-open)
+                    // Loi API -> khong ket luan duoc -> KHONG chan ket thuc (fail-open)
                     return result;
                 }
 
@@ -182,9 +184,9 @@ namespace HIS.Desktop.Plugins.Library.CheckRequireMediMate
         #region Hop thoai
 
         /// <summary>
-        /// Hien hop thoai Yes/No (mac dinh No) liet ke du cac dich vu thieu thuoc/vat tu (quy tac 5: hoi MOT lan cho tat ca).
+        /// Hien hop thong bao CHAN (chi co OK) liet ke du cac dich vu thieu thuoc/vat tu (quy tac 5: bao MOT lan cho tat ca).
         /// </summary>
-        /// <returns>true = nguoi dung chon tiep tuc ket thuc</returns>
+        /// <returns>luon false khi con dich vu thieu = khong cho ket thuc; true khi khong co gi de chan</returns>
         public static bool ConfirmFinish(List<SereServCheckADO> missing)
         {
             try
@@ -198,15 +200,14 @@ namespace HIS.Desktop.Plugins.Library.CheckRequireMediMate
                 Inventec.Common.Logging.LogSystem.Info("CheckRequireMediMateManager.ConfirmFinish: " + message
                     + Inventec.Common.Logging.LogUtil.TraceData("serviceReqIds", missing.Select(o => o.SERVICE_REQ_ID).Distinct().ToList()));
 
-                DialogResult dialogResult = DevExpress.XtraEditors.XtraMessageBox.Show(
+                DevExpress.XtraEditors.XtraMessageBox.Show(
                     message,
                     ResourceMessage.ThongBao,
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning,
-                    MessageBoxDefaultButton.Button2);
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
-                Inventec.Common.Logging.LogSystem.Info("CheckRequireMediMateManager.ConfirmFinish: nguoi dung chon " + dialogResult);
-                return dialogResult == DialogResult.Yes;
+                Inventec.Common.Logging.LogSystem.Info("CheckRequireMediMateManager.ConfirmFinish: CHAN ket thuc, nguoi dung phai ke thuoc/vat tu di kem roi ket thuc lai.");
+                return false;
             }
             catch (Exception ex)
             {
@@ -215,7 +216,7 @@ namespace HIS.Desktop.Plugins.Library.CheckRequireMediMate
             }
         }
 
-        /// <summary>"Dịch vụ chưa có thuốc, vật tư đi kèm:" + moi dich vu 1 dong "- Ma - Ten" + cau hoi tiep tuc</summary>
+        /// <summary>"Dịch vụ chưa có thuốc, vật tư đi kèm:" + moi dich vu 1 dong "- Ma - Ten" + huong dan xu ly</summary>
         public static string BuildMessage(List<SereServCheckADO> missing)
         {
             StringBuilder lines = new StringBuilder();
