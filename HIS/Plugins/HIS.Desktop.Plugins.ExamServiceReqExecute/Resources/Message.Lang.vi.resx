@@ -255,4 +255,10 @@
   <data name="BenhLaNguyenNhanTuVongKhongDuocSuDungChoTruongHopKhongPhaiTuVong" xml:space="preserve">
     <value>Bệnh {0} là nguyên nhân tử vong không được sử dụng cho các trường hợp không phải tử vong.</value>
   </data>
+  <data name="KhongCoThongTinDieuTri" xml:space="preserve">
+    <value>Không lấy được thông tin điều trị của lần khám hiện tại.</value>
+  </data>
+  <data name="KhongCoChiDinhXetNghiem" xml:space="preserve">
+    <value>Lần khám này chưa có chỉ định xét nghiệm.</value>
+  </data>
 </root>

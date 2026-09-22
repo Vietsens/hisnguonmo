@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -342,6 +342,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 }
                 InitControlState();
+                InitEmrToolkitButton();
                 timeClose = new Timer();
                 timeClose.Interval = 100;
                 timeClose.Tick += new System.EventHandler(this.timerClose_Tick);

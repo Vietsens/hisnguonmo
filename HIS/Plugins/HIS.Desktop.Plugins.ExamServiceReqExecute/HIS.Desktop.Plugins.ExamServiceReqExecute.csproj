@@ -625,6 +625,15 @@
     <Compile Include="ExamServiceReqExecuteControl__Load.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__EmrToolkit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Popup\frmChooseServiceReqEmrToolkit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmChooseServiceReqEmrToolkit.Designer.cs">
+      <DependentUpon>frmChooseServiceReqEmrToolkit.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExamServiceReqExecuteControl__Combo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -697,6 +706,9 @@
     <EmbeddedResource Include="frmXemGiayChuyenTuyen.resx">
       <DependentUpon>frmXemGiayChuyenTuyen.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Popup\frmChooseServiceReqEmrToolkit.resx">
+      <DependentUpon>frmChooseServiceReqEmrToolkit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Popup\frmInformationExam.resx">
       <DependentUpon>frmInformationExam.cs</DependentUpon>
     </EmbeddedResource>
@@ -732,6 +744,10 @@
     <Folder Include="Image\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrToolkitImport\HIS.Desktop.Plugins.Library.EmrToolkitImport.csproj">
+      <Project>{7e9c2a14-3b6d-4f8a-9c1e-2d5b8a0f3c71}</Project>
+      <Name>HIS.Desktop.Plugins.Library.EmrToolkitImport</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

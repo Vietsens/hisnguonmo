@@ -1140,4 +1140,7 @@
   <data name="UCDHST.SKINNY.III" xml:space="preserve">
     <value>(အဆင့် III Skinny)</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.btnEmrToolkit.Text" xml:space="preserve">
+    <value>EMRToolkit</value>
+  </data>
 </root>

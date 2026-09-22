@@ -1160,4 +1160,7 @@
   <data name="ExamServiceReqExecuteControl.lblMimsLactatingMonth.Text" xml:space="preserve">
     <value>Con bú bao nhiêu tháng:</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.btnEmrToolkit.Text" xml:space="preserve">
+    <value>EMRToolkit</value>
+  </data>
 </root>

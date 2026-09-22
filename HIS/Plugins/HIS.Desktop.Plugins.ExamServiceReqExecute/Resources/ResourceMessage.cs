@@ -598,5 +598,38 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Resources
                 return "Lưu Ghi chú KCB thất bại";
             }
         }
+        /// <summary>Không lấy được thông tin điều trị của lần khám hiện tại.</summary>
+        internal static string KhongCoThongTinDieuTri
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhongCoThongTinDieuTri", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Lần khám này chưa có chỉ định xét nghiệm.</summary>
+        internal static string KhongCoChiDinhXetNghiem
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhongCoChiDinhXetNghiem", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

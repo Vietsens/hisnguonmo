@@ -58,73 +58,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="frmEmrToolkitImportResult.Text" xml:space="preserve">
-    <value>Kết quả gửi dữ liệu qua EMRTOOLKIT</value>
+  <data name="BenhNhanChuaCoSoDinhDanh" xml:space="preserve">
+    <value>The patient has no identification number, so shared results cannot be looked up.</value>
   </data>
-  <data name="frmEmrToolkitImportResult.lciInfo.Text" xml:space="preserve">
-    <value>Thông tin</value>
+  <data name="KhongCoKetQuaConHieuLuc" xml:space="preserve">
+    <value>The patient has no valid shared subclinical result on EMRToolkit.</value>
   </data>
-  <data name="frmEmrToolkitImportResult.lciJson.Text" xml:space="preserve">
-    <value>Dữ liệu JSON trả về</value>
+  <data name="ChuaChonBanGhiDeXem" xml:space="preserve">
+    <value>Please select the result record to view.</value>
   </data>
-  <data name="frmEmrToolkitImportResult.lcgRequest.Text" xml:space="preserve">
-    <value>JSON đã gửi đi</value>
+  <data name="XinMaOtpQuaNhanh" xml:space="preserve">
+    <value>The gateway allows one OTP request every five seconds. Please try again shortly.</value>
   </data>
-  <data name="frmEmrToolkitImportResult.lcgResponse.Text" xml:space="preserve">
-    <value>JSON nhận về</value>
-  </data>
-  <data name="frmEmrToolkitImportResult.btnCopy.Text" xml:space="preserve">
-    <value>Sao chép JSON</value>
-  </data>
-  <data name="frmEmrToolkitImportResult.btnClose.Text" xml:space="preserve">
-    <value>Đóng</value>
-  </data>
-  <data name="frmEmrToolkitOtp.Text" xml:space="preserve">
-    <value>Xác thực OTP xem kết quả liên thông</value>
-  </data>
-  <data name="frmEmrToolkitOtp.lciOtp.Text" xml:space="preserve">
-    <value>Mã OTP</value>
-  </data>
-  <data name="frmEmrToolkitOtp.lciChannel.Text" xml:space="preserve">
-    <value>Kênh gửi OTP</value>
-  </data>
-  <data name="frmEmrToolkitOtp.lciExpire.Text" xml:space="preserve">
-    <value>Hiệu lực còn</value>
-  </data>
-  <data name="frmEmrToolkitOtp.btnAccept.Text" xml:space="preserve">
-    <value>Xem kết quả</value>
-  </data>
-  <data name="frmEmrToolkitOtp.btnCancel.Text" xml:space="preserve">
-    <value>Đóng</value>
-  </data>
-  <data name="frmEmrToolkitOtp.txtOtp.NullValuePrompt" xml:space="preserve">
-    <value>Nhập mã OTP</value>
-  </data>
-  <data name="frmEmrToolkitSyncResult.Text" xml:space="preserve">
-    <value>Kết quả đồng bộ KQXN lên cổng EMRToolkit</value>
-  </data>
-  <data name="frmEmrToolkitSyncResult.btnClose.Text" xml:space="preserve">
-    <value>Đóng</value>
-  </data>
-  <data name="frmEmrToolkitSyncResult.gcServiceCode.Caption" xml:space="preserve">
-    <value>Mã dịch vụ</value>
-  </data>
-  <data name="frmEmrToolkitSyncResult.gcServiceName.Caption" xml:space="preserve">
-    <value>Tên dịch vụ</value>
-  </data>
-  <data name="frmEmrToolkitSyncResult.gcTestIndexCount.Caption" xml:space="preserve">
-    <value>Số chỉ số</value>
-  </data>
-  <data name="frmEmrToolkitSyncResult.gcStatus.Caption" xml:space="preserve">
-    <value>Trạng thái</value>
-  </data>
-  <data name="frmEmrToolkitSyncResult.gcRecordId.Caption" xml:space="preserve">
-    <value>Mã bản ghi trên cổng</value>
-  </data>
-  <data name="frmEmrToolkitSyncResult.gcValidUntil.Caption" xml:space="preserve">
-    <value>Hiệu lực đến</value>
-  </data>
-  <data name="frmEmrToolkitSyncResult.gcMessage.Caption" xml:space="preserve">
-    <value>Lý do</value>
+  <data name="DaTaiNhieuPhieuKetQua" xml:space="preserve">
+    <value>{0} result forms were downloaded. Showing the first one; the rest are in: {1}</value>
   </data>
 </root>

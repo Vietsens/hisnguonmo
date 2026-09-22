@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -103,6 +103,26 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.lciSetting = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciACRPRC = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPageOther = new DevExpress.XtraTab.XtraTabPage();
+            this.xtraTabPageEmrToolkit = new DevExpress.XtraTab.XtraTabPage();
+            this.layoutControlEmr = new DevExpress.XtraLayout.LayoutControl();
+            this.lblEmrPatientId = new DevExpress.XtraEditors.LabelControl();
+            this.btnViewEmrToolkit = new DevExpress.XtraEditors.SimpleButton();
+            this.grdEmrValidity = new DevExpress.XtraGrid.GridControl();
+            this.gridViewEmrValidity = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gcEmrMaPhieuXN = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcEmrMaDichVu = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcEmrLoaiXetNghiem = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcEmrMaCskcb = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcEmrValidUntil = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcEmrQcDatChuan = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcEmrNgayTao = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.pdfViewerEmr = new DevExpress.XtraPdfViewer.PdfViewer();
+            this.layoutControlGroupEmr = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.lciEmrPatientId = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnViewEmr = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciEmrGrid = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciEmrPdf = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItemEmr = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.btnPrintServiceReq = new DevExpress.XtraEditors.SimpleButton();
             this.BtnEmr = new DevExpress.XtraEditors.SimpleButton();
@@ -153,6 +173,17 @@ namespace HIS.Desktop.Plugins.SereServTein
             ((System.ComponentModel.ISupportInitialize)(this.lciSetting)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciACRPRC)).BeginInit();
             this.xtraTabPageOther.SuspendLayout();
+            this.xtraTabPageEmrToolkit.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlEmr)).BeginInit();
+            this.layoutControlEmr.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grdEmrValidity)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewEmrValidity)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupEmr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEmrPatientId)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnViewEmr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEmrGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEmrPdf)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemEmr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtNote.Properties)).BeginInit();
@@ -189,7 +220,225 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.xtraTabControl1.TabIndex = 7;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPageTestIndex,
-            this.xtraTabPageOther});
+            this.xtraTabPageOther,
+            this.xtraTabPageEmrToolkit});
+            // 
+            // xtraTabPageEmrToolkit
+            // 
+            this.xtraTabPageEmrToolkit.Controls.Add(this.layoutControlEmr);
+            this.xtraTabPageEmrToolkit.Name = "xtraTabPageEmrToolkit";
+            this.xtraTabPageEmrToolkit.Size = new System.Drawing.Size(1062, 432);
+            this.xtraTabPageEmrToolkit.Text = "KQ liên thông EMRToolkit";
+            // 
+            // layoutControlEmr
+            // 
+            this.layoutControlEmr.Controls.Add(this.lblEmrPatientId);
+            this.layoutControlEmr.Controls.Add(this.btnViewEmrToolkit);
+            this.layoutControlEmr.Controls.Add(this.grdEmrValidity);
+            this.layoutControlEmr.Controls.Add(this.pdfViewerEmr);
+            this.layoutControlEmr.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControlEmr.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlEmr.Name = "layoutControlEmr";
+            this.layoutControlEmr.Root = this.layoutControlGroupEmr;
+            this.layoutControlEmr.Size = new System.Drawing.Size(1062, 432);
+            this.layoutControlEmr.TabIndex = 0;
+            this.layoutControlEmr.Text = "layoutControlEmr";
+            // 
+            // lblEmrPatientId
+            // 
+            this.lblEmrPatientId.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblEmrPatientId.Location = new System.Drawing.Point(114, 2);
+            this.lblEmrPatientId.Name = "lblEmrPatientId";
+            this.lblEmrPatientId.Size = new System.Drawing.Size(608, 22);
+            this.lblEmrPatientId.StyleController = this.layoutControlEmr;
+            this.lblEmrPatientId.TabIndex = 0;
+            // 
+            // btnViewEmrToolkit
+            // 
+            this.btnViewEmrToolkit.Location = new System.Drawing.Point(894, 2);
+            this.btnViewEmrToolkit.Name = "btnViewEmrToolkit";
+            this.btnViewEmrToolkit.Size = new System.Drawing.Size(166, 22);
+            this.btnViewEmrToolkit.StyleController = this.layoutControlEmr;
+            this.btnViewEmrToolkit.TabIndex = 2;
+            this.btnViewEmrToolkit.Text = "Xem KQ EMRToolkit";
+            this.btnViewEmrToolkit.ToolTip = "Xem phiếu kết quả xét nghiệm do cơ sở khác chia sẻ trên cổng EMRToolkit";
+            this.btnViewEmrToolkit.Click += new System.EventHandler(this.btnViewEmrToolkit_Click);
+            // 
+            // grdEmrValidity
+            // 
+            this.grdEmrValidity.Location = new System.Drawing.Point(2, 28);
+            this.grdEmrValidity.MainView = this.gridViewEmrValidity;
+            this.grdEmrValidity.Name = "grdEmrValidity";
+            this.grdEmrValidity.Size = new System.Drawing.Size(1058, 128);
+            this.grdEmrValidity.TabIndex = 3;
+            this.grdEmrValidity.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewEmrValidity});
+            // 
+            // gridViewEmrValidity
+            // 
+            this.gridViewEmrValidity.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gcEmrMaPhieuXN,
+            this.gcEmrMaDichVu,
+            this.gcEmrLoaiXetNghiem,
+            this.gcEmrMaCskcb,
+            this.gcEmrValidUntil,
+            this.gcEmrQcDatChuan,
+            this.gcEmrNgayTao});
+            this.gridViewEmrValidity.GridControl = this.grdEmrValidity;
+            this.gridViewEmrValidity.Name = "gridViewEmrValidity";
+            this.gridViewEmrValidity.OptionsBehavior.Editable = false;
+            this.gridViewEmrValidity.OptionsFind.AllowFindPanel = false;
+            this.gridViewEmrValidity.OptionsView.ShowGroupPanel = false;
+            this.gridViewEmrValidity.OptionsView.ShowIndicator = false;
+            this.gridViewEmrValidity.DoubleClick += new System.EventHandler(this.gridViewEmrValidity_DoubleClick);
+            // 
+            // gcEmrMaPhieuXN
+            // 
+            this.gcEmrMaPhieuXN.Caption = "Mã phiếu XN";
+            this.gcEmrMaPhieuXN.FieldName = "MaPhieuXN";
+            this.gcEmrMaPhieuXN.Name = "gcEmrMaPhieuXN";
+            this.gcEmrMaPhieuXN.OptionsColumn.AllowEdit = false;
+            this.gcEmrMaPhieuXN.Visible = true;
+            this.gcEmrMaPhieuXN.VisibleIndex = 0;
+            this.gcEmrMaPhieuXN.Width = 130;
+            // 
+            // gcEmrMaDichVu
+            // 
+            this.gcEmrMaDichVu.Caption = "Mã dịch vụ";
+            this.gcEmrMaDichVu.FieldName = "MaDichVu";
+            this.gcEmrMaDichVu.Name = "gcEmrMaDichVu";
+            this.gcEmrMaDichVu.OptionsColumn.AllowEdit = false;
+            this.gcEmrMaDichVu.Visible = true;
+            this.gcEmrMaDichVu.VisibleIndex = 1;
+            this.gcEmrMaDichVu.Width = 110;
+            // 
+            // gcEmrLoaiXetNghiem
+            // 
+            this.gcEmrLoaiXetNghiem.Caption = "Loại xét nghiệm";
+            this.gcEmrLoaiXetNghiem.FieldName = "LoaiXetNghiem";
+            this.gcEmrLoaiXetNghiem.Name = "gcEmrLoaiXetNghiem";
+            this.gcEmrLoaiXetNghiem.OptionsColumn.AllowEdit = false;
+            this.gcEmrLoaiXetNghiem.Visible = true;
+            this.gcEmrLoaiXetNghiem.VisibleIndex = 2;
+            this.gcEmrLoaiXetNghiem.Width = 130;
+            // 
+            // gcEmrMaCskcb
+            // 
+            this.gcEmrMaCskcb.Caption = "Mã CSKCB";
+            this.gcEmrMaCskcb.FieldName = "MaCSKCB";
+            this.gcEmrMaCskcb.Name = "gcEmrMaCskcb";
+            this.gcEmrMaCskcb.OptionsColumn.AllowEdit = false;
+            this.gcEmrMaCskcb.Visible = true;
+            this.gcEmrMaCskcb.VisibleIndex = 3;
+            this.gcEmrMaCskcb.Width = 110;
+            // 
+            // gcEmrValidUntil
+            // 
+            this.gcEmrValidUntil.Caption = "Hiệu lực đến";
+            this.gcEmrValidUntil.FieldName = "ValidUntil";
+            this.gcEmrValidUntil.Name = "gcEmrValidUntil";
+            this.gcEmrValidUntil.OptionsColumn.AllowEdit = false;
+            this.gcEmrValidUntil.Visible = true;
+            this.gcEmrValidUntil.VisibleIndex = 4;
+            this.gcEmrValidUntil.Width = 150;
+            // 
+            // gcEmrQcDatChuan
+            // 
+            this.gcEmrQcDatChuan.Caption = "QC đạt chuẩn";
+            this.gcEmrQcDatChuan.FieldName = "QCDatChuan";
+            this.gcEmrQcDatChuan.Name = "gcEmrQcDatChuan";
+            this.gcEmrQcDatChuan.OptionsColumn.AllowEdit = false;
+            this.gcEmrQcDatChuan.Visible = true;
+            this.gcEmrQcDatChuan.VisibleIndex = 5;
+            this.gcEmrQcDatChuan.Width = 100;
+            // 
+            // gcEmrNgayTao
+            // 
+            this.gcEmrNgayTao.Caption = "Ngày tạo";
+            this.gcEmrNgayTao.FieldName = "NgayTao";
+            this.gcEmrNgayTao.Name = "gcEmrNgayTao";
+            this.gcEmrNgayTao.OptionsColumn.AllowEdit = false;
+            this.gcEmrNgayTao.Visible = true;
+            this.gcEmrNgayTao.VisibleIndex = 6;
+            this.gcEmrNgayTao.Width = 150;
+            // 
+            // pdfViewerEmr
+            // 
+            this.pdfViewerEmr.Location = new System.Drawing.Point(2, 160);
+            this.pdfViewerEmr.Name = "pdfViewerEmr";
+            this.pdfViewerEmr.NavigationPaneInitialVisibility = DevExpress.XtraPdfViewer.PdfNavigationPaneVisibility.Hidden;
+            this.pdfViewerEmr.Size = new System.Drawing.Size(1058, 270);
+            this.pdfViewerEmr.TabIndex = 4;
+            this.pdfViewerEmr.ZoomMode = DevExpress.XtraPdfViewer.PdfZoomMode.FitToWidth;
+            // 
+            // layoutControlGroupEmr
+            // 
+            this.layoutControlGroupEmr.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroupEmr.GroupBordersVisible = false;
+            this.layoutControlGroupEmr.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciEmrPatientId,
+            this.lciBtnViewEmr,
+            this.lciEmrGrid,
+            this.lciEmrPdf,
+            this.emptySpaceItemEmr});
+            this.layoutControlGroupEmr.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroupEmr.Name = "layoutControlGroupEmr";
+            this.layoutControlGroupEmr.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlGroupEmr.Size = new System.Drawing.Size(1062, 432);
+            this.layoutControlGroupEmr.TextVisible = false;
+            // 
+            // lciEmrPatientId
+            // 
+            this.lciEmrPatientId.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciEmrPatientId.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciEmrPatientId.Control = this.lblEmrPatientId;
+            this.lciEmrPatientId.Location = new System.Drawing.Point(0, 0);
+            this.lciEmrPatientId.Name = "lciEmrPatientId";
+            this.lciEmrPatientId.Size = new System.Drawing.Size(612, 26);
+            this.lciEmrPatientId.Text = "Số định danh:";
+            this.lciEmrPatientId.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciEmrPatientId.TextSize = new System.Drawing.Size(98, 20);
+            this.lciEmrPatientId.TextToControlDistance = 5;
+            // 
+            // lciBtnViewEmr
+            // 
+            this.lciBtnViewEmr.Control = this.btnViewEmrToolkit;
+            this.lciBtnViewEmr.Location = new System.Drawing.Point(892, 0);
+            this.lciBtnViewEmr.MaxSize = new System.Drawing.Size(170, 26);
+            this.lciBtnViewEmr.MinSize = new System.Drawing.Size(170, 26);
+            this.lciBtnViewEmr.Name = "lciBtnViewEmr";
+            this.lciBtnViewEmr.Size = new System.Drawing.Size(170, 26);
+            this.lciBtnViewEmr.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnViewEmr.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnViewEmr.TextVisible = false;
+            // 
+            // lciEmrGrid
+            // 
+            this.lciEmrGrid.Control = this.grdEmrValidity;
+            this.lciEmrGrid.Location = new System.Drawing.Point(0, 26);
+            this.lciEmrGrid.MinSize = new System.Drawing.Size(120, 80);
+            this.lciEmrGrid.Name = "lciEmrGrid";
+            this.lciEmrGrid.Size = new System.Drawing.Size(1062, 132);
+            this.lciEmrGrid.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciEmrGrid.TextSize = new System.Drawing.Size(0, 0);
+            this.lciEmrGrid.TextVisible = false;
+            // 
+            // lciEmrPdf
+            // 
+            this.lciEmrPdf.Control = this.pdfViewerEmr;
+            this.lciEmrPdf.Location = new System.Drawing.Point(0, 158);
+            this.lciEmrPdf.Name = "lciEmrPdf";
+            this.lciEmrPdf.Size = new System.Drawing.Size(1062, 274);
+            this.lciEmrPdf.TextSize = new System.Drawing.Size(0, 0);
+            this.lciEmrPdf.TextVisible = false;
+            // 
+            // emptySpaceItemEmr
+            // 
+            this.emptySpaceItemEmr.AllowHotTrack = false;
+            this.emptySpaceItemEmr.Location = new System.Drawing.Point(612, 0);
+            this.emptySpaceItemEmr.Name = "emptySpaceItemEmr";
+            this.emptySpaceItemEmr.Size = new System.Drawing.Size(280, 26);
+            this.emptySpaceItemEmr.TextSize = new System.Drawing.Size(0, 0);
             // 
             // xtraTabPageTestIndex
             // 
@@ -1019,6 +1268,17 @@ namespace HIS.Desktop.Plugins.SereServTein
             ((System.ComponentModel.ISupportInitialize)(this.lciSetting)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciACRPRC)).EndInit();
             this.xtraTabPageOther.ResumeLayout(false);
+            this.xtraTabPageEmrToolkit.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemEmr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEmrPdf)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEmrGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnViewEmr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEmrPatientId)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupEmr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewEmrValidity)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdEmrValidity)).EndInit();
+            this.layoutControlEmr.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlEmr)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtNote.Properties)).EndInit();
@@ -1064,6 +1324,26 @@ namespace HIS.Desktop.Plugins.SereServTein
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraTab.XtraTabPage xtraTabPageOther;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPageEmrToolkit;
+        private DevExpress.XtraLayout.LayoutControl layoutControlEmr;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroupEmr;
+        private DevExpress.XtraEditors.LabelControl lblEmrPatientId;
+        private DevExpress.XtraEditors.SimpleButton btnViewEmrToolkit;
+        private DevExpress.XtraGrid.GridControl grdEmrValidity;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewEmrValidity;
+        private DevExpress.XtraGrid.Columns.GridColumn gcEmrMaPhieuXN;
+        private DevExpress.XtraGrid.Columns.GridColumn gcEmrMaDichVu;
+        private DevExpress.XtraGrid.Columns.GridColumn gcEmrLoaiXetNghiem;
+        private DevExpress.XtraGrid.Columns.GridColumn gcEmrMaCskcb;
+        private DevExpress.XtraGrid.Columns.GridColumn gcEmrValidUntil;
+        private DevExpress.XtraGrid.Columns.GridColumn gcEmrQcDatChuan;
+        private DevExpress.XtraGrid.Columns.GridColumn gcEmrNgayTao;
+        private DevExpress.XtraPdfViewer.PdfViewer pdfViewerEmr;
+        private DevExpress.XtraLayout.LayoutControlItem lciEmrPatientId;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnViewEmr;
+        private DevExpress.XtraLayout.LayoutControlItem lciEmrGrid;
+        private DevExpress.XtraLayout.LayoutControlItem lciEmrPdf;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemEmr;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControl layoutControl3;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup3;

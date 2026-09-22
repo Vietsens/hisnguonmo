@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -179,6 +179,7 @@ namespace HIS.Desktop.Plugins.SereServTein
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.sereServExt", sereServExt.First().CONCLUDE));
                 }
                 layoutControlItem10.TextVisible = false; 
+                InitEmrToolkitTab();
             }
             catch (Exception ex)
             {

@@ -177,4 +177,34 @@
   <data name="frmSereServTein.Text" xml:space="preserve">
     <value>Kết quả xét nghiệm</value>
   </data>
+  <data name="frmSereServTein.xtraTabPageEmrToolkit.Text" xml:space="preserve">
+    <value>KQ liên thông EMRToolkit</value>
+  </data>
+  <data name="frmSereServTein.lciEmrPatientId.Text" xml:space="preserve">
+    <value>Số định danh:</value>
+  </data>
+  <data name="frmSereServTein.btnViewEmrToolkit.Text" xml:space="preserve">
+    <value>Xem KQ EMRToolkit</value>
+  </data>
+  <data name="frmSereServTein.gcEmrMaPhieuXN.Caption" xml:space="preserve">
+    <value>Mã phiếu XN</value>
+  </data>
+  <data name="frmSereServTein.gcEmrMaDichVu.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="frmSereServTein.gcEmrLoaiXetNghiem.Caption" xml:space="preserve">
+    <value>Loại xét nghiệm</value>
+  </data>
+  <data name="frmSereServTein.gcEmrMaCskcb.Caption" xml:space="preserve">
+    <value>Mã CSKCB</value>
+  </data>
+  <data name="frmSereServTein.gcEmrValidUntil.Caption" xml:space="preserve">
+    <value>Hiệu lực đến</value>
+  </data>
+  <data name="frmSereServTein.gcEmrQcDatChuan.Caption" xml:space="preserve">
+    <value>QC đạt chuẩn</value>
+  </data>
+  <data name="frmSereServTein.gcEmrNgayTao.Caption" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
 </root>

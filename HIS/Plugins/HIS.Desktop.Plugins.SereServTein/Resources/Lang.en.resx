@@ -192,4 +192,34 @@
     <value>Test index</value>
     <comment>Chỉ số xét nghiệm</comment>
   </data>
+  <data name="frmSereServTein.xtraTabPageEmrToolkit.Text" xml:space="preserve">
+    <value>Shared results (EMRToolkit)</value>
+  </data>
+  <data name="frmSereServTein.lciEmrPatientId.Text" xml:space="preserve">
+    <value>Identification:</value>
+  </data>
+  <data name="frmSereServTein.btnViewEmrToolkit.Text" xml:space="preserve">
+    <value>View EMRToolkit result</value>
+  </data>
+  <data name="frmSereServTein.gcEmrMaPhieuXN.Caption" xml:space="preserve">
+    <value>Lab request code</value>
+  </data>
+  <data name="frmSereServTein.gcEmrMaDichVu.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="frmSereServTein.gcEmrLoaiXetNghiem.Caption" xml:space="preserve">
+    <value>Test group</value>
+  </data>
+  <data name="frmSereServTein.gcEmrMaCskcb.Caption" xml:space="preserve">
+    <value>Facility code</value>
+  </data>
+  <data name="frmSereServTein.gcEmrValidUntil.Caption" xml:space="preserve">
+    <value>Valid until</value>
+  </data>
+  <data name="frmSereServTein.gcEmrQcDatChuan.Caption" xml:space="preserve">
+    <value>QC passed</value>
+  </data>
+  <data name="frmSereServTein.gcEmrNgayTao.Caption" xml:space="preserve">
+    <value>Created on</value>
+  </data>
 </root>

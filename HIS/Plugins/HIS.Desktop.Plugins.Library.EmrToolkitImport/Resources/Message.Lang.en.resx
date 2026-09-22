@@ -67,4 +67,70 @@
   <data name="DaSaoChepJson" xml:space="preserve">
     <value>JSON copied to clipboard.</value>
   </data>
+  <data name="ChuaCauHinhKetNoiEmrToolkit" xml:space="preserve">
+    <value>EMRToolkit connection is not configured. Please contact the system administrator.</value>
+  </data>
+  <data name="ChuaBatChucNangLienThongKqxn" xml:space="preserve">
+    <value>Lab result interoperability through EMRToolkit is not enabled.</value>
+  </data>
+  <data name="KhongLayDuocTokenEmrToolkit" xml:space="preserve">
+    <value>Cannot sign in to EMRToolkit. Please check the configured account.</value>
+  </data>
+  <data name="MaHoaDuLieuThatBai" xml:space="preserve">
+    <value>Encrypting the payload on EMRToolkit failed.</value>
+  </data>
+  <data name="GuiKetQuaLenCongThatBai" xml:space="preserve">
+    <value>Submitting the lab result to EMRToolkit failed.</value>
+  </data>
+  <data name="DuLieuGuiDiRong" xml:space="preserve">
+    <value>There is no data to send to EMRToolkit.</value>
+  </data>
+  <data name="ThieuSoDinhDanhBenhNhan" xml:space="preserve">
+    <value>The patient has no identification number, so no data can be shared.</value>
+  </data>
+  <data name="KiemTraHieuLucThatBai" xml:space="preserve">
+    <value>Checking valid results on EMRToolkit failed.</value>
+  </data>
+  <data name="XinMaOtpThatBai" xml:space="preserve">
+    <value>Requesting the OTP failed.</value>
+  </data>
+  <data name="TaiPhieuKetQuaThatBai" xml:space="preserve">
+    <value>Downloading the result form from EMRToolkit failed.</value>
+  </data>
+  <data name="ThieuTransactionIdHoacOtp" xml:space="preserve">
+    <value>Missing transaction id or OTP.</value>
+  </data>
+  <data name="ThieuMaOtp" xml:space="preserve">
+    <value>Please enter the OTP code</value>
+  </data>
+  <data name="MaOtpDaHetHan" xml:space="preserve">
+    <value>The OTP has expired, please request a new one</value>
+  </data>
+  <data name="DongBoThanhCong" xml:space="preserve">
+    <value>Succeeded</value>
+  </data>
+  <data name="DongBoThatBai" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="KetQuaDongBoTongHop" xml:space="preserve">
+    <value>{0} of {1} lab services were synchronized.</value>
+  </data>
+  <data name="KhongCoKetQuaConHieuLuc" xml:space="preserve">
+    <value>The patient has no valid shared result on EMRToolkit.</value>
+  </data>
+  <data name="ChuaChonBanGhiDeXem" xml:space="preserve">
+    <value>Please select the result record to view.</value>
+  </data>
+  <data name="ChuaCoKetQuaDeDongBo" xml:space="preserve">
+    <value>No lab service is eligible for synchronization (the request must be finished and hold results).</value>
+  </data>
+  <data name="XacNhanDongBoKqxn" xml:space="preserve">
+    <value>Synchronize {0} lab service(s) to EMRToolkit?</value>
+  </data>
+  <data name="PhieuDaDongBoTruocDo" xml:space="preserve">
+    <value>This request already has a result on EMRToolkit. Synchronizing again creates another record. Continue?</value>
+  </data>
+  <data name="KhongCoChiDinhXetNghiem" xml:space="preserve">
+    <value>This examination has no lab service request.</value>
+  </data>
 </root>

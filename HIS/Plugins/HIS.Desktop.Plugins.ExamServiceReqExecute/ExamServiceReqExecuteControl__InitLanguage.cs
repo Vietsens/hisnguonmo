@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -58,6 +58,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.btnSaveFinish.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnSaveFinish.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.btnAssignService.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnAssignService.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.btnPrint_ExamService.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnPrint_ExamService.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                this.btnEmrToolkit.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnEmrToolkit.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.layoutControl3.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.layoutControl21.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.layoutControl21.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.gridColumn17.Caption = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.gridColumn17.Caption", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());

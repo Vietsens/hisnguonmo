@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -130,6 +130,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.btnSaveFinish = new DevExpress.XtraEditors.SimpleButton();
             this.btnAssignService = new DevExpress.XtraEditors.SimpleButton();
             this.btnPrint_ExamService = new DevExpress.XtraEditors.DropDownButton();
+            this.btnEmrToolkit = new DevExpress.XtraEditors.SimpleButton();
+            this.lciEmrToolkit = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.cboEmergencyClassifyId1 = new DevExpress.XtraEditors.GridLookUpEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
@@ -1207,6 +1209,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEmrToolkit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
@@ -1268,6 +1271,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControl2.Controls.Add(this.btnSaveFinish);
             this.layoutControl2.Controls.Add(this.btnAssignService);
             this.layoutControl2.Controls.Add(this.btnPrint_ExamService);
+            this.layoutControl2.Controls.Add(this.btnEmrToolkit);
             this.layoutControl2.Controls.Add(this.layoutControl3);
             this.layoutControl2.Location = new System.Drawing.Point(0, 0);
             this.layoutControl2.Name = "layoutControl2";
@@ -1442,6 +1446,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.btnPrint_ExamService.TabIndex = 26;
             this.btnPrint_ExamService.Text = "In ấn";
             this.btnPrint_ExamService.Click += new System.EventHandler(this.btnPrint_ExamService_Click);
+            // 
+            // btnEmrToolkit
+            // 
+            this.btnEmrToolkit.Location = new System.Drawing.Point(1152, 648);
+            this.btnEmrToolkit.Name = "btnEmrToolkit";
+            this.btnEmrToolkit.Size = new System.Drawing.Size(86, 31);
+            this.btnEmrToolkit.StyleController = this.layoutControl2;
+            this.btnEmrToolkit.TabIndex = 27;
+            this.btnEmrToolkit.Text = "EMRToolkit";
+            this.btnEmrToolkit.ToolTip = "Xem kết quả cận lâm sàng do cơ sở khác chia sẻ trên cổng EMRToolkit";
+            this.btnEmrToolkit.Click += new System.EventHandler(this.btnEmrToolkit_Click);
             // 
             // layoutControl3
             // 
@@ -8080,6 +8095,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem2,
             this.layoutControlItem6,
+            this.lciEmrToolkit,
             this.layoutControlItem13,
             this.layoutControlItem3,
             this.layoutControlItem8,
@@ -8124,6 +8140,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextToControlDistance = 0;
             this.layoutControlItem6.TextVisible = false;
+            // 
+            // lciEmrToolkit
+            // 
+            this.lciEmrToolkit.Control = this.btnEmrToolkit;
+            this.lciEmrToolkit.Location = new System.Drawing.Point(1150, 646);
+            this.lciEmrToolkit.MaxSize = new System.Drawing.Size(105, 35);
+            this.lciEmrToolkit.MinSize = new System.Drawing.Size(90, 35);
+            this.lciEmrToolkit.Name = "lciEmrToolkit";
+            this.lciEmrToolkit.Size = new System.Drawing.Size(90, 35);
+            this.lciEmrToolkit.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciEmrToolkit.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciEmrToolkit.TextSize = new System.Drawing.Size(0, 0);
+            this.lciEmrToolkit.TextToControlDistance = 0;
+            this.lciEmrToolkit.TextVisible = false;
             // 
             // layoutControlItem13
             // 
@@ -8278,7 +8308,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             this.layoutControlItem12.Control = this.btnVoBenhAn;
             this.layoutControlItem12.CustomizationFormText = "layoutControlItem12";
-            this.layoutControlItem12.Location = new System.Drawing.Point(1150, 646);
+            this.layoutControlItem12.Location = new System.Drawing.Point(1240, 646);
             this.layoutControlItem12.MaxSize = new System.Drawing.Size(110, 35);
             this.layoutControlItem12.MinSize = new System.Drawing.Size(90, 35);
             this.layoutControlItem12.Name = "layoutControlItem12";
@@ -8292,7 +8322,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // layoutControlItem109
             // 
             this.layoutControlItem109.Control = this.btnFastTrackingCreate;
-            this.layoutControlItem109.Location = new System.Drawing.Point(1330, 646);
+            this.layoutControlItem109.Location = new System.Drawing.Point(1420, 646);
             this.layoutControlItem109.MaxSize = new System.Drawing.Size(140, 35);
             this.layoutControlItem109.MinSize = new System.Drawing.Size(120, 35);
             this.layoutControlItem109.Name = "layoutControlItem109";
@@ -8306,7 +8336,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             this.lciServiceConsult.Control = this.btnServiceConsult;
             this.lciServiceConsult.CustomizationFormText = "lciServiceConsult";
-            this.lciServiceConsult.Location = new System.Drawing.Point(1240, 646);
+            this.lciServiceConsult.Location = new System.Drawing.Point(1330, 646);
             this.lciServiceConsult.MaxSize = new System.Drawing.Size(130, 35);
             this.lciServiceConsult.MinSize = new System.Drawing.Size(90, 35);
             this.lciServiceConsult.Name = "lciServiceConsult";
@@ -8897,6 +8927,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem162)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEmrToolkit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
@@ -8973,6 +9004,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private DevExpress.XtraEditors.DropDownButton btnPrint_ExamService;
+        private DevExpress.XtraEditors.SimpleButton btnEmrToolkit;
+        private DevExpress.XtraLayout.LayoutControlItem lciEmrToolkit;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         internal DevExpress.XtraEditors.SimpleButton btnAssignService;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;

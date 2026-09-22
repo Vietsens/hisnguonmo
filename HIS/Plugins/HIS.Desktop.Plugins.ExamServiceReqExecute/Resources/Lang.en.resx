@@ -1158,4 +1158,7 @@
   <data name="ExamServiceReqExecuteControl.lblMimsLactatingMonth.Text" xml:space="preserve">
     <value>Months of breastfeeding:</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.btnEmrToolkit.Text" xml:space="preserve">
+    <value>EMRToolkit</value>
+  </data>
 </root>
