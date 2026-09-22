@@ -26,13 +26,28 @@ namespace Inventec.UC.ChangePassword.Validate
     class NewPass__ValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         internal DevExpress.XtraEditors.TextEdit txtNewPass;
+        internal DevExpress.XtraEditors.TextEdit txtOldPass;
         public override bool Validate(System.Windows.Forms.Control control, object value)
         {
             bool valid = false;
             try
             {
                 if (txtNewPass == null) return valid;
-                if (string.IsNullOrEmpty(txtNewPass.Text)) return valid;
+                if (string.IsNullOrEmpty(txtNewPass.Text))
+                {
+                    this.ErrorText = "Thiếu trường dữ liệu bắt buộc";
+                    return valid;
+                }
+                //Chan dat lai dung mat khau cu. Backend khong kiem tra viec nay: doi thanh cong,
+                //nguoi dung van bi dang xuat nen tuong la da doi that, va moc han doi mat khau
+                //bi gia han them mot chu ky trong khi mat khau khong he thay doi.
+                //So sanh phan biet hoa thuong vi mat khau phan biet hoa thuong.
+                if (txtOldPass != null && !string.IsNullOrEmpty(txtOldPass.Text)
+                    && string.Equals(txtNewPass.Text, txtOldPass.Text, StringComparison.Ordinal))
+                {
+                    this.ErrorText = "Mật khẩu mới không được trùng mật khẩu cũ";
+                    return valid;
+                }
                 valid = true;
             }
             catch (Exception ex)

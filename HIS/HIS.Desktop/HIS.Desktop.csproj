@@ -405,6 +405,9 @@
     <Compile Include="Modules\Main\frmMainPlus__CheckConnectServer.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Modules\Main\frmMainPlus__CheckSessionTimeout.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Modules\Main\frmMainPlus__Subcrib.cs">
       <SubType>Form</SubType>
     </Compile>
