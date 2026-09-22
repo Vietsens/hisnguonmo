@@ -883,4 +883,10 @@
 	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_DESCRIPTION" xml:space="preserve">
     <value>Ghi chú</value>
   </data>
+  <data name="frmAssignPrescription.chkAutoSave.Text" xml:space="preserve">
+    <value>Tự động lưu</value>
+  </data>
+  <data name="frmAssignPrescription.chkAutoSave.ToolTip" xml:space="preserve">
+    <value>Tự động lưu thuốc, vật tư đi kèm ngay khi mở từ màn Thực hiện dịch vụ. Trạng thái tích được ghi nhớ trên máy trạm này.</value>
+  </data>
 </root>
