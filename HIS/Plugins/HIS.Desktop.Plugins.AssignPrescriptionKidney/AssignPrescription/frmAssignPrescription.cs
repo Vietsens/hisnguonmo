@@ -104,6 +104,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
         /// <summary>Module ID phục vụ ControlState — trùng [ExtensionOf]</summary>
         string moduleLinkControlState = "HIS.Desktop.Plugins.AssignPrescriptionKidney";
         #endregion
+        #region Hao phí theo cấu hình Khoa - ĐTTT và loại vật tư
+        /// <summary>Phòng chỉ định hiện tại — lấy DEPARTMENT_ID để tra HIS_DEPA_PATIENT_TYPE.</summary> 
+        MOS.EFMODEL.DataModels.V_HIS_ROOM requestRoom;
+        /// <summary>
+        /// Cache HIS_DEPA_PATIENT_TYPE per SERVICE_ID — phục vụ ApplyExpendByDepaPatientType,
+        /// tránh gọi API lặp khi load đơn cũ nhiều dòng.
+        /// </summary>
+        Dictionary<long, List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>> depaPatientTypeBySvcCache;
+        /// <summary>
+        /// Tập MATERIAL_TYPE_ID được tích "Không hao phí" (V_HIS_MATERIAL_TYPE.IS_NOT_EXPEND = 1).
+        /// Lớp kiểm tra thứ 2 sau cấu hình Khoa-ĐTTT để khóa cột Hao phí.
+        /// Thuốc không có cờ này nên không có tập tương ứng.
+        /// </summary>
+        HashSet<long> notExpendMaterialTypeIds = new HashSet<long>();
+        #endregion
         Size sizeListPatient { get; set; }
         internal V_HIS_SERE_SERV currentSereServ { get; set; }
         internal List<HIS_MEDICINE_SERVICE> medicineService { get; set; }
@@ -385,6 +400,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 LogSystem.Debug("frmAssignPrescription_Load Starting...");
                 WaitingManager.Show();
                 this.SetCaptionByLanguageKey();
+                // Ngữ cảnh cho rule Hao phí: khoa chỉ định (tra HIS_DEPA_PATIENT_TYPE) và danh mục loại vật tư "Không hao phí".
+                this.requestRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
+                this.LoadNotExpendMaterialType();
                 this.gridControlServiceProcess.ToolTipController = this.tooltipService;
                 this.ResetDataForm();
                 this.SetDefaultData();
@@ -3303,6 +3321,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                         {
                             mediMatyTypeADO.IsExpendType = false;
                         }
+
+                        if (e.Column.FieldName == "PATIENT_TYPE_ID")
+                        {
+                            // Reset trạng thái force của Hao phí trước khi tra lại theo ĐTTT mới —
+                            // tránh trường hợp ĐTTT cũ force tick+disable, ĐTTT mới không có config
+                            // mà cell vẫn giữ trạng thái force cũ.
+                            if (HisConfigCFG.UsePaymentObjectByDept == "1")
+                            {
+                                mediMatyTypeADO.NotExpend = false;
+                                mediMatyTypeADO.IsExpendEditableByDpt = false;
+                                mediMatyTypeADO.IsDisableExpend = false;
+                            }
+                            // Tra lại HIS_DEPA_PATIENT_TYPE theo ĐTTT mới -> set lại "Hao phí".
+                            ApplyExpendByDepaPatientType(mediMatyTypeADO);
+                        }
                     }
 
                     gridViewServiceProcess.BeginUpdate();
@@ -3356,8 +3389,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     }
                     else if (e.Column.FieldName == "IsExpend")
                     {
+                        // HIS_DEPA_PATIENT_TYPE có row khớp với cả 2 = 0 → ưu tiên CAO NHẤT: luôn cho sửa,
+                        // bỏ qua material IS_NOT_EXPEND và rule #16421 (không có DV cha).
+                        if (data.IsExpendEditableByDpt)
+                        {
+                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
+                        }
+                        // Force-disable theo HIS_DEPA_PATIENT_TYPE (kiểm tra TRƯỚC IS_NOT_EXPEND).
+                        else if (data.NotExpend)
+                        {
+                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
+                        // Loại vật tư tích "Không hao phí".
+                        else if (this.IsNotExpendMaterialType(data))
+                        {
+                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
                         //#16421 để key cấu hình giá trị 1: Không cho phép check hao phí với thuốc/vật tư không đính kèm
-                        if ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent))
+                        else if ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent))
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
                         else
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;

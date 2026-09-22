@@ -264,6 +264,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         // Cache HIS_DEPA_PATIENT_TYPE per SERVICE_ID — phục vụ ApplyExpendByDepaPatientType,
         // tránh gọi API lặp khi load đơn cũ nhiều dòng.
         Dictionary<long, List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>> depaPatientTypeBySvcCache;
+        /// <summary>
+        /// Tập MATERIAL_TYPE_ID được tích "Không hao phí" (V_HIS_MATERIAL_TYPE.IS_NOT_EXPEND = 1).
+        /// Lớp kiểm tra thứ 2 sau cấu hình Khoa-ĐTTT để khóa cột Hao phí.
+        /// Thuốc không có cờ này nên không có tập tương ứng.
+        /// </summary>
+        HashSet<long> notExpendMaterialTypeIds = new HashSet<long>();
         int numberDisplaySeperateFormatAmount = 0;
         long ContructorIntructionTime;
 
@@ -1214,6 +1220,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 InitMultipleThread();
                 LogSystem.Debug("frmAssignPrescription_Load. 3");
                 LoadDataFromRam();
+                LoadNotExpendMaterialType();
                 LogSystem.Debug("frmAssignPrescription_Load. 4");
                 this.AddBarManager(this.barManager1);
                 this.isNotLoadWhileChangeInstructionTimeInFirst = true;
@@ -2270,7 +2277,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 else
                 {
-                    //Mo form chon icd
+                    //Mo form chon icd 
                     icdChoose = new HIS_ICD();
                     frmChooseICD frm = new frmChooseICD(icds, refeshChooseIcd);
                     frm.ShowDialog();
@@ -6777,6 +6784,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                     mediMatyTypeADO.NotExpend = false;
                                     mediMatyTypeADO.IsExpend = false;
                                     mediMatyTypeADO.IsDisableExpend = false;
+                                    mediMatyTypeADO.IsExpendEditableByDpt = false;
                                 }
 
                                 // Auto-tick theo kho hao phí TRƯỚC, để DPT có thể override sau.
@@ -7037,7 +7045,19 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     }
                     else if (e.Column.FieldName == "IsExpend")
                     {
-                        if (data.NotExpend)
+                        // HIS_DEPA_PATIENT_TYPE có row khớp với cả 2 = 0 → ưu tiên CAO NHẤT: luôn cho sửa,
+                        // bỏ qua material IS_NOT_EXPEND và rule #16421 (không có DV cha).
+                        if (data.IsExpendEditableByDpt)
+                        {
+                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
+                        }
+                        // Force-disable theo HIS_DEPA_PATIENT_TYPE (kiểm tra TRƯỚC IS_NOT_EXPEND).
+                        else if (data.NotExpend)
+                        {
+                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
+                        // Loại vật tư tích "Không hao phí".
+                        else if (this.IsNotExpendMaterialType(data))
                         {
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
                         }

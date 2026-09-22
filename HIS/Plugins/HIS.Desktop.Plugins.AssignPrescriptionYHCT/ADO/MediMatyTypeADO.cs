@@ -1187,6 +1187,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
         /// (IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1).
         /// </summary>
         public bool NotExpend { get; set; }
+        /// <summary>
+        /// HIS_DEPA_PATIENT_TYPE có bản ghi khớp (Khoa, ĐTTT) nhưng cả 2 cờ đều = 0
+        /// → ưu tiên CAO NHẤT: luôn cho sửa, bỏ qua IS_NOT_EXPEND của loại vật tư và rule #16421.
+        /// </summary>
+        public bool IsExpendEditableByDpt { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeAmount { get; set; }
         public string ErrorMessageAmount { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypePatientTypeId { get; set; }
