@@ -23,8 +23,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
     /// - O tich "Tu dong luu" (chkAutoSave) ngay ben trai nut Luu, trang thai nho tren MAY TRAM (SQLite ControlState cua
     ///   client, giong moi checkbox nho trang thai khac cua HIS) qua ControlStateWorker
     ///   (KEY = chkAutoSave.Name, MODULE_LINK = HIS.Desktop.Plugins.AssignPrescriptionCLS) - mau frmAggrExpMestDetail.
-    /// - Khi form mo tu luong THUC HIEN DVKT (nut "Tu truc" o Thuc hien dich vu, "Ke don tu truc" o Thuc hien xet nghiem,
-    ///   "Ke don can lam sang" (ke moi) o Phong thuc hien: IsCabinet = true + SereServ, khong phai sua don) va thuoc/vat tu
+    /// - Khi form mo tu luong THUC HIEN DVKT (nut "Tu truc" + menu chuot phai "Ke thuoc/vat tu tieu hao" o Thuc hien dich vu,
+    ///   "Ke don tu truc" o Thuc hien xet nghiem, "Ke don can lam sang" (ke moi) o Phong thuc hien: IsCabinet = true + SereServ,
+    ///   khong phai sua don) va thuoc/vat tu
     ///   di kem theo HIS_SERVICE_METY/MATY da do len luoi, neu o tich dang bat thi tu goi ProcessSaveData(SAVE) sau khi
     ///   form hien xong VA 2 kiem tra async cua Load (no vien phi, tran BHYT) da tra loi xong - dung nhu nguoi dung bam Luu.
     /// - Ket hop key HIS.Desktop.Plugins.AssignPrescriptionCLS.AutoClose = 1 (HisConfigCFG.IsAutoCloseAfterSave,
