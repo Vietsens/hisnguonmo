@@ -370,4 +370,16 @@
   <data name="frmHisTestIndex.lciResultsRHTru.Text" xml:space="preserve">
     <value>RH- results:</value>
   </data>
+  <data name="frmHisTestIndex.lciCommonCode.Text" xml:space="preserve">
+    <value>Common code:</value>
+  </data>
+  <data name="frmHisTestIndex.lciHl7Code.Text" xml:space="preserve">
+    <value>HL7 code:</value>
+  </data>
+  <data name="frmHisTestIndex.grclCommonCode.Caption" xml:space="preserve">
+    <value>Common code</value>
+  </data>
+  <data name="frmHisTestIndex.grclHl7Code.Caption" xml:space="preserve">
+    <value>HL7 code</value>
+  </data>
 </root>

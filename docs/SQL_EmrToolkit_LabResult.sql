@@ -8,7 +8,7 @@
 -- bang co san.
 --   PHAN 1 - HIS_SERVICE_REQ : trang thai day cua phieu (tien trinh quet theo cot nay)
 --   PHAN 2 - HIS_SERE_SERV   : RECORD_ID cong tra ve cho tung dich vu can lam sang
---   PHAN 2B- HIS_TEST_INDEX : ma dung chung cua chi so (COMMON_CODE) de gui len cong
+--   PHAN 2B- HIS_TEST_INDEX : ma dung chung (COMMON_CODE) + ma HL7 (HL7_CODE) cua chi so
 --   PHAN 3 - HIS_CONFIG      : MOT khoa duy nhat (ket noi + loai CLS + so ngay quet)
 --
 -- Dat ten cot bam theo loi CSDL4750_* / HOC_CHECKIN_* dang co tren HIS_TREATMENT.
@@ -49,13 +49,15 @@ COMMENT ON COLUMN HIS_SERE_SERV.EMR_TOOLKIT_VALID_UNTIL IS 'Het hieu luc lien th
 COMMENT ON COLUMN HIS_SERE_SERV.EMR_TOOLKIT_TIME        IS 'Thoi diem day dich vu nay len cong - dang yyyyMMddHHmmss';
 
 -- =====================================================================
--- PHAN 2B - Ma dung chung cua chi so xet nghiem
+-- PHAN 2B - Ma dung chung va ma HL7 cua chi so xet nghiem
 -- Cong dinh danh du lieu bang MA DUNG CHUNG:
 --   MaDichVu    -> dung HIS_SERVICE.HEIN_SERVICE_BHYT_CODE CO SAN
 --                  (ma ky thuat dung chung, chinh ma da khai voi cong BHYT)
 --                  -> KHONG them cot cho HIS_SERVICE
 --   MaDungChung -> COT MOI HIS_TEST_INDEX.COMMON_CODE,
 --                  quan tri khai o HIS.Desktop.Plugins.HisTestIndex
+--   HL7_CODE    -> COT MOI HIS_TEST_INDEX.HL7_CODE (ma chi so theo chuan HL7),
+--                  khai cung man hinh danh muc chi so
 --
 -- LUU Y: khac cac cot EMR_TOOLKIT_* o tren, cot COMMON_CODE BAT BUOC duoc
 -- bo sung vao MOS.EFMODEL (EDMX + entity + view entity) va phat hanh lai
@@ -63,19 +65,21 @@ COMMENT ON COLUMN HIS_SERE_SERV.EMR_TOOLKIT_TIME        IS 'Thoi diem day dich v
 -- =====================================================================
 
 ALTER TABLE HIS_TEST_INDEX ADD (
-  COMMON_CODE VARCHAR2(50 CHAR)
+  COMMON_CODE VARCHAR2(50 CHAR),
+  HL7_CODE    VARCHAR2(50 CHAR)
 );
 
 COMMENT ON COLUMN HIS_TEST_INDEX.COMMON_CODE IS 'Ma chi so xet nghiem theo danh muc dung chung - gui truong MaDungChung khi lien thong';
+COMMENT ON COLUMN HIS_TEST_INDEX.HL7_CODE    IS 'Ma chi so theo chuan HL7 - dung khi trao doi ban tin HL7 voi may xet nghiem va he thong ngoai';
 
 COMMIT;
 
--- Sau khi them cot: BO SUNG COMMON_CODE vao cau SELECT cua view V_HIS_TEST_INDEX,
+-- Sau khi them cot: BO SUNG COMMON_CODE va HL7_CODE vao cau SELECT cua view V_HIS_TEST_INDEX,
 -- vi frontend nap danh muc qua BackendDataWorker tu view va luoi danh muc bind theo view.
 -- (Lay dinh nghia view hien tai roi CREATE OR REPLACE, khong viet lai tu dau:
 --  SELECT TEXT FROM USER_VIEWS WHERE VIEW_NAME = 'V_HIS_TEST_INDEX';)
 
--- KHONG tao index cho COMMON_CODE: chi doc theo khoa chinh danh muc va de hien thi.
+-- KHONG tao index cho COMMON_CODE / HL7_CODE: chi doc theo khoa chinh danh muc va de hien thi.
 
 -- KHONG tao index moi tren HIS_SERE_SERV: doc theo ID / SERVICE_REQ_ID da co index.
 
@@ -148,7 +152,7 @@ COMMIT;
 --    AND COLUMN_NAME LIKE 'EMR_TOOLKIT%' ORDER BY COLUMN_ID;
 --
 -- SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, DATA_LENGTH FROM USER_TAB_COLUMNS
---  WHERE COLUMN_NAME = 'COMMON_CODE'
+--  WHERE COLUMN_NAME IN ('COMMON_CODE','HL7_CODE')
 --    AND TABLE_NAME IN ('HIS_TEST_INDEX','V_HIS_TEST_INDEX');
 --
 -- Dem danh muc chua khai ma dung chung (se phai dung fallback khi day):
@@ -170,5 +174,5 @@ COMMIT;
 -- DROP INDEX IDX_HIS_SERVICE_REQ_EMR_TK;
 -- ALTER TABLE HIS_SERVICE_REQ DROP (EMR_TOOLKIT_RESULT, EMR_TOOLKIT_DESC, EMR_TOOLKIT_TIME);
 -- ALTER TABLE HIS_SERE_SERV DROP (EMR_TOOLKIT_RECORD_ID, EMR_TOOLKIT_VALID_UNTIL, EMR_TOOLKIT_TIME);
--- ALTER TABLE HIS_TEST_INDEX DROP (COMMON_CODE);
--- (go bo cot COMMON_CODE cung phai bo khoi view V_HIS_TEST_INDEX va khoi MOS.EFMODEL)
+-- ALTER TABLE HIS_TEST_INDEX DROP (COMMON_CODE, HL7_CODE);
+-- (go bo 2 cot nay cung phai bo khoi view V_HIS_TEST_INDEX va khoi MOS.EFMODEL)

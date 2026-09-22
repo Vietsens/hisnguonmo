@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -192,6 +192,11 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                 {
                     this.Text = this.moduleData.text;
                 }
+                //Ma dung chung va ma HL7 cua chi so — khai bao de lien thong va trao doi ban tin
+                this.lciCommonCode.Text = Inventec.Common.Resource.Get.Value("frmHisTestIndex.lciCommonCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciHl7Code.Text = Inventec.Common.Resource.Get.Value("frmHisTestIndex.lciHl7Code.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grclCommonCode.Caption = Inventec.Common.Resource.Get.Value("frmHisTestIndex.grclCommonCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grclHl7Code.Caption = Inventec.Common.Resource.Get.Value("frmHisTestIndex.grclHl7Code.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -780,6 +785,8 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                     txtConversionRate.EditValue = data.CONVERT_RATIO_TYPE;
                     txtDefaultResult.Text = data.DEFAULT_VALUE;
                     txtBHYTCode.Text = data.BHYT_CODE;
+                    txtCommonCode.Text = data.COMMON_CODE;
+                    txtHl7Code.Text = data.HL7_CODE;
                     txtBHYTName.Text = data.BHYT_NAME;
                     txtTestIndexCode.Text = data.TEST_INDEX_CODE;
                     txtTestIndexName.Text = data.TEST_INDEX_NAME;
@@ -1166,6 +1173,8 @@ namespace HIS.Desktop.Plugins.HisTestIndex
                 currentDTO.TEST_INDEX_CODE = txtTestIndexCode.Text.Trim();
                 currentDTO.TEST_INDEX_NAME = txtTestIndexName.Text.Trim();
                 currentDTO.BHYT_CODE = txtBHYTCode.Text.Trim();
+                currentDTO.COMMON_CODE = txtCommonCode.Text.Trim();
+                currentDTO.HL7_CODE = txtHl7Code.Text.Trim();
                 currentDTO.BHYT_NAME = txtBHYTName.Text.Trim();
                 currentDTO.RESULT_BLOOD_A = txtResultsGroupA.Text.Trim();
                 currentDTO.RESULT_BLOOD_B = txtResultsGroupB.Text.Trim();

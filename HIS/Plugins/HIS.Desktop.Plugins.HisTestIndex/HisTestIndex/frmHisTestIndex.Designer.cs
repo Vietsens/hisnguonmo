@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -95,6 +95,8 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grclBHYTCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grclBHYTName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grclCommonCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grclHl7Code = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -164,6 +166,10 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtBHYTName = new DevExpress.XtraEditors.TextEdit();
             this.txtBHYTCode = new DevExpress.XtraEditors.TextEdit();
+            this.txtCommonCode = new DevExpress.XtraEditors.TextEdit();
+            this.txtHl7Code = new DevExpress.XtraEditors.TextEdit();
+            this.lciCommonCode = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciHl7Code = new DevExpress.XtraLayout.LayoutControlItem();
             this.spNumOrder = new DevExpress.XtraEditors.SpinEdit();
             this.cboTestIndexUnit = new DevExpress.XtraEditors.LookUpEdit();
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
@@ -275,6 +281,10 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBHYTName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBHYTCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCommonCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHl7Code.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCommonCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHl7Code)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spNumOrder.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTestIndexUnit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTestIndexCode.Properties)).BeginInit();
@@ -545,6 +555,8 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn1,
             this.grclBHYTCode,
             this.grclBHYTName,
+            this.grclCommonCode,
+            this.grclHl7Code,
             this.gridColumn6,
             this.gridColumn10,
             this.gridColumn7,
@@ -712,6 +724,26 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.grclBHYTName.Visible = true;
             this.grclBHYTName.VisibleIndex = 9;
             // 
+            // grclCommonCode
+            // 
+            this.grclCommonCode.Caption = "Mã dùng chung";
+            this.grclCommonCode.FieldName = "COMMON_CODE";
+            this.grclCommonCode.Name = "grclCommonCode";
+            this.grclCommonCode.OptionsColumn.AllowEdit = false;
+            this.grclCommonCode.Visible = true;
+            this.grclCommonCode.VisibleIndex = 10;
+            this.grclCommonCode.Width = 110;
+            // 
+            // grclHl7Code
+            // 
+            this.grclHl7Code.Caption = "Mã HL7";
+            this.grclHl7Code.FieldName = "HL7_CODE";
+            this.grclHl7Code.Name = "grclHl7Code";
+            this.grclHl7Code.OptionsColumn.AllowEdit = false;
+            this.grclHl7Code.Visible = true;
+            this.grclHl7Code.VisibleIndex = 11;
+            this.grclHl7Code.Width = 110;
+            // 
             // gridColumn6
             // 
             this.gridColumn6.Caption = "Nhóm chỉ số";
@@ -719,7 +751,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 10;
+            this.gridColumn6.VisibleIndex = 12;
             this.gridColumn6.Width = 100;
             // 
             // gridColumn10
@@ -729,7 +761,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 11;
+            this.gridColumn10.VisibleIndex = 13;
             this.gridColumn10.Width = 90;
             // 
             // gridColumn7
@@ -742,7 +774,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn7.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 12;
+            this.gridColumn7.VisibleIndex = 14;
             // 
             // CheckIsToCalculateEgfr
             // 
@@ -759,7 +791,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumnIsHbsAg.OptionsColumn.AllowEdit = false;
             this.gridColumnIsHbsAg.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnIsHbsAg.Visible = true;
-            this.gridColumnIsHbsAg.VisibleIndex = 15;
+            this.gridColumnIsHbsAg.VisibleIndex = 17;
             // 
             // CheckIsHbsAg
             // 
@@ -776,7 +808,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumnHCV.OptionsColumn.AllowEdit = false;
             this.gridColumnHCV.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnHCV.Visible = true;
-            this.gridColumnHCV.VisibleIndex = 16;
+            this.gridColumnHCV.VisibleIndex = 18;
             // 
             // CheckIsHCV
             // 
@@ -793,7 +825,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumnHIV.OptionsColumn.AllowEdit = false;
             this.gridColumnHIV.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnHIV.Visible = true;
-            this.gridColumnHIV.VisibleIndex = 17;
+            this.gridColumnHIV.VisibleIndex = 19;
             // 
             // CheckIsHIV
             // 
@@ -810,7 +842,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumnABO.OptionsColumn.AllowEdit = false;
             this.gridColumnABO.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnABO.Visible = true;
-            this.gridColumnABO.VisibleIndex = 13;
+            this.gridColumnABO.VisibleIndex = 15;
             // 
             // CheckIsABO
             // 
@@ -827,7 +859,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumnRH.OptionsColumn.AllowEdit = false;
             this.gridColumnRH.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnRH.Visible = true;
-            this.gridColumnRH.VisibleIndex = 14;
+            this.gridColumnRH.VisibleIndex = 16;
             // 
             // CheckIsRH
             // 
@@ -841,7 +873,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn8.FieldName = "MATERIAL_TYPE_NAME";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 18;
+            this.gridColumn8.VisibleIndex = 20;
             this.gridColumn8.Width = 150;
             // 
             // gridColumn9
@@ -851,7 +883,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 19;
+            this.gridColumn9.VisibleIndex = 21;
             this.gridColumn9.Width = 150;
             // 
             // gridColumn11
@@ -862,7 +894,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 20;
+            this.gridColumn11.VisibleIndex = 22;
             // 
             // gridColumn12
             // 
@@ -872,7 +904,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 21;
+            this.gridColumn12.VisibleIndex = 23;
             // 
             // gridColumn13
             // 
@@ -881,7 +913,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 22;
+            this.gridColumn13.VisibleIndex = 24;
             // 
             // gridColumn14
             // 
@@ -890,7 +922,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 23;
+            this.gridColumn14.VisibleIndex = 25;
             // 
             // gridColumn15
             // 
@@ -899,7 +931,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 24;
+            this.gridColumn15.VisibleIndex = 26;
             // 
             // gridColumn16
             // 
@@ -909,7 +941,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn16.OptionsColumn.AllowEdit = false;
             this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 25;
+            this.gridColumn16.VisibleIndex = 27;
             // 
             // gridColumn5
             // 
@@ -920,7 +952,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.gridColumn5.ToolTip = "Trạng thái";
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 26;
+            this.gridColumn5.VisibleIndex = 28;
             // 
             // grdColCreateTime
             // 
@@ -931,7 +963,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.grdColCreateTime.ToolTip = "CREATE_TIME";
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 27;
+            this.grdColCreateTime.VisibleIndex = 29;
             this.grdColCreateTime.Width = 120;
             // 
             // grdColCreator
@@ -942,7 +974,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.grdColCreator.OptionsColumn.AllowEdit = false;
             this.grdColCreator.ToolTip = "CREATOR";
             this.grdColCreator.Visible = true;
-            this.grdColCreator.VisibleIndex = 28;
+            this.grdColCreator.VisibleIndex = 30;
             this.grdColCreator.Width = 100;
             // 
             // grdColModifyTime
@@ -954,7 +986,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.grdColModifyTime.ToolTip = "MODIFY_TIME";
             this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifyTime.Visible = true;
-            this.grdColModifyTime.VisibleIndex = 29;
+            this.grdColModifyTime.VisibleIndex = 31;
             this.grdColModifyTime.Width = 120;
             // 
             // grdColModifier
@@ -965,7 +997,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.grdColModifier.OptionsColumn.AllowEdit = false;
             this.grdColModifier.ToolTip = "MODIFIER";
             this.grdColModifier.Visible = true;
-            this.grdColModifier.VisibleIndex = 30;
+            this.grdColModifier.VisibleIndex = 32;
             this.grdColModifier.Width = 100;
             // 
             // Lock
@@ -1115,6 +1147,8 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lcEditorInfo.Controls.Add(this.lkTestServiceTypeId);
             this.lcEditorInfo.Controls.Add(this.txtBHYTName);
             this.lcEditorInfo.Controls.Add(this.txtBHYTCode);
+            this.lcEditorInfo.Controls.Add(this.txtCommonCode);
+            this.lcEditorInfo.Controls.Add(this.txtHl7Code);
             this.lcEditorInfo.Controls.Add(this.spNumOrder);
             this.lcEditorInfo.Controls.Add(this.cboTestIndexUnit);
             this.lcEditorInfo.Controls.Add(this.btnEdit);
@@ -1505,6 +1539,28 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.txtBHYTCode.TabIndex = 31;
             this.txtBHYTCode.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtBHYTCode_KeyUp);
             // 
+            // txtCommonCode
+            // 
+            this.txtCommonCode.Location = new System.Drawing.Point(112, 627);
+            this.txtCommonCode.MenuManager = this.barManager1;
+            this.txtCommonCode.Name = "txtCommonCode";
+            this.txtCommonCode.Properties.MaxLength = 50;
+            this.txtCommonCode.Size = new System.Drawing.Size(246, 20);
+            this.txtCommonCode.StyleController = this.lcEditorInfo;
+            this.txtCommonCode.TabIndex = 61;
+            this.txtCommonCode.ToolTip = "Mã chỉ số theo danh mục dùng chung, gửi lên cổng khi liên thông kết quả";
+            // 
+            // txtHl7Code
+            // 
+            this.txtHl7Code.Location = new System.Drawing.Point(112, 651);
+            this.txtHl7Code.MenuManager = this.barManager1;
+            this.txtHl7Code.Name = "txtHl7Code";
+            this.txtHl7Code.Properties.MaxLength = 50;
+            this.txtHl7Code.Size = new System.Drawing.Size(246, 20);
+            this.txtHl7Code.StyleController = this.lcEditorInfo;
+            this.txtHl7Code.TabIndex = 62;
+            this.txtHl7Code.ToolTip = "Mã chỉ số theo chuẩn HL7, dùng khi trao đổi bản tin với máy xét nghiệm";
+            // 
             // spNumOrder
             // 
             this.spNumOrder.EditValue = new decimal(new int[] {
@@ -1619,6 +1675,8 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem10,
             this.layoutControlItem13,
             this.layoutControlItem14,
+            this.lciCommonCode,
+            this.lciHl7Code,
             this.lciRoomTypeId,
             this.lciCsBatThuong,
             this.licTestIndexGroupID,
@@ -1649,7 +1707,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "Root";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(360, 635);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(360, 683);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem8
@@ -1695,7 +1753,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 625);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 673);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(360, 10);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -1767,6 +1825,32 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(105, 20);
             this.layoutControlItem14.TextToControlDistance = 5;
+            // 
+            // lciCommonCode
+            // 
+            this.lciCommonCode.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciCommonCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciCommonCode.Control = this.txtCommonCode;
+            this.lciCommonCode.Location = new System.Drawing.Point(0, 625);
+            this.lciCommonCode.Name = "lciCommonCode";
+            this.lciCommonCode.Size = new System.Drawing.Size(360, 24);
+            this.lciCommonCode.Text = "Mã dùng chung:";
+            this.lciCommonCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciCommonCode.TextSize = new System.Drawing.Size(105, 20);
+            this.lciCommonCode.TextToControlDistance = 5;
+            // 
+            // lciHl7Code
+            // 
+            this.lciHl7Code.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciHl7Code.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciHl7Code.Control = this.txtHl7Code;
+            this.lciHl7Code.Location = new System.Drawing.Point(0, 649);
+            this.lciHl7Code.Name = "lciHl7Code";
+            this.lciHl7Code.Size = new System.Drawing.Size(360, 24);
+            this.lciHl7Code.Text = "Mã HL7:";
+            this.lciHl7Code.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciHl7Code.TextSize = new System.Drawing.Size(105, 20);
+            this.lciHl7Code.TextToControlDistance = 5;
             // 
             // lciRoomTypeId
             // 
@@ -2247,6 +2331,10 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             ((System.ComponentModel.ISupportInitialize)(this.lkTestServiceTypeId.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBHYTName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHl7Code)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCommonCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHl7Code.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCommonCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBHYTCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spNumOrder.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTestIndexUnit.Properties)).EndInit();
@@ -2376,10 +2464,16 @@ namespace HIS.Desktop.Plugins.HisTestIndex
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraEditors.TextEdit txtBHYTName;
         private DevExpress.XtraEditors.TextEdit txtBHYTCode;
+        private DevExpress.XtraEditors.TextEdit txtCommonCode;
+        private DevExpress.XtraEditors.TextEdit txtHl7Code;
+        private DevExpress.XtraLayout.LayoutControlItem lciCommonCode;
+        private DevExpress.XtraLayout.LayoutControlItem lciHl7Code;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
         private DevExpress.XtraGrid.Columns.GridColumn grclBHYTCode;
         private DevExpress.XtraGrid.Columns.GridColumn grclBHYTName;
+        private DevExpress.XtraGrid.Columns.GridColumn grclCommonCode;
+        private DevExpress.XtraGrid.Columns.GridColumn grclHl7Code;
         private DevExpress.XtraEditors.GridLookUpEdit lkTestServiceTypeId;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem lciRoomTypeId;

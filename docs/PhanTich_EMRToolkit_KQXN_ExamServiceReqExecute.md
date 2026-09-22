@@ -19,7 +19,7 @@
 | 6 | Cấu hình | **Một khóa `HIS_CONFIG` duy nhất** — `HIS.Desktop.Plugins.EmrToolKit.ConnectionInfo`, các tham số là các vị trí phân tách `\|` (mục 6.1) |
 | 7 | Luồng xem trên Xử lý khám | **Giữ** — nút `EMRToolkit` đặt ngay sau "In ấn" |
 | 8 | Nhánh xem | Dùng **PDF** (`DownloadPdf`), không làm nhánh JSON (`VerifyOtp`) |
-| 9 | Mã dùng chung | `MaDichVu` dùng `HIS_SERVICE.HEIN_SERVICE_BHYT_CODE` **có sẵn** (mã kỹ thuật dùng chung như khai báo với cổng BHYT). `MaDungChung` là **cột mới** `HIS_TEST_INDEX.COMMON_CODE`, khai báo ở `HIS.Desktop.Plugins.HisTestIndex` (mục 4.3) |
+| 9 | Mã dùng chung | `MaDichVu` dùng `HIS_SERVICE.HEIN_SERVICE_BHYT_CODE` **có sẵn** (mã kỹ thuật dùng chung như khai báo với cổng BHYT). `MaDungChung` là **cột mới** `HIS_TEST_INDEX.COMMON_CODE`. Danh mục chỉ số bổ sung thêm **`HL7_CODE`** (mã theo chuẩn HL7) — cả hai khai ở `HIS.Desktop.Plugins.HisTestIndex` (mục 4.3) |
 | 10 | `GioiTinh` | Giữ đúng quy ước HIS (`HIS_GENDER.ID`) |
 | 11 | Loại CLS triển khai lần này | **Chỉ xét nghiệm**. Mọi tên gọi (khóa cấu hình, tên class, tên cột, tên job) đặt ở mức **cận lâm sàng — `Subclinical`**, để thêm CĐHA / PTTT / TDCN về sau chỉ là thêm builder + bật thêm loại trong cấu hình, không đổi kiến trúc hay DDL (mục 3.6) |
 
@@ -330,6 +330,7 @@ Cổng định danh dữ liệu bằng **mã dùng chung**, không phải mã n�
 |---|---|---|---|
 | `MaDichVu` | `HIS_SERVICE.HEIN_SERVICE_BHYT_CODE` | **Có sẵn** — mã kỹ thuật dùng chung, chính mã đã khai với cổng BHYT | `HIS.Desktop.Plugins.HisService` (ô "Mã BHYT" hiện có) |
 | `MaDungChung` | `HIS_TEST_INDEX.COMMON_CODE` | **Cột mới** — chỉ số xét nghiệm chưa có mã dùng chung | `HIS.Desktop.Plugins.HisTestIndex` (ô mới) |
+| — (chưa dùng khi gửi cổng) | `HIS_TEST_INDEX.HL7_CODE` | **Cột mới** — mã chỉ số theo chuẩn HL7, phục vụ trao đổi bản tin với máy xét nghiệm và hệ thống ngoài | `HIS.Desktop.Plugins.HisTestIndex` (ô mới) |
 
 `HEIN_SERVICE_BHYT_CODE` đang được dùng đúng vai này ở luồng xuất XML BHYT (`MA_DICH_VU` lấy từ cột đó — `UC_HisService.cs:8315`), nên **không thêm cột mới cho `HIS_SERVICE`**.
 
@@ -349,11 +350,11 @@ Chọn fallback thay vì chặn vì viện có hàng nghìn dịch vụ/chỉ s�
 
 | # | Việc | Chi tiết |
 |---|---|---|
-| 1 | Ô nhập | `txtCommonCode` (TextEdit, MaxLength 50) + `lciCommonCode` caption "Mã dùng chung", đặt cạnh ô "Mã BHYT" (`txtBHYTCode`) hiện có |
-| 2 | Cột lưới | `COMMON_CODE`, caption "Mã dùng chung", đặt sau cột "Mã BHYT" (`grclBHYTCode`) |
-| 3 | Nạp dữ liệu | `txtCommonCode.Text = data.COMMON_CODE` (cạnh chỗ gán `txtBHYTCode.Text`, `frmHisTestIndex.cs:782`) |
-| 4 | Lưu | `currentDTO.COMMON_CODE = txtCommonCode.Text.Trim()` trong `UpdateDTOFromDataForm` (`frmHisTestIndex.cs:1168`) |
-| 5 | Validate | Rule độ dài 50 — dùng lại `ValidMaxlength` / `ValidTextEditMaxLenght` sẵn có của plugin |
+| 1 | Ô nhập | `txtCommonCode` và `txtHl7Code` (TextEdit, MaxLength 50) + `lciCommonCode` / `lciHl7Code` caption "Mã dùng chung" và "Mã HL7", đặt ở cuối nhóm thông tin chỉ số |
+| 2 | Cột lưới | `COMMON_CODE` và `HL7_CODE`, caption "Mã dùng chung" và "Mã HL7", đặt ngay sau cột "Tên BHYT" (`grclBHYTName`) |
+| 3 | Nạp dữ liệu | `txtCommonCode.Text = data.COMMON_CODE` và `txtHl7Code.Text = data.HL7_CODE` (cạnh chỗ gán `txtBHYTCode.Text`) |
+| 4 | Lưu | Gán `COMMON_CODE` và `HL7_CODE` từ 2 ô nhập trong `UpdateDTOFromDataForm` |
+| 5 | Giới hạn nhập | `Properties.MaxLength = 50` trên cả hai ô — khớp độ dài cột, không cần thêm rule validate |
 | 6 | Đa ngôn ngữ | Key caption ô nhập + cột lưới vào `Lang.vi.resx` và `Lang.en.resx` |
 
 **Phụ thuộc kỹ thuật — khác với nhóm cột `EMR_TOOLKIT_*`:**
@@ -361,8 +362,8 @@ Chọn fallback thay vì chặn vì viện có hàng nghìn dịch vụ/chỉ s�
 Plugin danh mục gán trực tiếp vào entity `MOS.EFMODEL.DataModels.HIS_TEST_INDEX` rồi POST qua API, nên cột mới **BẮT BUỘC có trong EFMODEL**, không thể chỉ đọc/ghi bằng SQL raw như phần trạng thái đẩy. Chuỗi việc:
 
 ```
-1. DBA chạy DDL  : ALTER TABLE HIS_TEST_INDEX ADD COMMON_CODE   (mục 5.4)
-                   cập nhật lại view V_HIS_TEST_INDEX (thêm cột vào SELECT)
+1. DBA chạy DDL  : ALTER TABLE HIS_TEST_INDEX ADD COMMON_CODE, HL7_CODE   (mục 5.4)
+                   cập nhật lại view V_HIS_TEST_INDEX (thêm 2 cột vào SELECT)
 2. Backend MOS   : thêm property vào DataModelTable.edmx (SSDL + CSDL + MSL),
                    DataModelView.edmx, HIS_TEST_INDEX.cs, V_HIS_TEST_INDEX.cs
                    + rule độ dài trong HisTestIndexCheck
@@ -418,12 +419,13 @@ CREATE INDEX IDX_HIS_SERVICE_REQ_EMR_TK
 | Bảng | Cột | Kiểu | Ý nghĩa |
 |---|---|---|---|
 | `HIS_TEST_INDEX` | `COMMON_CODE` | VARCHAR2(50 CHAR) | Mã chỉ số theo danh mục dùng chung — gửi ở `MaDungChung` |
+| `HIS_TEST_INDEX` | `HL7_CODE` | VARCHAR2(50 CHAR) | Mã chỉ số theo chuẩn HL7 — trao đổi bản tin với máy xét nghiệm, hệ thống ngoài |
 
-Phải cập nhật lại **view** `V_HIS_TEST_INDEX` (thêm cột vào câu SELECT) vì frontend nạp danh mục qua `BackendDataWorker` từ view và lưới danh mục bind theo view.
+Phải cập nhật lại **view** `V_HIS_TEST_INDEX` (thêm 2 cột vào câu SELECT) vì frontend nạp danh mục qua `BackendDataWorker` từ view và lưới danh mục bind theo view.
 
 `HIS_SERVICE` **không thêm cột** — `MaDichVu` dùng `HEIN_SERVICE_BHYT_CODE` có sẵn.
 
-Không cần index: cột chỉ để đọc theo khóa chính của danh mục (đã có index) và để hiển thị.
+Không cần index: hai cột chỉ để đọc theo khóa chính của danh mục (đã có index) và để hiển thị.
 
 ### 5.5. Việc kèm DDL
 
@@ -508,10 +510,10 @@ Quy tắc parse (BE và FE dùng cùng logic, mẫu `Hoc3176ConnectionADO.Parse`
 | `MOS.MANAGER/MOS.MANAGER.csproj`, `MOS.QuartzScheduler/MOS.QuartzScheduler.csproj` | Sửa — thêm Compile |
 | `MOS.QuartzScheduler/JobProcessor.cs` | Sửa — 1 dòng `AddJob()` |
 | `MOS.API/Web.config` | Sửa — 1 key interval |
-| `MOS.EFMODEL/DataModels/DataModelTable.edmx` (SSDL + CSDL + MSL) | Sửa — thêm `COMMON_CODE` cho `HIS_TEST_INDEX` |
-| `MOS.EFMODEL/DataModels/DataModelView.edmx` | Sửa — thêm `COMMON_CODE` cho `V_HIS_TEST_INDEX` |
-| `MOS.EFMODEL/DataModels/HIS_TEST_INDEX.cs`, `V_HIS_TEST_INDEX.cs` | Sửa — thêm property `COMMON_CODE` |
-| `MOS.MANAGER/HisTestIndex/HisTestIndexCheck.cs` | Sửa — rule độ dài 50 cho `COMMON_CODE` |
+| `MOS.EFMODEL/DataModels/DataModelTable.edmx` (SSDL + CSDL + MSL) | Sửa — thêm `COMMON_CODE`, `HL7_CODE` cho `HIS_TEST_INDEX` |
+| `MOS.EFMODEL/DataModels/DataModelView.edmx` | Sửa — thêm `COMMON_CODE`, `HL7_CODE` cho `V_HIS_TEST_INDEX` |
+| `MOS.EFMODEL/DataModels/HIS_TEST_INDEX.cs`, `V_HIS_TEST_INDEX.cs` | Sửa — thêm property `COMMON_CODE`, `HL7_CODE` |
+| (`HisTestIndexCheck.cs` không phải sửa — plugin đã giới hạn `MaxLength = 50` ở ô nhập, độ dài do cột CSDL bảo đảm) | — |
 
 ### Frontend
 
@@ -526,9 +528,9 @@ Quy tắc parse (BE và FE dùng cùng logic, mẫu `Hoc3176ConnectionADO.Parse`
 | `ExamServiceReqExecute/ExamServiceReqExecuteControl.designer.cs` | Sửa | `btnEmrToolkit` sau "In ấn", dịch các item từ x=1150 |
 | `ExamServiceReqExecute/ExamServiceReqExecuteControl__EmrToolkit.cs` | Mới | Click → chọn phiếu XN → mở SereServTein |
 | `ExamServiceReqExecute/__InitLanguage.cs`, `__Load.cs`, `Config/HisConfigCFG.cs`, `Resources/Lang.*.resx`, `*.csproj` | Sửa | Caption, ẩn/hiện, reference |
-| `HisTestIndex/HisTestIndex/frmHisTestIndex.Designer.cs` | Sửa | Ô nhập `txtCommonCode` + cột lưới `COMMON_CODE` |
-| `HisTestIndex/HisTestIndex/frmHisTestIndex.cs` | Sửa | Nạp và lưu `COMMON_CODE`, validate độ dài 50 |
-| `HisTestIndex/Resources/Lang.vi.resx`, `Lang.en.resx` | Sửa | Caption ô nhập và cột lưới |
+| `HisTestIndex/HisTestIndex/frmHisTestIndex.Designer.cs` | Sửa | 2 ô nhập `txtCommonCode`, `txtHl7Code` + 2 cột lưới `COMMON_CODE`, `HL7_CODE` |
+| `HisTestIndex/HisTestIndex/frmHisTestIndex.cs` | Sửa | Nạp và lưu 2 trường, set caption đa ngôn ngữ |
+| `HisTestIndex/Resources/Lang.vi.resx`, `Lang.en.resx` | Sửa | 4 key caption cho 2 ô nhập và 2 cột lưới |
 
 
 ### Tài liệu

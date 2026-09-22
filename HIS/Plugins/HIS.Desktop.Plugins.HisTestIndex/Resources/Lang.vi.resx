@@ -321,4 +321,16 @@
   <data name="frmHisTestIndex.lciResultsRHTru.Text" xml:space="preserve">
     <value>Kết quả RH-:</value>
   </data>
+  <data name="frmHisTestIndex.lciCommonCode.Text" xml:space="preserve">
+    <value>Mã dùng chung:</value>
+  </data>
+  <data name="frmHisTestIndex.lciHl7Code.Text" xml:space="preserve">
+    <value>Mã HL7:</value>
+  </data>
+  <data name="frmHisTestIndex.grclCommonCode.Caption" xml:space="preserve">
+    <value>Mã dùng chung</value>
+  </data>
+  <data name="frmHisTestIndex.grclHl7Code.Caption" xml:space="preserve">
+    <value>Mã HL7</value>
+  </data>
 </root>
