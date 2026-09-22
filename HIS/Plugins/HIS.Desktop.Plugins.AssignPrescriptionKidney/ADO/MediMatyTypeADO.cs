@@ -1105,6 +1105,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
         public short? IS_CHEMICAL_SUBSTANCE { get; set; }
         public bool IsExpendType { get; set; }
         public bool IsDisableExpend { get; set; }
+        /// <summary>
+        /// Force-disable cell "Hao phí" theo cấu hình HIS_DEPA_PATIENT_TYPE
+        /// (IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1).
+        /// </summary>
+        public bool NotExpend { get; set; }
+        /// <summary>
+        /// HIS_DEPA_PATIENT_TYPE có bản ghi khớp (Khoa, ĐTTT) nhưng cả 2 cờ đều = 0
+        /// → ưu tiên CAO NHẤT: luôn cho sửa, bỏ qua IS_NOT_EXPEND của loại vật tư và rule #16421.
+        /// </summary>
+        public bool IsExpendEditableByDpt { get; set; }
         public short? IS_SUB_PRES { get; set; }
         public string EXCEED_LIMIT_IN_PRES_REASON { get; set; }
         public string EXCEED_LIMIT_IN_DAY_REASON { get; set; }

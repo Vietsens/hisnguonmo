@@ -203,6 +203,7 @@ namespace HIS.Desktop.Modules.Main
                     RunLogService();
                     RunNotify();
                     RunCheckConnectServer();
+                    RunCheckSessionTimeout();
                     InitSubscriber();//TODO
                     //Kiem tra han doi mat khau TRUOC khi chon phong: InitDefaultSelectRoom mo modal
                     //chon phong ngay trong Load nen phai chen truoc, neu khong canh bao se hien sau.
