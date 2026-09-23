@@ -421,6 +421,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     this.GetSereServInKip()
                     );
 
+                // Viec 56273: da qua het kiem tra, thuc su goi backend -> tu luu (__AutoSave.cs) khong bao alert chong len MessageManager.Show
+                this.lastSaveReachedBackend = true;
                 var rsData = (isave != null ? isave.Run() : null);
                 if (rsData != null)
                 {

@@ -437,7 +437,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
                 LogSystem.Debug("frmAssignPrescription_Load. 4");
                 this.FillDataToControlsForm();
-                // Viec 56273: khoi phuc trang thai o "Tu dong luu" (nho theo tai khoan) - chan CheckedChanged ghi de trong luc khoi phuc
+                // Viec 56273: khoi phuc trang thai o "Tu dong luu" (nho tren may tram - ControlState SQLite cua client) - chan CheckedChanged ghi de trong luc khoi phuc
                 this.isNotLoadWhileChangeControlStateInFirst = true;
                 this.InitControlState();
                 this.isNotLoadWhileChangeControlStateInFirst = false;

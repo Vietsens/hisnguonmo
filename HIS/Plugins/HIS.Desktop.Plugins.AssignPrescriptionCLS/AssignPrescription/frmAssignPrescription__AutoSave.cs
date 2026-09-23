@@ -7,10 +7,15 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  */
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.Resources;
+using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +32,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
     ///   "Ke don tu truc" o Thuc hien xet nghiem, "Ke don can lam sang" (ke moi) o Phong thuc hien: IsCabinet = true + SereServ,
     ///   khong phai sua don) va thuoc/vat tu
     ///   di kem theo HIS_SERVICE_METY/MATY da do len luoi, neu o tich dang bat thi tu goi ProcessSaveData(SAVE) sau khi
-    ///   form hien xong VA 2 kiem tra async cua Load (no vien phi, tran BHYT) da tra loi xong - dung nhu nguoi dung bam Luu.
+    ///   form hien xong VA 3 tac vu async cua Load (thuoc da ke trong ngay, no vien phi, tran BHYT) da xong, nguoi dung
+    ///   khong chon dong form o 2 hop hoi, va dich vu CHUA co thuoc/vat tu di kem (tranh xuat kho trung khi mo Tu truc lan 2)
+    ///   - dung nhu nguoi dung bam Luu.
     /// - Ket hop key HIS.Desktop.Plugins.AssignPrescriptionCLS.AutoClose = 1 (HisConfigCFG.IsAutoCloseAfterSave,
     ///   xu ly o frmAssignPrescription__Save.cs) thi form tu dong lai sau khi luu thanh cong.
     /// Ban Nghe An gui sang (Zalo anh Bui Nam 22/09/2026) chi co doan AutoClose + mo ta checkbox; phan checkbox,
@@ -51,11 +58,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         /// </summary>
         private bool isOpenFromServiceExecute;
         /// <summary>
-        /// Task gop 2 kiem tra async ban ra trong Load (CheckWarningOverTotalPatientPrice - no vien phi,
-        /// LoadTotalSereServByHeinWithTreatment - tran BHYT; ca 2 deu co the hoi YesNo roi this.Close()).
+        /// Task gop 3 tac vu async ban ra trong Load: LoadDataSereServWithTreatment (thuoc da ke trong ngay - can cho canh bao
+        /// khang sinh/trung thuoc trong ProcessSaveData), CheckWarningOverTotalPatientPrice (no vien phi) va
+        /// LoadTotalSereServByHeinWithTreatment (tran BHYT; 2 cai sau co the hoi YesNo roi this.Close()).
         /// Gan o FillSomePatientInfoSelectedInFormGeneralAfterLoad (__Load.cs); tu luu phai CHO task nay xong.
         /// </summary>
         private Task afterLoadWarningTask;
+        /// <summary>
+        /// Mot trong 2 kiem tra async cua Load (no vien phi / tran BHYT) da yeu cau dong form (nguoi dung chon Khong).
+        /// this.Close() co the bi FormClosing huy (hop hoi "thuoc chua luu") nen khong the chi dua vao IsDisposed/Visible:
+        /// co nay dat TRUOC this.Close() o __Load.cs, tu luu kiem sau khi await -> khong luu cai don nguoi dung vua tu choi.
+        /// </summary>
+        private bool isCancelledByAfterLoadWarning;
+        /// <summary>
+        /// Lan tu luu gan nhat: ProcessSaveData da qua het kiem tra va thuc su goi backend (isave.Run, dat o __Save.cs).
+        /// false = bi chan o khau kiem tra (thieu ICD, MIMS, ton kho...) -> bao alert "chua tu luu duoc";
+        /// true = backend da tra loi (thanh cong hoac loi) va MessageManager.Show da hien -> khong bao chong them.
+        /// </summary>
+        private bool lastSaveReachedBackend;
 
         /// <summary>Khoi phuc trang thai o "Tu dong luu" tu ControlState (goi trong Load khi co chan dang bat).</summary>
         private void InitControlState()
@@ -145,7 +165,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         /// xong (BeginInvoke) va sau khi 2 kiem tra async cua Load (no vien phi / tran BHYT) da xong - tuong duong bam nut
         /// Luu, nen moi kiem tra/hoi trong ProcessSaveData van chay: thieu ICD, canh bao MIMS... thi form van mo cho
         /// nguoi dung xu ly, chi bao them 1 alert nhe "chua tu luu duoc" de nguoi dung biet vi sao form con mo.
-        /// Luoi co dong vuot ton kho (Load da canh bao) thi KHONG tu luu de khoi hien 2 hop canh bao lien tiep.
+        /// Luoi co dong vuot ton kho (Load chi to do tren luoi, CheckAmoutWarringInStock chac chan se chan) thi KHONG goi luu,
+        /// chi bao alert nhe. Dich vu DA CO thuoc/vat tu di kem con hieu luc (mo Tu truc lan 2) cung KHONG tu luu de tranh xuat kho trung.
         /// </summary>
         private void TryAutoSaveAttachedMediMaty()
         {
@@ -160,16 +181,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     return;
                 }
                 if (!this.btnSave.Enabled) return;
-                // Cung dieu kien voi CheckAmoutWarringInStock trong ProcessSaveData: chac chan khong luu duoc, Load da hien canh bao
-                if (this.mediMatyTypeADOs.Any(o => (o.AmountAlert ?? 0) > 0
-                    || o.ErrorTypeMediMatyBean == DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning))
+                // Dung bieu thuc cua CheckAmoutWarringInStock (__ValidDataForSave.cs, ke ca bo loc DataType): chac chan se bi chan khi luu
+                if (this.mediMatyTypeADOs.Any(o => ((o.AmountAlert ?? 0) > 0
+                        || o.ErrorTypeMediMatyBean == DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning)
+                    && (o.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
+                        || o.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU
+                        || o.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)))
                 {
                     LogSystem.Info("56273 AutoSave: bo qua vi co dong vuot ton kho / co canh bao tren luoi - nguoi dung tu sua so luong roi bam Luu.");
                     Inventec.Desktop.Common.Message.MessageManager.ShowAlert(this, "", ResourceMessage.ChuaTuLuuDuocThuocVatTuDiKem);
                     return;
                 }
 
-                LogSystem.Info(String.Format("56273 AutoSave: tu luu {0} dong thuoc/vat tu di kem cua dich vu SERVICE_ID = {1} (SERE_SERV_ID = {2}).",
+                LogSystem.Info(String.Format("56273 AutoSave: du dieu kien tu luu {0} dong thuoc/vat tu di kem cua dich vu SERVICE_ID = {1} (SERE_SERV_ID = {2}) - cho cac tac vu async cua Load xong.",
                     this.mediMatyTypeADOs.Count,
                     this.currentSereServ != null ? this.currentSereServ.SERVICE_ID : 0,
                     this.currentSereServ != null ? this.currentSereServ.ID : 0));
@@ -177,20 +201,43 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     try
                     {
-                        // Cho 2 kiem tra async ban ra trong Load xong han (hop hoi "thieu vien phi"/"vuot tran BHYT" da duoc tra
-                        // loi, form chua bi Close) roi moi luu - tranh luu xong roi hop hoi moi hien, hoac form bi Dispose
-                        // trong luc ProcessSaveData dang chay. Task da xong thi await tra ve ngay.
+                        // Cho 3 tac vu async ban ra trong Load xong han (thuoc da ke trong ngay da nap; hop hoi "thieu vien phi"/
+                        // "vuot tran BHYT" da duoc tra loi) roi moi luu - tranh luu xong roi hop hoi moi hien, mat canh bao khang sinh
+                        // trong ngay, hoac form bi Dispose trong luc ProcessSaveData dang chay. Task da xong thi await tra ve ngay.
                         if (this.afterLoadWarningTask != null)
                         {
                             await this.afterLoadWarningTask;
                         }
-                        // Form co the da bi dong trong Load (thieu vien phi / canh bao BHYT chon Khong)
+                        else
+                        {
+                            LogSystem.Warn("56273 AutoSave: afterLoadWarningTask == null (FillSomePatientInfoSelectedInFormGeneralAfterLoad loi truoc khi gan) - tu luu chay khong cho cac tac vu Load.");
+                        }
+                        // Nguoi dung chon Khong o hop hoi no vien phi / tran BHYT -> form dang dong, hoac lenh dong bi FormClosing huy
+                        // (hop hoi "thuoc chua luu") -> tuyet doi khong luu cai don nguoi dung vua tu choi.
+                        if (this.isCancelledByAfterLoadWarning)
+                        {
+                            LogSystem.Info("56273 AutoSave: bo qua vi canh bao sau Load (no vien phi / tran BHYT) yeu cau dong form.");
+                            return;
+                        }
                         if (this.IsDisposed || !this.Visible) return;
                         if (this.actionType != GlobalVariables.ActionAdd || !this.btnSave.Enabled) return;
+                        // Dich vu da co thuoc/vat tu di kem con hieu luc (mo Tu truc lan 2 cho cung dich vu) -> khong tu luu them de tranh xuat kho trung
+                        if (this.HasAttachedMediMateAlready())
+                        {
+                            Inventec.Desktop.Common.Message.MessageManager.ShowAlert(this, "", ResourceMessage.DichVuDaCoThuocVatTuDiKemKhongTuLuu);
+                            return;
+                        }
+
+                        LogSystem.Info(String.Format("56273 AutoSave: goi ProcessSaveData(SAVE) tu luu {0} dong thuoc/vat tu di kem cua dich vu SERVICE_ID = {1} (SERE_SERV_ID = {2}).",
+                            this.mediMatyTypeADOs.Count,
+                            this.currentSereServ != null ? this.currentSereServ.SERVICE_ID : 0,
+                            this.currentSereServ != null ? this.currentSereServ.ID : 0));
+                        this.lastSaveReachedBackend = false;
                         this.ProcessSaveData(HIS.Desktop.Plugins.AssignPrescriptionCLS.SAVETYPE.SAVE);
-                        // Luu thanh cong -> actionType = ActionView. Con ActionAdd = bi chan boi kiem tra/xac nhan trong ProcessSaveData
-                        // (thieu ICD, MIMS, tuong tac...) -> bao nhe de nguoi dung biet form con mo vi chua luu, khong lam gi them.
-                        if (!this.IsDisposed && this.actionType == GlobalVariables.ActionAdd)
+                        // Luu thanh cong -> actionType = ActionView. Con ActionAdd + chua toi backend = bi chan boi kiem tra/xac nhan trong
+                        // ProcessSaveData (thieu ICD, MIMS, tuong tac...) -> bao nhe de nguoi dung biet form con mo vi chua luu.
+                        // Da toi backend ma loi thi MessageManager.Show trong ProcessSaveData da hien loi, khong bao chong them.
+                        if (!this.IsDisposed && this.actionType == GlobalVariables.ActionAdd && !this.lastSaveReachedBackend)
                         {
                             LogSystem.Info("56273 AutoSave: ProcessSaveData khong luu duoc (bi chan boi kiem tra/xac nhan) - giu form mo de nguoi dung xu ly.");
                             Inventec.Desktop.Common.Message.MessageManager.ShowAlert(this, "", ResourceMessage.ChuaTuLuuDuocThuocVatTuDiKem);
@@ -205,6 +252,49 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dich vu dang thuc hien da co thuoc/vat tu di kem con hieu luc chua: HIS_SERE_SERV con voi PARENT_ID = SereServ.ID,
+        /// loai Thuoc/Vat tu, khong IS_DELETE, khong IS_NO_EXECUTE - CUNG dinh nghia voi thu vien CheckRequireMediMate (viec 57799)
+        /// de 2 viec nhin thay cung mot su that. Loi API -> coi la DA CO (khong tu luu, nguoi dung bam Luu tay) de khong lo xuat kho trung.
+        /// </summary>
+        private bool HasAttachedMediMateAlready()
+        {
+            try
+            {
+                if (this.currentSereServ == null || this.currentSereServ.ID <= 0) return false;
+
+                CommonParam param = new CommonParam();
+                HisSereServFilter filter = new HisSereServFilter();
+                filter.PARENT_IDs = new List<long>() { this.currentSereServ.ID };
+                filter.TDL_SERVICE_TYPE_IDs = new List<long>()
+                {
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
+                };
+                var children = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, filter, ProcessLostToken, param);
+                if (children == null && param.HasException)
+                {
+                    LogSystem.Warn("56273 AutoSave: api/HisSereServ/Get loi khi kiem tra thuoc/vat tu di kem da co - khong tu luu."
+                        + Inventec.Common.Logging.LogUtil.TraceData("SERE_SERV_ID", this.currentSereServ.ID)
+                        + Inventec.Common.Logging.LogUtil.TraceData("param", param));
+                    return true;
+                }
+                int existing = children != null ? children.Count(o => o != null && o.IS_DELETE != 1 && o.IS_NO_EXECUTE != 1) : 0;
+                if (existing > 0)
+                {
+                    LogSystem.Info(String.Format("56273 AutoSave: bo qua vi dich vu SERE_SERV_ID = {0} da co {1} dong thuoc/vat tu di kem con hieu luc (tranh xuat kho trung).",
+                        this.currentSereServ.ID, existing));
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return true;
             }
         }
 

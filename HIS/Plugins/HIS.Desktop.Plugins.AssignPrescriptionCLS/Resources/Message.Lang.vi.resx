@@ -489,4 +489,7 @@
   <data name="ChuaTuLuuDuocThuocVatTuDiKem" xml:space="preserve">
     <value>Chưa tự động lưu được thuốc/vật tư đi kèm. Vui lòng kiểm tra lại cảnh báo/các trường bắt buộc rồi bấm Lưu.</value>
   </data>
+  <data name="DichVuDaCoThuocVatTuDiKemKhongTuLuu" xml:space="preserve">
+    <value>Dịch vụ đã có thuốc/vật tư đi kèm, không tự động lưu thêm để tránh xuất kho trùng. Cần kê thêm thì bấm Lưu.</value>
+  </data>
 </root>

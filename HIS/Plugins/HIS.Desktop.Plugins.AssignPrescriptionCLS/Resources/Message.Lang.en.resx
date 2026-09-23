@@ -273,4 +273,7 @@
   <data name="ChuaTuLuuDuocThuocVatTuDiKem" xml:space="preserve">
     <value>Attached medicines/materials were not saved automatically. Please review the warnings/required fields and click Save.</value>
   </data>
+  <data name="DichVuDaCoThuocVatTuDiKemKhongTuLuu" xml:space="preserve">
+    <value>This service already has attached medicines/materials; auto-save skipped to avoid a duplicate stock export. Click Save if more is needed.</value>
+  </data>
 </root>
