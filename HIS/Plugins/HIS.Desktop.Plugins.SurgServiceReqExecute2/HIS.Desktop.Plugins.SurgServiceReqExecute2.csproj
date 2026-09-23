@@ -251,6 +251,9 @@
     <Compile Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2___Extended.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2___MultiMachine.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="Validate\FinishTimeValidationRule.cs" />
     <Compile Include="Validate\StartTimeValidationRule.cs" />

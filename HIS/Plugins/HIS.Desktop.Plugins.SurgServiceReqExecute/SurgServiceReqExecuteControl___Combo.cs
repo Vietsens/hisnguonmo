@@ -1033,30 +1033,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 controlEditorADO.ImmediatePopup = true;
                 ControlEditorLoader.Load(this.cboMachine, datas, controlEditorADO);
 
-                // Lưu lại trạng thái sử dụng máy theo lần sử dụng trước đó
+                // Tich lai cac may da luu cua lan xu ly truoc (ca truong hop nhieu may lan du lieu cu 1 may)
                 if (datas != null && datas.Count > 0)
                 {
-                    long? lastMachineId = null;
-                    string lastMachineCode = null;
-                    if (this.SereServExt != null)
-                    {
-                        if (this.SereServExt.MACHINE_ID.HasValue && this.SereServExt.MACHINE_ID.Value > 0)
-                            lastMachineId = this.SereServExt.MACHINE_ID;
-                        if (!string.IsNullOrWhiteSpace(this.SereServExt.MACHINE_CODE))
-                            lastMachineCode = this.SereServExt.MACHINE_CODE;
-                    }
-
-                    HIS_MACHINE selected = null;
-                    if (lastMachineId.HasValue)
-                        selected = datas.FirstOrDefault(m => m.ID == lastMachineId.Value);
-                    if (selected == null && !string.IsNullOrWhiteSpace(lastMachineCode))
-                        selected = datas.FirstOrDefault(m => string.Equals(m.MACHINE_CODE, lastMachineCode, StringComparison.OrdinalIgnoreCase));
-
-                    if (selected != null)
-                    {
-                        cboMachine.EditValue = selected.ID;
-                        txtMachineCode.Text = selected.MACHINE_CODE;
-                    }
+                    RestoreSavedMachines_MultiMachine();
                 }
             }
             catch (Exception ex)

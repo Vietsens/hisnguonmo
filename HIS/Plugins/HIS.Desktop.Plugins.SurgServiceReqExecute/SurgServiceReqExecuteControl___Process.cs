@@ -950,23 +950,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         SereServExt.END_TIME = null;
                     }
 
-                    if (cboMachine.EditValue != null)
-                    {
-                        SereServExt.MACHINE_ID = (long)cboMachine.EditValue;
-                        SereServExt.MACHINE_CODE = this.txtMachineCode.Text;
-                    }
-                    else
-                    {
-                        SereServExt.MACHINE_ID = null;
-                        SereServExt.MACHINE_CODE = "";
-                    }
+                    //dat NHIEU may: ghi ca 4 truong MACHINE_ID/CODE (may dau tien) va MACHINE_IDS/CODES (ca danh sach)
+                    ApplyMachinesToExt(SereServExt);
                     SereServExt.INSTRUCTION_NOTE = !string.IsNullOrEmpty(txtIntructionNote.Text.Trim()) ? txtIntructionNote.Text.Trim() : null;
                     hisSurgResultSDO.SereServExt = SereServExt;
                 }
                 //AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5, HIS_SERE_SERV>();
                 //HIS_SERE_SERV HisSereServ = AutoMapper.Mapper.Map<V_HIS_SERE_SERV_5, HIS_SERE_SERV>(this.sereServ);
                 //hisSurgResultSDO.SereServ = HisSereServ;
-                Inventec.Common.Logging.LogSystem.Debug("MACHINE_ID=" + SereServExt.MACHINE_ID + "____MACHINE_CODE=" + SereServExt.MACHINE_CODE);
+                Inventec.Common.Logging.LogSystem.Debug("MACHINE_ID=" + SereServExt.MACHINE_ID + "____MACHINE_CODE=" + SereServExt.MACHINE_CODE
+                    + "____MACHINE_IDS=" + (SereServExt.MACHINE_IDS ?? "") + "____MACHINE_CODES=" + (SereServExt.MACHINE_CODES ?? ""));
             }
             catch (Exception ex)
             {

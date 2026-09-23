@@ -649,8 +649,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     txtDescription.Text = this.SereServExt.DESCRIPTION;
                     txtResultNote.Text = this.SereServExt.NOTE;
                     txtIntructionNote.Text = !string.IsNullOrEmpty(SereServExt.INSTRUCTION_NOTE) || (!txtIntructionNote.Text.Equals(SereServExt.INSTRUCTION_NOTE)) ? this.SereServExt.INSTRUCTION_NOTE : dfSereServExt.INSTRUCTION_NOTE;
-                    txtMachineCode.Text = this.SereServExt.MACHINE_CODE;
-                    cboMachine.EditValue = this.SereServExt.MACHINE_ID;
+                    //tich lai CA danh sach may da luu (MACHINE_IDS), du lieu cu chi co 1 may van doc duoc
+                    RestoreSavedMachines_MultiMachine();
                     LogSystem.Info("SereServExts: " + SereServExts.Count);
                     if (this.SereServExt.BEGIN_TIME.HasValue)
                     {
@@ -694,8 +694,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     txtDescription.Text = "";
                     txtResultNote.Text = "";
                     txtIntructionNote.Text = "";
-                    txtMachineCode.Text = "";
-                    cboMachine.EditValue = null;
+                    ClearMachines_MultiMachine();
                 }
 
                 // R18 (2891): gợi ý Máy thực hiện theo Máy đã chốt ở Chỉ định khi mức dịch vụ chưa có Máy
@@ -3160,15 +3159,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
-                // Đã có Máy mức dịch vụ (đã lưu trước đó) -> giữ nguyên, không ghi đè
-                if (cboMachine.EditValue != null)
+                // Đã có Máy mức dịch vụ (đã lưu trước đó) -> giữ nguyên, không ghi đè.
+                // Đọc danh sách máy đang chọn chứ không đọc cboMachine.EditValue: khi tích từ 2 máy
+                // trở lên, EditValue có chủ ý để null nên đọc EditValue sẽ ghi đè mất cả danh sách.
+                if (this.currentMachineIds_MultiMachine != null && this.currentMachineIds_MultiMachine.Count > 0)
                     return;
 
                 // Y lệnh có Máy ở Chỉ định -> gợi ý sẵn cho ĐD/BS
                 if (serviceReq != null && serviceReq.MACHINE_ID.HasValue)
                 {
-                    // cboMachine_EditValueChanged tự fill txtMachineCode từ cache HIS_MACHINE
-                    cboMachine.EditValue = serviceReq.MACHINE_ID.Value;
+                    this.currentMachineIds_MultiMachine = new List<long> { serviceReq.MACHINE_ID.Value };
+                    DisplayCurrentMachines_MultiMachine();
                 }
             }
             catch (Exception ex)
@@ -3200,9 +3201,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                     var data = sources.Where(o => !String.IsNullOrEmpty(o.MACHINE_CODE)
                         && o.MACHINE_CODE.IndexOf(searchCode, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                    //go ma may roi Enter = chon dung 1 may, thay ca danh sach dang tich
                     if (data.Count == 1)
                     {
-                        cboMachine.EditValue = data[0].ID;
+                        this.currentMachineIds_MultiMachine = new List<long> { data[0].ID };
+                        DisplayCurrentMachines_MultiMachine();
                         cboMachine.Properties.Buttons[1].Visible = true;
                         txtMoKTCao.Focus();
                         txtMoKTCao.SelectAll();
@@ -3212,14 +3215,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         var search = data.FirstOrDefault(m => String.Equals(m.MACHINE_CODE, searchCode, StringComparison.OrdinalIgnoreCase));
                         if (search != null)
                         {
-                            cboMachine.EditValue = search.ID;
+                            this.currentMachineIds_MultiMachine = new List<long> { search.ID };
+                            DisplayCurrentMachines_MultiMachine();
                             cboMachine.Properties.Buttons[1].Visible = true;
                             txtMoKTCao.Focus();
                             txtMoKTCao.SelectAll();
                         }
                         else
                         {
-                            cboMachine.EditValue = null;
+                            ClearMachines_MultiMachine();
                             cboMachine.Focus();
                             cboMachine.ShowPopup();
                         }
