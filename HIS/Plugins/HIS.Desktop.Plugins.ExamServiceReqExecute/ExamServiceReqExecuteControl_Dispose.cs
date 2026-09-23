@@ -106,6 +106,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 valiDHST = false;
                 checkSameHeinCFG = 0;
                 requiredControl = 0;
+                isRequiredFieldsQd130 = false;
                 isAllowNoIcd = false;
                 isAutoCheckIcd = false;
                 autoCheckIcd = 0;
