@@ -31,8 +31,10 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
     {
         private readonly Action<string> onSave;
         private List<KskSytClsFieldADO> fields;
-        private List<V_HIS_TEST_INDEX> testIndexs;
-        private Dictionary<string, V_HIS_TEST_INDEX> dicTestIndexByCode;
+        /// <summary>Danh sách bên trái: chỉ số xét nghiệm VÀ dịch vụ (siêu âm, PTTT).</summary>
+        private List<KskClsSourceADO> testIndexs;
+        /// <summary>Tra theo khóa "loại|mã" — mã dịch vụ có thể trùng mã chỉ số.</summary>
+        private Dictionary<string, KskClsSourceADO> dicTestIndexByCode;
         private bool isDirty;
 
         public frmKskSytClsMap(string currentJson, Action<string> onSave)
@@ -340,21 +342,90 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
                     .OrderBy(o => o.TEST_INDEX_GROUP_NAME)
                     .ThenBy(o => o.NUM_ORDER)
                     .ThenBy(o => o.TEST_INDEX_NAME)
+                    .Select(o => new KskClsSourceADO
+                    {
+                        TEST_INDEX_CODE = o.TEST_INDEX_CODE,
+                        TEST_INDEX_NAME = o.TEST_INDEX_NAME,
+                        TEST_INDEX_UNIT_NAME = o.TEST_INDEX_UNIT_NAME,
+                        TEST_INDEX_GROUP_NAME = o.TEST_INDEX_GROUP_NAME,
+                        IS_SERVICE = false
+                    })
                     .ToList();
 
-                this.dicTestIndexByCode = new Dictionary<string, V_HIS_TEST_INDEX>();
+                this.testIndexs.AddRange(LoadServiceSources());
+
+                this.dicTestIndexByCode = new Dictionary<string, KskClsSourceADO>();
                 foreach (var ti in this.testIndexs)
                 {
-                    if (!this.dicTestIndexByCode.ContainsKey(ti.TEST_INDEX_CODE))
-                        this.dicTestIndexByCode.Add(ti.TEST_INDEX_CODE, ti);
+                    if (!this.dicTestIndexByCode.ContainsKey(ti.Key))
+                        this.dicTestIndexByCode.Add(ti.Key, ti);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                this.testIndexs = new List<V_HIS_TEST_INDEX>();
-                this.dicTestIndexByCode = new Dictionary<string, V_HIS_TEST_INDEX>();
+                this.testIndexs = new List<KskClsSourceADO>();
+                this.dicTestIndexByCode = new Dictionary<string, KskClsSourceADO>();
             }
+        }
+
+        /// <summary>Loại dịch vụ được phép nối — siêu âm và phẫu thuật/thủ thuật.</summary>
+        private static readonly string[] SERVICE_TYPE_KEYWORDS =
+            new string[] { "siêu âm", "phẫu thuật", "thủ thuật" };
+
+        /// <summary>
+        /// Nạp DỊCH VỤ siêu âm / phẫu thuật - thủ thuật vào danh sách bên trái.
+        ///
+        /// VÌ SAO: chỉ tiêu "X-quang nhũ" và "Siêu âm 02 tuyến vú" của cổng là KẾT QUẢ CỦA DỊCH VỤ
+        /// chứ không phải chỉ số xét nghiệm, nên không có trong danh mục chỉ số.
+        ///
+        /// Lọc theo TÊN loại dịch vụ chứ không viết cứng mã loại: mã loại khác nhau giữa các viện,
+        /// còn tên thì theo danh mục chuẩn. Ghi ra nhật ký các loại đã gom được để đối chiếu khi
+        /// viện nào đó đặt tên khác.
+        /// </summary>
+        private List<KskClsSourceADO> LoadServiceSources()
+        {
+            var rs = new List<KskClsSourceADO>();
+            try
+            {
+                var all = BackendDataWorker.Get<V_HIS_SERVICE>() ?? new List<V_HIS_SERVICE>();
+                var types = new HashSet<string>();
+
+                foreach (var sv in all)
+                {
+                    if (sv == null || string.IsNullOrWhiteSpace(sv.SERVICE_CODE)) continue;
+                    if (sv.IS_ACTIVE != 1 || (sv.IS_DELETE != null && sv.IS_DELETE != 0)) continue;
+
+                    string loai = sv.SERVICE_TYPE_NAME ?? "";
+                    string loaiThuong = loai.ToLowerInvariant();
+                    bool hop = false;
+                    foreach (string kw in SERVICE_TYPE_KEYWORDS)
+                    {
+                        if (loaiThuong.Contains(kw)) { hop = true; break; }
+                    }
+                    if (!hop) continue;
+
+                    types.Add(loai);
+                    rs.Add(new KskClsSourceADO
+                    {
+                        TEST_INDEX_CODE = sv.SERVICE_CODE,
+                        TEST_INDEX_NAME = sv.SERVICE_NAME,
+                        TEST_INDEX_UNIT_NAME = "",
+                        TEST_INDEX_GROUP_NAME = "Dịch vụ - " + loai,
+                        IS_SERVICE = true
+                    });
+                }
+
+                rs = rs.OrderBy(o => o.TEST_INDEX_GROUP_NAME).ThenBy(o => o.TEST_INDEX_NAME).ToList();
+                Inventec.Common.Logging.LogSystem.Info("SytHcm/CLS: nap " + rs.Count
+                    + " dich vu vao danh sach noi chi so; loai dich vu gom duoc: "
+                    + (types.Count > 0 ? string.Join(", ", types.ToArray()) : "(khong co)"));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return rs;
         }
 
         /// <summary>
@@ -400,8 +471,13 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
                 field.Note = item.Note;
                 if (string.IsNullOrWhiteSpace(item.TestIndexCode)) { ClearMapKeepNote(field); continue; }
 
-                V_HIS_TEST_INDEX ti;
-                if (!this.dicTestIndexByCode.TryGetValue(item.TestIndexCode, out ti))
+                // Bản khai báo cũ không ghi loại nguồn -> hiểu là chỉ số xét nghiệm, như trước.
+                string kind = string.IsNullOrWhiteSpace(item.SourceKind)
+                    ? KskSytClsFieldStore.SOURCE_KIND__TEST_INDEX
+                    : item.SourceKind;
+
+                KskClsSourceADO ti;
+                if (!this.dicTestIndexByCode.TryGetValue(kind + "|" + item.TestIndexCode, out ti))
                 {
                     // Ma chi so khong con trong danh muc cua vien -> bo qua, khong gan bua.
                     ClearMapKeepNote(field);
@@ -413,11 +489,12 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
             return skipped;
         }
 
-        private void SetMap(KskSytClsFieldADO field, V_HIS_TEST_INDEX ti)
+        private void SetMap(KskSytClsFieldADO field, KskClsSourceADO ti)
         {
             field.TestIndexCode = ti.TEST_INDEX_CODE;
             field.TestIndexName = ti.TEST_INDEX_NAME;
             field.TestIndexUnitName = ti.TEST_INDEX_UNIT_NAME;
+            field.SourceKind = ti.SourceKind;
         }
 
         private void ClearMap(KskSytClsFieldADO field)
@@ -431,6 +508,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
             field.TestIndexCode = null;
             field.TestIndexName = null;
             field.TestIndexUnitName = null;
+            field.SourceKind = null;
         }
 
         #endregion
@@ -459,7 +537,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
 
                 if (this.testIndexs.Count == 0)
                 {
-                    XtraMessageBox.Show("Danh mục chỉ số xét nghiệm đang trống nên chưa nối được chỉ tiêu nào.",
+                    XtraMessageBox.Show("Danh mục chỉ số xét nghiệm và dịch vụ đang trống nên chưa nối được chỉ tiêu nào.",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
@@ -532,10 +610,10 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
         /// <summary>Gan chi so dang chon ben trai vao chi tieu dang chon ben phai.</summary>
         private void AssignFocusedRows()
         {
-            var ti = gridViewTestIndex.GetFocusedRow() as V_HIS_TEST_INDEX;
+            var ti = gridViewTestIndex.GetFocusedRow() as KskClsSourceADO;
             if (ti == null)
             {
-                XtraMessageBox.Show("Chọn một chỉ số xét nghiệm ở lưới bên trái.",
+                XtraMessageBox.Show("Chọn một chỉ số xét nghiệm hoặc một dịch vụ ở lưới bên trái.",
                     "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -600,6 +678,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
                 {
                     FieldCode = f.FieldCode,
                     TestIndexCode = f.TestIndexCode,
+                    SourceKind = f.SourceKind,
                     Note = f.Note
                 });
             }

@@ -82,6 +82,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.chkPatientMustSign = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsAllowEditWhenStored = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsHospitalization = new DevExpress.XtraEditors.CheckEdit();
+            this.chkIsRequiredWhenInDepartment = new DevExpress.XtraEditors.CheckEdit();
             this.cboPatientSignatureDisplayType = new DevExpress.XtraEditors.ComboBoxEdit();
             this.chkIsRequiredToComplete = new DevExpress.XtraEditors.CheckEdit();
             this.chkCancelSign = new DevExpress.XtraEditors.CheckEdit();
@@ -175,6 +176,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIsAllowEditWhenStored = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIsHospitalization = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciIsRequiredWhenInDepartment = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.bar1 = new DevExpress.XtraBars.Bar();
@@ -190,6 +192,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             ((System.ComponentModel.ISupportInitialize)(this.chkPatientMustSign.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsAllowEditWhenStored.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsHospitalization.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsRequiredWhenInDepartment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientSignatureDisplayType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsRequiredToComplete.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCancelSign.Properties)).BeginInit();
@@ -260,6 +263,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsAllowEditWhenStored)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsHospitalization)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIsRequiredWhenInDepartment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -274,6 +278,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.layoutControl1.Controls.Add(this.chkPatientMustSign);
             this.layoutControl1.Controls.Add(this.chkIsAllowEditWhenStored);
             this.layoutControl1.Controls.Add(this.chkIsHospitalization);
+            this.layoutControl1.Controls.Add(this.chkIsRequiredWhenInDepartment);
             this.layoutControl1.Controls.Add(this.cboPatientSignatureDisplayType);
             this.layoutControl1.Controls.Add(this.chkIsRequiredToComplete);
             this.layoutControl1.Controls.Add(this.chkCancelSign);
@@ -504,6 +509,19 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.chkIsHospitalization.ToolTip = "Chặn nhập viện khi chưa có văn bản thuộc loại này";
             this.chkIsHospitalization.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsHospitalization_PreviewKeyDown);
             // 
+            // chkIsRequiredWhenInDepartment
+            //
+            this.chkIsRequiredWhenInDepartment.Location = new System.Drawing.Point(914, 505);
+            this.chkIsRequiredWhenInDepartment.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkIsRequiredWhenInDepartment.MenuManager = this.barManager1;
+            this.chkIsRequiredWhenInDepartment.Name = "chkIsRequiredWhenInDepartment";
+            this.chkIsRequiredWhenInDepartment.Properties.Caption = "";
+            this.chkIsRequiredWhenInDepartment.Size = new System.Drawing.Size(251, 19);
+            this.chkIsRequiredWhenInDepartment.StyleController = this.layoutControl1;
+            this.chkIsRequiredWhenInDepartment.TabIndex = 30;
+            this.chkIsRequiredWhenInDepartment.ToolTip = "Bệnh nhân vào khoa phải hoàn thành loại văn bản này; quá thời gian cấu hình mà chưa hoàn thành sẽ bị cảnh báo tại màn Buồng bệnh";
+            this.chkIsRequiredWhenInDepartment.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsRequiredWhenInDepartment_PreviewKeyDown);
+            // 
             // cboPatientSignatureDisplayType
             // 
             this.cboPatientSignatureDisplayType.Location = new System.Drawing.Point(912, 97);
@@ -666,7 +684,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.layoutControl3.Location = new System.Drawing.Point(0, -1);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(725, 530);
+            this.layoutControl3.Size = new System.Drawing.Size(725, 554);
             this.layoutControl3.TabIndex = 4;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -676,7 +694,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.layoutControl4.Location = new System.Drawing.Point(0, 0);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(725, 499);
+            this.layoutControl4.Size = new System.Drawing.Size(725, 523);
             this.layoutControl4.TabIndex = 7;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -1056,7 +1074,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(725, 499);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(725, 523);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem12
@@ -1064,7 +1082,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.layoutControlItem12.Control = this.gridControl1;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(725, 499);
+            this.layoutControlItem12.Size = new System.Drawing.Size(725, 523);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -1085,13 +1103,13 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(725, 530);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(725, 554);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.ucPaging;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 499);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 523);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(725, 31);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -1103,7 +1121,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem1.Size = new System.Drawing.Size(725, 499);
+            this.layoutControlItem1.Size = new System.Drawing.Size(725, 523);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -1228,11 +1246,12 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.abc,
             this.layoutControlItem23,
             this.lciIsAllowEditWhenStored,
-            this.lciIsHospitalization});
+            this.lciIsHospitalization,
+            this.lciIsRequiredWhenInDepartment});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, -27);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1167, 556);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1167, 580);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem2
@@ -1296,7 +1315,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnAdd;
-            this.layoutControlItem4.Location = new System.Drawing.Point(725, 530);
+            this.layoutControlItem4.Location = new System.Drawing.Point(725, 554);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(134, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -1305,7 +1324,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.btnReset;
-            this.layoutControlItem5.Location = new System.Drawing.Point(985, 530);
+            this.layoutControlItem5.Location = new System.Drawing.Point(985, 554);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Size = new System.Drawing.Size(182, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
@@ -1314,7 +1333,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnEdit;
-            this.layoutControlItem6.Location = new System.Drawing.Point(859, 530);
+            this.layoutControlItem6.Location = new System.Drawing.Point(859, 554);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(126, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -1326,7 +1345,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem10.Size = new System.Drawing.Size(725, 530);
+            this.layoutControlItem10.Size = new System.Drawing.Size(725, 554);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -1596,6 +1615,20 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             this.lciIsHospitalization.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIsHospitalization.TextSize = new System.Drawing.Size(182, 20);
             this.lciIsHospitalization.TextToControlDistance = 5;
+            //
+            // lciIsRequiredWhenInDepartment
+            //
+            this.lciIsRequiredWhenInDepartment.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciIsRequiredWhenInDepartment.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciIsRequiredWhenInDepartment.Control = this.chkIsRequiredWhenInDepartment;
+            this.lciIsRequiredWhenInDepartment.Location = new System.Drawing.Point(725, 530);
+            this.lciIsRequiredWhenInDepartment.Name = "lciIsRequiredWhenInDepartment";
+            this.lciIsRequiredWhenInDepartment.OptionsToolTip.ToolTip = "Bệnh nhân vào khoa phải hoàn thành loại văn bản này; quá thời gian cấu hình mà chưa hoàn thành sẽ bị cảnh báo tại màn Buồng bệnh";
+            this.lciIsRequiredWhenInDepartment.Size = new System.Drawing.Size(442, 24);
+            this.lciIsRequiredWhenInDepartment.Text = "Hoàn thành khi vào khoa:";
+            this.lciIsRequiredWhenInDepartment.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciIsRequiredWhenInDepartment.TextSize = new System.Drawing.Size(182, 20);
+            this.lciIsRequiredWhenInDepartment.TextToControlDistance = 5;
             // 
             // dxValidationProvider1
             // 
@@ -1624,7 +1657,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 558);
+            this.ClientSize = new System.Drawing.Size(1184, 582);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -1649,6 +1682,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             ((System.ComponentModel.ISupportInitialize)(this.chkPatientMustSign.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsAllowEditWhenStored.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsHospitalization.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsRequiredWhenInDepartment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientSignatureDisplayType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsRequiredToComplete.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCancelSign.Properties)).EndInit();
@@ -1719,6 +1753,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsAllowEditWhenStored)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsHospitalization)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIsRequiredWhenInDepartment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
@@ -1830,6 +1865,8 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
         private DevExpress.XtraLayout.LayoutControlItem lciIsAllowEditWhenStored;
         private DevExpress.XtraEditors.CheckEdit chkIsHospitalization;
         private DevExpress.XtraLayout.LayoutControlItem lciIsHospitalization;
+        private DevExpress.XtraEditors.CheckEdit chkIsRequiredWhenInDepartment;
+        private DevExpress.XtraLayout.LayoutControlItem lciIsRequiredWhenInDepartment;
         private System.Windows.Forms.Label label1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;

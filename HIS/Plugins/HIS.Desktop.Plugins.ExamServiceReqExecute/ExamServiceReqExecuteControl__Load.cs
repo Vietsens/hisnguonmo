@@ -1370,6 +1370,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 this.requiredControl = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKeys.CONTROL_REQUIRED));
                 this.checkSameHeinCFG = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKeys.CHECK_SAME_HEIN));
+                this.LoadQd130Config();
             }
             catch (Exception ex)
             {

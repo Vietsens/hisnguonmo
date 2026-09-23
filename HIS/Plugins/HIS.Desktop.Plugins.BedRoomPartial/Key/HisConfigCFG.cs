@@ -17,6 +17,7 @@
  */
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.Plugins.BedRoomPartial.ADO;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
@@ -141,6 +142,42 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
             {
                 var ptVP = HisConfigs.Get<string>(Key.HisConfigKeys.HIS_CONFIG_KEY__PATIENT_TYPE_CODE__VP);
                 return ptVP;
+            }
+        }
+
+        /// <summary>
+        /// So phut ke tu khi nhap vien vao khoa thi bat dau kiem tra Loai van ban bat buoc.
+        ///
+        /// Tra ve 0 khi chua khai bao, khai bao khong phai so, hoac khai bao so am / so 0 —
+        /// ca ba truong hop deu la "khong kiem tra", trang thai mac dinh an toan cho vien chua bat.
+        ///
+        /// Cat o dau "|" roi chi lay doan dau: muc rang buoc (canh bao / chan) da bo, nhung dot
+        /// truoc co tai lieu ghi dang "30|1" nen van chap nhan cach ghi do va bo qua phan sau,
+        /// tranh truong hop khai bao "30|1" lam int.TryParse that bai va tinh nang tat am tham.
+        ///
+        /// KHONG bao gio nem ngoai le.
+        /// </summary>
+        internal static int RequiredDocumentCheckMinutes
+        {
+            get
+            {
+                try
+                {
+                    var raw = HisConfigs.Get<string>(Key.HisConfigKeys.HIS_CONFIG_KEY__RequiredDocument);
+                    if (string.IsNullOrWhiteSpace(raw))
+                        return 0;
+
+                    string first = raw.Split('|')[0];
+
+                    int minutes;
+                    if (!int.TryParse((first ?? "").Trim(), out minutes) || minutes <= 0)
+                        return 0;
+                    return minutes;
+                }
+                catch
+                {
+                    return 0;
+                }
             }
         }
     }

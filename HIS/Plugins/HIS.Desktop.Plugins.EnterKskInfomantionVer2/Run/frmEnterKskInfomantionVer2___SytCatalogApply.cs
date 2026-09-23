@@ -146,14 +146,26 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 bool okPayDetail = ApplySytToPaySourceDetail();
                 bool okSuggest = ApplySytToSuggestCombo();
                 bool okPlace = ApplySytToExamPlaceCombo();
+                bool okWorkPlace = ApplySytToWorkPlaceCombos();
                 bool okTooth = ApplySytToToothStatus();
                 bool okIcd = ApplySytToIcd();
-                bool any = okObject || okPay || okPayDetail || okSuggest || okPlace || okTooth || okIcd;
+                bool any = okObject || okPay || okPayDetail || okSuggest || okPlace || okTooth
+                    || okIcd || okWorkPlace;
 
                 LogSystem.Warn(string.Format(
                     "SytCatalog: do danh muc vao o nhap — Doi tuong={0}, Nguon chi tra={1}, "
-                    + "Hinh thuc chi tra={2}, De nghi={3}, Dia diem kham={4}, Tinh trang rang={5}, ICD={6}",
-                    okObject, okPay, okPayDetail, okSuggest, okPlace, okTooth, okIcd));
+                    + "Hinh thuc chi tra={2}, De nghi={3}, Dia diem kham={4}, Tinh trang rang={5},"
+                    + " ICD={6}, Noi cong tac={7}",
+                    okObject, okPay, okPayDetail, okSuggest, okPlace, okTooth, okIcd, okWorkPlace));
+
+                // Danh mục Đối tượng khám vừa về -> giờ mới tra được mục "Người cao tuổi".
+                // Lượt gọi lúc nạp hồ sơ có thể đã chạy khi danh mục chưa có và bỏ qua. Hàm này tự
+                // thoát nếu người dùng đã chọn, nên gọi lại nhiều lần không ghi đè lựa chọn của họ.
+                if (okObject)
+                {
+                    try { AutoTickElderlyObject(); }
+                    catch (Exception exTick) { LogSystem.Warn(exTick); }
+                }
 
                 if (okObject) sytObjectComboUseSytCode = true;
                 if (okPay) sytPaySourceComboUseSytCode = true;
@@ -199,7 +211,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 // CHI coi la xong khi TAT CA o nhap da nhan duoc danh muc. Neu con o nao truot
                 // (thuong do o do chua kip tao xong) thi de ngo de luot goi sau do bu.
-                if (okObject && okPay && okPayDetail && okSuggest && okPlace && okTooth && okIcd)
+                if (okObject && okPay && okPayDetail && okSuggest && okPlace && okTooth && okIcd
+                    && okWorkPlace)
                 {
                     sytCatalogApplied = true;
                     LogSystem.Debug("SytCatalog: da do danh muc cua cong vao TAT CA o nhap");
@@ -249,11 +262,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             return rs;
         }
 
+        /// <summary>
+        /// Đổ danh mục Đối tượng khám của Sở vào ô chọn, GIỮ LẠI những mục đang tích.
+        ///
+        /// VÌ SAO PHẢI GIỮ: hàm này chạy NHIỀU LƯỢT (danh mục về rải rác nên có lượt đổ bù), mà
+        /// bản cũ lượt nào cũng xoá sạch tick. Hậu quả: giá trị vừa tích — kể cả mục "Người cao
+        /// tuổi" do máy tự tích theo tuổi — bị lượt đổ sau xoá mất, mở ô chọn ra thấy trống trơn.
+        ///
+        /// Tick được lưu bằng THAM CHIẾU tới dòng của nguồn dữ liệu cũ, nên đổi nguồn xong phải
+        /// tick lại THEO MÃ mới khớp dòng mới — đó là việc SetKskObjectValue làm.
+        /// </summary>
         private bool ApplySytToObjectCombo()
         {
             var data = ToCodeNameList(SYT_CODE__DOI_TUONG_KHAM);
             if (data.Count == 0) return false;
-            // Combo tích nhiều: bỏ hết tick cũ vì mã của Sở khác mã của HIS.
+
+            string dangChon = "";
+            try { dangChon = GetKskObjectValue(); }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+
             try
             {
                 var gridCheck = cboObject.Properties.Tag as HIS.Desktop.Utilities.Extensions.GridCheckMarksSelection;
@@ -262,7 +289,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 cboObject.Text = string.Empty;
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
-            return SetCodeNameSource(cboObject, data);
+
+            bool ok = SetCodeNameSource(cboObject, data);
+
+            if (ok && !string.IsNullOrWhiteSpace(dangChon))
+            {
+                SetKskObjectValue(dangChon);
+                LogSystem.Debug("SytCatalog: do lai danh muc Doi tuong kham -> tick lai ma " + dangChon);
+            }
+            return ok;
         }
 
         private bool ApplySytToPaymentSourceCombo()

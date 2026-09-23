@@ -729,6 +729,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             bool valid = true;
             try
             {
+                // Bat buoc day du thong tin kham benh ngoai tru theo QD130 (key HIS.DESKTOP.EXAM.REQUIRED_FIELDS_QD130).
+                // Dat truoc cac kiem tra le de gom tat ca truong con thieu vao mot thong bao duy nhat.
+                if (!CheckQd130RequiredFields())
+                {
+                    return false;
+                }
+
                 long hospitalizationReasonRequired = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKeys.HOSPITALIZATION_REASON__REQUIRED));
                 var PatientTypeCode = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == this.treatment.TDL_PATIENT_TYPE_ID).PATIENT_TYPE_CODE;
                 if ((hospitalizationReasonRequired == 1 && String.IsNullOrEmpty(txtHospitalizationReason.Text.Trim())) || (String.IsNullOrEmpty(txtHospitalizationReason.Text.Trim()) && !string.IsNullOrEmpty(HisConfigCFG.HospitalizationReasonRequiredByPatientCode) && HisConfigCFG.HospitalizationReasonRequiredByPatientCode.Split(',').ToList().Contains(PatientTypeCode)))

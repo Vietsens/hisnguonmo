@@ -422,6 +422,10 @@
     <value>Mức phân loại cấp cứu</value>
   </data>
 
+  <data name="UCExecuteRoom.gridColumnUseTime.Caption" xml:space="preserve">
+    <value>Thời gian dự trù</value>
+  </data>
+
   <data name="UCExecuteRoom.gc_PatientClassify.Caption" xml:space="preserve">
     <value>BN အမျိုးအစားခွဲခြားခြင်း။</value>
   </data>
