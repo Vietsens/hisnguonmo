@@ -262,6 +262,7 @@
     <Compile Include="ADO\PatientFilterADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
     <Compile Include="ADO\ServiceReqGroupByDateADO.cs" />
+    <Compile Include="ADO\RequiredDocumentADO.cs" />
     <Compile Include="ADO\TreatmentStatusADO.cs" />
     <Compile Include="ApprovalFinish\FormApprovalFinish.cs">
       <SubType>Form</SubType>
@@ -338,6 +339,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Run\UCBedRoomPartial__Pluss__Anticipate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\UCBedRoomPartial__Pluss__CheckRequiredDocument.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Delegate\DelegateUC.cs" />

@@ -440,6 +440,9 @@
     <Compile Include="FormTreatmentFinish_Validation.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormTreatmentFinish_ValidateQd130.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="TreatmentFinishProcessor.cs" />
     <Compile Include="FormTreatmentFinish.cs">

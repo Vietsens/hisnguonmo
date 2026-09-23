@@ -485,6 +485,8 @@ namespace MPS.Processor.Mps000181
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
 
+                LogPhase("ProcessData bat dau");
+
                 SetBarcodeKey();
                 SetSingleKey();
                 ProcessListData();
@@ -493,6 +495,7 @@ namespace MPS.Processor.Mps000181
 
                 this.SetSignatureKeyImageByCFG();
                 MedicinesSort();
+                LogPhase("Template dang doc: " + System.IO.Path.GetFullPath(fileName));
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
@@ -503,10 +506,16 @@ namespace MPS.Processor.Mps000181
                 objectTag.AddObjectData(store, "list2", expMestMedicines_Sort);
                 objectTag.AddObjectData(store, "list3", expMestMedicines_Sort);
 
-                objectTag.AddObjectData(store, "Phase", serviceReqSdo);
-                objectTag.AddObjectData(store, "Phase1", serviceReqSdo);
-                objectTag.AddObjectData(store, "Medicine", expMestMedicineReq);
-                objectTag.AddObjectData(store, "Medicine1", expMestMedicineReq);
+                //AddObjectData nuot ArgumentNullException va chi log Warn, nen phai bat gia tri tra ve
+                bool addPhase = objectTag.AddObjectData(store, "Phase", serviceReqSdo);
+                bool addPhase1 = objectTag.AddObjectData(store, "Phase1", serviceReqSdo);
+                bool addMedicine = objectTag.AddObjectData(store, "Medicine", expMestMedicineReq);
+                bool addMedicine1 = objectTag.AddObjectData(store, "Medicine1", expMestMedicineReq);
+                LogPhase(string.Format("AddTable Phase={0}, Phase1={1}, Medicine={2}, Medicine1={3} | so dot={4}, so dong thuoc={5}",
+                    addPhase, addPhase1, addMedicine, addMedicine1,
+                    serviceReqSdo == null ? "null" : serviceReqSdo.Count.ToString(),
+                    expMestMedicineReq == null ? "null" : expMestMedicineReq.Count.ToString()));
+
                 objectTag.AddRelationship(store, "Phase", "Medicine", "INTRUCTION_DATE", "TDL_INTRUCTION_DATE");
                 objectTag.AddRelationship(store, "Phase1", "Medicine1", "INTRUCTION_DATE", "TDL_INTRUCTION_DATE");
 
@@ -551,6 +560,13 @@ namespace MPS.Processor.Mps000181
             return result;
         }
 
+        //Log lần vết băng Phase/Medicine. Ghi mức Error vì appender chặn Debug/Warn ở nhiều cấu hình.
+        //Stamp trong chuỗi để biết DLL đang chạy đã đúng bản chưa
+        private void LogPhase(string message)
+        {
+            Inventec.Common.Logging.LogSystem.Error("MPS000181[phase-v3-theo-y-lenh] " + message);
+        }
+
         private void ProcessListData()
         {
             try
@@ -580,23 +596,62 @@ namespace MPS.Processor.Mps000181
                     }
                 }
 
-                if (rdo.lstHisServiceReq != null && rdo.lstHisServiceReq.Count > 0)
+                //Luôn khởi tạo để bảng Phase/Medicine vẫn được AddTable, tránh FlexCel báo "DataTable not defined"
+                serviceReqSdo = new List<ServiceReqSDO>();
+                expMestMedicineReq = new List<ExpMestMedicineSDO>();
+                var allMedicines = rdo.expMestMedicines ?? new List<ExpMestMedicineSDO>();
+
+                //Luồng in đơn lẻ không truyền lstHisServiceReq, dựng 1 đợt từ chính y lệnh đang in 
+                List<HIS_SERVICE_REQ> lstServiceReq = rdo.lstHisServiceReq;
+                if ((lstServiceReq == null || lstServiceReq.Count == 0) && rdo.vHisPrescription5 != null)
                 {
-                    var group = rdo.lstHisServiceReq
-                        .GroupBy(req => req.INTRUCTION_DATE > 0 ? (long?)req.INTRUCTION_DATE : null)
-                        .OrderBy(g => g.Key)
+                    lstServiceReq = new List<HIS_SERVICE_REQ>() { rdo.vHisPrescription5 };
+                }
+
+                LogPhase(string.Format("Nguon du lieu: rdo.lstHisServiceReq={0}, rdo.vHisPrescription5.ID={1}, expMestMedicines={2}, lstServiceReq sau fallback={3}",
+                    rdo.lstHisServiceReq == null ? "null" : rdo.lstHisServiceReq.Count.ToString(),
+                    rdo.vHisPrescription5 == null ? "null" : rdo.vHisPrescription5.ID.ToString(),
+                    allMedicines.Count,
+                    lstServiceReq == null ? "null" : lstServiceReq.Count.ToString()));
+
+                if (rdo.lstHisServiceReq == null || rdo.lstHisServiceReq.Count == 0)
+                {
+                    LogPhase("Khong co lstHisServiceReq -> fallback 1 dot tu vHisPrescription5. Luong in nay moi ban in chi mang 1 y lenh nen khong the ra 2 dot.");
+                }
+
+                if (lstServiceReq != null)
+                {
+                    foreach (var req in lstServiceReq)
+                    {
+                        LogPhase(string.Format("  y lenh ID={0}, CODE={1}, INTRUCTION_DATE={2}, USE_TIME={3}, USE_TIME_TO={4}",
+                            req.ID, req.SERVICE_REQ_CODE, req.INTRUCTION_DATE, req.USE_TIME, req.USE_TIME_TO));
+                    }
+                }
+
+                if (lstServiceReq != null && lstServiceReq.Count > 0)
+                {
+                    var group = lstServiceReq
+                        .GroupBy(req => (long?)req.ID)
+                        .OrderBy(g => g.Min(o => o.USE_TIME.HasValue && o.USE_TIME.Value > 0 ? o.USE_TIME.Value : o.INTRUCTION_TIME))
                         .ToList();
 
-                    serviceReqSdo = new List<ServiceReqSDO>();
-                    expMestMedicineReq = new List<ExpMestMedicineSDO>();
+                    LogPhase(string.Format("Gom duoc {0} dot (moi y lenh mot dot)", group.Count));
+
                     foreach (var item in group)
                     {
                         bool isKey = false;
                         foreach (var req in item)
                         {
-                            var expMestMedicine = rdo.expMestMedicines
+                            var expMestMedicine = allMedicines
                                                 .Where(o => o.TDL_SERVICE_REQ_ID == req.ID) 
                                                 .ToList();
+                            //Đơn lẻ: thuốc không gắn TDL_SERVICE_REQ_ID khớp y lệnh thì lấy trọn danh sách đang in
+                            if (expMestMedicine.Count == 0 && lstServiceReq.Count == 1)
+                            {
+                                expMestMedicine = allMedicines.ToList();
+                                LogPhase(string.Format("Y lenh ID={0} khong khop TDL_SERVICE_REQ_ID nao, lay tron {1} dong thuoc", req.ID, expMestMedicine.Count));
+                            }
+                            LogPhase(string.Format("Y lenh ID={0}, INTRUCTION_DATE={1}: {2} dong thuoc", req.ID, req.INTRUCTION_DATE, expMestMedicine.Count));
                             foreach (var mediMest in expMestMedicine)
                             {
                                 isKey = true;
@@ -624,9 +679,23 @@ namespace MPS.Processor.Mps000181
                         {
                             ServiceReqSDO sdo = new ServiceReqSDO();
                             sdo.USE_TIME = item.Min(o => o.USE_TIME.HasValue && o.USE_TIME.Value > 0 ? o.USE_TIME.Value : o.INTRUCTION_TIME);
-                            sdo.USE_TIME_TO = item.Max(o => o.USE_TIME_TO.Value);
+                            sdo.USE_TIME_TO = item.Max(o => o.USE_TIME_TO ?? 0);
+                            //y lệnh chưa có USE_TIME_TO thì lấy mốc lớn nhất trong danh sách thuốc
+                            if ((sdo.USE_TIME_TO ?? 0) == 0)
+                            {
+                                var mediUseTimeTo = allMedicines.Where(o => o.USE_TIME_TO.HasValue).ToList();
+                                if (mediUseTimeTo.Count > 0)
+                                {
+                                    sdo.USE_TIME_TO = mediUseTimeTo.Max(o => o.USE_TIME_TO.Value);
+                                }
+                            }
                             sdo.INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
                             serviceReqSdo.Add(sdo);
+                            LogPhase(string.Format("Them dot INTRUCTION_DATE={0}, USE_TIME={1}, USE_TIME_TO={2}", sdo.INTRUCTION_DATE, sdo.USE_TIME, sdo.USE_TIME_TO));
+                        }
+                        else
+                        {
+                            LogPhase(string.Format("Bo qua dot INTRUCTION_DATE={0} vi khong co dong thuoc nao", item.Key));
                         }
 
 
@@ -655,6 +724,11 @@ namespace MPS.Processor.Mps000181
                     }
 
                 }
+
+                LogPhase(string.Format("Ket qua ProcessListData: Phase={0} dot, Medicine={1} dong, type={2}",
+                    serviceReqSdo.Count,
+                    expMestMedicineReq.Count,
+                    expMestMedicinesTYPE == null ? "null" : expMestMedicinesTYPE.Count.ToString()));
             }
             catch (Exception ex)
             {

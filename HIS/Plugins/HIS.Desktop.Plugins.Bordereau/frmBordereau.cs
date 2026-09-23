@@ -148,13 +148,6 @@ namespace HIS.Desktop.Plugins.Bordereau
         /// </summary>
         HashSet<long> depaServiceIdsHasConfig = new HashSet<long>();
 
-        /// <summary>
-        /// Tập SERVICE_ID của loại vật tư được tích "Không hao phí" (HIS_MATERIAL_TYPE.IS_NOT_EXPEND = 1).
-        /// Là lớp kiểm tra thứ 2 (sau cấu hình Khoa-ĐTTT) để khóa cột HP.
-        /// Thuốc không có cờ này (HIS_MEDICINE_TYPE chỉ có IS_AUTO_EXPEND) nên không có tập tương ứng.
-        /// </summary>
-        HashSet<long> notExpendMaterialServiceIds = new HashSet<long>();
-
         public frmBordereau()
         {
             InitializeComponent();
@@ -196,7 +189,6 @@ namespace HIS.Desktop.Plugins.Bordereau
                 Services = BackendDataWorker.Get<V_HIS_SERVICE>(false, true);
                 PatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>(false, true);
                 Departments = BackendDataWorker.Get<HIS_DEPARTMENT>(false, true);
-                LoadNotExpendMaterialType();
                 this.currentDepartmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == currentModule.RoomId).DepartmentId;
                 this.GetCurrentDepartment(this.currentDepartmentId);
                 this.currentPatientTypeWithPatientTypeAlter = BackendDataWorker.Get<HIS_PATIENT_TYPE>(false, true);
@@ -701,70 +693,6 @@ namespace HIS.Desktop.Plugins.Bordereau
         }
 
         /// <summary>
-        /// Nạp tập SERVICE_ID của loại vật tư tích "Không hao phí" từ cache HIS_MATERIAL_TYPE.
-        /// Dùng cache nên không phụ thuộc thứ tự gọi API lúc load màn hình.
-        /// </summary>
-        private void LoadNotExpendMaterialType()
-        {
-            try
-            {
-                this.notExpendMaterialServiceIds = new HashSet<long>(
-                    BackendDataWorker.Get<HIS_MATERIAL_TYPE>()
-                        .Where(o => o.IS_NOT_EXPEND == 1)
-                        .Select(o => o.SERVICE_ID));
-            }
-            catch (Exception ex)
-            {
-                this.notExpendMaterialServiceIds = new HashSet<long>();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Dòng vật tư có loại vật tư tích "Không hao phí" hay không.
-        /// Thuốc luôn trả false vì HIS_MEDICINE_TYPE không có cờ này.
-        /// </summary>
-        private bool IsNotExpendMaterialType(SereServADO data)
-        {
-            try
-            {
-                if (data == null || this.notExpendMaterialServiceIds == null || this.notExpendMaterialServiceIds.Count == 0)
-                    return false;
-                if (data.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
-                    return false;
-                return this.notExpendMaterialServiceIds.Contains(data.SERVICE_ID);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Cột HP của dòng có bị khóa theo cấu hình hao phí hay không.
-        /// Ưu tiên cấu hình Khoa-ĐTTT (IS_AUTO_EXPEND/IS_NOT_EXPEND theo khoa chỉ định + ĐTTT của dòng).
-        /// Khoa-ĐTTT không tích gì thì xét tiếp "Không hao phí" của loại vật tư;
-        /// với thuốc thì trả về false — giữ nguyên xử lý như hiện tại.
-        /// </summary>
-        private bool IsExpendLockedByConfig(SereServADO data)
-        {
-            try
-            {
-                if (data == null)
-                    return false;
-                if (this.GetDepaPatientTypeRule(data) != null)
-                    return true;
-                return IsNotExpendMaterialType(data);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Sau khi đổi ĐTTT thành công, tra lại HIS_DEPA_PATIENT_TYPE với (SERVICE_ID, ĐTTT mới).
         /// Nếu có rule IS_AUTO_EXPEND/IS_NOT_EXPEND → set IS_EXPEND tương ứng và gọi UpdatePayslipInfoProcess
         /// với field = IS_EXPEND để refresh grid.
@@ -992,7 +920,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                             {
                                 e.RepositoryItem = repositoryItemChkIsExpend_Disable;
                             }
-                            else if (this.IsExpendLockedByConfig(data))
+                            else if (this.GetDepaPatientTypeRule(data) != null)
                             {
                                 e.RepositoryItem = repositoryItemChkIsExpend_Disable;
                             }
@@ -1975,9 +1903,9 @@ namespace HIS.Desktop.Plugins.Bordereau
                                     Inventec.Common.Logging.LogSystem.Debug("PACKAGE_IS_NOT_FIXED_SERVICE!=1. return");
                                     return;
                                 }
-                                if (this.IsExpendLockedByConfig(sereServADO))
+                                if (this.GetDepaPatientTypeRule(sereServADO) != null)
                                 {
-                                    Inventec.Common.Logging.LogSystem.Debug("IsExpend bị disable theo cấu hình Khoa-ĐTTT / Không hao phí của loại vật tư. return");
+                                    Inventec.Common.Logging.LogSystem.Debug("IsExpend bị disable theo cấu hình Khoa-ĐTTT. return");
                                     return;
                                 }
                                 if (!this.CheckPremissionEdit(sereServADO, ComlumnType.EXPEND, ref mess))

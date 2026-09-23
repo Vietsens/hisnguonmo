@@ -197,6 +197,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 GetDataFromRam();
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.2");
                 HisConfigCFG.LoadConfig();
+                LoadUseTimeApplyFrom();
                 ShowCheckBoxIsResult();
                 //this.typeCodeFind = typeCodeFind__KeyWork;
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.3");
@@ -1004,8 +1005,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     }
                     if (e.Column.FieldName == "USE_TIME_DISPLAY")
                     {
-                        //Viec 3352: hien them gio phut khi y lenh du tru co gio
-                        e.Value = FormatUseTimeDisplay(dataRow.USE_TIME ?? 0, dataRow.SERVICE_REQ_TYPE_ID);
+                        // Viec vCongTBD: y lenh khong du tru -> de trong. Y lenh du tru -> hien ngay va gio,
+                        // cung dinh dang voi cot "Thoi gian y lenh" ben canh.
+                        e.Value = dataRow.USE_TIME.HasValue && dataRow.USE_TIME.Value > 0
+                            ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(dataRow.USE_TIME.Value)
+                            : "";
                     }
                     if (e.Column.FieldName == "REQUEST_USER_DISPLAY")
                     {
@@ -2456,6 +2460,88 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        #endregion
+
+        #region Viec vCongTBD: cot "Thoi gian du tru"
+
+        /// <summary>
+        /// Dua cot thoi gian du tru (co san trong Designer, mac dinh an) ra hien thi khi bat cau hinh
+        /// MOS.HIS_SERVICE_REQ.IS_MOVING_TO_EXECUTE_ROOM_BY_USE_TIME (gia tri "1" hoac "2").
+        /// Goi moi lan fill du lieu vi restore layout (file dung chung moi phong) co the ghi de
+        /// trang thai hien/an va vi tri cot.
+        ///
+        /// Cau hinh TAT: KHONG dung den cot - giu nguyen hanh vi hien tai cua cac vien khong bat tinh nang
+        /// (cot van an mac dinh, nguoi dung van tu bat duoc qua chuc nang chon cot).
+        ///
+        /// Phong duoc tich "phong kham" hoac "phong cap cuu": luon AN cot - hai loai phong nay khong
+        /// dung y lenh du tru nen cot chi lam roi luoi.
+        /// </summary>
+        private void EnsureUseTimeColumn()
+        {
+            try
+            {
+                if (!HisConfigCFG.IsMovingToExecuteRoomByUseTime)
+                {
+                    return;
+                }
+
+                DevExpress.XtraGrid.Columns.GridColumn col = gridViewServiceReq.Columns["USE_TIME_DISPLAY"];
+                if (col == null)
+                {
+                    return;
+                }
+
+                // Phai set lai Visible = false chu khong chi bo qua: file layout luoi dung chung cho
+                // moi phong nen trang thai hien cot o phong khac se duoc dung lai o day.
+                if (IsExamOrEmergencyRoom())
+                {
+                    col.Visible = false;
+                    return;
+                }
+
+                col.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.gridColumnUseTime.Caption",
+                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                if (string.IsNullOrWhiteSpace(col.Caption)) col.Caption = "Thời gian dự trù";
+
+                col.OptionsColumn.AllowEdit = false;
+                col.OptionsColumn.ReadOnly = true;
+                col.Width = 146;
+                col.Visible = true;
+                // Dat ngay sau cot "Thoi gian y lenh". Luon set lai vi restore layout co the lam troi vi tri.
+                col.VisibleIndex = gridColumnInstructionTime != null && gridColumnInstructionTime.VisibleIndex >= 0
+                    ? gridColumnInstructionTime.VisibleIndex + 1
+                    : col.VisibleIndex;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Phong xu ly hien tai co duoc tich "phong kham" (IS_EXAM) hoac "phong cap cuu" (IS_EMERGENCY)
+        /// trong khai bao phong thuc hien hay khong. Doc tu du lieu dung chung da nap san nen re.
+        /// Khong xac dinh duoc phong thi coi nhu khong tich, de khong an nham cot o phong binh thuong.
+        /// </summary>
+        private bool IsExamOrEmergencyRoom()
+        {
+            try
+            {
+                V_HIS_EXECUTE_ROOM room = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>()
+                    .FirstOrDefault(o => o.ROOM_ID == this.roomId);
+                return room != null && (room.IS_EXAM == 1 || room.IS_EMERGENCY == 1);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region PTTK cap cuu: to mau o cot "Muc CC"
 
         /// <summary>
         /// To nen mau muc phan loai cap cuu cho DUNG 1 O tren cot "Muc CC".

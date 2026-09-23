@@ -1550,11 +1550,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     var q1 = (from m in listEmteMedcineType
                               select new MediMatyTypeADO(m, this.InstructionTime)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -1572,11 +1568,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     var q1 = (from m in listEmteMaterialType
                               select new MediMatyTypeADO(m)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -1594,11 +1586,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     var q1 = (from m in listEquipmentSetMaty
                               select new MediMatyTypeADO(m)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -1853,11 +1841,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     var q1 = (from m in lstExpMestMetyReq
                               select new MediMatyTypeADO(m, isEdit)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -1875,11 +1859,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     var q1 = (from m in lstExpMestMatyReq
                               select new MediMatyTypeADO(m, isEdit)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -1903,11 +1883,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     var q1 = (from m in lstExpMestMedicine
                               select new MediMatyTypeADO(m, medicineBeans, isEdit)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -2043,11 +2019,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     var q1 = (from m in lstExpMestMaterial
                               select new MediMatyTypeADO(m, materialBeans, isEdit)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -2109,11 +2081,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                         var q1 = (from m in lstExpMestMaty
                                   select new MediMatyTypeADO(m, isEdit)).ToList();
                         if (q1 != null && q1.Count > 0)
-                        {
-                            // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                            foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                             this.mediMatyTypeADOs.AddRange(q1);
-                        }
                     }
 
                     if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
@@ -2167,11 +2135,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                               where m.IS_SUB_PRES != 1
                               select new MediMatyTypeADO(m, currentInstructionTime, serviceReq)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -2189,11 +2153,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     var q1 = (from m in lstExpMestMety
                               select new MediMatyTypeADO(m, isEdit)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -2217,11 +2177,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     var q1 = (from m in lstExpMestMety
                               select new MediMatyTypeADO(m, currentInstructionTime, serviceReq)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -2240,11 +2196,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     var q1 = (from m in lstExpMestMaty
                               select new MediMatyTypeADO(m, isEdit)).ToList();
                     if (q1 != null && q1.Count > 0)
-                    {
-                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc/vật tư, ĐTTT của dòng, khoa) -> set lại "Hao phí".
-                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
-                    }
                 }
             }
             catch (Exception ex)
@@ -2637,155 +2589,5 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             }
             return value;
         }
-
-        #region Hao phí theo cấu hình Khoa - ĐTTT và loại vật tư
-
-        /// <summary>
-        /// Lấy HIS_DEPA_PATIENT_TYPE theo SERVICE_ID, có cache trong phiên form.
-        /// </summary>
-        private List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE> GetDepaPatientTypeExpendConfig(long serviceId)
-        {
-            try
-            {
-                if (this.depaPatientTypeBySvcCache == null)
-                    this.depaPatientTypeBySvcCache = new Dictionary<long, List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>();
-
-                List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE> cached;
-                if (this.depaPatientTypeBySvcCache.TryGetValue(serviceId, out cached))
-                    return cached;
-
-                CommonParam common = new CommonParam();
-                HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
-                filter.SERVICE_ID = serviceId;
-
-                var depaPatientTypes = new BackendAdapter(common).Get<List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>(
-                    RequestUriStore.HIS_DEPA_PATIENT_TYPE__GET, ApiConsumers.MosConsumer, filter, common);
-
-                this.depaPatientTypeBySvcCache[serviceId] = depaPatientTypes ?? new List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>();
-                return this.depaPatientTypeBySvcCache[serviceId];
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Áp dụng cấu hình "Hao phí" theo cặp Khoa - ĐTTT từ bảng HIS_DEPA_PATIENT_TYPE.
-        /// - Config MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT tắt: bỏ qua.
-        /// - Bật &amp; có bản ghi khớp (DEPARTMENT_ID, SERVICE_ID, PATIENT_TYPE_ID):
-        ///     + IS_NOT_EXPEND  = 1 -> IsExpend = false, NotExpend = true (disable, ô trống).
-        ///     + IS_AUTO_EXPEND = 1 -> IsExpend = true,  NotExpend = true (disable, mặc định tích).
-        ///     + Cả 2 = 0           -> IsExpendEditableByDpt = true (luôn cho sửa, ưu tiên cao nhất).
-        /// - Không tìm thấy: bỏ qua, giữ nguyên.
-        /// Phụ thuộc EFMODEL: HIS_DEPA_PATIENT_TYPE.IS_AUTO_EXPEND, IS_NOT_EXPEND.
-        /// </summary>
-        internal void ApplyExpendByDepaPatientType(MediMatyTypeADO row)
-        {
-            try
-            {
-                if (row == null) return;
-                if (HisConfigCFG.UsePaymentObjectByDept != "1") return;
-                if (this.requestRoom == null) return;
-                if (row.SERVICE_ID <= 0) return;
-                long patientTypeId = row.PATIENT_TYPE_ID ?? 0;
-                if (patientTypeId <= 0) return;
-
-                var depaPatientTypes = GetDepaPatientTypeExpendConfig(row.SERVICE_ID);
-                if (depaPatientTypes == null || depaPatientTypes.Count == 0)
-                {
-                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                        "ApplyExpendByDepaPatientType.SKIP: empty. SERVICE_ID={0}, NAME={1}, CODE={2}",
-                        row.SERVICE_ID, row.MEDICINE_TYPE_NAME, row.MEDICINE_TYPE_CODE));
-                    return;
-                }
-
-                // Tìm bản ghi DPT theo (Khoa, ĐTTT) — KHÔNG lọc theo IS_AUTO/IS_NOT
-                // để bắt được cả trường hợp "có config nhưng cả 2 = 0" (cho phép sửa).
-                var match = depaPatientTypes.FirstOrDefault(o =>
-                    o.DEPARTMENT_ID == this.requestRoom.DEPARTMENT_ID
-                    && o.PATIENT_TYPE_ID == patientTypeId);
-
-                if (match == null)
-                {
-                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                        "ApplyExpendByDepaPatientType.NO_MATCH: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}, candidates={3}",
-                        row.SERVICE_ID, this.requestRoom.DEPARTMENT_ID, patientTypeId, depaPatientTypes.Count));
-                    return;
-                }
-
-                // Ưu tiên IS_NOT_EXPEND trước → bỏ tích + khóa.
-                if (match.IS_NOT_EXPEND == 1)
-                {
-                    row.IsExpend = false;
-                    row.NotExpend = true;
-                    row.IsDisableExpend = true;
-                    row.IsExpendEditableByDpt = false;
-                }
-                // IS_AUTO_EXPEND → tự động tích + khóa.
-                else if (match.IS_AUTO_EXPEND == 1)
-                {
-                    row.IsExpend = true;
-                    row.NotExpend = true;
-                    row.IsDisableExpend = true;
-                    row.IsExpendEditableByDpt = false;
-                }
-                // Cả 2 = 0 → lấy theo đơn đã kê (giữ nguyên IsExpend hiện tại), CHO PHÉP SỬA (ưu tiên cao nhất).
-                else
-                {
-                    row.NotExpend = false;
-                    row.IsDisableExpend = false;
-                    row.IsExpendEditableByDpt = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Nạp tập MATERIAL_TYPE_ID tích "Không hao phí" từ cache V_HIS_MATERIAL_TYPE.
-        /// Dùng cache nên không phụ thuộc thứ tự gọi API lúc load màn hình.
-        /// </summary>
-        internal void LoadNotExpendMaterialType()
-        {
-            try
-            {
-                this.notExpendMaterialTypeIds = new HashSet<long>(
-                    BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MATERIAL_TYPE>()
-                        .Where(o => o.IS_NOT_EXPEND == 1)
-                        .Select(o => o.ID));
-            }
-            catch (Exception ex)
-            {
-                this.notExpendMaterialTypeIds = new HashSet<long>();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Dòng vật tư có loại vật tư tích "Không hao phí" hay không.
-        /// Thuốc luôn trả false vì V_HIS_MEDICINE_TYPE không có cờ này.
-        /// </summary>
-        internal bool IsNotExpendMaterialType(MediMatyTypeADO row)
-        {
-            try
-            {
-                if (row == null || this.notExpendMaterialTypeIds == null || this.notExpendMaterialTypeIds.Count == 0)
-                    return false;
-                if (row.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
-                    return false;
-                return this.notExpendMaterialTypeIds.Contains(row.ID);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return false;
-            }
-        }
-
-        #endregion
     }
 }

@@ -4693,7 +4693,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
 
                 // Viec 3353 (PT-56272): dich vu bat co "Co thuoc, vat tu di kem" (HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1)
-                // nhung chua ke thuoc/vat tu di kem -> hoi Yes/No, khong chan. No = dung lai de ke bo sung roi ket thuc lai.
+                // nhung chua ke thuoc/vat tu di kem -> CHAN, khong cho ket thuc (chot anh Canh 22/09/2026). Phai ke bo sung roi ket thuc lai.
                 if (!HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(listServiceADO))
                 {
                     return;

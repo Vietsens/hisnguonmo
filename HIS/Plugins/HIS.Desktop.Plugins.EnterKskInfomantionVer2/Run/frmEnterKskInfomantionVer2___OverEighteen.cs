@@ -2173,6 +2173,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // 2 o tich + combo Dia diem kham ngay duoi Nguon chi tra (mau M4 SYT TP.HCM).
                 try { InitPaySourceExtraControls(); }
                 catch (Exception exExtra) { Inventec.Common.Logging.LogSystem.Warn(exExtra); }
+                // Hai ô "Nơi công tác" dưới Lý do khám (cổng bắt buộc với nhóm lao động/sinh viên).
+                try { InitWorkPlaceHcmControls(); }
+                catch (Exception exWp) { Inventec.Common.Logging.LogSystem.Warn(exWp); }
                 // Ô "Nhịp thở" ở phần Khám thể lực (mẫu M3 Sở Y tế TP.HCM bắt buộc chỉ tiêu này).
                 try { InitBreathRateControl(); }
                 catch (Exception exBr) { Inventec.Common.Logging.LogSystem.Warn(exBr); }

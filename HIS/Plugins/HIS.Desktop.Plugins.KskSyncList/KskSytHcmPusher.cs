@@ -344,10 +344,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 //
                 // Ký lại kèm DẤU THỜI GIAN VÀ SỐ DÙNG MỘT LẦN MỚI: chữ ký phủ lên cả hai giá trị đó,
                 // dùng lại số cũ có thể bị cổng coi là gửi trùng.
-                // Cổng từ chối thì ghi cả bản tin ra tệp để gửi Sở đối chiếu.
-                if (!r.Success)
-                    DumpRejected(cfg, baseUrl + uri, json, timestamp, nonce, hashA, hashB,
-                        signature, isElderlyForm, r);
+                // Ghi bản tin ra tệp — CẢ KHI THÀNH CÔNG, không chỉ khi bị từ chối.
+                //
+                // VÌ SAO: hồ sơ đẩy được và hồ sơ bị từ chối chỉ khác nhau ở DỮ LIỆU, mà trước đây
+                // chỉ bản bị từ chối mới được ghi lại nên không có gì để đối chiếu. Giữ lại cả bản
+                // đi lọt thì so hai bên là ra ngay chỗ lệch.
+                DumpBanTin(cfg, baseUrl + uri, json, timestamp, nonce, hashA, hashB,
+                    signature, isElderlyForm, r);
 
                 // Cổng chê chữ ký thì ghi luôn CHẨN ĐOÁN, không thử lại dạng khác nữa.
                 //
@@ -699,7 +702,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         ///
         /// KHÔNG ghi khóa riêng và phiếu truy cập vào tệp — chữ ký thì được, nó vốn để công khai.
         /// </summary>
-        private static void DumpRejected(KskSytHcmConfig cfg, string uri, string json,
+        private static void DumpBanTin(KskSytHcmConfig cfg, string uri, string json,
             string timestamp, string nonce, string hashA, string hashB, string signature,
             bool isElderlyForm, KskSytHcmPushResult r)
         {
@@ -712,14 +715,18 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
                 string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                string tenJson = "BanTin_" + mau + "_" + stamp + ".json";
-                string tenTxt = "BanTin_" + mau + "_" + stamp + "_TieuDe.txt";
+                // Có chữ DAT ở tên tệp = bản tin cổng đã nhận. Không có = bị từ chối.
+                string dau = (r != null && r.Success) ? "_DAT" : "";
+                string tenJson = "BanTin_" + mau + "_" + stamp + dau + ".json";
+                string tenTxt = "BanTin_" + mau + "_" + stamp + dau + "_TieuDe.txt";
 
                 // Thân bản tin: ghi KHÔNG kèm dấu thứ tự byte, để chuỗi đúng từng byte như đã gửi.
                 File.WriteAllText(Path.Combine(dir, tenJson), json, new UTF8Encoding(false));
 
                 var sb = new StringBuilder();
-                sb.AppendLine("Ban tin bi cong tu choi — " + mau);
+                sb.AppendLine((r != null && r.Success)
+                    ? ("Ban tin cong DA NHAN — " + mau)
+                    : ("Ban tin bi cong tu choi — " + mau));
                 sb.AppendLine("Thoi diem            : " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 sb.AppendLine("Dia chi goi           : " + uri);
                 sb.AppendLine("Ket qua cong tra ve   : " + r.ToString());
