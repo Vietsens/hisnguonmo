@@ -697,4 +697,19 @@
   <data name="frmServiceReqList.gridColumn12.Caption" xml:space="preserve">
     <value>Ngày dự trù</value>
   </data>
+  <data name="frmServiceReqList.lciSentExt.Text" xml:space="preserve">
+    <value>Gửi tích hợp:</value>
+  </data>
+  <data name="frmServiceReqList.cboSentExt.Sent" xml:space="preserve">
+    <value>Đã gửi yêu cầu</value>
+  </data>
+  <data name="frmServiceReqList.cboSentExt.NotSent" xml:space="preserve">
+    <value>Chưa gửi yêu cầu</value>
+  </data>
+  <data name="frmServiceReqList.btnResendIntegration.Text" xml:space="preserve">
+    <value>Gửi lại chỉ định</value>
+  </data>
+  <data name="frmServiceReqList.btnResendIntegration.ToolTip" xml:space="preserve">
+    <value>Gửi lại chỉ định sang hệ thống tích hợp cho các y lệnh đã chọn</value>
+  </data>
 </root>

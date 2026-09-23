@@ -191,4 +191,16 @@ Vui lòng chờ trả về kết quả trước khi in phiếu tổng hợp.</va
   <data name="YeuCau" xml:space="preserve">
     <value>Yêu cầu</value>
   </data>
+  <data name="XacNhanGuiLaiChiDinhSangHeThongTichHop" xml:space="preserve">
+    <value>Bạn có chắc chắn gửi lại chỉ định sang hệ thống tích hợp cho {0} y lệnh đã chọn?</value>
+  </data>
+  <data name="KetQuaGuiLaiChiDinh" xml:space="preserve">
+    <value>Kết quả gửi lại chỉ định: đã chọn {0} y lệnh, gửi thành công {1} y lệnh, gửi không thành công {2} y lệnh.</value>
+  </data>
+  <data name="DanhSachYLenhGuiKhongThanhCong" xml:space="preserve">
+    <value>Danh sách y lệnh gửi không thành công:</value>
+  </data>
+  <data name="GuiLaiChiDinhKhongThanhCong" xml:space="preserve">
+    <value>Gửi không thành công</value>
+  </data>
 </root>
