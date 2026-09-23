@@ -28,7 +28,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
     class ValidateCMTCCCD : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         private const int MIN_LENGTH = 6;
-        private const int MAX_LENGTH = 12;
+        private const int PASSPORT_MAX_LENGTH = 9;
+        private const int CCCD_LENGTH = 12;
 
         internal DevExpress.XtraEditors.TextEdit txtCmndNumber;
 
@@ -58,9 +59,16 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                         return valid;
                     }
 
-                    if (cmndNumber.Length < MIN_LENGTH || cmndNumber.Length > MAX_LENGTH)
+                    // Gioi han theo do dai cot DB: CCCD_NUMBER(12), CMND_NUMBER(9), PASSPORT_NUMBER(9)
+                    if (isNumeric && cmndNumber.Length == CCCD_LENGTH)
                     {
-                        ErrorText = string.Format("CMND/CCCD/Hộ chiếu phải từ {0} đến {1} ký tự", MIN_LENGTH, MAX_LENGTH);
+                        valid = true;
+                        return valid;
+                    }
+
+                    if (cmndNumber.Length < MIN_LENGTH || cmndNumber.Length > PASSPORT_MAX_LENGTH)
+                    {
+                        ErrorText = string.Format("CMND/Hộ chiếu tối đa {0} ký tự, CCCD phải đủ {1} số", PASSPORT_MAX_LENGTH, CCCD_LENGTH);
                         ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                         return valid;
                     }
