@@ -429,7 +429,16 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             if (e.Control && e.KeyCode == Keys.S)
             {
-                btnSave_Click(null, null);
+                // Phim tat khong duoc lam duoc viec ma nut da bi khoa: phieu da duyet thi khong luu lai.
+                if (btnSave.Enabled)
+                {
+                    btnSave_Click(null, null);
+                }
+                e.Handled = true;
+            }
+            if (e.Control && e.KeyCode == Keys.K)
+            {
+                btnSaveAndSign_Click(null, null);
                 e.Handled = true;
             }
             if (e.Control && e.KeyCode == Keys.P)
@@ -477,25 +486,66 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            SaveSpecialistExam();
+        }
+
+        private void btnSaveAndSign_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentSpecialistExam != null && this.currentSpecialistExam.IS_APPROVAL == 1)
+                {
+                    // Phieu da duyet: khong luu lai nua (btnSave da bi khoa sau khi duyet),
+                    // chi doc lai to dieu tri de ky - phuc vu truong hop ky so that bai phai ky lai.
+                    this.trackingToSign = GetTrackingToSign(
+                        this.currentSpecialistExam.EXAM_EXECUTE_TRACKING_ID,
+                        this.currentSpecialistExam.TRACKING_ID);
+                }
+                else
+                {
+                    // Chi ky so khi luu thanh cong, neu khong se ky vao to dieu tri chua co noi dung vua nhap.
+                    if (!SaveSpecialistExam())
+                        return;
+                }
+
+                if (this.trackingToSign == null)
+                {
+                    MessageBox.Show("Không xác định được tờ điều trị của phiếu duyệt để ký số.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                PrintProcess62(PrintType.IN_TO_DIEU_TRI);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Luu phieu duyet kham chuyen khoa. Tra ve true khi API Update tra ve du lieu.
+        /// </summary>
+        private bool SaveSpecialistExam()
+        {
+            bool result = false;
             try
             {
                 ValidationControl();
                 SetValidateNoiDungKham();
                 SetValidateYLenhKham();
-                var a = cboDoctor.EditValue;
                 if (!dxValidationProviderEditorInfo.Validate())
                 {
                     if (dxValidationProviderEditorInfo.GetInvalidControls().Contains(cboDoctor))
                     {
-                        return;
+                        return false;
                     }
                     else
                     {
-                        MessageBox.Show("Vui lòng kiểm tra lại nội dung khám và y lệnh khám.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
-                        return;
+                        MessageBox.Show("Vui lòng kiểm tra lại nội dung khám và y lệnh khám.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
                     }
                 }
-                
+
                 positionHandleControl = -1;
                 CommonParam param = new CommonParam();
                 HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
@@ -515,10 +565,17 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
                 Inventec.Common.Logging.LogSystem.Info("Body : " + Inventec.Common.Logging.LogUtil.TraceData("rs", rs));
-                if (rs != null && this.delegateRefresher != null)
+                if (rs != null)
                 {
+                    result = true;
                     currentSpecialistExam.EXAM_EXECUTE_TRACKING_ID = rs.EXAM_EXECUTE_TRACKING_ID;
-                    this.delegateRefresher();
+                    currentSpecialistExam.TRACKING_ID = rs.TRACKING_ID;
+                    currentSpecialistExam.IS_APPROVAL = rs.IS_APPROVAL;
+                    this.trackingToSign = GetTrackingToSign(rs.EXAM_EXECUTE_TRACKING_ID, rs.TRACKING_ID);
+                    if (this.delegateRefresher != null)
+                    {
+                        this.delegateRefresher();
+                    }
                     this.ShowHideBtnSave(rs.IS_APPROVAL);
                 }
 
@@ -530,6 +587,47 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Xac dinh to dieu tri mang noi dung duyet kham chuyen khoa - la to se duoc ky so.
+        /// Bat cau hinh MOS.HIS_TRACKING.CREATE_FOR_EXAM_DEPARTMENT: backend tao rieng to dieu tri cho khoa
+        /// kham va ghi noi dung duyet vao do (EXAM_EXECUTE_TRACKING_ID).
+        /// Tat cau hinh: noi dung duyet duoc ghi de len to moi kham (TRACKING_ID).
+        /// </summary>
+        private HIS_TRACKING GetTrackingToSign(long? examExecuteTrackingId, long? inviteTrackingId)
+        {
+            try
+            {
+                long? trackingId = examExecuteTrackingId.HasValue ? examExecuteTrackingId : inviteTrackingId;
+                if (!trackingId.HasValue || trackingId.Value <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Phieu duyet kham chuyen khoa khong co to dieu tri de ky.");
+                    return null;
+                }
+
+                CommonParam paramCommon = new CommonParam();
+                HisTrackingFilter trackingFilter = new HisTrackingFilter
+                {
+                    ID = trackingId
+                };
+                List<HIS_TRACKING> trackings = new BackendAdapter(paramCommon).Get<List<HIS_TRACKING>>(
+                    HisRequestUriStore.HIS_TRACKING_GET,
+                    ApiConsumers.MosConsumer, trackingFilter, paramCommon
+                );
+                if (trackings == null || trackings.Count <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong doc duoc HIS_TRACKING theo ID: " + trackingId.Value);
+                    return null;
+                }
+                return trackings.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
         }
 
@@ -1106,13 +1204,15 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             try
             {
+                // btnSaveAndSign khong bi khoa sau khi duyet: ky so co the that bai (token/USB chua san sang)
+                // nen phai cho ky lai to dieu tri da duyet.
                 if (isShow == null || isShow == 2)
                 {
                     btnSave.Enabled = true;
-                    btnTracking.Enabled = false; 
+                    btnTracking.Enabled = false;
                 }
                 else
-                {                    
+                {
                     btnSave.Enabled = false;
                     btnTracking.Enabled = true;
                     btnSave.AppearanceDisabled.BackColor = Color.LightGreen;
