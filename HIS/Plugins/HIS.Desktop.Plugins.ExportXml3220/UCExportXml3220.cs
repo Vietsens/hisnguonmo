@@ -1847,11 +1847,8 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                     listTreatmentSync = this.GetTreatment();
                 }
 
-                if (listTreatmentSync != null && listTreatmentSync.Count > 0 && listSelection != null && listSelection.Count > 0)
-                {
-                    var selectedIds = listSelection.Select(o => o.ID).ToList();
-                    listTreatmentSync = listTreatmentSync.Where(o => selectedIds.Contains(o.ID)).ToList();
-                }
+                //Khong loc theo dong dang tick tren luoi (giong ExportXmlQD130): tu dong day toan bo ho so API tra ve.
+                //Loc theo listSelection lam auto dung khi cac ho so da tick da co ket qua XML va khong con duoc API tra ve.
 
                 if (this.configSync.isXML3176 && !backgroundWorker1.IsBusy)
                 {
@@ -1859,10 +1856,17 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                     backgroundWorker1.RunWorkerAsync();
                 }
 
-                if (listTreatmentSync != null && listTreatmentSync.Count > 0 && !backgroundWorker1.IsBusy)
+                if (listTreatmentSync != null && listTreatmentSync.Count > 0)
                 {
-                    LogSystem.Info("Thread Auto Sync. TreatmentCount: " + listTreatmentSync.Count);
-                    backgroundWorker1.RunWorkerAsync();
+                    if (!backgroundWorker1.IsBusy)
+                    {
+                        LogSystem.Info("Thread Auto Sync. TreatmentCount: " + listTreatmentSync.Count);
+                        backgroundWorker1.RunWorkerAsync();
+                    }
+                    else
+                    {
+                        LogSystem.Info("BackgroundWorker dang ban, bo qua " + listTreatmentSync.Count + " ho so. Se thu lai lan tick tiep theo.");
+                    }
                 }
                 else
                 {
@@ -1908,13 +1912,13 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                     }
                     if (configSync.isCheckOutTime)
                     {
-                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.ToString("yyyyMMdd") + "000000");
+                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMdd") + "000000");
                         filter.OUT_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                         filter.IS_PAUSE = true;
                     }
                     else
                     {
-                        filter.FEE_LOCK_TIME_FROM = Convert.ToInt64(DateTime.Today.ToString("yyyyMMdd") + "000000");
+                        filter.FEE_LOCK_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMdd") + "000000");
                         filter.FEE_LOCK_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                     }
 
@@ -2125,16 +2129,9 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                                 resultSyncPlus == null ? -1 : resultSyncPlus.Length,
                                 errorMessPlus));
 
-                            var updateInfo = new
-                            {
-                                TreatmentId = ado.Treatment.ID,
-                                XmlType = 1,
-                                XmlResult = isSuccess ? 2 : 1,
-                                Description = errorMessPlus,
-                                CheckCode = ""
-                            };
-                            var updateList = new List<object> { updateInfo };
-                            //new BackendAdapter(new CommonParam()).Post<bool>("api/HisTreatmentXml/UpdateXmlInfo", ApiConsumers.MosConsumer, updateList, null);
+                            //Ket qua ghi len server tinh theo ket qua gui cong (giong ExportXmlQD130), khong chi theo tao XML
+                            bool sendOk = isSuccess;
+                            string sendMessage = errorMessPlus;
                             His.Bhyt.ExportXml.XML3220.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML3220.CreateXmlProcessor(ado);
 
                             if (resultSyncPlus != null)
@@ -2194,7 +2191,10 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                                             syncResult = syncResultADO;
                                             if (syncResult == null || !syncResult.Success)
                                             {
-                                                Inventec.Common.Logging.LogSystem.Warn(treatLogPrefix + " - Gui file khong ky so that bai: " + (syncResult == null ? "null" : syncResult.Message));
+                                                sendOk = false;
+                                                sendMessage = syncResult == null ? "Khong nhan duoc ket qua gui cong" : syncResult.Message;
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treat.TREATMENT_CODE, syncResult == null ? "" : syncResult.ErrorCode, sendMessage));
+                                                Inventec.Common.Logging.LogSystem.Warn(treatLogPrefix + " - Gui file khong ky so that bai: " + sendMessage);
                                             }
                                             else
                                             {
@@ -2215,6 +2215,15 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                                 //Nếu có check ký thì ký thành công mới cập nhật trạng thái
                                 try
                                 {
+                                    var updateInfo = new
+                                    {
+                                        TreatmentId = ado.Treatment.ID,
+                                        XmlType = 1,
+                                        XmlResult = sendOk ? 2 : 1,
+                                        Description = sendMessage,
+                                        CheckCode = (syncResult != null && syncResult.Success) ? syncResult.CheckCode : ""
+                                    };
+                                    var updateList = new List<object> { updateInfo };
                                     new BackendAdapter(new CommonParam()).Post<bool>("api/HisTreatmentXml/UpdateXmlInfo", ApiConsumers.MosConsumer, updateList, null);
                                     Inventec.Common.Logging.LogSystem.Info(treatLogPrefix + " - UpdateXmlInfo thanh cong");
                                 }
@@ -2950,7 +2959,16 @@ namespace HIS.Desktop.Plugins.ExportXml3220
         {
             try
             {
+                //Khong chay chong len luot tu dong dang chay (giong ExportXmlQD130): 2 luot dung chung state theo lo
+                if (backgroundWorker1 != null && backgroundWorker1.IsBusy)
+                {
+                    XtraMessageBox.Show("Đang chạy Đồng bộ tự động — chờ lượt hiện tại xong rồi bấm lại.",
+                        Resources.ResourceMessageLang.ThongBao);
+                    return;
+                }
                 await XML130();
+                //Reload luoi sau gui tay de xoa tick da chon (giong ExportXmlQD130)
+                FillDataToGridTreatment();
             }
             catch (Exception ex)
             {

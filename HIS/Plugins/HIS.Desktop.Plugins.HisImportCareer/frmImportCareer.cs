@@ -180,15 +180,12 @@ namespace HIS.Desktop.Plugins.HisImportCareer
                         var hisServiceImport = import.GetWithCheck<CareerADO>(0);
                         if (hisServiceImport != null && hisServiceImport.Count > 0)
                         {
+                            // Moi dong co du lieu = 1 nghe nghiep (file mau dang phang 8 cot)
                             List<CareerADO> listAfterRemove = new List<CareerADO>();
                             foreach (var item in hisServiceImport)
                             {
                                 bool checkNull = string.IsNullOrEmpty(item.CAREER_CODE)
-                                    && string.IsNullOrEmpty(item.CAREER_NAME)
-                                    && string.IsNullOrEmpty(item.LEVEL1_CODE)
-                                    && string.IsNullOrEmpty(item.LEVEL2_CODE)
-                                    && string.IsNullOrEmpty(item.LEVEL3_CODE)
-                                    && string.IsNullOrEmpty(item.LEVEL4_CODE);
+                                    && string.IsNullOrEmpty(item.CAREER_NAME);
 
                                 if (!checkNull)
                                 {
@@ -196,13 +193,9 @@ namespace HIS.Desktop.Plugins.HisImportCareer
                                 }
                             }
 
-                            // Dong khong co ma cap 5 nhung co ma cap 2/3/4 -> dong ten nhom cap cha (QD 34/2020/QD-TTg)
-                            BuildLevelNameDictionaries(listAfterRemove);
-
                             WaitingManager.Hide();
 
-                            // Chi cac dong co ma cap 5 la nghe nghiep chi tiet duoc import
-                            this._CurrentAdos = listAfterRemove.Where(o => !string.IsNullOrEmpty(o.CAREER_CODE)).ToList();
+                            this._CurrentAdos = listAfterRemove;
 
                             if (this._CurrentAdos != null && this._CurrentAdos.Count > 0)
                             {
@@ -215,9 +208,7 @@ namespace HIS.Desktop.Plugins.HisImportCareer
                                 SetDataSource(this._CareerAdos);
                             }
 
-                            lblStatistic.Text = string.Format("Cấp 2: {0} | Cấp 3: {1} | Cấp 4: {2} | Nghề cấp 5: {3} dòng",
-                                _dicLevel2Name.Count, _dicLevel3Name.Count, _dicLevel4Name.Count,
-                                (this._CurrentAdos != null ? this._CurrentAdos.Count : 0));
+                            SetStatisticText();
 
                             //btnSave.Enabled = true;
                         }
@@ -240,46 +231,44 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             }
         }
 
-        #region Level dictionaries (QD 34/2020/QD-TTg)
-        /// <summary>Ma cap 2 -> ten nhom cap 2 (doc tu cac dong cap 2 trong file)</summary>
-        Dictionary<string, string> _dicLevel2Name = new Dictionary<string, string>();
-        /// <summary>Ma cap 3 -> ten nhom cap 3</summary>
-        Dictionary<string, string> _dicLevel3Name = new Dictionary<string, string>();
-        /// <summary>Ma cap 4 -> ten nhom cap 4</summary>
-        Dictionary<string, string> _dicLevel4Name = new Dictionary<string, string>();
+        #region Level 2/3/4 (QD 34/2020/QD-TTg)
+        /// <summary>Do dai chuan cua ma nghe cap 5 theo QD 34/2020/QD-TTg</summary>
+        private const int CAREER_CODE_LENGTH = 5;
+
+        /// <summary>Ten nhom cap 2/3/4 tra tu danh muc da co trong he thong (ma cap -> ten cap)</summary>
+        Dictionary<string, string> _dicLevel2NameInDb = new Dictionary<string, string>();
+        Dictionary<string, string> _dicLevel3NameInDb = new Dictionary<string, string>();
+        Dictionary<string, string> _dicLevel4NameInDb = new Dictionary<string, string>();
 
         /// <summary>
-        /// Gom cac dong ten nhom cap 2/3/4 (dong khong co ma cap 5) thanh dictionary ma -> ten.
-        /// Ma trung thi lay ten dong sau cung (ghi de theo ban chuan moi nhat)
+        /// Gom ten nhom cap 2/3/4 tu danh muc nghe nghiep da co (_ListCareers) de dien
+        /// vao cac o ten cap bi de trong trong file import
         /// </summary>
-        private void BuildLevelNameDictionaries(List<CareerADO> rows)
+        private void BuildLevelNameDictionariesFromDb()
         {
             try
             {
-                _dicLevel2Name = new Dictionary<string, string>();
-                _dicLevel3Name = new Dictionary<string, string>();
-                _dicLevel4Name = new Dictionary<string, string>();
-                if (rows == null) return;
-                foreach (var item in rows.Where(o => string.IsNullOrEmpty(o.CAREER_CODE)))
+                _dicLevel2NameInDb = new Dictionary<string, string>();
+                _dicLevel3NameInDb = new Dictionary<string, string>();
+                _dicLevel4NameInDb = new Dictionary<string, string>();
+                if (_ListCareers == null) return;
+                foreach (var item in _ListCareers)
                 {
-                    if (!string.IsNullOrEmpty(item.LEVEL4_CODE))
-                    {
-                        _dicLevel4Name[item.LEVEL4_CODE.Trim()] = item.CAREER_NAME;
-                    }
-                    else if (!string.IsNullOrEmpty(item.LEVEL3_CODE))
-                    {
-                        _dicLevel3Name[item.LEVEL3_CODE.Trim()] = item.CAREER_NAME;
-                    }
-                    else if (!string.IsNullOrEmpty(item.LEVEL2_CODE))
-                    {
-                        _dicLevel2Name[item.LEVEL2_CODE.Trim()] = item.CAREER_NAME;
-                    }
+                    AddLevelName(_dicLevel2NameInDb, item.LEVEL2_CODE, item.LEVEL2_NAME);
+                    AddLevelName(_dicLevel3NameInDb, item.LEVEL3_CODE, item.LEVEL3_NAME);
+                    AddLevelName(_dicLevel4NameInDb, item.LEVEL4_CODE, item.LEVEL4_NAME);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private static void AddLevelName(Dictionary<string, string> dic, string levelCode, string levelName)
+        {
+            if (string.IsNullOrEmpty(levelCode) || string.IsNullOrEmpty(levelName)) return;
+            dic[levelCode.Trim()] = levelName;
         }
 
         /// <summary>
@@ -290,7 +279,7 @@ namespace HIS.Desktop.Plugins.HisImportCareer
             string result = "";
             try
             {
-                if (!string.IsNullOrEmpty(careerCode) && careerCode.Trim().Length == 5)
+                if (!string.IsNullOrEmpty(careerCode) && careerCode.Trim().Length == CAREER_CODE_LENGTH)
                 {
                     result = careerCode.Trim().Substring(0, level);
                 }
@@ -300,6 +289,41 @@ namespace HIS.Desktop.Plugins.HisImportCareer
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Lay gia tri tu file; rong thi tra ve gia tri du phong (tu suy ma cap / tra ten nhom)
+        /// </summary>
+        private static string ValueOrFallback(string valueInFile, string fallback)
+        {
+            return !string.IsNullOrEmpty(valueInFile) ? valueInFile.Trim() : fallback;
+        }
+
+        private static string FindLevelNameInDb(Dictionary<string, string> dic, string levelCode)
+        {
+            string result = "";
+            if (!string.IsNullOrEmpty(levelCode) && dic != null)
+            {
+                dic.TryGetValue(levelCode, out result);
+            }
+            return result ?? "";
+        }
+
+        /// <summary>
+        /// Nhan thong ke: tong so dong doc duoc + so dong loi
+        /// </summary>
+        private void SetStatisticText()
+        {
+            try
+            {
+                int total = (this._CareerAdos != null ? this._CareerAdos.Count : 0);
+                int errorCount = (this._CareerAdos != null ? this._CareerAdos.Count(o => !string.IsNullOrEmpty(o.ERROR)) : 0);
+                lblStatistic.Text = string.Format("Tổng {0} dòng · {1} dòng lỗi", total, errorCount);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
         #endregion
 
@@ -311,6 +335,9 @@ namespace HIS.Desktop.Plugins.HisImportCareer
         {
             try
             {
+                // Chuan bi ten nhom cap 2/3/4 tu danh muc da co (dung khi file de trong o ten cap)
+                BuildLevelNameDictionariesFromDb();
+
                 _careerRoomRef = new List<CareerADO>();
                 long i = 0;
                 foreach (var item in _service)
@@ -322,11 +349,11 @@ namespace HIS.Desktop.Plugins.HisImportCareer
 
                     if (!string.IsNullOrEmpty(item.CAREER_CODE))
                     {
-                        if (item.CAREER_CODE.Length > 5)
+                        if (item.CAREER_CODE.Length > CAREER_CODE_LENGTH)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã nghề nghiệp");
                         }
-                        serAdo.CAREER_CODE = item.CAREER_CODE;
+                        serAdo.CAREER_CODE = item.CAREER_CODE.Trim();
                     }
                     else
                     {
@@ -347,15 +374,24 @@ namespace HIS.Desktop.Plugins.HisImportCareer
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "Tên nghề nghiệp");
                     }
 
-                    // Suy ma cap 2/3/4 tu ma nghe + tra ten nhom tu cac dong cap cha trong file.
-                    // Khong tim thay ten -> de trong (theo quy tac NEU/THI viec 2841)
-                    serAdo.LEVEL2_CODE = GetLevelCode(serAdo.CAREER_CODE, 2);
-                    serAdo.LEVEL3_CODE = GetLevelCode(serAdo.CAREER_CODE, 3);
-                    serAdo.LEVEL4_CODE = GetLevelCode(serAdo.CAREER_CODE, 4);
-                    string levelName = "";
-                    serAdo.LEVEL2_NAME = (!string.IsNullOrEmpty(serAdo.LEVEL2_CODE) && _dicLevel2Name.TryGetValue(serAdo.LEVEL2_CODE, out levelName)) ? levelName : "";
-                    serAdo.LEVEL3_NAME = (!string.IsNullOrEmpty(serAdo.LEVEL3_CODE) && _dicLevel3Name.TryGetValue(serAdo.LEVEL3_CODE, out levelName)) ? levelName : "";
-                    serAdo.LEVEL4_NAME = (!string.IsNullOrEmpty(serAdo.LEVEL4_CODE) && _dicLevel4Name.TryGetValue(serAdo.LEVEL4_CODE, out levelName)) ? levelName : "";
+                    // Ma cap: uu tien gia tri trong file; de trong -> tu tach tu ma nghe (2/3/4 ky tu dau).
+                    // Ten cap: uu tien gia tri trong file; de trong -> tra tu danh muc da co trong he thong.
+                    // Khong tim thay -> de trong (quan tri nhap tay o man danh muc)
+                    serAdo.LEVEL2_CODE = ValueOrFallback(item.LEVEL2_CODE, GetLevelCode(serAdo.CAREER_CODE, 2));
+                    serAdo.LEVEL3_CODE = ValueOrFallback(item.LEVEL3_CODE, GetLevelCode(serAdo.CAREER_CODE, 3));
+                    serAdo.LEVEL4_CODE = ValueOrFallback(item.LEVEL4_CODE, GetLevelCode(serAdo.CAREER_CODE, 4));
+                    serAdo.LEVEL2_NAME = ValueOrFallback(item.LEVEL2_NAME, FindLevelNameInDb(_dicLevel2NameInDb, serAdo.LEVEL2_CODE));
+                    serAdo.LEVEL3_NAME = ValueOrFallback(item.LEVEL3_NAME, FindLevelNameInDb(_dicLevel3NameInDb, serAdo.LEVEL3_CODE));
+                    serAdo.LEVEL4_NAME = ValueOrFallback(item.LEVEL4_NAME, FindLevelNameInDb(_dicLevel4NameInDb, serAdo.LEVEL4_CODE));
+
+                    foreach (var levelName in new string[] { serAdo.LEVEL2_NAME, serAdo.LEVEL3_NAME, serAdo.LEVEL4_NAME })
+                    {
+                        if (!string.IsNullOrEmpty(levelName) && levelName.Length > 1000)
+                        {
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên cấp");
+                            break;
+                        }
+                    }
 
                     serAdo.ERROR = error;
                     serAdo.ID = i;
@@ -389,6 +425,7 @@ namespace HIS.Desktop.Plugins.HisImportCareer
         {
             try
             {
+                SetStatisticText();
                 var checkError = this._CareerAdos.Exists(o => !string.IsNullOrEmpty(o.ERROR));
                 if (!checkError)
                 {

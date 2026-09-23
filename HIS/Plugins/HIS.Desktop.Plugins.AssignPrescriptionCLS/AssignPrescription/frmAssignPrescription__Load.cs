@@ -586,9 +586,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                this.LoadDataSereServWithTreatment(this.currentTreatmentWithPatientType, 0);
-                this.LoadTotalSereServByHeinWithTreatment();
-                this.CheckWarningOverTotalPatientPrice();
+                // Viec 56273: 3 tac vu nay van fire-and-forget nhu cu; chi giu Task gop de TryAutoSaveAttachedMediMaty (__AutoSave.cs)
+                // cho ca 3 xong (thuoc da ke trong ngay da nap; hop hoi thieu vien phi / tran BHYT da tra loi) roi moi tu luu.
+                Task taskLoadDataSereServWithTreatment = this.LoadDataSereServWithTreatment(this.currentTreatmentWithPatientType, 0);
+                Task taskLoadTotalSereServByHein = this.LoadTotalSereServByHeinWithTreatment();
+                Task taskCheckWarningOverTotalPatientPrice = this.CheckWarningOverTotalPatientPrice();
+                this.afterLoadWarningTask = Task.WhenAll(taskLoadDataSereServWithTreatment, taskLoadTotalSereServByHein, taskCheckWarningOverTotalPatientPrice);
             }
             catch (Exception ex)
             {
@@ -667,6 +670,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     myResult = MessageBox.Show(this, String.Format(ResourceMessage.BenhNhanDangThieuVienPhi, transfer.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (myResult != DialogResult.Yes)
                     {
+                        // Viec 56273: bao tu luu biet form dang dong (Close co the bi FormClosing huy) - dat TRUOC Close
+                        this.isCancelledByAfterLoadWarning = true;
                         this.Close();
                     }
 
@@ -1159,6 +1164,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 AlertWarningFeeManager alertWarningFeeManager = new AlertWarningFeeManager();
                 if (!alertWarningFeeManager.RunOption(treatmentId, currentHisPatientTypeAlter.PATIENT_TYPE_ID, currentHisPatientTypeAlter.TREATMENT_TYPE_ID, currentHisPatientTypeAlter.HEIN_MEDI_ORG_CODE, HisConfigCFG.PatientTypeId__BHYT, totalHeinPriceByTreatment, HisConfigCFG.IsUsingWarningHeinFee, 0, ref messageErr, true))
                 {
+                    // Viec 56273: bao tu luu biet form dang dong (Close co the bi FormClosing huy) - dat TRUOC Close
+                    this.isCancelledByAfterLoadWarning = true;
                     this.Close();
                 }
 

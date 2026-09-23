@@ -2319,7 +2319,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.gridView3.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gridView3.Name = "gridView3";
             this.gridView3.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView3.OptionsSelection.MultiSelect = true;
+            this.gridView3.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+            this.gridView3.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
             this.gridView3.OptionsView.ShowGroupPanel = false;
+            this.gridView3.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.gridView3_SelectionChanged);
+            this.gridView3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gridView3_MouseUp);
+            this.cboMachine.Popup += new System.EventHandler(this.cboMachine_Popup);
             // 
             // txtMachineCode
             // 

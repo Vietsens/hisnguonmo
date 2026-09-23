@@ -647,6 +647,12 @@ namespace HIS.Desktop.Modules.Login
                 results.Add(ApiConsumers.SdaConsumer);
                 results.Add((Inventec.UC.ChangePassword.HasExceptionApi)new HIS.Desktop.ModuleExt.PluginInstanceBehavior().HasExceptionApi);
                 results.Add("APP.ico");
+                // BR01: bat buoc truyen co do phuc tap, giong bbtnChangePassword_ItemClick ben frmMain.
+                // ChangePasswordConfig.IsRequirePasswordComplexity la static va EventLogBehavior doc
+                // tham so theo KIEU du lieu - khong truyen bool thi co nay giu mac dinh false, man doi
+                // mat khau o luc dang nhap se khong kiem tra do phuc tap, trong khi man dang nhap van
+                // chan => nguoi dung doi sang mat khau yeu roi vao HIS lai bi canh bao tiep.
+                results.Add(CheckRequirePasswordComplexity());
                 Inventec.Desktop.Plugins.ChangePassword.ChangePasswordProcessor changePasswordProcessor = new Inventec.Desktop.Plugins.ChangePassword.ChangePasswordProcessor();
                 var frmChangePass = changePasswordProcessor.Run(results.ToArray()) as Form;
                 if (frmChangePass != null)

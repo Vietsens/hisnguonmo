@@ -1969,7 +1969,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 status.Add(new HIS.Desktop.Plugins.ConnectionTest.ComboADO(0, "Tất cả"));
                 if (!chkKhongHienThiChuaLayMau.Checked)
                 {
-                    status.Add(new HIS.Desktop.Plugins.ConnectionTest.ComboADO(IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM, "Chưa lấy mẫu"));
+                    status.Add(new HIS.Desktop.Plugins.ConnectionTest.ComboADO(IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM, "Chưa lấy mẫu và từ chối mẫu"));
                 }
                 status.Add(new HIS.Desktop.Plugins.ConnectionTest.ComboADO(IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM, "Đã lấy mẫu"));
                 status.Add(new HIS.Desktop.Plugins.ConnectionTest.ComboADO(IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ, "Có kết quả và đã duyệt"));

@@ -66,8 +66,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 reloadMenuBordereau.Type = ReloadMenuOption.MenuType.DYNAMIC;
                 BordereauInitData bordereauInitData = new BordereauInitData();
 
-                AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT_FEE, V_HIS_TREATMENT>();
-                bordereauInitData.Treatment = AutoMapper.Mapper.Map<V_HIS_TREATMENT>(this.currentTreatment);
+                bordereauInitData.Treatment = GetTreatmentViewForPrint();
                 AutoMapper.Mapper.CreateMap<V_HIS_SERE_SERV_5, HIS_SERE_SERV>();
                 bordereauInitData.SereServs = AutoMapper.Mapper.Map<List<HIS_SERE_SERV>>(this.ListSereServTranfer);
                 bordereauInitData.PatientTypeAlter = resultPatientType;
@@ -81,6 +80,42 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Lấy V_HIS_TREATMENT đầy đủ để truyền cho Library.PrintBordereau.
+        /// currentTreatment là V_HIS_TREATMENT_FEE, view này thiếu nhiều cột của V_HIS_TREATMENT
+        /// (HEIN_PATIENT_TYPE_CODE, TREATMENT_RESULT_NAME, END_DEPARTMENT_NAME...) nên nếu map
+        /// bằng AutoMapper thì các key tương ứng trên bảng kê (Mps000302...) sẽ trống.
+        /// Nếu gọi API lỗi thì fallback về map như cũ.
+        /// </summary>
+        private V_HIS_TREATMENT GetTreatmentViewForPrint()
+        {
+            V_HIS_TREATMENT result = null;
+            try
+            {
+                if (this.currentTreatment != null && this.currentTreatment.ID > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                    filter.ID = this.currentTreatment.ID;
+                    var treatments = new BackendAdapter(param)
+                        .Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param);
+                    result = treatments != null ? treatments.FirstOrDefault() : null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            if (result == null && this.currentTreatment != null)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("GetTreatmentViewForPrint: khong lay duoc V_HIS_TREATMENT, fallback map tu V_HIS_TREATMENT_FEE. TREATMENT_ID=" + this.currentTreatment.ID);
+                AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT_FEE, V_HIS_TREATMENT>();
+                result = AutoMapper.Mapper.Map<V_HIS_TREATMENT>(this.currentTreatment);
+            }
+            return result;
         }
 
         private void InitMenuToButtonPrint()

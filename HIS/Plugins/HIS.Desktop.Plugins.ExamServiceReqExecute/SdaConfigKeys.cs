@@ -36,5 +36,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         internal const string WARNING_OPTION = "HIS.DESKTOP.HIS_PATIENT_PROGRAM.NOT_HAS_EMR_COVER_TYPE.WARNING_OPTION";
         internal const string IS_REQUIRED_WEIGHT_OPTION = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsRequiredWeightOption";
 
+        /// <summary>
+        /// Bat buoc nhap day du thong tin kham benh ngoai tru theo QD130.
+        /// - BAT (= 1): voi ho so co loai dieu tri Kham, 9 nhom thong tin deu bat buoc,
+        ///   nhan to do, thieu thi canh bao va khong cho luu / chi dinh / ke don / ket thuc dieu tri.
+        /// - TAT (khac 1 hoac chua khai bao - mac dinh): giu nguyen hanh vi cu.
+        /// </summary>
+        internal const string REQUIRED_FIELDS_QD130 = "HIS.DESKTOP.EXAM.REQUIRED_FIELDS_QD130";
+
     }
 }

@@ -64,6 +64,7 @@
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colOpenWhenTreatmentFinish = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositorybtnUnlock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryUnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
@@ -91,6 +92,8 @@
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.chkOpenWhenTreatmentFinish = new DevExpress.XtraEditors.CheckEdit();
+            this.lciOpenWhenTreatmentFinish = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
@@ -124,6 +127,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkOpenWhenTreatmentFinish.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciOpenWhenTreatmentFinish)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
@@ -182,7 +187,8 @@
             this.gridColumn11,
             this.gridColumn12,
             this.gridColumn13,
-            this.gridColumn14});
+            this.gridColumn14,
+            this.colOpenWhenTreatmentFinish});
             this.gridViewFormList.GridControl = this.gridControlFormList;
             this.gridViewFormList.Name = "gridViewFormList";
             this.gridViewFormList.OptionsFind.AllowFindPanel = false;
@@ -292,7 +298,18 @@
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 6;
             this.gridColumn7.Width = 82;
-            // 
+            //
+            // colOpenWhenTreatmentFinish
+            //
+            this.colOpenWhenTreatmentFinish.Caption = "Mở khi kết thúc điều trị";
+            this.colOpenWhenTreatmentFinish.FieldName = "IS_OPEN_WHEN_TREATMENT_FINISH_STR";
+            this.colOpenWhenTreatmentFinish.Name = "colOpenWhenTreatmentFinish";
+            this.colOpenWhenTreatmentFinish.OptionsColumn.AllowEdit = false;
+            this.colOpenWhenTreatmentFinish.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.colOpenWhenTreatmentFinish.Visible = true;
+            this.colOpenWhenTreatmentFinish.VisibleIndex = 7;
+            this.colOpenWhenTreatmentFinish.Width = 140;
+            //
             // gridColumn8
             // 
             this.gridColumn8.Caption = "Thời gian tạo";
@@ -301,7 +318,7 @@
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 7;
+            this.gridColumn8.VisibleIndex = 8;
             this.gridColumn8.Width = 104;
             // 
             // gridColumn9
@@ -311,7 +328,7 @@
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 8;
+            this.gridColumn9.VisibleIndex = 9;
             this.gridColumn9.Width = 101;
             // 
             // gridColumn10
@@ -322,7 +339,7 @@
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 9;
+            this.gridColumn10.VisibleIndex = 10;
             this.gridColumn10.Width = 106;
             // 
             // gridColumn11
@@ -332,7 +349,7 @@
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 10;
+            this.gridColumn11.VisibleIndex = 11;
             this.gridColumn11.Width = 100;
             // 
             // gridColumn12
@@ -455,6 +472,7 @@
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.chkOpenWhenTreatmentFinish);
             this.layoutControl2.Controls.Add(this.cboLocation);
             this.layoutControl2.Controls.Add(this.btnReset);
             this.layoutControl2.Controls.Add(this.btnAdd);
@@ -552,7 +570,8 @@
             this.layoutControlItem10,
             this.emptySpaceItem3,
             this.emptySpaceItem4,
-            this.layoutControlItem6});
+            this.layoutControlItem6,
+            this.lciOpenWhenTreatmentFinish});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Size = new System.Drawing.Size(413, 511);
@@ -604,7 +623,7 @@
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.btnEdit;
-            this.layoutControlItem8.Location = new System.Drawing.Point(116, 96);
+            this.layoutControlItem8.Location = new System.Drawing.Point(116, 119);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Size = new System.Drawing.Size(95, 26);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
@@ -613,7 +632,7 @@
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnAdd;
-            this.layoutControlItem9.Location = new System.Drawing.Point(211, 96);
+            this.layoutControlItem9.Location = new System.Drawing.Point(211, 119);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(91, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -622,7 +641,7 @@
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnReset;
-            this.layoutControlItem10.Location = new System.Drawing.Point(302, 96);
+            this.layoutControlItem10.Location = new System.Drawing.Point(302, 119);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(91, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -631,15 +650,15 @@
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 122);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 145);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(393, 369);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(393, 346);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 96);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 119);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
             this.emptySpaceItem4.Size = new System.Drawing.Size(116, 26);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -656,7 +675,29 @@
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem6.TextToControlDistance = 5;
-            // 
+            //
+            // chkOpenWhenTreatmentFinish
+            //
+            this.chkOpenWhenTreatmentFinish.Location = new System.Drawing.Point(107, 108);
+            this.chkOpenWhenTreatmentFinish.Name = "chkOpenWhenTreatmentFinish";
+            this.chkOpenWhenTreatmentFinish.Properties.Caption = "";
+            this.chkOpenWhenTreatmentFinish.Size = new System.Drawing.Size(294, 19);
+            this.chkOpenWhenTreatmentFinish.StyleController = this.layoutControl2;
+            this.chkOpenWhenTreatmentFinish.TabIndex = 13;
+            //
+            // lciOpenWhenTreatmentFinish
+            //
+            this.lciOpenWhenTreatmentFinish.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciOpenWhenTreatmentFinish.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciOpenWhenTreatmentFinish.Control = this.chkOpenWhenTreatmentFinish;
+            this.lciOpenWhenTreatmentFinish.Location = new System.Drawing.Point(0, 96);
+            this.lciOpenWhenTreatmentFinish.Name = "lciOpenWhenTreatmentFinish";
+            this.lciOpenWhenTreatmentFinish.Size = new System.Drawing.Size(393, 23);
+            this.lciOpenWhenTreatmentFinish.Text = "Mở khi kết thúc điều trị:";
+            this.lciOpenWhenTreatmentFinish.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciOpenWhenTreatmentFinish.TextSize = new System.Drawing.Size(90, 20);
+            this.lciOpenWhenTreatmentFinish.TextToControlDistance = 5;
+            //
             // dxErrorProvider1
             // 
             this.dxErrorProvider1.ContainerControl = this;
@@ -708,6 +749,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkOpenWhenTreatmentFinish.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciOpenWhenTreatmentFinish)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
@@ -766,7 +809,10 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
+        private DevExpress.XtraGrid.Columns.GridColumn colOpenWhenTreatmentFinish;
         private DevExpress.XtraEditors.LookUpEdit cboLocation;
+        private DevExpress.XtraEditors.CheckEdit chkOpenWhenTreatmentFinish;
+        private DevExpress.XtraLayout.LayoutControlItem lciOpenWhenTreatmentFinish;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
     }
 }

@@ -395,6 +395,22 @@ namespace MPS.Processor.Mps000512.ADO
 
                 this.PRICE_VP = this.VIR_PRICE ?? 0;
                 this.TOTAL_PRICE_VP = this.VIR_TOTAL_PRICE ?? 0;
+
+                //PTTT phat sinh (dinh kem dich vu cha): backend da nhan ti le (50% hoac 80%) thang vao PRICE,
+                //nen don gia in ra bi chia theo ti le. Tinh nguoc lai de cot "Don gia" hien dung gia goc.
+                //Dat SAU khi da tinh cac cot TONG nen thanh tien GIU NGUYEN.
+                //Luu y: cac file template khac nhau doc cot "Don gia" bang cac tag khac nhau
+                //(VIR_PRICE / PRICE_VP / PRIMARY_PRICE) --> phai xu ly CA BA.
+                if ((this.SERVICE_PAY_RATE ?? 0) > 0 && (this.SERVICE_PAY_RATE ?? 0) < 100
+                    && this.PARENT_ID.HasValue
+                    && (this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
+                        || this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT))
+                {
+                    decimal heSo = (this.SERVICE_PAY_RATE ?? 0) / 100;
+                    this.PRIMARY_PRICE = (this.PRIMARY_PRICE ?? 0) / heSo;
+                    this.PRICE_VP = this.PRICE_VP / heSo;
+                    this.VIR_PRICE = (this.VIR_PRICE ?? 0) / heSo;
+                }
                 this.TOTAL_PATIENT_PRICE_LEFT = (this.VIR_TOTAL_PATIENT_PRICE ?? 0) - (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0) - (this.OTHER_SOURCE_PRICE ?? 0);
 
                 // Phần BN tự trả do chênh tỉ lệ thanh toán (port từ Mps000508) - phục vụ bộ gom theo khoa/phòng.
@@ -415,6 +431,16 @@ namespace MPS.Processor.Mps000512.ADO
                         {
                             this.PRICE_VP = this.PRICE_VP / ((this.SERVICE_PAY_RATE ?? 0) / 100);
                         }
+                    }
+                    else if (this.PARENT_ID.HasValue
+                        && (this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
+                            || this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT))
+                    {
+                        //PTTT phat sinh (dinh kem dich vu cha): backend da nhan ti le (50% hoac 80%)
+                        //thang vao PRICE, nen don gia in ra bi chia theo ti le.
+                        //Tinh nguoc lai de cot "Don gia" hien dung gia theo chinh sach gia dich vu.
+                        //Thanh tien van giu nguyen vi duoc tinh tu VIR_TOTAL_PRICE, khong phu thuoc PRICE_VP.
+                        this.PRICE_VP = this.PRICE_VP / ((this.SERVICE_PAY_RATE ?? 0) / 100);
                     }
                 }
 

@@ -162,7 +162,9 @@ namespace HIS.Desktop.Plugins.HisService
             new CauHinhItem(19, "KHONG_HUONG_BHYT", "Không hưởng BHYT"),
             new CauHinhItem(20, "CHO_PHEP_GUI_SANG_PACS", "Cho phép gửi sang PACS"),
             new CauHinhItem(21, "XU_LY_NHIEU_LAN", "Xử lý nhiều lần"),
-            new CauHinhItem(22, "CHAN_NHAP_VIEN", "Chặn nhập viện")
+            new CauHinhItem(22, "CHAN_NHAP_VIEN", "Chặn nhập viện"),
+            // Viec 3353 (PT-56272): HIS_SERVICE.IS_REQUIRE_MEDI_MATE - ket thuc thuc hien ma chua ke thuoc/vat tu di kem thi canh bao
+            new CauHinhItem(23, "CO_THUOC_VAT_TU_DI_KEM", "Có thuốc, vật tư đi kèm")
         };
         #endregion
 
@@ -3363,6 +3365,8 @@ namespace HIS.Desktop.Plugins.HisService
                 currentDTO.IS_OUT_OF_MANAGEMENT = (short)(IsItemSelected("DICH_VU_QUAN_LY_NGOAI") ? 1 : 0);
                 currentDTO.IS_BLOCK_DEPARTMENT_TRAN = (short)(IsItemSelected("CHAN_CHUYEN_KHOA") ? 1 : 0);
                 currentDTO.IS_BLOCK_HOSPITALIZE = IsItemSelected("CHAN_NHAP_VIEN") ? (short?)1 : null;
+                // Viec 3353: chi luu 1 hoac NULL theo quy uoc cot IS_*
+                currentDTO.IS_REQUIRE_MEDI_MATE = IsItemSelected("CO_THUOC_VAT_TU_DI_KEM") ? (short?)1 : null;
                 currentDTO.ALLOW_SIMULTANEITY = (short)(IsItemSelected("KHONG_CHAN_THUC_HIEN_CUNG_LUC") ? 1 : 0);
                 if (IsItemSelected("KHONG_HUONG_BHYT"))
                 {
@@ -7893,6 +7897,17 @@ namespace HIS.Desktop.Plugins.HisService
                 if (data.IS_BLOCK_HOSPITALIZE == 1)
                 {
                     var item = allItems.FirstOrDefault(x => x.Code == "CHAN_NHAP_VIEN");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                // Viec 3353 (PT-56272): co "Co thuoc, vat tu di kem"
+                if (data.IS_REQUIRE_MEDI_MATE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CO_THUOC_VAT_TU_DI_KEM");
                     if (item != null)
                     {
                         gridCheck.Selection.Add(item);

@@ -355,6 +355,21 @@ namespace MPS.Processor.Mps000508.ADO
                 this.PRICE_VP = this.VIR_PRICE ?? 0;
                 this.TOTAL_PRICE_VP = this.PRICE_VP * this.AMOUNT;
 
+                //PTTT phat sinh (dinh kem dich vu cha): backend da nhan ti le (50% hoac 80%) thang vao PRICE,
+                //nen don gia in ra bi chia theo ti le. Tinh nguoc lai de cot "Don gia" hien dung gia goc.
+                //Dat SAU khi da tinh TOTAL_PRICE_VP nen thanh tien GIU NGUYEN.
+                //Mau in co the doc PRIMARY_PRICE hoac PRICE_VP tuy file template --> xu ly ca hai.
+                if ((this.SERVICE_PAY_RATE ?? 0) > 0 && (this.SERVICE_PAY_RATE ?? 0) < 100
+                    && this.PARENT_ID.HasValue
+                    && (this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
+                        || this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT))
+                {
+                    decimal heSoPttt = (this.SERVICE_PAY_RATE ?? 0) / 100;
+                    this.PRICE_VP = this.PRICE_VP / heSoPttt;
+                    this.PRIMARY_PRICE = (this.PRIMARY_PRICE ?? 0) / heSoPttt;
+                    this.VIR_PRICE = (this.VIR_PRICE ?? 0) / heSoPttt;
+                }
+
                 // Người bệnh tự trả = (tổng viện phí − tổng tiền theo giá BHYT) + (tổng tiền theo giá BHYT − Quỹ BHYT − cùng chi trả − nguồn khác)
                 //  = chênh lệch ngoài phạm vi BHYT + phần tự trả trong phạm vi BHYT. KHÔNG nhân tỷ lệ thanh toán.
                 decimal chenhLechNgoaiBhyt = this.TOTAL_PRICE_VP - (this.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);

@@ -509,6 +509,16 @@ namespace HIS.Desktop.Plugins.ServiceExecuteGroup.Run
 
 			try
 			{
+				// Viec 3353 (PT-56272 / 57799): dich vu bat co "Co thuoc, vat tu di kem" nhung chua ke thuoc/vat tu -> bao MOT lan
+				// cho tat ca y lenh chua hoan thanh, TRUOC khi chay worker ket thuc, roi CHAN ca lan ket thuc do (chot anh Canh 22/09/2026).
+				List<long> serviceReqIdsToFinish = lstServiceReqSend != null
+					? lstServiceReqSend.Where(o => o.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT).Select(o => o.ID).ToList()
+					: null;
+				if (!HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinishByServiceReqIds(serviceReqIdsToFinish))
+				{
+					return;
+				}
+
 				pbProcess.Value = 0;
 				indexServiceReq = 0;
 				totalServiceReq = lstServiceReqSend.Count;

@@ -65,7 +65,8 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             {
                 NewPass__ValidationRule newPassRule = new NewPass__ValidationRule();
                 newPassRule.txtNewPass = txtNewPass;
-                newPassRule.ErrorText = "Thiếu trường dữ liệu bắt buộc";
+                newPassRule.txtOldPass = txtPreviousPass;
+                //ErrorText do chinh rule dat theo tung truong hop (thieu du lieu / trung mat khau cu)
                 newPassRule.ErrorType = ErrorType.Warning;
                 this.dxValidationProvider1.SetValidationRule(txtNewPass, newPassRule);
             }

@@ -42,6 +42,9 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
         public bool Error { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeBedId { get; set; }
         public string ErrorMessageBedId { get; set; }
+        // Nhac nhe vi sao khong dien san duoc giuong mac dinh. Chi de hien bieu tuong va chu giai
+        // tren o giuong, KHONG duoc dung ErrorMessageBedId vi truong do lam dong bi bo tich va chan luu.
+        public string HintMessageBedId { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeFinishTime { get; set; }
         public string ErrorMessageFinishTime { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeStartTime { get; set; }

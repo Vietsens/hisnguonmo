@@ -39,5 +39,18 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
         /// So chu so thap phan hien thi cua cot so luong. Khong khai bao = giu nguyen hien thi cu.
         /// </summary>
         internal const string HIS_CONFIG_KEY__AmountDecimalNumber = "HIS.Desktop.AmountDecimalNumber";
+        /// <summary>
+        /// Canh bao Loai van ban bat buoc phai hoan thanh khi benh nhan vao khoa.
+        ///
+        /// Gia tri la SO PHUT ke tu khi nhap vien vao khoa thi bat dau kiem tra — vi du "30".
+        /// Rong / khong phai so / nho hon hoac bang 0 = KHONG kiem tra (mac dinh, an toan cho
+        /// vien chua bat).
+        ///
+        /// Muc rang buoc (canh bao / chan) da bo — phan mem chi CANH BAO, khong chan thao tac nao.
+        ///
+        /// Lan cap nhat gan nhat cua chinh dong cau hinh nay la moc "thoi diem khai bao cau hinh"
+        /// cua quy tac khong hoi to: benh nhan vao khoa truoc moc do thi khong canh bao.
+        /// </summary>
+        internal const string HIS_CONFIG_KEY__RequiredDocument = "HIS.Desktop.Plugins.BedRoomPartial.RequiredDocument";
     }
 }

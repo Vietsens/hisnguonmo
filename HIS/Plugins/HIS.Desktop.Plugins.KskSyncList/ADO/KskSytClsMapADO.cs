@@ -12,6 +12,39 @@ using System.Collections.Generic;
 namespace HIS.Desktop.Plugins.KskSyncList.ADO
 {
     /// <summary>
+    /// Mot dong o DANH SACH BEN TRAI cua man hinh noi chi so — co the la CHI SO XET NGHIEM hoac
+    /// mot DICH VU (sieu am, phau thuat - thu thuat).
+    ///
+    /// VI SAO CAN: hai chi tieu "X-quang nhu" va "Sieu am 02 tuyen vu" cua cong KHONG phai chi so
+    /// xet nghiem ma la KET QUA CUA MOT DICH VU, nen khong co trong danh muc chi so. Khong cho chon
+    /// dich vu thi hai chi tieu do vinh vien khong noi duoc.
+    ///
+    /// TEN THUOC TINH DAT TRUNG voi V_HIS_TEST_INDEX de luoi ben trai giu nguyen cot da thiet ke,
+    /// khong phai sua tep bo cuc.
+    /// </summary>
+    public class KskClsSourceADO
+    {
+        /// <summary>Ma: chi so xet nghiem thi la ma chi so, dich vu thi la ma dich vu.</summary>
+        public string TEST_INDEX_CODE { get; set; }
+        public string TEST_INDEX_NAME { get; set; }
+        public string TEST_INDEX_UNIT_NAME { get; set; }
+        /// <summary>Nhom hien thi. Voi dich vu thi ghi "Dich vu - {ten loai dich vu}".</summary>
+        public string TEST_INDEX_GROUP_NAME { get; set; }
+
+        /// <summary>true = dich vu, false = chi so xet nghiem.</summary>
+        public bool IS_SERVICE { get; set; }
+
+        public string SourceKind
+        {
+            get { return this.IS_SERVICE ? KskSytClsFieldStore.SOURCE_KIND__SERVICE
+                                         : KskSytClsFieldStore.SOURCE_KIND__TEST_INDEX; }
+        }
+
+        /// <summary>Khoa tra cuu — ghep loai voi ma, vi ma dich vu co the trung ma chi so.</summary>
+        public string Key { get { return SourceKind + "|" + (this.TEST_INDEX_CODE ?? ""); } }
+    }
+
+    /// <summary>
     /// Mot dong tren luoi "Noi chi so can lam sang": 1 chi tieu can lam sang cua mau M3
     /// (co dinh theo dac ta cong SYT TP.HCM) va chi so xet nghiem cua HIS da noi vao chi tieu do.
     /// </summary>
@@ -29,10 +62,21 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
         public string TestIndexName { get; set; }
         /// <summary>Don vi do cua chi so HIS, hien ra de nguoi van hanh tu doi chieu — khong luu.</summary>
         public string TestIndexUnitName { get; set; }
+        /// <summary>
+        /// Loai nguon da noi: "XN" = chi so xet nghiem, "DV" = dich vu.
+        /// Ban khai bao cu KHONG co truong nay -> doc len la rong, hieu la "XN" nhu truoc.
+        /// </summary>
+        public string SourceKind { get; set; }
+
         /// <summary>Ghi chu doi soat cua nguoi van hanh.</summary>
         public string Note { get; set; }
 
         public bool IsMapped { get { return !string.IsNullOrWhiteSpace(this.TestIndexCode); } }
+
+        public bool IsService
+        {
+            get { return this.SourceKind == KskSytClsFieldStore.SOURCE_KIND__SERVICE; }
+        }
     }
 
     /// <summary>Mot cap noi khi luu / xuat tep. CHI luu ma, ten tra lai tu danh muc khi mo.</summary>
@@ -40,6 +84,8 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
     {
         public string FieldCode { get; set; }
         public string TestIndexCode { get; set; }
+        /// <summary>"XN" hoac "DV". Rong = ban khai bao cu, hieu la "XN".</summary>
+        public string SourceKind { get; set; }
         public string Note { get; set; }
     }
 
@@ -69,6 +115,11 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
     {
         public const string MAP_FILE_VERSION = "1";
         public const string FORM_CODE__M3 = "M3";
+
+        /// <summary>Nguon gia tri la chi so xet nghiem (mac dinh, va la cach duy nhat cua ban cu).</summary>
+        public const string SOURCE_KIND__TEST_INDEX = "XN";
+        /// <summary>Nguon gia tri la ket qua cua mot dich vu (sieu am, phau thuat - thu thuat).</summary>
+        public const string SOURCE_KIND__SERVICE = "DV";
 
         /// <summary>
         /// Ten cu, GIU LAI de doc duoc tep khai bao da xuat truoc day. Ban khai bao luu tren may

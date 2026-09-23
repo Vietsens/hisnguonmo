@@ -85,7 +85,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 if (d == null) return;
-                if (tabInterviewHcm == null) return;
+
+                // Tab hỏi bệnh chưa dựng: KHÔNG dựng lại cả chuỗi JSON (sẽ ghi đè bằng bản rỗng),
+                // nhưng hai ô "Nơi công tác" thì vẫn có thể vừa nhập nên ghép riêng vào chuỗi cũ.
+                if (tabInterviewHcm == null)
+                {
+                    string jsonGhep = MergeWorkPlaceHcmIntoJson(GetSytHcmStr(d, IHCM_COL__JSON));
+                    if (jsonGhep != null)
+                    {
+                        SetSytHcmValue(d, IHCM_COL__JSON, jsonGhep);
+                        LogSystem.Warn("SytHcm/HoiBenh: tab chua dung -> chi ghi hai o Noi cong tac");
+                    }
+                    return;
+                }
 
                 string json = BuildInterviewHcmJson();
                 int bytes = Encoding.UTF8.GetByteCount(json ?? "");
@@ -168,6 +180,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 string json = GetSytHcmStr(d, IHCM_COL__JSON);
                 string otherDisease = GetSytHcmStr(d, IHCM_COL__OTHER_DISEASE);
                 string otherSign = GetSytHcmStr(d, IHCM_COL__OTHER_SIGN);
+
+                // Hai ô "Nơi công tác" nằm ở phần thông tin bệnh nhân chứ không ở tab hỏi bệnh,
+                // nên phải đổ NGAY, không chờ tab dựng xong.
+                ApplyWorkPlaceHcmFromJson(json);
 
                 // Hồ sơ thường nạp TRƯỚC khi tab dựng xong -> giữ lại, dựng xong đổ sau.
                 if (tabInterviewHcm == null)

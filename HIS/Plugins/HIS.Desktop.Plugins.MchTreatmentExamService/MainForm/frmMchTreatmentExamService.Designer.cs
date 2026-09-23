@@ -574,6 +574,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.emptySpaceItem33 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem36 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.cboDiploma3 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.btnCopyFromBaby = new DevExpress.XtraEditors.SimpleButton();
+            this.lciCopyFromBaby = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridLookUpEdit13View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboUser3 = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit12View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -1144,6 +1146,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem121)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem122)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem123)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCopyFromBaby)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem124)).BeginInit();
             this.xtraTabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).BeginInit();
@@ -4103,6 +4106,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             // 
             this.layoutControl7.Controls.Add(this.xtraTabControl2);
             this.layoutControl7.Controls.Add(this.cboDiploma3);
+            this.layoutControl7.Controls.Add(this.btnCopyFromBaby);
             this.layoutControl7.Controls.Add(this.cboUser3);
             this.layoutControl7.Controls.Add(this.dteExam3);
             this.layoutControl7.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -6904,16 +6908,27 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             // 
             // cboDiploma3
             // 
-            this.cboDiploma3.Location = new System.Drawing.Point(710, 2);
+            this.cboDiploma3.Location = new System.Drawing.Point(650, 2);
             this.cboDiploma3.MenuManager = this.barManager1;
             this.cboDiploma3.Name = "cboDiploma3";
             this.cboDiploma3.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboDiploma3.Properties.NullText = "";
             this.cboDiploma3.Properties.View = this.gridLookUpEdit13View;
-            this.cboDiploma3.Size = new System.Drawing.Size(172, 20);
+            this.cboDiploma3.Size = new System.Drawing.Size(102, 20);
             this.cboDiploma3.StyleController = this.layoutControl7;
             this.cboDiploma3.TabIndex = 6;
+            //
+            // btnCopyFromBaby
+            //
+            this.btnCopyFromBaby.Location = new System.Drawing.Point(756, 2);
+            this.btnCopyFromBaby.Name = "btnCopyFromBaby";
+            this.btnCopyFromBaby.Size = new System.Drawing.Size(126, 20);
+            this.btnCopyFromBaby.StyleController = this.layoutControl7;
+            this.btnCopyFromBaby.TabIndex = 7;
+            this.btnCopyFromBaby.Text = "Lấy từ GCS";
+            this.btnCopyFromBaby.ToolTip = "Lấy thông tin Mẹ và Con từ giấy chứng sinh của lượt điều trị";
+            this.btnCopyFromBaby.Click += new System.EventHandler(this.btnCopyFromBaby_Click);
             // 
             // gridLookUpEdit13View
             // 
@@ -6931,7 +6946,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboUser3.Properties.NullText = "";
             this.cboUser3.Properties.View = this.gridLookUpEdit12View;
-            this.cboUser3.Size = new System.Drawing.Size(218, 20);
+            this.cboUser3.Size = new System.Drawing.Size(158, 20);
             this.cboUser3.StyleController = this.layoutControl7;
             this.cboUser3.TabIndex = 5;
             // 
@@ -6969,6 +6984,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.layoutControlItem121,
             this.layoutControlItem122,
             this.layoutControlItem123,
+            this.lciCopyFromBaby,
             this.layoutControlItem124});
             this.layoutControlGroup7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup7.Name = "layoutControlGroup7";
@@ -6999,7 +7015,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.layoutControlItem122.Control = this.cboUser3;
             this.layoutControlItem122.Location = new System.Drawing.Point(316, 0);
             this.layoutControlItem122.Name = "layoutControlItem122";
-            this.layoutControlItem122.Size = new System.Drawing.Size(307, 24);
+            this.layoutControlItem122.Size = new System.Drawing.Size(247, 24);
             this.layoutControlItem122.Text = "Người khám:";
             this.layoutControlItem122.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem122.TextSize = new System.Drawing.Size(80, 20);
@@ -7012,14 +7028,23 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.layoutControlItem123.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem123.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem123.Control = this.cboDiploma3;
-            this.layoutControlItem123.Location = new System.Drawing.Point(623, 0);
+            this.layoutControlItem123.Location = new System.Drawing.Point(563, 0);
             this.layoutControlItem123.Name = "layoutControlItem123";
-            this.layoutControlItem123.Size = new System.Drawing.Size(261, 24);
+            this.layoutControlItem123.Size = new System.Drawing.Size(191, 24);
             this.layoutControlItem123.Text = "Trình độ:";
             this.layoutControlItem123.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem123.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem123.TextToControlDistance = 5;
-            // 
+            //
+            // lciCopyFromBaby
+            //
+            this.lciCopyFromBaby.Control = this.btnCopyFromBaby;
+            this.lciCopyFromBaby.Location = new System.Drawing.Point(754, 0);
+            this.lciCopyFromBaby.Name = "lciCopyFromBaby";
+            this.lciCopyFromBaby.Size = new System.Drawing.Size(130, 24);
+            this.lciCopyFromBaby.TextSize = new System.Drawing.Size(0, 0);
+            this.lciCopyFromBaby.TextVisible = false;
+            //
             // layoutControlItem124
             // 
             this.layoutControlItem124.Control = this.xtraTabControl2;
@@ -8679,6 +8704,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem121)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem122)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem123)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCopyFromBaby)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem124)).EndInit();
             this.xtraTabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
@@ -9090,6 +9116,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup8;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage7;
         private DevExpress.XtraEditors.GridLookUpEdit cboDiploma3;
+        private DevExpress.XtraEditors.SimpleButton btnCopyFromBaby;
+        private DevExpress.XtraLayout.LayoutControlItem lciCopyFromBaby;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit13View;
         private DevExpress.XtraEditors.GridLookUpEdit cboUser3;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit12View;

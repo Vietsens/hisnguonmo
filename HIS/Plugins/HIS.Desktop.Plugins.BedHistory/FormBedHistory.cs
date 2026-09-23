@@ -117,6 +117,9 @@ namespace HIS.Desktop.Plugins.BedHistory
         // Bật cột "Thời gian thực hiện" (cột edit + cảnh báo cuối tuần + truyền UseTime) khi config = "1"
         string ConfigUseTimeBedHistory = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__BED_HISTORY_USE_TIME);
         private bool IsUseTimeBedHistoryOn { get { return this.ConfigUseTimeBedHistory == "1"; } }
+        // Mac dinh giuong theo lan chi dinh gan nhat trong buong benh nhan dang nam khi config = "1"
+        string ConfigDefaultBedByLastAssigned = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__DEFAULT_BED_BY_LAST_ASSIGNED);
+        private bool IsDefaultBedByLastAssignedOn { get { return this.ConfigDefaultBedByLastAssigned == "1"; } }
         RefeshReference refesh;
         Dictionary<long, List<V_HIS_BED_LOG>> dicBedLog = new Dictionary<long, List<V_HIS_BED_LOG>>();
         Dictionary<long, List<long>> dicTreatmentBedRoom = new Dictionary<long, List<long>>();
@@ -893,15 +896,45 @@ namespace HIS.Desktop.Plugins.BedHistory
             try
             {
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("BED_CODE", "", 50, 1));
-                columnInfos.Add(new ColumnInfo("BED_NAME", "", 250, 2));
-                columnInfos.Add(new ColumnInfo("AMOUNT_STR", "", 50, 3));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("BED_NAME", "ID", columnInfos, false, 250);
+                columnInfos.Add(new ColumnInfo("BED_CODE", "", 130, 1));
+                columnInfos.Add(new ColumnInfo("BED_NAME", "", 480, 2));
+                columnInfos.Add(new ColumnInfo("AMOUNT_STR", "", 90, 3));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("BED_NAME", "ID", columnInfos, false, 700);
                 ControlEditorLoader.Load(cboBedName, dataBedADOs, controlEditorADO);
+                this.WidenBedPopup(cboBedName);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Noi rong danh sach tha xuong cua combo giuong.
+        /// ControlEditorLoader (thu vien dung chung, khong duoc sua) luon bat ColumnAutoWidth = true
+        /// va RowAutoHeight = true, nen do rong dat cho tung cot bi ep co lai vua khung va ten giuong
+        /// bi xuong dong. Phai tat hai tuy chon do SAU khi Load thi do rong cot moi co hieu luc.
+        /// </summary>
+        private void WidenBedPopup(DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit cboBedName)
+        {
+            try
+            {
+                if (cboBedName == null || cboBedName.View == null)
+                    return;
+
+                cboBedName.View.OptionsView.ColumnAutoWidth = false;
+                cboBedName.View.OptionsView.RowAutoHeight = false;
+
+                // Combo nam trong luoi nen DevExpress ep do rong popup theo do rong cot cua luoi,
+                // rieng PopupFormWidth khong du de thang. Phai dat ca PopupFormMinSize va PopupFormSize
+                // thi popup moi mo dung do rong mong muon ma khong can nguoi dung keo tay.
+                cboBedName.PopupFormWidth = 700;
+                cboBedName.PopupFormMinSize = new System.Drawing.Size(700, 320);
+                cboBedName.PopupFormSize = new System.Drawing.Size(700, 320);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -910,9 +943,12 @@ namespace HIS.Desktop.Plugins.BedHistory
             try
             {
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("BED_CODE", "", 50, 1));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("BED_CODE", "BED_CODE_ID", columnInfos, false, 250);
+                columnInfos.Add(new ColumnInfo("BED_CODE", "", 130, 1));
+                columnInfos.Add(new ColumnInfo("BED_NAME", "", 480, 2));
+                columnInfos.Add(new ColumnInfo("AMOUNT_STR", "", 90, 3));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("BED_CODE", "BED_CODE_ID", columnInfos, false, 700);
                 ControlEditorLoader.Load(cboBedName, dataBedADOs, controlEditorADO);
+                this.WidenBedPopup(cboBedName);
             }
             catch (Exception ex)
             {
@@ -2332,6 +2368,10 @@ namespace HIS.Desktop.Plugins.BedHistory
                     ado.startTime = maxTime.First().finishTime.Value;
                 }
 
+                // Dien san giuong duoc ghi nhan gan nhat cua ho so, giong cach tren dang dien san startTime.
+                // Phai goi TRUOC khi them vao bedLogChecks de dong moi khong tu tinh vao phep so sanh.
+                this.FillDefaultBedForNewRow(ado);
+
                 this.bedLogChecks.Add(ado);
                 gridControlBedHistory.BeginUpdate();
                 gridControlBedHistory.DataSource = null;
@@ -2514,6 +2554,218 @@ namespace HIS.Desktop.Plugins.BedHistory
             }
         }
 
+        /// <summary>
+        /// Lay ma so giuong duoc ghi nhan GAN NHAT cua CHINH ho so dang thao tac, trong buong hien tai.
+        /// Nguon du lieu la cac dong dang co tren luoi (bedLogChecks) - luoi nay von da loc theo
+        /// TREATMENT_ID cua ho so (xem GetAllBedLog), nen khong lan sang ban ghi cua benh nhan khac.
+        /// KHONG dung ket qua TakeBedsInUse: do la bed log cua MOI benh nhan, khac muc dich.
+        /// excludeRow la dong dang sua, phai bo ra de khong tu so sanh voi chinh no.
+        /// Khong tim duoc thi tra ve 0 de bo qua, tuyet doi khong chon bua mot giuong.
+        /// </summary>
+        private long GetDefaultBedIdByLastAssigned(ADO.HisBedHistoryADO excludeRow)
+        {
+            long bedId = 0;
+            try
+            {
+                if (!this.IsDefaultBedByLastAssignedOn)
+                    return 0;
+
+                if (this.bedLogChecks == null || this.bedLogChecks.Count <= 0)
+                    return 0;
+
+                // Buong benh nhan dang nam. Ho so chua gan buong thi khong xac dinh duoc pham vi,
+                // luc do khong loc theo buong ma chi lay lan gan nhat cua ho so.
+                long currentBedRoomId = 0;
+                if (this._TreatmentBedRoom != null && this._TreatmentBedRoom.BED_ROOM_ID > 0)
+                    currentBedRoomId = this._TreatmentBedRoom.BED_ROOM_ID;
+
+                ADO.HisBedHistoryADO lastRow = null;
+                long lastTime = 0;
+                foreach (var item in this.bedLogChecks)
+                {
+                    if (item == null)
+                        continue;
+
+                    // Bo dong dang sua ra khoi phep so sanh
+                    if (excludeRow != null && object.ReferenceEquals(item, excludeRow))
+                        continue;
+
+                    // Dong chua chon giuong thi khong tinh
+                    if (item.BED_ID <= 0)
+                        continue;
+
+                    // Khong duoc loc bang item.BED_ROOM_ID: truong nay ke thua tu view va khong bao gio
+                    // duoc gan lai trong man nay, nen dong moi them co gia tri 0 con dong da doi giuong thi
+                    // van mang buong cu. Phai tra buong tu chinh giuong dang chon nhu cac cho khac dang lam.
+                    if (currentBedRoomId > 0)
+                    {
+                        var itemBed = this.dataBedADOs != null ? this.dataBedADOs.FirstOrDefault(o => o.ID == item.BED_ID) : null;
+                        if (itemBed == null || itemBed.BED_ROOM_ID != currentBedRoomId)
+                            continue;
+                    }
+
+                    // Cot "Thoi gian bat dau" tren luoi bind vao startTime (DateTime), con START_TIME (long)
+                    // chi duoc dong bo luc luu. Dong chua luu co START_TIME = 0, va dong vua sua tay ngay bat
+                    // dau van giu START_TIME cu. Dung dung idiom san co trong file de lay dung gia tri
+                    // nguoi dung dang thay tren luoi.
+                    long itemTime = item.START_TIME > 0 ? item.START_TIME : (Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(item.startTime) ?? 0);
+                    if (itemTime <= 0)
+                        continue;
+
+                    if (lastRow == null || itemTime > lastTime)
+                    {
+                        lastRow = item;
+                        lastTime = itemTime;
+                    }
+                }
+
+                if (lastRow != null)
+                    bedId = lastRow.BED_ID;
+            }
+            catch (Exception ex)
+            {
+                bedId = 0;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return bedId;
+        }
+
+        /// <summary>
+        /// Hoi xac nhan khi nguoi dung chon giuong KHAC giuong duoc ghi nhan gan nhat cua ho so.
+        /// Tra ve true la duoc phep chon tiep, false la nguoi dung khong dong y (phai huy viec chon).
+        /// Canh bao nay thuan tuy phia Desktop: duong api/HisServiceReq/CreateByBedLog khong co
+        /// truong xac nhan doi giuong de gui kem len Backend.
+        /// </summary>
+        private bool ConfirmChangeBedByLastAssigned(ADO.HisBedHistoryADO row, HisBedADO selectedBed)
+        {
+            try
+            {
+                if (!this.IsDefaultBedByLastAssignedOn)
+                    return true;
+
+                if (row == null || selectedBed == null)
+                    return true;
+
+                long defaultBedId = this.GetDefaultBedIdByLastAssigned(row);
+                if (defaultBedId <= 0)
+                    return true;
+
+                if (defaultBedId == selectedBed.ID)
+                    return true;
+
+                var defaultBed = this.dataBedADOs != null ? this.dataBedADOs.FirstOrDefault(o => o.ID == defaultBedId) : null;
+                string defaultBedName = defaultBed != null ? defaultBed.BED_NAME : defaultBedId.ToString();
+
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        string.Format("Người bệnh đang nằm giường {0}, xác nhận chuyển sang giường {1}?", defaultBedName, selectedBed.BED_NAME),
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Dien san giuong duoc ghi nhan gan nhat cua ho so vao dong lich su giuong vua duoc them moi.
+        /// Phai dien DU ca BED_ID (cot "Ten giuong") va BED_CODE_ID (cot "Ma giuong"), thieu mot trong
+        /// hai thi luoi hien sai. Khong de len gia tri nguoi dung da chon truoc do.
+        /// </summary>
+        private void FillDefaultBedForNewRow(ADO.HisBedHistoryADO row)
+        {
+            try
+            {
+                if (!this.IsDefaultBedByLastAssignedOn)
+                    return;
+
+                if (row == null)
+                    return;
+
+                // Khong de len giuong da co tren dong
+                if (row.BED_ID > 0 || row.BED_CODE_ID > 0)
+                    return;
+
+                long bedId = this.GetDefaultBedIdByLastAssigned(row);
+                if (bedId <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("FillDefaultBedForNewRow => khong tim duoc giuong duoc ghi nhan gan nhat, de trong giuong.");
+                    return;
+                }
+
+                var defaultBed = this.dataBedADOs != null ? this.dataBedADOs.FirstOrDefault(o => o.ID == bedId) : null;
+                if (defaultBed == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("FillDefaultBedForNewRow => giuong gan nhat khong co trong danh sach chon duoc, de trong giuong. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => bedId), bedId));
+                    return;
+                }
+
+                // Dien bang code thi khong chay qua su kien Closed cua combo, nen phai tu kiem tra
+                // suc chua o day, khong duoc dien san mot giuong da day.
+                // KHONG duoc dung thang defaultBed.IsKey: co do tinh tu tong so ban ghi nam giuong giao
+                // khoang thoi gian, KHONG loai tru ho so dang thao tac. Chinh nguoi benh nay dang nam
+                // giuong do nen tu bi tinh la mot nguoi chiem cho, lam giuong luon ra IsKey = 1 va khong
+                // bao gio dien san duoc - dung kich ban pho bien nhat. Backend cung phai loai tru tuong tu
+                // trong IsValidBedMaxCapacity.
+                long otherPatientCount = 0;
+                if (defaultBed.TREATMENT_BED_ROOM_IDs != null && defaultBed.TREATMENT_BED_ROOM_IDs.Count > 0)
+                {
+                    long currentTreatmentBedRoomId = this._TreatmentBedRoom != null ? this._TreatmentBedRoom.ID : 0;
+                    foreach (long treatmentBedRoomId in defaultBed.TREATMENT_BED_ROOM_IDs)
+                    {
+                        if (currentTreatmentBedRoomId > 0 && treatmentBedRoomId == currentTreatmentBedRoomId)
+                            continue;
+
+                        otherPatientCount = otherPatientCount + 1;
+                    }
+                }
+
+                // Giuong da du so nguoi nam toi da thi khong dien san, de nguoi dung chon giuong khac.
+                if (defaultBed.MAX_CAPACITY.HasValue && otherPatientCount + 1 > defaultBed.MAX_CAPACITY.Value)
+                {
+                    row.HintMessageBedId = string.Format("Giường {0} đã đủ {1}/{2} người, vui lòng chọn giường khác.", defaultBed.BED_NAME, otherPatientCount, defaultBed.MAX_CAPACITY.Value);
+                    Inventec.Common.Logging.LogSystem.Warn("FillDefaultBedForNewRow => giuong gan nhat da day, de trong giuong. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => bedId), bedId));
+                    return;
+                }
+
+                // Van con benh nhan KHAC dang nam giuong nay. Truong hop nam ghep thi hai handler Closed
+                // phai kiem tra IS_NOT_ALLOW_SHARE_BED, hoi nguoi dung co cho nam ghep khong, va tinh
+                // SHARE_COUNT. Dien san bang code thi khong lam duoc ba viec do, de nguyen se gui
+                // SHARE_COUNT = null len api/HisBedLog/Create va bo qua ca rang buoc cam nam ghep.
+                // Vi vay chi dien san khi khong co benh nhan khac, con lai de nguoi dung tu chon qua combo.
+                if (otherPatientCount > 0)
+                {
+                    row.HintMessageBedId = string.Format("Giường {0} đang có người bệnh khác nằm, vui lòng chọn giường qua danh sách để xác nhận nằm ghép.", defaultBed.BED_NAME);
+                    Inventec.Common.Logging.LogSystem.Warn("FillDefaultBedForNewRow => giuong gan nhat dang co benh nhan khac nam, de trong giuong. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => bedId), bedId));
+                    return;
+                }
+
+                row.BED_ID = defaultBed.ID;
+                row.BED_CODE_ID = defaultBed.BED_CODE_ID;
+                row.BED_CODE = defaultBed.BED_CODE;
+                row.BED_NAME = defaultBed.BED_NAME;
+                row.BED_TYPE_CODE = defaultBed.BED_TYPE_CODE;
+                row.BED_TYPE_ID = defaultBed.BED_TYPE_ID;
+                row.BED_TYPE_NAME = defaultBed.BED_TYPE_NAME;
+                row.IsBedStretcher = defaultBed.IS_BED_STRETCHER == 1;
+
+                // Giong het cach hai handler Closed ket thuc: chi rieng ham nay dien BED_SERVICE_TYPE_ID,
+                // BED_SERVICE_TYPE_CODE, BILL_PATIENT_TYPE_ID va goi ChoosePatientTypeDefaultlService de dien
+                // PATIENT_TYPE_ID / PRIMARY_PATIENT_TYPE_ID. Thieu no thi dong moi co giuong nhung trong cot
+                // dich vu giuong, khien o tich bi khoa (CheckEditDisable) va dong khong luu duoc.
+                this.LoadDataToCboBedServiceType(row);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void repositoryItemCboBed_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
             try
@@ -2530,8 +2782,19 @@ namespace HIS.Desktop.Plugins.BedHistory
                         }
                         long bedIdValue = (long)cbo.EditValue;
                         var dataBed = this.dataBedADOs.FirstOrDefault(p => p.ID == bedIdValue);
+
+                        // Hoi xac nhan khi chon giuong khac giuong duoc ghi nhan gan nhat cua ho so.
+                        // Dat truoc moi buoc xu ly de khi nguoi dung khong dong y thi dong luoi con nguyen.
+                        if (dataBed != null && !this.ConfirmChangeBedByLastAssigned(row, dataBed))
+                        {
+                            cbo.EditValue = cbo.OldEditValue;
+                            return;
+                        }
+
                         if (dataBed != null)
                         {
+                            // Nguoi dung da tu chon giuong thi go nhac nhe cua buoc dien san
+                            row.HintMessageBedId = "";
                             var shareCountdf = row.SHARE_COUNT;
                             row.SHARE_COUNT = null;
 
@@ -3132,6 +3395,14 @@ namespace HIS.Desktop.Plugins.BedHistory
                         e.Info.ErrorType = (ErrorType)(row.ErrorTypeBedId);
                         e.Info.ErrorText = (string)(row.ErrorMessageBedId);
                     }
+                    else if (!string.IsNullOrWhiteSpace(row.HintMessageBedId))
+                    {
+                        // Nhac nhe vi sao khong dien san duoc giuong mac dinh. Dung ErrorType.Information
+                        // de KHONG roi vao cac nhanh chan luu (cac nhanh do chi xet Warning va
+                        // ErrorMessageBedId), nguoi dung van luu binh thuong sau khi tu chon giuong.
+                        e.Info.ErrorType = ErrorType.Information;
+                        e.Info.ErrorText = row.HintMessageBedId;
+                    }
                     else
                     {
                         e.Info.ErrorType = (ErrorType)(ErrorType.None);
@@ -3263,6 +3534,10 @@ namespace HIS.Desktop.Plugins.BedHistory
 
         private void repositoryItemCboBedCode_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
         {
+            // Boc try/catch cho dong bo voi repositoryItemCboBed_Closed: truoc day ham nay khong bat loi nen
+            // moi exception deu thoat thang ra vong lap message cua WinForms.
+            try
+            {
             if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
             {
                 var cbo = sender as HIS.Desktop.Utilities.Extensions.CustomGridLookUpEdit;
@@ -3276,8 +3551,19 @@ namespace HIS.Desktop.Plugins.BedHistory
                     long bedcodeId = (long)cbo.EditValue;
                     var dataBed = this.dataBedADOs.FirstOrDefault(p => p.BED_CODE_ID == bedcodeId);
                     //var listSelectedBed = gridControlBedHistory.DataSource;
+
+                    // Hoi xac nhan khi chon giuong khac giuong duoc ghi nhan gan nhat cua ho so.
+                    // Dat truoc moi buoc xu ly de khi nguoi dung khong dong y thi dong luoi con nguyen.
+                    if (dataBed != null && !this.ConfirmChangeBedByLastAssigned(row, dataBed))
+                    {
+                        cbo.EditValue = cbo.OldEditValue;
+                        return;
+                    }
+
                     if (dataBed != null)
                     {
+                        // Nguoi dung da tu chon giuong thi go nhac nhe cua buoc dien san
+                        row.HintMessageBedId = "";
                         var shareCountdf = row.SHARE_COUNT;
                         row.SHARE_COUNT = null;
 
@@ -3401,6 +3687,11 @@ namespace HIS.Desktop.Plugins.BedHistory
                     row.IsBedStretcher = dataBed.IS_BED_STRETCHER == 1;
                     LoadDataToCboBedServiceType(row);
                 }
+            }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
         private long? GetMaxShareCount(HisBedADO dataBed, HisBedHistoryADO row)

@@ -617,6 +617,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                     medi.SERVICE_UNIT_NAME = exp.SERVICE_UNIT_NAME;
                     medi.EXPIRED_DATE = exp.EXPIRED_DATE;
                     medi.LOGGINNAME = exp.REQ_LOGINNAME;
+                    medi.USE_TIME = exp.TDL_USE_TIME;
                     medi.ngoaikho = false;
                     glstMedi.Add(medi);
                 }
@@ -679,6 +680,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                         mEDITYPE.EXPIRED_DATE = exp.EXPIRED_DATE;
                         mEDITYPE.LOGGINNAME = exp.REQ_LOGINNAME;
                         mEDITYPE.AMOUNT = exp.AMOUNT;
+                        mEDITYPE.USE_TIME = exp.TDL_USE_TIME;
                         mEDITYPE.ngoaikho = true;
                         V_HIS_SERVICE_REQ_METY v_HIS_SERVICE_REQ_METY = glstMetyReq.FirstOrDefault(o => o.MEDICINE_TYPE_ID == exp.MEDICINE_TYPE_ID && o.SERVICE_REQ_ID == exp.PRESCRIPTION_ID);
                         if (v_HIS_SERVICE_REQ_METY != null)
@@ -708,6 +710,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                             mediType.INSTRUCTION_TIME = serq.INTRUCTION_TIME;
                             mediType.LOGGINNAME = serq.REQUEST_LOGINNAME;
                             mediType.ID = serq.ID;
+                            mediType.SERVICE_REQ_ID = serq.SERVICE_REQ_ID;
 
                             mediType.MEDICINE_TYPE_NAME = serq.MEDICINE_TYPE_NAME;
                             mediType.AMOUNT = serq.AMOUNT;
@@ -731,12 +734,15 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                         }
 
                     }
+
+                    //Thuốc kê ngoài chưa có phiếu xuất: view HisServiceReqMety không mang ngày dự trù → tra thêm trên đơn (1 lần, chỉ khi có dòng cần tra)
+                    SetUseTimeFromServiceReq(glstMedi.Where(o => o.ngoaikho && !o.USE_TIME.HasValue && o.SERVICE_REQ_ID.HasValue).ToList());
                 }
 
                 if (glstMedi != null)
                 {
                     glstMedi = (from m in glstMedi
-                                group m by new { m.ID, m.MEDICINE_ID, m.MEDICINE_TYPE_CODE, m.MEDICINE_TYPE_NAME, m.PACKAGE_NUMBER, m.SERVICE_UNIT_ID, m.EXPIRED_DATE, m.SPEED, m.SERVICE_UNIT_NAME, m.INSTRUCTION_TIME, m.LOGGINNAME, m.INSTRUCTION_DATE_STR, m.ngoaikho } into g
+                                group m by new { m.ID, m.MEDICINE_ID, m.MEDICINE_TYPE_CODE, m.MEDICINE_TYPE_NAME, m.PACKAGE_NUMBER, m.SERVICE_UNIT_ID, m.EXPIRED_DATE, m.SPEED, m.SERVICE_UNIT_NAME, m.INSTRUCTION_TIME, m.LOGGINNAME, m.INSTRUCTION_DATE_STR, m.ngoaikho, m.USE_TIME } into g
                                 select new MEDITYPE
                                 {
                                     ID = g.Key.ID,
@@ -751,7 +757,8 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                                     EXPIRED_DATE = g.Key.EXPIRED_DATE,
                                     AMOUNT = g.Sum(md => md.AMOUNT),
                                     SPEED = g.Key.SPEED,
-                                    ngoaikho = g.Key.ngoaikho
+                                    ngoaikho = g.Key.ngoaikho,
+                                    USE_TIME = g.Key.USE_TIME
 
                                 }).ToList<MEDITYPE>();
                 }
@@ -763,6 +770,11 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                     if (medi.INSTRUCTION_TIME > 0)
                     {
                         medi.INSTRUCTION_TIME_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.TypeConvert.Parse.ToInt64(medi.INSTRUCTION_TIME.ToString()));
+                    }
+                    //Thời gian dự trù chỉ khai báo đến ngày (giờ 00:00:00) → hiển thị dd/MM/yyyy; không có → để trống
+                    if (medi.USE_TIME > 0)
+                    {
+                        medi.USE_TIME_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(Inventec.Common.TypeConvert.Parse.ToInt64(medi.USE_TIME.ToString()));
                     }
                 }
 
@@ -776,6 +788,39 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 return null;
             }
 
+        }
+
+        /// <summary>
+        /// Gắn Thời gian dự trù cho các dòng thuốc kê ngoài kho chưa có phiếu xuất.
+        /// View HisServiceReqMety không mang USE_TIME nên tra trên đơn (HIS_SERVICE_REQ.USE_TIME) theo danh sách mã đơn — 1 lần gọi.
+        /// Lỗi/không có dữ liệu → để trống cột, không chặn luồng.
+        /// </summary>
+        private void SetUseTimeFromServiceReq(List<MEDITYPE> lstMedi)
+        {
+            try
+            {
+                if (lstMedi == null || lstMedi.Count == 0) return;
+                List<long> serviceReqIds = lstMedi.Where(o => o.SERVICE_REQ_ID.HasValue && o.SERVICE_REQ_ID.Value > 0).Select(o => o.SERVICE_REQ_ID.Value).Distinct().ToList();
+                if (serviceReqIds.Count == 0) return;
+
+                HisServiceReqFilter filter = new HisServiceReqFilter();
+                filter.IDs = serviceReqIds;
+                var serviceReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, null);
+                if (serviceReqs == null || serviceReqs.Count == 0) return;
+
+                foreach (MEDITYPE medi in lstMedi)
+                {
+                    HIS_SERVICE_REQ serviceReq = serviceReqs.FirstOrDefault(o => o.ID == medi.SERVICE_REQ_ID);
+                    if (serviceReq != null)
+                    {
+                        medi.USE_TIME = serviceReq.USE_TIME;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         //Load conbo thuốc trong/ngoài kho
@@ -802,42 +847,49 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 aColumnIntructionTime.VisibleIndex = 1;
                 aColumnIntructionTime.Width = 120;
 
+                //Thời gian dự trù (chỉ đọc, dd/MM/yyyy) — ngay sau Thời gian y lệnh
+                GridColumn aColumnUseTime = lookUpEdit1.Properties.View.Columns.AddField("USE_TIME_STR");
+                aColumnUseTime.Caption = "Thời gian dự trù";
+                aColumnUseTime.Visible = true;
+                aColumnUseTime.VisibleIndex = 2;
+                aColumnUseTime.Width = 90;
+
                 GridColumn aColumnCode = lookUpEdit1.Properties.View.Columns.AddField("MEDICINE_TYPE_CODE");
                 aColumnCode.Caption = "Mã";
                 aColumnCode.Visible = true;
-                aColumnCode.VisibleIndex = 2;
+                aColumnCode.VisibleIndex = 3;
                 aColumnCode.Width = 50;
 
                 GridColumn aColumnName = lookUpEdit1.Properties.View.Columns.AddField("MEDICINE_TYPE_NAME");
                 aColumnName.Caption = "Tên";
                 aColumnName.Visible = true;
-                aColumnName.VisibleIndex = 3;
+                aColumnName.VisibleIndex = 4;
                 aColumnName.Width = 100;
 
                 GridColumn aColumnPackageNumber = lookUpEdit1.Properties.View.Columns.AddField("PACKAGE_NUMBER");
                 aColumnPackageNumber.Caption = "Số lô";
                 aColumnPackageNumber.Visible = true;
-                aColumnPackageNumber.VisibleIndex = 4;
+                aColumnPackageNumber.VisibleIndex = 5;
                 aColumnPackageNumber.Width = 40;
 
 
                 GridColumn aColumnExpiredDate = lookUpEdit1.Properties.View.Columns.AddField("EXPIRED_DATE_STR");
                 aColumnExpiredDate.Caption = "Hạn sử dụng";
                 aColumnExpiredDate.Visible = true;
-                aColumnExpiredDate.VisibleIndex = 5;
+                aColumnExpiredDate.VisibleIndex = 6;
                 aColumnExpiredDate.Width = 120;
 
 
                 GridColumn aColumnSpeed = lookUpEdit1.Properties.View.Columns.AddField("SPEED");
                 aColumnSpeed.Caption = "Tốc độ truyền";
                 aColumnSpeed.Visible = true;
-                aColumnSpeed.VisibleIndex = 6;
+                aColumnSpeed.VisibleIndex = 7;
                 aColumnSpeed.Width = 50;
 
                 GridColumn aColumnLoginName = lookUpEdit1.Properties.View.Columns.AddField("LOGGINNAME");
                 aColumnLoginName.Caption = "Người chỉ định";
                 aColumnLoginName.Visible = true;
-                aColumnLoginName.VisibleIndex = 7;
+                aColumnLoginName.VisibleIndex = 8;
                 aColumnLoginName.Width = 50;
 
 

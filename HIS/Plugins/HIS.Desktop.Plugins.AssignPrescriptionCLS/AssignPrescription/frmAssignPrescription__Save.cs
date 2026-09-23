@@ -421,6 +421,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     this.GetSereServInKip()
                     );
 
+                // Viec 56273: da qua het kiem tra, thuc su goi backend -> tu luu (__AutoSave.cs) khong bao alert chong len MessageManager.Show
+                this.lastSaveReachedBackend = true;
                 var rsData = (isave != null ? isave.Run() : null);
                 if (rsData != null)
                 {
@@ -511,6 +513,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 //    return;
                 MessageManager.Show(this, paramCommon, success);
                 #endregion
+
+                // Viec 56273 (tich hop vien Nghe An): key HIS.Desktop.Plugins.AssignPrescriptionCLS.AutoClose = 1 -> luu thanh cong
+                // thi tu dong form. Dat SAU WaitingManager.Hide + MessageManager.Show (ban Nghe An goi Close truoc 2 buoc nay).
+                // Callback nguoi goi (DgRefeshData, DgProcessDataResult) da chay trong ProcessAfterSaveFor* phia tren nen khong bi mat.
+                // Sau khi luu thanh cong actionType = ActionView nen FormClosing khong hoi "thuoc chua luu".
+                if (success && HisConfigCFG.IsAutoCloseAfterSave && !this.IsDisposed)
+                {
+                    LogSystem.Info("56273 AutoClose: luu thanh cong, tu dong form theo cau hinh HIS.Desktop.Plugins.AssignPrescriptionCLS.AutoClose = 1.");
+                    this.Close();
+                }
             }
             catch (Exception ex)
             {

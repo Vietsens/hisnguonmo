@@ -100,7 +100,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.MIMS.Integration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.MIMS.Integration\HIS.Desktop.MIMS.Integration.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.MIMS.Integration.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
@@ -673,6 +673,9 @@
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="SdaConfigKeys.cs" />
     <Compile Include="ExamServiceReqExecuteControl__ValidateExam.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__ValidateQd130.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ExamServiceReqExecuteControl__CheckDocumentHospitalize.cs">

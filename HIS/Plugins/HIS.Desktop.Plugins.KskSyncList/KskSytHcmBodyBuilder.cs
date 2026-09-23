@@ -59,6 +59,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
         public List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_TEIN> ClsTeins { get; set; }
 
         /// <summary>
+        /// Dịch vụ của chính đợt điều trị — nguồn cho những chỉ tiêu nối vào DỊCH VỤ (siêu âm,
+        /// phẫu thuật - thủ thuật) thay vì vào chỉ số xét nghiệm. Kết quả lấy ở cột kết luận,
+        /// không có thì lấy mô tả.
+        /// </summary>
+        public List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_2> ClsSereServs { get; set; }
+
+        /// <summary>
+        /// Kết quả của dịch vụ chẩn đoán hình ảnh / siêu âm — nằm ở bảng `HIS_SERE_SERV_EXT`
+        /// (mô tả + kết luận), nối với dịch vụ qua `SERE_SERV_ID`.
+        /// </summary>
+        public List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT> ClsExts { get; set; }
+
+        /// <summary>
         /// Bảng khai báo nối chỉ số cận lâm sàng đã lưu ở màn hình đồng bộ (dạng JSON).
         /// Rỗng = viện chưa khai báo -> khối cận lâm sàng gửi rỗng.
         /// </summary>
@@ -82,6 +95,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private const string CAT__YES_NO = "Yes_No";
         private const string CAT__YES_NO_M4 = "YesNo";
         private const string CAT__DOI_TUONG_KHAM = "M3_DoiTuongKham";
+
+        /// <summary>Nguồn chi trả: mẫu M3 dùng danh mục này (Id 4039–4042)...</summary>
+        private const string CAT__CHI_TRA_M3 = "ChiTra";
+
+        /// <summary>...còn mẫu M4 (người cao tuổi) dùng danh mục riêng, ít mục hơn (Id 5052–5054).</summary>
+        private const string CAT__CHI_TRA_M4 = "NCT_HTChiTraKhamSucKhoe";
 
         /// <summary>
         /// Các câu hỏi có/không gửi 1/0 hay gửi Id danh mục (264 = Có, 265 = Không)?
@@ -133,9 +152,21 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 return body;
             }
 
-            JObject full = JObject.FromObject(body);
+            JObject m3 = JObject.FromObject(body);
+            ReshapeTienSuToM4(m3);
+
+            // Dựng LẠI theo ĐÚNG THỨ TỰ KHỐI của đặc tả M4, thay vì gắn thêm vào cuối bản tin M3.
+            JObject full = new JObject();
+            full["tthc"] = m3["tthc"];
+            full["tien_su"] = m3["tien_su"];
             full["kham_thuc_the"] = JObject.FromObject(BuildKhamThucThe(src, hb));
             full["hoi_benh_kham_lam_sang"] = JObject.FromObject(BuildHoiBenh(src, hb));
+            full["kham_lam_san"] = RenameEarFieldsForM4(m3["kham_lam_san"] as JObject);
+            full["can_lam_san"] = m3["can_lam_san"];
+            full["ket_luan"] = m3["ket_luan"];
+
+            // Trường chữ bỏ trống: gửi "" chứ KHÔNG gửi null — xem chú thích của hàm.
+            NullToEmptyForTextFields(full);
             return full;
         }
 
@@ -252,8 +283,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Danh sách phải khớp với các ô ở tab Hỏi bệnh lâm sàng HCM. Thêm câu trên giao diện mà
         /// quên thêm vào đây thì câu đó không lên cổng.
         ///
-        /// KHÔNG có bpq_* (3 câu tầm soát phổi tắc nghẽn mạn tính): biểu mẫu in có mục này nhưng
-        /// đặc tả của cổng chưa có trường tương ứng.
+        /// 3 câu tầm soát phổi tắc nghẽn mạn tính nằm ở nhóm riêng `benh_phoi_tac_nghen`, xem
+        /// HB__PHOI_TAC_NGHEN bên dưới.
         /// </summary>
         private static readonly string[] HB__THONG_TIN_BENH = new string[]
         {
@@ -277,6 +308,23 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
         private static readonly string[] HB__DAI_THAO_DUONG = new string[]
         { "dtd_maudoi", "dtd_khatnuoc", "dtd_ditieunhieu", "dtd_sutcan", "dtd_vetthuong" };
+
+        /// <summary>
+        /// D3 — tầm soát bệnh phổi tắc nghẽn mạn tính. Cặp { tên trường của cổng, khoá trong
+        /// INTERVIEW_JSON }.
+        ///
+        /// ĐÂY LÀ NHÓM DUY NHẤT tên hai bên KHÁC NHAU: giao diện dựng theo biểu mẫu in (tiền tố
+        /// `bpq_`) từ trước khi có tài liệu của cổng, cổng lại gọi là `ptnmt_`. Đổi tên khoá trong
+        /// cơ sở dữ liệu thì hồ sơ đã lưu mất dữ liệu, nên quy đổi ở đây.
+        ///
+        /// Cổng BẮT BUỘC cả ba (400 `required` nếu thiếu), nên luôn gửi đủ mặt, không trả lời là 0.
+        /// </summary>
+        private static readonly string[][] HB__PHOI_TAC_NGHEN = new string[][]
+        {
+            new[] { "ptnmt_ho",      "bpq_ho_hangngay" },
+            new[] { "ptnmt_khacdom", "bpq_khacdam"     },
+            new[] { "ptnmt_khotho",  "bpq_khotho"      }
+        };
 
         private static readonly string[] HB__HEN_PHE_QUAN = new string[]
         {
@@ -360,6 +408,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             b["macbenh"] = ReadHoiBenhFlag(o, "macbenh");
             b["thong_tin_benh"] = thongTinBenh;
             b["dai_thao_duong"] = HoiBenhFlags(o, HB__DAI_THAO_DUONG);
+            b["benh_phoi_tac_nghen"] = HoiBenhFlagsRenamed(o, HB__PHOI_TAC_NGHEN);
             b["hen_phe_quan"] = HoiBenhFlags(o, HB__HEN_PHE_QUAN);
             b["ung_thu"] = HoiBenhFlags(o, HB__UNG_THU);
             b["roi_loan_tram_cam"] = HoiBenhIds(o, HB__ROI_LOAN_TRAM_CAM);
@@ -375,6 +424,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             var b = new Dictionary<string, object>();
             foreach (string f in fields) b[f] = ReadHoiBenhFlag(o, f);
+            return b;
+        }
+
+        /// <summary>Như HoiBenhFlags nhưng tên trường của cổng khác khoá lưu trong cơ sở dữ liệu.</summary>
+        private static Dictionary<string, object> HoiBenhFlagsRenamed(JObject o, string[][] pairs)
+        {
+            var b = new Dictionary<string, object>();
+            foreach (string[] p in pairs) b[p[0]] = ReadHoiBenhFlag(o, p[1]);
             return b;
         }
 
@@ -396,6 +453,24 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>Ô tích: có khoá và bằng 1 thì 1, còn lại là 0.</summary>
+        /// <summary>
+        /// Đọc một Id (kiểu số) từ chuỗi JSON hỏi bệnh. Không có khoá, hoặc giá trị không phải số
+        /// dương, thì trả null — chỗ gọi hiểu là KHÔNG GỬI trường đó.
+        /// </summary>
+        private static long? ReadInterviewLong(JObject o, string field)
+        {
+            try
+            {
+                if (o == null) return null;
+                JToken t = o[field];
+                if (t == null || t.Type == JTokenType.Null) return null;
+                long v;
+                if (!long.TryParse(t.ToString(), out v) || v <= 0) return null;
+                return v;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
         private static int ReadHoiBenhFlag(JObject o, string field)
         {
             try
@@ -466,6 +541,39 @@ namespace HIS.Desktop.Plugins.KskSyncList
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
         }
 
+
+        /// <summary>
+        /// Nắn riêng khối `tien_su` từ hình dạng M3 sang M4.
+        ///
+        /// Làm ở một chỗ như thế này thay vì sửa BuildTienSu, để LUỒNG M3 KHÔNG BỊ ĐỘNG VÀO — bốn
+        /// viện đang chạy M3 không phải kiểm tra lại.
+        ///
+        /// Khối `tien_su` của hai mẫu khác hẳn nhau:
+        ///       M3: giadinh_macbenh = cờ 0/1, danh sách mã nằm ở giadinh_danhsachbenh,
+        ///           kèm giadinh_macbenh_tenbenh.
+        ///       M4: giadinh_macbenh CHÍNH LÀ chuỗi danh sách mã ("1051,1053");
+        ///           KHÔNG có giadinh_danhsachbenh, KHÔNG có giadinh_macbenh_tenbenh.
+        /// </summary>
+        private static void ReshapeTienSuToM4(JObject full)
+        {
+            try
+            {
+                if (full == null) return;
+
+                JObject tienSu = full["tien_su"] as JObject;
+                if (tienSu == null) return;
+
+                JToken ids = tienSu["giadinh_danhsachbenh"];
+                bool coMa = (ids != null && ids.Type != JTokenType.Null
+                             && !string.IsNullOrWhiteSpace(ids.ToString()));
+
+                tienSu["giadinh_macbenh"] = coMa ? ids.ToString() : "";
+                tienSu.Remove("giadinh_danhsachbenh");
+                tienSu.Remove("giadinh_macbenh_tenbenh");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
         /// <summary>I. Thông tin hành chính — 23 chỉ tiêu.</summary>
         private static Dictionary<string, object> BuildTthc(KskSytHcmSource src)
         {
@@ -522,9 +630,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // Tra theo mã chắc hơn hẳn tra theo tên: tên cùng một nghề mỗi nơi ghi một kiểu, chỉ lệch
             // một dấu cách hay một chữ viết hoa là trượt.
             string careerCode = FirstStr(src.Treatment, "TDL_PATIENT_CAREER_CODE");
-            KskSytCatalogItem career = MapByNameItem(CAT__NGHE_NGHIEP, careerCode);
+            KskSytCatalogItem career = MapByNameItem(CAT__NGHE_NGHIEP, careerCode, false);
             if (career == null)
-                career = MapByNameItem(CAT__NGHE_NGHIEP, GetStr(p, "CAREER_NAME"));
+                career = MapByNameItem(CAT__NGHE_NGHIEP, GetStr(p, "CAREER_NAME"), false);
 
             if (career != null)
             {
@@ -553,18 +661,83 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // Danh mục nơi công tác của cổng có 5431 mục là tên cơ sở cụ thể, còn HIS lưu nơi công
             // tác dạng chữ tự do nên phần lớn hồ sơ sẽ không tra ra. Muốn gửi đúng thì phải bổ sung
             // ô chọn nơi công tác lấy thẳng danh mục của cổng, như đã làm cho ô chọn bệnh.
-            long? noiCongTac = MapByName(CAT__NOI_CONG_TAC,
-                FirstStr(o, "WORK_PLACE", "WORKING_PLACE"));
+            // Người nhập CHỌN THẲNG trong danh mục của cổng ở màn hình nhập KSK, giá trị lưu
+            // trong cột INTERVIEW_JSON. Bỏ hẳn cách tra theo tên: danh mục của cổng hơn 5.000 mục
+            // tên cơ sở cụ thể, còn HIS lưu nơi làm việc dạng chữ tự do nên tra tên gần như luôn
+            // trượt — và trước đó còn đọc nhầm sang bảng KSK (cột WORK_PLACE nằm ở HIS_PATIENT).
+            //
+            // `noi_cong_tac_xa_phuong` dùng chung danh mục xã/phường với địa chỉ bệnh nhân: bộ
+            // Postman của Sở liệt kê 26 danh mục và không có danh mục riêng cho xã/phường nơi
+            // công tác.
+            JObject hbTthc = ReadInterviewJson(src);
+            long? noiCongTac = ReadInterviewLong(hbTthc, "noi_cong_tac");
             if (noiCongTac.HasValue) b["noi_cong_tac"] = noiCongTac.Value;
 
-            // `noi_cong_tac_xa_phuong` KHÔNG gửi: chưa rõ đây là xã/phường của NƠI CÔNG TÁC hay của
-            // bệnh nhân, và HIS không có chỗ lưu tương ứng. Chờ Sở trả lời.
+            long? noiCongTacXa = ReadInterviewLong(hbTthc, "noi_cong_tac_xa_phuong");
+            if (noiCongTacXa.HasValue) b["noi_cong_tac_xa_phuong"] = noiCongTacXa.Value;
 
-            b["hinh_thuc_chi_tra_khamsk"] = GetLong(h, "SYT_PAYSOURCE_ID");
+            b["hinh_thuc_chi_tra_khamsk"] = MapPaySourceForForm(GetLong(h, "SYT_PAYSOURCE_ID"), src);
             b["hinh_thuc_chi_tra_khamsk_chi_tiet"] = GetLong(h, "SYT_PAY_SOURCE_DETAIL_ID");
             b["nguonkhac_ghiro"] = GetStr(h, "PAY_SOURCE_OTHER");
             b["ly_do_kham"] = GetStr(src.ServiceReq, "HOSPITALIZATION_REASON");
             return b;
+        }
+
+        /// <summary>
+        /// Quy đổi Nguồn chi trả sang danh mục ĐÚNG CỦA TỪNG MẪU.
+        ///
+        /// VÌ SAO: ô "Nguồn chi trả" ở màn hình nhập luôn đổ theo danh mục `ChiTra` (mẫu M3, Id
+        /// 4039–4042). Dịch vụ M4 lại đối chiếu danh mục riêng của người cao tuổi
+        /// `NCT_HTChiTraKhamSucKhoe` (Id 5052–5054) — tuy thông báo lỗi vẫn gọi là "danh mục
+        /// ChiTra". Gửi thẳng Id của M3 thì cổng trả 400 `category_not_found`.
+        ///
+        /// CÁCH LÀM: tra TÊN của mục đã chọn trong danh mục M3, rồi tìm đúng tên đó ở danh mục M4.
+        /// Không viết cứng cặp Id, vì Id do cổng cấp và có thể đổi.
+        ///
+        /// Mẫu M3 giữ nguyên hành vi cũ: trả lại đúng Id đã lưu.
+        /// </summary>
+        private static long? MapPaySourceForForm(long? paySourceId, KskSytHcmSource src)
+        {
+            try
+            {
+                if (!paySourceId.HasValue || !IsElderlyForm(src)) return paySourceId;
+
+                string name = null;
+                var items = KskSytHcmPayload.ReadCachedCatalog(CAT__CHI_TRA_M3);
+                if (items != null)
+                {
+                    foreach (var it in items)
+                    {
+                        if (it == null) continue;
+                        if (ToLongOrNull(it.Id) == paySourceId) { name = it.Name; break; }
+                    }
+                }
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: khong tra duoc ten cua nguon chi tra Id="
+                        + paySourceId.Value + " trong danh muc " + CAT__CHI_TRA_M3
+                        + " -> mau M4 gui trong o nguon chi tra");
+                    return null;
+                }
+
+                long? m4Id = MapByName(CAT__CHI_TRA_M4, name);
+                if (!m4Id.HasValue)
+                {
+                    // Danh mục của người cao tuổi ÍT MỤC HƠN (không có "Người sử dụng lao động chi
+                    // trả"). Chọn phải mục đó thì không có gì để quy đổi -> để trống và báo rõ, hơn
+                    // là tự đổi sang mục khác làm sai thông tin hành chính.
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: nguon chi tra \"" + name
+                        + "\" KHONG co trong danh muc " + CAT__CHI_TRA_M4 + " cua mau M4"
+                        + " -> gui trong; can chon lai nguon chi tra khac cho ho so nguoi cao tuoi");
+                    return null;
+                }
+
+                Inventec.Common.Logging.LogSystem.Info("SytHcm: mau M4 quy doi nguon chi tra \"" + name
+                    + "\": " + paySourceId.Value + " (" + CAT__CHI_TRA_M3 + ") -> " + m4Id.Value
+                    + " (" + CAT__CHI_TRA_M4 + ")");
+                return m4Id;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return paySourceId; }
         }
 
         /// <summary>II. Tiền sử.</summary>
@@ -822,8 +995,98 @@ namespace HIS.Desktop.Plugins.KskSyncList
             b["tmh_taiphai_noithuong"] = Num(ToNum(GetStr(o, "EXAM_ENT_RIGHT_NORMAL")));
             b["tmh_taiphai_noitham"] = Num(ToNum(GetStr(o, "EXAM_ENT_RIGHT_WHISPER")));
 
+            // Từ chối khám sản khoa / phụ khoa — cả bản mẫu M3 lẫn M4 đều có hai chỉ tiêu này.
+            // Chưa tích thì gửi 0: cổng cần biết "có khám, không từ chối", khác hẳn với vắng mặt.
+            b["sankhoa_tuchoikham"] = (GetLong(h, "IS_REFUSE_OBSTETRIC") == 1) ? 1 : 0;
+            b["phukhoa_tuchoikham"] = (GetLong(h, "IS_REFUSE_GYNECOLOGY") == 1) ? 1 : 0;
+
             b["chi_tiet_kham_rang"] = BuildChiTietKhamRang(h);
             return b;
+        }
+
+        /// <summary>
+        /// Tên các trường KIỂU CHỮ của mẫu M4. Bỏ trống thì gửi chuỗi rỗng, KHÔNG gửi null.
+        ///
+        /// VÌ SAO: bản mẫu của Sở có 52 trường kiểu chữ và KHÔNG trường nào là null — không có dữ
+        /// liệu thì để "". Null chỉ xuất hiện ở trường kiểu số/Id.
+        ///
+        /// Đối chiếu hai bản tin thật cho thấy đúng chỗ này: bản cổng NHẬN có `sdt`,
+        /// `dieu_tri_benh_liet_ke`, `thai_san_liet_ke`, `benh_khac` đều là chuỗi; bản cổng ném lỗi
+        /// `internal_error` "Tạo phiếu thất bại" thì cả sáu trường đó đều null, còn bộ khóa hai bên
+        /// giống hệt nhau (299 = 299). Cổng báo `field: null` — tức không chết ở tầng kiểm tra
+        /// từng trường mà chết lúc xử lý, đúng kiểu vấp phải chuỗi null.
+        ///
+        /// CHỈ ÁP DỤNG CHO M4. Mẫu M3 vẫn gửi null như cũ và vẫn chạy được — không đụng vào để
+        /// khỏi phải kiểm tra hồi quy phần đang chạy.
+        /// </summary>
+        private static readonly HashSet<string> M4__TRUONG_KIEU_CHU = new HashSet<string>(
+            new string[]
+            {
+                // I. Thông tin hành chính
+                "sdt", "the_bhyt", "nguonkhac_ghiro", "ly_do_kham", "dia_chi_hien_tai",
+                "ho_ten", "dinh_danh_ca_nhan", "ngay_kham", "ngay_sinh",
+                "nghenghiep_code", "city_code", "ward_code",
+                // II. Tiền sử + III. Khám thực thể
+                "dieu_tri_benh_liet_ke", "thai_san_liet_ke", "benh_khac",
+                "giadinh_danhsachbenh_icd", "giadinh_macbenh",
+                // IV. Hỏi bệnh
+                "dauhieu_khac", "benh_khac_hoibenh",
+                // V. Cận lâm sàng + VI. Kết luận
+                "xet_nghiem_hpv", "xet_nghiem_te_bao_co_tu_cung",
+                "can_lam_sang_khac_chi_tiet", "de_nghi"
+            });
+
+        /// <summary>
+        /// Duyệt cả bản tin, trường nào thuộc nhóm kiểu chữ mà đang null thì đổi thành "".
+        /// Mọi trường chẩn đoán (`*_icd`) cũng là kiểu chữ nên gộp bằng phần đuôi tên.
+        /// </summary>
+        private static void NullToEmptyForTextFields(JToken node)
+        {
+            try
+            {
+                JObject o = node as JObject;
+                if (o == null) return;
+
+                foreach (JProperty pr in o.Properties())
+                {
+                    if (pr.Value is JObject) { NullToEmptyForTextFields(pr.Value); continue; }
+                    if (pr.Value == null || pr.Value.Type != JTokenType.Null) continue;
+
+                    if (M4__TRUONG_KIEU_CHU.Contains(pr.Name)
+                        || pr.Name.EndsWith("_icd", StringComparison.Ordinal))
+                    {
+                        pr.Value = new JValue(string.Empty);
+                    }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Bốn chỉ tiêu thính lực: mẫu M3 gọi `tmh_taitrai_noithuong`, mẫu M4 gọi `taitrai_noithuong`
+        /// — KHÔNG có tiền tố. Đối chiếu hai bản mẫu của Sở thì đúng là hai tên khác nhau.
+        ///
+        /// Khối `kham_lam_san` của M4 lấy lại từ thân bản tin M3, nên phải đổi tên bốn khoá này;
+        /// để nguyên thì cổng M4 không nhận được thính lực mà cũng không báo lỗi.
+        /// </summary>
+        private static JToken RenameEarFieldsForM4(JObject khamLamSan)
+        {
+            try
+            {
+                if (khamLamSan == null) return khamLamSan;
+                string[] names = new string[]
+                { "taitrai_noithuong", "taitrai_noitham", "taiphai_noithuong", "taiphai_noitham" };
+
+                foreach (string n in names)
+                {
+                    JToken v = khamLamSan["tmh_" + n];
+                    if (v == null) continue;
+                    khamLamSan[n] = v;
+                    khamLamSan.Remove("tmh_" + n);
+                }
+                return khamLamSan;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return khamLamSan; }
         }
 
         /// <summary>
@@ -844,11 +1107,86 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 foreach (string no in all)
                 {
                     long? v = GetLong(h, "TOOTH_" + no);
-                    if (v.HasValue && v.Value > 0) teeth[no] = v.Value;
+                    if (!v.HasValue || v.Value <= 0) continue;
+
+                    long? id = MapToothStatusToCatalogId(v.Value);
+                    if (id.HasValue) teeth[no] = id.Value;
                 }
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
             return teeth;
+        }
+
+        /// <summary>Danh mục tình trạng răng của cổng.</summary>
+        private const string CAT__TINH_TRANG_RANG = "NenTangKSK_TinhTrangRang";
+
+        /// <summary>
+        /// Bảng mã trạng thái răng CŨ của HIS (màn hình nhập dùng khi cổng chưa cấp danh mục).
+        /// Chỉ dùng để ĐỌC LẠI hồ sơ lưu bằng bản cũ — không phải bảng mã chính thức.
+        /// </summary>
+        private static readonly Dictionary<long, string> TOOTH_LEGACY_NAME = new Dictionary<long, string>
+        {
+            { 1,  "Bình thường"       },
+            { 2,  "Sâu"               },
+            { 3,  "Trám sâu lại"      },
+            { 4,  "Trám tốt"          },
+            { 5,  "Mất do sâu"        },
+            { 6,  "Mất lý do khác"    },
+            { 7,  "Bít hố rãnh"       },
+            { 8,  "Trụ, cầu, implant" },
+            { 9,  "Chưa mọc"          },
+            { 10, "Không ghi nhận"    }
+        };
+
+        /// <summary>
+        /// Đưa trạng thái răng đã lưu về ĐÚNG Id của danh mục cổng.
+        ///
+        /// VÌ SAO: màn hình nhập bản cũ ghi mã nội bộ của HIS (1..10) thay vì Id của cổng
+        /// (191..221), nên cổng trả 400 "Trạng thái của các răng sau không tồn tại trong danh mục".
+        /// Bản mới đã ghi đúng Id, nhưng hồ sơ lưu trước đó vẫn còn mã cũ trong cơ sở dữ liệu —
+        /// quy đổi THEO TÊN ngay lúc đẩy để không phải mở lại và lưu lại từng hồ sơ.
+        ///
+        /// Không quy đổi được thì KHÔNG GỬI chiếc răng đó, hơn là gửi mã cổng không hiểu.
+        /// </summary>
+        private static long? MapToothStatusToCatalogId(long stored)
+        {
+            try
+            {
+                var items = KskSytHcmPayload.ReadCachedCatalog(CAT__TINH_TRANG_RANG);
+                if (items == null || items.Count == 0)
+                {
+                    // Chưa tải được danh mục -> giữ nguyên như trước, đừng tự ý bỏ dữ liệu.
+                    return stored;
+                }
+
+                foreach (var it in items)
+                {
+                    if (it != null && ToLongOrNull(it.Id) == stored) return stored;   // đã là Id đúng
+                }
+
+                string name;
+                if (!TOOTH_LEGACY_NAME.TryGetValue(stored, out name))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: trang thai rang " + stored
+                        + " khong co trong danh muc " + CAT__TINH_TRANG_RANG
+                        + " va cung khong phai ma cu cua HIS -> KHONG gui chiec rang nay");
+                    return null;
+                }
+
+                long? id = MapByName(CAT__TINH_TRANG_RANG, name);
+                if (!id.HasValue)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: trang thai rang cu \"" + name
+                        + "\" khong tra duoc trong danh muc " + CAT__TINH_TRANG_RANG
+                        + " -> KHONG gui chiec rang nay");
+                    return null;
+                }
+
+                Inventec.Common.Logging.LogSystem.Info("SytHcm: quy doi trang thai rang \"" + name
+                    + "\": " + stored + " (ma cu cua HIS) -> " + id.Value + " (Id cua cong)");
+                return id;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return stored; }
         }
 
         /// <summary>
@@ -872,6 +1210,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 Dictionary<string, string> map = ParseClsMap(src.ClsMapJson);
                 Dictionary<string, string> valueByIndexCode = IndexTeinValues(src.ClsTeins);
+                Dictionary<string, string> valueByServiceCode =
+                    ServiceResultValues(src.ClsSereServs, src.ClsExts);
 
                 // CHAN DOAN: ba con so nay chi ro hong o dau — chua noi chi so / ho so khong co ket
                 // qua / noi roi ma ma chi so khong khop. Khong co chung thi chi biet "gui rong".
@@ -894,10 +1234,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     Inventec.Common.Logging.LogSystem.Warn("SytHcm: CHUA noi chi so nao o bang khai bao"
                         + " -> 34 chi tieu xet nghiem gui rong");
                 }
-                else if (valueByIndexCode.Count == 0)
+                else if (valueByIndexCode.Count == 0 && valueByServiceCode.Count == 0)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: ho so khong co ket qua xet nghiem nao"
-                        + " -> 34 chi tieu xet nghiem gui rong");
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: ho so khong co ket qua xet nghiem"
+                        + " va cung khong co ket qua dich vu nao -> 34 chi tieu xet nghiem gui rong");
                 }
                 else
                 {
@@ -905,22 +1245,35 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     foreach (var kv in map)
                     {
                         string fieldCode = kv.Key;
-                        string indexCode = kv.Value;
+
+                        // Giá trị bảng khai báo có dạng "XN|<mã>" hoặc "DV|<mã>".
+                        string kind = ADO.KskSytClsFieldStore.SOURCE_KIND__TEST_INDEX;
+                        string indexCode = kv.Value ?? "";
+                        int vach = indexCode.IndexOf('|');
+                        if (vach > 0)
+                        {
+                            kind = indexCode.Substring(0, vach);
+                            indexCode = indexCode.Substring(vach + 1);
+                        }
+                        bool laDichVu = (kind == ADO.KskSytClsFieldStore.SOURCE_KIND__SERVICE);
+                        string tenNguon = laDichVu ? "ma dich vu" : "ma chi so";
 
                         string raw;
-                        if (!valueByIndexCode.TryGetValue(NormCode(indexCode), out raw)
-                            || string.IsNullOrWhiteSpace(raw))
+                        bool coKetQua = laDichVu
+                            ? valueByServiceCode.TryGetValue(NormCode(indexCode), out raw)
+                            : valueByIndexCode.TryGetValue(NormCode(indexCode), out raw);
+                        if (!coKetQua || string.IsNullOrWhiteSpace(raw))
                         {
                             // Ghi ro ma MUON ma khong thay -> doi chieu voi danh sach ma CO ket qua
                             // o dong log tren la biet ngay lech ma hay benh nhan khong lam dich vu do.
                             Inventec.Common.Logging.LogSystem.Warn("SytHcm/CLS: " + fieldCode
-                                + " <- ma chi so \"" + indexCode + "\" KHONG co ket qua");
+                                + " <- " + tenNguon + " \"" + indexCode + "\" KHONG co ket qua");
                             noResult++;
                             continue;
                         }
 
                         Inventec.Common.Logging.LogSystem.Debug("SytHcm/CLS: " + fieldCode
-                            + " <- " + indexCode + " = " + raw);
+                            + " <- " + tenNguon + " " + indexCode + " = " + raw);
 
                         object val = ConvertClsValue(fieldCode, raw.Trim());
                         if (val == null) { noResult++; continue; }
@@ -991,7 +1344,59 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     if (it == null) continue;
                     if (string.IsNullOrWhiteSpace(it.FieldCode)) continue;
                     if (string.IsNullOrWhiteSpace(it.TestIndexCode)) continue;
-                    rs[it.FieldCode.Trim()] = it.TestIndexCode.Trim();
+
+                    // Giá trị mang theo LOẠI NGUỒN: "XN|<mã chỉ số>" hoặc "DV|<mã dịch vụ>".
+                    // Bản khai báo cũ không ghi loại -> hiểu là chỉ số xét nghiệm, như trước.
+                    string kind = string.IsNullOrWhiteSpace(it.SourceKind)
+                        ? ADO.KskSytClsFieldStore.SOURCE_KIND__TEST_INDEX
+                        : it.SourceKind.Trim();
+                    rs[it.FieldCode.Trim()] = kind + "|" + it.TestIndexCode.Trim();
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return rs;
+        }
+
+        /// <summary>
+        /// Kết quả của DỊCH VỤ trong hồ sơ -> tra theo MÃ DỊCH VỤ.
+        ///
+        /// Ưu tiên cột kết luận, trống thì lấy mô tả — hai chỉ tiêu "X-quang nhũ" và "Siêu âm 02
+        /// tuyến vú" của cổng nhận văn bản tự do nên kết luận là thứ sát nghĩa nhất.
+        ///
+        /// Một mã có thể xuất hiện nhiều lần (làm lại dịch vụ): giữ giá trị KHÔNG RỖNG ĐẦU TIÊN,
+        /// cùng quy tắc với phần chỉ số xét nghiệm.
+        /// </summary>
+        private static Dictionary<string, string> ServiceResultValues(
+            List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_2> sereServs,
+            List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT> exts)
+        {
+            var rs = new Dictionary<string, string>();
+            try
+            {
+                if (sereServs == null || exts == null) return rs;
+
+                // Bảng kết quả tra theo mã dịch vụ đã chỉ định, KHÔNG phải theo mã dịch vụ.
+                var extBySereServ = new Dictionary<long, MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT>();
+                foreach (var ex in exts)
+                {
+                    if (ex == null) continue;
+                    if (!extBySereServ.ContainsKey(ex.SERE_SERV_ID)) extBySereServ[ex.SERE_SERV_ID] = ex;
+                }
+
+                foreach (var ss in sereServs)
+                {
+                    if (ss == null || string.IsNullOrWhiteSpace(ss.TDL_SERVICE_CODE)) continue;
+
+                    MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT ext;
+                    if (!extBySereServ.TryGetValue(ss.ID, out ext) || ext == null) continue;
+
+                    // Kết luận là thứ sát nghĩa nhất với ô văn bản của cổng; trống thì lấy mô tả.
+                    string val = ext.CONCLUDE;
+                    if (string.IsNullOrWhiteSpace(val)) val = ext.DESCRIPTION;
+                    if (string.IsNullOrWhiteSpace(val)) continue;
+
+                    string key = NormCode(ss.TDL_SERVICE_CODE);
+                    if (!rs.ContainsKey(key)) rs[key] = val;
                 }
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
@@ -1391,13 +1796,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 string c = (code ?? "").Trim();
                 if (c.Length > 0)
                 {
-                    KskSytCatalogItem hit = MapByNameItem(CAT__TINH, c);
-                    if (hit == null && c.Length < 3) hit = MapByNameItem(CAT__TINH, c.PadLeft(3, '0'));
-                    if (hit == null && c.Length > 1) hit = MapByNameItem(CAT__TINH, c.TrimStart('0'));
+                    KskSytCatalogItem hit = MapByNameItem(CAT__TINH, c, false);
+                    if (hit == null && c.Length < 3)
+                        hit = MapByNameItem(CAT__TINH, c.PadLeft(3, '0'), false);
+                    if (hit == null && c.Length > 1)
+                        hit = MapByNameItem(CAT__TINH, c.TrimStart('0'), false);
                     if (hit != null) return hit;
                 }
 
-                KskSytCatalogItem byName = MapByNameItem(CAT__TINH, name);
+                KskSytCatalogItem byName = MapByNameItem(CAT__TINH, name, false);
                 if (byName != null) return byName;
 
                 Inventec.Common.Logging.LogSystem.Warn("SytHcm: khong tra duoc tinh/thanh pho - ma HIS=\""
@@ -1416,6 +1823,21 @@ namespace HIS.Desktop.Plugins.KskSyncList
             = new Dictionary<string, Dictionary<string, KskSytCatalogItem>>();
 
         internal static KskSytCatalogItem MapByNameItem(string catalogCode, string hisName)
+        {
+            return MapByNameItem(catalogCode, hisName, true);
+        }
+
+        /// <summary>
+        /// <paramref name="warnWhenMissing"/> = false khi đây mới là MỘT TRONG NHIỀU cách tra và còn
+        /// cách khác phía sau (ví dụ tra mã "91" hụt thì thử tiếp "091"). Chỗ gọi tự ghi cảnh báo
+        /// khi đã thử hết mà vẫn không ra.
+        ///
+        /// VÌ SAO: trước đây mỗi lần thử hụt đều ghi một dòng cảnh báo, nên nhật ký báo "không tìm
+        /// được 91 trong danh mục tỉnh" NGAY CẢ KHI lần thử sau đó đã ra đúng tỉnh. Đọc nhật ký
+        /// tưởng gửi thiếu tỉnh, mà bản tin thật ra gửi đủ.
+        /// </summary>
+        internal static KskSytCatalogItem MapByNameItem(string catalogCode, string hisName,
+            bool warnWhenMissing)
         {
             try
             {
@@ -1447,8 +1869,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 KskSytCatalogItem found;
                 if (map.TryGetValue(Norm(hisName), out found)) return found;
 
-                Inventec.Common.Logging.LogSystem.Warn("SytHcm: khong tim duoc \"" + hisName
-                    + "\" trong danh muc " + catalogCode + " -> gui trong ca Id va ma");
+                if (warnWhenMissing)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: khong tim duoc \"" + hisName
+                        + "\" trong danh muc " + catalogCode + " -> gui trong ca Id va ma");
+                }
                 return null;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }

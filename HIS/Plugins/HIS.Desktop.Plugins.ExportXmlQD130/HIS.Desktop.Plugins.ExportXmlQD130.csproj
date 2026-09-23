@@ -263,6 +263,24 @@
     <Compile Include="ADO\ConfigSyncADO.cs" />
     <Compile Include="ADO\TienGiamDinhADO.cs" />
     <Compile Include="Base\TienGiamDinhWorker.cs" />
+    <Compile Include="ADO\MdInsightADO.cs" />
+    <Compile Include="ADO\XmlBuildContextADO.cs" />
+    <Compile Include="Base\MdInsightApiAdapter.cs" />
+    <Compile Include="frmMdInsightResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UCExportXml___XmlBuilder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCExportXml___MdInsight.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCExportXml___MdInsightFlow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Base\MdInsightConfig.cs" />
+    <Compile Include="Base\MdInsightDescCodec.cs" />
+    <Compile Include="Base\MdInsightWorker.cs" />
     <Compile Include="ADO\HisConfigCFG.cs" />
     <Compile Include="ADO\HisServiceSpecialityFilter.cs" />
     <Compile Include="UCExportXml_KiemTraHoSo.cs">

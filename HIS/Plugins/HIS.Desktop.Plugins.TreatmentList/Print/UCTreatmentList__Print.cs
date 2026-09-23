@@ -88,6 +88,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
 
                 // lấy về các phẫu thuật viên chính
                 List<V_HIS_EKIP_USER> ListEkipUser = new List<V_HIS_EKIP_USER>();
+                List<V_HIS_SERVICE> ListSurgService = new List<V_HIS_SERVICE>();
 
                 MOS.Filter.HisSereServView5Filter sereServFilter = new MOS.Filter.HisSereServView5Filter();
                 sereServFilter.TDL_TREATMENT_ID = treatment.ID;
@@ -99,6 +100,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     ekipFilter.EKIP_IDs = sereServs.Where(p => p.EKIP_ID.HasValue).Select(o => o.EKIP_ID.Value).Distinct().ToList();
                     ekipFilter.IS_SURG_MAIN = true;
                     ListEkipUser = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EKIP_USER>>("api/HisEkipUser/GetView", ApiConsumer.ApiConsumers.MosConsumer, ekipFilter, null);
+
+                    // lấy về các dịch vụ phẫu thuật tương ứng
+                    ListSurgService = GetSurgService(sereServs.Select(o => o.SERVICE_ID).Distinct().ToList());
                 }
 
                 MPS.Processor.Mps000008.PDO.Mps000008PDO mps000008RDO = new MPS.Processor.Mps000008.PDO.Mps000008PDO(
@@ -107,7 +111,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                            treatment,
                            null,
                            0,
-                           ListEkipUser
+                           ListEkipUser,
+                           null,
+                           null,
+                           ListSurgService
                            );
 
                 string printerName = "";
@@ -155,6 +162,35 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private List<V_HIS_SERVICE> GetSurgService(List<long> serviceIds)
+        {
+            List<V_HIS_SERVICE> result = new List<V_HIS_SERVICE>();
+            try
+            {
+                if (serviceIds == null || serviceIds.Count == 0) return result;
+
+                var services = BackendDataWorker.Get<V_HIS_SERVICE>();
+                if (services == null || services.Count == 0) return result;
+
+                var serviceDic = new Dictionary<long, V_HIS_SERVICE>();
+                foreach (var service in services)
+                {
+                    if (!serviceDic.ContainsKey(service.ID)) serviceDic.Add(service.ID, service);
+                }
+
+                foreach (var serviceId in serviceIds)
+                {
+                    if (serviceDic.ContainsKey(serviceId)) result.Add(serviceDic[serviceId]);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = new List<V_HIS_SERVICE>();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         ////bệnh nhân nhập viện:

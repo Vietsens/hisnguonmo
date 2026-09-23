@@ -92,6 +92,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                     case TemplateEnum.TYPE.Template12:
                         result = new Template12(dataInput);
                         break;
+                    case TemplateEnum.TYPE.Template13:
+                        result = new Template13(dataInput.Treatment.ID, dataInput.Branch, dataInput.SereServBill, dataInput);
+                        break;
                     default:
                         break;
                 }

@@ -995,6 +995,18 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                     txtLoginName.Text = _serviceReq.REQUEST_LOGINNAME;
                     txtPresUser.Text = _serviceReq.REQUEST_USERNAME;
+
+                    // Đổ chẩn đoán (CĐ chính + bệnh phụ) của đơn thuốc lên form khi chưa có phiếu xuất bán
+                    // (trước đây chỉ nạp chẩn đoán từ phiếu xuất bán đã có -> lần bán đầu bị trống)
+                    HIS.UC.Icd.ADO.IcdInputADO inputIcd = new HIS.UC.Icd.ADO.IcdInputADO();
+                    inputIcd.ICD_CODE = _serviceReq.ICD_CODE;
+                    inputIcd.ICD_NAME = _serviceReq.ICD_NAME;
+                    if (ucIcd != null)
+                    {
+                        icdProcessor.Reload(ucIcd, inputIcd);
+                    }
+                    txtSubIcdCode.Text = _serviceReq.ICD_SUB_CODE;
+                    txtIcd.Text = _serviceReq.ICD_TEXT;
                 }
                 else
                 {

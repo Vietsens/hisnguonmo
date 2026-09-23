@@ -1620,6 +1620,14 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         this.emrMenuPopupProcessor = new Library.FormMedicalRecord.MediRecordMenuPopupProcessor();
                     this.bedRoomPopupMenuProcessor = new BedRoomPopupMenuProcessor(this.treatmentBedRoomRow, this.BedRoomMouseRight_Click, barManager1);
                     this.bedRoomPopupMenuProcessor.InitMenu(this.emrMenuPopupProcessor, this.wkRoomId);
+
+                    // Canh bao Loai van ban bat buoc phai hoan thanh khi benh nhan vao khoa.
+                    // Phai co CA O DAY, khong chi o RowClick: bam PHAI cung chon benh nhan va la duong
+                    // chinh de vao Chi tiet benh an / To dieu tri qua menu ngu canh, nen chi nghe RowClick
+                    // thi nguoi dung bam phai di thang vao menu se khong bao gio nhan duoc nhac.
+                    // Dat SAU khi dung xong menu de menu da san sang; hop thoai hien truoc, dong xong thi
+                    // menu xuat hien. Co chan nhac lai trong phien nen moi benh nhan chi hien mot lan.
+                    CheckRequiredDocumentWhenInDepartment(this.RowCellClickBedRoom);
                 }
             }
             catch (Exception ex)
@@ -2061,7 +2069,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                     && rootSety.First().USE_TIME.HasValue)
                                 {
                                     //qtcode
-                                    ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.Value));
+                                    ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", FormatUseTimeDisplay(rootSety.First().USE_TIME.Value, idSerReqType));
                                     //qtcode
                                 }
                                 ssRootSety.PARENT_ID__IN_SETY = ssRootType.CONCRETE_ID__IN_SETY;
@@ -2297,7 +2305,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                 && rootSety.First().USE_TIME.HasValue)
                             {
                                 //qtcode
-                                ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.Value));
+                                ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", FormatUseTimeDisplay(rootSety.First().USE_TIME.Value, idSerReqType));
                                 //qtcode
                             }
                             ssRootSety.TRACKING_TIME = rootSety.First().TRACKING_TIME;
@@ -3729,6 +3737,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     SetEnableButton(false);
                 }
                 WaitingManager.Hide();
+
+                // Canh bao Loai van ban bat buoc phai hoan thanh khi benh nhan vao khoa.
+                // Dat SAU WaitingManager.Hide() de hop thoai khong bi man hinh cho che khuat.
+                // Phep kiem tra tu thoat som khi don vi chua khai bao cau hinh so phut, va khong bao gio
+                // nem ngoai le ra ngoai nen khong the lam hong thao tac chon benh nhan.
+                CheckRequiredDocumentWhenInDepartment(this.RowCellClickBedRoom);
             }
             catch (Exception ex)
             {

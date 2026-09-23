@@ -39,6 +39,7 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
         MPS.Processor.Mps000008.PDO.Mps000008PDO mps000008RDO;
         MPS.Processor.Mps000008.PDO.Mps000008ADO mps000008ADO = new MPS.Processor.Mps000008.PDO.Mps000008ADO();
         List<V_HIS_EKIP_USER> ListEkipUser = new List<V_HIS_EKIP_USER>();
+        List<V_HIS_SERVICE> ListSurgService = new List<V_HIS_SERVICE>();
         long timeIn;    
         HIS_TRACKING tracking;
 
@@ -71,7 +72,8 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                        timeIn,
                        ListEkipUser,
                        appointmentPeriods,
-                       tracking);
+                       tracking,
+                       ListSurgService);
 
                     result = Print.RunPrint(printTypeCode, fileName, mps000008RDO, (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint, result, _printNow, roomId);
                 }
@@ -252,7 +254,38 @@ namespace HIS.Desktop.Plugins.Library.PrintTreatmentFinish
                                 ListEkipUser.AddRange(EkipUsers);
                             }
                         }
+
+                        // lấy về các dịch vụ phẫu thuật tương ứng
+                        ProcessSurgService(sereServs);
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ProcessSurgService(List<HIS_SERE_SERV> sereServs)
+        {
+            try
+            {
+                List<long> serviceIds = sereServs.Select(o => o.SERVICE_ID).Distinct().ToList();
+                if (serviceIds.Count == 0) return;
+
+                var services = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_SERVICE>();
+                if (services == null || services.Count == 0) return;
+
+                var serviceDic = new Dictionary<long, V_HIS_SERVICE>();
+                foreach (var service in services)
+                {
+                    if (!serviceDic.ContainsKey(service.ID)) serviceDic.Add(service.ID, service);
+                }
+
+                ListSurgService = new List<V_HIS_SERVICE>();
+                foreach (var serviceId in serviceIds)
+                {
+                    if (serviceDic.ContainsKey(serviceId)) ListSurgService.Add(serviceDic[serviceId]);
                 }
             }
             catch (Exception ex)

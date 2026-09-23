@@ -65,6 +65,14 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string CONFIG_KEY__EMERGENCY_CLASSIFY_COLUMN = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY_COLUMN";
         // Cho phep kham som voi benh nhan dat lich hen qua APP. "1" = bat; khac "1" = tat (mac dinh).
         private const string CONFIG_KEY__ALLOW_EARLY_EXAM_FOR_APP_APPOINTMENT = "HIS.Desktop.Plugins.ExecuteRoom.AllowEarlyExamForAppAppointment";
+        // Viec vCongTBD: xep y lenh du tru vao phong xu ly theo NGAY DU TRU (thay vi ngay chi dinh),
+        // dong thoi hien cot "Thoi gian du tru".
+        //   "1" = chi ap dung cho y lenh ke tu lan sua gan nhat cua dong cau hinh tro di (khong hoi to)
+        //   "2" = ap dung cho moi y lenh du tru, khong xet thoi diem ke (co hoi to)
+        //   khac "1" va "2" hoac khong khai bao (mac dinh) = giu nguyen cach cu
+        internal const string CONFIG_KEY__MOVING_TO_EXECUTE_ROOM_BY_USE_TIME = "MOS.HIS_SERVICE_REQ.IS_MOVING_TO_EXECUTE_ROOM_BY_USE_TIME";
+        internal const string MOVING_TO_EXECUTE_ROOM_BY_USE_TIME__FROM_CONFIG_MODIFY_TIME = "1";
+        internal const string MOVING_TO_EXECUTE_ROOM_BY_USE_TIME__ALL = "2";
         internal static bool IsCheckHeinCard;
         internal static bool IsHasConnectionEmr;
         internal static string IsShowResultWhenReqComplete;
@@ -101,6 +109,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         /// <summary>Bat cot trang thai "Muc CC" thay cho to mau chu ca dong (MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY_COLUMN = 1)</summary>
         internal static bool IsEmergencyClassifyColumnEnabled;
         internal static bool IsKeepCameraConnectionOnSwitchPatient;
+        /// <summary>Viec vCongTBD: gia tri cau hinh xep y lenh du tru theo ngay du tru ("1" / "2" / khac)</summary>
+        internal static string MovingToExecuteRoomByUseTimeOption;
+        /// <summary>Viec vCongTBD: bat xep y lenh du tru vao phong xu ly theo ngay du tru (gia tri "1" hoac "2")</summary>
+        internal static bool IsMovingToExecuteRoomByUseTime;
+        /// <summary>Viec vCongTBD: gia tri "2" - ap dung cho moi y lenh du tru, khong xet thoi diem ke</summary>
+        internal static bool IsMovingToExecuteRoomByUseTimeForAll;
 
         // Doc truc tiep tu cache HisConfigs moi lan goi (khong cache vao static field) de khong phai mo lai man hinh
         // khi doi gia tri. Luu y: van con lop cache client cua HisConfigs (sync luc dang nhap) nen doi gia tri DB
@@ -162,6 +176,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 IsEmergencyClassifyEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY) == "1";
                 IsEmergencyClassifyColumnEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY_COLUMN) == "1";
                 IsKeepCameraConnectionOnSwitchPatient = GetValue(KEY__IsKeepCameraConnectionOnSwitchPatient) == GlobalVariables.CommonStringTrue;
+                MovingToExecuteRoomByUseTimeOption = GetValue(CONFIG_KEY__MOVING_TO_EXECUTE_ROOM_BY_USE_TIME);
+                IsMovingToExecuteRoomByUseTimeForAll = MovingToExecuteRoomByUseTimeOption == MOVING_TO_EXECUTE_ROOM_BY_USE_TIME__ALL;
+                IsMovingToExecuteRoomByUseTime = MovingToExecuteRoomByUseTimeOption == MOVING_TO_EXECUTE_ROOM_BY_USE_TIME__FROM_CONFIG_MODIFY_TIME
+                    || IsMovingToExecuteRoomByUseTimeForAll;
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

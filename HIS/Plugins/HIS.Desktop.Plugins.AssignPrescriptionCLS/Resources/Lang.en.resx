@@ -564,4 +564,10 @@
   <data name="frmAssignPrescription.lciForlblWeight.Text" xml:space="preserve">
     <value>Weight:</value>
   </data>
+  <data name="frmAssignPrescription.chkAutoSave.Text" xml:space="preserve">
+    <value>Auto save</value>
+  </data>
+  <data name="frmAssignPrescription.chkAutoSave.ToolTip" xml:space="preserve">
+    <value>Automatically save the attached medicines/materials right after opening from the Service Execution screen. The setting is remembered on this workstation.</value>
+  </data>
 </root>

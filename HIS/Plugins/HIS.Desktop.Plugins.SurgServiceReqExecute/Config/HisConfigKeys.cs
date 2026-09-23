@@ -40,6 +40,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Config
         // Canh bao khi USED_TIME thuoc/vat tu dinh kem > thoi gian Ket thuc dich vu. 1 = chan, 2 = canh bao Co/Khong
         internal const string WARNING_USED_TIME_ATTACHED_GREATER_PROCESSING_TIME_OPTION = "HIS.Desktop.Plugins.SurgServiceReqExecute.WarningUsedTimeAttachedGreaterProcessingTimeOption";
 
+        // PTTK_XXXXX: Bat buoc nhap Mo ta truoc khi ket thuc PTTT. Cung key voi Backend (MOS.MANAGER.Config.CFG.HisServiceReqCFG)
+        // 0/trong = khong bat buoc; 1 = bat buoc ca Phau thuat va Thu thuat; 2 = chi bat buoc Phau thuat
+        internal const string IS_REQUIRED_PTTT_DESCRIPTION_WHEN_FINISH = "MOS.HIS_SERVICE_REQ.IS_REQUIRED_PTTT_DESCRIPTION_WHEN_FINISH";
+
         internal static string CheckPermisson
         {
             get
@@ -95,6 +99,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Config
             get
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(WARNING_USED_TIME_ATTACHED_GREATER_PROCESSING_TIME_OPTION);
+            }
+        }
+
+        /// <summary>0/trống = không bắt buộc; 1 = bắt buộc cả Phẫu thuật và Thủ thuật; 2 = chỉ bắt buộc Phẫu thuật</summary>
+        internal static string IsRequiredPtttDescriptionWhenFinish
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(IS_REQUIRED_PTTT_DESCRIPTION_WHEN_FINISH);
             }
         }
     }

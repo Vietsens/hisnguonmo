@@ -316,6 +316,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     // Liên thông EmrToolKit: đồng bộ dữ liệu chuyển tuyến sau khi lưu thành công
                     SyncEmrToolkitIfNeeded(hisTreatmentFinishSDO);
+
+                    // Mở phiếu, Vỏ bệnh án (VBA): mở vỏ bệnh án và các mẫu phiếu sau khi lưu thành công
+                    OpenEmrAfterFinishIfNeeded();
                 }
 
                 #region Show message

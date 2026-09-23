@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ValidationSingleControlWithMaxLength(txtIcdMainTextCause, false, 500);
                 //ValidationICDCause(10, 500, isRequired);
                 UCNextTreatmentInstructionValid();
+                ApplyQd130Appearance();
             }
             catch (Exception ex)
             {

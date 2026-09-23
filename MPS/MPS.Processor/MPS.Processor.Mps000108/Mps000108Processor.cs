@@ -181,5 +181,35 @@ namespace MPS.Processor.Mps000108
                 Inventec.Common.Logging.LogSystem.Error(ex);   
             }
         }
+
+        /// <summary>
+        /// Sinh ma dinh danh duy nhat cho van ban dien tu cua phieu (HIS_CODE).
+        /// Truoc day Mps000108 KHONG override ham nay nen HisCode luon rong, khien
+        /// VerifyHisCode ben EMR khong tra ra van ban cu va lan nao in cung tao van ban MOI.
+        ///
+        /// CHI ghep ma mau in + MA XUAT, KHONG ghep so luong don vi mau nhu khuon
+        /// Mps000198Processor.cs dong 241. Ly do: nghiep vu chot moi phieu chi co DUY NHAT
+        /// ban ky cuoi cung co gia tri. Neu ghep them so luong thi sua don xong ma se doi,
+        /// EMR coi la van ban khac va tao them ban moi - trai voi yeu cau do.
+        /// </summary>
+        public override string ProcessUniqueCodeData()
+        {
+            string result = "";
+            try
+            {
+                if (rdo != null && rdo.ExpMest != null)
+                {
+                    result = String.Format("{0}_{1}",
+                        printTypeCode,
+                        rdo.ExpMest.EXP_MEST_CODE);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
     }
 }

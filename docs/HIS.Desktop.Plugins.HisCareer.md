@@ -64,6 +64,7 @@ Không có.
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 15/09/2026 | nampp (Claude) | Việc 2841 (fix theo test): **bỏ bắt buộc nhập 3 ô Tên cấp 2/3/4** — viện không dùng danh mục phân cấp thì để trống vẫn lưu được. Nguyên nhân: `ValidMaxlength` kiểm tra CẢ rỗng lẫn độ dài. Thêm class `ValidMaxlengthAllowEmpty` (chỉ check maxlength) trong `ValidateMaxlength.cs` + hàm `ValidateTextEditAllowEmpty` dùng cho 3 ô tên cấp. Mã cấp vẫn chỉ đọc (tự tách từ mã nghề), Mã + Tên nghề vẫn bắt buộc. |
 | 07/09/2026 | nampp (Claude) | Việc 2841: grid thêm 6 cột cấp 2/3/4 (unbound + reflection), panel thêm 6 ô chỉ đọc tự điền theo mã (txtCareerCode_Leave), CareerLevelWorker.cs, Lang.vi/en 12 entries, ColumnAutoWidth=false; xóa licenses.licx stale khỏi csproj |
 | 09/09/2026 | nampp (Claude) | Việc 2841 (chỉnh theo review): **3 ô TÊN cấp 2/3/4 cho phép nhập/sửa tay** (mã cấp vẫn khóa vì tách từ mã nghề) — auto-fill không đè tên đã gõ khi mã cấp không đổi (`FillOneLevel`); `UpdateDTOFromDataForm` gửi đủ 6 trường LEVEL lên BE (code thẳng property EFMODEL mới); validate maxlength 1000 cho 3 ô tên |
 
@@ -71,5 +72,7 @@ Không có.
 
 - [ ] Nhập mã 5 ký tự (VD 17310) → 6 ô cấp tự điền mã; tên cấp điền nếu danh mục chuẩn đã import
 - [ ] Nhập mã ≠ 5 ký tự → 6 ô trống, lưu bình thường
+- [ ] **Để TRỐNG cả 3 ô Tên cấp → Lưu/Thêm thành công, KHÔNG hiện icon cảnh báo bắt buộc**
+- [ ] Nhập tay tên cấp > 1000 ký tự → mới báo lỗi độ dài
 - [ ] Grid hiển thị 6 cột cấp sau khi BE cập nhật EFMODEL + data; trước đó cột trống, KHÔNG lỗi
 - [ ] Tìm "171" → ra các nghề thuộc cấp 3 "171" (cần BE mở rộng KEY_WORD)

@@ -212,6 +212,9 @@
     <Compile Include="MainForm\DataHandling\frmMchTreatmentExamService_CopyBabyData.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MainForm\Dialogs\frmSelectBaby.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainForm\DataHandling\frmMchTreatmentExamService_EditData.cs">
       <SubType>Form</SubType>
     </Compile>

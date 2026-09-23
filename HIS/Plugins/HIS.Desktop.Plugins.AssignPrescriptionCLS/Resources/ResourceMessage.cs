@@ -1854,5 +1854,39 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Resources
                 return "";
             }
         }
+
+        /// <summary>Viec 56273 - alert nhe khi o "Tu dong luu" dang bat nhung dich vu da co thuoc/vat tu di kem con hieu luc (mo Tu truc lan 2) -> khong tu luu de tranh xuat kho trung.</summary>
+        internal static string DichVuDaCoThuocVatTuDiKemKhongTuLuu
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("DichVuDaCoThuocVatTuDiKemKhongTuLuu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Viec 56273 - alert nhe khi o "Tu dong luu" dang bat nhung ProcessSaveData bi chan (vuot ton kho, thieu ICD, MIMS...).</summary>
+        internal static string ChuaTuLuuDuocThuocVatTuDiKem
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChuaTuLuuDuocThuocVatTuDiKem", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
 }
 }

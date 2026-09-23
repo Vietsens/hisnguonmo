@@ -490,7 +490,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             //
             // colRoom   (cot 15)
             //
-            this.colRoom.Caption = "Phòng";
+            this.colRoom.Caption = "Phòng chỉ định";
             this.colRoom.FieldName = "REQUEST_ROOM_NAME";
             this.colRoom.Name = "colRoom";
             this.colRoom.OptionsColumn.AllowEdit = false;

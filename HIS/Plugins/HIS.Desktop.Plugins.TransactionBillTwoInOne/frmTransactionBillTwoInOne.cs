@@ -1212,12 +1212,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         }
                     }
 
-                    if (inputSereServs == null || inputSereServs.Count <= 0)
-                    {
-                        HisSereServView5Filter ssFilter = new HisSereServView5Filter();
-                        ssFilter.TDL_TREATMENT_ID = this.treatmentId;
-                        inputSereServs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV_5>>("api/HisSereServ/GetView5", ApiConsumers.MosConsumer, ssFilter, null);
-                    }
+                    // LUON nap lai danh sach dich vu tai thoi diem mo form thu tien.
+                    // Danh sach do man Vien phi (UCTransaction) truyen sang chi la ANH CHUP luc CHON HO SO:
+                    // man do giu nguyen list den khi chon lai benh nhan, nen de lau la giá cu.
+                    // VIR_TOTAL_PATIENT_PRICE la cot ao, tinh tu PRICE/ADD_PRICE/VAT_RATIO/HEIN_RATIO/
+                    // HEIN_PRICE/OTHER_SOURCE_PRICE/DISCOUNT - chi can sua gia thuoc/ti le huong la doi ngay.
+                    // Gui so tien cu len backend se bi chan boi HisTransaction_KhacSoTienCanThanhToan
+                    // (IsValidSereServBill so tong chung tu voi VIR_TOTAL_PATIENT_PRICE, lech > 0.0001 la tu choi).
+                    // Man thu tien la noi quyet dinh so tien nen phai tu lay gia moi, khong tin snapshot man khac.
+                    HisSereServView5Filter ssFilter = new HisSereServView5Filter();
+                    ssFilter.TDL_TREATMENT_ID = this.treatmentId;
+                    inputSereServs = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV_5>>("api/HisSereServ/GetView5", ApiConsumers.MosConsumer, ssFilter, null);
                     if (inputSereServs != null && inputSereServs.Count > 0)
                     {
                         // bỏ những dịch vụ đã chốt nợ

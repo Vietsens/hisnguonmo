@@ -44,6 +44,342 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
     {
         bool isExpWithExpTime = false;
         long? ExpTime = null;
+
+        /// <summary>
+        /// Cot "Du tru mau": mo chi tiet benh an dien tu cua ho so dieu tri tren dong dang chon.
+        /// Dung lai nguyen logic cua ban DLL dang chay tai vien (dich nguoc tu IL ngay 14/09/2026),
+        /// vi ma nguon cua cot nay chua tung duoc dua len kho ma nguon.
+        /// </summary>
+        private void repositoryItemButtonViewBloodRequest_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var rowData = gridView.GetFocusedRow() as V_HIS_EXP_MEST_2;
+                if (rowData == null)
+                {
+                    MessageManager.Show("Bạn chưa chọn phiếu xuất.");
+                    return;
+                }
+
+                // Cau hinh bang 1: mo ngay Phieu cung cap mau va thanh phan mau (Mps000108).
+                // Khac 1 hoac khong khai bao: giu nguyen hanh vi cu la mo man chi tiet benh an.
+                if (HisConfigCFG.ViewBloodSupplySlipOption == "1")
+                {
+                    // Phieu cung cap mau chi phat sinh tu DON MAU. Cac loai phieu khac trong kho mau
+                    // (chuyen kho, nhap tra, hao phi...) khong co phieu nay nen chan ngay tu dau,
+                    // khong goi API lay du lieu roi moi bao loi.
+                    if (rowData.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM)
+                    {
+                        MessageManager.Show("Phiếu này không phải đơn máu nên không có phiếu cung cấp máu và thành phần máu.");
+                        return;
+                    }
+
+                    ShowBloodSupplySlip();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(rowData.TDL_TREATMENT_CODE))
+                {
+                    MessageManager.Show("Phiếu xuất không gắn hồ sơ điều trị nên không mở được chi tiết bệnh án.");
+                    return;
+                }
+
+                WaitingManager.Show();
+
+                List<object> listArgs = new List<object>();
+                listArgs.Add(rowData.TDL_TREATMENT_CODE);
+
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    "HIS.Desktop.Plugins.EmrDocument",
+                    this.currentModule.RoomId,
+                    this.currentModule.RoomTypeId,
+                    listArgs);
+
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+        /// <summary>
+        /// Mo ngay ban xem truoc Phieu cung cap mau va thanh phan mau
+        /// (mau in Mps000108) cua dong dang chon, theo ma phieu xuat.
+        /// Khuon lay tu chuc nang Ke don mau: HIS.Desktop.Plugins.HisAssignBlood,
+        /// tep frmHisAssignBlood__Plus__Print.cs, ham dung du lieu in dong 120-178.
+        /// Khac khuon goc: lay ma phieu xuat tu dong luoi thay vi tu bien cua form,
+        /// va mo o che do XEM TRUOC thay vi in thang ra may in.
+        /// </summary>
+        private void ShowBloodSupplySlip()
+        {
+            try
+            {
+                // Phai di qua RunPrintTemplate de lay TEN FILE MAU thuc te cua vien,
+                // vi cung mot ma Mps000108 moi vien dung mot file mau khac nhau.
+                // RunPrintTemplate se goi nguoc lai deletePrintTemplate kem printTypeCode + fileName.
+                // BUOC 1: tim van ban DA KY cua phieu nay trong EMR.
+                // Nghiep vu chot moi phieu chi co DUY NHAT ban ky cuoi cung co gia tri, nen da co
+                // ban ky thi phai mo dung ban do, KHONG dung lai phieu moi tu du lieu hien tai.
+                // Khong nho MPS lam viec nay duoc: moi che do PreviewType cua MPS (ke ca nhom Emr*)
+                // deu dung file MOI roi moi dua vao popup - da vap 3 lan ngay 17-18/09/2026.
+                if (ShowSignedBloodSupplySlip())
+                {
+                    return;
+                }
+
+                // BUOC 2: chua co ban ky thi dung phieu moi nhu cu.
+                Inventec.Common.RichEditor.RichEditorStore storeBloodSlip = new Inventec.Common.RichEditor.RichEditorStore(
+                    ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                storeBloodSlip.RunPrintTemplate(HIS.Desktop.Print.PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000108, deletePrintTemplate);
+                return;
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tim va mo van ban DA KY cua phieu (neo theo HIS_CODE = ma mau in + ma xuat).
+        /// Tra ve true neu da mo duoc ban da ky; false neu chua co ban ky nao.
+        /// Chep theo plugin EmrDocument: EmrDocumentForm.cs dong 1485-1495 va 1518-1558.
+        /// Diem chot: chi van ban co LAST_VERSION_URL moi la ban DA KY that.
+        /// </summary>
+        private bool ShowSignedBloodSupplySlip()
+        {
+            try
+            {
+                var rowData = gridView.GetFocusedRow() as V_HIS_EXP_MEST_2;
+                if (rowData == null || string.IsNullOrWhiteSpace(rowData.EXP_MEST_CODE))
+                    return false;
+
+                // HIS_CODE phai khop dung cong thuc ma Mps000108Processor.ProcessUniqueCodeData() sinh ra.
+                string hisCode = string.Format("{0}_{1}",
+                    HIS.Desktop.Print.PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000108,
+                    rowData.EXP_MEST_CODE);
+
+                CommonParam param = new CommonParam();
+
+                EMR.Filter.EmrDocumentViewFilter docFilter = new EMR.Filter.EmrDocumentViewFilter();
+                docFilter.HIS_CODE__EXACT = hisCode;
+                docFilter.IS_DELETE = false;
+                docFilter.ORDER_FIELD = "ID";
+                docFilter.ORDER_DIRECTION = "DESC";
+
+                var documents = new BackendAdapter(param).Get<List<EMR.EFMODEL.DataModels.V_EMR_DOCUMENT>>(
+                    "api/EmrDocument/GetView", ApiConsumers.EmrConsumer, docFilter, param);
+
+                if (documents == null || documents.Count == 0)
+                    return false;
+
+                // Ban ky cuoi cung: da sap ID giam dan nen lay ban DAU TIEN co LAST_VERSION_URL.
+                var signedDoc = documents.FirstOrDefault(o => !string.IsNullOrWhiteSpace(o.LAST_VERSION_URL));
+                if (signedDoc == null)
+                    return false;
+
+                WaitingManager.Show();
+
+                EMR.SDO.EmrDocumentDownloadFileSDO downloadSdo = new EMR.SDO.EmrDocumentDownloadFileSDO();
+                EMR.Filter.EmrDocumentViewFilter fileFilter = new EMR.Filter.EmrDocumentViewFilter();
+                fileFilter.ID = signedDoc.ID;
+                downloadSdo.EmrDocumentViewFilter = fileFilter;
+                downloadSdo.HisCode = hisCode;
+
+                var documentFiles = new BackendAdapter(param).Post<List<EMR.SDO.EmrDocumentFileSDO>>(
+                    "api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, downloadSdo, param);
+
+                WaitingManager.Hide();
+
+                if (documentFiles == null || documentFiles.Count == 0
+                    || string.IsNullOrWhiteSpace(documentFiles[0].Base64Data))
+                {
+                    // Co ban ghi van ban nhung khong tai duoc tep: bao cho nguoi dung biet,
+                    // KHONG am tham dung phieu moi vi se hien ra ban khac voi ban da ky.
+                    MessageManager.Show("Phiếu này đã có bản ký nhưng không tải được tệp. Vui lòng liên hệ quản trị.");
+                    return true;
+                }
+
+                // ShowPopup BAT BUOC phai co inputADO. Truyen null thi bi chan voi thong bao
+                // "Tinh nang chi danh cho benh an dien tu" (log WARN ngay 18/09/2026).
+                // Dung GenerateInputADO theo khuon EmrDocumentForm.cs dong 1456.
+                Inventec.Common.SignLibrary.ADO.InputADO viewInputADO =
+                    new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                        .GenerateInputADO(
+                            signedDoc.TREATMENT_CODE,
+                            signedDoc.DOCUMENT_CODE,
+                            signedDoc.DOCUMENT_NAME,
+                            this.currentModule.RoomId);
+
+                if (viewInputADO != null)
+                {
+                    // Man nay chi XEM ban da ky, khong ky va khong sua.
+                    viewInputADO.IsSign = false;
+                    viewInputADO.IsSave = false;
+                    viewInputADO.IsExport = false;
+                    viewInputADO.IsPrint = true;
+                    viewInputADO.IsShowPatientSign = true;
+                }
+
+                Inventec.Common.SignLibrary.SignLibraryGUIProcessor libraryProcessor =
+                    new Inventec.Common.SignLibrary.SignLibraryGUIProcessor();
+                libraryProcessor.ShowPopup(documentFiles[0].Base64Data,
+                    Inventec.Common.SignLibrary.FileType.Pdf, viewInputADO);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                // Loi khi tra ban da ky thi quay ve luong dung phieu moi, khong chan nguoi dung.
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Buoc 2: dung du lieu va in, duoc RunPrintTemplate goi nguoc lai kem ten file mau that.
+        /// </summary>
+        private void InPhieuCungCapMau(string printTypeCode, string fileName)
+        {
+            try
+            {
+                var rowData = gridView.GetFocusedRow() as V_HIS_EXP_MEST_2;
+                if (rowData == null)
+                {
+                    MessageManager.Show("Bạn chưa chọn phiếu xuất.");
+                    return;
+                }
+
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+
+                // 1. Phieu xuat: PDO nhan kieu BANG HIS_EXP_MEST, con dong luoi la kieu KHUNG NHIN
+                // V_HIS_EXP_MEST_2, nen phai lay lai ban ghi theo ma chu khong truyen thang duoc.
+                HisExpMestFilter expMestFilter = new HisExpMestFilter();
+                expMestFilter.ID = rowData.ID;
+                var expMests = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>(
+                    "api/HisExpMest/Get", ApiConsumers.MosConsumer, expMestFilter, param);
+                HIS_EXP_MEST expMest = (expMests != null ? expMests.FirstOrDefault() : null);
+                if (expMest == null)
+                {
+                    WaitingManager.Hide();
+                    return;
+                }
+
+                // 2. Che pham mau yeu cau (loc theo ma phieu xuat)
+                HisExpMestBltyReqView1Filter bltyFilter = new HisExpMestBltyReqView1Filter();
+                bltyFilter.EXP_MEST_ID = expMest.ID;
+                var expMestBltys = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_BLTY_REQ_1>>(
+                    "/api/HisExpMestBltyReq/GetView1", ApiConsumers.MosConsumer, bltyFilter, param);
+
+                // 3. Don vi mau thuc xuat (loc theo ma phieu xuat)
+                HisExpMestBloodViewFilter bloodFilter = new HisExpMestBloodViewFilter();
+                bloodFilter.EXP_MEST_ID = expMest.ID;
+                var expMestBloods = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_BLOOD>>(
+                    "api/HisExpMestBlood/GetView", ApiConsumers.MosConsumer, bloodFilter, param);
+
+                // Phieu khong co du lieu mau thi bao cho nguoi dung, dung mo cua so xem truoc trang tron.
+                if ((expMestBltys == null || expMestBltys.Count == 0)
+                    && (expMestBloods == null || expMestBloods.Count == 0))
+                {
+                    WaitingManager.Hide();
+                    MessageManager.Show("Phiếu xuất này chưa có dữ liệu máu nên không xem được phiếu cung cấp máu và thành phần máu.");
+                    return;
+                }
+
+                // 4-5. Ho so dieu tri va giuong benh (theo cot TDL_TREATMENT_ID cua phieu xuat)
+                V_HIS_TREATMENT treatment = null;
+                List<V_HIS_TREATMENT_BED_ROOM> treatmentBedRooms = null;
+                if (expMest.TDL_TREATMENT_ID.HasValue)
+                {
+                    HisTreatmentViewFilter treatmentFilter = new HisTreatmentViewFilter();
+                    treatmentFilter.ID = expMest.TDL_TREATMENT_ID.Value;
+                    var treatments = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>(
+                        "api/HisTreatment/GetView", ApiConsumers.MosConsumer, treatmentFilter, param);
+                    treatment = (treatments != null ? treatments.FirstOrDefault() : null);
+
+                    HisTreatmentBedRoomViewFilter bedRoomFilter = new HisTreatmentBedRoomViewFilter();
+                    bedRoomFilter.TREATMENT_ID = expMest.TDL_TREATMENT_ID.Value;
+                    bedRoomFilter.IS_IN_ROOM = true;
+                    treatmentBedRooms = new BackendAdapter(param).Get<List<V_HIS_TREATMENT_BED_ROOM>>(
+                        "api/HisTreatmentBedRoom/GetView", ApiConsumers.MosConsumer, bedRoomFilter, param);
+                }
+
+                // 6-7. Y lenh va dich vu con. Phai lay y lenh TRUOC vi dich vu con loc theo y lenh do.
+                // Luu y ten cot: SERVICE_REQ_ID, KHONG phai TDL_SERVICE_REQ_ID.
+                V_HIS_SERVICE_REQ serviceReq = null;
+                List<V_HIS_SERE_SERV_1> sereServs = null;
+                if (expMest.SERVICE_REQ_ID.HasValue)
+                {
+                    HisServiceReqViewFilter serviceReqFilter = new HisServiceReqViewFilter();
+                    serviceReqFilter.ID = expMest.SERVICE_REQ_ID.Value;
+                    var serviceReqs = new BackendAdapter(param).Get<List<V_HIS_SERVICE_REQ>>(
+                        "api/HisServiceReq/GetView", ApiConsumers.MosConsumer, serviceReqFilter, param);
+                    serviceReq = (serviceReqs != null ? serviceReqs.FirstOrDefault() : null);
+
+                    if (serviceReq != null)
+                    {
+                        HisSereServView1Filter sereServFilter = new HisSereServView1Filter();
+                        sereServFilter.SERVICE_REQ_PARENT_ID = serviceReq.ID;
+                        sereServs = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_1>>(
+                            "api/HisSereServ/GetView1", ApiConsumers.MosConsumer, sereServFilter, param);
+                    }
+                }
+
+                MPS.Processor.Mps000108.PDO.Mps000108PDO mps000108PDO = new MPS.Processor.Mps000108.PDO.Mps000108PDO(
+                    expMest,
+                    expMestBltys,
+                    treatment,
+                    serviceReq,
+                    expMestBloods,
+                    treatmentBedRooms,
+                    sereServs);
+
+                // May in cau hinh san cho ma mau in nay, neu co.
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                // Du lieu ky so dien tu. Chep theo khuon Ke don mau:
+                // frmHisAssignBlood__Plus__Print.cs dong 156-158.
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO =
+                    new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                        .GenerateInputADOWithPrintTypeCode(
+                            (treatment != null ? treatment.TREATMENT_CODE : ""),
+                            printTypeCode,
+                            this.currentModule.RoomId);
+
+                WaitingManager.Hide();
+
+                // PHAI dung PreviewType.EmrShow.
+                // Enum PreviewType co 9 gia tri, chia 2 nhom:
+                //   - Nhom in thuong: Show=0, ShowDialog=1, PrintNow=2, SaveFile=3
+                //     -> chi dung file roi hien thi/in, KHONG he cham toi EMR.
+                //   - Nhom EMR: EmrShow=4, EmrSignNow=5, EmrSignAndPrintNow=6,
+                //     EmrCreateDocument=7, EmrSignAndPrintPreview=8
+                //     -> moi di qua popup EMR, noi goi VerifyHisCode de tra ra van ban DA KY.
+                // EmrShow goi EmrShowClick() (AbstractProcessor.cs:1270), truyen emrInputADO
+                // mang HisCode vao popup, popup tra ra ban da ky neu co; chua co thi cho ky.
+                // Da vap 2 lan: dung ShowDialog roi PrintNow, ca hai deu ra ban in moi chua ky
+                // vi khong thuoc nhom EMR (17/09/2026).
+                MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
+                    printTypeCode,
+                    fileName,
+                    mps000108PDO,
+                    MPS.ProcessorBase.PrintConfig.PreviewType.EmrShow,
+                    printerName) { EmrInputADO = inputADO });
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void repositoryItemButtonViewDetail_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -1275,6 +1611,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                     {
                         case PrintTypeCodeWorker.PRINT_TYPE_CODE__HuongDanSuDungThuoc_MPS000099:
                             InHuongDanSuDungThuoc(printTypeCode, fileName);
+                            break;
+                        case HIS.Desktop.Print.PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000108:
+                            InPhieuCungCapMau(printTypeCode, fileName);
                             break;
                         default:
                             break;

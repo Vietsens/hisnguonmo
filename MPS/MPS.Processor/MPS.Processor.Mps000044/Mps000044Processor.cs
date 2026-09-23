@@ -38,6 +38,7 @@ namespace MPS.Processor.Mps000044
         private Mps000044PDO rdo;
         private List<ExpMestMedicineSDO> expMestMedicinesTYPE;
         private List<ExpMestMedicineSDO> expMestMedicines_Sort;
+        private List<ExpMestMedicineSDO> expMestMedicines_Merge;
 
         public Mps000044Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -156,6 +157,88 @@ namespace MPS.Processor.Mps000044
             }
         }
 
+        //Gop cac lo khac nhau cua cung 1 thuoc/vat tu thanh 1 dong (khong gom theo PRICE)
+        //Danh sach goc expMestMedicines_Sort van giu nguyen de cac mau in cu va cac key tien khong bi anh huong
+        private void MedicinesMerge()
+        {
+            try
+            {
+                expMestMedicines_Merge = new List<ExpMestMedicineSDO>();
+                if (expMestMedicines_Sort == null || expMestMedicines_Sort.Count <= 0) return;
+
+                var medicineGroups = expMestMedicines_Sort.GroupBy(o => new
+                {
+                    o.MEDICINE_TYPE_ID,
+                    o.Type,
+                    o.PATIENT_TYPE_ID,
+                    o.IS_EXPEND,
+                    o.EXP_MEST_ID,
+                    o.SERVICE_UNIT_NAME,
+                    o.TUTORIAL,
+                    o.HTU_ID,
+                    o.MORNING,
+                    o.NOON,
+                    o.AFTERNOON,
+                    o.EVENING,
+                    o.USE_TIME_TO
+                }).ToList();
+
+                foreach (var medicineGroup in medicineGroups)
+                {
+                    ExpMestMedicineSDO ado = CloneExpMestMedicine(medicineGroup.First());
+                    if (ado == null) continue;
+
+                    ado.AMOUNT = medicineGroup.Sum(o => o.AMOUNT);
+                    ado.PRES_AMOUNT = medicineGroup.Any(o => o.PRES_AMOUNT.HasValue)
+                        ? medicineGroup.Sum(o => o.PRES_AMOUNT ?? 0)
+                        : (decimal?)null;
+
+                    //Dong duoc gop tu nhieu lo: thong tin lo khong con duy nhat -> bo de mau in khong hien thi nham lo
+                    if (medicineGroup.Count() > 1)
+                    {
+                        ado.MEDICINE_LINE_ID = null;
+                        ado.PACKAGE_NUMBER = null;
+                        ado.EXPIRED_DATE = null;
+                        //IMP_PRICE la kieu decimal khong nullable nen giu nguyen gia tri cua lo dau tien
+
+                        //Cac lo khac gia: don gia khong con duy nhat -> bo de mau in khong in sai don gia/thanh tien
+                        if (medicineGroup.Select(o => o.PRICE).Distinct().Count() > 1)
+                        {
+                            ado.PRICE = null;
+                            ado.VAT_RATIO = null;
+                        }
+                    }
+
+                    expMestMedicines_Merge.Add(ado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private ExpMestMedicineSDO CloneExpMestMedicine(ExpMestMedicineSDO source)
+        {
+            ExpMestMedicineSDO result = new ExpMestMedicineSDO();
+            try
+            {
+                if (source == null) return result;
+
+                foreach (PropertyInfo pi in typeof(ExpMestMedicineSDO).GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                {
+                    if (!pi.CanRead || !pi.CanWrite) continue;
+                    if (pi.GetIndexParameters().Length > 0) continue;
+                    pi.SetValue(result, pi.GetValue(source));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
         /// <summary>
         /// Ham xu ly du lieu da qua xu ly
         /// Tao ra cac doi tuong du lieu xu dung trong thu vien xu ly file excel
@@ -175,6 +258,7 @@ namespace MPS.Processor.Mps000044
                 SetSingleKey();
                 MedicinesSort();
                 ProcessListData();
+                MedicinesMerge();
                 SetQrCode();
                 
                 //ghi đè PrintLogData và UniqueCodeData
@@ -194,6 +278,10 @@ namespace MPS.Processor.Mps000044
                 objectTag.AddObjectData(store, "type", expMestMedicinesTYPE);
                 objectTag.AddObjectData(store, "ServiceMedicines", expMestMedicines_Sort);
                 objectTag.AddRelationship(store, "type", "ServiceMedicines", "PATIENT_TYPE_NAME", "PATIENT_TYPE_NAME");
+                if (expMestMedicines_Merge == null)
+                    expMestMedicines_Merge = new List<ExpMestMedicineSDO>();
+                objectTag.AddObjectData(store, "ServiceMedicinesMerge", expMestMedicines_Merge);
+                objectTag.AddRelationship(store, "type", "ServiceMedicinesMerge", "PATIENT_TYPE_NAME", "PATIENT_TYPE_NAME");
 
                 result = true;
             }

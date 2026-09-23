@@ -54,6 +54,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         //PTTK 3142: BHYT_CODE nhóm y lệnh lấy người thực hiện theo kíp khi "Kiểm tra hồ sơ" (phân cách ',')
         internal static string QD_130_BYT__NGUOI_THUC_HIEN_OPTION;
 
+        //vCong XXXXX: Đấu nối MDInsight soát lỗi hồ sơ XML. MỘT khóa, hai tầng ngăn cách:
+        //  đoạn_kết_nối ; mã_cơ_sở|tài_khoản|mật_khẩu ; mã_cơ_sở|tài_khoản|mật_khẩu ; ...
+        //  đoạn kết nối = địa_chỉ [| 5 ngưỡng tuỳ chọn, đơn vị giây]
+        //Không khai báo = viện chưa đấu nối = không tạo nút, không tạo cột, không phát sinh kết nối.
+        internal const string HIS_MDINSIGHT__CONNECTION_INFO = "HIS.MDINSIGHT.CONNECTION_INFO";
+        internal static string MDINSIGHT__CONNECTION_INFO;
+
         //vCong53286: Thông tin kết nối hệ tiền giám định, dạng BaseURL | token [| timeout].
         //Không khai báo = viện chưa đấu nối = ẩn nút Kiểm tra lỗi, không gác chức năng xuất nào.
         internal const string HIS_TIEN_GIAM_DINH__CONNECTION_INFO = "HIS.TIEN_GIAM_DINH.CONNECTION_INFO";
@@ -87,6 +94,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 QD_130_BYT__NGUOI_THUC_HIEN_OPTION = GetValue(HIS_QD_130_BYT__NGUOI_THUC_HIEN_OPTION);
                 //vCong53286 - Đấu nối hệ thống tiền giám định
                 TIEN_GIAM_DINH__CONNECTION_INFO = GetValue(HIS_TIEN_GIAM_DINH__CONNECTION_INFO);
+                //vCong XXXXX - Đấu nối MDInsight soát lỗi hồ sơ XML
+                MDINSIGHT__CONNECTION_INFO = GetValue(HIS_MDINSIGHT__CONNECTION_INFO);
                 //Cổng tiếp nhận KDLYT Vĩnh Long
                 VLG_2062__CONNECTION_INFO = GetValue(MOS_HIS_KSK_SYNC__VLG_2062_CONNECTION_INFO);
                 //Trung tâm điều hành y tế (HOC) — liên thông KCB theo QĐ 3176

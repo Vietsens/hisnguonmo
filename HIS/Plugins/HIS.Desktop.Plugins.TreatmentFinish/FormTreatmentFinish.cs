@@ -466,12 +466,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 careers = BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
 
-                int popupWidth = 200;
+                int popupWidth = 350;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("CAREER_CODE", "", 50, 1));
-                columnInfos.Add(new ColumnInfo("CAREER_NAME", "", 150, 2));
+                columnInfos.Add(new ColumnInfo("CAREER_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("CAREER_NAME", "Tên nghề nghiệp", 250, 2));
                 AddCareerLevelColumns(columnInfos, ref popupWidth);
-                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, false, popupWidth);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_NAME", "ID", columnInfos, true, popupWidth);
                 ControlEditorLoader.Load(cboCareer, careers, controlEditorADO);
             }
             catch (Exception ex)
@@ -490,17 +490,17 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_2") == "1")
                 {
-                    columnInfos.Add(new ColumnInfo("LEVEL2_NAME", "", 180, 3));
+                    columnInfos.Add(new ColumnInfo("LEVEL2_NAME", "Nhóm cấp 2", 180, 3));
                     popupWidth += 180;
                 }
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_3") == "1")
                 {
-                    columnInfos.Add(new ColumnInfo("LEVEL3_NAME", "", 180, 4));
+                    columnInfos.Add(new ColumnInfo("LEVEL3_NAME", "Nhóm cấp 3", 180, 4));
                     popupWidth += 180;
                 }
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_4") == "1")
                 {
-                    columnInfos.Add(new ColumnInfo("LEVEL4_NAME", "", 180, 5));
+                    columnInfos.Add(new ColumnInfo("LEVEL4_NAME", "Nhóm cấp 4", 180, 5));
                     popupWidth += 180;
                 }
             }
@@ -974,6 +974,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         if (item.KEY == ChkLienThongEmrToolkit.Name)
                         {
                             ChkLienThongEmrToolkit.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == ChkMoPhieuVoBenhAn.Name)
+                        {
+                            ChkMoPhieuVoBenhAn.Checked = item.VALUE == "1";
                         }
                     }
                 }
@@ -2911,6 +2915,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
+                // Bat buoc day du thong tin kham benh ngoai tru theo QD130 (key HIS.DESKTOP.EXAM.REQUIRED_FIELDS_QD130).
+                // Kiem tra lai truoc khi ket thuc dieu tri, thieu thi chan.
+                if (!CheckQd130RequiredFields())
+                {
+                    return;
+                }
+
                 //huannh
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("currentTreatment input:", this.currentHisTreatment));
                 HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentHisTreatment, null, null);

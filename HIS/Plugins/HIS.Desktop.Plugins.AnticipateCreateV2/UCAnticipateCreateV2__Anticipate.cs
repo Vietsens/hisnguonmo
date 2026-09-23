@@ -807,6 +807,47 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
         }
 
         /// <summary>
+        /// Điền lại cột Tồn đầu / Nhập mới / Số sử dụng / Tồn cuối / Xuất nhiều nhất / SL thầu / Thầu đã nhập / Thầu còn lại
+        /// cho các dòng đang sửa (LoadExistingAnticipate nạp phiếu TRƯỚC khi GetForAnticipate chạy nên các cột này trống).
+        /// Gọi sau khi BuildAnticipateData xong (cuối ShowUCControl). Chỉ điền loại đang có số liệu (Thuốc / Vật tư).
+        /// </summary>
+        private void FillEditingLineFigures()
+        {
+            try
+            {
+                if (editingAnticipate == null || anticipateLines == null || anticipateLines.Count == 0) return;
+                bool changed = false;
+                foreach (var line in anticipateLines)
+                {
+                    if (line == null) continue;
+                    Dictionary<long, ADO.AnticipateRowADO> dicAntc = null;
+                    if (line.Type == ADO.AnticipateLineType.THUOC) dicAntc = dicMediAnticipate;
+                    else if (line.Type == ADO.AnticipateLineType.VATTU) dicAntc = dicMateAnticipate;
+                    if (dicAntc == null || dicAntc.Count == 0) continue;
+
+                    ADO.AnticipateRowADO ar;
+                    if (!dicAntc.TryGetValue(line.TypeId, out ar) || ar == null) continue;
+
+                    line.BidAmount = ar.BID_AMOUNT;
+                    line.BidImported = ar.BID_IMPORTED_AMOUNT;
+                    line.BidRemain = ar.BID_REMAIN_AMOUNT;
+                    line.OpenQuantity = ar.OPEN_QUANTITY;
+                    line.NewImport = ar.NEW_IMPORT_QUANTITY;
+                    line.Used = ar.USED_QUANTITY;
+                    line.CloseQuantity = ar.CLOSE_QUANTITY;
+                    line.MaxExport = ar.MAX_EXPORT_QUANTITY;
+                    line.MaxExportMonth = ar.MAX_EXPORT_MONTH;
+                    changed = true;
+                }
+                if (changed && gridViewAnticipate != null) gridViewAnticipate.RefreshData();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
         /// Lấy số liệu thầu theo loại (chế độ Thầu) để override cột SL thầu/đã nhập/còn lại/giá VAT/NCC.
         /// SL thầu = AMOUNT + ADJUST; Còn lại = AMOUNT + ADJUST + AMOUNT*IMP_MORE_RATIO − IN_AMOUNT; Giá VAT = IMP_PRICE*(1+IMP_VAT_RATIO).
         /// </summary>

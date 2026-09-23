@@ -14,7 +14,7 @@ namespace HIS.Desktop.Plugins.ApprovalExportPrescription.Resources
         {
             try
             {
-                ResourceLanguageManager.LanguageFormApprovalExportPrescription = new ResourceManager("HIS.Desktop.Plugins.ApprovalExportPrescription.Resources.Lang", typeof(HIS.Desktop.Plugins.ApprovalExportPrescription.FormApprovalExportPrescription).Assembly);
+                ResourceLanguageManager.LanguageFormApprovalExportPrescription = new ResourceManager("HIS.Desktop.Plugins.ApprovalExportPrescription.Resources.Lang", typeof(HIS.Desktop.Plugins.ApprovalExportPrescription.UCApprovalExportPrescription).Assembly);
             }
             catch (Exception ex)
             {

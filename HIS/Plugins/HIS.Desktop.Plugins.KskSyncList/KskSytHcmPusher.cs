@@ -274,7 +274,22 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 string hashA = KskPemUtil.Sha256HexUpperForSyt(
                     cfg.ClientId + "|" + timestamp + "|" + nonce);
-                string hashB = KskPemUtil.Sha256HexUpperForSyt(json);
+                // B băm trên thân bản tin ĐÃ BỎ MỌI KÝ TỰ TRẮNG — kể cả dấu cách NẰM TRONG giá
+                // trị chuỗi (họ tên, địa chỉ, lý do khám...). Mã mẫu của Sở làm đúng như vậy:
+                //     const normalizedBody = rawBody.replace(/\s+/g, '');
+                //     const hashB = sha256(normalizedBody);
+                // Tài liệu ghi "loại bỏ toàn bộ khoảng trắng (minify JSON)" — phải hiểu theo NGHĨA
+                // ĐEN, không phải chỉ nén JSON. Chỉ nén JSON thì dấu cách trong giá trị chuỗi còn
+                // nguyên, B tính ra khác B của cổng và chữ ký không khớp.
+                //
+                // LƯU Ý: chỉ CHUỖI ĐEM BĂM mới bỏ khoảng trắng. Thân bản tin GỬI ĐI vẫn nguyên vẹn,
+                // vì cổng cũng bỏ khoảng trắng của thân nhận được rồi mới băm để đối chiếu.
+                // CHI AP CHO MAU M4. Mau M3 dang chay TOT o bon vien voi cach bam cu (chi nen
+                // JSON, giu nguyen dau cach trong gia tri chuoi) — bang chung la cac ho so M3 da
+                // dong bo thanh cong. Nghia la dich vu M3 bam than ban tin NHU NHAN DUOC, khong bo
+                // khoang trang. Ap cach moi cho ca hai la lam gay mot luong dang chay.
+                string bodyForHash = isElderlyForm ? StripWhitespace(json) : json;
+                string hashB = KskPemUtil.Sha256HexUpperForSyt(bodyForHash);
                 string signature = KskPemUtil.SignRsaSha256HexUpper(hashA + "." + hashB, cfg.PrivateKeyPem);
                 if (string.IsNullOrEmpty(signature))
                 {
@@ -295,11 +310,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 LogSignatureShape(SIG_FORMAT__HEX_UPPER, signature);
 
+                // Sở báo lỗi "sai định dạng chữ ký số" thường do chuỗi chữ ký DƯ KHOẢNG TRẮNG.
+                // Chuỗi ta sinh ra vốn không thể có khoảng trắng (ghép từng byte thành hex), nhưng
+                // cắt sạch ở đây là chốt rẻ tiền, và NoWhitespace ghi nhật ký nếu thật sự có —
+                // để biết khoảng trắng sinh ra ở đâu thay vì đoán.
                 var headers = new System.Collections.Generic.Dictionary<string, string>();
-                headers["X-Client-Id"] = cfg.ClientId;
-                headers["X-Timestamp"] = timestamp;
-                headers["X-Nonce"] = nonce;
-                headers["X-API-Signature"] = signature;
+                headers["X-Client-Id"] = NoWhitespace(cfg.ClientId, "X-Client-Id");
+                headers["X-Timestamp"] = NoWhitespace(timestamp, "X-Timestamp");
+                headers["X-Nonce"] = NoWhitespace(nonce, "X-Nonce");
+                headers["X-API-Signature"] = NoWhitespace(signature, "X-API-Signature");
 
                 int status;
                 string uri = URI__PUSH_PREFIX
@@ -325,10 +344,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 //
                 // Ký lại kèm DẤU THỜI GIAN VÀ SỐ DÙNG MỘT LẦN MỚI: chữ ký phủ lên cả hai giá trị đó,
                 // dùng lại số cũ có thể bị cổng coi là gửi trùng.
-                // Cổng từ chối thì ghi cả bản tin ra tệp để gửi Sở đối chiếu.
-                if (!r.Success)
-                    DumpRejected(cfg, baseUrl + uri, json, timestamp, nonce, hashA, hashB,
-                        signature, isElderlyForm, r);
+                // Ghi bản tin ra tệp — CẢ KHI THÀNH CÔNG, không chỉ khi bị từ chối.
+                //
+                // VÌ SAO: hồ sơ đẩy được và hồ sơ bị từ chối chỉ khác nhau ở DỮ LIỆU, mà trước đây
+                // chỉ bản bị từ chối mới được ghi lại nên không có gì để đối chiếu. Giữ lại cả bản
+                // đi lọt thì so hai bên là ra ngay chỗ lệch.
+                DumpBanTin(cfg, baseUrl + uri, json, timestamp, nonce, hashA, hashB,
+                    signature, isElderlyForm, r);
 
                 // Cổng chê chữ ký thì ghi luôn CHẨN ĐOÁN, không thử lại dạng khác nữa.
                 //
@@ -370,6 +392,66 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private const string SIG_FORMAT__BASE64 = "Base64";
         private const string SIG_FORMAT__BASE64_URL = "Base64 an toan URL";
 
+
+
+
+        /// <summary>
+        /// Bỏ MỌI ký tự trắng khỏi chuỗi — dùng để chuẩn hoá thân bản tin TRƯỚC KHI BĂM.
+        /// Xem chỗ tính B để biết vì sao phải bỏ cả dấu cách nằm trong giá trị chuỗi.
+        /// </summary>
+        private static string StripWhitespace(string v)
+        {
+            if (string.IsNullOrEmpty(v)) return v;
+
+            var sb = new StringBuilder(v.Length);
+            foreach (char c in v) if (!char.IsWhiteSpace(c)) sb.Append(c);
+            return sb.ToString();
+        }
+
+        /// <summary>Dem ky tu trang trong chuoi (khong dung LINQ de khoi them using).</summary>
+        private static int DemKyTuTrang(string v)
+        {
+            int n = 0;
+            if (v != null) foreach (char c in v) if (char.IsWhiteSpace(c)) n++;
+            return n;
+        }
+
+        /// <summary>
+        /// Bỏ MỌI ký tự trắng khỏi giá trị tiêu đề, và ghi nhật ký nếu có ký tự nào bị bỏ.
+        ///
+        /// Sở cho biết lỗi "sai định dạng chữ ký số" hay gặp khi chuỗi chữ ký truyền lên dư khoảng
+        /// trắng. Điều đó khớp với lời chê ta nhận được: một dấu cách lọt vào chuỗi hex sẽ làm bộ
+        /// giải mã Base64 báo đúng câu "contains a non-base 64 character".
+        ///
+        /// Chuỗi của ta sinh từ việc ghép từng byte thành hai chữ số hex nên KHÔNG THỂ có khoảng
+        /// trắng. Vì vậy nếu dòng cảnh báo dưới đây xuất hiện, nghĩa là khoảng trắng đến từ chỗ
+        /// khác — cấu hình, hoặc thứ gì đó trên đường truyền — và đó chính là thứ cần tìm.
+        /// </summary>
+        private static string NoWhitespace(string value, string tenTieuDe)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(value)) return value;
+
+                var sb = new StringBuilder(value.Length);
+                int boi = 0;
+                foreach (char c in value)
+                {
+                    if (char.IsWhiteSpace(c)) { boi++; continue; }
+                    sb.Append(c);
+                }
+
+                if (boi > 0)
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                        "SytHcm: tieu de {0} co {1} ky tu trang -> da cat bo. Do dai {2} -> {3}."
+                        + " Chuoi nay dang le KHONG THE co khoang trang, can tim nguon goc.",
+                        tenTieuDe, boi, value.Length, sb.Length));
+
+                return sb.ToString();
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return value; }
+        }
+
         /// <summary>
         /// Ghi HÌNH DẠNG chuỗi chữ ký: độ dài, 12 ký tự đầu, và có chứa ký tự dễ bị đường truyền làm
         /// méo hay không. Đủ để đối chiếu với lời chê của cổng mà KHÔNG ghi cả chuỗi ra nhật ký.
@@ -382,12 +464,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 Inventec.Common.Logging.LogSystem.Warn(string.Format(
                     "SytHcm: chu ky dang {0} — do dai={1}; chia het 4={2}; dau chuoi={3}...; "
-                    + "co dau cong={4}; co gach cheo={5}; co dau bang={6}",
+                    + "co dau cong={4}; co gach cheo={5}; co dau bang={6}; so ky tu trang={7}",
                     dang, sig.Length, (sig.Length % 4 == 0) ? "co" : "KHONG",
                     sig.Substring(0, Math.Min(12, sig.Length)),
                     sig.IndexOf('+') >= 0 ? "co" : "khong",
                     sig.IndexOf('/') >= 0 ? "co" : "khong",
-                    sig.IndexOf('=') >= 0 ? "co" : "khong"));
+                    sig.IndexOf('=') >= 0 ? "co" : "khong",
+                    DemKyTuTrang(sig)));
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -619,7 +702,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         ///
         /// KHÔNG ghi khóa riêng và phiếu truy cập vào tệp — chữ ký thì được, nó vốn để công khai.
         /// </summary>
-        private static void DumpRejected(KskSytHcmConfig cfg, string uri, string json,
+        private static void DumpBanTin(KskSytHcmConfig cfg, string uri, string json,
             string timestamp, string nonce, string hashA, string hashB, string signature,
             bool isElderlyForm, KskSytHcmPushResult r)
         {
@@ -632,14 +715,18 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
                 string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                string tenJson = "BanTin_" + mau + "_" + stamp + ".json";
-                string tenTxt = "BanTin_" + mau + "_" + stamp + "_TieuDe.txt";
+                // Có chữ DAT ở tên tệp = bản tin cổng đã nhận. Không có = bị từ chối.
+                string dau = (r != null && r.Success) ? "_DAT" : "";
+                string tenJson = "BanTin_" + mau + "_" + stamp + dau + ".json";
+                string tenTxt = "BanTin_" + mau + "_" + stamp + dau + "_TieuDe.txt";
 
                 // Thân bản tin: ghi KHÔNG kèm dấu thứ tự byte, để chuỗi đúng từng byte như đã gửi.
                 File.WriteAllText(Path.Combine(dir, tenJson), json, new UTF8Encoding(false));
 
                 var sb = new StringBuilder();
-                sb.AppendLine("Ban tin bi cong tu choi — " + mau);
+                sb.AppendLine((r != null && r.Success)
+                    ? ("Ban tin cong DA NHAN — " + mau)
+                    : ("Ban tin bi cong tu choi — " + mau));
                 sb.AppendLine("Thoi diem            : " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 sb.AppendLine("Dia chi goi           : " + uri);
                 sb.AppendLine("Ket qua cong tra ve   : " + r.ToString());
@@ -655,7 +742,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     + "|" + timestamp + "|" + nonce);
                 sb.AppendLine("A = SHA256(chuoi tren), Hex viet hoa");
                 sb.AppendLine("A                     : " + hashA);
-                sb.AppendLine("B = SHA256(than ban tin trong tep .json), Hex viet hoa");
+                sb.AppendLine("B = SHA256(than ban tin trong tep .json SAU KHI BO MOI KY TU TRANG),"
+                    + " Hex viet hoa");
+                sb.AppendLine("   (bo ca dau cach nam trong gia tri chuoi — dung nhu ma mau cua So)");
                 sb.AppendLine("B                     : " + hashB);
                 sb.AppendLine("C = A + \".\" + B");
                 sb.AppendLine("C                     : " + hashA + "." + hashB);

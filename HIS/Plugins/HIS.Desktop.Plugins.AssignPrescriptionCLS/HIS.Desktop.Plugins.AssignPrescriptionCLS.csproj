@@ -94,6 +94,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Library.CacheClient">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.MIMS.Integration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.MIMS.Integration.dll</HintPath>
@@ -463,6 +466,9 @@
     <Compile Include="ADO\ThoiDiemADO.cs" />
     <Compile Include="ADO\threadMedicineADO.cs" />
     <Compile Include="ADO\VaoLucADO.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__AutoSave.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AssignPrescription\frmAssignPrescription__Save.cs">
       <SubType>Form</SubType>
     </Compile>

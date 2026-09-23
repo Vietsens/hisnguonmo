@@ -2630,6 +2630,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Resources
             }
         }
 
+
         internal static string CanhBaoThuocKeVuotQuaSoNGaySuDung
         {
             get

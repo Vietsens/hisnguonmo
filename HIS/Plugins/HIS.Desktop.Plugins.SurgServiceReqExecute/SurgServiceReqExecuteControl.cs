@@ -213,6 +213,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     lciIcdCmCode.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
                 }
+                // PTTK_XXXXX_Bat_Buoc_Nhap_Mo_Ta_Truoc_Khi_Ket_Thuc_PTTT:
+                // KHONG danh dau tab "Mo ta" bat buoc - luu khi chua ket thuc van khong yeu cau Mo ta,
+                // chi rang buoc dung o thoi diem ket thuc (xem ValidateRequiredDescriptionBeforeFinish)
                 timerInitForm.Enabled = true;
                 timerInitForm.Start();
                 isNotLoadWhileChangeControlStateInFirst = false;
@@ -461,19 +464,34 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
-                // Only check the machine selected in cboMachine
+                // Kiem tra trung gio cho CA danh sach may da tich.
+                // Khong doc cboMachine.EditValue: khi tich tu 2 may tro len, EditValue co chu y de null
+                // (ten may hien qua NullText) nen doc EditValue se bo qua het viec kiem tra.
                 var extList = new List<HIS_SERE_SERV_EXT>();
 
-                // Ensure SereServExt and cboMachine are valid
-                if (SereServExt != null && cboMachine.EditValue != null)
+                if (SereServExt != null
+                    && this.currentMachineIds_MultiMachine != null
+                    && this.currentMachineIds_MultiMachine.Count > 0)
                 {
-                    long machineId = Inventec.Common.TypeConvert.Parse.ToInt64(cboMachine.EditValue.ToString());
-                    if (machineId > 0)
+                    List<long> validIds = new List<long>();
+                    List<string> codes = new List<string>();
+                    foreach (long id in this.currentMachineIds_MultiMachine)
+                    {
+                        var machine = GetMachineById_MultiMachine(id);
+                        if (machine == null) continue;
+                        validIds.Add(machine.ID);
+                        codes.Add(machine.MACHINE_CODE ?? "");
+                    }
+
+                    if (validIds.Count > 0)
                     {
                         extList.Add(new HIS_SERE_SERV_EXT
                         {
                             ID = SereServExt.ID,
-                            MACHINE_ID = machineId,
+                            MACHINE_ID = validIds[0],
+                            MACHINE_CODE = codes[0],
+                            MACHINE_IDS = String.Join(";", validIds),
+                            MACHINE_CODES = String.Join(";", codes),
                             TDL_SERVICE_REQ_ID = SereServExt.TDL_SERVICE_REQ_ID,
                             BEGIN_TIME = SereServExt.BEGIN_TIME,
                             END_TIME = SereServExt.END_TIME
@@ -1269,6 +1287,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         {
                             if (dtFinish.EditValue != null && chkKetThuc.Checked)
                             {
+                                if (!ValidateRequiredDescriptionBeforeFinish())
+                                {
+                                    return false;
+                                }
                                 hisSurgResultSDO.IsFinished = true;
                             }
                         }
@@ -1348,7 +1370,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         sdo.UpdateInstructionTimeByStartTime = hisSurgResultSDO.UpdateInstructionTimeByStartTime;
 
                         if (dtFinish.EditValue != null && chkKetThuc.Checked)
+                        {
+                            if (!ValidateRequiredDescriptionBeforeFinish())
+                            {
+                                return false;
+                            }
                             sdo.IsFinished = true;
+                        }
                         SaveSurgServiceReq(sdo, ref success, notShowMess);
                     }
                     if (success)
@@ -1601,6 +1629,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (CheckLessTime(ref serviceCode))
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.DichVuChuaThucHienKhongChoKetThucXuLy, serviceCode));
+                    return;
+                }
+
+                // Viec 3353 (PT-56272): dich vu bat co "Co thuoc, vat tu di kem" (HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1)
+                // nhung chua ke thuoc/vat tu di kem -> CHAN, khong cho ket thuc (chot anh Canh 22/09/2026). Dat sau btnSaveClick nen du lieu vua nhap da duoc luu.
+                List<V_HIS_SERE_SERV_5> sereServsToCheckMediMate = (this.sereServbyServiceReqs != null && this.sereServbyServiceReqs.Count > 0)
+                    ? this.sereServbyServiceReqs
+                    : (this.sereServ != null ? new List<V_HIS_SERE_SERV_5>() { this.sereServ } : null);
+                if (!HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(sereServsToCheckMediMate))
+                {
                     return;
                 }
 
@@ -5065,7 +5103,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
+                    //xoa CA danh sach may dang chon, khong chi may dau tien
+                    this.currentMachineIds_MultiMachine = new List<long>();
+                    cboMachine.Properties.NullText = "";
                     cboMachine.EditValue = null;
+                    txtMachineCode.Text = "";
                     txtMachineCode.Focus();
                     txtMachineCode.SelectAll();
                 }
@@ -5080,9 +5122,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
-                if (e.CloseMode == PopupCloseMode.Normal)
+                if (e.CloseMode == PopupCloseMode.Cancel)
                 {
-                    if (cboMachine.EditValue != null)
+                    //bam Esc: tra danh sach may ve dung trang thai truoc khi mo popup,
+                    //vi SelectionChanged da ghi thang vao currentMachineIds_MultiMachine ngay khi tich
+                    RestoreMachinesOnCancel_MultiMachine();
+                }
+                else
+                {
+                    //dong popup binh thuong => bo anh chup, khong Esc lan sau lai hoan tac nham
+                    this.machineOriginIds_MultiMachine = null;
+
+                    //da tich may (1 hoac nhieu) thi nhay focus sang o tiep theo. Khong doc cboMachine.EditValue:
+                    //khi tich tu 2 may tro len, EditValue co chu y de null nen Enter se khong an.
+                    if (e.CloseMode == PopupCloseMode.Normal && HasCheckedMachine_MultiMachine())
                     {
                         txtMoKTCao.Focus();
                         txtMoKTCao.SelectAll();
@@ -5110,8 +5163,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 }
                 else
                 {
-                    txtMachineCode.Text = "";
-                    cboMachine.Properties.Buttons[1].Visible = false;
+                    //dang tich tu 2 may tro len thi EditValue co chu y de null, khong duoc xoa trang o ma may
+                    if (this.currentMachineIds_MultiMachine == null || this.currentMachineIds_MultiMachine.Count <= 1)
+                    {
+                        txtMachineCode.Text = "";
+                    }
+                    cboMachine.Properties.Buttons[1].Visible =
+                        this.currentMachineIds_MultiMachine != null && this.currentMachineIds_MultiMachine.Count > 0;
                 }
             }
             catch (Exception ex)
@@ -5126,7 +5184,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (cboMachine.EditValue != null)
+                    //da tich may (1 hoac nhieu) thi nhay focus sang o tiep theo. Khong doc cboMachine.EditValue:
+                    //khi tich tu 2 may tro len, EditValue co chu y de null nen Enter se khong an.
+                    if (HasCheckedMachine_MultiMachine())
                     {
                         txtMoKTCao.Focus();
                         txtMoKTCao.SelectAll();
@@ -5507,8 +5567,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     txtDescription.Text = this.SereServExt.DESCRIPTION;
                     txtResultNote.Text = this.SereServExt.NOTE;
                     txtIntructionNote.Text = this.SereServExt.INSTRUCTION_NOTE;
-                    txtMachineCode.Text = this.SereServExt.MACHINE_CODE;
-                    cboMachine.EditValue = this.SereServExt.MACHINE_ID;
+                    //tich lai CA danh sach may da luu (MACHINE_IDS), du lieu cu chi co 1 may van doc duoc
+                    RestoreSavedMachines_MultiMachine();
                     Inventec.Common.Logging.LogSystem.Info("SereServExts: " + SereServExts.Count);
                     dtStart.DateTime = DateTime.Now;
                     dtFinish.DateTime = DateTime.Now;
@@ -5543,8 +5603,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     txtDescription.Text = "";
                     txtResultNote.Text = "";
                     txtIntructionNote.Text = "";
-                    txtMachineCode.Text = "";
-                    cboMachine.EditValue = null;
+                    ClearMachines_MultiMachine();
                 }
 
                 // R18 (2891): gợi ý Máy thực hiện theo Máy đã chốt ở Chỉ định khi mức dịch vụ chưa có Máy
@@ -5835,7 +5894,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
-                if (cboMachine.EditValue != null)
+                //da tich may (1 hoac nhieu) thi coi nhu da khai bao du. Khong doc cboMachine.EditValue:
+                //khi tich tu 2 may tro len, EditValue co chu y de null nen se bao thieu may oan.
+                if (this.currentMachineIds_MultiMachine != null && this.currentMachineIds_MultiMachine.Count > 0)
                     return true;
 
                 string requiredMachineOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.SurgServiceReqExecute.RequiredMachineOption");

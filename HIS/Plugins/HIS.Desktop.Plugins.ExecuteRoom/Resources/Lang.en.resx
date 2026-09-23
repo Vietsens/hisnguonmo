@@ -422,6 +422,10 @@
     <value>Emergency classify level</value>
   </data>
 
+  <data name="UCExecuteRoom.gridColumnUseTime.Caption" xml:space="preserve">
+    <value>Reserved time</value>
+  </data>
+
   <data name="UCExecuteRoom.gc_PatientClassify.Caption" xml:space="preserve">
     <value>Classification of BN</value>
   </data>

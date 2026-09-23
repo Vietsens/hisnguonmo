@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -17,7 +17,7 @@
  */
 namespace HIS.Desktop.Plugins.ApprovalExportPrescription
 {
-    partial class FormApprovalExportPrescription
+    partial class UCApprovalExportPrescription
     {
         /// <summary>
         /// Required designer variable.
@@ -1048,20 +1048,18 @@ namespace HIS.Desktop.Plugins.ApprovalExportPrescription
             this.lciIcdText.TextSize = new System.Drawing.Size(95, 20);
             this.lciIcdText.TextToControlDistance = 5;
             // 
-            // FormApprovalExportPrescription
+            // UCApprovalExportPrescription
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1326, 556);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Name = "FormApprovalExportPrescription";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Thực xuất thuốc";
-            this.Load += new System.EventHandler(this.FormApprovalExportPrescription_Load);
+            this.Name = "UCApprovalExportPrescription";
+            this.Size = new System.Drawing.Size(1326, 556);
+            this.Load += new System.EventHandler(this.UCApprovalExportPrescription_Load);
             this.Controls.SetChildIndex(this.barDockControlTop, 0);
             this.Controls.SetChildIndex(this.barDockControlBottom, 0);
             this.Controls.SetChildIndex(this.barDockControlRight, 0);

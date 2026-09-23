@@ -106,6 +106,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     return;
                 }
 
+                if (HIS.Desktop.Plugins.EnterKskInfomantionVer2.Config.HisConfigCFG.CheckReq == "1" && !CheckUnfinishedServices())
+                    return;
+
                 WaitingManager.Show();
                 var param = new CommonParam();
                 var result = new BackendAdapter(param).Post<HIS_SERVICE_REQ>(
@@ -131,6 +134,53 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 WaitingManager.Hide();
                 LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Key CheckReq = "1": còn dịch vụ (khác y lệnh khám đang kết thúc) thuộc y lệnh chưa hoàn thành
+        /// (chưa xử lý / đang xử lý) trong cùng hồ sơ thì cảnh báo, cho người dùng chọn có kết thúc tiếp không.
+        /// Dùng V_HIS_SERE_SERV_1 vì chỉ view này có SERVICE_REQ_STT_ID + filter SERVICE_REQ_STT_IDs.
+        /// </summary>
+        /// <returns>false = người dùng chọn không kết thúc.</returns> 
+        private bool CheckUnfinishedServices()
+        {
+            try
+            {
+                var param = new CommonParam();
+                var filter = new MOS.Filter.HisSereServView1Filter();
+                filter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
+                filter.SERVICE_REQ_STT_IDs = new List<long>()
+                {
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL
+                };
+                filter.HAS_EXECUTE = true;
+
+                var unfinisheds = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_1>>(
+                    "api/HisSereServ/GetView1", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (unfinisheds == null || unfinisheds.Count == 0)
+                    return true;
+
+                // View không tự bỏ bản ghi đã xóa; bỏ luôn chính y lệnh khám đang kết thúc.
+                unfinisheds = unfinisheds.Where(o => o.IS_DELETE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && o.SERVICE_REQ_ID != currentServiceReq.ID).ToList();
+                if (unfinisheds.Count == 0)
+                    return true;
+
+                string serviceNames = string.Join(", ", unfinisheds.Select(o => o.TDL_SERVICE_NAME).Where(o => !string.IsNullOrEmpty(o)).Distinct());
+                string serviceReqCodes = string.Join(", ", unfinisheds.Select(o => o.TDL_SERVICE_REQ_CODE).Where(o => !string.IsNullOrEmpty(o)).Distinct());
+
+                return XtraMessageBox.Show(
+                    string.Format("Dịch vụ {0} (mã y lệnh: {1}) chưa hoàn thành. Bạn có muốn tiếp tục kết thúc khám không?", serviceNames, serviceReqCodes),
+                    "Cảnh báo", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning)
+                    == System.Windows.Forms.DialogResult.Yes;
+            }
+            catch (Exception ex)
+            {
+                // Chỉ là cảnh báo: lỗi khi kiểm tra thì không chặn kết thúc khám. 
+                LogSystem.Error(ex);
+                return true;
             }
         }
     }

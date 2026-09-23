@@ -300,4 +300,181 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
   <data name="TienGiamDinhXuatGhiChuCatBot" xml:space="preserve">
     <value>(The error list of this record was truncated — some errors may not be listed)</value>
   </data>
+  <data name="MdInsightNutKiemTraLoi" xml:space="preserve">
+    <value>Check XML errors</value>
+  </data>
+  <data name="MdInsightNutLayKetQua" xml:space="preserve">
+    <value>Get results</value>
+  </data>
+  <data name="MdInsightNutHuy" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="MdInsightTieuDeTienTrinh" xml:space="preserve">
+    <value>Checking XML record errors</value>
+  </data>
+  <data name="MdInsightDangGui" xml:space="preserve">
+    <value>Sending records: {0}/{1}</value>
+  </data>
+  <data name="MdInsightDangLayKetQua" xml:space="preserve">
+    <value>Getting results: {0}/{1}</value>
+  </data>
+  <data name="MdInsightChuaChonHoSo" xml:space="preserve">
+    <value>Please select at least one record to check.</value>
+  </data>
+  <data name="MdInsightXacNhanLoLon" xml:space="preserve">
+    <value>You selected {0} records, estimated time about {1}. Continue?</value>
+  </data>
+  <data name="MdInsightXacNhanLoLonVuotHan" xml:space="preserve">
+    <value>You selected {0} records, estimated time about {1} — some records may have no result yet, press Check XML errors again after a few minutes. Continue?</value>
+  </data>
+  <data name="MdInsightHeNgoaiKhongPhanHoi" xml:space="preserve">
+    <value>The error-checking system is not responding. No record was sent.</value>
+  </data>
+  <data name="MdInsightKhongCoCoSoHopLe" xml:space="preserve">
+    <value>No record belongs to a facility that has a configured account.</value>
+  </data>
+  <data name="MdInsightTrangThaiKhongLoi" xml:space="preserve">
+    <value>No error</value>
+  </data>
+  <data name="MdInsightTrangThaiCanhBao" xml:space="preserve">
+    <value>Has warning</value>
+  </data>
+  <data name="MdInsightTrangThaiLoiNghiemTrong" xml:space="preserve">
+    <value>Has critical error</value>
+  </data>
+  <data name="MdInsightTrangThaiChuaCoKetQua" xml:space="preserve">
+    <value>No result yet</value>
+  </data>
+  <data name="MdInsightTrangThaiKhongKiemTraDuoc" xml:space="preserve">
+    <value>Cannot check</value>
+  </data>
+  <data name="MdInsightLyDoChuaKhaiTaiKhoan" xml:space="preserve">
+    <value>The facility of this record has no configured account.</value>
+  </data>
+  <data name="MdInsightLyDoKhongKetXuatDuoc" xml:space="preserve">
+    <value>The record lacks required data so the XML file could not be exported.</value>
+  </data>
+  <data name="MdInsightLyDoGuiThatBai" xml:space="preserve">
+    <value>Uploading the file to the error-checking system failed.</value>
+  </data>
+  <data name="MdInsightLyDoSaiXacThuc" xml:space="preserve">
+    <value>The account of this facility could not sign in.</value>
+  </data>
+  <data name="MdInsightLyDoQuaHanGoi" xml:space="preserve">
+    <value>Timed out waiting for the error-checking system.</value>
+  </data>
+  <data name="MdInsightLyDoHeNgoaiLoi" xml:space="preserve">
+    <value>The error-checking system reported a processing error.</value>
+  </data>
+  <data name="MdInsightLyDoChoKetQua" xml:space="preserve">
+    <value>Sent, waiting for the error-checking system to return results.</value>
+  </data>
+  <data name="MdInsightLyDoChuaDuThoiGian" xml:space="preserve">
+    <value>Minimum checking time has not elapsed, no conclusion yet.</value>
+  </data>
+  <data name="MdInsightLyDoQuaHanChoKetQua" xml:space="preserve">
+    <value>Sent longer than the allowed hold time with no result. Please send again.</value>
+  </data>
+  <data name="MdInsightConLoiChuaLuu" xml:space="preserve">
+    <value>{0} more errors — press Check XML errors again to see all.</value>
+  </data>
+  <data name="MdInsightTongKetKetQua" xml:space="preserve">
+    <value>Checked {0} records: {1} no error, {2} warning, {3} critical, {4} no result yet, {5} cannot check.</value>
+  </data>
+  <data name="MdInsightCanhBaoDuLieuBenhNhan" xml:space="preserve">
+    <value>The error list file contains patient information. You are responsible for keeping it confidential. Continue exporting?</value>
+  </data>
+  <data name="MdInsightCotKetQua" xml:space="preserve">
+    <value>Check result</value>
+  </data>
+  <data name="MdInsightCotSoLoi" xml:space="preserve">
+    <value>Errors</value>
+  </data>
+  <data name="MdInsightCotThoiDiem" xml:space="preserve">
+    <value>Checked at</value>
+  </data>
+  <data name="MdInsightDangCho" xml:space="preserve">
+    <value>Waiting for the error-checking system… {0} seconds left</value>
+  </data>
+  <data name="MdInsightDangKetXuat" xml:space="preserve">
+    <value>Exporting files: {0}/{1}</value>
+  </data>
+  <data name="MdInsightKhongCoDienGiai" xml:space="preserve">
+    <value>Press Check XML errors again to retrieve the full explanation.</value>
+  </data>
+  <data name="MdInsightTieuDeKetQua" xml:space="preserve">
+    <value>XML record check results</value>
+  </data>
+  <data name="MdInsightNutXuatDanhSach" xml:space="preserve">
+    <value>Export error list</value>
+  </data>
+  <data name="MdInsightNutDong" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="MdInsightNhomDanhSachHoSo" xml:space="preserve">
+    <value>Records</value>
+  </data>
+  <data name="MdInsightNhomChiTietLoi" xml:space="preserve">
+    <value>Error details</value>
+  </data>
+  <data name="MdInsightNhomDienGiai" xml:space="preserve">
+    <value>Full explanation</value>
+  </data>
+  <data name="MdInsightCotMaDieuTri" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="MdInsightCotTenBenhNhan" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="MdInsightCotSoLoiNghiemTrong" xml:space="preserve">
+    <value>Critical errors</value>
+  </data>
+  <data name="MdInsightCotLyDo" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="MdInsightCotMucDo" xml:space="preserve">
+    <value>Severity</value>
+  </data>
+  <data name="MdInsightCotTepThanhPhan" xml:space="preserve">
+    <value>Component file</value>
+  </data>
+  <data name="MdInsightCotTheDuLieu" xml:space="preserve">
+    <value>Data tag</value>
+  </data>
+  <data name="MdInsightCotDongThuMay" xml:space="preserve">
+    <value>Row</value>
+  </data>
+  <data name="MdInsightCotGiaTriHienTai" xml:space="preserve">
+    <value>Current value</value>
+  </data>
+  <data name="MdInsightCotNoiDungLoi" xml:space="preserve">
+    <value>Error content</value>
+  </data>
+  <data name="MdInsightMucDoNghiemTrong" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="MdInsightMucDoCanhBao" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="MdInsightXuatKhongCoDuLieu" xml:space="preserve">
+    <value>No record has errors to export.</value>
+  </data>
+  <data name="MdInsightXuatThanhCong" xml:space="preserve">
+    <value>Error list exported to file: {0}</value>
+  </data>
+  <data name="MdInsightXuatThatBai" xml:space="preserve">
+    <value>Could not write the error list file. Check write permission of the selected folder.</value>
+  </data>
+  <data name="MdInsightChuaTungGui" xml:space="preserve">
+    <value>{0} record(s) have never been submitted, so no result can be retrieved. Press "Check XML errors" for them first.</value>
+  </data>
+  <data name="MdInsightLyDoKhaiNhamCoSo" xml:space="preserve">
+    <value>The configured account does not belong to the facility of this record. Contact the administrator to check the connection settings.</value>
+  </data>
+  <data name="MdInsightXacNhanGuiLai" xml:space="preserve">
+    <value>{0} of the selected records already have check results. Choose "Yes" to submit them again — previous results will be cleared. Choose "No" to only retrieve existing results.</value>
+  </data>
+  <data name="MdInsightLyDoLechCoSo" xml:space="preserve">
+    <value>The facility code of this record does not match the facility of the account in use, so the error-checking system cannot process it.</value>
+  </data>
 </root>

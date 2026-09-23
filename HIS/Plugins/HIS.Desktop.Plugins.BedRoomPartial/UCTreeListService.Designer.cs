@@ -361,7 +361,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.tc_UseDate.OptionsColumn.AllowEdit = false;
             this.tc_UseDate.Visible = false;
             this.tc_UseDate.VisibleIndex = 14;
-            this.tc_UseDate.Width = 90;
+            this.tc_UseDate.Width = 115;
             //
             // repositoryItemButton__Send
             // 

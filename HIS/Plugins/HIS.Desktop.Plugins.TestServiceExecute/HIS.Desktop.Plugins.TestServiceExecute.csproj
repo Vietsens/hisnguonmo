@@ -84,6 +84,10 @@
     <Reference Include="EMR.URI">
       <HintPath>..\..\..\..\LIB\EMR\EMR.URI.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.CheckRequireMediMate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckRequireMediMate\HIS.Desktop.Plugins.Library.CheckRequireMediMate.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT.dll</HintPath>
     </Reference>

@@ -779,28 +779,27 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                     return result;
 
                 CommonParam param = new CommonParam();
-                //Gọi theo từng kho: SDO trả về không điền đủ MEDI_STOCK_ID nên phải tự biết lô thuộc kho nào
-                foreach (long mediStockId in mediStockIds)
+                //Gọi 1 lần cho tất cả kho thay vì lặp từng kho (trước đây mỗi kho 1 request -> mở lưới rất lâu).
+                //INCLUDE_MEDI_STOCK = true để backend tách tồn theo từng kho và điền sẵn MEDI_STOCK_ID/CODE/NAME
+                //vào từng dòng lô, nên không cần tự suy ra lô thuộc kho nào nữa.
+                MOS.Filter.HisMedicineStockViewFilter filter = new MOS.Filter.HisMedicineStockViewFilter();
+                filter.MEDI_STOCK_IDs = mediStockIds;
+                filter.INCLUDE_MEDI_STOCK = true;
+                var lots = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, filter, param);
+                if (lots != null)
                 {
-                    MOS.Filter.HisMedicineStockViewFilter filter = new MOS.Filter.HisMedicineStockViewFilter();
-                    filter.MEDI_STOCK_ID = mediStockId;
-                    filter.MEDI_STOCK_IDs = new List<long>() { mediStockId };
-                    var lots = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, filter, param);
-                    if (lots != null)
+                    //API trả kèm node loại thuốc để dựng cây -> chỉ lấy dòng chi tiết theo lô
+                    result.AddRange(lots.Where(o => !o.isTypeNode && o.ID > 0).Select(o => new PackageStockADO()
                     {
-                        //API trả kèm node loại thuốc để dựng cây -> chỉ lấy dòng chi tiết theo lô
-                        result.AddRange(lots.Where(o => !o.isTypeNode && o.ID > 0).Select(o => new PackageStockADO()
-                        {
-                            TypeCode = o.MEDICINE_TYPE_CODE,
-                            PackageNumber = o.PACKAGE_NUMBER,
-                            ExpiredDate = o.EXPIRED_DATE,
-                            MediStockId = o.MEDI_STOCK_ID ?? mediStockId,
-                            MediStockCode = o.MEDI_STOCK_CODE,
-                            MediStockName = o.MEDI_STOCK_NAME,
-                            Amount = o.TotalAmount ?? o.AvailableAmount ?? 0,
-                            AvailableAmount = o.AvailableAmount ?? 0
-                        }));
-                    }
+                        TypeCode = o.MEDICINE_TYPE_CODE,
+                        PackageNumber = o.PACKAGE_NUMBER,
+                        ExpiredDate = o.EXPIRED_DATE,
+                        MediStockId = o.MEDI_STOCK_ID ?? 0,
+                        MediStockCode = o.MEDI_STOCK_CODE,
+                        MediStockName = o.MEDI_STOCK_NAME,
+                        Amount = o.TotalAmount ?? o.AvailableAmount ?? 0,
+                        AvailableAmount = o.AvailableAmount ?? 0
+                    }));
                 }
                 Inventec.Common.Logging.LogSystem.Debug("GetMedicinePackageStocks: " + mediStockIds.Count + " kho, so dong lo = " + result.Count
                     + ", tong ton = " + result.Sum(o => o.Amount) + ", tong kha dung = " + result.Sum(o => o.AvailableAmount));
@@ -824,28 +823,27 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                     return result;
 
                 CommonParam param = new CommonParam();
-                //Gọi theo từng kho: SDO trả về không điền đủ MEDI_STOCK_ID nên phải tự biết lô thuộc kho nào
-                foreach (long mediStockId in mediStockIds)
+                //Gọi 1 lần cho tất cả kho thay vì lặp từng kho (trước đây mỗi kho 1 request -> mở lưới rất lâu).
+                //INCLUDE_MEDI_STOCK = true để backend tách tồn theo từng kho và điền sẵn MEDI_STOCK_ID/CODE/NAME
+                //vào từng dòng lô, nên không cần tự suy ra lô thuộc kho nào nữa.
+                MOS.Filter.HisMaterialStockViewFilter filter = new MOS.Filter.HisMaterialStockViewFilter();
+                filter.MEDI_STOCK_IDs = mediStockIds;
+                filter.INCLUDE_MEDI_STOCK = true;
+                var lots = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, filter, param);
+                if (lots != null)
                 {
-                    MOS.Filter.HisMaterialStockViewFilter filter = new MOS.Filter.HisMaterialStockViewFilter();
-                    filter.MEDI_STOCK_ID = mediStockId;
-                    filter.MEDI_STOCK_IDs = new List<long>() { mediStockId };
-                    var lots = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, filter, param);
-                    if (lots != null)
+                    //API trả kèm node loại vật tư để dựng cây -> chỉ lấy dòng chi tiết theo lô
+                    result.AddRange(lots.Where(o => !o.isTypeNode && o.ID > 0).Select(o => new PackageStockADO()
                     {
-                        //API trả kèm node loại vật tư để dựng cây -> chỉ lấy dòng chi tiết theo lô
-                        result.AddRange(lots.Where(o => !o.isTypeNode && o.ID > 0).Select(o => new PackageStockADO()
-                        {
-                            TypeCode = o.MATERIAL_TYPE_CODE,
-                            PackageNumber = o.PACKAGE_NUMBER,
-                            ExpiredDate = o.EXPIRED_DATE,
-                            MediStockId = o.MEDI_STOCK_ID ?? mediStockId,
-                            MediStockCode = o.MEDI_STOCK_CODE,
-                            MediStockName = o.MEDI_STOCK_NAME,
-                            Amount = o.TotalAmount ?? o.AvailableAmount ?? 0,
-                            AvailableAmount = o.AvailableAmount ?? 0
-                        }));
-                    }
+                        TypeCode = o.MATERIAL_TYPE_CODE,
+                        PackageNumber = o.PACKAGE_NUMBER,
+                        ExpiredDate = o.EXPIRED_DATE,
+                        MediStockId = o.MEDI_STOCK_ID ?? 0,
+                        MediStockCode = o.MEDI_STOCK_CODE,
+                        MediStockName = o.MEDI_STOCK_NAME,
+                        Amount = o.TotalAmount ?? o.AvailableAmount ?? 0,
+                        AvailableAmount = o.AvailableAmount ?? 0
+                    }));
                 }
                 Inventec.Common.Logging.LogSystem.Debug("GetMaterialPackageStocks: " + mediStockIds.Count + " kho, so dong lo = " + result.Count
                     + ", tong ton = " + result.Sum(o => o.Amount) + ", tong kha dung = " + result.Sum(o => o.AvailableAmount));

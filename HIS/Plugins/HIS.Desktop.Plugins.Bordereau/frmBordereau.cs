@@ -1069,6 +1069,64 @@ namespace HIS.Desktop.Plugins.Bordereau
             }
         }
 
+        /// <summary>
+        /// Ti le thanh toan cua dich vu (%), tinh giong cach tinh tren bang ke 697 (MPS).
+        /// Tra ve 0 neu ko xac dinh duoc hoac bang 100%.
+        /// </summary>
+        private decimal GetTyLeThanhToan(SereServADO ss)
+        {
+            try
+            {
+                if (ss == null || ss.ORIGINAL_PRICE <= 0) return 0;
+
+                decimal tyLe;
+                if (ss.HEIN_LIMIT_PRICE.HasValue)
+                    tyLe = 100 * Math.Round(ss.HEIN_LIMIT_PRICE.Value / (ss.ORIGINAL_PRICE * (1 + ss.VAT_RATIO)), 2);
+                else if (ss.LIMIT_PRICE.HasValue)
+                    tyLe = 100 * Math.Round(ss.LIMIT_PRICE.Value / (ss.ORIGINAL_PRICE * (1 + ss.VAT_RATIO)), 2);
+                else
+                    tyLe = 100 * Math.Round(ss.PRICE / ss.ORIGINAL_PRICE, 2);
+
+                return Math.Round(tyLe, 0);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Don gia hien thi tren luoi.
+        /// Rieng dich vu PTTT phat sinh (dinh kem dich vu cha): backend da nhan ti le
+        /// (50% hoac 80%) thang vao PRICE nen don gia bi chia theo ti le --> tinh nguoc lai
+        /// de hien dung don gia theo chinh sach gia dich vu. Thanh tien van giu nguyen.
+        /// </summary>
+        private decimal GetDonGiaHienThi(SereServADO ss)
+        {
+            try
+            {
+                decimal donGia = ss != null ? (ss.VIR_PRICE_NO_EXPEND ?? 0) : 0;
+                if (ss == null || donGia <= 0) return donGia;
+
+                if (!ss.PARENT_ID.HasValue) return donGia;
+
+                if (ss.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
+                    && ss.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT)
+                    return donGia;
+
+                decimal tyLe = GetTyLeThanhToan(ss);
+                if (tyLe <= 0 || tyLe >= 100) return donGia;
+
+                return donGia / (tyLe / 100);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return ss != null ? (ss.VIR_PRICE_NO_EXPEND ?? 0) : 0;
+            }
+        }
+
         private void gridViewBordereau_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
         {
             try
@@ -1176,7 +1234,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                             }
                             else
                             {
-                                e.Value = Inventec.Common.Number.Convert.NumberToString(sereserv.VIR_PRICE_NO_EXPEND ?? 0, ConfigApplications.NumberSeperator);
+                                e.Value = Inventec.Common.Number.Convert.NumberToString(GetDonGiaHienThi(sereserv), ConfigApplications.NumberSeperator);
                             }
                         }
                         else if (e.Column.FieldName == "PACKAGE_PRICE_DISPLAY")

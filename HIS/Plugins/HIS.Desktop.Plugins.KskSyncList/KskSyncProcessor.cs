@@ -697,6 +697,50 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// hồ sơ này sẽ mang kết quả của bệnh nhân khác trong cùng lượt đẩy. Đường liên kết:
         /// kết quả -> dịch vụ (SERE_SERV_ID) -> đợt điều trị (TDL_TREATMENT_ID).
         /// </summary>
+        /// <summary>
+        /// Kết quả chẩn đoán hình ảnh / siêu âm của đúng đợt điều trị (`HIS_SERE_SERV_EXT`).
+        /// </summary>
+        private static List<HIS_SERE_SERV_EXT> ExtsOfTreatment(
+            List<HIS_SERE_SERV_EXT> exts, long treatmentId)
+        {
+            var rs = new List<HIS_SERE_SERV_EXT>();
+            try
+            {
+                if (exts == null || treatmentId <= 0) return rs;
+                foreach (var ex in exts)
+                {
+                    if (ex == null) continue;
+                    if ((ex.TDL_TREATMENT_ID ?? 0) != treatmentId) continue;
+                    rs.Add(ex);
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return rs;
+        }
+
+        /// <summary>
+        /// Dịch vụ của đúng đợt điều trị. KHÔNG lọc theo loại dịch vụ BHYT như phần lấy kết quả
+        /// xét nghiệm: chỉ tiêu có thể nối vào dịch vụ phẫu thuật - thủ thuật, mà loại đó nằm
+        /// ngoài nhóm CDHA/TDCN/XN.
+        /// </summary>
+        private static List<V_HIS_SERE_SERV_2> SereServsOfTreatment(
+            List<V_HIS_SERE_SERV_2> sereServs, long treatmentId)
+        {
+            var rs = new List<V_HIS_SERE_SERV_2>();
+            try
+            {
+                if (sereServs == null || treatmentId <= 0) return rs;
+                foreach (var ss in sereServs)
+                {
+                    if (ss == null) continue;
+                    if ((ss.TDL_TREATMENT_ID ?? 0) != treatmentId) continue;
+                    rs.Add(ss);
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return rs;
+        }
+
         private static List<V_HIS_SERE_SERV_TEIN> TeinsOfTreatment(
             List<V_HIS_SERE_SERV_2> sereServs, List<V_HIS_SERE_SERV_TEIN> teins, long treatmentId)
         {
@@ -1184,6 +1228,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             // Kết quả xét nghiệm của ĐÚNG đợt điều trị này — nguồn của khối cận lâm sàng.
                             ClsTeins = TeinsOfTreatment(clsSereServs, clsTeins,
                                 (trea != null) ? trea.ID : 0),
+                            // Dịch vụ của đợt điều trị — nguồn cho chỉ tiêu nối vào DỊCH VỤ
+                            // (siêu âm, phẫu thuật - thủ thuật), xem ServiceResultValues.
+                            ClsSereServs = SereServsOfTreatment(clsSereServs,
+                                (trea != null) ? trea.ID : 0),
+                            ClsExts = ExtsOfTreatment(clsExts, (trea != null) ? trea.ID : 0),
                             ClsMapJson = this.SytClsMapJson
                         };
                         if (sytHcmByO18 != null) AttachSytHcm(sytSourceBySr[sr], sytHcmByO18, over18.ID);

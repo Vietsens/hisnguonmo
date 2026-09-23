@@ -541,6 +541,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 {
                     treeListPivot.ApplyFindFilter(preFindText);
                 }
+                // BV HAGL — sửa phiếu: điền lại cột tồn/thầu cho các dòng đã nạp (số liệu theo loại vừa dựng xong ở trên)
+                FillEditingLineFigures();
                 WaitingManager.Hide();
             }
             catch (Exception ex)

@@ -36,6 +36,49 @@ namespace HIS.Desktop.Plugins.PatientInfo
 {
     public partial class frmPatientInfo : HIS.Desktop.Utility.FormBase
     {
+        /// <summary>
+        /// Combo nghe nghiep: tieu de cot Ma / Ten nghe nghiep + cot Nhom cap 2/3/4 theo key cau hinh
+        /// MOS.HIS_CAREER.IS_SHOW_LEVEL_2/3/4 (rong/khac 1 = an, mac dinh an nhu cu) - viec 56781
+        /// </summary>
+        void InitComboCareer(LookUpEdit cboEditor, object datasource)
+        {
+            try
+            {
+                cboEditor.Properties.DataSource = null;
+                cboEditor.Properties.DataSource = datasource;
+                cboEditor.Properties.DisplayMember = "CAREER_NAME";
+                cboEditor.Properties.ValueMember = "ID";
+                cboEditor.Properties.ForceInitialize();
+                cboEditor.Properties.Columns.Clear();
+                cboEditor.Properties.Columns.Add(new LookUpColumnInfo("CAREER_CODE", "Mã", 100));
+                cboEditor.Properties.Columns.Add(new LookUpColumnInfo("CAREER_NAME", "Tên nghề nghiệp", 250));
+                int popupWidth = 350;
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_2") == "1")
+                {
+                    cboEditor.Properties.Columns.Add(new LookUpColumnInfo("LEVEL2_NAME", "Nhóm cấp 2", 180));
+                    popupWidth += 180;
+                }
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_3") == "1")
+                {
+                    cboEditor.Properties.Columns.Add(new LookUpColumnInfo("LEVEL3_NAME", "Nhóm cấp 3", 180));
+                    popupWidth += 180;
+                }
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_CAREER.IS_SHOW_LEVEL_4") == "1")
+                {
+                    cboEditor.Properties.Columns.Add(new LookUpColumnInfo("LEVEL4_NAME", "Nhóm cấp 4", 180));
+                    popupWidth += 180;
+                }
+                cboEditor.Properties.ShowHeader = true;
+                cboEditor.Properties.ImmediatePopup = true;
+                cboEditor.Properties.DropDownRows = 20;
+                cboEditor.Properties.PopupWidth = popupWidth;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         void FillDataToLookupedit(LookUpEdit cboEditor, string displayMember, string valueMember, string displayCodeMember, object datasource)
         {
             try

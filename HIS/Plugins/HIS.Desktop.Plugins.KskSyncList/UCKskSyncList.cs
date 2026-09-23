@@ -392,6 +392,81 @@ namespace HIS.Desktop.Plugins.KskSyncList
         #endregion
 
         #region Grid events
+        private bool kskTypeDisplayHooked;
+
+        /// <summary>Tuổi tính đến ngày kết luận, dùng để biết hồ sơ đi mẫu M3 hay M4.</summary>
+        private const int SYT_HCM_ELDERLY_AGE = 60;
+
+        /// <summary>Mã loại KSK của mẫu "Người ≥18 tuổi" — chỉ mẫu này mới có bản M4.</summary>
+        private const long KSK_TYPE_ID__OVER_EIGHTEEN = 2;
+
+        /// <summary>
+        /// Cột "Loại KSK": hồ sơ người từ 60 tuổi trở lên hiện "Người cao tuổi" thay cho
+        /// "Người ≥18 tuổi", để nhìn danh sách là biết hồ sơ nào đẩy mẫu M4.
+        ///
+        /// AN TOÀN ĐA VIỆN: chỉ đổi chữ cho viện đã khai báo cấu hình cổng SYT TP.HCM; viện khác
+        /// vẫn thấy đúng tên loại KSK do máy chủ trả về.
+        ///
+        /// LƯU Ý: đây là ƯỚC LƯỢNG THEO TUỔI. Mẫu thật sự gửi đi được quyết định bởi ô "Đối tượng
+        /// khám" có tích "Người cao tuổi" hay không (màn hình nhập tự tích khi đủ 60 tuổi). Hai chỗ
+        /// gần như luôn trùng nhau, nhưng nếu người nhập bỏ tích thủ công thì cột này vẫn hiện
+        /// "Người cao tuổi" trong khi hồ sơ đẩy mẫu M3.
+        /// </summary>
+        private void gridView1_CustomColumnDisplayText(object sender,
+            DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (!sytConfigAvailable) return;
+                if (e.Column == null || e.Column.FieldName != "KSK_TYPE_NAME") return;
+                if (e.ListSourceRowIndex < 0) return;
+
+                V_HIS_KSK_SYNC data = gridView1.GetRow(
+                    gridView1.GetRowHandle(e.ListSourceRowIndex)) as V_HIS_KSK_SYNC;
+                if (data == null) return;
+                if (GetPropLong(data, "KSK_TYPE_ID") != KSK_TYPE_ID__OVER_EIGHTEEN) return;
+
+                int age = AgeAtExam(GetPropLong(data, "TDL_PATIENT_DOB"),
+                                    GetPropLong(data, "CONCLUSION_TIME"));
+                if (age >= SYT_HCM_ELDERLY_AGE) e.DisplayText = "Người cao tuổi";
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Tuổi tại ngày kết luận. Ngày kết luận trống thì tính đến hôm nay.
+        /// Trả -1 khi không có ngày sinh — chỗ gọi hiểu là "chưa biết", không suy đoán.
+        /// </summary>
+        private static int AgeAtExam(long dob, long examTime)
+        {
+            try
+            {
+                if (dob <= 0) return -1;
+                string s = dob.ToString();
+                if (s.Length < 8) return -1;
+
+                int by = int.Parse(s.Substring(0, 4));
+                int bm = int.Parse(s.Substring(4, 2));
+                int bd = int.Parse(s.Substring(6, 2));
+
+                DateTime at = DateTime.Now;
+                string e = examTime.ToString();
+                if (examTime > 0 && e.Length >= 8)
+                {
+                    at = new DateTime(int.Parse(e.Substring(0, 4)),
+                                      Math.Max(1, int.Parse(e.Substring(4, 2))),
+                                      Math.Max(1, int.Parse(e.Substring(6, 2))));
+                }
+
+                int age = at.Year - by;
+                // Chưa tới sinh nhật trong năm khám thì trừ một tuổi. Bệnh nhân chỉ có năm sinh thì
+                // tháng/ngày lưu là 00 -> coi như sinh đầu năm, không trừ.
+                if (bm > 0 && bd > 0 && (at.Month < bm || (at.Month == bm && at.Day < bd))) age--;
+                return age;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return -1; }
+        }
+
         private void gridView1_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
         {
             try
@@ -446,6 +521,18 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 return Inventec.Common.DateTime.Convert.TimeNumberToDateString(v);
             }
             catch { return ""; }
+        }
+
+        private static long GetPropLong(object obj, string name)
+        {
+            try
+            {
+                var p = obj.GetType().GetProperty(name);
+                if (p == null) return 0;
+                var v = p.GetValue(obj, null);
+                return v == null ? 0 : Convert.ToInt64(v);
+            }
+            catch { return 0; }
         }
 
         private static int GetPropInt(object obj, string name)
@@ -599,6 +686,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
             lciBtnClsMap.Visibility = sytConfigAvailable
                 ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                 : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+            // Cột "Loại KSK" hiện "Người cao tuổi" cho hồ sơ sẽ đẩy mẫu M4. Nối một lần.
+            if (!kskTypeDisplayHooked)
+            {
+                kskTypeDisplayHooked = true;
+                gridView1.CustomColumnDisplayText += gridView1_CustomColumnDisplayText;
+            }
             isNotLoadWhileChangeControlStateInFirst = false;
         }
 
@@ -701,7 +795,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             chkSyncHcc.Properties.Caption = "Liên thông HCC (2062/QĐ-BYT)";
             chkSyncHcc.Checked = syncTarget != null && syncTarget.SyncHcc;
             chkSyncSytHcm = new DevExpress.XtraEditors.CheckEdit();
-            chkSyncSytHcm.Properties.Caption = "Liên thông KSK Sở Y tế TP.HCM (mẫu M3)";
+            chkSyncSytHcm.Properties.Caption = "Liên thông KSK Sở Y tế TP.HCM (mẫu M3, M4)";
             chkSyncSytHcm.Checked = syncTarget != null && syncTarget.SyncSytHcm;
 
             chkSyncVlg = new DevExpress.XtraEditors.CheckEdit();

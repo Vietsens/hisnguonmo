@@ -336,6 +336,21 @@ namespace MPS.Processor.Mps000510.ADO
 
             this.PRICE_VP = this.VIR_PRICE ?? 0;
             this.TOTAL_PRICE_VP = this.PRICE_VP * this.AMOUNT;
+
+            //PTTT phat sinh (dinh kem dich vu cha): backend da nhan ti le (50% hoac 80%) thang vao PRICE,
+            //nen don gia in ra bi chia theo ti le. Tinh nguoc lai de cot "Don gia" hien dung gia
+            //theo chinh sach gia dich vu, dong thoi GIU NGUYEN thanh tien (TOTAL_PRICE_VP da tinh o tren).
+            if ((this.SERVICE_PAY_RATE ?? 0) > 0 && (this.SERVICE_PAY_RATE ?? 0) < 100
+                && this.PARENT_ID.HasValue
+                && (this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
+                    || this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT))
+            {
+                decimal heSoPttt = (this.SERVICE_PAY_RATE ?? 0) / 100;
+                this.PRICE_VP = this.PRICE_VP / heSoPttt;
+                this.PRIMARY_PRICE = (this.PRIMARY_PRICE ?? 0) / heSoPttt;
+                this.VIR_PRICE = (this.VIR_PRICE ?? 0) / heSoPttt;
+            }
+
             this.TOTAL_PATIENT_PRICE_LEFT = (this.TOTAL_PRICE_VP) * ((this.SERVICE_PAY_RATE ?? 0) / 100)
                 - (this.VIR_TOTAL_HEIN_PRICE ?? 0)
                 - (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0)

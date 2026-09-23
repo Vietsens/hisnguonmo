@@ -61,6 +61,50 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         List<HIS_SERVICE_REQ> rsServiceReq { get; set; }
         List<HIS_SERVICE_REQ> rsServiceReqTab2 { get; set; }
 
+        #region Viec 3352 - thoi gian du tru co gio phut
+
+        /// <summary>
+        /// Loai y lenh ma USE_TIME DA mang gio phut TU TRUOC viec 3352, nen phai giu nguyen cach so va cach hien thi cu:
+        /// don thuoc (DONK/DONM/DONDT/DONTT — vd luong ke don CLS gan UseTime = InstructionTime co gio)
+        /// va y lenh GIUONG (man Chi dinh giuong gui yyyyMMddHHmmss tu truoc).
+        /// </summary>
+        private static bool IsUseTimeWithHourBefore3352(long serviceReqTypeId)
+        {
+            return serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
+                || serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT
+                || serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
+                || serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM
+                || serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G;
+        }
+
+        /// <summary>
+        /// Viec 3352: y lenh DICH VU nay co the mang gio phut trong USE_TIME (truoc day luon 000000).
+        /// Dich vu -> so theo NGAY de du tru CUNG NGAY chi dinh van la y lenh thuong nhu truoc khi co o gio.
+        /// Don thuoc -> giu nguyen phep so cu, khong doi hanh vi dang chay.
+        /// </summary>
+        private static bool IsAnticipateByUseTime(HIS_SERVICE_REQ req)
+        {
+            if (req == null || req.USE_TIME == null) return false;
+            if (IsUseTimeWithHourBefore3352(req.SERVICE_REQ_TYPE_ID)) return req.USE_TIME > req.INTRUCTION_DATE;
+            return ((req.USE_TIME.Value / 1000000) * 1000000) > req.INTRUCTION_DATE;
+        }
+
+        /// <summary>
+        /// Viec 3352: nhan ngay du tru. Y lenh dich vu co gio -> "dd/MM/yyyy HH:mm"; con lai giu "dd/MM/yyyy".
+        /// </summary>
+        private static string FormatUseTimeDisplay(HIS_SERVICE_REQ req)
+        {
+            if (req == null || req.USE_TIME == null) return "";
+            long useTime = req.USE_TIME.Value;
+            if (!IsUseTimeWithHourBefore3352(req.SERVICE_REQ_TYPE_ID) && useTime % 1000000 != 0)
+            {
+                return Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(useTime);
+            }
+            return Inventec.Common.DateTime.Convert.TimeNumberToDateString(useTime);
+        }
+
+        #endregion
+
         bool isSearch = false;
 
         /// <summary>
@@ -481,8 +525,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                                         || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT
                                         || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL
                                         ) &&
-                                        ServiceReq.USE_TIME != null &&
-                                        ServiceReq.USE_TIME > ServiceReq.INTRUCTION_DATE)
+                                        //Viec 3352: dich vu so theo ngay, don thuoc giu phep so cu
+                                        IsAnticipateByUseTime(ServiceReq))
                                     {
                                         //string useTimeDate = null;
                                         //if (itemSSChild.USE_TIME != null)
@@ -511,7 +555,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                                         || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS
                                         || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA
                                         || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT
-                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL) ? "Dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ServiceReq.USE_TIME.Value) : ssServiceType.SERVICE_REQ_CODE + " dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ServiceReq.USE_TIME.Value);
+                                        || ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL) ? "Dự trù ngày " + FormatUseTimeDisplay(ServiceReq) : ssServiceType.SERVICE_REQ_CODE + " dự trù ngày " + FormatUseTimeDisplay(ServiceReq);
                                             ssServiceReqUseTime.TDL_SERVICE_TYPE_ID = itemSSChild.TDL_SERVICE_TYPE_ID;
                                             ssServiceReqUseTime.IsMedicinePreventive = true;
                                             SereServADOs.Add(ssServiceReqUseTime);
@@ -844,7 +888,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                                         || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS
                                         || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA
                                         || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT
-                                        || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL) && o.USE_TIME > o.INTRUCTION_DATE).ToList();
+                                        || o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL)
+                                        //Viec 3352: y lenh DA GAN cho chinh to dieu tri dang mo phai luon con tren cay tab 2.
+                                        //BE cap nhat UsedForServiceReqIds kieu thay the: thieu ID tren cay la BE go USED_FOR_TRACKING_ID = NULL khi Luu.
+                                        && (IsAnticipateByUseTime(o)
+                                            || (this.currentTracking != null && o.USED_FOR_TRACKING_ID == this.currentTracking.ID))).ToList();
                     if (rsServiceReqTab2 != null && rsServiceReqTab2.Count > 0)
                     {
                         if (this.currentTracking != null)
@@ -938,7 +986,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         var listBySety = rootSety.ToList<HisSereServADONumOrder>().GroupBy(p => p.TDL_SERVICE_TYPE_ID).ToList();
                         TreeSereServADO ssInTime = new TreeSereServADO();
                         ssInTime.CONCRETE_ID__IN_SETY = rootSety.First().USE_TIME + "";
-                        ssInTime.SERVICE_REQ_CODE = Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.ToString());
+                        //Viec 3352: node ngay du tru hien them gio phut khi y lenh dich vu co gio
+                        var serviceReqOfRootSety = (rsServiceReqTab2 != null) ? rsServiceReqTab2.FirstOrDefault(o => o.ID == rootSety.First().SERVICE_REQ_ID) : null;
+                        ssInTime.SERVICE_REQ_CODE = (serviceReqOfRootSety != null)
+                            ? FormatUseTimeDisplay(serviceReqOfRootSety)
+                            : Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.ToString());
                         ssInTime.TDL_INTRUCTION_DATE = rootSety.First().TDL_INTRUCTION_DATE;
                         ssInTime.LEVER = 1;
                         SereServADOs.Add(ssInTime);

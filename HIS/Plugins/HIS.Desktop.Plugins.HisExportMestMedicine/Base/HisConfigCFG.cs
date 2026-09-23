@@ -47,6 +47,12 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine.Base
 
         private const string AUTO_PRINT_TYPE = "HIS.Desktop.Plugins.TransactionBill.ElectronicBill.AutoPrintType";
         private const string ENABLE_BUTTON_DELETE = "HIS.Desktop.Plugins.HisExportMestMedicine.EnableButtonDelete";
+
+        /// <summary>
+        /// Bang 1: bam nut cot mau o Kho Mau thi mo ngay ban xem truoc Phieu cung cap mau va thanh phan mau (Mps000108).
+        /// Khac 1 hoac khong khai bao: giu nguyen hanh vi cu la mo man chi tiet benh an.
+        /// </summary>
+        private const string VIEW_BLOOD_SUPPLY_SLIP_OPTION = "HIS.Desktop.Plugins.HisExportMestMedicine.ViewBloodSupplySlipOption";
         internal static bool EXPORT_SALE__MUST_BILL;
         internal static bool CANCEL_ALLOW_OTHER_LOGINNAME;
         internal static string EXP_MEST_SALE__MODULE_UPDATE_OPTION_SELECT;
@@ -63,6 +69,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine.Base
         internal static string autoPrintType;
 
         internal static string AllowEditExpTime;
+
+        internal static string ViewBloodSupplySlipOption;
 
         internal static void LoadConfig()
         {
@@ -82,6 +90,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine.Base
                 autoPrintType = HisConfigs.Get<string>(AUTO_PRINT_TYPE);
                 PlatformOption = HisConfigs.Get<int>(PlatformOptionCFG);
                 AllowEditExpTime = HisConfigs.Get<string>(ALLOW_EDIT_EXP_TIME);
+                ViewBloodSupplySlipOption = HisConfigs.Get<string>(VIEW_BLOOD_SUPPLY_SLIP_OPTION);
             }
             catch (Exception ex)
             {

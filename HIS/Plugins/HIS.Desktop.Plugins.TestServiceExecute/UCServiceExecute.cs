@@ -2889,6 +2889,13 @@ namespace HIS.Desktop.Plugins.TestServiceExecute
                     }
                 }
 
+                // Viec 3353 (PT-56272 / 57799): dich vu bat co "Co thuoc, vat tu di kem" (HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1)
+                // nhung chua ke thuoc/vat tu di kem -> CHAN, khong cho ket thuc (chot anh Canh 22/09/2026: chan het o man hinh xu ly).
+                if (!HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(listServiceADO))
+                {
+                    return;
+                }
+
                 var result = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>(RequestUriStore.HIS_SERVICE_REQ_FINISH, ApiConsumer.ApiConsumers.MosConsumer, currentServiceReq.ID, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                 if (result != null)
                 {

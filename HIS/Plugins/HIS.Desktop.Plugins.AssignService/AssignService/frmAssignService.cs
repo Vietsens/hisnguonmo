@@ -150,6 +150,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         decimal totalGuaranteePrice_1 = 0;
         Inventec.Desktop.Common.Modules.Module currentModule;
 
+        //Viec 57452: thu vien kiem tra dich vu khong duoc chi dinh dong thoi
+        private HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager checkServiceExclusiveManager;
+
+        //Viec 57452: thong diep canh bao mem theo SERVICE_ID, hien icon tren cot Ma dich vu
+        private Dictionary<long, string> dicServiceExclusiveWarning = new Dictionary<long, string>();
+
         Dictionary<long, List<V_HIS_SERVICE_PATY>> servicePatyInBranchs;
         Dictionary<long, V_HIS_SERVICE> dicServices;
         List<HIS_ICD_SERVICE> icdServicePhacDos { get; set; }
@@ -972,6 +978,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.chkMultiIntructionTime.Properties.Caption = Inventec.Common.Resource.Get.Value("frmAssignService.chkMultiIntructionTime.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciDateEditor.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmAssignService.lciDateEditor.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciDateEditor.Text = Inventec.Common.Resource.Get.Value("frmAssignService.lciDateEditor.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciTimeDutru.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmAssignService.lciTimeDutru.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.timeDutru.ToolTip = this.lciTimeDutru.OptionsToolTip.ToolTip;
                 this.layoutControl15.Text = Inventec.Common.Resource.Get.Value("frmAssignService.layoutControl15.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtIcdText.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmAssignService.txtIcdText.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIcdSubCode.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmAssignService.lciIcdSubCode.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1193,6 +1201,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.IsFirstloadForm = true;
                 this.isInitTracking = true;
                 this.requestRoom = GetRequestRoom(this.currentModule.RoomId);
+                //Viec 57452: khoi tao thu vien kiem tra dich vu khong duoc chi dinh dong thoi
+                try
+                {
+                    this.checkServiceExclusiveManager = new HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager(this.currentModule);
+                    HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager.LoadData();
+                }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
                 this.IsFirstloadConditionService = true;
                 this.isNotLoadWhileChangeInstructionTimeInFirst = true;
                 gridViewServiceProcess.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;//ẩn panel filter editor mặc định của grid khi gõ tìm kiếm ở các ô
@@ -1277,6 +1292,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
                     : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 txtDutruTime.Enabled = !chkMultiIntructionTime.Checked;
+                //Viec 57754: o gio du tru dong bo trang thai voi o ngay du tru
+                lciTimeDutru.Visibility = layoutControlItemDutru.Visibility;
+                timeDutru.Enabled = txtDutruTime.Enabled;
 
                 string configValue = HisConfigCFG.IsAllowSignaturePrint;
 
@@ -3314,7 +3332,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                if (e.ColumnName == "AMOUNT" || e.ColumnName == "PATIENT_TYPE_ID" || e.ColumnName == "TDL_SERVICE_NAME")
+                if (e.ColumnName == "AMOUNT" || e.ColumnName == "PATIENT_TYPE_ID" || e.ColumnName == "TDL_SERVICE_NAME"
+                    || e.ColumnName == "TDL_SERVICE_CODE")
                 {
                     this.gridViewServiceProcess_CustomRowError(sender, e);
                 }
@@ -3370,6 +3389,26 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         e.Info.ErrorType = (ErrorType)(row.ErrorTypeIsAssignDay);
                         e.Info.ErrorText = (string)(row.ErrorMessageIsAssignDay);
+                    }
+                    else
+                    {
+                        e.Info.ErrorType = (ErrorType)(ErrorType.None);
+                        e.Info.ErrorText = "";
+                    }
+                }
+                else if (e.ColumnName == "TDL_SERVICE_CODE")
+                {
+                    //Viec 57452: canh bao dich vu khong duoc chi dinh dong thoi
+                    string exclusiveWarning = null;
+                    if (row.IsChecked && this.dicServiceExclusiveWarning != null)
+                    {
+                        this.dicServiceExclusiveWarning.TryGetValue(row.SERVICE_ID, out exclusiveWarning);
+                    }
+
+                    if (!String.IsNullOrEmpty(exclusiveWarning))
+                    {
+                        e.Info.ErrorType = ErrorType.Warning;
+                        e.Info.ErrorText = exclusiveWarning;
                     }
                     else
                     {
@@ -6168,6 +6207,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             ValidConsultationReqiured(serviceCheckeds__Send, item.TREATMENT_ID);
                             isValid = isValid && CheckMaxAmount(serviceCheckeds__Send, new List<long>() { item.TREATMENT_ID });
                         }
+                        //Viec 3352: gio du tru phai hop le (HH:mm 00:00 - 23:59) hoac de trong
+                        isValid = isValid && this.ValidDutruTimeBeforeSave();
                         if (isValid)
                         {
                             // Xac nhan danh sach phong xu ly truoc khi luu (chi chay khi cau hinh bat)
@@ -8583,11 +8624,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     string strTimeDisplay = DateTime.Now.ToString("dd/MM");
                     this.txtInstructionTime.Text = strTimeDisplay;
                     txtDutruTime.Enabled = false;
+                    timeDutru.Enabled = false;
                 }
                 else
                 {
                     this.dtInstructionTime.EditValue = DateTime.Now;
                     txtDutruTime.Enabled = true;
+                    timeDutru.Enabled = true;
                 }
                 this.DelegateMultiDateChanged();
             }
@@ -10866,7 +10909,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 }
                 UpdateSelectedDatesText();
-
+                //Viec 57754: chon ngay xong -> dua focus sang o gio du tru (giong TG chi dinh: ngay -> gio)
+                if (this.timeDutru != null && this.timeDutru.Enabled && this.timeDutru.Visible && this.selectedDates != null && this.selectedDates.Count > 0)
+                {
+                    this.timeDutru.Focus();
+                    this.timeDutru.SelectAll();
+                }
             }
             catch (Exception ex)
             {
@@ -10933,25 +10981,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 txtDutruTime.Text = string.Join(";", selectedDates.Select(d => d.ToString("dd/MM")).ToArray());
 
 
-                if (this.USE_TIME == null) this.USE_TIME = new List<long>();
-                this.USE_TIME.Clear();
-                selectedDates.ForEach(date =>
-                {
-                    try
-                    {
-                        var date_number = Convert.ToInt64(date.ToString("yyyyMMdd") + "000000");
-                        if (date_number > 0)
-                        {
-                            if (!this.USE_TIME.Contains(date_number))
-                                this.USE_TIME.Add(date_number);
-                        }
-                    }
-                    catch (Exception)
-                    {
-
-                        throw new Exception("Loi khi convert date");
-                    }
-                });
+                //Viec 57754: dung USE_TIME = ngay du tru + gio phut trong o timeDutru (yyyyMMddHHmm00)
+                this.BuildDutruUseTimes();
                 if (!string.IsNullOrEmpty(txtDutruTime.Text))
                 {
                     chkMultiIntructionTime.Enabled = false;
@@ -10960,6 +10991,210 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 57754/3352: gio phut du tru lay tu o timeDutru. De trong -> null (luu theo ngay nhu ban cu, 000000).
+        /// Co gia tri hop le (00:00 - 23:59) -> gio:phut (bo giay). Gia tri loi -> null (ValidDutruTimeBeforeSave se chan Luu).
+        /// </summary>
+        private TimeSpan? GetDutruTimeOfDay()
+        {
+            try
+            {
+                if (this.timeDutru == null || this.timeDutru.EditValue == null)
+                {
+                    return null;
+                }
+                TimeSpan ts = this.timeDutru.TimeSpan;
+                if (ts.Ticks < 0 || ts.TotalHours >= 24)
+                {
+                    return null;
+                }
+                return new TimeSpan(ts.Hours, ts.Minutes, 0);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Viec 57754: dung lai USE_TIME = ngay du tru da chon + gio phut trong o timeDutru (yyyyMMddHHmm00).
+        /// Mot gio dung chung cho moi ngay (giong TG chi dinh che do Nhieu ngay). Khong doi chuoi ngay hien thi tren txtDutruTime.
+        /// </summary>
+        private void BuildDutruUseTimes()
+        {
+            try
+            {
+                if (this.USE_TIME == null) this.USE_TIME = new List<long>();
+                this.USE_TIME.Clear();
+                if (this.selectedDates == null || this.selectedDates.Count == 0)
+                {
+                    return;
+                }
+                //Viec 3352: de trong o gio -> USE_TIME theo ngay (000000) nhu ban cu; co gio -> HHmm00
+                TimeSpan? timeOfDay = this.GetDutruTimeOfDay();
+                string timePart = timeOfDay.HasValue ? String.Format("{0:00}{1:00}00", timeOfDay.Value.Hours, timeOfDay.Value.Minutes) : "000000";
+                foreach (DateTime date in this.selectedDates)
+                {
+                    try
+                    {
+                        long date_number = Convert.ToInt64(date.ToString("yyyyMMdd") + timePart);
+                        if (date_number > 0 && !this.USE_TIME.Contains(date_number))
+                        {
+                            this.USE_TIME.Add(date_number);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw new Exception("Loi khi convert date");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void timeDutru_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                //Viec 57754: doi gio sau khi da chon ngay -> dung lai USE_TIME
+                if (this.selectedDates != null && this.selectedDates.Count > 0)
+                {
+                    this.BuildDutruUseTimes();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void timeDutru_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.selectedDates != null && this.selectedDates.Count > 0)
+                {
+                    this.BuildDutruUseTimes();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 3352: mac dinh gio du tru = gio phut tai thoi diem mo chuc nang Chi dinh dich vu (lay theo o gio TG chi dinh vua khoi tao).
+        /// Chi goi khi khoi tao form / doi benh nhan (SetDefaultData(isInit = true)); khong reset sau moi lan Luu de giu gio nguoi dung da nhap.
+        /// </summary>
+        private void SetDutruTimeDefault()
+        {
+            try
+            {
+                if (this.timeDutru == null) return;
+                object value = (this.timeIntruction != null && this.timeIntruction.EditValue != null)
+                    ? this.timeIntruction.EditValue
+                    : (object)DateTime.Now.ToString("HH:mm");
+                this.timeDutru.EditValue = value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 3352: o gio du tru dang de trong (khong co gia tri va khong go chu so nao).
+        /// </summary>
+        private bool IsDutruTimeBlank()
+        {
+            try
+            {
+                if (this.timeDutru == null) return true;
+                if (this.timeDutru.EditValue != null) return false;
+                string text = this.timeDutru.Text ?? "";
+                return !text.Any(c => Char.IsDigit(c));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Viec 3352: kiem tra gio du tru truoc khi Luu. Hop le khi: chua chon ngay du tru; hoac o gio de trong (du tru theo ngay);
+        /// hoac gio trong khoang 00:00 - 23:59. Khong hop le -> thong bao, focus o gio, tra ve false de chan Luu.
+        /// </summary>
+        private bool ValidDutruTimeBeforeSave()
+        {
+            bool valid = true;
+            try
+            {
+                if (this.selectedDates == null || this.selectedDates.Count == 0) return true;
+                if (this.timeDutru == null) return true;
+                if (this.IsDutruTimeBlank())
+                {
+                    this.BuildDutruUseTimes();
+                    return true;
+                }
+                if (this.timeDutru.EditValue != null)
+                {
+                    TimeSpan ts = this.timeDutru.TimeSpan;
+                    valid = ts.Ticks >= 0 && ts.TotalHours < 24;
+                }
+                else
+                {
+                    //co go chu so nhung khong thanh gio hop le (vd: 1_:__)
+                    valid = false;
+                }
+                if (valid)
+                {
+                    //dam bao USE_TIME mang dung gio cuoi cung truoc khi gui BE
+                    this.BuildDutruUseTimes();
+                }
+                else
+                {
+                    MessageBox.Show(this, Inventec.Common.Resource.Get.Value("frmAssignService.Message.GioDuTruKhongHopLe", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()));
+                    this.timeDutru.Focus();
+                    this.timeDutru.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                valid = true;
+            }
+            return valid;
+        }
+
+        private void timeDutru_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                //Viec 3352: Delete/Backspace khi dang chon toan bo (hoac o da rong) -> xoa trong o gio = du tru theo ngay, khong co gio
+                if ((e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back) && this.timeDutru != null)
+                {
+                    string text = this.timeDutru.Text ?? "";
+                    bool isSelectAll = this.timeDutru.SelectionLength > 0 && this.timeDutru.SelectionLength >= text.Length;
+                    if (isSelectAll || !text.Any(c => Char.IsDigit(c)))
+                    {
+                        this.timeDutru.EditValue = null;
+                        e.Handled = true;
+                        e.SuppressKeyPress = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

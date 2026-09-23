@@ -281,6 +281,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.InitCheckUSBToken();
                 //vCong53286 - Nút Kiểm tra lỗi tiền giám định. Chỉ hiện khi viện đã đấu nối.
                 this.InitTienGiamDinhButton();
+                //vCong XXXXX - Đấu nối MDInsight soát lỗi hồ sơ XML.
+                //Chỉ tạo nút và cột khi viện đã khai đủ cấu hình; chưa khai thì màn hình giữ nguyên.
+                this.InitMdInsight();
             }
             catch (Exception ex)
             {
@@ -4568,219 +4571,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                         var limit = listTreatmentSync.Skip(skip).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
                         skip = skip + GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
-                        #region
-                        ListPatientTypeAlter = new List<V_HIS_PATIENT_TYPE_ALTER>();
-                        ListSereServ = new List<V_HIS_SERE_SERV_2>();
-                        ListEkipUser = new List<HIS_EKIP_USER>();
-                        ListBedlog = new List<V_HIS_BED_LOG>();
-                        HisTreatments = new List<V_HIS_TREATMENT_12>();
-                        ListDhst = new List<HIS_DHST>();
-                        HisTrackings = new List<HIS_TRACKING>();
-                        HisSereServTeins = new List<V_HIS_SERE_SERV_TEIN>();
-                        HisSereServSuin = new List<V_HIS_SERE_SERV_SUIN>();
-                        HisSereServPttts = new List<V_HIS_SERE_SERV_PTTT>();
-                        ListDebates = new List<HIS_DEBATE>();
-                        ListBaby = new List<V_HIS_BABY>();
-                        ListMedicalAssessment = new List<V_HIS_MEDICAL_ASSESSMENT>();
-                        ListHivTreatment = new List<HIS_HIV_TREATMENT>();
-                        ListTuberculosisTreat = new List<HIS_TUBERCULOSIS_TREAT>();
-                        ListExpMedimateUsed = new List<HIS_EXP_MEDIMATE_USED>();
-                        CreateThreadGetData(limit);
-                        Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> dicPatientTypeAlter = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
-                        Dictionary<long, List<V_HIS_SERE_SERV_2>> dicSereServ = new Dictionary<long, List<V_HIS_SERE_SERV_2>>();
-                        Dictionary<long, List<V_HIS_SERE_SERV_TEIN>> dicSereServTein = new Dictionary<long, List<V_HIS_SERE_SERV_TEIN>>();
-                        Dictionary<long, List<V_HIS_SERE_SERV_SUIN>> dicSereServSuin = new Dictionary<long, List<V_HIS_SERE_SERV_SUIN>>();
-                        Dictionary<long, List<V_HIS_SERE_SERV_PTTT>> dicSereServPttt = new Dictionary<long, List<V_HIS_SERE_SERV_PTTT>>();
-                        Dictionary<long, List<V_HIS_BED_LOG>> dicBedLog = new Dictionary<long, List<V_HIS_BED_LOG>>();
-                        Dictionary<long, List<HIS_TRACKING>> dicTracking = new Dictionary<long, List<HIS_TRACKING>>();
-                        Dictionary<long, List<HIS_EKIP_USER>> dicEkipUser = new Dictionary<long, List<HIS_EKIP_USER>>();
-                        Dictionary<long, List<V_HIS_BABY>> dicBaby = new Dictionary<long, List<V_HIS_BABY>>();
-                        Dictionary<long, List<HIS_DEBATE>> dicDebate = new Dictionary<long, List<HIS_DEBATE>>();
-                        Dictionary<long, List<HIS_DHST>> dicDhstList = new Dictionary<long, List<HIS_DHST>>();
-                        Dictionary<long, List<V_HIS_MEDICAL_ASSESSMENT>> dicMedicalAssessment = new Dictionary<long, List<V_HIS_MEDICAL_ASSESSMENT>>();
-                        Dictionary<long, HIS_HIV_TREATMENT> dicHivTreatment = new Dictionary<long, HIS_HIV_TREATMENT>();
-                        Dictionary<long, HIS_TUBERCULOSIS_TREAT> dicTuberculosisTreat = new Dictionary<long, HIS_TUBERCULOSIS_TREAT>();
-                        Dictionary<long, List<HIS_EXP_MEDIMATE_USED>> dicExpUsedByExpMestMedicineId = new Dictionary<long, List<HIS_EXP_MEDIMATE_USED>>();
-                        Dictionary<long, List<HIS_EXP_MEDIMATE_USED>> dicExpUsedByExpMestMaterialId = new Dictionary<long, List<HIS_EXP_MEDIMATE_USED>>();
+                        //vCong XXXXX - Dau noi MDInsight: khoi nap du lieu ca lo da chuyen sang
+                        //LoadXmlBatchData (xem UCExportXml___XmlBuilder.cs) de luong soat loi dung lai
+                        //DUNG mot duong nap du lieu, khong chep sang noi khac roi de hai ban lech nhau.
+                        XmlBuildContextADO xmlBuildContext = LoadXmlBatchData(
+                            limit.ToList(), typeXml, username, password, address, xml130Api, xmlGdykApi);
 
-                        if (ListExpMedimateUsed != null && ListExpMedimateUsed.Count > 0)
-                        {
-                            foreach (var u in ListExpMedimateUsed)
-                            {
-                                if (u == null) continue;
-
-                                if (u.EXP_MEST_MEDICINE_ID.HasValue)
-                                {
-                                    var k = u.EXP_MEST_MEDICINE_ID.Value;
-                                    if (!dicExpUsedByExpMestMedicineId.ContainsKey(k))
-                                        dicExpUsedByExpMestMedicineId[k] = new List<HIS_EXP_MEDIMATE_USED>();
-                                    dicExpUsedByExpMestMedicineId[k].Add(u);
-                                }
-
-                                if (u.EXP_MEST_MATERIAL_ID.HasValue)
-                                {
-                                    var k = u.EXP_MEST_MATERIAL_ID.Value;
-                                    if (!dicExpUsedByExpMestMaterialId.ContainsKey(k))
-                                        dicExpUsedByExpMestMaterialId[k] = new List<HIS_EXP_MEDIMATE_USED>();
-                                    dicExpUsedByExpMestMaterialId[k].Add(u);
-                                }
-                            }
-                        }
-
-                        if (ListTuberculosisTreat != null && ListTuberculosisTreat.Count > 0)
-                        {
-                            foreach (var item in ListTuberculosisTreat)
-                            {
-                                if (!dicTuberculosisTreat.ContainsKey(item.TREATMENT_ID))
-                                    dicTuberculosisTreat[item.TREATMENT_ID] = new HIS_TUBERCULOSIS_TREAT();
-                                dicTuberculosisTreat[item.TREATMENT_ID] = item;
-                            }
-                        }
-                        if (ListPatientTypeAlter != null && ListPatientTypeAlter.Count > 0)
-                        {
-                            foreach (var item in ListPatientTypeAlter)
-                            {
-                                if (!dicPatientTypeAlter.ContainsKey(item.TREATMENT_ID))
-                                    dicPatientTypeAlter[item.TREATMENT_ID] = new List<V_HIS_PATIENT_TYPE_ALTER>();
-                                dicPatientTypeAlter[item.TREATMENT_ID].Add(item);
-                            }
-                        }
-
-                        if (ListSereServ != null && ListSereServ.Count > 0)
-                        {
-                            foreach (var sereServ in ListSereServ)
-                            {
-                                if (sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
-                                {
-                                    if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
-                                        dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
-                                    dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
-                                }
-
-                                if (sereServ.EKIP_ID.HasValue && ListEkipUser != null && ListEkipUser.Count > 0 && sereServ.TDL_TREATMENT_ID.HasValue)
-                                {
-                                    var ekips = ListEkipUser.Where(o => o.EKIP_ID == sereServ.EKIP_ID).ToList();
-                                    if (ekips != null && ekips.Count > 0)
-                                    {
-                                        foreach (var item in ekips)
-                                        {
-                                            if (!dicEkipUser.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
-                                                dicEkipUser[sereServ.TDL_TREATMENT_ID.Value] = new List<HIS_EKIP_USER>();
-
-                                            dicEkipUser[sereServ.TDL_TREATMENT_ID.Value].Add(item);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (HisSereServTeins != null && HisSereServTeins.Count > 0)
-                        {
-                            foreach (var ssTein in HisSereServTeins)
-                            {
-                                if (!ssTein.TDL_TREATMENT_ID.HasValue) continue;
-
-                                if (!dicSereServTein.ContainsKey(ssTein.TDL_TREATMENT_ID.Value))
-                                    dicSereServTein[ssTein.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_TEIN>();
-
-                                dicSereServTein[ssTein.TDL_TREATMENT_ID.Value].Add(ssTein);
-                            }
-                        }
-                        if (HisSereServSuin != null && HisSereServSuin.Count > 0)
-                        {
-                            foreach (var ssSuin in HisSereServSuin)
-                            {
-
-                                if (!dicSereServSuin.ContainsKey(ssSuin.TDL_TREATMENT_ID))
-                                    dicSereServSuin[ssSuin.TDL_TREATMENT_ID] = new List<V_HIS_SERE_SERV_SUIN>();
-
-                                dicSereServSuin[ssSuin.TDL_TREATMENT_ID].Add(ssSuin);
-                            }
-                        }
-                        if (HisTrackings != null && HisTrackings.Count > 0)
-                        {
-                            foreach (var tracking in HisTrackings)
-                            {
-                                if (!dicTracking.ContainsKey(tracking.TREATMENT_ID))
-                                    dicTracking[tracking.TREATMENT_ID] = new List<HIS_TRACKING>();
-
-                                dicTracking[tracking.TREATMENT_ID].Add(tracking);
-                            }
-                        }
-                        if (ListBaby != null && ListBaby.Count > 0)
-                        {
-                            foreach (var baby in ListBaby)
-                            {
-                                if (!dicBaby.ContainsKey(baby.TREATMENT_ID))
-                                    dicBaby[baby.TREATMENT_ID] = new List<V_HIS_BABY>();
-
-                                dicBaby[baby.TREATMENT_ID].Add(baby);
-                            }
-                        }
-                        if (ListHivTreatment != null && ListHivTreatment.Count > 0)
-                        {
-                            ListHivTreatment = ListHivTreatment.OrderBy(o => o.ID).ToList();
-                            foreach (var hivTreatment in ListHivTreatment)
-                            {
-                                dicHivTreatment[hivTreatment.TREATMENT_ID] = hivTreatment;
-                            }
-                        }
-                        if (HisSereServPttts != null && HisSereServPttts.Count > 0)
-                        {
-                            foreach (var ssPttt in HisSereServPttts)
-                            {
-                                if (!ssPttt.TDL_TREATMENT_ID.HasValue) continue;
-
-                                if (!dicSereServPttt.ContainsKey(ssPttt.TDL_TREATMENT_ID.Value))
-                                    dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_PTTT>();
-
-                                dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value].Add(ssPttt);
-                            }
-                        }
-
-                        if (ListDhst != null && ListDhst.Count > 0)
-                        {
-                            foreach (var item in ListDhst)
-                            {
-                                if (!dicDhstList.ContainsKey(item.TREATMENT_ID))
-                                    dicDhstList[item.TREATMENT_ID] = new List<HIS_DHST>();
-
-                                dicDhstList[item.TREATMENT_ID].Add(item);
-                            }
-                        }
-
-                        if (ListBedlog != null && ListBedlog.Count > 0)
-                        {
-                            foreach (var bed in ListBedlog)
-                            {
-                                if (!dicBedLog.ContainsKey(bed.TREATMENT_ID))
-                                    dicBedLog[bed.TREATMENT_ID] = new List<V_HIS_BED_LOG>();
-
-                                dicBedLog[bed.TREATMENT_ID].Add(bed);
-                            }
-                        }
-
-                        if (ListDebates != null && ListDebates.Count > 0)
-                        {
-                            foreach (var item in ListDebates)
-                            {
-                                if (!dicDebate.ContainsKey(item.TREATMENT_ID))
-                                    dicDebate[item.TREATMENT_ID] = new List<HIS_DEBATE>();
-
-                                dicDebate[item.TREATMENT_ID].Add(item);
-                            }
-                        }
-                        if (ListMedicalAssessment != null && ListMedicalAssessment.Count > 0)
-                        {
-                            foreach (var item in ListMedicalAssessment)
-                            {
-                                if (!dicMedicalAssessment.ContainsKey(item.TREATMENT_ID))
-                                    dicMedicalAssessment[item.TREATMENT_ID] = new List<V_HIS_MEDICAL_ASSESSMENT>();
-
-                                dicMedicalAssessment[item.TREATMENT_ID].Add(item);
-                            }
-                        }
-                        #endregion
                         foreach (var treatment in HisTreatments)
                         {
                             //Hủy giữa chừng khi: tắt Đồng bộ tự động, HOẶC (lượt KCB tự động) đã bỏ tích "Đồng bộ KCB" (dừng ở ranh giới hồ sơ).
@@ -4793,142 +4589,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                             paramUpdateXml130 = new CommonParam();
                             #region
+                            //vCong XXXXX - Dau noi MDInsight: doan dung ado da chuyen sang
+                            //BuildInputAdoForXml (xem UCExportXml___XmlBuilder.cs) de luong soat loi
+                            //dung LAI DUNG mot logic, khong chep sang noi khac roi de hai ban lech nhau.
+                            //Giu nguyen hanh vi cu: ho so khong co dong dich vu nao thi bo qua.
                             bool sendXml12 = true;
-                            InputADO ado = new InputADO();
-                            ado.Treatment = treatment;
-                            if (dicPatientTypeAlter.ContainsKey(treatment.ID))
-                            {
-                                ado.ListPatientTypeAlter = dicPatientTypeAlter[treatment.ID];
-                            }
-
-                            if (!dicSereServ.ContainsKey(treatment.ID))
+                            InputADO ado = BuildInputAdoForXml(xmlBuildContext, treatment, out sendXml12);
+                            if (ado == null)
                             {
                                 continue;
                             }
-
-                            ado.ListSereServ = dicSereServ.ContainsKey(treatment.ID) ? dicSereServ[treatment.ID] : null;
-
-                            if (dicDhstList.ContainsKey(treatment.ID))
-                            {
-                                ado.ListDhst = dicDhstList[treatment.ID];
-                            }
-
-                            if (dicSereServTein.ContainsKey(treatment.ID))
-                            {
-                                ado.ListSereServTein = dicSereServTein[treatment.ID];
-                            }
-                            if (dicSereServSuin.ContainsKey(treatment.ID))
-                            {
-                                ado.vSereServSuin = dicSereServSuin[treatment.ID];
-                            }
-                            if (dicSereServPttt.ContainsKey(treatment.ID))
-                            {
-                                ado.ListSereServPttt = dicSereServPttt[treatment.ID];
-                            }
-
-                            if (dicBedLog.ContainsKey(treatment.ID))
-                            {
-                                ado.ListBedLog = dicBedLog[treatment.ID];
-                            }
-
-                            if (dicTracking.ContainsKey(treatment.ID))
-                            {
-                                ado.ListTracking = dicTracking[treatment.ID];
-                            }
-
-                            if (dicEkipUser.ContainsKey(treatment.ID))
-                            {
-                                ado.ListEkipUser = dicEkipUser[treatment.ID].Distinct().ToList();
-                            }
-
-                            if (dicDebate.ContainsKey(treatment.ID))
-                            {
-                                ado.ListDebate = dicDebate[treatment.ID];
-                            }
-
-                            if (dicBaby.ContainsKey(treatment.ID))
-                            {
-                                ado.ListBaby = dicBaby[treatment.ID];
-                            }
-                            if (dicMedicalAssessment.ContainsKey(treatment.ID))
-                            {
-                                ado.ListMedicalAssessment = dicMedicalAssessment[treatment.ID];
-                            }
-                            else
-                                sendXml12 = false;
-                            sendXml12 = !string.IsNullOrEmpty(typeXml) ? typeXml.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList().Contains("12") && ado.ListMedicalAssessment != null && ado.ListMedicalAssessment.Count > 0 : false;
-                            if (dicHivTreatment.ContainsKey(treatment.ID))
-                            {
-                                ado.HivTreatment = dicHivTreatment[treatment.ID];
-                            }
-                            ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
-                            ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
-                            ado.TotalConfigData = NewConfig;
-                            ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
-                            ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
-                            ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
-                            ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
-                            ado.TotalMachineData = BackendDataWorker.Get<HIS_MACHINE>();
-                            var usedList = new List<HIS_EXP_MEDIMATE_USED>();
-
-                            if (ado.ListSereServ != null && ado.ListSereServ.Count > 0)
-                            {
-                                foreach (var ss in ado.ListSereServ)
-                                {
-                                    if (ss.EXP_MEST_MEDICINE_ID.HasValue)
-                                    {
-                                        var k = ss.EXP_MEST_MEDICINE_ID.Value;
-                                        if (dicExpUsedByExpMestMedicineId.TryGetValue(k, out var lst))
-                                            usedList.AddRange(lst);
-                                    }
-
-                                    if (ss.EXP_MEST_MATERIAL_ID.HasValue)
-                                    {
-                                        var k = ss.EXP_MEST_MATERIAL_ID.Value;
-                                        if (dicExpUsedByExpMestMaterialId.TryGetValue(k, out var lst))
-                                            usedList.AddRange(lst);
-                                    }
-                                }
-                            }
-
-                            ado.ListExpMedimateUsed = usedList
-                                .GroupBy(x => x.ID)
-                                .Select(g => g.First())
-                                .ToList();
-
-                            if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
-                            {
-                                ado.ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
-                            }
-                            ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
-                            //ado.delegateSignXml = DataSignXML;
-
-                            if (dicTuberculosisTreat.ContainsKey(treatment.ID))
-                            {
-                                ado.TuberculosisTreat = dicTuberculosisTreat[treatment.ID];
-                            }
-                            // --- SỬA LẠI ĐỂ TRÁNH LỖI CROSS-THREAD KHI CHẠY TỰ ĐỘNG ---
-                            bool isCheckedSafe = false;
-                            if (chkXML3176.InvokeRequired)
-                            {
-                                chkXML3176.Invoke(new MethodInvoker(delegate { isCheckedSafe = chkXML3176.Checked; }));
-                            }
-                            else
-                            {
-                                isCheckedSafe = chkXML3176.Checked;
-                            }
-
-                            if (isCheckedSafe)
-                            {
-                                ado.IS_3176 = true;
-                                Inventec.Common.Logging.LogSystem.Debug("ProcessSyncTreatment - Checkbox tích → IS_3176 = true (XML 3176)");
-                            }
-                            else
-                            {
-                                ado.IS_3176 = false;
-                                Inventec.Common.Logging.LogSystem.Debug("ProcessSyncTreatment - Checkbox không tích → IS_3176 = false (XML 130)");
-                            }
-                            // ----------------------------------------------------------
                             #endregion
                             His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(ado);
                             SyncResultADO syncResult = null;
@@ -5988,7 +5658,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 input3.vHisSereServTeins = HisSereServTeins != null
                                     ? HisSereServTeins.Where(o => o.TDL_TREATMENT_ID == treatment.ID).ToList()
                                     : new List<V_HIS_SERE_SERV_TEIN>();
-                                input3.Machines = BackendDataWorker.Get<HIS_MACHINE>();
+                                //Đã bỏ dòng gán input3.Machines: lớp InputXml3ADO KHÔNG có thuộc tính này
+                                //(xem FE/common/HISUTIL/His.Bhyt/His.Bhyt.ExportXml.XML130.XML3/InputXml3ADO.cs),
+                                //nên dòng đó làm cả plugin không biên dịch được. Xml3Processor cũng không đọc
+                                //danh sách máy: mã máy (MA_MAY) được dựng từ MACHINE_GROUP_CODE / SOURCE_CODE /
+                                //SERIAL_NUMBER ngay trên từng dòng dịch vụ. Cần truyền danh sách máy thật thì
+                                //phải bổ sung thuộc tính vào InputXml3ADO VÀ cho Xml3Processor dùng tới nó.
                                 input3.IS_3176 = true;
 
                                 var data3 = new His.Bhyt.ExportXml.XML130.XML3.Xml3Processor(input3).GenerateXml3Data();

@@ -82,6 +82,11 @@ namespace HIS.UC.MaterialType.Run
         bool isShowBid;
         bool isShowChkLock;
         bool isHightLightFilter = false;
+        // vCong 53748 — nhóm "Hiển thị: Tất cả / Ẩn dòng nhóm" (tạo runtime, chỉ khi màn hình chủ bật IsShowHideGroupOption)
+        bool isShowHideGroupOption = false;
+        DevExpress.XtraEditors.CheckEdit chkShowAllGroup;
+        DevExpress.XtraEditors.CheckEdit chkHideGroup;
+        string treeParentFieldName;
         DevExpress.Utils.ImageCollection selectImageCollection;
         DevExpress.Utils.ImageCollection stateImageCollection;
         MaterialTypeHandler updateSingleRow;
@@ -157,6 +162,10 @@ namespace HIS.UC.MaterialType.Run
                 if (MaterialTypeADO.IsShowChkLock.HasValue)
                 {
                     this.isShowChkLock = MaterialTypeADO.IsShowChkLock.Value;
+                }
+                if (MaterialTypeADO.IsShowHideGroupOption.HasValue)
+                {
+                    this.isShowHideGroupOption = MaterialTypeADO.IsShowHideGroupOption.Value;
                 }
                 if (MaterialTypeADO.IsHightLightFilter.HasValue)
                 {
@@ -304,6 +313,9 @@ namespace HIS.UC.MaterialType.Run
                     trvService.KeyFieldName = MaterialTypeTreeADO.KeyFieldName;
                 if (!String.IsNullOrEmpty(MaterialTypeTreeADO.ParentFieldName))
                     trvService.ParentFieldName = MaterialTypeTreeADO.ParentFieldName;
+
+                // vCong 53748 — "Ẩn dòng nhóm": chỉ giữ dòng loại, bỏ liên kết cha-con → danh sách phẳng
+                records = ApplyHideGroupMode(records);
 
                 trvService.DataSource = records;
                 trvService.ExpandAll();
@@ -469,6 +481,12 @@ namespace HIS.UC.MaterialType.Run
                     lciLock.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
 
+                // vCong 53748 — nhóm "Hiển thị: Tất cả / Ẩn dòng nhóm" cạnh ô Khóa, chỉ tạo khi màn hình chủ bật tuỳ chọn
+                if (this.isShowHideGroupOption)
+                {
+                    CreateHideGroupOption();
+                }
+
                 if (chkGroupByMap_CheckChanged != null)
                 {
                     lciCheckGroupByMap.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -521,6 +539,109 @@ namespace HIS.UC.MaterialType.Run
             }
         }
 
+        #region vCong 53748 — Ẩn dòng nhóm (Danh sách loại vật tư)
+        /// <summary>
+        /// Tạo nhóm "Hiển thị: Tất cả / Ẩn dòng nhóm" (2 radio loại trừ nhau) ngay bên phải ô Khóa.
+        /// Chỉ chạy khi màn hình chủ bật IsShowHideGroupOption — các màn khác dùng chung UC không có gì thay đổi.
+        /// </summary>
+        private void CreateHideGroupOption()
+        {
+            try
+            {
+                if (this.chkHideGroup != null || this.layoutControl1 == null || this.lciLock == null) return;
+
+                chkShowAllGroup = CreateHideGroupRadio("Tất cả", true);
+                chkHideGroup = CreateHideGroupRadio("Ẩn dòng nhóm", false);
+                chkHideGroup.ToolTip = "Ẩn các dòng nhóm cha, chỉ hiển thị danh sách loại dạng phẳng";
+
+                var lciShowAll = this.layoutControl1.AddItem("Hiển thị:", chkShowAllGroup, this.lciLock, DevExpress.XtraLayout.Utils.InsertType.Right);
+                lciShowAll.TextVisible = true;
+                lciShowAll.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
+                lciShowAll.MaxSize = new Size(150, 26);
+                lciShowAll.MinSize = new Size(150, 26);
+                lciShowAll.Size = new Size(150, 26);
+                lciShowAll.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+
+                var lciHide = this.layoutControl1.AddItem("", chkHideGroup, lciShowAll, DevExpress.XtraLayout.Utils.InsertType.Right);
+                lciHide.TextVisible = false;
+                lciHide.MaxSize = new Size(115, 26);
+                lciHide.MinSize = new Size(115, 26);
+                lciHide.Size = new Size(115, 26);
+                lciHide.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+
+                chkShowAllGroup.CheckedChanged += chkHideGroupOption_CheckedChanged;
+                chkHideGroup.CheckedChanged += chkHideGroupOption_CheckedChanged;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private DevExpress.XtraEditors.CheckEdit CreateHideGroupRadio(string caption, bool initialChecked)
+        {
+            var chk = new DevExpress.XtraEditors.CheckEdit();
+            chk.Properties.Caption = caption;
+            chk.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            // Nhóm radio riêng (index 7) — không dính vào nhóm radio nào đang có trên hàng lọc
+            chk.Properties.RadioGroupIndex = 7;
+            chk.Checked = initialChecked;
+            return chk;
+        }
+
+        /// <summary>Đổi lựa chọn → dựng lại danh sách ngay trên dữ liệu đã tải (giữ từ khóa), không gọi lại API.</summary>
+        private void chkHideGroupOption_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var chk = sender as DevExpress.XtraEditors.CheckEdit;
+                // Radio kia bắn Unchecked cùng lúc → chỉ xử lý ở radio vừa được chọn
+                if (chk == null || !chk.Checked) return;
+                if (MaterialTypeADOs == null) return;
+                SearchClick(txtKeyword.Text ?? "");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private bool IsHideGroupChecked()
+        {
+            return this.isShowHideGroupOption && this.chkHideGroup != null && this.chkHideGroup.Checked;
+        }
+
+        /// <summary>
+        /// "Ẩn dòng nhóm": chỉ giữ dòng loại thật (IS_LEAF = 1) và bỏ trường cha → mọi dòng là gốc (danh sách phẳng).
+        /// "Tất cả": khôi phục trường cha để dựng lại cây. Không bật tuỳ chọn → trả nguyên, không đụng TreeList.
+        /// </summary>
+        private BindingList<MaterialTypeADO> ApplyHideGroupMode(BindingList<MaterialTypeADO> source)
+        {
+            if (!this.isShowHideGroupOption) return source;
+            try
+            {
+                if (!String.IsNullOrEmpty(trvService.ParentFieldName))
+                    this.treeParentFieldName = trvService.ParentFieldName;
+
+                if (IsHideGroupChecked())
+                {
+                    trvService.ParentFieldName = "";
+                    if (source != null)
+                        return new BindingList<MaterialTypeADO>(source.Where(o => o.IS_LEAF == 1).ToList());
+                }
+                else if (!String.IsNullOrEmpty(this.treeParentFieldName))
+                {
+                    trvService.ParentFieldName = this.treeParentFieldName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return source;
+        }
+        #endregion
+
         private void SearchClick(string keyword)
         {
             try
@@ -564,6 +685,8 @@ namespace HIS.UC.MaterialType.Run
                     listResult = new BindingList<MaterialTypeADO>(MaterialTypeADOs);
                     HighlightedSearchTerms = new String[0];
                 }
+                // vCong 53748 — áp chế độ hiển thị đang chọn (Tất cả / Ẩn dòng nhóm) lên kết quả tìm
+                listResult = ApplyHideGroupMode(listResult);
                 trvService.DataSource = listResult;
                 trvService.ExpandAll();
             }

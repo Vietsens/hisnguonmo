@@ -142,6 +142,7 @@
             this.cboIcds = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
+            this.btnSaveAndSign = new DevExpress.XtraEditors.SimpleButton();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.btnChiTietBenhAn = new DevExpress.XtraEditors.SimpleButton();
             this.dtTrackingTime = new DevExpress.XtraEditors.DateEdit();
@@ -203,6 +204,7 @@
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -362,6 +364,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
@@ -1420,6 +1423,7 @@
             this.layoutControl1.Controls.Add(this.txtIcd);
             this.layoutControl1.Controls.Add(this.cboIcds);
             this.layoutControl1.Controls.Add(this.btnSave);
+            this.layoutControl1.Controls.Add(this.btnSaveAndSign);
             this.layoutControl1.Controls.Add(this.btnPrint);
             this.layoutControl1.Controls.Add(this.btnChiTietBenhAn);
             this.layoutControl1.Controls.Add(this.dtTrackingTime);
@@ -1503,18 +1507,29 @@
             this.btnSave.Location = new System.Drawing.Point(2, 558);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(169, 22);
+            this.btnSave.Size = new System.Drawing.Size(96, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 15;
             this.btnSave.Text = "Duyệt (Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
+            //
+            // btnSaveAndSign
+            //
+            this.btnSaveAndSign.Location = new System.Drawing.Point(102, 558);
+            this.btnSaveAndSign.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSaveAndSign.Name = "btnSaveAndSign";
+            this.btnSaveAndSign.Size = new System.Drawing.Size(131, 22);
+            this.btnSaveAndSign.StyleController = this.layoutControl1;
+            this.btnSaveAndSign.TabIndex = 16;
+            this.btnSaveAndSign.Text = "Duyệt và ký (Ctrl K)";
+            this.btnSaveAndSign.Click += new System.EventHandler(this.btnSaveAndSign_Click);
+            //
             // btnPrint
-            // 
-            this.btnPrint.Location = new System.Drawing.Point(175, 558);
+            //
+            this.btnPrint.Location = new System.Drawing.Point(237, 558);
             this.btnPrint.Margin = new System.Windows.Forms.Padding(2);
             this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(166, 22);
+            this.btnPrint.Size = new System.Drawing.Size(104, 22);
             this.btnPrint.StyleController = this.layoutControl1;
             this.btnPrint.TabIndex = 4;
             this.btnPrint.Text = "In (Ctrl P)";
@@ -2109,6 +2124,7 @@
             this.layoutControlItem8,
             this.layoutControlItem5,
             this.layoutControlItem7,
+            this.layoutControlItem19,
             this.layoutControlItem18,
             this.layoutControlItem2,
             this.layoutControlItem16,
@@ -2168,21 +2184,30 @@
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.btnPrint;
-            this.layoutControlItem5.Location = new System.Drawing.Point(173, 556);
+            this.layoutControlItem5.Location = new System.Drawing.Point(235, 556);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(170, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(108, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
-            // 
+            //
             // layoutControlItem7
-            // 
+            //
             this.layoutControlItem7.Control = this.btnSave;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 556);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(173, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(100, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
-            // 
+            //
+            // layoutControlItem19
+            //
+            this.layoutControlItem19.Control = this.btnSaveAndSign;
+            this.layoutControlItem19.Location = new System.Drawing.Point(100, 556);
+            this.layoutControlItem19.Name = "layoutControlItem19";
+            this.layoutControlItem19.Size = new System.Drawing.Size(135, 26);
+            this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem19.TextVisible = false;
+            //
             // layoutControlItem18
             // 
             this.layoutControlItem18.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
@@ -2452,6 +2477,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
@@ -2632,6 +2658,8 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraEditors.SimpleButton btnSave;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
+        private DevExpress.XtraEditors.SimpleButton btnSaveAndSign;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraEditors.GridLookUpEdit cboDoctor;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;

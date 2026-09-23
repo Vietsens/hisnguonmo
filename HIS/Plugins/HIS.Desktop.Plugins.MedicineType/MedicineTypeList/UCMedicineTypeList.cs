@@ -373,6 +373,8 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 ado.IsShowRadioThieuThongTinBHYT = true;
                 ado.IsShowImport = true;
                 ado.IsShowChkLock = true;
+                // vCong 53748 — nhóm "Hiển thị: Tất cả / Ẩn dòng nhóm" chỉ hiện khi viện bật cấu hình (1 key chung cho loại thuốc + loại vật tư)
+                ado.IsShowHideGroupOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.Desktop.Plugins.MedicineMaterialTypeList.IsShowHideGroupOption") == 1;
                 ado.MenuItems = MenuItems;
                 ado.MedicineTypeColumns = new List<MedicineTypeColumn>();
                 ado.SelectImageCollection = this.imageCollection1;

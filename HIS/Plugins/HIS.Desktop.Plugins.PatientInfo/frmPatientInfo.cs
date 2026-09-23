@@ -526,7 +526,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 //
                 LoadPDataToControlsFormByToggle();
                 //
-                FillDataToLookupedit(this.cboCareer, "CAREER_NAME", "ID", "CAREER_CODE", BackendDataWorker.Get<HIS_CAREER>());
+                InitComboCareer(this.cboCareer, BackendDataWorker.Get<HIS_CAREER>());
                 FillDataToLookupedit(this.cboEthnic, "ETHNIC_NAME", "ETHNIC_CODE", "ETHNIC_CODE", BackendDataWorker.Get<SDA_ETHNIC>());
                 FillDataToLookupedit(this.cboNation, "NATIONAL_NAME", "NATIONAL_CODE", "NATIONAL_CODE", BackendDataWorker.Get<SDA_NATIONAL>());
                 FillDataToLookupedit(this.cboMilitaryRank, "MILITARY_RANK_NAME", "ID", "MILITARY_RANK_CODE", BackendDataWorker.Get<HIS_MILITARY_RANK>());

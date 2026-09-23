@@ -1358,7 +1358,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
         {
             try
             {
-                //Van ban thuoc ma loai duoc cau hinh GOP NGANG -> ghep moi van ban cung MERGE_CODE mot cot
+                //Van ban co khoa danh dau GOP NGANG -> lay van ban MOI NHAT da ky hoan tat cung MERGE_CODE
                 if (IsMergeColumnDocument(data))
                 {
                     LoadPdfMergeColumnViewer(data);
@@ -1368,7 +1368,31 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 outPdfFile = "";
                 string strDTI = String.Format("{0}|{1}|{2}|{3}|{4}|{5}", ConfigSystems.URI_API_ACS, ConfigSystems.URI_API_EMR, ConfigSystems.URI_API_FSS, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData().TokenCode, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName());
                 DocumentManager documentManager = new DocumentManager(strDTI);
-                var uc = documentManager.GetUcDocumentMerge(data, ref outPdfFile, chkMerge.Checked);
+
+                //Tai file gop mot lan roi TU dung UC, de co the truyen DocumentCode cho thu vien:
+                //GetUcDocumentMerge de trong DocumentCode nen UCViewer bo qua toan bo phan ve chu ky
+                //benh nhan (chu ky chi nam o EMR_SIGN, khong nung vao file gop).
+                //DOCUMENT_NAME chi truyen khi chkMerge duoc tich - giu dung hanh vi cu (gop theo ten).
+                V_EMR_DOCUMENT dataMerge = new V_EMR_DOCUMENT();
+                dataMerge.MERGE_CODE = data.MERGE_CODE;
+                dataMerge.TREATMENT_CODE = data.TREATMENT_CODE;
+                dataMerge.ORIGINAL_HIGH = data.ORIGINAL_HIGH;
+                dataMerge.DOCUMENT_NAME = chkMerge.Checked ? data.DOCUMENT_NAME : null;
+                documentManager.GetFileDocumentMergeWithUri(dataMerge, null, ref outPdfFile);
+                Inventec.Common.Logging.LogSystem.Info("LoadPdfMergeViewer: file gop=" + outPdfFile + ", DOCUMENT_CODE=" + data.DOCUMENT_CODE + ", MERGE_CODE=" + data.MERGE_CODE);
+
+                System.Windows.Forms.UserControl uc = null;
+                if (!String.IsNullOrEmpty(outPdfFile) && File.Exists(outPdfFile))
+                {
+                    uc = BuildMergeViewerWithPatientSign(data, outPdfFile);
+                }
+                if (uc == null)
+                {
+                    //Khong dung duoc khung xem kem chu ky => quay ve dung duong cu
+                    Inventec.Common.Logging.LogSystem.Warn("LoadPdfMergeViewer: dung lai GetUcDocumentMerge (khung xem gop mac dinh)");
+                    uc = documentManager.GetUcDocumentMerge(data, ref outPdfFile, chkMerge.Checked);
+                }
+
                 if (uc != null)
                 {
                     uc.Dock = DockStyle.Fill;
@@ -1390,6 +1414,114 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 this.panel1.Controls.Clear();
                 this.panel1 = new Panel();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dong chu ky benh nhan len ban gop roi tra ve UC de hien thi.
+        /// Ban gop tu api/EmrDocument/MakeDocumentMergeBySdo khong chua chu ky benh nhan vi chu ky
+        /// ky bang signpad/van tay chi duoc luu o EMR_SIGN (SIGN_IMAGE + toa do), khong nung vao file.
+        /// Dung lai dung cach nut In dang lam: ProcessInsertPatientSign theo van ban dai dien.
+        /// Tra null khi khong co chu ky hoac dong that bai => goi ham giu nguyen UC cu.
+        /// </summary>
+        private System.Windows.Forms.UserControl BuildMergeViewerWithPatientSign(V_EMR_DOCUMENT data, string mergeFile)
+        {
+            try
+            {
+                if (data == null || String.IsNullOrEmpty(mergeFile) || !File.Exists(mergeFile))
+                    return null;
+
+                CommonParam paramCommon = new CommonParam();
+
+                //Chu ky co the nam o phieu khac trong cung nhom gop, khong han la dong dai dien
+                //=> lay danh sach van ban cua nhom theo MERGE_CODE de do.
+                List<V_EMR_DOCUMENT> documentsInGroup = null;
+                if (!String.IsNullOrEmpty(data.MERGE_CODE))
+                {
+                    EmrDocumentViewFilter documentFilter = new EmrDocumentViewFilter();
+                    documentFilter.MERGE_CODE__EXACT = data.MERGE_CODE;
+                    documentFilter.TREATMENT_ID = data.TREATMENT_ID;
+                    documentFilter.IS_DELETE = false;
+                    documentFilter.ORDER_FIELD = "DOCUMENT_TIME";
+                    documentFilter.ORDER_DIRECTION = "ASC";
+                    documentsInGroup = new BackendAdapter(paramCommon).Get<List<V_EMR_DOCUMENT>>(
+                        HIS.Desktop.Plugins.EmrDocument.EmrRequestUriStore.EMR_DOCUMENT_GET_VIEW, ApiConsumers.EmrConsumer, documentFilter, paramCommon);
+                }
+                List<long> documentIdsInGroup = (documentsInGroup != null && documentsInGroup.Count > 0)
+                    ? documentsInGroup.Select(o => o.ID).ToList()
+                    : new List<long>() { data.ID };
+                if (!documentIdsInGroup.Contains(data.ID)) documentIdsInGroup.Add(data.ID);
+
+                EmrSignViewFilter signFilter = new EmrSignViewFilter();
+                signFilter.PATIENT_CODE__EXACT = data.PATIENT_CODE;
+                List<EMR_SIGN> apiResultEmrSign = new BackendAdapter(paramCommon).Get<List<EMR_SIGN>>("api/EmrSign/Get", ApiConsumers.EmrConsumer, signFilter, paramCommon);
+                List<EMR_SIGN> signsInGroup = (apiResultEmrSign != null)
+                    ? apiResultEmrSign.Where(o => documentIdsInGroup.Contains(o.DOCUMENT_ID)
+                            && o.IS_SIGN_ELECTRONIC == 1
+                            && o.COOR_X_RECTANGLE > 0
+                            && o.COOR_Y_RECTANGLE > 0).ToList()
+                    : new List<EMR_SIGN>();
+
+                Inventec.Common.Logging.LogSystem.Info(String.Format(
+                    "BuildMergeViewerWithPatientSign: MERGE_CODE={0}, so van ban trong nhom={1}, so dong ky hop le trong nhom={2}, dong dai dien ID={3} co {4} dong ky",
+                    data.MERGE_CODE, documentIdsInGroup.Count, signsInGroup.Count, data.ID,
+                    signsInGroup.Count(o => o.DOCUMENT_ID == data.ID)));
+
+                //Khong co chu ky thi de trong DocumentCode => khung xem y nhu ban gop cu
+                string documentCodeSign = "";
+                if (signsInGroup.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("BuildMergeViewerWithPatientSign: khong co chu ky benh nhan trong nhom. DOCUMENT_CODE=" + data.DOCUMENT_CODE);
+                }
+                else
+                {
+                    //Uu tien dong dai dien; khong co thi lay van ban moi nhat trong nhom co chu ky
+                    long documentIdSign = signsInGroup.Any(o => o.DOCUMENT_ID == data.ID)
+                        ? data.ID
+                        : signsInGroup.OrderByDescending(o => o.DOCUMENT_ID).First().DOCUMENT_ID;
+                    documentCodeSign = data.DOCUMENT_CODE;
+                    if (documentIdSign != data.ID)
+                    {
+                        var documentSign = (documentsInGroup != null) ? documentsInGroup.FirstOrDefault(o => o.ID == documentIdSign) : null;
+                        documentCodeSign = (documentSign != null) ? documentSign.DOCUMENT_CODE : "";
+                        Inventec.Common.Logging.LogSystem.Info(String.Format(
+                            "BuildMergeViewerWithPatientSign: dong dai dien khong co chu ky => lay chu ky cua van ban DOCUMENT_ID={0}, DOCUMENT_CODE={1}", documentIdSign, documentCodeSign));
+                    }
+                }
+
+                //KHONG tu ve chu ky o plugin: ProcessInsertPatientSign cua plugin dung DisplayConfig rieng
+                //nen ra khac ca kich thuoc anh va cau chu so voi khi xem tung van ban.
+                //Chi can truyen DocumentCode vao InputADO: UCViewer se tu lay EMR_SIGN + V_EMR_DOCUMENT
+                //roi ve bang WaterMarkProcess.ProcessInsertWaterMark - dung bo logic cua luong xem 1 van ban.
+                //GetUcDocumentMerge de trong DocumentCode nen thu vien bo qua toan bo phan ve chu ky.
+                //Dung GenerateInputADO nhu cac khung xem khac cua plugin (co DTI, MediOrgCode...)
+                //roi ep lai cac co cho dung ban gop: chi xem, chi noi dung, khong ky.
+                SignLibraryGUIProcessor libraryProcessor = new SignLibraryGUIProcessor();
+                InputADO inputADO = new EmrGenerateProcessor().GenerateInputADO(data.TREATMENT_CODE, documentCodeSign, data.DOCUMENT_NAME, currentModule.RoomId);
+                inputADO.DocumentTypeCode = "";
+                inputADO.HisCode = "";
+                inputADO.IsSign = false;
+                inputADO.IsSave = false;
+                inputADO.IsExport = false;
+                inputADO.IsShowPatientSign = false;
+                inputADO.IsPrint = true;
+                inputADO.IsPrintOnlyContent = true;
+                inputADO.IsSignConfig = false;
+                if (!String.IsNullOrEmpty(data.PAPER_NAME) && data.RAW_KIND.HasValue && data.WIDTH.HasValue && data.HEIGHT.HasValue)
+                {
+                    inputADO.PaperSizeDefault = new System.Drawing.Printing.PaperSize(data.PAPER_NAME, (int)data.WIDTH, (int)data.HEIGHT);
+                    inputADO.PaperSizeDefault.RawKind = data.RAW_KIND.Value;
+                }
+
+                //Dung overload theo FILE - dung duong ma DocumentManager.GetUcDocumentMerge di.
+                //Overload base64 chay ValidParam(..., true, ...) nen co the lay ban da ky tren server
+                //hien thi thay cho file gop => ra bo cuc khac hoan toan.
+                return libraryProcessor.GetUC(mergeFile, inputADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
         }
 
@@ -3491,14 +3623,14 @@ namespace HIS.Desktop.Plugins.EmrDocument
         }
 
         /// <summary>
-        /// Dung PDF gop ngang cho mot nhom van ban cung MERGE_CODE: lay tat ca van ban cung ma gop,
-        /// da ky hoan tat, tai file ve roi ghep moi van ban mot cot. Tra ve null neu khong dung duoc.
+        /// Lay PDF dai dien cho mot nhom van ban cung MERGE_CODE (gop ngang): trong cac van ban da ky
+        /// hoan tat cua nhom, lay dung MOT van ban - van ban duoc TAO SAU CUNG (CREATE_TIME lon nhat).
+        /// Khong ghep, khong noi trang. Tra ve null neu khong lay duoc.
         /// </summary>
         private byte[] BuildMergeColumnPdfByMergeCode(V_EMR_DOCUMENT representative, out string warning, out string error)
         {
             warning = "";
             error = "";
-            List<string> tempFiles = new List<string>();
             try
             {
                 CommonParam paramCommon = new CommonParam();
@@ -3511,7 +3643,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 filter.IS_DELETE = false;
                 filter.HAS_REJECTER = false;
                 filter.HAS_NEXT_SIGNER_OR_NOT_SIGNERS = false;   //chi lay van ban da ky hoan tat
-                filter.ORDER_FIELD = "DOCUMENT_TIME";
+                filter.ORDER_FIELD = "CREATE_TIME";
                 filter.ORDER_DIRECTION = "ASC";
 
                 List<V_EMR_DOCUMENT> documents = new BackendAdapter(paramCommon).Get<List<V_EMR_DOCUMENT>>(
@@ -3526,51 +3658,20 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     return null;
                 }
 
+                //Lay van ban duoc TAO SAU CUNG trong nhom (CREATE_TIME lon nhat) - khong dung DOCUMENT_TIME
+                //(gio nhan dinh) vi thu tu tao van ban moi phan anh dung ban moi nhat EMR gui sang.
+                V_EMR_DOCUMENT newest = documents.OrderBy(o => o.CREATE_TIME).Last();
+
                 int opt = 0; int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
                 bool showWatermark = (opt == 1);
-                var files = GetEmrDocumentFile(null, documents.Select(o => o.ID).ToList(), false, chkAddPatientSign.Checked, showWatermark);
-                if (files == null || files.Count == 0)
+                var files = GetEmrDocumentFile(null, new List<long> { newest.ID }, false, chkAddPatientSign.Checked, showWatermark);
+                var pdfFile = files != null ? files.FirstOrDefault(o => o.Extension != null && o.Extension.ToLower().Equals("pdf")) : null;
+                if (pdfFile == null || String.IsNullOrEmpty(pdfFile.Base64Data))
                 {
                     error = ResourceMessage.KhongLayDuocFile;
                     return null;
                 }
-
-                foreach (var file in files.Where(o => o.Extension != null && o.Extension.ToLower().Equals("pdf")))
-                {
-                    string path = Utils.GenerateTempFileWithin();
-                    Utils.ByteToFile(Convert.FromBase64String(file.Base64Data), path);
-                    tempFiles.Add(path);
-                }
-
-                if (tempFiles.Count == 0)
-                {
-                    error = ResourceMessage.KhongLayDuocFile;
-                    return null;
-                }
-
-                //Chi mot van ban -> khong can gop, tra nguyen file
-                if (tempFiles.Count == 1)
-                    return File.ReadAllBytes(tempFiles[0]);
-
-                if (tempFiles.Count > Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT)
-                {
-                    warning = String.Format("Nhóm có {0} văn bản, vượt quá {1} cột của một phiếu — chỉ gộp được {1} văn bản đầu.",
-                        tempFiles.Count, Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT);
-                    tempFiles = tempFiles.Take(Worker.EmrDocumentMergeColumnsWorker.SLOT_COUNT).ToList();
-                }
-
-                string mergeWarning;
-                byte[] merged = Worker.EmrDocumentMergeColumnsWorker.Merge(tempFiles, out mergeWarning);
-                if (!String.IsNullOrWhiteSpace(mergeWarning))
-                    warning = String.IsNullOrWhiteSpace(warning) ? mergeWarning : warning + " " + mergeWarning;
-
-                if (merged == null || merged.Length == 0)
-                {
-                    error = String.IsNullOrWhiteSpace(mergeWarning) ? "Không gộp ngang được các văn bản trong nhóm." : mergeWarning;
-                    warning = "";
-                    return null;
-                }
-                return merged;
+                return Convert.FromBase64String(pdfFile.Base64Data);
             }
             catch (Exception ex)
             {
@@ -3578,17 +3679,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 error = "Không gộp được văn bản. Vui lòng kiểm tra lại hoặc liên hệ quản trị hệ thống.";
                 return null;
             }
-            finally
-            {
-                foreach (string path in tempFiles)
-                {
-                    try { if (File.Exists(path)) File.Delete(path); } catch { }
-                }
-            }
         }
 
         /// <summary>
-        /// In cac nhom van ban gop NGANG: moi dong dai dien (mot MERGE_CODE) -> mot to gop; nhieu dong -> noi cac to.
+        /// In cac nhom van ban gop NGANG: moi dong dai dien (mot MERGE_CODE) -> van ban MOI NHAT da ky hoan tat cua nhom do; nhieu dong -> noi tiep cac nhom.
         /// </summary>
         private void PrintMergeColumnGroups(List<EmrDocumentADO> representatives)
         {

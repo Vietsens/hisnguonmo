@@ -220,6 +220,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     mcCol2.Caption = "Tên"; mcCol2.Visible = true; mcCol2.VisibleIndex = 1; mcCol2.Width = 300;
                     cboMachine_v45072.Properties.View.OptionsView.ShowColumnHeaders = true;
 
+                    // Cho phép tích chọn NHIỀU máy: mỗi dòng có một ô tích, tích xong danh sách vẫn mở
+                    cboMachine_v45072.Properties.View.OptionsSelection.MultiSelect = true;
+                    cboMachine_v45072.Properties.View.OptionsSelection.MultiSelectMode =
+                        DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+                    cboMachine_v45072.Properties.View.OptionsSelection.ShowCheckBoxSelectorInColumnHeader =
+                        DevExpress.Utils.DefaultBoolean.True;
+                    cboMachine_v45072.Popup += CboMachine_v45072_Popup_MultiMachine;
+                    cboMachine_v45072.Closed += CboMachine_v45072_Closed_MultiMachine;
+                    cboMachine_v45072.Properties.View.SelectionChanged += MachineView_v45072_SelectionChanged_MultiMachine;
+                    cboMachine_v45072.Properties.View.MouseUp += MachineView_v45072_MouseUp_MultiMachine;
+
                     // E: nạp danh sách máy theo cấu hình HisMachine_ShowOption
                     LoadMachineByShowOption_v45072();
                 }
@@ -381,6 +392,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             {
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
                 {
+                    //xoa CA danh sach may dang chon, khong chi may dau tien
+                    this.currentMachineIds_MM = new List<long>();
+                    cboMachine_v45072.Properties.NullText = "";
                     ClearGridLookupDeferred_v45072(cboMachine_v45072, null);
                 }
             }
@@ -687,7 +701,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
 
                 if (extData != null)
                 {
-                    if (cboMachine_v45072 != null) cboMachine_v45072.EditValue = extData.MACHINE_ID;
+                    //tich lai CA danh sach may da luu (MACHINE_IDS), du lieu cu chi co 1 may van doc duoc
+                    RestoreSavedMachines_MM(extData);
                     if (txtConclude_v45072 != null) txtConclude_v45072.Text = extData.CONCLUDE ?? "";
                     if (txtInstructionNote_v45072 != null) txtInstructionNote_v45072.Text = extData.INSTRUCTION_NOTE ?? "";
                     if (txtDescription_v45072 != null) txtDescription_v45072.Text = extData.DESCRIPTION ?? "";
@@ -875,7 +890,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (cboIcdCmText_v45072 != null) cboIcdCmText_v45072.Text = string.Empty;
                 if (cboEmotionLess_v45072 != null) cboEmotionLess_v45072.EditValue = null;
                 if (txtManner_v45072 != null) txtManner_v45072.Text = "";
-                if (cboMachine_v45072 != null) cboMachine_v45072.EditValue = null;
+                ClearMachines_MM();
                 if (txtConclude_v45072 != null) txtConclude_v45072.Text = "";
                 if (txtInstructionNote_v45072 != null) txtInstructionNote_v45072.Text = "";
                 if (txtDescription_v45072 != null) txtDescription_v45072.Text = "";
@@ -1264,16 +1279,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (ext == null || currentRow == null) return;
                 ext.SERE_SERV_ID = currentRow.ID;
 
-                if (cboMachine_v45072 != null && cboMachine_v45072.EditValue != null)
-                {
-                    long mId;
-                    if (long.TryParse(cboMachine_v45072.EditValue.ToString(), out mId))
-                    {
-                        ext.MACHINE_ID = mId;
-                        var machine = BackendDataWorker.Get<HIS_MACHINE>().FirstOrDefault(o => o.ID == mId);
-                        if (machine != null) ext.MACHINE_CODE = machine.MACHINE_CODE;
-                    }
-                }
+                //dat NHIEU may: ghi ca 4 truong MACHINE_ID/CODE (may dau tien) va MACHINE_IDS/CODES (ca danh sach)
+                ApplyMachinesToExt_MM(ext);
                 if (txtInstructionNote_v45072 != null) ext.INSTRUCTION_NOTE = (txtInstructionNote_v45072.Text ?? "").Trim();
                 if (txtConclude_v45072 != null) ext.CONCLUDE = (txtConclude_v45072.Text ?? "").Trim();
                 if (txtDescription_v45072 != null) ext.DESCRIPTION = (txtDescription_v45072.Text ?? "").Trim();

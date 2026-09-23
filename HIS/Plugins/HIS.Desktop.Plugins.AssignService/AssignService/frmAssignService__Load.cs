@@ -1133,6 +1133,65 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         sereServADO.ErrorMessageIsAssignDay = "";
                         sereServADO.ErrorTypeIsAssignDay = ErrorType.None;
                     }
+
+                    //Viec 57452: canh bao mem ngay khi tich chon dich vu bi loai tru
+                    ProcessServiceExclusiveWarning(sereServADO);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 57452: tinh thong diep canh bao "dich vu khong duoc chi dinh dong thoi" cho 1 dong luoi
+        /// va luu vao dicServiceExclusiveWarning de hien icon canh bao tren cot Ma dich vu.
+        /// Khong dung chung cap ErrorMessageIsAssignDay/ErrorTypeIsAssignDay de tranh bi gom vao
+        /// hop thoai xac nhan Yes/No chung (se trung voi form canh bao/chan cua thu vien luc Luu).
+        /// </summary>
+        private void ProcessServiceExclusiveWarning(SereServADO sereServADO)
+        {
+            try
+            {
+                if (this.dicServiceExclusiveWarning == null)
+                {
+                    this.dicServiceExclusiveWarning = new Dictionary<long, string>();
+                }
+
+                if (sereServADO == null || sereServADO.SERVICE_ID <= 0)
+                {
+                    return;
+                }
+
+                if (!sereServADO.IsChecked
+                    || HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager.IsEmptyCatalog)
+                {
+                    this.dicServiceExclusiveWarning.Remove(sereServADO.SERVICE_ID);
+                    return;
+                }
+
+                if (this.checkServiceExclusiveManager == null)
+                {
+                    this.checkServiceExclusiveManager = new HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager(this.currentModule);
+                }
+
+                List<long> assigningServiceIds = this.ServiceIsleafADOs != null
+                    ? this.ServiceIsleafADOs.Where(o => o.IsChecked).Select(o => o.SERVICE_ID).Distinct().ToList()
+                    : new List<long>();
+                List<long> assignedServiceIds = HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager
+                    .BuildAssignedServiceIds(this.sereServsInTreatmentRaw);
+
+                string message = this.checkServiceExclusiveManager.GetWarningMessage(
+                    sereServADO.SERVICE_ID, assigningServiceIds, assignedServiceIds);
+
+                if (String.IsNullOrEmpty(message))
+                {
+                    this.dicServiceExclusiveWarning.Remove(sereServADO.SERVICE_ID);
+                }
+                else
+                {
+                    this.dicServiceExclusiveWarning[sereServADO.SERVICE_ID] = message;
                 }
             }
             catch (Exception ex)
@@ -3019,6 +3078,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     //ucDateProcessor.Reload(ucDate, dateInputADO);
                     //this.intructionTimeSelecteds = ucDateProcessor.GetValue(ucDate);
                 }
+                //Viec 3352: mac dinh gio du tru = gio phut luc mo chuc nang (giong TG chi dinh); chi dat khi khoi tao, khong reset sau moi lan Luu
+                if (isInit)
+                {
+                    this.SetDutruTimeDefault();
+                }
                 if (!isInit)
                 {
                     string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -3746,6 +3810,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     ip.Time = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.currentHisTreatment.SERVER_TIME).Value;
                     ip.Dates = new List<DateTime?>() { ip.Time.Date };
                     UcDateSetValue(ip);
+                    //Viec 3352: vien dung gio server thi gio du tru mac dinh phai bam theo gio server vua nap.
+                    //Chi ap dung luc mo form (IsFirstloadForm) de khong ghi de gio nguoi dung da nhap khi doi benh nhan.
+                    if (this.IsFirstloadForm)
+                    {
+                        this.SetDutruTimeDefault();
+                    }
                 }
             }
             catch (Exception ex)

@@ -226,11 +226,16 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtUseTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtUseTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy ";
+            this.dtUseTime.Properties.CalendarTimeProperties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtUseTime.Properties.CalendarTimeProperties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtUseTime.Properties.CalendarTimeProperties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtUseTime.Properties.CalendarTimeProperties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtUseTime.Properties.CalendarTimeProperties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.dtUseTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtUseTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dtUseTime.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            this.dtUseTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtUseTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dtUseTime.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.dtUseTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.dtUseTime.Size = new System.Drawing.Size(194, 20);
             this.dtUseTime.StyleController = this.layoutControl1;
             this.dtUseTime.TabIndex = 23;

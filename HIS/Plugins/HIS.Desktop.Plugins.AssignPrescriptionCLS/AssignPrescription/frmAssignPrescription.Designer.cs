@@ -292,6 +292,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.btnSaveTemplate = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
+            this.chkAutoSave = new DevExpress.XtraEditors.CheckEdit();
             this.txtExpMestTemplateCode = new DevExpress.XtraEditors.TextEdit();
             this.cboUser = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -302,6 +303,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTongTien = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcibtnSave = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciChkAutoSave = new DevExpress.XtraLayout.LayoutControlItem();
             this.lbibtnformNew = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciForpnlUCDate = new DevExpress.XtraLayout.LayoutControlItem();
@@ -476,6 +478,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTongTien)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcibtnSave)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoSave.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkAutoSave)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lbibtnformNew)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciForpnlUCDate)).BeginInit();
@@ -695,6 +699,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.layoutControl6.Controls.Add(this.cboMediStockExport);
             this.layoutControl6.Controls.Add(this.btnSaveTemplate);
             this.layoutControl6.Controls.Add(this.btnSave);
+            this.layoutControl6.Controls.Add(this.chkAutoSave);
             this.layoutControl6.Controls.Add(this.txtExpMestTemplateCode);
             this.layoutControl6.Controls.Add(this.cboUser);
             this.layoutControl6.Controls.Add(this.cboExpMestReason);
@@ -932,7 +937,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // 
             // btnSaveAndShowPrintPreview
             // 
-            this.btnSaveAndShowPrintPreview.Location = new System.Drawing.Point(960, 608);
+            this.btnSaveAndShowPrintPreview.Location = new System.Drawing.Point(860, 608);
             this.btnSaveAndShowPrintPreview.Name = "btnSaveAndShowPrintPreview";
             this.btnSaveAndShowPrintPreview.Size = new System.Drawing.Size(88, 22);
             this.btnSaveAndShowPrintPreview.StyleController = this.layoutControl6;
@@ -2560,7 +2565,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // 
             // btnSaveAndPrint
             // 
-            this.btnSaveAndPrint.Location = new System.Drawing.Point(1052, 608);
+            this.btnSaveAndPrint.Location = new System.Drawing.Point(952, 608);
             this.btnSaveAndPrint.Name = "btnSaveAndPrint";
             this.btnSaveAndPrint.Size = new System.Drawing.Size(96, 22);
             this.btnSaveAndPrint.StyleController = this.layoutControl6;
@@ -2619,7 +2624,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // 
             // btnSaveTemplate
             // 
-            this.btnSaveTemplate.Location = new System.Drawing.Point(880, 608);
+            this.btnSaveTemplate.Location = new System.Drawing.Point(780, 608);
             this.btnSaveTemplate.Name = "btnSaveTemplate";
             this.btnSaveTemplate.Size = new System.Drawing.Size(76, 22);
             this.btnSaveTemplate.StyleController = this.layoutControl6;
@@ -2628,8 +2633,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.btnSaveTemplate.ToolTip = "Lưu mẫu";
             this.btnSaveTemplate.Click += new System.EventHandler(this.btnSaveTemplate__MedicinePage_Click);
             // 
+            // chkAutoSave
+            //
+            this.chkAutoSave.Location = new System.Drawing.Point(1052, 608);
+            this.chkAutoSave.Name = "chkAutoSave";
+            this.chkAutoSave.Properties.Caption = "Tự động lưu";
+            this.chkAutoSave.Size = new System.Drawing.Size(96, 19);
+            this.chkAutoSave.StyleController = this.layoutControl6;
+            this.chkAutoSave.TabIndex = 107;
+            this.chkAutoSave.ToolTip = "Tự động lưu thuốc, vật tư đi kèm ngay khi mở từ màn Thực hiện dịch vụ";
+            this.chkAutoSave.CheckedChanged += new System.EventHandler(this.chkAutoSave_CheckedChanged);
+            //
             // btnSave
-            // 
+            //
             this.btnSave.Location = new System.Drawing.Point(1152, 608);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(86, 22);
@@ -2703,6 +2719,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.layoutControlGroup5.GroupBordersVisible = false;
             this.layoutControlGroup5.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lcibtnSaveAndPrint,
+            this.lciChkAutoSave,
             this.layoutControlItem8,
             this.lciTongTien,
             this.lcibtnSave,
@@ -2748,7 +2765,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // lcibtnSaveAndPrint
             // 
             this.lcibtnSaveAndPrint.Control = this.btnSaveAndPrint;
-            this.lcibtnSaveAndPrint.Location = new System.Drawing.Point(1050, 606);
+            this.lcibtnSaveAndPrint.Location = new System.Drawing.Point(950, 606);
             this.lcibtnSaveAndPrint.MaxSize = new System.Drawing.Size(100, 26);
             this.lcibtnSaveAndPrint.MinSize = new System.Drawing.Size(100, 26);
             this.lcibtnSaveAndPrint.Name = "lcibtnSaveAndPrint";
@@ -2782,8 +2799,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.lciTongTien.TextSize = new System.Drawing.Size(80, 0);
             this.lciTongTien.TextToControlDistance = 5;
             // 
+            // lciChkAutoSave
+            //
+            this.lciChkAutoSave.Control = this.chkAutoSave;
+            this.lciChkAutoSave.Location = new System.Drawing.Point(1050, 606);
+            this.lciChkAutoSave.MaxSize = new System.Drawing.Size(100, 26);
+            this.lciChkAutoSave.MinSize = new System.Drawing.Size(100, 26);
+            this.lciChkAutoSave.Name = "lciChkAutoSave";
+            this.lciChkAutoSave.Size = new System.Drawing.Size(100, 26);
+            this.lciChkAutoSave.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciChkAutoSave.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChkAutoSave.TextVisible = false;
+            //
             // lcibtnSave
-            // 
+            //
             this.lcibtnSave.Control = this.btnSave;
             this.lcibtnSave.Location = new System.Drawing.Point(1150, 606);
             this.lcibtnSave.MaxSize = new System.Drawing.Size(90, 26);
@@ -2846,7 +2875,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // lcibtnSaveTemplate
             // 
             this.lcibtnSaveTemplate.Control = this.btnSaveTemplate;
-            this.lcibtnSaveTemplate.Location = new System.Drawing.Point(878, 606);
+            this.lcibtnSaveTemplate.Location = new System.Drawing.Point(778, 606);
             this.lcibtnSaveTemplate.MaxSize = new System.Drawing.Size(80, 26);
             this.lcibtnSaveTemplate.MinSize = new System.Drawing.Size(80, 26);
             this.lcibtnSaveTemplate.Name = "lcibtnSaveTemplate";
@@ -2879,7 +2908,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // layoutControlItem25
             // 
             this.layoutControlItem25.Control = this.btnSaveAndShowPrintPreview;
-            this.layoutControlItem25.Location = new System.Drawing.Point(958, 606);
+            this.layoutControlItem25.Location = new System.Drawing.Point(858, 606);
             this.layoutControlItem25.MaxSize = new System.Drawing.Size(100, 26);
             this.layoutControlItem25.MinSize = new System.Drawing.Size(92, 26);
             this.layoutControlItem25.Name = "layoutControlItem25";
@@ -3075,7 +3104,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.emptySpaceItem3.AllowHotTrack = false;
             this.emptySpaceItem3.Location = new System.Drawing.Point(350, 606);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(528, 26);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(428, 26);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem10
@@ -3370,6 +3399,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTongTien)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcibtnSave)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoSave.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkAutoSave)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lbibtnformNew)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciForpnlUCDate)).EndInit();
@@ -3665,5 +3696,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemChkGuarantee_Enable;
         private DevExpress.XtraGrid.Columns.GridColumn colIsGuaranteeUnb;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemChkGuarantee_Disable;
+        private DevExpress.XtraEditors.CheckEdit chkAutoSave;
+        private DevExpress.XtraLayout.LayoutControlItem lciChkAutoSave;
     }
 }

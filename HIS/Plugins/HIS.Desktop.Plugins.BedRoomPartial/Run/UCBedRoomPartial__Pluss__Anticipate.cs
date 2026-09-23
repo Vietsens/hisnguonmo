@@ -91,6 +91,38 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         }
 
         /// <summary>
+        /// Viec 3352: hien thi thoi gian du tru cua y lenh dich vu.
+        /// USE_TIME co phan gio khac 000000 -> "dd/MM/yyyy HH:mm"; bang 000000 (du tru theo ngay, du lieu cu) -> "dd/MM/yyyy".
+        /// </summary>
+        /// <summary>
+        /// Loai y lenh ma USE_TIME DA mang gio phut tu truoc viec 3352 (don thuoc, y lenh giuong) -> giu nguyen hien thi cu.
+        /// </summary>
+        private static bool IsUseTimeWithHourBefore3352(long serviceReqTypeId)
+        {
+            return MEDICINE_SERVICE_REQ_TYPE_IDS.Contains(serviceReqTypeId)
+                || serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM
+                || serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G;
+        }
+
+        private static string FormatUseTimeDisplay(long useTime, long serviceReqTypeId)
+        {
+            try
+            {
+                if (useTime <= 0) return null;
+                if (!IsUseTimeWithHourBefore3352(serviceReqTypeId) && useTime % 1000000 != 0)
+                {
+                    return Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(useTime);
+                }
+                return Inventec.Common.DateTime.Convert.TimeNumberToDateString(useTime);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return Inventec.Common.DateTime.Convert.TimeNumberToDateString(useTime);
+            }
+        }
+
+        /// <summary>
         /// True neu y lenh la don THUOC du tru (QT-01 + QT-02).
         /// Ve so sanh ngay la BAT BUOC: mot so luong ke don gan USE_TIME = INTRUCTION_TIME
         /// khi nguoi dung bo trong o "Du tru" — chi kiem tra HasValue se hieu nham don thuong.
@@ -511,8 +543,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 if (!anticipateReqIds.Contains(req.ID)) return false;
 
                 ado.IS_ANTICIPATE = true;
-                ado.USE_DATE_STR =
-                    Inventec.Common.DateTime.Convert.TimeNumberToDateString(req.USE_TIME ?? 0);
+                //Viec 3352: cot Ngay du tru hien them gio phut khi co gio
+                ado.USE_DATE_STR = FormatUseTimeDisplay(req.USE_TIME ?? 0, req.SERVICE_REQ_TYPE_ID);
                 return true;
             }
             catch (Exception ex)
