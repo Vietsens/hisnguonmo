@@ -63,8 +63,114 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         /// <summary>
-        /// Tab ≥18, CHỈ phần KHÁM LÂM SÀNG (14 vùng chuyên khoa): vùng nào ĐÃ nhập Người khám mà THIẾU
-        /// kết quả và/hoặc phân loại -> 1 dòng lỗi. KHÔNG kiểm tra phần cận lâm sàng.
+        /// Một vùng khám lâm sàng của tab ≥18: Người khám + (đã có kết quả hay chưa) + Phân loại.
+        /// </summary>
+        private class ClinicalExamRegion
+        {
+            public string Name;
+            public DevExpress.XtraEditors.GridLookUpEdit Examiner;
+            public bool HasResult;
+            public DevExpress.XtraEditors.GridLookUpEdit Classify;
+        }
+
+        /// <summary>
+        /// Chữ ký từng vùng khám lâm sàng tab ≥18 CHỤP NGAY SAU KHI NẠP DỮ LIỆU (EnsureTabLoaded).
+        /// Dùng để biết vùng nào người dùng THỰC SỰ động vào trong phiên — vùng không đụng tới thì
+        /// không cảnh báo, dù bản ghi cũ có sẵn Người khám mà thiếu phân loại (backend tự đóng dấu
+        /// EXAM_*_LOGINNAME nên hồ sơ cũ gần như vùng nào cũng có người khám).
+        /// </summary>
+        private readonly Dictionary<string, string> clinicalExamSnapshot = new Dictionary<string, string>();
+
+        /// <summary>
+        /// 14 vùng KHÁM LÂM SÀNG của tab ≥18 — MỘT nguồn sự thật, dùng chung cho việc chụp snapshot
+        /// và việc kiểm tra khi Lưu. KHÔNG gồm cận lâm sàng (máu/nước tiểu/CĐHA/CLS khác).
+        /// </summary>
+        private List<ClinicalExamRegion> GetClinicalExamRegionsOverEighteen()
+        {
+            var regions = new List<ClinicalExamRegion>();
+            try
+            {
+                regions.Add(NewRegion("Tuần hoàn", cboExamCirculationLoginName2, HasText(txtExamCirculation2) || HasHcmResult("noikhoa"), cboExamCirculationRank2));
+                regions.Add(NewRegion("Hô hấp", cboExamRespiratoryLoginName2, HasText(txtExamRespiratory2) || HasHcmResult("hohap"), cboExamRespiratoryRank2));
+                regions.Add(NewRegion("Tiêu hóa", cboExamDigestionLoginName2, HasText(txtExamDigestion2) || HasHcmResult("tieuhoa"), cboExamDigestionRank2));
+                regions.Add(NewRegion("Thận - tiết niệu", cboExamKidneyUrologyLoginName2, HasText(txtExamKidneyUrology2) || HasHcmResult("thantietnieu"), cboExamKidneyUrologyRank2));
+                regions.Add(NewRegion("Nội tiết", cboExamOendLoginName2, HasText(txtExamOend2) || HasHcmResult("noitiet"), cboExamOend2));
+                regions.Add(NewRegion("Cơ - xương - khớp", cboExamMuscleBoneLoginName2, HasText(txtExamMuscleBone2) || HasHcmResult("coxuongkhop"), cboExamMuscleBoneRank2));
+                regions.Add(NewRegion("Thần kinh", cboExamNeurologicalLoginName2, HasText(txtExamNeurological2) || HasHcmResult("thankinh"), cboExamNeurologicalRank2));
+                regions.Add(NewRegion("Tâm thần", cboExamMentalLoginName2, HasText(txtExamMental2) || HasHcmResult("tamthan"), cboExamMentalRank2));
+                regions.Add(NewRegion("Ngoại khoa", cboExamSurgeryLoginName2, HasText(txtExamSurgery2) || HasHcmResult("ngoaikhoa"), cboExamSurgeryRank2));
+                regions.Add(NewRegion("Sản phụ khoa", cboExamObstetricLoginName2, HasText(txtExamObstetric2) || HasHcmResult("sankhoa") || HasHcmResult("phukhoa"), cboExamObstetricRank2));
+                regions.Add(NewRegion("Da liễu", cboExamDermatologyLoginName2, HasText(txtExamDernatology2) || HasHcmResult("dalieu"), cboExamDernatologyRank2));
+                regions.Add(NewRegion("Mắt", cboExamEyeLoginName2,
+                    HasAnyText(txtExamEyeSightRight2, txtExamEyeSightLeft2, txtExamEyeSightGlassRight2, txtExamEyeSightGlassLeft2, txtExamEyeDisease2)
+                        || HasHcmResult("mat"),
+                    cboExamEyeRank2));
+                regions.Add(NewRegion("Tai mũi họng", cboExamEntLoginName2,
+                    HasAnyText(txtExamEntLeftNormal2, txtExamEntRightNomal2, txtExamEntLeftWhisper2, txtExamEntRightWhisper2, txtExamEntDisease2)
+                        || HasHcmResult("tmh"),
+                    cboExamEntDiseaseRank2));
+                regions.Add(NewRegion("Răng hàm mặt", cboExamStomatologyLoginName2,
+                    HasAnyText(txtExamStomatologyUpper2, txtExamStomatologyLower2, txtExamStomatologyDisease2)
+                        || HasHcmResult("rhm"),
+                    cboExamStomatologyRank2));
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return regions;
+        }
+
+        private ClinicalExamRegion NewRegion(string name, DevExpress.XtraEditors.GridLookUpEdit examiner,
+            bool hasResult, DevExpress.XtraEditors.GridLookUpEdit classify)
+        {
+            return new ClinicalExamRegion { Name = name, Examiner = examiner, HasResult = hasResult, Classify = classify };
+        }
+
+        /// <summary>
+        /// Chữ ký một vùng: Người khám + đã có kết quả + Phân loại. Toàn ID / loginname / cờ,
+        /// KHÔNG chứa nội dung khám của bệnh nhân nên ghi log được.
+        /// </summary>
+        private string GetClinicalExamSignature(ClinicalExamRegion region)
+        {
+            try
+            {
+                if (region == null) return "";
+                string examiner = (region.Examiner == null || region.Examiner.EditValue == null
+                    || region.Examiner.EditValue == DBNull.Value) ? "" : region.Examiner.EditValue.ToString();
+                string classify = (region.Classify == null || region.Classify.EditValue == null
+                    || region.Classify.EditValue == DBNull.Value) ? "" : region.Classify.EditValue.ToString();
+                return examiner + "/" + (region.HasResult ? "1" : "0") + "/" + classify;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return ""; }
+        }
+
+        /// <summary>
+        /// Chụp chữ ký 14 vùng khám lâm sàng ngay sau khi nạp xong tab ≥18 (cuối EnsureTabLoaded).
+        /// </summary>
+        private void CaptureClinicalExamSnapshot()
+        {
+            try
+            {
+                clinicalExamSnapshot.Clear();
+                var regions = GetClinicalExamRegionsOverEighteen();
+                string log = "";
+                foreach (var r in regions)
+                {
+                    if (r == null || string.IsNullOrEmpty(r.Name)) continue;
+                    string sig = GetClinicalExamSignature(r);
+                    clinicalExamSnapshot[r.Name] = sig;
+                    log += (log.Length > 0 ? ", " : "") + r.Name + "=\"" + sig + "\"";
+                }
+                Inventec.Common.Logging.LogSystem.Debug("KskClinicalExam: CaptureClinicalExamSnapshot (tab >=18) -> " + log);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Tab ≥18, CHỈ phần KHÁM LÂM SÀNG (14 vùng chuyên khoa): vùng nào NGƯỜI DÙNG VỪA SỬA trong
+        /// phiên mà THIẾU kết quả và/hoặc phân loại -> 1 dòng lỗi. KHÔNG kiểm tra phần cận lâm sàng.
+        ///
+        /// Vùng giữ NGUYÊN như lúc nạp (người dùng không đụng tới) thì BỎ QUA: Người khám được backend
+        /// tự đóng dấu vào EXAM_*_LOGINNAME và nạp sẵn lúc Load, nên nếu cứ thấy "có người khám" là bắt
+        /// nhập phân loại thì mở hồ sơ cũ ra bấm Lưu là bị chặn hàng loạt vùng dù không sửa gì.
         /// </summary>
         private List<string> ValidateExaminerHasResultOverEighteen()
         {
@@ -72,30 +178,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 const string ksk = "Khám sức khỏe trên 18 tuổi";
-                // 14 vùng khám lâm sàng: có Người khám + kết quả + phân loại.
-                AddExamCheck(errors, ksk, "Tuần hoàn", cboExamCirculationLoginName2, HasText(txtExamCirculation2) || HasHcmResult("noikhoa"), cboExamCirculationRank2);
-                AddExamCheck(errors, ksk, "Hô hấp", cboExamRespiratoryLoginName2, HasText(txtExamRespiratory2) || HasHcmResult("hohap"), cboExamRespiratoryRank2);
-                AddExamCheck(errors, ksk, "Tiêu hóa", cboExamDigestionLoginName2, HasText(txtExamDigestion2) || HasHcmResult("tieuhoa"), cboExamDigestionRank2);
-                AddExamCheck(errors, ksk, "Thận - tiết niệu", cboExamKidneyUrologyLoginName2, HasText(txtExamKidneyUrology2) || HasHcmResult("thantietnieu"), cboExamKidneyUrologyRank2);
-                AddExamCheck(errors, ksk, "Nội tiết", cboExamOendLoginName2, HasText(txtExamOend2) || HasHcmResult("noitiet"), cboExamOend2);
-                AddExamCheck(errors, ksk, "Cơ - xương - khớp", cboExamMuscleBoneLoginName2, HasText(txtExamMuscleBone2) || HasHcmResult("coxuongkhop"), cboExamMuscleBoneRank2);
-                AddExamCheck(errors, ksk, "Thần kinh", cboExamNeurologicalLoginName2, HasText(txtExamNeurological2) || HasHcmResult("thankinh"), cboExamNeurologicalRank2);
-                AddExamCheck(errors, ksk, "Tâm thần", cboExamMentalLoginName2, HasText(txtExamMental2) || HasHcmResult("tamthan"), cboExamMentalRank2);
-                AddExamCheck(errors, ksk, "Ngoại khoa", cboExamSurgeryLoginName2, HasText(txtExamSurgery2) || HasHcmResult("ngoaikhoa"), cboExamSurgeryRank2);
-                AddExamCheck(errors, ksk, "Sản phụ khoa", cboExamObstetricLoginName2, HasText(txtExamObstetric2) || HasHcmResult("sankhoa") || HasHcmResult("phukhoa"), cboExamObstetricRank2);
-                AddExamCheck(errors, ksk, "Da liễu", cboExamDermatologyLoginName2, HasText(txtExamDernatology2) || HasHcmResult("dalieu"), cboExamDernatologyRank2);
-                AddExamCheck(errors, ksk, "Mắt", cboExamEyeLoginName2,
-                    HasAnyText(txtExamEyeSightRight2, txtExamEyeSightLeft2, txtExamEyeSightGlassRight2, txtExamEyeSightGlassLeft2, txtExamEyeDisease2)
-                        || HasHcmResult("mat"),
-                    cboExamEyeRank2);
-                AddExamCheck(errors, ksk, "Tai mũi họng", cboExamEntLoginName2,
-                    HasAnyText(txtExamEntLeftNormal2, txtExamEntRightNomal2, txtExamEntLeftWhisper2, txtExamEntRightWhisper2, txtExamEntDisease2)
-                        || HasHcmResult("tmh"),
-                    cboExamEntDiseaseRank2);
-                AddExamCheck(errors, ksk, "Răng hàm mặt", cboExamStomatologyLoginName2,
-                    HasAnyText(txtExamStomatologyUpper2, txtExamStomatologyLower2, txtExamStomatologyDisease2)
-                        || HasHcmResult("rhm"),
-                    cboExamStomatologyRank2);
+                var regions = GetClinicalExamRegionsOverEighteen();
+                foreach (var r in regions)
+                {
+                    if (r == null) continue;
+
+                    string snapshot;
+                    if (clinicalExamSnapshot.TryGetValue(r.Name, out snapshot))
+                    {
+                        string now = GetClinicalExamSignature(r);
+                        if (string.Equals(now, snapshot, StringComparison.Ordinal))
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("KskClinicalExam: vung \"" + r.Name
+                                + "\" GIU NGUYEN nhu luc nap (\"" + now + "\") -> bo qua, khong bat nhap ket qua/phan loai");
+                            continue;
+                        }
+                        Inventec.Common.Logging.LogSystem.Debug("KskClinicalExam: vung \"" + r.Name
+                            + "\" DA SUA trong phien (luc nap=\"" + snapshot + "\", hien tai=\"" + now + "\") -> kiem tra du ket qua/phan loai");
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("KskClinicalExam: vung \"" + r.Name
+                            + "\" CHUA co snapshot -> giu hanh vi cu, van kiem tra");
+                    }
+
+                    AddExamCheck(errors, ksk, r.Name, r.Examiner, r.HasResult, r.Classify);
+                }
                 // CHỈ kiểm tra phần KHÁM LÂM SÀNG (14 vùng trên). KHÔNG kiểm tra cận lâm sàng
                 // (máu/nước tiểu/CĐHA/CLS khác) theo yêu cầu.
             }
