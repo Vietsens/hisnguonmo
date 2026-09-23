@@ -41,5 +41,13 @@ namespace HIS.Desktop.Plugins.InfusionCreate
         public string LOGGINNAME { get; set; }
         public Boolean ngoaikho { get; set; }
         public string mediType { get; set; }
+        /// <summary>
+        /// Thời gian dự trù bác sĩ khai báo khi kê đơn dự trù (yyyyMMdd000000).
+        /// Thuốc trong kho / kê ngoài đã có phiếu xuất: lấy từ phiếu xuất (TDL_USE_TIME).
+        /// Thuốc kê ngoài chưa có phiếu xuất: tra trên đơn (HIS_SERVICE_REQ.USE_TIME) theo SERVICE_REQ_ID.
+        /// </summary>
+        public long? USE_TIME { get; set; }
+        public string USE_TIME_STR { get; set; }
+        public long? SERVICE_REQ_ID { get; set; }
     }
 }
