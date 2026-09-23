@@ -1861,11 +1861,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     return;
                 }
 
-                // Tìm bản ghi DPT theo (Khoa, ĐTTT) — KHÔNG lọc theo IS_AUTO/IS_NOT
-                // để bắt được cả trường hợp "có config nhưng cả 2 = 0" (cho phép sửa).
                 var match = depaPatientTypes.FirstOrDefault(o =>
                     o.DEPARTMENT_ID == this.requestRoom.DEPARTMENT_ID
-                    && o.PATIENT_TYPE_ID == patientTypeId);
+                    && o.PATIENT_TYPE_ID == patientTypeId
+                    && (o.IS_AUTO_EXPEND == 1 || o.IS_NOT_EXPEND == 1));
 
                 if (match == null)
                 {
@@ -1875,28 +1874,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     return;
                 }
 
-                // Ưu tiên IS_NOT_EXPEND trước → bỏ tích + khóa.
-                if (match.IS_NOT_EXPEND == 1)
-                {
-                    row.IsExpend = false;
-                    row.NotExpend = true;
-                    row.IsDisableExpend = true;
-                    row.IsExpendEditableByDpt = false;
-                }
-                // IS_AUTO_EXPEND → tự động tích + khóa.
-                else if (match.IS_AUTO_EXPEND == 1)
+                if (match.IS_AUTO_EXPEND == 1)
                 {
                     row.IsExpend = true;
                     row.NotExpend = true;
-                    row.IsDisableExpend = true;
-                    row.IsExpendEditableByDpt = false;
                 }
-                // Cả 2 = 0 → lấy theo đơn đã kê (giữ nguyên IsExpend hiện tại), CHO PHÉP SỬA (ưu tiên cao nhất).
-                else
+                else if (match.IS_NOT_EXPEND == 1)
                 {
-                    row.NotExpend = false;
-                    row.IsDisableExpend = false;
-                    row.IsExpendEditableByDpt = true;
+                    row.IsExpend = false;
+                    row.NotExpend = true;
                 }
             }
             catch (Exception ex)

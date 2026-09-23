@@ -91,7 +91,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         private const string CONFIG_KEY__IsAutoTickExpendWithAssignPresPTTT = "HIS.Desktop.Plugins.AssignPrescription.IsAutoTickExpendWithAssignPresPTTT";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION = "MOS.HIS_SERVICE_REQ.MANY_DAYS_PRESCRIPTION_OPTION";
         private const string CONFIG_KEY__IS_CHECK_PHARMACOLOGY = "HIS.Desktop.Plugins.IsCheckPharmacology";
-        private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
 
         /// <summary>
         /// 1: Kê nhiều ngày theo cả đơn; 2: Kê nhiều ngày theo từng thuốc
@@ -102,7 +101,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         internal static long ManyDayPrescriptionOption;
         internal static bool IsAutoTickExpendWithAssignPresPTTT;
         internal static bool IsNotAllowingExpendWithoutHavingParent;
-        internal static string UsePaymentObjectByDept;
         public static decimal WarningOverCeiling__Exam { get; set; }
         public static decimal WarningOverCeiling__Out { get; set; }
         public static decimal WarningOverCeiling__In { get; set; }
@@ -357,7 +355,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
                 IsDefaultTracking = GetValue(KEY_IS_DEFAULT_TRACKING) == GlobalVariables.CommonStringTrue;
                 MedicineHasPaymentLimitBHYT = GetValue(MEDICINE_HAS_PAYMENT_LIMIT_BHYT);
                 IsNotAllowingExpendWithoutHavingParent = (GetValue(MOS__HIS_SERVICE_REQ__IS_NOT_ALLOWING_EXPEND_WITHOUT_HAVING_PARENT) == "1");
-                UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
             }
             catch (Exception ex)
             {

@@ -2002,11 +2002,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public short? IS_OUT_MEDI_STOCK { get; set; }
         public bool IsDisableExpend { get; set; }
         public bool NotExpend { get; set; }
-        /// <summary>
-        /// HIS_DEPA_PATIENT_TYPE có bản ghi khớp (Khoa, ĐTTT) nhưng cả 2 cờ đều = 0
-        /// → ưu tiên CAO NHẤT: luôn cho sửa, bỏ qua IS_NOT_EXPEND của loại vật tư và rule #16421.
-        /// </summary>
-        public bool IsExpendEditableByDpt { get; set; }
         public bool IsNotOutStock { get; set; }
         public string EXCEED_LIMIT_IN_PRES_REASON { get; set; }
         public string EXCEED_LIMIT_IN_DAY_REASON { get; set; }
