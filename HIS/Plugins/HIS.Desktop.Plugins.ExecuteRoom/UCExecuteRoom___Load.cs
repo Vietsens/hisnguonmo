@@ -162,6 +162,138 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             Inventec.Common.Logging.LogSystem.Warn("ParseTimeString failed: " + timeString);
             return null;
         }
+        #region Viec vCongTBD: xep y lenh vao phong xu ly theo thoi gian du tru
+
+        /// <summary>
+        /// Moc ap dung cua cau hinh xep y lenh theo ngay du tru, doi chieu voi thoi diem ke y lenh:
+        ///   - cau hinh "1": MODIFY_TIME cua ban ghi cau hinh (thieu thi CREATE_TIME) => y lenh ke
+        ///     TRUOC moc van doi chieu theo thoi gian chi dinh (khong hoi to).
+        ///   - cau hinh "2": 0 => moi y lenh du tru deu doi chieu theo thoi gian du tru (co hoi to).
+        ///   - null = chua xac dinh duoc moc (loi khi lay cau hinh).
+        /// Phai tinh giong het Backend de buoc loc theo Ca lam viec o client khong lech voi ket qua
+        /// ma Backend da tra ve.
+        /// </summary>
+        private long? useTimeApplyFrom;
+
+        /// <summary>Lay moc ap dung. Cau hinh tat hoac dat "2" thi khong goi API nao.</summary>
+        private void LoadUseTimeApplyFrom()
+        {
+            try
+            {
+                this.useTimeApplyFrom = null;
+                if (!HisConfigCFG.IsMovingToExecuteRoomByUseTime)
+                {
+                    return;
+                }
+                if (HisConfigCFG.IsMovingToExecuteRoomByUseTimeForAll)
+                {
+                    // Gia tri "2": ap dung cho moi y lenh du tru, khong can biet moc
+                    this.useTimeApplyFrom = 0;
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisConfigFilter filter = new MOS.Filter.HisConfigFilter();
+                filter.KEY_WORD = HisConfigCFG.CONFIG_KEY__MOVING_TO_EXECUTE_ROOM_BY_USE_TIME;
+                List<MOS.EFMODEL.DataModels.HIS_CONFIG> configs = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_CONFIG>>("api/HisConfig/Get", ApiConsumers.MosConsumer, filter, param);
+
+                MOS.EFMODEL.DataModels.HIS_CONFIG config = configs != null
+                    ? configs.FirstOrDefault(o => o.KEY == HisConfigCFG.CONFIG_KEY__MOVING_TO_EXECUTE_ROOM_BY_USE_TIME)
+                    : null;
+
+                // Khong tim thay ban ghi cau hinh -> ap dung cho moi y lenh (giong Backend: applyFrom = 0)
+                this.useTimeApplyFrom = config != null ? (config.MODIFY_TIME ?? config.CREATE_TIME ?? 0) : 0;
+
+                Inventec.Common.Logging.LogSystem.Debug("LoadUseTimeApplyFrom: " + this.useTimeApplyFrom);
+            }
+            catch (Exception ex)
+            {
+                // De null -> buoc loc theo ca se noi long (khop 1 trong 2 moc) de khong an mat y lenh
+                this.useTimeApplyFrom = null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gan dieu kien loc theo MOT NGAY vao dung nhom: bat cau hinh thi dung nhom theo thoi gian du tru,
+        /// nguoc lai giu nguyen nhom theo thoi gian chi dinh nhu hien tai.
+        /// </summary>
+        private void SetInstructionDateEqualFilter(HisServiceReqLViewFilter filter, long value)
+        {
+            if (filter == null) return;
+            if (HisConfigCFG.IsMovingToExecuteRoomByUseTime)
+            {
+                filter.USE_TIME_OR_INTRUCTION_DATE__EQUAL = value;
+            }
+            else
+            {
+                filter.INTRUCTION_DATE__EQUAL = value;
+            }
+        }
+
+        /// <summary>Gan dieu kien loc theo MOT THANG vao dung nhom.</summary>
+        private void SetInstructionMonthEqualFilter(HisServiceReqLViewFilter filter, long value)
+        {
+            if (filter == null) return;
+            if (HisConfigCFG.IsMovingToExecuteRoomByUseTime)
+            {
+                filter.USE_TIME_OR_INTRUCTION_MONTH__EQUAL = value;
+            }
+            else
+            {
+                filter.VIR_INTRUCTION_MONTH__EQUAL = value;
+            }
+        }
+
+        /// <summary>Gan dieu kien loc theo KHOANG THOI GIAN vao dung nhom.</summary>
+        private void SetInstructionTimeRangeFilter(HisServiceReqLViewFilter filter, long? from, long? to)
+        {
+            if (filter == null) return;
+            if (HisConfigCFG.IsMovingToExecuteRoomByUseTime)
+            {
+                filter.USE_TIME_OR_INTRUCTION_TIME_FROM = from;
+                filter.USE_TIME_OR_INTRUCTION_TIME_TO = to;
+            }
+            else
+            {
+                filter.INTRUCTION_TIME_FROM = from;
+                filter.INTRUCTION_TIME_TO = to;
+            }
+        }
+
+        /// <summary>
+        /// Thoi diem dung de doi chieu y lenh voi khung gio ca lam viec.
+        /// Phai chon dung moc ma Backend da dung khi loc, neu khong se an mat y lenh khoi danh sach.
+        /// </summary>
+        private bool IsServiceReqInPeriods(ServiceReqADO serviceReq, List<TimePeriodADO> periods)
+        {
+            if (serviceReq == null || periods == null) return false;
+
+            long instructionTime = serviceReq.INTRUCTION_TIME;
+
+            if (!HisConfigCFG.IsMovingToExecuteRoomByUseTime || !serviceReq.USE_TIME.HasValue)
+            {
+                return periods.Any(p => instructionTime >= p.From && instructionTime <= p.To);
+            }
+
+            long useTime = serviceReq.USE_TIME.Value;
+
+            if (!this.useTimeApplyFrom.HasValue)
+            {
+                // Chua xac dinh duoc moc ap dung: noi long - khop 1 trong 2 moc, tranh an mat y lenh
+                return periods.Any(p => (useTime >= p.From && useTime <= p.To)
+                    || (instructionTime >= p.From && instructionTime <= p.To));
+            }
+
+            long matchTime = (serviceReq.CREATE_TIME.HasValue && serviceReq.CREATE_TIME.Value >= this.useTimeApplyFrom.Value)
+                ? useTime
+                : instructionTime;
+            return periods.Any(p => matchTime >= p.From && matchTime <= p.To);
+        }
+
+        #endregion
+
         private void ApplyWorkingShiftFilter(
     ref HisServiceReqLViewFilter filter,
     long baseDateFrom,
@@ -173,8 +305,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 if (selectedShifts == null || selectedShifts.Count == 0)
                 {
                     // Không chọn ca nào = chọn tất cả
-                    filter.INTRUCTION_TIME_FROM = baseDateFrom;
-                    filter.INTRUCTION_TIME_TO = baseDateTo;
+                    SetInstructionTimeRangeFilter(filter, baseDateFrom, baseDateTo);
                     return;
                 }
 
@@ -197,8 +328,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 if (minFromSeconds == long.MaxValue || maxToSeconds == long.MinValue)
                 {
                     // Không parse được ca nào
-                    filter.INTRUCTION_TIME_FROM = baseDateFrom;
-                    filter.INTRUCTION_TIME_TO = baseDateTo;
+                    SetInstructionTimeRangeFilter(filter, baseDateFrom, baseDateTo);
                     return;
                 }
 
@@ -210,12 +340,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 DateTime filterStart = startDate.AddSeconds(minFromSeconds);
                 DateTime filterEnd = endDate.AddSeconds(maxToSeconds);
 
-                filter.INTRUCTION_TIME_FROM = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(filterStart).Value;
-                filter.INTRUCTION_TIME_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(filterEnd).Value;
+                long shiftFrom = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(filterStart).Value;
+                long shiftTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(filterEnd).Value;
+                SetInstructionTimeRangeFilter(filter, shiftFrom, shiftTo);
 
                 Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                    "ApplyWorkingShiftFilter: FROM={0}, TO={1}",
-                    filter.INTRUCTION_TIME_FROM, filter.INTRUCTION_TIME_TO));
+                    "ApplyWorkingShiftFilter: FROM={0}, TO={1}", shiftFrom, shiftTo));
             }
             catch (Exception ex)
             {
@@ -283,11 +413,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     Inventec.Common.Logging.LogUtil.TraceData("Periods", mergedPeriods));
 
                 // Lọc serviceReqs nằm trong các khoảng hợp lệ
-                return serviceReqs.Where(sr =>
-                {
-                    long instructionTime = sr.INTRUCTION_TIME;
-                    return mergedPeriods.Any(p => instructionTime >= p.From && instructionTime <= p.To);
-                }).ToList();
+                return serviceReqs.Where(sr => IsServiceReqInPeriods(sr, mergedPeriods)).ToList();
             }
             catch (Exception ex)
             {
@@ -394,6 +520,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 // Goi NGAY sau restore layout va NGOAI nhanh "co du lieu": restore co the dung lai cot
                 // "Muc CC" da luu trong file layout (file dung chung moi phong) nen phai go ca khi luoi rong.
                 EnsureEmergencyClassifyColumn();
+                EnsureUseTimeColumn();
                 //transitionManager1.StartTransition(layoutControl2);
                 WaitingManager.Show();
                 int start = ((CommonParam)param).Start ?? 0;
@@ -460,24 +587,24 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     if (this.typeCodeFind__KeyWork_InDate == this.typeCodeFind_InDate
                        && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue)
                     {
-                        hisServiceReqFilter.INTRUCTION_DATE__EQUAL = Inventec.Common.TypeConvert.Parse.ToInt64(
-                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "000000");
+                        SetInstructionDateEqualFilter(hisServiceReqFilter, Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "000000"));
                     }
                     else if (this.typeCodeFind__KeyWork_InDate == typeCodeFind__InMonth
                         && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue)
                     {
-                        hisServiceReqFilter.VIR_INTRUCTION_MONTH__EQUAL = Inventec.Common.TypeConvert.Parse.ToInt64(
-                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMM") + "00000000");
+                        SetInstructionMonthEqualFilter(hisServiceReqFilter, Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMM") + "00000000"));
                     }
                     else if (this.typeCodeFind__KeyWork_InDate == typeCodeFind_RangeDate
                         && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue
                         && dtIntructionDateTo.EditValue != null && dtIntructionDateTo.DateTime != DateTime.MinValue)
                     {
-                        hisServiceReqFilter.INTRUCTION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
-                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "000000");
-
-                        hisServiceReqFilter.INTRUCTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
-                        Convert.ToDateTime(dtIntructionDateTo.EditValue).ToString("yyyyMMdd") + "235959");
+                        SetInstructionTimeRangeFilter(hisServiceReqFilter,
+                            Inventec.Common.TypeConvert.Parse.ToInt64(
+                                Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "000000"),
+                            Inventec.Common.TypeConvert.Parse.ToInt64(
+                                Convert.ToDateTime(dtIntructionDateTo.EditValue).ToString("yyyyMMdd") + "235959"));
                     }
                 }
                 if (!isSearchByPatientCode)
