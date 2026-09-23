@@ -1051,7 +1051,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.ApplyRecieptPayformToSave(billTwoBookSDO);
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                 {
-                    billTwoBookSDO.RecieptTransaction.TRANSACTION_TIME = Convert.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmmss"));
+                    // Giay luon = 00, dong bo voi so hoa don (InvoiceTransaction) va voi man thanh toan 1 so.
+                    // Truoc day so bien lai lay giay that tu dtTransactionTime -> hai chung tu cua CUNG mot lan
+                    // thanh toan ghi lech nhau toi ~20 giay (o nhap la DateEdit, nguoi dung khong nhap giay).
+                    billTwoBookSDO.RecieptTransaction.TRANSACTION_TIME = Convert.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmm") + "00");
                 }
                 billTwoBookSDO.RecieptTransaction.EXEMPTION = Math.Round(recieptDiscountValue, 4);
                 billTwoBookSDO.RecieptTransaction.EXEMPTION_REASON = Config.HisConfig.EnableMultiDiscount
@@ -1060,9 +1063,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 // Gán chiết khấu chi tiết vào FIELD SDO chuyên dụng (backend đọc từ đây).
                 // KHÔNG gán vào navigation collection HIS_TRANSACTION.HIS_TRANSACTION_DISCOUNT -> trước đó gán nhầm chỗ gây lỗi backend MOS005.
                 billTwoBookSDO.RecieptHisTransactionDiscounts = BuildRecieptDiscountList(this.treatmentId.Value);
-                billTwoBookSDO.RecieptTransaction.DESCRIPTION = txtRecieptDescription.Text;
                 billTwoBookSDO.RecieptTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
-                billTwoBookSDO.RecieptTransaction.DESCRIPTION = txtDescription.Text;
+                // HIS_TRANSACTION chi co MOT cot DESCRIPTION nhung form co 2 o nhap: "Ghi chu" (chung ca hai so)
+                // va "Mo ta" (rieng tung so, co popup nhap dai). Truoc day gan lien tiep 2 dong nen "Ghi chu"
+                // luon ghi de "Mo ta" -> du lieu nguoi dung nhap o "Mo ta" mat am tham.
+                // Giu nguyen thu tu uu tien hien huu (Ghi chu thang) va chi lay "Mo ta" khi "Ghi chu" de trong.
+                billTwoBookSDO.RecieptTransaction.DESCRIPTION = !string.IsNullOrWhiteSpace(txtDescription.Text)
+                    ? txtDescription.Text
+                    : txtRecieptDescription.Text;
                 billTwoBookSDO.RecieptTransaction.GUARANTEE_REF_CODE = txtGuaranteedRefCode.Text;
                 billTwoBookSDO.RecieptTransaction.GUARANTEE_AMOUNT = tongTienBaoLanh;
 
@@ -1242,9 +1250,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     : txtInvoiceReason.Text;
                 // Gán chiết khấu chi tiết vào FIELD SDO chuyên dụng (backend đọc từ đây) — KHÔNG gán navigation collection.
                 billTwoBookSDO.InvoiceHisTransactionDiscounts = BuildInvoiceDiscountList(this.treatmentId.Value);
-                billTwoBookSDO.InvoiceTransaction.DESCRIPTION = txtInvoiceDescription.Text;
                 billTwoBookSDO.InvoiceTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
-                billTwoBookSDO.InvoiceTransaction.DESCRIPTION = txtDescription.Text;
+                // Xem chu thich cung cho o so bien lai: "Ghi chu" chung uu tien, "Mo ta" rieng lam du phong.
+                billTwoBookSDO.InvoiceTransaction.DESCRIPTION = !string.IsNullOrWhiteSpace(txtDescription.Text)
+                    ? txtDescription.Text
+                    : txtInvoiceDescription.Text;
                 billTwoBookSDO.InvoiceTransaction.GUARANTEE_REF_CODE = txtGuaranteedRefCode.Text;
                 billTwoBookSDO.InvoiceTransaction.GUARANTEE_AMOUNT = tongTienBaoLanh;
 
@@ -1255,6 +1265,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     billTwoBookSDO.InvoiceTransaction.BUYER_ADDRESS = txtBuyerAddress.Text;
                     billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = chkOther.Checked ? txtBuyerOrganization.Text : cboBuyerOrganization.Text;
                     billTwoBookSDO.InvoiceTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
+                    // Dong bo voi so bien lai (RecieptTransaction): email nguoi mua truoc day khong duoc gan
+                    // cho so hoa don -> hoa don dien tu khong co email de gui cho khach.
+                    billTwoBookSDO.InvoiceTransaction.BUYER_EMAIL = txtBuyerEmail.Text;
 
                     billTwoBookSDO.InvoiceTransaction.BUYER_TYPE = 1;
                     billTwoBookSDO.InvoiceTransaction.BUYER_IDENTITY_NUMBER = txtCCCD.Text;

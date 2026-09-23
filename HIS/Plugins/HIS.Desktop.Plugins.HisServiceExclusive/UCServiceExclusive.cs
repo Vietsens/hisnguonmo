@@ -483,10 +483,10 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
             return pair.SERVICE_ID == serviceIdChecked ? pair.EXCLUSIVE_ID : pair.SERVICE_ID;
         }
 
-        /// <summary>Map: id dich vu doi ung -> cap loai tru dang co (2 chieu)</summary>
-        private Dictionary<long, HIS_SERVICE_EXCLUSIVE> BuildMappedDictionary()
+        /// <summary>Map: id dich vu doi ung -> TAT CA ban ghi cua cap do (co the co ca ban ghi chieu nguoc)</summary>
+        private Dictionary<long, List<HIS_SERVICE_EXCLUSIVE>> BuildMappedDictionary()
         {
-            Dictionary<long, HIS_SERVICE_EXCLUSIVE> result = new Dictionary<long, HIS_SERVICE_EXCLUSIVE>();
+            Dictionary<long, List<HIS_SERVICE_EXCLUSIVE>> result = new Dictionary<long, List<HIS_SERVICE_EXCLUSIVE>>();
             try
             {
                 if (serviceExclusivesByService == null || serviceIdChecked <= 0)
@@ -505,7 +505,14 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                     {
                         continue;
                     }
-                    result[otherId] = item;
+                    // Gom TAT CA ban ghi cua cung mot doi ung: rang buoc UK1 cua bang chi chan trung theo chieu
+                    // nen du lieu co the co ca (A,B) lan (B,A); neu chi giu 1 ban ghi thi khi bo tich / doi muc
+                    // se con ban ghi mo coi lam cap do van bi canh bao.
+                    if (!result.ContainsKey(otherId))
+                    {
+                        result[otherId] = new List<HIS_SERVICE_EXCLUSIVE>();
+                    }
+                    result[otherId].Add(item);
                 }
             }
             catch (Exception ex)
@@ -525,7 +532,7 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                     return;
                 }
 
-                Dictionary<long, HIS_SERVICE_EXCLUSIVE> mapped = BuildMappedDictionary();
+                Dictionary<long, List<HIS_SERVICE_EXCLUSIVE>> mapped = BuildMappedDictionary();
 
                 foreach (var item in lstExclusiveADOs)
                 {
@@ -555,14 +562,14 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
         {
             try
             {
-                Dictionary<long, HIS_SERVICE_EXCLUSIVE> mapped = BuildMappedDictionary();
+                Dictionary<long, List<HIS_SERVICE_EXCLUSIVE>> mapped = BuildMappedDictionary();
                 if (mapped.Count == 0)
                 {
                     ResetRecordPanel();
                     return;
                 }
 
-                List<HIS_SERVICE_EXCLUSIVE> pairs = mapped.Values.ToList();
+                List<HIS_SERVICE_EXCLUSIVE> pairs = mapped.Values.SelectMany(o => o).ToList();
 
                 short handleTypeId = pairs
                     .GroupBy(o => o.HANDLE_TYPE_ID)
@@ -929,7 +936,7 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                     : IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE;
                 string desiredNote = String.IsNullOrWhiteSpace(txtNote.Text) ? null : txtNote.Text.Trim();
 
-                Dictionary<long, HIS_SERVICE_EXCLUSIVE> mapped = BuildMappedDictionary();
+                Dictionary<long, List<HIS_SERVICE_EXCLUSIVE>> mapped = BuildMappedDictionary();
 
                 List<ServiceADO> dataCreates = new List<ServiceADO>();
                 List<long> deleteIds = new List<long>();
@@ -948,7 +955,7 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                     }
                     else if (!item.checkWarning && isMapped)
                     {
-                        deleteIds.Add(mapped[item.ID].ID);
+                        deleteIds.AddRange(mapped[item.ID].Select(o => o.ID));
                         deletedOtherIds.Add(item.ID);
                     }
                 }
@@ -956,7 +963,7 @@ namespace HIS.Desktop.Plugins.HisServiceExclusive
                 // Cac cap giu lai (ke ca cap khong hien tren trang luoi hien tai) nhan gia tri ban ghi tren panel
                 List<HIS_SERVICE_EXCLUSIVE> dataUpdates = mapped
                     .Where(o => !deletedOtherIds.Contains(o.Key))
-                    .Select(o => o.Value)
+                    .SelectMany(o => o.Value)
                     .Where(o => o.HANDLE_TYPE_ID != desiredHandleTypeId
                              || (o.NOTE ?? "") != (desiredNote ?? "")
                              || (o.IS_ACTIVE ?? IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE) != desiredIsActive)

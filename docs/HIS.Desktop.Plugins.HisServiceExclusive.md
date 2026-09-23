@@ -49,9 +49,9 @@ Thư viện đi kèm: **`HIS.Desktop.Plugins.Library.CheckServiceExclusive`** �
 |--------|------|----------|
 | V_HIS_SERVICE | View | Nguồn dữ liệu cả 2 lưới (SERVICE_CODE, SERVICE_NAME, SERVICE_TYPE_NAME) |
 | HIS_SERVICE_TYPE | Table (cache BackendDataWorker) | 2 combo "Loại dịch vụ" lọc 2 lưới |
-| HIS_SERVICE_EXCLUSIVE | Table — **chưa có trong MOS.EFMODEL.dll** | Bảng cặp dịch vụ loại trừ: SERVICE_ID, EXCLUSIVE_ID, HANDLE_TYPE_ID (1 Cảnh báo / 2 Chặn), IS_ACTIVE (Trạng thái), NOTE (Ghi chú) |
+| HIS_SERVICE_EXCLUSIVE | Table — **đã có trong MOS.EFMODEL.dll (bản backend 22/09/2026)** | Bảng cặp dịch vụ loại trừ: SERVICE_ID, EXCLUSIVE_ID, HANDLE_TYPE_ID (1 Cảnh báo / 2 Chặn), IS_ACTIVE (Trạng thái), NOTE (Ghi chú) |
 
-**Lưu ý kỹ thuật:** bảng `HIS_SERVICE_EXCLUSIVE` / view `V_HIS_SERVICE_EXCLUSIVE` và filter tương ứng chưa có trong `MOS.EFMODEL.dll` + `MOS.Filter.dll` đang bàn giao. FE tự khai lớp cục bộ trong thư viện `HIS.Desktop.Plugins.Library.CheckServiceExclusive/ADO/` (tên property trùng tuyệt đối với tên cột backend nên JSON map đúng). **Khi backend bàn giao DLL mới thì thay bằng `MOS.EFMODEL.DataModels.*` và `MOS.Filter.HisServiceExclusiveFilter`.**
+**Lưu ý kỹ thuật (cập nhật 22/09/2026):** backend đã bàn giao `MOS.EFMODEL.dll` + `MOS.Filter.dll` có sẵn `HIS_SERVICE_EXCLUSIVE`, `V_HIS_SERVICE_EXCLUSIVE`, `HisServiceExclusiveFilter`, `HisServiceExclusiveViewFilter` (đủ cả 2 trường tra 2 chiều `SERVICE_ID__OR__EXCLUSIVE_ID` / `SERVICE_ID__OR__EXCLUSIVE_IDs`). FE đã **gỡ toàn bộ lớp cục bộ** trong `HIS.Desktop.Plugins.Library.CheckServiceExclusive/ADO/`, chỉ giữ lại enum `HandleType` và `ServiceExclusiveViolationADO`. Cache danh mục vẫn dùng `ServiceExclusiveDataWorker` riêng (không dùng `BackendDataWorker`) vì đây là bảng của một tính năng, viện có thể không khai báo, và cần `Reset()` ngay sau khi sửa ở màn Danh mục.
 
 Filter: `MOS.Filter.HisServiceViewFilter` (KEY_WORD, SERVICE_TYPE_ID, IDs cho lọc "Đã khai báo") cho 2 lưới; `ADO/HisServiceExclusiveFilter.cs` (filter local, có `SERVICE_ID__OR__EXCLUSIVE_ID` để tra 2 chiều).
 
@@ -118,6 +118,8 @@ Không có.
 | Ngày | Người sửa | Mô tả thay đổi |
 |---|---|---|
 | 21/09/2026 | dangth + Claude | Rà lại theo tài liệu phân tích 3342: đổi tên chức năng "Dịch vụ không chỉ định đồng thời"; lưới phải còn 1 cột Chọn; thêm panel bản ghi Mức xử lý (mặc định Cảnh báo) / Còn sử dụng / Ghi chú áp dụng cho cả bản ghi; lưu diff có `UpdateList` + `ChangeLock`; lọc "Đã khai báo" ở lưới trái; combo Loại dịch vụ riêng cho lưới phải. Thư viện: thêm `NOTE`, cột Ghi chú trên form cảnh báo, câu thông báo đúng từng chữ 3342 (nối ". Ghi chú: …" nếu có). |
+| 22/09/2026 | dangth + Claude | Backend bàn giao bảng + API: gỡ 3 lớp cục bộ (`HIS_SERVICE_EXCLUSIVE`, `V_HIS_SERVICE_EXCLUSIVE`, `HisServiceExclusiveFilter`), chuyển sang `MOS.EFMODEL.DataModels.*` + `MOS.Filter.HisServiceExclusiveViewFilter`; build lại thư viện + 4 plugin; 33/33 test tự động của thư viện đạt; đã đẩy test (histest `e257182f8`). Phát hiện 2 việc thuộc backend: trigger `HIS_SERVICE_EXCLUSIVE_1` INVALID (xem `PTTK/57452_fix_trigger.sql`) và `HisServiceExclusiveCFG.Reload()` không được gọi ở đâu. |
+| 22/09/2026 (bổ sung) | dangth + Claude | Backend sửa trigger `HIS_SERVICE_EXCLUSIVE_1` (đã VALID, insert được). Test thật trên CSDL cho thấy `UK1` **chỉ chặn trùng theo chiều** — vẫn khai được cả `(A,B)` và `(B,A)` với mức khác nhau. Đã làm bền 2 chỗ: thư viện lấy **mức nặng nhất** trong các bản ghi của cùng một cặp (Chặn thắng Cảnh báo) và vẫn lấy Ghi chú của bản ghi còn lại; màn danh mục đổi `Dictionary<long, HIS_SERVICE_EXCLUSIVE>` → `Dictionary<long, List<…>>` để sửa/xoá **hết** bản ghi của cặp, không để bản ghi mồ côi. 37/37 test tự động đạt. Đẩy test `4dfebcd39`. |
 | 16/09/2026 | dangth + Claude | Tạo mới plugin theo thiết kế việc 57452. Clone khuôn 2 lưới từ `HIS.Desktop.Plugins.HisServiceSpeciality`, thay lưới phải bằng instance thứ 2 của `HIS.UC.Service`, 2 cột mức xử lý Cảnh báo/Chặn, lưu theo diff Create/Update/Delete. |
 
 ## 9. Test Cases

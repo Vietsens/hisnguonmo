@@ -253,6 +253,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 this.currentSereServ = data.SereServ;
                 this.isAutoCheckExpend = data.IsAutoCheckExpend;
                 this.assignPrescriptionEditADO = data.AssignPrescriptionEditADO;
+                // Viec 56273: nhan dien mo tu luong THUC HIEN DVKT (Tu truc / Ke thuoc vat tu tieu hao / Ke don CLS o Phong thuc hien)
+                // = IsCabinet + co dich vu dang thuc hien + ke moi (khong phai sua don) -> cho phep o "Tu dong luu" hoat dong.
+                this.isOpenFromServiceExecute = data.IsCabinet
+                    && data.SereServ != null && data.SereServ.ID > 0 && data.SereServ.SERVICE_ID > 0
+                    && data.AssignPrescriptionEditADO == null;
                 this.icdExam = data.IcdExam;
                 this.currentDhst = data.Dhst;
                 this.sereServsInTreatmentRaw = data.SereServsInTreatment;
@@ -336,6 +341,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 this.cboMediStockExport.Properties.NullText = Inventec.Common.Resource.Get.Value("frmAssignPrescription.cboMediStockExport.Properties.NullText", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.btnSaveTemplate.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.btnSaveTemplate.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.btnSave.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                this.chkAutoSave.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.chkAutoSave.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                this.chkAutoSave.ToolTip = Inventec.Common.Resource.Get.Value("frmAssignPrescription.chkAutoSave.ToolTip", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.btnAdd.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.grcIsExpendType.Caption = Inventec.Common.Resource.Get.Value("frmAssignPrescription.grcLoaiHaoPhi__MedicinePage.Caption", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.grcTocDoTruyen.Caption = Inventec.Common.Resource.Get.Value("frmAssignPrescription.grcTocDoTruyen__MedicinePage.Caption", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
@@ -430,6 +437,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
                 LogSystem.Debug("frmAssignPrescription_Load. 4");
                 this.FillDataToControlsForm();
+                // Viec 56273: khoi phuc trang thai o "Tu dong luu" (nho theo tai khoan) - chan CheckedChanged ghi de trong luc khoi phuc
+                this.isNotLoadWhileChangeControlStateInFirst = true;
+                this.InitControlState();
+                this.isNotLoadWhileChangeControlStateInFirst = false;
+                this.SetAutoSaveVisibility();
                 if (this.actionType == GlobalVariables.ActionAdd)
                 {
                     this.OpionGroupSelectedChanged();
@@ -465,6 +477,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 this.timerInitForm.Interval = 4000;//Fix 4s
                 this.timerInitForm.Enabled = true;
                 this.timerInitForm.Start();
+
+                // Viec 56273: mo tu luong thuc hien DVKT + o "Tu dong luu" dang tick + luoi da co thuoc/vat tu di kem
+                // -> tu Luu sau khi form hien xong (BeginInvoke ben trong), dat sau WaitingManager.Hide de khong long WaitingManager.
+                this.TryAutoSaveAttachedMediMaty();
 
                 LogSystem.Debug("frmAssignPrescription_Load. 8");
             }

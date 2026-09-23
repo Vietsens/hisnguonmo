@@ -587,8 +587,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             try
             {
                 this.LoadDataSereServWithTreatment(this.currentTreatmentWithPatientType, 0);
-                this.LoadTotalSereServByHeinWithTreatment();
-                this.CheckWarningOverTotalPatientPrice();
+                // Viec 56273: 2 kiem tra nay van fire-and-forget nhu cu; chi giu Task gop de TryAutoSaveAttachedMediMaty (__AutoSave.cs)
+                // cho ca 2 xong (hop hoi thieu vien phi / tran BHYT da tra loi, form chua Close) roi moi tu luu.
+                Task taskLoadTotalSereServByHein = this.LoadTotalSereServByHeinWithTreatment();
+                Task taskCheckWarningOverTotalPatientPrice = this.CheckWarningOverTotalPatientPrice();
+                this.afterLoadWarningTask = Task.WhenAll(taskLoadTotalSereServByHein, taskCheckWarningOverTotalPatientPrice);
             }
             catch (Exception ex)
             {

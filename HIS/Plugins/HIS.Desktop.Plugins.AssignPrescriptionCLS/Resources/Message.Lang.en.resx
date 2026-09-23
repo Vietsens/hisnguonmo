@@ -270,4 +270,7 @@
   <data name="DonNgayDungDenNgay" xml:space="preserve">
     <value>prescribed on {0}, until {1}</value>
   </data>
+  <data name="ChuaTuLuuDuocThuocVatTuDiKem" xml:space="preserve">
+    <value>Attached medicines/materials were not saved automatically. Please review the warnings/required fields and click Save.</value>
+  </data>
 </root>

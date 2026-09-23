@@ -13,9 +13,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Library_CheckRequireMediMate__DichVuChuaCoThuocVatTuDiKem" xml:space="preserve">
-    <value>Service has no accompanying medicine/material:
+    <value>Cannot finish. The following services have no accompanying medicine/material:
 {0}
-Do you want to continue finishing?</value>
+Please prescribe the accompanying medicines/materials for these services, then finish again.</value>
     <comment>Task 3353 (PT-56272). {0} = service list, one per line "- Code - Name"</comment>
   </data>
   <data name="Library_CheckRequireMediMate__ThongBao" xml:space="preserve">

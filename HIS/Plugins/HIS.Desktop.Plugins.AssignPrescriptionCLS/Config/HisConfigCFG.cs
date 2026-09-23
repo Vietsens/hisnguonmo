@@ -106,6 +106,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         private const string MOS__HIS_SERVICE_REQ__IS_NOT_ALLOWING_EXPEND_WITHOUT_HAVING_PARENT = "MOS.HIS_SERVICE_REQ.IS_NOT_ALLOWING_EXPEND_WITHOUT_HAVING_PARENT";
         internal const string IS_USING_SERVER_TIME = "MOS.IS_USING_SERVER_TIME";
         private const string CONFIG_KEY__IsAutoTickExpendWithAssignPresPTTT = "HIS.Desktop.Plugins.AssignPrescription.IsAutoTickExpendWithAssignPresPTTT";
+        // Viec 56273 (tich hop tinh nang vien Nghe An): sau khi Luu THANH CONG thi tu dong dong form.
+        // Giu dung ten key vien Nghe An dang dung. VALUE = 1 -> bat; khac/rong -> giu form mo nhu cu
+        // (ban DLL Nghe An tu sua coi moi gia tri khac "0" la bat - doi thanh opt-in de khong doi hanh vi vien khac).
+        private const string CONFIG_KEY__AUTO_CLOSE_AFTER_SAVE = "HIS.Desktop.Plugins.AssignPrescriptionCLS.AutoClose";
         private const string CONFIG_KEY__IsUsingWarningHeinFee = "His.Desktop.IsUsingWarningHeinFee";
         internal const string IS_CHOOSE_DRUGSTORE = "HIS.Desktop.Plugins.AssignPrescription.DefaultDrugStoreCode"; // co chọn nhà thuoc hay khong//Se bo sau
         internal const string CONFIG_KEY__DONT_PRES_EXPIRED_ITEM = "MOS.HIS_MEDI_STOCK.DONT_PRES_EXPIRED_ITEM";
@@ -135,6 +139,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         internal static string IsUsingWarningHeinFee;  
         internal static bool IsAutoCreateSaleExpMest;
         internal static bool IsAutoTickExpendWithAssignPresPTTT;
+        /// <summary>Viec 56273: tu dong dong form Ke don CLS / Tu truc sau khi luu thanh cong (key ...AssignPrescriptionCLS.AutoClose = 1).</summary>
+        internal static bool IsAutoCloseAfterSave;
         internal static bool IsNotAllowingExpendWithoutHavingParent;
         public static decimal WarningOverCeiling__Exam { get; set; }
         public static decimal WarningOverCeiling__Out { get; set; }
@@ -344,6 +350,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
                 IsloadIcdFromExamServiceExecute = GetValue(CONFIG_KEY__IsloadIcdFromExamServiceExecute) == GlobalVariables.CommonStringTrue;
                 IsAutoCreateSaleExpMest = GetValue(CONFIG_KEY__IS_AUTO_CREATE_SALE_EXP_MEST) == GlobalVariables.CommonStringTrue;
                 IsAutoTickExpendWithAssignPresPTTT = GetValue(CONFIG_KEY__IsAutoTickExpendWithAssignPresPTTT) == GlobalVariables.CommonStringTrue;
+                IsAutoCloseAfterSave = GetValue(CONFIG_KEY__AUTO_CLOSE_AFTER_SAVE) == GlobalVariables.CommonStringTrue;
                 icdServiceHasCheck = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(ICD_SERVICE__HAS_CHECK));
                 icdServiceHasRequireCheck = GetValue(ICD_SERVICE__HAS_REQUIRE_CHECK) == GlobalVariables.CommonStringTrue;
                 icdServiceAllowUpdate = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(HIS_ICD_SERVICE__ALLOW_UPDATE));

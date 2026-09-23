@@ -83,10 +83,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ADO\HIS_SERVICE_EXCLUSIVE.cs" />
-    <Compile Include="ADO\HisServiceExclusiveFilter.cs" />
+    <Compile Include="ADO\HandleType.cs" />
     <Compile Include="ADO\ServiceExclusiveViolationADO.cs" />
-    <Compile Include="ADO\V_HIS_SERVICE_EXCLUSIVE.cs" />
     <Compile Include="CheckServiceExclusiveManager.cs" />
     <Compile Include="Form\frmServiceExclusive.cs">
       <SubType>Form</SubType>
