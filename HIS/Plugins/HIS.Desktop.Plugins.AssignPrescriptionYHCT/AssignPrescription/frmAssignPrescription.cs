@@ -3185,9 +3185,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                                 mediMatyTypeADO.NotExpend = false;
                                 mediMatyTypeADO.IsExpend = false;
                                 mediMatyTypeADO.IsDisableExpend = false;
-                                mediMatyTypeADO.IsExpendEditableByDpt = false;
                             }
-                            // Auto-tick theo kho hao phí TRƯỚC, để DPT có thể override sau. 
+                            // Auto-tick theo kho hao phí TRƯỚC, để DPT có thể override sau.
                             ApplyStockBasedExpend(mediMatyTypeADO);
                             // Tra lại HIS_DEPA_PATIENT_TYPE theo ĐTTT mới -> set lại "Hao phí".
                             ApplyExpendByDepaPatientType(mediMatyTypeADO);
@@ -3409,15 +3408,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     }
                     else if (e.Column.FieldName == "IsExpend")
                     {
-                        // HIS_DEPA_PATIENT_TYPE có row khớp với cả 2 = 0 → ưu tiên CAO NHẤT: luôn cho sửa,
-                        // bỏ qua material IS_NOT_EXPEND và rule #16421 (không có DV cha).
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data.IS_NOT_EXPEND), data.IS_NOT_EXPEND));
-                        if (data.IsExpendEditableByDpt)
-                        {
-                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
-                        }
                         // Force-disable theo HIS_DEPA_PATIENT_TYPE (kiểm tra TRƯỚC IS_NOT_EXPEND).
-                        else if (data.NotExpend)
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data.IS_NOT_EXPEND), data.IS_NOT_EXPEND));
+                        if (data.NotExpend)
                         {
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
                         }
@@ -3562,7 +3555,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                             var dataRow = (MediMatyTypeADO)gridViewServiceProcess.GetRow(rowHandle);
                             if (dataRow != null)
                             {
-                                if (hi.Column.FieldName == "IsExpend" && !dataRow.IsExpendEditableByDpt && (HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && (dataRow.SereServParentId ?? 0) <= 0 && GetSereServInKip() <= 0))//Không cho phép check hao phí với thuốc/vật tư không đính kèm
+                                if (hi.Column.FieldName == "IsExpend" && (HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && (dataRow.SereServParentId ?? 0) <= 0 && GetSereServInKip() <= 0))//Không cho phép check hao phí với thuốc/vật tư không đính kèm
                                 {
                                     Inventec.Common.Logging.LogSystem.Debug("gridViewServiceProcess_MouseDown.return__FieldName:IsExpend");
                                     return;
@@ -3658,7 +3651,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 MediMatyTypeADO data = view.GetFocusedRow() as MediMatyTypeADO;
                 if (data == null) return;
 
-                if (view.FocusedColumn.FieldName == "IsExpend" && !data.IsExpendEditableByDpt && HisConfigCFG.IsNotAllowingExpendWithoutHavingParent)
+                if (view.FocusedColumn.FieldName == "IsExpend" && HisConfigCFG.IsNotAllowingExpendWithoutHavingParent)
                 {
                     if ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
                         && (data.SereServParentId ?? 0) <= 0 && GetSereServInKip() <= 0)
