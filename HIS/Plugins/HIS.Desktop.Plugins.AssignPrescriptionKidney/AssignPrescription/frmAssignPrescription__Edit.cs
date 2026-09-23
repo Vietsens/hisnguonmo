@@ -169,16 +169,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                         this.serviceReqMatys = this.GetServiceReqMatyByServiceReqId(this.oldServiceReq.ID);
                         this.ProcessGetServiceReqMaty(this.serviceReqMatys, true);
 
-                        // Re-apply HIS_DEPA_PATIENT_TYPE config sau khi load xong các dòng —
-                        // tránh các bước xử lý trên ghi đè trạng thái force NotExpend.
-                        if (this.mediMatyTypeADOs != null)
-                        {
-                            foreach (var item in this.mediMatyTypeADOs)
-                            {
-                                this.ApplyExpendByDepaPatientType(item);
-                            }
-                        }
-
                         //Nếu tất cả thuốc vật tư kê trước đấy là ngoài kho thì enabled kho
                         isMediMatyIsOutStock = CheckAllMediMatyIsOutStock();
                         if (isMediMatyIsOutStock)

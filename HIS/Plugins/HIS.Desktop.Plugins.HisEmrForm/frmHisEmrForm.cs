@@ -279,6 +279,20 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
+                    else if (e.Column.FieldName == "IS_OPEN_WHEN_TREATMENT_FINISH_STR")
+                    {
+                        try
+                        {
+                            if (pData.IS_OPEN_WHEN_TREATMENT_FINISH == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                                e.Value = "Có";
+                            else
+                                e.Value = "";
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
 
                     gridControlFormList.RefreshDataSource();
                 }
@@ -441,6 +455,7 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                         cboLocation.Properties.Buttons[1].Visible = false;
                     }
                     txtGroup.Text = data.EMR_FORM_GROUP_NAME;
+                    chkOpenWhenTreatmentFinish.Checked = (data.IS_OPEN_WHEN_TREATMENT_FINISH == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
 
                 }
             }
@@ -475,6 +490,7 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                 dxValidationProvider1.RemoveControlError(txtGroup);
                 //dxValidationProviderEditorInfo.RemoveControlError(cboRoom);
                 cboLocation.Properties.Buttons[1].Visible = false;
+                chkOpenWhenTreatmentFinish.Checked = false;
 
             }
             catch (Exception ex)
@@ -793,6 +809,10 @@ namespace HIS.Desktop.Plugins.HisEmrForm
                 {
                     updateDTO.EMR_FORM_GROUP_NAME = null;
                 }
+
+                updateDTO.IS_OPEN_WHEN_TREATMENT_FINISH = chkOpenWhenTreatmentFinish.Checked
+                    ? IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    : (short?)null;
             }
             catch (Exception ex)
             {

@@ -666,6 +666,9 @@
     <Compile Include="ExamServiceReqExecuteControl__ValidateExam.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__ValidateQd130.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ExamServiceReqExecuteControl__CheckDocumentHospitalize.cs">
       <SubType>UserControl</SubType>
     </Compile>

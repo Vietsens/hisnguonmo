@@ -65,6 +65,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string CONFIG_KEY__IS_REQUIRED_TREATMENT_METHOD_OPTION = "HIS.Desktop.Plugins.TreatmentFinish.RequiredTreatmentMethodOption";
         internal const string IS__TRUE = "1";
 
+        /// <summary>
+        /// Bat buoc nhap day du thong tin kham benh ngoai tru theo QD130 (dung chung voi man Xu ly kham).
+        /// - BAT (= 1): voi ho so co loai dieu tri Kham, kiem tra lai 9 nhom thong tin truoc khi ket thuc dieu tri.
+        /// - TAT (khac 1 hoac chua khai bao - mac dinh): giu nguyen hanh vi cu.
+        /// </summary>
+        private const string CONFIG_KEY__REQUIRED_FIELDS_QD130 = "HIS.DESKTOP.EXAM.REQUIRED_FIELDS_QD130";
+        internal static bool IsRequiredFieldsQd130;
+
         internal const string WARNING_OPTION = "HIS.DESKTOP.HIS_PATIENT_PROGRAM.NOT_HAS_EMR_COVER_TYPE.WARNING_OPTION";
         private const string SET_DEFAULT_TREATMENT_END_TYPE = "HIS.Desktop.Plugins.TreatmentFinish.SetDefaultTreatmentEndType";
         private const string TREATMENT_RESULT_DEFAULT = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentResultDefault";
@@ -215,6 +223,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 IsMustSetProgramWhenFinishingInPatient = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(MUST_SET_PROGRAM_WHEN_FINISHING_IN_PATIENT) == IS__TRUE;
                 IsNoMaterialInvoiceInfo = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(materialInvoiceInfo) == IS__TRUE;
                 RequiredTreatmentMethodOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IS_REQUIRED_TREATMENT_METHOD_OPTION);
+                IsRequiredFieldsQd130 = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__REQUIRED_FIELDS_QD130) == IS__TRUE;
                 string maxDayStr = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(MAX_OF_APPOINTMENT_DAYS);
                 if (!String.IsNullOrWhiteSpace(maxDayStr))
                 {

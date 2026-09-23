@@ -2943,11 +2943,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     return;
                 }
 
-                // Tìm bản ghi DPT theo (Khoa, ĐTTT) — KHÔNG lọc theo IS_AUTO/IS_NOT
-                // để bắt được cả trường hợp "có config nhưng cả 2 = 0" (cho phép sửa).
                 var match = depaPatientTypes.FirstOrDefault(o =>
                     o.DEPARTMENT_ID == this.requestRoom.DEPARTMENT_ID
-                    && o.PATIENT_TYPE_ID == patientTypeId);
+                    && o.PATIENT_TYPE_ID == patientTypeId
+                    && (o.IS_AUTO_EXPEND == 1 || o.IS_NOT_EXPEND == 1));
 
                 if (match == null)
                 {
@@ -2957,36 +2956,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     return;
                 }
 
-                // Ưu tiên IS_NOT_EXPEND trước → bỏ tích + khóa.
-                if (match.IS_NOT_EXPEND == 1)
-                {
-                    row.IsExpend = false;
-                    row.NotExpend = true;
-                    row.IsDisableExpend = true;
-                    row.IsExpendEditableByDpt = false;
-                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                        "ApplyExpendByDepaPatientType.APPLIED IS_NOT_EXPEND: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}",
-                        row.SERVICE_ID, this.requestRoom.DEPARTMENT_ID, patientTypeId));
-                }
-                // IS_AUTO_EXPEND → tự động tích + khóa.
-                else if (match.IS_AUTO_EXPEND == 1)
+                if (match.IS_AUTO_EXPEND == 1)
                 {
                     row.IsExpend = true;
                     row.NotExpend = true;
-                    row.IsDisableExpend = true;
-                    row.IsExpendEditableByDpt = false;
                     Inventec.Common.Logging.LogSystem.Debug(string.Format(
                         "ApplyExpendByDepaPatientType.APPLIED IS_AUTO_EXPEND: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}",
                         row.SERVICE_ID, this.requestRoom.DEPARTMENT_ID, patientTypeId));
                 }
-                // Cả 2 = 0 → lấy theo đơn đã kê (giữ nguyên IsExpend hiện tại), CHO PHÉP SỬA (ưu tiên cao nhất).
-                else
+                else if (match.IS_NOT_EXPEND == 1)
                 {
-                    row.NotExpend = false;
-                    row.IsDisableExpend = false;
-                    row.IsExpendEditableByDpt = true;
+                    row.IsExpend = false;
+                    row.NotExpend = true;
                     Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                        "ApplyExpendByDepaPatientType.BOTH_0 -> editable: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}",
+                        "ApplyExpendByDepaPatientType.APPLIED IS_NOT_EXPEND: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}",
                         row.SERVICE_ID, this.requestRoom.DEPARTMENT_ID, patientTypeId));
                 }
             }
@@ -3051,47 +3034,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return null;
-        }
-
-        /// <summary>
-        /// Nạp tập MATERIAL_TYPE_ID tích "Không hao phí" từ cache V_HIS_MATERIAL_TYPE.
-        /// Dùng cache nên không phụ thuộc thứ tự gọi API lúc load màn hình.
-        /// </summary>
-        internal void LoadNotExpendMaterialType()
-        {
-            try
-            {
-                this.notExpendMaterialTypeIds = new HashSet<long>(
-                    BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MATERIAL_TYPE>()
-                        .Where(o => o.IS_NOT_EXPEND == 1)
-                        .Select(o => o.ID));
-            }
-            catch (Exception ex)
-            {
-                this.notExpendMaterialTypeIds = new HashSet<long>();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Dòng vật tư có loại vật tư tích "Không hao phí" hay không.
-        /// Thuốc luôn trả false vì V_HIS_MEDICINE_TYPE không có cờ này.
-        /// </summary>
-        internal bool IsNotExpendMaterialType(MediMatyTypeADO row)
-        {
-            try
-            {
-                if (row == null || this.notExpendMaterialTypeIds == null || this.notExpendMaterialTypeIds.Count == 0)
-                    return false;
-                if (row.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
-                    return false;
-                return this.notExpendMaterialTypeIds.Contains(row.ID);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return false;
-            }
         }
 
         private void FillDataIntoExcuteRoomCombo(MediMatyTypeADO data, DevExpress.XtraEditors.GridLookUpEdit excuteRoomCombo)
