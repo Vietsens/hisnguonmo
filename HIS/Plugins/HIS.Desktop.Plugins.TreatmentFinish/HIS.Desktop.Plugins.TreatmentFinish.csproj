@@ -384,6 +384,9 @@
     <Compile Include="FormTreatmentFinish_EmrToolkit.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormTreatmentFinish_OpenEmr.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormTreatmentFinish_Print.cs">
       <SubType>Form</SubType>
     </Compile>

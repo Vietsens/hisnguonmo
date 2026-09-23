@@ -975,6 +975,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         {
                             ChkLienThongEmrToolkit.Checked = item.VALUE == "1";
                         }
+                        if (item.KEY == ChkMoPhieuVoBenhAn.Name)
+                        {
+                            ChkMoPhieuVoBenhAn.Checked = item.VALUE == "1";
+                        }
                     }
                 }
 
