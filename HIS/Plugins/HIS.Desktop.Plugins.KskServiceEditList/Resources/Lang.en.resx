@@ -117,70 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Plugins_TreatmentList__InDay" xml:space="preserve">
-    <value>Trong ngày</value>
+  <data name="frmKskServiceEditList.Text" xml:space="preserve">
+    <value>Edit health examination contract services</value>
   </data>
-  <data name="Plugins_TreatmentList__InMonth" xml:space="preserve">
-    <value>Trong tháng</value>
+  <data name="frmKskServiceEditList.lciContract.Text" xml:space="preserve">
+    <value>Contract:</value>
   </data>
-  <data name="Plugins_TreatmentList__KhongCoDuongDan" xml:space="preserve">
-    <value>Bạn chưa chọn đường đẫn</value>
+  <data name="frmKskServiceEditList.lciPatientCount.Text" xml:space="preserve">
+    <value>Apply to:</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__InMonth" xml:space="preserve">
-    <value>Trong tháng</value>
+  <data name="frmKskServiceEditList.lciLogin.Text" xml:space="preserve">
+    <value>Requester:</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__InTime" xml:space="preserve">
-    <value>Khoảng ngày</value>
+  <data name="frmKskServiceEditList.lciIntructionTime.Text" xml:space="preserve">
+    <value>Instruction time:</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__InYear" xml:space="preserve">
-    <value>Trong năm</value>
+  <data name="frmKskServiceEditList.lcgExist.Text" xml:space="preserve">
+    <value>Current services</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__KeyWork_InDate" xml:space="preserve">
-    <value>Trong ngày</value>
+  <data name="frmKskServiceEditList.lcgAdd.Text" xml:space="preserve">
+    <value>Add services</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__KeyWork_OutDate" xml:space="preserve">
-    <value>Trong ngày</value>
+  <data name="frmKskServiceEditList.lciKsk.Text" xml:space="preserve">
+    <value>KSK group:</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__OutMonth" xml:space="preserve">
-    <value>Trong tháng</value>
+  <data name="frmKskServiceEditList.lciKsk.ToolTip" xml:space="preserve">
+    <value>Health examination service group</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__OutTime" xml:space="preserve">
-    <value>Khoảng ngày</value>
+  <data name="frmKskServiceEditList.lciKskService.Text" xml:space="preserve">
+    <value>Service:</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__OutYear" xml:space="preserve">
-    <value>Trong năm</value>
+  <data name="frmKskServiceEditList.lciAddRoom.Text" xml:space="preserve">
+    <value>Execute room:</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind_InDate" xml:space="preserve">
-    <value>Trong ngày</value>
+  <data name="frmKskServiceEditList.btnAdd.Text" xml:space="preserve">
+    <value>Add</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind_OutDate" xml:space="preserve">
-    <value>Trong ngày</value>
+  <data name="frmKskServiceEditList.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl+S)</value>
   </data>
-  <data name="Plugins_TreatmentList__Thongbao" xml:space="preserve">
-    <value>Thông báo</value>
+  <data name="frmKskServiceEditList.gcExistStt.Caption" xml:space="preserve">
+    <value>No.</value>
   </data>
-  <data name="Plugins_TreatmentList__ThongTinHenKham" xml:space="preserve">
-    <value>Thông tin hẹn khám</value>
+  <data name="frmKskServiceEditList.gcExistServiceCode.Caption" xml:space="preserve">
+    <value>Service code</value>
   </data>
-  <data name="Plugins_TreatmentList__TranhCaoTai" xml:space="preserve">
-    <value>Để tránh cao tải hệ thống, đề nghị bạn nhập thông tin "Thời gian ra viện" hoặc "Thời gian vào viện" trước khi thực hiện tìm kiếm</value>
+  <data name="frmKskServiceEditList.gcExistServiceName.Caption" xml:space="preserve">
+    <value>Service name</value>
   </data>
-  <data name="Plugins_TreatmentList__ChoPhepDenBu" xml:space="preserve">
-    <value>Cho phép đền bù</value>
+  <data name="frmKskServiceEditList.gcExistServiceType.Caption" xml:space="preserve">
+    <value>Service type</value>
   </data>
-  <data name="Plugins_TreatmentList__HuyChoPhepDenBu" xml:space="preserve">
-    <value>Hủy cho phép đền bù</value>
+  <data name="frmKskServiceEditList.gcExistPatientCount.Caption" xml:space="preserve">
+    <value>Patients</value>
   </data>
-  <data name="Plugins_TreatmentList__XacNhanChoPhepDenBu" xml:space="preserve">
-    <value>Cho phép đền bù?</value>
+  <data name="frmKskServiceEditList.gcExistPatientCount.ToolTip" xml:space="preserve">
+    <value>Patients having the service / selected patients</value>
   </data>
-  <data name="Plugins_TreatmentList__XacNhanHuyChoPhepDenBu" xml:space="preserve">
-    <value>Hủy cho phép đền bù?</value>
+  <data name="frmKskServiceEditList.gcExistExecutedCount.Caption" xml:space="preserve">
+    <value>Executed</value>
   </data>
-  <data name="Plugins_TreatmentList__ChuaChonBenhNhanSuaDichVuKsk" xml:space="preserve">
-    <value>Chưa chọn bệnh nhân.</value>
+  <data name="frmKskServiceEditList.gcExistExecutedCount.ToolTip" xml:space="preserve">
+    <value>Patients already executed (cannot delete or change room)</value>
   </data>
-  <data name="Plugins_TreatmentList__HoSoKhongThuocHopDongKsk" xml:space="preserve">
-    <value>Các hồ sơ sau không thuộc hợp đồng khám sức khỏe đang lọc: {0}</value>
+  <data name="frmKskServiceEditList.gcExistCurrentRoom.Caption" xml:space="preserve">
+    <value>Current room</value>
+  </data>
+  <data name="frmKskServiceEditList.gcExistIsDelete.Caption" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="frmKskServiceEditList.gcExistIsDelete.ToolTip" xml:space="preserve">
+    <value>Remove the service from selected patients</value>
+  </data>
+  <data name="frmKskServiceEditList.gcExistNewRoom.Caption" xml:space="preserve">
+    <value>New room</value>
+  </data>
+  <data name="frmKskServiceEditList.gcExistNewRoom.ToolTip" xml:space="preserve">
+    <value>Change the execute room of the service</value>
+  </data>
+  <data name="frmKskServiceEditList.gcAddStt.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmKskServiceEditList.gcAddServiceCode.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="frmKskServiceEditList.gcAddServiceName.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="frmKskServiceEditList.gcAddKskName.Caption" xml:space="preserve">
+    <value>KSK group</value>
+  </data>
+  <data name="frmKskServiceEditList.gcAddRoomName.Caption" xml:space="preserve">
+    <value>Execute room</value>
+  </data>
+  <data name="frmKskServiceEditList.gcAddAmount.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmKskServiceEditList.gcAddPrice.Caption" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="frmKskServiceEditList.gcAddPrice.ToolTip" xml:space="preserve">
+    <value>Price of the KSK group (VAT included). Empty: price policy</value>
+  </data>
+  <data name="frmKskServiceEditResult.Text" xml:space="preserve">
+    <value>Service edit result</value>
+  </data>
+  <data name="frmKskServiceEditResult.lciSummary.Text" xml:space="preserve">
+    <value>Summary:</value>
+  </data>
+  <data name="frmKskServiceEditResult.btnExport.Text" xml:space="preserve">
+    <value>Export Excel</value>
+  </data>
+  <data name="frmKskServiceEditResult.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmKskServiceEditResult.gcResStt.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmKskServiceEditResult.gcResTreatmentCode.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="frmKskServiceEditResult.gcResPatientName.Caption" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="frmKskServiceEditResult.gcResAction.Caption" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="frmKskServiceEditResult.gcResServiceCode.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="frmKskServiceEditResult.gcResServiceName.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="frmKskServiceEditResult.gcResResult.Caption" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="frmKskServiceEditResult.gcResDescription.Caption" xml:space="preserve">
+    <value>Reason</value>
   </data>
 </root>

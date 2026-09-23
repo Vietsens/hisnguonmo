@@ -117,70 +117,65 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Plugins_TreatmentList__InDay" xml:space="preserve">
-    <value>Trong ngày</value>
+  <data name="LoiKetNoiChuaXuLy" xml:space="preserve">
+    <value>Connection error, the treatment was not processed</value>
   </data>
-  <data name="Plugins_TreatmentList__InMonth" xml:space="preserve">
-    <value>Trong tháng</value>
+  <data name="NhieuPhong" xml:space="preserve">
+    <value>Multiple rooms</value>
   </data>
-  <data name="Plugins_TreatmentList__KhongCoDuongDan" xml:space="preserve">
-    <value>Bạn chưa chọn đường đẫn</value>
+  <data name="ApDungChoBenhNhan" xml:space="preserve">
+    <value>{0} patients</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__InMonth" xml:space="preserve">
-    <value>Trong tháng</value>
+  <data name="KhongCoThayDoi" xml:space="preserve">
+    <value>There are no changes to save.</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__InTime" xml:space="preserve">
-    <value>Khoảng ngày</value>
+  <data name="DichVuChiDuocMotThaoTac" xml:space="preserve">
+    <value>Each service can only have one action (add, delete or change room): {0}</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__InYear" xml:space="preserve">
-    <value>Trong năm</value>
+  <data name="HopDongHetHieuLuc" xml:space="preserve">
+    <value>The health examination contract has expired, cannot add services or change rooms.</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__KeyWork_InDate" xml:space="preserve">
-    <value>Trong ngày</value>
+  <data name="XacNhanApDung" xml:space="preserve">
+    <value>Apply changes to {0} patients?</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__KeyWork_OutDate" xml:space="preserve">
-    <value>Trong ngày</value>
+  <data name="DichVuDaCoTrongDanhSachThem" xml:space="preserve">
+    <value>Service {0} is already in the add list.</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__OutMonth" xml:space="preserve">
-    <value>Trong tháng</value>
+  <data name="ChuaChonDichVu" xml:space="preserve">
+    <value>No service selected.</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__OutTime" xml:space="preserve">
-    <value>Khoảng ngày</value>
+  <data name="ChuaChonPhong" xml:space="preserve">
+    <value>No execute room selected.</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind__OutYear" xml:space="preserve">
-    <value>Trong năm</value>
+  <data name="TongHopKetQua" xml:space="preserve">
+    <value>Treatments: {0}. Success: {1}. Error: {2}.
+Added: {3} (skipped, already exists: {4}). Deleted: {5} (not deleted: {6}). Room changed: {7} (not changed: {8}).</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind_InDate" xml:space="preserve">
-    <value>Trong ngày</value>
+  <data name="ChuaXuLyDoMatPhien" xml:space="preserve">
+    <value>{0} treatments were not processed because the session expired.</value>
   </data>
-  <data name="Plugins_TreatmentList__typeCodeFind_OutDate" xml:space="preserve">
-    <value>Trong ngày</value>
+  <data name="ThaoTacThem" xml:space="preserve">
+    <value>Add service</value>
   </data>
-  <data name="Plugins_TreatmentList__Thongbao" xml:space="preserve">
-    <value>Thông báo</value>
+  <data name="ThaoTacXoa" xml:space="preserve">
+    <value>Delete service</value>
   </data>
-  <data name="Plugins_TreatmentList__ThongTinHenKham" xml:space="preserve">
-    <value>Thông tin hẹn khám</value>
+  <data name="ThaoTacDoiPhong" xml:space="preserve">
+    <value>Change execute room</value>
   </data>
-  <data name="Plugins_TreatmentList__TranhCaoTai" xml:space="preserve">
-    <value>Để tránh cao tải hệ thống, đề nghị bạn nhập thông tin "Thời gian ra viện" hoặc "Thời gian vào viện" trước khi thực hiện tìm kiếm</value>
+  <data name="KetQuaThanhCong" xml:space="preserve">
+    <value>Success</value>
   </data>
-  <data name="Plugins_TreatmentList__ChoPhepDenBu" xml:space="preserve">
-    <value>Cho phép đền bù</value>
+  <data name="KetQuaBoQua" xml:space="preserve">
+    <value>Skipped</value>
   </data>
-  <data name="Plugins_TreatmentList__HuyChoPhepDenBu" xml:space="preserve">
-    <value>Hủy cho phép đền bù</value>
+  <data name="KetQuaLoi" xml:space="preserve">
+    <value>Error</value>
   </data>
-  <data name="Plugins_TreatmentList__XacNhanChoPhepDenBu" xml:space="preserve">
-    <value>Cho phép đền bù?</value>
+  <data name="XuatFileThanhCongMoFile" xml:space="preserve">
+    <value>Export succeeded. Do you want to open the file?</value>
   </data>
-  <data name="Plugins_TreatmentList__XacNhanHuyChoPhepDenBu" xml:space="preserve">
-    <value>Hủy cho phép đền bù?</value>
-  </data>
-  <data name="Plugins_TreatmentList__ChuaChonBenhNhanSuaDichVuKsk" xml:space="preserve">
-    <value>Chưa chọn bệnh nhân.</value>
-  </data>
-  <data name="Plugins_TreatmentList__HoSoKhongThuocHopDongKsk" xml:space="preserve">
-    <value>Các hồ sơ sau không thuộc hợp đồng khám sức khỏe đang lọc: {0}</value>
+  <data name="ChuaCoDichVu" xml:space="preserve">
+    <value>The selected patients have no services.</value>
   </data>
 </root>
