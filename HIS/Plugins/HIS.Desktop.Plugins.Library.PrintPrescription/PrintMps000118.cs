@@ -55,6 +55,19 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
         short IS_TRUE = 1;
 
         List<ExpMestMedicineSDO> listGayNghien;
+
+        //Đơn gây nghiện in gộp: mỗi phiếu xuất là một đợt, phải gom hết rồi in một lần sau vòng lặp.
+        //Thông tin đầu đơn lấy theo phiếu xuất ĐẦU TIÊN có thuốc gây nghiện.
+        List<ExpMestMedicineSDO> listGayNghienTatCaPhieu;
+        List<HIS_SERVICE_REQ> lstServiceReqGayNghien;
+        private HIS_EXP_MEST expMestGayNghienDau;
+        private HIS_SERVICE_REQ serviceReqGayNghienDau;
+        private HIS_TRANS_REQ transReqGayNghienDau;
+        private string expMestCodeGayNghienDau;
+        private string mediStockNameGayNghienDau;
+        private V_HIS_ROOM executeRoomGayNghienDau;
+        private V_HIS_ROOM reqRoomGayNghienDau;
+
         List<ExpMestMedicineSDO> listHuongThan;
         List<ExpMestMedicineSDO> listTPCN;
         List<ExpMestMedicineSDO> listSPHoTro;
@@ -149,6 +162,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     }
 
                     treatmentCode = (hisTreatment != null ? hisTreatment.TREATMENT_CODE : "");
+
+                    listGayNghienTatCaPhieu = new List<ExpMestMedicineSDO>();
+                    lstServiceReqGayNghien = new List<HIS_SERVICE_REQ>();
 
                     foreach (var item in ExpMests)
                     {
@@ -503,7 +519,24 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         #region gay Nghien V2 3 lien
                         if (listGayNghien != null && listGayNghien.Count > 0)
                         {
-                            InGayNghien();
+                            //Gom lại, in một lần sau vòng lặp để đơn mang đủ các đợt
+                            listGayNghienTatCaPhieu.AddRange(listGayNghien);
+
+                            if (HisPrescriptionSDOPrintPlus != null && !lstServiceReqGayNghien.Exists(o => o.ID == HisPrescriptionSDOPrintPlus.ID))
+                            {
+                                lstServiceReqGayNghien.Add(HisPrescriptionSDOPrintPlus);
+                            }
+
+                            if (expMestGayNghienDau == null)
+                            {
+                                expMestGayNghienDau = this.HisExpMest;
+                                serviceReqGayNghienDau = HisPrescriptionSDOPrintPlus;
+                                transReqGayNghienDau = this.transReq;
+                                expMestCodeGayNghienDau = expMestCode;
+                                mediStockNameGayNghienDau = mediStockName;
+                                executeRoomGayNghienDau = executeRoom;
+                                reqRoomGayNghienDau = reqRoom;
+                            }
                         }
 
                         if (listHuongThan != null && listHuongThan.Count > 0)
@@ -597,6 +630,21 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             InHCHT();
                         }
                         #endregion
+                    }
+
+                    //In đơn gây nghiện MỘT lần cho tất cả phiếu xuất, mỗi y lệnh là một đợt
+                    if (listGayNghienTatCaPhieu.Count > 0)
+                    {
+                        this.HisExpMest = expMestGayNghienDau;
+                        HisPrescriptionSDOPrintPlus = serviceReqGayNghienDau;
+                        this.transReq = transReqGayNghienDau;
+                        expMestCode = expMestCodeGayNghienDau;
+                        mediStockName = mediStockNameGayNghienDau;
+                        executeRoom = executeRoomGayNghienDau;
+                        reqRoom = reqRoomGayNghienDau;
+                        listGayNghien = listGayNghienTatCaPhieu;
+
+                        InGayNghien();
                     }
                 }
             }
@@ -876,7 +924,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     //Lọc thuốc theo thứ tự
                     listGayNghien = listGayNghien.OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
                     List<MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO> listN = new List<MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO>();
-                    var group = listGayNghien.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                    //Gom kèm TDL_SERVICE_REQ_ID, nếu bỏ chiều này thì cùng một thuốc ở 2 đợt bị dồn về đợt đầu, đợt sau mất sạch dòng
+                    var group = listGayNghien.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, o.TDL_SERVICE_REQ_ID });
                     foreach (var itemN in group)
                     {
                         MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO();
@@ -915,6 +964,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         this.HisExpMest,
                         this.transReq,
                         this.lstConfigs);
+
+                    //Danh sách y lệnh để processor dựng băng Phase (mỗi y lệnh một đợt)
+                    mps000181PDO.lstHisServiceReq = lstServiceReqGayNghien;
 
                     Print.PrintData(printTypeCode, fileName, mps000181PDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, listGayNghien.Count, this.SavedData, numCopy);
                     //PrintData(printTypeCode, fileName, mps000181PDO, printNow, numCopy, ref result);

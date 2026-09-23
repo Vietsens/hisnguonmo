@@ -485,6 +485,8 @@ namespace MPS.Processor.Mps000181
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
 
+                LogPhase("ProcessData bat dau");
+
                 SetBarcodeKey();
                 SetSingleKey();
                 ProcessListData();
@@ -558,10 +560,11 @@ namespace MPS.Processor.Mps000181
             return result;
         }
 
-        //Log lần vết băng Phase/Medicine. Stamp trong chuỗi để biết DLL đang chạy đã đúng bản chưa
+        //Log lần vết băng Phase/Medicine. Ghi mức Error vì appender chặn Debug/Warn ở nhiều cấu hình.
+        //Stamp trong chuỗi để biết DLL đang chạy đã đúng bản chưa
         private void LogPhase(string message)
         {
-            Inventec.Common.Logging.LogSystem.Warn("MPS000181[phase-fallback-v1] " + message);
+            Inventec.Common.Logging.LogSystem.Error("MPS000181[phase-v3-theo-y-lenh] " + message);
         }
 
         private void ProcessListData()
@@ -611,14 +614,28 @@ namespace MPS.Processor.Mps000181
                     allMedicines.Count,
                     lstServiceReq == null ? "null" : lstServiceReq.Count.ToString()));
 
+                if (rdo.lstHisServiceReq == null || rdo.lstHisServiceReq.Count == 0)
+                {
+                    LogPhase("Khong co lstHisServiceReq -> fallback 1 dot tu vHisPrescription5. Luong in nay moi ban in chi mang 1 y lenh nen khong the ra 2 dot.");
+                }
+
+                if (lstServiceReq != null)
+                {
+                    foreach (var req in lstServiceReq)
+                    {
+                        LogPhase(string.Format("  y lenh ID={0}, CODE={1}, INTRUCTION_DATE={2}, USE_TIME={3}, USE_TIME_TO={4}",
+                            req.ID, req.SERVICE_REQ_CODE, req.INTRUCTION_DATE, req.USE_TIME, req.USE_TIME_TO));
+                    }
+                }
+
                 if (lstServiceReq != null && lstServiceReq.Count > 0)
                 {
                     var group = lstServiceReq
-                        .GroupBy(req => req.INTRUCTION_DATE > 0 ? (long?)req.INTRUCTION_DATE : null)
-                        .OrderBy(g => g.Key)
+                        .GroupBy(req => (long?)req.ID)
+                        .OrderBy(g => g.Min(o => o.USE_TIME.HasValue && o.USE_TIME.Value > 0 ? o.USE_TIME.Value : o.INTRUCTION_TIME))
                         .ToList();
 
-                    LogPhase(string.Format("Gom duoc {0} dot theo INTRUCTION_DATE", group.Count));
+                    LogPhase(string.Format("Gom duoc {0} dot (moi y lenh mot dot)", group.Count));
 
                     foreach (var item in group)
                     {
