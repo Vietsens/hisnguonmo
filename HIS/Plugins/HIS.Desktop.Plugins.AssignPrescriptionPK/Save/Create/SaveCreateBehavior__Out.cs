@@ -98,6 +98,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
                     string storeCode = result.MediRecord.STORE_CODE;
                     frmAssignPrescription.treatmentFinishProcessor.UpdateStoreCode(frmAssignPrescription.ucTreatmentFinish, storeCode);
                 }
+
+                if (result != null)
+                {
+                    //Tao yeu cau thanh toan cho phan hang mua ngoai de cap ma QR in len don.
+                    //Khong du dieu kien hoac that bai thi tra ve null, don van luu binh thuong.
+                    frmAssignPrescription.OutStockPresTransReq = OutStockPresQr.OutStockPresQrProcessor.Create(
+                        result, this.DrugStoreId, this.RequestRoomId);
+                }
             }
 
             return result;
