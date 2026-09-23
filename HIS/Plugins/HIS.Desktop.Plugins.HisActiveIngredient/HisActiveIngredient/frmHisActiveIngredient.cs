@@ -486,10 +486,8 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
                     {
                         try
                         {
-                            //Muc do KS can phe duyet: 1 = Chan, 2 = Canh bao, trong = chua chon (xu ly nhu Canh bao)
-                            e.Value = pData.APPROVAL_REQUIRED_LEVEL == 1 ? "Chặn"
-                                : pData.APPROVAL_REQUIRED_LEVEL == 2 ? "Cảnh báo"
-                                : "";
+                            //Co "Chan" KS can phe duyet: 1 = Chan, trong = Canh bao (hanh vi cu)
+                            e.Value = pData.APPROVAL_REQUIRED_LEVEL == 1;
                         }
                         catch (Exception ex)
                         {
@@ -584,7 +582,6 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
                     ChkConsulation.Checked = data.IS_CONSULTATION_REQUIRED == 1 ? true : false;
                     chkDS.Checked = data.IS_APPROVAL_REQUIRED == 1 ? true : false;
                     chkBlock.Checked = chkDS.Checked && data.APPROVAL_REQUIRED_LEVEL == 1;
-                    chkWarning.Checked = chkDS.Checked && data.APPROVAL_REQUIRED_LEVEL == 2;
                     txtNote.Text = data.NOTE;
                 }
             }
@@ -914,11 +911,9 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
                 if (chkDS.Checked)
                 {
                     currentDTO.IS_APPROVAL_REQUIRED = 1;
-                    //Muc do: 1 = Chan (sau khi luu don bat buoc tao phieu yeu cau), 2 = Canh bao (chi nhac, bo qua duoc),
-                    //trong = chua chon -> xu ly nhu Canh bao (hanh vi cu)
-                    currentDTO.APPROVAL_REQUIRED_LEVEL = chkBlock.Checked ? (short?)1
-                        : chkWarning.Checked ? (short?)2
-                        : null;
+                    //Co "Chan": 1 = Chan (sau khi luu don bat buoc tao phieu yeu cau);
+                    //trong = Canh bao (chi nhac, bo qua duoc — hanh vi cu)
+                    currentDTO.APPROVAL_REQUIRED_LEVEL = chkBlock.Checked ? (short?)1 : null;
                 }
                 else
                 {
@@ -1413,21 +1408,6 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkWarning.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void chkWarning_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
                     txtNote.Focus();
                     txtNote.SelectAll();
                 }
@@ -1439,8 +1419,8 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
         }
 
         /// <summary>
-        /// Muc do "Chan" / "Canh bao" chi co y nghia khi hoat chat da tick "KS can phe duyet":
-        /// bo tick thi xoa muc do va khoa 2 checkbox
+        /// Co "Chan" chi co y nghia khi hoat chat da tick "KS can phe duyet":
+        /// bo tick thi xoa co va khoa checkbox
         /// </summary>
         private void chkDS_CheckedChanged(object sender, EventArgs e)
         {
@@ -1448,42 +1428,7 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             {
                 bool enable = chkDS.Checked;
                 chkBlock.Enabled = enable;
-                chkWarning.Enabled = enable;
                 if (!enable)
-                {
-                    chkBlock.Checked = false;
-                    chkWarning.Checked = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        /// <summary>
-        /// "Chan" va "Canh bao" loai tru nhau: moi hoat chat chi mang mot muc do tai mot thoi diem
-        /// </summary>
-        private void chkBlock_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (chkBlock.Checked && chkWarning.Checked)
-                {
-                    chkWarning.Checked = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void chkWarning_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (chkWarning.Checked && chkBlock.Checked)
                 {
                     chkBlock.Checked = false;
                 }

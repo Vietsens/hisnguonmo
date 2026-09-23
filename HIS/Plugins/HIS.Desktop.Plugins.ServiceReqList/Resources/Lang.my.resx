@@ -685,4 +685,19 @@
   <data name="frmServiceReqList.lciTestSampleTypeName.Text" xml:space="preserve">
     <value>နမူနာအမျိုးအစား-</value>
   </data>
+  <data name="frmServiceReqList.lciSentExt.Text" xml:space="preserve">
+    <value>Integration:</value>
+  </data>
+  <data name="frmServiceReqList.cboSentExt.Sent" xml:space="preserve">
+    <value>Request sent</value>
+  </data>
+  <data name="frmServiceReqList.cboSentExt.NotSent" xml:space="preserve">
+    <value>Request not sent</value>
+  </data>
+  <data name="frmServiceReqList.btnResendIntegration.Text" xml:space="preserve">
+    <value>Resend request</value>
+  </data>
+  <data name="frmServiceReqList.btnResendIntegration.ToolTip" xml:space="preserve">
+    <value>Resend the selected requests to the integrated system</value>
+  </data>
 </root>

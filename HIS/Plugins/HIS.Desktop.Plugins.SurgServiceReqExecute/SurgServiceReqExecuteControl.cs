@@ -213,12 +213,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     lciIcdCmCode.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
                 }
-                // PTTK_XXXXX_Bat_Buoc_Nhap_Mo_Ta_Truoc_Khi_Ket_Thuc_PTTT: danh dau tab "Mo ta" bat buoc theo config
-                if (HisConfigKeys.IsRequiredPtttDescriptionWhenFinish == "1" || (HisConfigKeys.IsRequiredPtttDescriptionWhenFinish == "2" && this.serviceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__PT))
-                {
-                    xtraTabPageMoTa.Appearance.Header.ForeColor = System.Drawing.Color.Maroon;
-                    xtraTabPageMoTa.Appearance.Header.Options.UseForeColor = true;
-                }
+                // PTTK_XXXXX_Bat_Buoc_Nhap_Mo_Ta_Truoc_Khi_Ket_Thuc_PTTT:
+                // KHONG danh dau tab "Mo ta" bat buoc - luu khi chua ket thuc van khong yeu cau Mo ta,
+                // chi rang buoc dung o thoi diem ket thuc (xem ValidateRequiredDescriptionBeforeFinish)
                 timerInitForm.Enabled = true;
                 timerInitForm.Start();
                 isNotLoadWhileChangeControlStateInFirst = false;
