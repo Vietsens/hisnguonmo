@@ -439,6 +439,9 @@
     <Compile Include="SurgServiceReqExecuteControl___Combo.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="SurgServiceReqExecuteControl___MultiMachine.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SurgServiceReqExecuteControl___Load.cs">
       <SubType>UserControl</SubType>
     </Compile>

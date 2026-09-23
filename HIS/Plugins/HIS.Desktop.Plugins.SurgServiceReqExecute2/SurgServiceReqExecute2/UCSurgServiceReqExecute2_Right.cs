@@ -963,13 +963,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         {
             try
             {
-                // Bỏ qua khi không có máy HOẶC người dùng đã xóa máy trên giao diện (ô hiển thị trống).
-                // Đọc cboMachine.Text (chỉ đọc hiển thị, không commit) để phản ánh đúng thao tác xóa,
-                // tránh gọi API gây message pump -> combo repaint -> hiện lại máy cũ.
+                // Bỏ qua khi không còn máy nào được tích. Đọc thẳng danh sách máy đang chọn thay vì
+                // cboMachine.Text: khi tích từ 2 máy trở lên, tên máy hiện qua NullText nên Text rỗng.
                 if (savingExt == null
                     || savingExt.MACHINE_ID == null || savingExt.MACHINE_ID <= 0
-                    || cboMachine_v45072 == null
-                    || string.IsNullOrWhiteSpace(cboMachine_v45072.Text))
+                    || this.currentMachineIds_MM == null || this.currentMachineIds_MM.Count == 0)
                     return true;
 
                 var extList = new List<HIS_SERE_SERV_EXT>
@@ -979,6 +977,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                         // ID + TDL_SERVICE_REQ_ID lấy từ bản ghi cũ để backend loại trừ chính nó
                         ID = currentSereServExt_v45072 != null ? currentSereServExt_v45072.ID : 0,
                         MACHINE_ID = savingExt.MACHINE_ID,
+                        // gửi CẢ danh sách máy để backend kiểm tra trùng giờ cho từng máy đã tích
+                        MACHINE_IDS = savingExt.MACHINE_IDS,
+                        MACHINE_CODES = savingExt.MACHINE_CODES,
                         TDL_SERVICE_REQ_ID = currentSereServExt_v45072 != null ? currentSereServExt_v45072.TDL_SERVICE_REQ_ID : currentRow.SERVICE_REQ_ID,
                         BEGIN_TIME = savingExt.BEGIN_TIME,
                         END_TIME = savingExt.END_TIME
