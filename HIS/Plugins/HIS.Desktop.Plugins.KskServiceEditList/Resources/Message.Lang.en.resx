@@ -129,23 +129,14 @@
   <data name="KhongCoThayDoi" xml:space="preserve">
     <value>There are no changes to save.</value>
   </data>
-  <data name="DichVuChiDuocMotThaoTac" xml:space="preserve">
-    <value>Each service can only have one action (add, delete or change room): {0}</value>
+  <data name="DichVuKhongThuocNhomKsk" xml:space="preserve">
+    <value>The following services are not in the contract health examination groups and cannot be added: {0}</value>
   </data>
   <data name="HopDongHetHieuLuc" xml:space="preserve">
     <value>The health examination contract has expired, cannot add services or change rooms.</value>
   </data>
   <data name="XacNhanApDung" xml:space="preserve">
     <value>Apply changes to {0} patients?</value>
-  </data>
-  <data name="DichVuDaCoTrongDanhSachThem" xml:space="preserve">
-    <value>Service {0} is already in the add list.</value>
-  </data>
-  <data name="ChuaChonDichVu" xml:space="preserve">
-    <value>No service selected.</value>
-  </data>
-  <data name="ChuaChonPhong" xml:space="preserve">
-    <value>No execute room selected.</value>
   </data>
   <data name="TongHopKetQua" xml:space="preserve">
     <value>Treatments: {0}. Success: {1}. Error: {2}.
@@ -174,8 +165,5 @@ Added: {3} (skipped, already exists: {4}). Deleted: {5} (not deleted: {6}). Room
   </data>
   <data name="XuatFileThanhCongMoFile" xml:space="preserve">
     <value>Export succeeded. Do you want to open the file?</value>
-  </data>
-  <data name="ChuaCoDichVu" xml:space="preserve">
-    <value>The selected patients have no services.</value>
   </data>
 </root>

@@ -70,13 +70,13 @@ namespace HIS.Desktop.Plugins.KskServiceEditList.Resources
             }
         }
 
-        internal static string DichVuChiDuocMotThaoTac
+        internal static string DichVuKhongThuocNhomKsk
         {
             get
             {
                 try
                 {
-                    return Inventec.Common.Resource.Get.Value("DichVuChiDuocMotThaoTac", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    return Inventec.Common.Resource.Get.Value("DichVuKhongThuocNhomKsk", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {
@@ -109,54 +109,6 @@ namespace HIS.Desktop.Plugins.KskServiceEditList.Resources
                 try
                 {
                     return Inventec.Common.Resource.Get.Value("XacNhanApDung", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(ex);
-                }
-                return "";
-            }
-        }
-
-        internal static string DichVuDaCoTrongDanhSachThem
-        {
-            get
-            {
-                try
-                {
-                    return Inventec.Common.Resource.Get.Value("DichVuDaCoTrongDanhSachThem", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(ex);
-                }
-                return "";
-            }
-        }
-
-        internal static string ChuaChonDichVu
-        {
-            get
-            {
-                try
-                {
-                    return Inventec.Common.Resource.Get.Value("ChuaChonDichVu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(ex);
-                }
-                return "";
-            }
-        }
-
-        internal static string ChuaChonPhong
-        {
-            get
-            {
-                try
-                {
-                    return Inventec.Common.Resource.Get.Value("ChuaChonPhong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {
@@ -301,22 +253,6 @@ namespace HIS.Desktop.Plugins.KskServiceEditList.Resources
                 try
                 {
                     return Inventec.Common.Resource.Get.Value("XuatFileThanhCongMoFile", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(ex);
-                }
-                return "";
-            }
-        }
-
-        internal static string ChuaCoDichVu
-        {
-            get
-            {
-                try
-                {
-                    return Inventec.Common.Resource.Get.Value("ChuaCoDichVu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {

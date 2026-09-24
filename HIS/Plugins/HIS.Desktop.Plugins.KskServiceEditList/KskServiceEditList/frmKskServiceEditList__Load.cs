@@ -1,6 +1,4 @@
 ﻿using ACS.EFMODEL.DataModels;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraEditors.Repository;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.KskServiceEditList.ADO;
 using HIS.Desktop.Plugins.KskServiceEditList.Worker;
@@ -43,6 +41,7 @@ namespace HIS.Desktop.Plugins.KskServiceEditList
                 this.lblPatientCount.Text = String.Format(Resources.ResourceMessage.ApDungChoBenhNhan, this.treatments.Count);
                 this.cboLogin.EditValue = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 this.dtIntructionTime.DateTime = DateTime.Now;
+                this.toggleSwitch.IsOn = false;
             }
             catch (Exception ex)
             {
@@ -51,28 +50,21 @@ namespace HIS.Desktop.Plugins.KskServiceEditList
         }
 
         /// <summary>
-        /// Lấy dịch vụ của các hồ sơ đã chọn, gộp theo SERVICE_ID rồi bind grid "Dịch vụ hiện có"
+        /// Dựng danh sách dòng dịch vụ (giống allSereServ của "Sửa chỉ định dịch vụ"):
+        /// dịch vụ các hồ sơ đang có (tick sẵn) + dịch vụ trong nhóm dịch vụ KSK của hợp đồng (chưa tick).
         /// </summary>
-        private void LoadExistServices()
+        private void LoadServiceRows()
         {
             try
             {
                 WaitingManager.Show();
                 List<HIS_SERE_SERV> sereServs = new KskServiceEditWorker().GetSereServs(this.treatments.Select(o => o.ID).ToList());
-                this.BuildRoomLookup();
-                this.existServices = this.BuildExistServices(sereServs);
+                this.roomsByService = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToLookup(o => o.SERVICE_ID, o => new RoomADO { ID = o.ROOM_ID, ROOM_CODE = o.ROOM_CODE, ROOM_NAME = o.ROOM_NAME });
+                Dictionary<long, HIS_KSK_SERVICE> kskServiceDic = this.GetKskServiceOfContract();
+                this.allServiceRows = this.BuildServiceRows(sereServs, kskServiceDic);
                 WaitingManager.Hide();
-
-                this.gridViewExist.BeginUpdate();
-                try
-                {
-                    this.gridControlExist.DataSource = null;
-                    this.gridControlExist.DataSource = this.existServices;
-                }
-                finally
-                {
-                    this.gridViewExist.EndUpdate();
-                }
             }
             catch (Exception ex)
             {
@@ -81,149 +73,91 @@ namespace HIS.Desktop.Plugins.KskServiceEditList
             }
         }
 
-        private void BuildRoomLookup()
+        /// <summary>
+        /// Dịch vụ trong nhóm dịch vụ KSK của hợp đồng (ưu tiên) và nhóm dùng chung (không gắn hợp đồng).
+        /// 1 dịch vụ lấy 1 dòng nhóm KSK để thêm (giá, số lượng, phòng mặc định — giống Import).
+        /// </summary>
+        private Dictionary<long, HIS_KSK_SERVICE> GetKskServiceOfContract()
         {
-            this.roomsByService = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>()
-                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                .ToLookup(o => o.SERVICE_ID, o => new RoomADO { ID = o.ROOM_ID, ROOM_CODE = o.ROOM_CODE, ROOM_NAME = o.ROOM_NAME });
+            Dictionary<long, HIS_KSK> kskDic = BackendDataWorker.Get<HIS_KSK>()
+                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && (o.KSK_CONTRACT_ID == this.kskContract.ID || !o.KSK_CONTRACT_ID.HasValue))
+                .ToDictionary(o => o.ID);
+            return BackendDataWorker.Get<HIS_KSK_SERVICE>()
+                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && kskDic.ContainsKey(o.KSK_ID))
+                .GroupBy(o => o.SERVICE_ID)
+                .ToDictionary(g => g.Key, g => g.OrderByDescending(o => kskDic[o.KSK_ID].KSK_CONTRACT_ID.HasValue).ThenBy(o => o.KSK_ID).First());
         }
 
-        /// <summary>
-        /// Gộp dịch vụ theo SERVICE_ID — tính sẵn chuỗi hiển thị trước khi bind
-        /// </summary>
-        private List<ExistServiceADO> BuildExistServices(List<HIS_SERE_SERV> sereServs)
+        private List<ServiceRowADO> BuildServiceRows(List<HIS_SERE_SERV> sereServs, Dictionary<long, HIS_KSK_SERVICE> kskServiceDic)
         {
-            List<ExistServiceADO> result = new List<ExistServiceADO>();
-            if (sereServs == null || !sereServs.Any()) return result;
-
-            Dictionary<long, HIS_SERVICE_TYPE> serviceTypeDic = BackendDataWorker.Get<HIS_SERVICE_TYPE>().ToDictionary(o => o.ID);
+            Dictionary<long, V_HIS_SERVICE> serviceDic = BackendDataWorker.Get<V_HIS_SERVICE>().ToDictionary(o => o.ID);
             Dictionary<long, V_HIS_ROOM> roomDic = BackendDataWorker.Get<V_HIS_ROOM>().ToDictionary(o => o.ID);
+            this.roomNameDic = roomDic.ToDictionary(o => o.Key, o => o.Value.ROOM_NAME);
+            ILookup<long, HIS_SERE_SERV> sereServByService = (sereServs ?? new List<HIS_SERE_SERV>()).ToLookup(o => o.SERVICE_ID);
+            HashSet<long> serviceIds = new HashSet<long>(sereServByService.Select(g => g.Key));
+            serviceIds.UnionWith(kskServiceDic.Keys);
             int total = this.treatments.Count;
 
-            foreach (IGrouping<long, HIS_SERE_SERV> g in sereServs.GroupBy(o => o.SERVICE_ID))
+            List<ServiceRowADO> result = new List<ServiceRowADO>();
+            foreach (long serviceId in serviceIds)
             {
-                HIS_SERE_SERV first = g.First();
-                ExistServiceADO ado = new ExistServiceADO();
-                ado.SERVICE_ID = g.Key;
-                ado.SERVICE_CODE = first.TDL_SERVICE_CODE;
-                ado.SERVICE_NAME = first.TDL_SERVICE_NAME;
-                HIS_SERVICE_TYPE serviceType;
-                ado.SERVICE_TYPE_NAME = serviceTypeDic.TryGetValue(first.TDL_SERVICE_TYPE_ID, out serviceType) ? serviceType.SERVICE_TYPE_NAME : "";
-                ado.PatientCount = g.Select(o => o.TDL_TREATMENT_ID).Distinct().Count();
-                ado.PatientCountDisplay = ado.PatientCount + "/" + total;
-                ado.ExecutedCount = g.Where(o => o.EXECUTE_TIME.HasValue).Select(o => o.TDL_TREATMENT_ID).Distinct().Count();
+                V_HIS_SERVICE service;
+                serviceDic.TryGetValue(serviceId, out service);
+                List<HIS_SERE_SERV> ss = sereServByService[serviceId].ToList();
+                if (service == null && !ss.Any()) continue;
 
-                List<string> roomNames = g.Select(o => o.TDL_EXECUTE_ROOM_ID).Distinct()
-                    .Select(id => { V_HIS_ROOM r; return roomDic.TryGetValue(id, out r) ? r.ROOM_NAME : id.ToString(); })
-                    .ToList();
-                ado.CurrentRoomDisplay = roomNames.Count == 1 ? roomNames[0] : Resources.ResourceMessage.NhieuPhong;
-                ado.CurrentRoomTooltip = String.Join(", ", roomNames);
-                result.Add(ado);
+                ServiceRowADO row = new ServiceRowADO();
+                row.SERVICE_ID = serviceId;
+                row.SERVICE_CODE = service != null ? service.SERVICE_CODE : ss.First().TDL_SERVICE_CODE;
+                row.SERVICE_NAME = service != null ? service.SERVICE_NAME : ss.First().TDL_SERVICE_NAME;
+                row.SERVICE_TYPE_NAME = service != null ? service.SERVICE_TYPE_NAME : "";
+
+                HIS_KSK_SERVICE ks;
+                if (kskServiceDic.TryGetValue(serviceId, out ks))
+                {
+                    row.KSK_ID = ks.KSK_ID;
+                    row.AMOUNT = ks.AMOUNT;
+                    row.PRICE = ks.PRICE.HasValue ? ks.PRICE * (1 + (ks.VAT_RATIO ?? 0)) : null;
+                }
+
+                row.PatientCount = ss.Select(o => o.TDL_TREATMENT_ID).Distinct().Count();
+                row.PatientCountDisplay = row.PatientCount + "/" + total;
+                row.ExecutedCount = ss.Where(o => o.EXECUTE_TIME.HasValue).Select(o => o.TDL_TREATMENT_ID).Distinct().Count();
+                row.IsExisting = row.PatientCount > 0;
+                row.IsPartial = row.IsExisting && row.PatientCount < total;
+                row.IsChecked = !row.IsExisting ? false : (row.IsPartial ? (bool?)null : true);
+
+                List<long> roomIds = ss.Select(o => o.TDL_EXECUTE_ROOM_ID).Distinct().ToList();
+                row.OriginalRoomId = roomIds.Count == 1 ? (long?)roomIds[0] : null;
+                row.CurrentRoomDisplay = roomIds.Count > 1 ? Resources.ResourceMessage.NhieuPhong + ": "
+                    + String.Join(", ", roomIds.Select(id => { V_HIS_ROOM r; return roomDic.TryGetValue(id, out r) ? r.ROOM_NAME : id.ToString(); })) : "";
+                // Dịch vụ chưa có: phòng mặc định theo nhóm dịch vụ KSK (giống Import)
+                row.RoomId = row.IsExisting ? row.OriginalRoomId : (ks != null ? (long?)ks.ROOM_ID : null);
+                result.Add(row);
             }
-            return result.OrderBy(o => o.SERVICE_TYPE_NAME).ThenBy(o => o.SERVICE_CODE).ToList();
+            // Giống "Sửa chỉ định dịch vụ": dịch vụ đã chọn lên đầu, rồi theo tên
+            return result.OrderByDescending(o => o.IsExisting).ThenBy(o => o.SERVICE_NAME).ToList();
         }
 
         /// <summary>
-        /// Combo "Phòng mới" riêng cho từng dịch vụ (chỉ các phòng thực hiện được dịch vụ), tạo 1 lần
+        /// "Phòng thực hiện": lọc lưới theo dịch vụ phòng thực hiện được; là phòng mặc định khi tick thêm dịch vụ
         /// </summary>
-        private RepositoryItemGridLookUpEdit GetRepositoryNewRoom(long serviceId)
-        {
-            RepositoryItemGridLookUpEdit repository;
-            if (this.repositoryNewRoomDic.TryGetValue(serviceId, out repository)) return repository;
-
-            repository = new RepositoryItemGridLookUpEdit();
-            repository.NullText = "";
-            repository.Buttons.Add(new EditorButton(ButtonPredefines.Delete));
-            repository.ButtonClick += this.repositoryNewRoom_ButtonClick;
-            this.gridControlExist.RepositoryItems.Add(repository);
-
-            List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-            columnInfos.Add(new ColumnInfo("ROOM_CODE", "", 80, 1));
-            columnInfos.Add(new ColumnInfo("ROOM_NAME", "", 250, 2));
-            ControlEditorADO controlEditorADO = new ControlEditorADO("ROOM_NAME", "ID", columnInfos, false, 330);
-            List<RoomADO> rooms = this.roomsByService != null ? this.roomsByService[serviceId].ToList() : new List<RoomADO>();
-            ControlEditorLoader.Load(repository, rooms, controlEditorADO);
-
-            this.repositoryNewRoomDic[serviceId] = repository;
-            return repository;
-        }
-
-        private void repositoryNewRoom_ButtonClick(object sender, ButtonPressedEventArgs e)
+        private void InitComboRoom()
         {
             try
             {
-                if (e.Button.Kind == ButtonPredefines.Delete)
-                {
-                    this.gridViewExist.SetFocusedRowCellValue(this.gcExistNewRoom, null);
-                    this.gridViewExist.HideEditor();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void gridViewExist_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
-        {
-            try
-            {
-                if (e.Column != this.gcExistNewRoom) return;
-                ExistServiceADO row = this.gridViewExist.GetRow(e.RowHandle) as ExistServiceADO;
-                if (row == null) return;
-                e.RepositoryItem = row.IsDelete ? (RepositoryItem)this.repositoryItemTxtDisable : this.GetRepositoryNewRoom(row.SERVICE_ID);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void gridViewExist_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
-        {
-            try
-            {
-                if (e.IsGetData && e.Column == this.gcExistStt)
-                {
-                    e.Value = e.ListSourceRowIndex + 1;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void repositoryItemChkDelete_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                this.gridViewExist.PostEditor();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// "Xóa" và "Phòng mới" loại trừ nhau
-        /// </summary>
-        private void gridViewExist_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
-        {
-            try
-            {
-                ExistServiceADO row = this.gridViewExist.GetRow(e.RowHandle) as ExistServiceADO;
-                if (row == null) return;
-                if (e.Column == this.gcExistIsDelete && row.IsDelete)
-                {
-                    row.NewRoomId = null;
-                }
-                else if (e.Column == this.gcExistNewRoom && row.NewRoomId.HasValue)
-                {
-                    row.IsDelete = false;
-                }
-                this.gridViewExist.RefreshRow(e.RowHandle);
+                Dictionary<long, V_HIS_ROOM> roomDic = BackendDataWorker.Get<V_HIS_ROOM>().ToDictionary(o => o.ID);
+                List<RoomADO> rooms = this.allServiceRows
+                    .SelectMany(o => this.roomsByService[o.SERVICE_ID])
+                    .GroupBy(o => o.ID).Select(g => g.First())
+                    .Where(o => roomDic.ContainsKey(o.ID) && roomDic[o.ID].IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .OrderBy(o => o.ROOM_CODE).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("ROOM_CODE", "", 80, 1));
+                columnInfos.Add(new ColumnInfo("ROOM_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("ROOM_NAME", "ID", columnInfos, false, 330);
+                ControlEditorLoader.Load(this.cboRoom, rooms, controlEditorADO);
             }
             catch (Exception ex)
             {
