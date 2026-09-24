@@ -49,6 +49,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         internal const string DEFAULT_BASE_URL = "https://congtiepnhan.kdlyt.vinhlong.vn";
         internal const string TOKEN_PATH = "/api/xac-thuc/token";
         internal const string PROXY_PUSH_PATH = "/api/platform/data-sync/push";
+        internal const string LEGACY_PUSH_PATH = "/api/kham-suc-khoe/qd-2062/tiep-nhan";   // API V1.3 — Kho da tat (410)
         internal const string DEFAULT_TOKEN_URL = DEFAULT_BASE_URL + TOKEN_PATH;
         internal const string DEFAULT_PUSH_URL = DEFAULT_BASE_URL + PROXY_PUSH_PATH;
         private const int MIN_FIELD_COUNT = 3;
@@ -79,6 +80,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             string p = (pushUrl ?? "").Trim().TrimEnd('/');
             if (p.EndsWith(PROXY_PUSH_PATH, StringComparison.OrdinalIgnoreCase)) return p;
+            // PushUrl cu / URL la tuyet doi -> GIU host cua chinh PushUrl (vd dev) — khong doi sang host TokenUrl
+            // (TokenUrl bo trong = cong chinh thuc: day nham du lieu test len Kho that).
+            if (p.EndsWith(LEGACY_PUSH_PATH, StringComparison.OrdinalIgnoreCase))
+                return p.Substring(0, p.Length - LEGACY_PUSH_PATH.Length) + PROXY_PUSH_PATH;
+            Uri u;
+            if (!string.IsNullOrEmpty(p) && Uri.TryCreate(p, UriKind.Absolute, out u)
+                && (u.Scheme == Uri.UriSchemeHttps || u.Scheme == Uri.UriSchemeHttp))
+                return u.GetLeftPart(UriPartial.Authority) + PROXY_PUSH_PATH;
             return DeriveBaseUrl(tokenUrl) + PROXY_PUSH_PATH;
         }
 
@@ -154,6 +163,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         internal string LatestBytStatus { get; set; }       // vd PENDING, BYT_ACCEPTED
         internal string LatestBytResCode { get; set; }      // res_code Cong Bo tra ve (CM_SUCCESS...)
         internal string LatestTrackingId { get; set; }
+        internal DateTime LatestReceivedAt { get; set; }   // received_at cua lan gui moi nhat (MinValue = khong co)
         /// <summary>Trang thai TUNG lan gui theo msg_id (requests[]) — xet dung lan gui HIS quan tam, khong chi lan moi nhat.</summary>
         internal Dictionary<string, KskVlgRequestInfo> RequestsByMsgId { get; set; }
 
@@ -219,10 +229,54 @@ namespace HIS.Desktop.Plugins.KskSyncList
         internal string BytStatus { get; set; }
         internal string BytResCode { get; set; }
         internal string BytResMsg { get; set; }
+        /// <summary>Thoi diem Kho nhan lan gui (gio Kho, MinValue = khong co) — so voi SYNC_TIME cua HIS.</summary>
+        internal DateTime ReceivedAt { get; set; }
+        /// <summary>Loi muc ERROR cua lan gui (chi co khi tra /lan-gui/trang-thai theo tracking_id).</summary>
+        internal string ErrorSummary { get; set; }
 
+        // Trang thai xu ly cua Kho (tai lieu V1.5 muc 5.x): QUEUED, PROCESSING, PROCESSED, VALIDATION_FAILED, TECHNICAL_FAILED.
+        internal const string HOC_QUEUED = "QUEUED";
+        internal const string HOC_PROCESSING = "PROCESSING";
+        internal const string HOC_PROCESSED = "PROCESSED";
+        internal const string HOC_VALIDATION_FAILED = "VALIDATION_FAILED";
+        internal const string HOC_TECHNICAL_FAILED = "TECHNICAL_FAILED";
+
+        /// <summary>Kho KHONG DAT kiem tra ban tin nay (hoc_validation_status INVALID hoac hoc_status VALIDATION_FAILED).</summary>
         internal bool IsHocInvalid
         {
-            get { return string.Equals(HocValidationStatus, "INVALID", StringComparison.OrdinalIgnoreCase); }
+            get
+            {
+                return string.Equals(HocValidationStatus, "INVALID", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(HocStatus, HOC_VALIDATION_FAILED, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+        /// <summary>Kho loi ky thuat khi xu ly (TECHNICAL_FAILED / *_FAILED khac) — ban tin chua duoc xu ly, can gui lai.</summary>
+        internal bool IsHocTechnicalFailed
+        {
+            get
+            {
+                return !IsHocInvalid && !string.IsNullOrEmpty(HocStatus)
+                    && HocStatus.EndsWith("FAILED", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+        /// <summary>Kho dang xu ly (QUEUED / PROCESSING) — chua co ket luan.</summary>
+        internal bool IsHocInFlight
+        {
+            get
+            {
+                return string.Equals(HocStatus, HOC_QUEUED, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(HocStatus, HOC_PROCESSING, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+        /// <summary>Kho da xu ly xong va DAT (PROCESSED / VALID).</summary>
+        internal bool IsHocProcessedValid
+        {
+            get
+            {
+                if (IsHocInvalid || IsHocTechnicalFailed) return false;
+                return string.Equals(HocStatus, HOC_PROCESSED, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(HocValidationStatus, "VALID", StringComparison.OrdinalIgnoreCase);
+            }
         }
         internal bool IsBytAccepted
         {
@@ -240,8 +294,22 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     || (!string.IsNullOrEmpty(BytStatus) && BytStatus.IndexOf("REJECT", StringComparison.OrdinalIgnoreCase) >= 0);
             }
         }
+        /// <summary>
+        /// Gui Bo that bai han (byt_status chua FAIL/ERROR) ma KHONG phai ma Kho tu gui lai (PS_DS_SAVE_FAIL,
+        /// CM_AUTH_ACCOUNT_FAIL, HOC_BYT_*) — can gui lai tu HIS.
+        /// </summary>
+        internal bool IsBytFailed
+        {
+            get
+            {
+                if (IsBytAccepted || IsBytRejected || string.IsNullOrEmpty(BytStatus)) return false;
+                bool failLike = BytStatus.IndexOf("FAIL", StringComparison.OrdinalIgnoreCase) >= 0
+                    || BytStatus.IndexOf("ERROR", StringComparison.OrdinalIgnoreCase) >= 0;
+                return failLike && !KskVlgBytResCode.IsKhoRetrying(BytResCode);
+            }
+        }
 
-        /// <summary>Doc 1 lan gui tu JSON (requests[i] / data.item). Tra null neu khong phai object.</summary>
+        /// <summary>Doc 1 lan gui tu JSON (requests[i] / data.item / data cua lan-gui). Tra null neu khong phai object.</summary>
         internal static KskVlgRequestInfo FromJson(Newtonsoft.Json.Linq.JToken r)
         {
             var o = r as Newtonsoft.Json.Linq.JObject;
@@ -255,7 +323,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 HocValidationStatus = (string)o["hoc_validation_status"] ?? (string)o["validation_status"],
                 BytStatus = (string)o["byt_status"],
                 BytResCode = (string)o["byt_res_code"] ?? (string)o["res_code"],
-                BytResMsg = (string)o["byt_res_msg"] ?? (string)o["res_msg"]
+                BytResMsg = (string)o["byt_res_msg"] ?? (string)o["res_msg"],
+                ReceivedAt = KskVlgPusher.ReadTime(o["received_at"])
             };
         }
     }
@@ -281,6 +350,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
         internal const string SAVE_FAIL = "PS_DS_SAVE_FAIL";               // Bo loi luu — Kho tu gui lai
         internal const string AUTH_ACCOUNT_FAIL = "CM_AUTH_ACCOUNT_FAIL";  // Kho chua dang nhap duoc Bo
         internal const string CHUA_RO = "VLG_CHUA_RO";                     // HIS mat phan hoi sau khi da gui
+        internal const string CHUA_GUI = "VLG_CHUA_GUI";                   // lan dong bo nay CHUA gui duoc byte nao len Kho
+
+        /// <summary>Ma Kho tu xu ly / tu gui lai (HIS khong duoc gui lai): SAVE_FAIL, AUTH_ACCOUNT_FAIL, HOC_BYT_*.</summary>
+        internal static bool IsKhoRetrying(string code)
+        {
+            if (string.IsNullOrEmpty(code)) return false;
+            return string.Equals(code, SAVE_FAIL, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(code, AUTH_ACCOUNT_FAIL, StringComparison.OrdinalIgnoreCase)
+                || code.StartsWith("HOC_BYT_", StringComparison.OrdinalIgnoreCase);
+        }
 
         private static readonly HashSet<string> SuccessCodes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -487,9 +566,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         "VLG: bản tin {0:N0} byte (sau mã hóa base64) vượt giới hạn 10 MiB của cổng (PAYLOAD_TOO_LARGE)."
                         + " Kiểm tra ảnh chữ ký điện tử (CKDT_) / dữ liệu CLS của hồ sơ.", body.LongLength));
 
+                // Lan thu truoc cua CHINH ban tin nay (cung byte) co the da toi Kho (503 tran) -> moi loi sau do ma
+                // KHONG phai ket luan cua Kho (dang nhap lai hong, khong ket noi, 401/403/429) deu la CHUA RO.
+                bool ambiguous = false;
                 for (int attempt = 0; attempt < MAX_ATTEMPT; attempt++)
                 {
                     string token = GetToken();
+                    if (string.IsNullOrWhiteSpace(token) && ambiguous)
+                        return UnknownResult(msgId, treatmentCode, "lần gửi trước chưa rõ kết quả, lần gửi lại không đăng nhập được cổng");
                     if (string.IsNullOrWhiteSpace(token))
                         return KskVlgPushResult.Failure("VLG: đăng nhập cổng thất bại"
                             + (string.IsNullOrEmpty(this.lastAuthError) ? " (kiểm tra tài khoản tích hợp)." : (" — " + this.lastAuthError)));
@@ -509,6 +593,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     if (hr.Status == HTTP_SERVICE_UNAVAILABLE && string.IsNullOrEmpty(hr.TrackingId) && canRetry)
                     {
                         Inventec.Common.Logging.LogSystem.Warn("VLG: cong tra 503 khi push -> gui lai 1 lan. msg_id=" + msgId);
+                        // 503 khong kem ma nao cua Kho (proxy/nginx) -> chua biet Kho da nhan chua.
+                        if (!string.Equals(ExtractKhoCode(hr.Body), KskVlgBytResCode.SIGNING_UNAVAILABLE, StringComparison.OrdinalIgnoreCase))
+                            ambiguous = true;
                         continue;
                     }
 
@@ -520,6 +607,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             // Token cache con han nen GetToken khong cham mang -> latch tai day cho ca lo.
                             this.batchAuthFatalError = "không kết nối được cổng (kiểm tra mạng / URL đẩy dữ liệu: "
                                 + this.config.PushUrl + ")";
+                            if (ambiguous)
+                                return UnknownResult(msgId, treatmentCode, "lần gửi trước chưa rõ kết quả, lần gửi lại không kết nối được cổng");
                             return KskVlgPushResult.Failure("VLG: " + this.batchAuthFatalError + ".");
                         }
                         // Da gui xong body nhung mat phan hoi (het gio / dut ket noi) -> CHUA RO Kho da nhan chua.
@@ -533,8 +622,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         // proxy/nginx phia truoc tra. Kho CO THE da nhan -> CHUA RO, doi soat truoc khi gui lai.
                         Inventec.Common.Logging.LogSystem.Warn("VLG: HTTP " + hr.Status + " khong kem ma cua Kho. Body (cat 500): "
                             + Cut(hr.Body, 500));
-                        return UnknownResult(msgId, treatmentCode, "cổng trả HTTP " + hr.Status + " không kèm mã của Kho dữ liệu");
+                        // Cong CO tra loi (2xx / body Brotli) -> khong tinh vao nguong "cong khong phan hoi" dung lo.
+                        bool responded = hr.BodyDropped || (hr.Status >= 200 && hr.Status < 300);
+                        return UnknownResult(msgId, treatmentCode, "cổng trả HTTP " + hr.Status + " không kèm mã của Kho dữ liệu", !responded);
                     }
+                    if (ambiguous && !result.Success
+                        && (hr.Status == HTTP_UNAUTHORIZED || hr.Status == HTTP_FORBIDDEN || hr.Status == HTTP_TOO_MANY_REQUESTS))
+                        return UnknownResult(msgId, treatmentCode, "lần gửi trước chưa rõ kết quả, lần gửi lại bị từ chối xác thực (HTTP " + hr.Status + ")");
                     this.consecutiveUnknown = 0;
                     Inventec.Common.Logging.LogSystem.Info(string.Format(
                         "VLG: push ma dieu tri={0}; HTTP {1}; res_code={2}; tracking={3}; msg_id={4}; ok={5}",
@@ -563,7 +657,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         private KskVlgPushResult UnknownResult(string msgId, string treatmentCode, string detail)
         {
-            this.consecutiveUnknown++;
+            return UnknownResult(msgId, treatmentCode, detail, true);
+        }
+
+        private KskVlgPushResult UnknownResult(string msgId, string treatmentCode, string detail, bool countTowardLatch)
+        {
+            if (countTowardLatch) this.consecutiveUnknown++;
             Inventec.Common.Logging.LogSystem.Warn("VLG: " + detail + " -> CHUA RO. msg_id=" + msgId
                 + "; ma dieu tri=" + treatmentCode + "; lien tiep=" + this.consecutiveUnknown);
             if (this.consecutiveUnknown >= MAX_CONSECUTIVE_UNKNOWN && this.batchAuthFatalError == null)
@@ -581,9 +680,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>
-        /// Ket luan cho 1 lan gui DA CO tren Kho (tim duoc qua doi soat / requests[]) — dung khi lan day truoc
-        /// mat phan hoi. Kho khong dat / Bo tu choi -> that bai (ma khac CHUA_RO -> lan sau duoc gui ban sua);
-        /// Bo da nhan -> thanh cong; con lai (dang xu ly / cho Bo) -> thanh cong "Kho da giu", KHONG gui lai.
+        /// Ket luan cho 1 lan gui DA CO tren Kho (tim duoc qua doi soat) — dung khi lan day truoc mat phan hoi.
+        /// DANH SACH CHO PHEP (khong mac dinh thanh cong): Bo da nhan -> thanh cong; Kho dang xu ly / da xu ly DAT
+        /// ma Bo chua co ket qua (QUEUED/PROCESSING/PROCESSED, ma Kho tu gui lai) -> thanh cong "Kho da giu",
+        /// KHONG gui lai. Kho khong dat / loi ky thuat / Bo tu choi / gui Bo that bai / trang thai la -> that bai
+        /// (Status khac CHUA_RO) -> lan dong bo nay gui ban hien tai.
         /// </summary>
         internal static KskVlgPushResult FromKnownRequest(KskVlgRequestInfo info, string msgId)
         {
@@ -591,6 +692,27 @@ namespace HIS.Desktop.Plugins.KskSyncList
             string trk = !string.IsNullOrEmpty(info.TrackingId) ? info.TrackingId : ("MSG:" + msgId);
             var r = new KskVlgPushResult { MsgId = msgId, TrackingId = trk };
             string bo = (info.BytResCode ?? info.BytStatus) ?? "";
+            if (info.IsBytAccepted)
+            {
+                // Bo DA NHAN -> tuyet doi khong gui lai (gui lai = phien ban thu 2 len Bo), ke ca khi Kho tu danh gia khong dat.
+                r.Success = true;
+                r.Status = !string.IsNullOrEmpty(info.BytResCode) ? info.BytResCode : "BYT_ACCEPTED";
+                r.Note = "VLG: lần gửi trước (mất phản hồi) ĐÃ vào Kho và Cổng Bộ Y tế đã tiếp nhận (" + bo + ") — không gửi lại."
+                    + (info.IsHocInvalid ? " Kho dữ liệu báo KHÔNG ĐẠT kiểm tra — bấm \"Cập nhật KQ cổng\" xem lỗi." : "")
+                    + " Nếu đã sửa hồ sơ sau lần gửi đó, bấm Đồng bộ thêm lần nữa để gửi bản mới.";
+                return r;
+            }
+            if (!info.IsHocInvalid && !info.IsHocTechnicalFailed && !info.IsBytRejected
+                && (KskVlgBytResCode.IsKhoRetrying(info.BytResCode)
+                    || string.Equals(info.BytResCode, KskVlgBytResCode.FORWARD_PAUSED, StringComparison.OrdinalIgnoreCase)))
+            {
+                // Kho dang tu gui lai / tam dung chuyen Bo -> Kho giu ban tin, khong gui lai.
+                r.Success = true;
+                r.Status = "KHO_DA_NHAN";
+                r.Note = "VLG: lần gửi trước (mất phản hồi) ĐÃ vào Kho dữ liệu, Kho đang tự gửi Bộ (" + bo + ") — không gửi lại."
+                    + " Nếu đã sửa hồ sơ sau lần gửi đó, bấm Đồng bộ thêm lần nữa để gửi bản mới.";
+                return r;
+            }
             if (info.IsHocInvalid)
             {
                 r.Success = false;
@@ -598,11 +720,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 r.Message = "VLG: lần gửi trước (mất phản hồi) đã vào Kho dữ liệu nhưng KHÔNG ĐẠT kiểm tra"
                     + " — bấm \"Cập nhật KQ cổng\" xem lỗi, sửa hồ sơ rồi đẩy lại.";
             }
-            else if (info.IsBytRejected)
+            else if (info.IsHocTechnicalFailed)
             {
                 r.Success = false;
-                r.Status = !string.IsNullOrEmpty(info.BytResCode) ? info.BytResCode : "BYT_REJECTED";
-                r.Message = "VLG: lần gửi trước (mất phản hồi) bị Cổng Bộ Y tế TỪ CHỐI (" + bo + ")"
+                r.Status = info.HocStatus;
+                r.Message = "VLG: lần gửi trước (mất phản hồi) Kho dữ liệu xử lý LỖI KỸ THUẬT (" + info.HocStatus + ") — gửi lại.";
+            }
+            else if (info.IsBytRejected || info.IsBytFailed)
+            {
+                r.Success = false;
+                r.Status = !string.IsNullOrEmpty(info.BytResCode) ? info.BytResCode : (info.BytStatus ?? "BYT_REJECTED");
+                r.Message = "VLG: lần gửi trước (mất phản hồi) bị Cổng Bộ Y tế TỪ CHỐI / gửi Bộ thất bại (" + bo + ")"
                     + (string.IsNullOrEmpty(info.BytResMsg) ? "" : (": " + info.BytResMsg))
                     + " — sửa hồ sơ rồi đẩy lại.";
             }
@@ -610,15 +738,25 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 r.Success = true;
                 r.Status = !string.IsNullOrEmpty(info.BytResCode) ? info.BytResCode : "BYT_ACCEPTED";
-                r.Note = "VLG: lần gửi trước (mất phản hồi) ĐÃ vào Kho và Cổng Bộ Y tế đã tiếp nhận (" + bo + ") — không gửi lại.";
+                r.Note = "VLG: lần gửi trước (mất phản hồi) ĐÃ vào Kho và Cổng Bộ Y tế đã tiếp nhận (" + bo + ") — không gửi lại."
+                    + " Nếu đã sửa hồ sơ sau lần gửi đó, bấm Đồng bộ thêm lần nữa để gửi bản mới.";
             }
-            else
+            else if (info.IsHocInFlight || info.IsHocProcessedValid)
             {
                 r.Success = true;
                 r.Status = "KHO_DA_NHAN";
                 r.Note = "VLG: lần gửi trước (mất phản hồi) ĐÃ vào Kho dữ liệu (" + (info.HocStatus ?? "")
                     + (string.IsNullOrEmpty(info.BytStatus) ? "" : (", Bộ: " + info.BytStatus))
-                    + ") — không gửi lại. Bấm \"Cập nhật KQ cổng\" để xem kết quả Bộ Y tế.";
+                    + ") — không gửi lại. Bấm \"Cập nhật KQ cổng\" để xem kết quả Bộ Y tế."
+                    + " Nếu đã sửa hồ sơ sau lần gửi đó, bấm Đồng bộ thêm lần nữa để gửi bản mới.";
+            }
+            else
+            {
+                // Trang thai Kho KHONG thuoc danh sach da biet -> khong ket luan "Kho da giu": gui lai ban hien tai.
+                r.Success = false;
+                r.Status = !string.IsNullOrEmpty(info.HocStatus) ? info.HocStatus : "HOC_KHONG_RO";
+                r.Message = "VLG: lần gửi trước (mất phản hồi) có trên Kho nhưng trạng thái chưa xác định ("
+                    + (info.HocStatus ?? "trống") + ") — gửi lại.";
             }
             return r;
         }
@@ -641,6 +779,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         private KskVlgPushResult ClassifyProxyResponse(ProxyHttpResult hr, string msgId)
         {
+            // Body nen Brotli khong doc duoc: 2xx/5xx khong biet res_code (co the la Bo tu choi) -> CHUA RO, doi soat sau.
+            if (hr.BodyDropped && (hr.Status < 400 || hr.Status >= 500)) return null;
             Newtonsoft.Json.Linq.JObject jo = TryParseJObject(hr.Body);
             Newtonsoft.Json.Linq.JObject jh = (jo != null) ? jo["header"] as Newtonsoft.Json.Linq.JObject : null;
             Newtonsoft.Json.Linq.JObject jd = (jo != null) ? jo["data"] as Newtonsoft.Json.Linq.JObject : null;
@@ -718,6 +858,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         : ". Sửa dữ liệu hồ sơ rồi đẩy lại.");
                 return r;
             }
+            if (is2xx && jh == null && string.IsNullOrEmpty(hr.TrackingId))
+            {
+                // 2xx KHONG mang dau hieu nao cua Kho (khong envelope header, khong X-HOC-Tracking-Id) — vd trang
+                // HTML cua proxy/tuong lua benh vien -> khong duoc coi la Kho da nhan: CHUA RO, doi soat sau.
+                return null;
+            }
             if (is2xx)
             {
                 // Tai lieu muc 5.1: ma khac kem HTTP 2xx = "phan hoi chua nhan dien" — Kho van luu nguyen
@@ -728,8 +874,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 return r;
             }
 
-            if (hr.Status >= 500 && !string.IsNullOrEmpty(hr.TrackingId)
-                && !string.Equals(code, KskVlgBytResCode.SIGNING_UNAVAILABLE, StringComparison.OrdinalIgnoreCase))
+            bool signingUnavailable = string.Equals(code, KskVlgBytResCode.SIGNING_UNAVAILABLE, StringComparison.OrdinalIgnoreCase);
+            // 503 HOC_SIGNING_UNAVAILABLE KEM ma theo doi: Kho da ghi nhan lan gui nhung chua ky gui Bo — khong
+            // biet Kho co tu gui lai khong -> CHUA RO (lan sau doi soat, tranh 2 phien ban cung len Bo).
+            if (hr.Status >= 500 && !string.IsNullOrEmpty(hr.TrackingId) && signingUnavailable) return null;
+            if (hr.Status >= 500 && !string.IsNullOrEmpty(hr.TrackingId) && !signingUnavailable)
             {
                 // 5xx KEM X-HOC-Tracking-Id: Kho da ghi nhan lan gui (co ma theo doi) — loi tam thoi Kho tu
                 // gui tiep; day lai se thanh phien ban moi gui Bo -> coi la Kho da giu, cho doi soat.
@@ -741,7 +890,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             }
             // 5xx khong kem ma nao cua Kho va khong co X-HOC-Tracking-Id: khong du can cu ket luan -> null
             // (Push tra ket qua CHUA RO, lan sau doi soat roi moi gui lai).
-            if (hr.Status >= 500 && string.IsNullOrEmpty(code) && string.IsNullOrEmpty(hr.TrackingId))
+            // 5xx khong co X-HOC-Tracking-Id va khong phai ma "chua nhan" da biet (HOC_SIGNING_UNAVAILABLE) — ke ca
+            // ma la cua proxy/API gateway (GATEWAY_TIMEOUT, INTERNAL_ERROR...) -> CHUA RO (tai lieu muc 6-7: het
+            // gio / mat ket noi thi KHONG ket luan, doi soat bang sender_id + msg_id truoc khi gui lai).
+            if (hr.Status >= 500 && string.IsNullOrEmpty(hr.TrackingId) && !signingUnavailable)
                 return null;
 
             // Tu day: Kho KHONG giu ban tin -> that bai, duoc day lai sau khi xu ly nguyen nhan.
@@ -809,6 +961,20 @@ namespace HIS.Desktop.Plugins.KskSyncList
             return (senderGtin ?? "")
                  + DateTime.Now.ToString("yyMMdd", System.Globalization.CultureInfo.InvariantCulture)
                  + Guid.NewGuid().ToString("N");
+        }
+
+        /// <summary>Ma cua Kho trong body (header.res_code hoac code); khong co / khong phai JSON -> null.</summary>
+        private static string ExtractKhoCode(string body)
+        {
+            try
+            {
+                Newtonsoft.Json.Linq.JObject jo = TryParseJObject(body);
+                if (jo == null) return null;
+                Newtonsoft.Json.Linq.JObject jh = jo["header"] as Newtonsoft.Json.Linq.JObject;
+                string c = (jh != null) ? (string)jh["res_code"] : null;
+                return !string.IsNullOrEmpty(c) ? c : (string)jo["code"];
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
         private static Newtonsoft.Json.Linq.JObject TryParseJObject(string body)
@@ -963,6 +1129,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             internal string Body;
             internal string TrackingId;     // header X-HOC-Tracking-Id (co ca khi 4xx/5xx)
             internal bool RequestSent;      // da ghi xong body len mang
+            internal bool BodyDropped;      // body nen Brotli — .NET 4.5 khong giai nen duoc, da bo qua
             internal System.Net.WebExceptionStatus NetStatus;
         }
 
@@ -998,7 +1165,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     {
                         r.Status = (int)response.StatusCode;
                         r.TrackingId = response.Headers[HEADER_TRACKING_ID];
-                        r.Body = ReadProxyBody(response);
+                        r.Body = ReadProxyBody(response, out r.BodyDropped);
                     }
                 }
                 catch (System.Net.WebException wex)
@@ -1015,7 +1182,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     {
                         r.Status = (int)errResponse.StatusCode;
                         r.TrackingId = errResponse.Headers[HEADER_TRACKING_ID];
-                        r.Body = ReadProxyBody(errResponse);
+                        r.Body = ReadProxyBody(errResponse, out r.BodyDropped);
                     }
                 }
             }
@@ -1032,15 +1199,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Doc body phan hoi proxy. Kho tra Content-Encoding br (Brotli) -> .NET 4.5 khong giai nen duoc:
         /// bo body (phan loai theo HTTP status + X-HOC-Tracking-Id) thay vi doc ra chuoi rac.
         /// </summary>
-        private static string ReadProxyBody(System.Net.HttpWebResponse response)
+        private static string ReadProxyBody(System.Net.HttpWebResponse response, out bool dropped)
         {
+            dropped = false;
             try
             {
                 string ce = response.Headers["Content-Encoding"];
                 if (!string.IsNullOrEmpty(ce) && ce.IndexOf("br", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     Inventec.Common.Logging.LogSystem.Warn("VLG: phan hoi nen Brotli (Content-Encoding: " + ce
-                        + ") — .NET 4.5 khong giai nen, bo qua body; phan loai theo HTTP status + tracking.");
+                        + ") — .NET 4.5 khong giai nen, bo qua body; ket qua CHUA RO (doi soat sau).");
+                    dropped = true;
                     return null;
                 }
             }
@@ -1115,7 +1284,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         return KskVlgStatusResult.Failure("VLG: " + this.batchAuthFatalError + ".");
                     }
                     if (status == 404)
-                        return new KskVlgStatusResult { Ok = true, Found = false, Message = "Chưa có hồ sơ trên cổng" };
+                    {
+                        // Chi tin 404 khi Kho tra dung ma NOT_FOUND (404 do sai duong dan / proxy = khong ket luan).
+                        Newtonsoft.Json.Linq.JObject j404 = TryParseJObject(respBody);
+                        string c404 = (j404 != null) ? (string)j404["code"] : null;
+                        if (string.Equals(c404, "NOT_FOUND", StringComparison.OrdinalIgnoreCase))
+                            return new KskVlgStatusResult { Ok = true, Found = false, Message = "Chưa có hồ sơ trên cổng" };
+                        return KskVlgStatusResult.Failure("VLG: tra cứu trả HTTP 404 không rõ nguồn.");
+                    }
                     if (status != HTTP_OK || string.IsNullOrWhiteSpace(respBody))
                         return KskVlgStatusResult.Failure("VLG: tra cứu thất bại (HTTP " + status + ").");
 
@@ -1194,6 +1370,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         result.LatestBytStatus = (string)latest["byt_status"];
                         result.LatestBytResCode = (string)latest["byt_res_code"];
                         result.LatestTrackingId = (string)latest["tracking_id"];
+                        result.LatestReceivedAt = latestAt;
                     }
                     var errs = (latest != null) ? latest["errors"] as Newtonsoft.Json.Linq.JArray : null;
                     if (errs != null && errs.Count > 0)
@@ -1219,7 +1396,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>Thoi diem tu JSON (kieu Date da parse san hoac chuoi ISO). Khong doc duoc -> MinValue.</summary>
-        private static DateTime ReadTime(Newtonsoft.Json.Linq.JToken t)
+        internal static DateTime ReadTime(Newtonsoft.Json.Linq.JToken t)
         {
             try
             {
@@ -1241,17 +1418,44 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         internal KskVlgMessageLookup LookupMessage(string senderId, string msgId)
         {
+            if (string.IsNullOrWhiteSpace(senderId) || string.IsNullOrWhiteSpace(msgId))
+                return new KskVlgMessageLookup { FailReason = "VLG: thiếu sender_id/msg_id để đối soát." };
+            string url = KskVlgConfigParser.DeriveBaseUrl(this.config != null ? this.config.TokenUrl : null)
+                + "/api/kham-suc-khoe/doi-soat-byt/trang-thai"
+                + "?sender_id=" + Uri.EscapeDataString(senderId.Trim()) + "&msg_id=" + Uri.EscapeDataString(msgId.Trim());
+            KskVlgMessageLookup r = LookupOne(url, "đối soát", false);
+            if (r.Info != null && string.IsNullOrEmpty(r.Info.MsgId)) r.Info.MsgId = msgId;
+            return r;
+        }
+
+        /// <summary>
+        /// Tra DUNG 1 lan gui theo ma theo doi (tai lieu V1.5 muc 5.5): GET {base}/api/kham-suc-khoe/qd-2062/
+        /// lan-gui/trang-thai?tracking_id=. Tra trang thai Kho/Bo + loi cua chinh lan gui do (requests[] cua ho so
+        /// khong liet ke lan gui lai noi dung y het). 404 NOT_FOUND -> Found = false. Kiem chung dev 24/09/2026.
+        /// </summary>
+        internal KskVlgMessageLookup LookupTracking(string trackingId)
+        {
+            if (string.IsNullOrWhiteSpace(trackingId))
+                return new KskVlgMessageLookup { FailReason = "VLG: thiếu mã theo dõi để tra cứu." };
+            string url = KskVlgConfigParser.DeriveBaseUrl(this.config != null ? this.config.TokenUrl : null)
+                + "/api/kham-suc-khoe/qd-2062/lan-gui/trang-thai?tracking_id=" + Uri.EscapeDataString(trackingId.Trim());
+            KskVlgMessageLookup r = LookupOne(url, "tra lần gửi", true);
+            if (r.Info != null && string.IsNullOrEmpty(r.Info.TrackingId)) r.Info.TrackingId = trackingId.Trim();
+            return r;
+        }
+
+        /// <summary>
+        /// GET 1 ban ghi trang thai (doi soat: data.item; lan gui: data) — dung chung token / 401 thu lai / latch mat
+        /// ket noi. Chi tin 404 khi Kho tra dung ma NOT_FOUND (404 do sai duong dan / proxy = khong ket luan).
+        /// </summary>
+        private KskVlgMessageLookup LookupOne(string url, string what, bool dataIsItem)
+        {
             try
             {
                 string configError = ValidateConfig();
                 if (configError != null) return new KskVlgMessageLookup { FailReason = configError };
                 if (this.batchAuthFatalError != null)
-                    return new KskVlgMessageLookup { FailReason = "VLG: " + this.batchAuthFatalError + " (bỏ qua đối soát)." };
-                if (string.IsNullOrWhiteSpace(senderId) || string.IsNullOrWhiteSpace(msgId))
-                    return new KskVlgMessageLookup { FailReason = "VLG: thiếu sender_id/msg_id để đối soát." };
-
-                string url = KskVlgConfigParser.DeriveBaseUrl(this.config.TokenUrl) + "/api/kham-suc-khoe/doi-soat-byt/trang-thai"
-                    + "?sender_id=" + Uri.EscapeDataString(senderId.Trim()) + "&msg_id=" + Uri.EscapeDataString(msgId.Trim());
+                    return new KskVlgMessageLookup { FailReason = "VLG: " + this.batchAuthFatalError + " (bỏ qua " + what + ")." };
                 for (int attempt = 0; attempt < MAX_ATTEMPT; attempt++)
                 {
                     string token = GetToken();
@@ -1265,33 +1469,64 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     if (status == HTTP_UNAUTHORIZED && attempt + 1 < MAX_ATTEMPT) { ResetToken(); continue; }
                     if (status == 0)
                     {
-                        this.batchAuthFatalError = "không kết nối được cổng (URL đối soát: " + url + ")";
+                        this.batchAuthFatalError = "không kết nối được cổng (URL " + what + ": " + url + ")";
                         return new KskVlgMessageLookup { FailReason = "VLG: " + this.batchAuthFatalError + "." };
                     }
                     Newtonsoft.Json.Linq.JObject jo = TryParseJObject(body);
                     if (status == 404)
                     {
-                        // Chi tin 404 khi dung ma NOT_FOUND cua Kho (khong phai 404 do sai duong dan/proxy).
                         string code = (jo != null) ? (string)jo["code"] : null;
                         if (string.Equals(code, "NOT_FOUND", StringComparison.OrdinalIgnoreCase))
                             return new KskVlgMessageLookup { Ok = true, Found = false };
-                        return new KskVlgMessageLookup { FailReason = "VLG: đối soát trả HTTP 404 không rõ nguồn." };
+                        return new KskVlgMessageLookup { FailReason = "VLG: " + what + " trả HTTP 404 không rõ nguồn." };
                     }
                     var jd = (jo != null) ? jo["data"] as Newtonsoft.Json.Linq.JObject : null;
-                    var item = (jd != null) ? jd["item"] as Newtonsoft.Json.Linq.JObject : null;
+                    var item = dataIsItem ? jd : ((jd != null) ? jd["item"] as Newtonsoft.Json.Linq.JObject : null);
                     if (status != HTTP_OK || item == null)
-                        return new KskVlgMessageLookup { FailReason = "VLG: đối soát thất bại (HTTP " + status + ")." };
+                        return new KskVlgMessageLookup { FailReason = "VLG: " + what + " thất bại (HTTP " + status + ")." };
                     KskVlgRequestInfo info = KskVlgRequestInfo.FromJson(item);
-                    if (info != null && string.IsNullOrEmpty(info.MsgId)) info.MsgId = msgId;
-                    return new KskVlgMessageLookup { Ok = true, Found = true, Info = info };
+                    if (info != null) info.ErrorSummary = CollectErrors(item);
+                    return new KskVlgMessageLookup { Ok = true, Found = info != null, Info = info };
                 }
-                return new KskVlgMessageLookup { FailReason = "VLG: xác thực thất bại khi đối soát." };
+                return new KskVlgMessageLookup { FailReason = "VLG: xác thực thất bại khi " + what + "." };
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return new KskVlgMessageLookup { FailReason = "VLG: " + ex.Message };
             }
+        }
+
+        /// <summary>
+        /// Gom loi muc ERROR cua 1 lan gui: errors[] cua lan gui + errors[] tung ho_so[] (lan-gui/trang-thai).
+        /// Toi da 5 dong "CODE (duong dan): noi dung". Khong co -> null.
+        /// </summary>
+        private static string CollectErrors(Newtonsoft.Json.Linq.JObject item)
+        {
+            try
+            {
+                var parts = new List<string>();
+                var lists = new List<Newtonsoft.Json.Linq.JArray>();
+                var top = item["errors"] as Newtonsoft.Json.Linq.JArray;
+                if (top != null) lists.Add(top);
+                var hoSo = item["ho_so"] as Newtonsoft.Json.Linq.JArray;
+                if (hoSo != null)
+                    foreach (var h in hoSo)
+                    {
+                        var he = (h is Newtonsoft.Json.Linq.JObject) ? h["errors"] as Newtonsoft.Json.Linq.JArray : null;
+                        if (he != null) lists.Add(he);
+                    }
+                foreach (var arr in lists)
+                    foreach (var e in arr)
+                    {
+                        if (!(e is Newtonsoft.Json.Linq.JObject)) continue;
+                        if (!string.Equals((string)e["severity"], "ERROR", StringComparison.OrdinalIgnoreCase)) continue;
+                        if (parts.Count >= 5) { parts.Add("..."); return string.Join(" | ", parts.ToArray()); }
+                        parts.Add(((string)e["code"] ?? "") + " (" + ((string)e["field_path"] ?? "") + "): " + ((string)e["message"] ?? ""));
+                    }
+                return (parts.Count > 0) ? string.Join(" | ", parts.ToArray()) : null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
         /// <summary>GET voi Bearer token — dung cho API tra cuu. Hanh vi doc body/loi nhu HttpPost.</summary>

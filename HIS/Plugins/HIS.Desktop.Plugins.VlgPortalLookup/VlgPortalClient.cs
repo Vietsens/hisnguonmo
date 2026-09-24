@@ -536,6 +536,22 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
         }
 
         /// <summary>Parse response trang-thai -> ADO (tom tat + DetailText nhieu dong cho memo).</summary>
+        /// <summary>received_at cua 1 lan gui (kieu Date da parse san hoac chuoi ISO). Khong doc duoc -> MinValue.</summary>
+        private static DateTime RequestTime(Newtonsoft.Json.Linq.JToken r)
+        {
+            try
+            {
+                var t = (r is Newtonsoft.Json.Linq.JObject) ? r["received_at"] : null;
+                if (t == null || t.Type == Newtonsoft.Json.Linq.JTokenType.Null) return DateTime.MinValue;
+                if (t.Type == Newtonsoft.Json.Linq.JTokenType.Date) return (DateTime)t;
+                DateTime dt;
+                if (DateTime.TryParse((string)t, System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.RoundtripKind, out dt)) return dt;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return DateTime.MinValue;
+        }
+
         private static VlgHoSoADO ParseTrangThai(string body)
         {
             var jo = Newtonsoft.Json.Linq.JObject.Parse(body);
@@ -559,10 +575,11 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
             var requests = (jd != null) ? jd["requests"] as Newtonsoft.Json.Linq.JArray : null;
             if (requests != null)
             {
-                // Sap xep moi nhat truoc (received_at ISO — so sanh chuoi Ordinal la du).
+                // Sap xep moi nhat truoc theo THOI GIAN: Newtonsoft da doi chuoi ISO received_at thanh kieu Date,
+                // ep (string) ra dang "MM/dd/yyyy HH:mm:ss" — so chuoi se sai thu tu qua nam va mat phan le giay.
                 var sorted = new List<Newtonsoft.Json.Linq.JToken>();
                 foreach (var r in requests) sorted.Add(r);
-                sorted.Sort((a, b) => string.CompareOrdinal((string)b["received_at"] ?? "", (string)a["received_at"] ?? ""));
+                sorted.Sort((a, b) => RequestTime(b).CompareTo(RequestTime(a)));
                 sb.AppendLine("CÁC LẦN GỬI (" + sorted.Count + " — mới nhất trước):");
                 bool first = true;
                 foreach (var r in sorted)
