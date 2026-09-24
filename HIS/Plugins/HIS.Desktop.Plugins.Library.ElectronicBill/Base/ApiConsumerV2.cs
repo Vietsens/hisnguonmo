@@ -146,15 +146,43 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                     }
                 }
                 Inventec.Common.Logging.LogSystem.Info(string.Format("API: {0}. sendJsonData: {1}", fullrequestUri, sendJsonData));
-                if (method.Equals(System.Net.WebRequestMethods.Http.Get))
-                    resp = client.GetAsync(fullrequestUri).Result;
-                else
-                    resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
+                try
+                {
+                    if (method.Equals(System.Net.WebRequestMethods.Http.Get))
+                        resp = client.GetAsync(fullrequestUri).Result;
+                    else
+                        resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
+                }
+                catch (AggregateException ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    if (ex.InnerExceptions.Any(o => o is TaskCanceledException))
+                    {
+                        throw new Exception(string.Format("Hết thời gian chờ ({0} giây) phản hồi từ cổng hóa đơn điện tử ({1}). Vui lòng kiểm tra hóa đơn trên cổng trước khi phát hành lại.", (int)client.Timeout.TotalSeconds, requestUri));
+                    }
+                    Exception inner = ex.GetBaseException();
+                    throw new Exception(string.Format("Lỗi kết nối cổng hóa đơn điện tử ({0}): {1}", requestUri, inner != null ? inner.Message : ex.Message));
+                }
 
-                if (resp == null || !resp.IsSuccessStatusCode)
+                if (resp == null)
+                {
+                    throw new Exception(string.Format("Cổng hóa đơn điện tử không trả về dữ liệu ({0}).", requestUri));
+                }
+
+                if (!resp.IsSuccessStatusCode)
                 {
                     int statusCode = resp.StatusCode.GetHashCode();
-                    throw new Exception(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}", baseUri, requestUri, statusCode));
+                    string errorData = "";
+                    try
+                    {
+                        errorData = resp.Content != null ? resp.Content.ReadAsStringAsync().Result : "";
+                    }
+                    catch (Exception exRead)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exRead);
+                    }
+                    Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}. Response: {3}", baseUri, requestUri, statusCode, errorData));
+                    throw new Exception(string.Format("Cổng hóa đơn điện tử trả về lỗi (mã {0}): {1}", statusCode, String.IsNullOrWhiteSpace(errorData) ? resp.ReasonPhrase : errorData));
                 }
                 T data = default(T);
                 string responseData = resp.Content.ReadAsStringAsync().Result;
