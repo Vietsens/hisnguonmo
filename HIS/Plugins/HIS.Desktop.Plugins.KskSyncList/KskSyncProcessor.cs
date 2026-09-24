@@ -354,19 +354,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 string hccMacskcb = (hccConfig != null) ? (hccConfig.SenderId ?? "") : "";
                 KskHccPusher hccPusher = (hccConfig != null) ? new KskHccPusher(hccConfig) : null;
 
-                // Cổng KDLYT Vĩnh Long: giao thức riêng (token /api/xac-thuc/token + JSON wrapper chứa XML),
-                // KHÔNG dùng lại Qd1551Consumer; token cache trong 1 KskVlgPusher dùng chung cả lô.
-                // metadata định tuyến (sender_id/receiver_id/msg_type/txn_type) lấy theo cấu hình cổng BYT
-                // (MOS.HIS_KSK_SYNC.CONNECTION_INFO — bytConfig); viện không cấu hình BYT thì bỏ qua các trường đó.
+                // Cổng KDLYT Vĩnh Long — API V1.5 /api/platform/data-sync/push (cấu trúc trục Bộ Y tế, QĐ 2062
+                // Phụ lục 02): token Kho /api/xac-thuc/token; token cache trong 1 KskVlgPusher dùng chung cả lô.
+                // Mã 13 số (GTIN/GLN) dùng cho header.sender_id VÀ THONGTINDONVI/MACSKCB — y như luồng trục BYT
+                // (kiểm chứng cổng dev 24/09/2026: Kho VALID, phân loại đúng mẫu phiếu). Thiếu mã -> chặn ở pre-gate.
                 KskVlgConfig vlgConfig = BuildVlgConfig();
-                string vlgMacskcb = (vlgConfig != null) ? (vlgConfig.MaDonVi ?? "") : "";
-                KskVlgPusher vlgPusher = (vlgConfig != null)
-                    ? new KskVlgPusher(vlgConfig,
-                        (bytConfig != null) ? bytConfig.SenderId : null,
-                        (bytConfig != null) ? bytConfig.ReceiverId : null,
-                        (bytConfig != null) ? bytConfig.MsgType : null,
-                        (bytConfig != null) ? bytConfig.TxnType : null)
-                    : null;
+                string vlgGtin = (vlgConfig != null) ? ResolveVlgSenderGtin(vlgConfig, bytConfig) : null;
+                string vlgMacskcb = vlgGtin ?? "";
+                KskVlgPusher vlgPusher = (vlgConfig != null) ? new KskVlgPusher(vlgConfig, vlgGtin) : null;
 
                 // Các cổng do THƯ VIỆN đẩy (BYT/HSSK/HOC). Không có cổng nào -> KHÔNG gọi PushListMulti
                 // (gọi rỗng sẽ trả về "thành công" giả vì không cổng nào đánh dấu thất bại).
@@ -418,13 +413,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (hsskConfig != null) gateways.Add("HSSK");
                 if (hocConfig != null) gateways.Add("HOC");
                 if (hccConfig != null) gateways.Add("HCC" + (hccIsJson ? "(json)" : "(xml)"));
-                if (vlgConfig != null) gateways.Add("VLG(xml)");
+                if (vlgConfig != null) gateways.Add("VLG(data-sync/push)");
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                     "Dong bo KSK: {0} ho so -> cong: {1}; ky so: {2}{3}",
                     rowList.Count,
                     (gateways.Count > 0) ? string.Join(", ", gateways.ToArray()) : "(khong co cong nao)",
                     doSign ? "co" : "khong",
                     (configError != null) ? ("; LOI CAU HINH: " + configError) : ""));
+                // Có cổng nào NGOÀI VLG được đẩy trong lô không (quyết định lỗi cấu hình VLG có chặn cả hồ sơ không).
+                bool otherGatewaySelected = pushViaLibrary || hccPusher != null || this.PushSytHcm;
+                if (vlgConfig != null && (this.pushByt || hocConfig != null))
+                    Inventec.Common.Logging.LogSystem.Warn("Dong bo KSK: cong VLG (API V1.5) DA TU chuyen tiep ban tin sang"
+                        + " Cong Bo Y te (receiver TTYQG); lo nay con tich them BYT/HOC -> Bo co the nhan 2 ban tin cho"
+                        + " cung ho so. Vien dung VLG nen bo tich cong BYT/HOC.");
 
                 // ĐẨY 1 HỒ SƠ / LẦN; gom kết quả (hiển thị + entity lưu). LƯU 1 LẦN sau vòng lặp.
                 for (int i = 0; i < rowList.Count; i++)
@@ -462,13 +463,23 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             string vlgBlockReason = null;
                             string vlgPayload = null;
                             bool vlgSignFailed = false;
-                            if (vlgPusher != null)
+                            // Kết quả RIÊNG cổng VLG đã biết trước khi đẩy (thiếu mã 13 số / lần gửi trước mất
+                            // phản hồi đã vào Kho / chưa đối soát được) -> CHỈ bỏ qua lệnh đẩy VLG, các cổng
+                            // khác vẫn đẩy bình thường. Khác vlgBlockReason (lỗi DỮ LIỆU -> chặn mọi cổng).
+                            KskVlgPushResult vlgKnownResult = null;
+                            bool vlgGtinOk = KskVlgConfigParser.IsGtin13(vlgGtin);
+                            if (vlgPusher != null && !vlgGtinOk && !otherGatewaySelected)
+                            {
+                                // Chỉ đẩy VLG mà thiếu mã 13 số: không dựng/ký bản tin vô ích cho từng hồ sơ.
+                                vlgKnownResult = KskVlgPushResult.Failure(vlgPusher.DescribeMissingGtin());
+                            }
+                            else if (vlgPusher != null)
                             {
                                 vlgBlockReason = ValidateVlgInput(inp);   // thiếu CCCD / lý do khám / MA_LOAI_KCB > 2
                                 if (vlgBlockReason == null)
                                 {
-                                    // Dựng bản tin (bọc JSON + chuẩn hóa ngày + ký CKS_) rồi kiểm độ dài trên
-                                    // XML thực sự gửi đi (kể cả giá trị thư viện tự sinh, giải mã NOIDUNGFILE base64).
+                                    // Dựng bản tin (ký CKS_) rồi kiểm độ dài trên XML thực sự gửi đi
+                                    // (kể cả giá trị thư viện tự sinh, giải mã NOIDUNGFILE base64).
                                     vlgPayload = BuildVlgPayload(vlgMacskcb, inp, dataSigner, out vlgSignFailed);
                                     if (vlgSignFailed)
                                         vlgBlockReason = "VLG: ký số thất bại (CKS_BENH_VIEN/CKS_NGUOI_KET_LUAN)"
@@ -484,15 +495,21 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                         if (vlgReasons.Count > 0) vlgBlockReason = string.Join(" | ", vlgReasons.ToArray());
                                     }
                                 }
+                                if (vlgBlockReason == null)
+                                {
+                                    if (!vlgGtinOk)
+                                        vlgKnownResult = KskVlgPushResult.Failure(vlgPusher.DescribeMissingGtin());   // lỗi cấu hình VLG
+                                    else
+                                        vlgKnownResult = CheckPreviousVlgUnknown(vlgPusher, rowList[i]);
+                                }
                             }
 
                             if (vlgBlockReason != null)
                             {
-                                // Chặn cứng: đánh dấu Thất bại + lý do, KHÔNG gọi push cổng nào. BuildResultAdo
-                                // giữ TRANSACTION_CODE/REGISTRATION_NO cũ (không mất mã đối soát của lần trước).
-                                ado = BuildResultAdo(rowList[i], null, null,
-                                    KskVlgPushResult.Failure(vlgBlockReason), syncTime,
-                                    libSingleLabel, configError, null);
+                                // Chặn cứng vì lỗi DỮ LIỆU: KHÔNG gọi push cổng nào. BuildResultAdo giữ
+                                // TRANSACTION_CODE/REGISTRATION_NO cũ (không mất mã đối soát của lần trước).
+                                ado = BuildResultAdo(rowList[i], null, null, KskVlgPushResult.Failure(vlgBlockReason),
+                                    syncTime, libSingleLabel, configError, null);
                             }
                             else
                             {
@@ -512,9 +529,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 hccResult = hccPusher.Push(BuildHccPayload(hccMacskcb, inp, hccIsJson,
                                     signXmlForHcc ? dataSigner : null));
 
-                            // Cổng KDLYT Vĩnh Long (nếu chọn) — payload đã dựng + đã kiểm ở pre-gate trên.
-                            KskVlgPushResult vlgResult = null;
-                            if (vlgPusher != null)
+                            // Cổng KDLYT Vĩnh Long (nếu chọn) — payload đã dựng + đã kiểm ở pre-gate trên;
+                            // kết quả đã biết trước (vlgKnownResult) -> không gửi lại, dùng luôn để gộp.
+                            KskVlgPushResult vlgResult = vlgKnownResult;
+                            if (vlgPusher != null && vlgResult == null)
                                 vlgResult = vlgPusher.Push(vlgPayload, SafeString(GetProp(rowList[i], "TDL_TREATMENT_CODE")));
 
                             // Cổng Sở Y tế TP.HCM (mẫu M3) — hàm này tự bọc try/catch nên lỗi ở
@@ -793,9 +811,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 KSK_RECORD_ID = ToLong(GetProp(row, "KSK_RECORD_ID")),
                 SYNC_RESULT_TYPE = ado.SYNC_RESULT_TYPE,
                 SYNC_TIME = ado.SYNC_TIME,
-                TRANSACTION_CODE = ado.TRANSACTION_CODE,
+                // Cot varchar2(100): ghep nhieu cong (vd "BYT:<txn 55>;VLG:MSG:<msg_id 51>") de vuot ->
+                // ca lo luu that bai. FitSyncCode rut gon/cat truoc khi gui backend.
+                TRANSACTION_CODE = FitSyncCode(ado.TRANSACTION_CODE),
                 SYNC_FAILD_REASON = ado.SYNC_FAILD_REASON,
-                REGISTRATION_NO = ado.REGISTRATION_NO
+                REGISTRATION_NO = FitSyncCode(ado.REGISTRATION_NO)
             };
             long treaId = ToLong(GetProp(row, "TDL_TREATMENT_ID"));
             if (treaId > 0) ent.TDL_TREATMENT_ID = treaId;
@@ -832,10 +852,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
         /// <summary>
         /// TRA CUU ket qua xu ly THAT tren cong KDLYT Vinh Long cho danh sach ho so (ma_lk = ma dieu tri)
-        /// va CAP NHAT trang thai HIS theo ket qua kiem tra cua cong:
-        ///   - VALID   -> Da dong bo (SYNC_RESULT_TYPE=2) + ghi chu "DAT kiem tra"; REGISTRATION_NO=VALID.
-        ///   - INVALID -> That bai (SYNC_RESULT_TYPE=3) + SYNC_FAILD_REASON = danh sach loi cua cong.
+        /// va CAP NHAT trang thai HIS theo 2 lop ket qua (API V1.5): Kho kiem tra + Cong Bo Y te:
+        ///   - Kho INVALID            -> That bai + danh sach loi cua Kho.
+        ///   - Kho VALID, Bo tu choi  -> That bai + ma tu choi cua Bo (sua roi day lai).
+        ///   - Kho VALID, Bo da nhan  -> Da dong bo, REGISTRATION_NO=BYT_ACCEPTED.
+        ///   - Kho VALID, Bo chua co  -> giu Da dong bo + ghi chu cho (KHONG day lai); ho so dang That bai vi
+        ///     mat phan hoi (VLG_CHUA_RO) ma Kho da co -> nang len Da dong bo.
+        ///   - Kho VALID, gui qua API cu (LEGACY_API) -> Da dong bo, REGISTRATION_NO=VALID (nhu truoc).
         ///   - Chua co tren cong / dang xu ly / loi tra cuu -> CHI hien thi, KHONG cap nhat DB.
+        /// Ho so That bai co dau "MSG:&lt;msg_id&gt;" (lan day gan nhat mat phan hoi / bi tu choi khong kem ma
+        /// theo doi): doi soat DUNG ban tin do truoc — Kho chua co thi GIU That bai, khong nang theo lan gui
+        /// cu hon. Ghi REGISTRATION_NO / TRANSACTION_CODE chi thay doan "VLG:" (giu gia tri cong khac).
         /// Luu batch 1 lan qua api/HisKskSync/SaveSyncResult (nhu PushList); token cache dung chung ca lo.
         /// </summary>
         internal List<KskSyncResultADO> UpdateVlgStatuses(IEnumerable<V_HIS_KSK_SYNC> rows)
@@ -868,14 +895,51 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     KskSyncResultADO ado = NewResult(row, syncTime);
                     // GIU ma giao dich hien co (tracking_id luc day) — tra cuu khong duoc xoa/ghi de rong.
                     ado.TRANSACTION_CODE = EmptyToNull(SafeString(GetProp(row, "TRANSACTION_CODE")));
+                    // REGISTRATION_NO dang luu — chi thay DOAN VLG khi ghi (khong xoa trang thai cong khac).
+                    string curReg = EmptyToNull(SafeString(GetProp(row, "REGISTRATION_NO")));
                     string maLk = SafeString(GetProp(row, "TDL_TREATMENT_CODE"));
+                    string curReason = SafeString(GetProp(row, "SYNC_FAILD_REASON"));
+                    bool rowFailed = ToLong(GetProp(row, "SYNC_RESULT_TYPE")) == RESULT_FAILED;
+
+                    // Ho so That bai ma lan day VLG GAN NHAT ghi dau "MSG:<msg_id>" (mat phan hoi / cong tu choi
+                    // khong kem ma theo doi): doi soat DUNG ban tin do truoc. Kho chua co -> ban HIS gui gan nhat
+                    // CHUA toi Kho, KHONG duoc nang len Da dong bo theo lan gui cu hon (se mat ban sua). Giu nguyen.
+                    string lastMsgId = rowFailed ? ExtractVlgMsgMarker(row) : null;
+                    KskVlgRequestInfo lastInfo = null;   // trang thai DUNG ban tin HIS gui gan nhat (neu doi soat duoc)
+                    if (lastMsgId != null)
+                    {
+                        VlgPrevLookup lk = LookupVlgMessage(pusher, maLk, lastMsgId);
+                        if (!lk.Checked || !lk.Found)
+                        {
+                            ado.SYNC_RESULT_TYPE = RESULT_FAILED;
+                            ado.REGISTRATION_NO = curReg;
+                            ado.SYNC_FAILD_REASON = !lk.Checked
+                                ? (curReason + " | VLG: chưa đối soát được lần gửi gần nhất (" + lk.FailReason + ") — thử lại sau")
+                                : (curReason + " | VLG: lần gửi gần nhất CHƯA vào Kho dữ liệu — xử lý lỗi rồi đồng bộ lại");
+                            results.Add(ado);
+                            continue;   // chi hien thi, KHONG luu
+                        }
+                        // Kho CO ban tin gan nhat -> xet tiep theo trang thai ho so nhu duoi, nhung lay trang thai
+                        // Kho/Bo + ma theo doi cua CHINH ban tin do (requests[] cua ho so chi ghi lan gui lam doi
+                        // du lieu — gui lai noi dung y het khong hien o day, kiem chung dev 24/09).
+                        lastInfo = lk.Info;
+                    }
 
                     KskVlgStatusResult st = pusher.GetStatus(maLk);
+                    if (lastInfo != null && st.Ok && st.Found)
+                    {
+                        if (!string.IsNullOrEmpty(lastInfo.TrackingId)) st.LatestTrackingId = lastInfo.TrackingId;
+                        if (!string.IsNullOrEmpty(lastInfo.SourceChannel)) st.LatestSourceChannel = lastInfo.SourceChannel;
+                        st.LatestHocStatus = lastInfo.HocStatus ?? st.LatestHocStatus;
+                        st.LatestBytStatus = lastInfo.BytStatus;
+                        st.LatestBytResCode = lastInfo.BytResCode;
+                        // Ban HIS gui gan nhat KHONG DAT (du ho so con ban VALID cu hon) -> xet theo ban moi nhat.
+                        if (lastInfo.IsHocInvalid) st.ValidationStatus = "INVALID";
+                    }
                     // Ho so dang THAT BAI vi cong KHAC (ly do khong bat dau bang "VLG:")? SYNC_RESULT_TYPE
                     // la trang thai CHUNG moi cong — VLG DAT cung KHONG duoc nang 3->2/xoa ly do, neu khong
                     // nhan vien mat tin hieu day lai cong kia (ho so thieu vinh vien tren truc BYT...).
-                    string curReason = SafeString(GetProp(row, "SYNC_FAILD_REASON"));
-                    bool failedByOtherGateway = ToLong(GetProp(row, "SYNC_RESULT_TYPE")) == RESULT_FAILED
+                    bool failedByOtherGateway = rowFailed
                         && !string.IsNullOrWhiteSpace(curReason)
                         && !curReason.TrimStart().StartsWith("VLG:", StringComparison.OrdinalIgnoreCase);
                     bool save = false;
@@ -889,28 +953,72 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         ado.SYNC_RESULT_TYPE = RESULT_FAILED;
                         ado.SYNC_FAILD_REASON = "VLG: chưa có hồ sơ trên cổng (mã " + maLk + ") — hồ sơ chưa được đẩy?";
                     }
+                    else if (st.IsValid && st.IsBytRejected)
+                    {
+                        // API V1.5: Kho DAT nhung Cong Bo Y te TU CHOI lan gui moi nhat -> that bai, can sua roi day lai.
+                        ado.SYNC_RESULT_TYPE = RESULT_FAILED;
+                        ado.REGISTRATION_NO = SetVlgSegment(curReg, !string.IsNullOrEmpty(st.LatestBytResCode) ? st.LatestBytResCode : "BYT_REJECTED");
+                        string reason = "VLG: Kho dữ liệu ĐẠT kiểm tra nhưng Cổng Bộ Y tế TỪ CHỐI ("
+                            + (st.LatestBytResCode ?? st.LatestBytStatus) + ")"
+                            + (string.IsNullOrEmpty(st.ErrorSummary) ? "" : (" — " + st.ErrorSummary))
+                            + " — sửa hồ sơ rồi đẩy lại";
+                        if (failedByOtherGateway) reason += " | Lỗi cổng khác trước đó: " + curReason;
+                        ado.SYNC_FAILD_REASON = (reason.Length > 3900) ? reason.Substring(0, 3900) + "..." : reason;
+                        save = true;
+                    }
+                    else if (st.IsValid && !st.IsBytAccepted
+                        && !string.Equals(st.LatestSourceChannel, "LEGACY_API", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Kho DAT, Bo chua co ket qua (tam dung chuyen tiep / dang gui / cho Bo) -> KHONG day lai.
+                        string wait = "VLG: Kho dữ liệu ĐẠT kiểm tra, đang chờ Cổng Bộ Y tế ("
+                            + (st.LatestBytStatus ?? "chưa có kết quả")
+                            + (string.IsNullOrEmpty(st.LatestBytResCode) ? "" : (" " + st.LatestBytResCode))
+                            + ") — KHÔNG đẩy lại, bấm cập nhật lại sau";
+                        if (failedByOtherGateway)
+                        {
+                            ado.SYNC_RESULT_TYPE = RESULT_FAILED;
+                            ado.SYNC_FAILD_REASON = curReason + " | " + wait;
+                        }
+                        else
+                        {
+                            ado.SYNC_RESULT_TYPE = RESULT_SUCCESS;
+                            ado.SuccessNote = wait;
+                            // Ho so dang That bai vi lan truoc MAT PHAN HOI (VLG_CHUA_RO) ma Kho da co ban tin
+                            // -> nang len Da dong bo + ghi ma tra cuu that de nhan vien khong day trung.
+                            if (ToLong(GetProp(row, "SYNC_RESULT_TYPE")) != RESULT_SUCCESS)
+                            {
+                                ado.REGISTRATION_NO = SetVlgSegment(curReg, "KHO_DAT_CHO_BO");
+                                ado.TRANSACTION_CODE = SetVlgSegment(ado.TRANSACTION_CODE, st.LatestTrackingId);
+                                save = true;
+                            }
+                        }
+                    }
                     else if (st.IsValid)
                     {
+                        // Kho DAT va (Bo da tiep nhan HOAC ho so gui qua API cu truoc khi Kho bat chuyen tiep Bo).
+                        string okNote = st.IsBytAccepted
+                            ? "VLG: Kho ĐẠT kiểm tra và Cổng Bộ Y tế đã tiếp nhận (" + (st.LatestBytResCode ?? st.LatestBytStatus) + ")"
+                            : "VLG: hồ sơ ĐẠT kiểm tra (VALID)";
                         if (failedByOtherGateway)
                         {
                             // VLG DAT nhung ho so con loi cong khac -> GIU trang thai/ly do hien tai,
                             // chi hien thi ghi chu; KHONG luu DB (tranh xoa ly do loi cong kia).
                             ado.SYNC_RESULT_TYPE = RESULT_FAILED;
-                            ado.SYNC_FAILD_REASON = curReason
-                                + " | VLG: hồ sơ ĐẠT kiểm tra (VALID) — vẫn giữ Thất bại do lỗi cổng khác chưa xử lý";
+                            ado.SYNC_FAILD_REASON = curReason + " | " + okNote + " — vẫn giữ Thất bại do lỗi cổng khác chưa xử lý";
                         }
                         else
                         {
                             ado.SYNC_RESULT_TYPE = RESULT_SUCCESS;
-                            ado.REGISTRATION_NO = "VALID";
-                            ado.SuccessNote = "VLG: hồ sơ ĐẠT kiểm tra (VALID)";
+                            ado.REGISTRATION_NO = SetVlgSegment(curReg, st.IsBytAccepted ? "BYT_ACCEPTED" : "VALID");
+                            ado.TRANSACTION_CODE = SetVlgSegment(ado.TRANSACTION_CODE, st.LatestTrackingId);
+                            ado.SuccessNote = okNote;
                             save = true;
                         }
                     }
                     else if (st.IsInvalid)
                     {
                         ado.SYNC_RESULT_TYPE = RESULT_FAILED;
-                        ado.REGISTRATION_NO = "INVALID";
+                        ado.REGISTRATION_NO = SetVlgSegment(curReg, "INVALID");
                         string reason = "VLG: hồ sơ KHÔNG ĐẠT kiểm tra của cổng"
                             + (string.IsNullOrEmpty(st.ErrorSummary) ? "" : (" — " + st.ErrorSummary));
                         // Con loi cong khac -> NOI vao (khong xoa mat dau vet loi cong kia).
@@ -1139,8 +1247,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 }
                 if (string.IsNullOrWhiteSpace(sid) && !string.IsNullOrWhiteSpace(this.vlgConnectionInfo))
                 {
-                    var v = KskVlgConfigParser.Parse(this.vlgConnectionInfo);   // MaDonVi do tinh cap
-                    if (v != null && !string.IsNullOrWhiteSpace(v.MaDonVi)) sid = v.MaDonVi;
+                    // Uu tien ma 13 so khai o truong 6 khoa VLG (MA_GTIN_CSKCB phai trung THONGTINDONVI/MACSKCB
+                    // ban tin gui Kho/Bo); chi roi ve MaDonVi 5 so khi vien chua khai ma 13 so.
+                    var v = KskVlgConfigParser.Parse(this.vlgConnectionInfo);
+                    if (v != null && KskVlgConfigParser.IsGtin13((v.SenderGtin ?? "").Trim())) sid = v.SenderGtin.Trim();
+                    else if (v != null && !string.IsNullOrWhiteSpace(v.MaDonVi)) sid = v.MaDonVi;
                 }
                 maGtinCskcb = sid ?? "";
             }
@@ -2293,13 +2404,204 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// <summary>
         /// Cau hinh cong KDLYT Vinh Long tu MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO. Dinh dang RIENG
         /// (cac truong cach '|') — xem KskVlgConfigParser:
-        ///   MaDonVi|Username|Password|TokenUrl|PushUrl
+        ///   MaDonVi|Username|Password|TokenUrl|PushUrl|SenderGtin
         /// Tra null khi khong day cong VLG / chua cau hinh / chuoi sai dinh dang.
         /// </summary>
         private KskVlgConfig BuildVlgConfig()
         {
             if (!this.pushVlg || string.IsNullOrWhiteSpace(this.vlgConnectionInfo)) return null;
             return KskVlgConfigParser.Parse(this.vlgConnectionInfo);
+        }
+
+        /// <summary>
+        /// Chong gui trung len Bo: lan dong bo truoc MAT PHAN HOI sau khi da gui (REGISTRATION_NO chua
+        /// VLG_CHUA_RO, TRANSACTION_CODE chua "MSG:&lt;msg_id&gt;") -> doi soat xem ban tin do da vao Kho chua.
+        ///   - Kho chua co                       -> null: gui ban hien tai nhu binh thuong.
+        ///   - Kho co, Kho khong dat / Bo tu choi -> null: gui ban hien tai (ban cu hong, can gui ban moi).
+        ///   - Kho co, Bo da nhan / dang cho      -> ket qua thanh cong, KHONG gui lai.
+        ///   - Khong doi soat duoc                -> that bai, GIU dau VLG_CHUA_RO de lan sau doi soat lai.
+        /// </summary>
+        private KskVlgPushResult CheckPreviousVlgUnknown(KskVlgPusher pusher, V_HIS_KSK_SYNC row)
+        {
+            try
+            {
+                string prevReg = SafeString(GetProp(row, "REGISTRATION_NO"));
+                if (string.IsNullOrEmpty(prevReg)
+                    || prevReg.IndexOf(KskVlgBytResCode.CHUA_RO, StringComparison.OrdinalIgnoreCase) < 0) return null;
+                string prevMsgId = ExtractVlgMsgMarker(row);
+                if (prevMsgId == null) return null;
+                string maLk = SafeString(GetProp(row, "TDL_TREATMENT_CODE"));
+
+                VlgPrevLookup lk = LookupVlgMessage(pusher, maLk, prevMsgId);
+                if (!lk.Checked)
+                    return new KskVlgPushResult
+                    {
+                        Success = false,
+                        Status = KskVlgBytResCode.CHUA_RO,       // giu dau de lan sau doi soat lai
+                        TrackingId = "MSG:" + prevMsgId,
+                        MsgId = prevMsgId,
+                        Message = "VLG: lần gửi trước mất phản hồi và CHƯA đối soát được trên cổng (" + lk.FailReason
+                            + ") — chưa gửi lại để tránh trùng; đồng bộ lại sau."
+                    };
+                if (!lk.Found)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("VLG: ma dieu tri " + maLk + " — lan gui truoc (msg_id "
+                        + prevMsgId + ") CHUA vao Kho -> gui lai.");
+                    return null;
+                }
+                KskVlgPushResult known = KskVlgPusher.FromKnownRequest(lk.Info, lk.Info.MsgId ?? prevMsgId);
+                if (known == null || !known.Success)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("VLG: ma dieu tri " + maLk + " — lan gui truoc (msg_id "
+                        + prevMsgId + ") da vao Kho nhung khong dat/bi tu choi -> gui ban hien tai.");
+                    return null;
+                }
+                Inventec.Common.Logging.LogSystem.Info("VLG: ma dieu tri " + maLk + " — lan gui truoc (msg_id "
+                    + prevMsgId + ") DA vao Kho (" + known.Status + ") -> khong gui lai.");
+                return known;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>Ket qua doi soat 1 lan gui HIS da ghi dau "MSG:&lt;msg_id&gt;".</summary>
+        private sealed class VlgPrevLookup
+        {
+            internal bool Checked;       // doi soat duoc (ke ca ket luan "khong co")
+            internal bool Found;         // Kho CO ban tin do
+            internal KskVlgRequestInfo Info;
+            internal string FailReason;
+        }
+
+        /// <summary>
+        /// Lay msg_id HIS da ghi o TRANSACTION_CODE ("MSG:&lt;msg_id&gt;", ke ca khi ghep "BYT:..;VLG:MSG:..").
+        /// Co the chi con phan UUID cuoi (BuildSyncEntity rut gon cho vua cot 100 ky tu). Khong co -> null.
+        /// </summary>
+        private static string ExtractVlgMsgMarker(V_HIS_KSK_SYNC row)
+        {
+            string trk = SafeString(GetProp(row, "TRANSACTION_CODE")) ?? "";
+            var m = System.Text.RegularExpressions.Regex.Match(trk, @"MSG:([0-9A-Za-z]+)");
+            return m.Success ? m.Groups[1].Value : null;
+        }
+
+        // msg_id day du = GTIN 13 + yyMMdd 6 + UUID 32; ngan hon = da rut gon con UUID (khong suy duoc sender_id).
+        private const int FULL_MSG_ID_LEN = 51;
+
+        /// <summary>
+        /// Doi soat 1 ban tin: (1) API doi soat theo sender_id + msg_id (tai lieu V1.5 muc 5.8.1 — dung khi
+        /// msg_id day du, sender_id = 13 so dau); khong duoc thi (2) tra theo ma lien ket va tim msg_id trong
+        /// requests[] (khop ca phan UUID cuoi).
+        /// </summary>
+        private static VlgPrevLookup LookupVlgMessage(KskVlgPusher pusher, string maLk, string msgId)
+        {
+            var res = new VlgPrevLookup();
+            if (msgId.Length >= FULL_MSG_ID_LEN && KskVlgConfigParser.IsGtin13(msgId.Substring(0, 13)))
+            {
+                KskVlgMessageLookup ml = pusher.LookupMessage(msgId.Substring(0, 13), msgId);
+                if (ml.Ok)
+                {
+                    res.Checked = true; res.Found = ml.Found; res.Info = ml.Info;
+                    return res;
+                }
+                res.FailReason = ml.FailReason;
+            }
+            KskVlgStatusResult st = pusher.GetStatus(maLk);
+            if (st.Ok)
+            {
+                res.Checked = true;
+                res.Info = st.Found ? st.FindRequest(msgId) : null;
+                res.Found = res.Info != null;
+                res.FailReason = null;
+            }
+            else if (string.IsNullOrEmpty(res.FailReason))
+                res.FailReason = st.FailReason;
+            return res;
+        }
+
+        private static readonly string[] GatewayLabels = { "BYT:", "HSSK:", "HOC:", "HCC:", "VLG:" };
+
+        /// <summary>
+        /// Ghi gia tri cong VLG vao chuoi da luu ma KHONG xoa gia tri cong khac: chuoi ghep nhieu cong
+        /// ("BYT:x;VLG:y") -> thay/them doan "VLG:"; chuoi tran 1 cong (vien chi day VLG) -> thay ca chuoi.
+        /// </summary>
+        private static string SetVlgSegment(string existing, string vlgValue)
+        {
+            if (string.IsNullOrEmpty(vlgValue)) return existing;
+            if (string.IsNullOrEmpty(existing)) return vlgValue;
+            string[] parts = existing.Split(';');
+            bool labeled = false;
+            foreach (string p in parts)
+                foreach (string lb in GatewayLabels)
+                    if (p.StartsWith(lb, StringComparison.OrdinalIgnoreCase)) { labeled = true; break; }
+            if (!labeled) return vlgValue;
+            var outParts = new List<string>();
+            bool replaced = false;
+            foreach (string p in parts)
+            {
+                if (p.StartsWith("VLG:", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!replaced) outParts.Add("VLG:" + vlgValue);
+                    replaced = true;
+                }
+                else if (p.Length > 0) outParts.Add(p);
+            }
+            if (!replaced) outParts.Add("VLG:" + vlgValue);
+            return string.Join(";", outParts.ToArray());
+        }
+
+        private const int SYNC_CODE_MAX_LEN = 100;   // HIS_KSK_SYNC.TRANSACTION_CODE / REGISTRATION_NO varchar2(100)
+
+        /// <summary>
+        /// Cat gia tri cho vua cot 100 ky tu — vuot thi ca LO luu that bai (ORA-12899 / EF MaxLength).
+        /// Uu tien rut gon dau "MSG:&lt;msg_id 51 ky tu&gt;" con 32 ky tu UUID cuoi (van doi soat duoc qua
+        /// requests[]), roi moi cat duoi.
+        /// </summary>
+        private static string FitSyncCode(string value)
+        {
+            if (value == null || value.Length <= SYNC_CODE_MAX_LEN) return value;
+            string v = System.Text.RegularExpressions.Regex.Replace(value, @"MSG:([0-9A-Za-z]{33,})",
+                mm => "MSG:" + mm.Groups[1].Value.Substring(mm.Groups[1].Value.Length - 32));
+            if (v.Length <= SYNC_CODE_MAX_LEN) return v;
+            Inventec.Common.Logging.LogSystem.Warn("HIS_KSK_SYNC: gia tri ma giao dich/trang thai dai " + v.Length
+                + " ky tu, cat con " + SYNC_CODE_MAX_LEN + ": " + v);
+            return v.Substring(0, SYNC_CODE_MAX_LEN);
+        }
+
+        /// <summary>
+        /// Ma 13 so (GTIN/GLN) cua co so gui len cong VLG: truong 6 khoa VLG -> SenderId cong BYT -> HSSK -> HCC.
+        /// Chi nhan gia tri DUNG 13 chu so; khong co -> null (pre-gate chan kem huong dan khai cau hinh).
+        /// KHONG roi ve MaDonVi 5 so (Kho/Bo can ma dinh danh CSKCB 13 so — QD 2062 Phu luc 02 muc 5.2).
+        /// </summary>
+        private string ResolveVlgSenderGtin(KskVlgConfig vlgConfig, Qd1551Config bytConfig)
+        {
+            try
+            {
+                var candidates = new List<string>();
+                if (vlgConfig != null) candidates.Add(vlgConfig.SenderGtin);
+                if (bytConfig != null) candidates.Add(bytConfig.SenderId);
+                if (!string.IsNullOrWhiteSpace(this.hsskConnectionInfo))
+                {
+                    var h = Qd1551ConfigParser.Parse(this.hsskConnectionInfo, null);
+                    if (h != null) candidates.Add(h.SenderId);
+                }
+                if (!string.IsNullOrWhiteSpace(this.hccConnectionInfo))
+                {
+                    var c = KskHccConfigParser.Parse(this.hccConnectionInfo);
+                    if (c != null) candidates.Add(c.SenderId);
+                }
+                foreach (string s in candidates)
+                {
+                    string v = (s ?? "").Trim();
+                    if (KskVlgConfigParser.IsGtin13(v)) return v;
+                }
+                Inventec.Common.Logging.LogSystem.Warn("VLG: khong tim thay ma GTIN 13 so (truong 6 khoa VLG / SenderId"
+                    + " cong BYT/HSSK/HCC) -> cac ho so day VLG se bi chan cho den khi khai cau hinh.");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return null;
         }
 
         /// <summary>
@@ -2363,23 +2665,6 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>
-        /// Cat gia tri ngay 12 so (yyyyMMddHHmm) / 14 so (yyyyMMddHHmmss) cua cac the &lt;NGAY*&gt; ve
-        /// 8 so yyyyMMdd theo catalog QD 2062 cua cong VLG (NGAY_SINH, NGAY_VAO, NGAY_KET_LUAN...).
-        /// Gia tri da 8 so / khong phai so -> giu nguyen. CHI dung cho ban tin VLG.
-        /// </summary>
-        private static string NormalizeVlgDates(string xml)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(xml)) return xml;
-                return System.Text.RegularExpressions.Regex.Replace(xml,
-                    @"(<(NGAY[A-Z_0-9]*)>)(\d{12}|\d{14})(</\2>)",
-                    m => m.Groups[1].Value + m.Groups[3].Value.Substring(0, 8) + m.Groups[4].Value);
-            }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return xml; }
-        }
-
-        /// <summary>
         /// Sua declaration XML ve encoding="utf-8" (thu vien serialize StringWriter -> khai utf-16).
         /// Khong co declaration / khong khai encoding -> giu nguyen.
         /// </summary>
@@ -2402,8 +2687,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
         /// <summary>
         /// Dung payload cho cong KDLYT Vinh Long: XML KHAMSUCKHOE cua DUNG 1 ho so (SOLUONGHOSO = 1) —
-        /// chuoi XML nay se duoc KskVlgPusher boc JSON wrapper {data_type:"xml", data, metadata} khi gui
-        /// (tai lieu Cong tiep nhan V1.3 muc 5.1 dang b; KHONG base64). Ky CKS_ (neu bat ky so) nhu cong
+        /// KskVlgPusher base64 chuoi nay vao truong data cua envelope truc Bo (tai lieu V1.5 muc 5.1).
+        /// macskcb = ma 13 so (THONGTINDONVI/MACSKCB) nhu luong truc BYT. Ky CKS_ (neu bat ky so) nhu cong
         /// BYT — ban tin la XML nen luon ky duoc, khong co han che nhu HCC json/base64.
         /// signFailed = true khi user DA TICH ky so nhung ky that bai (dataSigner tra rong — HSM loi,
         /// USB token khong ky duoc...) -> caller PHAI danh dau ho so that bai, KHONG duoc day ban tin
@@ -2424,10 +2709,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 // bytes UTF-8 (Content-Type charset=utf-8) — parser chuan phia cong chieu theo declaration
                 // se loi INVALID_XML. Chuan hoa ve utf-8 TRUOC khi ky (sau khi ky khong duoc sua noi dung).
                 content = FixXmlDeclarationUtf8(content);
-                // Cong VLG doc ngay 8 so yyyyMMdd; thu vien sinh 12 so yyyyMMddHHmm (chuan truc BYT) ->
-                // cong khong parse duoc NGAY_SINH/NGAY_VAO => FORM_CLASSIFICATION_FAILED (kiem chung tren
-                // cong dev 09/08/2026: 12 so fail, 8 so phan loai duoc DU_18_TUOI_TRO_LEN). CHI ap cho VLG.
-                content = NormalizeVlgDates(content);
+                // API V1.5 (data-sync/push) nhan NGUYEN ban tin chuan truc Bo: ngay 12 so yyyyMMddHHmm nhu
+                // thu vien sinh (kiem chung cong dev 24/09/2026: Kho doc dung ngay sinh/ngay kham, phan loai
+                // DU_18_TUOI_TRO_LEN, VALID). Khong con cat ngay ve 8 so nhu API V1.3 cu.
                 if (dataSigner != null)
                 {
                     string signed = dataSigner(content);
@@ -2556,9 +2840,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             if (!LogConfigState("VLG", CFG_KEY_VLG, rawValue, selected, cfg == null)) return;
             Inventec.Common.Logging.LogSystem.Info(string.Format(
-                "Cau hinh VLG ({0}): MaDonVi={1}; Username={2}; Password={3}; TokenUrl={4}; PushUrl={5}",
+                "Cau hinh VLG ({0}): MaDonVi={1}; Username={2}; Password={3}; TokenUrl={4}; PushUrl={5}; SenderGtin={6}",
                 CFG_KEY_VLG, Show(cfg.MaDonVi), Show(cfg.Username), Mask(cfg.Password),
-                Show(cfg.TokenUrl), Show(cfg.PushUrl)));
+                Show(cfg.TokenUrl), Show(cfg.PushUrl), Show(cfg.SenderGtin)));
         }
 
         /// <summary>Log 1 dong cau hinh cong HOC (HocConfig — cau truc rieng, co URL hieu luc).</summary>
@@ -2702,7 +2986,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (string.IsNullOrEmpty(txn) && pushResult.Data.Length > 2) txn = pushResult.Data[2] as string;
                 if (string.IsNullOrEmpty(regState) && pushResult.Data.Length > 3) regState = pushResult.Data[3] as string;
             }
-            // VLG: tracking_id -> ma giao dich (kha tra cuu GET .../ho-so/trang-thai); status (QUEUED) -> trang thai.
+            // VLG: X-HOC-Tracking-Id (hoac "MSG:"+msg_id) -> ma giao dich; header.res_code -> trang thai.
             ado.TRANSACTION_CODE = JoinGatewayValue(txn, hasHcc ? hccResult.TxnCode : null,
                 hasVlg ? vlgResult.TrackingId : null, libSingleLabel);
             ado.REGISTRATION_NO = JoinGatewayValue(regState, hasHcc ? hccResult.State : null,
@@ -2714,14 +2998,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 ado.TRANSACTION_CODE = EmptyToNull(SafeString(GetProp(row, "TRANSACTION_CODE")));
             if (string.IsNullOrEmpty(ado.REGISTRATION_NO))
                 ado.REGISTRATION_NO = EmptyToNull(SafeString(GetProp(row, "REGISTRATION_NO")));
-            // Ghi chu tren dialog ket qua khi VLG tiep nhan OK: (1) QUEUED = cong xu ly BAT DONG BO —
-            // "da tiep nhan" chu chua phai "da xu ly xong", tra cuu bang ma giao dich; (2) canh bao
-            // ACCEPTED_WITH_WARNING / warnings[] cua cong. Vien khong day VLG -> SuccessNote null, hien thi nhu cu.
+            // Ghi chu tren dialog ket qua khi VLG thanh cong: Kho da giu ban tin nhung co the CHUA chuyen Bo
+            // (tam dung / qua gio / Bo loi luu) — noi ro de nhan vien KHONG day lai va biet bam "Cap nhat KQ
+            // cong". Vien khong day VLG -> SuccessNote null, hien thi nhu cu.
             if (success && hasVlg && vlgOk)
             {
                 var notes = new List<string>();
-                if (string.Equals(vlgResult.Status, "QUEUED", StringComparison.OrdinalIgnoreCase))
-                    notes.Add("VLG: đã tiếp nhận (QUEUED — cổng xử lý sau, tra cứu bằng mã giao dịch)");
+                if (!string.IsNullOrEmpty(vlgResult.Note)) notes.Add(vlgResult.Note);
                 if (!string.IsNullOrEmpty(vlgResult.Warning))
                     notes.Add("VLG lưu ý: " + vlgResult.Warning);
                 if (notes.Count > 0) ado.SuccessNote = string.Join("; ", notes.ToArray());
@@ -2735,13 +3018,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     reasons.Add(!string.IsNullOrEmpty(hccResult.Message) ? hccResult.Message : "HCC: đồng bộ thất bại");
                 if (hasVlg && !vlgOk)
                     reasons.Add(!string.IsNullOrEmpty(vlgResult.Message) ? vlgResult.Message : "VLG: đồng bộ thất bại");
-                if (!string.IsNullOrEmpty(configError)) reasons.Add(configError);
-                if (!hasLib && !hasHcc && !hasVlg && string.IsNullOrEmpty(configError))
                 if (hasSyt && !sytOk)
                     reasons.Add("SYT TP.HCM: " + (!string.IsNullOrEmpty(sytResult.Message)
                         ? sytResult.Message : "đồng bộ thất bại"));
                 if (!string.IsNullOrEmpty(configError)) reasons.Add(configError);
-                if (!hasLib && !hasHcc && !hasSyt && string.IsNullOrEmpty(configError))
+                // Chi khi KHONG co cong nao duoc day (truoc day thieu !hasVlg + cau "if" treo: ho so chi day VLG
+                // ma that bai luon bi noi them "Chua chon cong", ly do loi SYT bi nuot, configError ghi 2 lan).
+                if (!hasLib && !hasHcc && !hasVlg && !hasSyt && string.IsNullOrEmpty(configError))
                     reasons.Add("Chưa chọn cổng liên thông để đẩy");
                 ado.SYNC_FAILD_REASON = string.Join(" | ", reasons);
             }
@@ -2774,6 +3057,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             KskSyncResultADO ado = NewResult(row, syncTime);
             ado.SYNC_RESULT_TYPE = RESULT_FAILED;
             ado.SYNC_FAILD_REASON = reason;
+            // Giu ma da luu (backend upsert ghi de nguyen cot — null se xoa tracking cu / dau VLG_CHUA_RO,
+            // lam mat chong gui trung). Nhat quan voi BuildResultAdo.
+            ado.TRANSACTION_CODE = EmptyToNull(SafeString(GetProp(row, "TRANSACTION_CODE")));
+            ado.REGISTRATION_NO = EmptyToNull(SafeString(GetProp(row, "REGISTRATION_NO")));
             return ado;
         }
 
