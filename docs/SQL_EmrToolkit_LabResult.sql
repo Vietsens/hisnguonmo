@@ -1,4 +1,4 @@
--- =====================================================================
+﻿-- =====================================================================
 -- Lien thong ket qua xet nghiem qua cong EMRToolkit
 -- Phan viec : tien trinh nen day KQXN len cong (MOS.QuartzScheduler)
 -- Tai lieu  : docs/PhanTich_EMRToolkit_KQXN_ExamServiceReqExecute.md
@@ -121,18 +121,43 @@ COMMIT;
 -- Nhan loai chua co builder trong ma nguon thi bi bo qua kem log Warn.
 -- Bat them loai ve sau: chi sua cau hinh, vi du ...|XN,CDHA|XN,CDHA|3||120
 
+-- Bang HIS_CONFIG dinh danh khoa bang cot KEY, mo ta o cot DESCRIPTION (CLOB).
+-- CONFIG_CODE la ma so thu tu cua khoa (vi du '01375') - lay ma ke tiep chua dung.
+
 -- Truong hop CHUA co khoa:
--- INSERT INTO HIS_CONFIG (ID, CONFIG_CODE, CONFIG_NAME, VALUE, IS_ACTIVE)
--- VALUES (HIS_CONFIG_SEQ.NEXTVAL, 'HIS.Desktop.Plugins.EmrToolKit.ConnectionInfo',
---         'Cong EMRToolkit: dia chi|tai khoan|mat khau|IDMauPhieu|loai CLS day|loai CLS xem|so ngay quet|ma CSKCB|timeout giay',
---         '<BaseUrl>|<TaiKhoan>|<MatKhau>|524|XN|XN|3||120', 1);
+-- INSERT INTO HIS_CONFIG (KEY, DEFAULT_VALUE, DESCRIPTION, CONFIG_CODE, MODULE_LINKS)
+-- SELECT 'HIS.Desktop.Plugins.EmrToolKit.ConnectionInfo', '',
+-- TO_CLOB('Thong tin ket noi cong EMRToolkit - dung chung cho luong import benh an dien tu va lien thong ket qua can lam sang.') || CHR(13) || CHR(10) ||
+-- 'Dinh dang: BaseUrl|TaiKhoan|MatKhau|IDMauPhieu|SyncTypes|ViewTypes|ScanDayNumber|MaCskcb|TimeoutSecond' || CHR(13) || CHR(10) ||
+-- 'Vi tri 0 BaseUrl BAT BUOC - dia chi cong, bo dau / cuoi.' || CHR(13) || CHR(10) ||
+-- 'Vi tri 1 TaiKhoan BAT BUOC - dung chung cho gui (backend) va tra cuu (may tram).' || CHR(13) || CHR(10) ||
+-- 'Vi tri 2 MatKhau BAT BUOC.' || CHR(13) || CHR(10) ||
+-- 'Vi tri 3 IDMauPhieu cua luong import benh an dien tu san co, rong thi lay 524.' || CHR(13) || CHR(10) ||
+-- 'Vi tri 4 SyncTypes loai can lam sang duoc DAY len cong, phan tach dau phay. Nhan: XN, CDHA, TDCN, PTTT. Rong thi khong day.' || CHR(13) || CHR(10) ||
+-- 'Vi tri 5 ViewTypes loai can lam sang duoc XEM tren may tram. Rong thi an nut EMRToolkit va tab xem ket qua.' || CHR(13) || CHR(10) ||
+-- 'Vi tri 6 ScanDayNumber so ngay quet theo thoi diem ket thuc dieu tri. Rong/sai/<=0 thi lay 3 ngay, lon hon 90 thi kep con 90.' || CHR(13) || CHR(10) ||
+-- 'Vi tri 7 MaCskcb ghi de ma co so kham chua benh. Rong thi lay theo tai khoan cong.' || CHR(13) || CHR(10) ||
+-- 'Vi tri 8 TimeoutSecond thoi gian cho goi cong tinh bang giay, rong thi lay 120.' || CHR(13) || CHR(10) ||
+-- 'Thieu cac vi tri phia sau KHONG phai loi - he thong dung gia tri mac dinh.' || CHR(13) || CHR(10) ||
+-- 'VI DU: https://emrtoolkit.example.vn|taikhoan|matkhau|524|XN|XN|3||120',
+-- '<MaKeTiep>',
+-- 'HIS.Desktop.Plugins.SereServTein,HIS.Desktop.Plugins.ExamServiceReqExecute'
+-- FROM DUAL
+-- WHERE NOT EXISTS (SELECT 1 FROM HIS_CONFIG WHERE KEY = 'HIS.Desktop.Plugins.EmrToolKit.ConnectionInfo');
+-- COMMIT;
 
 -- Truong hop DA co khoa (dang la url|user|pass|IDMauPhieu) -> chi noi them 5 vi tri:
 -- UPDATE HIS_CONFIG
 --    SET VALUE = VALUE || '|XN|XN|3||120'
---  WHERE CONFIG_CODE = 'HIS.Desktop.Plugins.EmrToolKit.ConnectionInfo';
--- (Kiem tra truoc: SELECT VALUE FROM HIS_CONFIG WHERE CONFIG_CODE = 'HIS.Desktop.Plugins.EmrToolKit.ConnectionInfo';
+--  WHERE KEY = 'HIS.Desktop.Plugins.EmrToolKit.ConnectionInfo';
+-- COMMIT;
+-- (Kiem tra truoc: SELECT VALUE FROM HIS_CONFIG WHERE KEY = 'HIS.Desktop.Plugins.EmrToolKit.ConnectionInfo';
 --  neu gia tri hien tai chua co vi tri 3 thi them '|524' vao truoc: VALUE || '|524|XN|XN|3||120')
+
+-- Sua rieng MO TA cua khoa da ton tai:
+-- UPDATE HIS_CONFIG SET DESCRIPTION = <noi dung nhu phan INSERT o tren>
+--  WHERE KEY = 'HIS.Desktop.Plugins.EmrToolKit.ConnectionInfo';
+-- COMMIT;
 
 -- =====================================================================
 -- PHAN 4 - Cau hinh chu ky tien trinh: MOS.API/Web.config (khong phai DB)
