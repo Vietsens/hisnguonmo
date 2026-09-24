@@ -88,6 +88,14 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
         List<HIS_SERVICE_REQ_TYPE> serviceReqTypeSelecteds;
         List<HIS_SERVICE_REQ_STT> serviceReqSttSelecteds;
+
+        /// <summary>Loc theo tinh trang gui chi dinh sang he thong tich hop: khong loc</summary>
+        private const int SENT_EXT_FILTER__ALL = 0;
+        /// <summary>Loc theo tinh trang gui chi dinh sang he thong tich hop: da gui yeu cau</summary>
+        private const int SENT_EXT_FILTER__SENT = 1;
+        /// <summary>Loc theo tinh trang gui chi dinh sang he thong tich hop: chua gui yeu cau</summary>
+        private const int SENT_EXT_FILTER__NOT_SENT = 2;
+
         ADO.ServiceReqADO currentServiceReqPrint;
         ADO.ServiceReqADO currentServiceReq;
         V_HIS_SERVICE_REQ serviceReqPrintRaw;
@@ -444,6 +452,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmServiceReqList.layoutControl1.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.cboServiceReqType.Properties.NullText = Inventec.Common.Resource.Get.Value("frmServiceReqList.cboServiceReqType.Properties.NullText", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.cboServiceReqStt.Properties.NullText = Inventec.Common.Resource.Get.Value("frmServiceReqList.cboServiceReqStt.Properties.NullText", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
+                this.lciSentExt.Text = Inventec.Common.Resource.Get.Value("frmServiceReqList.lciSentExt.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
+                this.btnResendIntegration.Text = Inventec.Common.Resource.Get.Value("frmServiceReqList.btnResendIntegration.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
+                this.btnResendIntegration.ToolTip = Inventec.Common.Resource.Get.Value("frmServiceReqList.btnResendIntegration.ToolTip", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColSerSevSTT.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColSerSevSTT.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColSerSevView.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColSerSevView.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColSerSevPrint.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColSerSevPrint.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
@@ -611,6 +622,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 InitServiceReqSttCheck();
                 InitComboServiceReqType();
                 InitComboServiceReqStt();
+                InitComboSentExt();
 
                 cboFilter.EditValue = (long)0;
                 txtKeyword.Text = "";
@@ -1022,6 +1034,17 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         filter.SERVICE_REQ_STT_IDs = serviceReqSttSelecteds.Select(o => o.ID).ToList();
                     }
 
+                    //Loc theo tinh trang gui chi dinh sang he thong tich hop (LIS/PACS).
+                    //Khong chon => khong truyen dieu kien => giu nguyen hanh vi cu.
+                    if (cboSentExt.SelectedIndex == SENT_EXT_FILTER__SENT)
+                    {
+                        filter.IS_NOT_SENT__OR__UPDATED = false;
+                    }
+                    else if (cboSentExt.SelectedIndex == SENT_EXT_FILTER__NOT_SENT)
+                    {
+                        filter.IS_NOT_SENT__OR__UPDATED = true;
+                    }
+
                     int value = Convert.ToInt32(cboFilter.EditValue);
 
                     if (value == 0)//tôi tạo
@@ -1108,6 +1131,26 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         gridCheckMark.ClearSelection(cboServiceReqStt.Properties.View);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Khoi tao combo loc theo tinh trang gui chi dinh sang he thong tich hop (LIS/PACS).
+        /// Index 0: khong loc - Index 1: da gui yeu cau - Index 2: chua gui yeu cau
+        /// </summary>
+        private void InitComboSentExt()
+        {
+            try
+            {
+                cboSentExt.Properties.Items.Clear();
+                cboSentExt.Properties.Items.Add("");
+                cboSentExt.Properties.Items.Add(Inventec.Common.Resource.Get.Value("frmServiceReqList.cboSentExt.Sent", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture()));
+                cboSentExt.Properties.Items.Add(Inventec.Common.Resource.Get.Value("frmServiceReqList.cboSentExt.NotSent", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture()));
+                cboSentExt.SelectedIndex = SENT_EXT_FILTER__ALL;
             }
             catch (Exception ex)
             {
@@ -6349,6 +6392,158 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 WaitingManager.Hide();
+            }
+        }
+
+        /// <summary>
+        /// Gui lai chi dinh sang he thong tich hop (LIS/PACS) cho cac y lenh da tick chon tren luoi.
+        /// Gui lan luot tung y lenh; y lenh loi khong lam dung cac y lenh con lai.
+        /// </summary>
+        private void btnResendIntegration_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var listData = gridControlServiceReq.DataSource as List<ADO.ServiceReqADO>;
+                List<ADO.ServiceReqADO> selecteds = listData != null
+                    ? listData.Where(o => o.isCheck).ToList()
+                    : new List<ADO.ServiceReqADO>();
+
+                if (selecteds.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        Resources.ResourceMessage.BanChuaChonDichVu,
+                        Resources.ResourceMessage.ThongBao,
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Information);
+                    return;
+                }
+
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        String.Format(Resources.ResourceMessage.XacNhanGuiLaiChiDinhSangHeThongTichHop, selecteds.Count),
+                        Resources.ResourceMessage.ThongBao,
+                        System.Windows.Forms.MessageBoxButtons.YesNo,
+                        System.Windows.Forms.MessageBoxIcon.Question) != System.Windows.Forms.DialogResult.Yes)
+                {
+                    return;
+                }
+
+                int successCount = 0;
+                List<string> errors = new List<string>();
+                CommonParam lastParam = null;
+
+                WaitingManager.Show();
+                try
+                {
+                    foreach (var item in selecteds)
+                    {
+                        CommonParam param = new CommonParam();
+                        lastParam = param;
+                        bool success = false;
+                        try
+                        {
+                            success = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>(
+                                "api/HisTestServiceReq/RequestOrder",
+                                ApiConsumers.MosConsumer,
+                                item.ID,
+                                HIS.Desktop.Controls.Session.SessionManager.ActionLostToken,
+                                param);
+                        }
+                        catch (Exception exItem)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(exItem);
+                            success = false;
+                        }
+
+                        if (success)
+                        {
+                            successCount++;
+                        }
+                        else
+                        {
+                            errors.Add(String.Format("{0} - {1}: {2}",
+                                item.SERVICE_REQ_CODE,
+                                item.TDL_PATIENT_NAME,
+                                GetResendErrorMessage(param)));
+                        }
+                    }
+                }
+                finally
+                {
+                    WaitingManager.Hide();
+                }
+
+                ShowResendResult(selecteds.Count, successCount, errors);
+
+                #region Process has exception
+                if (lastParam != null)
+                {
+                    SessionManager.ProcessTokenLost(lastParam);
+                }
+                #endregion
+
+                FillDataToGrid();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lay ly do khong gui duoc do nghiep vu tra ve; neu khong co thi tra ve thong bao mac dinh.
+        /// </summary>
+        private string GetResendErrorMessage(CommonParam param)
+        {
+            try
+            {
+                if (param != null && param.Messages != null && param.Messages.Count > 0)
+                {
+                    return String.Join("; ", param.Messages.Where(o => !String.IsNullOrWhiteSpace(o)).ToArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return Resources.ResourceMessage.GuiLaiChiDinhKhongThanhCong;
+        }
+
+        /// <summary>
+        /// Hien thi bang tong hop ket qua gui lai: tong so chon, so thanh cong, so that bai kem ly do.
+        /// </summary>
+        private void ShowResendResult(int totalCount, int successCount, List<string> errors)
+        {
+            try
+            {
+                StringBuilder content = new StringBuilder();
+                content.AppendLine(String.Format(
+                    Resources.ResourceMessage.KetQuaGuiLaiChiDinh,
+                    totalCount,
+                    successCount,
+                    totalCount - successCount));
+
+                if (errors != null && errors.Count > 0)
+                {
+                    content.AppendLine();
+                    content.AppendLine(Resources.ResourceMessage.DanhSachYLenhGuiKhongThanhCong);
+                    foreach (var error in errors)
+                    {
+                        content.AppendLine(error);
+                    }
+                }
+
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    content.ToString(),
+                    Resources.ResourceMessage.ThongBao,
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    (errors != null && errors.Count > 0)
+                        ? System.Windows.Forms.MessageBoxIcon.Warning
+                        : System.Windows.Forms.MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

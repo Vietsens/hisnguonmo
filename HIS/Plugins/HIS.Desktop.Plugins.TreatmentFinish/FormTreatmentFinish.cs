@@ -2915,13 +2915,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
-                // Bat buoc day du thong tin kham benh ngoai tru theo QD130 (key HIS.DESKTOP.EXAM.REQUIRED_FIELDS_QD130).
-                // Kiem tra lai truoc khi ket thuc dieu tri, thieu thi chan.
-                if (!CheckQd130RequiredFields())
-                {
-                    return;
-                }
-
                 //huannh
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("currentTreatment input:", this.currentHisTreatment));
                 HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentHisTreatment, null, null);

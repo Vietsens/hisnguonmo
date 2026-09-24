@@ -331,5 +331,36 @@ namespace HIS.Desktop.Plugins.TreatmentList.Resources
             }
         }
 
+        internal static string ChuaChonBenhNhanSuaDichVuKsk
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TreatmentList__ChuaChonBenhNhanSuaDichVuKsk", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string HoSoKhongThuocHopDongKsk
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TreatmentList__HoSoKhongThuocHopDongKsk", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

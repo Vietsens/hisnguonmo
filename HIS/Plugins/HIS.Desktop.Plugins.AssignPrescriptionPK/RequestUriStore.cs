@@ -37,6 +37,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
 
         public const string HIS_SERVICE_REQ__CHECK_PHARMACOLOGY = "api/HisServiceReq/CheckPharmacology";
 
+        //Tao yeu cau thanh toan cho phan thuoc/vat tu mua ngoai de cap ma QR in len don
+        public const string HIS_TRANS_REQ__CREATE_BY_OUT_STOCK_PRESCRIPTION = "api/HisTransReq/CreateByOutStockPrescription";
+
         public const string HIS_SERVICE_REQ__IN_PATIENT_PRES_CREATE = "api/HisServiceReq/InPatientPresCreate";
         public const string HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE = "api/HisServiceReq/OutPatientPresCreate";
         public const string HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE_LIST = "api/HisServiceReq/OutPatientPresCreateList";

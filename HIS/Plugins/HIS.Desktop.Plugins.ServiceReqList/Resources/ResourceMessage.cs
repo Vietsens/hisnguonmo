@@ -380,5 +380,69 @@ namespace HIS.Desktop.Plugins.ServiceReqList.Resources
                 return "";
             }
         }
+
+        internal static string XacNhanGuiLaiChiDinhSangHeThongTichHop
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("XacNhanGuiLaiChiDinhSangHeThongTichHop", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string KetQuaGuiLaiChiDinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KetQuaGuiLaiChiDinh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string DanhSachYLenhGuiKhongThanhCong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("DanhSachYLenhGuiKhongThanhCong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string GuiLaiChiDinhKhongThanhCong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("GuiLaiChiDinhKhongThanhCong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

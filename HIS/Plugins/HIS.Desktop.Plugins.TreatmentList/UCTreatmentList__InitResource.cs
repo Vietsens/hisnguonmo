@@ -97,6 +97,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 this.btnXuatXML.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentList.btnXuatXML.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnPrintfKSK.Text = Inventec.Common.Resource.Get.Value("UCTreatmentList.btnPrintfKSK.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnPrintfKSK.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentList.btnPrintfKSK.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnKskServiceEdit.Text = Inventec.Common.Resource.Get.Value("UCTreatmentList.btnKskServiceEdit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnKskServiceEdit.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentList.btnKskServiceEdit.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.BtnPrintHuongDan.Text = Inventec.Common.Resource.Get.Value("UCTreatmentList.BtnPrintHuongDan.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtPatientName.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCTreatmentList.txtPatientName.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtOutCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCTreatmentList.txtOutCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
