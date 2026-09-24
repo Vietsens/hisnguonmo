@@ -632,6 +632,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 btnNextDayOutHospital.Enabled = false;
                 txtKeyword.Text = "";
                 cboContract.EditValue = null;
+                this.SetAppliedKskContract(null);
                 cboEndDepartment.EditValue = null;
                 btnPrintServiceReq.Enabled = false;
                 btnXuatXML.Enabled = false;
@@ -709,6 +710,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 btnNextDayOutHospital.Enabled = false;
                 txtKeyword.Text = "";
                 cboContract.EditValue = null;
+                this.SetAppliedKskContract(null);
                 cboEndDepartment.EditValue = null;
                 btnPrintServiceReq.Enabled = false;
                 btnXuatXML.Enabled = false;
@@ -756,6 +758,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 btnNextDayOutHospital.Enabled = false;
                 txtKeyword.Text = "";
                 cboContract.EditValue = null;
+                this.SetAppliedKskContract(null);
                 cboEndDepartment.EditValue = null;
                 btnPrintServiceReq.Enabled = false;
                 btnXuatXML.Enabled = false;
@@ -802,6 +805,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 btnNextDayOutHospital.Enabled = false;
                 txtKeyword.Text = "";
                 cboContract.EditValue = null;
+                this.SetAppliedKskContract(null);
                 cboEndDepartment.EditValue = null;
                 btnPrintServiceReq.Enabled = false;
                 btnXuatXML.Enabled = false;
@@ -847,6 +851,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 btnNextDayOutHospital.Enabled = false;
                 txtKeyword.Text = "";
                 cboContract.EditValue = null;
+                this.SetAppliedKskContract(null);
                 cboEndDepartment.EditValue = null;
                 btnPrintServiceReq.Enabled = false;
                 btnXuatXML.Enabled = false;
@@ -891,6 +896,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 btnNextDayOutHospital.Enabled = false;
                 txtKeyword.Text = "";
                 cboContract.EditValue = null;
+                this.SetAppliedKskContract(null);
                 cboEndDepartment.EditValue = null;
                 btnPrintServiceReq.Enabled = false;
                 btnXuatXML.Enabled = false;
@@ -1154,6 +1160,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         filter.TDL_PATIENT_TYPE_IDs = patientTypeSelecteds.Select(o => o.ID).ToList();
                     }
                 }
+                // 58013 - button "Sửa dịch vụ" follows the contract filter actually applied
+                this.SetAppliedKskContract(filter.TDL_KSK_CONTRACT_ID);
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT_4>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW4, ApiConsumers.MosConsumer, filter, paramCommon);
 
                 if (result != null)

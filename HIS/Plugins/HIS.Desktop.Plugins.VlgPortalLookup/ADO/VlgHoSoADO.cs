@@ -54,12 +54,31 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup.ADO
                 if (latest != null && latest.Type == Newtonsoft.Json.Linq.JTokenType.Object)
                 {
                     ado.TrackingId = (string)latest["tracking_id"];
-                    ado.LatestStatus = (string)latest["status"];
+                    ado.LatestStatus = FormatKskRequestStatus(latest);
                     ado.LatestReceivedText = IsoToTimeText((string)latest["received_at"]);
                 }
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
             return ado;
+        }
+
+        /// <summary>
+        /// Trang thai 1 lan gui KSK QD 2062. API V1.5 bo truong "status", thay bang trang thai Kho
+        /// (hoc_status) + ket qua Cong Bo Y te (byt_status/byt_res_code) — vd "PROCESSED | Bộ: PENDING".
+        /// Kho con tra "status" (ban cu) -> fallback. Lan gui qua API cu (LEGACY_API) khong co byt_*.
+        /// </summary>
+        internal static string FormatKskRequestStatus(Newtonsoft.Json.Linq.JToken r)
+        {
+            try
+            {
+                if (r == null || r.Type != Newtonsoft.Json.Linq.JTokenType.Object) return null;
+                string hoc = (string)r["hoc_status"] ?? (string)r["status"];
+                string byt = (string)r["byt_status"];
+                string bytCode = (string)r["byt_res_code"];
+                if (string.IsNullOrEmpty(byt) && string.IsNullOrEmpty(bytCode)) return hoc;
+                return (hoc ?? "") + " | Bộ: " + (byt ?? "") + (string.IsNullOrEmpty(bytCode) ? "" : (" " + bytCode));
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
         }
 
         /// <summary>Dung tu item JSON cua GET /api/kham-chua-benh/ho-so (nhom KCB).</summary>

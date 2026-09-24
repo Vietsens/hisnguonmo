@@ -192,4 +192,13 @@
   <data name="UCServiceExclusive.txtNote.NullValuePrompt" xml:space="preserve">
     <value>Reason for the exclusion (optional), shown together with the warning message</value>
   </data>
+  <data name="UCServiceExclusive.lciServiceType2.Text" xml:space="preserve">
+    <value>Service type:</value>
+  </data>
+  <data name="UCServiceExclusive.colExclusiveCode.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="UCServiceExclusive.colExclusiveName.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
 </root>

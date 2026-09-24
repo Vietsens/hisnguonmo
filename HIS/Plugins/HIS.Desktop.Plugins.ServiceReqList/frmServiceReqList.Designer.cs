@@ -2879,22 +2879,22 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // lciSentExt
             //
             this.lciSentExt.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciSentExt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciSentExt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
             this.lciSentExt.Control = this.cboSentExt;
             this.lciSentExt.Location = new System.Drawing.Point(0, 50);
             this.lciSentExt.Name = "lciSentExt";
-            this.lciSentExt.Size = new System.Drawing.Size(250, 24);
+            this.lciSentExt.Size = new System.Drawing.Size(238, 24);
             this.lciSentExt.Text = "Gửi tích hợp:";
             this.lciSentExt.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciSentExt.TextSize = new System.Drawing.Size(85, 20);
-            this.lciSentExt.TextToControlDistance = 5;
+            this.lciSentExt.TextSize = new System.Drawing.Size(76, 20);
+            this.lciSentExt.TextToControlDistance = 2;
             //
             // esiSentExt
             //
             this.esiSentExt.AllowHotTrack = false;
-            this.esiSentExt.Location = new System.Drawing.Point(250, 50);
+            this.esiSentExt.Location = new System.Drawing.Point(238, 50);
             this.esiSentExt.Name = "esiSentExt";
-            this.esiSentExt.Size = new System.Drawing.Size(613, 24);
+            this.esiSentExt.Size = new System.Drawing.Size(625, 24);
             this.esiSentExt.TextSize = new System.Drawing.Size(0, 0);
             //
             // lciResendIntegration

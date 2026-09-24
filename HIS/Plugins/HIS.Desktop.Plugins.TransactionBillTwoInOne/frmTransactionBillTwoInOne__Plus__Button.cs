@@ -646,6 +646,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         //AddLastAccountToLocal();
                         bool resetReceipt = false;
                         bool resetInvoice = false;
+                        List<string> einvoiceErrors = new List<string>();
                         foreach (var item in rs)
                         {
                             if (isLuuKy && TransactionBillConfig.InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt && item.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
@@ -657,12 +658,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 if (((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayFormInvoice.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayformReceipt.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR) && (electronicBillResult == null || !electronicBillResult.Success))
                                 {
                                     param.Messages.Add("Tạo hóa đơn điện tử thất bại");
-                                    if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                                    string errorDetail = "";
+                                    if (electronicBillResult != null && electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
                                     {
                                         param.Messages.AddRange(electronicBillResult.Messages);
+                                        errorDetail = string.Join("; ", electronicBillResult.Messages.Distinct());
                                     }
 
                                     param.Messages = param.Messages.Distinct().ToList();
+                                    einvoiceErrors.Add(string.Format("Giao dịch {0}: Tạo hóa đơn điện tử thất bại. {1}", item.TRANSACTION_CODE, errorDetail));
 
                                     //MessageManager.Show(this.ParentForm, param, success);
                                 }
@@ -693,7 +697,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                     else
                                     {
                                         Inventec.Common.Logging.LogSystem.Warn("UpdateInvoiceInfo tra ve false, khong ghi tra thong tin hoa don dien tu vao transaction. "
-                                            + Inventec.Common.Logging.LogUtil.TraceData("sdo", sdo));
+                                            + Inventec.Common.Logging.LogUtil.TraceData("sdo", sdo)
+                                            + Inventec.Common.Logging.LogUtil.TraceData("paramUpdate", paramUpdate));
+                                        string updateDetail = paramUpdate.Messages != null && paramUpdate.Messages.Count > 0 ? string.Join("; ", paramUpdate.Messages.Distinct()) : "";
+                                        string msg = string.Format("Giao dịch {0}: Không cập nhật được thông tin hóa đơn điện tử vào phần mềm (số hóa đơn: {1}). {2}", item.TRANSACTION_CODE, String.IsNullOrWhiteSpace(sdo.EinvoiceNumOrder) ? "không có" : sdo.EinvoiceNumOrder, updateDetail);
+                                        param.Messages.Add(msg);
+                                        einvoiceErrors.Add(msg);
                                     }
                                 }
                             }
@@ -725,6 +734,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         }
                         UpdateDictionaryNumOrderAccountBook(resetReceipt, resetInvoice, false);
                         this.RefreshSessionInfo();
+                        if (einvoiceErrors.Count > 0)
+                        {
+                            WaitingManager.Hide();
+                            DevExpress.XtraEditors.XtraMessageBox.Show(string.Join(Environment.NewLine, einvoiceErrors), "Thông báo hóa đơn điện tử", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                        }
                     }
                     else
                     {

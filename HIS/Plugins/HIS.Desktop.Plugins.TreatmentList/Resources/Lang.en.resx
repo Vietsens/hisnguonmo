@@ -726,4 +726,10 @@
   <data name="UCTreatmentList.txtTreatment.Properties.NullValuePrompt" xml:space="preserve">
     <value>Treatment code</value>
   </data>
+  <data name="UCTreatmentList.btnKskServiceEdit.Text" xml:space="preserve">
+    <value>Edit services</value>
+  </data>
+  <data name="UCTreatmentList.btnKskServiceEdit.ToolTip" xml:space="preserve">
+    <value>Add, remove services and change execute room for selected health examination contract patients</value>
+  </data>
 </root>

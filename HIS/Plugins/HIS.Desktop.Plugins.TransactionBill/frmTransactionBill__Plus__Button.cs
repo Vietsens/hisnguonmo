@@ -210,10 +210,13 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 {
                                     param.Messages.Add("Tạo hóa đơn điện tử thất bại");
 
+                                    string errorDetail = "";
                                     if (electronicBillResultagain != null && electronicBillResultagain.Messages != null && electronicBillResultagain.Messages.Count > 0)
                                     {
                                         param.Messages.AddRange(electronicBillResultagain.Messages.Distinct().ToList());
+                                        errorDetail = string.Join("; ", electronicBillResultagain.Messages.Distinct());
                                     }
+                                    XtraMessageBox.Show(string.Format("Giao dịch {0}: Phát hành lại hóa đơn điện tử thất bại. {1}", resultTranBill.TRANSACTION_CODE, errorDetail), "Thông báo hóa đơn điện tử", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 }
                             }
                             else
@@ -240,6 +243,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                     // Đính kèm bảng kê vào HĐĐT VNPT (chạy độc lập, theo config AUTO_ATTACH_BORDEREAU_HDDT__VNPT)
                                     // Dùng resultTranBill (V_HIS_TRANSACTION) vì cần EINVOICE_TYPE_ID — HIS_TRANSACTION không có
                                     ProcessAttachBordereauHddtVnpt(resultTranBill, electronicBillResultagain);
+                                }
+                                else
+                                {
+                                    ShowUpdateInvoiceInfoFail(sdo, paramUpdate);
                                 }
                             }
                         }
@@ -1696,7 +1703,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                         CreatAgain = true;
 
                                         ErrorElectronicBill.Add("Tạo hóa đơn điện tử thất bại");
-                                        if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                                        if (electronicBillResult != null && electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
                                         {
                                             ErrorElectronicBill.AddRange(electronicBillResult.Messages.Distinct().ToList());
                                         }
@@ -1732,6 +1739,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                         // Đính kèm bảng kê vào HĐĐT VNPT (chạy độc lập, theo config AUTO_ATTACH_BORDEREAU_HDDT__VNPT)
                                         // Dùng resultTranBill (V_HIS_TRANSACTION) vì cần EINVOICE_TYPE_ID — HIS_TRANSACTION không có
                                         ProcessAttachBordereauHddtVnpt(resultTranBill, electronicBillResult);
+                                    }
+                                    else
+                                    {
+                                        WaitingManager.Hide();
+                                        ShowUpdateInvoiceInfoFail(sdo, paramUpdate);
                                     }
                                 }
                             }

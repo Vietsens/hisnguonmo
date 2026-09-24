@@ -275,6 +275,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
+                // Viec 56273: nguoi dung bam Luu tay (khong phai tu luu goi) -> tu luu dang cho se khong goi lai lan 2
+                if (!this.isAutoSaveCalling) this.isManualSaveAttempted = true;
 
                 bool valid = true;
                 this.positionHandleControl = -1;
@@ -529,6 +531,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 this.ChangeLockButtonWhileProcess(true);
                 WaitingManager.Hide();
                 MessageManager.Show(this, paramCommon, false);
+                // Viec 56273: da hien thong bao loi o day -> tu luu khong bao them alert "chua tu luu duoc" chong len
+                this.lastSaveReachedBackend = true;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

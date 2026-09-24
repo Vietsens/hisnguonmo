@@ -492,6 +492,9 @@
     <Compile Include="UCTreatmentList_Right_Click.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCTreatmentList___KskServiceEdit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCTreatmentList___EmrToolkit.cs">
       <SubType>UserControl</SubType>
     </Compile>

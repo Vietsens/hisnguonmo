@@ -154,7 +154,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private HIS.Desktop.Plugins.Library.CheckServiceExclusive.CheckServiceExclusiveManager checkServiceExclusiveManager;
 
         //Viec 57452: thong diep canh bao mem theo SERVICE_ID, hien icon tren cot Ma dich vu
-        private Dictionary<long, string> dicServiceExclusiveWarning = new Dictionary<long, string>();
 
         Dictionary<long, List<V_HIS_SERVICE_PATY>> servicePatyInBranchs;
         Dictionary<long, V_HIS_SERVICE> dicServices;
@@ -3389,26 +3388,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         e.Info.ErrorType = (ErrorType)(row.ErrorTypeIsAssignDay);
                         e.Info.ErrorText = (string)(row.ErrorMessageIsAssignDay);
-                    }
-                    else
-                    {
-                        e.Info.ErrorType = (ErrorType)(ErrorType.None);
-                        e.Info.ErrorText = "";
-                    }
-                }
-                else if (e.ColumnName == "TDL_SERVICE_CODE")
-                {
-                    //Viec 57452: canh bao dich vu khong duoc chi dinh dong thoi
-                    string exclusiveWarning = null;
-                    if (row.IsChecked && this.dicServiceExclusiveWarning != null)
-                    {
-                        this.dicServiceExclusiveWarning.TryGetValue(row.SERVICE_ID, out exclusiveWarning);
-                    }
-
-                    if (!String.IsNullOrEmpty(exclusiveWarning))
-                    {
-                        e.Info.ErrorType = ErrorType.Warning;
-                        e.Info.ErrorText = exclusiveWarning;
                     }
                     else
                     {

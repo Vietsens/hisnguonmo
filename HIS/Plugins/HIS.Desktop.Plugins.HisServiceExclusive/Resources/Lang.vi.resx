@@ -192,4 +192,13 @@
   <data name="UCServiceExclusive.txtNote.NullValuePrompt" xml:space="preserve">
     <value>Diễn giải lý do loại trừ (tùy chọn), hiển thị kèm nội dung thông báo</value>
   </data>
+  <data name="UCServiceExclusive.lciServiceType2.Text" xml:space="preserve">
+    <value>Loại dịch vụ:</value>
+  </data>
+  <data name="UCServiceExclusive.colExclusiveCode.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="UCServiceExclusive.colExclusiveName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
 </root>

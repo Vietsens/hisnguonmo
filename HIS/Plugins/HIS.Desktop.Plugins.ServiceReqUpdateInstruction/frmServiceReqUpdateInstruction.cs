@@ -105,6 +105,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             InitUcIcdYhct();
             InitUcSecondaryIcdYhct();
             FillDataCommandToControl(this.currentServiceReq);
+            InitPacsBeginTimeControl();
+            LoadPacsBeginTime();
             LoadUser();
             ValidControlInform();
             SetIcon();

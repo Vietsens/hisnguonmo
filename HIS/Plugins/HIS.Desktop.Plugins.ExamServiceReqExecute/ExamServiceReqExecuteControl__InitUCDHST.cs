@@ -234,6 +234,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     lciTemperature.AppearanceItemCaption.ForeColor = Color.Maroon;
                 }
+
+                // Ghi lai cac chi so DHST da co co che canh bao dang bat, de kiem tra QD130
+                // khong canh bao lai lan nua (xem ExamServiceReqExecuteControl__ValidateQd130).
+                this.dhstRequiredAllQd130 = isRequired;
+                this.dhstRequiredWeightQd130 = isRequiredWeight;
+                this.dhstRequiredPulseBpQd130 = (requiredPulseBloodPressure == "1"
+                    || (requiredPulseBloodPressure == "2" && isThan16YearOld));
+                this.dhstRequiredTemperatureQd130 = (HisConfigCFG.IsRequiredTemperatureOption && lessthan16YearOld);
             }
             catch (Exception ex)
             {

@@ -73,8 +73,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     ValidateRequired(txtKetQuaXetNghiem);
                 }
                 
-                ApplyQd130Appearance();
-
                 ValidationMaxLength(txtSurgery, 3000);
                 ValidationMaxLength(txtMaBHXH, 20, true);
                 ValidationComboProgram();

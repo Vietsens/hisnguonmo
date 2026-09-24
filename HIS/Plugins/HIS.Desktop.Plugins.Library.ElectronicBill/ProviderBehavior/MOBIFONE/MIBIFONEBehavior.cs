@@ -95,7 +95,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                         case ElectronicBillType.ENUM.CREATE_INVOICE:
                             ProcessGetDataReferences(ref result); // lấy thông tin phát hành hóa đơn
                             ProcessCreateInvoice(ref result); // tạo
-                            if (isSign)
+                            if (isSign && result.Success)
                             {
                                 ProcessSignInvoiceCertFile(ref result); // ký
                             }
@@ -264,6 +264,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                //Loi (timeout, loi ket noi, cong tra ve loi) phai tra ve that bai kem noi dung de hien thi cho nguoi dung,
+                //tranh truong hop Success van = true (do buoc lay thong tin phat hanh da gan) ma khong co so hoa don
+                result.InvoiceSys = ProviderType.MOBIFONE;
+                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
             }
         }
         /// <summary>
