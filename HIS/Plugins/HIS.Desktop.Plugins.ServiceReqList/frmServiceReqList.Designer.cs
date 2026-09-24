@@ -236,6 +236,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.cboServiceReqType = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboServiceReqStt = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.cboSentExt = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.lciSentExt = new DevExpress.XtraLayout.LayoutControlItem();
+            this.esiSentExt = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.btnResendIntegration = new DevExpress.XtraEditors.SimpleButton();
+            this.lciResendIntegration = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.grdSereServServiceReq = new DevExpress.XtraGrid.GridControl();
             this.grdViewSereServServiceReq = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -420,6 +425,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceReqType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceReqStt.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboSentExt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdSereServServiceReq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdViewSereServServiceReq)).BeginInit();
@@ -467,6 +473,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             ((System.ComponentModel.ISupportInitialize)(this.lciIntructionTimeFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSentExt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.esiSentExt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciResendIntegration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceReqCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
@@ -499,6 +508,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.layoutControl1.Controls.Add(this.dtIntructionTimeFrom);
             this.layoutControl1.Controls.Add(this.cboServiceReqType);
             this.layoutControl1.Controls.Add(this.cboServiceReqStt);
+            this.layoutControl1.Controls.Add(this.cboSentExt);
+            this.layoutControl1.Controls.Add(this.btnResendIntegration);
             this.layoutControl1.Controls.Add(this.grdSereServServiceReq);
             this.layoutControl1.Controls.Add(this.txtServiceReqCode);
             this.layoutControl1.Controls.Add(this.txtKeyword);
@@ -1609,7 +1620,29 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.cboServiceReqStt.TabIndex = 13;
             this.cboServiceReqStt.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboServiceReqStt_Closed);
             this.cboServiceReqStt.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboServiceReqStt_CustomDisplayText);
-            // 
+            //
+            // cboSentExt
+            //
+            this.cboSentExt.EnterMoveNextControl = true;
+            this.cboSentExt.Location = new System.Drawing.Point(89, 52);
+            this.cboSentExt.Name = "cboSentExt";
+            this.cboSentExt.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboSentExt.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboSentExt.Size = new System.Drawing.Size(159, 20);
+            this.cboSentExt.StyleController = this.layoutControl1;
+            this.cboSentExt.TabIndex = 27;
+            //
+            // btnResendIntegration
+            //
+            this.btnResendIntegration.Location = new System.Drawing.Point(292, 556);
+            this.btnResendIntegration.Name = "btnResendIntegration";
+            this.btnResendIntegration.Size = new System.Drawing.Size(166, 22);
+            this.btnResendIntegration.StyleController = this.layoutControl1;
+            this.btnResendIntegration.TabIndex = 28;
+            this.btnResendIntegration.Text = "Gửi lại chỉ định";
+            this.btnResendIntegration.Click += new System.EventHandler(this.btnResendIntegration_Click);
+            //
             // gridLookUpEdit1View
             // 
             this.gridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
@@ -2708,6 +2741,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.lciIntructionTimeFrom,
             this.layoutControlItem7,
             this.layoutControlItem8,
+            this.lciSentExt,
+            this.esiSentExt,
+            this.lciResendIntegration,
             this.lciServiceReqCode,
             this.layoutControlItem2,
             this.layoutControlItem3,
@@ -2728,9 +2764,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.gridControlServiceReq;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 50);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 74);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(863, 504);
+            this.layoutControlItem1.Size = new System.Drawing.Size(863, 480);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -2750,7 +2786,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.lciServiceReqPaging.MaxSize = new System.Drawing.Size(0, 28);
             this.lciServiceReqPaging.MinSize = new System.Drawing.Size(104, 28);
             this.lciServiceReqPaging.Name = "lciServiceReqPaging";
-            this.lciServiceReqPaging.Size = new System.Drawing.Size(460, 28);
+            this.lciServiceReqPaging.Size = new System.Drawing.Size(290, 28);
             this.lciServiceReqPaging.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciServiceReqPaging.TextSize = new System.Drawing.Size(0, 0);
             this.lciServiceReqPaging.TextVisible = false;
@@ -2839,7 +2875,37 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(50, 20);
             this.layoutControlItem8.TextToControlDistance = 5;
-            // 
+            //
+            // lciSentExt
+            //
+            this.lciSentExt.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciSentExt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciSentExt.Control = this.cboSentExt;
+            this.lciSentExt.Location = new System.Drawing.Point(0, 50);
+            this.lciSentExt.Name = "lciSentExt";
+            this.lciSentExt.Size = new System.Drawing.Size(250, 24);
+            this.lciSentExt.Text = "Gửi tích hợp:";
+            this.lciSentExt.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciSentExt.TextSize = new System.Drawing.Size(85, 20);
+            this.lciSentExt.TextToControlDistance = 5;
+            //
+            // esiSentExt
+            //
+            this.esiSentExt.AllowHotTrack = false;
+            this.esiSentExt.Location = new System.Drawing.Point(250, 50);
+            this.esiSentExt.Name = "esiSentExt";
+            this.esiSentExt.Size = new System.Drawing.Size(613, 24);
+            this.esiSentExt.TextSize = new System.Drawing.Size(0, 0);
+            //
+            // lciResendIntegration
+            //
+            this.lciResendIntegration.Control = this.btnResendIntegration;
+            this.lciResendIntegration.Location = new System.Drawing.Point(290, 554);
+            this.lciResendIntegration.Name = "lciResendIntegration";
+            this.lciResendIntegration.Size = new System.Drawing.Size(170, 28);
+            this.lciResendIntegration.TextSize = new System.Drawing.Size(0, 0);
+            this.lciResendIntegration.TextVisible = false;
+            //
             // lciServiceReqCode
             // 
             this.lciServiceReqCode.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -3077,6 +3143,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceReqType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceReqStt.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboSentExt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdSereServServiceReq)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdViewSereServServiceReq)).EndInit();
@@ -3124,6 +3191,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             ((System.ComponentModel.ISupportInitialize)(this.lciIntructionTimeFrom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSentExt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.esiSentExt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciResendIntegration)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceReqCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
@@ -3210,6 +3280,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
+        internal DevExpress.XtraEditors.ComboBoxEdit cboSentExt;
+        private DevExpress.XtraLayout.LayoutControlItem lciSentExt;
+        private DevExpress.XtraLayout.EmptySpaceItem esiSentExt;
+        private DevExpress.XtraEditors.SimpleButton btnResendIntegration;
+        private DevExpress.XtraLayout.LayoutControlItem lciResendIntegration;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_ServiceReq_Print;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_ServiceReq_Stt;
         private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit repositoryItempicServiceReqStatus;

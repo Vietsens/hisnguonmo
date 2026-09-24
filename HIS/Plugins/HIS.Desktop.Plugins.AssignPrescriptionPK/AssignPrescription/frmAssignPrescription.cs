@@ -382,6 +382,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         List<HIS_PATIENT_TYPE> listSourcePatientType = new List<HIS_PATIENT_TYPE>();
         string PrintPrescription = "";
         HIS_MIMS_INTERACTION_LOG mimsInteractionLog;
+        //Yeu cau thanh toan vua tao cho phan thuoc/vat tu mua ngoai, dung de cap ma QR in len don
+        internal HIS_TRANS_REQ OutStockPresTransReq;
         #endregion
 
         #region Construct

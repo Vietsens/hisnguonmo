@@ -177,4 +177,10 @@
   <data name="Plugins_TreatmentList__XacNhanHuyChoPhepDenBu" xml:space="preserve">
     <value>Hủy cho phép đền bù?</value>
   </data>
+  <data name="Plugins_TreatmentList__ChuaChonBenhNhanSuaDichVuKsk" xml:space="preserve">
+    <value>Chưa chọn bệnh nhân.</value>
+  </data>
+  <data name="Plugins_TreatmentList__HoSoKhongThuocHopDongKsk" xml:space="preserve">
+    <value>Các hồ sơ sau không thuộc hợp đồng khám sức khỏe đang lọc: {0}</value>
+  </data>
 </root>

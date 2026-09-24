@@ -759,6 +759,7 @@
     </Compile>
     <Compile Include="NumCopy\NumCopyADO.cs" />
     <Compile Include="NumCopy\NumCopyConfig.cs" />
+    <Compile Include="OutStockPresQr\OutStockPresQrProcessor.cs" />
     <Compile Include="RequestUriStore.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

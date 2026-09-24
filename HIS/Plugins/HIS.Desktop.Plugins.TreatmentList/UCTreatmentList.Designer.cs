@@ -188,6 +188,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.btnCheckHeinBatch = new DevExpress.XtraEditors.SimpleButton();
             this.btnRecordChecking = new DevExpress.XtraEditors.SimpleButton();
             this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
+            this.btnKskServiceEdit = new DevExpress.XtraEditors.SimpleButton();
             this.btnGuiHS = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -502,6 +503,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.layoutControlItem38 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem40 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnKskServiceEdit = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem50 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -688,6 +690,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnKskServiceEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).BeginInit();
@@ -703,6 +706,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.layoutControl1.Controls.Add(this.btnCheckHeinBatch);
             this.layoutControl1.Controls.Add(this.btnRecordChecking);
             this.layoutControl1.Controls.Add(this.btnDelete);
+            this.layoutControl1.Controls.Add(this.btnKskServiceEdit);
             this.layoutControl1.Controls.Add(this.btnGuiHS);
             this.layoutControl1.Controls.Add(this.gridControl1);
             this.layoutControl1.Controls.Add(this.txtSocialInsuranceNumber);
@@ -772,6 +776,18 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.btnDelete.TabIndex = 27;
             this.btnDelete.Text = "Xóa";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnKskServiceEdit
+            // 
+            this.btnKskServiceEdit.Location = new System.Drawing.Point(1736, 1148);
+            this.btnKskServiceEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnKskServiceEdit.Name = "btnKskServiceEdit";
+            this.btnKskServiceEdit.Size = new System.Drawing.Size(107, 27);
+            this.btnKskServiceEdit.StyleController = this.layoutControl1;
+            this.btnKskServiceEdit.TabIndex = 28;
+            this.btnKskServiceEdit.Text = "Sửa dịch vụ";
+            this.btnKskServiceEdit.ToolTip = "Thêm, xóa dịch vụ, sửa phòng thực hiện cho các bệnh nhân khám sức khỏe hợp đồng đã chọn";
+            this.btnKskServiceEdit.Click += new System.EventHandler(this.btnKskServiceEdit_Click);
             // 
             // btnGuiHS
             // 
@@ -3979,6 +3995,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.layoutControlItem38,
             this.layoutControlItem39,
             this.layoutControlItem40,
+            this.lciBtnKskServiceEdit,
             this.emptySpaceItem4,
             this.layoutControlItem37,
             this.layoutControlItem50,
@@ -4213,9 +4230,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(1733, 1145);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(1846, 1145);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(767, 33);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(654, 33);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem33
@@ -4291,6 +4308,16 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.layoutControlItem40.Size = new System.Drawing.Size(87, 33);
             this.layoutControlItem40.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem40.TextVisible = false;
+            // 
+            // lciBtnKskServiceEdit
+            // 
+            this.lciBtnKskServiceEdit.Control = this.btnKskServiceEdit;
+            this.lciBtnKskServiceEdit.Location = new System.Drawing.Point(1733, 1145);
+            this.lciBtnKskServiceEdit.Name = "lciBtnKskServiceEdit";
+            this.lciBtnKskServiceEdit.Size = new System.Drawing.Size(113, 33);
+            this.lciBtnKskServiceEdit.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnKskServiceEdit.TextVisible = false;
+            this.lciBtnKskServiceEdit.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // emptySpaceItem4
             // 
@@ -4606,6 +4633,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnKskServiceEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).EndInit();
@@ -4925,6 +4953,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
         private DevExpress.XtraEditors.SimpleButton btnDelete;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem40;
+        private DevExpress.XtraEditors.SimpleButton btnKskServiceEdit;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnKskServiceEdit;
 		private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
         private DevExpress.XtraEditors.SimpleButton btnRecordChecking;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem37;

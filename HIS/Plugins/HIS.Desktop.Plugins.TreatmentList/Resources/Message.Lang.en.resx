@@ -177,4 +177,10 @@
   <data name="Plugins_TreatmentList__XacNhanHuyChoPhepDenBu" xml:space="preserve">
     <value>Disallow compensation?</value>
   </data>
+  <data name="Plugins_TreatmentList__ChuaChonBenhNhanSuaDichVuKsk" xml:space="preserve">
+    <value>No patient selected.</value>
+  </data>
+  <data name="Plugins_TreatmentList__HoSoKhongThuocHopDongKsk" xml:space="preserve">
+    <value>The following treatments do not belong to the filtered health examination contract: {0}</value>
+  </data>
 </root>

@@ -726,4 +726,10 @@
   <data name="UCTreatmentList.txtTreatment.Properties.NullValuePrompt" xml:space="preserve">
     <value>Mã điều trị</value>
   </data>
+  <data name="UCTreatmentList.btnKskServiceEdit.Text" xml:space="preserve">
+    <value>Sửa dịch vụ</value>
+  </data>
+  <data name="UCTreatmentList.btnKskServiceEdit.ToolTip" xml:space="preserve">
+    <value>Thêm, xóa dịch vụ, sửa phòng thực hiện cho các bệnh nhân khám sức khỏe hợp đồng đã chọn</value>
+  </data>
 </root>

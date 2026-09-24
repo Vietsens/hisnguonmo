@@ -191,4 +191,16 @@ Please wait for the results before printing the aggregate sheet.</value>
   <data name="YeuCau" xml:space="preserve">
     <value>တောင်းဆိုချက်ကို</value>
   </data>
+  <data name="XacNhanGuiLaiChiDinhSangHeThongTichHop" xml:space="preserve">
+    <value>Are you sure you want to resend {0} selected requests to the integrated system?</value>
+  </data>
+  <data name="KetQuaGuiLaiChiDinh" xml:space="preserve">
+    <value>Resend result: {0} selected, {1} sent successfully, {2} failed.</value>
+  </data>
+  <data name="DanhSachYLenhGuiKhongThanhCong" xml:space="preserve">
+    <value>Requests that failed to send:</value>
+  </data>
+  <data name="GuiLaiChiDinhKhongThanhCong" xml:space="preserve">
+    <value>Send failed</value>
+  </data>
 </root>
