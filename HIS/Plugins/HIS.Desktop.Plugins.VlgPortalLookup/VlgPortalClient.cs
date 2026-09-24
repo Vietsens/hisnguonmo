@@ -567,14 +567,23 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
                 bool first = true;
                 foreach (var r in sorted)
                 {
-                    sb.AppendLine("  ▶ " + (string)r["tracking_id"]);
+                    sb.AppendLine("  ▶ " + (string)r["tracking_id"]
+                        + (string.IsNullOrEmpty((string)r["source_channel"]) ? "" : ("  [kênh " + (string)r["source_channel"] + "]")));
+                    // API V1.5: "status"/"validation_status" -> hoc_status/hoc_validation_status (Kho) + byt_* (Cong Bo).
                     sb.AppendLine("     gửi lúc: " + VlgHoSoADO.IsoToTimeText((string)r["received_at"])
-                        + " | trạng thái: " + (string)r["status"]
-                        + " | kiểm tra: " + (string)r["validation_status"]);
+                        + " | Kho: " + ((string)r["hoc_status"] ?? (string)r["status"])
+                        + " / kiểm tra: " + ((string)r["hoc_validation_status"] ?? (string)r["validation_status"]));
+                    string bytStatus = (string)r["byt_status"];
+                    string bytCode = (string)r["byt_res_code"];
+                    if (!string.IsNullOrEmpty(bytStatus) || !string.IsNullOrEmpty(bytCode))
+                        sb.AppendLine("     Cổng Bộ Y tế: " + bytStatus
+                            + (string.IsNullOrEmpty(bytCode) ? "" : (" — " + bytCode))
+                            + (string.IsNullOrEmpty((string)r["byt_res_msg"]) ? "" : (": " + (string)r["byt_res_msg"]))
+                            + " | số lần gửi Bộ: " + (string)r["attempt_count"]);
                     if (first)
                     {
                         ado.TrackingId = (string)r["tracking_id"];
-                        ado.LatestStatus = (string)r["status"];
+                        ado.LatestStatus = VlgHoSoADO.FormatKskRequestStatus(r);
                         ado.LatestReceivedText = VlgHoSoADO.IsoToTimeText((string)r["received_at"]);
                         first = false;
                     }
