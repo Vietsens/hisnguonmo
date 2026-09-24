@@ -34,6 +34,29 @@ namespace HIS.Desktop.Plugins.TransactionBill
     public partial class frmTransactionBill : HIS.Desktop.Utility.FormBase
     {
         /// <summary>
+        /// Hóa đơn đã phát hành trên cổng nhưng api/HisTransaction/UpdateInvoiceInfo trả về false:
+        /// ghi log đầy đủ và thông báo cho người dùng (trước đây bỏ qua im lặng → phiếu hiện "chưa xuất hóa đơn").
+        /// </summary>
+        internal void ShowUpdateInvoiceInfoFail(MOS.SDO.HisTransactionInvoiceInfoSDO sdo, CommonParam paramUpdate)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Warn("UpdateInvoiceInfo tra ve false, khong ghi tra thong tin hoa don dien tu vao transaction. "
+                    + Inventec.Common.Logging.LogUtil.TraceData("sdo", sdo)
+                    + Inventec.Common.Logging.LogUtil.TraceData("paramUpdate", paramUpdate));
+                string updateDetail = paramUpdate != null && paramUpdate.Messages != null && paramUpdate.Messages.Count > 0 ? string.Join("; ", paramUpdate.Messages) : "";
+                string transactionCode = resultTranBill != null ? resultTranBill.TRANSACTION_CODE : "";
+                string numOrder = sdo != null && !String.IsNullOrWhiteSpace(sdo.EinvoiceNumOrder) ? sdo.EinvoiceNumOrder : "không có";
+                DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Giao dịch {0}: Không cập nhật được thông tin hóa đơn điện tử vào phần mềm (số hóa đơn: {1}). {2}", transactionCode, numOrder, updateDetail),
+                    "Thông báo hóa đơn điện tử", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
         /// Đính kèm bảng kê thanh toán (PDF) vào HĐĐT VNPT sau khi tạo hóa đơn thành công.
         ///
         /// Điều kiện chạy (ngược lại = bỏ qua, zero overhead, multi-site safe):
