@@ -342,7 +342,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControl4.Location = new System.Drawing.Point(0, 29);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(1236, 598);
+            this.layoutControl4.Size = new System.Drawing.Size(1236, 646);
             this.layoutControl4.TabIndex = 2;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -356,7 +356,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControl7.Location = new System.Drawing.Point(2, 2);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroup6;
-            this.layoutControl7.Size = new System.Drawing.Size(851, 635);
+            this.layoutControl7.Size = new System.Drawing.Size(851, 683);
             this.layoutControl7.TabIndex = 5;
             this.layoutControl7.Text = "layoutControl7";
             // 
@@ -509,7 +509,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.panelControl1.Controls.Add(this.ucPaging);
             this.panelControl1.Location = new System.Drawing.Point(2, 28);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(847, 605);
+            this.panelControl1.Size = new System.Drawing.Size(847, 653);
             this.panelControl1.TabIndex = 36;
             // 
             // gridControlFormList
@@ -536,7 +536,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.CheckIsHIV,
             this.CheckIsABO,
             this.CheckIsRH});
-            this.gridControlFormList.Size = new System.Drawing.Size(843, 580);
+            this.gridControlFormList.Size = new System.Drawing.Size(843, 628);
             this.gridControlFormList.TabIndex = 8;
             this.gridControlFormList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridviewFormList});
@@ -1035,7 +1035,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // ucPaging
             // 
             this.ucPaging.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ucPaging.Location = new System.Drawing.Point(2, 582);
+            this.ucPaging.Location = new System.Drawing.Point(2, 630);
             this.ucPaging.Name = "ucPaging";
             this.ucPaging.Size = new System.Drawing.Size(843, 21);
             this.ucPaging.TabIndex = 9;
@@ -1065,7 +1065,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "layoutControlGroup6";
             this.layoutControlGroup6.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup6.Size = new System.Drawing.Size(851, 635);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(851, 683);
             this.layoutControlGroup6.TextVisible = false;
             // 
             // layoutControlItem2
@@ -1082,7 +1082,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem1.Control = this.panelControl1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(851, 609);
+            this.layoutControlItem1.Size = new System.Drawing.Size(851, 657);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -1162,7 +1162,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lcEditorInfo.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(974, 65, 250, 350);
             this.lcEditorInfo.OptionsFocus.EnableAutoTabOrder = false;
             this.lcEditorInfo.Root = this.layoutControlGroup4;
-            this.lcEditorInfo.Size = new System.Drawing.Size(360, 635);
+            this.lcEditorInfo.Size = new System.Drawing.Size(360, 683);
             this.lcEditorInfo.TabIndex = 4;
             this.lcEditorInfo.Text = "layoutControl5";
             // 
@@ -1761,7 +1761,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnRefresh;
-            this.layoutControlItem6.Location = new System.Drawing.Point(264, 599);
+            this.layoutControlItem6.Location = new System.Drawing.Point(264, 647);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(96, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -1770,7 +1770,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(131, 599);
+            this.layoutControlItem7.Location = new System.Drawing.Point(131, 647);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(133, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -1779,7 +1779,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnEdit;
-            this.layoutControlItem9.Location = new System.Drawing.Point(0, 599);
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 647);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(131, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -1831,7 +1831,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lciCommonCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciCommonCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciCommonCode.Control = this.txtCommonCode;
-            this.lciCommonCode.Location = new System.Drawing.Point(0, 625);
+            this.lciCommonCode.Location = new System.Drawing.Point(0, 191);
             this.lciCommonCode.Name = "lciCommonCode";
             this.lciCommonCode.Size = new System.Drawing.Size(360, 24);
             this.lciCommonCode.Text = "Mã dùng chung:";
@@ -1844,7 +1844,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lciHl7Code.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciHl7Code.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciHl7Code.Control = this.txtHl7Code;
-            this.lciHl7Code.Location = new System.Drawing.Point(0, 649);
+            this.lciHl7Code.Location = new System.Drawing.Point(0, 215);
             this.lciHl7Code.Name = "lciHl7Code";
             this.lciHl7Code.Size = new System.Drawing.Size(360, 24);
             this.lciHl7Code.Text = "Mã HL7:";
@@ -1872,7 +1872,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lciCsBatThuong.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciCsBatThuong.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciCsBatThuong.Control = this.chkCsBatThuong;
-            this.lciCsBatThuong.Location = new System.Drawing.Point(160, 311);
+            this.lciCsBatThuong.Location = new System.Drawing.Point(160, 359);
             this.lciCsBatThuong.Name = "lciCsBatThuong";
             this.lciCsBatThuong.Size = new System.Drawing.Size(200, 24);
             this.lciCsBatThuong.Text = "CS quan trọng:";
@@ -1885,7 +1885,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.licTestIndexGroupID.AppearanceItemCaption.Options.UseTextOptions = true;
             this.licTestIndexGroupID.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.licTestIndexGroupID.Control = this.cboTestIndexGroupID;
-            this.licTestIndexGroupID.Location = new System.Drawing.Point(0, 191);
+            this.licTestIndexGroupID.Location = new System.Drawing.Point(0, 239);
             this.licTestIndexGroupID.Name = "licTestIndexGroupID";
             this.licTestIndexGroupID.Size = new System.Drawing.Size(360, 24);
             this.licTestIndexGroupID.Text = "Nhóm chỉ số:";
@@ -1896,7 +1896,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.cboMaterialType;
-            this.layoutControlItem18.Location = new System.Drawing.Point(198, 215);
+            this.layoutControlItem18.Location = new System.Drawing.Point(198, 263);
             this.layoutControlItem18.Name = "layoutControlItem18";
             this.layoutControlItem18.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem18.Size = new System.Drawing.Size(162, 24);
@@ -1908,7 +1908,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem19.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem19.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem19.Control = this.txtMaterialTypeCode;
-            this.layoutControlItem19.Location = new System.Drawing.Point(0, 215);
+            this.layoutControlItem19.Location = new System.Drawing.Point(0, 263);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
             this.layoutControlItem19.Size = new System.Drawing.Size(198, 24);
@@ -1922,7 +1922,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem22.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem22.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem22.Control = this.spinNormalAmount;
-            this.layoutControlItem22.Location = new System.Drawing.Point(0, 239);
+            this.layoutControlItem22.Location = new System.Drawing.Point(0, 287);
             this.layoutControlItem22.Name = "layoutControlItem22";
             this.layoutControlItem22.Size = new System.Drawing.Size(248, 24);
             this.layoutControlItem22.Text = "Định mức:";
@@ -1933,7 +1933,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // layoutControlItem21
             // 
             this.layoutControlItem21.Control = this.labelControl1;
-            this.layoutControlItem21.Location = new System.Drawing.Point(248, 239);
+            this.layoutControlItem21.Location = new System.Drawing.Point(248, 287);
             this.layoutControlItem21.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem21.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem21.Name = "layoutControlItem21";
@@ -1947,7 +1947,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem20.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem20.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem20.Control = this.chkHbsAg;
-            this.layoutControlItem20.Location = new System.Drawing.Point(160, 335);
+            this.layoutControlItem20.Location = new System.Drawing.Point(160, 383);
             this.layoutControlItem20.Name = "layoutControlItem20";
             this.layoutControlItem20.OptionsToolTip.ToolTip = "Chỉ số HbsAg";
             this.layoutControlItem20.Size = new System.Drawing.Size(200, 24);
@@ -1961,7 +1961,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem23.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem23.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem23.Control = this.chkHCV;
-            this.layoutControlItem23.Location = new System.Drawing.Point(0, 359);
+            this.layoutControlItem23.Location = new System.Drawing.Point(0, 407);
             this.layoutControlItem23.Name = "layoutControlItem23";
             this.layoutControlItem23.OptionsToolTip.ToolTip = "Chỉ số HCV";
             this.layoutControlItem23.Size = new System.Drawing.Size(160, 24);
@@ -1975,7 +1975,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem24.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem24.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem24.Control = this.chkHIV;
-            this.layoutControlItem24.Location = new System.Drawing.Point(160, 359);
+            this.layoutControlItem24.Location = new System.Drawing.Point(160, 407);
             this.layoutControlItem24.Name = "layoutControlItem24";
             this.layoutControlItem24.OptionsToolTip.ToolTip = "Chỉ số HIV";
             this.layoutControlItem24.Size = new System.Drawing.Size(200, 24);
@@ -1989,7 +1989,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem26.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem26.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem26.Control = this.chkRH;
-            this.layoutControlItem26.Location = new System.Drawing.Point(0, 527);
+            this.layoutControlItem26.Location = new System.Drawing.Point(0, 575);
             this.layoutControlItem26.Name = "layoutControlItem26";
             this.layoutControlItem26.OptionsToolTip.ToolTip = "Chỉ số nhóm máu RH";
             this.layoutControlItem26.Size = new System.Drawing.Size(360, 24);
@@ -2003,7 +2003,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem27.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem27.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem27.Control = this.chkIsTestHamonyBlood;
-            this.layoutControlItem27.Location = new System.Drawing.Point(0, 335);
+            this.layoutControlItem27.Location = new System.Drawing.Point(0, 383);
             this.layoutControlItem27.Name = "layoutControlItem27";
             this.layoutControlItem27.OptionsToolTip.ToolTip = "Xét nghiệm hòa hợp máu";
             this.layoutControlItem27.Size = new System.Drawing.Size(160, 24);
@@ -2017,7 +2017,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem15.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem15.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem15.Control = this.chkNotShowService;
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 311);
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 359);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Size = new System.Drawing.Size(160, 24);
             this.layoutControlItem15.Text = "Không HT tên DV:";
@@ -2030,7 +2030,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem17.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem17.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem17.Control = this.chkIsToCalculateEgfr;
-            this.layoutControlItem17.Location = new System.Drawing.Point(0, 383);
+            this.layoutControlItem17.Location = new System.Drawing.Point(0, 431);
             this.layoutControlItem17.Name = "layoutControlItem17";
             this.layoutControlItem17.Size = new System.Drawing.Size(160, 24);
             this.layoutControlItem17.Text = "Tính MLCT:";
@@ -2043,7 +2043,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem28.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem28.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem28.Control = this.txtMLCT;
-            this.layoutControlItem28.Location = new System.Drawing.Point(160, 383);
+            this.layoutControlItem28.Location = new System.Drawing.Point(160, 431);
             this.layoutControlItem28.Name = "layoutControlItem28";
             this.layoutControlItem28.Size = new System.Drawing.Size(200, 24);
             this.layoutControlItem28.Text = "Tỷ lệ quy đổi MLCT:";
@@ -2056,7 +2056,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem25.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem25.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem25.Control = this.chkABO;
-            this.layoutControlItem25.Location = new System.Drawing.Point(0, 407);
+            this.layoutControlItem25.Location = new System.Drawing.Point(0, 455);
             this.layoutControlItem25.Name = "layoutControlItem25";
             this.layoutControlItem25.OptionsToolTip.ToolTip = "Chỉ số nhóm máu ABO";
             this.layoutControlItem25.Size = new System.Drawing.Size(360, 24);
@@ -2070,7 +2070,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lciResultsGroupA.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciResultsGroupA.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciResultsGroupA.Control = this.txtResultsGroupA;
-            this.lciResultsGroupA.Location = new System.Drawing.Point(0, 431);
+            this.lciResultsGroupA.Location = new System.Drawing.Point(0, 479);
             this.lciResultsGroupA.Name = "lciResultsGroupA";
             this.lciResultsGroupA.OptionsToolTip.ToolTip = "Kết quả xét nghiệm tương ứng với nhóm máu A";
             this.lciResultsGroupA.Size = new System.Drawing.Size(360, 24);
@@ -2084,7 +2084,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lciResultsGroupB.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciResultsGroupB.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciResultsGroupB.Control = this.txtResultsGroupB;
-            this.lciResultsGroupB.Location = new System.Drawing.Point(0, 455);
+            this.lciResultsGroupB.Location = new System.Drawing.Point(0, 503);
             this.lciResultsGroupB.Name = "lciResultsGroupB";
             this.lciResultsGroupB.OptionsToolTip.ToolTip = "Kết quả xét nghiệm tương ứng với nhóm máu B";
             this.lciResultsGroupB.Size = new System.Drawing.Size(360, 24);
@@ -2098,7 +2098,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lciResultsGroupAB.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciResultsGroupAB.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciResultsGroupAB.Control = this.txtResultsGroupAB;
-            this.lciResultsGroupAB.Location = new System.Drawing.Point(0, 479);
+            this.lciResultsGroupAB.Location = new System.Drawing.Point(0, 527);
             this.lciResultsGroupAB.Name = "lciResultsGroupAB";
             this.lciResultsGroupAB.OptionsToolTip.ToolTip = "Kết quả xét nghiệm tương ứng với nhóm máu AB";
             this.lciResultsGroupAB.Size = new System.Drawing.Size(360, 24);
@@ -2112,7 +2112,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lciResultsRHCong.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciResultsRHCong.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciResultsRHCong.Control = this.txtResultsRHPlus;
-            this.lciResultsRHCong.Location = new System.Drawing.Point(0, 551);
+            this.lciResultsRHCong.Location = new System.Drawing.Point(0, 599);
             this.lciResultsRHCong.Name = "lciResultsRHCong";
             this.lciResultsRHCong.OptionsToolTip.ToolTip = "Kết quả xét nghiệm tương ứng với nhóm máu RH+";
             this.lciResultsRHCong.Size = new System.Drawing.Size(360, 24);
@@ -2126,7 +2126,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lciResultsRHTru.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciResultsRHTru.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciResultsRHTru.Control = this.txtResultsRHMinus;
-            this.lciResultsRHTru.Location = new System.Drawing.Point(0, 575);
+            this.lciResultsRHTru.Location = new System.Drawing.Point(0, 623);
             this.lciResultsRHTru.Name = "lciResultsRHTru";
             this.lciResultsRHTru.OptionsToolTip.ToolTip = "Kết quả xét nghiệm tương ứng với nhóm máu RH-";
             this.lciResultsRHTru.Size = new System.Drawing.Size(360, 24);
@@ -2140,7 +2140,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.lciResultsGroupO.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciResultsGroupO.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciResultsGroupO.Control = this.txtResultsGroupO;
-            this.lciResultsGroupO.Location = new System.Drawing.Point(0, 503);
+            this.lciResultsGroupO.Location = new System.Drawing.Point(0, 551);
             this.lciResultsGroupO.Name = "lciResultsGroupO";
             this.lciResultsGroupO.OptionsToolTip.ToolTip = "Kết quả xét nghiệm tương ứng với nhóm máu O";
             this.lciResultsGroupO.Size = new System.Drawing.Size(360, 24);
@@ -2180,7 +2180,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem30.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem30.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem30.Control = this.cboIndexType;
-            this.layoutControlItem30.Location = new System.Drawing.Point(0, 263);
+            this.layoutControlItem30.Location = new System.Drawing.Point(0, 311);
             this.layoutControlItem30.Name = "layoutControlItem30";
             this.layoutControlItem30.Size = new System.Drawing.Size(360, 24);
             this.layoutControlItem30.Text = "Loại chỉ số:";
@@ -2191,7 +2191,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(248, 287);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(248, 335);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(112, 24);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -2201,7 +2201,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem32.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem32.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem32.Control = this.txtConversionRate;
-            this.layoutControlItem32.Location = new System.Drawing.Point(0, 287);
+            this.layoutControlItem32.Location = new System.Drawing.Point(0, 335);
             this.layoutControlItem32.Name = "layoutControlItem32";
             this.layoutControlItem32.Size = new System.Drawing.Size(248, 24);
             this.layoutControlItem32.Text = "Tỉ lệ quy đổi:";
@@ -2219,7 +2219,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1219, 639);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1219, 687);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem4
@@ -2227,7 +2227,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem4.Control = this.lcEditorInfo;
             this.layoutControlItem4.Location = new System.Drawing.Point(855, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(364, 639);
+            this.layoutControlItem4.Size = new System.Drawing.Size(364, 687);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -2236,7 +2236,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             this.layoutControlItem5.Control = this.layoutControl7;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(855, 639);
+            this.layoutControlItem5.Size = new System.Drawing.Size(855, 687);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -2257,7 +2257,7 @@ namespace HIS.Desktop.Plugins.HisTestIndex
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1236, 627);
+            this.ClientSize = new System.Drawing.Size(1236, 675);
             this.Controls.Add(this.layoutControl4);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
