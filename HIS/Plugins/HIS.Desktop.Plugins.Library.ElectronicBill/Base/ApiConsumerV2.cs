@@ -131,12 +131,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                     client.DefaultRequestHeaders.Add("Authorization", string.Format("Bearer {0}", token));
                 }
 
-                client.Timeout = new TimeSpan(0, 0, 90);
+                client.Timeout = new TimeSpan(0, 0, 180);
 
                 HttpResponseMessage resp = null;
 
                 string fullrequestUri = requestUri;
-                int index = baseUri.IndexOf('/', baseUri.IndexOf("//") + 2); 
+                int index = baseUri.IndexOf('/', baseUri.IndexOf("//") + 2);
                 if (index > 0)
                 {
                     string extension = baseUri.Substring(index);
@@ -192,7 +192,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                     client.DefaultRequestHeaders.Add("Authorization", string.Format("Bear {0};{1}", token, maDvcs));
                 }
 
-                client.Timeout = new TimeSpan(0, 0, 90);
+                client.Timeout = new TimeSpan(0, 0, 180);
 
                 HttpResponseMessage resp = null;
 
