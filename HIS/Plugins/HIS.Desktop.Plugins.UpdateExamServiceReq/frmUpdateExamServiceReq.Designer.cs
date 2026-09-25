@@ -58,6 +58,8 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
             this.txtPrimaryPatientTypeCode = new DevExpress.XtraEditors.TextEdit();
             this.chkCopyExamOldContent = new DevExpress.XtraEditors.CheckEdit();
             this.chkThuSau = new DevExpress.XtraEditors.CheckEdit();
+            this.lblPaylaterDebt = new DevExpress.XtraEditors.LabelControl();
+            this.lciForlblPaylaterDebt = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.cboPatientType = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -113,6 +115,7 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
             ((System.ComponentModel.ISupportInitialize)(this.txtPrimaryPatientTypeCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCopyExamOldContent.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkThuSau.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciForlblPaylaterDebt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientTypeCode.Properties)).BeginInit();
@@ -157,6 +160,7 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
             this.layoutControl1.Controls.Add(this.txtPrimaryPatientTypeCode);
             this.layoutControl1.Controls.Add(this.chkCopyExamOldContent);
             this.layoutControl1.Controls.Add(this.chkThuSau);
+            this.layoutControl1.Controls.Add(this.lblPaylaterDebt);
             this.layoutControl1.Controls.Add(this.btnPrint);
             this.layoutControl1.Controls.Add(this.cboPatientType);
             this.layoutControl1.Controls.Add(this.txtPatientTypeCode);
@@ -298,6 +302,18 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
             this.chkThuSau.Size = new System.Drawing.Size(99, 19);
             this.chkThuSau.StyleController = this.layoutControl1;
             this.chkThuSau.TabIndex = 23;
+            //
+            // lblPaylaterDebt
+            //
+            this.lblPaylaterDebt.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblPaylaterDebt.Appearance.ForeColor = System.Drawing.Color.Red;
+            this.lblPaylaterDebt.Appearance.Options.UseFont = true;
+            this.lblPaylaterDebt.Appearance.Options.UseForeColor = true;
+            this.lblPaylaterDebt.Location = new System.Drawing.Point(575, 196);
+            this.lblPaylaterDebt.Name = "lblPaylaterDebt";
+            this.lblPaylaterDebt.Size = new System.Drawing.Size(120, 19);
+            this.lblPaylaterDebt.StyleController = this.layoutControl1;
+            this.lblPaylaterDebt.TabIndex = 24;
             // 
             // btnPrint
             // 
@@ -525,6 +541,7 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
             this.layoutControlItem14,
             this.layoutControlItem15,
             this.layoutControlItem17,
+            this.lciForlblPaylaterDebt,
             this.layoutControlItem9,
             this.layoutControlItem16,
             this.layoutControlItem19,
@@ -705,6 +722,22 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
             this.layoutControlItem17.Size = new System.Drawing.Size(103, 24);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
+            //
+            // lciForlblPaylaterDebt
+            //
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.ForeColor = System.Drawing.Color.Red;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseFont = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciForlblPaylaterDebt.Control = this.lblPaylaterDebt;
+            this.lciForlblPaylaterDebt.Location = new System.Drawing.Point(521, 194);
+            this.lciForlblPaylaterDebt.Name = "lciForlblPaylaterDebt";
+            this.lciForlblPaylaterDebt.Size = new System.Drawing.Size(180, 24);
+            this.lciForlblPaylaterDebt.Text = "Còn nợ:";
+            this.lciForlblPaylaterDebt.TextSize = new System.Drawing.Size(42, 13);
+            this.lciForlblPaylaterDebt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem9
             // 
@@ -833,6 +866,7 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
             ((System.ComponentModel.ISupportInitialize)(this.txtPrimaryPatientTypeCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCopyExamOldContent.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkThuSau.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciForlblPaylaterDebt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientTypeCode.Properties)).EndInit();
@@ -926,6 +960,8 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
         private DevExpress.XtraBars.BarButtonItem barButtonItem4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
         private DevExpress.XtraEditors.CheckEdit chkThuSau;
+        private DevExpress.XtraEditors.LabelControl lblPaylaterDebt;
+        private DevExpress.XtraLayout.LayoutControlItem lciForlblPaylaterDebt;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
         private DevExpress.XtraEditors.CheckEdit chkCopyExamOldContent;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;

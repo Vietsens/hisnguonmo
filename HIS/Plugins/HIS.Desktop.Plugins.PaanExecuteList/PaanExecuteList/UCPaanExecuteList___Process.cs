@@ -70,6 +70,42 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                     return;
                 }
 
+                // Y lenh DA HOAN THANH -> nut nay la "Huy ket thuc", khong mo man
+                // Tra ket qua. Chep tu UCExecuteRoom.cs:1412.
+                if (row.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                {
+                    L_HIS_SERVICE_REQ serviceReq = GetServiceReqOfFocusedRow(true);
+                    if (serviceReq == null) return;
+
+                    CancelFinish(serviceReq);
+                    return;
+                }
+
+                OpenServiceExecute(row.SERVICE_REQ_ID.Value);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Mo man Tra ket qua cho dong dang chon, KHONG xet trang thai hoan thanh.
+        /// Dung cho nhay dup chuot.
+        /// </summary>
+        private void OpenServiceExecuteOfFocusedRow()
+        {
+            try
+            {
+                PaanSereServADO row = GetFocusedRow();
+                if (row == null) return;
+
+                if (!row.SERVICE_REQ_ID.HasValue)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SERVICE_REQ_ID rong, khong mo duoc man Tra ket qua. SERE_SERV_ID = " + row.ID);
+                    return;
+                }
+
                 OpenServiceExecute(row.SERVICE_REQ_ID.Value);
             }
             catch (Exception ex)

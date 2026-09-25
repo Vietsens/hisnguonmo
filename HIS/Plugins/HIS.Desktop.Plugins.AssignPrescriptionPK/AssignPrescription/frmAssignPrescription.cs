@@ -355,6 +355,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         /// not on the re-check after saving/reset).
         /// </summary>
         long outpatientOverDepositWarnedTreatmentId { get; set; }
+
+        /// <summary>
+        /// Tinh trang vien phi cua ho so dien thu sau, lay mot lan khi nap form.
+        /// </summary>
+        private MOS.SDO.HisTreatmentPaylaterFeeSDO paylaterFeeStatus;
         List<V_HIS_SERVICE_REQ_7> serviceReqPreExpmestAll { get; set; }
         internal string TreatmentMethod { get; set; }
         List<HIS_EXP_MEST_MEDICINE> ListExpMestMedicineAntibioticRequired = new List<HIS_EXP_MEST_MEDICINE>();
@@ -2452,6 +2457,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 // Re-arm the over-deposit warning: pressing "New" re-checks like a fresh form open
                 this.outpatientOverDepositWarnedTreatmentId = 0;
                 this.CheckWarningOverTotalPatientPrice();
+                this.LoadPaylaterFeeStatus();
                 this.InitComboMediStockAllow(0);
                 this.cboMediStockExport.ShowPopup();
                 this.cboMediStockExport.ClosePopup();

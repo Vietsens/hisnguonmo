@@ -28,12 +28,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
     /// <summary>
     /// Tính năng "Mở phiếu, Vỏ bệnh án (VBA)":
     /// - Checkbox ChkMoPhieuVoBenhAn do người dùng tự tích, trạng thái lưu qua ControlState.
-    /// - Sau khi lưu kết thúc điều trị thành công → mở vỏ bệnh án đã lưu của người bệnh,
-    ///   kèm danh sách mã mẫu phiếu được khai báo "Mở khi kết thúc điều trị" trong danh mục
-    ///   Phiếu vỏ bệnh án (HIS_EMR_FORM.IS_OPEN_WHEN_TREATMENT_FINISH = 1).
+    /// - Sau khi lưu kết thúc điều trị thành công → mở các mẫu phiếu được khai báo
+    ///   "Mở khi kết thúc điều trị" trong danh mục Phiếu vỏ bệnh án
+    ///   (HIS_EMR_FORM.IS_OPEN_WHEN_TREATMENT_FINISH = 1).
     /// - Phần mềm EMR tự tách chuỗi mã phiếu theo dấu phẩy và mở lần lượt từng phiếu.
-    /// - Nếu hồ sơ chưa có vỏ bệnh án (EMR_COVER_TYPE_ID null) → cảnh báo rồi hiển thị danh
-    ///   mục vỏ để người dùng tự chọn, KHÔNG tự suy ra loại vỏ theo phòng/khoa.
+    /// - Hồ sơ chưa có vỏ bệnh án (EMR_COVER_TYPE_ID null) vẫn mở phiếu bình thường: không
+    ///   cảnh báo, không hiển thị danh mục vỏ và không tự tạo vỏ.
+    /// - Không có mẫu phiếu nào được tích thì không mở gì.
     /// </summary>
     public partial class FormTreatmentFinish
     {
@@ -101,68 +102,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (treatment == null)
                     return;
 
-                //Ho so chua co vo benh an: canh bao roi hien danh muc vo de nguoi dung tu chon
-                if (treatment.EMR_COVER_TYPE_ID == null || treatment.EMR_COVER_TYPE_ID <= 0)
-                {
-                    MessageBox.Show(
-                        ResourceMessage.BenhNhanChuaDuocTaoVoBenhAnCanTao,
-                        "",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-
-                    LoadEmrCoverConfigForChoose(treatment);
-                    VoBenhAn(treatment);
-                    return;
-                }
-
+                //Khong canh bao, khong tao vo benh an: chi mo cac mau phieu duoc tich
+                //"Mo khi ket thuc dieu tri" cho nguoi dung tu nhap lieu va tu tao phieu.
                 OpenEmrCoverWithForms(treatment);
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-            }
-        }
-
-        /// <summary>
-        /// Nap thiet lap vo benh an theo phong dang lam viec, khong co thi theo khoa, de thu
-        /// hep danh muc vo cho nguoi dung chon. Chi dung cho truong hop ho so chua co vo.
-        /// </summary>
-        private void LoadEmrCoverConfigForChoose(HIS_TREATMENT treatment)
-        {
-            try
-            {
-                LstEmrCoverConfig = null;
-                LstEmrCoverConfigDepartment = null;
-                if (treatment == null || this.module == null)
-                    return;
-
-                var allConfigs = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>();
-                if (allConfigs == null)
-                    return;
-
-                LstEmrCoverConfig = allConfigs
-                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                             && o.ROOM_ID == this.module.RoomId
-                             && o.TREATMENT_TYPE_ID == treatment.TDL_TREATMENT_TYPE_ID)
-                    .ToList();
-
-                if (LstEmrCoverConfig != null && LstEmrCoverConfig.Count > 0)
-                    return;
-
-                var workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO
-                    .FirstOrDefault(o => o.RoomId == this.module.RoomId);
-                if (workPlace == null)
-                    return;
-
-                LstEmrCoverConfigDepartment = allConfigs
-                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                             && o.DEPARTMENT_ID == workPlace.DepartmentId
-                             && o.TREATMENT_TYPE_ID == treatment.TDL_TREATMENT_TYPE_ID)
-                    .ToList();
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
             }
         }
 
@@ -174,8 +120,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
-                if (treatment == null || treatment.EMR_COVER_TYPE_ID == null)
+                if (treatment == null)
                     return;
+
+                string emrFormCodes = GetEmrFormCodesOpenWhenTreatmentFinish();
+                if (String.IsNullOrWhiteSpace(emrFormCodes))
+                {
+                    LogSystem.Debug("OpenEmrCoverWithForms: khong co mau phieu nao duoc tich Mo khi ket thuc dieu tri.");
+                    return;
+                }
 
                 HIS.Desktop.Plugins.Library.FormMedicalRecord.Base.EmrInputADO emrInputAdo
                     = new HIS.Desktop.Plugins.Library.FormMedicalRecord.Base.EmrInputADO();
@@ -185,14 +138,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 emrInputAdo.TreatmentTypeId = treatment.TDL_TREATMENT_TYPE_ID;
                 emrInputAdo.roomId = this.module != null ? (long?)this.module.RoomId : null;
 
-                string emrFormCodes = GetEmrFormCodesOpenWhenTreatmentFinish();
+                //Ho so chua co vo benh an thi truyen 0: thu vien tu goi LoadDataEmr voi loai vo = 0,
+                //van mo duoc cac mau phieu theo chuoi ma truyen vao.
+                long emrCoverTypeId = treatment.EMR_COVER_TYPE_ID ?? 0;
 
                 LogSystem.Debug("OpenEmrCoverWithForms. EmrCoverTypeId: "
-                    + treatment.EMR_COVER_TYPE_ID + ", MaPhieu: " + emrFormCodes);
+                    + emrCoverTypeId + ", MaPhieu: " + emrFormCodes);
 
                 HIS.Desktop.Plugins.Library.FormMedicalRecord.MediRecordMenuPopupProcessor processor
                     = new HIS.Desktop.Plugins.Library.FormMedicalRecord.MediRecordMenuPopupProcessor();
-                processor.FormOpenEmr(treatment.EMR_COVER_TYPE_ID.Value, emrInputAdo, emrFormCodes);
+                processor.FormOpenEmr(emrCoverTypeId, emrInputAdo, emrFormCodes);
             }
             catch (Exception ex)
             {

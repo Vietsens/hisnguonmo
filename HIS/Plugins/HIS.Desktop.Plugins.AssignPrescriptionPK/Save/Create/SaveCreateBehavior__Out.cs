@@ -93,7 +93,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
                     Inventec.Common.Logging.LogSystem.Debug("Goi api ke don thuoc that bai. Du lieu dau vao____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listInput), listInput) + ". Du lieu dau ra____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Param), Param));
                     result = null;
                 }
-                else if (this.ProgramId > 0 && result.MediRecord != null)
+
+                //Luu thanh cong nhung BE co the kem cau canh bao cong no voi ho so dien thu sau.
+                //Day la thong bao cho biet, don van da duoc luu.
+                if (result != null)
+                {
+                    PaylaterDebtWarningUtil.ShowAfterSave(Param);
+                }
+
+                if (result != null && this.ProgramId > 0 && result.MediRecord != null)
                 {
                     string storeCode = result.MediRecord.STORE_CODE;
                     frmAssignPrescription.treatmentFinishProcessor.UpdateStoreCode(frmAssignPrescription.ucTreatmentFinish, storeCode);

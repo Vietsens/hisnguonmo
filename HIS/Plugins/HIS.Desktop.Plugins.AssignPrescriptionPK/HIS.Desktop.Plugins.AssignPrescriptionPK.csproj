@@ -761,6 +761,7 @@
     <Compile Include="NumCopy\NumCopyConfig.cs" />
     <Compile Include="OutStockPresQr\OutStockPresQrProcessor.cs" />
     <Compile Include="RequestUriStore.cs" />
+    <Compile Include="PaylaterDebtWarningUtil.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />

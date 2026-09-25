@@ -1493,6 +1493,75 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         bool _isOutForm;
 
+        /// <summary>
+        /// Tinh trang vien phi cua ho so dien thu sau, lay mot lan khi nap form.
+        /// Chuoi kiem tra truoc khi luu la dong bo nen doc lai tu bien nay, khong goi API lai.
+        /// </summary>
+        private MOS.SDO.HisTreatmentPaylaterFeeSDO paylaterFeeStatus;
+
+        /// <summary>
+        /// Hien dong tinh trang vien phi cho ho so thuoc dien thu sau.
+        /// Tach rieng khoi CheckOverTotalPatientPrice vi ham do co early-return khi API tien tra rong.
+        /// </summary>
+        private async Task LoadPaylaterFeeStatus()
+        {
+            try
+            {
+                this.paylaterFeeStatus = null;
+                this.lciForlblPaylaterDebt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                if (this.treatmentId <= 0)
+                {
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisTreatmentPaylaterFeeFilter filter = new MOS.Filter.HisTreatmentPaylaterFeeFilter();
+                filter.TREATMENT_ID = this.treatmentId;
+                var feeStatus = await new BackendAdapter(param).GetAsync<MOS.SDO.HisTreatmentPaylaterFeeSDO>(
+                    RequestUriStore.HIS_TREATMENT__GET_PAYLATER_FEE_STATUS, ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+
+                this.paylaterFeeStatus = feeStatus;
+
+                //Ho so khong thuoc dien thu sau thi AN HAN dong nay, khong hien dong trong
+                if (feeStatus == null || !feeStatus.IS_PAYLATER)
+                {
+                    return;
+                }
+
+                this.lciForlblPaylaterDebt.Text = "Diện thu sau (" + GetPaylaterReasonName(feeStatus) + "):";
+                this.lblPaylaterDebt.Text = feeStatus.IS_UNDETERMINED
+                    ? "Không xác định được"
+                    : Inventec.Common.Number.Convert.NumberToString(feeStatus.UNPAID ?? 0, ConfigApplications.NumberSeperator);
+                this.lciForlblPaylaterDebt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private string GetPaylaterReasonName(MOS.SDO.HisTreatmentPaylaterFeeSDO feeStatus)
+        {
+            if (feeStatus == null)
+            {
+                return "";
+            }
+            switch (feeStatus.REASON)
+            {
+                case MOS.SDO.HisTreatmentPaylaterFeeSDO.PaylaterReason.EMERGENCY:
+                    return "Cấp cứu";
+                case MOS.SDO.HisTreatmentPaylaterFeeSDO.PaylaterReason.SERVICE_REQ:
+                    return "Y lệnh tích thu sau";
+                case MOS.SDO.HisTreatmentPaylaterFeeSDO.PaylaterReason.OWE_TYPE:
+                    return "Cho nợ viện phí";
+                case MOS.SDO.HisTreatmentPaylaterFeeSDO.PaylaterReason.UNDETERMINED:
+                    return "Chưa xác định";
+                default:
+                    return "";
+            }
+        }
+
         private async Task CheckOverTotalPatientPrice()
         {
             try
@@ -6448,6 +6517,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.outpatientOverDepositWarnedTreatmentId = 0;
                 this.transferTreatmentFeeBK = decimal.MinValue;
                 this.CheckOverTotalPatientPrice();
+                this.LoadPaylaterFeeStatus();
                 this.LoadTotalSereServByHeinWithTreatment(this.treatmentId);
                 this.RefeshSereServInTreatmentData();
                 this.SetEnableButtonControl(this.actionType);
