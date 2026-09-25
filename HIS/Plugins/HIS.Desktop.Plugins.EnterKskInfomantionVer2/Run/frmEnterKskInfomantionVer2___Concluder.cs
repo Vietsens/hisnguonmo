@@ -77,6 +77,49 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
 
+        /// <summary>
+        /// Sau Lưu thành công: HIS_KSK_GENERAL dùng CHUNG cho mọi tab (Người khám kết luận, Phân loại của tab
+        /// định kỳ / trẻ &lt;6) nhưng mỗi tab giữ bản sao riêng trên combo, còn bản tải sẵn preKskGenerals là của
+        /// lúc mở y lệnh. Không đồng bộ thì: (1) mở tab chưa nạp -> fill lại currentKskGeneral bằng bản CŨ;
+        /// (2) Lưu ở tab đã nạp trước đó -> gửi Người khám CŨ (null) đè mất người khám vừa lưu ở tab khác
+        /// -> "Kết thúc y lệnh khám" báo thiếu mục kết luận dù người dùng đã lưu.
+        /// Chỉ đổ lại cặp kết luận (Người khám + Phân loại trên HIS_KSK_GENERAL) cho các tab KHÁC tab vừa lưu,
+        /// và CHỈ cột mà tab vừa lưu thực sự ghi: Người khám do tab 0 / 1 / 2 / 3 / 7 ghi (tab 4/5/6 gửi null);
+        /// Phân loại HIS_KSK_GENERAL chỉ tab 0 / 7 ghi (tab 1-6 gửi null) — không đẩy giá trị null "không sở hữu"
+        /// đè bản sao trên màn hình của tab khác.
+        /// </summary>
+        private void SyncSharedGeneralAfterSave(int savedTab)
+        {
+            try
+            {
+                if (currentKskGeneral == null) return;
+                preKskGenerals = new List<HIS_KSK_GENERAL>() { currentKskGeneral };
+                bool ownsConcluder = savedTab == 0 || savedTab == TAB_UNDER_SIX || dicConcluderCboExt.ContainsKey(savedTab);
+                bool ownsRank = savedTab == 0 || savedTab == TAB_UNDER_SIX;
+                string login = string.IsNullOrWhiteSpace(currentKskGeneral.CONCLUDER_LOGINNAME) ? null : currentKskGeneral.CONCLUDER_LOGINNAME;
+                if (ownsConcluder)
+                {
+                    foreach (var kv in dicConcluderCboExt)
+                    {
+                        if (kv.Key == savedTab || kv.Value == null) continue;
+                        kv.Value.EditValue = login;
+                    }
+                    if (savedTab != 0 && tabFilled[0] && cboConcluderLoginName != null) cboConcluderLoginName.EditValue = login;
+                    if (savedTab != TAB_UNDER_SIX && tabFilled[TAB_UNDER_SIX] && cboConcluder8 != null) cboConcluder8.EditValue = login;
+                }
+                if (ownsRank)
+                {
+                    if (savedTab != 0 && tabFilled[0] && cboHealthExamRank != null)
+                        cboHealthExamRank.EditValue = currentKskGeneral.HEALTH_EXAM_RANK_ID;
+                    if (savedTab != TAB_UNDER_SIX && tabFilled[TAB_UNDER_SIX] && cboHealthExamRank8 != null)
+                        cboHealthExamRank8.EditValue = currentKskGeneral.HEALTH_EXAM_RANK_ID;
+                }
+                LogSystem.Debug("KskConcluder: dong bo sau Luu (tab " + savedTab + ") -> login=" + (login ?? "null")
+                    + "__rankGeneral=" + (currentKskGeneral.HEALTH_EXAM_RANK_ID.HasValue ? currentKskGeneral.HEALTH_EXAM_RANK_ID.Value.ToString() : "null"));
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
         /// <summary>Ghi người khám kết luận (theo tab đang lưu) vào HIS_KSK_GENERAL trước khi gọi API.</summary>
         private void FillConcluderExtToGeneral(HIS_KSK_GENERAL g)
         {
