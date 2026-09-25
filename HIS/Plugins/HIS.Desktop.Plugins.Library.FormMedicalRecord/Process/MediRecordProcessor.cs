@@ -415,8 +415,12 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                         departmentTranFirst = _DepartmentTrans.FirstOrDefault(o => o.ID == depaTranFirstId);
                         _DepartmentTranCKs = _DepartmentTrans.Where(o => o.DEPARTMENT_IN_TIME >= departmentTranFirst.DEPARTMENT_IN_TIME && o.ID > departmentTranFirst.ID).OrderBy(o => o.DEPARTMENT_IN_TIME).ToList();
                         departmentTranSecond = _DepartmentTranCKs != null ? _DepartmentTranCKs.FirstOrDefault() : null;
-                        timeIn = departmentTranFirst.DEPARTMENT_IN_TIME;
-                        timeOut = (departmentTranSecond == null) ? _Treatment.OUT_TIME : departmentTranSecond.DEPARTMENT_IN_TIME;
+                        //Số ngày điều trị tại khoa tính từ thời điểm nhập viện (LOG_TIME của bản ghi chuyển diện = NgayVaoKhoa), không lấy giờ vào phòng khám
+                        timeIn = (depaTranFirst.LOG_TIME > 0) ? depaTranFirst.LOG_TIME : departmentTranFirst.DEPARTMENT_IN_TIME;
+                        //Mốc kết thúc: ngày ra viện; chưa ra viện thì lấy thời điểm hiện tại (không cắt tại lần chuyển khoa) để khớp số ngày điều trị của TreatmentFinish
+                        timeOut = (_Treatment.OUT_TIME.HasValue && _Treatment.OUT_TIME.Value > 0)
+                            ? _Treatment.OUT_TIME
+                            : Inventec.Common.TypeConvert.Parse.ToInt64(System.DateTime.Now.ToString("yyyyMMddHHmmss"));
 
                         _ThongTinDieuTri.NgayVaoKhoa = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(depaTranFirst.LOG_TIME) ?? null;
                         _ThongTinDieuTri.TenKhoaVao = departmentTranFirst.DEPARTMENT_NAME;
