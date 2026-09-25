@@ -31,13 +31,18 @@ namespace HIS.Desktop.Plugins.Library.CheckRequireMediMate.Resources
             "HIS.Desktop.Plugins.Library.CheckRequireMediMate.Resources.Message.Lang",
             System.Reflection.Assembly.GetExecutingAssembly());
 
-        /// <summary>"Dịch vụ chưa có thuốc, vật tư đi kèm:\n{0}\nBạn có muốn tiếp tục kết thúc?" — {0} = danh sach dich vu, moi dong 1 dich vu</summary>
+        /// <summary>
+        /// "Không kết thúc được. Dịch vụ chưa có thuốc, vật tư đi kèm:\n{0}\nVui lòng kê thuốc, vật tư đi kèm cho các dịch vụ trên rồi kết thúc lại."
+        /// {0} = danh sach dich vu, moi dong 1 dich vu.
+        /// Viec 3353 - chot 22/09/2026: muc xu ly la CHAN (hop thong bao chi co nut OK) nen cau nay KHONG duoc hoi "co muon tiep tuc" -
+        /// gia tri mac dinh duoi day phai trung voi Message.Lang.resx, vi no la cau hien ra khi doc resource that bai.
+        /// </summary>
         internal static string DichVuChuaCoThuocVatTuDiKem
         {
             get
             {
                 return GetValue("Library_CheckRequireMediMate__DichVuChuaCoThuocVatTuDiKem",
-                    "Dịch vụ chưa có thuốc, vật tư đi kèm:\n{0}\nBạn có muốn tiếp tục kết thúc?");
+                    "Không kết thúc được. Dịch vụ chưa có thuốc, vật tư đi kèm:\n{0}\nVui lòng kê thuốc, vật tư đi kèm cho các dịch vụ trên rồi kết thúc lại.");
             }
         }
 

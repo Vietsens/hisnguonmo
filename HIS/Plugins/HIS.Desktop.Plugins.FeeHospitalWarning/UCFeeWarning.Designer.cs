@@ -62,6 +62,10 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.ChkThuBhyt = new DevExpress.XtraEditors.CheckEdit();
             this.ChkCanthu = new DevExpress.XtraEditors.CheckEdit();
+            this.ChkPaylaterOnly = new DevExpress.XtraEditors.CheckEdit();
+            this.LciChkPaylaterOnly = new DevExpress.XtraLayout.LayoutControlItem();
+            this.Gc_PaylaterDebt = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_PaylaterReason = new DevExpress.XtraGrid.Columns.GridColumn();
             this.SpTotalHeinPriceTo = new DevExpress.XtraEditors.SpinEdit();
             this.SpTotalHeinPriceFrom = new DevExpress.XtraEditors.SpinEdit();
             this.cboFill = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -130,6 +134,8 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChkThuBhyt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChkCanthu.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChkPaylaterOnly.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LciChkPaylaterOnly)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpTotalHeinPriceTo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpTotalHeinPriceFrom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboFill.Properties)).BeginInit();
@@ -220,6 +226,7 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
             this.layoutControl3.Controls.Add(this.cboTreatmentType);
             this.layoutControl3.Controls.Add(this.ChkThuBhyt);
             this.layoutControl3.Controls.Add(this.ChkCanthu);
+            this.layoutControl3.Controls.Add(this.ChkPaylaterOnly);
             this.layoutControl3.Controls.Add(this.SpTotalHeinPriceTo);
             this.layoutControl3.Controls.Add(this.SpTotalHeinPriceFrom);
             this.layoutControl3.Controls.Add(this.cboFill);
@@ -311,6 +318,51 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
             this.ChkCanthu.StyleController = this.layoutControl3;
             this.ChkCanthu.TabIndex = 10;
             this.ChkCanthu.CheckedChanged += new System.EventHandler(this.ChkCanthu_CheckedChanged);
+            //
+            // ChkPaylaterOnly
+            //
+            this.ChkPaylaterOnly.Location = new System.Drawing.Point(1172, 25);
+            this.ChkPaylaterOnly.Name = "ChkPaylaterOnly";
+            this.ChkPaylaterOnly.Properties.Caption = "Chỉ hiện hồ sơ diện thu sau còn nợ";
+            this.ChkPaylaterOnly.Size = new System.Drawing.Size(210, 19);
+            this.ChkPaylaterOnly.StyleController = this.layoutControl3;
+            this.ChkPaylaterOnly.TabIndex = 11;
+            this.ChkPaylaterOnly.CheckedChanged += new System.EventHandler(this.ChkPaylaterOnly_CheckedChanged);
+            //
+            // LciChkPaylaterOnly
+            //
+            this.LciChkPaylaterOnly.Control = this.ChkPaylaterOnly;
+            this.LciChkPaylaterOnly.Location = new System.Drawing.Point(1170, 23);
+            this.LciChkPaylaterOnly.Name = "LciChkPaylaterOnly";
+            this.LciChkPaylaterOnly.Size = new System.Drawing.Size(214, 23);
+            this.LciChkPaylaterOnly.TextSize = new System.Drawing.Size(0, 0);
+            this.LciChkPaylaterOnly.TextVisible = false;
+            //
+            // Gc_PaylaterDebt
+            //
+            this.Gc_PaylaterDebt.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_PaylaterDebt.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_PaylaterDebt.Caption = "Còn nợ";
+            this.Gc_PaylaterDebt.FieldName = "PaylaterDebt";
+            this.Gc_PaylaterDebt.Name = "Gc_PaylaterDebt";
+            this.Gc_PaylaterDebt.OptionsColumn.AllowEdit = false;
+            this.Gc_PaylaterDebt.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.Gc_PaylaterDebt.Visible = true;
+            this.Gc_PaylaterDebt.VisibleIndex = 19;
+            this.Gc_PaylaterDebt.Width = 100;
+            //
+            // Gc_PaylaterReason
+            //
+            this.Gc_PaylaterReason.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_PaylaterReason.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_PaylaterReason.Caption = "Căn cứ thu sau";
+            this.Gc_PaylaterReason.FieldName = "PaylaterReasonName";
+            this.Gc_PaylaterReason.Name = "Gc_PaylaterReason";
+            this.Gc_PaylaterReason.OptionsColumn.AllowEdit = false;
+            this.Gc_PaylaterReason.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.Gc_PaylaterReason.Visible = true;
+            this.Gc_PaylaterReason.VisibleIndex = 20;
+            this.Gc_PaylaterReason.Width = 130;
             // 
             // SpTotalHeinPriceTo
             // 
@@ -406,6 +458,7 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
             this.layoutControlItem7,
             this.layoutControlItem10,
             this.LciChkCanThu,
+            this.LciChkPaylaterOnly,
             this.LciChkThuBhyt,
             this.layoutControlItem11,
             this.layoutControlItem13,
@@ -573,7 +626,9 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
             this.gridColumn14,
             this.Gc_Department,
             this.Gc_BedRoom,
-            this.Gc_Bed});
+            this.Gc_Bed,
+            this.Gc_PaylaterDebt,
+            this.Gc_PaylaterReason});
             this.gridViewFeeWarning.GridControl = this.gridControlFeeWarning;
             this.gridViewFeeWarning.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
             this.gridViewFeeWarning.Name = "gridViewFeeWarning";
@@ -967,6 +1022,8 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChkThuBhyt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChkCanthu.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChkPaylaterOnly.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LciChkPaylaterOnly)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpTotalHeinPriceTo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpTotalHeinPriceFrom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboFill.Properties)).EndInit();
@@ -1051,6 +1108,10 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
         private DevExpress.XtraEditors.CheckEdit ChkThuBhyt;
         private DevExpress.XtraEditors.CheckEdit ChkCanthu;
         private DevExpress.XtraLayout.LayoutControlItem LciChkCanThu;
+        private DevExpress.XtraEditors.CheckEdit ChkPaylaterOnly;
+        private DevExpress.XtraLayout.LayoutControlItem LciChkPaylaterOnly;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_PaylaterDebt;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_PaylaterReason;
         private DevExpress.XtraLayout.LayoutControlItem LciChkThuBhyt;
         private DevExpress.XtraGrid.Columns.GridColumn Gc_IsRightMediOrg;
         private DevExpress.XtraGrid.Columns.GridColumn Gc_WarningFeeName;

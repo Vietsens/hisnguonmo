@@ -374,48 +374,55 @@ HIS.Desktop.Plugins.KskServiceEditList/
 ├── KskServiceEditList/
 │   ├── IKskServiceEditList.cs
 │   ├── KskServiceEditListFactory.cs
-│   └── KskServiceEditListBehavior.cs   ← nhận KskServiceEditListADO
+│   ├── KskServiceEditListBehavior.cs   ← nhận List<V_HIS_TREATMENT_4>, V_HIS_KSK_CONTRACT, RefeshReference
+│   ├── frmKskServiceEditList.cs (+ Designer)
+│   ├── frmKskServiceEditList__Load.cs  ← dựng dòng dịch vụ, combo
+│   ├── frmKskServiceEditList__Grid.cs  ← lọc phòng, công tắc, ô chọn, cột phòng
+│   └── frmKskServiceEditList__Save.cs  ← chuyển trạng thái lưới thành SDO, gọi Worker
 ├── ADO/
-│   ├── KskServiceEditListADO.cs        ← TreatmentIds, KskContractId, DelegateRefresh
-│   ├── ExistServiceADO.cs              ← dòng grid dịch vụ hiện có
-│   └── AddServiceADO.cs                ← dòng grid dịch vụ thêm
-├── Run/
-│   └── KskServiceEditProcessor.cs      ← build SDO, gọi API (không để trong Form)
-├── frmKskServiceEditList.cs (+ __Designer)
-├── frmKskServiceEditResult.cs          ← kết quả + xuất Excel
-├── Resources/ Lang.vi/en, Message.Lang.vi/en, ResourceLanguageManager, ResourceMessage
+│   ├── ServiceRowADO.cs                ← 1 dòng lưới dịch vụ (gộp trên các hồ sơ)
+│   ├── RoomADO.cs, KskServiceEditSDO.cs (bản sao SDO backend)
+│   └── KskServiceEditBatchResultADO.cs, KskServiceEditResultRowADO.cs
+├── Worker/KskServiceEditWorker.cs      ← lấy sere_serv, gọi API theo lô 200 (không để trong Form)
+├── Result/frmKskServiceEditResult.cs   ← kết quả + xuất Excel
+├── Resources/ Lang(.vi/.en), Message.Lang(.vi/.en), ResourceLanguageManager, ResourceMessage
 └── Properties/AssemblyInfo.cs          ← [assembly: Plugin]
 ```
 
-`KskServiceEditListADO` đặt trong `HIS.Desktop.ADO` để TreatmentList truyền sang qua `PluginInstance`.
+Không dùng ADO chung trong `HIS.Desktop.ADO` (tránh phải build/deploy lại DLL đó): TreatmentList truyền thẳng `List<V_HIS_TREATMENT_4>` + `V_HIS_KSK_CONTRACT`.
 
-### 5.2. Bố cục màn hình (tương tự Sửa chỉ định dịch vụ)
+### 5.2. Bố cục màn hình (luồng giống "Sửa chỉ định dịch vụ")
+
+Màn hình giữ đúng cách dùng của **Sửa chỉ định dịch vụ (AssignServiceEdit)**: một lưới dịch vụ có ô chọn,
+dịch vụ đang có được tick sẵn; tick / bỏ tick / sửa phòng rồi Lưu. Khác biệt duy nhất là dữ liệu gộp trên
+nhiều hồ sơ và Lưu gọi API mới `api/HisKskContract/ServiceEdit`.
 
 ```
-┌──────────────────────────────────────────────────────────────────────┐
-│ Hợp đồng: HD001 - Cty ABC     Áp dụng cho: 350 bệnh nhân             │
-│ Người chỉ định: [cboLogin ▼]   Thời gian y lệnh: [dtIntructionTime]  │
-├──────────────────────────────────────────────────────────────────────┤
-│ DỊCH VỤ HIỆN CÓ                                                      │
-│ STT│Mã DV│Tên DV│Loại DV│Số BN có│Phòng hiện tại│Xóa│Phòng mới ▼      │
-│  1 │XN01 │CTM   │XN     │350/350 │P.Xét nghiệm  │☐ │                 │
-│  2 │SA01 │SA bụng│CĐHA  │348/350 │Nhiều phòng   │☐ │P.Siêu âm 2      │
-├──────────────────────────────────────────────────────────────────────┤
-│ THÊM DỊCH VỤ                                                         │
-│ Nhóm DV KSK: [cboKsk ▼]  Dịch vụ: [cboKskService ▼] Phòng: [cbo ▼] [Thêm]│
-│ STT│Mã DV│Tên DV│Nhóm DV KSK│Phòng thực hiện│Số lượng│Đơn giá│[Xóa dòng]│
-├──────────────────────────────────────────────────────────────────────┤
-│                                               [Lưu (Ctrl+S)]         │
-└──────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│ Hợp đồng: HD001 - Cty ABC                     Số bệnh nhân: 350 bệnh nhân │
+│ Thời gian chỉ định:[dt]   Phòng thực hiện:[cboRoom]   Người chỉ định:[cbo] │
+├──────────────────────────────────────────────────────────────────────────┤
+│ ☐ │Mã DV│Tên DV   │Phòng thực hiện ▼│Số BN có│Đã thực hiện│SL│Đơn giá│Loại│
+│ ☑ │XN01 │CTM      │P.Xét nghiệm     │350/350 │0           │1 │ ...   │XN  │
+│ ▣ │SA01 │SA bụng  │P.Siêu âm        │120/350 │0           │1 │ ...   │CĐHA│
+│ ☐ │DT01 │Điện tim │P.TDCN           │0/350   │0           │1 │ ...   │TDCN│
+├──────────────────────────────────────────────────────────────────────────┤
+│ (Tất cả dịch vụ | Dịch vụ đã chọn)                         [Lưu (Ctrl S)] │
+└──────────────────────────────────────────────────────────────────────────┘
 ```
 
-| Vùng | Quy tắc |
+| Thành phần | Quy tắc |
 |---|---|
-| Header | "Áp dụng cho N bệnh nhân" = số `TreatmentIds`. Hợp đồng readonly. Người chỉ định mặc định = tài khoản đăng nhập. Thời gian y lệnh mặc định = hiện tại |
-| Dịch vụ hiện có | Load `api/HisSereServ/Get` với `TREATMENT_IDs` (chia lô 100 id/lần), `IS_DELETE = 0`; gộp theo `SERVICE_ID`. "Số BN có" = số hồ sơ có dịch vụ / N. "Phòng hiện tại" = tên phòng nếu duy nhất, ngược lại "Nhiều phòng" (tooltip liệt kê) |
-| Xóa / Phòng mới | Loại trừ nhau: tick Xóa → clear + khóa Phòng mới; chọn Phòng mới → bỏ tick Xóa. Combo Phòng mới chỉ gồm phòng trong `V_HIS_SERVICE_ROOM` của dịch vụ |
-| Thêm dịch vụ | `cboKsk` = `HIS_KSK` đang hoạt động; `cboKskService` = `HIS_KSK_SERVICE` của nhóm; Phòng mặc định `KSK_SERVICE.ROOM_ID`. Không cho thêm trùng dòng; dịch vụ đang tick Xóa không được thêm lại |
-| Lưu | Không có thay đổi → cảnh báo. Xác nhận "Áp dụng thay đổi cho N bệnh nhân?" → **chia lô 200 hồ sơ/lần gọi API** (mục 5.4) → gộp kết quả → mở `frmKskServiceEditResult` → gọi `DelegateRefresh` |
+| Nguồn dòng | Dịch vụ các hồ sơ đang có (`api/HisSereServ/Get` theo `TREATMENT_IDs`, lô 100) ∪ dịch vụ trong nhóm dịch vụ KSK của hợp đồng (`HIS_KSK.KSK_CONTRACT_ID`) và nhóm dùng chung. Dịch vụ đã chọn xếp đầu |
+| Ô chọn | Tất cả BN có → ☑; một phần BN có → ▣ (lưng chừng); chưa có → ☐ |
+| Bỏ tick dịch vụ đang có | **Xóa** khỏi mọi hồ sơ đã chọn |
+| Tick dịch vụ chưa có / tick hẳn dịch vụ lưng chừng | **Thêm** (BN đã có được bỏ qua); phải thuộc nhóm DV KSK, nếu không → cảnh báo |
+| Sửa cột "Phòng thực hiện" | Dịch vụ tất cả BN đang có → **đổi phòng**; dịch vụ thêm → phòng thực hiện khi thêm (trống → phòng theo nhóm KSK). Chỉ sửa khi dòng đang tick |
+| "Phòng thực hiện" (trên) | Như AssignServiceEdit: lọc lưới theo dịch vụ phòng đó thực hiện được (dòng đang có / đang tick luôn hiện); là phòng mặc định khi tick thêm |
+| Công tắc | "Tất cả dịch vụ" / "Dịch vụ đã chọn" (chỉ dòng ☑, ▣) |
+| Tìm kiếm | Hàng lọc tự động theo mã, tên, loại dịch vụ |
+| Màu dòng | Đỏ = sẽ xóa, xanh = sẽ thêm, cam (cột phòng) = đổi phòng |
+| Lưu | Xác nhận "Áp dụng thay đổi cho N bệnh nhân?" → **chia lô 200 hồ sơ/lần gọi API** (mục 5.4) → màn hình kết quả → làm mới Hồ sơ điều trị |
 
 ### 5.3. Màn hình kết quả
 
@@ -517,3 +524,4 @@ internal KskServiceEditResultADO Run(
 | 2026-09-23 | Chốt Q1: đổi phòng theo từng dịch vụ (tách phiếu). Chốt Q2–Q8 theo HisImportKsk; bổ sung thiết kế API `HisKskContract/ServiceEdit`, quy tắc xóa / đổi phòng / thêm, thiết kế module `KskServiceEditList` |
 | 2026-09-23 | Chốt: xóa hết dịch vụ của y lệnh → báo lỗi, không xóa; frontend chia lô 200 hồ sơ/lần gọi API (mục 5.4) |
 | 2026-09-23 | Triển khai code: TreatmentList, module KskServiceEditList, API MOS HisKskContract/ServiceEdit (mục 7) |
+| 2026-09-24 | Màn hình Sửa dịch vụ đổi sang luồng hiển thị/xử lý giống "Sửa chỉ định dịch vụ" (mục 5.2); API giữ nguyên |

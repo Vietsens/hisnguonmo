@@ -56,6 +56,8 @@
     <Reference Include="DevExpress.Persistent.Base.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Spreadsheet.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Docs.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Web.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Xpo.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -270,6 +272,7 @@
     <Compile Include="ADO\KskDefaultGroupADO.cs" />
     <Compile Include="ADO\KskDefaultRowADO.cs" />
     <Compile Include="ADO\KskDefaultValueADO.cs" />
+    <Compile Include="ADO\KskExcelRowADO.cs" />
     <Compile Include="ADO\KskUnderSixADO.cs" />
     <Compile Include="ADO\TypeADO.cs" />
     <Compile Include="ADO\VaccineTypeADO.cs" />
@@ -387,6 +390,12 @@
       <DependentUpon>frmAutoClsSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Run\KskDefaultSettingUtil.cs" />
+    <Compile Include="Run\KskExcelMap.cs" />
+    <Compile Include="Run\KskExcelFile.cs" />
+    <Compile Include="Run\frmEnterKskInfomantionVer2___ExcelTemplate.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___UnderSixDefault.cs">
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>

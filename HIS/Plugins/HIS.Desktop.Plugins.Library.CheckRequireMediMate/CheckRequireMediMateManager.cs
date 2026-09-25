@@ -93,7 +93,11 @@ namespace HIS.Desktop.Plugins.Library.CheckRequireMediMate
             }
         }
 
-        /// <summary>Kieu chung: tim dich vu thieu thuoc/vat tu roi hoi nguoi dung.</summary>
+        /// <summary>
+        /// Kieu chung (overload loi): tim dich vu thieu thuoc/vat tu roi CHAN khong cho ket thuc.
+        /// Viec 3353 - chot 22/09/2026: hop thong bao chi co nut OK, khong con hoi Yes/No,
+        /// nen ham tra false moi khi con dich vu thieu. Chi tra true khi khong thieu gi hoac gap loi ky thuat (fail-open).
+        /// </summary>
         public static bool CheckBeforeFinish(List<SereServCheckADO> sereServs)
         {
             try

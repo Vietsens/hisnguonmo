@@ -19,8 +19,8 @@ namespace HIS.Desktop.Plugins.KskServiceEditList
             if (this.isSaving) return;
             try
             {
-                this.gridViewExist.PostEditor();
-                this.gridViewExist.UpdateCurrentRow();
+                this.GridViewService.PostEditor();
+                this.GridViewService.UpdateCurrentRow();
                 if (!this.ValidateRequired()) return;
 
                 HisKskServiceEditSDO sdo = this.BuildSdo();
@@ -96,6 +96,12 @@ namespace HIS.Desktop.Plugins.KskServiceEditList
             return valid;
         }
 
+        /// <summary>
+        /// Chuyển trạng thái lưới thành thao tác (giống UpdataDataForProcess của AssignServiceEdit):
+        /// - Bỏ tick dịch vụ đang có -> Xóa
+        /// - Tick dịch vụ chưa có / tick hẳn dịch vụ một phần BN có -> Thêm (BN đã có được bỏ qua)
+        /// - Đổi "Phòng thực hiện" của dịch vụ tất cả BN đang có -> Đổi phòng
+        /// </summary>
         private HisKskServiceEditSDO BuildSdo()
         {
             HisKskServiceEditSDO sdo = new HisKskServiceEditSDO();
@@ -105,28 +111,34 @@ namespace HIS.Desktop.Plugins.KskServiceEditList
             ACS_USER user = this.listAcsUser != null ? this.listAcsUser.FirstOrDefault(o => o.LOGINNAME == sdo.Loginname) : null;
             sdo.Username = user != null ? user.USERNAME : "";
             sdo.IntructionTime = Inventec.Common.TypeConvert.Parse.ToInt64(this.dtIntructionTime.DateTime.ToString("yyyyMMddHHmm") + "00");
-            sdo.DeleteServiceIds = this.existServices.Where(o => o.IsDelete).Select(o => o.SERVICE_ID).ToList();
-            sdo.ChangeRooms = this.existServices.Where(o => !o.IsDelete && o.NewRoomId.HasValue)
-                .Select(o => new KskServiceChangeRoomSDO { ServiceId = o.SERVICE_ID, NewRoomId = o.NewRoomId.Value }).ToList();
-            sdo.AddServices = this.addServices
-                .Select(o => new KskServiceAddSDO { KskId = o.KSK_ID, ServiceId = o.SERVICE_ID, RoomId = o.ROOM_ID }).ToList();
+
+            sdo.DeleteServiceIds = this.allServiceRows
+                .Where(o => o.IsExisting && o.IsChecked == false)
+                .Select(o => o.SERVICE_ID).ToList();
+            sdo.ChangeRooms = this.allServiceRows
+                .Where(o => o.IsExisting && !o.IsPartial && o.IsChecked == true && o.IsRoomChanged && o.RoomId.HasValue)
+                .Select(o => new KskServiceChangeRoomSDO { ServiceId = o.SERVICE_ID, NewRoomId = o.RoomId.Value }).ToList();
+            sdo.AddServices = this.allServiceRows
+                .Where(o => o.IsChecked == true && (!o.IsExisting || o.IsPartial) && o.KSK_ID.HasValue)
+                .Select(o => new KskServiceAddSDO { KskId = o.KSK_ID.Value, ServiceId = o.SERVICE_ID, RoomId = o.RoomId }).ToList();
             return sdo;
         }
 
         private bool ValidateChanges(HisKskServiceEditSDO sdo)
         {
-            if (!sdo.DeleteServiceIds.Any() && !sdo.ChangeRooms.Any() && !sdo.AddServices.Any())
+            // Dịch vụ tick thêm nhưng không thuộc nhóm dịch vụ KSK của hợp đồng -> không có giá/nhóm để chỉ định
+            List<string> notInKsk = this.allServiceRows
+                .Where(o => o.IsChecked == true && (!o.IsExisting || o.IsPartial) && !o.KSK_ID.HasValue)
+                .Select(o => o.SERVICE_NAME).ToList();
+            if (notInKsk.Any())
             {
-                XtraMessageBox.Show(Resources.ResourceMessage.KhongCoThayDoi, this.GetTitleMessage());
+                XtraMessageBox.Show(String.Format(Resources.ResourceMessage.DichVuKhongThuocNhomKsk, String.Join(", ", notInKsk)), this.GetTitleMessage());
                 return false;
             }
 
-            // Mỗi dịch vụ chỉ 1 thao tác: dịch vụ thêm không được đồng thời xóa / đổi phòng
-            HashSet<long> editedIds = new HashSet<long>(sdo.DeleteServiceIds.Concat(sdo.ChangeRooms.Select(o => o.ServiceId)));
-            List<string> conflicts = this.addServices.Where(o => editedIds.Contains(o.SERVICE_ID)).Select(o => o.SERVICE_NAME).ToList();
-            if (conflicts.Any())
+            if (!sdo.DeleteServiceIds.Any() && !sdo.ChangeRooms.Any() && !sdo.AddServices.Any())
             {
-                XtraMessageBox.Show(String.Format(Resources.ResourceMessage.DichVuChiDuocMotThaoTac, String.Join(", ", conflicts)), this.GetTitleMessage());
+                XtraMessageBox.Show(Resources.ResourceMessage.KhongCoThayDoi, this.GetTitleMessage());
                 return false;
             }
 

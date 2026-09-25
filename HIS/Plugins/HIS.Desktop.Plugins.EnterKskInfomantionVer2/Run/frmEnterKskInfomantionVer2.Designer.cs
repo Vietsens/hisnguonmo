@@ -156,6 +156,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
             this.btnAutoClsSetting = new DevExpress.XtraEditors.SimpleButton();
+            this.btnKskExcelExport = new DevExpress.XtraEditors.SimpleButton();
+            this.btnKskExcelImport = new DevExpress.XtraEditors.SimpleButton();
+            this.lciKskExcelExport = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciKskExcelImport = new DevExpress.XtraLayout.LayoutControlItem();
             this.chkAutoFinish = new DevExpress.XtraEditors.CheckEdit();
             this.btnFinishServiceReq = new DevExpress.XtraEditors.SimpleButton();
             this.btnSaveAndSign = new DevExpress.XtraEditors.SimpleButton();
@@ -4402,6 +4406,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem634)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciChkAutoFinish)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAutoClsSetting)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKskExcelExport)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKskExcelImport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnFinishServiceReq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoIcdConclusion8.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlSecondaryIcd8)).BeginInit();
@@ -4432,6 +4438,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.layoutControl1.Controls.Add(this.chkAutoTestIndex);
             this.layoutControl1.Controls.Add(this.btnAutoClsSetting);
+            this.layoutControl1.Controls.Add(this.btnKskExcelExport);
+            this.layoutControl1.Controls.Add(this.btnKskExcelImport);
             this.layoutControl1.Controls.Add(this.chkAutoFinish);
             this.layoutControl1.Controls.Add(this.btnFinishServiceReq);
             this.layoutControl1.Controls.Add(this.btnSaveAndSign);
@@ -4523,6 +4531,28 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.barDockControl4.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControl4.Location = new System.Drawing.Point(1413, 29);
             this.barDockControl4.Size = new System.Drawing.Size(0, 1032);
+            // 
+            // btnKskExcelExport
+            // 
+            this.btnKskExcelExport.Location = new System.Drawing.Point(12, 1008);
+            this.btnKskExcelExport.Name = "btnKskExcelExport";
+            this.btnKskExcelExport.Size = new System.Drawing.Size(80, 22);
+            this.btnKskExcelExport.StyleController = this.layoutControl1;
+            this.btnKskExcelExport.TabIndex = 740;
+            this.btnKskExcelExport.Text = "Xuất mẫu";
+            this.btnKskExcelExport.ToolTip = "Xuất file Excel các mục khám của mẫu khám đang mở, điền sẵn Bình thường và Loại I";
+            this.btnKskExcelExport.Click += new System.EventHandler(this.btnKskExcelExport_Click);
+            // 
+            // btnKskExcelImport
+            // 
+            this.btnKskExcelImport.Location = new System.Drawing.Point(98, 1008);
+            this.btnKskExcelImport.Name = "btnKskExcelImport";
+            this.btnKskExcelImport.Size = new System.Drawing.Size(80, 22);
+            this.btnKskExcelImport.StyleController = this.layoutControl1;
+            this.btnKskExcelImport.TabIndex = 741;
+            this.btnKskExcelImport.Text = "Nhập mẫu";
+            this.btnKskExcelImport.ToolTip = "Nhập file Excel đã sửa để điền vào các ô của mẫu khám đang mở";
+            this.btnKskExcelImport.Click += new System.EventHandler(this.btnKskExcelImport_Click);
             // 
             // btnAutoClsSetting
             // 
@@ -30557,7 +30587,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem634,
             this.lciChkAutoFinish,
             this.lciAutoClsSetting,
-            this.lciBtnFinishServiceReq});
+            this.lciBtnFinishServiceReq,
+            this.lciKskExcelExport,
+            this.lciKskExcelImport});
             this.layoutControlGroup1.Location = new System.Drawing.Point(24, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(1389, 1032);
@@ -30602,9 +30634,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem8
             // 
             this.emptySpaceItem8.AllowHotTrack = false;
-            this.emptySpaceItem8.Location = new System.Drawing.Point(0, 1006);
+            // Thu h�p t� 768 xu�ng 584 � ch�a ch� cho 2 n�t Xu�t m�u / Nh�p m�u (vi�c 57621)
+            // � x = 0..184  ph�n c�n l�i v�n l� kho�ng tr�ng �y nh�m n�t sang ph�i nh� ci.
+            this.emptySpaceItem8.Location = new System.Drawing.Point(184, 1006);
             this.emptySpaceItem8.Name = "emptySpaceItem8";
-            this.emptySpaceItem8.Size = new System.Drawing.Size(768, 26);
+            this.emptySpaceItem8.Size = new System.Drawing.Size(584, 26);
+            // 
+            // lciKskExcelExport
+            // 
+            this.lciKskExcelExport.Control = this.btnKskExcelExport;
+            this.lciKskExcelExport.Location = new System.Drawing.Point(0, 1006);
+            this.lciKskExcelExport.MaxSize = new System.Drawing.Size(88, 26);
+            this.lciKskExcelExport.MinSize = new System.Drawing.Size(88, 26);
+            this.lciKskExcelExport.Name = "lciKskExcelExport";
+            this.lciKskExcelExport.Size = new System.Drawing.Size(88, 26);
+            this.lciKskExcelExport.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciKskExcelExport.TextSize = new System.Drawing.Size(0, 0);
+            this.lciKskExcelExport.TextVisible = false;
+            // 
+            // lciKskExcelImport
+            // 
+            this.lciKskExcelImport.Control = this.btnKskExcelImport;
+            this.lciKskExcelImport.Location = new System.Drawing.Point(88, 1006);
+            this.lciKskExcelImport.MaxSize = new System.Drawing.Size(96, 26);
+            this.lciKskExcelImport.MinSize = new System.Drawing.Size(96, 26);
+            this.lciKskExcelImport.Name = "lciKskExcelImport";
+            this.lciKskExcelImport.Size = new System.Drawing.Size(96, 26);
+            this.lciKskExcelImport.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciKskExcelImport.TextSize = new System.Drawing.Size(0, 0);
+            this.lciKskExcelImport.TextVisible = false;
             this.emptySpaceItem8.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem462
@@ -33878,6 +33936,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem634)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciChkAutoFinish)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAutoClsSetting)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKskExcelExport)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKskExcelImport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnFinishServiceReq)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoIcdConclusion8.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlSecondaryIcd8)).EndInit();
@@ -35936,7 +35996,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem632;
         private DevExpress.XtraEditors.CheckEdit chkAutoTestIndex;
         private DevExpress.XtraEditors.SimpleButton btnAutoClsSetting;
+        private DevExpress.XtraEditors.SimpleButton btnKskExcelExport;
+        private DevExpress.XtraEditors.SimpleButton btnKskExcelImport;
         private DevExpress.XtraLayout.LayoutControlItem lciAutoClsSetting;
+        private DevExpress.XtraLayout.LayoutControlItem lciKskExcelExport;
+        private DevExpress.XtraLayout.LayoutControlItem lciKskExcelImport;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem634;
         private DevExpress.XtraEditors.CheckEdit chkAutoFinish;
         private DevExpress.XtraLayout.LayoutControlItem lciChkAutoFinish;

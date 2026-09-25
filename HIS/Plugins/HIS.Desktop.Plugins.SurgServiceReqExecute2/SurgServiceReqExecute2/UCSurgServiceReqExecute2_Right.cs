@@ -923,6 +923,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     return;
                 if (this.ValidateData(hisSurgResultSDO))
                 {
+                    // Viec 3353 (PT-56272): IsFinished = true -> backend ket thuc y lenh ngay. Dich vu bat co "Co thuoc, vat tu di kem"
+                    // ma chua ke -> CHAN ket thuc (hop thong bao chi co OK), van luu du lieu PTTT vua nhap.
+                    // Dat sau kiem tra trung may + ValidateData de hop chan chi hien khi lan luu nay thuc su duoc gui.
+                    if (hisSurgResultSDO.IsFinished && !IsMediMateFinishAllowed_3353())
+                    {
+                        hisSurgResultSDO.IsFinished = false;
+                    }
                     WaitingManager.Show();
                     currentHisSurgResultSDO = new BackendAdapter(param)
                    .Post<MOS.SDO.HisSurgServiceReqUpdateSDO>("api/HisServiceReq/SurgUpdate", ApiConsumers.MosConsumer, hisSurgResultSDO, param);

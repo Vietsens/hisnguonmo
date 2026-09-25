@@ -67,6 +67,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Update
                     frmAssignPrescription.treatmentFinishProcessor.UpdateStoreCode(frmAssignPrescription.ucTreatmentFinish, storeCode);
                 }
 
+                //Luu thanh cong nhung BE co the kem cau canh bao cong no voi ho so dien thu sau
+                if (result != null)
+                {
+                    PaylaterDebtWarningUtil.ShowAfterSave(Param);
+                }
+
                 Inventec.Common.Logging.LogSystem.Debug("Goi api sua don thuoc. Du lieu dau vao____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => prescriptionSDO), prescriptionSDO) + ". Du lieu dau ra____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Param), Param) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
 
             }

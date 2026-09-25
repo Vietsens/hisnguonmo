@@ -137,6 +137,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         internal List<WarningADO> warningADOs = null;
         bool _isSkipWarningForSave = false;
 
+        /// <summary>
+        /// Nguoi dung da xac nhan van ket thuc ho so dien thu sau dang con no.
+        /// Dat trong CheckPaylaterFee_ForSave, gui len backend qua HisTreatmentFinishSDO.
+        /// </summary>
+        bool isConfirmedPaylaterDebt = false;
+
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
@@ -3217,6 +3223,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     return;
                 }
 
+                //Canh bao cong no voi ho so thuoc dien thu sau
+                if (!this.CheckPaylaterFee_ForSave(ValidationDataType.PopupMessage, ref warningADONew))
+                {
+                    return;
+                }
+
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager check = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(null, currentHisTreatment);
                 string message = null;
                 if (CheckIcdWhenSave == "1" || CheckIcdWhenSave == "2")
@@ -3332,6 +3344,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 //    XtraMessageBox.Show("Thiếu thông tin chuyển viện", "Thông báo");
                 //    return;
                 //}
+                //Nguoi dung da xac nhan van ket thuc ho so dien thu sau dang con no.
+                //Chi gan o luong luu that, khong gan o luong luu tam.
+                hisTreatmentFinishSDO.IsConfirmedPaylaterDebt = this.isConfirmedPaylaterDebt;
+
                 CommonParam param = new CommonParam();
                 SaveTreatmentFinish(hisTreatmentFinishSDO, ref success, ref param);
                 MessageManager.Show(this, param, success);
@@ -5898,7 +5914,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     return;
                 }
-                
+
+                //Canh bao cong no voi ho so thuoc dien thu sau
+                if (!this.CheckPaylaterFee_ForSave(ValidationDataType.GetListMessage, ref this.warningADOs))
+                {
+                    return;
+                }
+
                 GetValueUC();
                 if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
                 {

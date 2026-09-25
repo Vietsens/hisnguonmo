@@ -15,12 +15,13 @@
 ### Luồng chính
 1. ExecuteRoom gom các dòng đang chọn (`UCExecuteRoom.cs:1921-1932`) → mở plugin với `List<L_HIS_SERVICE_REQ>` (`UCExecuteRoom___Popup_Menu_Showing.cs:1070`).
 2. **Lưu (Ctrl S)** — `BackgroundWorker` duyệt từng y lệnh, từng dịch vụ: POST `api/HisSereServExt/CreateSdo` (`HisSereServExtWithFileSDO`) với nội dung chung; lỗi từng dòng gom vào lưới `lstResultError` (`ResultADO`: mã y lệnh, tên dịch vụ, mô tả lỗi).
-3. **Kết thúc (Ctrl E)** — nút `btnCancel` (tên control lịch sử, caption "Kết thúc (Ctrl E)") → `currentChoose = Choose.CANCEL` → `backgroundWorker1` chạy `SetDataToCancel()`: bỏ qua y lệnh đã hoàn thành (`SERVICE_REQ_STT_ID = ID__HT`), POST `api/HisServiceReq/Finish` cho từng y lệnh còn lại, cập nhật `SERVICE_REQ_STT_ID` và gọi `delegateRefresh` về ExecuteRoom.
+3. **Kết thúc (Ctrl E)** — nút `btnCancel` (tên control lịch sử, caption "Kết thúc (Ctrl E)") → kiểm tra thuốc/vật tư đi kèm của việc 3353 (chặn cả lần kết thúc nếu còn thiếu — xem Điều kiện nghiệp vụ) → `currentChoose = Choose.CANCEL` → `backgroundWorker1` chạy `SetDataToCancel()`: bỏ qua y lệnh đã hoàn thành (`SERVICE_REQ_STT_ID = ID__HT`), POST `api/HisServiceReq/Finish` cho từng y lệnh còn lại, cập nhật `SERVICE_REQ_STT_ID` và gọi `delegateRefresh` về ExecuteRoom.
 4. Thanh tiến trình `pbProcess` + `lblProcess` "Đã xử lý: n/N"; in phiếu tại `frmServiceExecuteGroup_Print.cs`.
 
 ### Điều kiện nghiệp vụ
 - Kiểm tra hạn dùng qua `Validation/ExpiredDateValidationRule`.
-- **Việc 3353 (18/09/2026):** trước khi chạy worker Kết thúc, gọi `CheckRequireMediMateManager.CheckBeforeFinishByServiceReqIds(ID các y lệnh chưa hoàn thành)`: dịch vụ có `HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1` mà chưa có thuốc/vật tư đi kèm → **một** hộp thoại Yes/No liệt kê đủ dịch vụ của tất cả y lệnh; No → không kết thúc y lệnh nào. Hỏi ở UI thread, trước `RunWorkerAsync()`.
+- **Việc 3353 — mức CHẶN (chốt 22/09/2026):** trước khi chạy worker Kết thúc, gọi `CheckRequireMediMateManager.CheckBeforeFinishByServiceReqIds(ID các y lệnh chưa hoàn thành)` (`Run/frmServiceExecuteGroup.cs:517`): dịch vụ có `HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1` mà chưa có thuốc/vật tư đi kèm còn hiệu lực → **một** hộp thông báo **chỉ có nút OK** liệt kê đủ dịch vụ thiếu của tất cả y lệnh (*"Không kết thúc được. Dịch vụ chưa có thuốc, vật tư đi kèm: … Vui lòng kê thuốc, vật tư đi kèm cho các dịch vụ trên rồi kết thúc lại."*). Thư viện **luôn trả `false`** khi còn dịch vụ thiếu → `btnCancel_Click` `return`, **không chạy `backgroundWorker1`**, không y lệnh nào bị kết thúc. Đường thoát duy nhất là kê bổ sung thuốc/vật tư cho các dịch vụ đó rồi bấm Kết thúc (Ctrl E) lại. Kiểm tra ở UI thread, **trước** `RunWorkerAsync()` — nếu chặn giữa chừng trong worker thì một phần y lệnh đã kết thúc dở dang.
+- **Fail-open (3353):** lỗi API / mất mạng / Backend cũ chưa có cột `IS_REQUIRE_MEDI_MATE` → thư viện ghi `LogSystem.Warn` và trả `true` ⇒ **không chặn**, kết thúc bình thường.
 
 ## 3. EFMODEL Sử Dụng
 
@@ -54,7 +55,7 @@
 
 | Library | Mục đích |
 |---------|----------|
-| HIS.Desktop.Plugins.Library.CheckRequireMediMate | Việc 3353 — cảnh báo dịch vụ chưa có thuốc, vật tư đi kèm trước khi kết thúc |
+| HIS.Desktop.Plugins.Library.CheckRequireMediMate | Việc 3353 — **chặn** kết thúc khi dịch vụ chưa có thuốc, vật tư đi kèm (hộp thông báo chỉ có nút OK) |
 
 Inter-plugin: được mở từ `HIS.Desktop.Plugins.ExecuteRoom` (menu chuột phải khi chọn nhiều y lệnh), trả `RefeshReference` để ExecuteRoom tải lại lưới.
 
@@ -67,10 +68,14 @@ Xem `Run/frmServiceExecuteGroup_Print.cs`.
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 18/09/2026 | dangth2 | Tạo tài liệu module. **Việc 3353 (PT-56272):** trong `btnCancel_Click` (nút "Kết thúc (Ctrl E)", `Run/frmServiceExecuteGroup.cs`) thêm lời gọi `CheckRequireMediMateManager.CheckBeforeFinishByServiceReqIds(...)` cho các y lệnh chưa hoàn thành, đặt trước `backgroundWorker1.RunWorkerAsync()`; No → `return`, không chạy worker. Thêm reference `HIS.Desktop.Plugins.Library.CheckRequireMediMate`. Ghi chú build trên máy backup: csproj có `Properties\licenses.licx` (file gitignore, không tồn tại) → lc.exe quá dài (MSB6003); build qua bản csproj tạm bỏ dòng này, không sửa csproj gốc. |
+| 22/09/2026 | dangth2 | **Việc 3353 (PT-56272 / 57799) — đổi mức xử lý từ CẢNH BÁO sang CHẶN** theo chốt của anh Cảnh: hộp thông báo **chỉ có nút OK** (bỏ Yes/No, bỏ nút mặc định), câu thông báo đổi thành *"Không kết thúc được. Dịch vụ chưa có thuốc, vật tư đi kèm: … Vui lòng kê thuốc, vật tư đi kèm cho các dịch vụ trên rồi kết thúc lại."*; `CheckRequireMediMateManager.ConfirmFinish` **luôn trả `false`** khi còn dịch vụ thiếu → `btnCancel_Click` `return`, `backgroundWorker1` không chạy, không y lệnh nào bị kết thúc. Màn này **không đổi code** (điểm gọi ở `Run/frmServiceExecuteGroup.cs:517` giữ nguyên, chỉ cập nhật chú thích) — hành vi đổi theo thư viện dùng chung. Fail-open giữ nguyên: lỗi API / mất mạng / Backend cũ chưa có cột → `LogSystem.Warn` và cho kết thúc bình thường. Cùng đợt chốt: phạm vi chặn là 3 nhóm CLS + PTTT + Xét nghiệm với **5 màn** (thêm `HIS.Desktop.Plugins.TestServiceExecute`, commit `359ff8013`, DLL lên test `052c55c03`); phần API cho hệ thống PACS bỏ khỏi phạm vi. |
 
 ## 9. Test Cases
 
 - [ ] Chọn 2 y lệnh, Kết thúc → cả 2 hoàn thành, ExecuteRoom tải lại.
 - [ ] Y lệnh đã hoàn thành trong danh sách → bỏ qua, không lỗi.
-- [ ] (3353) 2 y lệnh có dịch vụ bật cờ chưa kê thuốc/VT → 1 hộp thoại liệt kê đủ; No → không y lệnh nào bị kết thúc; Yes → kết thúc hết.
+- [ ] (3353) 2 y lệnh có dịch vụ bật cờ chưa kê thuốc/VT → **một** hộp thông báo **chỉ có nút OK** liệt kê đủ dịch vụ của cả 2 y lệnh; bấm OK → `backgroundWorker1` không chạy, **không y lệnh nào bị kết thúc**.
+- [ ] (3353) Kê đủ thuốc/vật tư gắn dịch vụ cho các dịch vụ trên rồi bấm Kết thúc (Ctrl E) lại → không còn thông báo, cả 2 y lệnh hoàn thành.
+- [ ] (3353) Tắt mạng / Backend cũ chưa có cột `IS_REQUIRE_MEDI_MATE` → **không bị chặn**, kết thúc bình thường, có dòng `LogSystem.Warn` trong `Logs/LogSystem.txt`.
+- [ ] (3353) Y lệnh đã hoàn thành (`SERVICE_REQ_STT_ID = ID__HT`) trong danh sách → không đưa vào kiểm tra, không làm phát sinh thông báo chặn.
 - [ ] Lỗi Finish 1 y lệnh → hiện trong lưới lỗi, các y lệnh khác vẫn xử lý.

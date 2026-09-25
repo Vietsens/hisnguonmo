@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -299,6 +299,9 @@ namespace MPS.ProcessorBase.Core
                         //KHONG doi dinh dang ProcessUniqueCodeData() - no la khoa dem so ban in
                         //(GetNumOrderPrint) va khoa ghi log in (printLog.UniqueCode).
                         string uniqueCodeData = ProcessUniqueCodeData();
+                        //bao dam luon co ma bieu in trong HIS_CODE (viec 58123 - App di buong VTX).
+                        //Noi them vao dau chuoi, khong thay the; da co roi thi giu nguyen.
+                        uniqueCodeData = EnsurePrintTypeCode(uniqueCodeData);
                         string emrStockData = ProcessEmrStockData();
                         emrInputADO.HisCode = String.IsNullOrWhiteSpace(emrStockData)
                             ? uniqueCodeData
@@ -688,6 +691,78 @@ namespace MPS.ProcessorBase.Core
         ///Lưu ý: Nếu trường của EMR là dữ liệu ngày(kiểu DateTime hoặc long) thì dữ liệu key để lấy dữ liệu có thể lấy với các biến kiểu long, DateTime, string date(vd: 09/08/2020 18:15, 09/08/2020)
         /// </summary>
         /// <param name="emrInputADO"></param>
+        /// <summary>
+        /// Tinh gia tri se gan vao cot EMR kieu chuoi, theo Mode khai bao o tung dong anh xa
+        /// cua man "Anh xa du lieu EMR" (EMR_COLUMN_MAPPING cua bieu in).
+        ///
+        ///   khong khai bao / "REPLACE" -> ghi de (mac dinh, giu nguyen hanh vi cu)
+        ///   "APPEND"                   -> gia tri cu + Separator + gia tri moi
+        ///   "PREPEND"                  -> gia tri moi + Separator + gia tri cu
+        ///
+        /// Chi tac dong den bieu in NAO KHAI BAO Mode. Bieu in khong khai bao chay y nhu truoc,
+        /// nen khong co rui ro lan sang cac MPS khac.
+        ///
+        /// Da co san gia tri moi trong chuoi cu -> giu nguyen, tranh noi lap khi in lai nhieu lan.
+        /// Moi loi deu nuot va tra ve gia tri moi (hanh vi ghi de cu) de khong lam hong ban in.
+        /// </summary>
+        private object BuildMappingValue(System.Reflection.PropertyInfo pi,
+                                         Inventec.Common.SignLibrary.ADO.InputADO emrInputADO,
+                                         object value,
+                                         EmrColumnMappingADO emrColumn)
+        {
+            try
+            {
+                if (emrColumn == null || String.IsNullOrWhiteSpace(emrColumn.Mode))
+                {
+                    return value;
+                }
+
+                string mode = emrColumn.Mode.Trim().ToUpperInvariant();
+                if (mode != "APPEND" && mode != "PREPEND")
+                {
+                    return value;
+                }
+
+                string newValue = value == null ? "" : value.ToString();
+                if (String.IsNullOrWhiteSpace(newValue))
+                {
+                    return value;
+                }
+
+                object current = pi.GetValue(emrInputADO);
+                string oldValue = current == null ? "" : current.ToString();
+                if (String.IsNullOrWhiteSpace(oldValue))
+                {
+                    return newValue;
+                }
+
+                if (oldValue.IndexOf(newValue, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return oldValue;
+                }
+
+                string sep = emrColumn.Separator ?? "";
+
+                string result = mode == "APPEND"
+                    ? oldValue + sep + newValue
+                    : newValue + sep + oldValue;
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "BuildMappingValue____EmrColumn=" + emrColumn.EmrColumn
+                    + ", Mode=" + mode + ", Separator=" + sep
+                    + ", oldValue=" + oldValue + ", newValue=" + newValue
+                    + ", result=" + result
+                    + ", printTypeCode=" + (this.printType != null ? this.printType.PRINT_TYPE_CODE : ""));
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return value;
+            }
+        }
+
         private bool ProcessColumnMaping(Inventec.Common.SignLibrary.ADO.InputADO emrInputADO)
         {
             bool success = true;
@@ -848,7 +923,9 @@ namespace MPS.ProcessorBase.Core
                                                 }
                                                 else
                                                 {
-                                                    pi.SetValue(emrInputADO, value);
+                                                    //Mode tren tung dong anh xa quyet dinh GHI DE hay NOI CHUOI.
+                                                    //Khong khai bao -> ghi de, dung hanh vi cu.
+                                                    pi.SetValue(emrInputADO, BuildMappingValue(pi, emrInputADO, value, emrColumn));
                                                     valueDataType = "string";
                                                 }
                                                 object newValue = pi.GetValue(emrInputADO);
@@ -1762,6 +1839,79 @@ namespace MPS.ProcessorBase.Core
         public virtual string ProcessUniqueCodeData()
         {
             return null;
+        }
+
+        /// <summary>
+        /// Bao dam chuoi dinh danh gui sang thu vien ky LUON co ma bieu in (PRINT_TYPE_CODE)
+        /// de App di buong cua VTX phan loai duoc van ban.
+        ///
+        /// Da co ma bieu in thi giu nguyen. Chua co thi NOI THEM vao DAU chuoi, ngan bang
+        /// mot dau cach - KHONG thay the chuoi dang co.
+        ///
+        /// Luu y:
+        /// - Do tren TOAN BO chuoi chu khong chi o dau: co bieu dat ma o cuoi (Mps000147,
+        ///   Mps000148, Mps000317, Mps000318) va o giua (Mps000360).
+        /// - So khop KHONG phan biet hoa thuong: danh muc SAR_PRINT_TYPE co ca dang
+        ///   Mps000001 lan dang MPS000500..MPS000514.
+        /// - Coi la "da co ma" khi chuoi chua BAT KY ma bieu in nao (dang Mps + 6 chu so),
+        ///   khong chi rieng ma dang in. Ly do: 4 bieu co y ghi ma KHAC ma dang in cho ban in
+        ///   benh nhan NOI TRU (Mps000279 ghi Mps000280, Mps000281 ghi Mps000282,
+        ///   MPS000508 ghi MPS000509, MPS000510 ghi MPS000511); neu chi do ma dang in thi se
+        ///   noi them vao thanh van ban mang HAI ma bieu in.
+        /// - Chi xu ly phan TRUOC dau '|' (phan sau la du lieu phieu kho cua
+        ///   ProcessEmrStockData, EMR tach rieng - xem HisCodeStockParser).
+        /// - KHONG dat logic nay vao ProcessUniqueCodeData() vi chuoi do con la khoa dem
+        ///   so ban in (GetNumOrderPrint) va khoa ghi log in (printLog.UniqueCode).
+        ///
+        /// CANH BAO khi mo rong sau nay: HisCode con duoc thu vien ky doc lai de kiem tra van
+        /// ban da ton tai chua - Inventec.Common.SignLibrary.Verify.VerifyHisCode() loc
+        /// EmrDocumentViewFilter.HIS_CODE__EXACT (so khop BANG). Caller nam trong DLL DONG nen
+        /// grep ma nguon .cs KHONG thay, phai ildasm ra IL moi thay. Nhanh do CHI chay khi
+        /// TREATMENT_CODE bat dau bang "MPS" (van ban ngoai dot dieu tri - phieu kho); van ban
+        /// cua benh nhan di nhanh khac, loc theo TREATMENT_CODE + DOCUMENT_TYPE_CODE, khong
+        /// dung HisCode. Nhom phieu kho von DA co san ma bieu in nen ham nay giu nguyen chuoi.
+        /// Neu sau nay noi them gi vao chuoi cua nhom phieu kho thi se lam mat nhan dien van
+        /// ban da ky truoc do.
+        /// </summary>
+        /// <param name="uniqueCodeData">chuoi dinh danh do ProcessUniqueCodeData() sinh ra</param>
+        protected string EnsurePrintTypeCode(string uniqueCodeData)
+        {
+            try
+            {
+                string code = this.printTypeCode;
+                if (String.IsNullOrWhiteSpace(code))
+                {
+                    return uniqueCodeData;
+                }
+
+                code = code.Trim();
+
+                if (String.IsNullOrWhiteSpace(uniqueCodeData))
+                {
+                    return code;
+                }
+
+                if (uniqueCodeData.IndexOf(code, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return uniqueCodeData;
+                }
+
+                //da mang ma bieu in KHAC (Mps000508/Mps000510 ghi MPS000509/MPS000511) thi cung
+                //coi nhu da co, tranh van ban mang hai ma bieu in.
+                if (System.Text.RegularExpressions.Regex.IsMatch(
+                        uniqueCodeData, @"Mps\d{6}",
+                        System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                {
+                    return uniqueCodeData;
+                }
+
+                return code + " " + uniqueCodeData;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return uniqueCodeData;
+            }
         }
 
         /// <summary>

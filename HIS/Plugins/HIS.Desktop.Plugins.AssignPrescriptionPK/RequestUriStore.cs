@@ -125,5 +125,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
         public const string HIS_PATIENT_PACKAGE__GETVIEW = "api/HisPatientPackage/GetView";
         public const string HIS_PATIENT_PACKAGE_DT__GET = "api/HisPatientPackageDt/Get";
         public const string HIS_PATIENT_PACKAGE_DT__GETVIEW = "api/HisPatientPackageDt/GetView";
+
+        //Tinh trang vien phi cua ho so thuoc dien thu sau
+        public const string HIS_TREATMENT__GET_PAYLATER_FEE_STATUS = "api/HisTreatment/GetPaylaterFeeStatus";
     }
 }

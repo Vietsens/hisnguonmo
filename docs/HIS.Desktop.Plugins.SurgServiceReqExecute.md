@@ -16,7 +16,8 @@
 2. Nhập thời gian y lệnh / bắt đầu / kết thúc PT, chỉ định kíp mổ, phương pháp, ICD, kết quả mô tả.
 3. Cập nhật danh sách VTYT/thuốc tiêu hao (HIS_SERVICE_REQ_MATY hoặc qua HIS_EXP_MEST_MATERIAL — đơn trong kho).
 4. Validate quan hệ thời gian giữa PT cha và các đơn VTYT con (DONDT / DONTT).
-5. Lưu, in phiếu, ký số EMR.
+5. Khi bấm **Kết thúc**: kiểm tra thuốc/vật tư đi kèm trước (Việc 3353, từ 25/09), rồi lưu (`btnSaveClick`), kiểm tra thời gian, rồi gọi Finish. Thiếu thuốc/vật tư thì vẫn lưu dữ liệu nhưng **chặn**, không kết thúc.
+6. Lưu, in phiếu, ký số EMR.
 
 ### Validate thời gian PT ↔ VTYT con
 
@@ -58,6 +59,33 @@ Tab **Lược đồ** cho phép gắn ảnh vào dịch vụ (lưu file đính k
   - Mỗi ảnh: `TextLibId` có giá trị → dùng lại; null → đọc bytes (stream runtime, fallback tải từ URL), encode base64 → bytes UTF-8, POST `api/HisTextLib/Create` (loại ảnh `HIS_LIB_TYPE.ID__IMAGE`, nhãn = tên file, public trong khoa `IS_PUBLIC_IN_DEPARTMENT=1`, gán `DEPARTMENT_ID` hiện tại). Thành công → cập nhật `TextLibId`; **thất bại → cảnh báo và DỪNG, không tạo mẫu**.
   - Loại trùng → ghép chuỗi dấu phẩy → `TEXT_LIB_IDS` → POST `api/HisSereServPtttTemp/Create`.
 
+### Chặn kết thúc khi dịch vụ chưa có thuốc, vật tư đi kèm (Việc 3353 / 57799 — PT-56272)
+
+Mức xử lý hiện hành là **CHẶN** (chốt 22/09/2026; bản đầu 18/09 chỉ cảnh báo Yes/No). Màn này có **2 đường kết thúc**, cả hai đều qua kiểm tra (sửa 25/09/2026):
+
+1. **Ô "KT:" (`chkKetThuc`, mặc định tick) + Lưu**: `btnSaveClick()` gửi `IsFinished = true` qua `api/HisServiceReq/SurgUpdate(List)`, backend chuyển y lệnh sang Hoàn thành. Các nút gọi `btnSaveClick`: Lưu / Ctrl+S, Kết thúc, Chỉ định trong kíp, DV phát sinh, DV không phát sinh GPBL. Trước khi đặt `IsFinished = true` (nhánh lưu nhóm và nhánh lưu 1 dịch vụ) gọi `IsMediMateFinishAllowed()`; bị chặn thì giữ `IsFinished = false`, vẫn lưu, không đóng tab (`chkClose`).
+2. **Nút Kết thúc** (`finishClick()`): gọi `IsMediMateFinishAllowed()` **TRƯỚC** `btnSaveClick(true)`, truyền kết quả qua field `mediMateFinishAllowed` để `btnSaveClick` dùng lại, không hiện hộp lần 2. Bị chặn thì vẫn lưu rồi `return`, không gọi `FinishWithTime`.
+
+```csharp
+this.mediMateFinishAllowed = null;
+bool isMediMateAllowed = IsMediMateFinishAllowed();
+this.mediMateFinishAllowed = isMediMateAllowed;
+try { isSaved = btnSaveClick(true); } finally { this.mediMateFinishAllowed = null; }
+if (!isSaved || !isMediMateAllowed) return;
+```
+
+`IsMediMateFinishAllowed()`: y lệnh đã Hoàn thành (`SERVICE_REQ_STT_ID = ID__HT`, viện cho sửa sau kết thúc) → cho qua, giữ đồng bộ `FINISH_TIME` như cũ. Lời gọi thư viện nằm ở `CallCheckRequireMediMate()` đánh dấu `NoInlining`, nên thiếu hoặc lệch DLL thư viện vẫn fail-open, không làm hỏng nút Lưu. Danh sách kiểm tra lấy từ `GetSereServsToCheckMediMate()`: cả y lệnh (`sereServbyServiceReqs`) nếu có, không thì dịch vụ đang xử lý.
+
+Điều kiện nghiệp vụ:
+- Dịch vụ bật cờ `HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1` mà chưa có dòng thuốc/vật tư con còn hiệu lực (`HIS_SERE_SERV.PARENT_ID` = ID dịch vụ, loại Thuốc/Vật tư, chưa hủy, `IS_NO_EXECUTE != 1`) → **CHẶN**, `finishClick()` `return`, KHÔNG gọi `api/HisServiceReq/Finish`.
+- Hộp thông báo **chỉ có nút OK** — không Yes/No, không "nút mặc định": *"Không kết thúc được. Dịch vụ chưa có thuốc, vật tư đi kèm:\n{0}\nVui lòng kê thuốc, vật tư đi kèm cho các dịch vụ trên rồi kết thúc lại."* Thư viện (`CheckRequireMediMateManager.ConfirmFinish`) **luôn trả `false`** khi còn dịch vụ thiếu.
+- Nhiều dịch vụ thiếu trong **một** lần kết thúc → **một** thông báo liệt kê đủ (mã – tên), chặn cả lần kết thúc đó.
+- Đường thoát duy nhất: kê bổ sung thuốc/vật tư đi kèm rồi bấm Kết thúc lại — nút **Kê đơn dược** (`btnAssignPre_Click` — `SurgServiceReqExecuteControl.cs:1899`, truyền dịch vụ vào `AssignPrescriptionADO` dòng 1913) và nút **Tủ trực** (`btnTuTruc_Click` — dòng 2011, `AssignPrescriptionADO` dòng 2025) ở màn PTTT đều truyền dịch vụ đang xử lý nên thuốc kê ra sinh `PARENT_ID`; hoặc bỏ tick cờ cho dịch vụ đó trong danh mục Dịch vụ kỹ thuật.
+- **Fail-open**: lỗi API / mất mạng / Backend cũ chưa có cột → KHÔNG chặn, cho kết thúc bình thường, ghi `LogSystem.Warn`.
+- Không có key config — chỉ phụ thuộc cờ tick theo từng dịch vụ, đọc "sống" qua `api/HisService/Get` nên sửa danh mục có hiệu lực ngay.
+- Bị chặn thì dữ liệu kíp mổ / thời gian vừa nhập vẫn được lưu (lưu với `IsFinished = false`); y lệnh chỉ chưa chuyển sang Hoàn thành, người dùng không mất dữ liệu. Nếu lần lưu bị hủy vì kiểm tra khác (kíp, vô cảm, trùng máy...) thì không lưu, như cũ.
+- Lưu từng dịch vụ (không tick lưu nhóm) vẫn kiểm cả y lệnh, nên hộp chặn có thể nêu dịch vụ khác của cùng y lệnh. Chấp nhận, vì kết thúc là kết thúc cả y lệnh.
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -95,6 +123,7 @@ Tập trung trong `RequestUriStore.cs`. Tất cả qua `ApiConsumers.MosConsumer
 
 ### Library Plugins
 - `HIS.Desktop.Plugins.Library.EmrGenerate` — ký số EMR cho phiếu in.
+- `HIS.Desktop.Plugins.Library.CheckRequireMediMate` — **chặn** kết thúc khi dịch vụ bật cờ "Có thuốc, vật tư đi kèm" mà chưa kê (Việc 3353). Reference qua HintPath `..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.CheckRequireMediMate\HIS.Desktop.Plugins.Library.CheckRequireMediMate.dll` (`HIS.Desktop.Plugins.SurgServiceReqExecute.csproj:111-113`).
 
 ### Inter-Plugin
 - Mở dialog `frmEkipTemp`, `FormPtttTemp`, `FormPtttMethod`, `FormImageTemp` (cùng plugin).
@@ -201,9 +230,10 @@ Template KHÔNG nằm trong git — lưu ở cấu hình print type backend, cac
 | 19/06/2026 | huyvu20 | **Lưu lược đồ vào Mẫu PTTT**: thêm `ImageADO.TextLibId` (runtime only); `SelectListImageTemp` build mapping file đính kèm → ID thư viện và gán `TextLibId` qua `AssignTextLibIdToImageADOs`; `btnSavePtttTemp` cho lưu mẫu khi chỉ có ảnh, truyền danh sách ảnh sang `FormPtttTemp`; `FormPtttTemp.btnSave` build `TEXT_LIB_IDS` (dùng lại `TextLibId` hoặc tạo mới qua `api/HisTextLib/Create`), thất bại thì dừng; thêm message `LuuLuocDoThatBaiKhongTheLuuMau` (vi/en/my). |
 | 23/06/2026 | huyvu20 | **Fix lỗi không load được lược đồ khi chọn Mẫu PTTT**: `cboPtttTemp_EditValueChanged` đổi từ `BackendDataWorker.Get<HIS_TEXT_LIB>()` (filter null, thiếu `CAN_VIEW` → `CONTENT` null) sang gọi `api/HisTextLib/Get` với `filter.IDs` + `filter.CAN_VIEW = true` + `LIB_TYPE_ID` để backend trả về `CONTENT` (bytes ảnh). Thêm guard bỏ qua bản ghi `CONTENT` rỗng trong `SelectListImageTemp` (cả 2 nhánh nhóm/đơn) để tránh 1 bản ghi lỗi làm hỏng cả lô. |
 | 02/07/2026 | dangth2 | **Việc 2891 - mục 4.1.6 (chạy thận)**: (1) **R18 - Pre-fill Máy thực hiện**: thêm helper `PrefillMachineFromServiceReq()` gợi ý `cboMachine` = `V_HIS_SERVICE_REQ.MACHINE_ID` (Máy chốt ở Chỉ định) khi mức dịch vụ `HIS_SERE_SERV_EXT.MACHINE_ID` chưa có Máy; gọi cuối `LoadSereServExt()` và `FillDataFromSereServLast()`; ĐD/BS được sửa; khi lưu vẫn ghi vào `HIS_SERE_SERV_EXT.MACHINE_ID` (logic sẵn có ở `___Process.cs`) → đồng bộ Máy 2 chiều. (2) **Delta 23169 - nút Tủ trực**: `btnTuTruc_Click` bổ sung truyền `assignPrescription.ExpMestTemplateId = serviceReq.EXP_MEST_TEMPLATE_ID` (Gói vật tư BS chốt) sang `AssignPrescriptionPK` → tự gọi `InitDataByExpMestTemplate()` fill grid kê đơn theo Gói. |
-
 | 20/08/2026 | khainq | **Mps000324 — bổ sung trường cho mẫu Phiếu thanh quyết toán PT/TT**: thêm ADO `Mps000324GroupADO` + `Mps000324ItemADO`; PDO thêm `bedLog`/`Groups`/`Items` và constructor overload 12 tham số (ctor cũ giữ nguyên); Processor thêm `BuildDetailData()` (gom nhóm, STT toàn phiếu + STT trong nhóm, thành tiền, tổng nhóm, tổng cuối), `SetSingleKeyExtend()` (barcode, giường, số phiếu, ghi chú, PP thực tế, ekip gộp nhiều người), hiện thực `SetBarcodeKey()` (Code128) + `barCodeTag.ProcessData`; `ProcessListSereServ` đổi `FirstOrDefault` trong loop → Dictionary; caller thêm `GetLastBedLogForMps000324` + `GetExecuteRolesForMps000324`. Khối kíp mổ sinh từ **danh mục `HIS_EXECUTE_ROLE`** (dataset `EkipRoles` + key `EXECUTE_ROLE_NAME_{CODE}`), mẫu in không hardcode mã vai `_01.._08` nữa. **Thuần bổ sung — key/dataset cũ không đổi nên mẫu `Mps000324.xlsx` hiện tại chạy y nguyên.** |
 | 18/09/2026 | dangth2 | **Việc 3353 (PT-56272) — Cảnh báo dịch vụ chưa có thuốc, vật tư đi kèm khi kết thúc PTTT.** Trong `finishClick()` (`SurgServiceReqExecuteControl.cs`), sau `CheckLessTime` và trước `if (valid)` (tức sau `btnSaveClick(true)` nên dữ liệu kíp/thời gian đã được lưu), thêm lời gọi `CheckRequireMediMateManager.CheckBeforeFinish(sereServbyServiceReqs)` (fallback `this.sereServ` khi danh sách rỗng): dịch vụ có `HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1` mà chưa có dòng thuốc/vật tư con (`HIS_SERE_SERV.PARENT_ID`) → hỏi Yes/No (mặc định No), No thì `return`. Không chặn, không key config. Thêm reference thư viện `HIS.Desktop.Plugins.Library.CheckRequireMediMate`. |
+| 22/09/2026 | dangth2 | **Việc 3353 (PT-56272) — đổi mức xử lý từ CẢNH BÁO sang CHẶN** (chốt anh Cảnh 22/09/2026; áp dụng cả 3 nhóm CLS + PTTT + Xét nghiệm, tổng 5 màn). Ở màn Thực hiện PTTT vị trí chèn trong `finishClick()` giữ nguyên (sau `btnSaveClick(true)` + `CheckLessTime`, trước `if (valid)` — `SurgServiceReqExecuteControl.cs:1625-1631`), nhưng thư viện `CheckRequireMediMateManager` đổi hành vi: hộp thông báo **chỉ có nút OK** (bỏ Yes/No, bỏ khái niệm "nút mặc định"), câu mới *"Không kết thúc được. Dịch vụ chưa có thuốc, vật tư đi kèm:\n{0}\nVui lòng kê thuốc, vật tư đi kèm cho các dịch vụ trên rồi kết thúc lại."*; `ConfirmFinish` **luôn trả `false`** khi còn dịch vụ thiếu → `finishClick()` `return`, KHÔNG gọi `api/HisServiceReq/Finish`. Đường thoát duy nhất là kê bổ sung thuốc/vật tư đi kèm rồi kết thúc lại (hoặc bỏ tick cờ cho dịch vụ trong danh mục). **Fail-open giữ nguyên**: lỗi API / mất mạng / Backend cũ chưa có cột → không chặn, ghi `LogSystem.Warn`. Điểm chặn vẫn nằm sau `btnSaveClick(true)` nên dữ liệu kíp/thời gian đã được lưu trước khi bị chặn. Phần API cho hệ thống PACS **đã bỏ khỏi phạm vi** (PACS tự làm bên họ). Commit `31aa33102` (cảnh báo → chặn), `359ff8013` (bổ sung màn thứ 5 `TestServiceExecute`), DLL test `052c55c03`. |
+| 25/09/2026 | dangth2 | **Việc 3353 / 57799 — vá đường lọt ô "KT:" (`chkKetThuc`, mặc định tick).** Tester báo "chưa được"; rà lại thấy (1) bấm **Lưu / Ctrl+S / Chỉ định trong kíp / DV phát sinh** khi ô KT tick sẽ gửi `IsFinished = true` qua `api/HisServiceReq/SurgUpdate(List)` → backend hoàn thành y lệnh ngay, không qua kiểm tra; (2) nút **Kết thúc** gọi `btnSaveClick(true)` TRƯỚC khi kiểm tra nên y lệnh đã hoàn thành rồi hộp chặn mới hiện. Sửa: trong `btnSaveClick` chỉ đặt `IsFinished = true` khi `IsMediMateFinishAllowed()` cho qua; bị chặn thì vẫn lưu dữ liệu PTTT, không kết thúc, không đóng tab (`chkClose`). `finishClick()` kiểm tra TRƯỚC `btnSaveClick(true)` và truyền kết quả qua field `mediMateFinishAllowed` để hộp chặn chỉ hiện 1 lần; bị chặn thì lưu rồi `return`. Helper `GetSereServsToCheckMediMate()` (cả y lệnh nếu có `sereServbyServiceReqs`, không thì dịch vụ đang xử lý). Build trên nền Develop `adfecba4e` (có sửa của phuongnm `f06336268`). DLL test: HISTEST `a13c6cb21`. |
 
 ## 9. Test Cases
 
@@ -254,3 +284,15 @@ Template KHÔNG nằm trong git — lưu ở cấu hình print type backend, cac
 - [ ] Tạo thư viện ảnh thất bại → cảnh báo `LuuLuocDoThatBaiKhongTheLuuMau`, KHÔNG tạo mẫu.
 - [ ] Chọn mẫu PTTT có lược đồ → ảnh được tải về dịch vụ và `TextLibId` gán đúng; lưu lại mẫu khác dùng lại ID thư viện.
 - [ ] Trùng ID ảnh → `TEXT_LIB_IDS` đã loại trùng.
+
+### Chặn kết thúc khi dịch vụ chưa có thuốc, vật tư đi kèm (3353 — mức CHẶN, 22/09/2026)
+- [ ] Dịch vụ PTTT tick cờ "Có thuốc, vật tư đi kèm", chưa kê gì → Kết thúc → hộp thông báo **chỉ có nút OK**; bấm OK → y lệnh **KHÔNG** hoàn thành (không gọi `api/HisServiceReq/Finish`).
+- [ ] Ngay sau khi bị chặn: dữ liệu kíp mổ / thời gian vừa nhập **vẫn còn** (đã lưu ở `btnSaveClick(true)` trước điểm chặn).
+- [ ] Kê thuốc/vật tư gắn đúng dịch vụ (nút **Kê đơn dược** hoặc **Tủ trực** ở màn PTTT) → bấm Kết thúc lại → hoàn thành bình thường.
+- [ ] Dịch vụ tick cờ, đã có ≥ 1 thuốc **hoặc** vật tư còn hiệu lực gắn dịch vụ → không bị chặn.
+- [ ] Đã kê rồi hủy chỉ định (xóa y lệnh đơn) → Kết thúc → **vẫn bị chặn** như khi chưa kê.
+- [ ] Y lệnh PTTT có nhiều dịch vụ cùng tick, đều chưa kê → **một** thông báo liệt kê đủ (mã – tên), chặn cả lần kết thúc đó.
+- [ ] Dịch vụ không tick cờ → Kết thúc → không bị chặn, không phát sinh request `api/HisSereServ/Get`.
+- [ ] Dịch vụ tick cờ nhưng tick "Không thực hiện" trong y lệnh → không bị chặn vì dịch vụ đó.
+- [ ] Ngắt mạng / Backend cũ chưa có cột `IS_REQUIRE_MEDI_MATE` → **KHÔNG chặn**, kết thúc bình thường, log có `LogSystem.Warn` (fail-open).
+- [ ] Hộp thông báo **không còn** nút Yes/No — không có đường xác nhận để kết thúc khi còn thiếu; muốn kết thúc mà không kê thì phải bỏ tick cờ trong danh mục dịch vụ.

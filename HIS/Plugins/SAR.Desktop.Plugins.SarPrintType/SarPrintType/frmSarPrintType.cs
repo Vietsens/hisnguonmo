@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -1972,8 +1972,24 @@ namespace SAR.Desktop.Plugins.SarPrintType
                 {
                     if (!String.IsNullOrEmpty(item.EmrColumn) || !String.IsNullOrEmpty(item.Key))
                     {
-                        var listObjectTemp = new { EmrColumn = item.EmrColumn, Key = item.Key };
-                        listObjectTemps.Add(listObjectTemp);
+                        //Chi ghi Mode/Separator khi nguoi dung co nhap, de JSON cua nhung bieu in
+                        //cu khong bi them truong thua.
+                        if (String.IsNullOrWhiteSpace(item.Mode))
+                        {
+                            var listObjectTemp = new { EmrColumn = item.EmrColumn, Key = item.Key };
+                            listObjectTemps.Add(listObjectTemp);
+                        }
+                        else
+                        {
+                            var listObjectTemp = new
+                            {
+                                EmrColumn = item.EmrColumn,
+                                Key = item.Key,
+                                Mode = item.Mode.Trim().ToUpperInvariant(),
+                                Separator = item.Separator ?? ""
+                            };
+                            listObjectTemps.Add(listObjectTemp);
+                        }
                     }
                 }
                 string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(listObjectTemps);

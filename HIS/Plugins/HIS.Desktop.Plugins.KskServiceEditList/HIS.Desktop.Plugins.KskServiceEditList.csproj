@@ -134,13 +134,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ADO\AddServiceADO.cs" />
-    <Compile Include="ADO\ExistServiceADO.cs" />
-    <Compile Include="ADO\KskServiceADO.cs" />
     <Compile Include="ADO\KskServiceEditBatchResultADO.cs" />
     <Compile Include="ADO\KskServiceEditResultRowADO.cs" />
     <Compile Include="ADO\KskServiceEditSDO.cs" />
     <Compile Include="ADO\RoomADO.cs" />
+    <Compile Include="ADO\ServiceRowADO.cs" />
     <Compile Include="Base\KskServiceEditConstant.cs" />
     <Compile Include="EnumKskServiceEditResultType.cs" />
     <Compile Include="HisRequestUriStore.cs" />
@@ -151,7 +149,7 @@
     <Compile Include="KskServiceEditList\frmKskServiceEditList.Designer.cs">
       <DependentUpon>frmKskServiceEditList.cs</DependentUpon>
     </Compile>
-    <Compile Include="KskServiceEditList\frmKskServiceEditList__Add.cs">
+    <Compile Include="KskServiceEditList\frmKskServiceEditList__Grid.cs">
       <DependentUpon>frmKskServiceEditList.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>

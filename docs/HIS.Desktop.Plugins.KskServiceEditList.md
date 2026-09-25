@@ -18,10 +18,12 @@
 ### Luồng chính
 1. Hồ sơ điều trị: lọc theo hợp đồng KSK → Tìm kiếm → nút "Sửa dịch vụ" hiện (chỉ khi grid đang lọc theo hợp đồng).
 2. Tick 1 / nhiều / tất cả bệnh nhân → "Sửa dịch vụ". Chưa tick → cảnh báo; có hồ sơ không thuộc hợp đồng đang lọc → cảnh báo.
-3. Màn hình "Sửa dịch vụ":
-   - Grid **Dịch vụ hiện có**: gộp theo dịch vụ trên toàn bộ hồ sơ đã chọn (Số BN có x/N, Đã thực hiện, Phòng hiện tại). Tick **Xóa** hoặc chọn **Phòng mới** (loại trừ nhau).
-   - Vùng **Thêm dịch vụ**: chọn Nhóm DV KSK → Dịch vụ trong nhóm → Phòng (mặc định theo nhóm) → Thêm.
-   - Người chỉ định (mặc định tài khoản đăng nhập), Thời gian y lệnh (mặc định hiện tại).
+3. Màn hình "Sửa dịch vụ" — luồng hiển thị và xử lý **tương tự "Sửa chỉ định dịch vụ" (AssignServiceEdit)**:
+   - Một lưới dịch vụ có ô chọn: gồm dịch vụ các hồ sơ đang có + dịch vụ trong nhóm dịch vụ KSK của hợp đồng (`HIS_KSK.KSK_CONTRACT_ID`) và nhóm dùng chung.
+   - Dịch vụ tất cả BN đang có: **tick sẵn**; một phần BN có: ô chọn **lưng chừng** (Số BN có x/N); chưa BN nào có: bỏ tick. Dịch vụ đã chọn xếp lên đầu.
+   - **Bỏ tick** dịch vụ đang có = xóa; **tick** dịch vụ chưa có / tick hẳn dịch vụ lưng chừng = thêm (BN đã có được bỏ qua); đổi cột **Phòng thực hiện** của dịch vụ tất cả BN đang có = đổi phòng.
+   - "Phòng thực hiện" ở trên: lọc lưới theo dịch vụ phòng đó thực hiện được, và là phòng mặc định khi tick thêm; công tắc "Tất cả dịch vụ / Dịch vụ đã chọn"; hàng lọc theo mã, tên, loại dịch vụ.
+   - Thời gian chỉ định (mặc định hiện tại), Người chỉ định (mặc định tài khoản đăng nhập). Màu dòng: đỏ = sẽ xóa, xanh = sẽ thêm, cam = đổi phòng.
 4. Lưu → xác nhận "Áp dụng thay đổi cho N bệnh nhân?" → frontend chia lô 200 hồ sơ/lần gọi API, tuần tự → màn hình **Kết quả** (tổng hợp + chi tiết từng bệnh nhân, xuất Excel).
 5. Có ít nhất 1 hồ sơ thành công → làm mới Hồ sơ điều trị, đóng màn hình.
 
@@ -50,14 +52,13 @@
 
 ```
 +------------------------------------------------------------------------+
-| Hợp đồng: HD001 - Cty ABC            Áp dụng cho: 350 bệnh nhân         |
-| Người chỉ định: [cboLogin]           Thời gian y lệnh: [dtIntructionTime]|
-| DỊCH VỤ HIỆN CÓ                                                         |
-| STT|Mã DV|Tên DV|Loại DV|Số BN có|Đã thực hiện|Phòng hiện tại|Xóa|Phòng mới|
-| THÊM DỊCH VỤ                                                            |
-| Nhóm DV KSK:[cboKsk] Dịch vụ:[cboKskService] Phòng:[cboAddRoom] [Thêm]   |
-| [x]|STT|Mã DV|Tên DV|Nhóm DV KSK|Phòng thực hiện|Số lượng|Đơn giá        |
-|                                                         [Lưu (Ctrl+S)]  |
+| Hợp đồng: HD001 - Cty ABC                      Số bệnh nhân: 350 bệnh nhân |
+| Thời gian chỉ định:[dt]  Phòng thực hiện:[cboRoom]  Người chỉ định:[cbo]  |
+| [x]|Mã DV|Tên DV|Phòng thực hiện ▼|Số BN có|Đã thực hiện|SL|Đơn giá|Loại DV|
+| [v]|XN01 |CTM   |P.Xét nghiệm     |350/350 |0           |1 |...    |XN     |
+| [-]|SA01 |SA bụng|P.Siêu âm       |120/350 |0           |1 |...    |CĐHA   |
+| [ ]|DT01 |Điện tim|P.TDCN         |0/350   |0           |1 |...    |TDCN   |
+| (Tất cả dịch vụ / Dịch vụ đã chọn)                        [Lưu (Ctrl S)] |
 +------------------------------------------------------------------------+
 Kết quả: Tổng hợp | grid Mã điều trị, Họ tên, Thao tác, Dịch vụ, Kết quả, Lý do | [Xuất Excel] [Đóng]
 ```
@@ -93,6 +94,7 @@ Không có.
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 23/09/2026 | vuongnd | Tạo mới plugin (PT-58013) |
+| 24/09/2026 | vuongnd | Đổi luồng hiển thị và xử lý giống "Sửa chỉ định dịch vụ": 1 lưới dịch vụ có ô chọn (tick = thêm, bỏ tick = xóa, sửa cột Phòng thực hiện = đổi phòng), lọc theo phòng, công tắc dịch vụ đã chọn; API giữ nguyên api/HisKskContract/ServiceEdit |
 
 ## 9. Test Cases
 
@@ -101,8 +103,14 @@ Không có.
 - [ ] Lọc hợp đồng + Tìm kiếm → nút hiện; chưa tick → cảnh báo
 - [ ] Tick nhiều BN → màn hình hiện đúng số BN, đúng dịch vụ gộp
 
+### Hiển thị
+- [ ] Dịch vụ tất cả BN có → tick; một phần BN có → lưng chừng; chưa có → không tick
+- [ ] Chọn "Phòng thực hiện" → lưới chỉ còn dịch vụ đang có + dịch vụ phòng đó thực hiện được
+- [ ] Bật "Dịch vụ đã chọn" → chỉ hiện dòng đang tick / lưng chừng
+
 ### Thêm
-- [ ] Thêm dịch vụ cho BN chưa có → Thành công; BN đã có → Bỏ qua
+- [ ] Tick dịch vụ chưa có → Thành công; tick hẳn dịch vụ lưng chừng → thêm cho BN còn thiếu, BN đã có → Bỏ qua
+- [ ] Tick dịch vụ không thuộc nhóm DV KSK → cảnh báo, không lưu
 - [ ] Hợp đồng hết hạn → chặn
 
 ### Xóa

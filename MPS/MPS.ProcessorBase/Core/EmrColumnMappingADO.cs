@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -28,5 +28,26 @@ namespace MPS.ProcessorBase.Core
         internal EmrColumnMappingADO() { }
         public string EmrColumn { get; set; }
         public string Key { get; set; }
+
+        /// <summary>
+        /// Cach gan gia tri vao cot EMR khi cot do la chuoi:
+        ///   null / khong khai bao / "REPLACE" -> GHI DE (hanh vi mac dinh, giong truoc day)
+        ///   "APPEND"                          -> NOI vao CUOI gia tri dang co
+        ///   "PREPEND"                         -> NOI vao DAU gia tri dang co
+        ///
+        /// Dat tren TUNG DONG anh xa cua TUNG bieu in (man "Anh xa du lieu EMR"), nen chi
+        /// bieu in nao khai bao moi doi hanh vi - cac MPS khac khong bi anh huong.
+        ///
+        /// Dung cho truong hop can bo sung du lieu vao mot cot ma KHONG duoc mat gia tri cu,
+        /// vi du HIS_CODE cua van ban ngoai dot dieu tri: thu vien ky dung chuoi nay de nhan
+        /// dien "van ban da ky chua" (so khop BANG), ghi de se lam mat nhan dien va tao ban trung.
+        /// </summary>
+        public string Mode { get; set; }
+
+        /// <summary>
+        /// Ky tu ngan cach khi Mode = APPEND / PREPEND. Khong khai bao -> khong chen gi.
+        /// Vi du "|" hoac " ".
+        /// </summary>
+        public string Separator { get; set; }
     }
 }

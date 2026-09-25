@@ -434,6 +434,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ModuleList();
                 EnableViaKeyDisablePartExamByExecutor();
                 FillDatatoCDYHCT();
+                MergeTraditionalIcdFromAdditionExams();
 
                 isWarning = false;
                 checkIcdManager = new CheckIcdManager(DlgIcdSubCode, treatment);
@@ -563,6 +564,91 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Kham chinh: gop chan doan YHCT (chinh + phu) cua cac y lenh kham them vao o YHCT
+        /// de khi luu cap nhat vao y lenh kham chinh va day sang UC nhap vien / ket thuc dieu tri
+        /// </summary>
+        private void MergeTraditionalIcdFromAdditionExams()
+        {
+            try
+            {
+                if (this.HisServiceReqView == null || (this.HisServiceReqView.IS_MAIN_EXAM ?? 0) != 1)
+                    return;
+
+                HisServiceReqFilter filter = new HisServiceReqFilter();
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                filter.TREATMENT_ID = this.HisServiceReqView.TREATMENT_ID;
+                filter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
+                var additionExams = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, null);
+                if (additionExams == null)
+                    return;
+                additionExams = additionExams.Where(o => o.ID != this.HisServiceReqView.ID).OrderBy(o => o.INTRUCTION_TIME).ToList();
+                if (additionExams.Count == 0)
+                    return;
+
+                GetUcIcdYHCT();
+                string mainCode = this.IcdCodeYHCT;
+                string mainName = this.IcdNameYHCT;
+                List<string> subCodes = new List<string>();
+                List<string> subNames = new List<string>();
+                List<string> freeTexts = new List<string>();
+
+                // Giu nguyen CD phu YHCT dang co cua kham chinh, dung truoc
+                AddTraditionalSubIcd(this.IcdSubCodeYHCT, this.IcdTextYHCT, mainCode, subCodes, subNames, freeTexts);
+
+                foreach (var req in additionExams)
+                {
+                    if (!String.IsNullOrWhiteSpace(req.TRADITIONAL_ICD_CODE))
+                    {
+                        // Kham chinh chua co CD chinh YHCT thi lay CD chinh YHCT cua kham them dau tien
+                        if (String.IsNullOrWhiteSpace(mainCode))
+                        {
+                            mainCode = req.TRADITIONAL_ICD_CODE;
+                            mainName = req.TRADITIONAL_ICD_NAME;
+                        }
+                        else
+                        {
+                            AddTraditionalSubIcd(req.TRADITIONAL_ICD_CODE, req.TRADITIONAL_ICD_NAME, mainCode, subCodes, subNames, freeTexts);
+                        }
+                    }
+                    AddTraditionalSubIcd(req.TRADITIONAL_ICD_SUB_CODE, req.TRADITIONAL_ICD_TEXT, mainCode, subCodes, subNames, freeTexts);
+                }
+
+                Inventec.Common.Logging.LogSystem.Error("[YHCT-MERGE] MergeTraditionalIcdFromAdditionExams: mainCode=" + mainCode
+                    + " subCodes=" + String.Join(";", subCodes) + " subNames=" + String.Join(";", subNames.Concat(freeTexts)));
+                LoadIcdToControlIcdYHCT(mainCode, mainName, String.Join(";", subCodes), String.Join(";", subNames.Concat(freeTexts)));
+                GetUcIcdYHCT();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void AddTraditionalSubIcd(string codes, string names, string mainCode, List<string> subCodes, List<string> subNames, List<string> freeTexts)
+        {
+            if (String.IsNullOrWhiteSpace(codes))
+                return;
+            var arrCode = codes.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            var arrName = (names ?? "").Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < arrCode.Length; i++)
+            {
+                string code = arrCode[i].Trim();
+                if (String.IsNullOrEmpty(code)
+                    || String.Equals(code, mainCode, StringComparison.OrdinalIgnoreCase)
+                    || subCodes.Exists(o => String.Equals(o, code, StringComparison.OrdinalIgnoreCase)))
+                    continue;
+                subCodes.Add(code);
+                subNames.Add(i < arrName.Length ? arrName[i] : code);
+            }
+            // Phan text nhap tay du ra ngoai so ma: dua xuong cuoi de khong lech cap ma - ten
+            for (int i = arrCode.Length; i < arrName.Length; i++)
+            {
+                if (!freeTexts.Contains(arrName[i]) && !subNames.Contains(arrName[i]))
+                    freeTexts.Add(arrName[i]);
             }
         }
 
@@ -2587,6 +2673,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                GetUcIcdYHCT(); 
                 if (isReturnCheckboxHosTreat)
                 {
                     chkTreatmentFinish.Checked = false;

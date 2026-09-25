@@ -197,6 +197,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 HisConfigCFG.LoadConfig();
                 BHXHLoginCFG.LoadConfig();
                 isLoadForm = true;
+                InitKskContractPrescriptionButton();
                 SetCaptionByLanguageKey();
                 InitTypeFind();
                 InitComboOutHopital();
@@ -1856,6 +1857,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         }
                     }
                     btnDelete.Enabled = enableBtnDelete_Data && enableBtnDelete_HIS000027;
+
+                    SetEnableKskContractPrescription();
                 }
                 else
                 {
@@ -1865,6 +1868,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     btnRecordChecking.Enabled = false;
                     btnGuiHS.Enabled = false;
                     btnDelete.Enabled = false;
+                    btnKskContractPrescription.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -1872,6 +1876,125 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        /// <summary>
+        /// Khoa cau hinh tat thi an han nut, man hinh giu nguyen nhu truoc khi cap nhat.
+        /// </summary>
+        private void InitKskContractPrescriptionButton()
+        {
+            try
+            {
+                layoutControlItemKskContractPrescription.Visibility = HisConfigCFG.AllowKskContractPrescription
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                btnKskContractPrescription.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tra ve ho so dang chon khi va chi khi dang chon DUNG MOT dong. Chon nhieu dong
+        /// hoac khong chon dong nao deu tra ve null.
+        /// </summary>
+        private V_HIS_TREATMENT_4 GetSingleSelectedTreatment()
+        {
+            try
+            {
+                var rowHandles = gridViewtreatmentList.GetSelectedRows();
+                if (rowHandles == null || rowHandles.Count() != 1)
+                    return null;
+
+                return gridViewtreatmentList.GetRow(rowHandles[0]) as V_HIS_TREATMENT_4;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Nut "Ke don thuoc (kham suc khoe)" chi sang khi chon dung mot ho so va ho so do
+        /// thuoc hop dong kham suc khoe (TDL_KSK_CONTRACT_ID co gia tri).
+        /// </summary>
+        private void SetEnableKskContractPrescription()
+        {
+            try
+            {
+                if (!HisConfigCFG.AllowKskContractPrescription)
+                {
+                    btnKskContractPrescription.Enabled = false;
+                    return;
+                }
+
+                var treatment = GetSingleSelectedTreatment();
+                btnKskContractPrescription.Enabled = treatment != null
+                    && treatment.TDL_KSK_CONTRACT_ID.HasValue
+                    && treatment.TDL_KSK_CONTRACT_ID.Value > 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                btnKskContractPrescription.Enabled = false;
+            }
+        }
+
+        private void btnKskContractPrescription_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var treatment = GetSingleSelectedTreatment();
+                if (treatment == null)
+                    return;
+
+                if (!treatment.TDL_KSK_CONTRACT_ID.HasValue || treatment.TDL_KSK_CONTRACT_ID.Value <= 0)
+                    return;
+
+                if (treatment.IS_PAUSE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    || treatment.IS_LOCK_FEE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Hồ sơ đã kết thúc, không thể kê thêm đơn thuốc",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (this.currentModule == null || this.currentModule.RoomId <= 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Bạn chưa chọn phòng làm việc",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Mo man ke don voi ServiceReqId = 0: y lenh don thuoc duoc tao khi luu don.
+                var assignPrescriptionADO = new HIS.Desktop.ADO.AssignPrescriptionADO(treatment.ID, 0, 0);
+                assignPrescriptionADO.TreatmentCode = treatment.TREATMENT_CODE;
+                assignPrescriptionADO.PatientId = treatment.PATIENT_ID;
+                assignPrescriptionADO.PatientName = treatment.TDL_PATIENT_NAME;
+                assignPrescriptionADO.PatientDob = treatment.TDL_PATIENT_DOB;
+                assignPrescriptionADO.GenderName = treatment.TDL_PATIENT_GENDER_NAME;
+                assignPrescriptionADO.IsAutoCheckExpend = true;
+
+                List<object> listArgs = new List<object>();
+                listArgs.Add(assignPrescriptionADO);
+
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    "HIS.Desktop.Plugins.AssignPrescriptionPK",
+                    this.currentModule.RoomId,
+                    this.currentModule.RoomTypeId,
+                    listArgs);
+
+                FillDataToGrid();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void btnImportKsk_Click(object sender, EventArgs e)

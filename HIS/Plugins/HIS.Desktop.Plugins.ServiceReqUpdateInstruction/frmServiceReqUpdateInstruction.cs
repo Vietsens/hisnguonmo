@@ -105,6 +105,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             InitUcIcdYhct();
             InitUcSecondaryIcdYhct();
             FillDataCommandToControl(this.currentServiceReq);
+            InitPacsBeginTimeControl();
+            LoadPacsBeginTime();
             LoadUser();
             ValidControlInform();
             SetIcon();
@@ -112,9 +114,70 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             dtTime.SelectAll();
             InitEnabledControl();
             services = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_SERVICE>();
+            //Canh bao vien phi voi ho so thuoc dien thu sau
+            this.chkIsNotRequireFee.CheckedChanged += this.chkIsNotRequireFee_CheckedChanged;
+            this.RefreshPaylaterDebtLabel();
             WaitingManager.Hide();
             dtTime.EditValueChanged += dtTime_EditValueChanged;
             isLoading = false;
+        }
+
+        /// <summary>
+        /// Nguoi dung tich hoac bo tich o Thu sau thi hien hoac an so tien con no.
+        /// Day la hien thong tin cho biet, KHONG hoi xac nhan, vi nguoi dung dang chu dong chon.
+        /// </summary>
+        private void chkIsNotRequireFee_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.RefreshPaylaterDebtLabel();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lay va hien so tien con no cua ho so khi o Thu sau dang duoc tich.
+        /// Bo tich thi an han dong nay.
+        /// </summary>
+        private void RefreshPaylaterDebtLabel()
+        {
+            try
+            {
+                this.lciForlblPaylaterDebt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                if (!this.chkIsNotRequireFee.Checked)
+                {
+                    return;
+                }
+
+                if (this.currentServiceReq == null || this.currentServiceReq.TREATMENT_ID <= 0)
+                {
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisTreatmentPaylaterFeeFilter filter = new MOS.Filter.HisTreatmentPaylaterFeeFilter();
+                filter.TREATMENT_ID = this.currentServiceReq.TREATMENT_ID;
+                var feeStatus = new BackendAdapter(param).Get<MOS.SDO.HisTreatmentPaylaterFeeSDO>(
+                    "api/HisTreatment/GetPaylaterFeeStatus", ApiConsumers.MosConsumer, filter, param);
+
+                if (feeStatus == null)
+                {
+                    return;
+                }
+
+                this.lblPaylaterDebt.Text = feeStatus.IS_UNDETERMINED
+                    ? "Không xác định được"
+                    : (feeStatus.UNPAID ?? 0).ToString("#,##0", System.Globalization.CultureInfo.InvariantCulture) + " đồng";
+                this.lciForlblPaylaterDebt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void VisibleLayout()

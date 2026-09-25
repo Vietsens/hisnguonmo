@@ -8,13 +8,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Resources;
-using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.KskServiceEditList
 {
     /// <summary>
-    /// 58013 - Sửa dịch vụ (thêm, xóa, đổi phòng thực hiện) cho nhiều bệnh nhân khám sức khỏe hợp đồng.
-    /// Bố cục tương tự "Sửa chỉ định dịch vụ", nhưng dữ liệu gộp theo dịch vụ trên toàn bộ hồ sơ đã chọn.
+    /// 58013 - Sửa dịch vụ cho nhiều bệnh nhân khám sức khỏe hợp đồng.
+    /// Luồng hiển thị và xử lý tương tự "Sửa chỉ định dịch vụ" (AssignServiceEdit):
+    /// lưới dịch vụ có ô chọn — dịch vụ đang có được tick sẵn; tick thêm = thêm dịch vụ,
+    /// bỏ tick = xóa dịch vụ, đổi "Phòng thực hiện" = đổi phòng. Lưu gọi API api/HisKskContract/ServiceEdit.
     /// </summary>
     public partial class frmKskServiceEditList : HIS.Desktop.Utility.FormBase
     {
@@ -24,13 +25,14 @@ namespace HIS.Desktop.Plugins.KskServiceEditList
         private V_HIS_KSK_CONTRACT kskContract;
         private RefeshReference refeshReference;
 
-        private List<ExistServiceADO> existServices = new List<ExistServiceADO>();
-        private List<AddServiceADO> addServices = new List<AddServiceADO>();
+        /// <summary>Toàn bộ dòng dịch vụ (dịch vụ đang có + dịch vụ trong nhóm dịch vụ KSK của hợp đồng)</summary>
+        private List<ServiceRowADO> allServiceRows = new List<ServiceRowADO>();
         /// <summary>Phòng thực hiện được theo dịch vụ (V_HIS_SERVICE_ROOM)</summary>
         private ILookup<long, RoomADO> roomsByService;
-        /// <summary>Combo "Phòng mới" theo từng dịch vụ (tạo 1 lần, dùng lại khi vẽ lại grid)</summary>
-        private Dictionary<long, RepositoryItemGridLookUpEdit> repositoryNewRoomDic = new Dictionary<long, RepositoryItemGridLookUpEdit>();
-        private List<KskServiceADO> currentKskServices = new List<KskServiceADO>();
+        /// <summary>Tên phòng theo ROOM_ID (hiển thị cột "Phòng thực hiện")</summary>
+        private Dictionary<long, string> roomNameDic;
+        /// <summary>Combo "Phòng thực hiện" theo từng dịch vụ (tạo 1 lần, dùng lại khi vẽ lại grid)</summary>
+        private Dictionary<long, RepositoryItemGridLookUpEdit> repositoryRoomDic = new Dictionary<long, RepositoryItemGridLookUpEdit>();
         private bool isSaving = false;
         #endregion
 
@@ -57,10 +59,12 @@ namespace HIS.Desktop.Plugins.KskServiceEditList
             {
                 this.SetIcon();
                 this.InitComboLogin();
-                this.InitComboKsk();
                 this.SetCaptionByLanguageKey();
                 this.SetDefaultValue();
-                this.LoadExistServices();
+                this.LoadServiceRows();
+                this.InitComboRoom();
+                this.FillDataToGrid();
+                this.GridViewService.Focus();
             }
             catch (Exception ex)
             {
@@ -89,40 +93,26 @@ namespace HIS.Desktop.Plugins.KskServiceEditList
                 this.Text = GetLang("frmKskServiceEditList.Text");
                 this.lciContract.Text = GetLang("frmKskServiceEditList.lciContract.Text");
                 this.lciPatientCount.Text = GetLang("frmKskServiceEditList.lciPatientCount.Text");
-                this.lciLogin.Text = GetLang("frmKskServiceEditList.lciLogin.Text");
                 this.lciIntructionTime.Text = GetLang("frmKskServiceEditList.lciIntructionTime.Text");
-                this.lblExistTitle.Text = GetLang("frmKskServiceEditList.lcgExist.Text");
-                this.lblAddTitle.Text = GetLang("frmKskServiceEditList.lcgAdd.Text");
-                this.lciKsk.Text = GetLang("frmKskServiceEditList.lciKsk.Text");
-                this.lciKsk.OptionsToolTip.ToolTip = GetLang("frmKskServiceEditList.lciKsk.ToolTip");
-                this.lciKskService.Text = GetLang("frmKskServiceEditList.lciKskService.Text");
-                this.lciAddRoom.Text = GetLang("frmKskServiceEditList.lciAddRoom.Text");
-                this.btnAdd.Text = GetLang("frmKskServiceEditList.btnAdd.Text");
+                this.lciRoom.Text = GetLang("frmKskServiceEditList.lciRoom.Text");
+                this.lciRoom.OptionsToolTip.ToolTip = GetLang("frmKskServiceEditList.lciRoom.ToolTip");
+                this.lciLogin.Text = GetLang("frmKskServiceEditList.lciLogin.Text");
+                this.toggleSwitch.Properties.OffText = GetLang("frmKskServiceEditList.toggleSwitch.OffText");
+                this.toggleSwitch.Properties.OnText = GetLang("frmKskServiceEditList.toggleSwitch.OnText");
                 this.btnSave.Text = GetLang("frmKskServiceEditList.btnSave.Text");
-                this.bbtnSave.Caption = this.btnSave.Text;
 
-                this.gcExistStt.Caption = GetLang("frmKskServiceEditList.gcExistStt.Caption");
-                this.gcExistServiceCode.Caption = GetLang("frmKskServiceEditList.gcExistServiceCode.Caption");
-                this.gcExistServiceName.Caption = GetLang("frmKskServiceEditList.gcExistServiceName.Caption");
-                this.gcExistServiceType.Caption = GetLang("frmKskServiceEditList.gcExistServiceType.Caption");
-                this.gcExistPatientCount.Caption = GetLang("frmKskServiceEditList.gcExistPatientCount.Caption");
-                this.gcExistPatientCount.ToolTip = GetLang("frmKskServiceEditList.gcExistPatientCount.ToolTip");
-                this.gcExistExecutedCount.Caption = GetLang("frmKskServiceEditList.gcExistExecutedCount.Caption");
-                this.gcExistExecutedCount.ToolTip = GetLang("frmKskServiceEditList.gcExistExecutedCount.ToolTip");
-                this.gcExistCurrentRoom.Caption = GetLang("frmKskServiceEditList.gcExistCurrentRoom.Caption");
-                this.gcExistIsDelete.Caption = GetLang("frmKskServiceEditList.gcExistIsDelete.Caption");
-                this.gcExistIsDelete.ToolTip = GetLang("frmKskServiceEditList.gcExistIsDelete.ToolTip");
-                this.gcExistNewRoom.Caption = GetLang("frmKskServiceEditList.gcExistNewRoom.Caption");
-                this.gcExistNewRoom.ToolTip = GetLang("frmKskServiceEditList.gcExistNewRoom.ToolTip");
-
-                this.gcAddStt.Caption = GetLang("frmKskServiceEditList.gcAddStt.Caption");
-                this.gcAddServiceCode.Caption = GetLang("frmKskServiceEditList.gcAddServiceCode.Caption");
-                this.gcAddServiceName.Caption = GetLang("frmKskServiceEditList.gcAddServiceName.Caption");
-                this.gcAddKskName.Caption = GetLang("frmKskServiceEditList.gcAddKskName.Caption");
-                this.gcAddRoomName.Caption = GetLang("frmKskServiceEditList.gcAddRoomName.Caption");
-                this.gcAddAmount.Caption = GetLang("frmKskServiceEditList.gcAddAmount.Caption");
-                this.gcAddPrice.Caption = GetLang("frmKskServiceEditList.gcAddPrice.Caption");
-                this.gcAddPrice.ToolTip = GetLang("frmKskServiceEditList.gcAddPrice.ToolTip");
+                this.gcServiceCode.Caption = GetLang("frmKskServiceEditList.gcServiceCode.Caption");
+                this.gcServiceName.Caption = GetLang("frmKskServiceEditList.gcServiceName.Caption");
+                this.gcRoom.Caption = GetLang("frmKskServiceEditList.gcRoom.Caption");
+                this.gcRoom.ToolTip = GetLang("frmKskServiceEditList.gcRoom.ToolTip");
+                this.gcPatientCount.Caption = GetLang("frmKskServiceEditList.gcPatientCount.Caption");
+                this.gcPatientCount.ToolTip = GetLang("frmKskServiceEditList.gcPatientCount.ToolTip");
+                this.gcExecutedCount.Caption = GetLang("frmKskServiceEditList.gcExecutedCount.Caption");
+                this.gcExecutedCount.ToolTip = GetLang("frmKskServiceEditList.gcExecutedCount.ToolTip");
+                this.gcAmount.Caption = GetLang("frmKskServiceEditList.gcAmount.Caption");
+                this.gcPrice.Caption = GetLang("frmKskServiceEditList.gcPrice.Caption");
+                this.gcPrice.ToolTip = GetLang("frmKskServiceEditList.gcPrice.ToolTip");
+                this.gcServiceType.Caption = GetLang("frmKskServiceEditList.gcServiceType.Caption");
             }
             catch (Exception ex)
             {
@@ -148,6 +138,11 @@ namespace HIS.Desktop.Plugins.KskServiceEditList
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private string GetTitleMessage()
+        {
+            return HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao);
         }
     }
 }

@@ -830,6 +830,47 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                     btnTreatmentHistory.Enabled = true;
                     btnServiceReqList.Enabled = true;
                 }
+
+                // Nhan nut doi theo trang thai y lenh (Xu ly / Huy ket thuc).
+                SetTextButtonExecute(row);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doi nhan nut "Xu ly (Ctrl X)" theo trang thai y lenh.
+        /// Chep tu UCExecuteRoom___Load.cs:3232 (SetTextButtonExecute).
+        ///
+        /// Y lenh DA HOAN THANH thi bam nut nay nghia la HUY KET THUC,
+        /// khong phai mo man Tra ket qua - xem tai lieu thiet ke muc 3.13.
+        /// </summary>
+        private void SetTextButtonExecute(PaanSereServADO row)
+        {
+            try
+            {
+                bool isFinished = (row != null
+                    && row.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT);
+
+                string languageKey = isFinished
+                    ? "UCExecuteRoom.btnExecuteHT.Text"
+                    : "UCExecuteRoom.btnExecute.Text";
+
+                string caption = isFinished ? "Hủy kết thúc (Ctrl X)" : "Xử lý (Ctrl X)";
+
+                if (Base.ResourceLangManager.LanguageUCExecuteRoom != null)
+                {
+                    string value = Inventec.Common.Resource.Get.Value(
+                        languageKey,
+                        Base.ResourceLangManager.LanguageUCExecuteRoom,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+
+                    if (!String.IsNullOrWhiteSpace(value)) caption = value;
+                }
+
+                btnProcess.Text = caption;
             }
             catch (Exception ex)
             {
