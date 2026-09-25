@@ -1032,6 +1032,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             bool success = false;
             bool valid = true;
+            // Viec 3353: o "KT" dang tick nhung dich vu con thieu thuoc/vat tu di kem -> van luu du lieu PTTT, KHONG ket thuc
+            bool isFinishBlockedByMediMate = false;
             try
             {
                 if (!CheckRequiredMachine())
@@ -1291,7 +1293,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                                 {
                                     return false;
                                 }
-                                hisSurgResultSDO.IsFinished = true;
+                                // Viec 3353: IsFinished = true -> backend ket thuc y lenh ngay, phai qua kiem tra thuoc/vat tu di kem
+                                if (IsMediMateFinishAllowed())
+                                    hisSurgResultSDO.IsFinished = true;
+                                else
+                                    isFinishBlockedByMediMate = true;
                             }
                         }
 
@@ -1375,7 +1381,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             {
                                 return false;
                             }
-                            sdo.IsFinished = true;
+                            // Viec 3353: IsFinished = true -> backend ket thuc y lenh ngay, phai qua kiem tra thuoc/vat tu di kem
+                            if (IsMediMateFinishAllowed())
+                                sdo.IsFinished = true;
+                            else
+                                isFinishBlockedByMediMate = true;
                         }
                         SaveSurgServiceReq(sdo, ref success, notShowMess);
                     }
@@ -1383,7 +1393,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     {
 
                         SetEnableControl();
-                        if (success && dtFinish.EditValue != null && chkKetThuc.Checked && chkClose.Checked)
+                        if (success && dtFinish.EditValue != null && chkKetThuc.Checked && chkClose.Checked && !isFinishBlockedByMediMate)
                         {
                             XtraTabControl main = SessionManager.GetTabControlMain();
                             XtraTabPage page = main.TabPages[GlobalVariables.SelectedTabPageIndex];
@@ -1621,7 +1631,24 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     return;
                 }
                 IsActionOtherButton = true;
-                if (!btnSaveClick(true))
+
+                // Viec 3353 (PT-56272): dich vu bat co "Co thuoc, vat tu di kem" (HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1)
+                // nhung chua ke thuoc/vat tu di kem -> CHAN, khong cho ket thuc (chot anh Canh 22/09/2026).
+                // Phai kiem tra TRUOC btnSaveClick: khi o "KT" dang tick, btnSaveClick gui IsFinished = true va backend ket thuc y lenh ngay.
+                // Ket qua duoc truyen vao btnSaveClick (mediMateFinishAllowed) de khong hien thong bao 2 lan; bi chan thi van luu du lieu vua nhap.
+                this.mediMateFinishAllowed = null;
+                bool isMediMateAllowed = IsMediMateFinishAllowed();
+                bool isSaved = false;
+                this.mediMateFinishAllowed = isMediMateAllowed;
+                try
+                {
+                    isSaved = btnSaveClick(true);
+                }
+                finally
+                {
+                    this.mediMateFinishAllowed = null;
+                }
+                if (!isSaved || !isMediMateAllowed)
                 {
                     return;
                 }
@@ -1629,16 +1656,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (CheckLessTime(ref serviceCode))
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.DichVuChuaThucHienKhongChoKetThucXuLy, serviceCode));
-                    return;
-                }
-
-                // Viec 3353 (PT-56272): dich vu bat co "Co thuoc, vat tu di kem" (HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1)
-                // nhung chua ke thuoc/vat tu di kem -> CHAN, khong cho ket thuc (chot anh Canh 22/09/2026). Dat sau btnSaveClick nen du lieu vua nhap da duoc luu.
-                List<V_HIS_SERE_SERV_5> sereServsToCheckMediMate = (this.sereServbyServiceReqs != null && this.sereServbyServiceReqs.Count > 0)
-                    ? this.sereServbyServiceReqs
-                    : (this.sereServ != null ? new List<V_HIS_SERE_SERV_5>() { this.sereServ } : null);
-                if (!HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(sereServsToCheckMediMate))
-                {
                     return;
                 }
 
@@ -1695,6 +1712,58 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Viec 3353: danh sach dich vu dua vao kiem tra thuoc/vat tu di kem - ca y lenh (luu nhom) hoac dich vu dang xu ly.
+        /// </summary>
+        private List<V_HIS_SERE_SERV_5> GetSereServsToCheckMediMate()
+        {
+            try
+            {
+                if (this.sereServbyServiceReqs != null && this.sereServbyServiceReqs.Count > 0)
+                    return this.sereServbyServiceReqs;
+                if (this.sereServ != null)
+                    return new List<V_HIS_SERE_SERV_5>() { this.sereServ };
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Viec 3353: lan Luu co gui IsFinished = true khong. Goi tu finishClick thi dung ket qua da kiem tra
+        /// (mediMateFinishAllowed), con Luu / Ctrl+S / cac nut luu truoc khi mo man khac thi tu kiem tra (hien hop chan neu thieu).
+        /// Loi ky thuat -> cho qua, dung quy uoc fail-open cua thu vien.
+        /// </summary>
+        private bool IsMediMateFinishAllowed()
+        {
+            try
+            {
+                if (this.mediMateFinishAllowed.HasValue)
+                    return this.mediMateFinishAllowed.Value;
+                // Y lenh da hoan thanh (vien cho sua sau ket thuc): khong con gi de chan, giu dong bo FINISH_TIME nhu cu
+                if (this.serviceReq != null && this.serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                    return true;
+                return CallCheckRequireMediMate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Goi thu vien o ham rieng khong inline: thieu/lech DLL thu vien thi loi nap assembly nem ra khi JIT ham NAY,
+        /// nen van bi catch cua IsMediMateFinishAllowed bat duoc (fail-open), khong lam hong nut Luu.
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private bool CallCheckRequireMediMate()
+        {
+            return HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(GetSereServsToCheckMediMate());
         }
 
         private bool CheckAccountWithRole()
@@ -2200,6 +2269,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         }
         private bool IsActionPrint = false;
         private bool IsActionOtherButton = false;
+        /// <summary>Viec 3353: ket qua kiem tra thuoc/vat tu di kem finishClick da tinh truoc khi goi btnSaveClick; null = btnSaveClick tu kiem tra</summary>
+        private bool? mediMateFinishAllowed = null;
         private void printClick()
         {
             try

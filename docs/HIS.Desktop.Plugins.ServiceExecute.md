@@ -190,6 +190,30 @@ btnLoadImage_Click  (ConnectImageOption == "3" và có TDL_PACS_TYPE_CODE)
 | Link | Đã được PACS mã hóa sẵn (`urltoken`) → truyền **nguyên văn**, KHÔNG encode lại |
 | Thông báo | `ResourceMessage.ChuaCoHinhAnhTuPacs` / `KhongMoDuocHinhAnhTuPacs` (vi/en/my) |
 
+### Chặn kết thúc khi dịch vụ chưa có thuốc, vật tư đi kèm (việc 3353 — cập nhật 22/09/2026)
+
+Khi bấm **Kết thúc**, trong `btnFinish_Click` (`UCServiceExecute.cs`) — sau khối kiểm tra "chưa xử lý hết dịch vụ" và **trước** khi POST `api/HisServiceReq/FinishWithTime` — plugin gọi 1 lần thư viện dùng chung `HIS.Desktop.Plugins.Library.CheckRequireMediMate`:
+
+```csharp
+// CHAN: con dich vu bat buoc co thuoc/vat tu di kem ma chua ke -> khong cho ket thuc
+if (!HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(listServiceADO))
+{
+    return;
+}
+```
+
+| Điểm | Chi tiết |
+|------|----------|
+| Điều kiện chặn | Dịch vụ có `HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1` nhưng chưa có dòng `HIS_SERE_SERV` con loại Thuốc/Vật tư (`PARENT_ID` = ID dịch vụ, chưa hủy) |
+| Mức xử lý | **CHẶN** — hộp thông báo **chỉ có nút OK**, KHÔNG có Yes/No, KHÔNG có "nút mặc định" |
+| Câu thông báo | `Không kết thúc được. Dịch vụ chưa có thuốc, vật tư đi kèm:\n{0}\nVui lòng kê thuốc, vật tư đi kèm cho các dịch vụ trên rồi kết thúc lại.` — `{0}` liệt kê đủ các dịch vụ thiếu, báo **một lần** cho tất cả |
+| Sau khi đóng hộp thông báo | `CheckRequireMediMateManager.ConfirmFinish` **luôn trả `false`** → màn `return`, **KHÔNG** gọi `api/HisServiceReq/FinishWithTime`. Đường thoát duy nhất: kê bổ sung thuốc, vật tư đi kèm cho các dịch vụ đó rồi kết thúc lại |
+| Fail-open | Lỗi API / mất mạng / Backend cũ chưa có cột `HIS_SERVICE.IS_REQUIRE_MEDI_MATE` → **KHÔNG chặn**, cho kết thúc bình thường và ghi `LogSystem.Warn` |
+| Phạm vi điểm chèn | 1 điểm chèn phủ cả nút **Kết thúc**, "Tự động kết thúc" sau Lưu và lối gọi `End()` (phím tắt / màn ngoài) — vì cả 3 đều gọi lại `btnFinish_Click` |
+| Cấu hình | KHÔNG có key config — bật theo dữ liệu danh mục `IS_REQUIRE_MEDI_MATE` |
+
+> Việc 3353 áp dụng cho 6 màn (CLS + PTTT + Xét nghiệm; màn thứ 6 SurgServiceReqExecute2 bổ sung 25/09/2026); plugin này là 1 trong 6 màn đó. Phần API cho hệ thống PACS đã bỏ khỏi phạm vi việc.
+
 ### Điều kiện nghiệp vụ
 
 - Bật/tắt tính năng giữ layout: cần `HIS_CONFIG` key `HIS.Desktop.ApplyRestoreLayout.ModuleLinks` chứa `HIS.Desktop.Plugins.ServiceExecute` (CSV/SCSV ModuleLink)
@@ -283,6 +307,7 @@ btnLoadImage_Click  (ConnectImageOption == "3" và có TDL_PACS_TYPE_CODE)
 | HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT | Cảnh báo khoản phí không BHYT khi chỉ định DV |
 | HIS.Desktop.Plugins.Library.EmrGenerate | Sinh InputADO ký số EMR cho phiếu kết quả |
 | HIS.Desktop.Plugins.Library.FormOtherSereServ | Biểu mẫu phụ theo dịch vụ |
+| HIS.Desktop.Plugins.Library.CheckRequireMediMate | Chặn kết thúc khi dịch vụ bắt buộc có thuốc, vật tư đi kèm mà chưa kê (việc 3353) — `CheckBeforeFinish(listServiceADO)` |
 
 ### Inter-Plugin
 
@@ -313,6 +338,7 @@ btnLoadImage_Click  (ConnectImageOption == "3" và có TDL_PACS_TYPE_CODE)
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 22/09/2026 | dangth2 | **Việc 3353 (PT-56272) — đổi mức từ CẢNH BÁO sang CHẶN (chốt của anh Cảnh ngày 22/09/2026).** Điểm chèn trong `btnFinish_Click` (`UCServiceExecute.cs`) giữ nguyên vị trí và vẫn là 1 lời gọi `HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(listServiceADO)`; hành vi của thư viện đổi: hộp thông báo **chỉ còn nút OK** (bỏ Yes/No, bỏ "nút mặc định"), nội dung mới `"Không kết thúc được. Dịch vụ chưa có thuốc, vật tư đi kèm:\n{0}\nVui lòng kê thuốc, vật tư đi kèm cho các dịch vụ trên rồi kết thúc lại."`, và `CheckRequireMediMateManager.ConfirmFinish` **luôn trả `false`** khi còn dịch vụ thiếu → màn luôn `return`, KHÔNG gọi `api/HisServiceReq/FinishWithTime`. Người dùng chỉ thoát được bằng cách kê bổ sung thuốc/vật tư đi kèm cho các dịch vụ đó rồi kết thúc lại. **Fail-open giữ nguyên**: lỗi API / mất mạng / Backend cũ chưa có cột `HIS_SERVICE.IS_REQUIRE_MEDI_MATE` → KHÔNG chặn, cho kết thúc bình thường và ghi `LogSystem.Warn`. Phạm vi việc 3353 mở rộng thành 5 màn (CLS + PTTT + Xét nghiệm) — plugin này vẫn chỉ 1 điểm chèn, không phát sinh sửa code thêm. Phần API cho hệ thống PACS đã bỏ khỏi phạm vi việc. Xem docs thư viện + `PTTK\3353 - Thiet ke - ...md`. |
 | 18/09/2026 | dangth2 | **Việc 3353 (PT-56272) — Cảnh báo dịch vụ chưa có thuốc, vật tư đi kèm khi kết thúc.** Trong `btnFinish_Click` (`UCServiceExecute.cs`), sau khối kiểm tra "chưa xử lý hết dịch vụ" và trước POST `api/HisServiceReq/FinishWithTime`, thêm 1 lời gọi `HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(listServiceADO)`: dịch vụ có `HIS_SERVICE.IS_REQUIRE_MEDI_MATE = 1` mà chưa có dòng `HIS_SERE_SERV` con loại Thuốc/Vật tư (PARENT_ID = ID dịch vụ, chưa hủy) → hỏi Yes/No (mặc định No), No thì `return` không kết thúc. Một điểm chèn phủ luôn nút Kết thúc, "Tự động kết thúc" sau Lưu và phím tắt. Không key config, không chặn, lỗi API thì bỏ qua. Thêm reference thư viện mới `HIS.Desktop.Plugins.Library.CheckRequireMediMate` (HintPath lib\HIS). Xem docs thư viện + `PTTK\3353 - Thiet ke - ...md`. |
 | 12/08/2026 | anhnh2@vietsens.vn | **Sửa luồng mở màn Xem kết quả để xem ảnh PACS Carestream.** (1) `ShowServiceReqResultView(long, string)` — thêm tham số link, và **kiểm tra module + quyền** qua `GlobalVariables.currentModuleRaws` trước khi gọi `PluginInstanceBehavior.ShowModule`; trước đây hàm luôn trả `true` (ShowModule là `void` + nuốt exception) nên nhánh dự phòng `Process.Start(link)` là code chết. (2) Truyền link (`HIS_SERE_SERV_EXT.JSON_FORM_ID`) sang plugin đích để màn đó không phải lấy lại link. (3) Thay 2 chuỗi hardcode bằng `ResourceMessage.ChuaCoHinhAnhTuPacs` / `KhongMoDuocHinhAnhTuPacs` (thêm key vào `Message.Lang.vi/en/my.resx`). (4) Thêm `ModuleLinkString.cs` (const `ServiceReqResultView`) theo `inter_plugin.md`, đăng ký vào `.csproj`. Phía plugin đích `HIS.Desktop.Plugins.ServiceReqResultView` sửa kèm: nhận link qua Behavior, hiển thị link đã lưu khi phòng chưa khai `Api`, không auto-print+Close khi mở để xem ảnh. |
 | 31/07/2026 | nampp@vietsens.vn | **Bổ sung điều kiện hiển thị checkbox `chkSendExt`** — thêm hàm `ApplySendExtVisibility()` (`UCServiceExecute.cs`): chỉ hiện khi (1) HIS_CONFIG `HIS.DESKTOP.HIS_SERE_SERV_EXT.ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA` = `1`, (2) y lệnh loại CĐHA (`ServiceReqConstruct.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA`), (3) phòng đang xử lý có địa chỉ PACS hợp lệ trong `MOS.PACS.ADDRESS`. Gọi ở cuối `UCServiceExecute_Load` và trong `SearchNewTreatmentServiceReqForShowForm()` (bám theo y lệnh mới khi đổi bệnh nhân). Thêm accessor `AppConfigKeys.AllowDisplaySendOrderPacsCdha` (trả string thô, so `== "1"` tại nơi dùng — theo pattern `UNLOCK_FEE_OPTION` / `CHECK_SAME_HEIN`) + const `CONFIG_KEY__ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA`. Thêm hàm `GetIsSendExtForSave()` — checkbox ẩn thì trả `true` (mặc định luôn gửi, không hồi quy); 2 chỗ lưu đổi sang dùng hàm này. Điều kiện 3 chỉ so `RoomCode` (không ràng buộc field kết nối vì `MOS.PACS.ADDRESS` có nhiều schema), phòng lấy theo `ServiceReqConstruct.EXECUTE_ROOM_ID` (fallback `moduleData.RoomId`). Bổ sung vào `PACS/PacsCFG.cs` các thành viên MỚI tách biệt: class `PacsAddressRoom` (chỉ có `RoomCode`) + `PACS_ADDRESS_EXPAND_ROOM` (cache riêng) + `GetAddressExpandRoom()` + const `ROOM_CODE_SEPARATOR` — parse cùng key `MOS.PACS.ADDRESS` nhưng có tách `RoomCode` gộp nhiều phòng `"P01\|P02"`. **CỐ Ý KHÔNG sửa `PACS_ADDRESS` / `GetAddress()` cũ** để KHÔNG thay đổi hành vi nút "Tải ảnh" (`btnLoadImage_Click`). Diff `PacsCFG.cs` chỉ có dòng thêm, không có dòng xóa/sửa. Config mặc định TẮT = giữ nguyên hành vi hiện tại. |
@@ -424,6 +450,16 @@ Tiền đề chung: lưu dịch vụ CLS khi chưa chọn máy (`MACHINE_ID == n
 - [ ] Mở form phụ "Thông tin CLS/PTTT" (`frmClsInfo`) → Lưu → luôn gửi PACS (`IsSendExt = true`) bất kể checkbox ở màn cha
 - [ ] Đổi ngôn ngữ sang English/Myanmar → caption và tooltip đổi đúng theo resx
 - [ ] Độ phân giải 1366×768 → caption không bị cắt chữ, không đè `dtResult`
+
+### Chặn kết thúc khi dịch vụ chưa có thuốc, vật tư đi kèm (việc 3353)
+
+- [ ] Y lệnh có dịch vụ `IS_REQUIRE_MEDI_MATE = 1` nhưng chưa kê thuốc/vật tư đi kèm → bấm **Kết thúc** → hiện hộp thông báo **chỉ có nút OK**, nội dung "Không kết thúc được. Dịch vụ chưa có thuốc, vật tư đi kèm: ..."
+- [ ] Đóng hộp thông báo → y lệnh **KHÔNG** được kết thúc (không gọi `api/HisServiceReq/FinishWithTime`), trạng thái giữ nguyên, nút Kết thúc vẫn bật
+- [ ] Kê bổ sung thuốc/vật tư đi kèm cho các dịch vụ bị liệt kê → bấm **Kết thúc** lại → kết thúc thành công
+- [ ] Nhiều dịch vụ cùng thiếu → chỉ hiện **một** hộp thông báo, liệt kê đủ tất cả dịch vụ thiếu
+- [ ] Dịch vụ đã có thuốc/vật tư đi kèm (hoặc `IS_REQUIRE_MEDI_MATE` khác `1`) → kết thúc bình thường, KHÔNG hiện thông báo
+- [ ] "Tự động kết thúc" sau khi Lưu và lối gọi `End()` (phím tắt / màn ngoài) → vẫn bị chặn giống bấm nút Kết thúc
+- [ ] **Fail-open**: ngắt mạng / API lỗi / Backend cũ chưa có cột `IS_REQUIRE_MEDI_MATE` → KHÔNG chặn, kết thúc bình thường, log `Warn`
 
 ### Logging
 

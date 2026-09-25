@@ -1292,6 +1292,51 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
+        /// <summary>
+        /// Viec 3353 (PT-56272): kiem tra thuoc/vat tu di kem truoc khi gui IsFinished = true.
+        /// Ket thuc qua SurgUpdate la ket thuc CA y lenh nen kiem tra moi dich vu cua y lenh (thu vien tu lay qua SERVICE_REQ_ID).
+        /// true = duoc ket thuc; false = da hien hop chan. Loi ky thuat -> cho qua (fail-open nhu thu vien).
+        /// </summary>
+        internal bool IsMediMateFinishAllowed_3353()
+        {
+            try
+            {
+                if (currentRow == null)
+                    return true;
+                // Y lenh da hoan thanh (sua lai sau ket thuc): khong con gi de chan, giu dong bo FINISH_TIME nhu cu
+                if (currentRow.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                    return true;
+                return CallCheckRequireMediMate_3353();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Goi thu vien o ham rieng khong inline: thieu/lech DLL thu vien thi loi nap assembly nem ra khi JIT ham NAY,
+        /// nen van bi catch cua IsMediMateFinishAllowed_3353 bat duoc (fail-open), khong lam hong nut Luu.
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private bool CallCheckRequireMediMate_3353()
+        {
+            // SurgUpdate + IsFinished ket thuc CA y lenh -> kiem tra moi dich vu cua y lenh (thu vien tu lay theo SERVICE_REQ_ID)
+            if (currentRow.SERVICE_REQ_ID.HasValue && currentRow.SERVICE_REQ_ID.Value > 0)
+                return HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinishByServiceReqIds(new List<long>() { currentRow.SERVICE_REQ_ID.Value });
+
+            HIS.Desktop.Plugins.Library.CheckRequireMediMate.ADO.SereServCheckADO row = new HIS.Desktop.Plugins.Library.CheckRequireMediMate.ADO.SereServCheckADO();
+            row.ID = currentRow.ID;
+            row.SERVICE_ID = currentRow.SERVICE_ID;
+            row.SERVICE_REQ_ID = currentRow.SERVICE_REQ_ID;
+            row.TDL_SERVICE_CODE = currentRow.TDL_SERVICE_CODE;
+            row.TDL_SERVICE_NAME = currentRow.TDL_SERVICE_NAME;
+            row.IS_NO_EXECUTE = currentRow.IS_NO_EXECUTE;
+            row.IS_DELETE = currentRow.IS_DELETE;
+            return HIS.Desktop.Plugins.Library.CheckRequireMediMate.CheckRequireMediMateManager.CheckBeforeFinish(new List<HIS.Desktop.Plugins.Library.CheckRequireMediMate.ADO.SereServCheckADO>() { row });
+        }
+
         internal bool ComputeIsFinished_v45072()
         {
             try
