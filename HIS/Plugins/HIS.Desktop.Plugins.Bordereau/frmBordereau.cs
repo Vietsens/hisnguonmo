@@ -148,6 +148,13 @@ namespace HIS.Desktop.Plugins.Bordereau
         /// </summary>
         HashSet<long> depaServiceIdsHasConfig = new HashSet<long>();
 
+        /// <summary>
+        /// Tập SERVICE_ID của loại vật tư tích "Không hao phí" (HIS_MATERIAL_TYPE.IS_NOT_EXPEND = 1).
+        /// Tương đương cờ NotExpend lấy từ D_HIS_MEDI_STOCK bên màn kê đơn: bảng kê không có dữ liệu 
+        /// kho theo dòng nên đọc thẳng cờ này từ danh mục loại vật tư.
+        /// </summary>
+        HashSet<long> notExpendMaterialServiceIds = new HashSet<long>();
+
         public frmBordereau()
         {
             InitializeComponent();
@@ -189,6 +196,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 Services = BackendDataWorker.Get<V_HIS_SERVICE>(false, true);
                 PatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>(false, true);
                 Departments = BackendDataWorker.Get<HIS_DEPARTMENT>(false, true);
+                LoadNotExpendMaterialType();
                 this.currentDepartmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == currentModule.RoomId).DepartmentId;
                 this.GetCurrentDepartment(this.currentDepartmentId);
                 this.currentPatientTypeWithPatientTypeAlter = BackendDataWorker.Get<HIS_PATIENT_TYPE>(false, true);
@@ -693,6 +701,46 @@ namespace HIS.Desktop.Plugins.Bordereau
         }
 
         /// <summary>
+        /// Nạp tập SERVICE_ID của loại vật tư tích "Không hao phí" từ cache HIS_MATERIAL_TYPE.
+        /// </summary>
+        private void LoadNotExpendMaterialType()
+        {
+            try
+            {
+                this.notExpendMaterialServiceIds = new HashSet<long>(
+                    BackendDataWorker.Get<HIS_MATERIAL_TYPE>()
+                        .Where(o => o.IS_NOT_EXPEND == 1)
+                        .Select(o => o.SERVICE_ID));
+            }
+            catch (Exception ex)
+            {
+                this.notExpendMaterialServiceIds = new HashSet<long>();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dòng vật tư có loại vật tư tích "Không hao phí" hay không — tương ứng cờ NotExpend bên màn kê đơn.
+        /// Thuốc luôn trả false vì HIS_MEDICINE_TYPE không có cờ này.
+        /// </summary>
+        private bool IsNotExpendMaterialType(SereServADO data)
+        {
+            try
+            {
+                if (data == null || this.notExpendMaterialServiceIds == null || this.notExpendMaterialServiceIds.Count == 0)
+                    return false;
+                if (data.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+                    return false;
+                return this.notExpendMaterialServiceIds.Contains(data.SERVICE_ID);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Sau khi đổi ĐTTT thành công, tra lại HIS_DEPA_PATIENT_TYPE với (SERVICE_ID, ĐTTT mới).
         /// Nếu có rule IS_AUTO_EXPEND/IS_NOT_EXPEND → set IS_EXPEND tương ứng và gọi UpdatePayslipInfoProcess
         /// với field = IS_EXPEND để refresh grid.
@@ -921,6 +969,11 @@ namespace HIS.Desktop.Plugins.Bordereau
                                 e.RepositoryItem = repositoryItemChkIsExpend_Disable;
                             }
                             else if (this.GetDepaPatientTypeRule(data) != null)
+                            {
+                                e.RepositoryItem = repositoryItemChkIsExpend_Disable;
+                            }
+                            // Loại vật tư tích "Không hao phí" — cùng quy tắc với cột HP màn kê đơn.
+                            else if (this.IsNotExpendMaterialType(data))
                             {
                                 e.RepositoryItem = repositoryItemChkIsExpend_Disable;
                             }
@@ -1906,6 +1959,11 @@ namespace HIS.Desktop.Plugins.Bordereau
                                 if (this.GetDepaPatientTypeRule(sereServADO) != null)
                                 {
                                     Inventec.Common.Logging.LogSystem.Debug("IsExpend bị disable theo cấu hình Khoa-ĐTTT. return");
+                                    return;
+                                }
+                                if (this.IsNotExpendMaterialType(sereServADO))
+                                {
+                                    Inventec.Common.Logging.LogSystem.Debug("IsExpend bị disable do loại vật tư tích Không hao phí. return");
                                     return;
                                 }
                                 if (!this.CheckPremissionEdit(sereServADO, ComlumnType.EXPEND, ref mess))
