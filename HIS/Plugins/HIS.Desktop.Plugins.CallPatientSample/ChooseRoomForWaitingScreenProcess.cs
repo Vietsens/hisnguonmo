@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -78,7 +78,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
         }
 
-        internal static void ShowFormInExtendMonitor(frmWaitingScreenSample22 control)
+        internal static void ShowFormInExtendMonitor(Form control)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
         }
 
-        internal static void TurnOffExtendMonitor(frmWaitingScreenSample22 control)
+        internal static void TurnOffExtendMonitor(Form control)
         {
             try
             {
