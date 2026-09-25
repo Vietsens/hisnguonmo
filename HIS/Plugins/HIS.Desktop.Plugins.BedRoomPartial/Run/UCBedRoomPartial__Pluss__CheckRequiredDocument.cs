@@ -36,15 +36,15 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
     /// khong dat - moi diem ra deu IM LANG, khong chan va khong bao loi ra man hinh:
     ///
     ///  1. Cau hinh so phut khong phai so nguyen duong                  -> ra (tinh nang chua bat)
-    ///  2. Benh nhan nay da duoc nhac trong phien lam viec hien tai     -> ra (QT10)
+    ///  2. Van dang o dung benh nhan vua xet (bam lap tren cung dong)      -> ra (QT10)
     ///  3. Ho so khong co thoi diem nhap vien vao khoa                  -> ra (chua vao khoa / ngoai tru)
     ///  4. Ho so da ket thuc dieu tri                                   -> ra (QT14)
-    ///  5. Vao khoa TRUOC lan cap nhat gan nhat cua cau hinh so phut    -> ra (QT13 - khong hoi to)
+    ///  5. Cau hinh KHONG co "|1" va benh nhan vao khoa TRUOC luc bat  -> ra (QT13 - luat hoi to)
     ///  6. Chua du so phut ke tu luc vao khoa                           -> ra (QT4)
     ///  7. Khong co loai van ban nao duoc tich "Hoan thanh khi vao khoa"-> ra (QT2)
     ///  8. Khong tra cuu duoc ho so                                     -> ra (QT15)
-    ///  9. Moi loai duoc tich deu dat                                   -> ra (QT8)
-    /// 10. Con loai thieu -> danh dau da nhac trong phien, hien hop thoai liet ke
+    ///  9. Moi loai duoc tich deu xong het van ban                      -> ra (QT8)
+    /// 10. Con van ban chua xong -> hien hop thoai liet ke
     ///
     /// Chi CANH BAO: hien thong bao roi cho nguoi dung lam tiep, KHONG chan thao tac nao (QT12).
     /// Cau hinh muc rang buoc (canh bao / chan) da bo — neu ve sau can chan thi lam bang dau viec rieng.
@@ -70,16 +70,24 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         /// <summary>
         /// Dau nhan de doi chieu DLL dang chay voi ban vua build. Doi moi lan sua logic phep kiem tra nay.
         /// </summary>
-        private const string STAMP__CHECK_REQUIRED_DOCUMENT = "canh-bao-vao-khoa-v3-chi-canh-bao";
+        private const string STAMP__CHECK_REQUIRED_DOCUMENT = "canh-bao-vao-khoa-v6-nhac-theo-tung-lan-chon";
 
         /// <summary>
-        /// TREATMENT_ID cac benh nhan da duoc nhac trong phien lam viec hien tai cua man Buong benh.
-        /// QT10: moi benh nhan chi nhac MOT lan trong mot phien; dong mo lai phan mem thi nhac lai.
+        /// TREATMENT_ID cua benh nhan vua xet o lan chon gan nhat.
+        ///
+        /// QT10: canh bao theo TUNG LAN CHON benh nhan, khong phai mot lan cho ca phien.
+        /// Chon A -> sang B -> quay lai A thi A duoc canh bao lai.
+        ///
+        /// Bien nay chi de chan lap khi VAN DANG O DUNG benh nhan do: bam nhieu lan tren cung
+        /// mot dong luoi, hoac bam trai roi bam phai cung mot benh nhan — neu khong se hien
+        /// hai hop thoai lien tiep. Ghi nhan moi lan xet, ke ca lan khong canh bao, de con
+        /// nhan biet duoc nguoi dung da doi sang benh nhan khac hay chua.
         /// </summary>
-        private readonly HashSet<long> requiredDocumentWarnedTreatmentIds = new HashSet<long>();
+        private long? requiredDocumentLastCheckedTreatmentId;
 
         /// <summary>
-        /// Lan cap nhat gan nhat cua cau hinh so phut, dang yyyyMMddHHmmss. Tra cuu mot lan cho ca phien.
+        /// Lan cap nhat gan nhat cua dong cau hinh, dang yyyyMMddHHmmss. Tra cuu mot lan cho ca phien.
+        /// Chi dung khi cau hinh KHONG co "|1" (tuc van giu luat hoi to).
         /// null = chua tra cuu; 0 = da tra cuu nhung khong tim thay dong cau hinh.
         /// </summary>
         private long? requiredDocumentConfigTimeCache;
@@ -107,26 +115,31 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 if (row == null)
                     return;
 
-                // ---- 1. Cau hinh so phut ----
-                int checkMinutes = HisConfigCFG.RequiredDocumentCheckMinutes;
-                if (checkMinutes <= 0)
+                // ---- 1. Cau hinh ----
+                RequiredDocumentConfigADO config = HisConfigCFG.RequiredDocumentConfig;
+                if (!config.IsEnabled)
                 {
                     // Khong log o day: day la trang thai binh thuong cua moi vien chua bat tinh nang,
                     // ghi log moi lan chon benh nhan se lam ngap LogSystem.txt.
                     return;
                 }
 
+                int checkMinutes = config.CheckMinutes;
+
                 TraceCheckRequiredDocument(string.Format(
                     "BAT DAU [" + STAMP__CHECK_REQUIRED_DOCUMENT + "]. TREATMENT_ID = {0}, ma dieu tri = {1}, "
-                    + "so phut cau hinh = {2}.",
-                    row.TREATMENT_ID, row.TREATMENT_CODE, checkMinutes));
+                    + "so phut cau hinh = {2}, kiem ca benh nhan vao khoa truoc luc bat cau hinh = {3}.",
+                    row.TREATMENT_ID, row.TREATMENT_CODE, checkMinutes, config.IsCheckPatientAdmittedBeforeConfig));
 
-                // ---- 2. Da nhac trong phien nay chua ----
-                if (requiredDocumentWarnedTreatmentIds.Contains(row.TREATMENT_ID))
+                // ---- 2. Van dang o dung benh nhan vua xet? ----
+                if (requiredDocumentLastCheckedTreatmentId.HasValue
+                    && requiredDocumentLastCheckedTreatmentId.Value == row.TREATMENT_ID)
                 {
-                    TraceCheckRequiredDocument("KET LUAN: da nhac benh nhan nay trong phien hien tai -> khong nhac lai.");
+                    TraceCheckRequiredDocument("KET LUAN: van dang o benh nhan vua xet -> khong hien lai. "
+                        + "Chon sang benh nhan khac roi quay lai thi se xet lai.");
                     return;
                 }
+                requiredDocumentLastCheckedTreatmentId = row.TREATMENT_ID;
 
                 // ---- 3. Thoi diem nhap vien vao khoa ----
                 if (!row.CLINICAL_IN_TIME.HasValue || row.CLINICAL_IN_TIME.Value <= 0)
@@ -144,14 +157,18 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     return;
                 }
 
-                // ---- 5. Khong hoi to ----
-                long configTime = GetRequiredDocumentConfigTime();
-                if (configTime > 0 && clinicalInTime < configTime)
+                // ---- 5. Luat hoi to (chi ap dung khi cau hinh KHONG co "|1") ----
+                if (!config.IsCheckPatientAdmittedBeforeConfig)
                 {
-                    TraceCheckRequiredDocument(string.Format(
-                        "KET LUAN: benh nhan vao khoa luc {0}, truoc lan khai bao cau hinh luc {1} -> khong hoi to.",
-                        clinicalInTime, configTime));
-                    return;
+                    long configTime = GetRequiredDocumentConfigTime();
+                    if (configTime > 0 && clinicalInTime < configTime)
+                    {
+                        TraceCheckRequiredDocument(string.Format(
+                            "KET LUAN: benh nhan vao khoa luc {0}, truoc lan khai bao cau hinh luc {1} -> khong hoi to. "
+                            + "Muon kiem ca benh nhan cu thi ghi cau hinh dang \"{2}|1\".",
+                            clinicalInTime, configTime, checkMinutes));
+                        return;
+                    }
                 }
 
                 // ---- 6. Da du so phut chua ----
@@ -229,17 +246,34 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         continue;
                     }
 
-                    // QT6: chi can MOT van ban thuoc loai do da hoan thanh ky thi loai do dat.
-                    bool hasFinished = documentsOfType.Any(o => !IsDocumentUnfinishedForRequiredCheck(o, unfinishedDocumentIds));
-                    TraceCheckRequiredDocument(string.Format(
-                        "loai '{0}' (ID {1}): {2} van ban, co van ban da hoan thanh = {3} => {4}.",
-                        typeName, requiredType.ID, documentsOfType.Count, hasFinished,
-                        hasFinished ? "DAT" : "CHUA HOAN THANH KY"));
+                    // QT6: MOI van ban thuoc loai do deu phai hoan thanh ky.
+                    //
+                    // Truoc day chi doi MOT van ban hoan thanh la coi loai do dat. Sai: ho so co 2 van ban
+                    // cung loai, ky xong 1 cai la het canh bao, cai con lai bo do khong ai biet.
+                    // Gio con bat ky van ban nao chua ky xong thi van canh bao, va liet ke ro tung van ban.
+                    List<RequiredDocumentADO> unfinishedOfType = documentsOfType
+                        .Where(o => IsDocumentUnfinishedForRequiredCheck(o, unfinishedDocumentIds))
+                        .ToList();
 
-                    if (hasFinished)
+                    TraceCheckRequiredDocument(string.Format(
+                        "loai '{0}' (ID {1}): {2} van ban, {3} van ban chua ky xong => {4}.",
+                        typeName, requiredType.ID, documentsOfType.Count, unfinishedOfType.Count,
+                        unfinishedOfType.Count == 0 ? "DAT" : "CHUA HOAN THANH KY"));
+
+                    if (unfinishedOfType.Count == 0)
                         continue;
 
-                    missingMessages.Add(string.Format("- {0}: văn bản chưa ký xong.", typeName));
+                    foreach (var document in unfinishedOfType
+                        .OrderBy(o => o.DOCUMENT_NAME ?? "").ThenBy(o => o.DOCUMENT_CODE ?? ""))
+                    {
+                        string documentName = !string.IsNullOrWhiteSpace(document.DOCUMENT_NAME)
+                            ? document.DOCUMENT_NAME.Trim()
+                            : (document.DOCUMENT_CODE ?? "").Trim();
+
+                        missingMessages.Add(string.IsNullOrWhiteSpace(documentName)
+                            ? string.Format("- {0}: còn văn bản chưa ký xong.", typeName)
+                            : string.Format("- {0}: văn bản {1} chưa ký xong.", typeName, documentName));
+                    }
                 }
 
                 if (missingMessages.Count == 0)
@@ -249,7 +283,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 }
 
                 // ---- 10. Canh bao ----
-                requiredDocumentWarnedTreatmentIds.Add(row.TREATMENT_ID);
                 TraceCheckRequiredDocument(string.Format(
                     "KET LUAN: canh bao {0} loai van ban chua hoan thanh: [{1}].",
                     missingMessages.Count, string.Join(" | ", missingMessages)));

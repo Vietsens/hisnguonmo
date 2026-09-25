@@ -52,6 +52,38 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.ADO
     }
 
     /// <summary>
+    /// Gia tri khoa cau hinh "RequiredDocument", dang "{so phut}|{co kiem ca benh nhan cu}".
+    ///
+    ///   "30"    -> kiem tra tu phut thu 30, CHI voi benh nhan vao khoa TU LUC bat cau hinh tro di;
+    ///   "30|1"  -> kiem tra tu phut thu 30, voi MOI benh nhan con dang dieu tri, ke ca nguoi da
+    ///              nam khoa tu truoc khi bat cau hinh.
+    ///
+    /// Chi dung "1" o doan sau moi bo luat hoi to. Thieu doan sau, hoac ghi gia tri khac,
+    /// deu giu luat hoi to — day la hanh vi mac dinh, dung Muc 3.5 cua yeu cau goc va tranh
+    /// canh bao hang loat trong ngay dau bat cau hinh.
+    /// </summary>
+    public class RequiredDocumentConfigADO
+    {
+        /// <summary>
+        /// So phut ke tu khi nhap vien vao khoa thi bat dau kiem tra.
+        /// 0 = khong kiem tra (chua khai bao, khong phai so, hoac so am / so 0).
+        /// </summary>
+        public int CheckMinutes { get; set; }
+
+        /// <summary>
+        /// true  = kiem ca benh nhan vao khoa TRUOC luc bat cau hinh (doan sau dau "|" la "1");
+        /// false = chi kiem benh nhan vao khoa tu luc bat cau hinh tro di (mac dinh).
+        /// </summary>
+        public bool IsCheckPatientAdmittedBeforeConfig { get; set; }
+
+        /// <summary>Tinh nang co dang bat khong. Chi can so phut hop le la bat.</summary>
+        public bool IsEnabled
+        {
+            get { return this.CheckMinutes > 0; }
+        }
+    }
+
+    /// <summary>
     /// Mot dong danh muc Loai van ban (EMR_DOCUMENT_TYPE) lay qua "api/EmrDocumentType/Get".
     ///
     /// Khai bao lai thay vi dung truc tiep EMR.EFMODEL.DataModels.EMR_DOCUMENT_TYPE de phep kiem tra nay
