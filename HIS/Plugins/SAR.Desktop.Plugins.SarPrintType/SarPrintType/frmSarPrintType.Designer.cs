@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -190,6 +190,8 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColumnNameEMR = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnKey = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColAdd = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMappingMode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMappingSeparator = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryBtnAdd = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryBtnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.popupContainerGenSignatureByKeyCFG = new DevExpress.XtraBars.PopupControlContainer(this.components);
@@ -1518,6 +1520,8 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridViewMappingEMR.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumnNameEMR,
             this.gridColumnKey,
+            this.gridColumnMappingMode,
+            this.gridColumnMappingSeparator,
             this.gridColAdd});
             this.gridViewMappingEMR.GridControl = this.gridControlMappingEMR;
             this.gridViewMappingEMR.Name = "gridViewMappingEMR";
@@ -1542,13 +1546,33 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColumnKey.VisibleIndex = 1;
             this.gridColumnKey.Width = 234;
             // 
+            // gridColumnMappingMode
+            // 
+            this.gridColumnMappingMode.Caption = "Cách gán (để trống = ghi đè)";
+            this.gridColumnMappingMode.FieldName = "Mode";
+            this.gridColumnMappingMode.Name = "gridColumnMappingMode";
+            this.gridColumnMappingMode.ToolTip = "Để trống hoặc REPLACE = ghi đè giá trị cũ. APPEND = nối vào cuối. PREPEND = nối vào đầu.";
+            this.gridColumnMappingMode.Visible = true;
+            this.gridColumnMappingMode.VisibleIndex = 2;
+            this.gridColumnMappingMode.Width = 120;
+            // 
+            // gridColumnMappingSeparator
+            // 
+            this.gridColumnMappingSeparator.Caption = "Ký tự ngăn cách";
+            this.gridColumnMappingSeparator.FieldName = "Separator";
+            this.gridColumnMappingSeparator.Name = "gridColumnMappingSeparator";
+            this.gridColumnMappingSeparator.ToolTip = "Ký tự chèn giữa giá trị cũ và mới khi Cách gán là APPEND/PREPEND. Ví dụ | hoặc dấu cách.";
+            this.gridColumnMappingSeparator.Visible = true;
+            this.gridColumnMappingSeparator.VisibleIndex = 3;
+            this.gridColumnMappingSeparator.Width = 90;
+            // 
             // gridColAdd
             // 
             this.gridColAdd.FieldName = "BtnAddAndDelete";
             this.gridColAdd.Name = "gridColAdd";
             this.gridColAdd.OptionsColumn.ShowCaption = false;
             this.gridColAdd.Visible = true;
-            this.gridColAdd.VisibleIndex = 2;
+            this.gridColAdd.VisibleIndex = 4;
             this.gridColAdd.Width = 23;
             // 
             // repositoryBtnAdd
@@ -3739,6 +3763,8 @@ namespace SAR.Desktop.Plugins.SarPrintType
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnNameEMR;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnKey;
         private DevExpress.XtraGrid.Columns.GridColumn gridColAdd;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMappingMode;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMappingSeparator;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryBtnAdd;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryBtnDelete;
         private DevExpress.XtraBars.PopupControlContainer popupContainerGenSignatureByKeyCFG;

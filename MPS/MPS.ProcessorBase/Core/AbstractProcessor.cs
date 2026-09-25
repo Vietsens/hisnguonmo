@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -691,6 +691,78 @@ namespace MPS.ProcessorBase.Core
         ///Lưu ý: Nếu trường của EMR là dữ liệu ngày(kiểu DateTime hoặc long) thì dữ liệu key để lấy dữ liệu có thể lấy với các biến kiểu long, DateTime, string date(vd: 09/08/2020 18:15, 09/08/2020)
         /// </summary>
         /// <param name="emrInputADO"></param>
+        /// <summary>
+        /// Tinh gia tri se gan vao cot EMR kieu chuoi, theo Mode khai bao o tung dong anh xa
+        /// cua man "Anh xa du lieu EMR" (EMR_COLUMN_MAPPING cua bieu in).
+        ///
+        ///   khong khai bao / "REPLACE" -> ghi de (mac dinh, giu nguyen hanh vi cu)
+        ///   "APPEND"                   -> gia tri cu + Separator + gia tri moi
+        ///   "PREPEND"                  -> gia tri moi + Separator + gia tri cu
+        ///
+        /// Chi tac dong den bieu in NAO KHAI BAO Mode. Bieu in khong khai bao chay y nhu truoc,
+        /// nen khong co rui ro lan sang cac MPS khac.
+        ///
+        /// Da co san gia tri moi trong chuoi cu -> giu nguyen, tranh noi lap khi in lai nhieu lan.
+        /// Moi loi deu nuot va tra ve gia tri moi (hanh vi ghi de cu) de khong lam hong ban in.
+        /// </summary>
+        private object BuildMappingValue(System.Reflection.PropertyInfo pi,
+                                         Inventec.Common.SignLibrary.ADO.InputADO emrInputADO,
+                                         object value,
+                                         EmrColumnMappingADO emrColumn)
+        {
+            try
+            {
+                if (emrColumn == null || String.IsNullOrWhiteSpace(emrColumn.Mode))
+                {
+                    return value;
+                }
+
+                string mode = emrColumn.Mode.Trim().ToUpperInvariant();
+                if (mode != "APPEND" && mode != "PREPEND")
+                {
+                    return value;
+                }
+
+                string newValue = value == null ? "" : value.ToString();
+                if (String.IsNullOrWhiteSpace(newValue))
+                {
+                    return value;
+                }
+
+                object current = pi.GetValue(emrInputADO);
+                string oldValue = current == null ? "" : current.ToString();
+                if (String.IsNullOrWhiteSpace(oldValue))
+                {
+                    return newValue;
+                }
+
+                if (oldValue.IndexOf(newValue, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return oldValue;
+                }
+
+                string sep = emrColumn.Separator ?? "";
+
+                string result = mode == "APPEND"
+                    ? oldValue + sep + newValue
+                    : newValue + sep + oldValue;
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "BuildMappingValue____EmrColumn=" + emrColumn.EmrColumn
+                    + ", Mode=" + mode + ", Separator=" + sep
+                    + ", oldValue=" + oldValue + ", newValue=" + newValue
+                    + ", result=" + result
+                    + ", printTypeCode=" + (this.printType != null ? this.printType.PRINT_TYPE_CODE : ""));
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return value;
+            }
+        }
+
         private bool ProcessColumnMaping(Inventec.Common.SignLibrary.ADO.InputADO emrInputADO)
         {
             bool success = true;
@@ -851,7 +923,9 @@ namespace MPS.ProcessorBase.Core
                                                 }
                                                 else
                                                 {
-                                                    pi.SetValue(emrInputADO, value);
+                                                    //Mode tren tung dong anh xa quyet dinh GHI DE hay NOI CHUOI.
+                                                    //Khong khai bao -> ghi de, dung hanh vi cu.
+                                                    pi.SetValue(emrInputADO, BuildMappingValue(pi, emrInputADO, value, emrColumn));
                                                     valueDataType = "string";
                                                 }
                                                 object newValue = pi.GetValue(emrInputADO);
