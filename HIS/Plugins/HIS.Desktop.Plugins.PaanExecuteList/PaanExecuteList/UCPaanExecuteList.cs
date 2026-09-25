@@ -642,12 +642,18 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             }
         }
 
-        /// <summary>Nhay dup tren luoi cung mo man Tra ket qua.</summary>
+        /// <summary>
+        /// Nhay dup tren luoi LUON mo man Tra ket qua, ke ca khi y lenh da hoan thanh.
+        ///
+        /// KHONG goi ProcessSelectedRow() vi ham do co nhanh "da hoan thanh -> huy
+        /// ket thuc": nhay dup nham se huy ket thuc ngoai y muon. Man cu cung tach
+        /// rieng nhu vay - xem UCExecuteRoom.cs:1432 (btnExecuteByDoubleClick).
+        /// </summary>
         private void gridViewPaan_DoubleClick(object sender, EventArgs e)
         {
             try
             {
-                ProcessSelectedRow();
+                OpenServiceExecuteOfFocusedRow();
             }
             catch (Exception ex)
             {

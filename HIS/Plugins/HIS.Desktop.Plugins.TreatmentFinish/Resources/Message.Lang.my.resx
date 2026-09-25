@@ -192,9 +192,6 @@
   <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
     <value>ချိန်းဆိုထားသည့်အချိန်သည် ကုသမှုပြီးဆုံးချိန်ထက် ပိုနေရပါမည်။</value>
   </data>
-  <data name="BenhNhanChuaDuocTaoVoBenhAnCanTao" xml:space="preserve">
-    <value>Bệnh nhân chưa được tạo vỏ bệnh án, cần tạo vỏ bệnh án cho bệnh nhân</value>
-  </data>
   <data name="ChuaDuocTaoVoBenhAn" xml:space="preserve">
     <value>ပရိုဂရမ်လူနာသည် ဆေးမှတ်တမ်းခွံတစ်ခုကို မဖန်တီးရသေးပါ။</value>
   </data>

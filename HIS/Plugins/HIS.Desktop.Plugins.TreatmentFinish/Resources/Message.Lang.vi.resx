@@ -192,9 +192,6 @@
   <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
     <value>Thời gian hẹn khám phải lớn hơn thời gian kết thúc điều trị</value>
   </data>
-  <data name="BenhNhanChuaDuocTaoVoBenhAnCanTao" xml:space="preserve">
-    <value>Bệnh nhân chưa được tạo vỏ bệnh án, cần tạo vỏ bệnh án cho bệnh nhân</value>
-  </data>
   <data name="ChuaDuocTaoVoBenhAn" xml:space="preserve">
     <value>Bệnh nhân chương trình chưa được tạo Vỏ bệnh án. Bạn có muốn tạo hay không?</value>
   </data>

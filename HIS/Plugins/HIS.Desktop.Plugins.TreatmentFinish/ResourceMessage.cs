@@ -781,22 +781,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
 
-        internal static string BenhNhanChuaDuocTaoVoBenhAnCanTao
-        {
-            get
-            {
-                try
-                {
-                    return Inventec.Common.Resource.Get.Value("BenhNhanChuaDuocTaoVoBenhAnCanTao", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(ex);
-                }
-                return "";
-            }
-        }
-
         internal static string ChuaDuocTaoVoBenhAn
         {
             get

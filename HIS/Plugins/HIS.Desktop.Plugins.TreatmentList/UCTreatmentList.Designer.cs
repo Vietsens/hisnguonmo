@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -189,6 +189,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.btnRecordChecking = new DevExpress.XtraEditors.SimpleButton();
             this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.btnKskServiceEdit = new DevExpress.XtraEditors.SimpleButton();
+            this.btnKskContractPrescription = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControlItemKskContractPrescription = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnGuiHS = new DevExpress.XtraEditors.SimpleButton();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -691,6 +693,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnKskServiceEdit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemKskContractPrescription)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).BeginInit();
@@ -707,6 +710,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.layoutControl1.Controls.Add(this.btnRecordChecking);
             this.layoutControl1.Controls.Add(this.btnDelete);
             this.layoutControl1.Controls.Add(this.btnKskServiceEdit);
+            this.layoutControl1.Controls.Add(this.btnKskContractPrescription);
             this.layoutControl1.Controls.Add(this.btnGuiHS);
             this.layoutControl1.Controls.Add(this.gridControl1);
             this.layoutControl1.Controls.Add(this.txtSocialInsuranceNumber);
@@ -776,6 +780,17 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.btnDelete.TabIndex = 27;
             this.btnDelete.Text = "Xóa";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            //
+            // btnKskContractPrescription
+            //
+            this.btnKskContractPrescription.Location = new System.Drawing.Point(1849, 1148);
+            this.btnKskContractPrescription.Margin = new System.Windows.Forms.Padding(4);
+            this.btnKskContractPrescription.Name = "btnKskContractPrescription";
+            this.btnKskContractPrescription.Size = new System.Drawing.Size(185, 27);
+            this.btnKskContractPrescription.StyleController = this.layoutControl1;
+            this.btnKskContractPrescription.TabIndex = 28;
+            this.btnKskContractPrescription.Text = "Kê đơn thuốc (khám sức khỏe)";
+            this.btnKskContractPrescription.Click += new System.EventHandler(this.btnKskContractPrescription_Click);
             // 
             // btnKskServiceEdit
             // 
@@ -3996,6 +4011,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.layoutControlItem39,
             this.layoutControlItem40,
             this.lciBtnKskServiceEdit,
+            this.layoutControlItemKskContractPrescription,
             this.emptySpaceItem4,
             this.layoutControlItem37,
             this.layoutControlItem50,
@@ -4308,6 +4324,15 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.layoutControlItem40.Size = new System.Drawing.Size(87, 33);
             this.layoutControlItem40.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem40.TextVisible = false;
+            //
+            // layoutControlItemKskContractPrescription
+            //
+            this.layoutControlItemKskContractPrescription.Control = this.btnKskContractPrescription;
+            this.layoutControlItemKskContractPrescription.Location = new System.Drawing.Point(1846, 1145);
+            this.layoutControlItemKskContractPrescription.Name = "layoutControlItemKskContractPrescription";
+            this.layoutControlItemKskContractPrescription.Size = new System.Drawing.Size(191, 33);
+            this.layoutControlItemKskContractPrescription.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemKskContractPrescription.TextVisible = false;
             // 
             // lciBtnKskServiceEdit
             // 
@@ -4634,6 +4659,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnKskServiceEdit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemKskContractPrescription)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).EndInit();
@@ -4952,6 +4978,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
         private DevExpress.XtraEditors.SimpleButton btnGuiHS;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
         private DevExpress.XtraEditors.SimpleButton btnDelete;
+        private DevExpress.XtraEditors.SimpleButton btnKskContractPrescription;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItemKskContractPrescription;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem40;
         private DevExpress.XtraEditors.SimpleButton btnKskServiceEdit;
         private DevExpress.XtraLayout.LayoutControlItem lciBtnKskServiceEdit;

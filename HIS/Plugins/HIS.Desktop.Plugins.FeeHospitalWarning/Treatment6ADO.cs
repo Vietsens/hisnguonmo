@@ -44,6 +44,16 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
         public string WARRING_COLOR { get; set; }
         public bool IS_BOLD { get; set; }
 
+        /// <summary>
+        /// So tien con no theo cach tinh chuan cua backend (khac cong thuc SoNo tinh tai client)
+        /// </summary>
+        public decimal? PaylaterDebt { get; set; }
+
+        /// <summary>
+        /// Can cu khien ho so duoc coi la dien thu sau
+        /// </summary>
+        public string PaylaterReasonName { get; set; }
+
         public Treatment6ADO(L_HIS_TREATMENT_1 data)
         {
             if (data != null)

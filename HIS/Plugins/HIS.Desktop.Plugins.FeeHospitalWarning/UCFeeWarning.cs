@@ -38,6 +38,7 @@ using HIS.Desktop.Utility;
 using Inventec.Desktop.Common.LanguageManager;
 using System.Resources;
 using MOS.Filter;
+using MOS.SDO;
 using Inventec.Common.Controls.EditorLoader;
 using HIS.Desktop.Plugins.FeeHospitalWarning.Config;
 
@@ -294,6 +295,13 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
                         }
                     }
 
+                    //Chi lay tinh trang vien phi khi dang bat bo loc dien thu sau, de khong goi
+                    //them API cho moi dong khi nguoi dung xem danh sach binh thuong
+                    if (this.ChkPaylaterOnly.Checked)
+                    {
+                        this.FillPaylaterInfo(treatment6Ado);
+                    }
+
                     treatment6Ado = treatment6Ado.OrderByDescending(o => o.SoNo).ToList();
 
                     gridViewFeeWarning.BeginUpdate();
@@ -350,6 +358,12 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
                 }
 
                 filter.IS_PAUSE = false;
+
+                //Chi hien ho so thuoc dien thu sau con no
+                if (this.ChkPaylaterOnly.Checked)
+                {
+                    filter.IS_PAYLATER_ONLY = true;
+                }
 
                 if (SpTotalHeinPriceFrom.EditValue != null && SpTotalHeinPriceFrom.Value > 0)
                 {
@@ -572,6 +586,88 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bat hoac tat bo loc chi hien ho so thuoc dien thu sau con no, roi tai lai danh sach.
+        /// </summary>
+        private void ChkPaylaterOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.Gc_PaylaterDebt.Visible = this.ChkPaylaterOnly.Checked;
+                this.Gc_PaylaterReason.Visible = this.ChkPaylaterOnly.Checked;
+                this.FillDataToGrid();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lay tinh trang vien phi cua tung ho so tren trang hien tai de do vao hai cot moi.
+        /// Chi chay khi dang bat bo loc dien thu sau, va chi voi so dong cua MOT trang.
+        /// </summary>
+        private void FillPaylaterInfo(List<Treatment6ADO> treatments)
+        {
+            try
+            {
+                if (treatments == null || treatments.Count == 0)
+                {
+                    return;
+                }
+
+                foreach (var ado in treatments)
+                {
+                    try
+                    {
+                        CommonParam param = new CommonParam();
+                        HisTreatmentPaylaterFeeFilter filter = new HisTreatmentPaylaterFeeFilter();
+                        filter.TREATMENT_ID = ado.ID;
+                        var feeStatus = new Inventec.Common.Adapter.BackendAdapter(param)
+                            .Get<HisTreatmentPaylaterFeeSDO>("api/HisTreatment/GetPaylaterFeeStatus", ApiConsumers.MosConsumer, filter, param);
+
+                        if (feeStatus == null)
+                        {
+                            continue;
+                        }
+
+                        ado.PaylaterDebt = feeStatus.UNPAID;
+                        ado.PaylaterReasonName = GetPaylaterReasonName(feeStatus);
+                    }
+                    catch (Exception exItem)
+                    {
+                        //Mot ho so loi thi bo qua dong do, khong lam hong ca danh sach
+                        Inventec.Common.Logging.LogSystem.Warn(exItem);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private string GetPaylaterReasonName(HisTreatmentPaylaterFeeSDO feeStatus)
+        {
+            if (feeStatus == null)
+            {
+                return "";
+            }
+            switch (feeStatus.REASON)
+            {
+                case HisTreatmentPaylaterFeeSDO.PaylaterReason.EMERGENCY:
+                    return "Cấp cứu";
+                case HisTreatmentPaylaterFeeSDO.PaylaterReason.SERVICE_REQ:
+                    return "Y lệnh tích thu sau";
+                case HisTreatmentPaylaterFeeSDO.PaylaterReason.OWE_TYPE:
+                    return "Cho nợ viện phí";
+                case HisTreatmentPaylaterFeeSDO.PaylaterReason.UNDETERMINED:
+                    return "Chưa xác định";
+                default:
+                    return "";
             }
         }
 

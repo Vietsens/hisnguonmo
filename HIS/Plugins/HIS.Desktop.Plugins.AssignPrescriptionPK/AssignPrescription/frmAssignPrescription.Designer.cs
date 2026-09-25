@@ -482,6 +482,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lblConThua = new DevExpress.XtraEditors.LabelControl();
             this.lblDaDong = new DevExpress.XtraEditors.LabelControl();
             this.lblChiPhiBNPhaiTra = new DevExpress.XtraEditors.LabelControl();
+            this.lblPaylaterDebt = new DevExpress.XtraEditors.LabelControl();
             this.layoutControlPrintAssignPrescriptionExt = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.emptySpaceItem13 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -711,6 +712,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.emptySpaceItem10 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciForlblConThua = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciForlblChiPhiBNPhaiTra = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciForlblPaylaterDebt = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem11 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -1173,6 +1175,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciForlblConThua)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciForlblChiPhiBNPhaiTra)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciForlblPaylaterDebt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
@@ -1476,6 +1479,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControl6.Controls.Add(this.lblConThua);
             this.layoutControl6.Controls.Add(this.lblDaDong);
             this.layoutControl6.Controls.Add(this.lblChiPhiBNPhaiTra);
+            this.layoutControl6.Controls.Add(this.lblPaylaterDebt);
             this.layoutControl6.Controls.Add(this.layoutControlPrintAssignPrescriptionExt);
             this.layoutControl6.Controls.Add(this.chkPreviewBeforePrint);
             this.layoutControl6.Controls.Add(this.chkEyeInfo);
@@ -4798,6 +4802,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lblConThua.Size = new System.Drawing.Size(58, 14);
             this.lblConThua.StyleController = this.layoutControl6;
             this.lblConThua.TabIndex = 124;
+            //
+            // lblPaylaterDebt
+            //
+            this.lblPaylaterDebt.Appearance.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPaylaterDebt.Appearance.ForeColor = System.Drawing.Color.Red;
+            this.lblPaylaterDebt.Appearance.Options.UseFont = true;
+            this.lblPaylaterDebt.Appearance.Options.UseForeColor = true;
+            this.lblPaylaterDebt.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblPaylaterDebt.Location = new System.Drawing.Point(147, 615);
+            this.lblPaylaterDebt.Name = "lblPaylaterDebt";
+            this.lblPaylaterDebt.Size = new System.Drawing.Size(58, 14);
+            this.lblPaylaterDebt.StyleController = this.layoutControl6;
+            this.lblPaylaterDebt.TabIndex = 125;
             // 
             // lblDaDong
             // 
@@ -7192,6 +7209,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.emptySpaceItem10,
             this.lciForlblConThua,
             this.lciForlblChiPhiBNPhaiTra,
+            this.lciForlblPaylaterDebt,
             this.emptySpaceItem11,
             this.layoutControlItem28,
             this.layoutControlItem20,
@@ -7941,6 +7959,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciForlblConThua.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciForlblConThua.TextSize = new System.Drawing.Size(140, 13);
             this.lciForlblConThua.TextToControlDistance = 5;
+            //
+            // lciForlblPaylaterDebt
+            //
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.ForeColor = System.Drawing.Color.Red;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseFont = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciForlblPaylaterDebt.Control = this.lblPaylaterDebt;
+            this.lciForlblPaylaterDebt.Location = new System.Drawing.Point(0, 613);
+            this.lciForlblPaylaterDebt.Name = "lciForlblPaylaterDebt";
+            this.lciForlblPaylaterDebt.Size = new System.Drawing.Size(207, 18);
+            this.lciForlblPaylaterDebt.Text = "Diện thu sau:";
+            this.lciForlblPaylaterDebt.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciForlblPaylaterDebt.TextSize = new System.Drawing.Size(140, 13);
+            this.lciForlblPaylaterDebt.TextToControlDistance = 5;
+            this.lciForlblPaylaterDebt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // lciForlblChiPhiBNPhaiTra
             // 
@@ -9050,6 +9086,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciForlblConThua)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciForlblChiPhiBNPhaiTra)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciForlblPaylaterDebt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
@@ -9455,6 +9492,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private DevExpress.XtraEditors.LabelControl lblConThua;
         private DevExpress.XtraEditors.LabelControl lblDaDong;
         private DevExpress.XtraEditors.LabelControl lblChiPhiBNPhaiTra;
+        private DevExpress.XtraEditors.LabelControl lblPaylaterDebt;
+        private DevExpress.XtraLayout.LayoutControlItem lciForlblPaylaterDebt;
         private DevExpress.XtraLayout.LayoutControlItem lciForlblDaDong;
         private DevExpress.XtraLayout.LayoutControlItem lciForlblConThua;
         private DevExpress.XtraLayout.LayoutControlItem lciForlblChiPhiBNPhaiTra;

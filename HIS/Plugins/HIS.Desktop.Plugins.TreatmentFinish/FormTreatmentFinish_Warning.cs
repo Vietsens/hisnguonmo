@@ -18,6 +18,7 @@
 using DevExpress.XtraEditors;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.Plugins.TreatmentFinish.ADO;
 using HIS.Desktop.Plugins.TreatmentFinish.Config;
 using Inventec.Common.Adapter;
@@ -1188,6 +1189,73 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             }
                         }
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                valid = false;
+            }
+            return valid;
+        }
+
+        /// <summary>
+        /// Canh bao cong no khi ket thuc ho so thuoc dien thu sau.
+        /// Nguoi dung xac nhan tiep tuc thi dat co IsConfirmedPaylaterDebt de backend bo qua
+        /// DUNG buoc kiem tra cong no, khong bo qua buoc kiem tra nao khac.
+        /// </summary>
+        private bool CheckPaylaterFee_ForSave(ValidationDataType validationDataType, ref List<WarningADO> listWarningADO)
+        {
+            bool valid = true;
+            try
+            {
+                this.isConfirmedPaylaterDebt = false;
+
+                if (validationDataType == ValidationDataType.PopupMessage && this._isSkipWarningForSave == true)
+                {
+                    return valid;
+                }
+
+                if (this.treatmentId <= 0)
+                {
+                    return valid;
+                }
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisTreatmentPaylaterFeeFilter filter = new MOS.Filter.HisTreatmentPaylaterFeeFilter();
+                filter.TREATMENT_ID = this.treatmentId;
+                var feeStatus = new BackendAdapter(param).Get<MOS.SDO.HisTreatmentPaylaterFeeSDO>(
+                    "api/HisTreatment/GetPaylaterFeeStatus", ApiConsumers.MosConsumer, filter, param);
+
+                //Khong lay duoc tinh trang vien phi thi de backend tu quyet dinh, khong tu chan o day
+                if (feeStatus == null || !feeStatus.IS_PAYLATER)
+                {
+                    return valid;
+                }
+
+                string debtText = feeStatus.IS_UNDETERMINED
+                    ? "không xác định được"
+                    : Inventec.Common.Number.Convert.NumberToString(feeStatus.UNPAID ?? 0, ConfigApplications.NumberSeperator) + " đồng";
+                string fullMessage = "Hồ sơ thuộc diện thu sau, còn nợ " + debtText + "."
+                    + Environment.NewLine + "Bạn có muốn tiếp tục kết thúc hồ sơ không?";
+
+                if (validationDataType == ValidationDataType.PopupMessage)
+                {
+                    var result = DevExpress.XtraEditors.XtraMessageBox.Show(fullMessage, "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result != DialogResult.Yes)
+                    {
+                        //Dung han, giu nguyen ho so de phoi hop voi thu ngan thu tien
+                        return false;
+                    }
+                    //Nguoi dung da xac nhan, danh dau de gui co len backend
+                    this.isConfirmedPaylaterDebt = true;
+                }
+                else if (validationDataType == ValidationDataType.GetListMessage && listWarningADO != null)
+                {
+                    WarningADO warning = new WarningADO();
+                    warning.IsSkippable = true;
+                    warning.Description = fullMessage;
+                    listWarningADO.Add(warning);
                 }
             }
             catch (Exception ex)
