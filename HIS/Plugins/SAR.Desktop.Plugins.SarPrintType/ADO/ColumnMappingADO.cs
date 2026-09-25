@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -35,6 +35,30 @@ namespace SAR.Desktop.Plugins.SarPrintType.ADO
             get;
             set;
         }
+        /// <summary>
+        /// Cach gan gia tri vao cot EMR khi cot do la chuoi:
+        ///   de trong / REPLACE -> ghi de (mac dinh, giong truoc day)
+        ///   APPEND             -> noi vao CUOI gia tri dang co
+        ///   PREPEND            -> noi vao DAU gia tri dang co
+        /// Dung khi can bo sung du lieu ma KHONG duoc mat gia tri cu, vi du HIS_CODE cua
+        /// van ban ngoai dot dieu tri (thu vien ky dung chuoi nay de nhan dien van ban
+        /// da ky chua - ghi de se lam mat nhan dien va tao ban trung).
+        /// </summary>
+        public string Mode
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Ky tu ngan cach khi Mode = APPEND / PREPEND. De trong thi khong chen gi.
+        /// </summary>
+        public string Separator
+        {
+            get;
+            set;
+        }
+
         public int Edit
         {
             get;

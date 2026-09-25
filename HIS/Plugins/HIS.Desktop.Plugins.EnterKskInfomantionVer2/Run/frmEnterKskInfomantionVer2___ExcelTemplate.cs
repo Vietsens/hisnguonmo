@@ -314,6 +314,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         BaseEdit edit;
                         if (!editors.TryGetValue(row.MA_O_PHAN_LOAI, out edit) || edit == null) result.SkippedMissing++;
                         else if (!IsEditable(edit)) result.SkippedLocked++;
+                        else if (edit is TextEdit && !(edit is GridLookUpEdit) && !(edit is LookUpEdit))
+                        {
+                            // Ô "Kết luận" của 2 mẫu khám lái xe là ô CHỮ TỰ DO (txt*Conclude), tuy
+                            // cũng mang giá trị "Loại I" nhưng KHÔNG neo danh mục — gán thẳng chuỗi.
+                            // Tra danh mục cho ô này sẽ luôn trượt và bị đếm nhầm là bỏ qua.
+                            edit.Text = row.PHAN_LOAI ?? "";
+                            result.Applied++;
+                        }
                         else
                         {
                             // Bỏ trống cột Phân loại trong file = xóa ô đó, không phải bỏ qua.

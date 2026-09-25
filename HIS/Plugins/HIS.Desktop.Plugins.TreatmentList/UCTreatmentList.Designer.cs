@@ -4246,9 +4246,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(1846, 1145);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(2037, 1145);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(654, 33);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(463, 33);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem33
