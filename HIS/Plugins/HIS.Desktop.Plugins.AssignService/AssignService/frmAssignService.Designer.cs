@@ -162,6 +162,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lblConThua = new DevExpress.XtraEditors.LabelControl();
             this.lblDaDong = new DevExpress.XtraEditors.LabelControl();
             this.lblChiPhiBNPhaiTra = new DevExpress.XtraEditors.LabelControl();
+            this.lblPaylaterDebt = new DevExpress.XtraEditors.LabelControl();
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
             this.btnBangKe = new DevExpress.XtraEditors.SimpleButton();
             this.btnConfiguration = new DevExpress.XtraEditors.SimpleButton();
@@ -488,6 +489,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciForlblDaDong = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem8 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciForlblConThua = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciForlblPaylaterDebt = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem6 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -787,6 +789,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.lciForlblDaDong)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciForlblConThua)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciForlblPaylaterDebt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
@@ -871,6 +874,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lcEditorInfo.Controls.Add(this.lblConThua);
             this.lcEditorInfo.Controls.Add(this.lblDaDong);
             this.lcEditorInfo.Controls.Add(this.lblChiPhiBNPhaiTra);
+            this.lcEditorInfo.Controls.Add(this.lblPaylaterDebt);
             this.lcEditorInfo.Controls.Add(this.btnEdit);
             this.lcEditorInfo.Controls.Add(this.btnBangKe);
             this.lcEditorInfo.Controls.Add(this.btnConfiguration);
@@ -1408,6 +1412,19 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lblConThua.Size = new System.Drawing.Size(71, 20);
             this.lblConThua.StyleController = this.lcEditorInfo;
             this.lblConThua.TabIndex = 131;
+            //
+            // lblPaylaterDebt
+            //
+            this.lblPaylaterDebt.Appearance.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblPaylaterDebt.Appearance.ForeColor = System.Drawing.Color.Red;
+            this.lblPaylaterDebt.Appearance.Options.UseFont = true;
+            this.lblPaylaterDebt.Appearance.Options.UseForeColor = true;
+            this.lblPaylaterDebt.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblPaylaterDebt.Location = new System.Drawing.Point(392, 526);
+            this.lblPaylaterDebt.Name = "lblPaylaterDebt";
+            this.lblPaylaterDebt.Size = new System.Drawing.Size(71, 20);
+            this.lblPaylaterDebt.StyleController = this.lcEditorInfo;
+            this.lblPaylaterDebt.TabIndex = 132;
             // 
             // lblDaDong
             // 
@@ -4696,6 +4713,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciForlblDaDong,
             this.emptySpaceItem8,
             this.lciForlblConThua,
+            this.lciForlblPaylaterDebt,
             this.layoutControlItem3,
             this.emptySpaceItem6,
             this.layoutControlItem16,
@@ -5311,6 +5329,27 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciForlblConThua.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciForlblConThua.TextSize = new System.Drawing.Size(120, 20);
             this.lciForlblConThua.TextToControlDistance = 5;
+            //
+            // lciForlblPaylaterDebt
+            //
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.ForeColor = System.Drawing.Color.Red;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseFont = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciForlblPaylaterDebt.Control = this.lblPaylaterDebt;
+            this.lciForlblPaylaterDebt.Location = new System.Drawing.Point(265, 524);
+            this.lciForlblPaylaterDebt.MaxSize = new System.Drawing.Size(0, 24);
+            this.lciForlblPaylaterDebt.MinSize = new System.Drawing.Size(200, 24);
+            this.lciForlblPaylaterDebt.Name = "lciForlblPaylaterDebt";
+            this.lciForlblPaylaterDebt.Size = new System.Drawing.Size(200, 24);
+            this.lciForlblPaylaterDebt.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciForlblPaylaterDebt.Text = "Diện thu sau:";
+            this.lciForlblPaylaterDebt.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciForlblPaylaterDebt.TextSize = new System.Drawing.Size(120, 20);
+            this.lciForlblPaylaterDebt.TextToControlDistance = 5;
+            this.lciForlblPaylaterDebt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem3
             // 
@@ -6143,6 +6182,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.lciForlblDaDong)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciForlblConThua)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciForlblPaylaterDebt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
@@ -6476,6 +6516,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private DevExpress.XtraEditors.LabelControl lblConThua;
         private DevExpress.XtraEditors.LabelControl lblDaDong;
         private DevExpress.XtraEditors.LabelControl lblChiPhiBNPhaiTra;
+        private DevExpress.XtraEditors.LabelControl lblPaylaterDebt;
+        private DevExpress.XtraLayout.LayoutControlItem lciForlblPaylaterDebt;
         private DevExpress.XtraLayout.LayoutControlItem lciForlblConThua;
         private DevExpress.XtraLayout.LayoutControlItem lciForlblChiPhiBNPhaiTra;
         private DevExpress.XtraLayout.LayoutControlItem lciForlblDaDong;

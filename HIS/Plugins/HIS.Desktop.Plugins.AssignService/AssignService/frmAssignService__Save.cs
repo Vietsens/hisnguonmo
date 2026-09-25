@@ -658,6 +658,34 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         }
 
         /// <summary>
+        /// Hien cau canh bao cong no do BE tra kem khi luu THANH CONG phieu chi dinh
+        /// cho ho so thuoc dien thu sau. Chi bao cho biet, khong chan luu.
+        /// </summary>
+        private void ShowPaylaterDebtWarningAfterSave(CommonParam param)
+        {
+            try
+            {
+                if (param == null)
+                {
+                    return;
+                }
+
+                string message = param.GetMessage();
+                if (string.IsNullOrWhiteSpace(message))
+                {
+                    return;
+                }
+
+                MessageBox.Show(message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                //Chi la thong bao cho biet, loi o day tuyet doi khong duoc anh huong ket qua luu
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
         /// Warn when an exam-treatment record's total cost (existing + being assigned) exceeds
         /// 15% of base salary (HIS_BHYT_PARAM.BASE_SALARY effective at instruction time).
         /// Controlled by config HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam = "1".
@@ -2087,7 +2115,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 if (rs != null)
                 {//qtcode
-                    this.totalGuaranteeOriginal = this.totalGuaranteePrice_1; 
+                    //Luu thanh cong nhung BE co the kem cau canh bao cong no voi ho so dien thu sau.
+                    //Day la thong bao cho biet, khong hoi co tiep tuc hay khong vi phieu da luu roi.
+                    ShowPaylaterDebtWarningAfterSave(param);
+
+                    this.totalGuaranteeOriginal = this.totalGuaranteePrice_1;
                     this.serviceReqComboResultSDO = rs;
                     dicSessionCode[serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID] = serviceReqComboResultSDO.SessionCode;
                     dicServiceReqList[serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID] = serviceReqComboResultSDO;

@@ -4513,6 +4513,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.InitDefaultDataService();
                     this.LoadDataToTrackingCombo();
                     this.CheckOverTotalPatientPrice();
+                    this.LoadPaylaterFeeStatus();
                 }
             }
             catch (Exception ex)

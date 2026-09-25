@@ -695,7 +695,7 @@
             this.lciOpenWhenTreatmentFinish.Size = new System.Drawing.Size(393, 23);
             this.lciOpenWhenTreatmentFinish.Text = "Mở khi kết thúc điều trị:";
             this.lciOpenWhenTreatmentFinish.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciOpenWhenTreatmentFinish.TextSize = new System.Drawing.Size(90, 20);
+            this.lciOpenWhenTreatmentFinish.TextSize = new System.Drawing.Size(132, 20);
             this.lciOpenWhenTreatmentFinish.TextToControlDistance = 5;
             //
             // dxErrorProvider1

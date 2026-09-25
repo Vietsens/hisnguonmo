@@ -212,6 +212,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Wire event cho checkbox tự động lấy kết quả (KHÔNG lưu/khôi phục trạng thái tích).
                 this.chkAutoTestIndex.CheckedChanged += new System.EventHandler(this.chkAutoTestIndex_CheckedChanged);
                 InitAutoClsSettingButtonIcon();
+                // 2 n�t Xu�t m�u / Nh�p m�u Excel (vi�c 57621).
+                UpdateKskExcelButtonState();
                 // Tab trên 18 tuổi đã tách vùng XN vào sub-tab "Cận lâm sàng" — cập nhật enable khi đổi sub-tab.
                 this.xtraTabControl2.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl2_SelectedPageChanged);
                 // Chỉ enable checkbox ở tab có khám lâm sàng (tab có ô để load kết quả xét nghiệm).
@@ -1451,6 +1453,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 UpdateKskNumberDisplay(); // doi tab -> cap nhat so thu tu KSK cua tab dang mo
                 // Đổi tab: cập nhật trạng thái cho phép tích "Tự động lấy kết quả xét nghiệm".
                 UpdateAutoTestIndexEnableByTab();
+                // �i m�u kh�m: b�t/m� 2 n�t Xu�t m�u / Nh�p m�u theo m�u kh�m �.
+                UpdateKskExcelButtonState();
                 bool IsEnable = false;
                 btnSave.Enabled = true;
                 if (xtraTabControl1.SelectedTabPageIndex == 0)

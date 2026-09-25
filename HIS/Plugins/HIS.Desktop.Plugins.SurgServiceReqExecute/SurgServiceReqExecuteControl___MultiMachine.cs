@@ -206,21 +206,52 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                 if (this.cboMachine != null)
                 {
-                    //EditValue chi mang duoc 1 gia tri nen dat may dau tien de cac xu ly cu van chay,
-                    //ten day du cua ca danh sach hien qua NullText khi tich tu 2 may tro len
-                    if (this.currentMachineIds_MultiMachine.Count > 1)
-                    {
-                        this.cboMachine.Properties.NullText = String.Join("; ", names);
-                        this.cboMachine.EditValue = null;
-                    }
-                    else
-                    {
-                        this.cboMachine.Properties.NullText = "";
-                        this.cboMachine.EditValue = this.currentMachineIds_MultiMachine.Count == 1
-                            ? (object)this.currentMachineIds_MultiMachine[0]
-                            : null;
-                    }
+                    //Luon hien ten may qua NullText va de EditValue = null, ke ca khi chi tich 1 may.
+                    //Khong duoc de EditValue mang id roi trong cho GridLookUpEdit tu tra ten:
+                    //view dang bat MultiSelectMode = CheckBoxRowSelect nen DevExpress dong bo lai EditValue
+                    //theo dong focus khi dong popup, ket qua la o nhap bi trang khi chi chon 1 may.
+                    this.cboMachine.Properties.NullText = names.Count > 0 ? String.Join("; ", names) : "";
+                    this.cboMachine.EditValue = null;
+                    this.cboMachine.Properties.Buttons[1].Visible = this.currentMachineIds_MultiMachine.Count > 0;
+
+                    //Doi NullText KHONG tu lam editor ve lai text: EditValue von da la null nen gan null
+                    //lan nua khong sinh EditValueChanged, o nhap giu nguyen anh cu va chi doi khi popup
+                    //mo lai => nguoi dung phai chon 2 lan moi thay ten may.
+                    //UpdateDisplayText() la protected nen goi qua reflection; that bai thi ve lai ca control.
+                    ForceRefreshDisplayText_MultiMachine(this.cboMachine);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ep editor tinh lai text hien thi tu NullText ngay lap tuc.
+        /// Can vi doi rieng Properties.NullText khong lam editor ve lai: no chi doc lai NullText
+        /// khi co EditValueChanged hoac khi popup mo lai, nen o nhap se tre mot nhip
+        /// (chon may lan 1 khong thay ten, lan 2 moi thay).
+        /// UpdateDisplayText() la protected tu TextEdit nen phai goi qua reflection;
+        /// neu DevExpress doi API thi rot xuong Invalidate() de it nhat con ve lai control.
+        /// </summary>
+        private void ForceRefreshDisplayText_MultiMachine(BaseEdit editor)
+        {
+            try
+            {
+                if (editor == null) return;
+
+                var method = editor.GetType().GetMethod(
+                    "UpdateDisplayText",
+                    System.Reflection.BindingFlags.Instance
+                        | System.Reflection.BindingFlags.Public
+                        | System.Reflection.BindingFlags.NonPublic
+                        | System.Reflection.BindingFlags.FlattenHierarchy,
+                    null, Type.EmptyTypes, null);
+
+                if (method != null) method.Invoke(editor, null);
+
+                editor.Invalidate();
             }
             catch (Exception ex)
             {

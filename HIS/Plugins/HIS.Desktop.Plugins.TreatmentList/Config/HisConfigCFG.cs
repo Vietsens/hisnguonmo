@@ -42,6 +42,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
         private const string CONFIG_KEY__UnlockConditionOption = "HIS.Desktop.Plugins.TreatmentList.UnlockConditionOption";
         private const string CONFIG_KEY__IsRequiredReasonWhenOpenTreatment = "HIS.Desktop.Plugins.TreatmentList.IsRequiredReasonWhenOpenTreatment";
         private const string CONFIG_KEY__SearchPatientsAcrossHospital = "HIS.Desktop.Plugins.TreatmentList.SearchPatientsAcrossHospital";
+        private const string CONFIG_KEY__AllowKskContractPrescription = "HIS.Desktop.Plugins.TreatmentList.ALLOW_KSK_CONTRACT_PRESCRIPTION";
         private const string CONFIG_KEY__AIConnectionInfo = "HIS.Desktop.AI.ConnectionInfo";
         private const string CONFIG_KEY__AIViewChatUrlFormat = "HIS.Desktop.AI.ViewChatUrlFormat";
 
@@ -54,6 +55,12 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
         internal static string AIViewChatUrlFormat;
         internal static string AIConnectionInfo;
         internal static bool SearchPatientsAcrossHospital;
+
+        /// <summary>
+        /// HIS.Desktop.Plugins.TreatmentList.ALLOW_KSK_CONTRACT_PRESCRIPTION = 1 → hien nut
+        /// "Ke don thuoc (kham suc khoe)" cho phep ke don thuoc cho ho so kham suc khoe theo hop dong.
+        /// </summary>
+        internal static bool AllowKskContractPrescription;
         internal static bool IsRequiredReasonWhenOpenTreatment;
         internal static bool IsUnlockConditionOption;
         internal static string HSSKAddress;
@@ -115,6 +122,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
                 IsAllowPrintNoMedicine = GetValue(CONFIG_KEY__IS_ALLOW_PRINT_NO_MEDICINE) == GlobalVariables.CommonStringTrue;
                 MPS_PrintPrescription = GetValue(CONFIG_KEY__MPS_PrintPrescription);
                 SearchPatientsAcrossHospital = GetValue(CONFIG_KEY__SearchPatientsAcrossHospital) == "1";
+                AllowKskContractPrescription = GetValue(CONFIG_KEY__AllowKskContractPrescription) == "1";
                 AIConnectionInfo = GetValue(CONFIG_KEY__AIConnectionInfo);
                 AIViewChatUrlFormat = GetValue(CONFIG_KEY__AIViewChatUrlFormat);
                 isAllowFinishDifferentDepartment = GetValue(CONFIG_KEY__ALLOW_FINISH_DIFFERENT_DEPARTMENT) == "1";

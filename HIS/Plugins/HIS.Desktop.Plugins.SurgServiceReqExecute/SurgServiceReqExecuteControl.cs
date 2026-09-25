@@ -5163,8 +5163,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 }
                 else
                 {
-                    //dang tich tu 2 may tro len thi EditValue co chu y de null, khong duoc xoa trang o ma may
-                    if (this.currentMachineIds_MultiMachine == null || this.currentMachineIds_MultiMachine.Count <= 1)
+                    //EditValue luon de null khi da tich may (ten may hien qua NullText),
+                    //nen chi duoc xoa trang o ma may khi that su khong con may nao duoc tich
+                    if (this.currentMachineIds_MultiMachine == null || this.currentMachineIds_MultiMachine.Count == 0)
                     {
                         txtMachineCode.Text = "";
                     }

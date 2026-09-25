@@ -1308,13 +1308,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             // 
             // ChkMoPhieuVoBenhAn
             // 
-            this.ChkMoPhieuVoBenhAn.Location = new System.Drawing.Point(1130, 492);
+            this.ChkMoPhieuVoBenhAn.Location = new System.Drawing.Point(178, 312);
             this.ChkMoPhieuVoBenhAn.Margin = new System.Windows.Forms.Padding(4);
             this.ChkMoPhieuVoBenhAn.MenuManager = this.barManager1;
             this.ChkMoPhieuVoBenhAn.Name = "ChkMoPhieuVoBenhAn";
             this.ChkMoPhieuVoBenhAn.Properties.Caption = "";
             this.ChkMoPhieuVoBenhAn.Properties.FullFocusRect = true;
-            this.ChkMoPhieuVoBenhAn.Size = new System.Drawing.Size(126, 19);
+            this.ChkMoPhieuVoBenhAn.Size = new System.Drawing.Size(161, 19);
             this.ChkMoPhieuVoBenhAn.StyleController = this.layoutControlMain;
             this.ChkMoPhieuVoBenhAn.TabIndex = 37;
             this.ChkMoPhieuVoBenhAn.CheckedChanged += new System.EventHandler(this.ChkMoPhieuVoBenhAn_CheckedChanged);
@@ -2329,9 +2329,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             // emptyCloseMediRecord
             // 
             this.emptyCloseMediRecord.AllowHotTrack = false;
-            this.emptyCloseMediRecord.Location = new System.Drawing.Point(0, 309);
+            this.emptyCloseMediRecord.Location = new System.Drawing.Point(0, 337);
             this.emptyCloseMediRecord.Name = "emptyCloseMediRecord";
-            this.emptyCloseMediRecord.Size = new System.Drawing.Size(344, 58);
+            this.emptyCloseMediRecord.Size = new System.Drawing.Size(344, 30);
             this.emptyCloseMediRecord.TextSize = new System.Drawing.Size(0, 0);
             this.emptyCloseMediRecord.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
@@ -2476,13 +2476,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.LciMoPhieuVoBenhAn.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciMoPhieuVoBenhAn.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciMoPhieuVoBenhAn.Control = this.ChkMoPhieuVoBenhAn;
-            this.LciMoPhieuVoBenhAn.Location = new System.Drawing.Point(992, 489);
+            this.LciMoPhieuVoBenhAn.Location = new System.Drawing.Point(0, 309);
             this.LciMoPhieuVoBenhAn.Name = "LciMoPhieuVoBenhAn";
             this.LciMoPhieuVoBenhAn.OptionsToolTip.ToolTip = "Mở phiếu, Vỏ bệnh án (VBA)";
-            this.LciMoPhieuVoBenhAn.Size = new System.Drawing.Size(267, 33);
+            this.LciMoPhieuVoBenhAn.Size = new System.Drawing.Size(344, 28);
             this.LciMoPhieuVoBenhAn.Text = "Mở phiếu, Vỏ bệnh án (VBA):";
             this.LciMoPhieuVoBenhAn.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.LciMoPhieuVoBenhAn.TextSize = new System.Drawing.Size(220, 20);
+            this.LciMoPhieuVoBenhAn.TextSize = new System.Drawing.Size(170, 20);
             this.LciMoPhieuVoBenhAn.TextToControlDistance = 5;
             // 
             // lcgEyeInfoGroup

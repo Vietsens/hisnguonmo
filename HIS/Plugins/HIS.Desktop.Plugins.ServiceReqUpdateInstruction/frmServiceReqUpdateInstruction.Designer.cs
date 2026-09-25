@@ -73,6 +73,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtResultApproverLoginname = new DevExpress.XtraEditors.TextEdit();
             this.chkIsNotRequireFee = new DevExpress.XtraEditors.CheckEdit();
+            this.lblPaylaterDebt = new DevExpress.XtraEditors.LabelControl();
+            this.lciForlblPaylaterDebt = new DevExpress.XtraLayout.LayoutControlItem();
             this.chkPriority = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsEmergency = new DevExpress.XtraEditors.CheckEdit();
             this.panelControlCauseIcd = new DevExpress.XtraEditors.PanelControl();
@@ -152,6 +154,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtResultApproverLoginname.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsNotRequireFee.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciForlblPaylaterDebt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPriority.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsEmergency.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlCauseIcd)).BeginInit();
@@ -235,6 +238,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.layoutControl1.Controls.Add(this.cboResultApprover);
             this.layoutControl1.Controls.Add(this.txtResultApproverLoginname);
             this.layoutControl1.Controls.Add(this.chkIsNotRequireFee);
+            this.layoutControl1.Controls.Add(this.lblPaylaterDebt);
             this.layoutControl1.Controls.Add(this.chkPriority);
             this.layoutControl1.Controls.Add(this.chkIsEmergency);
             this.layoutControl1.Controls.Add(this.panelControlCauseIcd);
@@ -806,6 +810,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.layoutControlItem5,
             this.layoutControlItem8,
             this.layoutControlItem9,
+            this.lciForlblPaylaterDebt,
             this.lciResultApprover,
             this.lciComboApprover,
             this.layoutControlItem10,
@@ -1010,6 +1015,34 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.layoutControlItem9.Size = new System.Drawing.Size(129, 24);
             this.layoutControlItem9.Text = "Thu sau:";
             this.layoutControlItem9.TextSize = new System.Drawing.Size(42, 13);
+            //
+            // lblPaylaterDebt
+            //
+            this.lblPaylaterDebt.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblPaylaterDebt.Appearance.ForeColor = System.Drawing.Color.Red;
+            this.lblPaylaterDebt.Appearance.Options.UseFont = true;
+            this.lblPaylaterDebt.Appearance.Options.UseForeColor = true;
+            this.lblPaylaterDebt.Location = new System.Drawing.Point(490, 525);
+            this.lblPaylaterDebt.Name = "lblPaylaterDebt";
+            this.lblPaylaterDebt.Size = new System.Drawing.Size(120, 19);
+            this.lblPaylaterDebt.StyleController = this.layoutControl1;
+            this.lblPaylaterDebt.TabIndex = 28;
+            //
+            // lciForlblPaylaterDebt
+            //
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.ForeColor = System.Drawing.Color.Red;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseFont = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciForlblPaylaterDebt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciForlblPaylaterDebt.Control = this.lblPaylaterDebt;
+            this.lciForlblPaylaterDebt.Location = new System.Drawing.Point(436, 523);
+            this.lciForlblPaylaterDebt.Name = "lciForlblPaylaterDebt";
+            this.lciForlblPaylaterDebt.Size = new System.Drawing.Size(180, 24);
+            this.lciForlblPaylaterDebt.Text = "Còn nợ:";
+            this.lciForlblPaylaterDebt.TextSize = new System.Drawing.Size(42, 13);
+            this.lciForlblPaylaterDebt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // lciResultApprover
             // 
@@ -1340,6 +1373,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtResultApproverLoginname.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsNotRequireFee.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciForlblPaylaterDebt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPriority.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsEmergency.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlCauseIcd)).EndInit();
@@ -1445,6 +1479,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         private DevExpress.XtraEditors.PanelControl panelControlCauseIcd;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraEditors.CheckEdit chkIsNotRequireFee;
+        private DevExpress.XtraEditors.LabelControl lblPaylaterDebt;
+        private DevExpress.XtraLayout.LayoutControlItem lciForlblPaylaterDebt;
         private DevExpress.XtraEditors.CheckEdit chkPriority;
         private DevExpress.XtraEditors.CheckEdit chkIsEmergency;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
