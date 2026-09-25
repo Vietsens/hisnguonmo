@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -46,11 +46,12 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 {
     public partial class frmChooseRoomForWaitingScreen : HIS.Desktop.Utility.FormBase
     {
-        frmWaitingScreenSample22 aFrmWaitingScreenQy = null;
+        Form aFrmWaitingScreenQy = null;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool isInit = true;
         const string frmWaitingScreenStr = "frmWaitingScreenSample22";
+        const string frmWaitingScreenNaStr = "frmWaitingScreenSample_NA";
         int positionHandleControl;
         internal V_LIS_SAMPLE listSample = null;
         string ModuleLinkName = "HIS.Desktop.Plugins.CallPatientSample";
@@ -64,7 +65,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             FormCollection fc = Application.OpenForms;
             foreach (Form frm in fc)
             {
-                if (frm.Name == frmWaitingScreenStr)
+                if (frm.Name == frmWaitingScreenStr || frm.Name == frmWaitingScreenNaStr)
                 {
                     this.Close();
                     return;
@@ -102,7 +103,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     for (int i = 0; i < Application.OpenForms.Count; i++)
                     {
                         Form f = Application.OpenForms[i];
-                        if (f.Name == frmWaitingScreenStr)
+                        if (f.Name == frmWaitingScreenStr || f.Name == frmWaitingScreenNaStr)
                         {
                             tgExtendMonitor.IsOn = true;
                         }
@@ -194,7 +195,16 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 this.positionHandleControl = -1;
                 if (!dxValidationProviderControl.Validate())
                     return;
-                aFrmWaitingScreenQy = new frmWaitingScreenSample22(this.currentModule, listSample, sampleSttIds, this.room,isTach);
+                // Cau hinh SAMPLE.WAITING_SCREEN.OPTION = 1 thi dung man hinh cho ban _NA,
+                // khac 1 thi giu nguyen man hinh cho hien tai.
+                if (WaitingScreenSampleNaCFG.IS_USE_WAITING_SCREEN_NA)
+                {
+                    aFrmWaitingScreenQy = new frmWaitingScreenSample_NA(this.currentModule, listSample, sampleSttIds, this.room, isTach);
+                }
+                else
+                {
+                    aFrmWaitingScreenQy = new frmWaitingScreenSample22(this.currentModule, listSample, sampleSttIds, this.room, isTach);
+                }
 
                 if (aFrmWaitingScreenQy != null && tgExtendMonitor.IsOn)
                 {

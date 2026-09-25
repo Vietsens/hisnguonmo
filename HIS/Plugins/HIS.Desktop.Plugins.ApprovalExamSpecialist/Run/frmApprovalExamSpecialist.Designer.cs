@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -213,10 +214,10 @@
             this.lciChiTietBenhAn = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItemChiTietBenhAn = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.imageCollection3 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.imageCollection3 = new DevExpress.Utils.ImageCollection(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
             this.xtraTabPage1.SuspendLayout();
@@ -1512,9 +1513,9 @@
             this.btnSave.TabIndex = 15;
             this.btnSave.Text = "Duyệt (Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            //
+            // 
             // btnSaveAndSign
-            //
+            // 
             this.btnSaveAndSign.Location = new System.Drawing.Point(102, 558);
             this.btnSaveAndSign.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveAndSign.Name = "btnSaveAndSign";
@@ -1522,10 +1523,11 @@
             this.btnSaveAndSign.StyleController = this.layoutControl1;
             this.btnSaveAndSign.TabIndex = 16;
             this.btnSaveAndSign.Text = "Duyệt và ký (Ctrl K)";
+            this.btnSaveAndSign.ToolTip = "Duyệt và ký tờ điều trị";
             this.btnSaveAndSign.Click += new System.EventHandler(this.btnSaveAndSign_Click);
-            //
+            // 
             // btnPrint
-            //
+            // 
             this.btnPrint.Location = new System.Drawing.Point(237, 558);
             this.btnPrint.Margin = new System.Windows.Forms.Padding(2);
             this.btnPrint.Name = "btnPrint";
@@ -2189,25 +2191,25 @@
             this.layoutControlItem5.Size = new System.Drawing.Size(108, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
-            //
+            // 
             // layoutControlItem7
-            //
+            // 
             this.layoutControlItem7.Control = this.btnSave;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 556);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(100, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
-            //
+            // 
             // layoutControlItem19
-            //
+            // 
             this.layoutControlItem19.Control = this.btnSaveAndSign;
             this.layoutControlItem19.Location = new System.Drawing.Point(100, 556);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.Size = new System.Drawing.Size(135, 26);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
-            //
+            // 
             // layoutControlItem18
             // 
             this.layoutControlItem18.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;

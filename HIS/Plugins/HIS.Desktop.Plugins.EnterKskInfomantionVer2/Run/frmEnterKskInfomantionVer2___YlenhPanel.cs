@@ -202,6 +202,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private List<YlenhRowADO> FetchYlenhRows(long roomId, string kw, long tfrom, long tto)
         {
             var filter = new HisServiceReqViewFilter();
+            // Lọc loại KH + chưa kết thúc ngay ở server: không thì tải về mọi y lệnh (XN, CĐHA...) của phòng trong ngày.
+            filter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
+            filter.SERVICE_REQ_STT_IDs = new List<long>()
+            {
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL
+            };
             if (roomId > 0) filter.EXECUTE_ROOM_ID = roomId;
             if (tfrom > 0) filter.INTRUCTION_TIME_FROM = tfrom;
             if (tto > 0) filter.INTRUCTION_TIME_TO = tto;
@@ -209,11 +216,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             var param = new CommonParam();
             var data = new BackendAdapter(param).Get<List<V_HIS_SERVICE_REQ>>(
                 "api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, param) ?? new List<V_HIS_SERVICE_REQ>();
-
-            // Chỉ y lệnh KHÁM (KH) + bỏ y lệnh ĐÃ KẾT THÚC (STT hoàn thành).
-            long typeKh = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
-            long sttHt = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT;
-            data = data.Where(o => o.SERVICE_REQ_TYPE_ID == typeKh && o.SERVICE_REQ_STT_ID != sttHt).ToList();
 
             // Lọc từ khóa (mã y lệnh / tên bệnh nhân) — không dấu.
             if (!string.IsNullOrEmpty(kw))

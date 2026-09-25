@@ -120,7 +120,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     // currentServiceReq là V_HIS_SERVICE_REQ (view) còn API trả HIS_SERVICE_REQ -> chỉ cập nhật trạng thái.
                     currentServiceReq.SERVICE_REQ_STT_ID = result.SERVICE_REQ_STT_ID;
                     UpdateFinishButtonEnable();
-                    try { LoadYlenhList(); } catch { }          // refresh danh sách (loại y lệnh đã kết thúc)
+                    // Refresh danh sách (loại y lệnh đã kết thúc) bằng luồng nền: gọi đồng bộ mất ~1s treo form.
+                    LoadYlenhListInBackground();
                     if (showMessage)
                         XtraMessageBox.Show("Đã kết thúc y lệnh khám.", "Thông báo",
                             System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
@@ -140,7 +141,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// <summary>
         /// Key CheckReq = "1": còn dịch vụ (khác y lệnh khám đang kết thúc) thuộc y lệnh chưa hoàn thành
         /// (chưa xử lý / đang xử lý) trong cùng hồ sơ thì cảnh báo, cho người dùng chọn có kết thúc tiếp không.
-        /// Dùng V_HIS_SERE_SERV_1 vì chỉ view này có SERVICE_REQ_STT_ID + filter SERVICE_REQ_STT_IDs.
+        /// Dùng V_HIS_SERE_SERV_1 vì chỉ view này có SERVICE_REQ_STT_ID + filter SERVICE_REQ_STT_IDs. 
         /// </summary>
         /// <returns>false = người dùng chọn không kết thúc.</returns> 
         private bool CheckUnfinishedServices()
@@ -156,9 +157,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL
                 };
                 filter.HAS_EXECUTE = true;
+                // Thuốc, vật tư kê đơn không cần kiểm tra. 
+                filter.NOT_IN_SERVICE_TYPE_IDs = new List<long>()
+                {
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
+                };
 
+                var sw = System.Diagnostics.Stopwatch.StartNew();
+                WaitingManager.Show();
                 var unfinisheds = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_1>>(
                     "api/HisSereServ/GetView1", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                WaitingManager.Hide();
+                LogSystem.Debug("EnterKskInfomantionVer2.CheckUnfinishedServices: " + sw.ElapsedMilliseconds + " ms, "
+                    + (unfinisheds == null ? "null" : unfinisheds.Count.ToString()) + " dong");
                 if (unfinisheds == null || unfinisheds.Count == 0)
                     return true;
 
@@ -178,7 +190,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
             catch (Exception ex)
             {
-                // Chỉ là cảnh báo: lỗi khi kiểm tra thì không chặn kết thúc khám. 
+                // Chỉ là cảnh báo: lỗi khi kiểm tra thì không chặn kết thúc khám.
+                WaitingManager.Hide();
                 LogSystem.Error(ex);
                 return true;
             }
