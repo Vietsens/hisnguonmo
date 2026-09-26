@@ -696,13 +696,16 @@ namespace MPS.ProcessorBase.Core
         /// cua man "Anh xa du lieu EMR" (EMR_COLUMN_MAPPING cua bieu in).
         ///
         ///   khong khai bao / "REPLACE" -> ghi de (mac dinh, giu nguyen hanh vi cu)
-        ///   "APPEND"                   -> gia tri cu + Separator + gia tri moi
         ///   "PREPEND"                  -> gia tri moi + Separator + gia tri cu
+        ///   "APPEND" (noi vao cuoi) DA BO theo yeu cau; cau hinh cu con APPEND duoc xu ly
+        ///   nhu PREPEND de khong ghi de mat chuoi dinh danh (HIS_CODE).
         ///
         /// Chi tac dong den bieu in NAO KHAI BAO Mode. Bieu in khong khai bao chay y nhu truoc,
         /// nen khong co rui ro lan sang cac MPS khac.
         ///
-        /// Da co san gia tri moi trong chuoi cu -> giu nguyen, tranh noi lap khi in lai nhieu lan.
+        /// Co khai bao Separator -> LUON noi kem Separator, ke ca khi chuoi cu da chua gia tri moi
+        /// (vd bang ke Mps000302 da co san ma bieu in -> "Mps000302|Mps000302 ..."), theo yeu cau nguoi dung.
+        /// Khong khai bao Separator ma chuoi cu da chua gia tri moi -> giu nguyen, tranh dinh lien 2 lan.
         /// Moi loi deu nuot va tra ve gia tri moi (hanh vi ghi de cu) de khong lam hong ban in.
         /// </summary>
         private object BuildMappingValue(System.Reflection.PropertyInfo pi,
@@ -718,7 +721,8 @@ namespace MPS.ProcessorBase.Core
                 }
 
                 string mode = emrColumn.Mode.Trim().ToUpperInvariant();
-                if (mode != "APPEND" && mode != "PREPEND")
+                //APPEND da bo: cau hinh cu con APPEND van noi (vao dau) chu khong ghi de.
+                if (mode != "PREPEND" && mode != "APPEND")
                 {
                     return value;
                 }
@@ -737,16 +741,16 @@ namespace MPS.ProcessorBase.Core
                     return newValue;
                 }
 
-                if (oldValue.IndexOf(newValue, StringComparison.OrdinalIgnoreCase) >= 0)
+                string sep = emrColumn.Separator ?? "";
+
+                //khong khai bao ky tu ngan cach ma chuoi cu da co gia tri moi -> giu nguyen (khong dinh lien 2 lan).
+                //co khai bao ky tu ngan cach -> luon noi kem ky tu do.
+                if (sep.Length == 0 && oldValue.IndexOf(newValue, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     return oldValue;
                 }
 
-                string sep = emrColumn.Separator ?? "";
-
-                string result = mode == "APPEND"
-                    ? oldValue + sep + newValue
-                    : newValue + sep + oldValue;
+                string result = newValue + sep + oldValue;
 
                 Inventec.Common.Logging.LogSystem.Info(
                     "BuildMappingValue____EmrColumn=" + emrColumn.EmrColumn
@@ -772,7 +776,7 @@ namespace MPS.ProcessorBase.Core
         ///   - Key la PRINT_TYPE_CODE (khong phan biet hoa thuong) ma bieu in khong tu co key nay
         ///     -> lay ma bieu in cua lan in hien tai (PRINT_TYPE_CODE cua SAR_PRINT_TYPE).
         ///     Viec 58123: bieu in nao can ma bieu in trong HIS_CODE thi khai bao dong anh xa
-        ///     HisCode - PRINT_TYPE_CODE kem Mode APPEND/PREPEND de khong ghi de chuoi dinh danh.
+        ///     HisCode - PRINT_TYPE_CODE kem Mode PREPEND de khong ghi de chuoi dinh danh.
         ///   - Con lai -> false, bo qua dong anh xa.
         /// </summary>
         private bool TryGetMappingValue(string key, out object value)

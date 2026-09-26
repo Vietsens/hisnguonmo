@@ -193,6 +193,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColumnMappingMode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMappingSeparator = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryBtnAdd = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryCboMappingMode = new DevExpress.XtraEditors.Repository.RepositoryItemImageComboBox();
             this.repositoryBtnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.popupContainerGenSignatureByKeyCFG = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.btnGenSignatureByKeyCFG = new DevExpress.XtraEditors.SimpleButton();
@@ -406,6 +407,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMappingEMR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewMappingEMR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnAdd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryCboMappingMode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupContainerGenSignatureByKeyCFG)).BeginInit();
             this.popupContainerGenSignatureByKeyCFG.SuspendLayout();
@@ -1509,7 +1511,8 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridControlMappingEMR.Name = "gridControlMappingEMR";
             this.gridControlMappingEMR.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryBtnAdd,
-            this.repositoryBtnDelete});
+            this.repositoryBtnDelete,
+            this.repositoryCboMappingMode});
             this.gridControlMappingEMR.Size = new System.Drawing.Size(700, 150);
             this.gridControlMappingEMR.TabIndex = 0;
             this.gridControlMappingEMR.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1548,10 +1551,11 @@ namespace SAR.Desktop.Plugins.SarPrintType
             // 
             // gridColumnMappingMode
             // 
-            this.gridColumnMappingMode.Caption = "Cách gán (để trống = ghi đè)";
+            this.gridColumnMappingMode.Caption = "Cách gán";
+            this.gridColumnMappingMode.ColumnEdit = this.repositoryCboMappingMode;
             this.gridColumnMappingMode.FieldName = "Mode";
             this.gridColumnMappingMode.Name = "gridColumnMappingMode";
-            this.gridColumnMappingMode.ToolTip = "Để trống hoặc REPLACE = ghi đè giá trị cũ. APPEND = nối vào cuối. PREPEND = nối vào đầu.";
+            this.gridColumnMappingMode.ToolTip = "REPLACE = ghi đè giá trị cũ. PREPEND = nối vào đầu giá trị cũ.";
             this.gridColumnMappingMode.Visible = true;
             this.gridColumnMappingMode.VisibleIndex = 2;
             this.gridColumnMappingMode.Width = 180;
@@ -1561,7 +1565,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColumnMappingSeparator.Caption = "Ký tự ngăn cách";
             this.gridColumnMappingSeparator.FieldName = "Separator";
             this.gridColumnMappingSeparator.Name = "gridColumnMappingSeparator";
-            this.gridColumnMappingSeparator.ToolTip = "Ký tự chèn giữa giá trị cũ và mới khi Cách gán là APPEND/PREPEND. Ví dụ | hoặc dấu cách.";
+            this.gridColumnMappingSeparator.ToolTip = "Ký tự chèn giữa giá trị mới và giá trị cũ khi Cách gán là PREPEND. Ví dụ | hoặc dấu cách.";
             this.gridColumnMappingSeparator.Visible = true;
             this.gridColumnMappingSeparator.VisibleIndex = 3;
             this.gridColumnMappingSeparator.Width = 110;
@@ -1574,6 +1578,18 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColAdd.Visible = true;
             this.gridColAdd.VisibleIndex = 4;
             this.gridColAdd.Width = 23;
+            // 
+            // repositoryCboMappingMode
+            // 
+            this.repositoryCboMappingMode.AutoHeight = false;
+            this.repositoryCboMappingMode.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryCboMappingMode.Items.AddRange(new DevExpress.XtraEditors.Controls.ImageComboBoxItem[] {
+            new DevExpress.XtraEditors.Controls.ImageComboBoxItem("REPLACE - Ghi đè giá trị cũ", "REPLACE", -1),
+            new DevExpress.XtraEditors.Controls.ImageComboBoxItem("PREPEND - Nối vào đầu", "PREPEND", -1)});
+            this.repositoryCboMappingMode.AllowMouseWheel = false;
+            this.repositoryCboMappingMode.Name = "repositoryCboMappingMode";
+            this.repositoryCboMappingMode.NullText = "REPLACE - Ghi đè giá trị cũ";
             // 
             // repositoryBtnAdd
             // 
@@ -3445,6 +3461,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMappingEMR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewMappingEMR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnAdd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryCboMappingMode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryBtnDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupContainerGenSignatureByKeyCFG)).EndInit();
             this.popupContainerGenSignatureByKeyCFG.ResumeLayout(false);
@@ -3766,6 +3783,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnMappingMode;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnMappingSeparator;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryBtnAdd;
+        private DevExpress.XtraEditors.Repository.RepositoryItemImageComboBox repositoryCboMappingMode;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryBtnDelete;
         private DevExpress.XtraBars.PopupControlContainer popupContainerGenSignatureByKeyCFG;
         private DevExpress.XtraBars.PopupControlContainer popupContainerDisablePrintByKeyCFG;

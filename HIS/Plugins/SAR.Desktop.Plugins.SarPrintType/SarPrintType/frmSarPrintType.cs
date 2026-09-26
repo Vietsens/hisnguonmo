@@ -1847,6 +1847,14 @@ namespace SAR.Desktop.Plugins.SarPrintType
 
                     //List<ColumnMappingADO> ados = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ColumnMappingADO>>(rowData.EMR_COLUMN_MAPPING);
                     List<ColumnMappingADO> ados = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ColumnMappingADO>>(memoMappingEMR.Text);
+                    if (ados != null)
+                    {
+                        //cot Cach gan la combo: dua gia tri cu (go tay, chu thuong) ve dung ma de combo hien dung.
+                        foreach (var ado in ados)
+                        {
+                            ado.Mode = NormalizeMappingMode(ado.Mode);
+                        }
+                    }
 
                     if (ados == null || ados.Count == 0)
                     {
@@ -1895,6 +1903,29 @@ namespace SAR.Desktop.Plugins.SarPrintType
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Chuan hoa Cach gan (Mode) cua dong anh xa ve mot trong cac ma cua combo: REPLACE, PREPEND.
+        /// APPEND (noi vao cuoi) da bo: gia tri cu con APPEND -> PREPEND, giong cach tang in MPS xu ly.
+        /// De trong hoac gia tri khac -> null (hien "Ghi de gia tri cu", luu nhu cu - chi EmrColumn va Key).
+        /// </summary>
+        private static string NormalizeMappingMode(string mode)
+        {
+            if (String.IsNullOrWhiteSpace(mode))
+            {
+                return null;
+            }
+            string code = mode.Trim().ToUpperInvariant();
+            if (code == "APPEND")
+            {
+                return "PREPEND";
+            }
+            if (code == "REPLACE" || code == "PREPEND")
+            {
+                return code;
+            }
+            return null;
         }
 
         private void gridViewMappingEMR_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
