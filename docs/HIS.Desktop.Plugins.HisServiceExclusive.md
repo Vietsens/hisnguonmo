@@ -19,14 +19,14 @@ Thư viện đi kèm: **`HIS.Desktop.Plugins.Library.CheckServiceExclusive`** �
 ### Luồng chính
 1. Mở màn "Dịch vụ không chỉ định đồng thời".
 2. Grid **trái** (dịch vụ gốc): lọc theo Loại dịch vụ + từ khóa mã/tên; tick **"Đã khai báo"** để chỉ hiện các dịch vụ đã có bản ghi cấu hình; tick **radio** chọn 1 dịch vụ gốc.
-3. Khi tick radio → gọi `api/HisServiceExclusive/Get` với `SERVICE_ID__OR__EXCLUSIVE_ID` (tra **2 chiều**, **không lọc IS_ACTIVE**) → grid phải tick sẵn các dịch vụ đã khai (dòng đã khai đẩy lên đầu); panel dưới đổ **Mức xử lý** (theo cặp phổ biến nhất), **Còn sử dụng** (còn ít nhất 1 cặp `IS_ACTIVE = 1`), **Ghi chú** (ghi chú đầu tiên khác rỗng). Chưa có cặp → panel về mặc định **Cảnh báo / Còn sử dụng / rỗng**.
-4. Grid **phải**: tick cột **Chọn** cho từng dịch vụ không được chỉ định cùng dịch vụ gốc; click header = tick/bỏ tick cả trang (không bao giờ tick chính dịch vụ gốc).
-5. Panel bản ghi: chọn **Mức xử lý** (Cảnh báo mặc định / Chặn), tick/bỏ **Còn sử dụng**, nhập **Ghi chú** (tối đa 2000 ký tự) — áp dụng cho **cả bản ghi** (mọi cặp của dịch vụ gốc).
-6. "Lưu (Ctrl S)" — so diff bản ghi:
-   - Cặp tick thêm → `api/HisServiceExclusive/CreateList` (mang Mức / Trạng thái / Ghi chú của panel)
+3. Khi tick radio → gọi `api/HisServiceExclusive/Get` với `SERVICE_ID__OR__EXCLUSIVE_ID` (tra **2 chiều**, **không lọc IS_ACTIVE**) → grid phải tick sẵn các dịch vụ đã khai (dòng đã khai đẩy lên đầu); **mỗi dòng** hiện giá trị riêng của cặp đó ở 3 cột **Mức xử lý** / **Còn sử dụng** / **Ghi chú** (từ 25/09/2026 — trước đó là 1 panel chung). Cặp có 2 bản ghi (A,B) + (B,A) → hiện **mức nặng nhất** (Chặn thắng Cảnh báo), Còn sử dụng nếu **một** bản ghi còn dùng, Ghi chú đầu tiên khác rỗng.
+4. Grid **phải**: tick cột **Chọn** cho từng dịch vụ không được chỉ định cùng dịch vụ gốc; click header = tick/bỏ tick cả trang (không bao giờ tick chính dịch vụ gốc). Dòng chưa tick để trống 3 cột giá trị; dòng vừa tick nhận mặc định **Cảnh báo / Còn sử dụng / không ghi chú**.
+5. Khai giá trị **theo từng dòng** ngay trên lưới phải: chọn **Mức xử lý** (Cảnh báo / Chặn), tick/bỏ **Còn sử dụng**, nhập **Ghi chú** (tối đa 2000 ký tự, bỏ dấu cách đầu cuối). Sửa ô của dòng chưa tick → **tự tick dòng đó**. Dòng chính dịch vụ gốc không sửa được. Panel bản ghi cũ ở dưới đã ẩn.
+6. "Lưu (Ctrl S)" — chốt ô đang sửa rồi so diff bản ghi:
+   - Cặp tick thêm → `api/HisServiceExclusive/CreateList` mang Mức / Ghi chú **của dòng đó**; dòng tạo mới mà bỏ tick "Còn sử dụng" → tạo xong gọi `ChangeLock` để khóa
    - Cặp bỏ tick (trong trang lưới đang hiện) → `api/HisServiceExclusive/DeleteList`
-   - Cặp giữ lại (kể cả cặp không hiện trên trang) mà Mức / Ghi chú / Trạng thái khác panel → `api/HisServiceExclusive/UpdateList`; cặp đang **Ngừng sử dụng** phải `ChangeLock` mở khóa trước (backend chặn Update bản ghi `IS_ACTIVE = 0`)
-   - Lưu xong: `CheckServiceExclusiveManager.ResetData()` → các màn chỉ định nạp lại danh mục; nạp lại bản ghi từ backend để grid + panel đúng dữ liệu đã lưu.
+   - Cặp giữ lại mà Mức / Ghi chú / Trạng thái **khác giá trị dòng** → `api/HisServiceExclusive/UpdateList`; cặp đang **Ngừng sử dụng** phải `ChangeLock` mở khóa trước (backend chặn Update bản ghi `IS_ACTIVE = 0`). Cặp không hiện trên trang giữ nguyên giá trị đang có trong CSDL
+   - Lưu xong: `CheckServiceExclusiveManager.ResetData()` → các màn chỉ định nạp lại danh mục; nạp lại bản ghi từ backend, bỏ các sửa chưa lưu, lưới đúng dữ liệu đã lưu.
 
 ### Ánh xạ thao tác theo tài liệu 3342
 | Thao tác 3342 | Cách làm trên màn |
@@ -60,12 +60,13 @@ Filter: `MOS.Filter.HisServiceViewFilter` (KEY_WORD, SERVICE_TYPE_ID, IDs cho l�
 ```
 +--[Từ khóa] [Loại dịch vụ ▼] [Tìm (Ctrl D)] [☐ Đã khai báo]--+--[Từ khóa] [Loại dịch vụ ▼] [Tìm (Ctrl F)]--+
 | GRID DỊCH VỤ GỐC (panelControl1 ← HIS.UC.Service)          | GRID DV KHÔNG CHỈ ĐỊNH ĐỒNG THỜI (panelControl2)|
-| (o) | Mã dịch vụ | Tên dịch vụ | Loại dịch vụ              | [x] Chọn | Mã | Tên | Loại dịch vụ           |
+| (o) | Mã dịch vụ | Tên dịch vụ | Loại dịch vụ              | [x] Chọn | Mã | Tên | Loại DV | Mức xử lý ▼ | [x] Còn sử dụng | Ghi chú |
 +--[ucPaging1]-----------------------------------------------+--[ucPaging2]----------------------------------+
-| Mức xử lý: [cboHandleType ▼]  [x] Còn sử dụng (chkIsActive)                          [Lưu (Ctrl S)]      |
-| Ghi chú:   [txtNote — MemoEdit 2 dòng .............................................................]      |
+|                                                                                      [Lưu (Ctrl S)]      |
 +----------------------------------------------------------------------------------------------------------+
 ```
+
+**Từ 25/09/2026:** 3 cột Mức xử lý / Còn sử dụng / Ghi chú là **cột unbound** thêm vào instance 2 của `HIS.UC.Service` bằng `ServiceInitADO.ServiceColumns` (không sửa UC dùng chung). Giá trị giữ trong `Dictionary<long, ExclusiveRowValueADO>` theo ID dịch vụ, code ở `UCServiceExclusive___RowValue.cs`. UC chỉ chuyển tiếp `IsGetData`, và `CellValueChanged` của cột unbound mang giá trị đọc lại từ ô (tức giá trị cũ), nên giá trị vừa sửa được bắt bằng handler `CustomUnboundColumnData` gắn thẳng vào grid view lấy qua `GetGridControl` (chỉ `IsSetData`, chỉ 3 cột này). 3 layout item panel cũ (`lciHandleType`, `lciIsActive`, `lciNote`) đặt `LayoutVisibility.Never`.
 
 ### UC sử dụng
 | UC | Panel | Mục đích |
@@ -120,12 +121,17 @@ Không có.
 | 21/09/2026 | dangth + Claude | Rà lại theo tài liệu phân tích 3342: đổi tên chức năng "Dịch vụ không chỉ định đồng thời"; lưới phải còn 1 cột Chọn; thêm panel bản ghi Mức xử lý (mặc định Cảnh báo) / Còn sử dụng / Ghi chú áp dụng cho cả bản ghi; lưu diff có `UpdateList` + `ChangeLock`; lọc "Đã khai báo" ở lưới trái; combo Loại dịch vụ riêng cho lưới phải. Thư viện: thêm `NOTE`, cột Ghi chú trên form cảnh báo, câu thông báo đúng từng chữ 3342 (nối ". Ghi chú: …" nếu có). |
 | 22/09/2026 | dangth + Claude | Backend bàn giao bảng + API: gỡ 3 lớp cục bộ (`HIS_SERVICE_EXCLUSIVE`, `V_HIS_SERVICE_EXCLUSIVE`, `HisServiceExclusiveFilter`), chuyển sang `MOS.EFMODEL.DataModels.*` + `MOS.Filter.HisServiceExclusiveViewFilter`; build lại thư viện + 4 plugin; 33/33 test tự động của thư viện đạt; đã đẩy test (histest `e257182f8`). Phát hiện 2 việc thuộc backend: trigger `HIS_SERVICE_EXCLUSIVE_1` INVALID (xem `PTTK/57452_fix_trigger.sql`) và `HisServiceExclusiveCFG.Reload()` không được gọi ở đâu. |
 | 22/09/2026 (bổ sung) | dangth + Claude | Backend sửa trigger `HIS_SERVICE_EXCLUSIVE_1` (đã VALID, insert được). Test thật trên CSDL cho thấy `UK1` **chỉ chặn trùng theo chiều** — vẫn khai được cả `(A,B)` và `(B,A)` với mức khác nhau. Đã làm bền 2 chỗ: thư viện lấy **mức nặng nhất** trong các bản ghi của cùng một cặp (Chặn thắng Cảnh báo) và vẫn lấy Ghi chú của bản ghi còn lại; màn danh mục đổi `Dictionary<long, HIS_SERVICE_EXCLUSIVE>` → `Dictionary<long, List<…>>` để sửa/xoá **hết** bản ghi của cặp, không để bản ghi mồ côi. 37/37 test tự động đạt. Đẩy test `4dfebcd39`. |
+| 25/09/2026 | dangth + Claude | Ý 1 của chị Hân (Zalo 23/09 17:21, "chuyển mức xử lý + ghi chú + còn sử dụng lên bảng, lưu theo từng dòng, không lưu chung"): bỏ panel bản ghi chung, thêm 3 cột sửa được trên lưới phải, lưu Create/Update theo giá trị từng dòng. File mới `UCServiceExclusive___RowValue.cs` + `ADO/ExclusiveRowValueADO.cs`; 5 key ngôn ngữ mới (caption + tooltip 3 cột). Không sửa `HIS.UC.Service`. Harness tự động 38/38 đạt trên lưới `HIS.UC.Service` thật (lần chạy đầu lộ 6 lỗi do UC bỏ qua `IsSetData`, đã sửa). Làm ở worktree nhánh `wip/57452-khai-theo-dong`, chưa commit. Đẩy test HISTEST `10a7d168f`; vá tiếp theo ảnh chị Hân 15:51: ô "Còn sử dụng" của dòng chưa tick (giá trị null) hiện ô xanh indeterminate → `AllowGrayed = false` + `NullStyle = Unchecked` nên hiện ô trắng (harness 41/41, có test so pixel), HISTEST `d20f59cc7`. |
 | 16/09/2026 | dangth + Claude | Tạo mới plugin theo thiết kế việc 57452. Clone khuôn 2 lưới từ `HIS.Desktop.Plugins.HisServiceSpeciality`, thay lưới phải bằng instance thứ 2 của `HIS.UC.Service`, 2 cột mức xử lý Cảnh báo/Chặn, lưu theo diff Create/Update/Delete. |
 
 ## 9. Test Cases
 
-- [ ] Mở màn hình: 2 lưới hiển thị, tìm kiếm + phân trang + lọc Loại dịch vụ chạy đúng ở cả 2 bên; panel mặc định Cảnh báo / Còn sử dụng / Ghi chú rỗng.
-- [ ] Tick radio 1 dịch vụ bên trái → lưới phải tick sẵn đúng các dịch vụ đã khai; panel đổ đúng Mức / Trạng thái / Ghi chú của bản ghi.
+- [ ] Mở màn hình: 2 lưới hiển thị, tìm kiếm + phân trang + lọc Loại dịch vụ chạy đúng ở cả 2 bên; không còn panel Mức / Còn sử dụng / Ghi chú ở dưới.
+- [ ] Tick radio 1 dịch vụ bên trái → lưới phải tick sẵn đúng các dịch vụ đã khai; mỗi dòng hiện đúng Mức / Còn sử dụng / Ghi chú của cặp đó.
+- [ ] Hai dòng khai 2 mức khác nhau (dòng 1 Chặn, dòng 2 Cảnh báo, ghi chú khác nhau) → Lưu → mở lại mỗi dòng giữ đúng giá trị riêng.
+- [ ] Sửa Mức xử lý ở dòng chưa tick → dòng tự tick; Lưu → tạo cặp với đúng mức vừa chọn.
+- [ ] Tạo cặp mới mà bỏ tick "Còn sử dụng" → Lưu → bản ghi tạo ra ở trạng thái Ngừng sử dụng.
+- [ ] Sửa ô rồi bấm Lưu ngay khi con trỏ còn trong ô (chưa rời ô) → giá trị vẫn được lưu.
 - [ ] KB1: chọn gốc, tick dịch vụ, Mức "Chặn", Lưu → mở lại giữ nguyên.
 - [ ] Đổi Mức Chặn → Cảnh báo, nhập Ghi chú → Lưu → `UpdateList`, mở lại đúng.
 - [ ] Bỏ tick → Lưu → `DeleteList`, mở lại không còn cặp đó.

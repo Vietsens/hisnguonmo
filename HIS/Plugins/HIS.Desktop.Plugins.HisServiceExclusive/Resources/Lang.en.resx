@@ -201,4 +201,19 @@
   <data name="UCServiceExclusive.colExclusiveName.Caption" xml:space="preserve">
     <value>Service name</value>
   </data>
+  <data name="UCServiceExclusive.colHandleType.Caption" xml:space="preserve">
+    <value>Handle type</value>
+  </data>
+  <data name="UCServiceExclusive.colHandleType.Tooltip" xml:space="preserve">
+    <value>Warning: the order can go on after confirmation. Block: the service cannot be ordered together with the base service.</value>
+  </data>
+  <data name="UCServiceExclusive.colIsActive.Caption" xml:space="preserve">
+    <value>In use</value>
+  </data>
+  <data name="UCServiceExclusive.colNote.Caption" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="UCServiceExclusive.colNote.Tooltip" xml:space="preserve">
+    <value>Reason of the exclusion (optional), shown with the message</value>
+  </data>
 </root>
