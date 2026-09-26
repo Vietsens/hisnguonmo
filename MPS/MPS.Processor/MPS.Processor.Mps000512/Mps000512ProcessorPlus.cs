@@ -619,7 +619,15 @@ namespace MPS.Processor.Mps000512
                             && rdo.Treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
                         {
                             //gán lại RATIO_STR theo HEIN_RATIO được gom nhóm.
-                            ado.RATIO_STR = ((int)(((g.FirstOrDefault(o => o.HEIN_RATIO.HasValue && !o.STENT_ORDER.HasValue) ?? g.First()).HEIN_RATIO ?? 0) * 100)) + "%";
+                            //Việc 58546: chỉ ghi đè khi HEIN_RATIO thực trả THẤP HƠN mức hưởng thẻ (trái tuyến bị giảm tỉ lệ).
+                            //Nếu HEIN_RATIO bị nâng lên 100% do tổng chi phí dưới 15% lương cơ sở (miễn cùng chi trả)
+                            //thì giữ nguyên mức hưởng theo thẻ (80%/95%) đã tính ở DataRawProcess.
+                            decimal heinRatio = (g.FirstOrDefault(o => o.HEIN_RATIO.HasValue && !o.STENT_ORDER.HasValue) ?? g.First()).HEIN_RATIO ?? 0;
+                            decimal cardRatio = ParseRatioStr(ado.RATIO_STR);
+                            if (heinRatio > 0 && (cardRatio <= 0 || heinRatio < cardRatio))
+                            {
+                                ado.RATIO_STR = ((int)(heinRatio * 100)) + "%";
+                            }
                         }
 
                         result.Add(ado);
@@ -636,6 +644,31 @@ namespace MPS.Processor.Mps000512
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+            return result;
+        }
+
+        /// <summary>
+        /// Đổi chuỗi mức hưởng "80.00%" / "80%" về số thập phân 0.8. Không parse được thì trả 0.
+        /// </summary>
+        private static decimal ParseRatioStr(string ratioStr)
+        {
+            decimal result = 0;
+            try
+            {
+                if (!String.IsNullOrWhiteSpace(ratioStr))
+                {
+                    string s = ratioStr.Replace("%", "").Replace(",", ".").Trim();
+                    decimal percent = 0;
+                    if (decimal.TryParse(s, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out percent))
+                    {
+                        result = percent / 100;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
             return result;
         }
     }
