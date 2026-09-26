@@ -381,4 +381,7 @@
   <data name="ThongBaoKetQuaTimKiemBenhNhanKhiQuetTheDuLieuTraVeNull" xml:space="preserve">
     <value>Invalid card</value>
   </data>
+  <data name="ThayThongTinDangNhapBangSoVuaGoi" xml:space="preserve">
+    <value>The reception form has unsaved data. Do you want to replace it with the information of the number just called?</value>
+  </data>
 </root>

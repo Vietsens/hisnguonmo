@@ -27,6 +27,26 @@ namespace HIS.Desktop.Plugins.RegisterV2
     {
         internal static System.Resources.ResourceManager languageMessage = new System.Resources.ResourceManager("HIS.Desktop.Plugins.RegisterV2.Resources.Message.Lang", System.Reflection.Assembly.GetExecutingAssembly());
 
+        /// <summary>
+        /// Hoi truoc khi nap de thong tin nguoi benh cua so vua goi khong de len
+        /// du lieu nhan vien dang nhap do - PTTK_54254 muc B.4.1.3 hanh vi 7.
+        /// </summary>
+        internal static string ThayThongTinDangNhapBangSoVuaGoi
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThayThongTinDangNhapBangSoVuaGoi", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string BenhNhanCoHenKhamVaoNgayTaiPhongKhamY
         {
             get
