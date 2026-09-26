@@ -146,37 +146,47 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
         }
 
         /// <summary>
-        /// So phut ke tu khi nhap vien vao khoa thi bat dau kiem tra Loai van ban bat buoc.
+        /// Cau hinh canh bao Loai van ban bat buoc phai hoan thanh khi benh nhan vao khoa.
         ///
-        /// Tra ve 0 khi chua khai bao, khai bao khong phai so, hoac khai bao so am / so 0 —
-        /// ca ba truong hop deu la "khong kiem tra", trang thai mac dinh an toan cho vien chua bat.
+        /// Gia tri dang "{so phut}|{co kiem ca benh nhan cu}" — xem RequiredDocumentConfigADO:
+        ///   "30"   -> chi kiem benh nhan vao khoa tu luc bat cau hinh tro di (mac dinh);
+        ///   "30|1" -> kiem ca benh nhan da nam khoa tu truoc khi bat cau hinh.
         ///
-        /// Cat o dau "|" roi chi lay doan dau: muc rang buoc (canh bao / chan) da bo, nhung dot
-        /// truoc co tai lieu ghi dang "30|1" nen van chap nhan cach ghi do va bo qua phan sau,
-        /// tranh truong hop khai bao "30|1" lam int.TryParse that bai va tinh nang tat am tham.
-        ///
-        /// KHONG bao gio nem ngoai le.
+        /// Moi truong hop khai bao sai deu tra ve CheckMinutes = 0, tuc khong kiem tra —
+        /// trang thai mac dinh an toan cho vien chua bat. KHONG bao gio nem ngoai le.
         /// </summary>
-        internal static int RequiredDocumentCheckMinutes
+        internal static RequiredDocumentConfigADO RequiredDocumentConfig
         {
             get
             {
+                var result = new RequiredDocumentConfigADO();
+                result.CheckMinutes = 0;
+                result.IsCheckPatientAdmittedBeforeConfig = false;
                 try
                 {
                     var raw = HisConfigs.Get<string>(Key.HisConfigKeys.HIS_CONFIG_KEY__RequiredDocument);
                     if (string.IsNullOrWhiteSpace(raw))
-                        return 0;
+                        return result;
 
-                    string first = raw.Split('|')[0];
+                    string[] parts = raw.Split('|');
 
                     int minutes;
-                    if (!int.TryParse((first ?? "").Trim(), out minutes) || minutes <= 0)
-                        return 0;
-                    return minutes;
+                    if (!int.TryParse((parts[0] ?? "").Trim(), out minutes) || minutes <= 0)
+                        return result;
+                    result.CheckMinutes = minutes;
+
+                    // Chi dung "1" moi bo luat hoi to. Thieu doan sau hoac ghi gia tri khac
+                    // deu giu luat hoi to (mac dinh an toan).
+                    if (parts.Length > 1)
+                        result.IsCheckPatientAdmittedBeforeConfig = (parts[1] ?? "").Trim() == "1";
+
+                    return result;
                 }
                 catch
                 {
-                    return 0;
+                    result.CheckMinutes = 0;
+                    result.IsCheckPatientAdmittedBeforeConfig = false;
+                    return result;
                 }
             }
         }
