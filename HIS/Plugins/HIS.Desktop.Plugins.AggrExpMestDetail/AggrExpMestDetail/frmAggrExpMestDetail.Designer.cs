@@ -107,6 +107,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.chkPrint = new DevExpress.XtraEditors.CheckEdit();
+            this.chkCloseAfterExecute = new DevExpress.XtraEditors.CheckEdit();
+            this.lciCloseAfterExecute = new DevExpress.XtraLayout.LayoutControlItem();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
@@ -279,6 +281,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrint.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCloseAfterExecute.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkInPhieu.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
@@ -331,6 +334,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCloseAfterExecute)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem_Save)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -726,6 +730,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // layoutControl3
             // 
             this.layoutControl3.Controls.Add(this.chkPrint);
+            this.layoutControl3.Controls.Add(this.chkCloseAfterExecute);
             this.layoutControl3.Controls.Add(this.chkInPhieu);
             this.layoutControl3.Controls.Add(this.layoutControl4);
             this.layoutControl3.Controls.Add(this.btnSave);
@@ -751,6 +756,18 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.chkPrint.StyleController = this.layoutControl3;
             this.chkPrint.TabIndex = 11;
             this.chkPrint.CheckedChanged += new System.EventHandler(this.chkPrint_CheckedChanged);
+            //
+            // chkCloseAfterExecute
+            //
+            this.chkCloseAfterExecute.Location = new System.Drawing.Point(744, 304);
+            this.chkCloseAfterExecute.MenuManager = this.barManager1;
+            this.chkCloseAfterExecute.Name = "chkCloseAfterExecute";
+            this.chkCloseAfterExecute.Properties.Caption = "";
+            this.chkCloseAfterExecute.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkCloseAfterExecute.Size = new System.Drawing.Size(19, 19);
+            this.chkCloseAfterExecute.StyleController = this.layoutControl3;
+            this.chkCloseAfterExecute.TabIndex = 12;
+            this.chkCloseAfterExecute.CheckedChanged += new System.EventHandler(this.chkCloseAfterExecute_CheckedChanged);
             // 
             // barManager1
             // 
@@ -2045,6 +2062,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem11,
             this.layoutControlItem3,
             this.layoutControlItem16,
+            this.lciCloseAfterExecute,
             this.layoutControlItem_Save,
             this.emptySpaceItem2});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
@@ -2115,6 +2133,19 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem16.Size = new System.Drawing.Size(40, 26);
             this.layoutControlItem16.Text = "In:";
             this.layoutControlItem16.TextSize = new System.Drawing.Size(14, 13);
+            //
+            // lciCloseAfterExecute
+            //
+            this.lciCloseAfterExecute.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciCloseAfterExecute.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciCloseAfterExecute.Control = this.chkCloseAfterExecute;
+            this.lciCloseAfterExecute.Location = new System.Drawing.Point(587, 302);
+            this.lciCloseAfterExecute.Name = "lciCloseAfterExecute";
+            this.lciCloseAfterExecute.Size = new System.Drawing.Size(176, 26);
+            this.lciCloseAfterExecute.Text = "Đóng sau khi thực xuất:";
+            this.lciCloseAfterExecute.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciCloseAfterExecute.TextSize = new System.Drawing.Size(150, 20);
+            this.lciCloseAfterExecute.TextToControlDistance = 5;
             // 
             // layoutControlItem_Save
             // 
@@ -2130,7 +2161,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(562, 302);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(201, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(25, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControl2
@@ -2578,6 +2609,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkPrint.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCloseAfterExecute.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkInPhieu.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
@@ -2630,6 +2662,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCloseAfterExecute)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem_Save)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
@@ -2791,6 +2824,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
         private DevExpress.XtraEditors.CheckEdit chkPrint;
+        private DevExpress.XtraEditors.CheckEdit chkCloseAfterExecute;
+        private DevExpress.XtraLayout.LayoutControlItem lciCloseAfterExecute;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnAntibioticRequestCode;
         private System.Windows.Forms.ImageList imageListStatus;

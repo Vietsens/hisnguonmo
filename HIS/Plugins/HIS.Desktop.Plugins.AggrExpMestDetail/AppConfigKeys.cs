@@ -31,6 +31,13 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail
 
         private const string CONFIG_KEY__CHE_DO_IN_CONG_KHAI_THUOC_BENH_NHAN = "CONFIG_KEY__CHE_DO_IN_CONG_KHAI_THUOC_BENH_NHAN";
         internal const string CONFIG_KEY__IS_REASON_REQUIRED = "MOS.EXP_MEST.IS_REASON_REQUIRED";
+
+        /// <summary>
+        /// 56689 - Luong phat thuoc nhanh.
+        /// Bang 1: hien o tich "Dong sau khi thuc xuat"; thuc xuat thanh cong thi tu dong form.
+        /// Khac 1 hoac khong khai bao: an o tich, giu nguyen hanh vi cu.
+        /// </summary>
+        internal const string CONFIG_KEY__QUICK_EXPORT_FLOW_OPTION = "HIS.EXP_MEST.QUICK_EXPORT_FLOW_OPTION";
         internal const string CONFIG_KEY__IS_REMOVE_AMOUNT_APPROVE = "HIS_MEDI_STOCK.IS_REMOVE_AMOUNT_APPROVE";
         internal const string CONFIG_KEY__IS_CHANGE_AMOUNT_APPROVE = "HIS_MEDI_STOCK.IS_CHANGE_AMOUNT_APPROVE";
         internal static string CHE_DO_IN_CONG_KHAI_THUOC_BENH_NHAN

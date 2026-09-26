@@ -128,6 +128,8 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             this.ucViewEmrDocument = new HIS.UC.ViewEmrDocument.UcEmrDocument.UcViewEmrDocument();
             this.chkInHDSD = new DevExpress.XtraEditors.CheckEdit();
+            this.chkCLoseAfterExute = new DevExpress.XtraEditors.CheckEdit();
+            this.lciCloseAfterExute = new DevExpress.XtraLayout.LayoutControlItem();
             this.lblSumPrice = new DevExpress.XtraEditors.LabelControl();
             this.btnApproval = new DevExpress.XtraEditors.SimpleButton();
             this.btnExport = new DevExpress.XtraEditors.SimpleButton();
@@ -422,6 +424,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.xtraTabDocument.SuspendLayout();
             this.xtraTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkInHDSD.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCLoseAfterExute.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
             this.tabPageRequestMedicine.SuspendLayout();
@@ -476,6 +479,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             ((System.ComponentModel.ISupportInitialize)(this.lciSumPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCloseAfterExute)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
@@ -1368,6 +1372,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             // 
             this.layoutControl2.Controls.Add(this.xtraTabDocument);
             this.layoutControl2.Controls.Add(this.chkInHDSD);
+            this.layoutControl2.Controls.Add(this.chkCLoseAfterExute);
             this.layoutControl2.Controls.Add(this.lblSumPrice);
             this.layoutControl2.Controls.Add(this.btnApproval);
             this.layoutControl2.Controls.Add(this.btnExport);
@@ -1417,6 +1422,17 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.chkInHDSD.StyleController = this.layoutControl2;
             this.chkInHDSD.TabIndex = 10;
             this.chkInHDSD.CheckedChanged += new System.EventHandler(this.chkInHDSD_CheckedChanged);
+            //
+            // chkCLoseAfterExute
+            //
+            this.chkCLoseAfterExute.Location = new System.Drawing.Point(845, 309);
+            this.chkCLoseAfterExute.MenuManager = this.barManager1;
+            this.chkCLoseAfterExute.Name = "chkCLoseAfterExute";
+            this.chkCLoseAfterExute.Properties.Caption = "";
+            this.chkCLoseAfterExute.Size = new System.Drawing.Size(19, 19);
+            this.chkCLoseAfterExute.StyleController = this.layoutControl2;
+            this.chkCLoseAfterExute.TabIndex = 11;
+            this.chkCLoseAfterExute.CheckedChanged += new System.EventHandler(this.chkCLoseAfterExute_CheckedChanged);
             // 
             // lblSumPrice
             // 
@@ -4153,6 +4169,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.layoutControlItem6,
             this.lciSumPrice,
             this.emptySpaceItem2,
+            this.lciCloseAfterExute,
             this.layoutControlItem7,
             this.emptySpaceItem3,
             this.layoutControlGroup4});
@@ -4176,7 +4193,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 307);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(936, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(760, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
@@ -4241,6 +4258,19 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(50, 20);
             this.layoutControlItem7.TextToControlDistance = 5;
+            //
+            // lciCloseAfterExute
+            //
+            this.lciCloseAfterExute.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciCloseAfterExute.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciCloseAfterExute.Control = this.chkCLoseAfterExute;
+            this.lciCloseAfterExute.Location = new System.Drawing.Point(760, 307);
+            this.lciCloseAfterExute.Name = "lciCloseAfterExute";
+            this.lciCloseAfterExute.Size = new System.Drawing.Size(176, 26);
+            this.lciCloseAfterExute.Text = "Đóng sau khi thực xuất:";
+            this.lciCloseAfterExute.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciCloseAfterExute.TextSize = new System.Drawing.Size(150, 20);
+            this.lciCloseAfterExute.TextToControlDistance = 5;
             // 
             // emptySpaceItem3
             // 
@@ -4381,6 +4411,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.xtraTabDocument.ResumeLayout(false);
             this.xtraTabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkInHDSD.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCLoseAfterExute.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
             this.xtraTabControl1.ResumeLayout(false);
             this.tabPageRequestMedicine.ResumeLayout(false);
@@ -4435,6 +4466,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             ((System.ComponentModel.ISupportInitialize)(this.lciSumPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCloseAfterExute)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
@@ -4712,6 +4744,8 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnRequestMedicineConcentra;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnApprovalMedicineConcentra;
         private DevExpress.XtraEditors.CheckEdit chkInHDSD;
+        private DevExpress.XtraEditors.CheckEdit chkCLoseAfterExute;
+        private DevExpress.XtraLayout.LayoutControlItem lciCloseAfterExute;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraEditors.LabelControl lblRecevingPlace;

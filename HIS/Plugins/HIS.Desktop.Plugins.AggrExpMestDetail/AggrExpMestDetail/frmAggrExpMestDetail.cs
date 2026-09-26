@@ -89,6 +89,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         int lastRowHandle = -1;
         List<HIS_EXP_MEST_REASON> reason;
         bool IsReasonRequired { get; set; }
+        bool QuickExportFlow { get; set; }
         long RoomIdFromMediStock { get; set; }
         HIS_TREATMENT curentTreatment;
         V_HIS_TREATMENT_BED_ROOM HisTreatmentBedRoom;
@@ -132,6 +133,13 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 WaitingManager.Show();
                 InitData = true;
                 IsReasonRequired = HisConfigs.Get<string>(AppConfigKeys.CONFIG_KEY__IS_REASON_REQUIRED) == "1";
+                // 56689: chua bat cau hinh luong phat thuoc nhanh -> an o tich "Dong sau khi thuc xuat"
+                QuickExportFlow = HisConfigs.Get<string>(AppConfigKeys.CONFIG_KEY__QUICK_EXPORT_FLOW_OPTION) == "1";
+                if (!QuickExportFlow)
+                {
+                    chkCloseAfterExecute.Visible = false;
+                    lciCloseAfterExecute.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
                 LoadMediStockConfig();
                 if (!IsAllowEditSlOnApprove)
                 {
@@ -1704,6 +1712,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     {
                         AutoPrintAfterExport();
                     }
+
+                    // 56689: thuc xuat thanh cong -> dong form
+                    if (QuickExportFlow && success)
+                    {
+                        this.Close();
+                    }
                 }
             }
             catch (Exception ex)
@@ -2679,6 +2693,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                         {
                             chkPatientType.Checked = item.VALUE == "1";
                         }
+                        if (item.KEY == chkCloseAfterExecute.Name)
+                        {
+                            chkCloseAfterExecute.Checked = item.VALUE == "1";
+                        }
 
                     }
                 }
@@ -2768,6 +2786,41 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkCloseAfterExecute_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkCloseAfterExecute.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkCloseAfterExecute.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkCloseAfterExecute.Name;
+                    csAddOrUpdate.VALUE = (chkCloseAfterExecute.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
