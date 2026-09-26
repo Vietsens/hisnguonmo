@@ -14,6 +14,30 @@
 Form mở từ ServiceReq yêu cầu khám sức khỏe. Gồm nhiều tab tương ứng các loại KSK.
 Mỗi tab cho phép nhập: tiền sử bệnh, nghề nghiệp, DHST, khám 11 chuyên khoa + xếp loại, kết quả CLS, kết luận chung.
 
+### Thứ tự nhập — mục kết luận (từ 25/09/2026)
+- **Lưu** lúc nào cũng được (khám thể lực, lâm sàng, cận lâm sàng...) — KHÔNG bắt nhập mục kết luận.
+- **Kết thúc y lệnh khám** (nút hoặc "Tự động kết thúc" sau Lưu) bắt buộc mục kết luận đã **nhập và đã Lưu**:
+  tab trên 18 / dưới 18 tuổi: "Phân loại" + "Người khám"; tab trẻ dưới 6 tuổi: "Xếp loại tình trạng sức khỏe chung"
+  + "Bác sĩ khám" + "Kết luận về sức khỏe". Chọn trên màn hình mà chưa Lưu → báo "đã chọn nhưng chưa Lưu".
+- Loại hồ sơ xét theo **bản ghi** của y lệnh (không theo tab đang mở): đứng ở tab khác (định kỳ, lái xe...) bấm Kết thúc
+  vẫn kiểm mục kết luận của hồ sơ trên 18 / dưới 18 / trẻ <6 (chỉ xét bản ghi đã lưu, báo "mở tab ... để nhập").
+  Hồ sơ định kỳ (chỉ có HIS_KSK_GENERAL) / lái xe / nghề nghiệp / KSK khác: không áp quy tắc.
+- "Tự động kết thúc" sau Lưu: mục kết luận chưa lưu ô nào (đang ở bước khám/CLS) → không kết thúc, không hiện thông báo;
+  đã lưu một phần → báo thiếu ô nào.
+
+### Giới hạn độ dài theo QĐ 2062 (từ 25/09/2026)
+Chỉ bật khi chi nhánh đang làm việc khai 1 trong các key cổng 2062 (`MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO`,
+`HSSK_HN_2062`, `HSSK_HOC_2062`, `HSSK_HCC_2062` `_CONNECTION_INFO`; chọn dòng theo BRANCH_ID như KskSyncList).
+- Lúc mở form: đặt MaxLength cho ô chữ tự do (thị lực 5, tai 10, tiền sử bệnh 255, thuốc đang dùng / tiền sử thai sản 1024,
+  các ô số đo tab trẻ <6: cân nặng 6, nhiệt độ / nhịp thở / chiều dài / vòng đầu / vòng cánh tay / SD 10, mạch 100,
+  họ tên người đi cùng 255, "Ghi rõ" / "Bệnh tật" 255).
+- Lúc Lưu (ngay trước khi gọi `api/HisServiceReq/KskExecuteV2`): đo trên chính dữ liệu sắp gửi — bắt cả giá trị đổ bằng code
+  (nhập mẫu Excel, thư viện văn bản mắt/TMH, lấy sẵn từ y lệnh khám), mã ICD kết luận / tiền sử ghép `;` (255),
+  "Đối tượng" ghép `;` (50), cân nặng DHST (6 ký tự, vd 999.99), SĐT người đi cùng trẻ (15).
+  Vượt → icon cảnh báo tại ô (tự mở sub-tab chứa ô) + thông báo, KHÔNG lưu; sửa đúng → icon tự mất.
+- 4 ô tai (nói thường / nói thầm): thư viện His.Ksk.QD2062 tự CẮT còn 10 ký tự nên cổng không từ chối → chỉ giới hạn
+  lúc gõ (MaxLength 10), KHÔNG chặn Lưu dữ liệu cũ dài hơn.
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -71,6 +95,7 @@ MPS printers (xem `frmEnterKskInfomantionVer2___PrintMPS.cs`).
 | 03/07/2026 | huannh | Đổi cách nhúng cụm ICD tiền sử + combo Người khám: KHÔNG chèn runtime vào LayoutControl (làm vỡ layout bố cục cố định) → nhúng vào **PanelControl host đặt sẵn trong Designer**, tìm theo tên bằng `Controls.Find` (`EmbedHistoryIcdIntoPanel`/`EmbedConcluderComboIntoPanel` + `FindHostControl`) rồi `panel.Controls.Add(uc/cbo); Dock=Fill`. Panel chưa đặt → bỏ qua an toàn (compile được, không lỗi). Tên panel: `pnlKskIcd{Family/Personal/Occupational/Obstetric}{tabIndex}` (tab 0/1/2/6/7) + `pnlKskConcluder1`, `pnlKskConcluder2`. CẦN đặt các panel này trong Designer để control hiển thị. |
 | 02/07/2026 | huannh | (HIS_KSK_SYNC) Chốt: khi lưu KSK V2, việc tạo bản ghi `HIS_KSK_SYNC` (lấy `KSK_TYPE_ID` = loại mẫu, set `SYNC_RESULT_TYPE = 0` = chưa gửi đồng bộ) do **BE tự sinh từ `HIS_KSK_GENERAL`** — FE KHÔNG phát sinh code mới, chỉ cần đảm bảo `HIS_KSK_GENERAL.KSK_TYPE_ID` được gửi kèm (đã có qua `SetKskTypeIdToGeneral`). |
 | 04/09/2026 | nampp | (Việc 56156) Mở rộng "Tự động lấy kết quả CLS" tab Khám cận lâm sàng (Ksk >18t) từ 3 lên **11 dòng cấu hình dịch vụ** trong `frmAutoClsSetting` (tab "Tự động lấy CLS"): thêm 1b Đường máu/Urê/Creatinin/ASAT/ALAT (`AutoCls_BloodGluco/BloodUre/BloodCreatinin/BloodAsat/BloodAlat` → `txtTestBloodGluco2/Ure2/Creatinin2/Asat2/Alat2`), 1c XN máu-Khác (`AutoCls_BloodOther` → `txtTestBloodOther2`), 4 KQ khám CLS khác (`AutoCls_OtherPara` → `txtResultSubclinical2`), KSK định kỳ-Kết quả (`AutoCls_Periodic` → `txtResultSubclinical2_2`). 2 dòng cuối đổ danh mục XN+CĐHA+TDCN, còn lại XN. `AutoGetTestIndexByGroup` chạy cơ chế nhóm chỉ số cũ trước (fallback điền ô trống) rồi 11 dòng theo dịch vụ (ghi đè nếu có cấu hình). Refactor: 11 combo gom vào `comboDefs` (combo–StateKey–JsonKey) để Init/Load/Save/Export/Import chạy vòng lặp; `KskSettingFileADO.AUTO_CLS` đổi từ 3 list sang Dictionary (key BLOOD/URINE/DIIM giữ nguyên → file JSON cũ vẫn nhập được, JSON_VERSION 2→3); key hằng chuyển `internal` để form chính dùng chung. Không đổi DB/BE — cấu hình lưu ControlState local. |
+| 25/09/2026 | dangth2 | (BV Nguyễn Đình Chiểu — liên thông cổng Vĩnh Long) (1) **Mục kết luận không còn chặn Lưu** ở tab trên 18 / dưới 18 / trẻ dưới 6 tuổi (trước đây mở sub-tab "Kết luận", chọn 1 ô của cặp hoặc tab trẻ <6 bắt "Kết luận về sức khỏe" là bắt nhập Phân loại + Người khám ngay khi Lưu → phải nhập kết luận trước mới lưu được phần khám/CLS). Nay chỉ bắt buộc khi **Kết thúc y lệnh khám** (`ValidateConclusionBeforeFinish` gọi đầu `FinishCurrentServiceReq`): đủ trên màn hình VÀ trong bản ghi đã lưu; tự động kết thúc sau Lưu mà mục kết luận chưa lưu ô nào thì bỏ qua lặng lẽ. Bỏ cơ chế snapshot (`CaptureConclusionInputSnapshot`...). Caption mục kết luận luôn Maroon + tooltip "bắt buộc trước khi kết thúc". Loại hồ sơ xét theo bản ghi (`ResolveConclusionRuleTab`: current* / pre*) nên đứng tab khác bấm Kết thúc không lách được; sau Lưu chỉ ghi đè `currentKskGeneral/OverEight/UnderEight/UnderSixEf` khi BE trả về khác null (trước đây Lưu tab khác làm null → Kết thúc báo nhầm "chưa Lưu"). `FocusFirstInvalidControl` tự mở sub-tab chứa ô lỗi. Sau Lưu `SyncSharedGeneralAfterSave` cập nhật `preKskGenerals` + đổ lại Người khám / Phân loại (HIS_KSK_GENERAL dùng chung) sang các tab khác đã nạp — chỉ cột tab vừa lưu thực sự ghi (tránh mở/Lưu tab khác đè mất Người khám vừa lưu). "Lưu và ký" chỉ in + ký khi Lưu thành công (`lastSaveSucceeded`). (2) **Giới hạn độ dài theo QĐ 2062** khi chi nhánh có cổng 2062 (`HisConfigCFG.IsQd2062LengthCheck`): MaxLength lúc Load + kiểm tra trên SDO trước khi POST (partial mới `frmEnterKskInfomantionVer2___Qd2062Length.cs`). Bảng cột→thẻ→độ dài đối chiếu thực nghiệm với thư viện His.Ksk.QD2062 (chép nguyên văn, không Trim; số in đủ chữ số thập phân; riêng 4 ô tai thư viện tự cắt 10 → chỉ MaxLength, không chặn Lưu). Thêm SĐT người đi cùng trẻ (DIEN_THOAI_NGUOI_DI_CUNG 15) và 3 ô số đo trẻ <6 (CHIEU_DAI, VONG_DAU, CHU_VI_VONG_CANH_TAY 10). Không đổi DB/BE. |
 
 ## 9. Test Cases
 
@@ -89,3 +114,23 @@ MPS printers (xem `frmEnterKskInfomantionVer2___PrintMPS.cs`).
 - [ ] Dòng không cấu hình → ô không bị động chạm (fallback nhóm chỉ số cũ vẫn điền ô trống nếu viện có khai nhóm)
 - [ ] BN không có kết quả → ô giữ nguyên, không lỗi
 - [ ] Xuất JSON → Nhập lại → đủ 11 phần; file JSON bản cũ (BLOOD/URINE/DIIM) nhập vẫn nhận, 8 phần mới giữ nguyên
+
+### 25/09/2026 — Mục kết luận bắt buộc khi kết thúc khám
+- [ ] Tab trẻ <6: chỉ nhập hành chính + khám (chưa nhập kết luận) → Lưu thành công, không báo Phân loại / Bác sĩ khám / Kết luận về sức khỏe
+- [ ] Tab trẻ <6: chọn "Bác sĩ khám" trước, chưa chọn xếp loại → Lưu thành công
+- [ ] Tab trên 18 / dưới 18: đang mở sub-tab "Kết luận" hoặc "Cận lâm sàng", chưa chọn Phân loại → Lưu thành công
+- [ ] Bấm "Kết thúc y lệnh khám" khi chưa có Phân loại / Người khám → chặn, mở sub-tab Kết luận, icon cảnh báo tại ô
+- [ ] Chọn Phân loại + Người khám rồi bấm Kết thúc ngay (chưa Lưu) → báo "đã chọn nhưng chưa Lưu"; Lưu → Kết thúc được
+- [ ] Tích "Tự động kết thúc": Lưu phần khám (chưa kết luận) → lưu OK, không kết thúc, không hiện hộp thoại; nhập đủ kết luận → Lưu → tự kết thúc
+- [ ] Tab định kỳ / lái xe / nghề nghiệp: Kết thúc như cũ (không áp quy tắc)
+- [ ] Hồ sơ trên 18 tuổi chưa có Phân loại: chuyển sang tab "Ksk định kỳ" rồi bấm Kết thúc → vẫn chặn, báo mở tab "Ksk trên 18 tuổi"
+- [ ] Lưu ở tab định kỳ rồi quay lại tab trên 18 (đã lưu đủ kết luận trước đó) → Kết thúc được, không báo nhầm "chưa Lưu"
+
+### 25/09/2026 — Độ dài theo QĐ 2062 (chi nhánh có cổng 2062)
+- [ ] Ô thị lực không kính mắt phải: gõ tối đa 5 ký tự; nhập mẫu Excel "10/10 có kính" → Lưu → chặn, icon tại ô, thông báo "dài 13 ký tự (tối đa 5 — KHONG_KINH_MAT_PHAI)"
+- [ ] Sửa ngắn lại ≤ 5 → icon tự mất → Lưu thành công → màn Đồng bộ KSK không còn lỗi độ dài
+- [ ] Tab trẻ <6: cân nặng tối đa 6 ký tự (vd "12.345"); vòng đầu / vòng cánh tay tối đa 10
+- [ ] Chọn quá nhiều mã ICD kết luận / tiền sử (> 255 ký tự) hoặc quá nhiều "Đối tượng" (> 50) → Lưu bị chặn, thông báo nêu rõ trường
+- [ ] Chi nhánh KHÔNG khai key cổng 2062 → không giới hạn (như cũ)
+- [ ] Ô tai có dữ liệu cũ "Nói thường 5m" (13 ký tự) → Lưu vẫn được (chỉ không gõ thêm quá 10)
+- [ ] Lưu từ sub-tab "Kết luận" khi ô thị lực (sub-tab Khám lâm sàng) vượt độ dài → tự mở sub-tab Khám lâm sàng, focus ô lỗi

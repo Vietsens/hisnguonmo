@@ -106,6 +106,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     return;
                 }
 
+                // Mục kết luận chỉ bắt buộc lúc kết thúc khám (Lưu không bắt) — áp cho cả nút và "Tự động
+                // kết thúc" sau Lưu (lần tự động: mục kết luận chưa lưu ô nào thì lặng lẽ bỏ qua).
+                if (!ValidateConclusionBeforeFinish(!showMessage))
+                    return;
+
                 if (HIS.Desktop.Plugins.EnterKskInfomantionVer2.Config.HisConfigCFG.CheckReq == "1" && !CheckUnfinishedServices())
                     return;
 

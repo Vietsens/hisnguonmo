@@ -128,6 +128,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
         public ENameOtherItem? NameOtherItem { get; set; }
         public bool IsSignEmr { get; set; }
+
+        /// <summary>Lần bấm Lưu gần nhất đã lưu thành công (API trả về) — "Lưu và ký" chỉ in + ký khi true.</summary>
+        private bool lastSaveSucceeded;
         #endregion
 
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -224,6 +227,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 InitFinishFeature();
                 // Cảnh báo trường bắt buộc (Đối tượng/Nguồn chi trả các tab + Lý do khám) tại control.
                 InitRequiredValidation();
+                // Giới hạn độ dài theo QĐ 2062 (chỉ chi nhánh có liên thông cổng 2062).
+                InitQd2062Length();
                 this.ResumeLayout(false);
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Debug("KskLoad.TOTAL(before deferred): " + swLoad.ElapsedMilliseconds + " ms");
@@ -1231,6 +1236,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Trường bắt buộc nhập (icon cảnh báo + nội dung lỗi tại control):
                 //  - Lý do khám: bắt buộc ở mức FORM (mọi tab) + giới hạn 500 ký tự.
                 //  - Đối tượng / Nguồn chi trả: bắt buộc ở tab trên 18, dưới 18 và trẻ em dưới 6 tuổi.
+                lastSaveSucceeded = false;
                 if (!ValidateRequiredBeforeSave()) return;
                 bool success = false;
                 // R: tab ≥18 — vùng nào ĐÃ nhập Người khám mà THIẾU kết quả/phân loại thì chặn Lưu (nêu rõ vùng + người khám).
@@ -1353,6 +1359,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
                 // Ngày kết luận theo tab đang lưu → HIS_KSK_GENERAL.CONCLUSION_TIME (tạo GENERAL nếu chưa có).
                 ApplyConclusionTimeToKskGeneralSdo(sdo);
+                // Độ dài theo QĐ 2062 đo trên CHÍNH dữ liệu sắp gửi (bắt cả giá trị đổ bằng code: nhập Excel,
+                // thư viện văn bản, lấy sẵn từ y lệnh khám; mã ICD / Đối tượng ghép ";").
+                if (!ValidateQd2062LengthBeforePost(sdo)) return;
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 KskExecuteResultV2SDO result = new BackendAdapter(param).Post<KskExecuteResultV2SDO>("api/HisServiceReq/KskExecuteV2", ApiConsumers.MosConsumer, sdo, param);
@@ -1360,17 +1369,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (result != null)
                 {       
                     success = true;
-                    currentKskDriverCar = result.HisKskDriverCar;
-                    currentKskGeneral = result.HisKskGeneral;
-                    currentKskOverEight = result.HisKskOverEighteen;
+                    lastSaveSucceeded = true;
+                    if (result.HisKskDriverCar != null) currentKskDriverCar = result.HisKskDriverCar;
+                    if (result.HisKskGeneral != null) currentKskGeneral = result.HisKskGeneral; // chỉ ghi đè khi BE trả về (tab lưu không gửi bảng đó -> null)
+                    if (result.HisKskOverEighteen != null) currentKskOverEight = result.HisKskOverEighteen;
                     // Lưu tiếp bảng dữ liệu riêng của mẫu M4 — cần mã bản ghi KSK vừa trả về
                     // làm khóa liên kết nên phải chạy sau, không gộp vào cùng lệnh lưu trên.
                     SaveKskSytHcm(result.HisKskOverEighteen);
-                    currentKskPeriodDriver = result.HisKskPeriodDriver;
-                    currentKskUnderEight = result.HisKskUnderEighteen;
-                    currentKskOther = result.HisKskOther;
-                    currentKsKOccupational = result.KskOccupational;
-                    currentKskUnderSixEf = result.KskUnderSix; // để in Mps000516 theo DB sau khi lưu
+                    if (result.HisKskPeriodDriver != null) currentKskPeriodDriver = result.HisKskPeriodDriver;
+                    if (result.HisKskUnderEighteen != null) currentKskUnderEight = result.HisKskUnderEighteen;
+                    if (result.HisKskOther != null) currentKskOther = result.HisKskOther;
+                    if (result.KskOccupational != null) currentKsKOccupational = result.KskOccupational;
+                    if (result.KskUnderSix != null) currentKskUnderSixEf = result.KskUnderSix; // để in Mps000516 theo DB sau khi lưu
+                    // HIS_KSK_GENERAL dùng chung mọi tab -> đồng bộ Người khám / Phân loại kết luận sang các tab khác.
+                    SyncSharedGeneralAfterSave(xtraTabControl1.SelectedTabPageIndex);
                     currentServiceReq = result.HisServiceReq;
                     btnPrint.Enabled = true;
                     UpdateFinishButtonEnable();
@@ -2216,7 +2228,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 IsSignEmr = true;
                 btnSave_Click(null, null);
-                btnPrint_Click(null, null);
+                // Lưu bị chặn (trường bắt buộc / độ dài QĐ 2062) hoặc lỗi -> KHÔNG in + ký dữ liệu cũ.
+                if (lastSaveSucceeded)
+                    btnPrint_Click(null, null);
+                else
+                    IsSignEmr = false;
             }
             catch (Exception ex)
             {

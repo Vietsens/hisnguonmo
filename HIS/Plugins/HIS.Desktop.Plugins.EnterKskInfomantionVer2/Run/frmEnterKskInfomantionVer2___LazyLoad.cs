@@ -191,10 +191,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 LoadConclusionTimeExt();
                 SetEnableControl();
                 UpdateKskNumberDisplay(); // đổ "Số thứ tự KSK" ngay khi nạp tab (kể cả lúc chỉ MỞ xem, không đổi tab / không lưu)
-                // MỐC so sánh của mục kết luận: chụp SAU KHI đã đổ xong mọi ô kết luận (kể cả UC ICD).
-                // Nội dung nạp từ bản ghi cũ KHÔNG được tính là "người dùng đã nhập kết luận" — nếu tính
-                // thì hồ sơ đã có kết luận sẽ bị bắt nhập "Phân loại" ở mọi sub-tab (xem HasConclusionInput).
-                CaptureConclusionInputSnapshot(tab);
+                // (Đã bỏ mốc so sánh mục kết luận — Lưu không còn bắt mục kết luận, chỉ bắt khi kết thúc khám.)
                 // Tab ≥18: MỐC so sánh của 14 vùng khám lâm sàng — vùng người dùng không đụng tới thì
                 // không bắt nhập kết quả/phân loại (xem ValidateExaminerHasResultOverEighteen).
                 if (tab == 1) CaptureClinicalExamSnapshot();
