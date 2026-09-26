@@ -98,4 +98,67 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+  <data name="BanDaLayDuSoTrongNgay" xml:space="preserve">
+    <value>You have already taken the maximum number of tickets today. Your number is {0} at counter {1}, please wait to be called.</value>
+  </data>
+  <data name="ChonHinhThucLaySo" xml:space="preserve">
+    <value>SELECT IDENTIFICATION METHOD</value>
+  </data>
+  <data name="DangLaySoCho" xml:space="preserve">
+    <value>Issuing number for</value>
+  </data>
+  <data name="HuongDanNhapTaySoCccd" xml:space="preserve">
+    <value>Enter the ID number of 12 digits or the old ID number of 9 digits</value>
+  </data>
+  <data name="HuongDanQuetQrTheCccd" xml:space="preserve">
+    <value>Place the QR code on the ID card into the reader</value>
+  </data>
+  <data name="HuongDanQuetQrVneId" xml:space="preserve">
+    <value>Open the identification QR code in the VNeID app and place it into the reader</value>
+  </data>
+  <data name="HuongDanTheBhyt" xml:space="preserve">
+    <value>Scan the QR code on the health insurance card or enter the card number</value>
+  </data>
+  <data name="HuyChonLai" xml:space="preserve">
+    <value>Cancel / choose again</value>
+  </data>
+  <data name="InLaiPhieu" xml:space="preserve">
+    <value>Reprint ticket</value>
+  </data>
+  <data name="KhongCoGiayTo" xml:space="preserve">
+    <value>NO DOCUMENT</value>
+  </data>
+  <data name="LaySoKhongDinhDanh" xml:space="preserve">
+    <value>Issue number without identification</value>
+  </data>
+  <data name="MaTheBhytKhongHopLe" xml:space="preserve">
+    <value>Invalid health insurance card number, please scan or enter again</value>
+  </data>
+  <data name="NhapTaySoCccd" xml:space="preserve">
+    <value>ENTER ID NUMBER</value>
+  </data>
+  <data name="QuayLai" xml:space="preserve">
+    <value>BACK</value>
+  </data>
+  <data name="QuetQrTheCccd" xml:space="preserve">
+    <value>SCAN ID CARD QR</value>
+  </data>
+  <data name="QuetQrVneId" xml:space="preserve">
+    <value>SCAN VNeID QR</value>
+  </data>
+  <data name="SoCccdKhongHopLe" xml:space="preserve">
+    <value>Invalid ID number, please scan or enter again</value>
+  </data>
+  <data name="TheBhyt" xml:space="preserve">
+    <value>HEALTH INSURANCE CARD</value>
+  </data>
+  <data name="VuiLongChonHinhThucLaySo" xml:space="preserve">
+    <value>Please select the identification method</value>
+  </data>
+  <data name="XacNhan" xml:space="preserve">
+    <value>CONFIRM</value>
+  </data>
+  <data name="SoThuTuBatDauKhongDuocPhepNhoHonKhong" xml:space="preserve">
+    <value>The starting number must not be less than 0</value>
+  </data>
 </root>

@@ -572,6 +572,19 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 gridControl.RefreshDataSource();
 
                 RefreshDisplaySummaryLabel();
+
+                // 56689: chi co dung 1 dong thi mo luon form chi tiet de xem
+                if (HisConfigCFG.QUICK_EXPORT_FLOW)
+                {
+                    List<V_HIS_EXP_MEST_2> dt = (List<V_HIS_EXP_MEST_2>)gridControl.DataSource;
+                    if (dt != null && dt.Count() == 1)
+                    {
+                        V_HIS_EXP_MEST val = new V_HIS_EXP_MEST();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST>(val, dt[0]);
+                        XemChiTiet(val);
+                    }
+                }
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -2135,6 +2148,19 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             }
         }
 
+        public void FocusTreatmentCode()
+        {
+            try
+            {
+                txtSearchTreatmentCode.Focus();
+                txtSearchTreatmentCode.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public void Export()
         {
             try
@@ -3055,6 +3081,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 {
                     FocusExpCode();
                 }
+                else if (e.KeyCode == Keys.F5 && HisConfigCFG.QUICK_EXPORT_FLOW)
+                {
+                    FocusTreatmentCode();
+                }
             }
             catch (Exception ex)
             {
@@ -3783,6 +3813,13 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                             CallModule callModule = new CallModule(CallModule.ExpMestViewDetail, this.roomId, this.roomTypeId, listArgs);
 
                             WaitingManager.Hide();
+                        }
+
+                        // 56689: dong form chi tiet xong thi focus + boi den lai o ma xuat
+                        if (HisConfigCFG.QUICK_EXPORT_FLOW)
+                        {
+                            txtExpMestCode.Focus();
+                            txtExpMestCode.SelectAll();
                         }
                     }
                     catch (Exception ex)

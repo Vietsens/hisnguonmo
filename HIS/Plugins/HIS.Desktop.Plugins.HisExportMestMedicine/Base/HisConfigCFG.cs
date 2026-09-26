@@ -53,6 +53,15 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine.Base
         /// Khac 1 hoac khong khai bao: giu nguyen hanh vi cu la mo man chi tiet benh an.
         /// </summary>
         private const string VIEW_BLOOD_SUPPLY_SLIP_OPTION = "HIS.Desktop.Plugins.HisExportMestMedicine.ViewBloodSupplySlipOption";
+
+        /// <summary>
+        /// 56689 - Luong phat thuoc nhanh.
+        /// Bang 1: bat phim tat F5 ve o Ma dieu tri; luoi con dung 1 dong thi tu mo form chi tiet;
+        ///         dong form chi tiet xong thi tra con tro ve o Ma xuat; hien o tich "Dong sau khi thuc xuat"
+        ///         tai man Chi tiet xuat va Chi tiet phieu linh.
+        /// Khac 1 hoac khong khai bao: giu nguyen toan bo hanh vi cu.
+        /// </summary>
+        private const string QUICK_EXPORT_FLOW_OPTION = "HIS.EXP_MEST.QUICK_EXPORT_FLOW_OPTION";
         internal static bool EXPORT_SALE__MUST_BILL;
         internal static bool CANCEL_ALLOW_OTHER_LOGINNAME;
         internal static string EXP_MEST_SALE__MODULE_UPDATE_OPTION_SELECT;
@@ -71,6 +80,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine.Base
         internal static string AllowEditExpTime;
 
         internal static string ViewBloodSupplySlipOption;
+        internal static bool QUICK_EXPORT_FLOW;
 
         internal static void LoadConfig()
         {
@@ -91,6 +101,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine.Base
                 PlatformOption = HisConfigs.Get<int>(PlatformOptionCFG);
                 AllowEditExpTime = HisConfigs.Get<string>(ALLOW_EDIT_EXP_TIME);
                 ViewBloodSupplySlipOption = HisConfigs.Get<string>(VIEW_BLOOD_SUPPLY_SLIP_OPTION);
+                QUICK_EXPORT_FLOW = HisConfigs.Get<string>(QUICK_EXPORT_FLOW_OPTION) == "1";
             }
             catch (Exception ex)
             {

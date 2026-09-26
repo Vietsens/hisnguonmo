@@ -81,11 +81,90 @@ namespace MPS.Processor.Mps000138
                     AddObjectKeyIntoListkey<V_HIS_REGISTER_REQ>(rdo._RegisterReq, false);
                 }
                 SetSingleKey(new KeyValue(Mps000138ExtendSingleKey.LAST_CALLED_NUM_ORDER, rdo._RegisterReqLastCalled != null ? rdo._RegisterReqLastCalled.NUM_ORDER : 0));
+
+                // Luon dat khoa de mau in khong bi thieu the khi so lay theo duong khong dinh danh
+                SetSingleKey(new KeyValue(Mps000138ExtendSingleKey.IDENTITY_PATIENT_NAME, this.GetIdentityPatientName()));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Lay ho ten nguoi benh trong chuoi JSON cua ban ghi cap so.
+        /// Khong doc duoc thi tra ve chuoi rong, phieu in ra nhu truoc.
+        /// </summary>
+        string GetIdentityPatientName()
+        {
+            try
+            {
+                if (rdo._RegisterReq == null || String.IsNullOrWhiteSpace(rdo._RegisterReq.IDENTITY_JSON))
+                {
+                    return "";
+                }
+
+                return ReadJsonStringValue(rdo._RegisterReq.IDENTITY_JSON, "PatientName");
+            }
+            catch (Exception ex)
+            {
+                // Chuoi JSON hong thi khong chan viec in phieu
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
+        }
+
+        /// <summary>
+        /// Doc gia tri chuoi cua mot khoa trong chuoi JSON phang.
+        /// Tu tach de du an in khong phai them phu thuoc thu vien JSON.
+        /// </summary>
+        static string ReadJsonStringValue(string json, string key)
+        {
+            try
+            {
+                string marker = "\"" + key + "\"";
+                int keyIndex = json.IndexOf(marker, StringComparison.Ordinal);
+                if (keyIndex < 0)
+                {
+                    return "";
+                }
+
+                int colonIndex = json.IndexOf(':', keyIndex + marker.Length);
+                if (colonIndex < 0)
+                {
+                    return "";
+                }
+
+                int openQuote = json.IndexOf('"', colonIndex + 1);
+                if (openQuote < 0)
+                {
+                    return "";
+                }
+
+                StringBuilder value = new StringBuilder();
+                for (int i = openQuote + 1; i < json.Length; i++)
+                {
+                    char current = json[i];
+                    if (current == '\\' && i + 1 < json.Length)
+                    {
+                        // Giu nguyen ky tu sau dau thoat, du cho ho ten nen khong xu ly \u
+                        i++;
+                        value.Append(json[i]);
+                        continue;
+                    }
+                    if (current == '"')
+                    {
+                        break;
+                    }
+                    value.Append(current);
+                }
+                return value.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
         }
     }
 }
