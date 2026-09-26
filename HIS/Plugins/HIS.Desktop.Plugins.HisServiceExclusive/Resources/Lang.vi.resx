@@ -201,4 +201,19 @@
   <data name="UCServiceExclusive.colExclusiveName.Caption" xml:space="preserve">
     <value>Tên dịch vụ</value>
   </data>
+  <data name="UCServiceExclusive.colHandleType.Caption" xml:space="preserve">
+    <value>Mức xử lý</value>
+  </data>
+  <data name="UCServiceExclusive.colHandleType.Tooltip" xml:space="preserve">
+    <value>Cảnh báo: cho phép tiếp tục chỉ định sau khi xác nhận. Chặn: không cho chỉ định cùng dịch vụ gốc.</value>
+  </data>
+  <data name="UCServiceExclusive.colIsActive.Caption" xml:space="preserve">
+    <value>Còn sử dụng</value>
+  </data>
+  <data name="UCServiceExclusive.colNote.Caption" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="UCServiceExclusive.colNote.Tooltip" xml:space="preserve">
+    <value>Diễn giải lý do loại trừ (tùy chọn), hiển thị kèm nội dung thông báo</value>
+  </data>
 </root>
