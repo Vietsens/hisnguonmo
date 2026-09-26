@@ -1966,6 +1966,11 @@ namespace SAR.Desktop.Plugins.SarPrintType
         {
             try
             {
+                //Chot o dang sua truoc khi doc DataSource: bam "Dong y" khi con tro con nam trong o
+                //vua go (vd Cach gan) thi gia tri do chua duoc ghi vao dong va se bi mat.
+                gridViewMappingEMR.CloseEditor();
+                gridViewMappingEMR.UpdateCurrentRow();
+
                 List<ColumnMappingADO> listObject = gridControlMappingEMR.DataSource as List<ColumnMappingADO>;
                 var listObjectTemps = new List<Object>();
                 foreach (var item in listObject)
