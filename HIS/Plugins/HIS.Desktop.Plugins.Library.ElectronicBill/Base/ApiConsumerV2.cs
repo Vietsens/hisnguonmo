@@ -131,7 +131,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                     client.DefaultRequestHeaders.Add("Authorization", string.Format("Bearer {0}", token));
                 }
 
-                client.Timeout = new TimeSpan(0, 0, 180);
+                client.Timeout = new TimeSpan(0, 0, 90);
 
                 HttpResponseMessage resp = null;
 
@@ -220,7 +220,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                     client.DefaultRequestHeaders.Add("Authorization", string.Format("Bear {0};{1}", token, maDvcs));
                 }
 
-                client.Timeout = new TimeSpan(0, 0, 180);
+                client.Timeout = new TimeSpan(0, 0, 90);
 
                 HttpResponseMessage resp = null;
 
