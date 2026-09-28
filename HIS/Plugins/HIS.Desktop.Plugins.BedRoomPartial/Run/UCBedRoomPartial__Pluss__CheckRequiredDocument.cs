@@ -55,7 +55,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
     /// </summary>
     public partial class UCBedRoomPartial
     {
-        private const string URI__EMR_DOCUMENT_MEDI_RECORD_CHECKING = "api/EmrDocument/MediRecordChecking";
         private const string URI__EMR_DOCUMENT_GET_VIEW = "api/EmrDocument/GetView";
         private const string URI__EMR_DOCUMENT_TYPE_GET = "api/EmrDocumentType/Get";
         private const string URI__HIS_CONFIG_GET = "api/HisConfig/Get";
@@ -70,7 +69,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         /// <summary>
         /// Dau nhan de doi chieu DLL dang chay voi ban vua build. Doi moi lan sua logic phep kiem tra nay.
         /// </summary>
-        private const string STAMP__CHECK_REQUIRED_DOCUMENT = "canh-bao-vao-khoa-v6-nhac-theo-tung-lan-chon";
+        private const string STAMP__CHECK_REQUIRED_DOCUMENT = "canh-bao-vao-khoa-v7-toi-uu-truy-van";
 
         /// <summary>
         /// TREATMENT_ID cua benh nhan vua xet o lan chon gan nhat.
@@ -205,25 +204,17 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     return;
                 }
 
-                // Goi MediRecordChecking TRUOC khi lay danh sach van ban de biet dich vu EMR con song:
-                // api nay loi thi bo qua kiem tra luon, tranh canh bao oan vi tuong ho so khong co van ban.
-                RequiredDocumentCheckingResultADO checkingResult = GetRequiredDocumentChecking(treatmentCode);
-                if (checkingResult == null)
-                {
-                    TraceCheckRequiredDocument("KET LUAN: api " + URI__EMR_DOCUMENT_MEDI_RECORD_CHECKING
-                        + " tra ve null (ma dieu tri " + treatmentCode + ") -> khong canh bao.");
-                    return;
-                }
-
-                List<RequiredDocumentADO> documents = GetTreatmentDocumentsForRequiredCheck(treatmentCode);
+                // Chi lay van ban THUOC CAC LOAI duoc tich, va chi van ban chua xoa — loc ngay o may chu.
+                // Ho so noi tru co the co vai tram van ban; loc o day thi bat ke ho so to co nao cung chi
+                // tra ve dung vai ban ghi can xet.
+                List<long> requiredTypeIds = requiredTypes.Select(o => o.ID).ToList();
+                List<RequiredDocumentADO> documents = GetTreatmentDocumentsForRequiredCheck(treatmentCode, requiredTypeIds);
                 if (documents == null)
                 {
                     TraceCheckRequiredDocument("KET LUAN: api " + URI__EMR_DOCUMENT_GET_VIEW
                         + " loi (ma dieu tri " + treatmentCode + ") -> khong canh bao.");
                     return;
                 }
-
-                HashSet<long> unfinishedDocumentIds = GetUnfinishedDocumentIdsForRequiredCheck(checkingResult);
 
                 // ---- 9. Xet TUNG loai duoc tich ----
                 List<string> missingMessages = new List<string>();
@@ -252,7 +243,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     // cung loai, ky xong 1 cai la het canh bao, cai con lai bo do khong ai biet.
                     // Gio con bat ky van ban nao chua ky xong thi van canh bao, va liet ke ro tung van ban.
                     List<RequiredDocumentADO> unfinishedOfType = documentsOfType
-                        .Where(o => IsDocumentUnfinishedForRequiredCheck(o, unfinishedDocumentIds))
+                        .Where(o => IsDocumentUnfinishedForRequiredCheck(o))
                         .ToList();
 
                     TraceCheckRequiredDocument(string.Format(
@@ -411,52 +402,42 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             }
         }
 
-        /// <summary>Ket qua kiem tra ho so benh an. Tra ve null khi goi api that bai.</summary>
-        private RequiredDocumentCheckingResultADO GetRequiredDocumentChecking(string treatmentCode)
-        {
-            try
-            {
-                CommonParam paramCheck = new CommonParam();
-                var checkingResult = new BackendAdapter(paramCheck).Post<RequiredDocumentCheckingResultADO>(
-                    URI__EMR_DOCUMENT_MEDI_RECORD_CHECKING, ApiConsumers.EmrConsumer, treatmentCode, paramCheck);
-                return checkingResult;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(LOG__CHECK_REQUIRED_DOCUMENT + "loi khi kiem tra ho so benh an.", ex);
-                return null;
-            }
-        }
-
         /// <summary>
-        /// Toan bo van ban chua xoa cua ho so. Tra ve danh sach rong khi ho so chua co van ban nao,
-        /// tra ve null khi goi api that bai - hai truong hop nay KHAC nhau: rong thi van canh bao duoc,
-        /// null thi phai bo qua phep kiem tra.
+        /// Van ban CHUA XOA cua ho so, CHI thuoc cac loai duoc tich "Hoan thanh khi vao khoa".
+        ///
+        /// Ca hai dieu kien deu day xuong may chu (DOCUMENT_TYPE_IDs + IS_DELETE) thay vi lay het roi
+        /// loc o may tram. Ho so noi tru dai ngay co the co vai tram van ban, trong khi so loai duoc
+        /// tich thuong chi 2-3; loc o may chu thi ban tin luon nho bat ke ho so to co nao.
+        ///
+        /// Tra ve danh sach rong khi ho so chua co van ban nao thuoc cac loai do, tra ve null khi goi
+        /// api that bai — hai truong hop KHAC nhau: rong thi van canh bao duoc, null thi phai bo qua.
         /// </summary>
-        private List<RequiredDocumentADO> GetTreatmentDocumentsForRequiredCheck(string treatmentCode)
+        private List<RequiredDocumentADO> GetTreatmentDocumentsForRequiredCheck(string treatmentCode, List<long> requiredTypeIds)
         {
             try
             {
                 CommonParam paramDoc = new CommonParam();
                 EmrDocumentViewFilter filter = new EmrDocumentViewFilter();
                 filter.TREATMENT_CODE__EXACT = treatmentCode;
+                filter.DOCUMENT_TYPE_IDs = requiredTypeIds;
+                filter.IS_DELETE = false;
 
                 var documents = new BackendAdapter(paramDoc).Get<List<RequiredDocumentADO>>(
                     URI__EMR_DOCUMENT_GET_VIEW, ApiConsumers.EmrConsumer, filter, paramDoc);
                 if (documents == null)
                 {
-                    // api tra ve null khi ho so chua co van ban nao, khong phan biet duoc voi loi goi api.
-                    // Ket qua MediRecordChecking o buoc truoc da xac nhan dich vu EMR con song nen coi la rong.
+                    // api tra ve null khi khong co ban ghi nao, khong phan biet duoc voi loi goi api.
+                    // Nhung buoc truoc da goi api/EmrDocumentType/Get thanh cong nen dich vu EMR chac chan
+                    // con song -> null o day la ho so thuc su chua co van ban thuoc cac loai duoc tich.
                     TraceCheckRequiredDocument("api " + URI__EMR_DOCUMENT_GET_VIEW
-                        + " tra ve null (ma dieu tri " + treatmentCode + "): coi nhu ho so chua co van ban nao.");
+                        + " tra ve null (ma dieu tri " + treatmentCode + "): ho so chua co van ban thuoc cac loai duoc tich.");
                     return new List<RequiredDocumentADO>();
                 }
 
-                int countFromApi = documents.Count;
-                documents = documents.Where(o => o != null && o.IS_DELETE != 1).ToList();
+                documents = documents.Where(o => o != null).ToList();
                 TraceCheckRequiredDocument(string.Format(
-                    "api {0} tra ve {1} van ban, con {2} van ban chua xoa (IS_DELETE khac 1).",
-                    URI__EMR_DOCUMENT_GET_VIEW, countFromApi, documents.Count));
+                    "api {0} tra ve {1} van ban thuoc {2} loai duoc tich.",
+                    URI__EMR_DOCUMENT_GET_VIEW, documents.Count, requiredTypeIds.Count));
                 return documents;
             }
             catch (Exception ex)
@@ -466,33 +447,28 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             }
         }
 
-        /// <summary>ID cac van ban chua hoan thanh chu ky theo ket qua kiem tra ho so.</summary>
-        private HashSet<long> GetUnfinishedDocumentIdsForRequiredCheck(RequiredDocumentCheckingResultADO checkingResult)
-        {
-            return new HashSet<long>((checkingResult.SignatureMissingDocuments ?? new List<RequiredDocumentADO>())
-                .Where(o => o != null)
-                .Select(o => o.ID));
-        }
-
         /// <summary>
-        /// Van ban da hoan thanh chua (QT7).
-        ///
-        /// KHONG chi tin vao SignatureMissingDocuments cua ket qua kiem tra ho so: phep kiem tra do bo qua
-        /// nhung van ban khong nam trong luong kiem tra ho so cua EMR, nen mot van ban dang con nguoi phai ky
-        /// van co the KHONG xuat hien trong danh sach do. Dung dung bon tin hieu ma dien "Chan nhap vien"
-        /// dang dung, de hai tinh nang cho ket qua nhat quan:
-        ///  - ket qua kiem tra ho so bao thieu chu ky;
+        /// Van ban da hoan thanh chua (QT7). Coi la CHUA hoan thanh khi thoa bat ky dieu nao:
         ///  - con NEXT_SIGNER (den luot nguoi khac phai ky);
         ///  - SIGNERS rong (chua ai ky);
         ///  - con REJECTER (co nguoi tu choi ky).
+        ///
+        /// Truoc day con OR them ket qua api/EmrDocument/MediRecordChecking. Da bo lan goi do vi KHONG
+        /// them duoc gi: dieu kien loc cua api la
+        ///     (REJECTER rong VA NEXT_SIGNER co) HOAC (SIGNERS rong VA UN_SIGNERS rong VA IS_CAPTURE null)
+        /// — ve thu nhat nam gon trong "con NEXT_SIGNER", ve thu hai nam gon trong "SIGNERS rong", nen moi
+        /// van ban api bao thieu chu ky deu da bi ba tin hieu doc thang tren ban ghi bat duoc.
+        /// Bo lan goi do giup moi lan chon benh nhan bot mot luot goi dich vu nang (api do tu no cung
+        /// phai lay TOAN BO van ban cua ho so + toan bo danh muc loai van ban).
+        ///
+        /// Van dung dung bo tin hieu ma dien "Chan nhap vien" dang dung, de hai tinh nang nhat quan.
         /// </summary>
-        private bool IsDocumentUnfinishedForRequiredCheck(RequiredDocumentADO document, HashSet<long> apiUnfinishedDocumentIds)
+        private bool IsDocumentUnfinishedForRequiredCheck(RequiredDocumentADO document)
         {
             if (document == null)
                 return false;
 
-            return apiUnfinishedDocumentIds.Contains(document.ID)
-                || !string.IsNullOrWhiteSpace(document.NEXT_SIGNER)
+            return !string.IsNullOrWhiteSpace(document.NEXT_SIGNER)
                 || string.IsNullOrWhiteSpace(document.SIGNERS)
                 || !string.IsNullOrWhiteSpace(document.REJECTER);
         }
