@@ -369,10 +369,10 @@ btnSaveFinish_Click_Action (L3399)
 | SQL | `docs/SQL_55058_HisIcd_IsChronic.sql` — cột `NUMBER(2,0)` (khớp EDMX `Precision=2` của `IS_INFECTIOUS`) | Chưa chạy DB — cần DBA |
 | MOS.EFMODEL (SVN local) | `HIS_ICD.cs`, `V_HIS_ICD.cs` + `DataModelTable.edmx`, `DataModelView.edmx` (SSDL/CSDL/MSL) — build OK | Chưa commit SVN (máy không có svn CLI) |
 | R-05 `HisIcdUpdate` | Đã xác minh: không copy từng field → không sửa backend | — |
-| HisIcd | Logic đặt trong partial mới `HisIcd/frmHisIcd__Chronic.cs` (file chính đã > 2000 dòng) | Thêm cơ chế tự ẩn ô + cột khi EFMODEL runtime chưa có `IS_CHRONIC` |
+| HisIcd | Logic đặt trong partial mới `HisIcd/frmHisIcd__Chronic.cs` (file chính đã > 2000 dòng) | `IS_CHRONIC` đọc/ghi qua `PropertyInfo` cache; tự ẩn ô + cột khi EFMODEL runtime chưa có cột |
 | UC ExamTreatmentFinish | `IsChronicEditable` (kiểm cả `ReadOnly` và `Properties.ReadOnly`), `FocusChronic()` | — |
-| ExamServiceReqExecute | Partial mới `ExamServiceReqExecuteControl__CheckChronicIcd.cs`; gọi cuối khối `chkTreatmentFinish.Checked` trong `ProcessTreatmentFinish` | Truy cập `IS_CHRONIC` qua `FindChronicIcd` (`NoInlining`) + kiểm tra reflection → EFMODEL cũ thì bỏ qua cảnh báo |
-| Build | 3 project build v4.5 AnyCPU, 0 lỗi, biên dịch với EFMODEL mới qua `ReferencePath` shim (không đè `lib/MOS`) | — |
+| ExamServiceReqExecute | Partial mới `ExamServiceReqExecuteControl__CheckChronicIcd.cs`; gọi cuối khối `chkTreatmentFinish.Checked` trong `ProcessTreatmentFinish` | `FindChronicIcd` tìm theo mã rồi đọc `IS_CHRONIC` qua `PropertyInfo` → EFMODEL cũ thì bỏ qua cảnh báo |
+| Build | 3 project build v4.5 AnyCPU, 0 lỗi **với `lib/MOS/MOS.EFMODEL.dll` hiện tại** (không cần EFMODEL mới để biên dịch) | Không tham chiếu trực tiếp `IS_CHRONIC` để không làm gãy build của người khác từ Develop |
 
 **Vì sao cần cơ chế tự tắt:** bản `MOS.EFMODEL.dll` đang chạy (`histest/x64/`) và bản `lib/MOS` lệch nhau (mỗi bản có cột của team khác mà bản kia không có — ví dụ `NURSE_EXECUTE_*`, `PACS_END_TIME` so với `PACS_BEGIN_TIME`), còn source SVN local thiếu cả hai phần đó. Không dựng được một EFMODEL gộp đúng từ máy này, nên **không deploy EFMODEL**. Plugin mới vẫn chạy an toàn trên EFMODEL cũ (tính năng ẩn/tắt) và tự bật khi backend deploy EFMODEL có `IS_CHRONIC` + DB có cột.
 

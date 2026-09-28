@@ -19,20 +19,23 @@ using HIS.Desktop.LocalStorage.LocalData;
 using Inventec.Desktop.Common.LanguageManager;
 using MOS.EFMODEL.DataModels;
 using System;
-using System.Runtime.CompilerServices;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.HisIcd
 {
     /// <summary>
     /// 55058 - "Benh man tinh" checkbox (HIS_ICD.IS_CHRONIC).
-    /// Every access to IS_CHRONIC goes through a NoInlining accessor that only runs when the
-    /// runtime MOS.EFMODEL has the column, so an older EFMODEL just hides the feature
-    /// instead of breaking the whole form (MissingMethodException at JIT time).
+    /// IS_CHRONIC is read/written through cached PropertyInfo so the plugin builds and runs with
+    /// both the old MOS.EFMODEL (no column -> checkbox and grid column are hidden) and the new one.
     /// </summary>
     public partial class frmHisIcd
     {
-        private static bool? isChronicFieldSupported;
+        private const string IS_CHRONIC_PROPERTY = "IS_CHRONIC";
+
+        private static bool isChronicPropertyLoaded;
+        private static PropertyInfo icdChronicProperty;
+        private static PropertyInfo viewIcdChronicProperty;
 
         /// <summary>
         /// True when the loaded MOS.EFMODEL has HIS_ICD.IS_CHRONIC and V_HIS_ICD.IS_CHRONIC.
@@ -41,24 +44,26 @@ namespace HIS.Desktop.Plugins.HisIcd
         {
             get
             {
-                if (!isChronicFieldSupported.HasValue)
+                if (!isChronicPropertyLoaded)
                 {
+                    isChronicPropertyLoaded = true;
                     try
                     {
-                        isChronicFieldSupported = typeof(HIS_ICD).GetProperty("IS_CHRONIC") != null
-                            && typeof(V_HIS_ICD).GetProperty("IS_CHRONIC") != null;
-                        if (!isChronicFieldSupported.Value)
+                        icdChronicProperty = typeof(HIS_ICD).GetProperty(IS_CHRONIC_PROPERTY);
+                        viewIcdChronicProperty = typeof(V_HIS_ICD).GetProperty(IS_CHRONIC_PROPERTY);
+                        if (icdChronicProperty == null || viewIcdChronicProperty == null)
                         {
-                            Inventec.Common.Logging.LogSystem.Warn("MOS.EFMODEL chua co HIS_ICD.IS_CHRONIC/V_HIS_ICD.IS_CHRONIC -> an checkbox Benh man tinh");
+                            Inventec.Common.Logging.LogSystem.Warn("MOS.EFMODEL chua co HIS_ICD.IS_CHRONIC/V_HIS_ICD.IS_CHRONIC -> an checkbox Benh man tinh (55058)");
                         }
                     }
                     catch (Exception ex)
                     {
-                        isChronicFieldSupported = false;
+                        icdChronicProperty = null;
+                        viewIcdChronicProperty = null;
                         Inventec.Common.Logging.LogSystem.Warn(ex);
                     }
                 }
-                return isChronicFieldSupported.Value;
+                return icdChronicProperty != null && viewIcdChronicProperty != null;
             }
         }
 
@@ -97,13 +102,17 @@ namespace HIS.Desktop.Plugins.HisIcd
         }
 
         /// <summary>
-        /// Value for grid unbound column IS_CHRONIC_CHK.
+        /// V_HIS_ICD.IS_CHRONIC == 1. Used by the grid unbound column and the editor.
         /// </summary>
         private bool IsChronicIcd(V_HIS_ICD data)
         {
             try
             {
-                return data != null && IsChronicFieldSupported && GetIsChronic(data);
+                if (data != null && IsChronicFieldSupported)
+                {
+                    short? value = viewIcdChronicProperty.GetValue(data, null) as short?;
+                    return value == 1;
+                }
             }
             catch (Exception ex)
             {
@@ -130,25 +139,13 @@ namespace HIS.Desktop.Plugins.HisIcd
             {
                 if (currentDTO != null && IsChronicFieldSupported)
                 {
-                    SetIsChronic(currentDTO, chkIsChronic.Checked);
+                    icdChronicProperty.SetValue(currentDTO, chkIsChronic.Checked ? (short?)1 : null, null);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static bool GetIsChronic(V_HIS_ICD data)
-        {
-            return data.IS_CHRONIC == 1;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void SetIsChronic(HIS_ICD dto, bool isChronic)
-        {
-            dto.IS_CHRONIC = isChronic ? (short?)1 : null;
         }
 
         private void chkIsChronic_KeyUp(object sender, KeyEventArgs e)

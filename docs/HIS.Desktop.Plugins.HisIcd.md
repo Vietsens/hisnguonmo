@@ -95,7 +95,7 @@ Create/Update API **không cần sửa** (map trọn entity).
 | # | Vị trí | Đã làm |
 |---|--------|--------|
 | 1 | Designer | `CheckEdit chkIsChronic` + `layoutControlItem30` tại `(0,551)` (dưới `chkIsInfectious`), TabIndex 43; dịch hàng nút +24px (item6/7/9 → 575, item10/11 → 601, emptySpaceItem1 → 627), nới `lcEditorInfo`/`layoutControlGroup4` 625→649. Cột grid `grdColIsChronic` FieldName `IS_CHRONIC_CHK`, `ColumnEdit=check`, VisibleIndex 24 |
-| 2 | `frmHisIcd__Chronic.cs` (MỚI) | `IsChronicFieldSupported` (reflection 1 lần), `InitChronicControl` (ẩn ô + cột nếu EFMODEL runtime chưa có cột), `SetCaptionChronic`, `IsChronicIcd`, `FillChronicToEditor`, `UpdateChronicToDTO`, accessor `NoInlining` `GetIsChronic`/`SetIsChronic`, `chkIsChronic_KeyUp` |
+| 2 | `frmHisIcd__Chronic.cs` (MỚI) | `IsChronicFieldSupported` (cache `PropertyInfo` của `HIS_ICD`/`V_HIS_ICD.IS_CHRONIC`), `InitChronicControl` (ẩn ô + cột nếu EFMODEL runtime chưa có cột), `SetCaptionChronic`, `IsChronicIcd`, `FillChronicToEditor`, `UpdateChronicToDTO` (đọc/ghi qua `PropertyInfo` — KHÔNG tham chiếu trực tiếp nên build được với EFMODEL cũ), `chkIsChronic_KeyUp` |
 | 3 | `frmHisIcd.cs` | Gọi `SetCaptionChronic()` trong `SetCaptionByLanguageKey`, `InitChronicControl()` trong `MeShow`, nhánh `IS_CHRONIC_CHK` trong `CustomUnboundColumnData`, `FillChronicToEditor` / `chkIsChronic.Checked=false` / `UpdateChronicToDTO`; Enter từ `chkIsDeathCauseOnly` → `chkIsChronic` |
 | 4 | Resources `Lang.vi/en.resx` | `frmHisIcd.chkIsChronic.Properties.Caption`/`.ToolTip`, `frmHisIcd.grdColIsChronic.Caption`/`.ToolTip` |
 

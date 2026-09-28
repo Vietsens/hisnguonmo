@@ -161,7 +161,7 @@
 - **Hành vi**: `XtraMessageBox` Yes/No (tiêu đề "Cảnh báo"): "Mã bệnh chính {mã - tên} là bệnh mãn tính nhưng hồ sơ chưa được tích "Mãn tính". Bạn có muốn tiếp tục kết thúc điều trị không?" → **Có**: lưu tiếp; **Không**: `ProcessTreatmentFinish` trả false (không gọi API) + `UCExamTreatmentFinish.FocusChronic()`.
 - **Không tự tích** ô Mãn tính: tích sẽ gọi ngay `api/HisTreatment/SetChronic` — phải là thao tác của BS.
 - **Chỉ xét ICD chính**, không xét ICD phụ. Không có config bật/tắt riêng — có hiệu lực khi danh mục ICD có mã được đánh dấu (plugin `HisIcd`).
-- **An toàn EFMODEL cũ**: truy cập `IS_CHRONIC` nằm trong method `NoInlining` `FindChronicIcd`, chỉ gọi khi `typeof(HIS_ICD).GetProperty("IS_CHRONIC") != null` → runtime chưa có EFMODEL mới thì cảnh báo tự tắt, không ảnh hưởng kết thúc điều trị.
+- **Tương thích EFMODEL cũ**: đọc `IS_CHRONIC` qua `PropertyInfo` cache (`typeof(HIS_ICD).GetProperty("IS_CHRONIC")`), KHÔNG tham chiếu trực tiếp → build được với `lib/MOS/MOS.EFMODEL.dll` hiện tại; runtime chưa có cột thì cảnh báo tự tắt (log Warn 1 lần), không ảnh hưởng kết thúc điều trị. Khi EFMODEL chính thức có cột có thể đổi về truy cập trực tiếp.
 - **Files**: `ExamServiceReqExecuteControl__CheckChronicIcd.cs` (MỚI — `CheckChronicMainIcd`, `FindChronicIcd`), `ExamServiceReqExecuteControl__Process.cs` (gọi cuối khối `chkTreatmentFinish.Checked` trong `ProcessTreatmentFinish`), `Resources/Message.Lang.{vi,en,my}.resx` + `ResourceMessage.cs` (`IcdChinhLaBenhManTinhChuaTichManTinh`), UC `HIS.UC.ExamTreatmentFinish/Run/UCTreatmentFinish.cs` (+`IsChronicEditable`, +`FocusChronic()`).
 
 ## 8. Changelog

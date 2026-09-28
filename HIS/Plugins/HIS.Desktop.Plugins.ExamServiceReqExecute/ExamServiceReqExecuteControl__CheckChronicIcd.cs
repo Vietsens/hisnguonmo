@@ -22,41 +22,42 @@ using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 {
     public partial class ExamServiceReqExecuteControl
     {
-        private static bool? isIcdChronicFieldSupported;
+        private static bool isIcdChronicPropertyLoaded;
+        private static System.Reflection.PropertyInfo icdChronicProperty;
 
         /// <summary>
         /// True when the loaded MOS.EFMODEL has HIS_ICD.IS_CHRONIC.
-        /// The IS_CHRONIC access lives in a NoInlining method, so an older EFMODEL at runtime only
-        /// turns this warning off instead of failing ProcessTreatmentFinish (MissingMethodException).
+        /// IS_CHRONIC is read through cached PropertyInfo so the plugin builds and runs with both
+        /// the old MOS.EFMODEL (no column -> warning is skipped) and the new one.
         /// </summary>
         private static bool IsIcdChronicFieldSupported
         {
             get
             {
-                if (!isIcdChronicFieldSupported.HasValue)
+                if (!isIcdChronicPropertyLoaded)
                 {
+                    isIcdChronicPropertyLoaded = true;
                     try
                     {
-                        isIcdChronicFieldSupported = typeof(HIS_ICD).GetProperty("IS_CHRONIC") != null;
-                        if (!isIcdChronicFieldSupported.Value)
+                        icdChronicProperty = typeof(HIS_ICD).GetProperty("IS_CHRONIC");
+                        if (icdChronicProperty == null)
                         {
                             Inventec.Common.Logging.LogSystem.Warn("MOS.EFMODEL chua co HIS_ICD.IS_CHRONIC -> bo qua canh bao ICD chinh la benh man tinh (55058)");
                         }
                     }
                     catch (Exception ex)
                     {
-                        isIcdChronicFieldSupported = false;
+                        icdChronicProperty = null;
                         Inventec.Common.Logging.LogSystem.Warn(ex);
                     }
                 }
-                return isIcdChronicFieldSupported.Value;
+                return icdChronicProperty != null;
             }
         }
 
@@ -104,11 +105,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         /// <summary>
         /// currentIcds: ICD dang hoat dong, khong phai YHCT (nap 1 lan khi Load).
+        /// Tim theo ma truoc, chi doc IS_CHRONIC (reflection) tren ban ghi tim duoc.
         /// </summary>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         private static HIS_ICD FindChronicIcd(List<HIS_ICD> icds, string icdCode)
         {
-            return icds != null ? icds.FirstOrDefault(o => o.IS_CHRONIC == 1 && o.ICD_CODE == icdCode) : null;
+            HIS_ICD icd = icds != null ? icds.FirstOrDefault(o => o.ICD_CODE == icdCode) : null;
+            if (icd == null)
+                return null;
+            short? isChronic = icdChronicProperty.GetValue(icd, null) as short?;
+            return isChronic == 1 ? icd : null;
         }
     }
 }
