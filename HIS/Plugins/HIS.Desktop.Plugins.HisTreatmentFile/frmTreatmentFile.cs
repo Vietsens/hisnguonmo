@@ -820,9 +820,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
 
         /// <summary>
         /// Mo man hinh van ban EMR (plugin HIS.Desktop.Plugins.EmrDocument) cua ho so dieu tri dang mo,
-        /// goi giong cach man Danh sach ho so dieu tri (HIS.Desktop.Plugins.TreatmentList) dang goi sang.
-        /// Uu tien truyen HIS_TREATMENT.ID, khong co thi truyen ma ho so dieu tri (EmrDocumentProcessor nhan ca 2 kieu).
-        /// Loi ben EMR khong chan luong HIS vi HIS_TREATMENT_FILE da luu xong 
+        /// goi giong cach man Danh sach ho so dieu tri (HIS.Desktop.Plugins.TreatmentList) dang goi sang. 
+        /// Truyen MA ho so dieu tri (string), KHONG truyen HIS_TREATMENT.ID: EmrDocumentProcessor coi tham so long la
+        /// EMR_TREATMENT.ID (chi EmrTreatmentList truyen kieu nay), ID 2 CSDL khac nhau nen truyen ID HIS thi
+        /// EmrDocumentForm khong tim ra ho so -> o Ma dieu tri rong -> lay tat ca van ban.
+        /// Loi ben EMR khong chan luong HIS vi HIS_TREATMENT_FILE da luu xong
         /// </summary>
         private void ShowEmrDocumentModule()
         {
@@ -834,26 +836,20 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                     return;
                 }
 
-                List<object> listArgs = new List<object>();
-                if (_TreatmentId > 0)
+                if (currentTreatment == null || string.IsNullOrEmpty(currentTreatment.TREATMENT_CODE))
                 {
-                    listArgs.Add(_TreatmentId);
-                }
-                else if (currentTreatment != null && !string.IsNullOrEmpty(currentTreatment.TREATMENT_CODE))
-                {
-                    listArgs.Add(currentTreatment.TREATMENT_CODE);
-                }
-                else
-                {
-                    Inventec.Common.Logging.LogSystem.Warn("Khong xac dinh duoc ho so dieu tri, bo qua mo man hinh van ban EMR____TREATMENT_ID=" + _TreatmentId);
+                    Inventec.Common.Logging.LogSystem.Warn("Khong xac dinh duoc ma ho so dieu tri, bo qua mo man hinh van ban EMR____TREATMENT_ID=" + _TreatmentId);
                     return;
                 }
+
+                List<object> listArgs = new List<object>();
+                listArgs.Add(currentTreatment.TREATMENT_CODE);
 
                 // form dang mo co the duoc goi tu module khac nen currentModule chua chac co phong lam viec
                 long roomId = (currentModule != null && currentModule.RoomId > 0) ? currentModule.RoomId : WorkPlace.GetRoomId();
                 long roomTypeId = (currentModule != null && currentModule.RoomTypeId > 0) ? currentModule.RoomTypeId : WorkPlace.GetRoomTypeIds().FirstOrDefault();
 
-                Inventec.Common.Logging.LogSystem.Debug("Mo man hinh van ban EMR____TREATMENT_ID=" + _TreatmentId
+                Inventec.Common.Logging.LogSystem.Debug("Mo man hinh van ban EMR____TREATMENT_CODE=" + currentTreatment.TREATMENT_CODE
                     + "____RoomId=" + roomId + "____RoomTypeId=" + roomTypeId);
 
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.EmrDocument", roomId, roomTypeId, listArgs);
@@ -900,16 +896,19 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
         }
 
         /// <summary>
-        /// Lay ma ho so dieu tri ben EMR (EMR_TREATMENT dung chung ID voi HIS_TREATMENT). 
+        /// Lay ma ho so dieu tri ben EMR, tim theo MA (EMR_TREATMENT va HIS_TREATMENT KHONG dung chung ID).
         /// Khong tim thay thi lay ma cua HIS_TREATMENT dang mo
         /// </summary>
         private string GetEmrTreatmentCode()
         {
             try
             {
+                if (currentTreatment == null || string.IsNullOrEmpty(currentTreatment.TREATMENT_CODE))
+                    return null;
+
                 Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
                 EmrTreatmentFilter filter = new EmrTreatmentFilter();
-                filter.ID = _TreatmentId;
+                filter.TREATMENT_CODE__EXACT = currentTreatment.TREATMENT_CODE;
                 var datas = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<EMR_TREATMENT>>("api/EmrTreatment/Get",
                     ApiConsumers.EmrConsumer, filter, param);
                 var emrTreatment = datas != null ? datas.FirstOrDefault() : null;

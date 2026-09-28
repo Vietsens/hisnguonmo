@@ -62,15 +62,16 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         private const int MAX_COLUMN_COUNT = 12;
 
         public frmDashboard()
-            : this(0, null, 0, DEFAULT_COLUMN_COUNT)
+            : this(0, null, 0, DEFAULT_COLUMN_COUNT, 0)
         {
         }
 
         /// <param name="departmentId">Khoa dang xem.</param>
         /// <param name="roomIds">ID cac phong duoc tich ben frmTreatmentBedRoom.</param>
-        /// <param name="reloadSecond">Chu ky lam moi tinh bang giay. 0 = khong tu lam moi.</param> 
-        /// <param name="columnCount">So cot nguoi dung chon. Ngoai khoang cho phep thi lay mac dinh.</param> 
-        public frmDashboard(long departmentId, List<long> roomIds, int reloadSecond, int columnCount)
+        /// <param name="reloadSecond">Chu ky lam moi tinh bang giay. 0 = khong tu lam moi.</param>
+        /// <param name="columnCount">So cot nguoi dung chon. Ngoai khoang cho phep thi lay mac dinh.</param>
+        /// <param name="pageSecond">Chu ky lat trang tinh bang giay. 0 = khong lat.</param>
+        public frmDashboard(long departmentId, List<long> roomIds, int reloadSecond, int columnCount, int pageSecond)
         {
             try
             {
@@ -80,6 +81,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 this.roomIds = roomIds ?? new List<long>();
                 this.ucBoard.RefreshIntervalSecond = reloadSecond;
                 this.ucBoard.ColumnCount = NormalizeColumnCount(columnCount);
+                this.ucBoard.PageIntervalSecond = pageSecond;
             }
             catch (Exception ex)
             {
@@ -152,7 +154,8 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         /// man hinh la cho trang, va moi nhip lam moi lai kho mot lan. Man hinh treo tuong chay
         /// suot ngay nen cai nay rat lo.
         ///
-        /// Danh sach buong chi lay mot lan; cac nhip sau chi goi lai api Dashboard.
+        /// Danh sach buong va giuong dang bat lay lai MOI nhip: khoa buong / khoa giuong giua
+        /// ngay thi nhip lam moi ke tiep bang tu bo di, khong phai dong mo lai man hinh.
         /// </summary>
         private void BeginLoadData()
         {
@@ -174,13 +177,20 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 {
                     Stopwatch watch = Stopwatch.StartNew();
 
-                    if (this.bedRooms == null || this.bedRooms.Count == 0)
-                    {
-                        LoadBedRooms();
-                    }
+                    LoadBedRooms();
 
                     requestedBedRoomCount = GetBedRoomIds().Count;
-                    data = CallDashboardApi();
+                    if (requestedBedRoomCount > 0)
+                    {
+                        data = CallDashboardApi();
+                        RemoveInactiveBeds(data);
+                    }
+                    else
+                    {
+                        // Moi buong da tich deu bi tat: bang trong, khong goi api Dashboard
+                        // (server tra null khi BED_ROOM_IDs rong, bang se dung o du lieu cu)
+                        data = new HisTreatmentBedRoomDashboardSDO();
+                    }
 
                     watch.Stop();
                     elapsedMs = watch.ElapsedMilliseconds;
@@ -232,6 +242,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 }
 
                 LogDashboardData(requestedBedRoomCount, data, elapsedMs);
+                RemoveRoomsWithoutBed(data);
                 this.ucBoard.SetData(data);
             }
             catch (Exception ex)
@@ -376,16 +387,19 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
 
         #region Load data
         /// <summary>
-        /// Tu cac ROOM_ID duoc tich lay ra buong benh tuong ung.
+        /// Tu cac ROOM_ID duoc tich lay ra buong benh DANG BAT tuong ung.
         /// Loc ngay tren server bang ROOM_IDs, khong keo het buong toan vien ve roi loc o client.
+        ///
+        /// Goi loi thi giu nguyen danh sach cu: ham chay moi nhip lam moi, xoa trang vi mot lan
+        /// mang chap chon la ca bang dung lai.
         /// </summary>
         private void LoadBedRooms()
         {
-            this.bedRooms = new List<HIS_BED_ROOM>();
             try
             {
                 if (this.roomIds == null || this.roomIds.Count == 0)
                 {
+                    this.bedRooms = new List<HIS_BED_ROOM>();
                     return;
                 }
 
@@ -415,6 +429,98 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
             }
         }
 
+        /// <summary>
+        /// CHAY TREN LUONG NEN. Bo cac giuong dang tat khoi du lieu Dashboard.
+        ///
+        /// api Dashboard lay HIS_BED theo buong ma khong loc IS_ACTIVE nen phai loc o day.
+        /// Dong khong co BedId la benh nhan vao buong chua gan giuong - khong thuoc giuong nao
+        /// nen giu lai. Ba so giuong tren dai thong ke tinh lai theo danh sach da loc, de
+        /// "Giuong benh" khop voi so the giuong nhin thay.
+        ///
+        /// Lay danh sach giuong loi thi de nguyen du lieu: hien thua giuong tat con hon mat het giuong.
+        /// </summary>
+        private void RemoveInactiveBeds(HisTreatmentBedRoomDashboardSDO data)
+        {
+            try
+            {
+                if (data == null || data.Rooms == null) return;
+
+                CommonParam param = new CommonParam();
+                HisBedFilter filter = new HisBedFilter();
+                filter.BED_ROOM_IDs = GetBedRoomIds();
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+
+                List<HIS_BED> activeBeds = new BackendAdapter(param)
+                    .Get<List<HIS_BED>>("api/HisBed/Get", ApiConsumers.MosConsumer, filter, param);
+                if (activeBeds == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("api/HisBed/Get tra ve null, khong loc duoc giuong dang tat. BED_ROOM_IDs: "
+                        + string.Join(",", filter.BED_ROOM_IDs));
+                    return;
+                }
+
+                HashSet<long> activeBedIds = new HashSet<long>(activeBeds.Select(o => o.ID));
+                int removed = 0;
+
+                foreach (TreatmentBedRoomDashboardRoomSDO room in data.Rooms)
+                {
+                    if (room == null || room.Beds == null) continue;
+
+                    removed += room.Beds.RemoveAll(o => o != null && o.BedId.HasValue && !activeBedIds.Contains(o.BedId.Value));
+                }
+
+                if (removed == 0) return;
+
+                List<TreatmentBedRoomDashboardBedSDO> beds = data.Rooms
+                    .Where(o => o != null && o.Beds != null)
+                    .SelectMany(o => o.Beds)
+                    .Where(o => o != null && o.BedId.HasValue)
+                    .ToList();
+
+                // Giuong nam ghep ra nhieu dong cung BedId nen dem theo BedId khong trung
+                data.BedTotal = beds.Select(o => o.BedId.Value).Distinct().Count();
+                data.UsedBedTotal = beds.Where(o => o.Treatment != null).Select(o => o.BedId.Value).Distinct().Count();
+                data.EmptyBedTotal = data.BedTotal - data.UsedBedTotal;
+
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "Bo {0} dong giuong dang tat. Tinh lai: {1} giuong, {2} dang dung, {3} trong",
+                    removed, data.BedTotal, data.UsedBedTotal, data.EmptyBedTotal));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// An buong khong co giuong nao (chua khai bao giuong, hoac moi giuong deu dang tat
+        /// da bi RemoveInactiveBeds bo di). The trong chi chiem cho tren trang.
+        ///
+        /// Goi SAU LogDashboardData: bo truoc thi log bao lech "gui len N buong nhung nhan ve M"
+        /// trong khi server tra du. Buong co benh nhan chua gan giuong van con dong trong Beds
+        /// nen khong bi an - an di la mat benh nhan tren bang.
+        /// </summary>
+        private void RemoveRoomsWithoutBed(HisTreatmentBedRoomDashboardSDO data)
+        {
+            try
+            {
+                if (data == null || data.Rooms == null) return;
+
+                List<string> hidden = data.Rooms
+                    .Where(o => o != null && (o.Beds == null || o.Beds.Count == 0))
+                    .Select(o => string.IsNullOrEmpty(o.BedRoomName) ? o.BedRoomCode : o.BedRoomName)
+                    .ToList();
+                if (hidden.Count == 0) return;
+
+                data.Rooms.RemoveAll(o => o == null || o.Beds == null || o.Beds.Count == 0);
+
+                Inventec.Common.Logging.LogSystem.Info("An buong khong co giuong: " + string.Join(", ", hidden));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         #endregion
 
         #region Public

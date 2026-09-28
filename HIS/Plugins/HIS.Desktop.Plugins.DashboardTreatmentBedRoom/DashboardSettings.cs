@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         private const string FILE_NAME = "settings.cfg";
         private const string KEY_COLUMN = "COLUMN_COUNT";
         private const string KEY_RELOAD = "RELOAD_SECOND";
+        private const string KEY_PAGE = "PAGE_MINUTE";
 
         private static string GetFilePath()
         {
@@ -53,10 +54,11 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         /// Đọc thiết lập đã lưu. Trả 0 cho giá trị không có hoặc không đọc được,
         /// nơi gọi cứ giữ nguyên giá trị mặc định trên form.
         /// </summary>
-        public static void Load(out int columnCount, out int reloadSecond)
+        public static void Load(out int columnCount, out int reloadSecond, out int pageMinute)
         {
             columnCount = 0;
             reloadSecond = 0;
+            pageMinute = 0;
 
             try
             {
@@ -78,21 +80,24 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
 
                     if (key == KEY_COLUMN) columnCount = parsed;
                     else if (key == KEY_RELOAD) reloadSecond = parsed;
+                    else if (key == KEY_PAGE) pageMinute = parsed;
                 }
 
                 Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                    "Doc thiet lap da luu: so cot={0}, thoi gian tai lai={1}s", columnCount, reloadSecond));
+                    "Doc thiet lap da luu: so cot={0}, thoi gian tai lai={1}s, thoi gian lat trang={2} phut",
+                    columnCount, reloadSecond, pageMinute));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 columnCount = 0;
                 reloadSecond = 0;
+                pageMinute = 0;
             }
         }
 
         /// <summary>Ghi lại thiết lập vừa dùng. Chỉ gọi sau khi giá trị đã qua kiểm tra hợp lệ.</summary>
-        public static void Save(int columnCount, int reloadSecond)
+        public static void Save(int columnCount, int reloadSecond, int pageMinute)
         {
             try
             {
@@ -103,6 +108,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 List<string> lines = new List<string>();
                 lines.Add(KEY_COLUMN + "=" + columnCount.ToString(CultureInfo.InvariantCulture));
                 lines.Add(KEY_RELOAD + "=" + reloadSecond.ToString(CultureInfo.InvariantCulture));
+                lines.Add(KEY_PAGE + "=" + pageMinute.ToString(CultureInfo.InvariantCulture));
 
                 File.WriteAllLines(path, lines.ToArray(), Encoding.UTF8);
             }
