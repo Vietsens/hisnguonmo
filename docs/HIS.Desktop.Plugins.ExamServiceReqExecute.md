@@ -154,10 +154,21 @@
 - Message dùng resource đa ngôn ngữ (vi/en/my): `Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongChan` (chặn) / `Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongCanhBao` (cảnh báo). Format `{0}` = ngưỡng động.
 - MessageBox dùng `DevExpress.XtraEditors.XtraMessageBox` với `MessageBoxIcon.Warning` (chặn) / `MessageBoxIcon.Question` (cảnh báo) — đồng bộ skin với toàn bộ HIS Desktop.
 
+## 7C. Cảnh báo ICD chính là bệnh mãn tính khi kết thúc điều trị (55058)
+
+- **Phạm vi**: chỉ nút "Lưu và kết thúc" (`btnSaveFinish`) khi tích "Kết thúc điều trị" — đi qua `ProcessTreatmentFinish` (`ExamServiceReqExecuteControl__Process.cs`). Plugin `TreatmentFinish` độc lập KHÔNG đổi.
+- **Điều kiện cảnh báo**: ô "Mãn tính" (`chkChronic` trong `HIS.UC.ExamTreatmentFinish`) đang hiện + cho tích (`UCExamTreatmentFinish.IsChronicEditable` — config `MOS.HIS_TREATMENT.FINISH.CHRONIC_CHANGE_TREATMENT_TYPE_OPTION` = 1, hồ sơ chưa kết thúc) **và** chưa tích **và** ICD chính gửi backend (`TreatmentFinishSDO.IcdCode`) có `HIS_ICD.IS_CHRONIC = 1` trong `currentIcds` (ICD active, không YHCT).
+- **Hành vi**: `XtraMessageBox` Yes/No (tiêu đề "Cảnh báo"): "Mã bệnh chính {mã - tên} là bệnh mãn tính nhưng hồ sơ chưa được tích "Mãn tính". Bạn có muốn tiếp tục kết thúc điều trị không?" → **Có**: lưu tiếp; **Không**: `ProcessTreatmentFinish` trả false (không gọi API) + `UCExamTreatmentFinish.FocusChronic()`.
+- **Không tự tích** ô Mãn tính: tích sẽ gọi ngay `api/HisTreatment/SetChronic` — phải là thao tác của BS.
+- **Chỉ xét ICD chính**, không xét ICD phụ. Không có config bật/tắt riêng — có hiệu lực khi danh mục ICD có mã được đánh dấu (plugin `HisIcd`).
+- **An toàn EFMODEL cũ**: truy cập `IS_CHRONIC` nằm trong method `NoInlining` `FindChronicIcd`, chỉ gọi khi `typeof(HIS_ICD).GetProperty("IS_CHRONIC") != null` → runtime chưa có EFMODEL mới thì cảnh báo tự tắt, không ảnh hưởng kết thúc điều trị.
+- **Files**: `ExamServiceReqExecuteControl__CheckChronicIcd.cs` (MỚI — `CheckChronicMainIcd`, `FindChronicIcd`), `ExamServiceReqExecuteControl__Process.cs` (gọi cuối khối `chkTreatmentFinish.Checked` trong `ProcessTreatmentFinish`), `Resources/Message.Lang.{vi,en,my}.resx` + `ResourceMessage.cs` (`IcdChinhLaBenhManTinhChuaTichManTinh`), UC `HIS.UC.ExamTreatmentFinish/Run/UCTreatmentFinish.cs` (+`IsChronicEditable`, +`FocusChronic()`).
+
 ## 8. Changelog
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 28/09/2026 | khainq | **55058 Cảnh báo ICD chính là bệnh mãn tính** — Khi BS phòng khám "Lưu và kết thúc" mà ICD chính có `HIS_ICD.IS_CHRONIC = 1` nhưng chưa tích "Mãn tính" (ô đang hiện, cho tích) → hỏi Yes/No; No → không lưu, focus ô Mãn tính. Chi tiết §7C. Files: `ExamServiceReqExecuteControl__CheckChronicIcd.cs` (MỚI), `__Process.cs`, `Resources/Message.Lang.{vi,en,my}.resx` + `ResourceMessage.cs`; UC `HIS.UC.ExamTreatmentFinish` (+`IsChronicEditable`, +`FocusChronic()`). Phụ thuộc cột mới `HIS_ICD.IS_CHRONIC` (`docs/SQL_55058_HisIcd_IsChronic.sql`) + MOS.EFMODEL mới. |
 | 03/09/2026 | khainq | **MIMS — Tab "Phân loại phụ nữ": bổ sung trường "Tuần tuổi thai"** — Thêm `spinMimsPregnantWeek` (0..42) ngay dưới "Mang thai bao nhiêu tháng", xử lý đồng bộ với số tháng: enable/clear theo `chkMimsPregnant`, fill từ DB, dirty-check, validate BẮT BUỘC 1..42 khi tick mang thai (`ValidWomanClassify()`), lưu vào cột mới `HIS_MIMS_PATIENT_PROFILE.PREGNANT_WEEK`. Khối control "cho con bú" dịch xuống 32px. Request MIMS sinh thêm `<Pregnancy><Week>` khi có giá trị (song song `<Month>`). Files: `ExamServiceReqExecuteControl__WomanClassify.cs`, `Resources/Lang.{vi,en}.resx`, `HIS.Desktop.MIMS.Integration/Models/MimsPatientProfileRecord.cs`, `Models/MimsPatientProfile.cs`, `Core/MimsPatientProfileWorker.cs`, `Core/MimsRequestBuilder.cs`, `docs/SQL_HisMimsPatientProfile_PregnantWeek.sql` (MỚI). Lưu ý: cần DBA chạy SQL thêm cột + BE bổ sung `PREGNANT_WEEK` vào MOS.EFMODEL/SDO `HIS_MIMS_PATIENT_PROFILE` thì giá trị mới persist được. |
 | 06/08/2026 | anhnh2 | **PT-53438 Chặn hẹn khám khi bệnh án ngoại trú quá 1 năm** (áp dụng gián tiếp — sửa ở UC `HIS.UC.ExamTreatmentFinish`, plugin này KHÔNG đổi code). Khi bác sĩ xử trí "Hẹn khám", màn hình hẹn khám của khối kết thúc khám kiểm tra thời hạn bệnh án ngoại trú trước mọi cảnh báo hiện có; quá 1 năm → chặn, hiển thị "Bệnh nhân đã hết thời gian hẹn khám trong năm, không được phép hẹn khám". Bật/tắt bằng cấu hình toàn viện `MOS.HIS_TREATMENT.IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR` (`1` = chặn). Luồng này KHÔNG phát sinh API mới — bệnh án lấy từ `TreatmentFinishInitADO.MediRecord` mà plugin đã nạp sẵn (`LoadMediRecord()`). Files (UC): `Base/AppointmentMediRecordExpiryWorker.cs` (mới), `EndTypeForm/FormAppointment.cs`, `Config/HisConfig.cs`, `Run/UCTreatmentFinish.cs`, `GetValue/UCTreatmentFinish__GetValue.cs`, `Resources/Lang.{vi,en,my}.resx` + `ResourceMessage.cs`. |
 | 29/07/2026 | nampp | **MIMS — Tab "Phân loại phụ nữ"** (Drug Pregnancy/Lactation) — Tab mới tạo RUNTIME trên `xtraTabControlInfo` (cạnh "Chống chỉ định"), chỉ hiện khi config `HIS.Desktop.Mims.IsCheckPregnancyLactation` = 1 và BN nữ (`treatment.TDL_PATIENT_GENDER_ID == HIS_GENDER.ID__FEMALE`). Controls: CheckEdit "Phụ nữ mang thai" + SpinEdit số tháng (1-9, BẮT BUỘC khi tick — `ValidWomanClassify()` chặn lưu ở nút Lưu và Lưu & Kết thúc) / CheckEdit "Phụ nữ cho con bú" + SpinEdit số tháng. Load async từ `HIS_MIMS_PATIENT_PROFILE` theo `PATIENT_ID` (`MimsPatientProfileWorker.GetByPatientId`); lưu qua `SaveWomanClassify()` SAU khi ExamUpdate thành công tại 3 luồng (btnSave / SaveExamServiceReq / auto-save trước khi mở chức năng khác); dirty-check — không đổi thì KHÔNG gọi API; 1 bản ghi active/BN, update tại chỗ (khám 100 lần vẫn 1 bản ghi). Files: `ExamServiceReqExecuteControl__WomanClassify.cs` (MỚI), `ExamServiceReqExecuteControl.cs`, `__Process.cs`, `Config/HisConfigCFG.cs` (`IsCheckMimsPregnancyLactation`), `_Dispose.cs`, `Resources/Lang.{vi,en}.resx`, csproj (+ ref `HIS.Desktop.MIMS.Integration`). Lưu ý: API `api/HisMimsPatientProfile/*` do BE làm (chưa có → load/save chỉ log Warn, KHÔNG ảnh hưởng lưu khám). |
@@ -200,3 +211,15 @@
 - [ ] `IsCheckSubIcdExceedLimit = "1"` → nhập **chẩn đoán phụ phần khám** vượt 12 mã, nhưng ICD phụ ra viện ≤ 12 → KHÔNG cảnh báo (đã bỏ kiểm tra phần khám).
 - [ ] Đổi ngôn ngữ sang English → MessageBox hiển thị "The number of discharge sub-diagnoses exceeds N. Please check again" / "...Do you want to continue?".
 - [ ] User nhập ICD phụ ra viện qua popup `frmICDInformation` → đếm từ `ShowIcdText` (không phải `IcdSubCode` legacy).
+
+### 55058 — Cảnh báo ICD chính mãn tính
+
+- [ ] ICD I10 `IS_CHRONIC=1`, config mãn tính = 1, không tích Mãn tính → Lưu và kết thúc → hiện Yes/No.
+- [ ] Chọn Có → kết thúc điều trị thành công.
+- [ ] Chọn Không → không lưu, focus ô "Mãn tính"; tích Mãn tính + nhập CLS/PP điều trị → lưu không cảnh báo.
+- [ ] Đã tích Mãn tính → không cảnh báo.
+- [ ] Chỉ ICD phụ mãn tính → không cảnh báo.
+- [ ] Config mãn tính = 0 (ô ẩn) / hồ sơ đã kết thúc (ô khóa) → không cảnh báo.
+- [ ] Nút "Lưu" (không kết thúc) → không cảnh báo.
+- [ ] Runtime MOS.EFMODEL cũ (chưa có `HIS_ICD.IS_CHRONIC`) → không cảnh báo, kết thúc điều trị bình thường, log Warn 1 lần.
+- [ ] Ngôn ngữ English → message tiếng Anh.

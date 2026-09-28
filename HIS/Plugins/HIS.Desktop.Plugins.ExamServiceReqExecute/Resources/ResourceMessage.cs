@@ -79,6 +79,25 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Resources
         /// <summary>
         /// Da tich "Man tinh", ban phai nhap: {0}.
         /// </summary>
+        /// <summary>
+        /// Ma benh chinh {0} la benh man tinh nhung ho so chua duoc tich "Man tinh". Ban co muon tiep tuc ket thuc dieu tri khong? (55058)
+        /// </summary>
+        internal static string IcdChinhLaBenhManTinhChuaTichManTinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("IcdChinhLaBenhManTinhChuaTichManTinh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string TichManTinhPhaiNhapTruongBatBuoc
         {
             get

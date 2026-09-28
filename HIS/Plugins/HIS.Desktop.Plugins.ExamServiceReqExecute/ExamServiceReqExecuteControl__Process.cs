@@ -2550,6 +2550,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = txtSubclinical.Text.Trim();
                         serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
                     }
+
+                    // 55058: ICD chinh la benh man tinh nhung chua tick "Man tinh" --> hoi bac si
+                    if (!CheckChronicMainIcd(serviceReqUpdateSDO.TreatmentFinishSDO.IcdCode))
+                    {
+                        return false;
+                    }
                 }
                 //else
                 //{

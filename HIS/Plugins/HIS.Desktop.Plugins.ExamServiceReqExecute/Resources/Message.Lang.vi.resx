@@ -255,4 +255,7 @@
   <data name="BenhLaNguyenNhanTuVongKhongDuocSuDungChoTruongHopKhongPhaiTuVong" xml:space="preserve">
     <value>Bệnh {0} là nguyên nhân tử vong không được sử dụng cho các trường hợp không phải tử vong.</value>
   </data>
+  <data name="IcdChinhLaBenhManTinhChuaTichManTinh" xml:space="preserve">
+    <value>Mã bệnh chính {0} là bệnh mãn tính nhưng hồ sơ chưa được tích "Mãn tính". Bạn có muốn tiếp tục kết thúc điều trị không?</value>
+  </data>
 </root>

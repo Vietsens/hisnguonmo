@@ -145,6 +145,9 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.chkIsInfectious = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.chkIsChronic = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem30 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.grdColIsChronic = new DevExpress.XtraGrid.Columns.GridColumn();
             this.chkIsSubcode = new DevExpress.XtraEditors.CheckEdit();
             this.cboGender = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -244,6 +247,8 @@ namespace HIS.Desktop.Plugins.HisIcd
             ((System.ComponentModel.ISupportInitialize)(this.chkIsCovid.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsInfectious.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsChronic.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem30)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsSubcode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboGender.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).BeginInit();
@@ -400,6 +405,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumn7,
             this.gridColumn8,
             this.gridColumn9,
+            this.grdColIsChronic,
             this.gridColumn3,
             this.grdColIsCause,
             this.grdColIsRequireCause,
@@ -580,6 +586,19 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumn9.Visible = true;
             this.gridColumn9.VisibleIndex = 23;
             this.gridColumn9.Width = 110;
+            // 
+            // grdColIsChronic
+            // 
+            this.grdColIsChronic.Caption = "Bệnh mãn tính";
+            this.grdColIsChronic.ColumnEdit = this.check;
+            this.grdColIsChronic.FieldName = "IS_CHRONIC_CHK";
+            this.grdColIsChronic.Name = "grdColIsChronic";
+            this.grdColIsChronic.OptionsColumn.AllowEdit = false;
+            this.grdColIsChronic.ToolTip = "Là bệnh mãn tính";
+            this.grdColIsChronic.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColIsChronic.Visible = true;
+            this.grdColIsChronic.VisibleIndex = 24;
+            this.grdColIsChronic.Width = 110;
             // 
             // gridColumn3
             // 
@@ -862,6 +881,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.lcEditorInfo.Controls.Add(this.txtICD_YHCT);
             this.lcEditorInfo.Controls.Add(this.chkIsCovid);
             this.lcEditorInfo.Controls.Add(this.chkIsInfectious);
+            this.lcEditorInfo.Controls.Add(this.chkIsChronic);
             this.lcEditorInfo.Controls.Add(this.chkIsSubcode);
             this.lcEditorInfo.Controls.Add(this.cboGender);
             this.lcEditorInfo.Controls.Add(this.chkIsSword);
@@ -890,7 +910,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.lcEditorInfo.Name = "lcEditorInfo";
             this.lcEditorInfo.OptionsFocus.EnableAutoTabOrder = false;
             this.lcEditorInfo.Root = this.layoutControlGroup4;
-            this.lcEditorInfo.Size = new System.Drawing.Size(360, 625);
+            this.lcEditorInfo.Size = new System.Drawing.Size(360, 649);
             this.lcEditorInfo.TabIndex = 4;
             this.lcEditorInfo.Text = "layoutControl5";
             // 
@@ -1088,6 +1108,18 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.chkIsInfectious.TabIndex = 38;
             this.chkIsInfectious.ToolTip = "Là mã bệnh truyền nhiễm (nhận diện ca bệnh truyền nhiễm cho liên thông ECDS)";
             this.chkIsInfectious.KeyUp += new System.Windows.Forms.KeyEventHandler(this.chkIsInfectious_KeyUp);
+            // 
+            // chkIsChronic
+            // 
+            this.chkIsChronic.Location = new System.Drawing.Point(102, 553);
+            this.chkIsChronic.MenuManager = this.barManager1;
+            this.chkIsChronic.Name = "chkIsChronic";
+            this.chkIsChronic.Properties.Caption = "Bệnh mãn tính";
+            this.chkIsChronic.Size = new System.Drawing.Size(256, 19);
+            this.chkIsChronic.StyleController = this.lcEditorInfo;
+            this.chkIsChronic.TabIndex = 43;
+            this.chkIsChronic.ToolTip = "Mã bệnh là bệnh mãn tính. Khi bác sĩ phòng khám kết thúc điều trị với mã bệnh chính này mà chưa tích Mãn tính, phần mềm sẽ cảnh báo";
+            this.chkIsChronic.KeyUp += new System.Windows.Forms.KeyEventHandler(this.chkIsChronic_KeyUp);
             // 
             // chkIsSubcode
             // 
@@ -1456,6 +1488,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlItem24,
             this.layoutControlItem25,
             this.layoutControlItem29,
+            this.layoutControlItem30,
             this.layoutControlItem18,
             this.nameICD_YHCT,
             this.layoutControlItem26,
@@ -1464,7 +1497,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(360, 625);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(360, 649);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // lciIcdCode
@@ -1556,7 +1589,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnEdit;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 551);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 575);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(119, 26);
             this.layoutControlItem6.Text = "Sửa (Ctrl S)";
@@ -1566,7 +1599,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(119, 551);
+            this.layoutControlItem7.Location = new System.Drawing.Point(119, 575);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(122, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -1575,7 +1608,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnRefresh;
-            this.layoutControlItem9.Location = new System.Drawing.Point(241, 551);
+            this.layoutControlItem9.Location = new System.Drawing.Point(241, 575);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(119, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -1584,7 +1617,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(193, 603);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(193, 627);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(167, 22);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -1592,7 +1625,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.simpleButton1;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 577);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 601);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(193, 48);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -1601,7 +1634,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.simpleButton2;
-            this.layoutControlItem11.Location = new System.Drawing.Point(193, 577);
+            this.layoutControlItem11.Location = new System.Drawing.Point(193, 601);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(167, 26);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -1794,6 +1827,17 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlItem29.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem29.TextSize = new System.Drawing.Size(95, 20);
             this.layoutControlItem29.TextToControlDistance = 5;
+            // 
+            // layoutControlItem30
+            // 
+            this.layoutControlItem30.Control = this.chkIsChronic;
+            this.layoutControlItem30.Location = new System.Drawing.Point(0, 551);
+            this.layoutControlItem30.Name = "layoutControlItem30";
+            this.layoutControlItem30.Size = new System.Drawing.Size(360, 24);
+            this.layoutControlItem30.Text = " ";
+            this.layoutControlItem30.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem30.TextSize = new System.Drawing.Size(95, 20);
+            this.layoutControlItem30.TextToControlDistance = 5;
             // 
             // layoutControlItem18
             // 
@@ -1995,6 +2039,8 @@ namespace HIS.Desktop.Plugins.HisIcd
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsChronic.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem30)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nameICD_YHCT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
@@ -2125,6 +2171,9 @@ private DevExpress.XtraGrid.Columns.GridColumn grdColIsHeinNds;
         private DevExpress.XtraEditors.CheckEdit chkIsInfectious;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem29;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
+        private DevExpress.XtraEditors.CheckEdit chkIsChronic;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem30;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColIsChronic;
         private DevExpress.XtraEditors.CheckEdit chkIsSubcode;
         private DevExpress.XtraEditors.GridLookUpEdit cboGender;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit2View;
