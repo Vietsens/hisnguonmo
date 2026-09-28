@@ -31,8 +31,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
 {
     /// <summary>
     /// Man hinh bang dien tu noi tru.
-    /// Luoi phong luon 4 cot, vung nhin cao dung 2 hang; nhieu hon 8 phong thi cuon doc,
-    /// it hon thi hien bao nhieu ve bay nhieu - kich thuoc the phong khong doi.
+    /// Luoi phong N cot, vung nhin cao dung 2 hang. Nhieu hon 2 hang thi chia trang, moi trang
+    /// 2 hang, tu lat sang trang sau theo PageIntervalSecond roi quay vong ve trang dau -
+    /// bang treo tuong khong ai cam chuot de cuon.
     /// </summary>
     public partial class UcInpatientBoard : XtraUserControl
     {
@@ -48,6 +49,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
         // Khoa doi chieu la BedRoomId cua buong
         private readonly Dictionary<string, UcRoomCard> roomCards = new Dictionary<string, UcRoomCard>();
         private readonly List<UcRoomCard> orderedCards = new List<UcRoomCard>();
+
+        /// <summary>Trang dang hien, dem tu 0.</summary>
+        private int pageIndex;
 
         /// <summary>Ban to yeu cau nap lai du lieu. Nguoi dung control bat su kien nay de goi API.</summary>
         public event EventHandler DataRefreshRequested;
@@ -75,8 +79,110 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                 if (columnCount == value) return;
 
                 columnCount = value;
+                pageIndex = 0;
                 RelayoutRooms();
             }
+        }
+
+        /// <summary>Chu ky lat trang, tinh bang giay. 0 = khong lat, chi hien trang dau.</summary>
+        public int PageIntervalSecond
+        {
+            get { return tmrPage.Enabled ? tmrPage.Interval / 1000 : 0; }
+            set
+            {
+                if (value <= 0)
+                {
+                    tmrPage.Stop();
+                    return;
+                }
+                tmrPage.Interval = value * 1000;
+                tmrPage.Start();
+            }
+        }
+
+        private int PageSize
+        {
+            get { return columnCount * VISIBLE_ROW_COUNT; }
+        }
+
+        private int PageCount
+        {
+            get { return Math.Max(1, (orderedCards.Count + PageSize - 1) / PageSize); }
+        }
+
+        /// <summary>
+        /// Het trang thi quay ve trang dau. Chi co 1 trang thi khong lam gi, de khoi
+        /// sap xep lai the phong vo ich moi nhip.
+        /// </summary>
+        private void TmrPage_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (PageCount <= 1)
+                {
+                    pageIndex = 0;
+                    return;
+                }
+
+                GoToPage(pageIndex + 1);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnPrevPage_Click(object sender, EventArgs e)
+        {
+            TurnPageByHand(-1);
+        }
+
+        private void btnNextPage_Click(object sender, EventArgs e)
+        {
+            TurnPageByHand(1);
+        }
+
+        /// <summary>
+        /// Nguoi dung bam lat tay: sang trang roi dem lai tu dau chu ky. Khong dem lai thi
+        /// vua bam xong co the bi tu lat tiep ngay giua chung, chua kip doc trang vua chon.
+        /// </summary>
+        private void TurnPageByHand(int step)
+        {
+            try
+            {
+                if (PageCount <= 1) return;
+
+                GoToPage(pageIndex + step);
+
+                if (tmrPage.Enabled)
+                {
+                    tmrPage.Stop();
+                    tmrPage.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Sang trang bat ky, vuot dau/cuoi thi quay vong.</summary>
+        private void GoToPage(int index)
+        {
+            int count = PageCount;
+            pageIndex = ((index % count) + count) % count;
+            RelayoutRooms();
+
+            // Sang trang moi thi ve dau, dung giu vi tri cuon cua trang truoc
+            if (pnlScroll.AutoScrollPosition != Point.Empty) pnlScroll.AutoScrollPosition = Point.Empty;
+        }
+
+        private void UpdatePageInfo()
+        {
+            int count = PageCount;
+            lblPageInfo.Text = string.Format("Trang {0}/{1}", pageIndex + 1, count);
+            btnPrevPage.Enabled = count > 1;
+            btnNextPage.Enabled = count > 1;
         }
 
         /// <summary>Chu ky tu nap lai, tinh bang giay. 0 = tat.</summary>
@@ -216,6 +322,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                 pnlCanvas.ResumeLayout(false);
             }
 
+            // Lam moi giu nguyen trang dang xem; bot buong lam mat trang do thi ve trang dau
+            if (pageIndex >= PageCount) pageIndex = 0;
+
             RelayoutRooms();
         }
 
@@ -297,9 +406,17 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
             ucSummary.SetBounds(left, Padding.Top, width, UcSummaryBar.DEFAULT_HEIGHT);
 
             int top = Padding.Top + UcSummaryBar.DEFAULT_HEIGHT + GAP;
+
+            // Hang nut lat trang nam sat day, can phai
+            int footerTop = Height - Padding.Bottom - btnNextPage.Height;
+            int right = Width - Padding.Right;
+            btnNextPage.Location = new Point(right - btnNextPage.Width, footerTop);
+            btnPrevPage.Location = new Point(btnNextPage.Left - GAP - btnPrevPage.Width, footerTop);
+            lblPageInfo.SetBounds(btnPrevPage.Left - GAP - lblPageInfo.Width, footerTop, lblPageInfo.Width, btnNextPage.Height);
+
             // Vung cuon trai ra sat hai mep: le 12px quanh the phong do chinh pnlCanvas lo ra,
             // neu de pnlScroll thut vao nua thi le bi cong don hai lan.
-            pnlScroll.SetBounds(0, top, Width, Math.Max(10, Height - top));
+            pnlScroll.SetBounds(0, top, Width, Math.Max(10, footerTop - top));
 
             RelayoutRooms();
         }
@@ -309,11 +426,16 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
         /// Moc do la kich thuoc NGOAI cua pnlScroll, khong phai ClientSize: ClientSize co lai ngay
         /// khi thanh cuon hien ra, lay no lam moc thi chieu cao the va thanh cuon tinh vong lan nhau
         /// -> lo mot phan hang thu ba o day man hinh.
+        ///
+        /// Chi xep the cua trang dang hien, the cac trang khac an di. Trang cuoi it hang hon
+        /// thi cac hang nam tu tren xuong, chieu cao the van nhu trang day du.
         /// </summary>
         private void RelayoutRooms()
         {
             int viewW = pnlScroll.Width;
             int viewH = pnlScroll.Height;
+
+            UpdatePageInfo();
 
             if (orderedCards.Count == 0)
             {
@@ -321,7 +443,9 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                 return;
             }
 
-            int rows = (orderedCards.Count + columnCount - 1) / columnCount;
+            int pageStart = pageIndex * PageSize;
+            int pageEnd = Math.Min(orderedCards.Count, pageStart + PageSize);
+            int rows = (pageEnd - pageStart + columnCount - 1) / columnCount;
 
             int cardH = (viewH - GAP * (VISIBLE_ROW_COUNT + 1)) / VISIBLE_ROW_COUNT;
             if (cardH < MIN_CARD_HEIGHT) cardH = MIN_CARD_HEIGHT;
@@ -362,9 +486,16 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
             {
                 for (int i = 0; i < orderedCards.Count; i++)
                 {
-                    int r = i / columnCount;
-                    int c = i % columnCount;
+                    if (i < pageStart || i >= pageEnd)
+                    {
+                        orderedCards[i].Visible = false;
+                        continue;
+                    }
+
+                    int r = (i - pageStart) / columnCount;
+                    int c = (i - pageStart) % columnCount;
                     orderedCards[i].SetBounds(colX[c], GAP + r * (cardH + GAP), colW[c], cardH);
+                    orderedCards[i].Visible = true;
                 }
             }
             finally

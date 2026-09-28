@@ -50,6 +50,11 @@
             this.spinColumnCount = new DevExpress.XtraEditors.SpinEdit();
             this.lciColumnCount = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.spinPageTime = new DevExpress.XtraEditors.SpinEdit();
+            this.lblPageTimeUnit = new DevExpress.XtraEditors.LabelControl();
+            this.lciPageTime = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciPageTimeUnit = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).BeginInit();
@@ -69,6 +74,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.spinColumnCount.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciColumnCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinPageTime.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPageTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPageTimeUnit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -77,19 +86,21 @@
             this.layoutControl1.Controls.Add(this.labelControl1);
             this.layoutControl1.Controls.Add(this.spinColumnCount);
             this.layoutControl1.Controls.Add(this.spinReloadTime);
+            this.layoutControl1.Controls.Add(this.spinPageTime);
+            this.layoutControl1.Controls.Add(this.lblPageTimeUnit);
             this.layoutControl1.Controls.Add(this.gridControlRoom);
             this.layoutControl1.Controls.Add(this.txtDepartment);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(431, 321);
+            this.layoutControl1.Size = new System.Drawing.Size(431, 345);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // toggleSwitch1
             // 
-            this.toggleSwitch1.Location = new System.Drawing.Point(166, 295);
+            this.toggleSwitch1.Location = new System.Drawing.Point(166, 319);
             this.toggleSwitch1.Name = "toggleSwitch1";
             this.toggleSwitch1.Properties.OffText = "Bật màn hình mở rộng";
             this.toggleSwitch1.Properties.OnText = "On";
@@ -121,7 +132,39 @@
             this.spinReloadTime.Size = new System.Drawing.Size(172, 20);
             this.spinReloadTime.StyleController = this.layoutControl1;
             this.spinReloadTime.TabIndex = 4;
-            // 
+            //
+            // spinPageTime
+            //
+            this.spinPageTime.EditValue = null;
+            this.spinPageTime.Location = new System.Drawing.Point(127, 295);
+            this.spinPageTime.Name = "spinPageTime";
+            this.spinPageTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinPageTime.Properties.IsFloatValue = false;
+            this.spinPageTime.Properties.Mask.EditMask = "N00";
+            this.spinPageTime.Properties.MaxValue = new decimal(new int[] {
+            1440,
+            0,
+            0,
+            0});
+            this.spinPageTime.Properties.MinValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.spinPageTime.Size = new System.Drawing.Size(172, 20);
+            this.spinPageTime.StyleController = this.layoutControl1;
+            this.spinPageTime.TabIndex = 8;
+            //
+            // lblPageTimeUnit
+            //
+            this.lblPageTimeUnit.Location = new System.Drawing.Point(303, 295);
+            this.lblPageTimeUnit.Name = "lblPageTimeUnit";
+            this.lblPageTimeUnit.Size = new System.Drawing.Size(20, 13);
+            this.lblPageTimeUnit.StyleController = this.layoutControl1;
+            this.lblPageTimeUnit.TabIndex = 9;
+            this.lblPageTimeUnit.Text = "phút";
+            //
             // gridControlRoom
             // 
             this.gridControlRoom.Location = new System.Drawing.Point(2, 26);
@@ -226,11 +269,14 @@
             this.layoutControlItem3,
             this.emptySpaceItem2,
             this.lciColumnCount,
-            this.emptySpaceItem3});
+            this.emptySpaceItem3,
+            this.lciPageTime,
+            this.lciPageTimeUnit,
+            this.emptySpaceItem4});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(431, 321);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(431, 345);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // lciDepartment
@@ -290,7 +336,7 @@
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.toggleSwitch1;
-            this.layoutControlItem3.Location = new System.Drawing.Point(164, 293);
+            this.layoutControlItem3.Location = new System.Drawing.Point(164, 317);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(267, 28);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -346,10 +392,42 @@
             this.emptySpaceItem3.Size = new System.Drawing.Size(130, 24);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             //
+            // lciPageTime
+            //
+            this.lciPageTime.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciPageTime.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lciPageTime.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciPageTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciPageTime.Control = this.spinPageTime;
+            this.lciPageTime.Location = new System.Drawing.Point(0, 293);
+            this.lciPageTime.Name = "lciPageTime";
+            this.lciPageTime.Size = new System.Drawing.Size(301, 24);
+            this.lciPageTime.Text = "Thời gian lật trang:";
+            this.lciPageTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciPageTime.TextSize = new System.Drawing.Size(120, 20);
+            this.lciPageTime.TextToControlDistance = 5;
+            //
+            // lciPageTimeUnit
+            //
+            this.lciPageTimeUnit.Control = this.lblPageTimeUnit;
+            this.lciPageTimeUnit.Location = new System.Drawing.Point(301, 293);
+            this.lciPageTimeUnit.Name = "lciPageTimeUnit";
+            this.lciPageTimeUnit.Size = new System.Drawing.Size(24, 24);
+            this.lciPageTimeUnit.TextSize = new System.Drawing.Size(0, 0);
+            this.lciPageTimeUnit.TextVisible = false;
+            //
+            // emptySpaceItem4
+            //
+            this.emptySpaceItem4.AllowHotTrack = false;
+            this.emptySpaceItem4.Location = new System.Drawing.Point(325, 293);
+            this.emptySpaceItem4.Name = "emptySpaceItem4";
+            this.emptySpaceItem4.Size = new System.Drawing.Size(106, 24);
+            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
+            //
             // emptySpaceItem2
             //
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 293);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 317);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(164, 28);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -358,9 +436,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(431, 321);
+            this.ClientSize = new System.Drawing.Size(431, 345);
             this.Controls.Add(this.layoutControl1);
-            this.MinimumSize = new System.Drawing.Size(420, 300);
+            this.MinimumSize = new System.Drawing.Size(420, 324);
             this.Name = "frmTreatmentBedRoom";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Danh sách phòng trong khoa";
@@ -384,6 +462,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.spinColumnCount.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciColumnCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinPageTime.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPageTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPageTimeUnit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -414,5 +496,10 @@
         private DevExpress.XtraEditors.SpinEdit spinColumnCount;
         private DevExpress.XtraLayout.LayoutControlItem lciColumnCount;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
+        private DevExpress.XtraEditors.SpinEdit spinPageTime;
+        private DevExpress.XtraEditors.LabelControl lblPageTimeUnit;
+        private DevExpress.XtraLayout.LayoutControlItem lciPageTime;
+        private DevExpress.XtraLayout.LayoutControlItem lciPageTimeUnit;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
     }
 }

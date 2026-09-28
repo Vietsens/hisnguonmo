@@ -98,11 +98,12 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
         {
             try
             {
-                int columnCount, reloadSecond;
-                DashboardSettings.Load(out columnCount, out reloadSecond);
+                int columnCount, reloadSecond, pageMinute;
+                DashboardSettings.Load(out columnCount, out reloadSecond, out pageMinute);
 
                 if (columnCount > 0) this.spinColumnCount.EditValue = columnCount;
                 if (reloadSecond > 0) this.spinReloadTime.EditValue = reloadSecond;
+                if (pageMinute > 0) this.spinPageTime.EditValue = pageMinute;
             }
             catch (Exception ex)
             {
@@ -129,6 +130,8 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 this.gcRoomCode.Caption = GetLang("frmTreatmentBedRoom.gcRoomCode.Caption", this.gcRoomCode.Caption);
                 this.gcRoomName.Caption = GetLang("frmTreatmentBedRoom.gcRoomName.Caption", this.gcRoomName.Caption);
                 this.lciColumnCount.Text = GetLang("frmTreatmentBedRoom.lciColumnCount.Text", this.lciColumnCount.Text);
+                this.lciPageTime.Text = GetLang("frmTreatmentBedRoom.lciPageTime.Text", this.lciPageTime.Text);
+                this.lblPageTimeUnit.Text = GetLang("frmTreatmentBedRoom.lblPageTimeUnit.Text", this.lblPageTimeUnit.Text);
                 this.toggleSwitch1.Properties.OffText = GetLang("frmTreatmentBedRoom.toggleSwitch1.OffText", this.toggleSwitch1.Properties.OffText);
                 this.toggleSwitch1.Properties.OnText = GetLang("frmTreatmentBedRoom.toggleSwitch1.OnText", this.toggleSwitch1.Properties.OnText);
             }
@@ -450,6 +453,29 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
                 return false;
             }
 
+            // Tach bo trong va nhap qua nho, cung ly do nhu thoi gian tai lai o tren
+            if (this.spinPageTime.EditValue == null
+                || string.IsNullOrEmpty((this.spinPageTime.Text ?? string.Empty).Trim()))
+            {
+                ShowWarning(GetLang("frmTreatmentBedRoom.MsgPageTimeRequired",
+                    "Chưa nhập thời gian lật trang.\r\n\r\nBảng hiển thị 2 hàng buồng mỗi trang, nhiều hơn 2 hàng thì tự lật sang trang sau theo thời gian này. Thời gian lật trang cần >= 1 phút."));
+                this.spinPageTime.Focus();
+                this.spinPageTime.SelectAll();
+                return false;
+            }
+
+            int pageMinute = GetPageMinute();
+            if (pageMinute < 1)
+            {
+                ShowWarning(string.Format(
+                    GetLang("frmTreatmentBedRoom.MsgPageTimeTooSmall",
+                        "Thời gian lật trang {0} phút không hợp lệ.\r\n\r\nThời gian lật trang cần >= 1 phút."),
+                    pageMinute));
+                this.spinPageTime.Focus();
+                this.spinPageTime.SelectAll();
+                return false;
+            }
+
             return true;
         }
 
@@ -480,12 +506,13 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
 
                 int reloadSecond = GetReloadSecond();
                 int columnCount = GetColumnCount();
+                int pageMinute = GetPageMinute();
 
                 // Chi luu sau khi da qua ValidateInput, khong luu gia tri hong
-                DashboardSettings.Save(columnCount, reloadSecond);
+                DashboardSettings.Save(columnCount, reloadSecond, pageMinute);
 
                 frmDashboard board = new frmDashboard(
-                    this.departmentId, roomIds, reloadSecond, columnCount);
+                    this.departmentId, roomIds, reloadSecond, columnCount, pageMinute * 60);
 
                 // Show() khong owner: cua so co chu luon nam de len chu, HIS se bi chan
                 ShowFormProcessor.ShowFullScreenOnSecondMonitor(board);
@@ -547,6 +574,29 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom
 
                 int second = Convert.ToInt32(this.spinReloadTime.Value);
                 return second < 0 ? 0 : second;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Chu kỳ lật trang đang đặt trên spinPageTime, đơn vị phút. Bỏ trống hoặc đọc lỗi thì trả 0.
+        /// </summary>
+        private int GetPageMinute()
+        {
+            try
+            {
+                if (this.spinPageTime.EditValue == null
+                    || string.IsNullOrEmpty((this.spinPageTime.Text ?? string.Empty).Trim()))
+                {
+                    return 0;
+                }
+
+                int minute = Convert.ToInt32(this.spinPageTime.Value);
+                return minute < 0 ? 0 : minute;
             }
             catch (Exception ex)
             {
