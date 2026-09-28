@@ -3,25 +3,7 @@ using System.Collections.Generic;
 namespace HIS.Desktop.Plugins.BedRoomPartial.ADO
 {
     /// <summary>
-    /// Ket qua tra ve cua api "api/EmrDocument/MediRecordChecking" (EMR.SDO.MediRecordCheckingResultSDO).
-    ///
-    /// Khai bao lai o day thay vi tham chieu truc tiep EMR.SDO vi kieu phan tu cua
-    /// SignatureMissingDocuments trong EMR.SDO la EMR.EFMODEL.DataModels.V_EMR_DOCUMENT,
-    /// ma ban EMR.EFMODEL.dll trong lib\EMR khong con chua cac kieu view V_*.
-    /// Ban tin di tren day la JSON nen chi can trung ten thuoc tinh la Newtonsoft map duoc.
-    /// </summary>
-    public class RequiredDocumentCheckingResultADO
-    {
-        /// <summary>Cac van ban chua hoan thanh chu ky.</summary>
-        public List<RequiredDocumentADO> SignatureMissingDocuments { get; set; }
-
-        /// <summary>Ten cac van ban thuoc dien "Bat buoc" nhung chua duoc tao. Khong dung o day.</summary>
-        public List<string> MandatoryMissingDocuments { get; set; }
-    }
-
-    /// <summary>
-    /// Mot van ban EMR (V_EMR_DOCUMENT). Dung cho ca ket qua "api/EmrDocument/MediRecordChecking"
-    /// va "api/EmrDocument/GetView" vi hai api tra ve cung kieu phan tu.
+    /// Mot van ban EMR (V_EMR_DOCUMENT) lay qua "api/EmrDocument/GetView".
     /// Chi khai bao cac truong duoc su dung; cac truong con lai bi bo qua khi deserialize.
     /// </summary>
     public class RequiredDocumentADO
