@@ -162,7 +162,7 @@
     <Compile Include="frmServiceReqUpdateInstruction__Load.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmServiceReqUpdateInstruction__PacsBeginTime.cs">
+    <Compile Include="frmServiceReqUpdateInstruction__PacsEndTime.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmServiceReqUpdateInstruction.cs">

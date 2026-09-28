@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -105,8 +105,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             InitUcIcdYhct();
             InitUcSecondaryIcdYhct();
             FillDataCommandToControl(this.currentServiceReq);
-            InitPacsBeginTimeControl();
-            LoadPacsBeginTime();
+            InitPacsEndTimeControl();
+            LoadPacsEndTime();
             LoadUser();
             ValidControlInform();
             SetIcon();
