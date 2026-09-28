@@ -17,6 +17,7 @@
  */
 using DevExpress.XtraBars;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.BedRoomPartial.Key;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using HIS.Desktop.Utility;
@@ -107,6 +108,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             HisSoKetBenhAnTruocPhauThuat,
             HisSoKetBenhAnTruocThuThuat,
             MedicinMaterialIUsed,
+            ClsIsExecuted,
             HisTreatmentFile,
             PhanLoaiBenhNhan,
             Phieuchamsoc_vobenhan,
@@ -268,6 +270,18 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 itemMedicinMaterialIsUsed.Tag = ModuleType.MedicinMaterialIUsed;
                 itemMedicinMaterialIsUsed.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
                 menu.AddItems(new BarItem[] { itemMedicinMaterialIsUsed });
+
+                #region ----- ThucHienYLenhCls (PTTK_XXXXX_Thuc_Hien_Y_Lenh_CLS_Man_Hinh_Buong_Benh)
+                // Chi them muc menu khi nguoi dung duoc phan quyen module plugin moi -> vien khong cap quyen khong thay muc nay, menu giu nguyen nhu cu
+                if (GlobalVariables.currentModuleRaws != null
+                    && GlobalVariables.currentModuleRaws.Any(o => o.ModuleLink == "HIS.Desktop.Plugins.ClsIsExecutedPatient"))
+                {
+                    BarButtonItem itemClsIsExecuted = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THUC_HIEN_Y_LENH_CLS", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 1);
+                    itemClsIsExecuted.Tag = ModuleType.ClsIsExecuted;
+                    itemClsIsExecuted.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
+                    menu.AddItems(new BarItem[] { itemClsIsExecuted });
+                }
+                #endregion
                 #endregion
 
 

@@ -1047,4 +1047,10 @@
   <data name="UCBedRoomPartial.btnKetQuaCLS.ToolTip" xml:space="preserve">
     <value>View subclinical results</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__THUC_HIEN_Y_LENH_CLS" xml:space="preserve">
+    <value>Subclinical order execution</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DIEU_DUONG_DA_THUC_HIEN_Y_LENH" xml:space="preserve">
+    <value>Nurse executed the order at</value>
+  </data>
 </root>

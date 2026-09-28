@@ -68,6 +68,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         Inventec.Desktop.Common.Modules.Module currentModule;
         List<SereServADO> dataSource = null;
         List<HIS_SERVICE_REQ> listDataServiceReq = null;
+        /// <summary>
+        /// PTTK_XXXXX_Thuc_Hien_Y_Lenh_CLS_Man_Hinh_Buong_Benh: icon "dieu duong da thuc hien y lenh" cho dong dich vu CLS,
+        /// dung chung cot icon voi "Thuoc/vt da dung" (cot nay trong o dong CLS). Tao trong code, khong dung Designer / resx anh.
+        /// </summary>
+        DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButton_NurseExecuted;
         public UCTreeListService(ImageCollection image, Inventec.Desktop.Common.Modules.Module _currentModule)
         {
             InitializeComponent();
@@ -77,6 +82,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.currentModule = _currentModule;
                 this.wkRoomId = currentModule != null ? currentModule.RoomId : 0;
                 this.wkRoomTypeId = currentModule != null ? currentModule.RoomTypeId : 0;
+                InitNurseExecutedRepository();
 
             }
             catch (Exception ex)
@@ -84,6 +90,25 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        private void InitNurseExecutedRepository()
+        {
+            try
+            {
+                repositoryItemButton_NurseExecuted = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+                repositoryItemButton_NurseExecuted.Name = "repositoryItemButton_NurseExecuted";
+                repositoryItemButton_NurseExecuted.AutoHeight = false;
+                repositoryItemButton_NurseExecuted.ReadOnly = true;
+                repositoryItemButton_NurseExecuted.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+                repositoryItemButton_NurseExecuted.Buttons.Clear();
+                repositoryItemButton_NurseExecuted.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.OK));
+                this.treeSereServ.RepositoryItems.Add(repositoryItemButton_NurseExecuted);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void UCTreeListService_Load(object sender, EventArgs e)
@@ -246,6 +271,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         if (data.IS_USED == 1)
                         {
                             e.RepositoryItem = repositoryItemButton_IsUse;
+                        }
+                        else if (data.IS_NURSE_EXECUTED == 1 && repositoryItemButton_NurseExecuted != null)
+                        {
+                            // PTTK_XXXXX_Thuc_Hien_Y_Lenh_CLS_Man_Hinh_Buong_Benh: dieu duong da danh dau thuc hien y lenh CLS
+                            e.RepositoryItem = repositoryItemButton_NurseExecuted;
                         }
                     }
 
@@ -656,6 +686,26 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             info = new DevExpress.Utils.ToolTipControlInfo(o, text);
                             e.Info = info;
                         }
+                        else if (hi.HitInfoType == HitInfoType.Cell && hi.Column != null && hi.Column.FieldName == "MEDI_USED")
+                        {
+                            // PTTK_XXXXX_Thuc_Hien_Y_Lenh_CLS_Man_Hinh_Buong_Benh: tooltip icon "dieu duong da thuc hien y lenh" kem gio va nguoi thuc hien
+                            var data = treeSereServ.GetDataRecordByNode(o) as SereServADO;
+                            if (data != null && !o.HasChildren && data.IS_NURSE_EXECUTED == 1 && data.IS_USED != 1)
+                            {
+                                string text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DIEU_DUONG_DA_THUC_HIEN_Y_LENH", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                                if (data.NURSE_EXECUTE_TIME.HasValue && data.NURSE_EXECUTE_TIME.Value > 0)
+                                {
+                                    string time = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.NURSE_EXECUTE_TIME.Value);
+                                    if (!String.IsNullOrEmpty(time) && time.Length > 3) time = time.Substring(0, time.Length - 3);
+                                    text += " " + time;
+                                }
+                                if (!String.IsNullOrWhiteSpace(data.NURSE_EXECUTE_USERNAME))
+                                {
+                                    text += " - " + data.NURSE_EXECUTE_USERNAME;
+                                }
+                                e.Info = new DevExpress.Utils.ToolTipControlInfo(o.Id + "_NURSE_EXECUTED", text);
+                            }
+                        }
                         else if (hi.HitInfoType == HitInfoType.StateImage)
                         {
                             var data = (SereServADO)treeSereServ.GetDataRecordByNode(o);
@@ -862,6 +912,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.repositoryItemButton__Send__Disable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__GUI_LAI_YEU_CAU_XET_NGHIEM", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.repositoryItemButtonEdit_TaoThuHoi.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__TAO_THU_HOI", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.repositoryItemButton_IsUse.Buttons[0].ToolTip = Resources.ResourceMessage.ThuocVtBNDaDung;
+                if (this.repositoryItemButton_NurseExecuted != null && this.repositoryItemButton_NurseExecuted.Buttons.Count > 0)
+                {
+                    this.repositoryItemButton_NurseExecuted.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DIEU_DUONG_DA_THUC_HIEN_Y_LENH", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
+                }
                 this.rep_btnEdit_Enable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__SUA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.rep_btnEdit_Disable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__SUA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.rep_btnDelete_Enable.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__XOA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
@@ -949,6 +1003,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 toolTipController2 = null;
                 repositoryItemButtonEdit_TaoThuHoi = null;
                 repositoryItemButton_IsUse = null;
+                repositoryItemButton_NurseExecuted = null;
                 repositoryItemButton__Send__Disable = null;
                 repositoryItemButton__Send = null;
                 imageCollection1 = null;
