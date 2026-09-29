@@ -172,6 +172,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             {
                 CommonParam param = new CommonParam();
                 HisConfigCFG.LoadConfig();
+                // Viec 57853: cot icon "Don dinh kem" cho phieu xuat ban (chi tao khi bat config)
+                InitAttachPrescriptionColumn();
 
                 medistocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(o => o.IS_ACTIVE == 1).ToList();
                 rooms = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == 1).ToList();
@@ -677,6 +679,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 if (apiResult != null)
                 {
                     listExpMest = apiResult.Data;
+                    // Viec 57853: danh dau phieu ban da co don dinh kem (1 API cho ca trang)
+                    LoadAttachPrescriptionMarks(listExpMest);
                     if (listExpMest != null && listExpMest.Count > 0)
                     {
                         GetImpMest(listExpMest.Select(o => o.ID).ToList());

@@ -1171,6 +1171,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     LoadDataFromExpMest(_expMest[0], _is);
 
                     moduleAction = GlobalDataStore.ModuleAction.EDIT;
+                    // Viec 57853: phieu tim theo don -> nut "Dinh kem don" mo danh sach don cua phieu
+                    SetAttachExpMests(_expMest);
 
                     SetLabelSave(this.moduleAction);
                 }

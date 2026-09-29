@@ -46,6 +46,7 @@
     <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="HIS.Desktop.ApiConsumer">
@@ -355,6 +356,9 @@
     <Compile Include="UCExpMestSaleCreate___SaveSignPrintInvoice.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExpMestSaleCreate___AttachPrescription.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="RowAdd\AddAbstract.cs" />
     <Compile Include="UCExpMestSaleCreate__Load.cs">
       <SubType>UserControl</SubType>
@@ -487,6 +491,10 @@
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.ExpMestAttachFile\HIS.Desktop.Plugins.Library.ExpMestAttachFile.csproj">
+      <Project>{B65375BB-99E8-4925-9C89-C84F5F0AF06C}</Project>
+      <Name>HIS.Desktop.Plugins.Library.ExpMestAttachFile</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

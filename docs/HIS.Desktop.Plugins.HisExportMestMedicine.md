@@ -21,6 +21,13 @@ Khi config `HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport` = 1:
 - Worker: lấy phiếu theo mã phiếu, chỉ phiếu **loại XUẤT BÁN**; **HOÀN THÀNH** → `api/HisExpMest/Unexport` (hoàn kho); **ĐÃ DUYỆT** → `api/HisExpMest/Unapprove` → phiếu về **YÊU CẦU (vàng)**. Tự động, không confirm; chỉ báo khi API fail. KHÔNG xóa phiếu — viện tự xóa.
 - Config tắt → luồng hủy bill giữ nguyên 100%.
 
+### Đơn đính kèm phiếu xuất bán (việc 57853 — 29/09/2026)
+- Gate: `MOS.HAS_CONNECTION_EMR = 1` **và** `HIS.Desktop.Plugins.ExpMestSaleCreate.AttachPrescription.IsEnable = 1`. Tắt → không tạo cột, lưới như cũ.
+- Cột icon `ATTACH_PRESCRIPTION_DISPLAY` tạo lúc runtime (`InitAttachPrescriptionColumn`, partial `UCHisExportMestMedicine__AttachPrescription.cs`), ngay sau cột "Thanh toán", Fixed Left, rộng 20.
+- **Chỉ phiếu bán** (`EXP_MEST_TYPE_ID = ID__BAN`): icon màu = đã có đơn đính kèm, icon xám = chưa có; phiếu loại khác để trống.
+- Đánh dấu: mỗi lần nạp trang (`GridPaging`), `LoadAttachPrescriptionMarks` gọi **1 lần** EMR `GetView` cho toàn bộ mã phiếu bán trên trang → `HashSet<string>`; `CustomRowCellEdit` chỉ tra HashSet (không gọi API theo dòng).
+- Bấm icon → Danh sách đơn đính kèm của phiếu (Library `ExpMestAttachFile`): Xem/In, Đính kèm mới, Xóa (không cho xóa khi phiếu Hoàn thành / có BILL_ID / có DEBT_ID). Có thay đổi → cập nhật lại icon của dòng đó.
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -28,10 +35,13 @@ Khi config `HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport` = 1:
 | V_HIS_EXP_MEST_2 | View | Dòng grid phiếu xuất |
 | V_HIS_EXP_MEST | View | Phiếu xuất bán gắn bill (3082) |
 | HIS_EXP_MEST | Table | Kết quả các API duyệt/xuất/hoàn |
+| V_EMR_DOCUMENT | View (EMR) | Đơn đính kèm phiếu bán (việc 57853) |
 
 ## 4. UI Layout
 
 Bộ lọc bên trái + grid phiếu xuất với dải nút icon đầu dòng (xem, sửa, duyệt, bỏ duyệt, thực xuất, hủy thực xuất, tạo/hủy bill, in…) + panel thông tin chi tiết bên phải.
+
+Việc 57853: cột icon 📎 "Đơn đính kèm" sau cột "Thanh toán" (chỉ khi bật config, chỉ phiếu bán).
 
 ## 5. API Endpoints
 
@@ -42,6 +52,7 @@ Bộ lọc bên trái + grid phiếu xuất với dải nút icon đầu dòng (
 | Thực xuất | api/HisExpMest/Export | MosConsumer |
 | Hủy thực xuất/hoàn kho | api/HisExpMest/Unexport | MosConsumer |
 | Phiếu theo bill (3082) | api/HisExpMest/GetView (BILL_ID) | MosConsumer |
+| Đánh dấu phiếu bán có đơn đính kèm (57853) | api/EmrDocument/GetView (TREATMENT_CODEs = EXP_MEST_CODE trên trang, DOCUMENT_TYPE_ID = EXPSA, IS_DELETE=false) | EmrConsumer |
 
 ## 6. Dependencies
 
@@ -51,6 +62,10 @@ Bộ lọc bên trái + grid phiếu xuất với dải nút icon đầu dòng (
 | HIS.Desktop.Plugins.TransactionCancel | Nút hủy bill | billId + row + DelegateSelectData |
 | HIS.Desktop.Plugins.ExpMestViewDetail | Xem chi tiết phiếu | ExpMestViewDetailADO |
 
+| Library | Mục đích |
+|---------|----------|
+| HIS.Desktop.Plugins.Library.ExpMestAttachFile (mới, 57853) | Đánh dấu + danh sách đơn đính kèm phiếu bán (xem/in, bổ sung, xóa theo trạng thái) |
+
 ## 7. Print
 
 In phiếu xuất, hướng dẫn sử dụng thuốc (Mps000099…) qua MPS.
@@ -59,6 +74,7 @@ In phiếu xuất, hướng dẫn sử dụng thuốc (Mps000099…) qua MPS.
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 29/09/2026 | khainq | **Việc 57853** — Cột icon "Đơn đính kèm" cho phiếu xuất bán (runtime, gated config `HIS.Desktop.Plugins.ExpMestSaleCreate.AttachPrescription.IsEnable` + `MOS.HAS_CONNECTION_EMR`): đánh dấu cả trang bằng 1 API EMR, bấm icon mở danh sách đơn đính kèm. Partial mới `UCHisExportMestMedicine__AttachPrescription.cs`, móc ở `UCHisExportMestMedicine_Load` + `GridPaging`; ProjectReference `HIS.Desktop.Plugins.Library.ExpMestAttachFile`; reference `DevExpress.Images.v15.2`. |
 | 07/08/2026 | nampp | Việc 3082: nút **Hủy bill** — sau khi TransactionCancel hủy hóa đơn thành công, tự động hoàn kho (Unexport) + hủy duyệt (Unapprove) đưa phiếu xuất bán về trạng thái Yêu cầu (chỉ khi config `SaveSignPrintAutoExport` = 1). Thêm `ExpMestRestoreStockWorker`. Fix build máy backup: đổi ProjectReference `Library.ElectronicBill` sang Reference resolve qua ReferencePath. |
 | (trước 2026) | team | Tạo plugin danh sách xuất thuốc/vật tư. |
 
@@ -68,3 +84,11 @@ In phiếu xuất, hướng dẫn sử dụng thuốc (Mps000099…) qua MPS.
 - [ ] Config bật, hủy bill của phiếu xuất bán ĐÃ THỰC XUẤT: tồn kho tăng lại; phiếu về **Yêu cầu**; phiếu vẫn còn trong danh sách.
 - [ ] Phiếu không phải loại xuất bán: worker bỏ qua, không đụng trạng thái.
 - [ ] Đóng màn Hủy giao dịch mà không hủy: không gọi Unexport/Unapprove.
+
+### Việc 57853 — Đơn đính kèm
+- [ ] Config tắt → không có cột 📎, lưới như cũ.
+- [ ] Config bật → cột 📎 sau cột Thanh toán; phiếu bán có đơn → icon màu, chưa có → icon xám; phiếu không phải bán → trống.
+- [ ] Lọc theo khoảng thời gian (kịch bản 3) → nhận biết đúng phiếu đã có đơn; bấm icon → danh sách đơn, Xem/In được.
+- [ ] Bấm icon phiếu chưa có đơn → Đính kèm mới → đóng danh sách → icon dòng đó đổi sang màu; xóa hết đơn (phiếu chưa hoàn tất) → icon về xám.
+- [ ] Phiếu Hoàn thành / đã thanh toán → không xóa được (kịch bản 4), vẫn bổ sung được.
+- [ ] Chuyển trang → mỗi trang chỉ 1 lần gọi EMR GetView.

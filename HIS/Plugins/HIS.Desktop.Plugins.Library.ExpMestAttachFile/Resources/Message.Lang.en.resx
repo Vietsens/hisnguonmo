@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FileKhongDungDinhDang" xml:space="preserve">
+    <value>File "{0}" is not an allowed format (jpg, jpeg, png, bmp, gif, pdf).</value>
+  </data>
+  <data name="FileVuotDungLuong" xml:space="preserve">
+    <value>File "{0}" is {1} MB, exceeding the allowed {2} MB. Please capture again or choose another file.</value>
+  </data>
+  <data name="ChuaChonTepDinhKem" xml:space="preserve">
+    <value>Please choose a file or take a photo of the prescription.</value>
+  </data>
+  <data name="KhongTimThayLoaiVanBan" xml:space="preserve">
+    <value>EMR document type "{0}" is not declared. Please contact the administrator.</value>
+  </data>
+  <data name="KhongTimThayModuleCamera" xml:space="preserve">
+    <value>The account has no permission on the Camera module (HIS.Desktop.Plugins.Camera).</value>
+  </data>
+  <data name="PhieuDaHoanTatKhongDuocXoa" xml:space="preserve">
+    <value>The export ticket is finished/paid, so attached prescriptions cannot be deleted; you can only view or add more.</value>
+  </data>
+  <data name="KhongTaiDuocNoiDungTaiLieu" xml:space="preserve">
+    <value>Unable to download the document content.</value>
+  </data>
+  <data name="DinhKemDonThatBai" xml:space="preserve">
+    <value>Export ticket {0} was saved but attaching the prescription failed. Please attach again with the "Attach Rx" button or from the export list.</value>
+  </data>
+  <data name="BanNhieuBenhNhanKhongDinhKem" xml:space="preserve">
+    <value>Sale for several patients: the prescription was not attached automatically. Please attach it to each ticket from the export list.</value>
+  </data>
+  <data name="CoDonChuaLuuBanCoMuonBo" xml:space="preserve">
+    <value>There are {0} attached prescription file(s) not saved yet. Do you want to discard them?</value>
+  </data>
+  <data name="ChuaChonPhieuXuatBan" xml:space="preserve">
+    <value>This function applies to sale export tickets only.</value>
+  </data>
+</root>
