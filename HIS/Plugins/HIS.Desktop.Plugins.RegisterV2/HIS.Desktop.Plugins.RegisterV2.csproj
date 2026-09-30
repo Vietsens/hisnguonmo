@@ -380,6 +380,10 @@
     <Compile Include="ADO\ExecuteRoomADO.cs" />
     <Compile Include="ADO\KeyADO.cs" />
     <Compile Include="ADO\PersonADO.cs" />
+    <Compile Include="ADO\RegisterReqIdentityADO.cs" />
+    <Compile Include="RunV3\UCRegister__IdentityFill.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ADO\ServiceReqADO.cs" />
     <Compile Include="CalculatePatientAge.cs" />
     <Compile Include="Choice\frmCheckHeinCardGOV.cs">

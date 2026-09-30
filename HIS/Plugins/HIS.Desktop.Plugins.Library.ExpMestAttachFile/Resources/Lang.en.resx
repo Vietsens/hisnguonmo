@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmExpMestAttachFile.Text" xml:space="preserve">
+    <value>Attach prescription</value>
+  </data>
+  <data name="frmExpMestAttachFile.lciDocumentName.Text" xml:space="preserve">
+    <value>Document name:</value>
+  </data>
+  <data name="frmExpMestAttachFile.btnChooseFile.Text" xml:space="preserve">
+    <value>Choose file</value>
+  </data>
+  <data name="frmExpMestAttachFile.btnCapture.Text" xml:space="preserve">
+    <value>Capture</value>
+  </data>
+  <data name="frmExpMestAttachFile.btnRotateLeft.ToolTip" xml:space="preserve">
+    <value>Rotate left</value>
+  </data>
+  <data name="frmExpMestAttachFile.btnRotateRight.ToolTip" xml:space="preserve">
+    <value>Rotate right</value>
+  </data>
+  <data name="frmExpMestAttachFile.btnOk.Text.Buffer" xml:space="preserve">
+    <value>OK (Ctrl S)</value>
+  </data>
+  <data name="frmExpMestAttachFile.btnOk.Text.Save" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmExpMestAttachFile.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmExpMestAttachFile.gcStt.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmExpMestAttachFile.gcFileName.Caption" xml:space="preserve">
+    <value>File name</value>
+  </data>
+  <data name="frmExpMestAttachFile.gcDelete.ToolTip" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="frmExpMestAttachFile.lblHint.Text" xml:space="preserve">
+    <value>Allowed formats: jpg, jpeg, png, bmp, gif, pdf — max {0} MB per file. Multiple files are merged into one PDF document.</value>
+  </data>
+  <data name="frmExpMestAttachFile.DefaultDocumentName" xml:space="preserve">
+    <value>External prescription</value>
+  </data>
+  <data name="frmExpMestAttachFile.CaptureFileName" xml:space="preserve">
+    <value>Capture {0}.jpg</value>
+  </data>
+  <data name="frmExpMestAttachList.Text" xml:space="preserve">
+    <value>Attached prescriptions — Export ticket: {0}</value>
+  </data>
+  <data name="frmExpMestAttachList.btnAttachNew.Text" xml:space="preserve">
+    <value>Attach new (Ctrl N)</value>
+  </data>
+  <data name="frmExpMestAttachList.btnRefresh.Text" xml:space="preserve">
+    <value>Refresh (F5)</value>
+  </data>
+  <data name="frmExpMestAttachList.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmExpMestAttachList.gcStt.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmExpMestAttachList.gcView.ToolTip" xml:space="preserve">
+    <value>View / Print</value>
+  </data>
+  <data name="frmExpMestAttachList.gcDelete.ToolTip" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="frmExpMestAttachList.gcDocumentName.Caption" xml:space="preserve">
+    <value>Document name</value>
+  </data>
+  <data name="frmExpMestAttachList.gcCreateTime.Caption" xml:space="preserve">
+    <value>Attached time</value>
+  </data>
+  <data name="frmExpMestAttachList.gcCreator.Caption" xml:space="preserve">
+    <value>Attached by</value>
+  </data>
+  <data name="frmExpMestAttachList.gcModifyTime.Caption" xml:space="preserve">
+    <value>Modified time</value>
+  </data>
+  <data name="frmExpMestAttachList.gcModifier.Caption" xml:space="preserve">
+    <value>Modified by</value>
+  </data>
+  <data name="frmExpMestAttachList.lblCount.Text" xml:space="preserve">
+    <value>{0} document(s)</value>
+  </data>
+  <data name="frmExpMestAttachList.lblReadOnly.Text" xml:space="preserve">
+    <value>Ticket is finished/paid: view and add only, deleting is not allowed.</value>
+  </data>
+  <data name="Processor.ButtonCaption" xml:space="preserve">
+    <value>Attach Rx</value>
+  </data>
+  <data name="Processor.ButtonCaptionWithCount" xml:space="preserve">
+    <value>Attach Rx ({0})</value>
+  </data>
+  <data name="Processor.ButtonToolTip" xml:space="preserve">
+    <value>Attach a file or take a photo of the patient's prescription</value>
+  </data>
+  <data name="Processor.GridColumnCaption" xml:space="preserve">
+    <value>Attached prescription</value>
+  </data>
+  <data name="Processor.GridToolTipHasAttach" xml:space="preserve">
+    <value>Prescription attached — click to view</value>
+  </data>
+  <data name="Processor.GridToolTipNoAttach" xml:space="preserve">
+    <value>No prescription attached — click to attach</value>
+  </data>
+</root>

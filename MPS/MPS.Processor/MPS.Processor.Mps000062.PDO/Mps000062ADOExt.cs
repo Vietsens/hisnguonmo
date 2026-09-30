@@ -920,6 +920,53 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICAL_INSTRUCTION { get; set; }
     }
 
+    /// <summary>
+    /// Viec 56831 - duong A: MOT dong in cua to dieu tri.
+    ///
+    /// Mau in cu don ca cot DIEN BIEN vao mot o gop doc 27 dong, nen chu chay xuyen qua ranh gioi
+    /// dong bang. Excel chi ngat trang duoc o ranh gioi giua hai dong bang, gap cho nao co chu thi
+    /// xen ngang cho do. Cac mau MPS khac khong bi vi chu cua chung luon nam gon trong mot dong bang.
+    ///
+    /// Lop nay dua to dieu tri ve dung kieu do: code ghep san tung dong in, moi ban ghi la MOT dong
+    /// bang chua mot dong chu cua ca hai cot. Khong con o gop doc nao xuyen qua noi dung, nen moc
+    /// ngat trang luon roi vao khe giua hai dong - khong phu thuoc co chu, he so hay bo ve nao.
+    /// </summary>
+    public class Mps000062PrintRowADO
+    {
+        public long TRACKING_ID { get; set; }
+        /// <summary>Thu tu dong trong mot to dieu tri, bat dau tu 1</summary>
+        public long NUM_ORDER { get; set; }
+        /// <summary>Cot Ngay gio - chi dien o dong dau moi to dieu tri</summary>
+        public string NGAY_GIO { get; set; }
+        /// <summary>Dong "Ngay dieu tri thu N" - chi dien o dong dau</summary>
+        public string NGAY_DIEU_TRI { get; set; }
+        /// <summary>Mot dong chu cua cot DIEN BIEN BENH</summary>
+        public string DIEN_BIEN { get; set; }
+        /// <summary>Mot dong chu cua cot Y LENH</summary>
+        public string Y_LENH { get; set; }
+        /// <summary>Cot so luong canh phai cua Y LENH, vi du "x 2 Vien"</summary>
+        public string Y_LENH_SL { get; set; }
+        /// <summary>0 = thuong, 1 = in dam (tieu de nhom), 2 = in nghieng (cach dung)</summary>
+        public long STYLE { get; set; }
+
+        public const long STYLE_NORMAL = 0;
+        public const long STYLE_BOLD = 1;
+        public const long STYLE_ITALIC = 2;
+        /// <summary>Dong ke ngang ket thuc mot to dieu tri (khong co chu)</summary>
+        public const long STYLE_END_LINE = 3;
+        /// <summary>Dong ten thuoc: in dam, va co cot so luong canh le phai ben ngoai</summary>
+        public const long STYLE_MEDICINE = 4;
+        //Dong dem cao 2,3pt ke net dut o day cot Y LENH, dat ngay duoi dong "Ngay su dung"
+        public const long STYLE_DATE_LINE = 5;
+        //Cong them vao STYLE khi cot Ngay gio cua dong do phai in dam (dong "Ngay dieu tri thu: N").
+        //Mau co du 12 dong bien the: 0..5 la Ngay gio chu thuong, 10..15 la Ngay gio in dam.
+        //Dong danh cho chu ky cuoi moi to dieu tri: cao 2,5cm, van co vach doc cua bang,
+        //ben trong co san key ky tu dong cua thu vien ky.
+        public const long STYLE_SIGN = 7;
+
+        public const long STYLE_NGAY_GIO_DAM = 10;
+    }
+
     public class ServiceCLS : HIS_SERE_SERV
     {
         public long TRACKING_ID { get; set; }

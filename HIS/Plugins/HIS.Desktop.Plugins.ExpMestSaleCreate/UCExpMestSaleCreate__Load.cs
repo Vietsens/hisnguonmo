@@ -96,6 +96,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     LoadMediMateBeanByExpMestMediMate(expMestList, expMestMedicines, expMestMaterials, null, false);
 
                     moduleAction = GlobalDataStore.ModuleAction.EDIT;
+                    // Viec 57853: phieu dang sua -> nut "Dinh kem don" mo danh sach don cua phieu
+                    SetAttachExpMests(expMestList);
                 }
             }
             catch (Exception ex)
@@ -150,6 +152,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     }
 
                     moduleAction = GlobalDataStore.ModuleAction.EDIT;
+                    // Viec 57853: phieu da xuat -> nut "Dinh kem don" mo danh sach don cua phieu
+                    SetAttachExpMests(ExpMestList);
                     btnCancelExport.Enabled = true;
                     btnSavePrint.Enabled = false;
                     btnSave.Enabled = false;

@@ -171,6 +171,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     nFrom = bFrom;
                     nTo = bTo;
                     numSttNow = txtTo.Text;
+
+                    // PTTK_54254: du ba dieu kien thi nap san thong tin nguoi benh len man tiep don
+                    this.ProcessFillPatientFromRegisterReq(apiResult, Step);
                 }
 				else
 				{

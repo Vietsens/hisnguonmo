@@ -238,7 +238,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.cboServiceReqStt = new DevExpress.XtraEditors.GridLookUpEdit();
             this.cboSentExt = new DevExpress.XtraEditors.ComboBoxEdit();
             this.lciSentExt = new DevExpress.XtraLayout.LayoutControlItem();
-            this.esiSentExt = new DevExpress.XtraLayout.EmptySpaceItem();
             this.btnResendIntegration = new DevExpress.XtraEditors.SimpleButton();
             this.lciResendIntegration = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -474,7 +473,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSentExt)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.esiSentExt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciResendIntegration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceReqCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
@@ -2742,7 +2740,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.layoutControlItem7,
             this.layoutControlItem8,
             this.lciSentExt,
-            this.esiSentExt,
             this.lciResendIntegration,
             this.lciServiceReqCode,
             this.layoutControlItem2,
@@ -2764,9 +2761,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.gridControlServiceReq;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 74);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 76);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(863, 480);
+            this.layoutControlItem1.Size = new System.Drawing.Size(863, 478);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -2883,19 +2880,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.lciSentExt.Control = this.cboSentExt;
             this.lciSentExt.Location = new System.Drawing.Point(0, 50);
             this.lciSentExt.Name = "lciSentExt";
-            this.lciSentExt.Size = new System.Drawing.Size(238, 24);
+            this.lciSentExt.Size = new System.Drawing.Size(238, 26);
             this.lciSentExt.Text = "Gửi tích hợp:";
             this.lciSentExt.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSentExt.TextSize = new System.Drawing.Size(76, 20);
             this.lciSentExt.TextToControlDistance = 2;
-            //
-            // esiSentExt
-            //
-            this.esiSentExt.AllowHotTrack = false;
-            this.esiSentExt.Location = new System.Drawing.Point(238, 50);
-            this.esiSentExt.Name = "esiSentExt";
-            this.esiSentExt.Size = new System.Drawing.Size(625, 24);
-            this.esiSentExt.TextSize = new System.Drawing.Size(0, 0);
             //
             // lciResendIntegration
             //
@@ -2913,7 +2902,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.lciServiceReqCode.Control = this.txtServiceReqCode;
             this.lciServiceReqCode.Location = new System.Drawing.Point(0, 24);
             this.lciServiceReqCode.Name = "lciServiceReqCode";
-            this.lciServiceReqCode.Size = new System.Drawing.Size(117, 26);
+            this.lciServiceReqCode.Size = new System.Drawing.Size(216, 26);
             this.lciServiceReqCode.Text = "Mã yêu cầu:";
             this.lciServiceReqCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciServiceReqCode.TextSize = new System.Drawing.Size(0, 0);
@@ -2923,16 +2912,16 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.txtTreatmentCode;
-            this.layoutControlItem2.Location = new System.Drawing.Point(117, 24);
+            this.layoutControlItem2.Location = new System.Drawing.Point(216, 24);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(129, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(216, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnFind;
-            this.layoutControlItem3.Location = new System.Drawing.Point(766, 24);
+            this.layoutControlItem3.Location = new System.Drawing.Point(766, 50);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(97, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -2955,9 +2944,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.txtPatientCode;
-            this.layoutControlItem14.Location = new System.Drawing.Point(246, 24);
+            this.layoutControlItem14.Location = new System.Drawing.Point(432, 24);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(114, 26);
+            this.layoutControlItem14.Size = new System.Drawing.Size(216, 26);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
@@ -2966,9 +2955,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.lciKeyword.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciKeyword.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciKeyword.Control = this.txtKeyword;
-            this.lciKeyword.Location = new System.Drawing.Point(495, 24);
+            this.lciKeyword.Location = new System.Drawing.Point(238, 50);
             this.lciKeyword.Name = "lciKeyword";
-            this.lciKeyword.Size = new System.Drawing.Size(157, 26);
+            this.lciKeyword.Size = new System.Drawing.Size(414, 26);
             this.lciKeyword.Text = "Từ khóa tìm kiếm:";
             this.lciKeyword.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciKeyword.TextSize = new System.Drawing.Size(0, 0);
@@ -2978,7 +2967,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.cboFilter;
-            this.layoutControlItem4.Location = new System.Drawing.Point(652, 24);
+            this.layoutControlItem4.Location = new System.Drawing.Point(652, 50);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(114, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -3009,9 +2998,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.txtStoreCode;
-            this.layoutControlItem16.Location = new System.Drawing.Point(360, 24);
+            this.layoutControlItem16.Location = new System.Drawing.Point(648, 24);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(135, 26);
+            this.layoutControlItem16.Size = new System.Drawing.Size(215, 26);
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem16.TextVisible = false;
             // 
@@ -3192,7 +3181,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSentExt)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.esiSentExt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciResendIntegration)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceReqCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
@@ -3282,7 +3270,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         internal DevExpress.XtraEditors.ComboBoxEdit cboSentExt;
         private DevExpress.XtraLayout.LayoutControlItem lciSentExt;
-        private DevExpress.XtraLayout.EmptySpaceItem esiSentExt;
         private DevExpress.XtraEditors.SimpleButton btnResendIntegration;
         private DevExpress.XtraLayout.LayoutControlItem lciResendIntegration;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_ServiceReq_Print;

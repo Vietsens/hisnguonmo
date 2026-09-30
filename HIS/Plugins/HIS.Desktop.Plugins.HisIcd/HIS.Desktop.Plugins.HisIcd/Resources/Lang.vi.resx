@@ -502,4 +502,16 @@ hướng dẫn nhằm đẩy dữ liệu XML đối với các hồ sơ bệnh n
   <data name="frmHisIcd.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
     <value>Từ khóa tìm kiếm</value>
   </data>
+  <data name="frmHisIcd.chkIsChronic.Properties.Caption" xml:space="preserve">
+    <value>Bệnh mãn tính</value>
+  </data>
+  <data name="frmHisIcd.chkIsChronic.ToolTip" xml:space="preserve">
+    <value>Mã bệnh là bệnh mãn tính. Khi bác sĩ phòng khám kết thúc điều trị với mã bệnh chính này mà chưa tích Mãn tính, phần mềm sẽ cảnh báo</value>
+  </data>
+  <data name="frmHisIcd.grdColIsChronic.Caption" xml:space="preserve">
+    <value>Bệnh mãn tính</value>
+  </data>
+  <data name="frmHisIcd.grdColIsChronic.ToolTip" xml:space="preserve">
+    <value>Là bệnh mãn tính</value>
+  </data>
 </root>

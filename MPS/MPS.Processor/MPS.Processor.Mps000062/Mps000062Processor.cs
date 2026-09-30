@@ -70,6 +70,20 @@ namespace MPS.Processor.Mps000062
         internal List<ServiceReqMetyADO> _ServiceReqMetyADOs { get; set; }
         internal List<ServiceReqMatyADO> _ServiceReqMatyADOs { get; set; }
         internal List<MedicalInstruction> _MedicalInstructions { get; set; }
+
+        //Viec 56831 - duong A: danh sach TUNG DONG IN cua to dieu tri
+        internal List<Mps000062PrintRowADO> _PrintRows { get; set; }
+
+        //Viec 56831: bat tinh nang cat khoi bang chinh TEN FILE MAU, vi du "...__SPLIT30.xlsx".
+        //Khong doc cau hinh tu backend de tranh cham luong giao dien. Mau nao khong co nhan nay
+        //thi khong cat gi ca - cac vien khac giu nguyen hanh vi cu.
+        private const string SPLIT_MARK_PATTERN = @"SPLIT(\d{1,3})";
+        //Nhan hien o cot Ngay gio cua khoi noi tiep
+        private const string CONTINUATION_BLOCK_MARK = "(tiếp)";
+        //ID am cap cho khoi noi tiep - khong quan he nao khop nen khoi do khong keo theo thuoc/CLS
+        private long continuationBlockId;
+        //Doc cau hinh DUNG MOT LAN cho ca lan in. Khong doc lai trong vong lap tung to dieu tri.
+        private int maxContentLinePerBlock;
         Dictionary<long, List<NumberDate>> _DicCountNumbers = new Dictionary<long, List<NumberDate>>();
         Dictionary<long, List<NumberDate>> _DicCountNumberByTypes = new Dictionary<long, List<NumberDate>>();
         Dictionary<long, List<NumberDate>> _DicCountNumberByGroup = new Dictionary<long, List<NumberDate>>();//số cả thuốc trong kho và ngoài kho
@@ -739,6 +753,621 @@ namespace MPS.Processor.Mps000062
             }
         }
 
+        /// <summary>
+        /// Viec 56831: mot luot theo doi co dien bien benh qua dai lam khoi in cao hon mot trang giay.
+        /// Khi do o gop doc cua cot DIEN BIEN (J12:AL38) vat qua moc ngat trang, ma Excel chi ngat duoc
+        /// o ranh gioi GIUA HAI DONG BANG, nen no xen ngang dong chu dang nam do.
+        ///
+        /// Cach xu ly: cat phan dien bien thanh nhieu khoi, moi khoi toi da MAX_CONTENT_LINE_PER_BLOCK dong.
+        /// - Khoi dau giu nguyen ID that nen van keo theo thuoc, CLS, cham soc... nhu cu.
+        /// - Khoi noi tiep mang ID am. Cac vung lap cua cot Y LENH deu noi voi TrackingADOs qua
+        ///   AddRelationship theo ID, khong ban ghi nao khop ID am nen khoi noi tiep chi con chu dien bien.
+        /// Khoi nho lai thi vua mot trang, mau in bat lai KeepRows_1_ de khoi khong bao gio bi cat doi.
+        /// </summary>
+        /// <summary>
+        /// Viec 56831: lay so dong toi da moi khoi tu TEN FILE MAU dang in, vi du
+        /// "062_To_dieu_tri__SPLIT30.xlsx" -> 30. Khong co nhan -> tra ve 0 = TAT tinh nang.
+        /// Doc tu ten file thay vi doc cau hinh backend: khong ton mot lan goi mang nao,
+        /// va nhan di kem file mau nen chi vien nao dung mau do moi bat tinh nang.
+        /// </summary>
+        private int GetMaxContentLinePerBlock()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(this.fileName))
+                {
+                    Inventec.Common.Logging.LogSystem.Info("Mps000062.SPLIT: khong co duong dan mau -> TAT");
+                    return 0;
+                }
+
+                //Nhan dat o BAT KY dau trong duong dan: ten file hoac ten thu muc deu duoc
+                var match = System.Text.RegularExpressions.Regex.Match(
+                    this.fileName, SPLIT_MARK_PATTERN, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                int value = 0;
+                if (match.Success)
+                    int.TryParse(match.Groups[1].Value, out value);
+                if (value < 0)
+                    value = 0;
+
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "Mps000062.SPLIT: so dong moi khoi = {0} ({1}). Mau dang dung: {2}",
+                    value, value > 0 ? "BAT" : "TAT - ten mau khong co nhan SPLITnn", this.fileName));
+
+                return value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return 0;
+            }
+        }
+
+        private void SplitLongContentIntoBlocks(Mps000062ADO firstBlock)
+        {
+            try
+            {
+                if (firstBlock == null || string.IsNullOrEmpty(firstBlock.CONTENT))
+                    return;
+
+                int maxLine = this.maxContentLinePerBlock;
+                if (maxLine <= 0)
+                    return;     //Vien khong bat cau hinh -> giu nguyen hanh vi cu
+
+                string[] lines = firstBlock.CONTENT.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n');
+                if (lines.Length <= maxLine)
+                    return;
+
+                firstBlock.CONTENT = string.Join("\n", lines.Take(maxLine).ToArray());
+
+                for (int start = maxLine; start < lines.Length; start += maxLine)
+                {
+                    Mps000062ADO nextBlock = new Mps000062ADO();
+                    nextBlock.ID = this.continuationBlockId--;
+                    nextBlock.CONTENT = string.Join("\n", lines.Skip(start).Take(maxLine).ToArray());
+                    nextBlock.TRACKING_TIME_STR = CONTINUATION_BLOCK_MARK;
+                    nextBlock.NUMBER_DAYS_TREATMENT = firstBlock.NUMBER_DAYS_TREATMENT;
+                    //Giu cung moc ngay de ham gop o theo ngay (FuncMergeData) xu ly nhu cu
+                    nextBlock.TRACKING_DATE_STR = firstBlock.TRACKING_DATE_STR;
+                    nextBlock.TRACKING_DATE_SEPARATE_STR = firstBlock.TRACKING_DATE_SEPARATE_STR;
+                    _Mps000062ADOs.Add(nextBlock);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #region Viec 56831 - duong A: dung tung DONG IN cho to dieu tri
+
+        /// <summary>Mot dong cua cot Y LENH truoc khi ghep voi cot DIEN BIEN</summary>
+        private class YLenhLine
+        {
+            public string Text;
+            public string Amount;
+            public long Style;
+            public YLenhLine(string text, string amount, long style)
+            {
+                this.Text = text; this.Amount = amount; this.Style = style;
+            }
+        }
+
+        //Be rong cho phep cua tung cot, tinh theo "don vi chu n" (xem CharWidth) chu khong
+        //phai so ky tu - vi chu IN HOA rong gap ruoi chu thuong, dem so ky tu thi dong chu hoa
+        //se dai qua o va de sat vao duong ke doc.
+        //Do that bang FlexCel tren chinh o gop cua mau (Times New Roman 12), suc chua theo chu 'n':
+        //  NGAY GIO   A..I  : 10
+        //  DIEN BIEN  J..AL : 34
+        //  Y LENH     AM..BO: 39
+        //  TEN THUOC  AM..BD: 24
+        //Dat thap hon suc chua khoang 6-8% de chu luon dung truoc duong ke, khong cham vach.
+        private const int WRAP_DIEN_BIEN = 32;
+        private const int WRAP_Y_LENH = 36;
+        //Dong IN DAM rong hon dong thuong: o AM..BO chi con chua 35 chu 'n' thay vi 39.
+        //Cac dong tieu de (Ngay su dung, Don thuoc du tru, ten nhom dich vu, Thu thuat...)
+        //deu in dam nen phai quan hep hon, neu khong van cham vao duong ke doc.
+        private const int WRAP_Y_LENH_DAM = 32;
+        //Cot Ngay gio A..I hep. Ngay gio va "Ngay dieu tri thu N" deu dai hon nen neu don ca vao
+        //mot o thi dong dau moi to dieu tri cao 3-4 hang, con cot Dien Bien chi co mot dong ->
+        //tho ra mot khoang trong lon. Rai moi manh ra mot dong rieng de khong con lech.
+        //Suc chua that cua o A..I la 10 don vi. Chuoi "14/09/2026" chiem 9,12 don vi nen phai
+        //de 10; de 9 thi chuoi ngay bi coi la dai qua o va bi cat cung thanh "14/09/202" + "6".
+        private const int WRAP_NGAY_GIO = 10;
+        //Dong ten thuoc chia doi: ten o AM..BD, so luong o BE..BO (canh le phai).
+        private const int WRAP_TEN_THUOC = 22;
+
+        /// <summary>
+        /// Ghi chu thu hoi. O so luong BE..BO chi rong 12 don vi nen khong nhet duoc chuoi nay
+        /// vao do - in thanh mot dong nghieng rieng o cot chu, giong cach mau cu de o rieng.
+        /// </summary>
+        private static string BuildThuHoiNote(decimal? thAmount, string unitName)
+        {
+            decimal th = thAmount ?? 0;
+            return th > 0 ? "(Thu hồi " + th + " " + unitName + ")" : "";
+        }
+
+        /// <summary>Dong ten thuoc: in dam, so luong tach ra cot rieng canh le phai</summary>
+        private static void AddMedicineNameLines(List<YLenhLine> lines, string ten, string amount)
+        {
+            List<string> parts = ToDisplayLines(ten, WRAP_TEN_THUOC);
+            for (int i = 0; i < parts.Count; i++)
+                lines.Add(new YLenhLine(parts[i], i == 0 ? amount : "", Mps000062PrintRowADO.STYLE_MEDICINE));
+        }
+
+        /// <summary>
+        /// Cat mot doan van thanh tung dong vua be rong cot, uu tien ngat o dau cach.
+        /// Khong co dau cach (chuoi dai lien tuc) thi cat cung theo be rong.
+        /// maxWidth tinh theo "don vi chu n" - xem CharWidth.
+        /// </summary>
+        private static List<string> WrapText(string text, int maxWidth)
+        {
+            List<string> result = new List<string>();
+            if (text == null) { result.Add(""); return result; }
+            if (TextWidth(text) <= maxWidth) { result.Add(text); return result; }
+
+            string rest = text;
+            while (TextWidth(rest) > maxWidth)
+            {
+                int fit = FitLength(rest, maxWidth);
+                int cut = rest.LastIndexOf(' ', Math.Min(fit, rest.Length - 1));
+                if (cut <= 0) cut = fit;                 //mot tu qua dai: cat cung
+                result.Add(rest.Substring(0, cut).TrimEnd());
+                rest = rest.Substring(cut).TrimStart();
+            }
+            if (rest.Length > 0) result.Add(rest);
+            if (result.Count == 0) result.Add("");
+            return result;
+        }
+
+        /// <summary>So ky tu dau tien cua chuoi con nam gon trong be rong cho phep</summary>
+        private static int FitLength(string s, double maxWidth)
+        {
+            double w = 0;
+            for (int i = 0; i < s.Length; i++)
+            {
+                w += CharWidth(s[i]);
+                if (w > maxWidth)
+                    return i > 0 ? i : 1;
+            }
+            return s.Length;
+        }
+
+        private static double TextWidth(string s)
+        {
+            double w = 0;
+            if (s != null)
+                for (int i = 0; i < s.Length; i++)
+                    w += CharWidth(s[i]);
+            return w;
+        }
+
+        //Chu co dau duoc quy ve chu goc de tra be rong. Rieng o/u co rau rong hon o/u thuong
+        //nen giu lai thanh chu rieng.
+        private const string VN_ACCENTED = "ÀÁÂÃÄÅÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåèéêëìíîïòóôõöùúûüýÿĀāĂăĄąĒēĔĕĖėĘęĚěĨĩĪīĬĭĮįİŌōŎŏŐőŨũŪūŬŭŮůŰűŲųŶŷŸƠơƯưǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǞǟǠǡǪǫǬǭǺǻȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏȔȕȖȗȦȧȨȩȪȫȬȭȮȯȰȱȲȳḀḁḔḕḖḗḘḙḚḛḜḝḬḭḮḯṌṍṎṏṐṑṒṓṲṳṴṵṶṷṸṹṺṻẎẏẙẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾếỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹđĐ";
+        private const string VN_BASE     = "AAAAAAEEEEIIIIOOOOOUUUUYaaaaaaeeeeiiiiooooouuuuyyAaAaAaEeEeEeEeEeIiIiIiIiIOoOoOoUuUuUuUuUuUuYyYƠơƯưAaIiOoUuUuUuUuUuAaAaOoOoAaAaAaEeEeIiIiOoOoUuUuAaEeOoOoOoOoYyAaEeEeEeEeEeIiIiOoOoOoOoUuUuUuUuUuYyyAaAaAaAaAaAaAaAaAaAaAaAaEeEeEeEeEeEeEeEeIiIiOoOoOoOoOoOoOoƠơƠơƠơƠơƠơUuUuƯưƯưƯưƯưƯưYyYyYyYydD";
+
+        /// <summary>
+        /// Be rong tuong doi cua mot chu, lay chu 'n' lam mot don vi. So do bang FlexCel
+        /// tren chinh o gop cua mau (Times New Roman 12): 'i' 0,56 - 'a' 0,89 - 'n' 1,00 -
+        /// 'A' 1,48 - 'M' 1,79. Dem theo be rong thay vi dem so ky tu de dong chu IN HOA
+        /// khong con dai qua o roi de sat vao duong ke doc.
+        /// </summary>
+        private static double CharWidth(char c)
+        {
+            int k = VN_ACCENTED.IndexOf(c);
+            char b = k >= 0 ? VN_BASE[k] : c;
+            switch (b)
+            {
+                case ' ': case '.': case ',': return 0.50;
+                case '\'': case '!': case '|': case ':': case ';': case '/':
+                case 'i': case 'l': case 'j': case 't': return 0.56;
+                case '(': case ')': case '[': case ']': case '-': case '"':
+                case 'f': case 'r': case 'I': return 0.67;
+                case 'J': return 0.78;
+                case 's': return 0.79;
+                case 'a': case 'c': case 'e': case 'z': case '?': return 0.89;
+                case 'ơ': return 1.06;
+                case 'ư': return 1.10;
+                case 'F': case 'P': case 'S': case '+': case '=': return 1.13;
+                case 'Z': return 1.22;
+                case 'E': case 'L': case 'T': return 1.26;
+                case 'B': case 'C': case 'R': return 1.36;
+                case 'w': return 1.44;
+                case 'm': case 'Ư': return 1.62;
+                case '%': case '@': return 1.67;
+                case 'M': return 1.79;
+                case 'W': return 1.90;
+                default:
+                    if (b >= 'A' && b <= 'Z') return 1.48;
+                    if (b == 'Ơ') return 1.48;
+                    return 1.00;
+            }
+        }
+
+        /// <summary>Tach theo xuong dong roi quan tiep theo be rong cot: moi dong chu = mot dong bang</summary>
+        private static List<string> ToDisplayLines(string text, int maxChars)
+        {
+            List<string> all = new List<string>();
+            string[] parts = (text ?? "").Replace("\r\n", "\n").Replace("\r", "\n").Split('\n');
+            foreach (string p in parts)
+                all.AddRange(WrapText(p, maxChars));
+            return all;
+        }
+
+        private static void AddLines(List<YLenhLine> lines, string text, string amount, long style)
+        {
+            if (string.IsNullOrEmpty(text) && string.IsNullOrEmpty(amount))
+                return;
+
+            //So luong ghep vao cuoi dong chu thay vi de o cot rieng - de cot Y LENH
+            //dung duoc tron be ngang, chu khong bi bo hep lai mot nua.
+            string full = text ?? "";
+            if (!string.IsNullOrEmpty(amount))
+                full = string.IsNullOrEmpty(full) ? amount : full + "   " + amount;
+
+            List<string> parts = ToDisplayLines(full,
+                style == Mps000062PrintRowADO.STYLE_BOLD ? WRAP_Y_LENH_DAM : WRAP_Y_LENH);
+            for (int i = 0; i < parts.Count; i++)
+                lines.Add(new YLenhLine(parts[i], "", style));
+        }
+
+        /// <summary>
+        /// Gom toan bo cot Y LENH cua MOT to dieu tri thanh danh sach tung dong, dung thu tu
+        /// nhu mau in cu dang the hien (xem cac vung lap AM12..AM38 cua mau).
+        /// </summary>
+        private List<YLenhLine> BuildYLenhLines(Mps000062ADO tracking)
+        {
+            List<YLenhLine> lines = new List<YLenhLine>();
+            long id = tracking.ID;
+
+            //1. Thuoc dieu tri - kem dong tieu de "Ngay su dung"
+            var medicines = _ExpMestMetyReqADOCommons != null
+                ? _ExpMestMetyReqADOCommons.Where(o => o.TRACKING_ID == id).ToList()
+                : new List<ExpMestMetyReqADO>();
+            var mediTreatment = medicines.Where(o => o.IS_HOME_PRES != 1).ToList();
+            var mediHomePres = medicines.Where(o => o.IS_HOME_PRES == 1).ToList();
+
+            if (medicines.Count > 0)
+            {
+                string ngaySuDung = Inventec.Common.DateTime.Convert
+                    .TimeNumberToDateString(medicines[0].INTRUCTION_TIME_STR.ToString());
+                AddLines(lines, "Ngày sử dụng " + ngaySuDung, "", Mps000062PrintRowADO.STYLE_BOLD);
+                //Mau goc ke mot net dut ngay duoi dong "Ngay su dung" de tach khoi danh sach thuoc
+                lines.Add(new YLenhLine("", "", Mps000062PrintRowADO.STYLE_DATE_LINE));
+            }
+            AddMedicineLines(lines, mediTreatment, "");
+            //Viec 26771: thuoc cap ve tach rieng, co tieu de
+            AddMedicineLines(lines, mediHomePres, "Thuốc cấp về:");
+
+            //2. Vat tu
+            if (_ExpMestMatyReqADOs != null)
+                foreach (var mat in _ExpMestMatyReqADOs.Where(o => o.TRACKING_ID == id))
+                    AddMedicineNameLines(lines, mat.MATERIAL_TYPE_NAME,
+                        "x " + mat.AMOUNT + " " + mat.SERVICE_UNIT_NAME);
+
+            //2b. Don thuoc / vat tu DU TRU.
+            //Viec 56831: KHONG in khoi "thuc hien du tru" nua. Hai khoi nay cung mot don thuoc
+            //nen in ca hai thi moi thuoc hien hai lan. Vien chot chi lay khoi du tru.
+            //Muon bat lai thi bo chu thich doan duoi.
+            AddReserveLines(lines, id, _ServiceReqDuTrus, _ExpMestMetyReqADOCommonsDuTru, _ExpMestMatyReqADOsDuTru,
+                "Đơn thuốc dự trù ngày ", "Đơn vật tư dự trù ngày ", true);
+            //AddReserveLines(lines, id, _ServiceReqTHDT, _ExpMestMetyReqADOCommonsTHDT, _ExpMestMatyReqADOsTHDT,
+            //    "Đơn thuốc thực hiện dự trù ngày ", "Đơn vật tư thực hiện dự trù ngày ", false);
+
+            //3. Thuoc tu mua
+            if (_ServiceReqMetyADOs != null)
+                foreach (var m in _ServiceReqMetyADOs.Where(o => o.TRACKING_ID == id))
+                    AddLines(lines, "Thuốc tự mua: " + m.MEDICINE_TYPE_NAME,
+                        "x " + m.AMOUNT + " " + m.UNIT_NAME, Mps000062PrintRowADO.STYLE_NORMAL);
+
+            //4. Dich vu can lam sang - gom theo loai dich vu nhu mau cu (AM27)
+            if (_ServiceCLSs != null)
+            {
+                string loaiTruoc = null;
+                foreach (var cls in _ServiceCLSs.Where(o => o.TRACKING_ID == id))
+                {
+                    if (!string.IsNullOrEmpty(cls.SERVICE_TYPE_NAME) && cls.SERVICE_TYPE_NAME != loaiTruoc)
+                    {
+                        AddLines(lines, cls.SERVICE_TYPE_NAME, "", Mps000062PrintRowADO.STYLE_BOLD);
+                        loaiTruoc = cls.SERVICE_TYPE_NAME;
+                    }
+                    AddLines(lines, cls.SERVICE_NAME, "", Mps000062PrintRowADO.STYLE_NORMAL);
+                }
+            }
+
+            //5. Thu thuat
+            if (_TTServices != null)
+                foreach (var tt in _TTServices.Where(o => o.TRACKING_ID == id))
+                {
+                    //Nhan in dam mot dong rieng, noi dung dong duoi - dinh dang ap theo tung dong
+                    AddLines(lines, "Thủ thuật:", "", Mps000062PrintRowADO.STYLE_BOLD);
+                    AddLines(lines, tt.TDL_SERVICE_NAME
+                        + (string.IsNullOrEmpty(tt.INSTRUCTION_NOTE) ? "" : " - " + tt.INSTRUCTION_NOTE),
+                        "", Mps000062PrintRowADO.STYLE_NORMAL);
+                }
+
+            //6. Y lenh
+            AddLines(lines, tracking.MEDICAL_INSTRUCTION, "", Mps000062PrintRowADO.STYLE_NORMAL);
+
+            //7. Cham soc
+            AddLines(lines, tracking.CARE_INSTRUCTION, "", Mps000062PrintRowADO.STYLE_NORMAL);
+
+            //8. Mau
+            if (_Bloods != null)
+                foreach (var b in _Bloods.Where(o => o.TRACKING_ID == id))
+                    AddLines(lines, b.TDL_SERVICE_NAME + "   *   " + b.AMOUNT + "  Đơn vị",
+                        "", Mps000062PrintRowADO.STYLE_NORMAL);
+
+            //9. Che do an
+            if (rdo._Cares != null)
+                foreach (var care in rdo._Cares.Where(o => o.TRACKING_ID == id && !string.IsNullOrEmpty(o.NUTRITION)))
+                    AddLines(lines, "Chế độ ăn: " + care.NUTRITION, "", Mps000062PrintRowADO.STYLE_NORMAL);
+
+            return lines;
+        }
+
+        /// <summary>Do mot danh sach thuoc ra tung dong, kem tieu de nhom neu co</summary>
+        private static void AddMedicineLines(List<YLenhLine> lines, List<ExpMestMetyReqADO> medicines, string title)
+        {
+            if (medicines == null || medicines.Count == 0)
+                return;
+            if (!string.IsNullOrEmpty(title))
+                AddLines(lines, title, "", Mps000062PrintRowADO.STYLE_BOLD);
+
+            foreach (var medi in medicines)
+            {
+                string stt = (medi.NUMBER_H_N.HasValue && medi.USING_COUNT_NUMBER.HasValue)
+                    ? "(" + medi.USING_COUNT_NUMBER + ") " : "";
+                string ten = medi.MEDICINE_TYPE_NAME;
+                if (!string.IsNullOrEmpty(medi.CONCENTRA))
+                    ten += " - " + medi.CONCENTRA;
+                AddMedicineNameLines(lines, stt + ten, BuildAmountText(medi));
+                AddLines(lines, BuildThuHoiNote(medi.TH_AMOUNT, medi.SERVICE_UNIT_NAME),
+                    "", Mps000062PrintRowADO.STYLE_ITALIC);
+                //Cach dung thut vao mot nhip cho de doc, thay cho in nghieng
+                if (!string.IsNullOrEmpty(medi.TUTORIAL))
+                    AddLines(lines, medi.TUTORIAL, "", Mps000062PrintRowADO.STYLE_ITALIC);
+            }
+        }
+
+        /// <summary>
+        /// Don thuoc / vat tu du tru (hoac thuc hien du tru) cua mot to dieu tri.
+        /// Mau cu the hien o AM19..AM26: moi phieu co dong tieu de kem ngay, roi den cac dong thuoc/vat tu.
+        /// </summary>
+        private void AddReserveLines(List<YLenhLine> lines, long trackingId,
+            List<HIS_SERVICE_REQ> serviceReqs, List<ExpMestMetyReqADO> medicines,
+            List<ExpMestMatyReqADO> materials, string titleMedicine, string titleMaterial, bool isDuTru)
+        {
+            try
+            {
+                if (serviceReqs == null || serviceReqs.Count == 0)
+                    return;
+
+                var medis = medicines != null
+                    ? medicines.Where(o => o.TRACKING_ID == trackingId).ToList() : new List<ExpMestMetyReqADO>();
+                var mats = materials != null
+                    ? materials.Where(o => o.TRACKING_ID == trackingId).ToList() : new List<ExpMestMatyReqADO>();
+                if (medis.Count == 0 && mats.Count == 0)
+                    return;
+
+                //Mau cu in mot dong tieu de cho TUNG phieu du tru, kem ngay cua chinh phieu do.
+                //Gom theo phieu de nhieu phieu khac ngay khong bi don chung vao mot ngay.
+                foreach (var g in medis.GroupBy(o => o.TDL_SERVICE_REQ_ID ?? 0).ToList())
+                {
+                    AddReserveTitle(lines, serviceReqs, g.Key, titleMedicine);
+                    foreach (var medi in g)
+                    {
+                        //Mau cu: <#NUMBER_BY_TYPE;>--- <ten thuoc>, dau "---" luon co du co so thu tu hay khong
+                        string ten = (medi.NUMBER_BY_TYPE.HasValue ? medi.NUMBER_BY_TYPE.ToString() : "")
+                            + "--- " + medi.MEDICINE_TYPE_NAME;
+                        AddMedicineNameLines(lines, ten, BuildReserveAmountText(medi, isDuTru));
+                        AddLines(lines, BuildThuHoiNote(medi.TH_AMOUNT, medi.SERVICE_UNIT_NAME),
+                            "", Mps000062PrintRowADO.STYLE_ITALIC);
+                        if (!string.IsNullOrEmpty(medi.TUTORIAL))
+                            AddLines(lines, medi.TUTORIAL, "", Mps000062PrintRowADO.STYLE_ITALIC);
+                    }
+                }
+
+                foreach (var g in mats.GroupBy(o => o.TDL_SERVICE_REQ_ID ?? 0).ToList())
+                {
+                    AddReserveTitle(lines, serviceReqs, g.Key, titleMaterial);
+                    foreach (var mat in g)
+                        //Mau cu o cot so luong vat tu du tru chi in con so, khong co "x" va khong co don vi
+                        AddMedicineNameLines(lines, mat.MATERIAL_TYPE_NAME, mat.AMOUNT.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dong tieu de cua mot phieu du tru. Mau cu bo han dong tieu de khi phieu khong co
+        /// ngay su dung: <#if(<#ServiceReqDuTru.USE_TIME;> = 0;;Don thuoc du tru ngay ...)>
+        /// </summary>
+        private static void AddReserveTitle(List<YLenhLine> lines, List<HIS_SERVICE_REQ> serviceReqs,
+            long serviceReqId, string title)
+        {
+            var req = serviceReqs.FirstOrDefault(o => o.ID == serviceReqId);
+            if (req == null || (req.USE_TIME ?? 0) <= 0)
+                return;
+            AddLines(lines, title + Inventec.Common.DateTime.Convert.TimeNumberToDateString(req.USE_TIME.ToString()),
+                "", Mps000062PrintRowADO.STYLE_BOLD);
+        }
+
+        /// <summary>
+        /// So luong dong thuoc du tru / thuc hien du tru, lay dung o ma mau cu doc:
+        ///   du tru        : x <#MedicinesDuTru.AMOUNTDuTru;> <#SERVICE_UNIT_NAME;>
+        ///   thuc hien DT  : x <#MedicinesTHDT.AMOUNT;> <#SERVICE_UNIT_NAME;>
+        /// Truoc day ham nay doc AMOUNTTHDT cho nhanh thuc hien du tru nen in ra "x 0".
+        /// </summary>
+        private static string BuildReserveAmountText(ExpMestMetyReqADO medi, bool isDuTru)
+        {
+            try
+            {
+                decimal sl = isDuTru ? medi.AMOUNTDuTru : medi.AMOUNT;
+                decimal th = medi.TH_AMOUNT ?? 0;
+                //Khong thu hoi gi ma so luong van ra 0 la do chua gom duoc theo phieu -> lay tong cua dong thuoc
+                if (sl == 0 && th == 0)
+                    sl = medi.AMOUNT;
+                if (sl - th == 0)
+                    return "Đã thu hồi";
+                string s = "x " + sl + " " + medi.SERVICE_UNIT_NAME;
+                return s;
+            }
+            catch { return ""; }
+        }
+
+        /// <summary>Viec 56831 - duong A: dung dong in cho TAT CA to dieu tri, goi sau khi du lieu da day du</summary>
+        private void BuildAllPrintRows()
+        {
+            try
+            {
+                if (_PrintRows == null)
+                    _PrintRows = new List<Mps000062PrintRowADO>();
+                _PrintRows.Clear();
+
+                if (_Mps000062ADOs == null)
+                    return;
+
+                //Bo qua cac khoi noi tiep cua duong B (ID am) - duong A khong can cat khoi
+                var trackings = _Mps000062ADOs.Where(o => o.ID > 0).ToList();
+                for (int i = 0; i < trackings.Count; i++)
+                {
+                    BuildPrintRows(trackings[i]);
+
+                    //Cuoi moi to dieu tri: mot dong danh cho chu ky (co san key ky tu dong),
+                    //roi moi den dong ke ngang dong khung. Chu ky nam trong bang giong mau vien gui.
+                    _PrintRows.Add(new Mps000062PrintRowADO
+                    {
+                        TRACKING_ID = trackings[i].ID,
+                        NUM_ORDER = 0,
+                        NGAY_GIO = "",
+                        NGAY_DIEU_TRI = "",
+                        DIEN_BIEN = "",
+                        Y_LENH = "",
+                        Y_LENH_SL = "",
+                        STYLE = Mps000062PrintRowADO.STYLE_SIGN
+                    });
+
+                    //Trong khoi khong con ke ngang de nhin lien mach nhu o gop cu.
+                    //Ket thuc moi to dieu tri phat mot dong ke ngang de phan cach, giong mau cu.
+                    _PrintRows.Add(new Mps000062PrintRowADO
+                    {
+                        TRACKING_ID = trackings[i].ID,
+                        NUM_ORDER = 0,
+                        NGAY_GIO = "",
+                        NGAY_DIEU_TRI = "",
+                        DIEN_BIEN = "",
+                        Y_LENH = "",
+                        Y_LENH_SL = "",
+                        STYLE = Mps000062PrintRowADO.STYLE_END_LINE
+                    });
+                }
+
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "Mps000062.PrintRows: da dung {0} dong in cho {1} to dieu tri",
+                    _PrintRows.Count, _Mps000062ADOs.Count(o => o.ID > 0)));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private static string BuildAmountText(ExpMestMetyReqADO medi)
+        {
+            try
+            {
+                decimal th = medi.TH_AMOUNT ?? 0;
+                if (medi.AMOUNT - th == 0)
+                    return "Đã thu hồi";
+                string s = "x " + medi.AMOUNT + " " + medi.SERVICE_UNIT_NAME;
+                return s;
+            }
+            catch { return ""; }
+        }
+
+        /// <summary>
+        /// Ghep cot DIEN BIEN va cot Y LENH thanh tung dong in. So dong = ben nao dai hon.
+        /// Dong dau mang Ngay gio; cac dong sau de trong o do.
+        /// </summary>
+        private void BuildPrintRows(Mps000062ADO tracking)
+        {
+            try
+            {
+                if (tracking == null)
+                    return;
+
+                List<string> dienBien = string.IsNullOrEmpty(tracking.CONTENT)
+                    ? new List<string>()
+                    : ToDisplayLines(tracking.CONTENT, WRAP_DIEN_BIEN);
+
+                List<YLenhLine> yLenh = BuildYLenhLines(tracking);
+
+                //Ngay gio + ngay dieu tri thu may: moi manh mot dong rieng.
+                //Tach san ngay va gio ra hai dong. De lien "14/09/2026 21:52" thi cho ngat duy nhat
+                //la dau cach o giua, nam ngoai be rong cot, nen chuoi bi cat cung giua con so.
+                string ngayGioStr = (tracking.TRACKING_TIME_STR ?? "").Trim();
+                int viTriCach = ngayGioStr.IndexOf(' ');
+                if (viTriCach > 0)
+                    ngayGioStr = ngayGioStr.Substring(0, viTriCach) + "\n" + ngayGioStr.Substring(viTriCach + 1).Trim();
+                List<string> ngayGio = ToDisplayLines(ngayGioStr, WRAP_NGAY_GIO);
+                //Cac dong tu day tro di la "Ngay dieu tri thu: N" - mau in dam rieng phan nay
+                int dongDamTuDay = ngayGio.Count;
+                ngayGio.AddRange(ToDisplayLines(
+                    "Ngày điều trị thứ: " + tracking.NUMBER_DAYS_TREATMENT, WRAP_NGAY_GIO));
+
+                //Ghep ba cot lai. Rieng dong net dut chi cao 2,3pt nen khong duoc mang chu:
+                //no khong an mot dong cua cot Ngay gio hay Dien bien, hai cot do lui xuong dong sau.
+                int iNgay = 0, iDien = 0, iY = 0, stt = 0;
+                while (iNgay < ngayGio.Count || iDien < dienBien.Count || iY < yLenh.Count)
+                {
+                    bool laNetDut = iY < yLenh.Count
+                        && yLenh[iY].Style == Mps000062PrintRowADO.STYLE_DATE_LINE;
+
+                    Mps000062PrintRowADO row = new Mps000062PrintRowADO();
+                    row.TRACKING_ID = tracking.ID;
+                    row.NUM_ORDER = ++stt;
+                    bool damNgayGio = false;
+                    if (!laNetDut && iNgay < ngayGio.Count)
+                    {
+                        damNgayGio = iNgay >= dongDamTuDay;
+                        row.NGAY_GIO = ngayGio[iNgay++];
+                    }
+                    else row.NGAY_GIO = "";
+                    row.NGAY_DIEU_TRI = "";     //da gop vao NGAY_GIO, moi manh mot dong
+                    row.DIEN_BIEN = (!laNetDut && iDien < dienBien.Count) ? dienBien[iDien++] : "";
+                    row.Y_LENH = (iY < yLenh.Count) ? yLenh[iY].Text : "";
+                    row.Y_LENH_SL = (iY < yLenh.Count) ? yLenh[iY].Amount : "";
+                    row.STYLE = (iY < yLenh.Count) ? yLenh[iY].Style : Mps000062PrintRowADO.STYLE_NORMAL;
+                    if (damNgayGio)
+                        row.STYLE += Mps000062PrintRowADO.STYLE_NGAY_GIO_DAM;
+                    if (iY < yLenh.Count) iY++;
+                    _PrintRows.Add(row);
+                }
+                if (stt == 0)
+                {
+                    //To dieu tri rong: van in mot dong de giu khung bang
+                    Mps000062PrintRowADO row = new Mps000062PrintRowADO();
+                    row.TRACKING_ID = tracking.ID;
+                    row.NUM_ORDER = 1;
+                    row.NGAY_GIO = ""; row.NGAY_DIEU_TRI = ""; row.DIEN_BIEN = "";
+                    row.Y_LENH = ""; row.Y_LENH_SL = "";
+                    row.STYLE = Mps000062PrintRowADO.STYLE_NORMAL;
+                    _PrintRows.Add(row);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
+
         private void ProcessorDataPrint()
         {
             try
@@ -746,6 +1375,9 @@ namespace MPS.Processor.Mps000062
                 _ExpMestMetyReqADOCommons = new List<ExpMestMetyReqADO>();
                 _ExpMestMetyReqADOCommonsMix = new List<ExpMestMetyReqADO>();
                 _Mps000062ADOs = new List<Mps000062ADO>();
+                continuationBlockId = -1;                                   //Viec 56831
+                _PrintRows = new List<Mps000062PrintRowADO>();              //Viec 56831 - duong A
+                maxContentLinePerBlock = GetMaxContentLinePerBlock();       //Viec 56831: doc cau hinh 1 lan duy nhat
                 _Mps000062ExtADOs = new List<Mps000062ExtADO>();
                 _ExpMestMetyReqADOs = new List<ExpMestMetyReqADO>();
                 _ServiceCLSs = new List<ServiceCLS>();
@@ -983,6 +1615,9 @@ namespace MPS.Processor.Mps000062
                         _Mps000062ADOs.Add(_service);
 
                         this.ProcessMedicineLine();
+
+                        //Viec 56831: cat nho phan dien bien de mot khoi in khong cao qua mot trang giay
+                        SplitLongContentIntoBlocks(_service);
                     }
                 }
 
@@ -4229,6 +4864,10 @@ namespace MPS.Processor.Mps000062
                 objectTag.AddObjectData(store, "ServiceReqTHDT", _ServiceReqTHDT ?? new List<HIS_SERVICE_REQ>());
 
                 objectTag.AddObjectData(store, "TrackingADOs", this._Mps000062ADOs);
+                //Viec 56831 - duong A: dung tung dong in SAU KHI moi nguon du lieu da san sang
+                //(danh sach du tru / thuc hien du tru duoc dung o buoc sau vong lap tracking)
+                BuildAllPrintRows();
+                objectTag.AddObjectData(store, "PrintRows", this._PrintRows);   //Viec 56831 - duong A
                 objectTag.AddObjectData(store, "RemedyCount", this._RemedyCountADOs);
 
                 objectTag.AddObjectData(store, "Materials", this._ExpMestMatyReqADOs);

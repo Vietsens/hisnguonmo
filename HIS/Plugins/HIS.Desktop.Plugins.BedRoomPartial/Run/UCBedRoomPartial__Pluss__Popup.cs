@@ -156,6 +156,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         case BedRoomPopupMenuProcessor.ModuleType.BoTheoDoi:
                             btnBoTheoDoi();
                             break;
+                        case BedRoomPopupMenuProcessor.ModuleType.ClsIsExecuted:
+                            btnClsIsExecutedClick();
+                            break;
                         case BedRoomPopupMenuProcessor.ModuleType.MedicinMaterialIUsed:
                             btnMedicinMaterialIUsedClick();
                             break;
@@ -459,6 +462,47 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// PTTK_XXXXX_Thuc_Hien_Y_Lenh_CLS_Man_Hinh_Buong_Benh: mo man "Thuc hien y lenh CLS" cho BN dang chon
+        /// (cung cach mo voi "Thuoc/vt benh nhan da dung"), dong lai thi nap lai cay dich vu de icon cap nhat ngay.
+        /// </summary>
+        private void btnClsIsExecutedClick()
+        {
+            try
+            {
+                if (treatmentBedRoomRow != null)
+                {
+                    WaitingManager.Show();
+                    treatmentCode = this.treatmentBedRoomRow.TREATMENT_CODE;
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ClsIsExecutedPatient").FirstOrDefault();
+                    if (moduleData == null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ClsIsExecutedPatient");
+                        WaitingManager.Hide();
+                        return;
+                    }
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(treatmentCode);
+                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
+                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        WaitingManager.Hide();
+                        ((Form)extenceInstance).ShowDialog();
+                        // Nap lai cay dich vu cua BN dang chon de icon "da thuc hien" hien / an ngay, khong can bam Tim
+                        LoadDataSereServByTreatmentId(this.rowClickByDate);
+                    }
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

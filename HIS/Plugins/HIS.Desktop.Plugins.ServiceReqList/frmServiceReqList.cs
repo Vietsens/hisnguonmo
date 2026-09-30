@@ -1147,7 +1147,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             try
             {
                 cboSentExt.Properties.Items.Clear();
-                cboSentExt.Properties.Items.Add("");
+                cboSentExt.Properties.Items.Add(Inventec.Common.Resource.Get.Value("frmServiceReqList.cboSentExt.All", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture()));
                 cboSentExt.Properties.Items.Add(Inventec.Common.Resource.Get.Value("frmServiceReqList.cboSentExt.Sent", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture()));
                 cboSentExt.Properties.Items.Add(Inventec.Common.Resource.Get.Value("frmServiceReqList.cboSentExt.NotSent", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture()));
                 cboSentExt.SelectedIndex = SENT_EXT_FILTER__ALL;

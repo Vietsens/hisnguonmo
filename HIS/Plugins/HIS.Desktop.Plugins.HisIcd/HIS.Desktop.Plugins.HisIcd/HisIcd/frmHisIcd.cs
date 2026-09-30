@@ -180,6 +180,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 this.chkIsCovid.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsCovid.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsInfectious.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsInfectious.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsInfectious.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsInfectious.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                SetCaptionChronic();
                 this.chkIsSubcode.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsSubcode.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboGender.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisIcd.cboGender.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsSword.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsSword.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -675,6 +676,10 @@ namespace HIS.Desktop.Plugins.HisIcd
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot IS_INFECTIOUS_CHK", ex);
                         }
                     }
+                    else if (e.Column.FieldName == "IS_CHRONIC_CHK")
+                    {
+                        e.Value = IsChronicIcd(pData);
+                    }
                     else if (e.Column.FieldName == "IS_YHCT")
                     {
                         try
@@ -900,6 +905,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                     chkValid1Year.Checked = (data.VALID_1_YEAR == 1 ? true : false);
                     chkIsNotRecommendMain.Checked = (data.IS_NOT_RECOMMEND_MAIN == 1 ? true : false);
                     chkIsDeathCauseOnly.Checked = (data.IS_DEATH_CAUSE_ONLY == 1 ? true : false);
+                    FillChronicToEditor(data);
                 }
             }
             catch (Exception ex)
@@ -966,6 +972,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 chkValid1Year.Checked = false;
                 chkIsNotRecommendMain.Checked = false;
                 chkIsDeathCauseOnly.Checked = false;
+                chkIsChronic.Checked = false;
             }
             catch (Exception ex)
             {
@@ -1337,6 +1344,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 currentDTO.VALID_1_YEAR = chkValid1Year.Checked ? (short?)1 : null;
                 currentDTO.IS_NOT_RECOMMEND_MAIN = chkIsNotRecommendMain.Checked ? (short?)1 : null;
                 currentDTO.IS_DEATH_CAUSE_ONLY = chkIsDeathCauseOnly.Checked ? (short?)1 : null;
+                UpdateChronicToDTO(currentDTO);
             }
             catch (Exception ex)
             {
@@ -1434,6 +1442,9 @@ namespace HIS.Desktop.Plugins.HisIcd
 
                 //Load ngon ngu label control
                 SetCaptionByLanguageKey();
+
+                //An checkbox Benh man tinh neu EFMODEL chua co IS_CHRONIC
+                InitChronicControl();
 
                 //Set validate rule
                 ValidateForm();
@@ -2090,7 +2101,11 @@ namespace HIS.Desktop.Plugins.HisIcd
                 }
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (this.ActionType == GlobalVariables.ActionAdd)
+                    if (IsChronicFieldSupported)
+                    {
+                        chkIsChronic.Focus();
+                    }
+                    else if (this.ActionType == GlobalVariables.ActionAdd)
                     {
                         btnAdd.Focus();
                     }

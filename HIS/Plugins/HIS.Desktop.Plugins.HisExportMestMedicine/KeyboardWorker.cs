@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
     [KeyboardAction("Search", "HIS.Desktop.Plugins.HisExportMestMedicine.UCHisExportMestMedicine", KeyStroke = XKeys.Control | XKeys.F)]
     [KeyboardAction("Refreshs", "HIS.Desktop.Plugins.HisExportMestMedicine.UCHisExportMestMedicine", KeyStroke = XKeys.Control | XKeys.R)]
     [KeyboardAction("FocusExpCode", "HIS.Desktop.Plugins.HisExportMestMedicine.UCHisExportMestMedicine", KeyStroke = XKeys.F2)]
+    [KeyboardAction("FocusTreatmentCode", "HIS.Desktop.Plugins.HisExportMestMedicine.UCHisExportMestMedicine", KeyStroke = XKeys.F5)]
     [KeyboardAction("Export", "HIS.Desktop.Plugins.HisExportMestMedicine.UCHisExportMestMedicine", KeyStroke = XKeys.Control | XKeys.E)]
 
     [ExtensionOf(typeof(DesktopToolExtensionPoint))]

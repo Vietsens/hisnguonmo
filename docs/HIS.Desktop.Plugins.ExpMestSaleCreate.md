@@ -25,6 +25,15 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 - Flag `savePrintInvoice` reset trong `finally` của `btnSaveSignPrint_Click` và catch của `ProcessSave`.
 - Nút "Lưu in" giữ nguyên luồng cũ.
 
+### Đính kèm đơn thuốc (việc 57853 — 29/09/2026)
+- Gate: `MOS.HAS_CONNECTION_EMR = 1` **và** `HIS.Desktop.Plugins.ExpMestSaleCreate.AttachPrescription.IsEnable = 1` (mặc định 0). Tắt → **không tạo nút**, giao diện như cũ.
+- Nút **"Đính kèm đơn"** tạo lúc runtime (`InitAttachPrescriptionButton`, partial `UCExpMestSaleCreate___AttachPrescription.cs`), chèn bên trái "Hủy xuất" bằng item-move (`LayoutControlItem.Move(layoutControlItem1, InsertType.Left)`), cố định 120px.
+- **Phiếu chưa lưu (ADD)**: mở form chọn tệp/chụp ảnh (thư viện `HIS.Desktop.Plugins.Library.ExpMestAttachFile`) → tệp **giữ tạm trong RAM** (`pendingAttachPrescription`), nút hiện số tệp "Đính kèm đơn (n)". Lưu phiếu thành công → `ProcessAttachPrescriptionAfterSave` gộp tệp thành 1 PDF và tạo tài liệu EMR cho **từng** phiếu trong `resultSDO.ExpMestSdos`. Lỗi đính kèm → cảnh báo (phiếu vẫn đã lưu), giữ tệp tạm; bấm lại nút sẽ đính kèm lại trước khi mở danh sách.
+- **Bán nhiều bệnh nhân** (`SaleCreateBillList`): không tự đính kèm, cảnh báo đính kèm từng phiếu tại Danh sách xuất, bỏ tệp tạm.
+- **Phiếu đã có (EDIT)** — sau lưu, mở sửa từ danh sách, tìm theo đơn (`SetAttachExpMests` ở `LoadDataExpMestByEdit` / `LoadDataExpMestByEditMulti` / `LoadDataExpMestBySearch` / sau lưu): 1 phiếu → mở **Danh sách đơn đính kèm** (xem/in, bổ sung, xóa theo trạng thái); nhiều phiếu → chọn tệp rồi đính kèm cho tất cả.
+- Nút Mới / Đơn mới còn tệp tạm → hỏi xác nhận bỏ (Không → giữ nguyên màn hình). Đóng tab → giải phóng ảnh tạm.
+- Không cho xóa khi phiếu Hoàn thành / có `BILL_ID` / có `DEBT_ID` (phiếu đã chốt kỳ kho luôn Hoàn thành). **Chặn ở frontend** — xem rủi ro trong docs thư viện.
+
 ### Điều kiện nghiệp vụ
 - Không kê vượt tồn khả dụng (validation khi thêm dòng).
 - Hình thức Tiền mặt/CK, Tiền mặt/QT: số tiền CK/QT không vượt tổng phải thanh toán.
@@ -58,7 +67,8 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 | In ▾ | QR | Xuất hóa đơn (F10) | Xác nhận nợ                                    |
 +------------------------------------------------------------------------------+
 ```
-`[Lưu ký in]` = `btnSaveSignPrint` (việc 3082) — chỉ enable khi tick "Xuất biên lai/hóa đơn". Phím tắt F5/F7/F8/F9/F10/F11 khi key `ExpMestSaleCreate.IsUsingFunctionKeyInsteadOfCtrlKey` = 1, ngược lại Ctrl S/D/N/I/T/E.
+`[Lưu ký in]` = `btnSaveSignPrint` (việc 3082) — chỉ enable khi tick "Xuất biên lai/hóa đơn".
+`[Đính kèm đơn]` (việc 57853) — nút tạo runtime bên trái "Hủy xuất", chỉ có khi bật config `...AttachPrescription.IsEnable`. Phím tắt F5/F7/F8/F9/F10/F11 khi key `ExpMestSaleCreate.IsUsingFunctionKeyInsteadOfCtrlKey` = 1, ngược lại Ctrl S/D/N/I/T/E.
 
 ### UC sử dụng
 | UC | Mục đích |
@@ -76,6 +86,9 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 | Sửa phiếu bán | api/HisExpMest/SaleUpdateListSdo | MosConsumer |
 | Đơn thuốc nguồn | api/HisServiceReq/Get | MosConsumer |
 | Bệnh nhân | api/HisPatient/Get | MosConsumer |
+| Đính kèm đơn — tạo tài liệu (57853) | api/EmrDocument/CreateByTdo (qua Library.ExpMestAttachFile) | EmrConsumer |
+| Đơn đính kèm của phiếu / đánh dấu (57853) | api/EmrDocument/GetView — `TREATMENT_CODEs` = EXP_MEST_CODE + `DOCUMENT_TYPE_ID` = EXPSA + `IS_DELETE=false` | EmrConsumer |
+| Xem / xóa mềm đơn (57853) | api/EmrDocument/DownloadFile, api/EmrDocument/Delete | EmrConsumer |
 
 ## 6. Dependencies
 
@@ -91,6 +104,7 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 |---------|----------|
 | HIS.Desktop.Library.CacheClient.ControlStateWorker | Nhớ checkbox (Xem trước khi in, Xuất biên lai/hóa đơn, POS, Ký đơn) |
 | Inventec.Common.RichEditor.RichEditorStore | In phiếu xuất bán / hóa đơn biên lai / HDSD |
+| **HIS.Desktop.Plugins.Library.ExpMestAttachFile** (mới, 57853) | Chọn tệp/chụp ảnh (HIS.Desktop.Plugins.Camera), kiểm tra định dạng/dung lượng, gộp PDF, lưu EMR (EXPSA), danh sách đơn đính kèm |
 
 ## 7. Print
 
@@ -105,6 +119,7 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 29/09/2026 | khainq | **Việc 57853** — Đính kèm đơn thuốc (tệp/ảnh chụp) trên phiếu xuất bán: nút "Đính kèm đơn" (runtime, gated config `HIS.Desktop.Plugins.ExpMestSaleCreate.AttachPrescription.IsEnable` + `MOS.HAS_CONNECTION_EMR`); giữ tệp tạm khi chưa lưu, tự đính kèm sau lưu thành công (`ProcessSave` → `ProcessAttachPrescriptionAfterSave`); phiếu đã có → danh sách đơn đính kèm. Partial mới `UCExpMestSaleCreate___AttachPrescription.cs`; ProjectReference thư viện mới `HIS.Desktop.Plugins.Library.ExpMestAttachFile`; thêm reference `DevExpress.Images.v15.2`. Script: `docs/SQL_57853_ExpMestSaleAttachPrescription.sql`. |
 | 29/08/2026 | nampp | Việc 3082 **v3.2** (chốt DANGTH): **bỏ key** `SaveSignPrintAutoExport` và **bỏ checkbox "Xuất HĐĐT"** riêng (Designer/ControlState); nút `btnSaveSignPrint` luôn hiện, **enable theo `chkCreateBill` ("Xuất biên lai/hóa đơn") && `btnSavePrint.Enabled`**; gỡ khóa `chkCreateBill` (08/08) → code gốc; `OpenMedicineSaleBillAutoSignPrint` truyền marker `AUTO_ISSUE_EXISTING_BILL` + `TRANSACTION_ID=` (bill đã tạo lúc lưu), QR bỏ qua, không bill → `AUTO_SAVE_SIGN_PRINT`. Hàng đáy: emptySpaceItem1 47, Ký đơn 185, Xem trước 130. V2: gỡ khóa `chkExp` → không còn thay đổi. |
 | 26/08/2026 | nampp | Việc 3082 v3.1: nút mới "Lưu ký in (Ctrl E / F11)" enable theo checkbox "Xuất HĐĐT" riêng + key; fix `Enabled` hiệu dụng (WaitingManager khóa form cha lúc load) bằng guard `this.Enabled` + `EnabledChanged/VisibleChanged` UC + `BeginInvoke`. |
 | 25/08/2026 | nampp | Việc 3082 v3: checkbox "In" tại màn Xuất bán, "Lưu in" mở form hóa đơn tự động; partial `UCExpMestSaleCreate___SaveSignPrintInvoice.cs`; tạo tài liệu module. |
@@ -127,3 +142,16 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 - [ ] Hình thức QR + Lưu ký in: lưu + module QR như cũ, không mở form tự động.
 - [ ] Nhiều bệnh nhân 1 lượt lưu: form mở lần lượt từng bill.
 - [ ] Key `Show_MedicineSaleBill` = 1 + Lưu ký in: form chỉ mở 1 lần (chế độ tự động).
+
+### Việc 57853 — Đính kèm đơn thuốc
+- [ ] Config `...AttachPrescription.IsEnable` = 0 (mặc định) hoặc `MOS.HAS_CONNECTION_EMR` ≠ 1 → KHÔNG có nút "Đính kèm đơn", hàng nút như cũ.
+- [ ] Bật config → có nút "Đính kèm đơn" bên trái "Hủy xuất", không che/chia nút khác ở 1366x768.
+- [ ] Phiếu mới: Đính kèm đơn → chụp 2 ảnh → Đồng ý → nút hiện "Đính kèm đơn (2)" → Lưu → phiếu có 1 tài liệu EMR 2 trang, người/thời gian đính kèm đúng (kịch bản 1).
+- [ ] Chọn tệp > dung lượng config hoặc sai định dạng → cảnh báo tên tệp, không nhận; tệp hợp lệ cùng lượt vẫn nhận (kịch bản 2).
+- [ ] Xóa 1 ảnh trong form trước khi lưu → chỉ còn ảnh khác; mở lại form → danh sách ảnh giữ nguyên.
+- [ ] Lưu thất bại (validate/API) → tệp tạm giữ nguyên, nút vẫn hiện số tệp.
+- [ ] Có tệp tạm → bấm Mới / Đơn mới → hỏi xác nhận; Không → giữ màn hình; Có → xóa tệp tạm, nút về "Đính kèm đơn".
+- [ ] Sau lưu (EDIT) → nút mở Danh sách đơn đính kèm của phiếu; bổ sung thêm lần 2 → danh sách có 2 dòng.
+- [ ] Phiếu Hoàn thành / đã thanh toán / xác nhận nợ → danh sách hiện dòng cảnh báo; nút Xóa xám, bấm → thông báo không được xóa (kịch bản 4); Xem/In và Đính kèm mới vẫn dùng được.
+- [ ] Bán nhiều bệnh nhân 1 lượt lưu có tệp tạm → cảnh báo đính kèm tại Danh sách xuất, không tạo tài liệu.
+- [ ] Tài khoản không có quyền module Camera → bấm Chụp ảnh báo thông báo, không lỗi.

@@ -384,4 +384,7 @@
   <data name="ThongBaoKetQuaTimKiemBenhNhanKhiQuetTheDuLieuTraVeNull" xml:space="preserve">
     <value>Thẻ không hợp lệ</value>
   </data>
+  <data name="ThayThongTinDangNhapBangSoVuaGoi" xml:space="preserve">
+    <value>Màn tiếp đón đang có thông tin chưa lưu. Bạn có muốn thay bằng thông tin của số thứ tự vừa gọi không?</value>
+  </data>
 </root>

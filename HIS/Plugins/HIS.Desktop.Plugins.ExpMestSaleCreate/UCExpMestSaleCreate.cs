@@ -221,6 +221,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                 spinBaseValue.EditValue = HisConfigCFG.IS_ROUND_PRICE_BASE;
                 CheckEnableBtnQR();
+                // Viec 57853: nut "Dinh kem don" (chi hien khi bat config)
+                InitAttachPrescriptionButton();
                 isNewAddressStructure = Properties.Settings.Default.UseNewAddressStructure;
                 toggleSwitch1.IsOn = isNewAddressStructure;
                 SetToggleSwitchTooltip(toggleSwitch1.IsOn);
@@ -496,6 +498,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             try
             {
                 ReleaseAll();
+                // Viec 57853: giai phong anh don dinh kem chua luu
+                ReleasePendingAttachPrescription();
             }
             catch (Exception ex)
             {
@@ -1041,6 +1045,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         {
             try
             {
+                // Viec 57853: con don dinh kem chua luu -> hoi truoc khi bo
+                if (!ConfirmDiscardPendingAttachPrescription())
+                    return;
                 ReleaseAll();
                 ResetAllControl();
                 SetControlByExpMest(null);
@@ -3754,6 +3761,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         {
             try
             {
+                // Viec 57853: con don dinh kem chua luu -> hoi truoc khi bo
+                if (!ConfirmDiscardPendingAttachPrescription())
+                    return;
                 ReleaseAll();
                 ResetNewControl();
                 SetControlByExpMest(null);

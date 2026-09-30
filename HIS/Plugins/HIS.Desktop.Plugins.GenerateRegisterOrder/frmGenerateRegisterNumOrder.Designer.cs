@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmGenerateRegisterNumOrder));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.tileControlRegisterGate = new DevExpress.XtraEditors.TileControl();
@@ -52,17 +53,27 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciTitlePage = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.pnlIdentityBar = new DevExpress.XtraEditors.PanelControl();
+            this.lblIdentityInfo = new DevExpress.XtraEditors.LabelControl();
+            this.btnCancelIdentity = new DevExpress.XtraEditors.SimpleButton();
+            this.btnReprint = new DevExpress.XtraEditors.SimpleButton();
+            this.lciIdentityBar = new DevExpress.XtraLayout.LayoutControlItem();
+            this.tmrAutoReset = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTitlePage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pnlIdentityBar)).BeginInit();
+            this.pnlIdentityBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIdentityBar)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
             this.layoutControl1.Controls.Add(this.tileControlRegisterGate);
             this.layoutControl1.Controls.Add(this.lblTitlePage);
+            this.layoutControl1.Controls.Add(this.pnlIdentityBar);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
@@ -114,6 +125,7 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lciTitlePage,
+            this.lciIdentityBar,
             this.layoutControlItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
@@ -143,13 +155,86 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
             this.layoutControlItem1.AppearanceItemCaption.Options.UseFont = true;
             this.layoutControlItem1.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem1.Control = this.tileControlRegisterGate;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 90);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 160);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1320, 570);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1320, 500);
             this.layoutControlItem1.Text = "Vui lòng chọn để lấy số thứ tự";
             this.layoutControlItem1.TextLocation = DevExpress.Utils.Locations.Top;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(453, 37);
-            // 
+            //
+            // pnlIdentityBar
+            //
+            this.pnlIdentityBar.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(245)))), ((int)(((byte)(252)))));
+            this.pnlIdentityBar.Appearance.Options.UseBackColor = true;
+            this.pnlIdentityBar.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.pnlIdentityBar.Controls.Add(this.lblIdentityInfo);
+            this.pnlIdentityBar.Controls.Add(this.btnReprint);
+            this.pnlIdentityBar.Controls.Add(this.btnCancelIdentity);
+            this.pnlIdentityBar.Location = new System.Drawing.Point(2, 92);
+            this.pnlIdentityBar.Name = "pnlIdentityBar";
+            this.pnlIdentityBar.Size = new System.Drawing.Size(1316, 66);
+            this.pnlIdentityBar.TabIndex = 12;
+            //
+            // lblIdentityInfo
+            //
+            this.lblIdentityInfo.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold);
+            this.lblIdentityInfo.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(150)))));
+            this.lblIdentityInfo.Appearance.Options.UseFont = true;
+            this.lblIdentityInfo.Appearance.Options.UseForeColor = true;
+            this.lblIdentityInfo.Appearance.Options.UseTextOptions = true;
+            this.lblIdentityInfo.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.lblIdentityInfo.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.lblIdentityInfo.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblIdentityInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblIdentityInfo.Location = new System.Drawing.Point(0, 0);
+            this.lblIdentityInfo.Name = "lblIdentityInfo";
+            this.lblIdentityInfo.Size = new System.Drawing.Size(1086, 66);
+            this.lblIdentityInfo.TabIndex = 0;
+            this.lblIdentityInfo.Text = "";
+            //
+            // btnCancelIdentity
+            //
+            this.btnCancelIdentity.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.btnCancelIdentity.Appearance.Options.UseFont = true;
+            this.btnCancelIdentity.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnCancelIdentity.Location = new System.Drawing.Point(1086, 0);
+            this.btnCancelIdentity.Name = "btnCancelIdentity";
+            this.btnCancelIdentity.Size = new System.Drawing.Size(230, 66);
+            this.btnCancelIdentity.TabIndex = 1;
+            this.btnCancelIdentity.Text = "Hủy / chọn lại";
+            this.btnCancelIdentity.Click += new System.EventHandler(this.btnCancelIdentity_Click);
+            //
+            // btnReprint
+            //
+            this.btnReprint.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.btnReprint.Appearance.Options.UseFont = true;
+            this.btnReprint.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnReprint.Location = new System.Drawing.Point(886, 0);
+            this.btnReprint.Name = "btnReprint";
+            this.btnReprint.Size = new System.Drawing.Size(200, 66);
+            this.btnReprint.TabIndex = 2;
+            this.btnReprint.Text = "In lại phiếu";
+            this.btnReprint.Visible = false;
+            this.btnReprint.Click += new System.EventHandler(this.btnReprint_Click);
+            //
+            // tmrAutoReset
+            //
+            this.tmrAutoReset.Interval = 15000;
+            this.tmrAutoReset.Tick += new System.EventHandler(this.tmrAutoReset_Tick);
+            //
+            // lciIdentityBar
+            //
+            this.lciIdentityBar.Control = this.pnlIdentityBar;
+            this.lciIdentityBar.Location = new System.Drawing.Point(0, 90);
+            this.lciIdentityBar.MaxSize = new System.Drawing.Size(0, 70);
+            this.lciIdentityBar.MinSize = new System.Drawing.Size(43, 70);
+            this.lciIdentityBar.Name = "lciIdentityBar";
+            this.lciIdentityBar.Size = new System.Drawing.Size(1320, 70);
+            this.lciIdentityBar.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciIdentityBar.TextSize = new System.Drawing.Size(0, 0);
+            this.lciIdentityBar.TextToControlDistance = 0;
+            this.lciIdentityBar.TextVisible = false;
+            //
             // frmGenerateRegisterNumOrder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -170,6 +255,9 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTitlePage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pnlIdentityBar)).EndInit();
+            this.pnlIdentityBar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.lciIdentityBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,5 +271,11 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
         private DevExpress.XtraLayout.LayoutControlItem lciTitlePage;
         private DevExpress.XtraEditors.TileControl tileControlRegisterGate;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
+        private DevExpress.XtraEditors.PanelControl pnlIdentityBar;
+        private DevExpress.XtraEditors.LabelControl lblIdentityInfo;
+        private DevExpress.XtraEditors.SimpleButton btnCancelIdentity;
+        private DevExpress.XtraEditors.SimpleButton btnReprint;
+        private DevExpress.XtraLayout.LayoutControlItem lciIdentityBar;
+        private System.Windows.Forms.Timer tmrAutoReset;
     }
 }

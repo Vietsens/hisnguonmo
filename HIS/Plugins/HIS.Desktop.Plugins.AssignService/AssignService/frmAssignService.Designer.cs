@@ -936,7 +936,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // lblTotalGuarantee
             // 
             this.lblTotalGuarantee.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalGuarantee.Location = new System.Drawing.Point(783, 502);
+            this.lblTotalGuarantee.Location = new System.Drawing.Point(1113, 502);
             this.lblTotalGuarantee.Name = "lblTotalGuarantee";
             this.lblTotalGuarantee.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lblTotalGuarantee.Size = new System.Drawing.Size(219, 20);
@@ -947,7 +947,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // lblGuarantee
             // 
             this.lblGuarantee.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGuarantee.Location = new System.Drawing.Point(542, 502);
+            this.lblGuarantee.Location = new System.Drawing.Point(872, 502);
             this.lblGuarantee.Name = "lblGuarantee";
             this.lblGuarantee.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lblGuarantee.Size = new System.Drawing.Size(112, 20);
@@ -1420,9 +1420,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lblPaylaterDebt.Appearance.Options.UseFont = true;
             this.lblPaylaterDebt.Appearance.Options.UseForeColor = true;
             this.lblPaylaterDebt.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblPaylaterDebt.Location = new System.Drawing.Point(392, 526);
+            this.lblPaylaterDebt.Location = new System.Drawing.Point(552, 502);
             this.lblPaylaterDebt.Name = "lblPaylaterDebt";
-            this.lblPaylaterDebt.Size = new System.Drawing.Size(71, 20);
+            this.lblPaylaterDebt.Size = new System.Drawing.Size(241, 20);
             this.lblPaylaterDebt.StyleController = this.lcEditorInfo;
             this.lblPaylaterDebt.TabIndex = 132;
             // 
@@ -5336,18 +5336,16 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciForlblPaylaterDebt.AppearanceItemCaption.ForeColor = System.Drawing.Color.Red;
             this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseFont = true;
             this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseForeColor = true;
-            this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciForlblPaylaterDebt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciForlblPaylaterDebt.Control = this.lblPaylaterDebt;
-            this.lciForlblPaylaterDebt.Location = new System.Drawing.Point(265, 524);
+            this.lciForlblPaylaterDebt.Location = new System.Drawing.Point(465, 500);
             this.lciForlblPaylaterDebt.MaxSize = new System.Drawing.Size(0, 24);
-            this.lciForlblPaylaterDebt.MinSize = new System.Drawing.Size(200, 24);
+            this.lciForlblPaylaterDebt.MinSize = new System.Drawing.Size(330, 24);
             this.lciForlblPaylaterDebt.Name = "lciForlblPaylaterDebt";
-            this.lciForlblPaylaterDebt.Size = new System.Drawing.Size(200, 24);
+            this.lciForlblPaylaterDebt.Size = new System.Drawing.Size(330, 24);
             this.lciForlblPaylaterDebt.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciForlblPaylaterDebt.Text = "Diện thu sau:";
-            this.lciForlblPaylaterDebt.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciForlblPaylaterDebt.TextSize = new System.Drawing.Size(120, 20);
+            this.lciForlblPaylaterDebt.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
+            this.lciForlblPaylaterDebt.TextSize = new System.Drawing.Size(80, 13);
             this.lciForlblPaylaterDebt.TextToControlDistance = 5;
             this.lciForlblPaylaterDebt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
@@ -5425,9 +5423,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // emptySpaceItem10
             // 
             this.emptySpaceItem10.AllowHotTrack = false;
-            this.emptySpaceItem10.Location = new System.Drawing.Point(1004, 500);
+            this.emptySpaceItem10.Location = new System.Drawing.Point(1334, 500);
             this.emptySpaceItem10.Name = "emptySpaceItem10";
-            this.emptySpaceItem10.Size = new System.Drawing.Size(348, 24);
+            this.emptySpaceItem10.Size = new System.Drawing.Size(18, 24);
             this.emptySpaceItem10.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciServiceGroup
@@ -5814,7 +5812,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciGuarantee.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciGuarantee.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciGuarantee.Control = this.lblGuarantee;
-            this.lciGuarantee.Location = new System.Drawing.Point(465, 500);
+            this.lciGuarantee.Location = new System.Drawing.Point(795, 500);
             this.lciGuarantee.Name = "lciGuarantee";
             this.lciGuarantee.OptionsToolTip.ToolTip = "Hạn mức bảo lãnh";
             this.lciGuarantee.Size = new System.Drawing.Size(191, 24);
@@ -5830,7 +5828,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciTotalGuarantee.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTotalGuarantee.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTotalGuarantee.Control = this.lblTotalGuarantee;
-            this.lciTotalGuarantee.Location = new System.Drawing.Point(656, 500);
+            this.lciTotalGuarantee.Location = new System.Drawing.Point(986, 500);
             this.lciTotalGuarantee.Name = "lciTotalGuarantee";
             this.lciTotalGuarantee.Size = new System.Drawing.Size(348, 24);
             this.lciTotalGuarantee.Text = "Số tiền cần bảo lãnh:";

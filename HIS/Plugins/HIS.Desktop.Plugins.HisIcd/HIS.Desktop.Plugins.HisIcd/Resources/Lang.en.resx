@@ -501,4 +501,16 @@
   <data name="frmHisIcd.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
     <value>Keyword</value>
   </data>
+  <data name="frmHisIcd.chkIsChronic.Properties.Caption" xml:space="preserve">
+    <value>Chronic disease</value>
+  </data>
+  <data name="frmHisIcd.chkIsChronic.ToolTip" xml:space="preserve">
+    <value>Chronic disease code. The exam doctor is warned when finishing treatment with this main diagnosis without ticking Chronic</value>
+  </data>
+  <data name="frmHisIcd.grdColIsChronic.Caption" xml:space="preserve">
+    <value>Chronic disease</value>
+  </data>
+  <data name="frmHisIcd.grdColIsChronic.ToolTip" xml:space="preserve">
+    <value>Is chronic disease</value>
+  </data>
 </root>

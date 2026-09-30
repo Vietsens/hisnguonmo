@@ -29,5 +29,12 @@ namespace MPS.Processor.Mps000138
         internal const string REGISTER_TIME_STR = "REGISTER_TIME_STR";
         internal const string REGISTER_DATE_STR = "REGISTER_DATE_STR";
         internal const string LAST_CALLED_NUM_ORDER = "LAST_CALLED_NUM_ORDER";
+
+        /// <summary>
+        /// Ho ten nguoi benh xac dinh duoc tai buoc lay so tren man ki-ot.
+        /// Doc tu chuoi JSON luu kem ban ghi cap so - PTTK_54254 muc B.4.2.
+        /// Rong khi so thu tu duoc lay theo duong khong dinh danh hoac go tay so dinh danh.
+        /// </summary>
+        internal const string IDENTITY_PATIENT_NAME = "IDENTITY_PATIENT_NAME";
     }
 }

@@ -21,6 +21,8 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.GenerateRegisterOrder.ADO;
+using HIS.Desktop.Plugins.GenerateRegisterOrder.Config;
+using HIS.Desktop.Plugins.GenerateRegisterOrder.Popup;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Core;
@@ -48,6 +50,15 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
         private List<HisRegisterGateADO> lstRegister;
         private SettingADO ConfigSettings;
         private Delegates.FormClosedDelegate formClosedDelegate;
+
+        /// <summary>
+        /// Thong tin dinh danh nguoi benh dang giu, doc tu popup chon hinh thuc lay so.
+        /// Rong khi chua dinh danh hoac khi nguoi benh chon khong co giay to.
+        /// </summary>
+        private IdentityInfoADO currentIdentity;
+
+        /// <summary>Nguoi benh da chon duong lay so khong can giay to</summary>
+        private bool isNoPaperChosen;
 
         public frmGenerateRegisterNumOrder(Inventec.Desktop.Common.Modules.Module module, List<HisRegisterGateADO> lstAdo, SettingADO setting)
             : base(module)
@@ -82,9 +93,17 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
             try
             {
                 WaitingManager.Show();
+                HisConfigCFG.LoadConfig();
                 this.SetControlValue();
                 this.GenerateControlByRegisterGate();
+                this.SetIdentityBar();
                 WaitingManager.Hide();
+
+                // Bat popup sau khi Load xong de khong mo hop thoai trong luc form dang dung len
+                if (HisConfigCFG.IsIssueWithIdentity)
+                {
+                    this.BeginInvoke(new MethodInvoker(delegate() { this.ShowIdentityPopup(); }));
+                }
             }
             catch (Exception ex)
             {
@@ -273,13 +292,49 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
         {
             try
             {
-                //Nếu phòng không có dịch vụ khám thì đưa ra thông báo khoong có dịch vụ nào.
-                //Nếu có 1 dịch vụ khám thì hiển thị thông báo Bạn có chắc chắn muốn đăng ký khám
-                //Nếu có nhiều dịch vụ thì hiển thị ra popup đẻ người dùng chọn dịch vụ để đăng kí
+                HIS_REGISTER_GATE gate = (HIS_REGISTER_GATE)e.Item.Tag;
+
+                // Vien khong bat tinh nang thi giu nguyen hoan toan luong cap so hien tai
+                if (!HisConfigCFG.IsIssueWithIdentity)
+                {
+                    this.IssueNumOrderDefault(gate, e.Item);
+                    return;
+                }
+
+                // Chua dinh danh va cung chua chon duong khong giay to thi bat chon truoc
+                if (!this.isNoPaperChosen && (this.currentIdentity == null || !this.currentIdentity.HasIdentity()))
+                {
+                    this.ShowIdentityPopup();
+                    return;
+                }
+
+                if (this.isNoPaperChosen)
+                {
+                    this.IssueNumOrderDefault(gate, e.Item);
+                    this.ShowIdentityPopup();
+                    return;
+                }
+
+                this.IssueNumOrderWithIdentity(gate, e.Item);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Cap so theo dung cach hien tai, khong kem dinh danh.
+        /// Dung cho vien khong bat tinh nang va cho duong khong co giay to.
+        /// </summary>
+        private void IssueNumOrderDefault(HIS_REGISTER_GATE gate, TileItem tileItem)
+        {
+            CommonParam param = new CommonParam();
+            try
+            {
                 WaitingManager.Show();
                 this.resultRegister = null;
-                HIS_REGISTER_GATE gate = (HIS_REGISTER_GATE)e.Item.Tag;
-                CommonParam param = new CommonParam();
                 bool success = false;
 
                 HisRegisterReqSDO req = new HisRegisterReqSDO();
@@ -291,7 +346,7 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
                 {
                     success = true;
                     this.resultRegister = rs;
-                    e.Item.Elements[2].Text = rs.NUM_ORDER + "\n\n";
+                    tileItem.Elements[2].Text = rs.NUM_ORDER + "\n\n";
                 }
                 WaitingManager.Hide();
                 if (!success)
@@ -309,6 +364,232 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        /// <summary>
+        /// Cap so kem dinh danh nguoi benh. May chu se quy dinh danh ve mot nguoi,
+        /// dem so luot da cap trong ngay tren toan vien roi quyet dinh co cap tiep hay khong.
+        /// Thiet ke: PTTK_54254 muc B.3.1.1.
+        /// </summary>
+        private void IssueNumOrderWithIdentity(HIS_REGISTER_GATE gate, TileItem tileItem)
+        {
+            CommonParam param = new CommonParam();
+            try
+            {
+                WaitingManager.Show();
+                this.resultRegister = null;
+
+                HisRegisterReqWithIdentitySDO req = new HisRegisterReqWithIdentitySDO();
+                req.RegisterGateId = gate.ID;
+                req.IdentityType = this.currentIdentity.IdentityType;
+                req.IdentityNumber = this.currentIdentity.IdentityNumber;
+                req.IdentityJson = this.currentIdentity.ToJson();
+
+                HisRegisterReqWithIdentityResultSDO rs = new BackendAdapter(param)
+                    .Post<HisRegisterReqWithIdentityResultSDO>("api/HisRegisterReq/CreateWithIdentity", ApiConsumers.MosConsumer, req, param);
+
+                WaitingManager.Hide();
+
+                if (rs == null)
+                {
+                    MessageManager.Show(this, param, false);
+                    return;
+                }
+
+                if (rs.IsLimitReached)
+                {
+                    // Da du luot trong ngay: khong cap so moi, hien lai so cu va cho in lai phieu
+                    this.resultRegister = rs.RegisterReq;
+                    this.ShowLimitReachedMessage(rs);
+                    return;
+                }
+
+                if (rs.RegisterReq == null)
+                {
+                    MessageManager.Show(this, param, false);
+                    return;
+                }
+
+                this.resultRegister = rs.RegisterReq;
+                tileItem.Elements[2].Text = rs.RegisterReq.NUM_ORDER + "\n\n";
+                this.PrintMps138();
+
+                // Xoa thong tin dang giu roi hien lai popup cho nguoi ke tiep
+                this.ShowIdentityPopup();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #region Dinh danh nguoi benh
+
+        /// <summary>
+        /// Mo popup chon hinh thuc lay so. Goi khi mo man, sau moi luot cap so,
+        /// va khi nguoi benh nhan huy de chon lai.
+        /// </summary>
+        private void ShowIdentityPopup()
+        {
+            try
+            {
+                this.ClearLimitMessage();
+                this.currentIdentity = null;
+                this.isNoPaperChosen = false;
+
+                using (frmChooseIdentity frm = new frmChooseIdentity())
+                {
+                    frm.ShowDialog(this);
+                    if (frm.DialogResult == DialogResult.OK)
+                    {
+                        this.currentIdentity = frm.Identity;
+                        this.isNoPaperChosen = frm.IsNoPaper;
+                    }
+                }
+
+                this.SetIdentityBar();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Cap nhat dai thong tin phia duoi tieu de man lay so.
+        /// Vien khong bat tinh nang thi an han dai nay di.
+        /// </summary>
+        private void SetIdentityBar()
+        {
+            try
+            {
+                if (!HisConfigCFG.IsIssueWithIdentity)
+                {
+                    this.lciIdentityBar.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    return;
+                }
+
+                this.lciIdentityBar.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                this.lblIdentityInfo.Appearance.ForeColor = Color.FromArgb(0, 100, 150);
+                this.lblIdentityInfo.Appearance.Options.UseForeColor = true;
+                this.btnReprint.Visible = false;
+
+                if (this.isNoPaperChosen)
+                {
+                    this.lblIdentityInfo.Text = Resources.ResourceMessage.LaySoKhongDinhDanh;
+                    this.btnCancelIdentity.Visible = true;
+                    return;
+                }
+
+                if (this.currentIdentity != null && this.currentIdentity.HasIdentity())
+                {
+                    string name = String.IsNullOrWhiteSpace(this.currentIdentity.PatientName)
+                        ? ""
+                        : this.currentIdentity.PatientName + " - ";
+                    this.lblIdentityInfo.Text = Resources.ResourceMessage.DangLaySoCho
+                        + ": " + name + this.currentIdentity.GetMaskedNumber();
+                    this.btnCancelIdentity.Visible = true;
+                    return;
+                }
+
+                this.lblIdentityInfo.Text = Resources.ResourceMessage.VuiLongChonHinhThucLaySo;
+                this.btnCancelIdentity.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hien thong bao da lay du so trong ngay kem so thu tu va ten day da lay truoc do.
+        /// Sau mot khoang cho ngan tu quay ve popup cho nguoi ke tiep.
+        /// </summary>
+        private void ShowLimitReachedMessage(HisRegisterReqWithIdentityResultSDO rs)
+        {
+            try
+            {
+                string numOrder = "";
+                string gateName = rs.PreviousGateName ?? "";
+                if (rs.RegisterReq != null)
+                {
+                    numOrder = rs.RegisterReq.NUM_ORDER.ToString();
+                    if (String.IsNullOrWhiteSpace(gateName))
+                    {
+                        gateName = rs.RegisterReq.REGISTER_GATE_NAME ?? "";
+                    }
+                }
+
+                this.lblIdentityInfo.Appearance.ForeColor = Color.Red;
+                this.lblIdentityInfo.Appearance.Options.UseForeColor = true;
+                this.lblIdentityInfo.Text = String.Format(
+                    Resources.ResourceMessage.BanDaLayDuSoTrongNgay, numOrder, gateName);
+
+                this.btnCancelIdentity.Visible = true;
+                this.btnReprint.Visible = (this.resultRegister != null);
+                this.tmrAutoReset.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ClearLimitMessage()
+        {
+            try
+            {
+                this.tmrAutoReset.Enabled = false;
+                this.btnReprint.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnCancelIdentity_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.ShowIdentityPopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnReprint_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.resultRegister == null)
+                {
+                    return;
+                }
+                this.PrintMps138();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void tmrAutoReset_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                this.tmrAutoReset.Enabled = false;
+                this.ShowIdentityPopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
 
         private void PrintMps138()
         {

@@ -1390,6 +1390,41 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         }
 
         /// <summary>
+        /// Checkbox "Man tinh" dang hien va cho phep tick (config bat, ho so chua ket thuc).
+        /// Plugin cha dung de quyet dinh co canh bao ICD chinh la benh man tinh hay khong (55058).
+        /// </summary>
+        public bool IsChronicEditable
+        {
+            get
+            {
+                return this.chkChronic != null
+                    && this.lciChronic != null
+                    && this.lciChronic.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    && !this.chkChronic.ReadOnly
+                    && !this.chkChronic.Properties.ReadOnly
+                    && this.chkChronic.Enabled;
+            }
+        }
+
+        /// <summary>
+        /// Dua focus ve checkbox "Man tinh" (55058).
+        /// </summary>
+        public void FocusChronic()
+        {
+            try
+            {
+                if (this.chkChronic != null && this.chkChronic.CanFocus)
+                {
+                    this.chkChronic.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
         /// Bao plugin cha khi trang thai checkbox "Man tinh" doi thanh cong, de to mau / bo to mau
         /// cac truong bat buoc nhap ben panel trai.
         /// </summary>

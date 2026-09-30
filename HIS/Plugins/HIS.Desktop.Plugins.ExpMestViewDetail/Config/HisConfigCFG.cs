@@ -32,8 +32,16 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.Config
         private const string CONFIG_KEY__MUST_CONFIRM_BEFORE_APPROVE = "MOS.HIS_EXP_MEST.MUST_CONFIRM_BEFORE_APPROVE.OPTION";
         private const string CONFIG_KEY__ODER_OPTION = "HIS.Desktop.Plugins.AggrExpMest.OderOption";
 
+        /// <summary>
+        /// 56689 - Luong phat thuoc nhanh.
+        /// Bang 1: hien o tich "Dong sau khi thuc xuat"; tick roi thuc xuat thanh cong thi tu dong form.
+        /// Khac 1 hoac khong khai bao: an o tich, giu nguyen hanh vi cu.
+        /// </summary>
+        private const string CONFIG_KEY__QUICK_EXPORT_FLOW_OPTION = "HIS.EXP_MEST.QUICK_EXPORT_FLOW_OPTION";
+
 
         internal static bool IS_MUST_BE_FINISHED_BEFORED_PRINTING;
+        internal static bool QUICK_EXPORT_FLOW;
         internal static bool IS_JOIN_NAME_WITH_CONCENTRA;
         internal static string MUST_CONFIRM_BEFORE_APPROVE;
         internal static string WARNING_MODIFIED_PRESCRIPTION_OPTION;
@@ -45,6 +53,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.Config
             {
                 IS_JOIN_NAME_WITH_CONCENTRA = GetValue(CONFIG_KEY__IS_JOIN_NAME_WITH_CONCENTRA) == "1";
                 IS_MUST_BE_FINISHED_BEFORED_PRINTING = GetValue(CONFIG_KEY__MUST_BE_FINISHED_BEFORED_PRINTING) == "1";
+                QUICK_EXPORT_FLOW = GetValue(CONFIG_KEY__QUICK_EXPORT_FLOW_OPTION) == "1";
                 MUST_CONFIRM_BEFORE_APPROVE = HisConfigs.Get<string>(CONFIG_KEY__MUST_CONFIRM_BEFORE_APPROVE);
                 WARNING_MODIFIED_PRESCRIPTION_OPTION = HisConfigs.Get<string>(CONFIG_KEY__WARNING_MODIFIED_PRESCRIPTION_OPTION);
                 ODER_OPTION = Convert.ToInt16(HisConfigs.Get<string>(CONFIG_KEY__ODER_OPTION));

@@ -34,6 +34,16 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.QrCodeCCCD">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.QrCodeCCCD\Inventec.Common.QrCodeCCCD.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.QrCodeBHYT ">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.QrCodeBHYT\Inventec.Common.QrCodeBHYT .dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -135,7 +145,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\HisRegisterGateADO.cs" />
+    <Compile Include="ADO\IdentityInfoADO.cs" />
     <Compile Include="ADO\SettingADO.cs" />
+    <Compile Include="Config\HisConfigCFG.cs" />
+    <Compile Include="EnumIdentityType.cs" />
+    <Compile Include="Popup\frmChooseIdentity.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmChooseIdentity.Designer.cs">
+      <DependentUpon>frmChooseIdentity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Delegates.cs" />
     <Compile Include="GenerateRegisterOrderProcessor.cs" />
     <Compile Include="frmGenerateRegisterNumOrder.cs">

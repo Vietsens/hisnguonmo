@@ -100,6 +100,19 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                 Math.Max(10, Height - HEADER_HEIGHT - BODY_PAD));
         }
 
+        /// <summary>
+        /// Ban to lat trang bang cach an/hien the buong. The bi an van nhan du lieu moi nhung
+        /// kich thuoc giu nguyen nen khong co ClientSizeChanged - hien lai phai tu sap giuong.
+        /// </summary>
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (!Visible) return;
+
+            ResizeBedCards();
+            UpdateAutoScroll();
+        }
+
         private void FlpBeds_ClientSizeChanged(object sender, EventArgs e)
         {
             ResizeBedCards();
@@ -325,8 +338,17 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
             data = ado;
             if (ado == null) return;
 
-            lblRoomName.Text = ado.BedRoomCode;
             List<TreatmentBedRoomDashboardBedSDO> beds = SortBeds(ado.Beds, careLevelOrder);
+
+            // Hien ten buong; buong chua dat ten thi moi roi ve ma.
+            // So giuong dem theo BedId khong trung: giuong nam ghep ra nhieu dong cung BedId,
+            // dong khong co BedId la benh nhan chua gan giuong - khong phai giuong nao.
+            int bedTotal = beds.Where(o => o != null && o.BedId.HasValue)
+                .Select(o => o.BedId.Value).Distinct().Count();
+            int bedUsed = beds.Where(o => o != null && o.BedId.HasValue && o.Treatment != null)
+                .Select(o => o.BedId.Value).Distinct().Count();
+            string roomName = string.IsNullOrEmpty(ado.BedRoomName) ? ado.BedRoomCode : ado.BedRoomName;
+            lblRoomName.Text = string.Format("{0} ({1}/{2})", roomName, bedUsed, bedTotal);
 
             List<string> bedKeys = BuildUniqueBedKeys(ado, beds);
 

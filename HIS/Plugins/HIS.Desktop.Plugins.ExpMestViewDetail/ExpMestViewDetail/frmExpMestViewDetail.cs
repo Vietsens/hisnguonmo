@@ -129,6 +129,12 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 this.gridControlApprovalMedicine.ToolTipController = this.toolTipController1;
                 this.gridControlApprovalMaterial.ToolTipController = this.toolTipController1;
                 IsReasonRequired = HisConfigs.Get<string>("MOS.EXP_MEST.IS_REASON_REQUIRED") == "1";
+                // 56689: chua bat cau hinh luong phat thuoc nhanh -> an o tich "Dong sau khi thuc xuat"
+                if (!HisConfigCFG.QUICK_EXPORT_FLOW)
+                {
+                    chkCLoseAfterExute.Visible = false;
+                    lciCloseAfterExute.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
                 ReloadExpMest();
                 GetControlAcs();
                 LoadDataToComboReasonRequired();
@@ -1511,6 +1517,12 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
                         store.RunPrintTemplate("Mps000099", deletePrintTemplate);
                     }
+
+                    // 56689: thuc xuat thanh cong + co tick "Dong sau khi thuc xuat" -> dong form
+                    if (HisConfigCFG.QUICK_EXPORT_FLOW && success && chkCLoseAfterExute.Checked)
+                    {
+                        this.Close();
+                    }
                 }
             }
             catch (Exception ex)
@@ -2274,6 +2286,10 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         {
                             chkInHDSD.Checked = item.VALUE == "1";
                         }
+                        if (item.KEY == chkCLoseAfterExute.Name)
+                        {
+                            chkCLoseAfterExute.Checked = item.VALUE == "1";
+                        }
                     }
                     layoutControlGroup4.Expanded = currentControlStateRDO.Where(o => o.KEY == layoutControlGroup4.Name) != null && currentControlStateRDO.Where(o => o.KEY == layoutControlGroup4.Name).FirstOrDefault().VALUE == "1";
                 }
@@ -2309,6 +2325,39 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = chkInHDSD.Name;
                     csAddOrUpdate.VALUE = (chkInHDSD.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkCLoseAfterExute_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkCLoseAfterExute.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkCLoseAfterExute.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkCLoseAfterExute.Name;
+                    csAddOrUpdate.VALUE = (chkCLoseAfterExute.Checked ? "1" : "");
                     csAddOrUpdate.MODULE_LINK = moduleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();

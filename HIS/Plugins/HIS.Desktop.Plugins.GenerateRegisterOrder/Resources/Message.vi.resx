@@ -120,4 +120,64 @@
   <data name="SoThuTuBatDauKhongDuocPhepNhoHonKhong" xml:space="preserve">
     <value>Số thứ tự bắt đầu không được phép nhỏ hơn 0</value>
   </data>
+  <data name="BanDaLayDuSoTrongNgay" xml:space="preserve">
+    <value>Bạn đã lấy đủ số trong ngày hôm nay. Số thứ tự của bạn là {0} của quầy {1}, vui lòng chờ gọi.</value>
+  </data>
+  <data name="ChonHinhThucLaySo" xml:space="preserve">
+    <value>CHỌN HÌNH THỨC LẤY SỐ</value>
+  </data>
+  <data name="DangLaySoCho" xml:space="preserve">
+    <value>Đang lấy số cho</value>
+  </data>
+  <data name="HuongDanNhapTaySoCccd" xml:space="preserve">
+    <value>Nhập số CCCD 12 số hoặc CMND 9 số</value>
+  </data>
+  <data name="HuongDanQuetQrTheCccd" xml:space="preserve">
+    <value>Đưa mã QR trên thẻ CCCD vào đầu đọc</value>
+  </data>
+  <data name="HuongDanQuetQrVneId" xml:space="preserve">
+    <value>Mở mã QR định danh trên ứng dụng VNeID và đưa vào đầu đọc</value>
+  </data>
+  <data name="HuongDanTheBhyt" xml:space="preserve">
+    <value>Quét mã QR trên thẻ BHYT hoặc nhập mã thẻ</value>
+  </data>
+  <data name="HuyChonLai" xml:space="preserve">
+    <value>Hủy / chọn lại</value>
+  </data>
+  <data name="InLaiPhieu" xml:space="preserve">
+    <value>In lại phiếu</value>
+  </data>
+  <data name="KhongCoGiayTo" xml:space="preserve">
+    <value>KHÔNG CÓ GIẤY TỜ</value>
+  </data>
+  <data name="LaySoKhongDinhDanh" xml:space="preserve">
+    <value>Lấy số không định danh</value>
+  </data>
+  <data name="MaTheBhytKhongHopLe" xml:space="preserve">
+    <value>Mã thẻ BHYT không hợp lệ, vui lòng quét hoặc nhập lại</value>
+  </data>
+  <data name="NhapTaySoCccd" xml:space="preserve">
+    <value>NHẬP TAY SỐ CCCD</value>
+  </data>
+  <data name="QuayLai" xml:space="preserve">
+    <value>QUAY LẠI</value>
+  </data>
+  <data name="QuetQrTheCccd" xml:space="preserve">
+    <value>QUÉT QR THẺ CCCD</value>
+  </data>
+  <data name="QuetQrVneId" xml:space="preserve">
+    <value>QUÉT QR VNeID</value>
+  </data>
+  <data name="SoCccdKhongHopLe" xml:space="preserve">
+    <value>Số CCCD không hợp lệ, vui lòng quét hoặc nhập lại</value>
+  </data>
+  <data name="TheBhyt" xml:space="preserve">
+    <value>THẺ BHYT</value>
+  </data>
+  <data name="VuiLongChonHinhThucLaySo" xml:space="preserve">
+    <value>Vui lòng chọn hình thức lấy số</value>
+  </data>
+  <data name="XacNhan" xml:space="preserve">
+    <value>XÁC NHẬN</value>
+  </data>
 </root>

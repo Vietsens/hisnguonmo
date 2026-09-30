@@ -102,6 +102,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\ExclusiveRowValueADO.cs" />
     <Compile Include="HandleTypeItem.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="ServiceExclusive.processor.cs" />
@@ -112,6 +113,9 @@
     <Compile Include="ServiceExclusive\ServiceExclusive.Factory.cs" />
     <Compile Include="ServiceExclusive\IServiceExclusive.cs" />
     <Compile Include="UCServiceExclusive.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCServiceExclusive___RowValue.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UCServiceExclusive.Designer.cs">
