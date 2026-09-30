@@ -331,6 +331,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     ValidateObjectAndPaySource(cboObject8, GetObjectValueExt(cboObject8), cboPaymentSource8, messages);
                     ValidateRequiredUnderSix(messages);
                 }
+                else if (tabIndex == TAB_MENTAL) // Ksk tâm thần (Mẫu 04)
+                    ValidateObjectAndPaySource(this.ucKskMental.CboObject, GetObjectValueExt(this.ucKskMental.CboObject),
+                        this.ucKskMental.CboPaymentSource, messages);
 
                 // 3. Huyết áp: đã nhập 1 ô thì phải nhập đủ cả tâm thu và tâm trương.
                 ValidateBloodPressure(tabIndex, messages);
@@ -401,6 +404,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 else if (tabIndex == 1) { spnMax = spnBloodPressureMax2; spnMin = spnBloodPressureMin2; }
                 else if (tabIndex == 2) { spnMax = spnBloodPressureMax3; spnMin = spnBloodPressureMin3; }
                 else if (tabIndex == 6) { spnMax = spnBloodPressureMax7; spnMin = spnBloodPressureMin7; }
+                else if (tabIndex == TAB_MENTAL) { spnMax = this.ucKskMental.SpnBloodPressureMax; spnMin = this.ucKskMental.SpnBloodPressureMin; }
                 else return;
                 if (spnMax == null || spnMin == null) return;
 

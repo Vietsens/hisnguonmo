@@ -1328,6 +1328,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     sdo.KskGeneral = new KskGeneralV2SDO();
                     sdo.KskGeneral.HisKskGeneral = BuildKskGeneralConclusionEf();
                 }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_MENTAL)
+                {
+                    // Ksk tam than (Mau 04 TT 25/2026): du lieu kham -> HIS_KSK_MENTAL, the luc -> HIS_DHST;
+                    // bac si kham + ngay ket luan -> HIS_KSK_GENERAL (ban sao day du, xem BuildKskGeneralForMental)
+                    sdo.KskMental = BuildKskMentalSdo();
+                    sdo.KskGeneral = new KskGeneralV2SDO();
+                    sdo.KskGeneral.HisKskGeneral = BuildKskGeneralForMental();
+                }
                 // Kết luận theo bệnh (ICD-10) — UC chung → lưu vào HIS_KSK_GENERAL cho MỌI tab
                 int curTabIcd = xtraTabControl1.SelectedTabPageIndex;
                 if (dicIcdConclusionUc.ContainsKey(curTabIcd) && dicIcdConclusionUc[curTabIcd] != null)
@@ -1380,6 +1388,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     if (result.HisKskUnderEighteen != null) currentKskUnderEight = result.HisKskUnderEighteen;
                     if (result.HisKskOther != null) currentKskOther = result.HisKskOther;
                     if (result.KskOccupational != null) currentKsKOccupational = result.KskOccupational;
+                    if (result.KskMental != null) currentKskMentalEf = result.KskMental; // tab Ksk tam than
                     if (result.KskUnderSix != null) currentKskUnderSixEf = result.KskUnderSix; // để in Mps000516 theo DB sau khi lưu
                     // HIS_KSK_GENERAL dùng chung mọi tab -> đồng bộ Người khám / Phân loại kết luận sang các tab khác.
                     SyncSharedGeneralAfterSave(xtraTabControl1.SelectedTabPageIndex);
@@ -1521,6 +1530,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     if (currentServiceReq != null)
                         IsEnable = true;
                 }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_MENTAL)
+                {
+                    // Ksk tam than: phieu in (Mps000520) dung tu du lieu da luu, chua luu thi tu form
+                    if (currentServiceReq != null)
+                        IsEnable = true;
+                }
                 btnPrint.Enabled = IsEnable;
             }
             catch (System.Exception ex)
@@ -1575,6 +1590,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     if (currentServiceReq != null)
                         PrintProcess(PRINT_TYPE.MPS000516);
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_MENTAL)
+                {
+                    // Ksk tam than: Giay kham suc khoe tam than (Mps000520)
+                    if (currentServiceReq != null)
+                        PrintProcess(PRINT_TYPE.MPS000520);
                 }
             }
             catch (System.Exception ex)

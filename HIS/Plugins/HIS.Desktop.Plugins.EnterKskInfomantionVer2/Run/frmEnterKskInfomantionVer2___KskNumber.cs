@@ -42,10 +42,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             string c = KskCodeForTab(tab);
             if (!string.IsNullOrWhiteSpace(c)) return c;
 
-            bool isNumberedTab = (tab == 1 || tab == 2 || tab == 5 || tab == 7);
+            bool isNumberedTab = (tab == 1 || tab == 2 || tab == 5 || tab == 7 || tab == TAB_MENTAL);
             if (!isNumberedTab)
             {
-                foreach (int t in new[] { 1, 2, 5, 7 })
+                foreach (int t in new[] { 1, 2, 5, 7, TAB_MENTAL })
                 {
                     c = KskCodeForTab(t);
                     if (!string.IsNullOrWhiteSpace(c)) return c;
@@ -74,6 +74,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 case 7: // tre duoi 6
                     if (currentKskUnderSixEf != null) return currentKskUnderSixEf.KSK_UNDER_SIX_CODE;
                     if (preKskUnderSixes != null && preKskUnderSixes.Count > 0) return preKskUnderSixes[0].KSK_UNDER_SIX_CODE;
+                    return null;
+                case TAB_MENTAL: // ksk tam than
+                    if (currentKskMentalEf != null) return currentKskMentalEf.KSK_MENTAL_CODE;
+                    if (preKskMentals != null && preKskMentals.Count > 0) return preKskMentals[0].KSK_MENTAL_CODE;
                     return null;
             }
             return null;
