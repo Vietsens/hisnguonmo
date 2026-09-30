@@ -467,6 +467,10 @@ namespace HIS.Desktop.Plugins.SereServTein
                             {
                                 ssTein.IS_PARENT = 0;
                                 ssTein.TEST_INDEX_CODE = "        " + ssTein.TEST_INDEX_CODE;
+                                if (String.IsNullOrEmpty(ssTein.NOTE) && sereServExt != null)
+                                {
+                                    ssTein.NOTE = sereServExt.INSTRUCTION_NOTE;
+                                }
                                 this.lstHisSereServTeinSDO.Add(ssTein);
                                 if (!String.IsNullOrWhiteSpace(ssTein.VALUE))
                                 {
