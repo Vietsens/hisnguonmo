@@ -371,7 +371,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 			ButtonEdit editor = sender as ButtonEdit;
 			Rectangle buttonPosition = new Rectangle(editor.Bounds.X, editor.Bounds.Y, editor.Bounds.Width, editor.Bounds.Height);
 			popupContainerControl2.ShowPopup(new Point(buttonPosition.X + 700, buttonPosition.Bottom + 200));
-			mmMec.Text = ado.MECHANISM;
+			mmMec.Text = GetPopupInitText(editor, ado.MECHANISM);
 		}
 		private void repositoryItemButtonEdit_HauQua_ButtonClick1(object sender, HIS_ACTIVE_INGREDIENT data, ConflictActiveIngredientADO ado)
 		{
@@ -380,7 +380,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 			ButtonEdit editor = sender as ButtonEdit;
 			Rectangle buttonPosition = new Rectangle(editor.Bounds.X, editor.Bounds.Y, editor.Bounds.Width, editor.Bounds.Height);
 			popupContainerControl1.ShowPopup(new Point(buttonPosition.X + 700, buttonPosition.Bottom + 200));
-			mmCon.Text = ado.CONSEQUENCE;
+			mmCon.Text = GetPopupInitText(editor, ado.CONSEQUENCE);
 		}
 		private void repositoryItemButtonEdit_HuongXuLy_ButtonClick1(object sender, HIS_ACTIVE_INGREDIENT data, ConflictActiveIngredientADO ado)
 		{
@@ -389,7 +389,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 			ButtonEdit editor = sender as ButtonEdit;
 			Rectangle buttonPosition = new Rectangle(editor.Bounds.X, editor.Bounds.Y, editor.Bounds.Width, editor.Bounds.Height);
 			popupControlContainerHuongXuLy.ShowPopup(new Point(buttonPosition.X + 700, buttonPosition.Bottom + 200));
-			txtHuongXuLy.Text = ado.INSTRUCTION;
+			txtHuongXuLy.Text = GetPopupInitText(editor, ado.INSTRUCTION);
 		}
 
 		private void InitUcgrid2()
@@ -706,7 +706,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 
 				if (ucGridControlCAI != null)
 				{
-					CAIProcessor.Reload(ucGridControlCAI, lstCAIADOs);
+					ReloadCAIGrid(lstCAIADOs);
 				}
 				rowCount = (data == null ? 0 : lstCAIADOs.Count);
 				dataTotal = (rs.Param == null ? 0 : rs.Param.Count ?? 0);
@@ -1001,6 +1001,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 											data = data.OrderByDescending(p => p.check1).ToList();
 											if (ucGridControlAI != null)
 											{
+												lstAIADOs = data;
 												ActiveIngredentProcessor.Reload(ucGridControlAI, data);
 											}
 										}
@@ -1190,7 +1191,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 											data = data.OrderByDescending(p => p.check2).ToList();
 											if (ucGridControlCAI != null)
 											{
-												CAIProcessor.Reload(ucGridControlCAI, data);
+												ReloadCAIGrid(data);
 											}
 										}
 									}
@@ -1262,7 +1263,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 					{
 						if (hi.Column.FieldName == "check2")
 						{
-							var lstCheckAll = lstCAIADOs;
+							var lstCheckAll = GetCurrentCAIGridData() ?? lstCAIADOs;
 							List<HIS.UC.ConflictActiveIngredient.ConflictActiveIngredientADO> lstChecks = new List<HIS.UC.ConflictActiveIngredient.ConflictActiveIngredientADO>();
 
 							if (lstCheckAll != null && lstCheckAll.Count > 0)
@@ -1302,7 +1303,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 									hi.Column.Image = imageCollection.Images[0];
 								}
 
-								CAIProcessor.Reload(ucGridControlCAI, lstChecks);
+								ReloadCAIGrid(lstChecks);
 								//??
 
 							}
@@ -1337,7 +1338,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 					{
 						if (hi.Column.FieldName == "check1")
 						{
-							var lstCheckAll = lstAIADOs;
+							var lstCheckAll = (ActiveIngredentProcessor.GetDataGridView(ucGridControlAI) as List<HIS.UC.ActiveIngredent.ActiveIngredentADO>) ?? lstAIADOs;
 							List<HIS.UC.ActiveIngredent.ActiveIngredentADO> lstChecks = new List<HIS.UC.ActiveIngredent.ActiveIngredentADO>();
 
 							if (lstCheckAll != null && lstCheckAll.Count > 0)
@@ -1378,6 +1379,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 								}
 
 								//ReloadData
+								lstAIADOs = lstChecks;
 								ActiveIngredentProcessor.Reload(ucGridControlAI, lstChecks);
 								//??
 
@@ -1428,6 +1430,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 				dataNew = dataNew.OrderByDescending(p => p.check1).ToList();
 				if (ucGridControlAI != null)
 				{
+					lstAIADOs = dataNew;
 					ActiveIngredentProcessor.Reload(ucGridControlAI, dataNew);
 				}
 				WaitingManager.Hide();
@@ -1478,7 +1481,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 					this.dataNew = dataNew = dataNew.OrderByDescending(p => p.check2).ToList();
 					if (ucGridControlCAI != null)
 					{
-						CAIProcessor.Reload(ucGridControlCAI, dataNew);
+						ReloadCAIGrid(dataNew);
 					}
 				}
 				else
@@ -1578,37 +1581,13 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 			try
 			{
 				WaitingManager.Show();
-				if (dataNew == null || dataNew.Count() == 0)
+				string text = txtHuongXuLy.Text;
+				if (ApplyPopupText(o => o.INSTRUCTION = text))
 				{
-					this.dataNew = (from r in listCAI select new HIS.UC.ConflictActiveIngredient.ConflictActiveIngredientADO(r)).ToList();
+					txtHuongXuLy.Text = "";
+					popupControlContainerHuongXuLy.HidePopup();
 				}
-				if (dataNew != null && dataNew.Count() > 0)
-				{
-					var check = dataNew.FirstOrDefault(o => o.ID == this.currentADO.ID);
-					if (check != null)
-					{
-						
-							check.check2 = true;
-						check.INSTRUCTION = txtHuongXuLy.Text;
-							txtHuongXuLy.Text = "";
-							popupControlContainerHuongXuLy.HidePopup();
-						
-					}
-
-					dataNew = dataNew.OrderByDescending(p => p.check2).ToList();
-					if (ucGridControlCAI != null)
-					{
-						CAIProcessor.Reload(ucGridControlCAI, dataNew);
-					}
-
-					else
-					{
-						FillDataToGrid1(this);
-					}
-				}
-
 				WaitingManager.Hide();
-				checkRa = true;
 			}
 			catch (Exception ex)
 			{
@@ -1641,8 +1620,7 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 									 HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
 									 filter,
 									 param);
-					List<HIS.UC.ConflictActiveIngredient.ConflictActiveIngredientADO> dataNew = new List<HIS.UC.ConflictActiveIngredient.ConflictActiveIngredientADO>();
-					this.dataNew = dataNew = (from r in listCAIAll select new HIS.UC.ConflictActiveIngredient.ConflictActiveIngredientADO(r)).ToList();
+					List<HIS.UC.ConflictActiveIngredient.ConflictActiveIngredientADO> dataNew = (from r in listCAIAll select new HIS.UC.ConflictActiveIngredient.ConflictActiveIngredientADO(r)).ToList();
 					if (dt != null && dt.Count > 0)
 					{
 						foreach (var itemUsername in dt)
@@ -1756,40 +1734,13 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 			try
 			{
 				WaitingManager.Show();
-				if (dataNew == null || dataNew.Count() == 0)
+				string text = mmCon.Text;
+				if (ApplyPopupText(o => o.CONSEQUENCE = text))
 				{
-					this.dataNew = (from r in listCAI select new HIS.UC.ConflictActiveIngredient.ConflictActiveIngredientADO(r)).ToList();
+					mmCon.Text = "";
+					popupContainerControl1.HidePopup();
 				}
-				if (dataNew != null && dataNew.Count() > 0)
-				{
-					var check = dataNew.FirstOrDefault(o => o.ID == this.currentADO.ID);
-					if (check != null)
-					{
-						IsActivebtnOkeCon = false;
-						check.check2 = true;
-							check.CONSEQUENCE = mmCon.Text;
-							Valid(check);
-							mmCon.Text = "";
-							popupContainerControl1.HidePopup();
-						if (string.IsNullOrEmpty(mmCon.Text))
-							IsActivebtnOkeCon = true;
-
-					}
-
-					dataNew = dataNew.OrderByDescending(p => p.check2).ToList();
-					if (ucGridControlCAI != null)
-					{
-						CAIProcessor.Reload(ucGridControlCAI, dataNew);
-					}
-
-					else
-					{
-						FillDataToGrid1(this);
-					}
-				}
-
 				WaitingManager.Hide();
-				checkRa = true;
 			}
 			catch (Exception ex)
 			{
@@ -1834,44 +1785,114 @@ namespace HIS.Desktop.Plugins.ActiveIngredientAndConflict
 			}
 		}
 
+		private List<ConflictActiveIngredientADO> GetCurrentCAIGridData()
+		{
+			List<ConflictActiveIngredientADO> result = null;
+			try
+			{
+				if (ucGridControlCAI != null)
+					result = CAIProcessor.GetDataGridView(ucGridControlCAI) as List<ConflictActiveIngredientADO>;
+			}
+			catch (Exception ex)
+			{
+				Inventec.Common.Logging.LogSystem.Error(ex);
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// Nạp lại grid hoạt chất xung đột và giữ dataNew/lstCAIADOs luôn trỏ đúng danh sách grid đang hiển thị
+		/// </summary>
+		private void ReloadCAIGrid(List<ConflictActiveIngredientADO> data)
+		{
+			try
+			{
+				this.lstCAIADOs = data;
+				this.dataNew = data;
+				if (ucGridControlCAI != null)
+					CAIProcessor.Reload(ucGridControlCAI, data);
+			}
+			catch (Exception ex)
+			{
+				Inventec.Common.Logging.LogSystem.Error(ex);
+			}
+		}
+
+		private void HideCAIGridEditor()
+		{
+			try
+			{
+				GridControl grid = ucGridControlCAI != null ? CAIProcessor.GetGridControl(ucGridControlCAI) as GridControl : null;
+				GridView view = grid != null ? grid.MainView as GridView : null;
+				if (view != null)
+					view.HideEditor();
+			}
+			catch (Exception ex)
+			{
+				Inventec.Common.Logging.LogSystem.Warn(ex);
+			}
+		}
+
+		/// <summary>
+		/// Nội dung khởi tạo popup: nếu người dùng đã gõ trực tiếp vào ô (chưa post) thì lấy nội dung đang gõ
+		/// </summary>
+		private string GetPopupInitText(ButtonEdit editor, string value)
+		{
+			if (editor != null && editor.IsModified)
+				return editor.Text;
+			return value;
+		}
+
+		/// <summary>
+		/// Gán nội dung popup (cơ chế/hậu quả/hướng xử lý) vào đúng dòng đang hiển thị trên grid
+		/// </summary>
+		private bool ApplyPopupText(Action<ConflictActiveIngredientADO> setValue)
+		{
+			bool result = false;
+			try
+			{
+				if (this.currentADO == null)
+					return result;
+
+				//Đóng editor trong ô để khi nạp lại grid không post đè giá trị cũ của ô
+				HideCAIGridEditor();
+
+				List<ConflictActiveIngredientADO> gridData = GetCurrentCAIGridData();
+				ConflictActiveIngredientADO row = this.currentADO;
+				if (gridData != null && !gridData.Contains(row))
+				{
+					row = gridData.FirstOrDefault(o => o.ID == this.currentADO.ID) ?? row;
+				}
+
+				row.check2 = true;
+				setValue(row);
+				Valid(row);
+
+				if (gridData != null)
+				{
+					ReloadCAIGrid(gridData.OrderByDescending(p => p.check2).ToList());
+				}
+				result = true;
+			}
+			catch (Exception ex)
+			{
+				Inventec.Common.Logging.LogSystem.Error(ex);
+			}
+			return result;
+		}
+
 		private void btnOkMec_Click(object sender, EventArgs e)
 		{
 			try
 			{
 				WaitingManager.Show();
-				if (dataNew == null || dataNew.Count() == 0)
+				string text = mmMec.Text;
+				if (ApplyPopupText(o => o.MECHANISM = text))
 				{
-					this.dataNew = (from r in listCAI select new HIS.UC.ConflictActiveIngredient.ConflictActiveIngredientADO(r)).ToList();
+					mmMec.Text = "";
+					popupContainerControl2.HidePopup();
 				}
-				if (dataNew != null && dataNew.Count() > 0)
-				{
-					var check = dataNew.FirstOrDefault(o => o.ID == this.currentADO.ID);
-					if (check != null)
-					{
-						IsActivebtnOkeMec = false;
-							check.check2 = true;
-							check.MECHANISM = mmMec.Text;
-							Valid(check);
-							mmMec.Text = "";
-							popupContainerControl2.HidePopup();
-						if (string.IsNullOrEmpty(mmMec.Text))
-							IsActivebtnOkeMec = true;
-					}
-
-					dataNew = dataNew.OrderByDescending(p => p.check2).ToList();
-					if (ucGridControlCAI != null)
-					{
-						CAIProcessor.Reload(ucGridControlCAI, dataNew);
-					}
-
-					else
-					{
-						FillDataToGrid1(this);
-					}
-				}
-
 				WaitingManager.Hide();
-				checkRa = true;
 			}
 			catch (Exception ex)
 			{
