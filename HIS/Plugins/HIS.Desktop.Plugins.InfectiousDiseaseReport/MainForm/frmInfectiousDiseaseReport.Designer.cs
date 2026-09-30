@@ -304,7 +304,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             F("Tỉnh/TP:", cboTinh);
             F("Xã/Phường:", cboXa);
             // Thôn/Ấp: bỏ ô nhập theo yêu cầu (cboThon vẫn khai báo nhưng không đưa lên giao diện).
-            F("Xã/phường quản lý (*):", cboXaQuanLy);   // đơn vị y tế xã theo dõi ca bệnh (mặc định = xã hiện nay)
+            F("Xã/phường quản lý:", cboXaQuanLy);   // đơn vị y tế xã theo dõi ca bệnh (tùy chọn; trống -> đẩy theo xã hiện nay)
             F("Địa chỉ chi tiết:", txtDiaChi);
 
             BeginSection("Địa chỉ thường trú");
