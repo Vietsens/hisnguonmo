@@ -92,7 +92,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lcgTransferAmount = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lcTransAmountNew = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcSwipeAmountNew = new DevExpress.XtraLayout.LayoutControlItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -247,7 +247,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcgTransferAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcTransAmountNew)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcSwipeAmountNew)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -538,9 +538,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.spinSwipeAmountNew.Location = new System.Drawing.Point(263, 60);
             this.spinSwipeAmountNew.MenuManager = this.barManager1;
             this.spinSwipeAmountNew.Name = "spinSwipeAmountNew";
+            this.spinSwipeAmountNew.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.spinSwipeAmountNew.Properties.Appearance.Options.UseFont = true;
             this.spinSwipeAmountNew.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spinSwipeAmountNew.Size = new System.Drawing.Size(69, 20);
+            this.spinSwipeAmountNew.Size = new System.Drawing.Size(69, 24);
             this.spinSwipeAmountNew.StyleController = this.layoutControl3;
             this.spinSwipeAmountNew.TabIndex = 24;
             this.spinSwipeAmountNew.EditValueChanged += new System.EventHandler(this.spinSwipeAmountNew_EditValueChanged);
@@ -555,30 +557,36 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.spinTransAmountNew.Location = new System.Drawing.Point(97, 60);
             this.spinTransAmountNew.MenuManager = this.barManager1;
             this.spinTransAmountNew.Name = "spinTransAmountNew";
+            this.spinTransAmountNew.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.spinTransAmountNew.Properties.Appearance.Options.UseFont = true;
             this.spinTransAmountNew.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spinTransAmountNew.Size = new System.Drawing.Size(77, 20);
+            this.spinTransAmountNew.Size = new System.Drawing.Size(77, 24);
             this.spinTransAmountNew.StyleController = this.layoutControl3;
             this.spinTransAmountNew.TabIndex = 23;
             this.spinTransAmountNew.EditValueChanged += new System.EventHandler(this.spinTransAmountNew_EditValueChanged);
             // 
             // lblCanThu
             // 
-            this.lblCanThu.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCanThu.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCanThu.ForeColor = System.Drawing.Color.Red;
             this.lblCanThu.Location = new System.Drawing.Point(453, 36);
             this.lblCanThu.Name = "lblCanThu";
-            this.lblCanThu.Size = new System.Drawing.Size(555, 44);
+            this.lblCanThu.Size = new System.Drawing.Size(555, 52);
             this.lblCanThu.TabIndex = 22;
-            // 
+            this.lblCanThu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
             // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            //
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Maroon;
             this.label2.Location = new System.Drawing.Point(370, 36);
             this.label2.Margin = new System.Windows.Forms.Padding(3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(79, 44);
+            this.label2.Size = new System.Drawing.Size(79, 52);
             this.label2.TabIndex = 21;
             this.label2.Text = "Cần thu:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // spinTransferAmount
             // 
@@ -590,9 +598,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.spinTransferAmount.Location = new System.Drawing.Point(97, 36);
             this.spinTransferAmount.MenuManager = this.barManager1;
             this.spinTransferAmount.Name = "spinTransferAmount";
+            this.spinTransferAmount.Properties.Appearance.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.spinTransferAmount.Properties.Appearance.Options.UseFont = true;
             this.spinTransferAmount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spinTransferAmount.Size = new System.Drawing.Size(235, 20);
+            this.spinTransferAmount.Size = new System.Drawing.Size(235, 24);
             this.spinTransferAmount.StyleController = this.layoutControl3;
             this.spinTransferAmount.TabIndex = 20;
             this.spinTransferAmount.EditValueChanged += new System.EventHandler(this.spinTransferAmount_EditValueChanged);
@@ -776,16 +786,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.layoutControlItem24,
             this.lciOriginalTransaction,
             this.lciReplaceReason,
-            this.layoutControlItem27,
             this.layoutControlItem28,
             this.layoutControlItem34,
-            this.emptySpaceItem5,
-            this.lcTransAmountNew,
-            this.lcSwipeAmountNew});
+            this.lcgTransferAmount});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, -48);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1010, 130);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1010, 138);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem6
@@ -926,10 +933,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.layoutControlItem27.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem27.Control = this.spinTransferAmount;
             this.layoutControlItem27.Enabled = false;
-            this.layoutControlItem27.Location = new System.Drawing.Point(0, 82);
+            this.layoutControlItem27.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem27.Name = "layoutControlItem27";
             this.layoutControlItem27.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
-            this.layoutControlItem27.Size = new System.Drawing.Size(334, 24);
+            this.layoutControlItem27.Size = new System.Drawing.Size(334, 28);
             this.layoutControlItem27.Text = "Số tiền CK:";
             this.layoutControlItem27.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem27.TextSize = new System.Drawing.Size(90, 20);
@@ -938,28 +945,33 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             // layoutControlItem28
             // 
             this.layoutControlItem28.Control = this.label2;
-            this.layoutControlItem28.Location = new System.Drawing.Point(368, 82);
+            this.layoutControlItem28.Location = new System.Drawing.Point(334, 82);
             this.layoutControlItem28.Name = "layoutControlItem28";
-            this.layoutControlItem28.Size = new System.Drawing.Size(83, 48);
+            this.layoutControlItem28.Size = new System.Drawing.Size(84, 56);
             this.layoutControlItem28.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem28.TextVisible = false;
             // 
             // layoutControlItem34
             // 
             this.layoutControlItem34.Control = this.lblCanThu;
-            this.layoutControlItem34.Location = new System.Drawing.Point(451, 82);
+            this.layoutControlItem34.Location = new System.Drawing.Point(418, 82);
             this.layoutControlItem34.Name = "layoutControlItem34";
-            this.layoutControlItem34.Size = new System.Drawing.Size(559, 48);
+            this.layoutControlItem34.Size = new System.Drawing.Size(592, 56);
             this.layoutControlItem34.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem34.TextVisible = false;
             // 
-            // emptySpaceItem5
-            // 
-            this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(334, 82);
-            this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(34, 48);
-            this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
+            // lcgTransferAmount
+            //
+            this.lcgTransferAmount.GroupBordersVisible = false;
+            this.lcgTransferAmount.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem27,
+            this.lcTransAmountNew,
+            this.lcSwipeAmountNew});
+            this.lcgTransferAmount.Location = new System.Drawing.Point(0, 82);
+            this.lcgTransferAmount.Name = "lcgTransferAmount";
+            this.lcgTransferAmount.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.lcgTransferAmount.Size = new System.Drawing.Size(334, 56);
+            this.lcgTransferAmount.TextVisible = false;
             // 
             // lcTransAmountNew
             // 
@@ -968,9 +980,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.lcTransAmountNew.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcTransAmountNew.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcTransAmountNew.Control = this.spinTransAmountNew;
-            this.lcTransAmountNew.Location = new System.Drawing.Point(0, 106);
+            this.lcTransAmountNew.Location = new System.Drawing.Point(0, 28);
             this.lcTransAmountNew.Name = "lcTransAmountNew";
-            this.lcTransAmountNew.Size = new System.Drawing.Size(176, 24);
+            this.lcTransAmountNew.Size = new System.Drawing.Size(176, 28);
             this.lcTransAmountNew.Text = "Số tiền CK:";
             this.lcTransAmountNew.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcTransAmountNew.TextSize = new System.Drawing.Size(90, 20);
@@ -984,9 +996,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.lcSwipeAmountNew.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcSwipeAmountNew.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcSwipeAmountNew.Control = this.spinSwipeAmountNew;
-            this.lcSwipeAmountNew.Location = new System.Drawing.Point(176, 106);
+            this.lcSwipeAmountNew.Location = new System.Drawing.Point(176, 28);
             this.lcSwipeAmountNew.Name = "lcSwipeAmountNew";
-            this.lcSwipeAmountNew.Size = new System.Drawing.Size(158, 24);
+            this.lcSwipeAmountNew.Size = new System.Drawing.Size(158, 28);
             this.lcSwipeAmountNew.Text = "Số tiền QT:";
             this.lcSwipeAmountNew.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcSwipeAmountNew.TextSize = new System.Drawing.Size(80, 20);
@@ -1984,7 +1996,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.layoutControlItem9.Control = this.gridControlExpMestDetail;
             this.layoutControlItem9.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(1037, 275);
+            this.layoutControlItem9.Size = new System.Drawing.Size(1037, 232);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -1997,7 +2009,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.layoutTotalPrice.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutTotalPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutTotalPrice.Control = this.lblTotalPrice;
-            this.layoutTotalPrice.Location = new System.Drawing.Point(415, 301);
+            this.layoutTotalPrice.Location = new System.Drawing.Point(415, 258);
             this.layoutTotalPrice.Name = "layoutTotalPrice";
             this.layoutTotalPrice.Size = new System.Drawing.Size(622, 26);
             this.layoutTotalPrice.Text = "Tổng tiền:";
@@ -2008,7 +2020,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.layoutControl2;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 301);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 258);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(222, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -2019,7 +2031,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.layoutControlItem3.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem3.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem3.Control = this.lblDiscount;
-            this.layoutControlItem3.Location = new System.Drawing.Point(222, 301);
+            this.layoutControlItem3.Location = new System.Drawing.Point(222, 258);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(193, 26);
             this.layoutControlItem3.Text = "Chiết khấu:";
@@ -2114,7 +2126,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.groupBox1;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 327);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 284);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Size = new System.Drawing.Size(1037, 116);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -2123,9 +2135,12 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.groupBox2;
-            this.layoutControlItem14.Location = new System.Drawing.Point(0, 443);
+            this.layoutControlItem14.Location = new System.Drawing.Point(0, 400);
+            this.layoutControlItem14.MaxSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem14.MinSize = new System.Drawing.Size(104, 150);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(1037, 107);
+            this.layoutControlItem14.Size = new System.Drawing.Size(1037, 150);
+            this.layoutControlItem14.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
@@ -2303,7 +2318,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcgTransferAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcTransAmountNew)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcSwipeAmountNew)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -2550,7 +2565,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem28;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem34;
         private DevExpress.Utils.ToolTipController toolTipController1;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
+        private DevExpress.XtraLayout.LayoutControlGroup lcgTransferAmount;
         private DevExpress.XtraEditors.TextEdit txtBudRelUnitCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem37;
         private DevExpress.XtraEditors.TextEdit txtBudRelUnitCode1;
