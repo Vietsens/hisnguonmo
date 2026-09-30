@@ -117,6 +117,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
         string AllowExportBloodOverRequestCFG = "";
         //54361: 0/rong = khong kiem tra Rh; 1 = canh bao van cho bo sung; khac 0,1 = chan
         string CheckBloodRhOptionCFG = "";
+        string CheckIntructionTimeDMCFG = "";
         HisExpMestResultSDO rsSave = null;
         CabinetBaseResultSDO cabinetBaseResultSDO = null;
         V_HIS_EXP_MEST_4 expMest;
@@ -1635,6 +1636,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             {
                 this.AllowExportBloodOverRequestCFG = HisConfigs.Get<string>("HIS.Desktop.Plugins.BrowseExportTicket.AllowExportBloodOverRequest");
                 this.CheckBloodRhOptionCFG = HisConfigs.Get<string>("HIS.Desktop.Plugins.BrowseExportTicket.CheckBloodRhOption");
+                this.CheckIntructionTimeDMCFG = HisConfigs.Get<string>("HIS.Desktop.Plugins.BrowseExportTicket.CheckIntructionTimeDM");
             }
             catch (Exception ex)
             {
@@ -2877,6 +2879,31 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                     WaitingManager.Hide();
                     DevExpress.XtraEditors.XtraMessageBox.Show("Chưa chọn thuốc, vật tư, máu", "Thông báo");
                     return;
+                }
+
+                //Đơn máu: thời gian duyệt (thời gian hiện tại) phải lớn hơn thời gian y lệnh, so sánh đến phút
+                if ((this.CheckIntructionTimeDMCFG == "1" || this.CheckIntructionTimeDMCFG == "2")
+                    && ChmsExpMest != null && ChmsExpMest.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM
+                    && ChmsExpMest.TDL_INTRUCTION_TIME.HasValue)
+                {
+                    long approvalTimeMinute = Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMddHHmm") + "00");
+                    long intructionTimeMinute = ChmsExpMest.TDL_INTRUCTION_TIME.Value - ChmsExpMest.TDL_INTRUCTION_TIME.Value % 100;
+                    if (approvalTimeMinute <= intructionTimeMinute)
+                    {
+                        WaitingManager.Hide();
+                        if (this.CheckIntructionTimeDMCFG == "1")
+                        {
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show("Thời gian duyệt đang nhỏ hơn hoặc bằng thời gian y lệnh máu. Đề nghị kiểm tra lại thời gian duyệt.\nBạn có muốn tiếp tục duyệt không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                            {
+                                return;
+                            }
+                        }
+                        else if (this.CheckIntructionTimeDMCFG == "2")
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show("Thời gian duyệt phải lớn hơn thời gian y lệnh máu. Không thực hiện duyệt y lệnh.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
                 }
 
                 WaitingManager.Show();

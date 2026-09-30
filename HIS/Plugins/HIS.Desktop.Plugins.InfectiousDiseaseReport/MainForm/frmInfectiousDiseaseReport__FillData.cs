@@ -599,9 +599,6 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 if (cboTinh.EditValue == null && cboTinhTru.EditValue != null) cboTinh.EditValue = cboTinhTru.EditValue;
                 if (cboXa.EditValue == null && cboXaTru.EditValue != null) cboXa.EditValue = cboXaTru.EditValue;
                 if (string.IsNullOrEmpty(txtDiaChi.Text)) txtDiaChi.Text = txtDiaChiTru.Text;
-
-                // Xã/phường quản lý: mặc định KHÔNG chọn (tùy chọn). Trống -> khi đẩy cổng lấy theo xã hiện nay.
-                cboXaQuanLy.EditValue = null;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
