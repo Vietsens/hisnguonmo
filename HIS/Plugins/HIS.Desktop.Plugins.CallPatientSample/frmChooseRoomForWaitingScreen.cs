@@ -195,8 +195,8 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 this.positionHandleControl = -1;
                 if (!dxValidationProviderControl.Validate())
                     return;
-                // Cau hinh SAMPLE.WAITING_SCREEN.OPTION = 1 thi dung man hinh cho ban _NA,
-                // khac 1 thi giu nguyen man hinh cho hien tai.
+                // Cau hinh SAMPLE.WAITING_SCREEN.OPTION = 1 thi dung man hinh cho ban Nghe An (_NA),
+                // khac 1 hoac chua co key thi giu nguyen man hinh cho hien tai.
                 if (WaitingScreenSampleNaCFG.IS_USE_WAITING_SCREEN_NA)
                 {
                     aFrmWaitingScreenQy = new frmWaitingScreenSample_NA(this.currentModule, listSample, sampleSttIds, this.room, isTach);

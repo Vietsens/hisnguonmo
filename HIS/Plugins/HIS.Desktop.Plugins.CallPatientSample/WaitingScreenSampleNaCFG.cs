@@ -23,134 +23,128 @@ using System.Linq;
 namespace HIS.Desktop.Plugins.CallPatientSample
 {
     /// <summary>
-    /// Cau hinh rieng cho man hinh cho _NA (tien to SAMPLE.WAITING_SCREEN.*).
-    /// Tach khoi WaitingScreenCFG (tien to EXE.WAITING_SCREEN.*) de khong anh huong man hinh cho dang chay.
+    /// Cau hinh man hinh cho lay mau ban Nghe An (frmWaitingScreenSample_NA).
+    /// Chi dung 2 key: mot key chon man hinh, mot key gom toan bo phan hien thi.
     /// </summary>
     public class WaitingScreenSampleNaCFG
     {
         /// <summary>
-        /// Chua co key (null/rong) hoac = 1 thi mo man hinh cho _NA, gia tri khac thi mo man hinh cho hien tai.
-        /// Dang de trong giai doan test nen chua co key cung ra man hinh moi.
+        /// = 1 thi mo man hinh cho ban Nghe An (_NA).
+        /// Khac 1 hoac chua co key thi mo man hinh cho hien tai.
         /// </summary>
         public const string WAITING_SCREEN_OPTION = "SAMPLE.WAITING_SCREEN.OPTION";
 
-        //Ten to chuc hien tren man hinh cho. Gia tri: chuoi tu do. Bo trong thi khong hien.
-        private const string ORGANIZATION_NAME_CODE = "SAMPLE.WAITING_SCREEN.ORGANIZATION_NAME";
+        /// <summary>
+        /// Toan bo cau hinh hien thi cua man hinh cho, gom trong MOT key.
+        /// 13 doan ngan cach bang dau |, dung thu tu duoi day. Doan de trong thi dung mac dinh cua giao dien.
+        /// Doan mau la 3 so RGB ngan cach bang dau phay. Doan co chu va so la so nguyen.
+        ///
+        ///  1. Ten to chuc
+        ///  2. Mau chu ten phong lay mau
+        ///  3. Co chu ten phong lay mau
+        ///  4. Mau chu ten nguoi dang nhap
+        ///  5. Co chu ten nguoi dang nhap
+        ///  6. Mau nen man hinh
+        ///  7. Mau nen cac dong trong luoi
+        ///  8. Mau nen dong tieu de luoi
+        ///  9. Mau chu dong tieu de luoi
+        /// 10. Mau chu cac dong trong luoi
+        /// 11. Co chu cac dong trong luoi
+        /// 12. Chu ky tai lai danh sach, tinh bang GIAY (cung la nhip nhap nhay cua dong dang goi)
+        /// 13. So benh nhan toi da hien tren danh sach, bo trong thi lay 10
+        ///
+        /// Vi du day du:
+        /// BENH VIEN HNDK NGHE AN|255,255,0|36|255,255,255|20|0,51,102|0,51,102|0,41,82|255,255,0|255,255,255|20|5|10
+        ///
+        /// Vi du chi doi co chu va chu ky, con lai de mac dinh:
+        /// ||36||20||||||20|5|
+        ///
+        /// Luu y: dong dang duoc goi luon bi de thanh Arial 29 dam, nen xanh chu vang,
+        /// khong chinh duoc bang cau hinh (xem gridViewWaiting_RowStyle).
+        /// </summary>
+        public const string WAITING_SCREEN_DISPLAY = "SAMPLE.WAITING_SCREEN.DISPLAY";
 
-        //Mau chu ten phong lay mau, dong chu "MOI NGUOI BENH" va nhan phu. Gia tri: 3 so RGB cach nhau dau phay, vi du 255,255,0
-        private const string ROOM_NAME_COLOR_CODES = "SAMPLE.WAITING_SCREEN.ROOM_NAME.COLOR_CODES";
-
-        //Mau chu ten nguoi dang dang nhap goc tren. Gia tri: 3 so RGB, vi du 255,255,255
-        private const string USER_NAME_COLOR_CODES = "SAMPLE.WAITING_SCREEN.USER_NAME.COLOR_CODES";
-
-        //Co chu ten phong lay mau. Gia tri: 1 so nguyen (point), vi du 36. <= 0 hoac bo trong thi giu co chu thiet ke san
-        private const string ROOM_NAME_SIZE_CODES = "SAMPLE.WAITING_SCREEN.ROOM_NAME.SIZE_CODES";
-
-        //Co chu ten nguoi dang nhap. Gia tri: 1 so nguyen, vi du 36
-        private const string USER_NAME_SIZE_CODES = "SAMPLE.WAITING_SCREEN.USER_NAME.SIZE_CODES";
-
-        //Co chu cac dong trong luoi danh sach cho. Gia tri: 1 so nguyen, vi du 20.
-        //Rieng dong dang duoc goi luon bi de len co chu 29 dam (xem gridViewWaiting_RowStyle)
-        private const string GRID_PATIENT_BODY_SIZE_CODES = "SAMPLE.WAITING_SCREEN.FONT_SIZE_GRID_PATIENT_BODY.SIZE_CODES";
-
-        //Mau nen toan man hinh. Gia tri: 3 so RGB, vi du 0,51,102
-        private const string BACKGROUND_PARENT_COLOR_CODES = "SAMPLE.WAITING_SCREEN.BACKGROUND_PARENT.COLOR_CODES";
-
-        //Mau nen cac dong trong luoi. Gia tri: 3 so RGB
-        private const string GRID_PATIENT_BACK_COLOR_CODES = "SAMPLE.WAITING_SCREEN.BACK_COLOR_GRID_PATIENT.COLOR_CODES";
-
-        //Mau nen dong tieu de luoi. Gia tri: 3 so RGB
-        private const string GRID_PATIENT_HEADER_BACK_COLOR_CODES = "SAMPLE.WAITING_SCREEN.BACK_COLOR_GRID_PATIENT_HEADER.COLOR_CODES";
-
-        //Mau chu dong tieu de luoi. Gia tri: 3 so RGB
-        private const string GRID_PATIENT_HEADER_FORCE_COLOR_CODES = "SAMPLE.WAITING_SCREEN.FORCE_COLOR_GRID_PATIENT_HEADER.COLOR_CODES";
-
-        //Mau chu cac dong trong luoi. Gia tri: 3 so RGB
-        private const string GRID_PATIENT_BODY_FORCE_COLOR_CODES = "SAMPLE.WAITING_SCREEN.FORCE_COLOR_GRID_PATIENT_BODY.COLOR_CODES";
-
-        //Mau chu trang thai moi. Gia tri: 3 so RGB. Hien doc ra bien nhung man hinh _NA chua dung den
-        private const string NEW_STATUS_FORCE_COLOR_CODES = "SAMPLE.WAITING_SCREEN.FORCE_COLOR_NEW_STATUS.COLOR_CODES";
-
-        //Chu ky tai lai danh sach, tinh bang GIAY. Gia tri: 1 so nguyen, vi du 5.
-        //<= 0 hoac bo trong thi giu Interval cua timer trong designer.
-        //Luu y: day cung la nhip nhap nhay cua dong dang goi
-        private const string TIMER_FOR_AUTO_LOAD_WAITING_SCREEN = "SAMPLE.WAITING_SCREEN.TIMER_FOR_AUTO_LOAD_PATIENTS";
-
-        //So benh nhan toi da hien tren danh sach cho. Gia tri: 1 so nguyen. Bo trong hoac <= 0 thi lay 10
-        private const string SO_BENH_NHAN_TREN_DANH_SACH = "SAMPLE.CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_CLS";
+        private const int IDX_ORGANIZATION_NAME = 0;
+        private const int IDX_ROOM_NAME_COLOR = 1;
+        private const int IDX_ROOM_NAME_SIZE = 2;
+        private const int IDX_USER_NAME_COLOR = 3;
+        private const int IDX_USER_NAME_SIZE = 4;
+        private const int IDX_PARENT_BACK_COLOR = 5;
+        private const int IDX_GRID_BACK_COLOR = 6;
+        private const int IDX_GRID_HEADER_BACK_COLOR = 7;
+        private const int IDX_GRID_HEADER_FORE_COLOR = 8;
+        private const int IDX_GRID_BODY_FORE_COLOR = 9;
+        private const int IDX_GRID_BODY_SIZE = 10;
+        private const int IDX_TIMER_AUTO_LOAD = 11;
+        private const int IDX_SO_BENH_NHAN = 12;
 
         public static bool IS_USE_WAITING_SCREEN_NA
         {
             get
             {
-                string value = GetName(WAITING_SCREEN_OPTION);
-                return String.IsNullOrWhiteSpace(value) || value.Trim() == "1";
+                string value = GetConfig(WAITING_SCREEN_OPTION);
+                return !String.IsNullOrWhiteSpace(value) && value.Trim() == "1";
             }
         }
 
         public static string ORGANIZATION_NAME
         {
-            get { return GetName(ORGANIZATION_NAME_CODE); }
+            get { return GetText(IDX_ORGANIZATION_NAME); }
         }
 
         public static List<int> ROOM_NAME_FORCE_COLOR_CODES
         {
-            get { return GetIds(ROOM_NAME_COLOR_CODES); }
-        }
-
-        public static List<int> USER_NAME_FORCE_COLOR_CODES
-        {
-            get { return GetIds(USER_NAME_COLOR_CODES); }
-        }
-
-        public static List<int> PARENT_BACK_COLOR_CODES
-        {
-            get { return GetIds(BACKGROUND_PARENT_COLOR_CODES); }
-        }
-
-        public static List<int> GRID_PATIENTS_BACK_COLOR_CODES
-        {
-            get { return GetIds(GRID_PATIENT_BACK_COLOR_CODES); }
-        }
-
-        public static List<int> GRID_PATIENTS_HEADER_BACK_COLOR_CODES
-        {
-            get { return GetIds(GRID_PATIENT_HEADER_BACK_COLOR_CODES); }
-        }
-
-        public static List<int> GRID_PATIENTS_HEADER_FORCE_COLOR_CODES
-        {
-            get { return GetIds(GRID_PATIENT_HEADER_FORCE_COLOR_CODES); }
-        }
-
-        public static List<int> GRID_PATIENTS_BODY_FORCE_COLOR_CODES
-        {
-            get { return GetIds(GRID_PATIENT_BODY_FORCE_COLOR_CODES); }
-        }
-
-        public static List<int> NEW_STATUS_REQUEST_FORCE_COLOR_CODES
-        {
-            get { return GetIds(NEW_STATUS_FORCE_COLOR_CODES); }
+            get { return GetColor(IDX_ROOM_NAME_COLOR); }
         }
 
         public static int ROOM_NAME_SIZE
         {
-            get { return GetId(ROOM_NAME_SIZE_CODES); }
+            get { return GetNumber(IDX_ROOM_NAME_SIZE); }
+        }
+
+        public static List<int> USER_NAME_FORCE_COLOR_CODES
+        {
+            get { return GetColor(IDX_USER_NAME_COLOR); }
         }
 
         public static int USER_NAME_SIZE
         {
-            get { return GetId(USER_NAME_SIZE_CODES); }
+            get { return GetNumber(IDX_USER_NAME_SIZE); }
+        }
+
+        public static List<int> PARENT_BACK_COLOR_CODES
+        {
+            get { return GetColor(IDX_PARENT_BACK_COLOR); }
+        }
+
+        public static List<int> GRID_PATIENTS_BACK_COLOR_CODES
+        {
+            get { return GetColor(IDX_GRID_BACK_COLOR); }
+        }
+
+        public static List<int> GRID_PATIENTS_HEADER_BACK_COLOR_CODES
+        {
+            get { return GetColor(IDX_GRID_HEADER_BACK_COLOR); }
+        }
+
+        public static List<int> GRID_PATIENTS_HEADER_FORCE_COLOR_CODES
+        {
+            get { return GetColor(IDX_GRID_HEADER_FORE_COLOR); }
+        }
+
+        public static List<int> GRID_PATIENTS_BODY_FORCE_COLOR_CODES
+        {
+            get { return GetColor(IDX_GRID_BODY_FORE_COLOR); }
         }
 
         public static int PATIENT_BODY_SIZE
         {
-            get { return GetId(GRID_PATIENT_BODY_SIZE_CODES); }
+            get { return GetNumber(IDX_GRID_BODY_SIZE); }
         }
 
         public static int TIMER_FOR_AUTO_LOAD_WAITING_SCREENS
         {
-            get { return GetId(TIMER_FOR_AUTO_LOAD_WAITING_SCREEN); }
+            get { return GetNumber(IDX_TIMER_AUTO_LOAD); }
         }
 
         /// <summary>So benh nhan hien tren danh sach cho, mac dinh 10.</summary>
@@ -158,17 +152,40 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         {
             get
             {
-                int value = GetId(SO_BENH_NHAN_TREN_DANH_SACH);
+                int value = GetNumber(IDX_SO_BENH_NHAN);
                 return value > 0 ? value : 10;
             }
         }
 
-        private static string GetName(string code)
+        /// <summary>Cat gia tri cau hinh hien thi thanh cac doan theo dau |.</summary>
+        private static string[] GetSegments()
+        {
+            try
+            {
+                string value = GetConfig(WAITING_SCREEN_DISPLAY);
+                if (String.IsNullOrWhiteSpace(value))
+                {
+                    return new string[0];
+                }
+                return value.Split('|');
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return new string[0];
+            }
+        }
+
+        private static string GetText(int index)
         {
             string result = "";
             try
             {
-                result = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(code);
+                string[] segments = GetSegments();
+                if (index < segments.Length)
+                {
+                    result = segments[index].Trim();
+                }
             }
             catch (Exception ex)
             {
@@ -178,18 +195,23 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             return result;
         }
 
-        private static List<int> GetIds(string code)
+        /// <summary>Doan mau: 3 so RGB ngan cach bang dau phay. Sai dinh dang thi tra ve rong de giu mau thiet ke.</summary>
+        private static List<int> GetColor(int index)
         {
             List<int> result = new List<int>();
             try
             {
-                string value = GetName(code);
+                string value = GetText(index);
                 if (!String.IsNullOrWhiteSpace(value))
                 {
                     result = value.Split(',')
                         .Where(o => !String.IsNullOrWhiteSpace(o))
                         .Select(o => Inventec.Common.TypeConvert.Parse.ToInt32(o.Trim()))
                         .ToList();
+                }
+                if (result.Count != 3)
+                {
+                    result = new List<int>();
                 }
             }
             catch (Exception ex)
@@ -200,16 +222,31 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             return result;
         }
 
-        private static int GetId(string code)
+        private static int GetNumber(int index)
         {
             int result = 0;
             try
             {
-                result = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>(code);
+                result = Inventec.Common.TypeConvert.Parse.ToInt32(GetText(index));
             }
             catch (Exception ex)
             {
                 result = 0;
+                LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private static string GetConfig(string code)
+        {
+            string result = "";
+            try
+            {
+                result = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(code);
+            }
+            catch (Exception ex)
+            {
+                result = "";
                 LogSystem.Warn(ex);
             }
             return result;
