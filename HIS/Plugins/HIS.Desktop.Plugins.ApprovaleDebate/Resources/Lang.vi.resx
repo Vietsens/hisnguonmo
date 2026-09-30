@@ -297,4 +297,19 @@
   <data name="UCTreeListTracking.USER_NAME.Caption" xml:space="preserve">
     <value>Bác sĩ</value>
   </data>
+  <data name="frmApprovaleDebate.btnApproveAndSign.Text" xml:space="preserve">
+    <value>Duyệt và ký (Ctrl K)</value>
+  </data>
+  <data name="frmApprovaleDebate.btnApproveAndSign.ToolTip" xml:space="preserve">
+    <value>Duyệt hội chẩn và ký số phiếu duyệt hội chẩn</value>
+  </data>
+  <data name="frmApprovaleDebate.bbtnApproveAndSign.Caption" xml:space="preserve">
+    <value>Duyệt và ký (Ctrl K)</value>
+  </data>
+  <data name="frmApprovaleDebate.chkPrintSigned.Properties.Caption" xml:space="preserve">
+    <value>In văn bản đã ký</value>
+  </data>
+  <data name="frmApprovaleDebate.chkPrintSigned.ToolTip" xml:space="preserve">
+    <value>Tích chọn để in luôn phiếu duyệt hội chẩn sau khi ký số (nút Duyệt và ký)</value>
+  </data>
 </root>

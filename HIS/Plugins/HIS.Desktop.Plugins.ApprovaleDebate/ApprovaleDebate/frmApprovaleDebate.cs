@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
     {
         private const string MODULE_LINK__CONTROL_STATE = "HIS.Desktop.Plugins.ApprovaleDebate";
         private const string CONTROL_STATE_KEY__TAO_TO_DIEU_TRI = "chkTaoToDieuTri";
+        private const string CONTROL_STATE_KEY__PRINT_SIGNED = "chkPrintSigned";
 
         private Common.RefeshReference delegateRefresh;
         private bool isNotLoadWhileChangeControlStateInFirst;
@@ -76,6 +77,11 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnChiTietBenhAn.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnChiTietBenhAn.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnPrint.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnPrint.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnApproveAndSign.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnApproveAndSign.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnApproveAndSign.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnApproveAndSign.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnApproveAndSign.Caption = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.bbtnApproveAndSign.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkPrintSigned.Properties.Caption = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.chkPrintSigned.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkPrintSigned.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.chkPrintSigned.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabToDieuTri.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabToDieuTri.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabCDHA.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabCDHA.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabXetNghiem.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabXetNghiem.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -137,6 +143,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.InitComboEmployee();
                 this.InitComboICD_YHCT();
                 this.InitCheckTaoToDieuTri();
+                this.InitCheckPrintSigned();
                 this.ValidControl();
                 if (this.currentHisSpecialistExam != null)
                 {
@@ -702,6 +709,67 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             }
         }
 
+        /// <summary>
+        /// Read the saved "print signed document" option. Must run after InitCheckTaoToDieuTri,
+        /// which creates controlStateWorker and loads currentControlStateRDO.
+        /// </summary>
+        private void InitCheckPrintSigned()
+        {
+            try
+            {
+                this.isNotLoadWhileChangeControlStateInFirst = true;
+                bool isChecked = false;
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    var state = this.currentControlStateRDO.FirstOrDefault(o => o.KEY == CONTROL_STATE_KEY__PRINT_SIGNED);
+                    if (state != null)
+                        isChecked = state.VALUE == "1";
+                }
+                this.chkPrintSigned.Checked = isChecked;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                this.isNotLoadWhileChangeControlStateInFirst = false;
+            }
+        }
+
+        private void chkPrintSigned_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.isNotLoadWhileChangeControlStateInFirst) return;
+            try
+            {
+                if (this.controlStateWorker == null) return;
+
+                if (this.currentControlStateRDO == null)
+                    this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var state = this.currentControlStateRDO.FirstOrDefault(o => o.KEY == CONTROL_STATE_KEY__PRINT_SIGNED
+                                                                        && o.MODULE_LINK == MODULE_LINK__CONTROL_STATE);
+                if (state != null)
+                {
+                    state.VALUE = this.chkPrintSigned.Checked ? "1" : "";
+                }
+                else
+                {
+                    this.currentControlStateRDO.Add(new HIS.Desktop.Library.CacheClient.ControlStateRDO()
+                    {
+                        MODULE_LINK = MODULE_LINK__CONTROL_STATE,
+                        KEY = CONTROL_STATE_KEY__PRINT_SIGNED,
+                        VALUE = this.chkPrintSigned.Checked ? "1" : ""
+                    });
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void chkTaoToDieuTri_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -775,10 +843,27 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
             try
             {
+                this.ApproveProcess();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Approve the debate (api/HisSpecialistExam/Update, IS_APPROVAL = 1).
+        /// Shared by "Duyet" and "Duyet va ky". Returns true when the API returns data.
+        /// </summary>
+        private bool ApproveProcess()
+        {
+            bool result = false;
+            try
+            {
                 if (!dxValidationProvider1.Validate())
                 {
                     Inventec.Common.Logging.LogSystem.Info("dxValidationProvider1.Validate");
-                    return;
+                    return false;
                 }
 
                 positionHandleControl = -1;
@@ -807,8 +892,13 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 datamapper.ICD_SUB_CODE= txtICDsub.Text.Trim();
                 datamapper.ICD_TEXT = txtICDsubName.Text.Trim();
                 //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => datamapper), datamapper));
+                WaitingManager.Show();
                 var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
-                if (rs != null && this.delegateRefresh != null)
+                WaitingManager.Hide();
+                result = (rs != null);
+                // Keep the local record in sync even when opened without a refresh delegate,
+                // otherwise "Duyet va ky" would approve the same record again.
+                if (rs != null)
                 {
                     currentHisSpecialistExam.EXAM_EXECUTE_LOGINNAME = datamapper.EXAM_EXECUTE_LOGINNAME;
                     currentHisSpecialistExam.EXAM_EXECUTE_USERNAME = datamapper.EXAM_EXECUTE_USERNAME;
@@ -824,7 +914,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         currentHisSpecialistExam.CONTENT = datamapper.CONTENT;
                         currentHisSpecialistExam.MEDICAL_INSTRUCTION = datamapper.MEDICAL_INSTRUCTION;
                     }
-                    this.delegateRefresh();
+                    if (this.delegateRefresh != null)
+                        this.delegateRefresh();
                 }
                 MessageManager.Show(this, param, rs != null);
                 SessionManager.ProcessTokenLost(param);
@@ -865,7 +956,52 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private void bbtnApproveAndSign_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                if (this.btnApproveAndSign.Enabled)
+                    this.btnApproveAndSign_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 57944: approve then open EMR signing of the debate approval form (Mps000513) in one step.
+        /// An already approved record is not approved again - only signed, so a failed/cancelled
+        /// signing can be retried.
+        /// </summary>
+        private void btnApproveAndSign_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentHisSpecialistExam == null) return;
+                this.btnApproveAndSign.Enabled = false;
+
+                if (this.currentHisSpecialistExam.IS_APPROVAL != 1)
+                {
+                    // Sign only after a successful approval.
+                    if (!this.ApproveProcess()) return;
+                }
+
+                this.PrintDebateApproval(true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                this.btnApproveAndSign.Enabled = true;
             }
         }
         List<HIS_EMPLOYEE> EmployeeSelecteds;
@@ -1430,14 +1566,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
             try
             {
-                if (this.currentHisSpecialistExam == null) return;
-
-                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(
-                    ApiConsumers.SarConsumer,
-                    ConfigSystems.URI_API_SAR,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(),
-                    GlobalVariables.TemnplatePathFolder);
-                store.RunPrintTemplate(PRINT_TYPE_CODE__MPS000513, DeletegatePrintTemplate);
+                this.PrintDebateApproval(false);
             }
             catch (Exception ex)
             {
@@ -1445,7 +1574,30 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             }
         }
 
-        private bool DeletegatePrintTemplate(string printCode, string fileName)
+        /// <summary>
+        /// Print the debate approval form (Mps000513).
+        /// isSign = true: open EMR signing right away (EmrSignNow / EmrSignAndPrintNow) instead of preview.
+        /// </summary>
+        private void PrintDebateApproval(bool isSign)
+        {
+            try
+            {
+                if (this.currentHisSpecialistExam == null) return;
+
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(
+                    ApiConsumers.SarConsumer,
+                    ConfigSystems.URI_API_SAR,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(),
+                    GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate(PRINT_TYPE_CODE__MPS000513, (printCode, fileName) => DeletegatePrintTemplate(printCode, fileName, isSign));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool DeletegatePrintTemplate(string printCode, string fileName, bool isSign)
         {
             bool result = false;
             try
@@ -1453,7 +1605,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 switch (printCode)
                 {
                     case PRINT_TYPE_CODE__MPS000513:
-                        InPhieuDuyetHoiChan(printCode, fileName, ref result);
+                        InPhieuDuyetHoiChan(printCode, fileName, isSign, ref result);
                         break;
                     default:
                         break;
@@ -1467,7 +1619,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             return result;
         }
 
-        private void InPhieuDuyetHoiChan(string printTypeCode, string fileName, ref bool result)
+        private void InPhieuDuyetHoiChan(string printTypeCode, string fileName, bool isSign, ref bool result)
         {
             try
             {
@@ -1505,21 +1657,36 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
 
                 WaitingManager.Hide();
 
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                MPS.ProcessorBase.PrintConfig.PreviewType previewType;
+                if (isSign)
                 {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
-                        printTypeCode, fileName, pdo,
-                        MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow,
-                        printerName)
-                    { EmrInputADO = inputADO });
+                    // Viec 57944: sign right after approval, same as "Luu ky" in TrackingCreate.
+                    previewType = this.chkPrintSigned.Checked
+                        ? MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow
+                        : MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
                 }
                 else
                 {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
-                        printTypeCode, fileName, pdo,
-                        MPS.ProcessorBase.PrintConfig.PreviewType.Show,
-                        printerName)
-                    { EmrInputADO = inputADO });
+                    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.Show;
+                }
+
+                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
+                    printTypeCode, fileName, pdo, previewType, printerName)
+                { EmrInputADO = inputADO });
+
+                if (isSign)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("Mps000513. Duyet va ky. SpecialistExamId=" + currentHisSpecialistExam.ID
+                        + ", previewType=" + previewType + ", result=" + result);
+                    if (result)
+                    {
+                        Inventec.Common.Logging.LogUtil.LogActionSuccess("frmApprovaleDebate", "ApproveAndSign",
+                            Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+                    }
                 }
             }
             catch (Exception ex)

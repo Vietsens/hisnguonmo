@@ -42,6 +42,7 @@
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
+            this.bbtnApproveAndSign = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
@@ -53,6 +54,8 @@
             this.cboEmployee = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
+            this.btnApproveAndSign = new DevExpress.XtraEditors.SimpleButton();
+            this.chkPrintSigned = new DevExpress.XtraEditors.CheckEdit();
             this.chkTaoToDieuTri = new DevExpress.XtraEditors.CheckEdit();
             this.txtPPXuLy = new DevExpress.XtraEditors.MemoEdit();
             this.txtDienBien = new DevExpress.XtraEditors.MemoEdit();
@@ -82,6 +85,8 @@
             this.layoutControlItemDienBien = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItemPPXuLy = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItemTaoToDieuTri = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciChkPrintSigned = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnApproveAndSign = new DevExpress.XtraLayout.LayoutControlItem();
             this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
@@ -96,6 +101,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkTaoToDieuTri.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrintSigned.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPPXuLy.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDienBien.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtYKienBacSi.Properties)).BeginInit();
@@ -118,6 +124,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemDienBien)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemPPXuLy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemTaoToDieuTri)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkPrintSigned)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnApproveAndSign)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
@@ -133,6 +141,8 @@
             this.layoutControl1.Controls.Add(this.cboICD_YHCT);
             this.layoutControl1.Controls.Add(this.txtICD_YHCT);
             this.layoutControl1.Controls.Add(this.cboEmployee);
+            this.layoutControl1.Controls.Add(this.btnApproveAndSign);
+            this.layoutControl1.Controls.Add(this.chkPrintSigned);
             this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Controls.Add(this.chkTaoToDieuTri);
             this.layoutControl1.Controls.Add(this.txtPPXuLy);
@@ -203,8 +213,9 @@
             this.barManager1.DockControls.Add(this.barDockControl4);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.bbtnSave});
-            this.barManager1.MaxItemId = 1;
+            this.bbtnSave,
+            this.bbtnApproveAndSign});
+            this.barManager1.MaxItemId = 2;
             // 
             // bar1
             // 
@@ -213,7 +224,8 @@
             this.bar1.DockRow = 0;
             this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnSave)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnSave),
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnApproveAndSign)});
             this.bar1.Text = "Tools";
             this.bar1.Visible = false;
             // 
@@ -224,6 +236,14 @@
             this.bbtnSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
             this.bbtnSave.Name = "bbtnSave";
             this.bbtnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSave_ItemClick);
+            //
+            // bbtnApproveAndSign
+            //
+            this.bbtnApproveAndSign.Caption = "Duyệt và ký (Ctrl K)";
+            this.bbtnApproveAndSign.Id = 1;
+            this.bbtnApproveAndSign.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K));
+            this.bbtnApproveAndSign.Name = "bbtnApproveAndSign";
+            this.bbtnApproveAndSign.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnApproveAndSign_ItemClick);
             // 
             // barDockControl1
             // 
@@ -336,10 +356,34 @@
             this.btnSave.TabIndex = 7;
             this.btnSave.Text = "Duyệt (Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            //
+            // btnApproveAndSign
+            //
+            this.btnApproveAndSign.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnApproveAndSign.Location = new System.Drawing.Point(227, 602);
+            this.btnApproveAndSign.Name = "btnApproveAndSign";
+            this.btnApproveAndSign.Size = new System.Drawing.Size(131, 22);
+            this.btnApproveAndSign.StyleController = this.layoutControl1;
+            this.btnApproveAndSign.TabIndex = 12;
+            this.btnApproveAndSign.Text = "Duyệt và ký (Ctrl K)";
+            this.btnApproveAndSign.ToolTip = "Duyệt hội chẩn và ký số phiếu duyệt hội chẩn";
+            this.btnApproveAndSign.Click += new System.EventHandler(this.btnApproveAndSign_Click);
+            //
+            // chkPrintSigned
+            //
+            this.chkPrintSigned.Location = new System.Drawing.Point(2, 602);
+            this.chkPrintSigned.MenuManager = this.barManager1;
+            this.chkPrintSigned.Name = "chkPrintSigned";
+            this.chkPrintSigned.Properties.Caption = "In văn bản đã ký";
+            this.chkPrintSigned.Size = new System.Drawing.Size(221, 19);
+            this.chkPrintSigned.StyleController = this.layoutControl1;
+            this.chkPrintSigned.TabIndex = 13;
+            this.chkPrintSigned.ToolTip = "Tích chọn để in luôn phiếu duyệt hội chẩn sau khi ký số (nút Duyệt và ký)";
+            this.chkPrintSigned.CheckedChanged += new System.EventHandler(this.chkPrintSigned_CheckedChanged);
             // 
             // chkTaoToDieuTri
             // 
-            this.chkTaoToDieuTri.Location = new System.Drawing.Point(110, 602);
+            this.chkTaoToDieuTri.Location = new System.Drawing.Point(110, 576);
             this.chkTaoToDieuTri.MenuManager = this.barManager1;
             this.chkTaoToDieuTri.Name = "chkTaoToDieuTri";
             this.chkTaoToDieuTri.Properties.Caption = "Ghi diễn biến, PP xử lý vào tờ điều trị";
@@ -356,7 +400,7 @@
             this.txtPPXuLy.MenuManager = this.barManager1;
             this.txtPPXuLy.Name = "txtPPXuLy";
             this.txtPPXuLy.Properties.MaxLength = 4000;
-            this.txtPPXuLy.Size = new System.Drawing.Size(248, 154);
+            this.txtPPXuLy.Size = new System.Drawing.Size(248, 128);
             this.txtPPXuLy.StyleController = this.layoutControl1;
             this.txtPPXuLy.TabIndex = 10;
             // 
@@ -457,7 +501,9 @@
             this.layoutControlItem9,
             this.layoutControlItemDienBien,
             this.layoutControlItemPPXuLy,
-            this.layoutControlItemTaoToDieuTri});
+            this.layoutControlItemTaoToDieuTri,
+            this.lciChkPrintSigned,
+            this.lciBtnApproveAndSign});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Size = new System.Drawing.Size(1443, 652);
@@ -501,7 +547,7 @@
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 590);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 564);
             this.emptySpaceItem3.MaxSize = new System.Drawing.Size(0, 10);
             this.emptySpaceItem3.MinSize = new System.Drawing.Size(10, 10);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
@@ -639,14 +685,14 @@
             this.layoutControlItemPPXuLy.Control = this.txtPPXuLy;
             this.layoutControlItemPPXuLy.Location = new System.Drawing.Point(0, 432);
             this.layoutControlItemPPXuLy.Name = "layoutControlItemPPXuLy";
-            this.layoutControlItemPPXuLy.Size = new System.Drawing.Size(360, 158);
+            this.layoutControlItemPPXuLy.Size = new System.Drawing.Size(360, 132);
             this.layoutControlItemPPXuLy.Text = "PP xử lý:";
             this.layoutControlItemPPXuLy.TextSize = new System.Drawing.Size(105, 13);
             // 
             // layoutControlItemTaoToDieuTri
             // 
             this.layoutControlItemTaoToDieuTri.Control = this.chkTaoToDieuTri;
-            this.layoutControlItemTaoToDieuTri.Location = new System.Drawing.Point(0, 600);
+            this.layoutControlItemTaoToDieuTri.Location = new System.Drawing.Point(0, 574);
             this.layoutControlItemTaoToDieuTri.MaxSize = new System.Drawing.Size(0, 26);
             this.layoutControlItemTaoToDieuTri.MinSize = new System.Drawing.Size(150, 26);
             this.layoutControlItemTaoToDieuTri.Name = "layoutControlItemTaoToDieuTri";
@@ -654,6 +700,30 @@
             this.layoutControlItemTaoToDieuTri.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItemTaoToDieuTri.Text = " ";
             this.layoutControlItemTaoToDieuTri.TextSize = new System.Drawing.Size(105, 13);
+            //
+            // lciChkPrintSigned
+            //
+            this.lciChkPrintSigned.Control = this.chkPrintSigned;
+            this.lciChkPrintSigned.Location = new System.Drawing.Point(0, 600);
+            this.lciChkPrintSigned.MaxSize = new System.Drawing.Size(0, 26);
+            this.lciChkPrintSigned.MinSize = new System.Drawing.Size(110, 26);
+            this.lciChkPrintSigned.Name = "lciChkPrintSigned";
+            this.lciChkPrintSigned.Size = new System.Drawing.Size(225, 26);
+            this.lciChkPrintSigned.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciChkPrintSigned.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChkPrintSigned.TextVisible = false;
+            //
+            // lciBtnApproveAndSign
+            //
+            this.lciBtnApproveAndSign.Control = this.btnApproveAndSign;
+            this.lciBtnApproveAndSign.Location = new System.Drawing.Point(225, 600);
+            this.lciBtnApproveAndSign.MaxSize = new System.Drawing.Size(135, 26);
+            this.lciBtnApproveAndSign.MinSize = new System.Drawing.Size(135, 26);
+            this.lciBtnApproveAndSign.Name = "lciBtnApproveAndSign";
+            this.lciBtnApproveAndSign.Size = new System.Drawing.Size(135, 26);
+            this.lciBtnApproveAndSign.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnApproveAndSign.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnApproveAndSign.TextVisible = false;
             // 
             // customGridViewWithFilterMultiColumn1
             // 
@@ -709,6 +779,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkTaoToDieuTri.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrintSigned.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPPXuLy.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDienBien.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtYKienBacSi.Properties)).EndInit();
@@ -731,6 +802,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemDienBien)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemPPXuLy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemTaoToDieuTri)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkPrintSigned)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnApproveAndSign)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
@@ -792,5 +865,10 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItemDienBien;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItemPPXuLy;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItemTaoToDieuTri;
+        private DevExpress.XtraEditors.SimpleButton btnApproveAndSign;
+        private DevExpress.XtraEditors.CheckEdit chkPrintSigned;
+        private DevExpress.XtraBars.BarButtonItem bbtnApproveAndSign;
+        private DevExpress.XtraLayout.LayoutControlItem lciChkPrintSigned;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnApproveAndSign;
     }
 }

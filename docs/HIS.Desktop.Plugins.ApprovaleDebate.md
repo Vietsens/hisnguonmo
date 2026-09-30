@@ -16,7 +16,12 @@
 2. Form load: hiển thị bác sĩ hội chẩn (multi-select), chẩn đoán chính/phụ, ý kiến BS hội chẩn (nhập nhiều dòng), kèm các tab tổng hợp tờ điều trị / CĐHA / XN / Thuốc-VT-Máu / Siêu âm-Nội soi / PTTT / GPB của ca điều trị.
 3. Nhấn "Duyệt (Ctrl+S)": validate người duyệt + ý kiến → POST `api/HisSpecialistExam/Update` với `IS_APPROVAL = 1`, `EXAM_EXECUTE_CONTENT = ý kiến`, `REJECT_APPROVAL_REASON = null`. **Không** tạo tờ điều trị (GP-HC6).
 4. Nhấn "Chi tiết bệnh án": mở popup `HIS.Desktop.Plugins.EmrDocument` theo `TREATMENT_CODE` hiện tại.
-5. Nhấn "In phiếu duyệt hội chẩn": load lại treatment + view exam → build `Mps000500PDO` → preview/in qua `MPS.MpsPrinter`.
+5. Nhấn "In phiếu duyệt hội chẩn": load lại treatment + view exam → build `Mps000513PDO` → preview/in qua `MPS.MpsPrinter`.
+6. **(Việc 57944)** Nhấn "Duyệt và ký (Ctrl+K)": gộp 2 thao tác Duyệt + ký số phiếu duyệt hội chẩn.
+   - Phiếu chưa duyệt (`IS_APPROVAL != 1`) → chạy đúng luồng Duyệt ở bước 3 (`ApproveProcess()`); duyệt lỗi/validate lỗi → **dừng, không mở ký**.
+   - Phiếu đã duyệt → bỏ qua Duyệt, chỉ mở ký (để ký lại khi lần trước ký lỗi/hủy).
+   - Duyệt xong → in Mps000513 với `PreviewType.EmrSignNow` (mở màn ký số ngay); tích "In văn bản đã ký" → `EmrSignAndPrintNow` (ký xong in luôn).
+   - Ký bị hủy/lỗi → phiếu vẫn ở trạng thái đã duyệt (không rollback).
 
 ### Sơ đồ trạng thái IS_APPROVAL
 ```
@@ -26,6 +31,8 @@ NULL / 2 (Chờ duyệt) → 1 (Đã duyệt)        ← nhấn Duyệt
 
 ### Điều kiện nghiệp vụ
 - Nút "Duyệt" chỉ enable khi `IS_APPROVAL == null || IS_APPROVAL == 2`.
+- Nút "Duyệt và ký" luôn hiển thị và enable (giống "Duyệt và ký" của ApprovalExamSpecialist); chỉ tạm khóa trong lúc đang xử lý để chống bấm đúp.
+- Ký lại phiếu duyệt hội chẩn KHÔNG xóa văn bản ký cũ trên EMR: Mps000513 không override `ProcessUniqueCodeData()` nên `EMR_DOCUMENT.HIS_CODE` rỗng, frontend không xác định được đúng văn bản cũ.
 - Ý kiến BS hội chẩn bắt buộc, max 4000 ký tự.
 - Bác sĩ hội chẩn bắt buộc chọn ít nhất 1 (multi-select, lọc theo `EXAM_EXECUTE_DEPARMENT_ID`).
 - GP-HC6: KHÔNG tạo tờ điều trị khi duyệt — frontend bỏ truyền `CONTENT`/`MEDICAL_INSTRUCTION` trong DTO Update.
@@ -57,6 +64,8 @@ NULL / 2 (Chờ duyệt) → 1 (Đã duyệt)        ← nhấn Duyệt
 |              | Tab: Tờ điều trị | CĐHA | XN | Thuốc/VT/Máu... |
 |              | [Tree/Grid dữ liệu chỉ định]                    |
 |                                                                |
+| [☐ Ghi diễn biến, PP xử lý vào tờ điều trị]                   |
+| [☐ In văn bản đã ký]          [Duyệt và ký (Ctrl K)]          |
 | [Chi tiết bệnh án] [In phiếu duyệt hội chẩn] [Duyệt (Ctrl S)]|
 +--------------------------------------------------------------+
 ```
@@ -70,7 +79,9 @@ NULL / 2 (Chờ duyệt) → 1 (Đã duyệt)        ← nhấn Duyệt
 | txtYKienBacSi | MemoEdit | Ý kiến bác sĩ hội chẩn (nhiều dòng, 4000 ký tự) |
 | btnSave | SimpleButton (Ctrl+S) | Duyệt |
 | btnChiTietBenhAn | SimpleButton | Mở popup EMR theo TREATMENT_CODE |
-| btnPrint | SimpleButton | In phiếu duyệt hội chẩn (Mps000500) |
+| btnPrint | SimpleButton | In phiếu duyệt hội chẩn (Mps000513) |
+| btnApproveAndSign / bbtnApproveAndSign | SimpleButton + BarButtonItem (Ctrl+K) | Duyệt và ký số phiếu duyệt hội chẩn (việc 57944) |
+| chkPrintSigned | CheckEdit (ControlState key `chkPrintSigned`) | In văn bản đã ký sau khi ký (`EmrSignAndPrintNow`) |
 | UCTreeListTracking / UCTreeListService | UC nội bộ | Hiển thị các tab nghiệp vụ |
 
 ## 5. API Endpoints
@@ -106,16 +117,24 @@ NULL / 2 (Chờ duyệt) → 1 (Đã duyệt)        ← nhấn Duyệt
 
 | Loại in | PrintTypeCode | Library/MPS | Template server |
 |---------|--------------|-------------|-----------------|
-| Phiếu duyệt hội chẩn | Mps000500 | `MPS.MpsPrinter.Run` + `MPS.ProcessorBase.Core.PrintData` | SarConsumer / `ConfigSystems.URI_API_SAR` |
+| Phiếu duyệt hội chẩn | Mps000513 | `MPS.MpsPrinter.Run` + `MPS.ProcessorBase.Core.PrintData` | SarConsumer / `ConfigSystems.URI_API_SAR` |
 
 Flow:
 ```
-btnPrint_Click
- → RichEditorStore.RunPrintTemplate("Mps000500", DeletegatePrintTemplate)
+btnPrint_Click              → PrintDebateApproval(isSign: false)
+btnApproveAndSign_Click     → [ApproveProcess() nếu chưa duyệt] → PrintDebateApproval(isSign: true)
+
+PrintDebateApproval(isSign)
+ → RichEditorStore.RunPrintTemplate("Mps000513", (code, file) => DeletegatePrintTemplate(code, file, isSign))
    → InPhieuDuyetHoiChan: load HIS_TREATMENT + V_HIS_SPECIALIST_EXAM
-   → Mps000500PDO(examItem, treatmentItem)
+   → Mps000513PDO(examItem, treatmentItem)
    → EmrGenerateProcessor.GenerateInputADOWithPrintTypeCode → InputADO ký số
-   → MpsPrinter.Run(PrintData{ EmrInputADO = inputADO }, PreviewType = Show | PrintNow)
+   → PreviewType:
+       isSign && chkPrintSigned  → EmrSignAndPrintNow
+       isSign                    → EmrSignNow
+       !isSign && CheDoIn == 2   → PrintNow
+       !isSign                   → Show
+   → MpsPrinter.Run(PrintData{ EmrInputADO = inputADO })
 ```
 
 ## 8. Changelog
@@ -124,7 +143,21 @@ btnPrint_Click
 |------|-----------|-----------------|
 | 21/05/2026 | phuongnm | **B.4.3 Duyệt hội chẩn (Sửa đổi)**: <br>- Xóa trường UI "Diễn biến" (`txtDienBien`) và "PP xử lý" (`txtPPXuLy`) cùng layout items tương ứng.<br>- Mở rộng vùng "Ý kiến bác sĩ hội chẩn" (`txtYKienBacSi`) chiếm vùng đã giải phóng, caption đổi thành "Ý kiến bác sĩ hội chẩn:" (Maroon, bắt buộc).<br>- Thêm nút **"Chi tiết bệnh án"** mở popup `HIS.Desktop.Plugins.EmrDocument` theo `TREATMENT_CODE` (giống pattern ApprovalExamAnesthesia / ApprovalExamSpecialist).<br>- Thêm nút **"In phiếu duyệt hội chẩn"** sử dụng `Mps000500` qua `MPS.MpsPrinter.Run` + `EmrGenerateProcessor` ký số.<br>- **GP-HC6**: Bỏ set `datamapper.CONTENT` và `datamapper.MEDICAL_INSTRUCTION` trong save → không tạo tờ điều trị khi duyệt; bỏ refresh `existingData[0].CONTENT/MEDICAL_INSTRUCTION` ở tab "Tờ điều trị".<br>- Bỏ validate `ValidateNull(txtDienBien)` + `ValidateMaxLength(txtPPXuLy)` trong `ValidContent()`.<br>- Cập nhật Lang.vi / Lang.en / Lang.my: bỏ keys `layoutControlItem9.Text` (Diễn biến) + `layoutControlItem10.Text` (PP xử lý); thêm keys `btnChiTietBenhAn.Text`, `btnPrint.Text`.<br>- Thêm references csproj: `Inventec.Common.RichEditor`, `Inventec.Common.SignLibrary`, `MPS`, `MPS.Processor.Mps000500.PDO`, `MPS.ProcessorBase`, ProjectReference `HIS.Desktop.LocalStorage.ConfigApplication`, `HIS.Desktop.LocalStorage.ConfigSystem`, `HIS.Desktop.Plugins.Library.EmrGenerate`. |
 
+| 30/09/2026 | nampp | **Việc 57944 (NTP) — Tích hợp nút Duyệt và ký số**: <br>- Thêm nút **"Duyệt và ký (Ctrl K)"** (`btnApproveAndSign` + `bbtnApproveAndSign` trong BarManager) và checkbox **"In văn bản đã ký"** (`chkPrintSigned`, lưu ControlState). Hàng mới đặt trên hàng nút dưới cùng, lấy 26px từ ô "PP xử lý".<br>- Tách thân `btnSave_Click` thành `ApproveProcess()` trả `bool` (không đổi logic duyệt), dùng chung cho Duyệt và Duyệt và ký; thêm `WaitingManager` quanh API Update.<br>- Sửa: sau khi duyệt luôn cập nhật `currentHisSpecialistExam` (trước chỉ cập nhật khi có `delegateRefresh`), `delegateRefresh` gọi khi khác null.<br>- `btnPrint_Click` → `PrintDebateApproval(isSign)`; chế độ ký truyền qua lambda vào `DeletegatePrintTemplate` / `InPhieuDuyetHoiChan` (không dùng cờ field).<br>- Audit `LogUtil.LogActionSuccess("frmApprovaleDebate", "ApproveAndSign", loginName)` khi ký thành công.<br>- Sửa `ResourceMessage` trỏ nhầm base name `HIS.Desktop.Plugins.BedRoomPartial.Resources.Message.Lang` → `HIS.Desktop.Plugins.ApprovaleDebate.Resources.Message.Lang` (trước đây mọi message riêng plugin trả chuỗi rỗng).<br>- Lang.vi/en/my: thêm `btnApproveAndSign.Text/ToolTip`, `bbtnApproveAndSign.Caption`, `chkPrintSigned.Properties.Caption/ToolTip` (bản my tạm dùng tiếng Anh).<br>- Sửa tài liệu: mã in thực tế là **Mps000513** (không phải Mps000500). |
+
 ## 9. Test Cases
+
+### Duyệt và ký (việc 57944)
+- [ ] Phiếu chưa duyệt, nhập đủ → "Duyệt và ký" → báo duyệt thành công → mở màn ký số Mps000513; ký xong văn bản xuất hiện trong "Chi tiết bệnh án".
+- [ ] Bỏ trống ý kiến/bác sĩ → "Duyệt và ký" → lỗi validate tại control, KHÔNG gọi API, KHÔNG mở ký.
+- [ ] API Update lỗi → thông báo lỗi, không mở ký, nút "Duyệt và ký" bật lại.
+- [ ] Duyệt và ký → hủy ở màn ký → phiếu vẫn đã duyệt, "Duyệt" bị khóa, "Duyệt và ký" còn bật → bấm lại chỉ mở ký (không gọi Update lần 2).
+- [ ] Mở phiếu đã duyệt từ danh sách → "Duyệt và ký" chỉ mở ký.
+- [ ] Tích "In văn bản đã ký" → ký xong in luôn; đóng/mở form checkbox giữ nguyên trạng thái.
+- [ ] Ctrl+K hoạt động như bấm nút; Ctrl+S vẫn là Duyệt.
+- [ ] Nút "In phiếu duyệt hội chẩn" vẫn Show/PrintNow như cũ, không tự ký.
+- [ ] Tích/bỏ tích "Ghi diễn biến, PP xử lý vào tờ điều trị" → Duyệt và ký xử lý tờ điều trị giống nút Duyệt.
+- [ ] Đổi ngôn ngữ EN → caption nút/checkbox tiếng Anh.
 
 ### Duyệt
 - [ ] Mở form từ danh sách phiếu hội chẩn chưa duyệt → btnSave enabled.

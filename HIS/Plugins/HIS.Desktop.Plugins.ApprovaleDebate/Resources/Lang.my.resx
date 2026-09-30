@@ -297,4 +297,19 @@
   <data name="UCTreeListTracking.USER_NAME.Caption" xml:space="preserve">
     <value>ဆရာဝန်မ</value>
   </data>
+  <data name="frmApprovaleDebate.btnApproveAndSign.Text" xml:space="preserve">
+    <value>Approve and sign (Ctrl K)</value>
+  </data>
+  <data name="frmApprovaleDebate.btnApproveAndSign.ToolTip" xml:space="preserve">
+    <value>Approve the consultation and digitally sign the approval form</value>
+  </data>
+  <data name="frmApprovaleDebate.bbtnApproveAndSign.Caption" xml:space="preserve">
+    <value>Approve and sign (Ctrl K)</value>
+  </data>
+  <data name="frmApprovaleDebate.chkPrintSigned.Properties.Caption" xml:space="preserve">
+    <value>Print signed document</value>
+  </data>
+  <data name="frmApprovaleDebate.chkPrintSigned.ToolTip" xml:space="preserve">
+    <value>Check to print the approval form right after signing (Approve and sign button)</value>
+  </data>
 </root>
