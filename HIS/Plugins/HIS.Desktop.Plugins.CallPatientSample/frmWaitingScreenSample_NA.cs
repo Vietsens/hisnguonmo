@@ -57,7 +57,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         private bool isTach = false;
 
         private string organizationName = "";
-        private List<int> newStatusForceColorCodes = new List<int>();
         private List<int> gridpatientBodyForceColorCodes;
         private int rowCount = 0;
 
@@ -255,8 +254,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                         column.AppearanceCell.Font = new Font("Arial", patientBodySize, FontStyle.Bold);
                     }
                 }
-
-                newStatusForceColorCodes = WaitingScreenSampleNaCFG.NEW_STATUS_REQUEST_FORCE_COLOR_CODES;
             }
             catch (Exception ex)
             {
