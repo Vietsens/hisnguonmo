@@ -38,7 +38,7 @@ namespace SAR.Desktop.Plugins.SarPrintType.ADO
         /// <summary>
         /// Cach gan gia tri vao cot EMR khi cot do la chuoi:
         ///   de trong / REPLACE -> ghi de (mac dinh, giong truoc day)
-        ///   PREPEND            -> noi vao DAU gia tri dang co
+        ///   PREPEND            -> noi vao DAU gia tri dang co, ngan cach 1 dau cach
         ///   (APPEND da bo; gia tri cu con APPEND hien va xu ly nhu PREPEND)
         /// Dung khi can bo sung du lieu ma KHONG duoc mat gia tri cu, vi du HIS_CODE cua
         /// van ban ngoai dot dieu tri (thu vien ky dung chuoi nay de nhan dien van ban
@@ -50,14 +50,6 @@ namespace SAR.Desktop.Plugins.SarPrintType.ADO
             set;
         }
 
-        /// <summary>
-        /// Ky tu ngan cach khi Mode = PREPEND. De trong thi khong chen gi.
-        /// </summary>
-        public string Separator
-        {
-            get;
-            set;
-        }
 
         public int Edit
         {

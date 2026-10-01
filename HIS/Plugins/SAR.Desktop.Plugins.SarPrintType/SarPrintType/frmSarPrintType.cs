@@ -2008,8 +2008,8 @@ namespace SAR.Desktop.Plugins.SarPrintType
                 {
                     if (!String.IsNullOrEmpty(item.EmrColumn) || !String.IsNullOrEmpty(item.Key))
                     {
-                        //Chi ghi Mode/Separator khi nguoi dung co nhap, de JSON cua nhung bieu in
-                        //cu khong bi them truong thua.
+                        //Chi ghi Mode khi nguoi dung co chon, de JSON cua nhung bieu in cu khong bi them
+                        //truong thua. Ky tu ngan cach khong con cau hinh (tang in co dinh 1 dau cach).
                         if (String.IsNullOrWhiteSpace(item.Mode))
                         {
                             var listObjectTemp = new { EmrColumn = item.EmrColumn, Key = item.Key };
@@ -2021,8 +2021,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
                             {
                                 EmrColumn = item.EmrColumn,
                                 Key = item.Key,
-                                Mode = item.Mode.Trim().ToUpperInvariant(),
-                                Separator = item.Separator ?? ""
+                                Mode = item.Mode.Trim().ToUpperInvariant()
                             };
                             listObjectTemps.Add(listObjectTemp);
                         }

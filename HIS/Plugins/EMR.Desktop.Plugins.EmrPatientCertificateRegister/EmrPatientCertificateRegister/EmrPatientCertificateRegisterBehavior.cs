@@ -60,6 +60,11 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                 if (moduleData != null)
                 {
+                    // EMR.HSM.CMC.INTEGRATE_OPTION: 0/khong khai bao => man cap chung thu 2ID; khac 0 => man cap chung thu CMC
+                    if (IsCmcPlatform())
+                    {
+                        return new frmEmrPatientCertificateRegisterCmc(moduleData);
+                    }
                     return new frmEmrPatientCertificateRegister(moduleData, documentId);
                 }
                 else
@@ -72,6 +77,26 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return null;
+            }
+        }
+
+        private const string CFG_HSM_CMC_INTEGRATE_OPTION = "EMR.HSM.CMC.INTEGRATE_OPTION";
+
+        /// <summary>Doc giong BE (EmrSignCFG.IS_CMC_PLATFORM): so khac 0 => nen tang CMC (CSign + HubCA); 0, de trong hoac khong phai so => 2ID</summary>
+        private static bool IsCmcPlatform()
+        {
+            try
+            {
+                // Tai lai cau hinh EMR truoc khi doc: cache may tram co the nap tu truoc khi key duoc them/doi tren server
+                HIS.Desktop.LocalStorage.EmrConfig.ConfigLoader.Refresh();
+                string value = HIS.Desktop.LocalStorage.EmrConfig.EmrConfigs.Get<string>(CFG_HSM_CMC_INTEGRATE_OPTION);
+                int option;
+                return Int32.TryParse(value, out option) && option != 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
     }
