@@ -191,7 +191,6 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColumnKey = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColAdd = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMappingMode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnMappingSeparator = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryBtnAdd = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryCboMappingMode = new DevExpress.XtraEditors.Repository.RepositoryItemImageComboBox();
             this.repositoryBtnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -1524,7 +1523,6 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColumnNameEMR,
             this.gridColumnKey,
             this.gridColumnMappingMode,
-            this.gridColumnMappingSeparator,
             this.gridColAdd});
             this.gridViewMappingEMR.GridControl = this.gridControlMappingEMR;
             this.gridViewMappingEMR.Name = "gridViewMappingEMR";
@@ -1538,7 +1536,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColumnNameEMR.Name = "gridColumnNameEMR";
             this.gridColumnNameEMR.Visible = true;
             this.gridColumnNameEMR.VisibleIndex = 0;
-            this.gridColumnNameEMR.Width = 190;
+            this.gridColumnNameEMR.Width = 215;
             // 
             // gridColumnKey
             // 
@@ -1547,7 +1545,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColumnKey.Name = "gridColumnKey";
             this.gridColumnKey.Visible = true;
             this.gridColumnKey.VisibleIndex = 1;
-            this.gridColumnKey.Width = 190;
+            this.gridColumnKey.Width = 215;
             // 
             // gridColumnMappingMode
             // 
@@ -1555,20 +1553,10 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColumnMappingMode.ColumnEdit = this.repositoryCboMappingMode;
             this.gridColumnMappingMode.FieldName = "Mode";
             this.gridColumnMappingMode.Name = "gridColumnMappingMode";
-            this.gridColumnMappingMode.ToolTip = "REPLACE = ghi đè giá trị cũ. PREPEND = nối vào đầu giá trị cũ.";
+            this.gridColumnMappingMode.ToolTip = "REPLACE = ghi đè giá trị cũ. PREPEND = nối vào đầu giá trị cũ, cách một dấu cách.";
             this.gridColumnMappingMode.Visible = true;
             this.gridColumnMappingMode.VisibleIndex = 2;
-            this.gridColumnMappingMode.Width = 180;
-            // 
-            // gridColumnMappingSeparator
-            // 
-            this.gridColumnMappingSeparator.Caption = "Ký tự ngăn cách";
-            this.gridColumnMappingSeparator.FieldName = "Separator";
-            this.gridColumnMappingSeparator.Name = "gridColumnMappingSeparator";
-            this.gridColumnMappingSeparator.ToolTip = "Ký tự chèn giữa giá trị mới và giá trị cũ khi Cách gán là PREPEND. Ví dụ | hoặc dấu cách.";
-            this.gridColumnMappingSeparator.Visible = true;
-            this.gridColumnMappingSeparator.VisibleIndex = 3;
-            this.gridColumnMappingSeparator.Width = 110;
+            this.gridColumnMappingMode.Width = 215;
             // 
             // gridColAdd
             // 
@@ -1576,7 +1564,7 @@ namespace SAR.Desktop.Plugins.SarPrintType
             this.gridColAdd.Name = "gridColAdd";
             this.gridColAdd.OptionsColumn.ShowCaption = false;
             this.gridColAdd.Visible = true;
-            this.gridColAdd.VisibleIndex = 4;
+            this.gridColAdd.VisibleIndex = 3;
             this.gridColAdd.Width = 23;
             // 
             // repositoryCboMappingMode
@@ -3781,7 +3769,6 @@ namespace SAR.Desktop.Plugins.SarPrintType
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnKey;
         private DevExpress.XtraGrid.Columns.GridColumn gridColAdd;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnMappingMode;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMappingSeparator;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryBtnAdd;
         private DevExpress.XtraEditors.Repository.RepositoryItemImageComboBox repositoryCboMappingMode;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryBtnDelete;

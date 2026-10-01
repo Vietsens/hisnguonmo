@@ -696,16 +696,16 @@ namespace MPS.ProcessorBase.Core
         /// cua man "Anh xa du lieu EMR" (EMR_COLUMN_MAPPING cua bieu in).
         ///
         ///   khong khai bao / "REPLACE" -> ghi de (mac dinh, giu nguyen hanh vi cu)
-        ///   "PREPEND"                  -> gia tri moi + Separator + gia tri cu
+        ///   "PREPEND"                  -> gia tri moi + " " + gia tri cu (ngan cach co dinh 1 dau cach)
         ///   "APPEND" (noi vao cuoi) DA BO theo yeu cau; cau hinh cu con APPEND duoc xu ly
         ///   nhu PREPEND de khong ghi de mat chuoi dinh danh (HIS_CODE).
         ///
         /// Chi tac dong den bieu in NAO KHAI BAO Mode. Bieu in khong khai bao chay y nhu truoc,
         /// nen khong co rui ro lan sang cac MPS khac.
         ///
-        /// Co khai bao Separator -> LUON noi kem Separator, ke ca khi chuoi cu da chua gia tri moi
-        /// (vd bang ke Mps000302 da co san ma bieu in -> "Mps000302|Mps000302 ..."), theo yeu cau nguoi dung.
-        /// Khong khai bao Separator ma chuoi cu da chua gia tri moi -> giu nguyen, tranh dinh lien 2 lan.
+        /// Da bo o nhap Ky tu ngan cach tren man "Anh xa du lieu EMR": luon ngan cach bang 1 dau cach.
+        /// Luon noi, ke ca khi chuoi cu da chua gia tri moi (vd bang ke Mps000302 da co san ma bieu in
+        /// -> "Mps000302 Mps000302 TREATMENT_CODE: ..."), theo yeu cau nguoi dung.
         /// Moi loi deu nuot va tra ve gia tri moi (hanh vi ghi de cu) de khong lam hong ban in.
         /// </summary>
         private object BuildMappingValue(System.Reflection.PropertyInfo pi,
@@ -741,20 +741,13 @@ namespace MPS.ProcessorBase.Core
                     return newValue;
                 }
 
-                string sep = emrColumn.Separator ?? "";
-
-                //khong khai bao ky tu ngan cach ma chuoi cu da co gia tri moi -> giu nguyen (khong dinh lien 2 lan).
-                //co khai bao ky tu ngan cach -> luon noi kem ky tu do.
-                if (sep.Length == 0 && oldValue.IndexOf(newValue, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    return oldValue;
-                }
-
+                //ngan cach co dinh 1 dau cach (da bo o nhap Ky tu ngan cach); luon noi.
+                const string sep = " ";
                 string result = newValue + sep + oldValue;
 
                 Inventec.Common.Logging.LogSystem.Info(
                     "BuildMappingValue____EmrColumn=" + emrColumn.EmrColumn
-                    + ", Mode=" + mode + ", Separator=" + sep
+                    + ", Mode=" + mode
                     + ", oldValue=" + oldValue + ", newValue=" + newValue
                     + ", result=" + result
                     + ", printTypeCode=" + (this.printType != null ? this.printType.PRINT_TYPE_CODE : ""));

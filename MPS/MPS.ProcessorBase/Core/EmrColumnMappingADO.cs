@@ -32,7 +32,7 @@ namespace MPS.ProcessorBase.Core
         /// <summary>
         /// Cach gan gia tri vao cot EMR khi cot do la chuoi:
         ///   null / khong khai bao / "REPLACE" -> GHI DE (hanh vi mac dinh, giong truoc day)
-        ///   "PREPEND"                         -> NOI vao DAU gia tri dang co
+        ///   "PREPEND"                         -> NOI vao DAU gia tri dang co, ngan cach 1 dau cach
         ///   "APPEND" da bo; gia tri cu con APPEND duoc xu ly nhu PREPEND
         ///
         /// Dat tren TUNG DONG anh xa cua TUNG bieu in (man "Anh xa du lieu EMR"), nen chi
@@ -43,11 +43,5 @@ namespace MPS.ProcessorBase.Core
         /// dien "van ban da ky chua" (so khop BANG), ghi de se lam mat nhan dien va tao ban trung.
         /// </summary>
         public string Mode { get; set; }
-
-        /// <summary>
-        /// Ky tu ngan cach khi Mode = PREPEND. Khong khai bao -> khong chen gi.
-        /// Vi du "|" hoac " ".
-        /// </summary>
-        public string Separator { get; set; }
     }
 }
