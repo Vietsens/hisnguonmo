@@ -62,14 +62,25 @@ namespace MPS.Processor.Mps000510
                 objectTag.AddObjectData(store, "PatyAlterBHYT", this.patyAlterBHYTADOs);
                 objectTag.AddObjectData(store, "PatyAlterBHYTDepaRoom", this.patyAlterBHYTADOs);
 
+                if (heinServiceTypeADOs_LoaiDV == null) heinServiceTypeADOs_LoaiDV = new List<HeinServiceTypeADO>();
+                if (medicineLineADOs_LoaiDV == null) medicineLineADOs_LoaiDV = new List<MedicineLineADO>();
+                if (HeinServiceTypeBeds_LoaiDV == null) HeinServiceTypeBeds_LoaiDV = new List<HeinServiceTypeADO>();
+                if (sereServADOsLoaiDV == null) sereServADOsLoaiDV = new List<SereServADO>();
+
+                // Mẫu KHÔNG có band khoa/phòng (ServiceGroupByDepa / ServiceGroupByRoom) = mẫu cũ nhiều viện đang dùng:
+                // bind HeinServiceType/MedicineLine/HeinServiceTypeBed/Service, hoặc *LoaiDV lồng Service.
+                // Với mẫu này phải cấp bộ gộp THUẦN theo loại DV (tương đương GroupType=None trước commit f6b733d58):
+                // nếu cấp bộ gộp theo khoa+phòng thì dịch vụ cùng tên ở nhiều phòng tách dòng, loại DV lặp theo phòng.
+                bool flatTemplate = IsFlatTemplate();
+
                 #region bộ 1 theo khoa phòng
                 objectTag.AddObjectData(store, "ServiceGroupByDepa", this.ServiceGroupByDepa);
                 objectTag.AddObjectData(store, "ServiceGroupByRoom", this.ServiceGroupByRoom);
-                objectTag.AddObjectData(store, "HeinServiceType", heinServiceTypeADOs.OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
-                objectTag.AddObjectData(store, "MedicineLine", medicineLineADOs);
-                objectTag.AddObjectData(store, "HeinServiceTypeBed", HeinServiceTypeBeds);
-                objectTag.AddObjectData(store, "Service", sereServADOs);
-                
+                objectTag.AddObjectData(store, "HeinServiceType", (flatTemplate ? heinServiceTypeADOs_LoaiDV : heinServiceTypeADOs).OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
+                objectTag.AddObjectData(store, "MedicineLine", flatTemplate ? medicineLineADOs_LoaiDV : medicineLineADOs);
+                objectTag.AddObjectData(store, "HeinServiceTypeBed", flatTemplate ? HeinServiceTypeBeds_LoaiDV : HeinServiceTypeBeds);
+                objectTag.AddObjectData(store, "Service", flatTemplate ? sereServADOsLoaiDV : sereServADOs);
+
                 objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceGroupByRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
                 objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceType", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
                 objectTag.AddRelationship(store, "ServiceGroupByDepa", "MedicineLine", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
@@ -115,9 +126,6 @@ namespace MPS.Processor.Mps000510
                 #endregion
 
                 #region bộ 3 theo loại hình dịch vụ
-                if (heinServiceTypeADOs_LoaiDV == null) heinServiceTypeADOs_LoaiDV = new List<HeinServiceTypeADO>();
-                if (medicineLineADOs_LoaiDV == null) medicineLineADOs_LoaiDV = new List<MedicineLineADO>();
-                if (HeinServiceTypeBeds_LoaiDV == null) HeinServiceTypeBeds_LoaiDV = new List<HeinServiceTypeADO>();
                 objectTag.AddObjectData(store, "HeinServiceTypeLoaiDV", heinServiceTypeADOs_LoaiDV.OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
                 objectTag.AddObjectData(store, "MedicineLineLoaiDV", medicineLineADOs_LoaiDV);
                 objectTag.AddObjectData(store, "HeinServiceTypeBedLoaiDV", HeinServiceTypeBeds_LoaiDV);
@@ -131,6 +139,12 @@ namespace MPS.Processor.Mps000510
                 objectTag.AddRelationship(store, "MedicineLineLoaiDV", "HeinServiceTypeBedLoaiDV", "ID", "MEDICINE_LINE_ID");
 
                 objectTag.AddRelationship(store, "HeinServiceTypeBedLoaiDV", "ServiceLoaiDV", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
+
+                // Mẫu cũ lồng band Service (không phải ServiceLoaiDV) trong *LoaiDV: không có relationship thì FlexCel
+                // in toàn bộ Service dưới mỗi loại DV / dòng thuốc / giường -> lặp dịch vụ. Nối lại như trước f6b733d58.
+                objectTag.AddRelationship(store, "HeinServiceTypeLoaiDV", "Service", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "MedicineLineLoaiDV", "Service", "ID", "MEDICINE_LINE_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeBedLoaiDV", "Service", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
                 #endregion
 
                 objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656
@@ -146,6 +160,31 @@ namespace MPS.Processor.Mps000510
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Mẫu "phẳng" = template không có band ServiceGroupByDepa / ServiceGroupByRoom (named range __X__ trong file Excel).
+        /// Lỗi đọc template -> coi như không phẳng (giữ nguyên hành vi hiện tại).
+        /// </summary>
+        private bool IsFlatTemplate()
+        {
+            try
+            {
+                FlexCel.XlsAdapter.XlsFile xls = new FlexCel.XlsAdapter.XlsFile(System.IO.Path.GetFullPath(fileName), true);
+                for (int i = 1; i <= xls.NamedRangeCount; i++)
+                {
+                    string name = xls.GetNamedRange(i).Name ?? "";
+                    if (name.Equals("__ServiceGroupByDepa__", StringComparison.OrdinalIgnoreCase)
+                        || name.Equals("__ServiceGroupByRoom__", StringComparison.OrdinalIgnoreCase))
+                        return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
         }
 
         private List<SurchargeADO> SurchargeProcess()
