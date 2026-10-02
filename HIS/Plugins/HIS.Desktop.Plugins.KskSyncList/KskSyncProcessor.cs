@@ -437,9 +437,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     try
                     {
                         Qd1551KskInput inp = (i < inputs.Count) ? inputs[i] : null;
+                        // MỤC KẾT LUẬN (Phân loại + Người kết luận...) — cùng luật nút "Kết thúc khám" của màn nhập KSK.
+                        string conclusionBlockReason = (inp != null) ? KskConclusionRules.Validate(rowList[i], inp) : null;
                         if (inp == null)
                         {
                             ado = BuildFailedResult(rowList[i], syncTime, "Không dựng được dữ liệu hồ sơ");
+                            if (vlgPusher != null) MarkVlgNotSent(ado, rowList[i]);
+                        }
+                        else if (conclusionBlockReason != null)
+                        {
+                            // Thiếu mục kết luận -> KHÔNG đẩy cổng nào; giữ mã đối soát của lần đẩy trước.
+                            Inventec.Common.Logging.LogSystem.Info("Dong bo KSK: ho so treatment_code="
+                                + SafeString(GetProp(rowList[i], "TDL_TREATMENT_CODE")) + " -> KHONG day: " + conclusionBlockReason);
+                            ado = BuildFailedResult(rowList[i], syncTime, conclusionBlockReason);
                             if (vlgPusher != null) MarkVlgNotSent(ado, rowList[i]);
                         }
                         else
