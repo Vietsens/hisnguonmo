@@ -34,10 +34,11 @@ Phiếu ĐÃ có (màn Xuất bán chế độ sửa / icon trên Danh sách xu�
 ### Liên kết tài liệu ↔ phiếu
 | Trường DocumentTDO | Giá trị | Lý do |
 |---|---|---|
-| TreatmentCode | `EXP_MEST_CODE` | `EmrDocumentViewFilter.TREATMENT_CODEs` → đánh dấu cả trang lưới bằng 1 API |
-| HisCode | `{MaSite} EXP_MEST_CODE:{mã} SERVICE_REQ_CODE:{mã đơn}` | Tra cứu/đối chiếu |
+| TreatmentCode | `TDL_TREATMENT_CODE` (mã hồ sơ); bán vãng lai không có hồ sơ → `EXP_MEST_CODE` | Đúng mã hồ sơ của phiếu; backend bắt buộc không rỗng |
+| HisCode | `{MaSite} EXP_MEST_CODE:{mã} SERVICE_REQ_CODE:{mã đơn}` + `|EXP_MEST_CODE:{mã}|EXP_STOCK:{mã kho}|REQ_DEPT:{mã khoa}` | Khối sau dấu `|` được EMR (`HisCodeStockParser`) tách vào cột **`EMR_DOCUMENT.EXP_MEST_CODE`**, `EXP_MEDI_STOCK_CODE`, `REQ_DEPARTMENT_CODE` — cùng định dạng `MPS AbstractProcessor.BuildEmrStockData` |
 | DocumentTypeId | ID của `EXPSA` | Lọc chọn lọc, tránh quét toàn EMR_DOCUMENT |
-| IsOutsideTreatment | true | Đơn ngoại viện, không thuộc hồ sơ điều trị (không hiện trong bệnh án EMR của BN) |
+| IsOutsideTreatment | true | Không vào bộ bệnh án; backend không kiểm tra khóa/lưu trữ hồ sơ → đính kèm được cả khi hồ sơ đã khóa |
+| (Truy vấn) | `TREATMENT_CODEs` = mã hồ sơ + mã phiếu, rồi khớp theo `EMR_DOCUMENT.EXP_MEST_CODE` (fallback tách `EXP_MEST_CODE:` từ `HIS_CODE`) | Bộ lọc EMR không có `EXP_MEST_CODEs`; 1 hồ sơ nhiều phiếu không lẫn đơn của nhau; tài liệu tạo trước 02/10/2026 vẫn nhận ra |
 | FileType | PDF | Mọi tệp của 1 lần đính kèm gộp thành 1 PDF (ảnh: 1 trang A4, tự xoay ngang theo ảnh; PDF: giữ nguyên trang) |
 
 ### Điều kiện nghiệp vụ
@@ -89,7 +90,7 @@ Phím tắt: Ctrl S (lưu/đồng ý), Ctrl N (đính kèm mới), F5 (làm mớ
 | Action | URI | Consumer | Filter / Body |
 |--------|-----|----------|---------------|
 | Loại văn bản EXPSA | api/EmrDocumentType/Get | EmrConsumer | EmrDocumentTypeFilter (DOCUMENT_TYPE_CODE__EXACT, IS_ACTIVE) |
-| Danh sách / đánh dấu | api/EmrDocument/GetView | EmrConsumer | EmrDocumentViewFilter (TREATMENT_CODEs, DOCUMENT_TYPE_ID, IS_ACTIVE, IS_DELETE=false) |
+| Danh sách / đánh dấu | api/EmrDocument/GetView | EmrConsumer | EmrDocumentViewFilter (TREATMENT_CODEs = mã hồ sơ + mã phiếu, DOCUMENT_TYPE_ID, IS_ACTIVE, IS_DELETE=false) → khớp `EXP_MEST_CODE` phía client |
 | Tạo tài liệu | EMR.URI.EmrDocument.CREATE_BY_TDO | EmrConsumer | DocumentTDO (base64 PDF) |
 | Tải nội dung | api/EmrDocument/DownloadFile | EmrConsumer | EmrDocumentDownloadFileSDO (ID, IsMerge) |
 | Xóa mềm | EMR.URI.EmrDocument.DELETE | EmrConsumer | documentId |
@@ -104,7 +105,7 @@ Phím tắt: Ctrl S (lưu/đồng ý), Ctrl N (đính kèm mới), F5 (làm mớ
 | `ChooseFiles(PendingAttachADO)` | Form chọn tệp chế độ tạm; null = hủy |
 | `AttachPendingFiles(List<ExpMestAttachInfoADO>, PendingAttachADO)` | Gộp PDF + tạo tài liệu cho từng phiếu; cảnh báo phiếu lỗi |
 | `ShowAttachList(ExpMestAttachInfoADO, roomId, Action)` | Danh sách đơn của phiếu; Action gọi khi có thay đổi |
-| `GetExpMestCodesHasAttach(List<string>)` | HashSet mã phiếu đã có đơn (1 API) |
+| `GetExpMestCodesHasAttach(List<ExpMestAttachInfoADO>)` | HashSet mã phiếu đã có đơn (1 API) — cần EXP_MEST_CODE + TDL_TREATMENT_CODE |
 | `ConfirmDiscard`, `Release`, `ShowMultiPatientWarning` | Hỗ trợ màn Xuất bán |
 | `GetButtonCaption/GetButtonToolTip/GetGridColumnCaption/GetGridToolTip` | Chuỗi đa ngôn ngữ cho màn gọi |
 
@@ -135,6 +136,7 @@ Không có mẫu MPS. In đơn đính kèm qua viewer `SignLibraryGUIProcessor.S
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 02/10/2026 | nampp | **Việc 57853 (gắn đúng mã hồ sơ + mã xuất)** — Tài liệu EMR: `TreatmentCode` = `TDL_TREATMENT_CODE` (bán vãng lai không có hồ sơ → `EXP_MEST_CODE`), vẫn `IsOutsideTreatment = true`; `HIS_CODE` thêm khối chuẩn `|EXP_MEST_CODE:x|EXP_STOCK:y|REQ_DEPT:z` để EMR (`HisCodeStockParser`) ghi cột `EMR_DOCUMENT.EXP_MEST_CODE` / `EXP_MEDI_STOCK_CODE` / `REQ_DEPARTMENT_CODE` (trước đây không có `|` nên các cột này NULL). Danh sách đơn + đánh dấu lọc `TREATMENT_CODEs` = mã hồ sơ + mã phiếu rồi khớp theo `EMR_DOCUMENT.EXP_MEST_CODE` (fallback tách từ `HIS_CODE`) → tài liệu tạo trước đó vẫn nhận ra. |
 | 29/09/2026 | khainq | Việc 57853 — Tạo thư viện: form đính kèm (chế độ tạm/lưu thẳng, chọn tệp, chụp ảnh, xoay, kiểm tra định dạng/dung lượng), form danh sách đơn (xem/in, bổ sung, xóa theo trạng thái), worker EMR, gộp PDF, audit LogAction. |
 
 ## 9. Test Cases

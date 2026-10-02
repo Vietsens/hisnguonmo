@@ -31,6 +31,12 @@ namespace HIS.Desktop.Plugins.Library.ExpMestAttachFile.ADO
         public long EXP_MEST_STT_ID { get; set; }
         public long? BILL_ID { get; set; }
         public long? DEBT_ID { get; set; }
+        /// <summary>v57853 - Ma ho so dieu tri (rong voi phieu ban vang lai) -> DocumentTDO.TreatmentCode</summary>
+        public string TDL_TREATMENT_CODE { get; set; }
+        /// <summary>v57853 - Ma kho xuat -> khoi "EXP_STOCK:" trong HIS_CODE (EMR tach vao EMR_DOCUMENT.EXP_MEDI_STOCK_CODE)</summary>
+        public string MEDI_STOCK_CODE { get; set; }
+        /// <summary>v57853 - Ma khoa yeu cau -> khoi "REQ_DEPT:" trong HIS_CODE (EMR_DOCUMENT.REQ_DEPARTMENT_CODE)</summary>
+        public string REQ_DEPARTMENT_CODE { get; set; }
 
         public ExpMestAttachInfoADO() { }
 
@@ -43,6 +49,7 @@ namespace HIS.Desktop.Plugins.Library.ExpMestAttachFile.ADO
             this.EXP_MEST_STT_ID = data.EXP_MEST_STT_ID;
             this.BILL_ID = data.BILL_ID;
             this.DEBT_ID = data.DEBT_ID;
+            this.TDL_TREATMENT_CODE = data.TDL_TREATMENT_CODE;
         }
 
         public ExpMestAttachInfoADO(V_HIS_EXP_MEST data)
@@ -54,6 +61,9 @@ namespace HIS.Desktop.Plugins.Library.ExpMestAttachFile.ADO
             this.EXP_MEST_STT_ID = data.EXP_MEST_STT_ID;
             this.BILL_ID = data.BILL_ID;
             this.DEBT_ID = data.DEBT_ID;
+            this.TDL_TREATMENT_CODE = data.TDL_TREATMENT_CODE;
+            this.MEDI_STOCK_CODE = data.MEDI_STOCK_CODE;
+            this.REQ_DEPARTMENT_CODE = data.REQ_DEPARTMENT_CODE;
         }
 
         public ExpMestAttachInfoADO(V_HIS_EXP_MEST_2 data)
@@ -65,6 +75,9 @@ namespace HIS.Desktop.Plugins.Library.ExpMestAttachFile.ADO
             this.EXP_MEST_STT_ID = data.EXP_MEST_STT_ID;
             this.BILL_ID = data.BILL_ID;
             this.DEBT_ID = data.DEBT_ID;
+            this.TDL_TREATMENT_CODE = data.TDL_TREATMENT_CODE;
+            this.MEDI_STOCK_CODE = data.MEDI_STOCK_CODE;
+            this.REQ_DEPARTMENT_CODE = data.REQ_DEPARTMENT_CODE;
         }
     }
 }

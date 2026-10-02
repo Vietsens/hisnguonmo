@@ -79,8 +79,8 @@ class ExpMestAttachFileADO
 
 | Trường DocumentTDO | Giá trị | Lý do |
 |---|---|---|
-| `TreatmentCode` | `EXP_MEST_CODE` | `EmrDocumentViewFilter` có **`TREATMENT_CODEs`** → đánh dấu cả trang lưới bằng **1 API** |
-| `HisCode` | `"{MaSite} EXP_MEST_CODE:{code} PRES:{TDL_SERVICE_REQ_CODE}"` | Tra cứu chính xác từng phiếu |
+| `TreatmentCode` | `TDL_TREATMENT_CODE` (vãng lai → `EXP_MEST_CODE`) — *cập nhật 02/10/2026* | `EmrDocumentViewFilter` có **`TREATMENT_CODEs`** → đánh dấu cả trang lưới bằng **1 API** |
+| `HisCode` | `"{MaSite} EXP_MEST_CODE:{code} SERVICE_REQ_CODE:{mã đơn}|EXP_MEST_CODE:{code}|EXP_STOCK:{kho}|REQ_DEPT:{khoa}"` | EMR tách khối sau `|` vào cột `EMR_DOCUMENT.EXP_MEST_CODE` → tài liệu gắn đúng phiếu xuất |
 | `DocumentTypeId` | `EXPSA` (khóa ReadOnly) | Lọc chọn lọc, tránh quét toàn EMR_DOCUMENT (bài học fix hiệu năng 42244) |
 | `IsOutsideTreatment` | `true` | Đơn ngoại viện, không thuộc hồ sơ điều trị |
 | `FileType` | `PDF` | Gộp nhiều ảnh/trang thành 1 PDF như bản tham khảo |

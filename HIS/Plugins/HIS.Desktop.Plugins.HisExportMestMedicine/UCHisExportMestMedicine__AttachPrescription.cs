@@ -123,12 +123,12 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             {
                 if (!this.isAttachPrescriptionEnable)
                     return;
-                List<string> saleCodes = data != null
+                List<ExpMestAttachInfoADO> saleExpMests = data != null
                     ? data.Where(o => o.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BAN && !String.IsNullOrEmpty(o.EXP_MEST_CODE))
-                        .Select(o => o.EXP_MEST_CODE).ToList()
-                    : new List<string>();
-                this.expMestCodesHasAttach = saleCodes.Any()
-                    ? ExpMestAttachFileProcessor.GetExpMestCodesHasAttach(saleCodes)
+                        .Select(o => new ExpMestAttachInfoADO(o)).ToList()
+                    : new List<ExpMestAttachInfoADO>();
+                this.expMestCodesHasAttach = saleExpMests.Any()
+                    ? ExpMestAttachFileProcessor.GetExpMestCodesHasAttach(saleExpMests)
                     : new HashSet<string>();
             }
             catch (Exception ex)
@@ -181,7 +181,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             try
             {
                 if (row == null || String.IsNullOrEmpty(row.EXP_MEST_CODE)) return;
-                var codes = ExpMestAttachFileProcessor.GetExpMestCodesHasAttach(new List<string> { row.EXP_MEST_CODE });
+                var codes = ExpMestAttachFileProcessor.GetExpMestCodesHasAttach(new List<ExpMestAttachInfoADO> { new ExpMestAttachInfoADO(row) });
                 if (codes.Contains(row.EXP_MEST_CODE))
                     this.expMestCodesHasAttach.Add(row.EXP_MEST_CODE);
                 else

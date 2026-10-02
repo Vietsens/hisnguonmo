@@ -165,7 +165,7 @@ namespace HIS.Desktop.Plugins.Library.ExpMestAttachFile.Popup
             try
             {
                 WaitingManager.Show();
-                this.documents = AttachDocumentWorker.GetDocuments(this.expMest.EXP_MEST_CODE, param);
+                this.documents = AttachDocumentWorker.GetDocuments(this.expMest, param);
                 WaitingManager.Hide();
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
 

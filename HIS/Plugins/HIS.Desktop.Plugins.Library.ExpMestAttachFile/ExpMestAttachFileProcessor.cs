@@ -239,10 +239,13 @@ namespace HIS.Desktop.Plugins.Library.ExpMestAttachFile
             }
         }
 
-        /// <summary>EXP_MEST_CODEs having at least one attached prescription — one API call for the whole list</summary>
-        public static HashSet<string> GetExpMestCodesHasAttach(List<string> expMestCodes)
+        /// <summary>
+        /// EXP_MEST_CODEs (among the input tickets) having at least one attached prescription — one API call for the whole list.
+        /// Ticket needs EXP_MEST_CODE and TDL_TREATMENT_CODE (documents are filed under the treatment code).
+        /// </summary>
+        public static HashSet<string> GetExpMestCodesHasAttach(List<ExpMestAttachInfoADO> expMests)
         {
-            return AttachDocumentWorker.GetExpMestCodesHasAttach(expMestCodes);
+            return AttachDocumentWorker.GetExpMestCodesHasAttach(expMests);
         }
 
         #endregion
