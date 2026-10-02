@@ -3672,25 +3672,33 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMedicinePatys = new List<HIS_MEDICINE_PATY>();
                     }
 
+                    // Doi tuong bi bo tich "Khong ban" sau khi sua: bo dong moi them (ID = 0), giu dong da luu DB (ID > 0)
+                    this.currrentServiceAdo.HisMedicinePatys.RemoveAll(o => o.ID <= 0
+                        && (this.currrentServiceAdo.VHisServicePatys == null || !this.currrentServiceAdo.VHisServicePatys.Exists(p => !p.IsNotSell && p.PATIENT_TYPE_ID == o.PATIENT_TYPE_ID)));
+
+                    long tpUpdate = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.AutoRoundExpPriceOption"));
                     List<string> mes1 = new List<string>();
                     foreach (var paty in this.currrentServiceAdo.VHisServicePatys)
                     {
                         if (!paty.IsNotSell)
                         {
                             var mediPaty = this.currrentServiceAdo.HisMedicinePatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
-                            if (mediPaty != null)
-                            {
-                                mediPaty.EXP_PRICE = paty.ExpPrice;
-                                mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
-                            }
-                            else
+                            if (mediPaty == null)
                             {
                                 mediPaty = new HIS_MEDICINE_PATY();
                                 mediPaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                mediPaty.EXP_PRICE = paty.ExpPrice;
-                                mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 this.currrentServiceAdo.HisMedicinePatys.Add(mediPaty);
                             }
+                            // Dong bo voi luong Them: gia ban = cot "Gia ban" tren luoi (da gom thang so), khong lay gia von paty.ExpPrice
+                            mediPaty.EXP_PRICE = GetExpPriceForPaty(paty);
+                            mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
+                            if (tpUpdate == 1 || tpUpdate == 2 || tpUpdate == 3)
+                            {
+                                mediPaty.EXP_VAT_RATIO = 0;
+                                mediPaty.EXP_PRICE = paty.PRICE;
+                            }
+                            LogPatyPrice("MedicinePaty_Update", paty, mediPaty.EXP_PRICE, mediPaty.EXP_VAT_RATIO);
+
                             if (paty.PRICE != paty.PRE_PRICE_Str && paty.PRE_PRICE_Str > 0)
                             {
                                 mes1.Add(string.Format("{0} {1} có giá bán lần trước = {2} của đối tượng {3} khác với giá bán hiện tại.",
@@ -3770,25 +3778,33 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMaterialPatys = new List<HIS_MATERIAL_PATY>();
                     }
 
+                    // Doi tuong bi bo tich "Khong ban" sau khi sua: bo dong moi them (ID = 0), giu dong da luu DB (ID > 0)
+                    this.currrentServiceAdo.HisMaterialPatys.RemoveAll(o => o.ID <= 0
+                        && (this.currrentServiceAdo.VHisServicePatys == null || !this.currrentServiceAdo.VHisServicePatys.Exists(p => !p.IsNotSell && p.PATIENT_TYPE_ID == o.PATIENT_TYPE_ID)));
+
+                    long tpUpdate = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.AutoRoundExpPriceOption"));
                     List<string> mes2 = new List<string>();
                     foreach (var paty in this.currrentServiceAdo.VHisServicePatys)
                     {
                         if (!paty.IsNotSell)
                         {
                             var matePaty = this.currrentServiceAdo.HisMaterialPatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
-                            if (matePaty != null)
-                            {
-                                matePaty.EXP_PRICE = paty.ExpPrice;
-                                matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
-                            }
-                            else
+                            if (matePaty == null)
                             {
                                 matePaty = new HIS_MATERIAL_PATY();
                                 matePaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                matePaty.EXP_PRICE = paty.ExpPrice;
-                                matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 this.currrentServiceAdo.HisMaterialPatys.Add(matePaty);
                             }
+                            // Dong bo voi luong Them: gia ban = cot "Gia ban" tren luoi (da gom thang so), khong lay gia von paty.ExpPrice
+                            matePaty.EXP_PRICE = GetExpPriceForPaty(paty);
+                            matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
+                            if (tpUpdate == 1 || tpUpdate == 2 || tpUpdate == 3)
+                            {
+                                matePaty.EXP_VAT_RATIO = 0;
+                                matePaty.EXP_PRICE = paty.PRICE;
+                            }
+                            LogPatyPrice("MaterialPaty_Update", paty, matePaty.EXP_PRICE, matePaty.EXP_VAT_RATIO);
+
                             if (paty.PRICE != paty.PRE_PRICE_Str && paty.PRE_PRICE_Str > 0)
                             {
                                 mes2.Add(string.Format("{0} {1} có giá bán lần trước = {2} của đối tượng {3} khác với giá bán hiện tại.",
