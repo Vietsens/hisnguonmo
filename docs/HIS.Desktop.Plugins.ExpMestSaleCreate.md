@@ -28,10 +28,9 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 ### Đính kèm đơn thuốc (việc 57853 — 29/09/2026)
 - Gate: `MOS.HAS_CONNECTION_EMR = 1` **và** `HIS.Desktop.Plugins.ExpMestSaleCreate.AttachPrescription.IsEnable = 1` (mặc định 0). Tắt → **không tạo nút**, giao diện như cũ.
 - Nút **"Đính kèm đơn"** tạo lúc runtime (`InitAttachPrescriptionButton`, partial `UCExpMestSaleCreate___AttachPrescription.cs`), chèn bên trái "Hủy xuất" bằng item-move (`LayoutControlItem.Move(layoutControlItem1, InsertType.Left)`), cố định 120px.
-- **Phiếu chưa lưu (ADD)**: mở form chọn tệp/chụp ảnh (thư viện `HIS.Desktop.Plugins.Library.ExpMestAttachFile`) → tệp **giữ tạm trong RAM** (`pendingAttachPrescription`), nút hiện số tệp "Đính kèm đơn (n)". Lưu phiếu thành công → `ProcessAttachPrescriptionAfterSave` gộp tệp thành 1 PDF và tạo tài liệu EMR cho **từng** phiếu trong `resultSDO.ExpMestSdos`. Lỗi đính kèm → cảnh báo (phiếu vẫn đã lưu), giữ tệp tạm; bấm lại nút sẽ đính kèm lại trước khi mở danh sách.
-- **Bán nhiều bệnh nhân** (`SaleCreateBillList`): không tự đính kèm, cảnh báo đính kèm từng phiếu tại Danh sách xuất, bỏ tệp tạm.
-- **Phiếu đã có (EDIT)** — sau lưu, mở sửa từ danh sách, tìm theo đơn (`SetAttachExpMests` ở `LoadDataExpMestByEdit` / `LoadDataExpMestByEditMulti` / `LoadDataExpMestBySearch` / sau lưu): 1 phiếu → mở **Danh sách đơn đính kèm** (xem/in, bổ sung, xóa theo trạng thái); nhiều phiếu → chọn tệp rồi đính kèm cho tất cả.
-- Nút Mới / Đơn mới còn tệp tạm → hỏi xác nhận bỏ (Không → giữ nguyên màn hình). Đóng tab → giải phóng ảnh tạm.
+- **Chỉ enable khi phiếu đã lưu** (cập nhật 02/10/2026): phiếu chưa lưu (ADD) → nút **disable**. Trạng thái nút cập nhật trong setter `moduleAction` (về ADD thì bỏ luôn phiếu đang giữ) và `SetAttachExpMests`, nên mọi luồng Mới / Đơn mới / tìm đơn / mở sửa / sau lưu đều đúng. Bỏ chế độ giữ tệp tạm trước khi lưu trên màn này.
+- **Bán nhiều bệnh nhân** (`SaleCreateBillList`): sau lưu nút enable nhưng bấm → cảnh báo đính kèm từng phiếu tại Danh sách xuất (mỗi bệnh nhân một đơn riêng).
+- **Phiếu đã lưu (EDIT)** — sau lưu, mở sửa từ danh sách, tìm theo đơn (`SetAttachExpMests` ở `LoadDataExpMestByEdit` / `LoadDataExpMestByEditMulti` / `LoadDataExpMestBySearch` / `ProcessAttachPrescriptionAfterSave`): 1 phiếu → mở **Danh sách đơn đính kèm** (xem/in, đính kèm mới, xóa theo trạng thái); nhiều phiếu cùng bệnh nhân → chọn tệp rồi đính kèm cho từng phiếu (tên văn bản theo mã của từng phiếu).
 - Không cho xóa khi phiếu Hoàn thành / có `BILL_ID` / có `DEBT_ID` (phiếu đã chốt kỳ kho luôn Hoàn thành). **Chặn ở frontend** — xem rủi ro trong docs thư viện.
 
 ### Điều kiện nghiệp vụ
@@ -119,6 +118,7 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 02/10/2026 | nampp | **Việc 57853 (chỉ enable khi đã lưu)** — Nút "Đính kèm đơn" chỉ enable khi phiếu xuất đã lưu (EDIT + có phiếu); phiếu chưa lưu disable. `moduleAction` đổi từ auto-property sang property có setter gọi `RefreshAttachPrescriptionButtonState` (về ADD thì bỏ `attachExpMests`). Bỏ chế độ giữ tệp tạm trên màn Xuất bán (gỡ hỏi xác nhận ở Mới / Đơn mới, giải phóng ảnh khi đóng tab). Bán nhiều bệnh nhân → cảnh báo đính kèm tại Danh sách xuất. |
 | 02/10/2026 | nampp | **Việc 57853 (tên văn bản mặc định)** — Tên mặc định đổi thành **"Đơn thuốc ngoại viện của mã phiếu xuất {EXP_MEST_CODE}"** (key `frmExpMestAttachFile.DefaultDocumentName` có `{0}`). Phiếu đã lưu: điền sẵn theo mã phiếu. Phiếu chưa lưu: ô tên để trống + gợi ý (`...txtDocumentName.NullText.Pending`), lưu phiếu xong tên được dựng theo mã của TỪNG phiếu (`ExpMestAttachFileProcessor.GetDefaultDocumentName`); người dùng tự gõ tên thì giữ nguyên. |
 | 02/10/2026 | nampp | **Việc 57853 (gắn đúng mã hồ sơ + mã xuất)** — Tài liệu EMR: `TreatmentCode` = `TDL_TREATMENT_CODE` (bán vãng lai không có hồ sơ → `EXP_MEST_CODE`), vẫn `IsOutsideTreatment = true`; `HIS_CODE` thêm khối chuẩn `|EXP_MEST_CODE:x|EXP_STOCK:y|REQ_DEPT:z` để EMR (`HisCodeStockParser`) ghi cột `EMR_DOCUMENT.EXP_MEST_CODE` / `EXP_MEDI_STOCK_CODE` / `REQ_DEPARTMENT_CODE` (trước đây không có `|` nên các cột này NULL). Danh sách đơn + đánh dấu lọc `TREATMENT_CODEs` = mã hồ sơ + mã phiếu rồi khớp theo `EMR_DOCUMENT.EXP_MEST_CODE` (fallback tách từ `HIS_CODE`) → tài liệu tạo trước đó vẫn nhận ra. |
 | 29/09/2026 | khainq | **Việc 57853** — Đính kèm đơn thuốc (tệp/ảnh chụp) trên phiếu xuất bán: nút "Đính kèm đơn" (runtime, gated config `HIS.Desktop.Plugins.ExpMestSaleCreate.AttachPrescription.IsEnable` + `MOS.HAS_CONNECTION_EMR`); giữ tệp tạm khi chưa lưu, tự đính kèm sau lưu thành công (`ProcessSave` → `ProcessAttachPrescriptionAfterSave`); phiếu đã có → danh sách đơn đính kèm. Partial mới `UCExpMestSaleCreate___AttachPrescription.cs`; ProjectReference thư viện mới `HIS.Desktop.Plugins.Library.ExpMestAttachFile`; thêm reference `DevExpress.Images.v15.2`. Script: `docs/SQL_57853_ExpMestSaleAttachPrescription.sql`. |
@@ -148,12 +148,11 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 ### Việc 57853 — Đính kèm đơn thuốc
 - [ ] Config `...AttachPrescription.IsEnable` = 0 (mặc định) hoặc `MOS.HAS_CONNECTION_EMR` ≠ 1 → KHÔNG có nút "Đính kèm đơn", hàng nút như cũ.
 - [ ] Bật config → có nút "Đính kèm đơn" bên trái "Hủy xuất", không che/chia nút khác ở 1366x768.
-- [ ] Phiếu mới: Đính kèm đơn → chụp 2 ảnh → Đồng ý → nút hiện "Đính kèm đơn (2)" → Lưu → phiếu có 1 tài liệu EMR 2 trang, người/thời gian đính kèm đúng (kịch bản 1).
+- [ ] Phiếu mới chưa lưu → nút "Đính kèm đơn" **disable**; Lưu thành công → nút enable; bấm → Danh sách đơn của phiếu vừa lưu → Đính kèm mới → chụp 2 ảnh → Lưu → 1 tài liệu EMR 2 trang, tên "Đơn thuốc ngoại viện của mã phiếu xuất <mã>" (kịch bản 1).
 - [ ] Chọn tệp > dung lượng config hoặc sai định dạng → cảnh báo tên tệp, không nhận; tệp hợp lệ cùng lượt vẫn nhận (kịch bản 2).
-- [ ] Xóa 1 ảnh trong form trước khi lưu → chỉ còn ảnh khác; mở lại form → danh sách ảnh giữ nguyên.
-- [ ] Lưu thất bại (validate/API) → tệp tạm giữ nguyên, nút vẫn hiện số tệp.
-- [ ] Có tệp tạm → bấm Mới / Đơn mới → hỏi xác nhận; Không → giữ màn hình; Có → xóa tệp tạm, nút về "Đính kèm đơn".
 - [ ] Sau lưu (EDIT) → nút mở Danh sách đơn đính kèm của phiếu; bổ sung thêm lần 2 → danh sách có 2 dòng.
 - [ ] Phiếu Hoàn thành / đã thanh toán / xác nhận nợ → danh sách hiện dòng cảnh báo; nút Xóa xám, bấm → thông báo không được xóa (kịch bản 4); Xem/In và Đính kèm mới vẫn dùng được.
-- [ ] Bán nhiều bệnh nhân 1 lượt lưu có tệp tạm → cảnh báo đính kèm tại Danh sách xuất, không tạo tài liệu.
+- [ ] Bán nhiều bệnh nhân 1 lượt lưu → bấm "Đính kèm đơn" → cảnh báo đính kèm tại Danh sách xuất, không tạo tài liệu.
+- [ ] Sau lưu bấm Mới / Đơn mới → nút disable lại; Lưu thất bại → nút vẫn disable.
+- [ ] Mở sửa phiếu từ Danh sách xuất / tìm theo mã đơn đã có phiếu → nút enable ngay.
 - [ ] Tài khoản không có quyền module Camera → bấm Chụp ảnh báo thông báo, không lỗi.

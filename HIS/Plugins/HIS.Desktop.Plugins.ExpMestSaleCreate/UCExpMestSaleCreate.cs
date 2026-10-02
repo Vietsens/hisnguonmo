@@ -102,7 +102,23 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private long? expMestId { get; set; }
         private List<long> expMestMedicineIds { get; set; }
         private List<long> expMestMaterialIds { get; set; }
-        HIS.Desktop.Plugins.ExpMestSaleCreate.Base.GlobalDataStore.ModuleAction moduleAction { get; set; }
+        private HIS.Desktop.Plugins.ExpMestSaleCreate.Base.GlobalDataStore.ModuleAction moduleActionValue;
+        /// <summary>
+        /// Viec 57853: moi lan doi ADD/EDIT -> cap nhat trang thai nut "Dinh kem don" (chi enable khi phieu da luu).
+        /// moduleAction duoc gan o nhieu luong (Moi, Don moi, tim don, mo sua, sau luu) nen dat o setter de khong sot.
+        /// </summary>
+        HIS.Desktop.Plugins.ExpMestSaleCreate.Base.GlobalDataStore.ModuleAction moduleAction
+        {
+            get { return this.moduleActionValue; }
+            set
+            {
+                this.moduleActionValue = value;
+                // Ve ADD (Moi / Don moi / tim don moi...) -> bo phieu cu, tranh dinh kem nham phieu truoc
+                if (value != HIS.Desktop.Plugins.ExpMestSaleCreate.Base.GlobalDataStore.ModuleAction.EDIT)
+                    this.attachExpMests = null;
+                RefreshAttachPrescriptionButtonState();
+            }
+        }
 
         private bool discountFocus { get; set; }
         private bool discountRatioFocus { get; set; }
@@ -498,8 +514,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             try
             {
                 ReleaseAll();
-                // Viec 57853: giai phong anh don dinh kem chua luu
-                ReleasePendingAttachPrescription();
             }
             catch (Exception ex)
             {
@@ -1045,9 +1059,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         {
             try
             {
-                // Viec 57853: con don dinh kem chua luu -> hoi truoc khi bo
-                if (!ConfirmDiscardPendingAttachPrescription())
-                    return;
                 ReleaseAll();
                 ResetAllControl();
                 SetControlByExpMest(null);
@@ -3761,9 +3772,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         {
             try
             {
-                // Viec 57853: con don dinh kem chua luu -> hoi truoc khi bo
-                if (!ConfirmDiscardPendingAttachPrescription())
-                    return;
                 ReleaseAll();
                 ResetNewControl();
                 SetControlByExpMest(null);

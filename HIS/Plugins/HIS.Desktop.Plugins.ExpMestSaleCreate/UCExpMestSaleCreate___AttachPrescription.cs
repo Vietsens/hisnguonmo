@@ -32,9 +32,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
     /// <summary>
     /// Viec 57853: dinh kem don thuoc (tep/anh chup) cho phieu xuat ban — luu sang EMR qua
     /// HIS.Desktop.Plugins.Library.ExpMestAttachFile.
-    /// - Phieu CHUA luu (ADD): tep giu tam trong RAM, luu phieu thanh cong -> tu dong dinh kem vao phieu vua tao.
-    /// - Phieu DA co (EDIT): mo danh sach don dinh kem cua phieu (xem/in, bo sung, xoa theo trang thai phieu).
-    /// Nut "Dinh kem don" chi tao khi bat config (khong bat -> giao dien giu nguyen nhu cu).
+    /// Nut "Dinh kem don" CHI enable khi phieu xuat DA LUU (moduleAction = EDIT va co phieu dang hien thi:
+    /// sau luu / mo sua tu danh sach / tim theo don) -> mo danh sach don dinh kem cua phieu
+    /// (xem/in, bo sung, xoa theo trang thai phieu). Phieu chua luu (ADD) -> nut disable.
+    /// Nut chi tao khi bat config (khong bat -> giao dien giu nguyen nhu cu).
     /// </summary>
     public partial class UCExpMestSaleCreate : UserControlBase
     {
@@ -43,11 +44,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private SimpleButton btnAttachPrescription;
         private LayoutControlItem lciAttachPrescription;
 
-        /// <summary>Tep da chon khi phieu chua luu (chua co EXP_MEST_CODE)</summary>
-        private PendingAttachADO pendingAttachPrescription;
-
         /// <summary>Phieu xuat dang hien thi o che do EDIT (sau luu / mo sua / tim theo don)</summary>
         private List<V_HIS_EXP_MEST> attachExpMests;
+
+        /// <summary>Lan luu vua roi la ban cho nhieu benh nhan (SaleCreateBillList) -> khong dinh kem chung 1 don</summary>
+        private bool isAttachExpMestsMultiPatient;
 
         /// <summary>Tao nut "Dinh kem don" canh nut "Huy xuat" (goi trong Load)</summary>
         private void InitAttachPrescriptionButton()
@@ -67,6 +68,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     this.btnAttachPrescription = new SimpleButton();
                     this.btnAttachPrescription.Name = "btnAttachPrescription";
                     this.btnAttachPrescription.StyleController = this.layoutControl1;
+                    this.btnAttachPrescription.Text = ExpMestAttachFileProcessor.GetButtonCaption(0);
                     this.btnAttachPrescription.ToolTip = ExpMestAttachFileProcessor.GetButtonToolTip();
                     this.btnAttachPrescription.Image = DevExpress.Images.ImageResourceCache.Default.GetImage(IMAGE__ATTACH);
                     this.btnAttachPrescription.Click += new EventHandler(this.btnAttachPrescription_Click);
@@ -87,7 +89,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 {
                     this.layoutControl1.EndUpdate();
                 }
-                RefreshAttachPrescriptionCaption();
+                RefreshAttachPrescriptionButtonState();
             }
             catch (Exception ex)
             {
@@ -95,13 +97,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             }
         }
 
-        private void RefreshAttachPrescriptionCaption()
+        /// <summary>
+        /// Enable chi khi phieu da luu. Goi tu setter moduleAction + SetAttachExpMests nen moi luong
+        /// (Moi, Don moi, tim don, mo sua, sau luu) deu cap nhat dung.
+        /// </summary>
+        private void RefreshAttachPrescriptionButtonState()
         {
             try
             {
                 if (this.btnAttachPrescription == null) return;
-                int pendingCount = this.pendingAttachPrescription != null ? this.pendingAttachPrescription.Count : 0;
-                this.btnAttachPrescription.Text = ExpMestAttachFileProcessor.GetButtonCaption(pendingCount);
+                this.btnAttachPrescription.Enabled = GetAttachExpMestInfos().Any();
             }
             catch (Exception ex)
             {
@@ -110,11 +115,13 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         }
 
         /// <summary>Ghi nhan phieu dang hien thi khi chuyen sang che do EDIT</summary>
-        private void SetAttachExpMests(IEnumerable<V_HIS_EXP_MEST> expMests)
+        private void SetAttachExpMests(IEnumerable<V_HIS_EXP_MEST> expMests, bool isMultiPatient = false)
         {
             try
             {
                 this.attachExpMests = expMests != null ? expMests.Where(o => o != null).ToList() : null;
+                this.isAttachExpMestsMultiPatient = isMultiPatient;
+                RefreshAttachPrescriptionButtonState();
             }
             catch (Exception ex)
             {
@@ -134,46 +141,40 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         {
             try
             {
+                var expMests = GetAttachExpMestInfos();
+                // Phieu chua luu: nut da disable — chan them o day phong khi goi qua phim tat/code
+                if (!expMests.Any())
+                    return;
+
+                if (this.isAttachExpMestsMultiPatient)
+                {
+                    // Ban nhieu benh nhan: moi benh nhan 1 don rieng -> dinh kem tung phieu tai Danh sach xuat
+                    ExpMestAttachFileProcessor.ShowMultiPatientWarning();
+                    return;
+                }
+
                 this.btnAttachPrescription.Enabled = false;
                 try
                 {
-                    var expMests = GetAttachExpMestInfos();
-                    if (!expMests.Any())
+                    if (expMests.Count == 1)
                     {
-                        // Phieu chua luu -> chon tep, giu tam cho toi khi luu phieu
-                        var result = ExpMestAttachFileProcessor.ChooseFiles(this.pendingAttachPrescription);
-                        if (result != null)
-                            this.pendingAttachPrescription = result;
+                        ExpMestAttachFileProcessor.ShowAttachList(expMests[0], this.roomId, null);
                     }
                     else
                     {
-                        // Con tep tam cua lan dinh kem truoc bi loi -> dinh kem lai truoc
-                        if (this.pendingAttachPrescription != null && this.pendingAttachPrescription.Count > 0
-                            && ExpMestAttachFileProcessor.AttachPendingFiles(expMests, this.pendingAttachPrescription))
+                        // 1 don -> nhieu phieu xuat (cung benh nhan): dinh kem cung bo tep cho tung phieu,
+                        // ten van ban mac dinh dung ma cua TUNG phieu
+                        var chosen = ExpMestAttachFileProcessor.ChooseFiles(null);
+                        if (chosen != null && chosen.Count > 0)
                         {
-                            ReleasePendingAttachPrescription();
-                        }
-
-                        if (expMests.Count == 1)
-                        {
-                            ExpMestAttachFileProcessor.ShowAttachList(expMests[0], this.roomId, null);
-                        }
-                        else
-                        {
-                            // Nhieu phieu cung luc (1 don -> nhieu phieu xuat): dinh kem cung bo tep cho tung phieu
-                            var chosen = ExpMestAttachFileProcessor.ChooseFiles(null);
-                            if (chosen != null && chosen.Count > 0)
-                            {
-                                ExpMestAttachFileProcessor.AttachPendingFiles(expMests, chosen);
-                                ExpMestAttachFileProcessor.Release(chosen);
-                            }
+                            ExpMestAttachFileProcessor.AttachPendingFiles(expMests, chosen);
+                            ExpMestAttachFileProcessor.Release(chosen);
                         }
                     }
                 }
                 finally
                 {
-                    this.btnAttachPrescription.Enabled = true;
-                    RefreshAttachPrescriptionCaption();
+                    RefreshAttachPrescriptionButtonState();
                 }
             }
             catch (Exception ex)
@@ -182,10 +183,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             }
         }
 
-        /// <summary>
-        /// Goi sau khi luu phieu (ProcessSave): luu thanh cong -> dinh kem tep tam vao (cac) phieu vua luu.
-        /// Ban nhieu benh nhan (SaleCreateBillList) -> khong tu dong dinh kem, bao nguoi dung dinh kem tai Danh sach xuat.
-        /// </summary>
+        /// <summary>Goi sau khi luu phieu (ProcessSave): luu thanh cong -> ghi nhan (cac) phieu vua luu, enable nut</summary>
         private void ProcessAttachPrescriptionAfterSave(bool success)
         {
             try
@@ -203,57 +201,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 {
                     savedExpMests = this.resultSDO.ExpMestSdos.Select(o => o.ExpMest).ToList();
                 }
-                SetAttachExpMests(savedExpMests);
-
-                if (this.btnAttachPrescription == null || this.pendingAttachPrescription == null || this.pendingAttachPrescription.Count == 0)
-                    return;
-
-                if (this.isTwoPatient)
-                {
-                    ExpMestAttachFileProcessor.ShowMultiPatientWarning();
-                    ReleasePendingAttachPrescription();
-                    return;
-                }
-
-                // Loi dinh kem -> giu tep tam, bam "Dinh kem don" de dinh kem lai
-                if (ExpMestAttachFileProcessor.AttachPendingFiles(GetAttachExpMestInfos(), this.pendingAttachPrescription))
-                    ReleasePendingAttachPrescription();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            finally
-            {
-                RefreshAttachPrescriptionCaption();
-            }
-        }
-
-        /// <summary>Nut Moi / Don moi: con tep tam chua luu -> hoi truoc khi bo. false = nguoi dung muon giu lai</summary>
-        private bool ConfirmDiscardPendingAttachPrescription()
-        {
-            try
-            {
-                if (this.pendingAttachPrescription == null || this.pendingAttachPrescription.Count == 0)
-                    return true;
-                if (!ExpMestAttachFileProcessor.ConfirmDiscard(this.pendingAttachPrescription))
-                    return false;
-                ReleasePendingAttachPrescription();
-                RefreshAttachPrescriptionCaption();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            return true;
-        }
-
-        private void ReleasePendingAttachPrescription()
-        {
-            try
-            {
-                ExpMestAttachFileProcessor.Release(this.pendingAttachPrescription);
-                this.pendingAttachPrescription = null;
+                SetAttachExpMests(savedExpMests, this.isTwoPatient);
             }
             catch (Exception ex)
             {
