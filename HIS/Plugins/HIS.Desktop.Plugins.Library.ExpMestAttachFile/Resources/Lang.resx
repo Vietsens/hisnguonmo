@@ -98,7 +98,10 @@
     <value>Định dạng cho phép: jpg, jpeg, png, bmp, gif, pdf — tối đa {0} MB/tệp. Nhiều tệp được gộp thành 1 văn bản PDF.</value>
   </data>
   <data name="frmExpMestAttachFile.DefaultDocumentName" xml:space="preserve">
-    <value>Đơn thuốc ngoại viện</value>
+    <value>Đơn thuốc ngoại viện của mã phiếu xuất {0}</value>
+  </data>
+  <data name="frmExpMestAttachFile.txtDocumentName.NullText.Pending" xml:space="preserve">
+    <value>Đơn thuốc ngoại viện của mã phiếu xuất &lt;tự điền mã khi lưu phiếu&gt;</value>
   </data>
   <data name="frmExpMestAttachFile.CaptureFileName" xml:space="preserve">
     <value>Ảnh chụp {0}.jpg</value>

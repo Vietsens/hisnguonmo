@@ -110,6 +110,22 @@ namespace HIS.Desktop.Plugins.Library.ExpMestAttachFile
             return result;
         }
 
+        /// <summary>Default document name: "Đơn thuốc ngoại viện của mã phiếu xuất {EXP_MEST_CODE}"</summary>
+        internal static string GetDefaultDocumentName(string expMestCode)
+        {
+            string format = Resources.ResourceLanguageManager.GetValue("frmExpMestAttachFile.DefaultDocumentName", "Đơn thuốc ngoại viện của mã phiếu xuất {0}");
+            try
+            {
+                return String.Format(format, expMestCode ?? "").Trim();
+            }
+            catch (FormatException ex)
+            {
+                // Ban dich sai dinh dang {0} -> dung nguyen chuoi + ma phieu
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return (format + " " + expMestCode).Trim();
+            }
+        }
+
         /// <summary>
         /// Upload the pending files to every saved ticket (one merged PDF per ticket).
         /// Shows a warning listing the tickets that failed. Returns true when all tickets succeeded.
@@ -128,7 +144,11 @@ namespace HIS.Desktop.Plugins.Library.ExpMestAttachFile
                 foreach (var expMest in expMests)
                 {
                     CommonParam param = new CommonParam();
-                    var created = pdf != null ? AttachDocumentWorker.CreateDocument(expMest, pdf, pending.DocumentName, param) : null;
+                    // Ten de trong luc chon tep (phieu chua co ma) -> ten mac dinh theo ma cua TUNG phieu vua luu
+                    string documentName = !String.IsNullOrWhiteSpace(pending.DocumentName)
+                        ? pending.DocumentName
+                        : GetDefaultDocumentName(expMest.EXP_MEST_CODE);
+                    var created = pdf != null ? AttachDocumentWorker.CreateDocument(expMest, pdf, documentName, param) : null;
                     if (created == null)
                         failCodes.Add(expMest.EXP_MEST_CODE);
                     else

@@ -113,9 +113,7 @@ namespace HIS.Desktop.Plugins.Library.ExpMestAttachFile.Popup
             {
                 SetCaptionByLanguageKey();
                 SetButtonImages();
-                this.txtDocumentName.Text = !String.IsNullOrWhiteSpace(this.originalDocumentName)
-                    ? this.originalDocumentName
-                    : Resources.ResourceLanguageManager.GetValue("frmExpMestAttachFile.DefaultDocumentName", "Đơn thuốc ngoại viện");
+                InitDocumentName();
                 BindGrid();
                 this.btnChooseFile.Focus();
             }
@@ -457,12 +455,40 @@ namespace HIS.Desktop.Plugins.Library.ExpMestAttachFile.Popup
             }
         }
 
+        /// <summary>
+        /// Saved ticket -> "Đơn thuốc ngoại viện của mã phiếu xuất {code}".
+        /// Pending (ticket not saved, no code yet) -> leave empty with a hint; the name is built per ticket after saving.
+        /// </summary>
+        private void InitDocumentName()
+        {
+            try
+            {
+                if (this.IsPendingMode)
+                {
+                    this.txtDocumentName.Properties.NullValuePrompt = Resources.ResourceLanguageManager.GetValue(
+                        "frmExpMestAttachFile.txtDocumentName.NullText.Pending",
+                        "Đơn thuốc ngoại viện của mã phiếu xuất <tự điền mã khi lưu phiếu>");
+                    this.txtDocumentName.Properties.NullValuePromptShowForEmptyValue = true;
+                    this.txtDocumentName.Text = this.originalDocumentName ?? "";
+                }
+                else
+                {
+                    this.txtDocumentName.Text = ExpMestAttachFileProcessor.GetDefaultDocumentName(this.expMest.EXP_MEST_CODE);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Pending mode: empty = use the default name with the ticket code after saving (returns null)</summary>
         private string GetDocumentName()
         {
             string name = (this.txtDocumentName.Text ?? "").Trim();
-            return !String.IsNullOrEmpty(name)
-                ? name
-                : Resources.ResourceLanguageManager.GetValue("frmExpMestAttachFile.DefaultDocumentName", "Đơn thuốc ngoại viện");
+            if (!String.IsNullOrEmpty(name))
+                return name;
+            return this.IsPendingMode ? null : ExpMestAttachFileProcessor.GetDefaultDocumentName(this.expMest.EXP_MEST_CODE);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

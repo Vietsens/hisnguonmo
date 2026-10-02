@@ -98,7 +98,10 @@
     <value>Allowed formats: jpg, jpeg, png, bmp, gif, pdf — max {0} MB per file. Multiple files are merged into one PDF document.</value>
   </data>
   <data name="frmExpMestAttachFile.DefaultDocumentName" xml:space="preserve">
-    <value>External prescription</value>
+    <value>External prescription of export ticket {0}</value>
+  </data>
+  <data name="frmExpMestAttachFile.txtDocumentName.NullText.Pending" xml:space="preserve">
+    <value>External prescription of export ticket &lt;code filled in when the ticket is saved&gt;</value>
   </data>
   <data name="frmExpMestAttachFile.CaptureFileName" xml:space="preserve">
     <value>Capture {0}.jpg</value>

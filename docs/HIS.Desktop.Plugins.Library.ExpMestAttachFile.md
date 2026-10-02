@@ -42,6 +42,7 @@ Phiếu ĐÃ có (màn Xuất bán chế độ sửa / icon trên Danh sách xu�
 | FileType | PDF | Mọi tệp của 1 lần đính kèm gộp thành 1 PDF (ảnh: 1 trang A4, tự xoay ngang theo ảnh; PDF: giữ nguyên trang) |
 
 ### Điều kiện nghiệp vụ
+- **Tên văn bản mặc định**: "Đơn thuốc ngoại viện của mã phiếu xuất {EXP_MEST_CODE}". Phiếu chưa lưu (chưa có mã) → ô tên để trống, hiện gợi ý; khi lưu phiếu mỗi phiếu nhận tên theo đúng mã của nó. Người dùng tự gõ tên → giữ nguyên tên đã gõ.
 - Bật khi `MOS.HAS_CONNECTION_EMR = 1` **và** `HIS.Desktop.Plugins.ExpMestSaleCreate.AttachPrescription.IsEnable = 1`.
 - Định dạng: jpg, jpeg, png, bmp, gif, pdf. Dung lượng tối đa/tệp: `HIS.Desktop.Plugins.ExpMestSaleCreate.AttachPrescription.MaxFileSizeMB` (mặc định 5). Kiểm tra ngay khi chọn tệp (trước khi đọc vào RAM); ảnh chụp đo theo JPEG.
 - **Không cho xóa** khi phiếu `EXP_MEST_STT_ID = ID__DONE` hoặc có `BILL_ID` hoặc có `DEBT_ID` (`ExpMestAttachFileProcessor.IsAllowDelete`). Phiếu đã chốt kỳ kho luôn Hoàn thành → cùng điều kiện. `HIS_EXP_MEST` không có cột `MEDI_STOCK_PERIOD_ID`.
@@ -68,7 +69,7 @@ Phiếu ĐÃ có (màn Xuất bán chế độ sửa / icon trên Danh sách xu�
 ### frmExpMestAttachFile
 ```
 +------------------------------------------------------------------+
-| Tên văn bản: [Đơn thuốc ngoại viện                             ] |
+| Tên văn bản: [Đơn thuốc ngoại viện của mã phiếu xuất {mã}      ] |
 | [Chọn tệp] [Chụp ảnh] [↶ Xoay trái] [Xoay phải ↷]                |
 | STT | 🗑 | Tên tệp      |  Xem trước (ảnh: PictureEdit Zoom /     |
 | 1   | 🗑 | Ảnh chụp 1   |             PDF: PdfViewer)             |
@@ -136,6 +137,7 @@ Không có mẫu MPS. In đơn đính kèm qua viewer `SignLibraryGUIProcessor.S
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 02/10/2026 | nampp | **Việc 57853 (tên văn bản mặc định)** — Tên mặc định đổi thành **"Đơn thuốc ngoại viện của mã phiếu xuất {EXP_MEST_CODE}"** (key `frmExpMestAttachFile.DefaultDocumentName` có `{0}`). Phiếu đã lưu: điền sẵn theo mã phiếu. Phiếu chưa lưu: ô tên để trống + gợi ý (`...txtDocumentName.NullText.Pending`), lưu phiếu xong tên được dựng theo mã của TỪNG phiếu (`ExpMestAttachFileProcessor.GetDefaultDocumentName`); người dùng tự gõ tên thì giữ nguyên. |
 | 02/10/2026 | nampp | **Việc 57853 (gắn đúng mã hồ sơ + mã xuất)** — Tài liệu EMR: `TreatmentCode` = `TDL_TREATMENT_CODE` (bán vãng lai không có hồ sơ → `EXP_MEST_CODE`), vẫn `IsOutsideTreatment = true`; `HIS_CODE` thêm khối chuẩn `|EXP_MEST_CODE:x|EXP_STOCK:y|REQ_DEPT:z` để EMR (`HisCodeStockParser`) ghi cột `EMR_DOCUMENT.EXP_MEST_CODE` / `EXP_MEDI_STOCK_CODE` / `REQ_DEPARTMENT_CODE` (trước đây không có `|` nên các cột này NULL). Danh sách đơn + đánh dấu lọc `TREATMENT_CODEs` = mã hồ sơ + mã phiếu rồi khớp theo `EMR_DOCUMENT.EXP_MEST_CODE` (fallback tách từ `HIS_CODE`) → tài liệu tạo trước đó vẫn nhận ra. |
 | 29/09/2026 | khainq | Việc 57853 — Tạo thư viện: form đính kèm (chế độ tạm/lưu thẳng, chọn tệp, chụp ảnh, xoay, kiểm tra định dạng/dung lượng), form danh sách đơn (xem/in, bổ sung, xóa theo trạng thái), worker EMR, gộp PDF, audit LogAction. |
 
@@ -148,6 +150,9 @@ Không có mẫu MPS. In đơn đính kèm qua viewer `SignLibraryGUIProcessor.S
 - [ ] Chụp ảnh nhiều lần → "Ảnh chụp 1.jpg", "Ảnh chụp 2.jpg"…; xoay trái/phải → ảnh lưu đúng chiều trong PDF.
 - [ ] Không có quyền module Camera → thông báo, không lỗi.
 - [ ] Chế độ tạm: Đóng (không Đồng ý) → danh sách tệp giữ như trước khi mở.
+- [ ] Đính kèm mới trên phiếu đã có → ô tên điền sẵn "Đơn thuốc ngoại viện của mã phiếu xuất <mã phiếu>".
+- [ ] Phiếu chưa lưu → ô tên trống có gợi ý; lưu phiếu → tài liệu EMR mang tên có mã phiếu vừa tạo (1 lần lưu nhiều phiếu → mỗi phiếu đúng mã của mình).
+- [ ] Tự gõ tên khác → tài liệu lưu đúng tên đã gõ.
 
 ### Lưu / danh sách
 - [ ] Lưu thẳng không có tệp → "Vui lòng chọn tệp hoặc chụp ảnh...".
