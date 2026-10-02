@@ -522,37 +522,61 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             try
             {
-                if (this.currentSpecialistExam != null && this.currentSpecialistExam.IS_APPROVAL == 1)
+                if (this.currentSpecialistExam == null) return;
+                this.btnSaveAndSign.Enabled = false;
+
+                // Phieu da duyet: khong luu lai nua (btnSave da bi khoa sau khi duyet), chi ky lai
+                // - phuc vu truong hop ky so that bai phai ky lai.
+                if (this.currentSpecialistExam.IS_APPROVAL != 1)
                 {
-                    // Phieu da duyet: khong luu lai nua (btnSave da bi khoa sau khi duyet),
-                    // chi doc lai to dieu tri de ky - phuc vu truong hop ky so that bai phai ky lai.
-                    this.trackingToSign = GetTrackingToSign(
-                        this.currentSpecialistExam.EXAM_EXECUTE_TRACKING_ID,
-                        this.currentSpecialistExam.TRACKING_ID);
-                }
-                else
-                {
-                    // Chi ky so khi luu thanh cong, neu khong se ky vao to dieu tri chua co noi dung vua nhap.
+                    // Chi ky so khi luu thanh cong.
                     if (!SaveSpecialistExam())
                         return;
                 }
 
-                if (this.trackingToSign == null)
-                {
-                    MessageBox.Show("Không xác định được tờ điều trị của phiếu duyệt để ký số.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    PrintProcess62(PrintType.IN_TO_DIEU_TRI);
-                }
-
-                // Viec 57944: sau to dieu tri, ky tiep phieu ket qua kham chuyen khoa (Mps000500).
-                // Ky doc lap voi to dieu tri: to dieu tri ky loi/huy van ky phieu ket qua.
+                // Viec 57944: "Duyet va ky" chi ky phieu ket qua kham chuyen khoa (Mps000500).
+                // To dieu tri ky rieng bang nut "Ky to dieu tri" (btnSignTracking).
                 PrintExamResult(true);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.btnSaveAndSign.Enabled = true;
+            }
+        }
+
+        /// <summary>
+        /// Viec 57944: ky so to dieu tri mang noi dung duyet kham chuyen khoa (Mps000062).
+        /// Chi bat khi phieu da duyet (xem ShowHideBtnSave).
+        /// </summary>
+        private void btnSignTracking_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentSpecialistExam == null || !this.btnSignTracking.Enabled) return;
+                this.btnSignTracking.Enabled = false;
+
+                this.trackingToSign = GetTrackingToSign(
+                    this.currentSpecialistExam.EXAM_EXECUTE_TRACKING_ID,
+                    this.currentSpecialistExam.TRACKING_ID);
+                if (this.trackingToSign == null)
+                {
+                    MessageBox.Show("Không xác định được tờ điều trị của phiếu duyệt để ký số.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                PrintProcess62(PrintType.IN_TO_DIEU_TRI);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.btnSignTracking.Enabled = (this.currentSpecialistExam != null && this.currentSpecialistExam.IS_APPROVAL == 1);
             }
         }
 
@@ -1239,16 +1263,19 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             try
             {
                 // btnSaveAndSign khong bi khoa sau khi duyet: ky so co the that bai (token/USB chua san sang)
-                // nen phai cho ky lai to dieu tri da duyet.
+                // nen phai cho ky lai phieu ket qua da duyet.
+                // btnSignTracking (ky to dieu tri) chi bat khi da duyet - truoc do to dieu tri chua co noi dung duyet.
                 if (isShow == null || isShow == 2)
                 {
                     btnSave.Enabled = true;
                     btnTracking.Enabled = false;
+                    btnSignTracking.Enabled = false;
                 }
                 else
                 {
                     btnSave.Enabled = false;
                     btnTracking.Enabled = true;
+                    btnSignTracking.Enabled = true;
                     btnSave.AppearanceDisabled.BackColor = Color.LightGreen;
                 }
             }
