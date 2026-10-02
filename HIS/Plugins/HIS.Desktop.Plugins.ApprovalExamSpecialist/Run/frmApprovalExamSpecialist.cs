@@ -344,15 +344,33 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             try
             {
-                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
-                store.RunPrintTemplate("Mps000500", DeletegatePrintTemplate);
+                PrintExamResult(false);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private bool DeletegatePrintTemplate(string printCode, string fileName)
+
+        /// <summary>
+        /// Print the specialist exam result form (Mps000500).
+        /// isSign = true: open EMR signing right away (EmrSignNow) instead of preview/print.
+        /// </summary>
+        private void PrintExamResult(bool isSign)
+        {
+            try
+            {
+                if (this.currentSpecialistExam == null) return;
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("Mps000500", (printCode, fileName) => DeletegatePrintTemplate(printCode, fileName, isSign));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool DeletegatePrintTemplate(string printCode, string fileName, bool isSign)
         {
             bool result = false;
             try
@@ -360,7 +378,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 switch (printCode)
                 {
                     case "Mps000500":
-                        Inphieuketquakhamchuyenkhoa(printCode, fileName, ref result);
+                        Inphieuketquakhamchuyenkhoa(printCode, fileName, isSign, ref result);
                         break;
                     default:
                         break;
@@ -374,7 +392,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             }
             return result;
         }
-        private void Inphieuketquakhamchuyenkhoa(string printTypeCode, string fileName, ref bool result)
+        private void Inphieuketquakhamchuyenkhoa(string printTypeCode, string fileName, bool isSign, ref bool result)
         {
             try
             {   
@@ -408,7 +426,18 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentSpecialistExam.TREATMENT_CODE ?? ""), printTypeCode, currentModuleBase.RoomId);
                 WaitingManager.Hide();
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (isSign)
+                {
+                    // Viec 57944: "Duyet va ky" ky luon phieu ket qua kham chuyen khoa.
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow, printerName) { EmrInputADO = inputADO });
+                    Inventec.Common.Logging.LogSystem.Info("Mps000500. Duyet va ky. SpecialistExamId=" + currentSpecialistExam.ID + ", result=" + result);
+                    if (result)
+                    {
+                        Inventec.Common.Logging.LogUtil.LogActionSuccess("frmApprovalExamSpecialist", "ApproveAndSign.Mps000500",
+                            Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+                    }
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
 
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
@@ -511,10 +540,15 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 if (this.trackingToSign == null)
                 {
                     MessageBox.Show("Không xác định được tờ điều trị của phiếu duyệt để ký số.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                }
+                else
+                {
+                    PrintProcess62(PrintType.IN_TO_DIEU_TRI);
                 }
 
-                PrintProcess62(PrintType.IN_TO_DIEU_TRI);
+                // Viec 57944: sau to dieu tri, ky tiep phieu ket qua kham chuyen khoa (Mps000500).
+                // Ky doc lap voi to dieu tri: to dieu tri ky loi/huy van ky phieu ket qua.
+                PrintExamResult(true);
             }
             catch (Exception ex)
             {
