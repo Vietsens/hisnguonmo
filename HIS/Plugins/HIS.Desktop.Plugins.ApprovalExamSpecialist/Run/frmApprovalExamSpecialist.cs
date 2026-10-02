@@ -344,33 +344,15 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             try
             {
-                PrintExamResult(false);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        /// <summary>
-        /// Print the specialist exam result form (Mps000500).
-        /// isSign = true: open EMR signing right away (EmrSignNow) instead of preview/print.
-        /// </summary>
-        private void PrintExamResult(bool isSign)
-        {
-            try
-            {
-                if (this.currentSpecialistExam == null) return;
                 Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
-                store.RunPrintTemplate("Mps000500", (printCode, fileName) => DeletegatePrintTemplate(printCode, fileName, isSign));
+                store.RunPrintTemplate("Mps000500", DeletegatePrintTemplate);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
-        private bool DeletegatePrintTemplate(string printCode, string fileName, bool isSign)
+        private bool DeletegatePrintTemplate(string printCode, string fileName)
         {
             bool result = false;
             try
@@ -378,7 +360,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 switch (printCode)
                 {
                     case "Mps000500":
-                        Inphieuketquakhamchuyenkhoa(printCode, fileName, isSign, ref result);
+                        Inphieuketquakhamchuyenkhoa(printCode, fileName, ref result);
                         break;
                     default:
                         break;
@@ -392,7 +374,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             }
             return result;
         }
-        private void Inphieuketquakhamchuyenkhoa(string printTypeCode, string fileName, bool isSign, ref bool result)
+        private void Inphieuketquakhamchuyenkhoa(string printTypeCode, string fileName, ref bool result)
         {
             try
             {   
@@ -426,18 +408,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentSpecialistExam.TREATMENT_CODE ?? ""), printTypeCode, currentModuleBase.RoomId);
                 WaitingManager.Hide();
-                if (isSign)
-                {
-                    // Viec 57944: "Duyet va ky" ky luon phieu ket qua kham chuyen khoa.
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow, printerName) { EmrInputADO = inputADO });
-                    Inventec.Common.Logging.LogSystem.Info("Mps000500. Duyet va ky. SpecialistExamId=" + currentSpecialistExam.ID + ", result=" + result);
-                    if (result)
-                    {
-                        Inventec.Common.Logging.LogUtil.LogActionSuccess("frmApprovalExamSpecialist", "ApproveAndSign.Mps000500",
-                            Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
-                    }
-                }
-                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
 
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
@@ -522,46 +493,21 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             try
             {
-                if (this.currentSpecialistExam == null) return;
-                this.btnSaveAndSign.Enabled = false;
-
-                // Phieu da duyet: khong luu lai nua (btnSave da bi khoa sau khi duyet), chi ky lai
-                // - phuc vu truong hop ky so that bai phai ky lai.
-                if (this.currentSpecialistExam.IS_APPROVAL != 1)
+                if (this.currentSpecialistExam != null && this.currentSpecialistExam.IS_APPROVAL == 1)
                 {
-                    // Chi ky so khi luu thanh cong.
+                    // Phieu da duyet: khong luu lai nua (btnSave da bi khoa sau khi duyet),
+                    // chi doc lai to dieu tri de ky - phuc vu truong hop ky so that bai phai ky lai.
+                    this.trackingToSign = GetTrackingToSign(
+                        this.currentSpecialistExam.EXAM_EXECUTE_TRACKING_ID,
+                        this.currentSpecialistExam.TRACKING_ID);
+                }
+                else
+                {
+                    // Chi ky so khi luu thanh cong, neu khong se ky vao to dieu tri chua co noi dung vua nhap.
                     if (!SaveSpecialistExam())
                         return;
                 }
 
-                // Viec 57944: "Duyet va ky" chi ky phieu ket qua kham chuyen khoa (Mps000500).
-                // To dieu tri ky rieng bang nut "Ky to dieu tri" (btnSignTracking).
-                PrintExamResult(true);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            finally
-            {
-                this.btnSaveAndSign.Enabled = true;
-            }
-        }
-
-        /// <summary>
-        /// Viec 57944: ky so to dieu tri mang noi dung duyet kham chuyen khoa (Mps000062).
-        /// Chi bat khi phieu da duyet (xem ShowHideBtnSave).
-        /// </summary>
-        private void btnSignTracking_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (this.currentSpecialistExam == null || !this.btnSignTracking.Enabled) return;
-                this.btnSignTracking.Enabled = false;
-
-                this.trackingToSign = GetTrackingToSign(
-                    this.currentSpecialistExam.EXAM_EXECUTE_TRACKING_ID,
-                    this.currentSpecialistExam.TRACKING_ID);
                 if (this.trackingToSign == null)
                 {
                     MessageBox.Show("Không xác định được tờ điều trị của phiếu duyệt để ký số.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -573,10 +519,6 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            finally
-            {
-                this.btnSignTracking.Enabled = (this.currentSpecialistExam != null && this.currentSpecialistExam.IS_APPROVAL == 1);
             }
         }
 
@@ -1263,19 +1205,16 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             try
             {
                 // btnSaveAndSign khong bi khoa sau khi duyet: ky so co the that bai (token/USB chua san sang)
-                // nen phai cho ky lai phieu ket qua da duyet.
-                // btnSignTracking (ky to dieu tri) chi bat khi da duyet - truoc do to dieu tri chua co noi dung duyet.
+                // nen phai cho ky lai to dieu tri da duyet.
                 if (isShow == null || isShow == 2)
                 {
                     btnSave.Enabled = true;
                     btnTracking.Enabled = false;
-                    btnSignTracking.Enabled = false;
                 }
                 else
                 {
                     btnSave.Enabled = false;
                     btnTracking.Enabled = true;
-                    btnSignTracking.Enabled = true;
                     btnSave.AppearanceDisabled.BackColor = Color.LightGreen;
                 }
             }
