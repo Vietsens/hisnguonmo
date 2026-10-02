@@ -107,9 +107,6 @@ namespace MPS.Processor.Mps000512.ADO
                     item.SetValue(this, (item.GetValue(data)));
                 }
 
-                //Viec 58504: dong bo cach lam tron tien BHYT tung dong voi XML2 (QD130) de bang ke khop cong giam dinh.
-                RoundHeinPriceLikeXml2();
-
                 if (heinServiceTypes != null && heinServiceTypes.Count > 0 && services != null && services.Count > 0)
                 {
                     V_HIS_SERVICE service = services.FirstOrDefault(o => o.ID == data.SERVICE_ID);
@@ -488,84 +485,6 @@ namespace MPS.Processor.Mps000512.ADO
                             this.IS_PAID = 1;
                         }
                     }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-
-        /// <summary>
-        /// Viec 58504: XML2 (QD130) tinh tien tung dong = ROUND(SL x DG, 2); quy BHYT = ROUND(tien x muc huong, 2);
-        /// BN cung chi tra = tien - quy BHYT - nguon khac. DB (VIR_*) giu 4 so le nen khi so luong le (vd 4,35 lo)
-        /// tong bang ke lech 0,01 so voi cong giam dinh. Ham nay dua VIR_TOTAL_HEIN_PRICE / VIR_TOTAL_PATIENT_PRICE_BHYT
-        /// ve dung cach lam tron cua XML2, CHI khi chenh lech thuan tuy do lam tron (< 0,01 moi cot); moi truong hop khac giu nguyen.
-        /// </summary>
-        private void RoundHeinPriceLikeXml2()
-        {
-            try
-            {
-                if (String.IsNullOrEmpty(this.HEIN_CARD_NUMBER)
-                    || !this.HEIN_RATIO.HasValue
-                    || this.IS_EXPEND == 1
-                    || this.IS_NO_EXECUTE == 1
-                    || this.STENT_ORDER.HasValue
-                    || this.PATIENT_PRICE_BHYT.HasValue
-                    || this.AMOUNT <= 0
-                    || this.ORIGINAL_PRICE <= 0
-                    || (this.VIR_TOTAL_HEIN_PRICE ?? 0) <= 0)
-                {
-                    return;
-                }
-
-                decimal rawHein = this.VIR_TOTAL_HEIN_PRICE ?? 0;
-                decimal rawPatientBhyt = this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0;
-                if (rawHein == Math.Round(rawHein, 2) && rawPatientBhyt == Math.Round(rawPatientBhyt, 2))
-                {
-                    return;
-                }
-
-                //Ty le thanh toan BH (TYLE_TT_BH) - giong Xml2Processor
-                decimal tyleTTBH = 0;
-                if (this.HEIN_LIMIT_PRICE.HasValue)
-                {
-                    tyleTTBH = Math.Round((this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO))) * 100, 0);
-                }
-                else
-                {
-                    tyleTTBH = Math.Round((this.PRICE / this.ORIGINAL_PRICE) * 100, 0);
-                }
-                if (tyleTTBH <= 0)
-                {
-                    return;
-                }
-
-                decimal soLuong = Math.Round(this.AMOUNT, 3, MidpointRounding.AwayFromZero);
-                decimal donGia = Math.Round(this.ORIGINAL_PRICE * (1 + this.VAT_RATIO), 3, MidpointRounding.AwayFromZero);
-                decimal tienBH = Math.Round(soLuong * donGia * (tyleTTBH / 100), 2, MidpointRounding.AwayFromZero);
-                decimal quyBHTT = Math.Round(tienBH * this.HEIN_RATIO.Value, 2, MidpointRounding.AwayFromZero);
-                decimal nguonKhac = Math.Round(
-                    Math.Round((this.OTHER_SOURCE_PRICE ?? 0), 3, MidpointRounding.AwayFromZero) * soLuong,
-                    2, MidpointRounding.AwayFromZero);
-                decimal bnCungChiTra = tienBH - quyBHTT - nguonKhac;
-                if (bnCungChiTra < 0) bnCungChiTra = 0;
-
-                //Chi ap dung khi chenh lech thuan tuy do lam tron; lech lon hon la nghiep vu khac (vuot tran, tra 1 phan...) -> giu nguyen
-                if (Math.Abs(quyBHTT - rawHein) >= 0.01m || Math.Abs(bnCungChiTra - rawPatientBhyt) >= 0.01m)
-                {
-                    return;
-                }
-
-                this.VIR_TOTAL_HEIN_PRICE = quyBHTT;
-                this.VIR_TOTAL_PATIENT_PRICE_BHYT = bnCungChiTra;
-                //Giu "phai tra khac" = 0 nhu truoc (VIR_TOTAL_PATIENT_PRICE - VIR_TOTAL_PATIENT_PRICE_BHYT - nguon khac)
-                decimal nguonKhacRaw = (this.OTHER_SOURCE_PRICE ?? 0) * this.AMOUNT;
-                if (this.VIR_TOTAL_PATIENT_PRICE.HasValue
-                    && Math.Abs(this.VIR_TOTAL_PATIENT_PRICE.Value - rawPatientBhyt - nguonKhacRaw) < 0.01m)
-                {
-                    this.VIR_TOTAL_PATIENT_PRICE = bnCungChiTra + nguonKhacRaw;
                 }
             }
             catch (Exception ex)
