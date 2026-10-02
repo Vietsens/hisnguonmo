@@ -838,7 +838,7 @@ namespace HIS.Desktop.Plugins.HisBhytBlacklist.HisBhytBlacklist
         {
             try
             {
-                currentDTO.HEIN_CARD_NUMBER = txtHeinCardNumber.Text.Replace(" ", " ").ToUpper();
+                currentDTO.HEIN_CARD_NUMBER = HIS.Desktop.Utility.HeinCardHelper.TrimHeinCardNumber(txtHeinCardNumber.Text);
             }
             catch (Exception ex)
             {

@@ -162,7 +162,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                     }
                     else if (!string.IsNullOrEmpty(txtSoThe.Text.Trim()))
                     {
-                        var soThe = txtSoThe.Text.Replace("-", "");
+                        var soThe = HeinCardHelper.TrimHeinCardNumber(txtSoThe.Text);
                         //So the BHYT 15 ky tu -> 10 so cuoi; 17 ky tu -> 12 so dinh danh (deu bat dau tu vi tri 5)
                         txtBhxhCode.Text = GetBhxhCodeFromHeinCard(soThe);
                     }

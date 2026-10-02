@@ -322,7 +322,8 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 string sothe = "";
                 if (!string.IsNullOrEmpty(txtSoThe.Text))
                 {
-                    sothe = txtSoThe.Text.Replace("-", "");
+                    //Mask 15|17 ky tu de lai placeholder "_" va dau cach voi the 15 -> bo het ky tu phan cach
+                    sothe = HeinCardHelper.TrimHeinCardNumber(txtSoThe.Text);
                 }
                 if (!string.IsNullOrEmpty(sothe))
                 {
@@ -876,7 +877,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             {
                 if (lciBhxhCode.Visible && !string.IsNullOrEmpty(txtSoThe.Text))
                 {
-                    var soThe = txtSoThe.Text.Replace("-", "");
+                    var soThe = HeinCardHelper.TrimHeinCardNumber(txtSoThe.Text);
                     //So the BHYT 15 ky tu -> 10 so cuoi; 17 ky tu -> 12 so dinh danh (deu bat dau tu vi tri 5)
                     txtBhxhCode.Text = GetBhxhCodeFromHeinCard(soThe);
                 }

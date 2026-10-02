@@ -172,7 +172,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
                     apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.APIEGW;
                     CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
-                    checkHistoryLDO.maThe = dataHein.HeinCardNumber.Replace("-", "").Replace("_", "");
+                    checkHistoryLDO.maThe = HeinCardHelper.TrimHeinCardNumber(dataHein.HeinCardNumber);
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);
@@ -1094,7 +1094,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
                     apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.APIEGW;
                     CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
-                    checkHistoryLDO.maThe = dataHein.HeinCardNumber.Replace("-", "").Replace("_", "");
+                    checkHistoryLDO.maThe = HeinCardHelper.TrimHeinCardNumber(dataHein.HeinCardNumber);
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
                     checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.PatientName);
                     checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? dataHein.PatientName : checkHistoryLDO.hoTen);

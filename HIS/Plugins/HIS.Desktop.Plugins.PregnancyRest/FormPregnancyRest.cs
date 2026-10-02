@@ -950,7 +950,8 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                     sdo.TreatmentEndTypeExtId = Inventec.Common.TypeConvert.Parse.ToInt64(CboTreatmentEndTypExt.EditValue.ToString());
                     //sdo.PatientRelativeName = TxtRelativeName.Text;
                     //sdo.PatientRelativeType = CboRelativeType.Text.Trim();
-                    sdo.SickHeinCardNumber = txtHeinCardNumber.Text.Trim();
+                    //Bo dau "-", "_", dau cach nguoi dung go/dan vao so the
+                    sdo.SickHeinCardNumber = HeinCardHelper.TrimHeinCardNumber(txtHeinCardNumber.Text);
                     //sdo.SocialInsuranceNumber = txtMaBHXH.Text.Trim();
 
                     if (String.IsNullOrWhiteSpace(sdo.SocialInsuranceNumber) && !String.IsNullOrWhiteSpace(sdo.SickHeinCardNumber))
@@ -2167,7 +2168,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 {
                     if (!String.IsNullOrWhiteSpace(txtHeinCardNumber.Text))
                     {
-                        string hein = txtHeinCardNumber.Text.Trim();
+                        string hein = HeinCardHelper.TrimHeinCardNumber(txtHeinCardNumber.Text);
                         txtMaBHXH.Text = GetBhxhCodeFromHeinCard(hein);
                     }
                     if (String.IsNullOrWhiteSpace(txtMaBHXH.Text))
