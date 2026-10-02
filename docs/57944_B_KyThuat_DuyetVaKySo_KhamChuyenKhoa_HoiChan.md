@@ -328,3 +328,4 @@ Không đổi backend, không đổi EFMODEL, không thêm reference mới (phư
 | 30/09/2026 | nampp | Tạo thiết kế việc 57944 |
 | 30/09/2026 | nampp | Triển khai ApprovaleDebate (phương án A, bỏ Q4 — xem ghi chú đầu mục 4). ApprovalExamSpecialist (mục 5) chưa làm. |
 | 02/10/2026 | nampp | ApprovalExamSpecialist: "Duyệt và ký" ký thêm phiếu kết quả khám CK **Mps000500** sau tờ điều trị Mps000062 (user chốt "ký cả 2 phiếu"). Ký độc lập; ký lại Mps000500 không xóa văn bản cũ (HIS_CODE rỗng). G1–G4 vẫn chưa làm. |
+| 02/10/2026 | nampp | ApprovalExamSpecialist **đổi luồng theo yêu cầu**: "Duyệt và ký" chỉ ký Mps000500 (chống bấm đúp — G4); tờ điều trị Mps000062 ký bằng nút mới **"Ký tờ điều trị"** (chỉ bật khi đã duyệt). |

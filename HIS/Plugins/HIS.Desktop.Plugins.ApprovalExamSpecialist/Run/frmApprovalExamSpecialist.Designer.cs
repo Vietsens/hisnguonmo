@@ -137,6 +137,7 @@
             this.xtraScrollableControl16 = new DevExpress.XtraEditors.XtraScrollableControl();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnTracking = new DevExpress.XtraEditors.SimpleButton();
+            this.btnSignTracking = new DevExpress.XtraEditors.SimpleButton();
             this.txtCdPhu = new DevExpress.XtraEditors.TextEdit();
             this.cboCdPhu = new DevExpress.XtraEditors.TextEdit();
             this.txtIcd = new DevExpress.XtraEditors.TextEdit();
@@ -214,6 +215,7 @@
             this.lciChiTietBenhAn = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItemChiTietBenhAn = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciSignTracking = new DevExpress.XtraLayout.LayoutControlItem();
             this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
             this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
@@ -374,6 +376,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.lciChiTietBenhAn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemChiTietBenhAn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSignTracking)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
@@ -1419,6 +1422,7 @@
             // layoutControl1
             // 
             this.layoutControl1.Controls.Add(this.btnTracking);
+            this.layoutControl1.Controls.Add(this.btnSignTracking);
             this.layoutControl1.Controls.Add(this.txtCdPhu);
             this.layoutControl1.Controls.Add(this.cboCdPhu);
             this.layoutControl1.Controls.Add(this.txtIcd);
@@ -1450,6 +1454,18 @@
             this.btnTracking.TabIndex = 101;
             this.btnTracking.Text = "Tờ điều trị";
             this.btnTracking.Click += new System.EventHandler(this.btnTracking_Click);
+            //
+            // btnSignTracking
+            //
+            this.btnSignTracking.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSignTracking.Location = new System.Drawing.Point(947, 2);
+            this.btnSignTracking.Name = "btnSignTracking";
+            this.btnSignTracking.Size = new System.Drawing.Size(101, 22);
+            this.btnSignTracking.StyleController = this.layoutControl1;
+            this.btnSignTracking.TabIndex = 102;
+            this.btnSignTracking.Text = "Ký tờ điều trị";
+            this.btnSignTracking.ToolTip = "Ký số tờ điều trị chứa nội dung duyệt khám chuyên khoa (chỉ dùng khi phiếu đã duyệt)";
+            this.btnSignTracking.Click += new System.EventHandler(this.btnSignTracking_Click);
             // 
             // txtCdPhu
             // 
@@ -1523,7 +1539,7 @@
             this.btnSaveAndSign.StyleController = this.layoutControl1;
             this.btnSaveAndSign.TabIndex = 16;
             this.btnSaveAndSign.Text = "Duyệt và ký (Ctrl K)";
-            this.btnSaveAndSign.ToolTip = "Duyệt, ký tờ điều trị và ký phiếu kết quả khám chuyên khoa";
+            this.btnSaveAndSign.ToolTip = "Duyệt và ký số phiếu kết quả khám chuyên khoa";
             this.btnSaveAndSign.Click += new System.EventHandler(this.btnSaveAndSign_Click);
             // 
             // btnPrint
@@ -2134,7 +2150,8 @@
             this.layoutControlItem21,
             this.lciChiTietBenhAn,
             this.emptySpaceItemChiTietBenhAn,
-            this.layoutControlItem15});
+            this.layoutControlItem15,
+            this.lciSignTracking});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.OptionsItemText.TextToControlDistance = 4;
@@ -2284,7 +2301,7 @@
             this.emptySpaceItemChiTietBenhAn.AllowHotTrack = false;
             this.emptySpaceItemChiTietBenhAn.Location = new System.Drawing.Point(343, 0);
             this.emptySpaceItemChiTietBenhAn.Name = "emptySpaceItemChiTietBenhAn";
-            this.emptySpaceItemChiTietBenhAn.Size = new System.Drawing.Size(707, 26);
+            this.emptySpaceItemChiTietBenhAn.Size = new System.Drawing.Size(602, 26);
             this.emptySpaceItemChiTietBenhAn.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem15
@@ -2295,6 +2312,15 @@
             this.layoutControlItem15.Size = new System.Drawing.Size(87, 26);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
+            //
+            // lciSignTracking
+            //
+            this.lciSignTracking.Control = this.btnSignTracking;
+            this.lciSignTracking.Location = new System.Drawing.Point(945, 0);
+            this.lciSignTracking.Name = "lciSignTracking";
+            this.lciSignTracking.Size = new System.Drawing.Size(105, 26);
+            this.lciSignTracking.TextSize = new System.Drawing.Size(0, 0);
+            this.lciSignTracking.TextVisible = false;
             // 
             // imageCollection1
             // 
@@ -2488,6 +2514,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.lciChiTietBenhAn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemChiTietBenhAn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSignTracking)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
@@ -2683,5 +2710,7 @@
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemChiTietBenhAn;
         private DevExpress.XtraEditors.SimpleButton btnTracking;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
+        private DevExpress.XtraEditors.SimpleButton btnSignTracking;
+        private DevExpress.XtraLayout.LayoutControlItem lciSignTracking;
     }
 }

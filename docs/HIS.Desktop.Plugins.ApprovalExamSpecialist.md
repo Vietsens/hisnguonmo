@@ -6,7 +6,7 @@
 |-----------|---------|
 | Plugin ID | HIS.Desktop.Plugins.ApprovalExamSpecialist |
 | Loại | Form |
-| Mục đích | Bác sĩ chuyên khoa duyệt phiếu mời khám chuyên khoa (HIS_SPECIALIST_EXAM): chọn bác sĩ khám, nhập nội dung khám / y lệnh, chẩn đoán; backend ghi nội dung vào tờ điều trị. Có "Duyệt và ký" ký số tờ điều trị (Mps000062) và phiếu kết quả khám chuyên khoa (Mps000500). |
+| Mục đích | Bác sĩ chuyên khoa duyệt phiếu mời khám chuyên khoa (HIS_SPECIALIST_EXAM): chọn bác sĩ khám, nhập nội dung khám / y lệnh, chẩn đoán; backend ghi nội dung vào tờ điều trị. "Duyệt và ký" ký số phiếu kết quả khám chuyên khoa (Mps000500); "Ký tờ điều trị" ký số tờ điều trị (Mps000062). |
 | Trạng thái | Bảo trì |
 
 ## 2. Quy Trình Nghiệp Vụ
@@ -15,13 +15,14 @@
 1. Plugin nhận `V_HIS_SPECIALIST_EXAM` (phiếu mời), `long` (id) và delegate `Common.RefeshReference` từ form cha.
 2. Form load: thông tin khám, tab tổng hợp tờ điều trị / XN / CĐHA / TT / TDCN... của ca điều trị.
 3. **"Duyệt (Ctrl S)"** → `SaveSpecialistExam()`: validate bác sĩ + nội dung khám + y lệnh → POST `api/HisSpecialistExam/Update` với `IS_APPROVAL = 1`. Backend ghi nội dung vào tờ điều trị (`EXAM_EXECUTE_TRACKING_ID` nếu bật `MOS.HIS_TRACKING.CREATE_FOR_EXAM_DEPARTMENT`, ngược lại `TRACKING_ID`).
-4. **"Duyệt và ký (Ctrl K)"** (việc 56271, bổ sung việc 57944):
+4. **"Duyệt và ký (Ctrl K)"** (việc 57944 — chỉ ký Mps000500):
    - Phiếu chưa duyệt → chạy Duyệt như bước 3; lỗi thì dừng, không ký.
    - Phiếu đã duyệt → bỏ qua Duyệt, chỉ ký (ký lại khi lần trước lỗi/hủy).
-   - Ký **tờ điều trị Mps000062** (`EmrSignNow`); nếu tờ điều trị đã có văn bản ký thì hỏi xóa văn bản cũ trước khi ký lại. Không xác định được tờ điều trị → cảnh báo, bỏ qua bước này.
-   - **(57944)** Ký tiếp **phiếu kết quả khám chuyên khoa Mps000500** (`EmrSignNow`). Ký độc lập với tờ điều trị: tờ điều trị ký lỗi/hủy vẫn ký phiếu kết quả.
-5. **"In (Ctrl P)"** → in/xem trước Mps000500 (`Show` / `PrintNow` theo `CheDoInChoCacChucNangTrongPhanMem`), không tự ký.
-6. "Tờ điều trị" mở `HIS.Desktop.Plugins.TrackingCreate`; "Chi tiết bệnh án" mở `HIS.Desktop.Plugins.EmrDocument` theo `TREATMENT_CODE`.
+   - Ký **phiếu kết quả khám chuyên khoa Mps000500** (`EmrSignNow`). KHÔNG ký tờ điều trị.
+   - Nút tạm khóa trong lúc xử lý (chống bấm đúp).
+5. **"Ký tờ điều trị"** (việc 57944, nút trên cùng cạnh "Tờ điều trị"): chỉ bật khi phiếu đã duyệt. Xác định tờ điều trị (`EXAM_EXECUTE_TRACKING_ID` → `TRACKING_ID`) → ký **Mps000062** (`EmrSignNow`); tờ đã có văn bản ký thì hỏi xóa văn bản cũ trước khi ký lại. Không xác định được tờ điều trị → cảnh báo.
+6. **"In (Ctrl P)"** → in/xem trước Mps000500 (`Show` / `PrintNow` theo `CheDoInChoCacChucNangTrongPhanMem`), không tự ký.
+7. "Tờ điều trị" mở `HIS.Desktop.Plugins.TrackingCreate`; "Chi tiết bệnh án" mở `HIS.Desktop.Plugins.EmrDocument` theo `TREATMENT_CODE`.
 
 ### Sơ đồ trạng thái IS_APPROVAL
 ```
@@ -29,7 +30,7 @@ NULL / 2 (Chờ duyệt / Từ chối) → 1 (Đã duyệt)   ← Duyệt / Duy�
 ```
 
 ### Điều kiện nghiệp vụ
-- "Duyệt" chỉ bật khi `IS_APPROVAL == null || IS_APPROVAL == 2`; "Tờ điều trị" chỉ bật khi đã duyệt.
+- "Duyệt" chỉ bật khi `IS_APPROVAL == null || IS_APPROVAL == 2`; "Tờ điều trị" và "Ký tờ điều trị" chỉ bật khi đã duyệt (`ShowHideBtnSave`).
 - "Duyệt và ký" luôn bật (cho phép ký lại).
 - Ký lại Mps000500 KHÔNG xóa văn bản ký cũ: Mps000500 không override `ProcessUniqueCodeData()` → `EMR_DOCUMENT.HIS_CODE` rỗng, không lọc được đúng văn bản cũ.
 
@@ -48,18 +49,19 @@ NULL / 2 (Chờ duyệt / Từ chối) → 1 (Đã duyệt)   ← Duyệt / Duy�
 
 ```
 +------------------------------------------------------------------+
-| [Tờ điều trị]                                                     |
+|                              [Ký tờ điều trị] [Tờ điều trị] [Chi tiết bệnh án] |
 | Bác sĩ khám ★ | Thời gian | Chẩn đoán chính/phụ                   |
 | Nội dung khám ★ / Y lệnh khám ★                                   |
 |                | Tab: Tất cả | Khám bệnh | XN | CĐHA | TT | TDCN... |
-| [Chi tiết bệnh án] [Duyệt (Ctrl S)] [Duyệt và ký (Ctrl K)] [In (Ctrl P)] |
+| [Duyệt (Ctrl S)] [Duyệt và ký (Ctrl K)] [In (Ctrl P)]             |
 +------------------------------------------------------------------+
 ```
 
 | Control | Loại | Mục đích |
 |---------|------|----------|
 | btnSave | SimpleButton (Ctrl+S) | Duyệt |
-| btnSaveAndSign | SimpleButton (Ctrl+K) | Duyệt, ký tờ điều trị Mps000062 và ký phiếu kết quả Mps000500 |
+| btnSaveAndSign | SimpleButton (Ctrl+K) | Duyệt và ký phiếu kết quả khám chuyên khoa Mps000500 |
+| btnSignTracking | SimpleButton | Ký tờ điều trị Mps000062 (chỉ bật khi đã duyệt) |
 | btnPrint | SimpleButton (Ctrl+P) | In phiếu kết quả khám chuyên khoa Mps000500 |
 | btnTracking | SimpleButton | Mở tờ điều trị |
 | btnChiTietBenhAn | SimpleButton | Mở EMR theo TREATMENT_CODE |
@@ -98,9 +100,8 @@ NULL / 2 (Chờ duyệt / Từ chối) → 1 (Đã duyệt)   ← Duyệt / Duy�
 
 ```
 btnPrint_Click          → PrintExamResult(isSign: false)
-btnSaveAndSign_Click    → [SaveSpecialistExam() nếu chưa duyệt]
-                        → PrintProcess62(IN_TO_DIEU_TRI)        (nếu xác định được tờ điều trị)
-                        → PrintExamResult(isSign: true)
+btnSaveAndSign_Click    → [SaveSpecialistExam() nếu chưa duyệt] → PrintExamResult(isSign: true)
+btnSignTracking_Click   → GetTrackingToSign(...) → PrintProcess62(IN_TO_DIEU_TRI)
 PrintExamResult(isSign) → RunPrintTemplate("Mps000500", (code, file) => DeletegatePrintTemplate(code, file, isSign))
                         → Inphieuketquakhamchuyenkhoa(..., isSign) → MpsPrinter.Run(PrintData{ EmrInputADO })
 ```
@@ -111,16 +112,21 @@ PrintExamResult(isSign) → RunPrintTemplate("Mps000500", (code, file) => Delete
 |------|-----------|-----------------|
 | (việc 56271) | — | Thêm "Duyệt và ký": duyệt xong in + ký số tờ điều trị Mps000062 (partial `_PrintToDieuTri.cs`). |
 | 02/10/2026 | nampp | **Việc 57944 (NTP)**: "Duyệt và ký" ký thêm **phiếu kết quả khám chuyên khoa Mps000500** sau tờ điều trị (`EmrSignNow`, ký độc lập — tờ điều trị lỗi/hủy hoặc không xác định được vẫn ký Mps000500). Tách `btnPrint_Click` → `PrintExamResult(isSign)`; chế độ ký truyền qua lambda vào `DeletegatePrintTemplate`/`Inphieuketquakhamchuyenkhoa`. Audit `LogActionSuccess("frmApprovalExamSpecialist", "ApproveAndSign.Mps000500", loginName)`. Tooltip nút: "Duyệt, ký tờ điều trị và ký phiếu kết quả khám chuyên khoa". Tạo tài liệu module. |
+| 02/10/2026 | nampp | **Việc 57944 — đổi luồng**: "Duyệt và ký" **chỉ ký Mps000500** (bỏ ký tờ điều trị), khóa nút trong lúc xử lý. Thêm nút **"Ký tờ điều trị"** (`btnSignTracking`, hàng trên cạnh "Tờ điều trị", lấy 105px từ `emptySpaceItemChiTietBenhAn`) ký Mps000062, chỉ bật khi đã duyệt. Tooltip "Duyệt và ký": "Duyệt và ký số phiếu kết quả khám chuyên khoa". |
 
 ## 9. Test Cases
 
 ### Duyệt và ký
-- [ ] Phiếu chưa duyệt, nhập đủ → "Duyệt và ký" → duyệt thành công → màn ký tờ điều trị → ký xong → màn ký phiếu kết quả Mps000500 → ký xong, "Chi tiết bệnh án" có cả 2 văn bản.
+- [ ] Phiếu chưa duyệt, nhập đủ → "Duyệt và ký" → duyệt thành công → CHỈ mở màn ký phiếu kết quả Mps000500 (không ký tờ điều trị).
 - [ ] Thiếu bác sĩ / nội dung khám → không gọi API, không mở ký.
-- [ ] Hủy ở màn ký tờ điều trị → vẫn mở màn ký Mps000500.
-- [ ] Không xác định được tờ điều trị → cảnh báo, sau đó vẫn ký Mps000500.
-- [ ] Phiếu đã duyệt → "Duyệt và ký" không gọi Update, chỉ ký 2 phiếu.
-- [ ] Ký lại tờ điều trị đã có văn bản ký → hỏi xóa văn bản cũ (No → bỏ qua tờ điều trị, vẫn ký Mps000500).
+- [ ] Phiếu đã duyệt → "Duyệt và ký" không gọi Update, chỉ ký Mps000500.
+- [ ] Bấm đúp nhanh → chỉ 1 lần gọi Update.
+
+### Ký tờ điều trị
+- [ ] Phiếu chưa duyệt → nút "Ký tờ điều trị" bị khóa; duyệt xong → nút bật.
+- [ ] Phiếu đã duyệt → "Ký tờ điều trị" → mở màn ký Mps000062 của đúng tờ điều trị chứa nội dung duyệt.
+- [ ] Tờ điều trị đã có văn bản ký → hỏi xóa văn bản cũ; No → dừng, Yes → xóa + ký lại.
+- [ ] Không xác định được tờ điều trị → cảnh báo.
 
 ### In
 - [ ] "In (Ctrl P)" vẫn preview/in Mps000500 như cũ, không tự ký.
