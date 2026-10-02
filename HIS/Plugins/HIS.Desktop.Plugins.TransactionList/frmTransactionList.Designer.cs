@@ -175,6 +175,29 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupControlContainerCashierRoom = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
+            this.layoutControlCashierRoom = new DevExpress.XtraLayout.LayoutControl();
+            this.grdCashierRoom = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.grdCashierRoomView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.layoutControlGroupCashierRoom = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.lciCashierRoom = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupCashierRoom = new DevExpress.XtraNavBar.NavBarGroup();
+            this.navBarGroupControlContainerCashier = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
+            this.layoutControlCashier = new DevExpress.XtraLayout.LayoutControl();
+            this.grdCashier = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.grdCashierView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.layoutControlGroupCashier = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.lciCashier = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupCashier = new DevExpress.XtraNavBar.NavBarGroup();
+            this.navBarGroupControlContainerAccountBook = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
+            this.layoutControlAccountBook = new DevExpress.XtraLayout.LayoutControl();
+            this.grdAccountBook = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.grdAccountBookView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.layoutControlGroupAccountBook = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.lciAccountBook = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupAccountBook = new DevExpress.XtraNavBar.NavBarGroup();
+            this.lblTotalAmount = new DevExpress.XtraEditors.LabelControl();
+            this.lciTotalAmount = new DevExpress.XtraLayout.LayoutControlItem();
             this.navBarGroupControlContainer3 = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.txtAccountBookSymbol = new DevExpress.XtraEditors.TextEdit();
@@ -361,6 +384,28 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
+            this.navBarGroupControlContainerCashierRoom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlCashierRoom)).BeginInit();
+            this.layoutControlCashierRoom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grdCashierRoom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdCashierRoomView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupCashierRoom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCashierRoom)).BeginInit();
+            this.navBarGroupControlContainerCashier.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlCashier)).BeginInit();
+            this.layoutControlCashier.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grdCashier.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdCashierView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupCashier)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCashier)).BeginInit();
+            this.navBarGroupControlContainerAccountBook.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlAccountBook)).BeginInit();
+            this.layoutControlAccountBook.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grdAccountBook.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdAccountBookView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupAccountBook)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAccountBook)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTotalAmount)).BeginInit();
             this.navBarGroupControlContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
@@ -463,6 +508,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControl1.Controls.Add(this.ucPaging1);
             this.layoutControl1.Controls.Add(this.btnRefresh);
             this.layoutControl1.Controls.Add(this.btnFind);
+            this.layoutControl1.Controls.Add(this.lblTotalAmount);
             this.layoutControl1.Controls.Add(this.navBarControl1);
             this.layoutControl1.Controls.Add(this.txtKeyword);
             this.layoutControl1.Controls.Add(this.gridControlTransaction);
@@ -799,11 +845,26 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.btnFind.Text = "Tìm (Ctrl F)";
             this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
             // 
+            // lblTotalAmount
+            // 
+            this.lblTotalAmount.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblTotalAmount.Appearance.ForeColor = System.Drawing.Color.Blue;
+            this.lblTotalAmount.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblTotalAmount.Location = new System.Drawing.Point(2, 597);
+            this.lblTotalAmount.Name = "lblTotalAmount";
+            this.lblTotalAmount.Size = new System.Drawing.Size(257, 18);
+            this.lblTotalAmount.StyleController = this.layoutControl1;
+            this.lblTotalAmount.TabIndex = 15;
+            this.lblTotalAmount.Text = "Tổng tiền: 0";
+            // 
             // navBarControl1
             // 
             this.navBarControl1.ActiveGroup = this.navBarGroupCreateTime;
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer1);
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer2);
+            this.navBarControl1.Controls.Add(this.navBarGroupControlContainerCashierRoom);
+            this.navBarControl1.Controls.Add(this.navBarGroupControlContainerCashier);
+            this.navBarControl1.Controls.Add(this.navBarGroupControlContainerAccountBook);
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer3);
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer4);
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer5);
@@ -811,6 +872,9 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.navBarControl1.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] {
             this.navBarGroupCreateTime,
             this.navBarGroupTransactionType,
+            this.navBarGroupCashierRoom,
+            this.navBarGroupCashier,
+            this.navBarGroupAccountBook,
             this.navBarGroupBillType,
             this.barElectronic,
             this.navBarGroupAccountBookInfo,
@@ -818,7 +882,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.navBarControl1.Location = new System.Drawing.Point(2, 98);
             this.navBarControl1.Name = "navBarControl1";
             this.navBarControl1.OptionsNavPane.ExpandedWidth = 257;
-            this.navBarControl1.Size = new System.Drawing.Size(257, 517);
+            this.navBarControl1.Size = new System.Drawing.Size(257, 495);
             this.navBarControl1.TabIndex = 6;
             this.navBarControl1.Text = "navBarControl1";
             // 
@@ -992,6 +1056,198 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem18.Size = new System.Drawing.Size(249, 26);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
+            // 
+            // navBarGroupControlContainerCashierRoom
+            // 
+            this.navBarGroupControlContainerCashierRoom.Appearance.BackColor = System.Drawing.SystemColors.Control;
+            this.navBarGroupControlContainerCashierRoom.Appearance.Options.UseBackColor = true;
+            this.navBarGroupControlContainerCashierRoom.Controls.Add(this.layoutControlCashierRoom);
+            this.navBarGroupControlContainerCashierRoom.Name = "navBarGroupControlContainerCashierRoom";
+            this.navBarGroupControlContainerCashierRoom.Size = new System.Drawing.Size(249, 36);
+            this.navBarGroupControlContainerCashierRoom.TabIndex = 1;
+            // 
+            // layoutControlCashierRoom
+            // 
+            this.layoutControlCashierRoom.Controls.Add(this.grdCashierRoom);
+            this.layoutControlCashierRoom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControlCashierRoom.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlCashierRoom.Name = "layoutControlCashierRoom";
+            this.layoutControlCashierRoom.Root = this.layoutControlGroupCashierRoom;
+            this.layoutControlCashierRoom.Size = new System.Drawing.Size(249, 36);
+            this.layoutControlCashierRoom.TabIndex = 0;
+            this.layoutControlCashierRoom.Text = "layoutControlCashierRoom";
+            // 
+            // grdCashierRoom
+            // 
+            this.grdCashierRoom.Location = new System.Drawing.Point(2, 12);
+            this.grdCashierRoom.MenuManager = this.barManager1;
+            this.grdCashierRoom.Name = "grdCashierRoom";
+            this.grdCashierRoom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.grdCashierRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.grdCashierRoom.Properties.NullText = "";
+            this.grdCashierRoom.Properties.View = this.grdCashierRoomView;
+            this.grdCashierRoom.Size = new System.Drawing.Size(245, 20);
+            this.grdCashierRoom.StyleController = this.layoutControlCashierRoom;
+            this.grdCashierRoom.TabIndex = 8;
+            this.grdCashierRoom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.grdCashierRoom_Closed);
+            this.grdCashierRoom.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.grdCashierRoom_CustomDisplayText);
+            // 
+            // grdCashierRoomView
+            // 
+            this.grdCashierRoomView.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.grdCashierRoomView.Name = "grdCashierRoomView";
+            this.grdCashierRoomView.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.grdCashierRoomView.OptionsView.ShowGroupPanel = false;
+            // 
+            // layoutControlGroupCashierRoom
+            // 
+            this.layoutControlGroupCashierRoom.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroupCashierRoom.GroupBordersVisible = false;
+            this.layoutControlGroupCashierRoom.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciCashierRoom});
+            this.layoutControlGroupCashierRoom.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroupCashierRoom.Name = "layoutControlGroupCashierRoom";
+            this.layoutControlGroupCashierRoom.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 10, 0);
+            this.layoutControlGroupCashierRoom.Size = new System.Drawing.Size(249, 36);
+            this.layoutControlGroupCashierRoom.TextVisible = false;
+            // 
+            // lciCashierRoom
+            // 
+            this.lciCashierRoom.Control = this.grdCashierRoom;
+            this.lciCashierRoom.Location = new System.Drawing.Point(0, 0);
+            this.lciCashierRoom.Name = "lciCashierRoom";
+            this.lciCashierRoom.Size = new System.Drawing.Size(249, 26);
+            this.lciCashierRoom.TextSize = new System.Drawing.Size(0, 0);
+            this.lciCashierRoom.TextVisible = false;
+            // 
+            // navBarGroupControlContainerCashier
+            // 
+            this.navBarGroupControlContainerCashier.Appearance.BackColor = System.Drawing.SystemColors.Control;
+            this.navBarGroupControlContainerCashier.Appearance.Options.UseBackColor = true;
+            this.navBarGroupControlContainerCashier.Controls.Add(this.layoutControlCashier);
+            this.navBarGroupControlContainerCashier.Name = "navBarGroupControlContainerCashier";
+            this.navBarGroupControlContainerCashier.Size = new System.Drawing.Size(249, 36);
+            this.navBarGroupControlContainerCashier.TabIndex = 1;
+            // 
+            // layoutControlCashier
+            // 
+            this.layoutControlCashier.Controls.Add(this.grdCashier);
+            this.layoutControlCashier.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControlCashier.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlCashier.Name = "layoutControlCashier";
+            this.layoutControlCashier.Root = this.layoutControlGroupCashier;
+            this.layoutControlCashier.Size = new System.Drawing.Size(249, 36);
+            this.layoutControlCashier.TabIndex = 0;
+            this.layoutControlCashier.Text = "layoutControlCashier";
+            // 
+            // grdCashier
+            // 
+            this.grdCashier.Location = new System.Drawing.Point(2, 12);
+            this.grdCashier.MenuManager = this.barManager1;
+            this.grdCashier.Name = "grdCashier";
+            this.grdCashier.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.grdCashier.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.grdCashier.Properties.NullText = "";
+            this.grdCashier.Properties.View = this.grdCashierView;
+            this.grdCashier.Size = new System.Drawing.Size(245, 20);
+            this.grdCashier.StyleController = this.layoutControlCashier;
+            this.grdCashier.TabIndex = 8;
+            this.grdCashier.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.grdCashier_Closed);
+            this.grdCashier.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.grdCashier_CustomDisplayText);
+            // 
+            // grdCashierView
+            // 
+            this.grdCashierView.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.grdCashierView.Name = "grdCashierView";
+            this.grdCashierView.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.grdCashierView.OptionsView.ShowGroupPanel = false;
+            // 
+            // layoutControlGroupCashier
+            // 
+            this.layoutControlGroupCashier.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroupCashier.GroupBordersVisible = false;
+            this.layoutControlGroupCashier.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciCashier});
+            this.layoutControlGroupCashier.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroupCashier.Name = "layoutControlGroupCashier";
+            this.layoutControlGroupCashier.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 10, 0);
+            this.layoutControlGroupCashier.Size = new System.Drawing.Size(249, 36);
+            this.layoutControlGroupCashier.TextVisible = false;
+            // 
+            // lciCashier
+            // 
+            this.lciCashier.Control = this.grdCashier;
+            this.lciCashier.Location = new System.Drawing.Point(0, 0);
+            this.lciCashier.Name = "lciCashier";
+            this.lciCashier.Size = new System.Drawing.Size(249, 26);
+            this.lciCashier.TextSize = new System.Drawing.Size(0, 0);
+            this.lciCashier.TextVisible = false;
+            // 
+            // navBarGroupControlContainerAccountBook
+            // 
+            this.navBarGroupControlContainerAccountBook.Appearance.BackColor = System.Drawing.SystemColors.Control;
+            this.navBarGroupControlContainerAccountBook.Appearance.Options.UseBackColor = true;
+            this.navBarGroupControlContainerAccountBook.Controls.Add(this.layoutControlAccountBook);
+            this.navBarGroupControlContainerAccountBook.Name = "navBarGroupControlContainerAccountBook";
+            this.navBarGroupControlContainerAccountBook.Size = new System.Drawing.Size(249, 36);
+            this.navBarGroupControlContainerAccountBook.TabIndex = 1;
+            // 
+            // layoutControlAccountBook
+            // 
+            this.layoutControlAccountBook.Controls.Add(this.grdAccountBook);
+            this.layoutControlAccountBook.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControlAccountBook.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlAccountBook.Name = "layoutControlAccountBook";
+            this.layoutControlAccountBook.Root = this.layoutControlGroupAccountBook;
+            this.layoutControlAccountBook.Size = new System.Drawing.Size(249, 36);
+            this.layoutControlAccountBook.TabIndex = 0;
+            this.layoutControlAccountBook.Text = "layoutControlAccountBook";
+            // 
+            // grdAccountBook
+            // 
+            this.grdAccountBook.Location = new System.Drawing.Point(2, 12);
+            this.grdAccountBook.MenuManager = this.barManager1;
+            this.grdAccountBook.Name = "grdAccountBook";
+            this.grdAccountBook.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.grdAccountBook.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.grdAccountBook.Properties.NullText = "";
+            this.grdAccountBook.Properties.View = this.grdAccountBookView;
+            this.grdAccountBook.Size = new System.Drawing.Size(245, 20);
+            this.grdAccountBook.StyleController = this.layoutControlAccountBook;
+            this.grdAccountBook.TabIndex = 8;
+            this.grdAccountBook.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.grdAccountBook_Closed);
+            this.grdAccountBook.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.grdAccountBook_CustomDisplayText);
+            // 
+            // grdAccountBookView
+            // 
+            this.grdAccountBookView.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.grdAccountBookView.Name = "grdAccountBookView";
+            this.grdAccountBookView.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.grdAccountBookView.OptionsView.ShowGroupPanel = false;
+            // 
+            // layoutControlGroupAccountBook
+            // 
+            this.layoutControlGroupAccountBook.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroupAccountBook.GroupBordersVisible = false;
+            this.layoutControlGroupAccountBook.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciAccountBook});
+            this.layoutControlGroupAccountBook.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroupAccountBook.Name = "layoutControlGroupAccountBook";
+            this.layoutControlGroupAccountBook.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 10, 0);
+            this.layoutControlGroupAccountBook.Size = new System.Drawing.Size(249, 36);
+            this.layoutControlGroupAccountBook.TextVisible = false;
+            // 
+            // lciAccountBook
+            // 
+            this.lciAccountBook.Control = this.grdAccountBook;
+            this.lciAccountBook.Location = new System.Drawing.Point(0, 0);
+            this.lciAccountBook.Name = "lciAccountBook";
+            this.lciAccountBook.Size = new System.Drawing.Size(249, 26);
+            this.lciAccountBook.TextSize = new System.Drawing.Size(0, 0);
+            this.lciAccountBook.TextVisible = false;
             // 
             // navBarGroupControlContainer3
             // 
@@ -1532,6 +1788,33 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.navBarGroupTransactionType.GroupClientHeight = 40;
             this.navBarGroupTransactionType.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.navBarGroupTransactionType.Name = "navBarGroupTransactionType";
+            // 
+            // navBarGroupCashierRoom
+            // 
+            this.navBarGroupCashierRoom.Caption = "Điểm thu";
+            this.navBarGroupCashierRoom.ControlContainer = this.navBarGroupControlContainerCashierRoom;
+            this.navBarGroupCashierRoom.Expanded = true;
+            this.navBarGroupCashierRoom.GroupClientHeight = 40;
+            this.navBarGroupCashierRoom.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
+            this.navBarGroupCashierRoom.Name = "navBarGroupCashierRoom";
+            // 
+            // navBarGroupCashier
+            // 
+            this.navBarGroupCashier.Caption = "Người thu";
+            this.navBarGroupCashier.ControlContainer = this.navBarGroupControlContainerCashier;
+            this.navBarGroupCashier.Expanded = true;
+            this.navBarGroupCashier.GroupClientHeight = 40;
+            this.navBarGroupCashier.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
+            this.navBarGroupCashier.Name = "navBarGroupCashier";
+            // 
+            // navBarGroupAccountBook
+            // 
+            this.navBarGroupAccountBook.Caption = "Sổ thu";
+            this.navBarGroupAccountBook.ControlContainer = this.navBarGroupControlContainerAccountBook;
+            this.navBarGroupAccountBook.Expanded = true;
+            this.navBarGroupAccountBook.GroupClientHeight = 40;
+            this.navBarGroupAccountBook.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
+            this.navBarGroupAccountBook.Name = "navBarGroupAccountBook";
             // 
             // navBarGroupBillType
             // 
@@ -2577,7 +2860,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem9,
             this.layoutControlItem13,
             this.layoutControlItem20,
-            this.layoutControlItem24});
+            this.layoutControlItem24,
+            this.lciTotalAmount});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2609,9 +2893,21 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem3.Control = this.navBarControl1;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 96);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(261, 521);
+            this.layoutControlItem3.Size = new System.Drawing.Size(261, 499);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
+            // 
+            // lciTotalAmount
+            // 
+            this.lciTotalAmount.Control = this.lblTotalAmount;
+            this.lciTotalAmount.Location = new System.Drawing.Point(0, 595);
+            this.lciTotalAmount.MaxSize = new System.Drawing.Size(0, 22);
+            this.lciTotalAmount.MinSize = new System.Drawing.Size(1, 22);
+            this.lciTotalAmount.Name = "lciTotalAmount";
+            this.lciTotalAmount.Size = new System.Drawing.Size(261, 22);
+            this.lciTotalAmount.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciTotalAmount.TextSize = new System.Drawing.Size(0, 0);
+            this.lciTotalAmount.TextVisible = false;
             // 
             // layoutControlItem4
             // 
@@ -2784,6 +3080,28 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
+            this.navBarGroupControlContainerCashierRoom.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlCashierRoom)).EndInit();
+            this.layoutControlCashierRoom.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.grdCashierRoom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdCashierRoomView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupCashierRoom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCashierRoom)).EndInit();
+            this.navBarGroupControlContainerCashier.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlCashier)).EndInit();
+            this.layoutControlCashier.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.grdCashier.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdCashierView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupCashier)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCashier)).EndInit();
+            this.navBarGroupControlContainerAccountBook.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlAccountBook)).EndInit();
+            this.layoutControlAccountBook.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.grdAccountBook.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdAccountBookView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupAccountBook)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAccountBook)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTotalAmount)).EndInit();
             this.navBarGroupControlContainer3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             this.layoutControl4.ResumeLayout(false);
@@ -3029,6 +3347,29 @@ namespace HIS.Desktop.Plugins.TransactionList
         private DevExpress.XtraEditors.GridLookUpEdit grdLoaiGiaoDich;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
+        private DevExpress.XtraNavBar.NavBarGroupControlContainer navBarGroupControlContainerCashierRoom;
+        private DevExpress.XtraLayout.LayoutControl layoutControlCashierRoom;
+        private DevExpress.XtraEditors.GridLookUpEdit grdCashierRoom;
+        private DevExpress.XtraGrid.Views.Grid.GridView grdCashierRoomView;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroupCashierRoom;
+        private DevExpress.XtraLayout.LayoutControlItem lciCashierRoom;
+        private DevExpress.XtraNavBar.NavBarGroup navBarGroupCashierRoom;
+        private DevExpress.XtraNavBar.NavBarGroupControlContainer navBarGroupControlContainerCashier;
+        private DevExpress.XtraLayout.LayoutControl layoutControlCashier;
+        private DevExpress.XtraEditors.GridLookUpEdit grdCashier;
+        private DevExpress.XtraGrid.Views.Grid.GridView grdCashierView;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroupCashier;
+        private DevExpress.XtraLayout.LayoutControlItem lciCashier;
+        private DevExpress.XtraNavBar.NavBarGroup navBarGroupCashier;
+        private DevExpress.XtraNavBar.NavBarGroupControlContainer navBarGroupControlContainerAccountBook;
+        private DevExpress.XtraLayout.LayoutControl layoutControlAccountBook;
+        private DevExpress.XtraEditors.GridLookUpEdit grdAccountBook;
+        private DevExpress.XtraGrid.Views.Grid.GridView grdAccountBookView;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroupAccountBook;
+        private DevExpress.XtraLayout.LayoutControlItem lciAccountBook;
+        private DevExpress.XtraNavBar.NavBarGroup navBarGroupAccountBook;
+        private DevExpress.XtraEditors.LabelControl lblTotalAmount;
+        private DevExpress.XtraLayout.LayoutControlItem lciTotalAmount;
         private DevExpress.XtraEditors.GridLookUpEdit grdLoaiHoaDon;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
