@@ -365,6 +365,12 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             {
                 gridViewPaan.EndUpdate();
                 WaitingManager.Hide();
+
+                // Nap lai luoi ma dong dang chon van la dong 0 thi DevExpress KHONG ban
+                // FocusedRowChanged (ColumnView.DoChangeFocusedRowInternal bo qua khi handle
+                // khong doi) -> phai tu cap nhat lai cac nut va nhan "Xu ly / Huy ket thuc"
+                // theo dong moi, neu khong nhan se giu trang thai cua lan nap truoc.
+                InitEnableControl();
             }
         }
 
