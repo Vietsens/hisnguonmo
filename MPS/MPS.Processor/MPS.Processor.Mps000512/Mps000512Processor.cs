@@ -157,14 +157,28 @@ namespace MPS.Processor.Mps000512
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
 
                 DataInputProcess();
+                Inventec.Common.Logging.LogSystem.Info(String.Format("MPS000512: DataInputProcess xong. SereServs={0}, sereServADOs={1}, sereServADOSAs={2}, sereServADONoExamZero={3}, CurrentPatyAlter={4}, TDL_PATIENT_TYPE_ID={5}",
+                    rdo.SereServs != null ? rdo.SereServs.Count : -1,
+                    sereServADOs != null ? sereServADOs.Count : -1,
+                    sereServADOSAs != null ? sereServADOSAs.Count : -1,
+                    sereServADONoExamZero != null ? sereServADONoExamZero.Count : -1,
+                    rdo.CurrentPatyAlter != null ? rdo.CurrentPatyAlter.ID.ToString() : "null",
+                    rdo.Treatment != null ? rdo.Treatment.TDL_PATIENT_TYPE_ID.ToString() : "null"));
                 GroupDisplayProcess();
+                Inventec.Common.Logging.LogSystem.Info(String.Format("MPS000512: GroupDisplayProcess xong. patyAlterBHYTADOs={0}, heinServiceTypeADOs={1}",
+                    patyAlterBHYTADOs != null ? patyAlterBHYTADOs.Count : -1,
+                    heinServiceTypeADOs != null ? heinServiceTypeADOs.Count : -1));
                 ExeRoomProcess();
                 ProcessSingleKey();
                 SetQrCode();
                 SetBarcodeKey();
                 SetImageKey();
                 if (sereServADOs == null || sereServADOs.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("MPS000512: Khong co dich vu nao sau khi loc (sereServADOs rong) => khong in. SereServs=" + (rdo.SereServs != null ? rdo.SereServs.Count : -1));
                     return false;
+                }
+                Inventec.Common.Logging.LogSystem.Info("MPS000512: ProcessData.bat dau do du lieu vao template");
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);

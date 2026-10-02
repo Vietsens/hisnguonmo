@@ -94,6 +94,8 @@ namespace MPS.Processor.Mps000512
                         && (!rdo.HisConfigValue.IsNotIncludeIsExpend || (rdo.HisConfigValue.IsNotIncludeIsExpend && o.IS_EXPEND != 1)))
                     .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999).ThenBy(o => o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER ?? 99999).ToList();
 
+                sereServADOTemps = RemoveAllExpendPackages_ExeRoom(sereServADOTemps);
+
                 // 2 bộ chi tiết từ CÙNG nguồn temps (mỗi bộ CLONE dòng gốc trước khi mutate -> tránh cộng dồn kép, xem mps510-merge-alias-double-amount):
                 //  - Theo phòng (dedup CÓ GROUP_ROOM_ID): template khoa+phòng dùng (ServiceExeRoom), mỗi (dv, khoa, phòng) là 1 dòng.
                 //  - Theo khoa (dedup KHÔNG GROUP_ROOM_ID): template gom theo khoa dùng (ServiceExeRoomByDepa) -> cùng 1 dv trong khoa gộp qua các phòng,
@@ -108,6 +110,36 @@ namespace MPS.Processor.Mps000512
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bỏ các gói vật tư y tế mà TOÀN BỘ vật tư đi kèm đều là hao phí (IS_EXPEND = 1).
+        /// Dòng hao phí có đơn giá BV = 0 nên template xoá hết dòng chi tiết, còn lại tiêu đề "Gói thiết bị y tế n (...)" rỗng toàn số 0
+        /// và đánh số lệch các gói thật. Các dòng này không mang tiền (VIR_* = 0) nên bỏ đi không làm đổi tổng.
+        /// Gói có ít nhất 1 vật tư không hao phí giữ nguyên.
+        /// </summary>
+        private static List<SereServADO> RemoveAllExpendPackages_ExeRoom(List<SereServADO> sereServADOTemps)
+        {
+            try
+            {
+                Func<SereServADO, bool> isPackageItem = o => o.PARENT_ID.HasValue && o.HEIN_SERVICE_TYPE_ID == o.PARENT_ID;
+
+                var allExpendPackageKeys = new HashSet<string>(sereServADOTemps
+                    .Where(isPackageItem)
+                    .GroupBy(o => o.PARENT_ID + "|" + o.KEY_PATY_ALTER)
+                    .Where(g => g.All(o => o.IS_EXPEND == 1))
+                    .Select(g => g.Key));
+
+                if (allExpendPackageKeys.Count == 0)
+                    return sereServADOTemps;
+
+                return sereServADOTemps.Where(o => !(isPackageItem(o) && allExpendPackageKeys.Contains(o.PARENT_ID + "|" + o.KEY_PATY_ALTER))).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return sereServADOTemps;
             }
         }
 
