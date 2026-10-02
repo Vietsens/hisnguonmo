@@ -257,6 +257,7 @@
     <Compile Include="Base\ResourceLanguageManager.cs" />
     <Compile Include="Base\UriApi.cs" />
     <Compile Include="CallModule.cs" />
+    <Compile Include="EnumApproveAndSignOption.cs" />
     <Compile Include="Key\HisConfigCFG.cs" />
     <Compile Include="Key\HisConfigKeys.cs" />
     <Compile Include="Processor\ApprovalSpecialistProcessor.cs" />

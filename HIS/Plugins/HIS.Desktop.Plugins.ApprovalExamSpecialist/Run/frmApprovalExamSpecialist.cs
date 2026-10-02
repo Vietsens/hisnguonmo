@@ -90,6 +90,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 this.KeyPreview = true;
                 this.ActiveControl = gridControl1;
                 this.SetCaptionByLanguageKey();
+                this.SetToolTipApproveAndSign();
                 this.InitComboDoctor();
                 this.LoadDataToCombo();
                 AddUc();
@@ -344,15 +345,33 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             try
             {
-                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
-                store.RunPrintTemplate("Mps000500", DeletegatePrintTemplate);
+                PrintExamResult(false);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private bool DeletegatePrintTemplate(string printCode, string fileName)
+
+        /// <summary>
+        /// In phieu ket qua kham chuyen khoa (Mps000500).
+        /// isSign = true: mo ky so EMR ngay (EmrSignNow) thay vi xem truoc/in.
+        /// </summary>
+        private void PrintExamResult(bool isSign)
+        {
+            try
+            {
+                if (this.currentSpecialistExam == null) return;
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("Mps000500", (printCode, fileName) => DeletegatePrintTemplate(printCode, fileName, isSign));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool DeletegatePrintTemplate(string printCode, string fileName, bool isSign)
         {
             bool result = false;
             try
@@ -360,7 +379,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 switch (printCode)
                 {
                     case "Mps000500":
-                        Inphieuketquakhamchuyenkhoa(printCode, fileName, ref result);
+                        Inphieuketquakhamchuyenkhoa(printCode, fileName, isSign, ref result);
                         break;
                     default:
                         break;
@@ -374,7 +393,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             }
             return result;
         }
-        private void Inphieuketquakhamchuyenkhoa(string printTypeCode, string fileName, ref bool result)
+        private void Inphieuketquakhamchuyenkhoa(string printTypeCode, string fileName, bool isSign, ref bool result)
         {
             try
             {   
@@ -408,7 +427,18 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentSpecialistExam.TREATMENT_CODE ?? ""), printTypeCode, currentModuleBase.RoomId);
                 WaitingManager.Hide();
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (isSign)
+                {
+                    // Viec 57944: "Duyet va ky" (cau hinh ApproveAndSignOption = 2/3) ky phieu ket qua kham chuyen khoa.
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow, printerName) { EmrInputADO = inputADO });
+                    Inventec.Common.Logging.LogSystem.Info("Mps000500. Duyet va ky. SpecialistExamId=" + currentSpecialistExam.ID + ", result=" + result);
+                    if (result)
+                    {
+                        Inventec.Common.Logging.LogUtil.LogActionSuccess("frmApprovalExamSpecialist", "ApproveAndSign.Mps000500",
+                            Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+                    }
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
 
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
@@ -489,6 +519,32 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             SaveSpecialistExam();
         }
 
+        /// <summary>
+        /// Viec 57944: tooltip "Duyet va ky" theo cau hinh ApproveAndSignOption.
+        /// </summary>
+        private void SetToolTipApproveAndSign()
+        {
+            try
+            {
+                switch (Key.HisConfigCFG.ApproveAndSignOption)
+                {
+                    case EnumApproveAndSignOption.ExamResultOnly:
+                        this.btnSaveAndSign.ToolTip = "Duyệt và ký phiếu kết quả khám chuyên khoa";
+                        break;
+                    case EnumApproveAndSignOption.Both:
+                        this.btnSaveAndSign.ToolTip = "Duyệt, ký tờ điều trị và ký phiếu kết quả khám chuyên khoa";
+                        break;
+                    default:
+                        this.btnSaveAndSign.ToolTip = "Duyệt và ký tờ điều trị";
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void btnSaveAndSign_Click(object sender, EventArgs e)
         {
             try
@@ -508,13 +564,30 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                         return;
                 }
 
-                if (this.trackingToSign == null)
+                // Viec 57944: cau hinh HIS.Desktop.Plugins.ApprovalExamSpecialist.ApproveAndSignOption
+                // quyet dinh ky phieu nao. Mac dinh (rong) = chi ky to dieu tri nhu viec 56271.
+                EnumApproveAndSignOption signOption = Key.HisConfigCFG.ApproveAndSignOption;
+                Inventec.Common.Logging.LogSystem.Debug("ApproveAndSignOption=" + signOption);
+
+                if (signOption != EnumApproveAndSignOption.ExamResultOnly)
                 {
-                    MessageBox.Show("Không xác định được tờ điều trị của phiếu duyệt để ký số.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    if (this.trackingToSign == null)
+                    {
+                        MessageBox.Show("Không xác định được tờ điều trị của phiếu duyệt để ký số.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        // Chi ky to dieu tri thi dung; ky ca hai thi van ky tiep phieu ket qua.
+                        if (signOption == EnumApproveAndSignOption.TrackingOnly)
+                            return;
+                    }
+                    else
+                    {
+                        PrintProcess62(PrintType.IN_TO_DIEU_TRI);
+                    }
                 }
 
-                PrintProcess62(PrintType.IN_TO_DIEU_TRI);
+                if (signOption != EnumApproveAndSignOption.TrackingOnly)
+                {
+                    PrintExamResult(true);
+                }
             }
             catch (Exception ex)
             {
