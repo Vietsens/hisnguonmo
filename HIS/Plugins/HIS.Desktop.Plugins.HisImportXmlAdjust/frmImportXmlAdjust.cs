@@ -385,11 +385,13 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                     if (soBangXml.Length > 0 && soBangXml != "1" && soBangXml != "2" && soBangXml != "3")
                         error += "Số bảng XML chỉ nhận giá trị 1, 2 hoặc 3. ";
 
-                    if (string.IsNullOrEmpty(item.ADJUST_FIELD))
-                        error += string.Format(MessageImport.ThongTinDieuChinhBatBuoc, "Trường thông tin điều chỉnh");
-                    if (string.IsNullOrEmpty(item.ADJUST_VALUE))
-                        error += string.Format(MessageImport.ThongTinDieuChinhBatBuoc, "Thông tin điều chỉnh");
-                    if (string.IsNullOrEmpty(item.ADJUST_REASON))
+                    // Theo tài liệu 09/BH (MoTaAPI_GuiHoSoDieuChinh09BH mục 8, 9): TRUONG_TT_DIEUCHINH và TT_DIEUCHINH
+                    // KHÔNG bắt buộc - dòng huỷ/thu hồi được để trống cột "Trường thông tin điều chỉnh" / "Thông tin
+                    // điều chỉnh". LYDO_DIEUCHINH chỉ bắt buộc khi có nội dung điều chỉnh (có TRUONG_TT_DIEUCHINH hoặc
+                    // TT_DIEUCHINH). Bỏ 3 check bắt buộc cứng bản cũ, giữ đúng điều kiện của cổng; HoSo09BHValidator
+                    // kiểm lại lần nữa trước khi đẩy cổng.
+                    if ((!string.IsNullOrEmpty(item.ADJUST_FIELD) || !string.IsNullOrEmpty(item.ADJUST_VALUE))
+                        && string.IsNullOrEmpty(item.ADJUST_REASON))
                         error += string.Format(MessageImport.ThongTinDieuChinhBatBuoc, "Lý do điều chỉnh");
 
                     item.ERROR = error;
