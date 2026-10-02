@@ -1523,7 +1523,7 @@
             this.btnSaveAndSign.StyleController = this.layoutControl1;
             this.btnSaveAndSign.TabIndex = 16;
             this.btnSaveAndSign.Text = "Duyệt và ký (Ctrl K)";
-            this.btnSaveAndSign.ToolTip = "Duyệt và ký tờ điều trị";
+            this.btnSaveAndSign.ToolTip = "Duyệt, ký tờ điều trị và ký phiếu kết quả khám chuyên khoa";
             this.btnSaveAndSign.Click += new System.EventHandler(this.btnSaveAndSign_Click);
             // 
             // btnPrint
