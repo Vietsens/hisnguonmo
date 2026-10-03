@@ -125,6 +125,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.layoutControlItemsubyhct = new DevExpress.XtraLayout.LayoutControlItem();
             this.ControlDtAssignTimeTo = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
@@ -209,6 +210,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemsubyhct)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ControlDtAssignTimeTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
@@ -269,7 +271,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.chkIsNotUseBHYT.MenuManager = this.barManager1;
             this.chkIsNotUseBHYT.Name = "chkIsNotUseBHYT";
             this.chkIsNotUseBHYT.Properties.Caption = "";
-            this.chkIsNotUseBHYT.Size = new System.Drawing.Size(73, 19);
+            this.chkIsNotUseBHYT.Size = new System.Drawing.Size(21, 19);
             this.chkIsNotUseBHYT.StyleController = this.layoutControl1;
             this.chkIsNotUseBHYT.TabIndex = 44;
             // 
@@ -407,20 +409,20 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(626, 525);
+            this.label1.Location = new System.Drawing.Point(709, 525);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(182, 20);
+            this.label1.Size = new System.Drawing.Size(156, 20);
             this.label1.TabIndex = 35;
             this.label1.Text = "Không bắt buộc hoàn thành:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // chkIsNotComplete
             // 
-            this.chkIsNotComplete.Location = new System.Drawing.Point(812, 525);
+            this.chkIsNotComplete.Location = new System.Drawing.Point(869, 525);
             this.chkIsNotComplete.MenuManager = this.barManager1;
             this.chkIsNotComplete.Name = "chkIsNotComplete";
             this.chkIsNotComplete.Properties.Caption = "";
-            this.chkIsNotComplete.Size = new System.Drawing.Size(76, 19);
+            this.chkIsNotComplete.Size = new System.Drawing.Size(19, 19);
             this.chkIsNotComplete.StyleController = this.layoutControl1;
             this.chkIsNotComplete.TabIndex = 34;
             // 
@@ -829,6 +831,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.layoutControlItemsubyhct,
             this.ControlDtAssignTimeTo,
             this.emptySpaceItem2,
+            this.emptySpaceItem3,
             this.layoutControlItem18,
             this.layoutControlItem19,
             this.layoutControlItem20});
@@ -1022,9 +1025,11 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.lblPaylaterDebt.Appearance.ForeColor = System.Drawing.Color.Red;
             this.lblPaylaterDebt.Appearance.Options.UseFont = true;
             this.lblPaylaterDebt.Appearance.Options.UseForeColor = true;
-            this.lblPaylaterDebt.Location = new System.Drawing.Point(490, 525);
+            this.lblPaylaterDebt.Appearance.Options.UseTextOptions = true;
+            this.lblPaylaterDebt.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.lblPaylaterDebt.Location = new System.Drawing.Point(626, 525);
             this.lblPaylaterDebt.Name = "lblPaylaterDebt";
-            this.lblPaylaterDebt.Size = new System.Drawing.Size(120, 19);
+            this.lblPaylaterDebt.Size = new System.Drawing.Size(70, 20);
             this.lblPaylaterDebt.StyleController = this.layoutControl1;
             this.lblPaylaterDebt.TabIndex = 28;
             //
@@ -1037,11 +1042,12 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.lciForlblPaylaterDebt.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciForlblPaylaterDebt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciForlblPaylaterDebt.Control = this.lblPaylaterDebt;
-            this.lciForlblPaylaterDebt.Location = new System.Drawing.Point(436, 523);
+            this.lciForlblPaylaterDebt.Location = new System.Drawing.Point(572, 523);
             this.lciForlblPaylaterDebt.Name = "lciForlblPaylaterDebt";
-            this.lciForlblPaylaterDebt.Size = new System.Drawing.Size(180, 24);
+            this.lciForlblPaylaterDebt.Size = new System.Drawing.Size(126, 24);
             this.lciForlblPaylaterDebt.Text = "Còn nợ:";
-            this.lciForlblPaylaterDebt.TextSize = new System.Drawing.Size(42, 13);
+            this.lciForlblPaylaterDebt.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
+            this.lciForlblPaylaterDebt.TextSize = new System.Drawing.Size(45, 13);
             this.lciForlblPaylaterDebt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // lciResultApprover
@@ -1123,11 +1129,11 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.layoutControlItem14.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem14.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem14.Control = this.chkIsNotComplete;
-            this.layoutControlItem14.Location = new System.Drawing.Point(810, 523);
+            this.layoutControlItem14.Location = new System.Drawing.Point(867, 523);
             this.layoutControlItem14.MaxSize = new System.Drawing.Size(0, 23);
             this.layoutControlItem14.MinSize = new System.Drawing.Size(23, 23);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(80, 24);
+            this.layoutControlItem14.Size = new System.Drawing.Size(23, 24);
             this.layoutControlItem14.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem14.Text = "Không hưởng BHYT:";
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
@@ -1136,9 +1142,11 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.label1;
-            this.layoutControlItem15.Location = new System.Drawing.Point(624, 523);
+            this.layoutControlItem15.Location = new System.Drawing.Point(707, 523);
+            this.layoutControlItem15.MinSize = new System.Drawing.Size(160, 24);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(186, 24);
+            this.layoutControlItem15.Size = new System.Drawing.Size(160, 24);
+            this.layoutControlItem15.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
@@ -1257,13 +1265,25 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(10, 144);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            //
+            // emptySpaceItem3
+            //
+            this.emptySpaceItem3.AllowHotTrack = false;
+            this.emptySpaceItem3.Location = new System.Drawing.Point(698, 523);
+            this.emptySpaceItem3.MinSize = new System.Drawing.Size(1, 24);
+            this.emptySpaceItem3.Name = "emptySpaceItem3";
+            this.emptySpaceItem3.Size = new System.Drawing.Size(9, 24);
+            this.emptySpaceItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.label2;
             this.layoutControlItem18.Location = new System.Drawing.Point(436, 523);
+            this.layoutControlItem18.MinSize = new System.Drawing.Size(111, 24);
             this.layoutControlItem18.Name = "layoutControlItem18";
             this.layoutControlItem18.Size = new System.Drawing.Size(111, 24);
+            this.layoutControlItem18.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
             // 
@@ -1272,7 +1292,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.layoutControlItem19.Control = this.chkIsNotUseBHYT;
             this.layoutControlItem19.Location = new System.Drawing.Point(547, 523);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(77, 24);
+            this.layoutControlItem19.Size = new System.Drawing.Size(25, 24);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
             // 
@@ -1428,6 +1448,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemsubyhct)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ControlDtAssignTimeTo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
@@ -1521,6 +1542,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         private DevExpress.XtraEditors.DateEdit dtAssignTimeTo;
         private DevExpress.XtraLayout.LayoutControlItem ControlDtAssignTimeTo;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraEditors.CheckEdit chkIsNotUseBHYT;
         private System.Windows.Forms.Label label2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;

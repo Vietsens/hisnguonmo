@@ -618,7 +618,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             //
             // btnUnStart
             //
-            this.btnUnStart.Location = new System.Drawing.Point(534, 5);
+            this.btnUnStart.Location = new System.Drawing.Point(505, 5);
             this.btnUnStart.Name = "btnUnStart";
             this.btnUnStart.Size = new System.Drawing.Size(82, 23);
             this.btnUnStart.TabIndex = 8;
@@ -627,9 +627,9 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             //
             // btnProcess
             //
-            this.btnProcess.Location = new System.Drawing.Point(620, 5);
+            this.btnProcess.Location = new System.Drawing.Point(591, 5);
             this.btnProcess.Name = "btnProcess";
-            this.btnProcess.Size = new System.Drawing.Size(86, 23);
+            this.btnProcess.Size = new System.Drawing.Size(115, 23);
             this.btnProcess.TabIndex = 9;
             this.btnProcess.Text = "Xử lý (Ctrl X)";
             this.btnProcess.Click += new System.EventHandler(this.btnProcess_Click);
