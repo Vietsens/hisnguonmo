@@ -916,7 +916,7 @@
     <value>Click \\Select Result\\ to select the service</value>
   </data>
   <data name="frmTrackingCreateNew.txtTheoDoiChamSoc.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Press F1 to select the type of care</value>
+    <value>Press F1 to select the type of care, F2 to select diet</value>
   </data>
   <data name="frmTrackingCreateNew.treeListColumn1.Caption" xml:space="preserve">
     <value>vi</value>
@@ -977,5 +977,29 @@
   </data>
   <data name="LoaiChamSoc.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
     <value>Search keyword</value>
+  </data>
+  <data name="LoaiChamSoc.chkChonCheDoAn.Properties.Caption" xml:space="preserve">
+    <value>Select diet</value>
+  </data>
+  <data name="frmChonCheDoAn.Text" xml:space="preserve">
+    <value>Select diet</value>
+  </data>
+  <data name="frmChonCheDoAn.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Enter diet code or treatment application to search</value>
+  </data>
+  <data name="frmChonCheDoAn.btnDongY.Text" xml:space="preserve">
+    <value>OK (Ctrl S)</value>
+  </data>
+  <data name="frmChonCheDoAn.grdColDietCode.Caption" xml:space="preserve">
+    <value>Diet code</value>
+  </data>
+  <data name="frmChonCheDoAn.grdColNutritionInfo.Caption" xml:space="preserve">
+    <value>Nutrition/24h</value>
+  </data>
+  <data name="frmChonCheDoAn.grdColProcessingForm.Caption" xml:space="preserve">
+    <value>Processing form</value>
+  </data>
+  <data name="frmChonCheDoAn.grdColTreatmentApply.Caption" xml:space="preserve">
+    <value>Treatment application</value>
   </data>
 </root>

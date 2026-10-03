@@ -2734,7 +2734,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.txtTheoDoiChamSoc.Location = new System.Drawing.Point(306, 348);
             this.txtTheoDoiChamSoc.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.txtTheoDoiChamSoc.Name = "txtTheoDoiChamSoc";
-            this.txtTheoDoiChamSoc.Properties.NullValuePrompt = "Nhấn F1 để chọn loại chăm sóc";
+            this.txtTheoDoiChamSoc.Properties.NullValuePrompt = "Nhấn F1 để chọn loại chăm sóc, F2 để chọn chế độ ăn";
             this.txtTheoDoiChamSoc.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtTheoDoiChamSoc.Properties.ShowNullValuePromptWhenFocused = true;
             this.txtTheoDoiChamSoc.Size = new System.Drawing.Size(306, 67);

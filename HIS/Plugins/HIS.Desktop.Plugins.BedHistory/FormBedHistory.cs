@@ -120,9 +120,6 @@ namespace HIS.Desktop.Plugins.BedHistory
         // Mac dinh giuong theo lan chi dinh gan nhat trong buong benh nhan dang nam khi config = "1"
         string ConfigDefaultBedByLastAssigned = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__DEFAULT_BED_BY_LAST_ASSIGNED);
         private bool IsDefaultBedByLastAssignedOn { get { return this.ConfigDefaultBedByLastAssigned == "1"; } }
-        // Tu dong ket thuc/tao ban ghi nam don, nam ghep cua cac benh nhan cung giuong khi config = "1"
-        string ConfigAutoShareBed = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__IS_AUTO_SHARE_BED);
-        private bool IsAutoShareBedOn { get { return this.ConfigAutoShareBed == "1"; } }
         RefeshReference refesh;
         Dictionary<long, List<V_HIS_BED_LOG>> dicBedLog = new Dictionary<long, List<V_HIS_BED_LOG>>();
         Dictionary<long, List<long>> dicTreatmentBedRoom = new Dictionary<long, List<long>>();
@@ -2288,15 +2285,9 @@ namespace HIS.Desktop.Plugins.BedHistory
 
                     if (deleteVhisBedLog.ID > 0)
                     {
-                        if (!this.IsAutoShareBedOn && IsShareBed == "1" && deleteVhisBedLog.SHARE_COUNT > 1 && DevExpress.XtraEditors.XtraMessageBox.Show("Giường hiện tại có nằm ghép. Bạn có muốn cập nhật thông tin nằm ghép của bệnh nhân khác không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        if (IsShareBed == "1" && deleteVhisBedLog.SHARE_COUNT > 1 && DevExpress.XtraEditors.XtraMessageBox.Show("Giường hiện tại có nằm ghép. Bạn có muốn cập nhật thông tin nằm ghép của bệnh nhân khác không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)
                             IsRemoveShareCount = true;
-                        // Tu dong nam ghep can biet giuong/gio cua ban ghi truoc khi xoa
-                        V_HIS_BED_LOG bedLogBefore = this.IsAutoShareBedOn ? this.GetBedLogById(deleteVhisBedLog.ID) : null;
                         var success = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>(Base.GlobalStore.HIS_BED_LOG_DELETE, ApiConsumer.ApiConsumers.MosConsumer, deleteVhisBedLog.ID, param);
-                        if (success == true && bedLogBefore != null && this.ProcessAutoShareBed(bedLogBefore, null))
-                        {
-                            this.QueueReloadAfterAutoShareBed();
-                        }
                         if (success == true)
                         {
                             gridControlBedHistory.BeginUpdate();
@@ -2451,17 +2442,11 @@ namespace HIS.Desktop.Plugins.BedHistory
                     HisBedLogSDO inPut = new HisBedLogSDO();
                     SaveBedLogData(row, ref inPut);
                     bool isCreate = row.ID == 0;
-                    // Tu dong nam ghep can biet giuong/gio cu truoc khi sua
-                    V_HIS_BED_LOG bedLogBefore = (this.IsAutoShareBedOn && !isCreate) ? this.GetBedLogById(row.ID) : null;
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("inPut___________________", inPut));
                     outPut = new BackendAdapter(param).Post<HIS_BED_LOG>(isCreate ? Base.GlobalStore.HIS_BED_LOG_CREATE : Base.GlobalStore.HIS_BED_LOG_UPDATE, ApiConsumer.ApiConsumers.MosConsumer, inPut, param);
                     if (outPut != null)
                     {
                         success = true;
-                        if (this.ProcessAutoShareBed(bedLogBefore, outPut) && !isClose)
-                        {
-                            this.QueueReloadAfterAutoShareBed();
-                        }
                         if (!isClose)
                         {
                             if (isCreate)
@@ -2851,13 +2836,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                                 cbo.ShowPopup();
                                                 return;
                                             }
-                                            if (this.IsAutoShareBedOn)
-                                            {
-                                                // Tu dong nam ghep: chi dien tam so nguoi nam ghep de hien thi. Viec ket thuc/tao ban ghi
-                                                // cua cac benh nhan cung giuong lam sau khi luu (ProcessAutoShareBed)
-                                                row.SHARE_COUNT = this.CountOtherPatientOnBed(dataBed) + 1;
-                                            }
-                                            else if (row.ID <= 0)
+                                            if (row.ID <= 0)
                                             {
                                                 if (IsShareBed != "1")
                                                 {
@@ -2924,7 +2903,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                             else
                             {
                                 var bedId = row.BED_ID != 0 ? row.BED_ID : row.BedIdAfterSave;
-                                if (!this.IsAutoShareBedOn && bedId != 0 && bedId != dataBed.ID && IsShareBed == "1" && DevExpress.XtraEditors.XtraMessageBox.Show("Giường hiện tại có nằm ghép. Bạn có muốn cập nhật thông tin nằm ghép của bệnh nhân khác không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                if (bedId != 0 && bedId != dataBed.ID && IsShareBed == "1" && DevExpress.XtraEditors.XtraMessageBox.Show("Giường hiện tại có nằm ghép. Bạn có muốn cập nhật thông tin nằm ghép của bệnh nhân khác không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)
                                 {
                                     var dataBedOld = this.dataBedADOs.FirstOrDefault(p => p.BED_CODE_ID == bedId);
                                     var UpdateShareCountOld = UpdateShareCount(dataBedOld, row);
@@ -3626,13 +3605,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                             cbo.ShowPopup();
                                             return;
                                         }
-                                        if (this.IsAutoShareBedOn)
-                                        {
-                                            // Tu dong nam ghep: chi dien tam so nguoi nam ghep de hien thi. Viec ket thuc/tao ban ghi
-                                            // cua cac benh nhan cung giuong lam sau khi luu (ProcessAutoShareBed)
-                                            row.SHARE_COUNT = this.CountOtherPatientOnBed(dataBed) + 1;
-                                        }
-                                        else if (row.ID <= 0)
+                                        if (row.ID <= 0)
                                         {
                                             if (IsShareBed != "1")
                                             {
@@ -3695,7 +3668,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                         else
                         {
                             var bedId = row.BED_ID != 0 ? row.BED_ID : row.BedIdAfterSave;
-                            if (!this.IsAutoShareBedOn && bedId != 0 && bedId != dataBed.ID && IsShareBed == "1" && DevExpress.XtraEditors.XtraMessageBox.Show("Giường hiện tại có nằm ghép. Bạn có muốn cập nhật thông tin nằm ghép của bệnh nhân khác không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            if (bedId != 0 && bedId != dataBed.ID && IsShareBed == "1" && DevExpress.XtraEditors.XtraMessageBox.Show("Giường hiện tại có nằm ghép. Bạn có muốn cập nhật thông tin nằm ghép của bệnh nhân khác không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)
                             {
                                 var dataBedOld = this.dataBedADOs.FirstOrDefault(p => p.BED_CODE_ID == bedId);
                                 var UpdateShareCountOld = UpdateShareCount(dataBedOld, row);

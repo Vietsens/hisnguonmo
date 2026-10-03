@@ -3696,11 +3696,80 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             {
                 if (e.KeyCode == Keys.F1)
                 {
-                    LoaiChamSoc lcs = new LoaiChamSoc((HIS.Desktop.Common.DelegateSelectData)ReloadSoVaoVien);
+                    bool isChonCheDoAn = this.currentControlStateRDO != null
+                        && this.currentControlStateRDO.Any(o => o.KEY == "chkChonCheDoAn" && o.MODULE_LINK == moduleLink && o.VALUE == "1");
+
+                    LoaiChamSoc lcs = new LoaiChamSoc((HIS.Desktop.Common.DelegateSelectData)ReloadSoVaoVien, isChonCheDoAn);
                     lcs.ShowDialog();
 
+                    //O tick tu nho theo lan tick truoc
+                    SaveControlStateChonCheDoAn(lcs.IsChonCheDoAn);
 
+                    //Chi mo tiep khi da chon loai cham soc (HisCare_ chi duoc gan khi bam chon dong).
+                    //Mo sau khi form F1 da dong, khong mo long ben trong form F1.
+                    if (lcs.HisCare_ != null && lcs.IsChonCheDoAn)
+                    {
+                        frmChonCheDoAn frm = new frmChonCheDoAn((HIS.Desktop.Common.DelegateSelectData)SelectCheDoAn);
+                        frm.ShowDialog();
+                    }
                 }
+                else if (e.KeyCode == Keys.F2)
+                {
+                    frmChonCheDoAn frm = new frmChonCheDoAn((HIS.Desktop.Common.DelegateSelectData)SelectCheDoAn);
+                    frm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chen cac dong "Che do an: ..." NOI TIEP sau noi dung dang co cua o Theo doi cham soc,
+        /// khong xoa noi dung bac si da nhap (khac voi F1 loai cham soc - F1 ghi de ca o).
+        /// </summary>
+        private void SelectCheDoAn(object obj)
+        {
+            try
+            {
+                if (obj == null || !(obj is string)) return;
+
+                string text = txtTheoDoiChamSoc.Text;
+                if (!String.IsNullOrWhiteSpace(text))
+                    text = text.TrimEnd() + "\r\n";
+                txtTheoDoiChamSoc.Text = text + (string)obj;
+
+                txtTheoDoiChamSoc.Select(txtTheoDoiChamSoc.Text.Length, 0);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SaveControlStateChonCheDoAn(bool isChecked)
+        {
+            try
+            {
+                if (this.controlStateWorker == null) return;
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "chkChonCheDoAn" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (isChecked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = "chkChonCheDoAn";
+                    csAddOrUpdate.VALUE = (isChecked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
             }
             catch (Exception ex)
             {
