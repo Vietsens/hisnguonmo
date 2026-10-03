@@ -792,7 +792,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, -48);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1010, 138);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1010, 110);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem6
@@ -936,7 +936,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.layoutControlItem27.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem27.Name = "layoutControlItem27";
             this.layoutControlItem27.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
-            this.layoutControlItem27.Size = new System.Drawing.Size(334, 28);
+            this.layoutControlItem27.Size = new System.Drawing.Size(134, 28);
             this.layoutControlItem27.Text = "Số tiền CK:";
             this.layoutControlItem27.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem27.TextSize = new System.Drawing.Size(90, 20);
@@ -946,8 +946,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             // 
             this.layoutControlItem28.Control = this.label2;
             this.layoutControlItem28.Location = new System.Drawing.Point(334, 82);
+            this.layoutControlItem28.MaxSize = new System.Drawing.Size(0, 28);
+            this.layoutControlItem28.MinSize = new System.Drawing.Size(24, 28);
             this.layoutControlItem28.Name = "layoutControlItem28";
-            this.layoutControlItem28.Size = new System.Drawing.Size(84, 56);
+            this.layoutControlItem28.Size = new System.Drawing.Size(84, 28);
+            this.layoutControlItem28.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem28.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem28.TextVisible = false;
             // 
@@ -955,8 +958,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             // 
             this.layoutControlItem34.Control = this.lblCanThu;
             this.layoutControlItem34.Location = new System.Drawing.Point(418, 82);
+            this.layoutControlItem34.MaxSize = new System.Drawing.Size(0, 28);
+            this.layoutControlItem34.MinSize = new System.Drawing.Size(24, 28);
             this.layoutControlItem34.Name = "layoutControlItem34";
-            this.layoutControlItem34.Size = new System.Drawing.Size(592, 56);
+            this.layoutControlItem34.Size = new System.Drawing.Size(592, 28);
+            this.layoutControlItem34.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem34.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem34.TextVisible = false;
             // 
@@ -970,7 +976,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.lcgTransferAmount.Location = new System.Drawing.Point(0, 82);
             this.lcgTransferAmount.Name = "lcgTransferAmount";
             this.lcgTransferAmount.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgTransferAmount.Size = new System.Drawing.Size(334, 56);
+            this.lcgTransferAmount.Size = new System.Drawing.Size(334, 28);
             this.lcgTransferAmount.TextVisible = false;
             // 
             // lcTransAmountNew
@@ -980,9 +986,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.lcTransAmountNew.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcTransAmountNew.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcTransAmountNew.Control = this.spinTransAmountNew;
-            this.lcTransAmountNew.Location = new System.Drawing.Point(0, 28);
+            this.lcTransAmountNew.Location = new System.Drawing.Point(134, 0);
             this.lcTransAmountNew.Name = "lcTransAmountNew";
-            this.lcTransAmountNew.Size = new System.Drawing.Size(176, 28);
+            this.lcTransAmountNew.Size = new System.Drawing.Size(106, 28);
             this.lcTransAmountNew.Text = "Số tiền CK:";
             this.lcTransAmountNew.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcTransAmountNew.TextSize = new System.Drawing.Size(90, 20);
@@ -996,9 +1002,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.lcSwipeAmountNew.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcSwipeAmountNew.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcSwipeAmountNew.Control = this.spinSwipeAmountNew;
-            this.lcSwipeAmountNew.Location = new System.Drawing.Point(176, 28);
+            this.lcSwipeAmountNew.Location = new System.Drawing.Point(240, 0);
             this.lcSwipeAmountNew.Name = "lcSwipeAmountNew";
-            this.lcSwipeAmountNew.Size = new System.Drawing.Size(158, 28);
+            this.lcSwipeAmountNew.Size = new System.Drawing.Size(94, 28);
             this.lcSwipeAmountNew.Text = "Số tiền QT:";
             this.lcSwipeAmountNew.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcSwipeAmountNew.TextSize = new System.Drawing.Size(80, 20);
