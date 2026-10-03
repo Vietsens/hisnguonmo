@@ -433,8 +433,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
 
                 // Ghi lai dia chi dang dung de doi chieu khi goi that bai. KHONG ghi tai khoan/mat khau.
-                LogSystem.Warn("SytCatalog: bat dau tai — dia chi xac thuc=" + cfg.AuthBaseUrl
-                    + " , dia chi nghiep vu=" + cfg.ApiBaseUrl);
+                LogSystem.Warn("SytCatalog: bat dau tai — LAY DANH MUC O "
+                    + (!string.IsNullOrWhiteSpace(cfg.AuthBaseUrl) ? cfg.AuthBaseUrl : cfg.ApiBaseUrl)
+                    + " (truong 4). Truong 5 = " + cfg.ApiBaseUrl + " khong con dung de tai danh muc.");
 
                 // Doi dia chi/tai khoan thi bo danh muc da tai tu cau hinh cu.
                 DropSytCatalogsIfConfigChanged(cfg);
@@ -569,7 +570,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
-                string url = cfg.ApiBaseUrl + "/hin-api-service/kskdk-danh-muc-service?code="
+                // Danh mục lấy ở TRƯỜNG 4, cùng địa chỉ với lấy phiếu truy cập.
+                //
+                // VÌ SAO ĐỔI: bộ Postman của Sở ghi các lời gọi danh mục vào máy chủ ở trường 5,
+                // nhưng máy trạm của viện KHÔNG phân giải được tên miền đó — cả 30 danh mục hỏng
+                // với "khong phan giai duoc ten mien", tức chưa hề gọi tới nơi. Địa chỉ ở trường 4
+                // thì gọi được.
+                //
+                // Trường 4 để trống thì lùi về trường 5 — giữ được viện đã khai theo cách cũ.
+                string baseUrl = !string.IsNullOrWhiteSpace(cfg.AuthBaseUrl)
+                    ? cfg.AuthBaseUrl : cfg.ApiBaseUrl;
+                string url = baseUrl + "/hin-api-service/kskdk-danh-muc-service?code="
                            + Uri.EscapeDataString(code);
                 string resp = HttpSyt(url, "GET", null, token);
                 if (string.IsNullOrEmpty(resp)) return null;

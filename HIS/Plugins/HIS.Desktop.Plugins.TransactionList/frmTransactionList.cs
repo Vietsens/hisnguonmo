@@ -215,6 +215,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 LoaihoadongList();
                 InitCheck(grdLoaiHoaDon, SelectionGrid__LoaiHoaDon);
                 InitCombo(grdLoaiHoaDon, this.ListLoaiHoaDon_, "Name", "ID");
+                InitCashierFilterCombos();
 
                 if (isOpenFromHisTransaction)
                 {
@@ -226,6 +227,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
 
                 InitControlState();
+                InitCashierFilterControlState();
                 InitBordereauAttachUI();
                 CheckKeyCauHinh();
 
@@ -723,8 +725,13 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                 // Bo loc "Dinh kem bang ke" (chi tac dung khi config bat + cac radio da duoc tao runtime)
                 SetBordereauAttachFilter(filter);
+                SetCashierFilter(filter);
 
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TRANSACTION>>(HisRequestUriStore.HIS_TRANSACTION_GETVIEW, ApiConsumers.MosConsumer, filter, paramCommon);
+
+                // Chi tinh lai tong tien khi tim moi (trang dau); chuyen trang giu nguyen bo loc nen khong can goi lai
+                if (start == 0)
+                    LoadTotalAmount(filter);
 
                 _transactionList = result.Data;
                 if (result != null)

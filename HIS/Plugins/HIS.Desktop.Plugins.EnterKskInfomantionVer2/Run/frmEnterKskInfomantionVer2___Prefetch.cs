@@ -117,6 +117,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     preKskPeriodDrivers = sdo.HisKskPeriodDrivers;
                     preKskOthers = sdo.HisKskOthers;
                     preKskUnderSixes = sdo.HisKskUnderSixs;
+                    preKskMentals = sdo.HisKskMentals;
                     preTreatments = sdo.HisTreatments;
                     preKskContracts = sdo.HisKskContracts;
                     preUneiVatys = sdo.HisKskUneiVatys;

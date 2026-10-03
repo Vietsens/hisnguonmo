@@ -219,6 +219,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000516.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000520.PDO">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000520.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
@@ -473,6 +477,15 @@
     </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___UnderSixNormalSign.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___Mental.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\UcKskMental.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\UcKskMental.Designer.cs">
+      <DependentUpon>UcKskMental.cs</DependentUpon>
     </Compile>
     <Compile Include="Run\UcKskConclusionIcd.cs">
       <SubType>UserControl</SubType>

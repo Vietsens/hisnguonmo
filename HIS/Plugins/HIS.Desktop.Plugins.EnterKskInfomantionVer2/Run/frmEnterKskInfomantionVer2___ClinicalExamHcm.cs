@@ -219,6 +219,62 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 this.xtraTabControl2.TabPages.Add(tabClinicalExamHcm);
                 HideStandardClinicalTab();
+                ArrangeKskTabOrder();
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Xếp lại thứ tự các tab của trang KSK trên 18 tuổi theo trình tự khám thực tế:
+        ///
+        ///     Khám thể lực -> Khám lâm sàng -> Hỏi bệnh lâm sàng -> Cận lâm sàng -> Kết luận
+        ///
+        /// VÌ SAO CẦN: hai tab của mẫu M4 được dựng lúc chạy nên mặc định bị nối vào CUỐI, sau cả
+        /// "Kết luận" — người nhập phải nhảy ngược về giữa để nhập xong rồi mới quay lại kết luận.
+        ///
+        /// Gọi sau mỗi lần thêm tab; hai tab dựng ở hai thời điểm khác nhau nên không đoán được
+        /// tab nào có trước, cứ xếp lại toàn bộ là chắc.
+        /// </summary>
+        private void ArrangeKskTabOrder()
+        {
+            try
+            {
+                if (this.xtraTabControl2 == null) return;
+
+                var thuTu = new List<DevExpress.XtraTab.XtraTabPage>
+                {
+                    this.xtraTabPage9,        // Khám thể lực
+                    tabClinicalExamHcm,       // Khám lâm sàng HCM
+                    this.xtraTabPage10,       // Khám lâm sàng (đã ẩn khi có tab HCM)
+                    tabInterviewHcm,          // Hỏi bệnh lâm sàng HCM
+                    this.xtraTabPage11,       // Khám cận lâm sàng
+                    this.xtraTabPage12        // Kết luận
+                };
+
+                // Giữ lại tab đang mở: bỏ ra rồi chèn lại sẽ làm đổi tab đang chọn.
+                DevExpress.XtraTab.XtraTabPage dangMo = this.xtraTabControl2.SelectedTabPage;
+
+                this.xtraTabControl2.BeginUpdate();
+                try
+                {
+                    int viTri = 0;
+                    foreach (DevExpress.XtraTab.XtraTabPage tab in thuTu)
+                    {
+                        if (tab == null) continue;
+                        if (!this.xtraTabControl2.TabPages.Contains(tab)) continue;
+
+                        if (this.xtraTabControl2.TabPages.IndexOf(tab) != viTri)
+                        {
+                            this.xtraTabControl2.TabPages.Remove(tab);
+                            this.xtraTabControl2.TabPages.Insert(viTri, tab);
+                        }
+                        viTri++;
+                    }
+                }
+                finally { this.xtraTabControl2.EndUpdate(); }
+
+                if (dangMo != null && this.xtraTabControl2.TabPages.Contains(dangMo))
+                    this.xtraTabControl2.SelectedTabPage = dangMo;
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }

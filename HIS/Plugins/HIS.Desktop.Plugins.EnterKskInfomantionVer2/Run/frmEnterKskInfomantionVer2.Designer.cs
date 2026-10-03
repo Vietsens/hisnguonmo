@@ -1957,6 +1957,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlGroup15 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem553 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage8 = new DevExpress.XtraTab.XtraTabPage();
+            this.xtraTabPage17 = new DevExpress.XtraTab.XtraTabPage();
+            this.ucKskMental = new HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run.UcKskMental();
             this.tlpUnderSix = new System.Windows.Forms.TableLayoutPanel();
             this.scrUnderSixLeft = new System.Windows.Forms.Panel();
             this.lcUnderSixLeft = new DevExpress.XtraLayout.LayoutControl();
@@ -4064,6 +4066,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem553)).BeginInit();
             this.xtraTabPage8.SuspendLayout();
+            this.xtraTabPage17.SuspendLayout();
             this.tlpUnderSix.SuspendLayout();
             this.scrUnderSixLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lcUnderSixLeft)).BeginInit();
@@ -4634,7 +4637,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.xtraTabPage5,
             this.xtraTabPage6,
             this.xtraTabPage7,
-            this.xtraTabPage8});
+            this.xtraTabPage8,
+            this.xtraTabPage17});
             this.xtraTabControl1.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl1_SelectedPageChanged);
             // 
             // xtraTabPage1
@@ -26547,7 +26551,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.xtraTabPage8.Size = new System.Drawing.Size(1379, 835);
             this.xtraTabPage8.Text = "Trẻ em dưới 6 tuổi";
             this.xtraTabPage8.Tooltip = "Khám sức khỏe trẻ em dưới 6 tuổi";
-            // 
+            //
+            // xtraTabPage17
+            //
+            this.xtraTabPage17.Controls.Add(this.ucKskMental);
+            this.xtraTabPage17.Name = "xtraTabPage17";
+            this.xtraTabPage17.Size = new System.Drawing.Size(1379, 835);
+            this.xtraTabPage17.Text = "Ksk tâm thần";
+            this.xtraTabPage17.Tooltip = "Giấy khám sức khỏe tâm thần (Mẫu số 04 - Thông tư 25/2026/TT-BYT)";
+            //
+            // ucKskMental
+            //
+            this.ucKskMental.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ucKskMental.Location = new System.Drawing.Point(0, 0);
+            this.ucKskMental.Name = "ucKskMental";
+            this.ucKskMental.Size = new System.Drawing.Size(1379, 835);
+            this.ucKskMental.TabIndex = 0;
+            //
             // tlpUnderSix
             // 
             this.tlpUnderSix.ColumnCount = 3;
@@ -33594,6 +33614,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem553)).EndInit();
             this.xtraTabPage8.ResumeLayout(false);
+            this.xtraTabPage17.ResumeLayout(false);
             this.tlpUnderSix.ResumeLayout(false);
             this.scrUnderSixLeft.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.lcUnderSixLeft)).EndInit();
@@ -33971,6 +33992,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         // === Field declarations cho tab "Trẻ em dưới 6 tuổi" (thêm thủ công) ===
         private DevExpress.XtraTab.XtraTabPage xtraTabPage8;
+        // Tab "Ksk tâm thần" — Mẫu số 04, TT 25/2026/TT-BYT (giao diện nằm trong UcKskMental)
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage17;
+        private HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run.UcKskMental ucKskMental;
         private System.Windows.Forms.TableLayoutPanel tlpUnderSix;
         private System.Windows.Forms.Panel scrUnderSixLeft;
         private System.Windows.Forms.Panel scrUnderSixMid;

@@ -381,6 +381,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Bo ban ghi mau M4 cua ho so truoc, tranh luu de sang ho so vua chon.
                 currentKskSytHcm = null;
                 preKskPeriodDrivers = null; preKskOthers = null; preKskUnderSixes = null;
+                preKskMentals = null; currentKskMentalEf = null; dhstMental = null; // tab Ksk tâm thần
                 preTreatments = null; preBabies = null; preKskContracts = null;
                 preDhstById = null; preUneiVatys = null; preDitysOverE = null; preDitysPeriodDriver = null;
                 preVaccineTypes = null; preDiseaseTypesOverE = null; preDiseaseTypesPeriodDriver = null;

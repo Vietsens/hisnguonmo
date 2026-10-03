@@ -17,8 +17,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
     {
-        /// <summary>Cờ đã fill dữ liệu cho từng tab (index 0..7) — chống fill lại.</summary>
-        private readonly bool[] tabFilled = new bool[8];
+        /// <summary>Cờ đã fill dữ liệu cho từng tab (index 0..8) — chống fill lại.</summary>
+        private readonly bool[] tabFilled = new bool[9];
 
         /// <summary>Chỉ số 3 tab chọn theo tuổi khi y lệnh chưa có bản ghi KSK nào.</summary>
         private const int TAB_OVER_EIGHTEEN = 1;
@@ -72,6 +72,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             if (Cnt(preKskDriverCars) > 0) return 4;
             if (Cnt(preKskOthers) > 0) return 5;
             if (Cnt(preKskUnderSixes) > 0) return TAB_UNDER_SIX;
+            if (Cnt(preKskMentals) > 0) return TAB_MENTAL;
             // Ksk nghề nghiệp hiển thị ở tab 0 — giữ nguyên hành vi cũ.
             if (Cnt(preKskOccupationals) > 0) return 0;
             return -1;
@@ -167,11 +168,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// </summary>
         private void EnsureTabLoaded(int tab)
         {
-            if (tab < 0 || tab > 7 || tabFilled[tab]) return;
+            if (tab < 0 || tab >= tabFilled.Length || tabFilled[tab]) return;
             tabFilled[tab] = true;
             try
             {
                 this.SuspendLayout();
+                // Tab "Ksk tâm thần": luồng nạp riêng (chưa có bảng dữ liệu riêng ở backend).
+                if (tab == TAB_MENTAL)
+                {
+                    LoadTabMental();
+                    return;
+                }
                 // CHỐNG DÍNH DỮ LIỆU Y LỆNH TRƯỚC: xóa sạch mọi editor trên trang tab trước khi đổ dữ liệu.
                 // (ResetControl* của từng tab thiếu sót; nhánh else FillData* chỉ phủ 1 phần control.)
                 ClearTabInputEditors(tab);

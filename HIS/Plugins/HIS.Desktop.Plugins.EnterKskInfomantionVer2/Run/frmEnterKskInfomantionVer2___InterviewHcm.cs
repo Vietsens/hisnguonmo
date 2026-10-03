@@ -124,6 +124,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 ApplyPendingInterviewHcm();     // ho so nap truoc khi tab kip dung
 
                 this.xtraTabControl2.TabPages.Add(tabInterviewHcm);
+                ArrangeKskTabOrder();
                 LogSystem.Warn("SytHcm/HoiBenh: da dung tab — " + dicInterviewHcm.Count
                     + " o nhap, " + lstIhcmRule.Count + " luat khoa/mo");
             }

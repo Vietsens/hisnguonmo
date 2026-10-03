@@ -59,6 +59,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Bỏ qua cboObject theo REFERENCE (order-independent): lazy-load khiến InitObjectCheck (gán Tag
                 // multi-select) chạy SAU init nút clear deferred -> check Tag không đủ, phải skip tường minh.
                 if (this.cboObject != null && gle == this.cboObject) return;
+                if (this.ucKskMental != null && gle == this.ucKskMental.CboObject) return; // tab Ksk tâm thần
                 if (gle.Properties.Tag is HIS.Desktop.Utilities.Extensions.GridCheckMarksSelection) return;
 
                 // BẮT BUỘC cho phép null thì set EditValue=null mới "dính" (nếu không DevExpress khôi phục

@@ -360,6 +360,9 @@
     <Compile Include="frmTransactionList__Plus__AttachBordereauUI.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmTransactionList__Plus__CashierFilter.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTransactionReasonEdit.cs">
       <SubType>Form</SubType>
     </Compile>

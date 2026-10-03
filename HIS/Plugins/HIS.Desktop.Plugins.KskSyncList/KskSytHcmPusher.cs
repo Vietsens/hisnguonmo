@@ -284,11 +284,28 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 //
                 // LƯU Ý: chỉ CHUỖI ĐEM BĂM mới bỏ khoảng trắng. Thân bản tin GỬI ĐI vẫn nguyên vẹn,
                 // vì cổng cũng bỏ khoảng trắng của thân nhận được rồi mới băm để đối chiếu.
-                // CHI AP CHO MAU M4. Mau M3 dang chay TOT o bon vien voi cach bam cu (chi nen
-                // JSON, giu nguyen dau cach trong gia tri chuoi) — bang chung la cac ho so M3 da
-                // dong bo thanh cong. Nghia la dich vu M3 bam than ban tin NHU NHAN DUOC, khong bo
-                // khoang trang. Ap cach moi cho ca hai la lam gay mot luong dang chay.
-                string bodyForHash = isElderlyForm ? StripWhitespace(json) : json;
+                // Dựng địa chỉ máy chủ TRƯỚC khi băm: cách băm phụ thuộc máy chủ đích.
+                string uri = URI__PUSH_PREFIX
+                    + (isElderlyForm ? SERVICE_CODE__M4 : SERVICE_CODE__M3);
+                string baseUrl = ResolvePushBaseUrl(cfg, isElderlyForm);
+
+                // BAM THEO MAY CHU DICH, KHONG BAM THEO MAU.
+                //
+                //   M3 -> may chu truong 5 (-be),   nguyen van        -> 200 (15/09)
+                //   M4 -> may chu truong 4 (-apis), bo khoang trang   -> 200 (19/09, 21/09)
+                //   M3 -> may chu truong 4 (-apis), nguyen van        -> 401 (28/09, 30/09)
+                //   M3 -> may chu truong 4 (-apis), bo khoang trang   -> 200 (Postman)
+                //
+                // Dong cuoi la bang chung quyet dinh. Vien bao "dan chu ky tu nhat ky vao Postman
+                // thi day duoc", nen co luc da ket luan -apis nhan chu ky bam nguyen van. SAI: bo
+                // Postman cua So co Pre-request Script tu sinh lai chu ky bang
+                // `rawBody.replace(/\s+/g, "")` roi GHI DE header — chu ky dan tay khong he duoc
+                // gui di. Doc ket qua Postman ma khong doc script la ket luan nguoc.
+                //
+                // Vien nao con day vao truong 5 thi van bam nguyen van, khong pha luong dang chay.
+                bool bamBoKhoangTrang = !string.IsNullOrWhiteSpace(cfg.AuthBaseUrl)
+                    && string.Equals(baseUrl, cfg.AuthBaseUrl, StringComparison.OrdinalIgnoreCase);
+                string bodyForHash = bamBoKhoangTrang ? StripWhitespace(json) : json;
                 string hashB = KskPemUtil.Sha256HexUpperForSyt(bodyForHash);
                 string signature = KskPemUtil.SignRsaSha256HexUpper(hashA + "." + hashB, cfg.PrivateKeyPem);
                 if (string.IsNullOrEmpty(signature))
@@ -302,9 +319,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                     "SytHcm: gui ban tin " + (isElderlyForm ? "M4" : "M3")
                     + " — X-Client-Id={0}; X-Timestamp={1}; X-Nonce={2}; "
-                    + "A={3}; B={4}; do dai ban tin={5} byte",
+                    + "A={3}; B={4}; do dai ban tin={5} byte; may chu={6}; bam B={7}",
                     cfg.ClientId, timestamp, nonce, hashA, hashB,
-                    Encoding.UTF8.GetByteCount(json)));
+                    Encoding.UTF8.GetByteCount(json), baseUrl,
+                    bamBoKhoangTrang ? "bo khoang trang" : "nguyen van"));
 
                 if (DUMP_BODY_FOR_DEBUG) DumpBody(json);
 
@@ -321,9 +339,6 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 headers["X-API-Signature"] = NoWhitespace(signature, "X-API-Signature");
 
                 int status;
-                string uri = URI__PUSH_PREFIX
-                    + (isElderlyForm ? SERVICE_CODE__M4 : SERVICE_CODE__M3);
-                string baseUrl = ResolvePushBaseUrl(cfg, isElderlyForm);
                 string res = HttpSend(baseUrl + uri, "POST", json, token, headers, out status);
                 r.HttpStatus = status;
 
@@ -350,7 +365,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 // chỉ bản bị từ chối mới được ghi lại nên không có gì để đối chiếu. Giữ lại cả bản
                 // đi lọt thì so hai bên là ra ngay chỗ lệch.
                 DumpBanTin(cfg, baseUrl + uri, json, timestamp, nonce, hashA, hashB,
-                    signature, isElderlyForm, r);
+                    signature, isElderlyForm, bamBoKhoangTrang, r);
 
                 // Cổng chê chữ ký thì ghi luôn CHẨN ĐOÁN, không thử lại dạng khác nữa.
                 //
@@ -650,8 +665,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// tài liệu nào — nó chỉ xuất hiện trong tệp Postman của Sở, ở các lệnh lấy danh mục được ghi
         /// cứng; biến host của bộ Postman đó Sở để trống.
         ///
-        /// Mẫu M3 đang chạy tốt trên "-be" nên GIỮ NGUYÊN, không đụng vào. Chỉ mẫu M4 đổi sang máy
-        /// chủ mà tài liệu của nó chỉ định.
+        /// TỪ 30/09/2026: cả hai mẫu dùng chung địa chỉ ở trường 4. Trước đó M3 đi trường 5,
+        /// M4 đi trường 4 — tách làm hai nơi khai báo nên đổi máy chủ cho M3 buộc phải sửa bản ghi
+        /// cấu hình, kéo theo lệch những chỗ khác cùng đọc bản ghi đó.
         ///
         /// Đây là lý do chuỗi lỗi chữ ký trước đó vô lý: hai máy chủ là hai bản dịch vụ khác nhau,
         /// bộ đọc chữ ký khác nhau — gửi Hex thì bị chê không phải Base64, gửi Base64 thì bị chê
@@ -665,20 +681,27 @@ namespace HIS.Desktop.Plugins.KskSyncList
             try
             {
                 if (cfg == null) return "";
-                if (!isElderlyForm) return cfg.ApiBaseUrl;
 
-                if (string.IsNullOrWhiteSpace(cfg.AuthBaseUrl))
+                // CA HAI MAU dung CUNG dia chi — truong 4 (dia chi xac thuc).
+                //
+                // VI SAO: truoc day M3 di vao truong 5 con M4 vao truong 4. Muon doi may chu cho M3
+                // thi phai sua ban ghi cau hinh, ma sua ban ghi do keo theo lech nhieu cho khac
+                // (dia chi lay phieu truy cap, dau nhan cua bo dem danh muc). Nguoi yeu cau chot cho
+                // M3 dung chung dia chi voi M4 de chi con MOT cho khai bao.
+                //
+                // Truong 4 de trong thi lui ve truong 5 — giu duoc cac vien da khai theo cach cu.
+                if (!string.IsNullOrWhiteSpace(cfg.AuthBaseUrl))
                 {
                     Inventec.Common.Logging.LogSystem.Warn(
-                        "SytHcm: cau hinh chua co dia chi xac thuc -> mau M4 tam dung dia chi nghiep vu");
-                    return cfg.ApiBaseUrl;
+                        "SytHcm: ca hai mau gui vao " + cfg.AuthBaseUrl
+                        + " (truong 4). Dia chi nghiep vu truong 5 = " + cfg.ApiBaseUrl
+                        + " hien KHONG con duoc dung de day ban tin.");
+                    return cfg.AuthBaseUrl;
                 }
 
                 Inventec.Common.Logging.LogSystem.Warn(
-                    "SytHcm: mau M4 gui vao " + cfg.AuthBaseUrl
-                    + " (theo bang THONG TIN KET NOI cua tai lieu M4), mau M3 van gui vao "
-                    + cfg.ApiBaseUrl);
-                return cfg.AuthBaseUrl;
+                    "SytHcm: cau hinh chua co dia chi o truong 4 -> tam dung dia chi truong 5");
+                return cfg.ApiBaseUrl;
             }
             catch (Exception ex)
             {
@@ -704,7 +727,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         private static void DumpBanTin(KskSytHcmConfig cfg, string uri, string json,
             string timestamp, string nonce, string hashA, string hashB, string signature,
-            bool isElderlyForm, KskSytHcmPushResult r)
+            bool isElderlyForm, bool stripped, KskSytHcmPushResult r)
         {
             try
             {
@@ -742,9 +765,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     + "|" + timestamp + "|" + nonce);
                 sb.AppendLine("A = SHA256(chuoi tren), Hex viet hoa");
                 sb.AppendLine("A                     : " + hashA);
-                sb.AppendLine("B = SHA256(than ban tin trong tep .json SAU KHI BO MOI KY TU TRANG),"
-                    + " Hex viet hoa");
-                sb.AppendLine("   (bo ca dau cach nam trong gia tri chuoi — dung nhu ma mau cua So)");
+                // In dung cach bam DA DUNG. Dong nay tung ghi cung mot cau cho moi truong hop,
+                // ke ca khi bam nguyen van — doc tep nay de chan doan nham.
+                if (stripped)
+                {
+                    sb.AppendLine("B = SHA256(than ban tin trong tep .json SAU KHI BO MOI KY TU TRANG),"
+                        + " Hex viet hoa");
+                    sb.AppendLine("   (bo ca dau cach nam trong gia tri chuoi — theo may chu o truong 4)");
+                }
+                else
+                {
+                    sb.AppendLine("B = SHA256(than ban tin trong tep .json GIU NGUYEN VAN), Hex viet hoa");
+                    sb.AppendLine("   (KHONG bo khoang trang — theo may chu o truong 5)");
+                }
                 sb.AppendLine("B                     : " + hashB);
                 sb.AppendLine("C = A + \".\" + B");
                 sb.AppendLine("C                     : " + hashA + "." + hashB);
