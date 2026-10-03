@@ -43,8 +43,5 @@ namespace HIS.Desktop.Plugins.BedHistory
         internal const string CONFIG_KEY__BED_HISTORY_USE_TIME = "HIS.Desktop.Plugins.BedHistory.UseTime";
         //= "1" -> mac dinh giuong theo lan chi dinh gan nhat trong buong benh nhan dang nam. Khac "1" la tat
         internal const string CONFIG_KEY__DEFAULT_BED_BY_LAST_ASSIGNED = "MOS.HIS_SERVICE_REQ.DEFAULT_BED_BY_LAST_ASSIGNED";
-        //= "1" -> tu dong ket thuc/tao ban ghi giuong nam don, ghep doi, ghep 3... cua cac benh nhan cung giuong
-        //khi co benh nhan vao/roi giuong. Khac "1" la tat, nguoi dung tu thao tac nhu cu
-        internal const string CONFIG_KEY__IS_AUTO_SHARE_BED = "HIS.Desktop.Plugins.BedHistory.IsAutoShareBed";
     }
 }

@@ -70,10 +70,26 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         List<HIS_CARE_TYPE> HisCare;
         public HIS_CARE_TYPE HisCare_;
         HIS.Desktop.Common.DelegateSelectData dataSelect;
+
+        /// <summary>
+        /// Trang thai o tick "Chon che do an" luc dong form. Form goi doc gia tri nay de
+        /// luu ControlState va quyet dinh co mo tiep man hinh chon che do an hay khong.
+        /// </summary>
+        public bool IsChonCheDoAn
+        {
+            get { return chkChonCheDoAn.Checked; }
+        }
+
         public LoaiChamSoc(HIS.Desktop.Common.DelegateSelectData dataSelect_)
+            : this(dataSelect_, false)
+        {
+        }
+
+        public LoaiChamSoc(HIS.Desktop.Common.DelegateSelectData dataSelect_, bool isChonCheDoAn)
         {
             this.dataSelect = dataSelect_;
             InitializeComponent();
+            chkChonCheDoAn.Checked = isChonCheDoAn;
         }
 
         private void LoaiChamSoc_Load(object sender, EventArgs e)
@@ -186,6 +202,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("LoaiChamSoc.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource__LoaiChamSoc, LanguageManager.GetCulture());
                 this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("LoaiChamSoc.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource__LoaiChamSoc, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("LoaiChamSoc.Text", Resources.ResourceLanguageManager.LanguageResource__LoaiChamSoc, LanguageManager.GetCulture());
+                this.chkChonCheDoAn.Properties.Caption = Inventec.Common.Resource.Get.Value("LoaiChamSoc.chkChonCheDoAn.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource__LoaiChamSoc, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
