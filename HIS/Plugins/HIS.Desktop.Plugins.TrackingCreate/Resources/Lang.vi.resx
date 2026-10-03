@@ -916,7 +916,7 @@
     <value>Click "Chọn kết quả" để chọn dịch vụ</value>
   </data>
   <data name="frmTrackingCreateNew.txtTheoDoiChamSoc.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Nhấn F1 để chọn loại chăm sóc</value>
+    <value>Nhấn F1 để chọn loại chăm sóc, F2 để chọn chế độ ăn</value>
   </data>
   <data name="frmTrackingCreateNew.treeListColumn1.Caption" xml:space="preserve">
     <value> </value>
@@ -977,5 +977,29 @@
   </data>
   <data name="LoaiChamSoc.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
     <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="LoaiChamSoc.chkChonCheDoAn.Properties.Caption" xml:space="preserve">
+    <value>Chọn chế độ ăn</value>
+  </data>
+  <data name="frmChonCheDoAn.Text" xml:space="preserve">
+    <value>Chọn chế độ ăn</value>
+  </data>
+  <data name="frmChonCheDoAn.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhập mã chế độ ăn hoặc áp dụng điều trị để tìm kiếm</value>
+  </data>
+  <data name="frmChonCheDoAn.btnDongY.Text" xml:space="preserve">
+    <value>Đồng ý (Ctrl S)</value>
+  </data>
+  <data name="frmChonCheDoAn.grdColDietCode.Caption" xml:space="preserve">
+    <value>Mã chế độ ăn</value>
+  </data>
+  <data name="frmChonCheDoAn.grdColNutritionInfo.Caption" xml:space="preserve">
+    <value>Thành phần dinh dưỡng/24h</value>
+  </data>
+  <data name="frmChonCheDoAn.grdColProcessingForm.Caption" xml:space="preserve">
+    <value>Dạng chế biến</value>
+  </data>
+  <data name="frmChonCheDoAn.grdColTreatmentApply.Caption" xml:space="preserve">
+    <value>Áp dụng điều trị</value>
   </data>
 </root>

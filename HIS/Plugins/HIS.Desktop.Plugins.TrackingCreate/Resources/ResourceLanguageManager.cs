@@ -14,5 +14,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate.Resources
         public static ResourceManager LanguageResource__frmKetLuanHoiChan { get; set; }
         public static ResourceManager LanguageResource__frmInstructionNote { get; set; }
         public static ResourceManager LanguageResource__LoaiChamSoc { get; set; }
+        public static ResourceManager LanguageResource__frmChonCheDoAn { get; set; }
     }
 }

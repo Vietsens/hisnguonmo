@@ -265,6 +265,7 @@
       <DependentUpon>frmAddExamInfor.cs</DependentUpon>
     </Compile>
     <Compile Include="ADO\ConfigADO.cs" />
+    <Compile Include="ADO\DietADO.cs" />
     <Compile Include="ADO\HisSereServADONumOrder.cs" />
     <Compile Include="ADO\HisTrackingADO.cs" />
     <Compile Include="ADO\TreeSereServADO.cs" />
@@ -282,6 +283,12 @@
     </Compile>
     <Compile Include="frmAttach.Designer.cs">
       <DependentUpon>frmAttach.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmChonCheDoAn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChonCheDoAn.Designer.cs">
+      <DependentUpon>frmChonCheDoAn.cs</DependentUpon>
     </Compile>
     <Compile Include="frmDisplay.cs">
       <SubType>Form</SubType>

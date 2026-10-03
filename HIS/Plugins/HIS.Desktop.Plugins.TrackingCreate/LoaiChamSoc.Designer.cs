@@ -54,8 +54,12 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkChonCheDoAn = new DevExpress.XtraEditors.CheckEdit();
+            this.lciChonCheDoAn = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChonCheDoAn.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChonCheDoAn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grcChonLoaiChamSoc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdChonLoaiChamSoc)).BeginInit();
@@ -66,6 +70,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkChonCheDoAn);
             this.layoutControl1.Controls.Add(this.txtKeyWord);
             this.layoutControl1.Controls.Add(this.grcChonLoaiChamSoc);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -81,10 +86,20 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.txtKeyWord.Location = new System.Drawing.Point(2, 2);
             this.txtKeyWord.Name = "txtKeyWord";
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
-            this.txtKeyWord.Size = new System.Drawing.Size(470, 20);
+            this.txtKeyWord.Size = new System.Drawing.Size(340, 20);
             this.txtKeyWord.StyleController = this.layoutControl1;
             this.txtKeyWord.TabIndex = 6;
             this.txtKeyWord.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyWord_KeyDown);
+            //
+            // chkChonCheDoAn
+            //
+            this.chkChonCheDoAn.Location = new System.Drawing.Point(346, 2);
+            this.chkChonCheDoAn.Name = "chkChonCheDoAn";
+            this.chkChonCheDoAn.Properties.Caption = "Chọn chế độ ăn";
+            this.chkChonCheDoAn.Size = new System.Drawing.Size(126, 19);
+            this.chkChonCheDoAn.StyleController = this.layoutControl1;
+            this.chkChonCheDoAn.TabIndex = 7;
+            this.chkChonCheDoAn.ToolTip = "Chọn xong loại chăm sóc sẽ mở tiếp màn hình chọn chế độ ăn";
             // 
             // grcChonLoaiChamSoc
             // 
@@ -133,7 +148,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem2,
-            this.layoutControlItem1});
+            this.layoutControlItem1,
+            this.lciChonCheDoAn});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(474, 384);
@@ -153,9 +169,21 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControlItem1.Control = this.txtKeyWord;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(474, 24);
+            this.layoutControlItem1.Size = new System.Drawing.Size(344, 24);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
+            //
+            // lciChonCheDoAn
+            //
+            this.lciChonCheDoAn.Control = this.chkChonCheDoAn;
+            this.lciChonCheDoAn.Location = new System.Drawing.Point(344, 0);
+            this.lciChonCheDoAn.MaxSize = new System.Drawing.Size(130, 24);
+            this.lciChonCheDoAn.MinSize = new System.Drawing.Size(130, 24);
+            this.lciChonCheDoAn.Name = "lciChonCheDoAn";
+            this.lciChonCheDoAn.Size = new System.Drawing.Size(130, 24);
+            this.lciChonCheDoAn.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciChonCheDoAn.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChonCheDoAn.TextVisible = false;
             // 
             // LoaiChamSoc
             // 
@@ -177,6 +205,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChonCheDoAn.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChonCheDoAn)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -192,5 +222,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraEditors.TextEdit txtKeyWord;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
+        private DevExpress.XtraEditors.CheckEdit chkChonCheDoAn;
+        private DevExpress.XtraLayout.LayoutControlItem lciChonCheDoAn;
     }
 }
