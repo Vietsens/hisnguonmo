@@ -428,6 +428,7 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
         /// <summary>
         /// Mo popup chon hinh thuc lay so. Goi khi mo man, sau moi luot cap so,
         /// va khi nguoi benh nhan huy de chon lai.
+        /// Thoat popup ma khong chon hinh thuc nao thi dong luon man cap so.
         /// </summary>
         private void ShowIdentityPopup()
         {
@@ -437,17 +438,43 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder
                 this.currentIdentity = null;
                 this.isNoPaperChosen = false;
 
+                bool isChosen = false;
                 using (frmChooseIdentity frm = new frmChooseIdentity())
                 {
                     frm.ShowDialog(this);
                     if (frm.DialogResult == DialogResult.OK)
                     {
+                        isChosen = true;
                         this.currentIdentity = frm.Identity;
                         this.isNoPaperChosen = frm.IsNoPaper;
                     }
                 }
 
+                // Man cap so khong co nut dong nen popup la duong thoat duy nhat.
+                // Khong chon hinh thuc nao thi tra nguoi dung ve man thiet lap,
+                // khong de lo man chon day o trang thai chua dinh danh.
+                if (!isChosen)
+                {
+                    this.CloseWhenIdentityCancelled();
+                    return;
+                }
+
                 this.SetIdentityBar();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Dong man cap so, tra ve man thiet lap da mo no</summary>
+        private void CloseWhenIdentityCancelled()
+        {
+            try
+            {
+                this.tmrAutoReset.Enabled = false;
+                this.DialogResult = DialogResult.Cancel;
+                this.Close();
             }
             catch (Exception ex)
             {
