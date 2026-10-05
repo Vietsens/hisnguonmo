@@ -253,6 +253,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RegistrySettingWorker.cs" />
+    <Compile Include="RemoteSupport\ApiUrl.cs" />
     <Compile Include="RemoteSupport\frmRemoteSupportCreate.cs">
       <SubType>Form</SubType>
     </Compile>

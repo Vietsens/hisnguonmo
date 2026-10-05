@@ -79,6 +79,9 @@ namespace Inventec.UC.ListReports.Form
             try
             {
                 SetValueControl();
+                //Clicking any column other than the tick box used to clear every ticked row.
+                //Keep the ticked rows: only the tick box changes the selection.
+                gridViewUserList.OptionsSelection.ResetSelectionClickOutsideCheckboxSelector = false;
                 gridControlSelectedUser.DataSource = ListUserSelected;
                 LoadDataToRam();
                 //ProcessCheckedSelected();
@@ -102,6 +105,7 @@ namespace Inventec.UC.ListReports.Form
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private void LoadDataToRam()
         {
@@ -192,7 +196,9 @@ namespace Inventec.UC.ListReports.Form
                     }
                     WaitingManager.Hide();
                     #region Show message
-                    MessageManager.Show(this.ParentForm, new CommonParam(), true);
+                    //Show what the service answered, including the messages about sending the
+                    //report by email (accounts with no email, accounts the email failed for...).
+                    MessageManager.Show(this.ParentForm, param, success);
                     #endregion ;
 
                     #region Has exception

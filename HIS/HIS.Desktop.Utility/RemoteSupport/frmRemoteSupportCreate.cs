@@ -59,6 +59,13 @@ namespace HIS.Desktop.Utilities.RemoteSupport
     public partial class frmRemoteSupportCreate : Form
     {
         const string CONFIG_KEY__VPLUS_CUSTOMER_INFO = "HIS.Desktop.VPLUS_CUSTOMER_INFO";
+        // vCong57682: khoa cau hinh bat luong gui yeu cau ho tro toi bo phan quan tri benh vien
+        const string CONFIG_KEY__SUPPORT_REQUEST_ENABLE = "MOS.HIS_SUPPORT_REQUEST.ENABLE";
+        const int SEND_TO__INTERNAL = 0;
+        const int SEND_TO__CRM = 1;
+        // Chieu cao phan them cua khoi "Noi gui" = lciSendTo 30 + lciAssignee 24 + lciSendHint 17
+        const int SEND_TO_AREA_HEIGHT = 71;
+        bool isSupportRequestEnable = false;
         string stt_sản_phẩm = "1";
         string stt_phần_mềm = "2";
         string yourAnydeskID = "";
@@ -135,6 +142,7 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                 GetEmployee();
                 timerCheck.Start();
                 InitControlState();
+                InitSendToArea();
                 this.txtContactInfo.Text = String.Format("IP: {0}, Tài khoản phần mềm: {1}-{2}, Điện thoại: {3}, Phiên bản: {4}", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName(), currentEmployee.TDL_MOBILE, GlobalString.VersionApp);
 
 
@@ -208,6 +216,250 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                 LogSystem.Warn(ex);
             }
         }
+
+        #region vCong57682 - Noi gui yeu cau ho tro
+
+        /// <summary>
+        /// Doc khoa cau hinh mot lan khi mo cua so.
+        /// Cau hinh tat -> an han khoi "Noi gui" va thu nho cua so ve dung kich thuoc cu.
+        /// </summary>
+        private void InitSendToArea()
+        {
+            try
+            {
+                isSupportRequestEnable = HisConfigs.Get<string>(CONFIG_KEY__SUPPORT_REQUEST_ENABLE) == "1";
+
+                if (!isSupportRequestEnable)
+                {
+                    lciSendTo.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciAssignee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciSendHint.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height - SEND_TO_AREA_HEIGHT);
+                    return;
+                }
+
+                LoadAssigneeDataSource();
+                rdoSendTo.SelectedIndex = SEND_TO__INTERNAL;
+                ProcessSendToChanged();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Danh sach nguoi tiep nhan chi gom nhan vien duoc tich "Quan tri" tren danh muc Nhan vien.
+        /// Doc tu du lieu nen da nap san o may tram, khong goi them dich vu.
+        /// Luu y: o tich luu gia tri 1 khi bat va DE TRONG khi tat -> phai so bang 1.
+        /// </summary>
+        private void LoadAssigneeDataSource()
+        {
+            try
+            {
+                var admins = BackendDataWorker.Get<HIS_EMPLOYEE>()
+                    .Where(o => o.IS_ADMIN == 1 && o.IS_ACTIVE == 1 && !string.IsNullOrWhiteSpace(o.LOGINNAME))
+                    .Select(o => new AssigneeADO
+                    {
+                        LOGINNAME = o.LOGINNAME,
+                        USERNAME = string.IsNullOrWhiteSpace(o.TDL_USERNAME) ? o.LOGINNAME : o.TDL_USERNAME
+                    })
+                    .OrderBy(o => o.USERNAME)
+                    .ToList();
+
+                cboAssignee.Properties.DataSource = admins;
+                // O chon chi loc tren cot hien thi -> DISPLAY ghep ho ten lan ten dang nhap,
+                // go chu thi loc kieu "co chua" nen go ten nao cung tim thay.
+                cboAssignee.Properties.DisplayMember = "DISPLAY";
+                cboAssignee.Properties.ValueMember = "LOGINNAME";
+                cboAssignee.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboAssignee.Properties.ImmediatePopup = true;
+                cboAssignee.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                var view = cboAssignee.Properties.View;
+                view.Columns.Clear();
+                view.OptionsView.ShowIndicator = false;
+                view.OptionsSelection.EnableAppearanceFocusedCell = false;
+                var colLogin = view.Columns.AddField("LOGINNAME");
+                colLogin.Caption = "Tài khoản";
+                colLogin.Width = 100;
+                colLogin.Visible = true;
+                colLogin.VisibleIndex = 0;
+                var colName = view.Columns.AddField("USERNAME");
+                colName.Caption = "Người tiếp nhận";
+                colName.Width = 220;
+                colName.Visible = true;
+                colName.VisibleIndex = 1;
+                cboAssignee.Properties.NullText = "(để trống — cả bộ phận quản trị đều thấy)";
+                cboAssignee.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void rdoSendTo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ProcessSendToChanged();
+        }
+
+        /// <summary>
+        /// Doi sang "Gui cong ty" thi an o Nguoi tiep nhan va xoa gia tri dang chon,
+        /// tranh gui du lieu thua len dich vu.
+        /// </summary>
+        private void ProcessSendToChanged()
+        {
+            try
+            {
+                bool isInternal = rdoSendTo.SelectedIndex == SEND_TO__INTERNAL;
+
+                lciAssignee.Visibility = isInternal
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                if (!isInternal)
+                    cboAssignee.EditValue = null;
+
+                lblSendHint.Text = isInternal
+                    ? "→ Yêu cầu sẽ được gửi tới bộ phận quản trị của bệnh viện"
+                    : "→ Yêu cầu sẽ được gửi thẳng về công ty";
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboAssignee_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    // Bo co IsModified, khong thi bam xoa khi o chua co focus roi click ra ngoai
+                    // GridLookUpEdit se lay lai gia tri cu.
+                    cboAssignee.EditValue = null;
+                    cboAssignee.IsModified = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private bool IsSendToInternal()
+        {
+            return isSupportRequestEnable && rdoSendTo.SelectedIndex == SEND_TO__INTERNAL;
+        }
+
+        /// <summary>
+        /// Phan loai tep de bo phan quan tri loc nhanh:
+        /// 1 = nguoi dung dinh kem, 2 = anh chup man hinh, 3 = nhat ky he thong.
+        /// </summary>
+        private short GetFileKind(string fileName)
+        {
+            if (string.Equals(fileName, "imgCaptureMyScreen.png", StringComparison.OrdinalIgnoreCase)) return 2;
+            if (string.Equals(fileName, "LogSystem.txt", StringComparison.OrdinalIgnoreCase)) return 3;
+            return 1;
+        }
+
+        /// <summary>
+        /// Luu yeu cau vao he thong cua benh vien.
+        /// Tep dinh kem tai len kho tep CUA VIEN (URI_API_FSS), khong phai kho tep dung cho CRM.
+        /// </summary>
+        private void SaveInternalSupportRequest(List<FileHolder> files)
+        {
+            CommonParam param = new CommonParam();
+            bool success = false;
+            try
+            {
+                List<MOS.SDO.HisSupportRequestFileSDO> fileSdos = new List<MOS.SDO.HisSupportRequestFileSDO>();
+
+                if (files != null && files.Count > 0)
+                {
+                    // Phai doc dung luong TRUOC khi nap len: UploadFile dong cac luong du lieu
+                    // sau khi gui xong, doc Content.Length sau do se nem ObjectDisposedException.
+                    Dictionary<string, long> fileSizes = new Dictionary<string, long>();
+                    foreach (var h in files)
+                    {
+                        if (h == null || h.Content == null || string.IsNullOrEmpty(h.FileName)) continue;
+                        fileSizes[h.FileName] = h.Content.Length;
+                    }
+
+                    var fileResults = Inventec.Fss.Client.FileUpload.UploadFile(
+                        GlobalVariables.APPLICATION_CODE, "", files, false,
+                        HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS);
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("fileResults_noi_bo", fileResults));
+
+                    if (fileResults == null || fileResults.Count == 0)
+                    {
+                        WaitingManager.Hide();
+                        XtraMessageBox.Show("Không tải lên được tệp đính kèm. Tạo yêu cầu hỗ trợ thất bại", "Thông báo");
+                        return;
+                    }
+
+                    foreach (var f in fileResults)
+                    {
+                        long size = 0;
+                        bool hasSize = !string.IsNullOrEmpty(f.OriginalName) && fileSizes.TryGetValue(f.OriginalName, out size);
+                        fileSdos.Add(new MOS.SDO.HisSupportRequestFileSDO
+                        {
+                            FileName = f.OriginalName,
+                            FileUrl = f.Url.Replace("\\", "/"),
+                            FileSize = hasSize ? (long?)size : null,
+                            FileKind = GetFileKind(f.OriginalName)
+                        });
+                    }
+                }
+
+                MOS.SDO.HisSupportRequestSDO sdo = new MOS.SDO.HisSupportRequestSDO();
+                sdo.Title = txtTitle.Text;
+                sdo.Content = txtDescription.Text;
+                sdo.ContactInfo = txtContactInfo.Text;
+                sdo.AnydeskId = !string.IsNullOrEmpty(yourAnydeskID) ? yourAnydeskID : null;
+                sdo.ModuleLink = currentModule != null ? currentModule.ModuleLink : null;
+                sdo.RequestDepartmentId = currentEmployee != null ? currentEmployee.DEPARTMENT_ID : null;
+                sdo.RequestRoomId = currentModule != null && currentModule.RoomId > 0 ? (long?)currentModule.RoomId : null;
+                sdo.BranchId = currentEmployee != null ? currentEmployee.BRANCH_ID : null;
+                sdo.AssigneeLoginname = cboAssignee.EditValue != null ? cboAssignee.EditValue.ToString() : null;
+                sdo.Files = fileSdos;
+
+                var result = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Post<MOS.EFMODEL.DataModels.HIS_SUPPORT_REQUEST>(
+                        ApiUrl.HIS_SUPPORT_REQUEST__CREATE,
+                        ApiConsumers.MosConsumer, sdo, param);
+
+                Inventec.Common.Logging.LogSystem.Info("Tao yeu cau ho tro noi bo"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
+
+                WaitingManager.Hide();
+
+                if (result != null)
+                {
+                    success = true;
+                    MessageManager.Show(this, param, success);
+                    XtraMessageBox.Show(
+                        string.Format("Đã gửi yêu cầu tới bộ phận quản trị của bệnh viện.\r\nMã yêu cầu: {0}", result.SUPPORT_REQUEST_CODE),
+                        "Thông báo");
+                    this.Hide();
+                }
+                else
+                {
+                    MessageManager.Show(this, param, success);
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                XtraMessageBox.Show("Xảy ra lỗi khi tạo yêu cầu hỗ trợ. Vui lòng kiểm tra lại", "Thông báo");
+                LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
 
         private void TimerCheck_Tick(object sender, EventArgs e)
         {
@@ -474,6 +726,16 @@ namespace HIS.Desktop.Utilities.RemoteSupport
                         }
                     }
                     Inventec.Common.Logging.LogSystem.Debug(string.Format("dung lượng file log: {0}, dung lượng ảnh chụp màn hình: {1}, dung lượng file đính kèm: {2}, địa chỉ FSS: {3}", fileLogSize, imgCaptureSize, attFileSize, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_FSS_FOR_CRM));
+
+                    // vCong57682: nguoi dung chon gui cho bo phan quan tri benh vien
+                    // -> luu vao HIS, KHONG goi sang he thong cua cong ty.
+                    if (IsSendToInternal())
+                    {
+                        IsThrowExFss = false;
+                        SaveInternalSupportRequest(files);
+                        return;
+                    }
+
                     string fileContent = "";
                     string formatImg = "<img src=\"{0}\">";
                     string formatFile = "<a href=\"{0}\">{1}</a>";
@@ -934,5 +1196,24 @@ namespace HIS.Desktop.Utilities.RemoteSupport
     {
         public string FileAttachName { get; set; }
         public string PathFile { get; set; }
+    }
+
+    /// <summary>
+    /// vCong57682 - Dong du lieu cho o chon Nguoi tiep nhan.
+    /// Chi gom nhan vien duoc tich "Quan tri" tren danh muc Nhan vien.
+    /// </summary>
+    public class AssigneeADO
+    {
+        public string LOGINNAME { get; set; }
+        public string USERNAME { get; set; }
+
+        /// <summary>
+        /// Chu hien thi o chon: "Ho ten (ten dang nhap)". O chon chi loc tren cot hien thi
+        /// nen ghep ca hai vao day de go ten nao cung tim thay.
+        /// </summary>
+        public string DISPLAY
+        {
+            get { return string.IsNullOrWhiteSpace(USERNAME) || USERNAME == LOGINNAME ? LOGINNAME : USERNAME + " (" + LOGINNAME + ")"; }
+        }
     }
 }
