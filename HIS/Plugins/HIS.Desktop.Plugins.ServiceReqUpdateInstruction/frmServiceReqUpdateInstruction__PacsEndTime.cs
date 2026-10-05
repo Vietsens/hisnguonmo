@@ -15,11 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Utils;
 using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Columns;
-using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraLayout;
 using DevExpress.XtraLayout.Utils;
 using HIS.Desktop.ApiConsumer;
@@ -35,18 +32,17 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
 {
     /// <summary>
     /// O "Thoi gian thuc hien xong": gio chup xong do PACS gui ve (OBR.8), luu theo tung dich vu
-    /// tai HIS_SERE_SERV_EXT.PACS_END_TIME. Chi doc, khong tham gia luu / validate cua form.
-    /// Y lenh co nhieu dich vu co du lieu thi o hien moc muon nhat va co nut so xuong liet ke tung dich vu.
+    /// tai HIS_SERE_SERV_EXT.PACS_END_TIME. Hien thi bang label (chi doc, khong go, khong dan),
+    /// khong tham gia luu / validate cua form.
+    /// Y lenh co nhieu dich vu co du lieu: label hien moc muon nhat kem "(n dich vu)"; di chuot vao
+    /// hoac bam vao label se hien bang chi tiet tung dich vu + gio tuong ung (SuperToolTip).
     /// Control duoc tao luc chay va chen duoi o "Thoi gian ket thuc" (cot phai) de khong phai sua Designer.
     /// </summary>
     public partial class frmServiceReqUpdateInstruction
     {
-        private PopupContainerEdit cboPacsEndTime;
-        private PopupContainerControl popupPacsEndTime;
-        private GridControl gridPacsEndTime;
-        private GridView gridViewPacsEndTime;
+        private LabelControl lblPacsEndTime;
         private LayoutControlItem lciPacsEndTime;
-        private string pacsEndTimeDisplay = "";
+        private ToolTipController pacsEndTimeToolTip;
         private List<PacsEndTimeADO> pacsEndTimes = new List<PacsEndTimeADO>();
 
         private class PacsEndTimeADO
@@ -60,54 +56,34 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         {
             try
             {
-                if (cboPacsEndTime != null) return;
+                if (lblPacsEndTime != null) return;
 
-                gridViewPacsEndTime = new GridView();
-                gridViewPacsEndTime.OptionsBehavior.Editable = false;
-                gridViewPacsEndTime.OptionsBehavior.ReadOnly = true;
-                gridViewPacsEndTime.OptionsView.ShowGroupPanel = false;
-                gridViewPacsEndTime.OptionsView.ShowIndicator = false;
-                gridViewPacsEndTime.OptionsSelection.EnableAppearanceFocusedCell = false;
-                gridViewPacsEndTime.OptionsSelection.EnableAppearanceFocusedRow = false;
-                GridColumn colService = gridViewPacsEndTime.Columns.AddVisible("TDL_SERVICE_NAME", "Dịch vụ");
-                colService.Width = 300;
-                GridColumn colTime = gridViewPacsEndTime.Columns.AddVisible("PACS_END_TIME_STR", "Thời gian thực hiện xong");
-                colTime.Width = 150;
+                pacsEndTimeToolTip = new ToolTipController();
+                pacsEndTimeToolTip.ToolTipType = ToolTipType.SuperTip;
+                pacsEndTimeToolTip.AutoPopDelay = 20000;
 
-                gridPacsEndTime = new GridControl();
-                gridPacsEndTime.Dock = System.Windows.Forms.DockStyle.Fill;
-                gridPacsEndTime.ViewCollection.Add(gridViewPacsEndTime);
-                gridPacsEndTime.MainView = gridViewPacsEndTime;
-                gridViewPacsEndTime.GridControl = gridPacsEndTime;
-
-                popupPacsEndTime = new PopupContainerControl();
-                popupPacsEndTime.Size = new System.Drawing.Size(470, 160);
-                popupPacsEndTime.Controls.Add(gridPacsEndTime);
-                this.Controls.Add(popupPacsEndTime);
-
-                cboPacsEndTime = new PopupContainerEdit();
-                cboPacsEndTime.Name = "cboPacsEndTime";
-                cboPacsEndTime.Properties.PopupControl = popupPacsEndTime;
-                cboPacsEndTime.Properties.TextEditStyle = TextEditStyles.DisableTextEditor;
-                cboPacsEndTime.Properties.CloseOnOuterMouseClick = true;
-                cboPacsEndTime.Properties.ShowPopupCloseButton = false;
-                cboPacsEndTime.Properties.PopupSizeable = false;
-                cboPacsEndTime.Properties.QueryPopUp += cboPacsEndTime_QueryPopUp;
-                cboPacsEndTime.Properties.QueryResultValue += cboPacsEndTime_QueryResultValue;
-                cboPacsEndTime.Properties.QueryDisplayText += cboPacsEndTime_QueryDisplayText;
+                lblPacsEndTime = new LabelControl();
+                lblPacsEndTime.Name = "lblPacsEndTime";
+                lblPacsEndTime.AutoSizeMode = LabelAutoSizeMode.None;
+                lblPacsEndTime.Size = new System.Drawing.Size(200, 20);
+                lblPacsEndTime.Appearance.TextOptions.HAlignment = HorzAlignment.Near;
+                lblPacsEndTime.Appearance.TextOptions.VAlignment = VertAlignment.Center;
+                lblPacsEndTime.ToolTipController = pacsEndTimeToolTip;
+                lblPacsEndTime.Click += lblPacsEndTime_Click;
 
                 layoutControl1.BeginUpdate();
                 try
                 {
-                    layoutControl1.Controls.Add(cboPacsEndTime);
-                    lciPacsEndTime = layoutControlGroup1.AddItem("Thời gian thực hiện xong:", cboPacsEndTime);
+                    layoutControl1.Controls.Add(lblPacsEndTime);
+                    lciPacsEndTime = layoutControlGroup1.AddItem("Thời gian thực hiện xong:", lblPacsEndTime);
                     lciPacsEndTime.Name = "lciPacsEndTime";
                     lciPacsEndTime.AppearanceItemCaption.Options.UseTextOptions = true;
                     lciPacsEndTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-                    //nhan dai hon cac nhan cung cot -> de layout tu tinh do rong theo chu (AutoSize), khong do tay de khoi lech theo font/DPI
-                    lciPacsEndTime.TextAlignMode = TextAlignModeItem.AutoSize;
+                    //nhan rong dung bang cac nhan cot phai (160) de noi dung bat dau thang hang voi "Thoi gian ket thuc" ben tren
+                    lciPacsEndTime.TextAlignMode = TextAlignModeItem.CustomSize;
+                    lciPacsEndTime.TextSize = lciEndTime.TextSize;
                     lciPacsEndTime.TextToControlDistance = lciEndTime.TextToControlDistance;
-                    //dat o cot phai, ngay duoi "Thoi gian ket thuc" (cot phai nhan rong 160 nen gan thang hang)
+                    //dat o cot phai, ngay duoi "Thoi gian ket thuc"
                     lciPacsEndTime.Move(lciEndTime, InsertType.Bottom);
 
                     //can hai cot: o moi lam cot phai dai hon cot trai 1 hang -> chuyen "Thu ky" (1 item, control panel1)
@@ -122,6 +98,15 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 {
                     layoutControl1.EndUpdate();
                 }
+
+                //panel1 (Thu ky) duoc layout keo rong theo cot trai nhung 2 control con co vi tri co dinh trong Designer
+                //-> dat lai cho khop hang "Nguoi yeu cau" ben tren (o ma rong 113, o ten chiem phan con lai) va neo phai de theo resize
+                txtSecretaryLoginName.Width = txtRequestUser.Width;
+                cboSecretaryUserName.Left = txtSecretaryLoginName.Right;
+                cboSecretaryUserName.Width = panel1.ClientSize.Width - cboSecretaryUserName.Left;
+                cboSecretaryUserName.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+
+                this.Height += lciPacsEndTime.Height + 8;
             }
             catch (Exception ex)
             {
@@ -130,14 +115,14 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         }
 
         /// <summary>
-        /// Nap gio ket thuc thuc hien cua cac dich vu thuoc y lenh. Loi lay du lieu chi de trong, khong chan form.
+        /// Nap gio thuc hien xong cua cac dich vu thuoc y lenh. Loi lay du lieu chi de trong, khong chan form.
         /// </summary>
         private void LoadPacsEndTime()
         {
             List<PacsEndTimeADO> ados = new List<PacsEndTimeADO>();
             try
             {
-                if (cboPacsEndTime == null) return;
+                if (lblPacsEndTime == null) return;
 
                 CommonParam param = new CommonParam();
                 HisSereServExtFilter extFilter = new HisSereServExtFilter();
@@ -175,12 +160,53 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             try
             {
                 pacsEndTimes = ados;
-                gridPacsEndTime.DataSource = pacsEndTimes;
-                //moc muon nhat trong cac dich vu (danh sach da sap xep tang dan)
-                pacsEndTimeDisplay = pacsEndTimes.Count > 0 ? pacsEndTimes[pacsEndTimes.Count - 1].PACS_END_TIME_STR : "";
-                cboPacsEndTime.EditValue = pacsEndTimeDisplay;
-                //nhieu dich vu moi hien nut so xuong
-                cboPacsEndTime.Properties.Buttons[0].Visible = pacsEndTimes.Count > 1;
+                if (pacsEndTimes.Count == 0)
+                {
+                    lblPacsEndTime.Text = "";
+                    lblPacsEndTime.SuperTip = null;
+                    lblPacsEndTime.Cursor = System.Windows.Forms.Cursors.Default;
+                }
+                else if (pacsEndTimes.Count == 1)
+                {
+                    lblPacsEndTime.Text = pacsEndTimes[0].PACS_END_TIME_STR;
+                    lblPacsEndTime.SuperTip = BuildPacsEndTimeSuperTip();
+                    lblPacsEndTime.Cursor = System.Windows.Forms.Cursors.Default;
+                }
+                else
+                {
+                    //moc muon nhat trong cac dich vu (danh sach da sap xep tang dan) + so dich vu; chi tiet xem o tooltip
+                    lblPacsEndTime.Text = string.Format("{0}  ({1} dịch vụ)", pacsEndTimes[pacsEndTimes.Count - 1].PACS_END_TIME_STR, pacsEndTimes.Count);
+                    lblPacsEndTime.SuperTip = BuildPacsEndTimeSuperTip();
+                    lblPacsEndTime.Cursor = System.Windows.Forms.Cursors.Hand;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private SuperToolTip BuildPacsEndTimeSuperTip()
+        {
+            SuperToolTip tip = new SuperToolTip();
+            tip.Items.AddTitle("Thời gian thực hiện xong theo dịch vụ");
+            foreach (PacsEndTimeADO ado in pacsEndTimes)
+            {
+                tip.Items.Add(string.Format("{0}   {1}", ado.PACS_END_TIME_STR, ado.TDL_SERVICE_NAME));
+            }
+            return tip;
+        }
+
+        private void lblPacsEndTime_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //bam vao label cung hien bang chi tiet (khong can cho tooltip)
+                if (lblPacsEndTime.SuperTip == null) return;
+                ToolTipControllerShowEventArgs args = pacsEndTimeToolTip.CreateShowArgs();
+                args.SuperTip = lblPacsEndTime.SuperTip;
+                args.ToolTipType = ToolTipType.SuperTip;
+                pacsEndTimeToolTip.ShowHint(args, lblPacsEndTime.PointToScreen(new System.Drawing.Point(0, lblPacsEndTime.Height)));
             }
             catch (Exception ex)
             {
@@ -192,23 +218,6 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         {
             DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(timeNumber);
             return dt.HasValue ? dt.Value.ToString("dd/MM/yyyy HH:mm") : "";
-        }
-
-        private void cboPacsEndTime_QueryPopUp(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //1 dich vu tro xuong thi khong co gi de so
-            e.Cancel = pacsEndTimes == null || pacsEndTimes.Count < 2;
-        }
-
-        private void cboPacsEndTime_QueryResultValue(object sender, QueryResultValueEventArgs e)
-        {
-            //dong popup khong lam doi gia tri dang hien thi
-            e.Value = pacsEndTimeDisplay;
-        }
-
-        private void cboPacsEndTime_QueryDisplayText(object sender, QueryDisplayTextEventArgs e)
-        {
-            e.DisplayText = pacsEndTimeDisplay;
         }
     }
 }

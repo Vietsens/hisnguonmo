@@ -323,6 +323,7 @@
     <Compile Include="Template\Template11.cs" />
     <Compile Include="Template\Template12.cs" />
     <Compile Include="Template\Template13.cs" />
+    <Compile Include="Template\Template14.cs" />
     <Compile Include="Template\Template2.cs" />
     <Compile Include="Template\Template3.cs" />
     <Compile Include="Template\Template4.cs" />

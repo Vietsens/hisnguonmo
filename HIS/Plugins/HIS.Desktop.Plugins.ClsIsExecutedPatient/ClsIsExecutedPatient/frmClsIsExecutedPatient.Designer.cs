@@ -1241,9 +1241,9 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
                         // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(1177, 555);
+            this.btnReset.Location = new System.Drawing.Point(1104, 10);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(131, 22);
+            this.btnReset.Size = new System.Drawing.Size(101, 22);
             this.btnReset.StyleController = this.layoutControl1;
             this.btnReset.TabIndex = 19;
             this.btnReset.Text = "Mới (Ctrl N)";
@@ -1450,9 +1450,9 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(1094, 0);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(1195, 0);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(206, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(105, 24);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
@@ -1650,9 +1650,10 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.btnReset;
-            this.layoutControlItem16.Location = new System.Drawing.Point(1165, 543);
+            this.layoutControlItem16.Location = new System.Drawing.Point(1094, 0);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(135, 26);
+            this.layoutControlItem16.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem16.Size = new System.Drawing.Size(101, 24);
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem16.TextVisible = false;
             // 
@@ -1713,7 +1714,7 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
             this.layoutControlItem26.Control = this.btnSave;
             this.layoutControlItem26.Location = new System.Drawing.Point(1023, 543);
             this.layoutControlItem26.Name = "layoutControlItem26";
-            this.layoutControlItem26.Size = new System.Drawing.Size(142, 26);
+            this.layoutControlItem26.Size = new System.Drawing.Size(277, 26);
             this.layoutControlItem26.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem26.TextVisible = false;
             // 
