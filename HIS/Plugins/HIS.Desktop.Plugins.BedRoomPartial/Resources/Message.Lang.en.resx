@@ -216,4 +216,16 @@
   <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
     <value>This command already exists signed text, do you want to cancel the data?</value>
   </data>
+  <data name="XoaCungKhoaKhongXoaDuoc" xml:space="preserve">
+    <value>Cannot delete the following service requests under the same-department rule:</value>
+  </data>
+  <data name="XoaCungKhoaYLenhDaKySo" xml:space="preserve">
+    <value>- Service request {0}: document &quot;{1}&quot; has been digitally signed (signed by: {2}). Only the requester, the creator or an administrator can delete it.</value>
+  </data>
+  <data name="XoaCungKhoaVanBanDoNguoiKhacTao" xml:space="preserve">
+    <value>- Service request {0}: document &quot;{1}&quot; was created by account {2} and is not signed yet. The document creator must delete it in the EMR before the request can be deleted.</value>
+  </data>
+  <data name="XoaCungKhoaKhongKiemTraDuocVanBanKy" xml:space="preserve">
+    <value>Could not check the EMR signed documents of service request {0}, so it was not deleted. Please try again.</value>
+  </data>
 </root>

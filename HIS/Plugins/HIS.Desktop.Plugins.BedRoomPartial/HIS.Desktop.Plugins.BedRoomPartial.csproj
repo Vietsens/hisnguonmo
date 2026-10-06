@@ -273,6 +273,7 @@
     <Compile Include="Base\ControlCode.cs" />
     <Compile Include="Base\HasCoTreatmentADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
+    <Compile Include="Base\SameDepartmentDeleteChecker.cs" />
     <Compile Include="Base\TabControlProcess.cs" />
     <Compile Include="Base\TreatmentBedRoomADO.cs">
       <SubType>Code</SubType>
@@ -342,6 +343,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Run\UCBedRoomPartial__Pluss__CheckRequiredDocument.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\UCBedRoomPartial__Pluss__DeleteSameDepartment.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Delegate\DelegateUC.cs" />

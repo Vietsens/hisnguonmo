@@ -53,6 +53,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal const string CONFIG_KEY__IsPrintTemBarcodeBartender = "HIS.Desktop.Plugins.IsPrintTemBarcodeBartender";
         // So chu so thap phan hien thi cua cac cot so luong. Khong khai bao = giu nguyen hien thi cu.
         private const string CONFIG_KEY__AmountDecimalNumber = "HIS.Desktop.AmountDecimalNumber";
+        // Viec 55703: "1" = tai khoan dang lam viec tai khoa chi dinh duoc xoa y lenh do nguoi khac chi dinh
+        // (y lenh chua xu ly, chua ky so, chua thanh toan). Khac "1" hoac khong khai bao = giu nguyen nhu cu.
+        private const string CONFIG_KEY__AllowDeleteBySameRequestDepartment = "MOS.HIS_SERVICE_REQ.ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT";
+        // "1" = co ket noi he thong benh an dien tu (EMR)
+        private const string CONFIG_KEY__HasConnectionEmr = "MOS.HAS_CONNECTION_EMR";
 
 
         internal static bool IsShowPresAmount;
@@ -76,6 +81,10 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         /// Null khi key khong khai bao: giu nguyen hien thi cu.
         /// </summary>
         internal static string AmountFormatString;
+        /// <summary>Viec 55703: cho phep xoa y lenh cua nguoi khac trong cung khoa chi dinh (MOS.HIS_SERVICE_REQ.ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT = 1)</summary>
+        internal static bool IsAllowDeleteBySameRequestDepartment;
+        /// <summary>Co ket noi EMR (MOS.HAS_CONNECTION_EMR = 1)</summary>
+        internal static bool HasConnectionEmr;
 
         internal static void LoadConfig()
         {
@@ -97,6 +106,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 ServiceReqAndChild = GetValue(CONFIG_KEY__DeleteServiceReqAndChild);
                 IsPrintTemBarcodeBartender = GetValue(CONFIG_KEY__IsPrintTemBarcodeBartender) == GlobalVariables.CommonStringTrue;
                 AmountFormatString = GetAmountFormatString();
+                IsAllowDeleteBySameRequestDepartment = GetValue(CONFIG_KEY__AllowDeleteBySameRequestDepartment) == GlobalVariables.CommonStringTrue;
+                HasConnectionEmr = GetValue(CONFIG_KEY__HasConnectionEmr) == GlobalVariables.CommonStringTrue;
             }
             catch (Exception ex)
             {

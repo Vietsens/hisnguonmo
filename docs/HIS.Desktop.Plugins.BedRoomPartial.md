@@ -38,11 +38,18 @@ Chiến lược nạp: config bật → nạp toàn đợt 1 lần trong `LoadAn
 Đơn dự trù nhiều ngày đã được backend **tách sẵn thành nhiều `HIS_SERVICE_REQ`**, mỗi đơn 1 `USE_TIME` — không dùng `USE_TIME_TO`.
 
 ### Điều kiện enable nút "Xóa y lệnh" trong TreeList (`ssRootSety.IsEnableDelete`)
-Với `SERVICE_REQ_STT_ID == CXL` (chưa xử lý), enable khi thỏa **1 trong 3**:
+Với `SERVICE_REQ_STT_ID == CXL` (chưa xử lý), enable khi thỏa **1 trong 5**:
 1. Tài khoản đăng nhập là **người chỉ định** (`REQUEST_LOGINNAME == loginName`)
 2. Tài khoản đăng nhập là **admin** (`CheckLoginAdmin.IsAdmin`)
 3. Khoa chỉ định **trùng khoa làm việc** AND loại y lệnh là **Khám (KH)**
 4. Loại y lệnh là **Giường (G)** AND tài khoản có quyền **HIS000053** (bổ sung theo việc 44693)
+5. Key `MOS.HIS_SERVICE_REQ.ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT = 1` AND khoa chỉ định **trùng khoa làm việc** — mọi loại y lệnh (bổ sung theo việc 55703, mặc định tắt)
+
+### Xóa theo quy tắc cùng khoa — kiểm tra văn bản ký EMR (việc 55703)
+Khi bấm Xóa (`Delete_Click`), y lệnh **chỉ** xóa được nhờ điều kiện 5 (tài khoản không phải người tạo y lệnh `SERVICE_REQ_CREATOR` / người chỉ định / admin / giường + HIS000053 / khám cùng khoa) phải qua `CheckEmrDocumentBeforeSameDepartmentDelete` (`Run/UCBedRoomPartial__Pluss__DeleteSameDepartment.cs`) trước luồng xóa cũ:
+- `MOS.HAS_CONNECTION_EMR = 1` thì gọi `api/EmrDocument/Get` theo mã hồ sơ, lấy văn bản chưa xóa có `HIS_CODE` chứa `SERVICE_REQ_CODE:<mã y lệnh>` (mọi loại văn bản, không chỉ phiếu chỉ định).
+- Văn bản đã có người ký (`SIGNERS`) → chặn "đã được ký số"; văn bản chưa ký do tài khoản khác tạo → chặn (EMR chỉ cho người tạo xóa văn bản); không lấy được văn bản → chặn "không kiểm tra được".
+- Y lệnh có quyền xóa sẵn có giữ nguyên luồng cũ. Logic dùng chung ở `Base/SameDepartmentDeleteChecker.cs` (bản sao cùng nội dung với plugin ServiceReqList).
 
 ## 3. EFMODEL Sử Dụng
 
@@ -79,6 +86,7 @@ Hiển thị nhóm máu (`lblBloodType`) từ `TDL_PATIENT_BLOOD_ABO_CODE` + `TD
 | Action | URI | Consumer |
 |--------|-----|----------|
 | Xóa y lệnh | api/HisServiceReq/Delete | MosConsumer |
+| Kiểm tra văn bản ký trước khi xóa cùng khoa (việc 55703) | api/EmrDocument/Get (`UriApi.EMR_DOCUMENT_GET`) | EmrConsumer |
 | Sửa y lệnh | api/HisServiceReq/Update | MosConsumer |
 | Lấy danh sách | api/HisServiceReq/GetView | MosConsumer |
 
@@ -110,6 +118,7 @@ Plugin tích hợp nhiều mẫu in qua RichEditorStore + MpsPrinter, phụ thu�
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 06/10/2026 | dangth2 | Việc 55703 (BV Nguyễn Tri Phương): cho phép người cùng khoa chỉ định xóa y lệnh do người khác chỉ định, bật bằng key `MOS.HIS_SERVICE_REQ.ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT = 1` (mặc định tắt). Thêm điều kiện 5 vào 2 chỗ đặt `ssRootSety.IsEnableDelete` (`LoadDataSereServByTreatmentId`, `GroupDataByTracking`), đọc key 1 lần trước vòng lặp; nút y lệnh mang thêm `SERVICE_REQ_CREATOR` (ADO). `Delete_Click` gọi `CheckEmrDocumentBeforeSameDepartmentDelete` trước luồng cũ (file mới `Run/UCBedRoomPartial__Pluss__DeleteSameDepartment.cs`, `Base/SameDepartmentDeleteChecker.cs`). Key mới trong `Key/HisConfigKeys.cs` + `Key/HisConfigCFG.cs` (kèm `MOS.HAS_CONNECTION_EMR`), `UriApi.EMR_DOCUMENT_GET`, 4 thông báo `XoaCungKhoa*` (vi/en/my). Cần Backend MOS bản có cùng key. |
 | 21/09/2026 | sinhnt | Việc 3352 (PT-56263): nhãn `Dự trù: ...` ở cột "Khoa yêu cầu" (2 chỗ trong `Run/UCBedRoomPartial.cs`: `LoadDataSereServByTreatmentId` và `GroupDataByTracking`) và cột "Ngày dự trù" (`USE_DATE_STR`) hiển thị thêm **giờ phút** khi `USE_TIME` có giờ — helper `FormatUseTimeDisplay` đặt cạnh `ToDateNumber` trong `Run/UCBedRoomPartial__Pluss__Anticipate.cs`. Nới `tc_UseDate.Width` 90 → 115 cho đủ chuỗi `dd/MM/yyyy HH:mm`. **Không đụng** logic gom nhóm theo ngày (`ToDateNumber`, `IsAnticipateMedicinePres`, `GetEffectiveDate`) nên cây ngày bên trái không đổi. |
 | 22/05/2026 | dangth2 | Việc 44693 (Tài liệu 2671): Bổ sung điều kiện enable nút "Xóa y lệnh giường" trong `Run/UCBedRoomPartial.cs` (2 vị trí thiết lập `ssRootSety.IsEnableDelete`) — nếu loại y lệnh là Giường (`SERVICE_REQ_TYPE.ID__G`) VÀ tài khoản có quyền HIS000053 thì enable. Các trường hợp khác giữ nguyên. Thêm `Base/ControlCode.cs`, field `hasDeleteBedPermission`, method `LoadDeleteBedPermission()`. Reference `ACS.EFMODEL.dll`. |
 | 06/07/2026 | phuongnm | Tài liệu 1223: Sửa hiển thị nhóm máu ở vùng thông tin hành chính (`Run/UCBedRoomPartial.cs`, `lblBloodType`). Trước đây điều kiện `abo && rh` khiến chỉ có 1 trong 2 giá trị thì không hiển thị. Sửa thành 4 trường hợp: có cả ABO+RH (`O; RH(-)`), chỉ ABO (`A`), chỉ RH (`RH(-)`), không có (trống). |
@@ -139,6 +148,16 @@ Plugin tích hợp nhiều mẫu in qua RichEditorStore + MpsPrinter, phụ thu�
 - [ ] Nhấn nút → mở màn kết quả CLS đúng BN đang chọn, KHÔNG có ô tích/nút "Chọn (Ctrl S)"/6 tuỳ chọn chèn, có nút "Đóng"
 - [ ] BN chưa có kết quả CLS → màn mở với cây rỗng, không popup lỗi
 - [ ] Hồi quy: màn "Chọn kết quả CLS" mở từ tờ điều trị vẫn đủ ô tích + nút Chọn + chèn kết quả như cũ
+
+### Xóa y lệnh cùng khoa — việc 55703
+- [ ] Key tắt: nút Xóa trên cây y lệnh giữ nguyên như cũ
+- [ ] Key = 1: y lệnh người khác chỉ định, cùng khoa làm việc, chưa xử lý → nút Xóa bật (cả 4 tab)
+- [ ] Key = 1: y lệnh khoa khác / đang xử lý / hoàn thành → nút Xóa tắt
+- [ ] Y lệnh cùng khoa chưa có văn bản EMR → xóa thành công (Backend bản mới)
+- [ ] Y lệnh đã ký số → chặn, thông báo mã y lệnh + tên văn bản + người ký, không gọi API xóa
+- [ ] Văn bản chưa ký do người khác tạo → chặn; do chính mình tạo → xóa được cả văn bản
+- [ ] EMR lỗi / mất kết nối → chặn "Không kiểm tra được văn bản ký"
+- [ ] Hồi quy: người chỉ định / người tạo y lệnh / admin xóa như cũ
 
 ### Xóa y lệnh giường — phân quyền HIS000053
 - [ ] User KHÔNG có quyền HIS000053, KHÔNG là người chỉ định/admin → nút Xóa **disable** trên y lệnh giường

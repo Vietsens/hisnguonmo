@@ -203,4 +203,16 @@ Vui lòng chờ trả về kết quả trước khi in phiếu tổng hợp.</va
   <data name="GuiLaiChiDinhKhongThanhCong" xml:space="preserve">
     <value>Gửi không thành công</value>
   </data>
+  <data name="XoaCungKhoaKhongXoaDuoc" xml:space="preserve">
+    <value>Không xóa được y lệnh theo quyền xóa trong cùng khoa:</value>
+  </data>
+  <data name="XoaCungKhoaYLenhDaKySo" xml:space="preserve">
+    <value>- Y lệnh {0}: văn bản &quot;{1}&quot; đã được ký số (người ký: {2}). Chỉ người chỉ định, người tạo y lệnh hoặc quản trị hệ thống mới được xóa.</value>
+  </data>
+  <data name="XoaCungKhoaVanBanDoNguoiKhacTao" xml:space="preserve">
+    <value>- Y lệnh {0}: văn bản &quot;{1}&quot; do tài khoản {2} tạo, chưa ký. Người tạo văn bản cần xóa văn bản trên bệnh án điện tử trước khi xóa y lệnh.</value>
+  </data>
+  <data name="XoaCungKhoaKhongKiemTraDuocVanBanKy" xml:space="preserve">
+    <value>Không kiểm tra được văn bản ký trên bệnh án điện tử của y lệnh {0} nên chưa xóa. Vui lòng thử lại.</value>
+  </data>
 </root>

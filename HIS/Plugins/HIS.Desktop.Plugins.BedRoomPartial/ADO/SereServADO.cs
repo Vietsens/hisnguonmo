@@ -40,6 +40,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.ADO
         public long? SAMPLE_TIME { get; set; }
         public long? RECEIVE_SAMPLE_TIME { get; set; }
         public short? IS_TEMPORARY_PRES { get; set; }
+        /// <summary>
+        /// Nguoi tao y lenh (HIS_SERVICE_REQ.CREATOR) - viec 55703 dung de xac dinh quyen xoa san co.
+        /// </summary>
+        public string SERVICE_REQ_CREATOR { get; set; }
 
         /// <summary>
         /// Ngay ke y lenh dang dd/MM/yyyy — cot "Ngay ke" (QT-07).
