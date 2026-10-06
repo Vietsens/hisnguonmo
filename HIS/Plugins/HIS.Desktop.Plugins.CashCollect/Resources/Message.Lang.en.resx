@@ -120,4 +120,10 @@
   <data name="Plugin_CashCollect__BanCoMuonXoaDuLieuKhong" xml:space="preserve">
     <value>Do you want to delete the data?</value>
   </data>
+  <data name="Plugin_CashCollect__KhongCoGiaoDichChuaNopQuyTheoDieuKienLoc" xml:space="preserve">
+    <value>No undeposited transaction matches the filter.</value>
+  </data>
+  <data name="Plugin_CashCollect__ChuaChonGiaoDichNopQuy" xml:space="preserve">
+    <value>No transaction has been selected for deposit.</value>
+  </data>
 </root>

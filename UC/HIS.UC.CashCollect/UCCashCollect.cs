@@ -47,8 +47,11 @@ namespace HIS.UC.CashCollect
         Grid_CustomUnboundColumnData gridViewTransaction_CustomUnboundColumnData = null;
         btn_Un_Collect_Click btn_Un_Collect_Click = null;
         check_changed check_Changed = null;
+        check_all_click checkAll_Click = null;
 
         bool isShowSearchPanel;
+        bool isCheckAll;
+        const string CHECK_FIELD_NAME = "check";
 
         public UCCashCollect(CashCollectInitADO ado)
         {
@@ -68,6 +71,10 @@ namespace HIS.UC.CashCollect
                 if (ado.check_Changed != null)
                 {
                     this.check_Changed = ado.check_Changed;
+                }
+                if (ado.CheckAll_Click != null)
+                {
+                    this.checkAll_Click = ado.CheckAll_Click;
                 }
             }
             catch (Exception ex)
@@ -143,6 +150,11 @@ namespace HIS.UC.CashCollect
                         {
                             col.DisplayFormat.FormatString = item.Format.FormatString;
                             col.DisplayFormat.FormatType = item.Format.FormatType;
+                        }
+                        if (this.checkAll_Click != null && item.FieldName == CHECK_FIELD_NAME)
+                        {
+                            // Header click toggles select-all, so it must not sort the grid
+                            col.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
                         }
                     }
                 }
@@ -290,6 +302,13 @@ namespace HIS.UC.CashCollect
 
         private void gridViewCashCollect_MouseDown(object sender, MouseEventArgs e)
         {
+            if (IsCheckAllHeaderClicked(sender as GridView, e))
+            {
+                ProcessCheckAllClick();
+                (e as DevExpress.Utils.DXMouseEventArgs).Handled = true;
+                return;
+            }
+
             if ((Control.ModifierKeys & Keys.Control) != Keys.Control)
             {
                 GridView view = sender as GridView;
@@ -356,6 +375,80 @@ namespace HIS.UC.CashCollect
 
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool IsCheckAllHeaderClicked(GridView view, MouseEventArgs e)
+        {
+            bool result = false;
+            try
+            {
+                if (this.checkAll_Click != null && view != null && e.Button == MouseButtons.Left)
+                {
+                    GridHitInfo hi = view.CalcHitInfo(e.Location);
+                    result = hi.HitTest == GridHitTest.Column && hi.Column != null && hi.Column.FieldName == CHECK_FIELD_NAME;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private void ProcessCheckAllClick()
+        {
+            try
+            {
+                gridViewCashCollect.CloseEditor();
+                SetCheckAll(!this.isCheckAll);
+                this.checkAll_Click(this.isCheckAll);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Sets the header select-all state without raising CheckAll_Click.</summary>
+        internal void SetCheckAll(bool isCheckAll)
+        {
+            try
+            {
+                this.isCheckAll = isCheckAll;
+                gridViewCashCollect.InvalidateColumnHeader(gridViewCashCollect.Columns.ColumnByFieldName(CHECK_FIELD_NAME));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewCashCollect_CustomDrawColumnHeader(object sender, ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (this.checkAll_Click != null && e.Column != null && e.Column.FieldName == CHECK_FIELD_NAME)
+                {
+                    e.Info.InnerElements.Clear();
+                    e.Painter.DrawObject(e.Info);
+                    DrawCheckBox(e.Cache, repositoryItemCheck__Enable, e.Bounds, this.isCheckAll);
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DrawCheckBox(DevExpress.Utils.Drawing.GraphicsCache cache, DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit edit, Rectangle r, bool isChecked)
+        {
+            DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo info = edit.CreateViewInfo() as DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo;
+            DevExpress.XtraEditors.Drawing.CheckEditPainter painter = edit.CreatePainter() as DevExpress.XtraEditors.Drawing.CheckEditPainter;
+            info.EditValue = isChecked;
+            info.Bounds = r;
+            info.CalcViewInfo(cache.Graphics);
+            painter.Draw(new DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs(info, cache, r));
         }
     }
 }

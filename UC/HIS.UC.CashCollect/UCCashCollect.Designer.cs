@@ -112,6 +112,7 @@ namespace HIS.UC.CashCollect
             this.gridViewCashCollect.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewCashCollect_CellValueChanged);
             this.gridViewCashCollect.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewCashCollect_CustomUnboundColumnData);
             this.gridViewCashCollect.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewCashCollect_MouseDown);
+            this.gridViewCashCollect.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridViewCashCollect_CustomDrawColumnHeader);
             // 
             // repositoryItemCheck__Enable
             // 

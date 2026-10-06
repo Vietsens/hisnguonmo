@@ -72,7 +72,6 @@ namespace HIS.Desktop.Plugins.CashCollect
         internal MOS.EFMODEL.DataModels.V_HIS_TRANSACTION TransactionData = null;
         UserControl ucGridControl;
         UCCashCollectProcessor CashCollectProcessor;
-        List<HIS.UC.CashCollect.CashCollectADO> dataCheck = new List<CashCollectADO>();
         List<CashCollectADO> inputAdo = new List<CashCollectADO>();
         List<HIS_ACCOUNT_BOOK> AccountBookSelecteds;
         //List<HIS_ACCOUNT_BOOK> listAccountBook = new List<HIS_ACCOUNT_BOOK>();
@@ -173,6 +172,7 @@ namespace HIS.Desktop.Plugins.CashCollect
                 ado.CashCollectGrid_CustomUnboundColumnData = gridViewTransaction_CustomUnboundColumnData;
                 ado.btn_Un_Collect_Click = btn_Un_Collect_Click;
                 ado.check_Changed = check_Changed;
+                ado.CheckAll_Click = checkAll_Click;
 
                 CashCollectColumn colNopQuy = new CashCollectColumn("   ", "check", 30, true);
                 colNopQuy.VisibleIndex = 1;
@@ -393,6 +393,7 @@ namespace HIS.Desktop.Plugins.CashCollect
                     numPageSize = (int)ConfigApplications.NumPageSize;
                 }
 
+                this.currentTransactionFilter = BuildTransactionFilter();
                 FillDataToGridTransaction(new CommonParam(0, numPageSize));
 
                 CommonParam param = new CommonParam();
@@ -416,60 +417,8 @@ namespace HIS.Desktop.Plugins.CashCollect
                 int start = ((CommonParam)data).Start ?? 0;
                 int limit = ((CommonParam)data).Limit ?? 0;
                 CommonParam param = new CommonParam(start, limit);
-                MOS.Filter.HisTransactionViewFilter TransactionFilter = new MOS.Filter.HisTransactionViewFilter();
-                TransactionFilter.IS_CANCEL = false;
-                TransactionFilter.IS_ACTIVE = 1;
-                TransactionFilter.ORDER_FIELD = "CREATE_TIME";
-                TransactionFilter.ORDER_DIRECTION = "DESC";
-                TransactionFilter.KEY_WORD = txtKeyword.Text;
-                if (!String.IsNullOrEmpty(txtFindTransactionCode.Text))
-                {
-                    string code = txtFindTransactionCode.Text.Trim();
-                    if (code.Length < 12)
-                    {
-                        code = string.Format("{0:000000000000}", Convert.ToInt64(code));
-                        txtFindTransactionCode.Text = code;
-                    }
-                    TransactionFilter.TRANSACTION_CODE__EXACT = code;
-                }
-                if (AccountBookSelecteds != null && AccountBookSelecteds.Count > 0)
-                {
-                    TransactionFilter.ACCOUNT_BOOK_IDs = AccountBookSelecteds.Select(o => o.ID).ToList();
-                }
-                if (cboCashier.EditValue != null)
-                {
-                    TransactionFilter.CREATOR = (string)cboCashier.Text;
-                }
-                long isColect = 0;
-
-                if ((long)cboStatus.EditValue == 3)
-                {
-                    TransactionFilter.HAS_CASHOUT = false;
-                    isColect = (long)cboStatus.EditValue;
-                }
-                else if ((long)cboStatus.EditValue == 2)
-                {
-                    TransactionFilter.CASHOUT_IDs = cashout.Select(o => o.ID).ToList();
-                    isColect = (long)cboStatus.EditValue;
-                }
-                if (spinNumOrderFrom.EditValue != null)
-                {
-                    TransactionFilter.NUM_ORDER_FROM = (long)spinNumOrderFrom.Value;
-                }
-                if (spinNumOrderTo.EditValue != null)
-                {
-                    TransactionFilter.NUM_ORDER_TO = (long)spinNumOrderTo.Value;
-                }
-                if (dtDayFrom.EditValue != null && dtDayFrom.DateTime != DateTime.MinValue)
-                {
-                    TransactionFilter.TRANSACTION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
-                       Convert.ToDateTime(dtDayFrom.EditValue).ToString("yyyyMMdd") + "000000");
-                }
-                if (dtDayTo.EditValue != null && dtDayTo.DateTime != DateTime.MinValue)
-                {
-                    TransactionFilter.TRANSACTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
-                        Convert.ToDateTime(dtDayTo.EditValue).ToString("yyyyMMdd") + "235959");
-                }
+                // Paging reuses the filter of the last search so that every page (and "select all") matches it
+                MOS.Filter.HisTransactionViewFilter TransactionFilter = this.currentTransactionFilter ?? BuildTransactionFilter();
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_TRANSACTION>>(
                  HIS.Desktop.ApiConsumer.HisRequestUriStore.HIS_TRANSACTION_GETVIEW,
@@ -482,13 +431,17 @@ namespace HIS.Desktop.Plugins.CashCollect
                     dataByIsColect = rs.Data;
 
                     if (dataByIsColect == null)
+                    {
+                        WaitingManager.Hide();
                         return;
+                    }
                     inputAdo = new List<CashCollectADO>();
+                    Mapper.CreateMap<MOS.EFMODEL.DataModels.V_HIS_TRANSACTION, CashCollectADO>();
                     foreach (var item in dataByIsColect)
                     {
-                        CashCollectADO CashCollectADO = new CashCollectADO();
-                        Mapper.CreateMap<MOS.EFMODEL.DataModels.V_HIS_TRANSACTION, CashCollectADO>();
-                        CashCollectADO = Mapper.Map<MOS.EFMODEL.DataModels.V_HIS_TRANSACTION, CashCollectADO>(item);
+                        CashCollectADO CashCollectADO = Mapper.Map<MOS.EFMODEL.DataModels.V_HIS_TRANSACTION, CashCollectADO>(item);
+                        // Keep the selection made on other pages / by "select all"
+                        CashCollectADO.check = !item.CASHOUT_ID.HasValue && dicSelectedTransaction.ContainsKey(item.ID);
                         inputAdo.Add(CashCollectADO);
                     }
                 }
@@ -507,12 +460,73 @@ namespace HIS.Desktop.Plugins.CashCollect
             }
         }
 
+        /// <summary>Builds the transaction filter from the search controls.</summary>
+        /// <remarks>Exceptions are left to the caller on purpose: never query with a partially built filter.</remarks>
+        private MOS.Filter.HisTransactionViewFilter BuildTransactionFilter()
+        {
+            MOS.Filter.HisTransactionViewFilter TransactionFilter = new MOS.Filter.HisTransactionViewFilter();
+            TransactionFilter.IS_CANCEL = false;
+            TransactionFilter.IS_ACTIVE = 1;
+            TransactionFilter.ORDER_FIELD = "CREATE_TIME";
+            TransactionFilter.ORDER_DIRECTION = "DESC";
+            TransactionFilter.KEY_WORD = txtKeyword.Text;
+            if (!String.IsNullOrEmpty(txtFindTransactionCode.Text))
+            {
+                string code = txtFindTransactionCode.Text.Trim();
+                if (code.Length < 12)
+                {
+                    code = string.Format("{0:000000000000}", Convert.ToInt64(code));
+                    txtFindTransactionCode.Text = code;
+                }
+                TransactionFilter.TRANSACTION_CODE__EXACT = code;
+            }
+            if (AccountBookSelecteds != null && AccountBookSelecteds.Count > 0)
+            {
+                TransactionFilter.ACCOUNT_BOOK_IDs = AccountBookSelecteds.Select(o => o.ID).ToList();
+            }
+            TransactionFilter.CASHIER_ROOM_IDs = GetSelectedCashierRoomIds();
+            if (cboCashier.EditValue != null)
+            {
+                TransactionFilter.CREATOR = (string)cboCashier.Text;
+            }
+
+            if ((long)cboStatus.EditValue == 3)
+            {
+                TransactionFilter.HAS_CASHOUT = false;
+            }
+            else if ((long)cboStatus.EditValue == 2)
+            {
+                TransactionFilter.CASHOUT_IDs = cashout.Select(o => o.ID).ToList();
+            }
+            if (spinNumOrderFrom.EditValue != null)
+            {
+                TransactionFilter.NUM_ORDER_FROM = (long)spinNumOrderFrom.Value;
+            }
+            if (spinNumOrderTo.EditValue != null)
+            {
+                TransactionFilter.NUM_ORDER_TO = (long)spinNumOrderTo.Value;
+            }
+            if (dtDayFrom.EditValue != null && dtDayFrom.DateTime != DateTime.MinValue)
+            {
+                TransactionFilter.TRANSACTION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                   Convert.ToDateTime(dtDayFrom.EditValue).ToString("yyyyMMdd") + "000000");
+            }
+            if (dtDayTo.EditValue != null && dtDayTo.DateTime != DateTime.MinValue)
+            {
+                TransactionFilter.TRANSACTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                    Convert.ToDateTime(dtDayTo.EditValue).ToString("yyyyMMdd") + "235959");
+            }
+            return TransactionFilter;
+        }
+
         private void LoadDataToCombo()
         {
             try
             {
                 InitBookCollectionCheck();
                 LoadDataToComboBookCollection();
+                InitCashierRoomCheck();
+                LoadDataToComboCashierRoom();
                 LoadDataToComboStatus();
             }
             catch (Exception ex)
@@ -626,9 +640,25 @@ namespace HIS.Desktop.Plugins.CashCollect
                 if (e.KeyCode == Keys.Enter)
                 {
                     WaitingManager.Show();
-                    FillDataToGrid(this);
+                    SearchTransaction();
                     WaitingManager.Hide();
                 }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>New search: the previous selection belonged to the previous filter, so it is cleared.</summary>
+        private void SearchTransaction()
+        {
+            try
+            {
+                ClearSelectedTransactions();
+                FillDataToGrid(this);
+                RefreshCollectGrid();
             }
             catch (Exception ex)
             {
@@ -713,9 +743,7 @@ namespace HIS.Desktop.Plugins.CashCollect
             try
             {
                 WaitingManager.Show();
-                FillDataToGrid(this);
-                //gridControlCollect.DataSource = dataCheck;
-                txtAmountSum.EditValue = null;
+                SearchTransaction();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -756,54 +784,9 @@ namespace HIS.Desktop.Plugins.CashCollect
         {
             try
             {
-                if (btnAdd.Enabled == true)
-                {
-                    gridControlCollect.DataSource = data;
-                }
-                else
-                {
-                    if (this.dataClick != null && this.dataClick.Count > 0)
-                    {
-                        foreach (var itemRs in dataClick)
-                        {
-                            CashCollectADO ado = new CashCollectADO(itemRs);
-                            data.Add(ado);
-                        }
-                    }
-                    dataCheck = data;
-                    gridControlCollect.DataSource = data;
-                }
-
-                totalPay = 0;
-                decimal totalPayKC = 0;
-                decimal totalPayBillFund = 0;
-                decimal totalPayExemption = 0;
-
-                totalPayKC = Convert.ToDecimal(data.Sum(o => o.KC_AMOUNT));
-                totalPayBillFund = Convert.ToDecimal(data.Sum(o => o.TDL_BILL_FUND_AMOUNT));
-                totalPayExemption = Convert.ToDecimal(data.Sum(o => o.EXEMPTION));
-
-                var totalPayHU = data.Where(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU);
-                var totalPayTU = data.Where(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU);
-                var totalPayTT = data.Where(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT);
-
-                totalPay += totalPayTT.Sum(o => o.AMOUNT) + totalPayTU.Sum(o => o.AMOUNT) - totalPayHU.Sum(o => o.AMOUNT);
-
-                if (data.Sum(o => o.KC_AMOUNT) != null && totalPayKC > 0)
-                {
-                    totalPay -= totalPayKC;
-                }
-                if (data.Sum(o => o.TDL_BILL_FUND_AMOUNT) != null && totalPayBillFund > 0)
-                {
-                    totalPay -= totalPayBillFund;
-                }
-                if (data.Sum(o => o.EXEMPTION) != null && totalPayExemption > 0)
-                {
-                    totalPay -= totalPayExemption;
-                }
-
-                txtAmountSum.Text = Inventec.Common.Number.Convert.NumberToStringRoundMax4(totalPay);
-
+                // "data" only holds the checked rows of the current page; the selection spans every page
+                SyncSelectionWithCurrentPage();
+                RefreshCollectGrid();
             }
             catch (Exception ex)
             {
@@ -827,6 +810,7 @@ namespace HIS.Desktop.Plugins.CashCollect
                 this.txtKeyword.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCCashCollect.txtKeyword.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("UCCashCollect.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciAmountSum.Text = Inventec.Common.Resource.Get.Value("UCCashCollect.lciAmountSum.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciCashierRoom.Text = Inventec.Common.Resource.Get.Value("UCCashCollect.lciCashierRoom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -912,71 +896,24 @@ namespace HIS.Desktop.Plugins.CashCollect
         {
             try
             {
-                WaitingManager.Show();
-
                 var data = (HIS.UC.CashCollect.CashCollectADO)gridViewCollect.GetFocusedRow();
-                gridViewCollect.DeleteRow(gridViewCollect.FocusedRowHandle);
-                gridViewCollect.RefreshData();
+                if (data == null) return;
 
-                if (data.CASHOUT_ID == null)
+                if (dicSelectedTransaction.Remove(data.ID))
                 {
-                    object rs = CashCollectProcessor.GetDataGridView(ucGridControl);
-                    var datacheck2 = (List<HIS.UC.CashCollect.CashCollectADO>)rs;
-                    foreach (var item in datacheck2)
-                    {
-                        if (item.ID == data.ID)
-                        {
-                            item.check = false;
-                            break;
-                        }
-                    }
-                    CashCollectProcessor.Reload(ucGridControl, datacheck2);
+                    // Newly selected transaction: also untick it on the transaction grid
+                    SetCheckAllState(false);
+                    ApplySelectionToCurrentPage();
                 }
-
-                List<HIS.UC.CashCollect.CashCollectADO> dataGridViewCollects = (List<HIS.UC.CashCollect.CashCollectADO>)gridViewCollect.DataSource;
-                dataClick = new List<V_HIS_TRANSACTION>();
-                foreach (var item in dataGridViewCollects)
+                else if (dataClick != null)
                 {
-                    V_HIS_TRANSACTION transaction = new V_HIS_TRANSACTION();
-                    AutoMapper.Mapper.CreateMap<HIS.UC.CashCollect.CashCollectADO, V_HIS_TRANSACTION>();
-                    transaction = AutoMapper.Mapper.Map<V_HIS_TRANSACTION>(item);
-                    dataClick.Add(transaction);
+                    // Transaction of the edited cashout: it is released when "Sửa" is saved
+                    dataClick.RemoveAll(o => o.ID == data.ID);
                 }
-
-                totalPay = 0;
-                decimal totalPayKC = 0;
-                decimal totalPayBillFund = 0;
-                decimal totalPayExemption = 0;
-
-                totalPayKC = Convert.ToDecimal(dataGridViewCollects.Sum(o => o.KC_AMOUNT));
-                totalPayBillFund = Convert.ToDecimal(dataGridViewCollects.Sum(o => o.TDL_BILL_FUND_AMOUNT));
-                totalPayExemption = Convert.ToDecimal(dataGridViewCollects.Sum(o => o.EXEMPTION));
-
-                var totalPayHU = dataGridViewCollects.Where(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU);
-                var totalPayTU = dataGridViewCollects.Where(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU);
-                var totalPayTT = dataGridViewCollects.Where(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT);
-
-                totalPay += totalPayTT.Sum(o => o.AMOUNT) + totalPayTU.Sum(o => o.AMOUNT) - totalPayHU.Sum(o => o.AMOUNT);
-
-                if (dataGridViewCollects.Sum(o => o.KC_AMOUNT) != null && totalPayKC > 0)
-                {
-                    totalPay -= totalPayKC;
-                }
-                if (dataGridViewCollects.Sum(o => o.TDL_BILL_FUND_AMOUNT) != null && totalPayBillFund > 0)
-                {
-                    totalPay -= totalPayBillFund;
-                }
-                if (dataGridViewCollects.Sum(o => o.EXEMPTION) != null && totalPayExemption > 0)
-                {
-                    totalPay -= totalPayExemption;
-                }
-
-                txtAmountSum.Text = Inventec.Common.Number.Convert.NumberToStringRoundMax4(totalPay);
-                WaitingManager.Hide();
+                RefreshCollectGrid();
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -994,7 +931,8 @@ namespace HIS.Desktop.Plugins.CashCollect
                         {
                             try
                             {
-                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CREATE_TIME ?? 0);
+                                // Deposit time chosen by the user (was CREATE_TIME, which never reflected "Ngày nộp")
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CASHOUT_TIME);
                             }
                             catch (Exception ex)
                             {
@@ -1015,66 +953,31 @@ namespace HIS.Desktop.Plugins.CashCollect
         {
             try
             {
+                var row = (HIS_CASHOUT)gridViewCashout.GetFocusedRow();
+                if (row == null) return;
+
                 WaitingManager.Show();
                 btnEdit.Enabled = true;
                 btnAdd.Enabled = false;
+                this.currentData = row;
+                cashoutId = row.ID;
+                // Editing another cashout: forget what was ticked for the previous one
+                ClearSelectedTransactions();
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisTransactionViewFilter TransactionFilter = new MOS.Filter.HisTransactionViewFilter();
+                TransactionFilter.CASHOUT_ID = row.ID;
+                lstTranSaction = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_TRANSACTION>>(
+               "api/HisTransaction/GetView",
+               HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+               TransactionFilter,
+               param);
+                dataClick = lstTranSaction != null ? lstTranSaction.Where(o => o.CASHOUT_ID == row.ID).ToList() : new List<V_HIS_TRANSACTION>();
+                // DateTime value (not a string) so that saving does not depend on the regional date format
+                dtCashOutTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(row.CASHOUT_TIME);
+
                 FillDataToGrid(this);
-                var row = (HIS_CASHOUT)gridViewCashout.GetFocusedRow();
-                this.currentData = row as HIS_CASHOUT;
-                if (row != null)
-                {
-                    CommonParam param = new CommonParam();
-                    MOS.Filter.HisTransactionViewFilter TransactionFilter = new MOS.Filter.HisTransactionViewFilter();
-                    TransactionFilter.CASHOUT_ID = row.ID;
-                    lstTranSaction = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_TRANSACTION>>(
-                   "api/HisTransaction/GetView",
-                   HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
-                   TransactionFilter,
-                   param);
-                    dtCashOutTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(row.CASHOUT_TIME);
-                    dataClick = lstTranSaction.Where(o => o.CASHOUT_ID == row.ID).ToList();
-                    cashoutId = row.ID;
-                    if (this.dataClick != null && this.dataClick.Count > 0)
-                    {
-                        List<CashCollectADO> data = new List<CashCollectADO>();
-                        foreach (var itemRs in dataClick)
-                        {
-                            CashCollectADO ado = new CashCollectADO(itemRs);
-                            data.Add(ado);
-                        }
-                        gridControlCollect.DataSource = data;
-                    }
-
-                }
-                totalPay = 0;
-                decimal totalPayKC = 0;
-                decimal totalPayBillFund = 0;
-                decimal totalPayExemption = 0;
-
-                totalPayKC = Convert.ToDecimal(dataClick.Sum(o => o.KC_AMOUNT));
-                totalPayBillFund = Convert.ToDecimal(dataClick.Sum(o => o.TDL_BILL_FUND_AMOUNT));
-                totalPayExemption = Convert.ToDecimal(dataClick.Sum(o => o.EXEMPTION));
-
-                var totalPayHU = dataClick.Where(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU);
-                var totalPayTU = dataClick.Where(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU);
-                var totalPayTT = dataClick.Where(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT);
-
-                totalPay += totalPayTT.Sum(o => o.AMOUNT) + totalPayTU.Sum(o => o.AMOUNT) - totalPayHU.Sum(o => o.AMOUNT);
-
-                if (dataClick.Sum(o => o.KC_AMOUNT) != null && totalPayKC > 0)
-                {
-                    totalPay -= totalPayKC;
-                }
-                if (dataClick.Sum(o => o.TDL_BILL_FUND_AMOUNT) != null && totalPayBillFund > 0)
-                {
-                    totalPay -= totalPayBillFund;
-                }
-                if (dataClick.Sum(o => o.EXEMPTION) != null && totalPayExemption > 0)
-                {
-                    totalPay -= totalPayExemption;
-                }
-
-                txtAmountSum.Text = Inventec.Common.Number.Convert.NumberToStringRoundMax4(totalPay);
+                RefreshCollectGrid();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1088,75 +991,54 @@ namespace HIS.Desktop.Plugins.CashCollect
         {
             try
             {
-                WaitingManager.Show();
-                //long idCashout;
-                if (ucGridControl != null)
+                if (!btnAdd.Enabled) return;
+
+                // Selection of every page (manual ticks and "select all"), not only the rows of the current page
+                List<CashCollectADO> collects = GetTransactionsToCollect();
+                if (collects.Count == 0)
                 {
-                    CommonParam param = new CommonParam();
-                    bool success = false;
-
-                    HisCashoutSDO newdata = new HisCashoutSDO();
-                    object rs = CashCollectProcessor.GetDataGridView(ucGridControl);
-                    if (rs is List<HIS.UC.CashCollect.CashCollectADO>)
-                    {
-                        var data = (List<HIS.UC.CashCollect.CashCollectADO>)rs;
-                        //decimal totalPay = 0;
-                        if (data != null && data.Count > 0)
-                        {
-                            List<HIS.UC.CashCollect.CashCollectADO> dataCheck = new List<HIS.UC.CashCollect.CashCollectADO>();
-                            dataCheck = data.Where(p => p.check == true).ToList();
-                            if (dataCheck != null && dataCheck.Count > 0)
-                            {
-                                //Gọi api update is_collect
-                                List<long> lstTransactionIds = new List<long>();
-                                lstTransactionIds = dataCheck.Select(p => p.ID).ToList();
-                                if (dtCashOutTime.EditValue != null)
-                                {
-                                    newdata.CashoutTime = Inventec.Common.TypeConvert.Parse.ToInt64(
-                        Convert.ToDateTime(dtCashOutTime.EditValue).ToString("yyyyMMdd") + "235959");
-                                }
-                                else
-                                {
-                                    newdata.CashoutTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
-                                }
-                                newdata.TransactionIds = lstTransactionIds;
-                                newdata.Amount = totalPay;
-
-                                var outPut = new BackendAdapter(param).Post<HIS_CASHOUT>(
-                                    "/api/HisCashout/Create",
-                                HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
-                                newdata,
-                                param);
-                                if (outPut != null)
-                                {
-                                    success = true;
-                                    //thành công
-                                    //load lại
-                                    FillDataToGrid(this);
-                                    gridControlCollect.DataSource = null;
-                                    FillDataToGridCashout();
-                                    txtAmountSum.Text = Inventec.Common.Number.Convert.NumberToStringRoundMax4(totalPay);
-                                    //totalPay.ToString();
-                                }
-                                WaitingManager.Hide();
-                                #region Show message
-                                MessageManager.Show(this.ParentForm, param, success);
-                                #endregion
-                                #region Process has exception
-                                SessionManager.ProcessTokenLost(param);
-                                #endregion
-                            }
-                            else
-                            {
-                                WaitingManager.Hide();
-                                DevExpress.XtraEditors.XtraMessageBox.Show("Chưa chọn dịch vụ", "Thông báo");
-                            }
-                        }
-                    }
+                    DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.ChuaChonGiaoDichNopQuy,
+                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                    return;
                 }
+
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                bool success = false;
+
+                HisCashoutSDO newdata = new HisCashoutSDO();
+                newdata.CashoutTime = GetCashoutTimeInput();
+                if (newdata.CashoutTime <= 0)
+                {
+                    newdata.CashoutTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
+                }
+                newdata.TransactionIds = collects.Select(p => p.ID).ToList();
+                newdata.Amount = CalcCashoutAmount(collects);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => newdata), newdata));
+
+                var outPut = new BackendAdapter(param).Post<HIS_CASHOUT>(
+                    "/api/HisCashout/Create",
+                HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                newdata,
+                param);
+                if (outPut != null)
+                {
+                    success = true;
+                    ResetToAddMode();
+                    FillDataToGrid(this);
+                    FillDataToGridCashout();
+                }
+                WaitingManager.Hide();
+                #region Show message
+                MessageManager.Show(this.ParentForm, param, success);
+                #endregion
+                #region Process has exception
+                SessionManager.ProcessTokenLost(param);
+                #endregion
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -1176,19 +1058,16 @@ namespace HIS.Desktop.Plugins.CashCollect
                 }
                 cboBookCollection.Text = "";
                 cboBookCollection.EditValue = null;
+                ClearCashierRoomSelection();
                 cboCashier.EditValue = null;
                 spinNumOrderFrom.EditValue = null;
                 spinNumOrderTo.EditValue = null;
                 dtDayFrom.EditValue = DateTime.Now;
                 dtDayTo.EditValue = DateTime.Now;
                 dtCashOutTime.EditValue = DateTime.Now;
+                ResetToAddMode();
                 FillDataToGrid(this);
                 FillDataToGridCashout();
-                gridControlCollect.DataSource = null;
-                cashoutId = 0;
-                btnEdit.Enabled = false;
-                btnAdd.Enabled = true;
-                dtCashOutTime.EditValue = Inventec.Common.DateTime.Convert.SystemDateTimeToDateString(DateTime.Now);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1202,53 +1081,41 @@ namespace HIS.Desktop.Plugins.CashCollect
         {
             try
             {
+                if (cashoutId <= 0) return;
+
                 WaitingManager.Show();
-                List<V_HIS_TRANSACTION> lstTransactionChecks = new List<V_HIS_TRANSACTION>();
+                // Transactions kept in the cashout + newly selected ones (the right grid)
+                List<CashCollectADO> collects = GetTransactionsToCollect();
                 HisCashoutSDO dataSDO = new HisCashoutSDO();
-                if (dataCheck != null && dataCheck.Count > 0)
-                {
-                    List<long> transactionIds = dataCheck.Select(o => o.ID).ToList();
-                    dataSDO.TransactionIds = transactionIds;
-                }
-                else
-                {
-                    List<long> transactionIds = dataClick.Select(o => o.ID).ToList();
-                    dataSDO.TransactionIds = transactionIds;
-                }
+                dataSDO.TransactionIds = collects.Select(o => o.ID).ToList();
                 CommonParam param = new CommonParam();
                 bool success = false;
 
                 dataSDO.Id = cashoutId;
-                dataSDO.Amount = totalPay;
-                if (dataSDO.Amount == 0)
+                dataSDO.Amount = CalcCashoutAmount(collects);
+                if (dataSDO.TransactionIds.Count == 0)
                 {
+                    // No transaction left in the cashout: delete it
                     success = new BackendAdapter(param).Post<bool>("api/HisCashout/Delete", ApiConsumers.MosConsumer,
                            dataSDO.Id, param);
                     if (success)
                     {
+                        ResetToAddMode();
                         FillDataToGridCashout();
-                        gridControlCollect.DataSource = null;
                         FillDataToGrid(this);
-                        btnAdd.Enabled = true;
-                        btnEdit.Enabled = false;
                     }
                     WaitingManager.Hide();
                     MessageManager.Show(this.ParentForm, param, success);
+                    SessionManager.ProcessTokenLost(param);
                     return;
                 }
-                HIS_CASHOUT data = cashout.SingleOrDefault(o => o.ID == cashoutId);
-                if (dtCashOutTime.EditValue != null)
+                HIS_CASHOUT data = cashout != null ? cashout.FirstOrDefault(o => o.ID == cashoutId) : null;
+                dataSDO.CashoutTime = GetCashoutTimeInput();
+                if (dataSDO.CashoutTime <= 0 && data != null)
                 {
-                    dataSDO.CashoutTime = Inventec.Common.TypeConvert.Parse.ToInt64(
-                        Convert.ToDateTime(dtCashOutTime.EditValue).ToString("yyyyMMdd") + "235959");
+                    dataSDO.CashoutTime = data.CASHOUT_TIME;
                 }
-                else
-                {
-                    if (data != null)
-                    {
-                        dataSDO.CashoutTime = data.CASHOUT_TIME;
-                    }
-                }
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataSDO), dataSDO));
 
                 var outPut = new BackendAdapter(param).Post<HIS_CASHOUT>(
                     "api/HisCashout/Update",
@@ -1258,10 +1125,9 @@ namespace HIS.Desktop.Plugins.CashCollect
                 if (outPut != null)
                 {
                     success = true;
+                    ResetToAddMode();
                     FillDataToGridCashout();
                     FillDataToGrid(this);
-                    btnAdd.Enabled = true;
-                    btnEdit.Enabled = false;
                 }
                 WaitingManager.Hide();
                 #region Show message
@@ -1293,8 +1159,13 @@ namespace HIS.Desktop.Plugins.CashCollect
                             data.ID, param);
                         if (success)
                         {
+                            if (cashoutId == data.ID)
+                            {
+                                // The cashout being edited no longer exists
+                                ResetToAddMode();
+                            }
                             FillDataToGridCashout();
-                            gridControlCollect.DataSource = null;
+                            RefreshCollectGrid();
                         }
                         MessageManager.Show(this.ParentForm, param, success);
                     }
@@ -1314,12 +1185,13 @@ namespace HIS.Desktop.Plugins.CashCollect
                 if (e.KeyCode == Keys.Enter)
                 {
                     WaitingManager.Show();
-                    FillDataToGrid(this);
+                    SearchTransaction();
                     WaitingManager.Hide();
                 }
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

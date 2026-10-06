@@ -20,6 +20,7 @@ using HIS.UC.CashCollect.ADO;
 using HIS.UC.CashCollect.GetDataGridView;
 using HIS.UC.CashCollect.Reload;
 using HIS.UC.CashCollect.Run;
+using HIS.UC.CashCollect.SetCheckAll;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using System;
@@ -86,6 +87,20 @@ namespace HIS.UC.CashCollect
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        /// <summary>Sets the select-all checkbox in the "check" column header (does not raise CheckAll_Click).</summary>
+        public void SetCheckAll(UserControl control, bool isCheckAll)
+        {
+            try
+            {
+                ISetCheckAll behavior = SetCheckAllFactory.MakeISetCheckAll(param, (control == null ? (UserControl)uc : control), isCheckAll);
+                if (behavior != null) behavior.Run();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
     }
