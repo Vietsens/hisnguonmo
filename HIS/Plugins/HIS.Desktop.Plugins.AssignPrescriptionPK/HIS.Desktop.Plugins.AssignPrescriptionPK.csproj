@@ -728,6 +728,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Util\ConvertNumber.cs" />
+    <Compile Include="Util\MedicineLineUtil.cs" />
     <Compile Include="RowAdd\MaterialType\MaterialTypeRowAddBehavior.cs" />
     <Compile Include="RowAdd\IAdd.cs" />
     <Compile Include="RowAdd\AddAbstract.cs" />

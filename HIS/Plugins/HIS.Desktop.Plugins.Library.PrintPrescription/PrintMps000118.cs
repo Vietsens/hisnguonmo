@@ -410,7 +410,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             || (ExpMests.Count == 1 && ExpMests.First().ID == -1 && HisPrescriptionSDOPrintPlus.ID == -1))
                         {
                             List<MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO> ExpMestMedicineSDO = new List<MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO>();
-                            var group = lstMedicineExpmestTypeADO.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                            var group = lstMedicineExpmestTypeADO.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                             foreach (var aitem in group)
                             {
                                 MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO();
@@ -465,7 +465,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         if (listTThuongNgoaiKho != null && listTThuongNgoaiKho.Count > 0)
                         {
                             List<MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO> ExpMestMedicineSDO = new List<MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO>();
-                            var group = listTThuongNgoaiKho.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                            var group = listTThuongNgoaiKho.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                             foreach (var aitem in group)
                             {
                                 MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO();
@@ -563,7 +563,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         if (listNgoaiVien != null && listNgoaiVien.Count > 0)
                         {
                             List<MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO> ExpMestMedicineSDO = new List<MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO>();
-                            var group = listNgoaiVien.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                            var group = listNgoaiVien.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                             foreach (var aitem in group)
                             {
                                 MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000118.PDO.ExpMestMedicineSDO();
@@ -743,7 +743,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                 if (listCoChuaDuocChatHT != null && listCoChuaDuocChatHT.Count > 0)
                 {
                     List<MPS.Processor.Mps000192.PDO.ExpMestMedicineSDO> list = new List<MPS.Processor.Mps000192.PDO.ExpMestMedicineSDO>();
-                    var group = listCoChuaDuocChatHT.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                    var group = listCoChuaDuocChatHT.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                     foreach (var item in group)
                     {
                         MPS.Processor.Mps000192.PDO.ExpMestMedicineSDO sdo = new MPS.Processor.Mps000192.PDO.ExpMestMedicineSDO();
@@ -805,7 +805,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     //Lọc thuốc theo thứ tự
                     listCoChuaDuocChatGN = listCoChuaDuocChatGN.OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
                     List<MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO> listHCGN = new List<MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO>();
-                    var group = listCoChuaDuocChatGN.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                    var group = listCoChuaDuocChatGN.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                     foreach (var itemN in group)
                     {
                         MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO();
@@ -863,7 +863,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                 if (listSPHoTro != null && listSPHoTro.Count > 0)
                 {
                     List<MPS.Processor.Mps000353.PDO.ExpMestMedicineSDO> ExpMestMedicineSDO = new List<MPS.Processor.Mps000353.PDO.ExpMestMedicineSDO>();
-                    var group = listSPHoTro.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                    var group = listSPHoTro.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                     foreach (var aitem in group)
                     {
                         MPS.Processor.Mps000353.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000353.PDO.ExpMestMedicineSDO();
@@ -925,7 +925,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     listGayNghien = listGayNghien.OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
                     List<MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO> listN = new List<MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO>();
                     //Gom kèm TDL_SERVICE_REQ_ID, nếu bỏ chiều này thì cùng một thuốc ở 2 đợt bị dồn về đợt đầu, đợt sau mất sạch dòng
-                    var group = listGayNghien.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, o.TDL_SERVICE_REQ_ID });
+                    //Viec 46680: gom kem lieu dung + cach dung de cung 1 thuoc ke nhieu dong khac cach dung in thanh cac dong rieng
+                    var group = listGayNghien.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, o.TDL_SERVICE_REQ_ID, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                     foreach (var itemN in group)
                     {
                         MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000181.PDO.ExpMestMedicineSDO();
@@ -986,7 +987,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                 if (listTPCN != null && listTPCN.Count > 0)
                 {
                     List<MPS.Processor.Mps000191.PDO.ExpMestMedicineSDO> listTP = new List<MPS.Processor.Mps000191.PDO.ExpMestMedicineSDO>();
-                    var group = listTPCN.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                    var group = listTPCN.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                     foreach (var item in group)
                     {
                         MPS.Processor.Mps000191.PDO.ExpMestMedicineSDO sdo = new MPS.Processor.Mps000191.PDO.ExpMestMedicineSDO();
@@ -1043,7 +1044,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                 if (listHuongThan != null && listHuongThan.Count > 0)
                 {
                     List<MPS.Processor.Mps000192.PDO.ExpMestMedicineSDO> list = new List<MPS.Processor.Mps000192.PDO.ExpMestMedicineSDO>();
-                    var group = listHuongThan.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                    var group = listHuongThan.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                     foreach (var item in group)
                     {
                         MPS.Processor.Mps000192.PDO.ExpMestMedicineSDO sdo = new MPS.Processor.Mps000192.PDO.ExpMestMedicineSDO();

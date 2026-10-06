@@ -176,6 +176,8 @@ namespace MPS.Processor.Mps000044
                     o.SERVICE_UNIT_NAME,
                     o.TUTORIAL,
                     o.HTU_ID,
+                    //Viec 46680: cung 1 thuoc ke nhieu dong khac cach dung khong bi gop lai
+                    HTU_TEXT = String.IsNullOrWhiteSpace(o.HTU_TEXT) ? "" : o.HTU_TEXT.Trim(),
                     o.MORNING,
                     o.NOON,
                     o.AFTERNOON,

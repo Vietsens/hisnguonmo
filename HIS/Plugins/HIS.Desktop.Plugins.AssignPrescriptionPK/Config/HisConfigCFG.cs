@@ -52,6 +52,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.MAX_OF_APPOINTMENT_DAYS";
         private const string WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS";
         private const string CONFIG_KEY__HIS_Desktop_Plugins_AssignPrescription_IsNotAutoGenerateTutorial = "HIS.Desktop.Plugins.AssignPrescription.IsNotAutoGenerateTutorial";
+        //Viec 46680: "1" = cung 1 thuoc trong kho ke nhieu dong khac cach dung (HTU_TEXT) thi giu thanh cac dong rieng khi luu don
+        private const string CONFIG_KEY__HIS_Desktop_Plugins_AssignPrescription_IsSplitMedicineByHtu = "HIS.Desktop.Plugins.AssignPrescription.IsSplitMedicineByHtu";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION = "MOS.HIS_SERVICE_REQ.MANY_DAYS_PRESCRIPTION_OPTION";
         private const string CONFIG_KEY__IsAllowAssignPresByPackage = "HIS.Desktop.Plugins.IsAllowAssignPresByPackage";
         private const string CONFIG_KEY__IsloadIcdFromExamServiceExecute = "HIS.Desktop.Plugins.IsloadIcdFromExamServiceExecute";
@@ -395,6 +397,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static bool IsNotAutoGenerateTutorial;
 
         /// <summary>
+        /// Việc 46680 - HIS.Desktop.Plugins.AssignPrescription.IsSplitMedicineByHtu.
+        /// 1: Kê cùng 1 thuốc trong kho nhiều dòng có cách dùng (HTU_TEXT) khác nhau thì giữ thành các dòng riêng khi lưu đơn
+        /// (không gộp, không cộng dồn số lượng). Khác 1 hoặc không khai báo: như cũ, gộp các dòng cùng thuốc, cùng liều dùng.
+        /// Chỉ bật khi Backend MOS đã có bản sửa việc 46680.
+        /// </summary>
+        internal static bool IsSplitMedicineByHtu;
+
+        /// <summary>
         /// Cấu hình số ngày hẹn khám tối đa tính từ thời điểm kết thúc khám
         /// </summary>
         internal static long? MaxOfAppointmentDays;
@@ -631,6 +641,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 IsShowingInTheSameDepartment = GetValue(CONFIG_KEY__IsShowingInTheSameDepartment) == GlobalVariables.CommonStringTrue;
                 IsAutoRoundUpByConvertUnitRatio = GetValue(CONFIG_KEY__IsAutoRoundUpByConvertUnitRatio) == GlobalVariables.CommonStringTrue;
                 IsNotAutoGenerateTutorial = GetValue(CONFIG_KEY__HIS_Desktop_Plugins_AssignPrescription_IsNotAutoGenerateTutorial) == GlobalVariables.CommonStringTrue;
+                IsSplitMedicineByHtu = GetValue(CONFIG_KEY__HIS_Desktop_Plugins_AssignPrescription_IsSplitMedicineByHtu) == GlobalVariables.CommonStringTrue;
                 IsWarningOddConvertAmount = GetValue(CONFIG_KEY__WARNING_ODD_CONVERT_AMOUNT) == GlobalVariables.CommonStringTrue;
                 IsDontPresExpiredTime = GetValue(CONFIG_KEY__DONT_PRES_EXPIRED_ITEM) == GlobalVariables.CommonStringTrue;
                 IsUsingWarningHeinFee = GetValue(CONFIG_KEY__IsUsingWarningHeinFee);
