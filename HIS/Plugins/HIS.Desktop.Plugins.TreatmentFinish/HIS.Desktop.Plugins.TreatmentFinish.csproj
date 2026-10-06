@@ -502,6 +502,7 @@
     <EmbeddedResource Include="frmCheckBedRoom.resx">
       <DependentUpon>frmCheckBedRoom.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -601,7 +602,7 @@
     <PostBuildEvent>echo POSTBUILDSTEP for $(ProjectName)
 
 REM Dung $(ProjectDir) thay cho $(SolutionDir)/$(SolutionName): 2 macro do chi co gia tri khi build qua .sln,
-REM build rieng .csproj se ra *Undefined* -> xcopy hoi F/D roi doc rac tu stdin.
+REM build rieng .csproj se ra *Undefined* -&gt; xcopy hoi F/D roi doc rac tu stdin.
 
 REM --- Dich 1: thu muc chay khi F5 tu HIS\HIS.Desktop.sln
 if not exist "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\Plugins\Module" mkdir "$(ProjectDir)..\..\HIS.Desktop\bin\$(Configuration)\Plugins\Module"

@@ -84,11 +84,46 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                         this.TempType = TemplateEnum.TYPE.Template1;
                     }
                 }
+
+                //Mẫu 14 (BVND 115): giao dịch xuất bán nhà thuốc luôn xuất chi tiết từng mặt hàng theo mẫu nhà thuốc,
+                //kể cả ở màn hình phát hành theo cấu hình (VD: Xuất hóa đơn điện tử tổng hợp - tick Nhà thuốc).
+                //Chỉ tác động khi cấu hình = 14 nên các viện dùng mẫu khác không đổi hành vi.
+                if (this.TempType == TemplateEnum.TYPE.Template14 && IsSaleExpTransaction(_electronicBillDataInput))
+                {
+                    this.TempType = TemplateEnum.TYPE.TemplateNhaThuoc;
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Giao dịch (hoặc danh sách giao dịch gộp) có loại bán là xuất bán nhà thuốc.
+        /// </summary>
+        private static bool IsSaleExpTransaction(ElectronicBillDataInput dataInput)
+        {
+            try
+            {
+                if (dataInput == null) return false;
+
+                if (dataInput.Transaction != null && dataInput.Transaction.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP)
+                {
+                    return true;
+                }
+
+                if (dataInput.ListTransaction != null && dataInput.ListTransaction.Count > 0
+                    && dataInput.ListTransaction.Exists(o => o.SALE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SALE_TYPE.ID__SALE_EXP))
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
         }
 
         public ElectronicBillResult Run(ElectronicBillType.ENUM type)

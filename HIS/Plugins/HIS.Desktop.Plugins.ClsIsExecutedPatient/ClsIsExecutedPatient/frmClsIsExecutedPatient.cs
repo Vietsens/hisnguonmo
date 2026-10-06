@@ -59,6 +59,12 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
         /// <summary>Toan bo dich vu CLS cua ho so trong khoang thoi gian y lenh (chua loc theo Trang thai)</summary>
         private List<ClsSereServADO> allAdos = new List<ClsSereServADO>();
         private bool isFirstLoad = true;
+        /// <summary>
+        /// Lech dong ho server - client, do tu CommonParam.Now ma backend tra ve khi nap du lieu.
+        /// Gio thuc hien gui len = gio client + offset (= gio server) de backend khong tu choi
+        /// "sau thoi diem hien tai" khi may client nhanh hon server vai giay (loi tester 2026-10-01: lech +2s).
+        /// </summary>
+        private TimeSpan serverClockOffset = TimeSpan.Zero;
 
         /// <summary>6 loai dich vu cua tab "CLS" tren man Buong benh (R1)</summary>
         private static readonly List<long> CLS_SERVICE_TYPE_IDS = new List<long>
@@ -124,6 +130,13 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
                 dtIntructionTimeTo.DateTime = now;
 
                 cboIsUse.EditValueChanged += new EventHandler(cboIsUse_EditValueChanged);
+                // Kiem tra + ghi API khi gia tri o gio da duoc ghi vao dong (khong lam trong EditValueChanged cua editor)
+                treeMedicineIsUsePt.CellValueChanged += new CellValueChangedEventHandler(treeMedicineIsUsePt_CellValueChanged);
+                // Khong de DevExpress tu hien hop "Error" (loi tester 2026-10-01: "Object reference not set..."); ghi log de chan doan
+                treeMedicineIsUsePt.InvalidNodeException += new InvalidNodeExceptionEventHandler(treeMedicineIsUsePt_InvalidNodeException);
+                // Log chan doan (loi tester 2026-10-01: BE bao "sau thoi diem hien tai" tren may test): gio client luc mo man
+                Inventec.Common.Logging.LogSystem.Info(string.Format("[ClsIsExecuted] Mo man: maDieuTri={0}, gioClient(Get.Now)={1}, DateTime.Now={2:yyyy-MM-dd HH:mm:ss.fff}, DateTime.UtcNow={3:yyyy-MM-dd HH:mm:ss}, TimeZone={4}, May={5}",
+                    txtTreatmentCode.Text, Inventec.Common.DateTime.Get.Now(), DateTime.Now, DateTime.UtcNow, TimeZoneInfo.Local.Id, Environment.MachineName));
                 btnSearch_Click(null, null);
             }
             catch (Exception ex)
@@ -348,6 +361,7 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
                 filter.TREATMENT_ID = treatment.ID;
                 filter.IS_NO_EXECUTE = false;
                 List<DHisSereServ2> data = new BackendAdapter(param).Get<List<DHisSereServ2>>("api/HisSereServ/GetDHisSereServ2", ApiConsumers.MosConsumer, filter, param);
+                UpdateServerClockOffset(param);
                 if (data == null || data.Count == 0) return result;
 
                 long timeFrom = 0;
@@ -395,6 +409,38 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        /// <summary>Do lech gio server - client tu CommonParam.Now cua response (0 = backend khong tra -> giu offset cu)</summary>
+        private void UpdateServerClockOffset(CommonParam param)
+        {
+            try
+            {
+                if (param == null || param.Now <= 0) return;
+                DateTime? serverNow = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(param.Now);
+                if (!serverNow.HasValue) return;
+                // client lay gio SAU khi nhan response nen offset hoi am (som hon server) -> an toan voi kiem tra "sau hien tai"
+                serverClockOffset = serverNow.Value - DateTime.Now;
+                Inventec.Common.Logging.LogSystem.Info(string.Format("[ClsIsExecuted] Lech gio server-client = {0:0.0}s (serverNow={1}, clientNow={2:yyyyMMddHHmmss})", serverClockOffset.TotalSeconds, param.Now, DateTime.Now));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Gio hien tai theo dong ho server (client + offset), dang yyyyMMddHHmmss</summary>
+        private long ServerNowNumber()
+        {
+            try
+            {
+                return Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now + serverClockOffset) ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return Inventec.Common.DateTime.Get.Now() ?? 0;
+            }
         }
 
         /// <summary>Loc theo Trang thai (Tat ca / Da thuc hien / Chua thuc hien) tren du lieu da nap, dung cay theo y lenh</summary>
@@ -540,18 +586,16 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
             }
         }
 
-        /// <summary>Moi (Ctrl N): dat lai bo loc mac dinh (tu ngay vao vien -> hom nay, Tat ca) roi tim lai</summary>
+        /// <summary>Moi (Ctrl N): xoa ma dieu tri + thong tin hanh chinh + danh sach, dat con tro vao o ma — giong man "Thuoc/vt benh nhan da dung"</summary>
         private void btnReset_Click(object sender, EventArgs e)
         {
             try
             {
-                DateTime now = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.Now() ?? 0) ?? DateTime.Now;
-                dtIntructionTimeTo.DateTime = now;
-                DateTime? inTime = currentTreatment != null && currentTreatment.IN_TIME > 0
-                    ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatment.IN_TIME) : null;
-                dtIntructionTimeFrom.DateTime = inTime ?? now;
-                cboIsUse.EditValue = STATUS_ALL;
-                btnSearch_Click(null, null);
+                SetDefaultValueControl();
+                allAdos = new List<ClsSereServADO>();
+                currentTreatment = null;
+                txtTreatmentCode.Text = "";
+                txtTreatmentCode.Focus();
             }
             catch (Exception ex)
             {
@@ -698,11 +742,13 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
                     return;
                 }
                 bool isChecked = e.NewValue is bool && (bool)e.NewValue;
-                long? executeTime = isChecked ? Inventec.Common.DateTime.Get.Now() : null;
+                long? executeTime = isChecked ? (long?)ServerNowNumber() : null;
+                Inventec.Common.Logging.LogSystem.Info(string.Format("[ClsIsExecuted] Tick: sereServId={0}, dichVu={1}, gioYLenh={2}, isChecked={3}, gioGuiLen(theo server)={4}, DateTime.Now={5:yyyy-MM-dd HH:mm:ss.fff}, offset={6:0.0}s",
+                    rowData.SERE_SERV_ID, rowData.SERVICE_CODE, rowData.INTRUCTION_TIME, isChecked, executeTime, DateTime.Now, serverClockOffset.TotalSeconds));
                 if (isChecked && executeTime.HasValue && executeTime.Value < rowData.INTRUCTION_TIME)
                 {
-                    XtraMessageBox.Show(string.Format("Thời gian thực hiện không được trước thời gian y lệnh ({0})", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowData.INTRUCTION_TIME)), "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     e.Cancel = true;
+                    ShowWarningLater(string.Format("Thời gian thực hiện không được trước thời gian y lệnh ({0})", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowData.INTRUCTION_TIME)));
                     return;
                 }
                 bool success = CallUpdateNurseExecute(rowData, isChecked, executeTime);
@@ -738,35 +784,80 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
                 if (treeList == null || treeList.FocusedNode == null) return;
                 ClsSereServADO rowData = treeList.GetDataRecordByNode(treeList.FocusedNode) as ClsSereServADO;
                 if (rowData == null || rowData.IS_PARENT || rowData.IS_EXECUTED != true) return;
+                // Su kien nay ban theo TUNG PHIM go trong editor -> chi to mau canh bao (nhu man Thuoc/vt da dung).
+                // KHONG hien hop thoai / goi API o day: hop thoai modal giua luc editor dang mo lam DevExpress nem
+                // NullReference va tu hien hop "Error" (loi tester 2026-10-01). Kiem tra + ghi API lam o CellValueChanged.
                 if (dateEdit.EditValue == null || dateEdit.DateTime == DateTime.MinValue)
                 {
-                    // Xoa trang gio -> khong hop le, giu gia tri da luu
                     rowData.IS_IN_VALID = true;
-                    treeList.RefreshNode(treeList.FocusedNode);
+                }
+                else
+                {
+                    long typed = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dateEdit.DateTime) ?? 0;
+                    long now = ServerNowNumber();
+                    rowData.IS_IN_VALID = typed <= 0 || typed < rowData.INTRUCTION_TIME || (now > 0 && typed > now);
+                }
+                treeList.RefreshNode(treeList.FocusedNode);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gia tri o "Thoi gian thuc hien" da duoc ghi vao dong (roi o / Enter): kiem tra R6 roi goi API.
+        /// Khong hop le -> tra lai gio da luu va bao sau khi su kien ket thuc (BeginInvoke) de khong pha editor cua cay.
+        /// </summary>
+        private void treeMedicineIsUsePt_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e == null || e.Node == null || e.Column == null || e.Column.FieldName != "EXECUTE_TIME_DT") return;
+                ClsSereServADO rowData = treeMedicineIsUsePt.GetDataRecordByNode(e.Node) as ClsSereServADO;
+                if (rowData == null || rowData.IS_PARENT || rowData.IS_EXECUTED != true) return;
+                DateTime? oldDt = ToDateTime(rowData.EXECUTE_TIME);
+                DateTime? newDt = rowData.EXECUTE_TIME_DT;
+                if (!newDt.HasValue || newDt.Value == DateTime.MinValue)
+                {
+                    rowData.EXECUTE_TIME_DT = oldDt;
+                    rowData.IS_IN_VALID = false;
+                    treeMedicineIsUsePt.RefreshNode(e.Node);
+                    ShowWarningLater("Chưa nhập thời gian thực hiện, giữ nguyên thời gian đã lưu");
                     return;
                 }
-                DateTime picked = dateEdit.DateTime;
-                picked = new DateTime(picked.Year, picked.Month, picked.Day, picked.Hour, picked.Minute, 0);
+                DateTime picked = new DateTime(newDt.Value.Year, newDt.Value.Month, newDt.Value.Day, newDt.Value.Hour, newDt.Value.Minute, 0);
                 long newTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(picked) ?? 0;
-                if (newTime <= 0) return;
+                if (newTime <= 0)
+                {
+                    rowData.EXECUTE_TIME_DT = oldDt;
+                    rowData.IS_IN_VALID = false;
+                    treeMedicineIsUsePt.RefreshNode(e.Node);
+                    return;
+                }
                 if (rowData.EXECUTE_TIME.HasValue && newTime == rowData.EXECUTE_TIME.Value)
                 {
                     rowData.IS_IN_VALID = false;
+                    treeMedicineIsUsePt.RefreshNode(e.Node);
                     return;
                 }
-                long now = Inventec.Common.DateTime.Get.Now() ?? 0;
+                long now = ServerNowNumber();
+                Inventec.Common.Logging.LogSystem.Info(string.Format("[ClsIsExecuted] Sua gio: sereServId={0}, dichVu={1}, gioYLenh={2}, gioCu={3}, gioMoi={4}, gioServerQuyDoi={5}",
+                    rowData.SERE_SERV_ID, rowData.SERVICE_CODE, rowData.INTRUCTION_TIME, rowData.EXECUTE_TIME, newTime, now));
                 if (newTime < rowData.INTRUCTION_TIME)
                 {
-                    rowData.IS_IN_VALID = true;
-                    XtraMessageBox.Show(string.Format("Thời gian thực hiện không được trước thời gian y lệnh ({0})", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowData.INTRUCTION_TIME)), "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    treeList.RefreshNode(treeList.FocusedNode);
+                    rowData.EXECUTE_TIME_DT = oldDt;
+                    rowData.IS_IN_VALID = false;
+                    treeMedicineIsUsePt.RefreshNode(e.Node);
+                    ShowWarningLater(string.Format("Thời gian thực hiện không được trước thời gian y lệnh ({0}). Giữ nguyên thời gian đã lưu.", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowData.INTRUCTION_TIME)));
                     return;
                 }
                 if (now > 0 && newTime > now)
                 {
-                    rowData.IS_IN_VALID = true;
-                    XtraMessageBox.Show("Thời gian thực hiện không được sau thời điểm hiện tại", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    treeList.RefreshNode(treeList.FocusedNode);
+                    rowData.EXECUTE_TIME_DT = oldDt;
+                    rowData.IS_IN_VALID = false;
+                    treeMedicineIsUsePt.RefreshNode(e.Node);
+                    ShowWarningLater("Thời gian thực hiện không được sau thời điểm hiện tại. Giữ nguyên thời gian đã lưu.");
                     return;
                 }
                 bool success = CallUpdateNurseExecute(rowData, true, newTime);
@@ -774,18 +865,55 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
                 {
                     rowData.EXECUTE_TIME = newTime;
                     rowData.EXECUTE_TIME_DT = picked;
-                    rowData.IS_IN_VALID = false;
                 }
                 else
                 {
-                    rowData.EXECUTE_TIME_DT = ToDateTime(rowData.EXECUTE_TIME);
-                    rowData.IS_IN_VALID = false;
+                    rowData.EXECUTE_TIME_DT = oldDt;
                 }
-                treeList.RefreshNode(treeList.FocusedNode);
+                rowData.IS_IN_VALID = false;
+                treeMedicineIsUsePt.RefreshNode(e.Node);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Loi ben trong cay (DevExpress) -> khong hien hop "Error" mac dinh, ghi log kem stack trace de chan doan</summary>
+        private void treeMedicineIsUsePt_InvalidNodeException(object sender, InvalidNodeExceptionEventArgs e)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Error("[ClsIsExecuted] InvalidNodeException: " + (e.ErrorText ?? ""), e.Exception);
+                e.ExceptionMode = DevExpress.XtraEditors.Controls.ExceptionMode.NoAction;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Hien canh bao SAU khi su kien editor ket thuc (tranh modal giua luc cay dang mo editor)</summary>
+        private void ShowWarningLater(string message)
+        {
+            try
+            {
+                if (this.IsDisposed || !this.IsHandleCreated) return;
+                this.BeginInvoke(new Action(() =>
+                {
+                    try
+                    {
+                        XtraMessageBox.Show(message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -807,7 +935,15 @@ namespace HIS.Desktop.Plugins.ClsIsExecutedPatient.ClsIsExecutedPatient
                 success = result != null && result.Count > 0;
                 if (!success)
                 {
+                    // Log day du de doi chieu voi log server (LogSystem.txt) khi may test bi tu choi
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format("[ClsIsExecuted] UpdateNurseExecute THAT BAI: sereServId={0}, dichVu={1}, gioYLenh={2}, isExecuted={3}, executeTime={4}, gioClient={5}, DateTime.Now={6:yyyy-MM-dd HH:mm:ss.fff}, resultNull={7}",
+                        rowData.SERE_SERV_ID, rowData.SERVICE_CODE, rowData.INTRUCTION_TIME, isExecuted, executeTime, Inventec.Common.DateTime.Get.Now(), DateTime.Now, result == null)
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
                     MessageManager.Show(this, param, success);
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Info(string.Format("[ClsIsExecuted] UpdateNurseExecute OK: sereServId={0}, isExecuted={1}, executeTime={2}", rowData.SERE_SERV_ID, isExecuted, executeTime));
                 }
             }
             catch (Exception ex)

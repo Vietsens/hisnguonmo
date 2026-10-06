@@ -156,6 +156,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     this.txtICDsubName.Text = this.currentHisSpecialistExam.ICD_TEXT;
                     LogSystem.Debug("IS_APPROVAL: " + currentHisSpecialistExam.IS_APPROVAL);
                     btnSave.Enabled = (currentHisSpecialistExam.IS_APPROVAL == null || currentHisSpecialistExam.IS_APPROVAL == 2);
+                    btnApproveAndSign.Enabled = (currentHisSpecialistExam.IS_APPROVAL == null || currentHisSpecialistExam.IS_APPROVAL == 2);
                     btnTracking.Enabled = (currentHisSpecialistExam.IS_APPROVAL == 1); 
                     this.ProcessSelectEmployee();
                     //
@@ -947,6 +948,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         this.btnSave.Enabled = false;
                         this.btnTracking.Enabled = true;
                         if (this.bbtnSave != null) this.bbtnSave.Enabled = false;
+                        this.btnApproveAndSign.Enabled = false;
                     }
                     catch (Exception ex)
                     {
@@ -977,8 +979,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
 
         /// <summary>
         /// Viec 57944: approve then open EMR signing of the debate approval form (Mps000513) in one step.
-        /// An already approved record is not approved again - only signed, so a failed/cancelled
-        /// signing can be retried.
+        /// Like "Duyet", the button is disabled once the record is approved (by either button).
         /// </summary>
         private void btnApproveAndSign_Click(object sender, EventArgs e)
         {
@@ -1001,7 +1002,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             }
             finally
             {
-                this.btnApproveAndSign.Enabled = true;
+                this.btnApproveAndSign.Enabled = this.currentHisSpecialistExam != null
+                    && (this.currentHisSpecialistExam.IS_APPROVAL == null || this.currentHisSpecialistExam.IS_APPROVAL == 2);
             }
         }
         List<HIS_EMPLOYEE> EmployeeSelecteds;
