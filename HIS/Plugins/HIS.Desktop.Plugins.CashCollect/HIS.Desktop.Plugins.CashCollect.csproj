@@ -164,6 +164,12 @@
     <Compile Include="UCCashCollect.Designer.cs">
       <DependentUpon>UCCashCollect.cs</DependentUpon>
     </Compile>
+    <Compile Include="UCCashCollect___CashierRoom.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCCashCollect___Selection.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

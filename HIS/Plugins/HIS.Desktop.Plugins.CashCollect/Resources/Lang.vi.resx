@@ -144,4 +144,7 @@
   <data name="UCCashCollect.lciAmountSum.Text" xml:space="preserve">
     <value>Tổng số tiền:</value>
   </data>
+  <data name="UCCashCollect.lciCashierRoom.Text" xml:space="preserve">
+    <value>Phòng thu ngân:</value>
+  </data>
 </root>

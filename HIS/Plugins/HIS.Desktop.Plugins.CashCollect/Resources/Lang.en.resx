@@ -144,4 +144,7 @@
   <data name="UCCashCollect.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
     <value>Keyword search</value>
   </data>
+  <data name="UCCashCollect.lciCashierRoom.Text" xml:space="preserve">
+    <value>Cashier room:</value>
+  </data>
 </root>

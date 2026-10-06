@@ -25,5 +25,39 @@ namespace HIS.Desktop.Plugins.CashCollect.Resources
                 return "";
             }
         }
+
+        /// <summary>Không có giao dịch chưa nộp quỹ nào theo điều kiện lọc.</summary>
+        internal static string KhongCoGiaoDichChuaNopQuyTheoDieuKienLoc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_CashCollect__KhongCoGiaoDichChuaNopQuyTheoDieuKienLoc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Chưa chọn giao dịch nộp quỹ.</summary>
+        internal static string ChuaChonGiaoDichNopQuy
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_CashCollect__ChuaChonGiaoDichNopQuy", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

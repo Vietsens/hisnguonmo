@@ -93,6 +93,9 @@
     <Compile Include="Run\IRun.cs" />
     <Compile Include="Run\RunBehavior.cs" />
     <Compile Include="Run\RunFactory.cs" />
+    <Compile Include="SetCheckAll\ISetCheckAll.cs" />
+    <Compile Include="SetCheckAll\SetCheckAllBehavior.cs" />
+    <Compile Include="SetCheckAll\SetCheckAllFactory.cs" />
     <Compile Include="UCCashCollect.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -28,5 +28,7 @@ namespace HIS.UC.CashCollect
     public delegate void Grid_CustomRowCellEdit(V_HIS_TRANSACTION data, DevExpress.XtraGrid.Views.Base.CustomRowCellEventArgs e);
     public delegate void btn_Un_Collect_Click(V_HIS_TRANSACTION data);
     public delegate void check_changed(List<HIS.UC.CashCollect.CashCollectADO> data);
+    /// <summary>Raised when the user clicks the select-all checkbox in the "check" column header; isCheckAll = new state.</summary>
+    public delegate void check_all_click(bool isCheckAll);
 
 }
