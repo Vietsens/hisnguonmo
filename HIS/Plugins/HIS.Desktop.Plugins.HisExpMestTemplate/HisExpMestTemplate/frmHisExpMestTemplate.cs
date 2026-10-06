@@ -399,9 +399,10 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
         {
             try
             {
-                startPage = ((CommonParam)param).Start ?? 0;
-                int limit = ((CommonParam)param).Limit ?? 0;
-                CommonParam paramCommon = new CommonParam(startPage, limit);
+                //startPage = ((CommonParam)param).Start ?? 0;
+                //int limit = ((CommonParam)param).Limit ?? 0;
+                //CommonParam paramCommon = new CommonParam(startPage, limit);
+                CommonParam paramCommon = new CommonParam();
                 //Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TEMPLATE>> apiResult = null;
                 HisExpMestTemplateFilter filter = new HisExpMestTemplateFilter();
                 SetFilterNavBar(ref filter);
@@ -413,7 +414,8 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                 var apiResult = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TEMPLATE>>(HisRequestUriStore.MOSHIS_EXP_MEST_TEMPLATE_GET, ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
                 {
-                    //var data = (List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TEMPLATE>)apiResult.Data.Where(o => o.CREATOR == this.loggingName || o.IS_PUBLIC == 1).ToList()
+                    //var data = (List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TEMPLATE>)apiResult.Data.Where(o => o.CREATOR == this.loggingName || o.IS_PUBLIC == 1).ToList()\
+                    
                     var data = (List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TEMPLATE>)apiResult.Where(o => o.CREATOR == this.loggingName || o.IS_PUBLIC == 1).ToList();
                     if (data != null)
                     {
