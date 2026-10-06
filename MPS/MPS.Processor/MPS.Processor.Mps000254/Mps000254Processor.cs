@@ -38,6 +38,8 @@ namespace MPS.Processor.Mps000254
         Mps000254PDO rdo;
         List<Mps000254ADO> listAdoPrint = new List<Mps000254ADO>();
         List<Mps000254ADO> listAdoPrintGroup = new List<Mps000254ADO>();
+        List<Mps000254ADO> listParentGroup = new List<Mps000254ADO>();
+
         List<Mps000254ADODetail> listAdoPrintDetail = new List<Mps000254ADODetail>();
         List<Mps000254ADO> listMedicineType = new List<Mps000254ADO>();
         List<Mps000254ADO> listMedicineTypeOTherPaySource = new List<Mps000254ADO>();
@@ -89,12 +91,12 @@ namespace MPS.Processor.Mps000254
                     objectTag.AddObjectData(store, "MedicineGroup2", listMedicineTypeOTherPaySource);
                 }
 
-
-
                 objectTag.AddObjectData(store, "MedicineGroup3", listAdoPrintGroup);
 
 
                 objectTag.AddObjectData(store, "ListMediMateSplitedByPackage", listAdoPrintGroup);
+                objectTag.AddObjectData(store, "listParentGroup", listParentGroup);
+
                 objectTag.AddObjectData(store, "Medicine1Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "Medicine2Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "Medicine3Detail", listAdoPrintDetail);
@@ -108,7 +110,11 @@ namespace MPS.Processor.Mps000254
 
                 objectTag.AddRelationship(store, "MedicineGroup1", "ListMediMateSplitedByPackage", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
                 objectTag.AddRelationship(store, "MedicineGroup2", "ListMediMateSplitedByPackage", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
-                objectTag.AddRelationship(store, "MedicineGroup3", "ListMediMateSplitedByPackage", "PARENT_ID ", "PARENT_ID");
+                objectTag.AddRelationship(store, "MedicineGroup3", "ListMediMateSplitedByPackage", "PARENT_ID", "PARENT_ID");
+
+                objectTag.AddRelationship(store, "MedicineGroup1", "listParentGroup", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
+                objectTag.AddRelationship(store, "MedicineGroup2", "listParentGroup", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+                objectTag.AddRelationship(store, "MedicineGroup3", "listParentGroup", "PARENT_ID", "PARENT_ID");
 
                 objectTag.AddRelationship(store, "MedicineGroup", "Medicine1", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID"); 
                 
@@ -149,7 +155,7 @@ namespace MPS.Processor.Mps000254
                     var group = listAdoPrint.GroupBy(o => new { o.PARENT_ID, o.PARENT_CODE, o.PARENT_NAME });
                     foreach (var item in group)
                     {
-                        listAdoPrintGroup.Add(item.ToList().First());
+                        listParentGroup.Add(item.ToList().First());
                     }
                 }
             }

@@ -266,9 +266,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                 product.ProdUnit = detail.Unit;
                                 product.Stt = detail.Stt ?? 0;
                                 product.IsBHYT = true;
-                                //dòng gom nhóm: 1 lần, đơn giá = thành tiền (đơn giá x số lượng = thành tiền trên hóa đơn)
-                                product.ProdQuantity = 1;
-                                product.ProdPrice = product.Amount;
+                                //Dòng gom nhóm: chỉ khi bật cấu hình Template8.GroupLineQuantityPrice mới gửi số lượng = 1, đơn giá = thành tiền
+                                //(đơn giá x số lượng = thành tiền trên hóa đơn). Mặc định để trống như bản cũ để không đổi hóa đơn các viện đang dùng.
+                                if (HisConfigCFG.IsTemplate8GroupLineQuantityPrice)
+                                {
+                                    product.ProdQuantity = 1;
+                                    product.ProdPrice = product.Amount;
+                                }
                                 result.Add(product);
                             }
                             else
@@ -291,9 +295,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                 product.ProdCode = General.GetFirstWord(product.ProdName);
                                 product.Type = sereServs.Count() == sereServs.Count(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC) ? 1 : 0;
                                 product.Stt = detail.Stt ?? 0;
-                                //dòng gom nhóm: 1 lần, đơn giá = thành tiền (đơn giá x số lượng = thành tiền trên hóa đơn)
-                                product.ProdQuantity = 1;
-                                product.ProdPrice = product.Amount;
+                                //Dòng gom nhóm: chỉ khi bật cấu hình Template8.GroupLineQuantityPrice mới gửi số lượng = 1, đơn giá = thành tiền
+                                //(đơn giá x số lượng = thành tiền trên hóa đơn). Mặc định để trống như bản cũ để không đổi hóa đơn các viện đang dùng.
+                                if (HisConfigCFG.IsTemplate8GroupLineQuantityPrice)
+                                {
+                                    product.ProdQuantity = 1;
+                                    product.ProdPrice = product.Amount;
+                                }
                                 result.Add(product);
                             }
 
@@ -330,9 +338,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(amount);
                             product.Type = sereServsTotal.Count() == sereServsTotal.Count(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC) ? 1 : 0;
                             product.Stt = long.MaxValue;
-                            //dòng gom nhóm: 1 lần, đơn giá = thành tiền (đơn giá x số lượng = thành tiền trên hóa đơn)
-                            product.ProdQuantity = 1;
-                            product.ProdPrice = product.Amount;
+                            //Dòng gom nhóm: chỉ khi bật cấu hình Template8.GroupLineQuantityPrice mới gửi số lượng = 1, đơn giá = thành tiền
+                            //(đơn giá x số lượng = thành tiền trên hóa đơn). Mặc định để trống như bản cũ để không đổi hóa đơn các viện đang dùng.
+                            if (HisConfigCFG.IsTemplate8GroupLineQuantityPrice)
+                            {
+                                product.ProdQuantity = 1;
+                                product.ProdPrice = product.Amount;
+                            }
                             result.Add(product);
                         }
                     }
