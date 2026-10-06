@@ -532,8 +532,6 @@
             // 
             // layoutControlItem2
             // 
-            this.layoutControlItem2.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-            this.layoutControlItem2.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
