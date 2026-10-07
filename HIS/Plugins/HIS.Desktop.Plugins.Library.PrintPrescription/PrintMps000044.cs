@@ -477,7 +477,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         if (listTThuongNgoaiKho != null && listTThuongNgoaiKho.Count > 0)
                         {
                             List<MPS.Processor.Mps000044.PDO.ExpMestMedicineSDO> ExpMestMedicineSDO = new List<MPS.Processor.Mps000044.PDO.ExpMestMedicineSDO>();
-                            var group = listTThuongNgoaiKho.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                            var group = listTThuongNgoaiKho.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                             foreach (var aitem in group)
                             {
                                 MPS.Processor.Mps000044.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000044.PDO.ExpMestMedicineSDO();
@@ -851,7 +851,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                 if (listSPHoTro != null && listSPHoTro.Count > 0)
                 {
                     List<MPS.Processor.Mps000353.PDO.ExpMestMedicineSDO> ExpMestMedicineSDO = new List<MPS.Processor.Mps000353.PDO.ExpMestMedicineSDO>();
-                    var group = listSPHoTro.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                    var group = listSPHoTro.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                     foreach (var aitem in group)
                     {
                         MPS.Processor.Mps000353.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000353.PDO.ExpMestMedicineSDO();

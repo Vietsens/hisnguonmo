@@ -209,6 +209,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("lcibtnSave.Size", lcibtnSave.Size));
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("lciPrintAssignPrescriptionExt.Size", lciPrintAssignPrescriptionExt.Size) + "____" + Inventec.Common.Logging.LogUtil.TraceData("lciPrintAssignPrescription.Size", lciPrintAssignPrescription.Size));
                 Inventec.Common.Logging.LogSystem.Debug("InitMenuToButtonPrint .2");
+                this.RequestEqualFooterButtonWidth();
             }
             catch (Exception ex)
             {

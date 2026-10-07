@@ -1252,6 +1252,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 RefeshSereServInTreatmentData();
                 CalculatorToTalGuaranteeOriginal();
+                this.InitFooterButtonWidth();
                 this.timerInitForm.Interval = 500;//Fix
                 this.timerInitForm.Enabled = true;
                 this.timerInitForm.Start();

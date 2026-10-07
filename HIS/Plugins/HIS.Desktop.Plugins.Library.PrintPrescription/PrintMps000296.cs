@@ -144,7 +144,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         if (lstMedicineExpmestTypeADO != null && lstMedicineExpmestTypeADO.Count > 0)
                         {
                             countMediMate += lstMedicineExpmestTypeADO.Count;
-                            var group = lstMedicineExpmestTypeADO.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME });
+                            var group = lstMedicineExpmestTypeADO.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
                             foreach (var aitem in group)
                             {
                                 MPS.Processor.Mps000296.PDO.ExpMestMedicineSDO ado = new MPS.Processor.Mps000296.PDO.ExpMestMedicineSDO();
