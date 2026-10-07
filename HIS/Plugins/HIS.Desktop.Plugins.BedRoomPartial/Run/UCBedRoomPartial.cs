@@ -2033,6 +2033,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         var listRootByType = dataNew.OrderByDescending(o => o.TRACKING_TIME).GroupBy(o => o.TDL_SERVICE_TYPE_ID).ToList();
                         var department = currentModule != null ? BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == currentModule.RoomId) : null;
                         var departmentId = department != null ? department.DEPARTMENT_ID : 0;
+                        //Viec 55703: nguoi cung khoa chi dinh duoc xoa y lenh chua xu ly
+                        bool allowDeleteBySameDepartment = HisConfigCFG.IsAllowDeleteBySameRequestDepartment;
                         foreach (var types in listRootByType)
                         {
                             SereServADO ssRootType = new SereServADO();
@@ -2089,6 +2091,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                 {
                                     ssRootSety.SAMPLE_TIME = reqOfSety.SAMPLE_TIME;
                                     ssRootSety.RECEIVE_SAMPLE_TIME = reqOfSety.RECEIVE_SAMPLE_TIME;
+                                    ssRootSety.SERVICE_REQ_CREATOR = reqOfSety.CREATOR;
                                 }
                                 ssRootSety.TDL_TREATMENT_ID = rootSety.First().TDL_TREATMENT_ID;
                                 ssRootSety.PRESCRIPTION_TYPE_ID = rootSety.First().PRESCRIPTION_TYPE_ID;
@@ -2106,7 +2109,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                 }
                                 if ((rootSety.First().REQUEST_LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() || CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName())
                                   || (rootSety.First().REQUEST_DEPARTMENT_ID == departmentId && ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
-                                  || (ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G && hasDeleteBedPermission))
+                                  || (ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G && hasDeleteBedPermission)
+                                  || (allowDeleteBySameDepartment && rootSety.First().REQUEST_DEPARTMENT_ID == departmentId))
                                   && rootSety.First().SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                                 {
                                     ssRootSety.IsEnableDelete = true;
@@ -2231,6 +2235,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             try
             {
                 var departmentId = BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == currentModule.RoomId).DEPARTMENT_ID;
+                //Viec 55703: nguoi cung khoa chi dinh duoc xoa y lenh chua xu ly
+                bool allowDeleteBySameDepartment = HisConfigCFG.IsAllowDeleteBySameRequestDepartment;
 
                 // Tra cứu O(1) — thay cho các đoạn dataServiceReq.Where(...) lặp trong vòng lặp
                 Dictionary<long, HIS_SERVICE_REQ> dictReq = BuildServiceReqDictionary(dataServiceReq);
@@ -2324,6 +2330,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             {
                                 ssRootSety.SAMPLE_TIME = reqOfSety.SAMPLE_TIME;
                                 ssRootSety.RECEIVE_SAMPLE_TIME = reqOfSety.RECEIVE_SAMPLE_TIME;
+                                ssRootSety.SERVICE_REQ_CREATOR = reqOfSety.CREATOR;
                             }
                             ssRootSety.SERVICE_NAME = String.Format("- {0} - {1}", rootSety.First().REQUEST_ROOM_NAME, rootSety.First().REQUEST_DEPARTMENT_NAME);
                             var time = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rootSety.First().TDL_INTRUCTION_TIME ?? 0);
@@ -2338,7 +2345,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             }
                             if ((rootSety.First().REQUEST_LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() || CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName())
                               || (rootSety.First().REQUEST_DEPARTMENT_ID == departmentId && ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
-                              || (ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G && hasDeleteBedPermission))
+                              || (ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G && hasDeleteBedPermission)
+                              || (allowDeleteBySameDepartment && rootSety.First().REQUEST_DEPARTMENT_ID == departmentId))
                               && rootSety.First().SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                             {
                                 ssRootSety.IsEnableDelete = true;
@@ -2393,6 +2401,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         {
             try
             {
+                //Viec 55703: y lenh chi xoa duoc theo quy tac cung khoa thi khong duoc co van ban da ky so tren EMR
+                if (data != null && !CheckEmrDocumentBeforeSameDepartmentDelete(data))
+                {
+                    return;
+                }
                 if (data != null && HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HAS_CONNECTION_EMR") == "1")
                 {
                     CommonParam paramEmr = new CommonParam();

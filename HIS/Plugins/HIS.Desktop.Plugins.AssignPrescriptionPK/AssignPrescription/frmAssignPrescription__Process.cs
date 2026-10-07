@@ -486,6 +486,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                             && o.MEDICINE_USE_FORM_ID == item.MEDICINE_USE_FORM_ID
                                             && o.DataType == item.DataType
                                             && o.TUTORIAL == item.TUTORIAL
+                                            && MedicineLineUtil.IsSameHtuForMerge(o.HTU_TEXT, item.HTU_TEXT)//Viec 46680
                             //&& o.UseTimeTo == item.UseTimeTo
                             //&& o.PRICE == item.PRICE
                                             );
@@ -2157,6 +2158,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.lciPrintAssignPrescriptionExt.MaxSize = new System.Drawing.Size(2, 40);
                 this.lciPrintAssignPrescriptionExt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 this.lciPrintAssignPrescription.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                this.RequestEqualFooterButtonWidth();
 
                 this.cboPatientType.EditValue = null;
                 this.cboPatientType.Properties.DataSource = null;

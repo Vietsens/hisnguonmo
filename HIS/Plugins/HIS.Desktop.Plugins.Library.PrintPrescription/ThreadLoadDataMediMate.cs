@@ -160,7 +160,11 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             lstExpMestMedicine = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/GetView", ApiConsumers.MosConsumer, expMestMedicineFilter, null);
                             Inventec.Common.Logging.LogUtil.TraceData("data lstExpMestMedicine: ", lstExpMestMedicine);
                         }
-                        var expMestMedicineGroups = lstmedicine.GroupBy(o => new { o.TDL_MEDICINE_TYPE_ID, o.PRICE, o.IS_EXPEND, o.EXP_MEST_ID });
+                        //Viec 46680: gom kem lieu dung + cach dung de cung 1 thuoc ke nhieu dong khac cach dung in thanh cac dong rieng
+                        var expMestMedicineGroups = lstmedicine.GroupBy(o => new { o.TDL_MEDICINE_TYPE_ID, o.PRICE, o.IS_EXPEND, o.EXP_MEST_ID, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
+                        Dictionary<long, V_HIS_EXP_MEST_MEDICINE> dicExpMestMedicineById = lstExpMestMedicine != null
+                            ? lstExpMestMedicine.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First())
+                            : new Dictionary<long, V_HIS_EXP_MEST_MEDICINE>();
 
                         foreach (var item in lstExpMestMedicine)
                         {
@@ -321,7 +325,13 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 mediExpmestADO.PRICE = mediExpmestADO.PRICE / mediExpmestADO.CONVERT_RATIO.Value;
                                 mediExpmestADO.SERVICE_UNIT_NAME = mediExpmestADO.CONVERT_UNIT_NAME;
                             }
-                            var lstEMMedicine = lstExpMestMedicine.FirstOrDefault(p => p.TDL_MEDICINE_TYPE_ID == expMestMedicineGroup.FirstOrDefault().TDL_MEDICINE_TYPE_ID && p.PRICE == expMestMedicineGroup.FirstOrDefault().PRICE && p.IS_EXPEND == expMestMedicineGroup.FirstOrDefault().IS_EXPEND && p.EXP_MEST_ID == expMestMedicineGroup.FirstOrDefault().EXP_MEST_ID);
+                            //Viec 46680: lay dung ban ghi cua dong (theo ID) de lieu dung/lo/han dung khong bi lay nham sang dong khac cung thuoc
+                            V_HIS_EXP_MEST_MEDICINE lstEMMedicine = null;
+                            if (!dicExpMestMedicineById.TryGetValue(expMestMedicineGroup.First().ID, out lstEMMedicine))
+                            {
+                                lstEMMedicine = lstExpMestMedicine.FirstOrDefault(p => p.TDL_MEDICINE_TYPE_ID == expMestMedicineGroup.Key.TDL_MEDICINE_TYPE_ID && p.PRICE == expMestMedicineGroup.Key.PRICE && p.IS_EXPEND == expMestMedicineGroup.Key.IS_EXPEND && p.EXP_MEST_ID == expMestMedicineGroup.Key.EXP_MEST_ID
+                                    && PrescriptionLineKey.Normalize(p.TUTORIAL) == expMestMedicineGroup.Key.TUTORIAL && PrescriptionLineKey.Normalize(p.HTU_TEXT) == expMestMedicineGroup.Key.HTU_TEXT);
+                            }
                             if (lstEMMedicine != null)
                             {
                                 mediExpmestADO.MEDICINE_LINE_ID = lstEMMedicine.MEDICINE_LINE_ID;        
@@ -534,7 +544,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             ServiceReqMetyFilter.TDL_TREATMENT_ID = treatment.ID;
                             lstServiceReqMety = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ_METY>>("api/HisServiceReqMety/Get", ApiConsumers.MosConsumer, ServiceReqMetyFilter, null);
                         }
-                        var expMestMetyGroups = metys.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, o.MEDICINE_USE_FORM_ID, o.SERVICE_REQ_ID, o.PRICE, o.IS_SUB_PRES });
+                        //Viec 46680: gom kem lieu dung + cach dung
+                        var expMestMetyGroups = metys.GroupBy(o => new { o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME, o.MEDICINE_USE_FORM_ID, o.SERVICE_REQ_ID, o.PRICE, o.IS_SUB_PRES, TUTORIAL = PrescriptionLineKey.Normalize(o.TUTORIAL), HTU_TEXT = PrescriptionLineKey.Normalize(o.HTU_TEXT) });
 
                         foreach (var expMestMetyGroup in expMestMetyGroups)
                         {

@@ -105,9 +105,12 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 }
 
                 bool isDelete = true;
+                long workingDepartmentId = this.currentRoom != null ? this.currentRoom.DEPARTMENT_ID : 0;
                 foreach (var ado in ListAdos)
                 {
-                    if (!((ado.CREATOR == this.loginName || ado.REQUEST_LOGINNAME == this.loginName || CheckLoginAdmin.IsAdmin(loginName) || (this.currentRoom != null && ado.REQUEST_DEPARTMENT_ID == this.currentRoom.DEPARTMENT_ID && ado.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))
+                    //Viec 55703: them quy tac cung khoa chi dinh (key ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT)
+                    bool sameDepartmentCanDelete = Base.SameDepartmentDeleteChecker.IsAllowedBySameDepartment(HisConfigCFG.IsAllowDeleteBySameRequestDepartment, ado.REQUEST_DEPARTMENT_ID, ado.SERVICE_REQ_STT_ID, workingDepartmentId);
+                    if (!((ado.CREATOR == this.loginName || ado.REQUEST_LOGINNAME == this.loginName || CheckLoginAdmin.IsAdmin(loginName) || sameDepartmentCanDelete || (this.currentRoom != null && ado.REQUEST_DEPARTMENT_ID == this.currentRoom.DEPARTMENT_ID && ado.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))
                            && (ado.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)))
                     {
                         isDelete = false;

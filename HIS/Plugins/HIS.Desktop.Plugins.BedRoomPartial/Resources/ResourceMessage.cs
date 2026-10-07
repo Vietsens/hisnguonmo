@@ -510,5 +510,73 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Resources
                 return "";
             }
         }
+
+        /// <summary>Viec 55703: Không xóa được y lệnh theo quyền xóa trong cùng khoa:</summary>
+        internal static string XoaCungKhoaKhongXoaDuoc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("XoaCungKhoaKhongXoaDuoc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Viec 55703: - Y lệnh {0}: văn bản "{1}" đã được ký số (người ký: {2}). Chỉ người chỉ định, người tạo y lệnh hoặc quản trị hệ thống mới được xóa.</summary>
+        internal static string XoaCungKhoaYLenhDaKySo
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("XoaCungKhoaYLenhDaKySo", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Viec 55703: - Y lệnh {0}: văn bản "{1}" do tài khoản {2} tạo, chưa ký. Người tạo văn bản cần xóa văn bản trên bệnh án điện tử trước khi xóa y lệnh.</summary>
+        internal static string XoaCungKhoaVanBanDoNguoiKhacTao
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("XoaCungKhoaVanBanDoNguoiKhacTao", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Viec 55703: Không kiểm tra được văn bản ký trên bệnh án điện tử của y lệnh {0} nên chưa xóa. Vui lòng thử lại.</summary>
+        internal static string XoaCungKhoaKhongKiemTraDuocVanBanKy
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("XoaCungKhoaKhongKiemTraDuocVanBanKy", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

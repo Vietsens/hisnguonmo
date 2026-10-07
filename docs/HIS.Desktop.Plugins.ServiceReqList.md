@@ -20,6 +20,8 @@
 ### Cau hinh anh huong
 - **MOS.HIS_TREATMENT.RESTRICT_SEARCH_OTHER_DEPARTMENT (GP4)**: Khi bat (=1) va user khong phai admin (IS_ADMIN != 1), an lua chon "Tat ca" khoi dropdown, mac dinh chuyen sang "Toi tao"
 - **Filter_Type_For_Treatment_Patient**: Cau hinh gia tri mac dinh cua dropdown bo loc
+- **MOS.HIS_SERVICE_REQ.ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT** (viec 55703): `= 1` cho phep tai khoan dang lam viec tai khoa chi dinh xoa y lenh do nguoi khac chi dinh (y lenh chua xu ly, chua ky so, chua thanh toan). Khac 1/khong khai bao: giu nguyen quyen xoa cu. Backend (MOS) doc cung key nay de cho phep xoa.
+- **MOS.HAS_CONNECTION_EMR**: `= 1` thi xoa theo quy tac cung khoa phai kiem tra van ban ky tren EMR truoc (viec 55703)
 
 ## 4. UI Layout
 
@@ -33,6 +35,8 @@ Cot **Thu ky** hien thi truc tiep `SECRETARY_USERNAME` tu V_HIS_SERVICE_REQ — 
 | Action | URI | Consumer | Filter |
 |--------|-----|----------|--------|
 | Lay danh sach y lenh | api/HisServiceReq/GetView | MosConsumer | HisServiceReqViewFilter (da co SECRETARY_USERNAME sau khi cap nhat view) |
+| Xoa y lenh | api/HisServiceReq/Delete | MosConsumer | HisServiceReqSDO (Id, RequestRoomId) |
+| Kiem tra van ban ky truoc khi xoa cung khoa (viec 55703) | api/EmrDocument/Get (`RequestUriStore.EMR_DOCUMENT_GET`) | EmrConsumer | EmrDocumentFilter.TREATMENT_CODE__EXACT |
 
 ## 6. Dependencies
 
@@ -47,7 +51,19 @@ Plugin reference `ACS.EFMODEL.dll`. Load quyen qua `GlobalVariables.AcsAuthorize
 Voi `SERVICE_REQ_STT_ID == CXL`, enable khi:
 - `accountCanDelete`: loginName la nguoi tao / nguoi chi dinh / admin, **HOAC**
 - `bedCanDelete`: loai y lenh la **Giuong (G)** VA tai khoan co quyen **HIS000053**, **HOAC**
+- `sameDepartmentCanDelete` (viec 55703): key `ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT = 1` VA khoa chi dinh trung khoa cua phong dang lam viec (moi loai y lenh), **HOAC**
 - Loai la **Kham (KH)** VA cung khoa chi dinh VA cung phong (yeu cau hoac thuc hien)
+
+Menu chuot phai "Xoa" (1 dong, `DeleteCheck`) va "Xoa tat ca" khi tich nhieu dong (`PopupMenuProcessorCheck`) cung them quy tac cung khoa nhu tren. Logic dung chung o `Base/SameDepartmentDeleteChecker.cs`.
+
+### Xoa theo quy tac cung khoa — kiem tra van ban ky EMR (viec 55703)
+Y lenh **chi** xoa duoc nho quy tac cung khoa (tai khoan khong phai nguoi tao / nguoi chi dinh / admin / giuong + HIS000053 / kham cung khoa) thi truoc khi xoa (`frmServiceReqList__Plus__DeleteSameDepartment.cs`, goi o dau `repositoryItemBtnServiceReqDelete_ButtonClick` va `ProcessDataCheckedToDelete`):
+- `MOS.HAS_CONNECTION_EMR = 1` thi goi `api/EmrDocument/Get` theo `TREATMENT_CODE__EXACT`, loc van ban chua xoa co `HIS_CODE` chua `SERVICE_REQ_CODE:<ma y lenh>` (ky tu sau ma khong phai chu so).
+- Van ban co `SIGNERS` (da co nguoi ky) -> CHAN: "Y lenh ... da duoc ky so ...".
+- Van ban chua ky nhung `CREATOR` khac tai khoan dang nhap (khong phai van ban chup `IS_CAPTURE`) -> CHAN: EMR chi cho nguoi tao xoa van ban, neu xoa y lenh se de lai van ban mo coi.
+- Khong lay duoc van ban (loi API / mat ket noi) -> CHAN "Khong kiem tra duoc van ban ky".
+- Xoa nhieu y lenh: chi can 1 y lenh bi chan la dung ca lan xoa, thong bao liet ke tung y lenh bi chan.
+Y lenh co quyen xoa san co giu nguyen luong cu (hoi "da ton tai van ban ky" roi xoa ca van ban). "Chua thanh toan" do Backend kiem tra (HasNoBill/HasNoInvoice/HasNoDeposit/HasNoDebt) nhu truoc.
 
 ## 7. Print
 
@@ -77,6 +93,7 @@ Quy trinh kiem tra truoc khi in (4 buoc):
 
 | Ngay | Nguoi sua | Mo ta thay doi |
 |------|-----------|-----------------|
+| 06/10/2026 | dangth2 | Viec 55703 (BV Nguyen Tri Phuong): cho phep nguoi cung khoa chi dinh xoa y lenh do nguoi khac chi dinh, bat bang key `MOS.HIS_SERVICE_REQ.ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT = 1` (mac dinh tat, giu nguyen nhu cu). Them quy tac cung khoa vao 3 duong xoa: nut Xoa tren luoi (`gridViewServiceReq_CustomRowCellEdit`), menu chuot phai 1 dong (`DeleteCheck`), "Xoa tat ca" khi tich nhieu dong (`PopupMenuProcessorCheck`). Y lenh chi xoa duoc nho quy tac nay phai qua kiem tra van ban EMR (chan neu da ky so / van ban chua ky do nguoi khac tao / khong lay duoc EMR) — file moi `frmServiceReqList__Plus__DeleteSameDepartment.cs`, `Base/SameDepartmentDeleteChecker.cs`; `HisConfigCFG` doc them `MOS.HAS_CONNECTION_EMR`; `RequestUriStore.EMR_DOCUMENT_GET`; 4 thong bao moi `XoaCungKhoa*` (vi/en/my). Can Backend MOS ban co cung key (HisServiceReqTruncateCheck.IsAllow) — Backend cu van chan "Du lieu do nguoi dung khac tao ra". |
 | 21/09/2026 | sinhnt | Viec 3352 (PT-56263): cot "Ngay du tru" (`USE_TIME_STR`) hien them gio phut theo quy uoc `USE_TIME % 1000000 != 0` (helper `FormatUseTimeDisplay`); them `gridViewServiceReq_CustomColumnSort` so theo so `USE_TIME` + `gridColumn12.SortMode = Custom`, noi Width 100 -> 115. Sua loi CO SAN o key in: `dicParam.Add("USE_TIME", ... currentServiceReqPrint.USE_TIME.Value)` nem loi voi y lenh KHONG du tru (USE_TIME null) khien cac key in phia sau (START_TIME_STR...) khong duoc them — doi sang `?? 0`; bo sung key moi `USE_TIME_STR` dang "dd/MM/yyyy HH:mm" cho mau in can gio du tru. |
 | 11/08/2026 | nampp | **Bo sung config gate**: them key `MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY_COLUMN` vao `HisConfigCFG.cs` (+ `IsEmergencyClassifyColumnEnabled`). `= 1` chay cach hien thi moi (nhan mau tren tieu de nhom, khong to mau chu toan luoi); khac `1`/khong khai bao thi GIU NGUYEN Y HET code cu (mau cap cuu to ForeColor toan luoi va uu tien hon mau cam don thuoc tam, khong doi caption nhom). `ApplyEmergencyClassifyBadge` return ngay truoc moi lenh ghi khi key tat; clamp mau 0-255 chi ap dung khi key bat. |
 | 11/08/2026 | nampp | PTTK phan loai cap cuu: GO nhanh to ForeColor TOAN LUOI theo muc phan loai cap cuu trong `gridViewServiceReq_RowCellStyle` -> don thuoc tam (`IS_TEMPORARY_PRES`) hien thi lai mau cam. Muc phan loai chuyen thanh NHAN CO MAU tren tieu de nhom "Thong tin chung" (`ApplyEmergencyClassifyBadge`: AppearanceCaption BackColor/BackColor2 = mau muc, ForeColor tuong phan, in dam; khoi phuc caption goc khi BN khong co muc) — form chi co 1 benh nhan nen KHONG dung cot rieng (moi dong se lap cung gia tri). `InitEmergencyClassifyColor` lay them `PATIENT_CLASSIFY_NAME` + clamp mau 0-255. |
@@ -86,3 +103,19 @@ Quy trinh kiem tra truoc khi in (4 buoc):
 | 24/06/2026 | huannh | B.4.2: Them nut "In KQ tong hop XN" vao dropdown `btnDropDownPrint` (`GeneratePopupMenu`). Them partial `frmServiceReqList__Plus__InKQTongHopXN.cs` voi 4 buoc kiem tra (chon y lenh XN, cung benh nhan, kiem tra V_LIS_SAMPLE.RESULT_TIME qua `api/LisSample/GetView`) truoc khi goi bieu in Mps000517. Them reference LIS.EFMODEL, LIS.Filter; URI `LIS_SAMPLE_GETVIEW`; 3 message (vi/en/my). |
 | 30/06/2026 | huannh | Hoan thien in Mps000517: build day du Mps000517PDO trong `DelegateRunPrinterMps000517` (load treatment, patientTypeAlter, V_LIS_SAMPLE, V_LIS_RESULT, test index/range/service) va goi `MpsPrinter.Run` (PreviewType theo cau hinh). Them reference `MPS.Processor.Mps000517.PDO`. |
 | 01/07/2026 | huannh | YC4: Them cot "So Serial" (`gridColumnSerialNumber`, FieldName `SERIAL_NUMBER`) vao cuoi grid chi tiet thuoc/vat tu `grdViewSereServServiceReq`, chi hien thi khi xem y lenh loai Don dieu tri (`ID__DONDT`) hoac Don tu truc (`ID__DONTT`). Them property `SERIAL_NUMBER` vao `ADO/ListMedicineADO.cs`. Bo sung `SERIAL_NUMBER` vao GroupBy khi gom vat tu trong `FillDataGridDetail` (tu `api/HisExpMestMaterial/Get`) → moi dong vat tu ung dung 1 serial, khong gop sai. Toggle `gridColumnSerialNumber.Visible` theo loai y lenh truoc khi bind (an cho loai OT). Resources cap nhat 3 ngon ngu vi/en/my. |
+
+## 9. Test Cases
+
+### Xoa y lenh cung khoa — viec 55703
+- [ ] Key tat (rong/0): nut Xoa, menu Xoa giu nguyen nhu cu (y lenh nguoi khac chi dinh thi tat)
+- [ ] Key = 1, y lenh nguoi khac chi dinh, cung khoa voi phong dang lam viec, chua xu ly -> nut Xoa BAT, menu chuot phai co "Xoa", tich nhieu dong co "Xoa tat ca"
+- [ ] Key = 1, y lenh khoa khac / dang xu ly / hoan thanh / dang muon the -> nut Xoa TAT
+- [ ] Xoa y lenh cung khoa chua co van ban EMR -> hoi xac nhan -> xoa thanh cong (Backend ban moi)
+- [ ] Y lenh da ky so tren EMR -> chan, thong bao ma y lenh + ten van ban + nguoi ky, KHONG goi api xoa
+- [ ] Y lenh co van ban chua ky do nguoi khac tao -> chan, thong bao tai khoan tao van ban
+- [ ] Y lenh co van ban chua ky do chinh minh tao -> xoa duoc ca y lenh lan van ban
+- [ ] EMR loi / mat ket noi -> chan "Khong kiem tra duoc van ban ky"
+- [ ] Xoa nhieu y lenh, co 1 y lenh da ky -> dung ca lan xoa, thong bao liet ke dung y lenh da ky
+- [ ] Y lenh da thanh toan / tam ung -> Backend chan nhu cu
+- [ ] Hoi quy: nguoi tao / nguoi chi dinh / admin xoa y lenh cua minh nhu cu (ke ca y lenh co van ban ky)
+- [ ] Backend cu (chua co key) -> thong bao "Du lieu do nguoi dung khac tao ra, khong cho phep xoa", y lenh con nguyen

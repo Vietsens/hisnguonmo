@@ -177,6 +177,7 @@
     <Compile Include="PrintMps000234.cs" />
     <Compile Include="NumCopy\NumCopyADO.cs" />
     <Compile Include="NumCopy\NumCopyConfig.cs" />
+    <Compile Include="PrescriptionLineKey.cs" />
     <Compile Include="PrintMps000044.cs" />
     <Compile Include="PrintMps000050.cs" />
     <Compile Include="PrintMps000118.cs" />

@@ -350,6 +350,7 @@
     <Compile Include="Base\ControlCode.cs" />
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
+    <Compile Include="Base\SameDepartmentDeleteChecker.cs" />
     <Compile Include="frmChangeRoom.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -363,6 +364,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmServiceReqList__Plus__InKQTongHopXN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmServiceReqList__Plus__DeleteSameDepartment.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmServiceReqList__Plus__InChiDinhTongHopMps190001.cs">

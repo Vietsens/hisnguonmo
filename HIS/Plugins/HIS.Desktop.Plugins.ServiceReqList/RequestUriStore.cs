@@ -49,5 +49,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal const string HIS_SERVICE_REQ_DELETE = "api/HisServiceReq/Delete";
         internal const string HIS_RATION_SUM_GET = "api/HisRationSum/Get";
         internal const string LIS_SAMPLE_GETVIEW = "api/LisSample/GetView";
+        internal const string EMR_DOCUMENT_GET = "api/EmrDocument/Get";
     }
 }

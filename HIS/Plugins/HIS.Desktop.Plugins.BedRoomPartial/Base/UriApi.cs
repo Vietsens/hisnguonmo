@@ -26,5 +26,6 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Base
     public class UriApi
     {
         public const string HIS_TREATMENT_BED_ROOM_GETLVIEW = "/api/HisTreatmentBedRoom/GetLView";
+        public const string EMR_DOCUMENT_GET = "api/EmrDocument/Get";
     }
 }

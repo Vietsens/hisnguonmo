@@ -52,5 +52,14 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
         /// cua quy tac khong hoi to: benh nhan vao khoa truoc moc do thi khong canh bao.
         /// </summary>
         internal const string HIS_CONFIG_KEY__RequiredDocument = "HIS.Desktop.Plugins.BedRoomPartial.RequiredDocument";
+        /// <summary>
+        /// Viec 55703: "1" = tai khoan dang lam viec tai khoa chi dinh duoc xoa y lenh do nguoi khac chi dinh
+        /// (y lenh chua xu ly, chua ky so, chua thanh toan). Khac "1" hoac khong khai bao = giu nguyen nhu cu.
+        /// </summary>
+        internal const string HIS_CONFIG_KEY__AllowDeleteBySameRequestDepartment = "MOS.HIS_SERVICE_REQ.ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT";
+        /// <summary>
+        /// "1" = co ket noi he thong benh an dien tu (EMR).
+        /// </summary>
+        internal const string HIS_CONFIG_KEY__HasConnectionEmr = "MOS.HAS_CONNECTION_EMR";
     }
 }

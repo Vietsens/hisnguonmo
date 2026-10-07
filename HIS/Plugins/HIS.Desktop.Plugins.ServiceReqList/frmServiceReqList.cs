@@ -2086,7 +2086,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         bool accountCanDelete = this.loginName == creator || CheckLoginAdmin.IsAdmin(this.loginName) || this.loginName == reqLoginName;
                         bool roomCanDelete = this.currentRoom != null && (currentRoom.ID == executeRoomId || currentRoom.ID == requestRoomId);
                         bool bedCanDelete = serReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G && hasDeleteBedPermission;
-                        if (reqSttId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && (accountCanDelete || bedCanDelete || (serReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && requestDepartmentId == this.currentRoom.DEPARTMENT_ID && roomCanDelete)))
+                        //Viec 55703: nguoi cung khoa chi dinh duoc xoa y lenh chua xu ly (key ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT)
+                        bool sameDepartmentCanDelete = IsDeleteAllowedBySameDepartment(data);
+                        if (reqSttId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && (accountCanDelete || bedCanDelete || sameDepartmentCanDelete || (serReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && requestDepartmentId == this.currentRoom.DEPARTMENT_ID && roomCanDelete)))
                         {
                             e.RepositoryItem = repositoryItemBtnDeleteServiceReq;
                         }
@@ -2395,7 +2397,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         var row = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
                         if (row != null)
                         {
-                            row.DeleteCheck = CheckLoginAdmin.IsAdmin(this.loginName) || (this.currentRoom != null && row.REQUEST_DEPARTMENT_ID == this.currentRoom.DEPARTMENT_ID && row.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH);
+                            row.DeleteCheck = CheckLoginAdmin.IsAdmin(this.loginName) || (this.currentRoom != null && row.REQUEST_DEPARTMENT_ID == this.currentRoom.DEPARTMENT_ID && row.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                                || IsDeleteAllowedBySameDepartment(row);//Viec 55703
                             row.AddInforPTTT = row.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT
                                 && (this.currentRoom != null
                                 && row.EXECUTE_DEPARTMENT_ID == this.currentRoom.DEPARTMENT_ID
@@ -3411,6 +3414,12 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             {
                 if (listServiceReq != null && listServiceReq.Count > 0)
                 {
+                    //Viec 55703: y lenh chi xoa duoc theo quy tac cung khoa thi khong duoc co van ban da ky so tren EMR
+                    if (!CheckEmrDocumentBeforeSameDepartmentDelete(listServiceReq))
+                    {
+                        return;
+                    }
+
                     // Lấy danh sách văn bản EMR liên quan đến các y lệnh được chọn (theo SERVICE_REQ_CODE)
                     CommonParam paramEmr = null;
                     List<EMR_DOCUMENT> emrDocumentsToDelete = null;
@@ -4043,6 +4052,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 if (IsBreak)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Dịch vụ {0} có đối tượng thanh toán được tích \"Không cho phép sửa xóa dịch vụ đã chỉ định\", vui lòng liên hệ với quản trị hệ thống", string.Join(", ", lstServiceName)), "Thông báo");
+                    return;
+                }
+                //Viec 55703: y lenh chi xoa duoc theo quy tac cung khoa thi khong duoc co van ban da ky so tren EMR
+                if (data != null && !CheckEmrDocumentBeforeSameDepartmentDelete(new List<ADO.ServiceReqADO>() { data }))
+                {
                     return;
                 }
                 if (gridViewServiceReq.FocusedRowHandle >= 0 && !IsBreak)

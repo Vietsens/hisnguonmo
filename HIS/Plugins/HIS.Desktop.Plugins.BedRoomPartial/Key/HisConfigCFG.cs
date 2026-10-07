@@ -110,6 +110,45 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
             }
         }
 
+        /// <summary>
+        /// Viec 55703: cho phep tai khoan cung khoa chi dinh xoa y lenh do nguoi khac chi dinh.
+        /// Mac dinh tat (khac "1") - giu nguyen quyen xoa nhu cu.
+        /// </summary>
+        internal static bool IsAllowDeleteBySameRequestDepartment
+        {
+            get
+            {
+                try
+                {
+                    return HisConfigs.Get<string>(Key.HisConfigKeys.HIS_CONFIG_KEY__AllowDeleteBySameRequestDepartment) == "1";
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Co ket noi he thong benh an dien tu (MOS.HAS_CONNECTION_EMR = 1).
+        /// </summary>
+        internal static bool HasConnectionEmr
+        {
+            get
+            {
+                try
+                {
+                    return HisConfigs.Get<string>(Key.HisConfigKeys.HIS_CONFIG_KEY__HasConnectionEmr) == "1";
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                    return false;
+                }
+            }
+        }
+
         internal static string IsShowResultWhenReqComplete
         {
             get

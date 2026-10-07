@@ -379,6 +379,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                                                                 && o.SereServParentId == pres.SereServParentId
                                                                 && o.MIXED_INFUSION == pres.MIXED_INFUSION
                                                                 && o.TUTORIAL == pres.TUTORIAL
+                                                                && MedicineLineUtil.IsSameHtuForMerge(o.HTU_TEXT, pres.HTU_TEXT)//Viec 46680
                                                                 && o.EXP_MEST_REASON_ID == pres.EXP_MEST_REASON_ID
                                                                 && o.DataType == pres.DataType
                                                             //&& o.EmbedPatientTypeId == pres.EmbedPatientTypeId
@@ -997,6 +998,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                                 && o.SereServParentId == pres.SereServParentId
                                 && o.MixedInfusion == pres.MixedInfusion
                                 && o.Tutorial == pres.Tutorial
+                                && MedicineLineUtil.IsSameHtuForMerge(o.HtuText, pres.HtuText)//Viec 46680
                                 && o.ExpMestReasonId == pres.ExpMestReasonId
                                 && o.useTime == useTime
                                 && o.UsedTime == pres.UsedTime

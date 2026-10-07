@@ -539,6 +539,7 @@
       <DependentUpon>frmTreatmentMethod.cs</DependentUpon>
     </Compile>
     <Compile Include="Base\MediMatyProcessor.cs" />
+    <Compile Include="Base\FooterButtonWidthEqualizer.cs" />
     <Compile Include="ChooseICD\frmMissingIcd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -659,6 +660,9 @@
     <Compile Include="AssignPrescription\frmAssignPrescription__Printv2.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AssignPrescription\frmAssignPrescription__FooterButtonWidth.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CommonBaseEditor.cs" />
     <Compile Include="Worker\ValidActiveIngrBhytWorker.cs" />
     <Compile Include="Worker\WarningOddConvertWorker.cs" />
@@ -728,6 +732,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Util\ConvertNumber.cs" />
+    <Compile Include="Util\MedicineLineUtil.cs" />
     <Compile Include="RowAdd\MaterialType\MaterialTypeRowAddBehavior.cs" />
     <Compile Include="RowAdd\IAdd.cs" />
     <Compile Include="RowAdd\AddAbstract.cs" />

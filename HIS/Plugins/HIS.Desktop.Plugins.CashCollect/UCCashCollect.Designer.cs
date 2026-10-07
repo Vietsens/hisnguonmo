@@ -234,14 +234,14 @@ namespace HIS.Desktop.Plugins.CashCollect
             //
             // cboCashierRoom
             //
-            this.cboCashierRoom.Location = new System.Drawing.Point(457, 2);
+            this.cboCashierRoom.Location = new System.Drawing.Point(432, 2);
             this.cboCashierRoom.Margin = new System.Windows.Forms.Padding(2);
             this.cboCashierRoom.Name = "cboCashierRoom";
             this.cboCashierRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboCashierRoom.Properties.NullText = "";
             this.cboCashierRoom.Properties.View = this.gridViewCashierRoom;
-            this.cboCashierRoom.Size = new System.Drawing.Size(111, 20);
+            this.cboCashierRoom.Size = new System.Drawing.Size(136, 20);
             this.cboCashierRoom.StyleController = this.layoutControl1;
             this.cboCashierRoom.TabIndex = 50;
             this.cboCashierRoom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboCashierRoom_Closed);
@@ -282,18 +282,18 @@ namespace HIS.Desktop.Plugins.CashCollect
             // 
             // txtLoginName
             // 
-            this.txtLoginName.Location = new System.Drawing.Point(1112, 26);
+            this.txtLoginName.Location = new System.Drawing.Point(1108, 26);
             this.txtLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.txtLoginName.Name = "txtLoginName";
             this.txtLoginName.Properties.ReadOnly = true;
-            this.txtLoginName.Size = new System.Drawing.Size(65, 20);
+            this.txtLoginName.Size = new System.Drawing.Size(60, 20);
             this.txtLoginName.StyleController = this.layoutControl1;
             this.txtLoginName.TabIndex = 48;
             // 
             // dtCashOutTime
             // 
             this.dtCashOutTime.EditValue = null;
-            this.dtCashOutTime.Location = new System.Drawing.Point(1236, 26);
+            this.dtCashOutTime.Location = new System.Drawing.Point(1232, 26);
             this.dtCashOutTime.Margin = new System.Windows.Forms.Padding(2);
             this.dtCashOutTime.Name = "dtCashOutTime";
             this.dtCashOutTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -301,13 +301,18 @@ namespace HIS.Desktop.Plugins.CashCollect
             this.dtCashOutTime.Properties.CalendarTimeEditing = DevExpress.Utils.DefaultBoolean.True;
             this.dtCashOutTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtCashOutTime.Properties.CalendarTimeProperties.DisplayFormat.FormatString = "HH:mm:ss";
+            this.dtCashOutTime.Properties.CalendarTimeProperties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dtCashOutTime.Properties.CalendarTimeProperties.EditFormat.FormatString = "HH:mm:ss";
+            this.dtCashOutTime.Properties.CalendarTimeProperties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dtCashOutTime.Properties.CalendarTimeProperties.Mask.EditMask = "HH:mm:ss";
             this.dtCashOutTime.Properties.CalendarView = DevExpress.XtraEditors.Repository.CalendarView.Vista;
-            this.dtCashOutTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtCashOutTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.dtCashOutTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtCashOutTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtCashOutTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.dtCashOutTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtCashOutTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtCashOutTime.Size = new System.Drawing.Size(128, 20);
+            this.dtCashOutTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
+            this.dtCashOutTime.Size = new System.Drawing.Size(132, 20);
             this.dtCashOutTime.StyleController = this.layoutControl1;
             this.dtCashOutTime.TabIndex = 47;
             // 
@@ -480,21 +485,21 @@ namespace HIS.Desktop.Plugins.CashCollect
             this.txtKeyword.Location = new System.Drawing.Point(107, 2);
             this.txtKeyword.Margin = new System.Windows.Forms.Padding(2);
             this.txtKeyword.Name = "txtKeyword";
-            this.txtKeyword.Size = new System.Drawing.Size(141, 20);
+            this.txtKeyword.Size = new System.Drawing.Size(126, 20);
             this.txtKeyword.StyleController = this.layoutControl1;
             this.txtKeyword.TabIndex = 37;
             this.txtKeyword.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtKeyword_PreviewKeyDown);
             // 
             // cboStatus
             // 
-            this.cboStatus.Location = new System.Drawing.Point(252, 2);
+            this.cboStatus.Location = new System.Drawing.Point(237, 2);
             this.cboStatus.Margin = new System.Windows.Forms.Padding(2);
             this.cboStatus.Name = "cboStatus";
             this.cboStatus.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboStatus.Properties.NullText = "";
             this.cboStatus.Properties.View = this.gridView1;
-            this.cboStatus.Size = new System.Drawing.Size(106, 20);
+            this.cboStatus.Size = new System.Drawing.Size(96, 20);
             this.cboStatus.StyleController = this.layoutControl1;
             this.cboStatus.TabIndex = 36;
             // 
@@ -574,7 +579,7 @@ namespace HIS.Desktop.Plugins.CashCollect
             this.txtAmountSum.Margin = new System.Windows.Forms.Padding(2);
             this.txtAmountSum.Name = "txtAmountSum";
             this.txtAmountSum.Properties.ReadOnly = true;
-            this.txtAmountSum.Size = new System.Drawing.Size(85, 20);
+            this.txtAmountSum.Size = new System.Drawing.Size(81, 20);
             this.txtAmountSum.StyleController = this.layoutControl1;
             this.txtAmountSum.TabIndex = 27;
             // 
@@ -1033,7 +1038,7 @@ namespace HIS.Desktop.Plugins.CashCollect
             this.lciAmountSum.Control = this.txtAmountSum;
             this.lciAmountSum.Location = new System.Drawing.Point(861, 24);
             this.lciAmountSum.Name = "lciAmountSum";
-            this.lciAmountSum.Size = new System.Drawing.Size(184, 26);
+            this.lciAmountSum.Size = new System.Drawing.Size(180, 26);
             this.lciAmountSum.Text = "Tổng số tiền:";
             this.lciAmountSum.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAmountSum.TextSize = new System.Drawing.Size(90, 20);
@@ -1088,9 +1093,9 @@ namespace HIS.Desktop.Plugins.CashCollect
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.cboStatus;
-            this.layoutControlItem2.Location = new System.Drawing.Point(250, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(235, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(110, 24);
+            this.layoutControlItem2.Size = new System.Drawing.Size(100, 24);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -1099,7 +1104,7 @@ namespace HIS.Desktop.Plugins.CashCollect
             this.lciKeyword.Control = this.txtKeyword;
             this.lciKeyword.Location = new System.Drawing.Point(105, 0);
             this.lciKeyword.Name = "lciKeyword";
-            this.lciKeyword.Size = new System.Drawing.Size(145, 24);
+            this.lciKeyword.Size = new System.Drawing.Size(130, 24);
             this.lciKeyword.TextSize = new System.Drawing.Size(0, 0);
             this.lciKeyword.TextVisible = false;
             // 
@@ -1171,12 +1176,12 @@ namespace HIS.Desktop.Plugins.CashCollect
             this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem7.Control = this.dtCashOutTime;
-            this.layoutControlItem7.Location = new System.Drawing.Point(1179, 24);
+            this.layoutControlItem7.Location = new System.Drawing.Point(1170, 24);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(187, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(196, 26);
             this.layoutControlItem7.Text = "Ngày nộp:";
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem7.TextSize = new System.Drawing.Size(50, 20);
+            this.layoutControlItem7.TextSize = new System.Drawing.Size(55, 20);
             this.layoutControlItem7.TextToControlDistance = 5;
             // 
             // layoutControlItem6
@@ -1184,9 +1189,9 @@ namespace HIS.Desktop.Plugins.CashCollect
             this.layoutControlItem6.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem6.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem6.Control = this.txtLoginName;
-            this.layoutControlItem6.Location = new System.Drawing.Point(1045, 24);
+            this.layoutControlItem6.Location = new System.Drawing.Point(1041, 24);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(134, 26);
+            this.layoutControlItem6.Size = new System.Drawing.Size(129, 26);
             this.layoutControlItem6.Text = "Người nộp:";
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(60, 20);
@@ -1210,9 +1215,9 @@ namespace HIS.Desktop.Plugins.CashCollect
             this.lciCashierRoom.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciCashierRoom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciCashierRoom.Control = this.cboCashierRoom;
-            this.lciCashierRoom.Location = new System.Drawing.Point(360, 0);
+            this.lciCashierRoom.Location = new System.Drawing.Point(335, 0);
             this.lciCashierRoom.Name = "lciCashierRoom";
-            this.lciCashierRoom.Size = new System.Drawing.Size(210, 24);
+            this.lciCashierRoom.Size = new System.Drawing.Size(235, 24);
             this.lciCashierRoom.Text = "Phòng thu ngân:";
             this.lciCashierRoom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciCashierRoom.TextSize = new System.Drawing.Size(90, 20);

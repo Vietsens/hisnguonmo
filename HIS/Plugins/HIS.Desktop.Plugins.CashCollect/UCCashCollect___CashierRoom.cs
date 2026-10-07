@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.CashCollect
     {
         List<V_HIS_CASHIER_ROOM> cashierRoomCollection;
         List<V_HIS_CASHIER_ROOM> CashierRoomSelecteds = new List<V_HIS_CASHIER_ROOM>();
+        const string CASHIER_ROOM_NAME_FIELD = "CASHIER_ROOM_NAME";
 
         private void InitCashierRoomCheck()
         {
@@ -45,6 +46,8 @@ namespace HIS.Desktop.Plugins.CashCollect
                 gridCheck.SelectionChanged += new GridCheckMarksSelection1.SelectionChangedEventHandler(SelectionGrid__CashierRoom);
                 cboCashierRoom.Properties.Tag = gridCheck;
                 cboCashierRoom.Properties.View.OptionsSelection.MultiSelect = true;
+                cboCashierRoom.Properties.View.CustomRowFilter += CashierRoomView_CustomRowFilter;
+                cboCashierRoom.Properties.View.MouseUp += CashierRoomView_MouseUp;
             }
             catch (Exception ex)
             {
@@ -64,16 +67,15 @@ namespace HIS.Desktop.Plugins.CashCollect
                 cboCashierRoom.Properties.DataSource = cashierRoomCollection;
                 cboCashierRoom.Properties.DisplayMember = "CASHIER_ROOM_NAME";
                 cboCashierRoom.Properties.ValueMember = "ID";
-                DevExpress.XtraGrid.Columns.GridColumn colCode = cboCashierRoom.Properties.View.Columns.AddField("CASHIER_ROOM_CODE");
-                colCode.VisibleIndex = 1;
-                colCode.Width = 80;
-                colCode.Caption = "";
-                DevExpress.XtraGrid.Columns.GridColumn colName = cboCashierRoom.Properties.View.Columns.AddField("CASHIER_ROOM_NAME");
-                colName.VisibleIndex = 2;
-                colName.Width = 220;
+                // One name column like "Sổ thu chi" (the search box still matches the code).
+                // The header row is shown: its check box (GridCheckMarksSelection1) and the caption "Chọn tất cả" select / clear every listed room.
+                DevExpress.XtraGrid.Columns.GridColumn colName = cboCashierRoom.Properties.View.Columns.AddField(CASHIER_ROOM_NAME_FIELD);
+                colName.VisibleIndex = 1;
+                colName.Width = 300;
                 colName.Caption = "";
-                cboCashierRoom.Properties.PopupFormWidth = 320;
-                cboCashierRoom.Properties.View.OptionsView.ShowColumnHeaders = false;
+                colName.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+                cboCashierRoom.Properties.PopupFormWidth = 300;
+                cboCashierRoom.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cboCashierRoom.Properties.View.OptionsSelection.MultiSelect = true;
                 ClearCashierRoomSelection();
             }
@@ -93,6 +95,34 @@ namespace HIS.Desktop.Plugins.CashCollect
                     if (rv != null)
                         CashierRoomSelecteds.Add(rv);
                 }
+                // The box is narrow: the tooltip lists every selected room
+                cboCashierRoom.ToolTip = String.Join(Environment.NewLine, CashierRoomSelecteds.Select(o => o.CASHIER_ROOM_NAME));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// "Chọn tất cả": a click on the name column header selects every room listed (after the search box filter), or clears them when all are selected.
+        /// The check box header next to it does the same inside GridCheckMarksSelection1.
+        /// </summary>
+        private void CashierRoomView_MouseUp(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                GridCheckMarksSelection1 gridCheck = cboCashierRoom.Properties.Tag as GridCheckMarksSelection1;
+                if (view == null || gridCheck == null || e.Button != MouseButtons.Left) return;
+
+                DevExpress.XtraGrid.Views.Grid.ViewInfo.GridHitInfo hi = view.CalcHitInfo(e.Location);
+                if (!hi.InColumn || hi.Column == null || hi.Column.FieldName != CASHIER_ROOM_NAME_FIELD) return;
+
+                if (gridCheck.SelectedCount == view.DataRowCount)
+                    gridCheck.ClearSelection(view);
+                else
+                    gridCheck.SelectAll(view);
             }
             catch (Exception ex)
             {
