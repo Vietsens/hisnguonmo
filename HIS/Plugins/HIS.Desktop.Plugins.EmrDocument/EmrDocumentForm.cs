@@ -2603,7 +2603,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 doc.DupRank = 0;
             }
 
-            if (IsMergeDocument)
+            //Key khác 1 hoặc null: không đánh dấu => khóa sắp xếp trùng giá trị gốc, hiển thị như cũ
+            if (!Config.ConfigKey.IsWarningDuplicateSignedDocument || IsMergeDocument)
                 return;
 
             var groups = listData
