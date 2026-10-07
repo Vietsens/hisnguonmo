@@ -33,6 +33,15 @@ namespace HIS.Desktop.Plugins.EmrDocument.Base
         public string CHILD_KEY { get; set; }
         public bool IsChecked { get; set; }
 
+        //Văn bản trùng: cùng hồ sơ + loại + HIS_CODE, có chung người đã ký, đã có bản tạo sau
+        public bool IsOlderDuplicate { get; set; }
+        public long DuplicateAnchorId { get; set; }//ID bản mới nhất của bộ trùng
+        public string NewestDocumentCode { get; set; }
+        public long? NewestCreateTime { get; set; }
+        //Khóa sắp xếp: bản cũ mượn khóa của bản mới nhất để đứng liền ngay dưới
+        public long? SortDocTime { get; set; }
+        public long? SortCreateTime { get; set; }
+        public int DupRank { get; set; }
 
       
     }
