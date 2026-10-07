@@ -60,11 +60,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                 if (moduleData != null)
                 {
-                    // EMR.HSM.CMC.INTEGRATE_OPTION: 0/khong khai bao => man cap chung thu 2ID; khac 0 => man cap chung thu CMC
-                    if (IsCmcPlatform())
-                    {
-                        return new frmEmrPatientCertificateRegisterCmc(moduleData);
-                    }
+                    // 2ID va CMC dung chung man doc chip CCCD: server chon nen tang cap chung thu theo EMR.HSM.CMC.INTEGRATE_OPTION
+                    // (khac 0 => CMC HubCA kiem tra C06 bang du lieu chip; 0/khong khai bao => 2ID), man hien nen tang tren tieu de
                     return new frmEmrPatientCertificateRegister(moduleData, documentId);
                 }
                 else
@@ -82,8 +79,11 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
         private const string CFG_HSM_CMC_INTEGRATE_OPTION = "EMR.HSM.CMC.INTEGRATE_OPTION";
 
-        /// <summary>Doc giong BE (EmrSignCFG.IS_CMC_PLATFORM): so khac 0 => nen tang CMC (CSign + HubCA); 0, de trong hoac khong phai so => 2ID</summary>
-        private static bool IsCmcPlatform()
+        /// <summary>
+        /// Nha cung cap phat hanh chung thu, doc giong BE (EmrSignCFG.IS_CMC_PLATFORM): so khac 0 => CMC (HubCA, kiem tra C06 bang du lieu chip);
+        /// 0, de trong hoac khong phai so => 2ID
+        /// </summary>
+        internal static bool IsCmcPlatform()
         {
             try
             {

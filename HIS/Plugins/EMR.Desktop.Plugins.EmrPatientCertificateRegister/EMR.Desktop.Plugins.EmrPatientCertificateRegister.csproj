@@ -169,7 +169,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\AttackADO.cs" />
-    <Compile Include="ADO\CmcCertificateRegisterSDO.cs" />
     <Compile Include="ADO\ImageADO.cs" />
     <Compile Include="DTO\CCCDResponse.cs" />
     <Compile Include="EmrPatientCertificateRegister\EmrPatientCertificateRegisterBehavior.cs" />
@@ -181,12 +180,6 @@
     <Compile Include=".Designer.cs">
       <DependentUpon>frmEmrPatientCertificateRegister.cs</DependentUpon>
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEmrPatientCertificateRegisterCmc.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEmrPatientCertificateRegisterCmc.Designer.cs">
-      <DependentUpon>frmEmrPatientCertificateRegisterCmc.cs</DependentUpon>
     </Compile>
     <Compile Include="EmrPatientCertificateRegisterProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

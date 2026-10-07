@@ -116,7 +116,11 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
 
                 //BarSubItem barSubThaoTac = new BarSubItem(this.barManager, "Thao tác", 1);
 
-                if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT)
+                // 57576: phieu linh (PL) chi duyet/thuc xuat trong man chi tiet (Xem chi tiet) qua cac API Aggr*,
+                // cac thao tac Sua/Xoa/Duyet/Thuc xuat/Huy duyet ben duoi goi API phieu thuong nen bo qua.
+                bool isAggrExpMest = expMestTypeId == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__PL;
+
+                if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT && !isAggrExpMest)
                 {
                     if ((creator == LoggingName || CheckLoginAdmin.IsAdmin(LoggingName)) &&
                         (statusIdCheckForButtonEdit == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DRAFT ||
@@ -146,7 +150,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                         popupMenu.ItemLinks.Add(bbtXoa);
                     }
                 }
-                else if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT)
+                else if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT && !isAggrExpMest)
                 {
                     if ((creator == LoggingName || CheckLoginAdmin.IsAdmin(LoggingName)) &&
                         (
@@ -179,7 +183,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                     }
                 }
 
-                if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT)
+                if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT && !isAggrExpMest)
                 {
                     if (pData.IS_NOT_TAKEN == 1 || (pData.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM && HisConfigCFG.MUST_CONFIRM_BEFORE_APPROVE == "1" && pData.IS_CONFIRM != 1))
                     {
@@ -245,7 +249,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                     }
                 }
 
-                if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT)
+                if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT && !isAggrExpMest)
                 {
                     if (pData.IS_NOT_TAKEN == 1)
                     {
@@ -286,7 +290,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                     }
                 }
 
-                if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT)
+                if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT && !isAggrExpMest)
                 {
                     if (pData.IS_NOT_TAKEN == 1)
                     {
