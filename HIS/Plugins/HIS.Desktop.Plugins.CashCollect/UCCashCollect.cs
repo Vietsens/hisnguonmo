@@ -812,6 +812,11 @@ namespace HIS.Desktop.Plugins.CashCollect
                 this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("UCCashCollect.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciAmountSum.Text = Inventec.Common.Resource.Get.Value("UCCashCollect.lciAmountSum.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciCashierRoom.Text = Inventec.Common.Resource.Get.Value("UCCashCollect.lciCashierRoom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                DevExpress.XtraGrid.Columns.GridColumn colCashierRoomName = this.cboCashierRoom.Properties.View.Columns.ColumnByFieldName(CASHIER_ROOM_NAME_FIELD);
+                if (colCashierRoomName != null)
+                {
+                    colCashierRoomName.Caption = Inventec.Common.Resource.Get.Value("UCCashCollect.cboCashierRoom.colCashierRoomName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
             }
             catch (Exception ex)
             {

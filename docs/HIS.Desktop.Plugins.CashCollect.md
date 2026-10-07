@@ -28,6 +28,7 @@
 
 ### Ô tìm của combo chọn nhiều (Phòng thu ngân, Sổ thu chi)
 - Gõ vào ô tìm trong popup: dòng hiện khi mã + tên chứa **đủ mọi từ** đã gõ, không phân biệt hoa thường, có dấu hay không dấu (gõ "quay 2" ra "Thu viện phí quầy 2"; gõ mã "TN02" cũng ra).
+- Popup Phòng thu ngân có hàng tiêu đề **☐ Chọn tất cả**: tích ô tiêu đề hoặc bấm chữ "Chọn tất cả" → chọn mọi phòng **đang hiện** trong popup (đã gõ ô tìm thì chỉ chọn các phòng khớp); bấm lần nữa khi đã chọn hết → bỏ chọn hết.
 
 ### Điều kiện nghiệp vụ
 - Giao dịch đã thuộc một phiếu nộp quỹ thì không tích được; Tích ALL chỉ lấy giao dịch chưa nộp (`HAS_CASHOUT = false`).
@@ -55,7 +56,7 @@
 ```
 +----------------------------------------------------------------------------------------------+
 | [Mã GD][Từ khóa][Trạng thái][Phòng thu ngân ▼][Sổ thu chi ▼] |                                |
-| [Giao dịch viên][Từ số][Đến số][Từ ngày][Đến ngày]           | [Tìm kiếm][Tổng số tiền][Người nộp][Ngày nộp dd/MM/yyyy HH:mm] |
+| [Giao dịch viên][Từ số][Đến số][Từ ngày][Đến ngày]           | [Tìm kiếm][Tổng số tiền][Người nộp][Ngày nộp dd/MM/yyyy HH:mm:ss] |
 +--------------------------------------------------------------+-------------------------------+
 | Lưới giao dịch (UC HIS.UC.CashCollect)                       | Lưới phiếu nộp quỹ            |
 | [☑ tiêu đề = Tích ALL] STT | Mã GD | Số tiền | ...           | X | Tên đăng nhập | Thời gian nộp quỹ | Số tiền |
@@ -77,7 +78,7 @@
 | File | Nội dung |
 |------|----------|
 | `UCCashCollect.cs` | Khởi tạo, bộ lọc (`BuildTransactionFilter`), lưới, Nộp mới / Sửa / Làm lại |
-| `UCCashCollect___CashierRoom.cs` | Combo Phòng thu ngân |
+| `UCCashCollect___CashierRoom.cs` | Combo Phòng thu ngân (kể cả "Chọn tất cả" trên tiêu đề popup) |
 | `UCCashCollect___ComboSearch.cs` | Ô tìm của 2 combo chọn nhiều: khớp đủ mọi từ, không dấu |
 | `UCCashCollect___Selection.cs` | Danh sách chọn, Tích ALL, lưới phải, `CalcCashoutAmount` |
 
@@ -110,6 +111,7 @@ Không có chức năng in.
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 07/10/2026 | dangth2 (Claude) | Combo **Phòng thu ngân** thêm **Chọn tất cả**: popup hiện hàng tiêu đề, tích ô tiêu đề (`GridCheckMarksSelection1`) hoặc bấm chữ "Chọn tất cả" (`CashierRoomView_MouseUp`) → chọn / bỏ chọn mọi phòng đang hiện trong popup (theo ô tìm). Khóa ngôn ngữ `UCCashCollect.cboCashierRoom.colCashierRoomName.Caption` (vi "Chọn tất cả", en "Select all") |
 | 07/10/2026 | dangth2 (Claude) | Sửa theo test 59333 (chị Hân): ô tìm trong popup **Phòng thu ngân** và **Sổ thu chi** khớp khi mã + tên chứa **đủ mọi từ đã gõ**, không phân biệt hoa thường, có dấu hay không dấu (`UCCashCollect___ComboSearch.cs`, `CustomRowFilter`; ô tìm DevExpress 15.2 nối các từ bằng HOẶC nên gõ thêm từ không thu hẹp được); popup Phòng thu ngân chỉ hiện cột tên giống Sổ thu chi, có tooltip liệt kê các phòng đã chọn; **Ngày nộp** chọn được giây (`dd/MM/yyyy HH:mm:ss`, ô giờ trong lịch `HH:mm:ss`); nới ô Phòng thu ngân và ô Ngày nộp ở độ rộng 1366 px |
 | 06/10/2026 | dangth2 (Claude) | Việc 55505 (NTP): thêm lọc **Phòng thu ngân** (chọn nhiều, `CASHIER_ROOM_IDs`); **Ngày nộp** chọn ngày + giờ, lưu đúng giá trị chọn (bỏ ép 23:59:59), lưới "Thời gian nộp quỹ" hiển thị `CASHOUT_TIME` (trước hiển thị nhầm `CREATE_TIME`); **Tích ALL theo điều kiện lọc** (ô tích trên tiêu đề cột, chọn mọi trang); danh sách chọn giữ qua các trang; một hàm tính tổng tiền theo công thức BE. Sửa kèm luồng Sửa: không còn gửi giao dịch của phiếu sửa trước, không lặp dòng khi xóa rồi tích thêm, ngày nộp không phụ thuộc định dạng vùng của máy; Ctrl N không tạo phiếu khi đang sửa; Sửa xóa phiếu khi không còn giao dịch (thay cho điều kiện tổng tiền = 0). UC `HIS.UC.CashCollect`: `CheckAll_Click`, `SetCheckAll`; khôi phục 2 ảnh `Resources/cancel_16x16*.png` bị hỏng trong git (thiếu byte `0D` ở header PNG, làm build lỗi MSB3103) |
 
@@ -119,6 +121,9 @@ Không có chức năng in.
 - [ ] Không chọn Phòng thu ngân → giao dịch mọi phòng
 - [ ] Chọn 1 / nhiều phòng → chỉ giao dịch của các phòng đó
 - [ ] Làm lại → bỏ chọn phòng
+- [ ] Mở popup Phòng thu ngân → tích "Chọn tất cả" → mọi phòng được chọn, ô combo hiện đủ tên → Tìm kiếm ra giao dịch của các phòng đó
+- [ ] Bấm "Chọn tất cả" lần nữa → bỏ chọn hết
+- [ ] Gõ ô tìm "quầy 2" rồi bấm "Chọn tất cả" → chỉ chọn phòng khớp
 
 ### Tích ALL
 - [ ] Kết quả nhiều trang → tích ô tiêu đề → lưới phải đủ số dòng bằng tổng ở thanh phân trang, Tổng số tiền đúng; sang trang khác dòng vẫn tích
@@ -140,4 +145,4 @@ Không có chức năng in.
 - [ ] Ngày nộp nhập/chọn được giây; lưới nộp quỹ hiện đúng giây đã chọn
 
 ### Tự động (harness `PTTK\55505\harness_test_FE`)
-- 06/10/2026: 72/72; 07/10/2026 (sau sửa theo test 59333): 85/85 — đạt ở cả culture vi-VN và en-US: UC thật + BackendAdapter thật gọi máy chủ MOS giả lập có luật kiểm tổng tiền / giao dịch đã nộp như BE.
+- 06/10/2026: 72/72; 07/10/2026 (sau sửa theo test 59333): 85/85; 07/10/2026 (thêm Chọn tất cả Phòng thu ngân): 90/90 — đạt ở cả culture vi-VN và en-US: UC thật + BackendAdapter thật gọi máy chủ MOS giả lập có luật kiểm tổng tiền / giao dịch đã nộp như BE.

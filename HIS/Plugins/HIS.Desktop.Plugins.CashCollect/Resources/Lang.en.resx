@@ -147,4 +147,7 @@
   <data name="UCCashCollect.lciCashierRoom.Text" xml:space="preserve">
     <value>Cashier room:</value>
   </data>
+  <data name="UCCashCollect.cboCashierRoom.colCashierRoomName.Caption" xml:space="preserve">
+    <value>Select all</value>
+  </data>
 </root>
