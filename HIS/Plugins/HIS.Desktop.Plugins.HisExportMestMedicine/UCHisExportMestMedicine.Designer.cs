@@ -243,6 +243,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_TransactionCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_PayFormName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnDESCRIPTION = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -746,6 +747,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn19,
             this.gridColumn20,
             this.Gc_TransactionCode,
+            this.Gc_PayFormName,
             this.gridColumn18,
             this.gridColumnDESCRIPTION,
             this.gridColumn14,
@@ -1146,7 +1148,18 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.Gc_TransactionCode.Visible = true;
             this.Gc_TransactionCode.VisibleIndex = 16;
             this.Gc_TransactionCode.Width = 100;
-            // 
+            //
+            // Gc_PayFormName
+            //
+            this.Gc_PayFormName.Caption = "Hình thức thanh toán";
+            this.Gc_PayFormName.FieldName = "PAY_FORM_NAME_DISPLAY";
+            this.Gc_PayFormName.Name = "Gc_PayFormName";
+            this.Gc_PayFormName.OptionsColumn.AllowEdit = false;
+            this.Gc_PayFormName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.Gc_PayFormName.Visible = true;
+            this.Gc_PayFormName.VisibleIndex = 17;
+            this.Gc_PayFormName.Width = 120;
+            //
             // gridColumn18
             // 
             this.gridColumn18.Caption = "Số toa";
@@ -1155,7 +1168,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn18.OptionsColumn.AllowEdit = false;
             this.gridColumn18.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn18.Visible = true;
-            this.gridColumn18.VisibleIndex = 17;
+            this.gridColumn18.VisibleIndex = 18;
             // 
             // gridColumnDESCRIPTION
             // 
@@ -1163,7 +1176,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumnDESCRIPTION.FieldName = "DESCRIPTION";
             this.gridColumnDESCRIPTION.Name = "gridColumnDESCRIPTION";
             this.gridColumnDESCRIPTION.Visible = true;
-            this.gridColumnDESCRIPTION.VisibleIndex = 18;
+            this.gridColumnDESCRIPTION.VisibleIndex = 19;
             this.gridColumnDESCRIPTION.Width = 300;
             // 
             // gridColumn14
@@ -1173,7 +1186,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.ReadOnly = true;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 19;
+            this.gridColumn14.VisibleIndex = 20;
             this.gridColumn14.Width = 79;
             // 
             // gridColumn22
@@ -1183,7 +1196,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.OptionsColumn.ReadOnly = true;
             this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 20;
+            this.gridColumn22.VisibleIndex = 21;
             this.gridColumn22.Width = 80;
             // 
             // gridColumn13
@@ -1193,7 +1206,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 21;
+            this.gridColumn13.VisibleIndex = 22;
             this.gridColumn13.Width = 119;
             // 
             // gridColumn12
@@ -1204,7 +1217,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 22;
+            this.gridColumn12.VisibleIndex = 23;
             this.gridColumn12.Width = 81;
             // 
             // gridColumn_PatientType
@@ -1215,7 +1228,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn_PatientType.OptionsColumn.AllowEdit = false;
             this.gridColumn_PatientType.ToolTip = "Đối tượng bệnh nhân";
             this.gridColumn_PatientType.Visible = true;
-            this.gridColumn_PatientType.VisibleIndex = 23;
+            this.gridColumn_PatientType.VisibleIndex = 24;
             this.gridColumn_PatientType.Width = 90;
             // 
             // GcExpMestTypeName
@@ -1227,7 +1240,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcExpMestTypeName.Name = "GcExpMestTypeName";
             this.GcExpMestTypeName.OptionsColumn.AllowEdit = false;
             this.GcExpMestTypeName.Visible = true;
-            this.GcExpMestTypeName.VisibleIndex = 24;
+            this.GcExpMestTypeName.VisibleIndex = 25;
             this.GcExpMestTypeName.Width = 133;
             // 
             // gridColumn21
@@ -1238,7 +1251,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 25;
+            this.gridColumn21.VisibleIndex = 26;
             this.gridColumn21.Width = 120;
             // 
             // GcReqName
@@ -1249,7 +1262,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcReqName.OptionsColumn.AllowEdit = false;
             this.GcReqName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcReqName.Visible = true;
-            this.GcReqName.VisibleIndex = 26;
+            this.GcReqName.VisibleIndex = 27;
             this.GcReqName.Width = 150;
             // 
             // GcMediStockName
@@ -1259,7 +1272,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcMediStockName.Name = "GcMediStockName";
             this.GcMediStockName.OptionsColumn.AllowEdit = false;
             this.GcMediStockName.Visible = true;
-            this.GcMediStockName.VisibleIndex = 27;
+            this.GcMediStockName.VisibleIndex = 28;
             this.GcMediStockName.Width = 120;
             // 
             // GcApprovalName
@@ -1300,7 +1313,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcReqDepartmentCode.Name = "GcReqDepartmentCode";
             this.GcReqDepartmentCode.OptionsColumn.AllowEdit = false;
             this.GcReqDepartmentCode.Visible = true;
-            this.GcReqDepartmentCode.VisibleIndex = 28;
+            this.GcReqDepartmentCode.VisibleIndex = 29;
             this.GcReqDepartmentCode.Width = 100;
             // 
             // GcReqDepartmentName
@@ -1310,7 +1323,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcReqDepartmentName.Name = "GcReqDepartmentName";
             this.GcReqDepartmentName.OptionsColumn.AllowEdit = false;
             this.GcReqDepartmentName.Visible = true;
-            this.GcReqDepartmentName.VisibleIndex = 29;
+            this.GcReqDepartmentName.VisibleIndex = 30;
             this.GcReqDepartmentName.Width = 150;
             // 
             // gridColumn23
@@ -1320,7 +1333,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 30;
+            this.gridColumn23.VisibleIndex = 31;
             this.gridColumn23.Width = 120;
             // 
             // GcFinishTime
@@ -1335,7 +1348,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcFinishTime.OptionsColumn.AllowEdit = false;
             this.GcFinishTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcFinishTime.Visible = true;
-            this.GcFinishTime.VisibleIndex = 31;
+            this.GcFinishTime.VisibleIndex = 32;
             this.GcFinishTime.Width = 120;
             // 
             // GcNationalExpMestCode
@@ -1345,7 +1358,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcNationalExpMestCode.Name = "GcNationalExpMestCode";
             this.GcNationalExpMestCode.OptionsColumn.AllowEdit = false;
             this.GcNationalExpMestCode.Visible = true;
-            this.GcNationalExpMestCode.VisibleIndex = 32;
+            this.GcNationalExpMestCode.VisibleIndex = 33;
             // 
             // GcCreateTime
             // 
@@ -1359,7 +1372,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcCreateTime.OptionsColumn.AllowEdit = false;
             this.GcCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcCreateTime.Visible = true;
-            this.GcCreateTime.VisibleIndex = 33;
+            this.GcCreateTime.VisibleIndex = 34;
             this.GcCreateTime.Width = 120;
             // 
             // GcCreator
@@ -1369,7 +1382,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcCreator.Name = "GcCreator";
             this.GcCreator.OptionsColumn.AllowEdit = false;
             this.GcCreator.Visible = true;
-            this.GcCreator.VisibleIndex = 34;
+            this.GcCreator.VisibleIndex = 35;
             this.GcCreator.Width = 90;
             // 
             // GcModifyTime
@@ -1384,7 +1397,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcModifyTime.OptionsColumn.AllowEdit = false;
             this.GcModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcModifyTime.Visible = true;
-            this.GcModifyTime.VisibleIndex = 35;
+            this.GcModifyTime.VisibleIndex = 36;
             this.GcModifyTime.Width = 120;
             // 
             // GcModifier
@@ -1394,7 +1407,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
             this.GcModifier.Name = "GcModifier";
             this.GcModifier.OptionsColumn.AllowEdit = false;
             this.GcModifier.Visible = true;
-            this.GcModifier.VisibleIndex = 36;
+            this.GcModifier.VisibleIndex = 37;
             this.GcModifier.Width = 90;
             // 
             // imageListStatus
@@ -3836,6 +3849,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraGrid.Columns.GridColumn Gc_TransactionCode;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_PayFormName;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn19;
         private DevExpress.XtraEditors.LabelControl lblAveragePerMedicine;
         private DevExpress.XtraEditors.LabelControl lblTotalOfPrice;
