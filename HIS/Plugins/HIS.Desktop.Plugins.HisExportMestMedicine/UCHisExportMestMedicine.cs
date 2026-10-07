@@ -689,7 +689,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                         LoadInfoClick(listExpMest[0]);
                         LoadVisibility(listExpMest[0]);
-                        if (chkAutoCallPatient.Checked && (filter.EXP_MEST_CODE__EXACT != null || filter.TDL_SERVICE_REQ_CODE__EXACT != null || filter.TDL_TREATMENT_CODE__EXACT != null))
+                        if (chkAutoCallPatient.Checked && (filter.EXP_MEST_CODE__EXACT != null || filter.EXP_MEST_SUB_CODE_2__EXACT != null || filter.TDL_SERVICE_REQ_CODE__EXACT != null || filter.TDL_TREATMENT_CODE__EXACT != null))
                         {
                             var listCall = listExpMest.Where(o => o.IS_NOT_TAKEN != 1 && o.TDL_PATIENT_NAME != null);
                             if (listCall != null && listCall.ToList().Count > 0)
@@ -733,12 +733,20 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 else if (!String.IsNullOrEmpty(txtExpMestCode.Text))
                 {
                     string code = txtExpMestCode.Text.Trim();
-                    if (code.Length < 12 && checkDigit(code))
+                    // Viec 58005: chuoi co dau '.' (VD DB5.261002.0001) la Ma thu cap (2)
+                    if (code.Contains("."))
                     {
-                        code = string.Format("{0:000000000000}", Convert.ToInt64(code));
-                        txtExpMestCode.Text = code;
+                        filter.EXP_MEST_SUB_CODE_2__EXACT = code;
                     }
-                    filter.EXP_MEST_CODE__EXACT = code;
+                    else
+                    {
+                        if (code.Length < 12 && checkDigit(code))
+                        {
+                            code = string.Format("{0:000000000000}", Convert.ToInt64(code));
+                            txtExpMestCode.Text = code;
+                        }
+                        filter.EXP_MEST_CODE__EXACT = code;
+                    }
                     filter.DATA_DOMAIN_FILTER = true;
                     filter.WORKING_ROOM_ID = roomId;
                     filter.HAS_AGGR = false;

@@ -2480,12 +2480,20 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 else if (!String.IsNullOrEmpty(txtExpMestCode.Text))
                 {
                     string code = txtExpMestCode.Text.Trim();
-                    if (code.Length < 12)
+                    // Viec 58005: chuoi co dau '.' (VD DB5.261002.0001) la Ma thu cap (2)
+                    if (code.Contains("."))
                     {
-                        code = string.Format("{0:000000000000}", Convert.ToInt64(code));
-                        txtExpMestCode.Text = code;
+                        filter.EXP_MEST_SUB_CODE_2__EXACT = code;
                     }
-                    filter.EXP_MEST_CODE__EXACT = code;
+                    else
+                    {
+                        if (code.Length < 12)
+                        {
+                            code = string.Format("{0:000000000000}", Convert.ToInt64(code));
+                            txtExpMestCode.Text = code;
+                        }
+                        filter.EXP_MEST_CODE__EXACT = code;
+                    }
                 }
 
                 var listExpMest = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, filter, param);
