@@ -1445,8 +1445,12 @@ namespace HIS.UC.UCPatientRaw
                                 message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0 hoặc hồ sơ BHYT chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}.", treatmentPrevis);
                                 if (DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                                 {
+                                    if (this.dlgEnableSave != null)
+                                        this.dlgEnableSave(false);
                                     return;
                                 }
+                                // Đã hiện trong hộp YesNo (gồm cả cảnh báo thuốc nếu có) -> không hiện lại ở cuối hàm
+                                message = "";
                             }
                             if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4")
                             {
@@ -1503,7 +1507,7 @@ namespace HIS.UC.UCPatientRaw
                                 this.dlgEnableSave(false);
                         }
                     }
-                    else if (HisConfigCFG.IsCheckPreviousDebt != "5")
+                    else
                     {
                         MessageManager.Show(message);
                     }

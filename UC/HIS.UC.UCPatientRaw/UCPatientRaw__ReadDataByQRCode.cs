@@ -286,6 +286,9 @@ namespace HIS.UC.UCPatientRaw
 			try
 			{
 				Inventec.Common.Logging.LogSystem.Debug("FillDataPatientToControl.1");
+				// Người dùng chủ động tìm BN (kể cả tìm lại đúng BN vừa lưu mà chưa bấm Mới) -> lượt tiếp đón mới,
+				// bỏ lọc hồ sơ vừa lưu để không mất cảnh báo nợ viện phí/chưa khóa viện phí.
+				this.lastSavedTreatmentCode = null;
     //            bool checkK = checkKey6(patientDTO.ID);
     //            if (!checkK)
 				//{
