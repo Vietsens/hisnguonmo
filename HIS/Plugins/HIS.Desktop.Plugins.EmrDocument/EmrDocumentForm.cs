@@ -747,6 +747,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     if (listData != null && listData.Count > 0)
                     {
                         listData = listData.Where(o => o.IS_OUTSIDE_TREATMENT != 1).ToList();
+                        MarkDuplicateDocuments(listData);
                     }
 
                     long order = 1;
@@ -819,7 +820,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             }
                                         }
 
-                                        listByGroups = listByGroups.OrderBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
+                                        listByGroups = listByGroups.OrderBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.SortDocTime).ThenBy(o => o.SortCreateTime).ThenBy(o => o.DupRank).ToList();
 
                                         listByGroups.ForEach(o =>
                                         {
@@ -905,7 +906,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                         });
                                     }
                                 }
-                                listData = listData.OrderByDescending(o => o.NUM_ORDER).ThenBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
+                                listData = listData.OrderByDescending(o => o.NUM_ORDER).ThenBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.SortDocTime).ThenBy(o => o.SortCreateTime).ThenBy(o => o.DupRank).ToList();
                             }
                         }
                         else if (listData != null && listData.Count > 0)
@@ -914,7 +915,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                             foreach (var item in this.lstTreatment)
                             {
-                                var lstCheck = listData.Where(o => o.TREATMENT_ID == item.ID).ToList();
+                                var lstCheck = PlaceOlderDuplicatesUnderNewest(listData.Where(o => o.TREATMENT_ID == item.ID).ToList());
 
                                 if (lstCheck != null && lstCheck.Count > 0)
                                 {
@@ -983,8 +984,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                                 documents = documents
                                       .OrderBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
-                                      .ThenBy(d => d.DOCUMENT_TIME)
-                                      .ThenBy(d => d.CREATE_TIME)
+                                      .ThenBy(d => d.SortDocTime)
+                                      .ThenBy(d => d.SortCreateTime)
+                                      .ThenBy(d => d.DupRank)
                                       .ToList();
 
                                 foreach (var doc in documents)
@@ -1036,13 +1038,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             listData = listData
                                 .OrderByDescending(d => d.NUM_ORDER)
                                 .ThenBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
-                                .ThenBy(d => d.DOCUMENT_TIME)
-                                .ThenBy(d => d.CREATE_TIME)
+                                .ThenBy(d => d.SortDocTime)
+                                .ThenBy(d => d.SortCreateTime)
+                                .ThenBy(d => d.DupRank)
                                 .ToList();
                         }
                         else if (listData != null && listData.Count > 0)
                         {
                             order = 1;
+                            listData = PlaceOlderDuplicatesUnderNewest(listData);
                             listData.ForEach(o =>
                             {
                                 o.DOCUMENT_DISPLAY = o.DOCUMENT_NAME;
@@ -2575,6 +2579,133 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đánh dấu văn bản ký trùng: cùng hồ sơ + loại văn bản + HIS_CODE, có chung ít nhất 1 người đã ký
+        /// và đã có bản tạo sau (chưa hủy) => bản cũ hiển thị dấu "!", đứng ngay dưới bản mới nhất
+        /// </summary>
+        private void MarkDuplicateDocuments(List<EmrDocumentADO> listData)
+        {
+            foreach (var doc in listData)
+            {
+                doc.IsOlderDuplicate = false;
+                doc.DuplicateAnchorId = doc.ID;
+                doc.NewestDocumentCode = null;
+                doc.NewestCreateTime = null;
+                doc.SortDocTime = doc.DOCUMENT_TIME;
+                doc.SortCreateTime = doc.CREATE_TIME;
+                doc.DupRank = 0;
+            }
+
+            if (IsMergeDocument)
+                return;
+
+            var groups = listData
+                .Where(o => o.ID > 0 && o.IS_DELETE != 1 && !string.IsNullOrEmpty(o.HIS_CODE) && !string.IsNullOrEmpty(o.SIGNERS))
+                .GroupBy(o => new { o.TREATMENT_ID, o.DOCUMENT_TYPE_ID, o.HIS_CODE });
+
+            foreach (var group in groups)
+            {
+                var docs = group.OrderByDescending(o => o.CREATE_TIME).ThenByDescending(o => o.ID).ToList();
+                if (docs.Count < 2)
+                    continue;
+
+                for (int i = 1; i < docs.Count; i++)
+                {
+                    var signers = SplitSigners(docs[i].SIGNERS);
+                    var newer = docs.Take(i).FirstOrDefault(o => SplitSigners(o.SIGNERS).Overlaps(signers));
+                    if (newer == null)
+                        continue;
+
+                    //Bản mới được xử lý trước nên khóa của newer đã là khóa của bản mới nhất trong chuỗi
+                    docs[i].IsOlderDuplicate = true;
+                    docs[i].DuplicateAnchorId = newer.DuplicateAnchorId;
+                    docs[i].NewestDocumentCode = newer.DOCUMENT_CODE;
+                    docs[i].NewestCreateTime = newer.CREATE_TIME;
+                    docs[i].SortDocTime = newer.SortDocTime;
+                    docs[i].SortCreateTime = newer.SortCreateTime;
+                    docs[i].DupRank = i;
+                }
+            }
+        }
+
+        private HashSet<string> SplitSigners(string signers)
+        {
+            return new HashSet<string>(signers.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()), StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Dùng cho nhánh giữ nguyên thứ tự server trả về: chuyển bản cũ xuống ngay dưới bản mới nhất của nó
+        /// </summary>
+        private List<EmrDocumentADO> PlaceOlderDuplicatesUnderNewest(List<EmrDocumentADO> listData)
+        {
+            var olders = listData.Where(o => o.IsOlderDuplicate).ToList();
+            if (olders.Count == 0)
+                return listData;
+
+            var result = new List<EmrDocumentADO>();
+            foreach (var doc in listData.Where(o => !o.IsOlderDuplicate))
+            {
+                result.Add(doc);
+                result.AddRange(olders.Where(o => o.DuplicateAnchorId == doc.ID).OrderBy(o => o.DupRank));
+            }
+            result.AddRange(olders.Where(o => !result.Contains(o)));
+            return result;
+        }
+
+        private void treeListDocument_CustomDrawNodeCell(object sender, DevExpress.XtraTreeList.CustomDrawNodeCellEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName != "DOCUMENT_DISPLAY")
+                    return;
+                var data = treeListDocument.GetDataRecordByNode(e.Node) as EmrDocumentADO;
+                if (data == null || !data.IsOlderDuplicate)
+                    return;
+
+                e.Appearance.FillRectangle(e.Cache, e.Bounds);
+
+                System.Drawing.Rectangle iconRect = new System.Drawing.Rectangle(e.Bounds.X + 1, e.Bounds.Y + (e.Bounds.Height - 14) / 2, 14, 14);
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                e.Graphics.FillEllipse(Brushes.DarkOrange, iconRect);
+                using (var iconFont = new System.Drawing.Font("Tahoma", 8, System.Drawing.FontStyle.Bold))
+                using (var format = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+                {
+                    e.Graphics.DrawString("!", iconFont, Brushes.White, iconRect, format);
+                }
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+
+                System.Drawing.Rectangle textRect = new System.Drawing.Rectangle(iconRect.Right + 3, e.Bounds.Y, e.Bounds.Right - iconRect.Right - 3, e.Bounds.Height);
+                e.Appearance.DrawString(e.Cache, e.CellText, textRect);
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void toolTipController1_GetActiveObjectInfo(object sender, DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs e)
+        {
+            try
+            {
+                if (e.SelectedControl != treeListDocument)
+                    return;
+                var hit = treeListDocument.CalcHitInfo(e.ControlMousePosition);
+                if (hit.Node == null || hit.Column == null || hit.Column.FieldName != "DOCUMENT_DISPLAY")
+                    return;
+                var data = treeListDocument.GetDataRecordByNode(hit.Node) as EmrDocumentADO;
+                if (data == null || !data.IsOlderDuplicate)
+                    return;
+
+                string text = String.Format("Văn bản trùng - đã có bản ký mới hơn (Mã VB: {0}, tạo lúc {1}). Bạn có thể xem lại hoặc xóa văn bản này.", data.NewestDocumentCode, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.NewestCreateTime ?? 0));
+                e.Info = new DevExpress.Utils.ToolTipControlInfo(hit.Node.Id + "_duplicate", text);
             }
             catch (Exception ex)
             {

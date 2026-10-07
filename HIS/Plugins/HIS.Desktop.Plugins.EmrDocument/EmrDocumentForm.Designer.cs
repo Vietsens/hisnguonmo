@@ -929,6 +929,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.repEdit_Disable});
             this.treeListDocument.Size = new System.Drawing.Size(546, 310);
             this.treeListDocument.TabIndex = 16;
+            this.treeListDocument.ToolTipController = this.toolTipController1;
+            this.toolTipController1.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController1_GetActiveObjectInfo);
+            this.treeListDocument.CustomDrawNodeCell += new DevExpress.XtraTreeList.CustomDrawNodeCellEventHandler(this.treeListDocument_CustomDrawNodeCell);
             this.treeListDocument.CustomNodeCellEdit += new DevExpress.XtraTreeList.GetCustomNodeCellEditEventHandler(this.treeListDocument_CustomNodeCellEdit);
             this.treeListDocument.NodeCellStyle += new DevExpress.XtraTreeList.GetCustomNodeCellStyleEventHandler(this.treeListDocument_NodeCellStyle);
             this.treeListDocument.CustomUnboundColumnData += new DevExpress.XtraTreeList.CustomColumnDataEventHandler(this.treeListDocument_CustomUnboundColumnData);

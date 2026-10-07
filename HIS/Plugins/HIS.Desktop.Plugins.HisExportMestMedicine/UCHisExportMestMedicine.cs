@@ -1243,6 +1243,14 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                             string Req_UserName = data.REQ_USERNAME;
                             e.Value = DisplayName(Req_loginName, Req_UserName);
                         }
+                        else if (e.Column.FieldName == "PAY_FORM_NAME_DISPLAY")
+                        {
+                            if (data.PAY_FORM_ID.HasValue)
+                            {
+                                var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == data.PAY_FORM_ID.Value);
+                                e.Value = payForm != null ? payForm.PAY_FORM_NAME : null;
+                            }
+                        }
                         if (e.Column.FieldName == "EXP_MEST_REASON_DISPLAY")
                         {
                             //if (data.EXP_MEST_SUB_CODE_2 != null) e.Value = string.Format("{0}-{1}", data.EXP_MEST_REASON_CODE, data.EXP_MEST_REASON_NAME);
