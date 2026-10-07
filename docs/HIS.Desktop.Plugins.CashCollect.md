@@ -16,7 +16,7 @@
 1. Lọc giao dịch: Mã giao dịch, Từ khóa, Trạng thái (Tất cả / Đã nộp / Chưa nộp — mặc định Chưa nộp), **Phòng thu ngân** (chọn nhiều), Sổ thu chi (chọn nhiều), Giao dịch viên, Từ số – Đến số, Từ ngày – Đến ngày → **Tìm kiếm (Ctrl F)**.
 2. Tích từng giao dịch, hoặc tích **ô trên tiêu đề cột tích** để chọn **mọi giao dịch chưa nộp thỏa bộ lọc (tất cả các trang)**. Danh sách chọn giữ nguyên khi chuyển trang.
 3. Lưới bên phải = các giao dịch sẽ nộp; **Tổng số tiền** tính lại mỗi lần chọn/bỏ.
-4. Chọn **Ngày nộp** (ngày + giờ, mặc định thời điểm hiện tại) → **Nộp mới (Ctrl N)** → `api/HisCashout/Create`.
+4. Chọn **Ngày nộp** (ngày + giờ + giây `dd/MM/yyyy HH:mm:ss`, mặc định thời điểm hiện tại) → **Nộp mới (Ctrl N)** → `api/HisCashout/Create`.
 5. Sửa phiếu: chọn phiếu ở lưới nộp quỹ → lưới phải nạp giao dịch của phiếu, ô Ngày nộp nạp `CASHOUT_TIME` → đổi ngày, tích thêm giao dịch hoặc bấm X để bỏ giao dịch → **Sửa (Ctrl S)** → `api/HisCashout/Update`. Bỏ hết giao dịch rồi Sửa = xóa phiếu.
 6. **Làm lại (Ctrl C)**: xóa bộ lọc (kể cả Phòng thu ngân), xóa danh sách chọn, về chế độ nộp mới.
 
@@ -25,6 +25,9 @@
 - Chuyển trang và Tích ALL dùng **bộ lọc của lần Tìm kiếm gần nhất** (`currentTransactionFilter`), không dùng giá trị đang gõ dở trên ô lọc.
 - Danh sách chọn bị xóa khi: Tìm kiếm lại, Làm lại, Nộp mới / Sửa thành công, chọn phiếu khác ở lưới nộp quỹ.
 - Ô tích tiêu đề tự bỏ tích khi người dùng bỏ 1 dòng (lưới trái) hoặc xóa 1 dòng mới chọn (lưới phải).
+
+### Ô tìm của combo chọn nhiều (Phòng thu ngân, Sổ thu chi)
+- Gõ vào ô tìm trong popup: dòng hiện khi mã + tên chứa **đủ mọi từ** đã gõ, không phân biệt hoa thường, có dấu hay không dấu (gõ "quay 2" ra "Thu viện phí quầy 2"; gõ mã "TN02" cũng ra).
 
 ### Điều kiện nghiệp vụ
 - Giao dịch đã thuộc một phiếu nộp quỹ thì không tích được; Tích ALL chỉ lấy giao dịch chưa nộp (`HAS_CASHOUT = false`).
@@ -75,6 +78,7 @@
 |------|----------|
 | `UCCashCollect.cs` | Khởi tạo, bộ lọc (`BuildTransactionFilter`), lưới, Nộp mới / Sửa / Làm lại |
 | `UCCashCollect___CashierRoom.cs` | Combo Phòng thu ngân |
+| `UCCashCollect___ComboSearch.cs` | Ô tìm của 2 combo chọn nhiều: khớp đủ mọi từ, không dấu |
 | `UCCashCollect___Selection.cs` | Danh sách chọn, Tích ALL, lưới phải, `CalcCashoutAmount` |
 
 ## 5. API Endpoints
@@ -106,6 +110,7 @@ Không có chức năng in.
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 07/10/2026 | dangth2 (Claude) | Sửa theo test 59333 (chị Hân): ô tìm trong popup **Phòng thu ngân** và **Sổ thu chi** khớp khi mã + tên chứa **đủ mọi từ đã gõ**, không phân biệt hoa thường, có dấu hay không dấu (`UCCashCollect___ComboSearch.cs`, `CustomRowFilter`; ô tìm DevExpress 15.2 nối các từ bằng HOẶC nên gõ thêm từ không thu hẹp được); popup Phòng thu ngân chỉ hiện cột tên giống Sổ thu chi, có tooltip liệt kê các phòng đã chọn; **Ngày nộp** chọn được giây (`dd/MM/yyyy HH:mm:ss`, ô giờ trong lịch `HH:mm:ss`); nới ô Phòng thu ngân và ô Ngày nộp ở độ rộng 1366 px |
 | 06/10/2026 | dangth2 (Claude) | Việc 55505 (NTP): thêm lọc **Phòng thu ngân** (chọn nhiều, `CASHIER_ROOM_IDs`); **Ngày nộp** chọn ngày + giờ, lưu đúng giá trị chọn (bỏ ép 23:59:59), lưới "Thời gian nộp quỹ" hiển thị `CASHOUT_TIME` (trước hiển thị nhầm `CREATE_TIME`); **Tích ALL theo điều kiện lọc** (ô tích trên tiêu đề cột, chọn mọi trang); danh sách chọn giữ qua các trang; một hàm tính tổng tiền theo công thức BE. Sửa kèm luồng Sửa: không còn gửi giao dịch của phiếu sửa trước, không lặp dòng khi xóa rồi tích thêm, ngày nộp không phụ thuộc định dạng vùng của máy; Ctrl N không tạo phiếu khi đang sửa; Sửa xóa phiếu khi không còn giao dịch (thay cho điều kiện tổng tiền = 0). UC `HIS.UC.CashCollect`: `CheckAll_Click`, `SetCheckAll`; khôi phục 2 ảnh `Resources/cancel_16x16*.png` bị hỏng trong git (thiếu byte `0D` ở header PNG, làm build lỗi MSB3103) |
 
 ## 9. Test Cases
@@ -129,5 +134,10 @@ Không có chức năng in.
 - [ ] Sửa phiếu A rồi phiếu B (chỉ đổi ngày) → không kéo giao dịch của A
 - [ ] Bỏ hết giao dịch của phiếu → Sửa → phiếu bị xóa
 
-### Tự động (harness, 06/10/2026)
-- 72/72 đạt ở cả culture vi-VN và en-US: UC thật + BackendAdapter thật gọi máy chủ MOS giả lập có luật kiểm tổng tiền / giao dịch đã nộp như BE.
+### Tìm kiếm combo / Ngày nộp (test 59333)
+- [ ] Phòng thu ngân gõ "Thu quầy" → chỉ phòng có cả 2 từ; gõ "quay 2" (không dấu) → đúng phòng; gõ mã phòng → đúng phòng
+- [ ] Sổ thu chi gõ "hoa don" → các sổ Hóa đơn
+- [ ] Ngày nộp nhập/chọn được giây; lưới nộp quỹ hiện đúng giây đã chọn
+
+### Tự động (harness `PTTK\55505\harness_test_FE`)
+- 06/10/2026: 72/72; 07/10/2026 (sau sửa theo test 59333): 85/85 — đạt ở cả culture vi-VN và en-US: UC thật + BackendAdapter thật gọi máy chủ MOS giả lập có luật kiểm tổng tiền / giao dịch đã nộp như BE.

@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.CashCollect
                 gridCheck.SelectionChanged += new GridCheckMarksSelection1.SelectionChangedEventHandler(SelectionGrid__CashierRoom);
                 cboCashierRoom.Properties.Tag = gridCheck;
                 cboCashierRoom.Properties.View.OptionsSelection.MultiSelect = true;
+                cboCashierRoom.Properties.View.CustomRowFilter += CashierRoomView_CustomRowFilter;
             }
             catch (Exception ex)
             {
@@ -64,15 +65,12 @@ namespace HIS.Desktop.Plugins.CashCollect
                 cboCashierRoom.Properties.DataSource = cashierRoomCollection;
                 cboCashierRoom.Properties.DisplayMember = "CASHIER_ROOM_NAME";
                 cboCashierRoom.Properties.ValueMember = "ID";
-                DevExpress.XtraGrid.Columns.GridColumn colCode = cboCashierRoom.Properties.View.Columns.AddField("CASHIER_ROOM_CODE");
-                colCode.VisibleIndex = 1;
-                colCode.Width = 80;
-                colCode.Caption = "";
+                // Same look as "Sổ thu chi": one name column (the search box still matches the code)
                 DevExpress.XtraGrid.Columns.GridColumn colName = cboCashierRoom.Properties.View.Columns.AddField("CASHIER_ROOM_NAME");
-                colName.VisibleIndex = 2;
-                colName.Width = 220;
+                colName.VisibleIndex = 1;
+                colName.Width = 300;
                 colName.Caption = "";
-                cboCashierRoom.Properties.PopupFormWidth = 320;
+                cboCashierRoom.Properties.PopupFormWidth = 300;
                 cboCashierRoom.Properties.View.OptionsView.ShowColumnHeaders = false;
                 cboCashierRoom.Properties.View.OptionsSelection.MultiSelect = true;
                 ClearCashierRoomSelection();
@@ -93,6 +91,8 @@ namespace HIS.Desktop.Plugins.CashCollect
                     if (rv != null)
                         CashierRoomSelecteds.Add(rv);
                 }
+                // The box is narrow: the tooltip lists every selected room
+                cboCashierRoom.ToolTip = String.Join(Environment.NewLine, CashierRoomSelecteds.Select(o => o.CASHIER_ROOM_NAME));
             }
             catch (Exception ex)
             {

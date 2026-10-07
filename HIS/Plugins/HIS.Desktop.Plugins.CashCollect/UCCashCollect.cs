@@ -543,6 +543,7 @@ namespace HIS.Desktop.Plugins.CashCollect
                 gridCheck.SelectionChanged += new GridCheckMarksSelection1.SelectionChangedEventHandler(SelectionGrid__BookCollection);
                 cboBookCollection.Properties.Tag = gridCheck;
                 cboBookCollection.Properties.View.OptionsSelection.MultiSelect = true;
+                cboBookCollection.Properties.View.CustomRowFilter += BookCollectionView_CustomRowFilter;
                 GridCheckMarksSelection1 gridCheckMark = cboBookCollection.Properties.Tag as GridCheckMarksSelection1;
                 if (gridCheckMark != null)
                 {
