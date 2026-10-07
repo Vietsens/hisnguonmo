@@ -86,7 +86,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
         List<V_HIS_MEDI_STOCK> medistocks;
         List<V_HIS_ROOM> rooms;
         V_HIS_EXP_MEST rightClickData;
-        //ACS.SDO.AcsAuthorizeSDO acsAuthorizeSDO;
+        //ACS.SDO.AcsAuthorizeSDO acsAuthorizeSDO; 
 
         List<HIS_EXP_MEST_STT> _StatusSelecteds;
         List<HIS_EXP_MEST_TYPE> _TypeSelecteds;
@@ -1230,6 +1230,14 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                             string Req_loginName = data.REQ_LOGINNAME;
                             string Req_UserName = data.REQ_USERNAME;
                             e.Value = DisplayName(Req_loginName, Req_UserName);
+                        }
+                        else if (e.Column.FieldName == "PAY_FORM_NAME_DISPLAY")
+                        {
+                            if (data.PAY_FORM_ID.HasValue)
+                            {
+                                var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == data.PAY_FORM_ID.Value);
+                                e.Value = payForm != null ? payForm.PAY_FORM_NAME : null;
+                            }
                         }
                         if (e.Column.FieldName == "EXP_MEST_REASON_DISPLAY")
                         {
