@@ -397,9 +397,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static bool IsNotAutoGenerateTutorial;
 
         /// <summary>
-        /// Việc 46680 - HIS.Desktop.Plugins.AssignPrescription.IsSplitMedicineByHtu.
-        /// 1: Kê cùng 1 thuốc trong kho nhiều dòng có cách dùng (HTU_TEXT) khác nhau thì giữ thành các dòng riêng khi lưu đơn
-        /// (không gộp, không cộng dồn số lượng). Khác 1 hoặc không khai báo: như cũ, gộp các dòng cùng thuốc, cùng liều dùng.
+        /// Việc 46680 - HIS.Desktop.Plugins.AssignPrescription.IsSplitMedicineByHtu: tách thuốc thành nhiều dòng khi cách dùng khác nhau.
+        /// 1: Khi lưu đơn, các dòng cùng một thuốc nhưng khác cách dùng (HTU_TEXT) được giữ thành các dòng riêng, không gộp và không cộng dồn số lượng.
+        /// Khác 1 hoặc để trống: xử lý như cũ, các dòng cùng thuốc vẫn được gộp dù khác cách dùng, chỉ tách riêng khi liều dùng khác nhau.
         /// Chỉ bật khi Backend MOS đã có bản sửa việc 46680.
         /// </summary>
         internal static bool IsSplitMedicineByHtu;

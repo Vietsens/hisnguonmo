@@ -2158,6 +2158,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.lciPrintAssignPrescriptionExt.MaxSize = new System.Drawing.Size(2, 40);
                 this.lciPrintAssignPrescriptionExt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 this.lciPrintAssignPrescription.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                this.RequestEqualFooterButtonWidth();
 
                 this.cboPatientType.EditValue = null;
                 this.cboPatientType.Properties.DataSource = null;
