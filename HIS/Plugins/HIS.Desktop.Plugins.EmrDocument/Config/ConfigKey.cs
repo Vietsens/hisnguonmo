@@ -32,7 +32,7 @@ namespace HIS.Desktop.Plugins.EmrDocument.Config
         private const string DO_NOT_ALLOW_DELETING_IF_EXIST_SERVICE_REQ = "EMR.EMR_DOCUMENT.DO_NOT_ALLOW_DELETING_IF_EXIST_SERVICE_REQ"; 
         private const string PRINT_USING_WATERMARK = "EMR.DOCUMENT.PRINT_USING_WARTERMARK.OPTION";
         private const string DOWNLOAD_FILE_OPTION = "EMR.DOWNLOAD_FILE_OPTION";
-        private const string IS_WARNING_DUPLICATE_SIGNED_DOCUMENT = "HIS.EMR_DOCUMENT.IS_WARNING_DUPLICATE_SIGNED_DOCUMENT";
+        private const string IS_WARNING_DUPLICATE_SIGNED_DOCUMENT = "EMR.EMR_DOCUMENT.IS_WARNING_DUPLICATE_SIGNED_DOCUMENT";
 
         internal static bool IsStoredMustReqToView;
         internal static bool IsHasConnectionEmr;
