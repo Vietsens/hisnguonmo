@@ -95,7 +95,10 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             {
                 this.ModuleData = module;
                 this.LoginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName().Trim();
-                this.Text = module.text;
+                // Hien nha cung cap tren tieu de: EMR.HSM.CMC.INTEGRATE_OPTION khac 0 => CMC, con lai => 2ID
+                string providerName = EmrPatientCertificateRegisterBehavior.IsCmcPlatform() ? "CMC" : "2ID";
+                Inventec.Common.Logging.LogSystem.Info("Phat hanh chung thu so: nen tang " + providerName);
+                this.Text = module.text + " - " + providerName;
                 this.Icon = Icon.ExtractAssociatedIcon(System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory, System.Configuration.ConfigurationManager.AppSettings["Inventec.Desktop.Icon"]));
             }
             catch (Exception ex)
@@ -190,23 +193,29 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             {
                 if (!IsProcessOpen("Inventec.SignPadManager"))
                 {
+                    // Moc bat dau cho ky: chi nhan file anh chu ky ghi ra sau moc nay (cung cach SignLibrary chon anh bang ky)
+                    DateTime startTime = DateTime.Now;
                     string pathSaveFolder = Path.Combine(Path.Combine(Application.StartupPath, "temp"), DateTime.Now.ToString("ddMMyyyy"), "STPadLibFile");
                     if (!Directory.Exists(pathSaveFolder))
                     {
                         Directory.CreateDirectory(pathSaveFolder);
                     }
-                    DirectoryInfo dicInfo = new DirectoryInfo(pathSaveFolder);
 
-                    string[] fileImage = Directory.GetFiles(dicInfo.FullName, "*");
-                    if (fileImage != null && fileImage.Length > 0)
+                    // Xoa tung file cu thay vi ca thu muc; file xoa khong duoc (dang bi khoa) thi loai tru khi chon anh
+                    List<string> staleFiles = new List<string>();
+                    foreach (string oldFile in Directory.GetFiles(pathSaveFolder, "*"))
                     {
                         try
                         {
-                            dicInfo.Delete(true);
+                            File.Delete(oldFile);
                         }
                         catch (Exception exx)
                         {
-                            LogSystem.Error(exx);
+                            LogSystem.Warn(exx);
+                        }
+                        if (File.Exists(oldFile))
+                        {
+                            staleFiles.Add(oldFile);
                         }
                     }
 
@@ -214,29 +223,43 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     startInfo.FileName = Application.StartupPath + @"\Inventec.SignPadManager.exe";
                     Process.Start(startInfo);
 
-                    while (true)
+                    Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.1");
+                    while (IsProcessOpen("Inventec.SignPadManager"))
                     {
-                        if (IsProcessOpen("Inventec.SignPadManager"))
+                        // Cho bang ky dong: nghi giua cac lan kiem tra de khong chiem CPU va khong ghi log lien tuc
+                        System.Threading.Thread.Sleep(200);
+                    }
+
+                    Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.2");
+                    FileInfo signFile = !Directory.Exists(pathSaveFolder) ? null : new DirectoryInfo(pathSaveFolder).GetFiles("*")
+                        .Where(o => !staleFiles.Contains(o.FullName, StringComparer.OrdinalIgnoreCase) && GetSignFileTime(o) >= startTime.AddSeconds(-2))
+                        .OrderByDescending(o => GetSignFileTime(o))
+                        .FirstOrDefault();
+                    if (signFile != null)
+                    {
+                        // Doc qua byte[]: Image.FromFile giu khoa file khien lan ky sau khong xoa duoc file cu
+                        using (MemoryStream ms = new MemoryStream(File.ReadAllBytes(signFile.FullName)))
+                        using (Image signImage = Image.FromStream(ms))
                         {
-                            Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.1");
+                            picSignPatient.Image = new Bitmap(signImage);
                         }
-                        else
+                        try
                         {
-                            Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.2");
-                            fileImage = Directory.GetFiles(dicInfo.FullName, "*");
-                            if (fileImage != null && fileImage.Length > 0)
-                            {
-                                picSignPatient.Image = Image.FromFile(fileImage[0]);
-                             
-                                Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.3");
-                                break;
-                            }
-                            else
-                            {
-                                Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.4");
-                                break;
-                            }
+                            File.Delete(signFile.FullName);
                         }
+                        catch (Exception exx)
+                        {
+                            LogSystem.Warn(exx);
+                        }
+
+                        // Da co chu ky tu bang ky: nut Phat hanh dung anh nay (truoc day khong bo co anh mac dinh nen luon bao chua ky)
+                        isDefaultImageLoaded = false;
+                        isSignHand = false;
+                        Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.3");
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.4");
                     }
                 }
             }
@@ -245,6 +268,12 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 LogSystem.Warn(ex);
             }
         }
+        // Thoi diem file anh chu ky duoc ghi: lay moc lon hon giua LastWriteTime va CreationTime
+        private static DateTime GetSignFileTime(FileInfo file)
+        {
+            return file.LastWriteTime > file.CreationTime ? file.LastWriteTime : file.CreationTime;
+        }
+
         private Bitmap ResizeSignImage(string imageFile = "")
         {
             Size size = new Size();
@@ -305,6 +334,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     Bitmap bImage = ResizeSignImage(openFile.FileName);
                     picSignPatient.Image = bImage;
                     isDefaultImageLoaded = false;
+                    isSignHand = false;
                     
                 }
             }
@@ -324,6 +354,9 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     Bitmap processed = ProcessSignatureImage(bmp);
                     picSignPatient.Image = processed;
                     picSignPatient.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
+                    // Chi khi nhan duoc anh chup moi coi la da co chu ky
+                    isDefaultImageLoaded = false;
+                    isSignHand = false;
                 
 
                     var check = this.ListfileNameAttack.OrderByDescending(o => o.Dem).FirstOrDefault();
@@ -419,8 +452,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     List<object> listArgs = new List<object>();
                     this.dlgGetImageFromModuleCamera = this.FillImageFromModuleCamereToUC;
                     listArgs.Add(this.dlgGetImageFromModuleCamera);
+                    // Co "da co chu ky" dat trong FillImageFromModuleCamereToUC khi camera tra anh ve (dong camera khong chup thi giu anh mac dinh)
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(PluginInstance.GetModuleWithWorkingRoom(moduleData, 0, 0), listArgs);
-                    isDefaultImageLoaded = false;
                 }
             }
             catch (Exception ex)
@@ -444,6 +477,9 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     picSignPatient.Image = null;
                     picSignPatient.Properties.NullText = "Chưa có chữ ký";
                 }
+                // Xoa chu ky: tro lai anh mac dinh, nut Phat hanh phai bao chua ky (khong gui anh mac dinh lam chu ky)
+                isDefaultImageLoaded = true;
+                isSignHand = false;
                 picSignPatient.Refresh();
                
             }
@@ -511,6 +547,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 picSignPatient.Image = finalImage;
 
                 isDefaultImageLoaded = false;
+                isSignHand = false;
               
                 MessageBox.Show("Lưu ảnh thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -755,16 +792,23 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 HisPatientAdvanceFilter hisPatientFilter = new HisPatientAdvanceFilter();
                 hisPatientFilter.CCCD_NUMBER__EXACT = this.currentCCCDInfo.identifyNumber;
 
-                var lstPatient = new Inventec.Common.Adapter.BackendAdapter(param)
-                    .Get<List<HisPatientSDO>>(
-                        "api/HisPatient/GetSdoAdvance",
-                        HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
-                        hisPatientFilter,
-                        param
-                    );
+                // Hien loading tu luc tra cuu benh nhan den khi server phat hanh xong (goi CMC/2ID co the mat vai chuc giay)
+                WaitingManager.Show();
+                var lstPatient = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HisPatientSDO>>("api/HisPatient/GetSdoAdvance",HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,hisPatientFilter,param);
                 if (lstPatient != null && lstPatient.Count > 0)
                 {
                     currentPatient = lstPatient.FirstOrDefault();
+                }
+                // Nha cung cap theo EMR.HSM.CMC.INTEGRATE_OPTION (server cung re nhanh theo khoa nay): khac 0 => CMC, con lai => 2ID
+                bool isCmc = EmrPatientCertificateRegisterBehavior.IsCmcPlatform();
+                string providerName = isCmc ? "CMC" : "2ID";
+                Inventec.Common.Logging.LogSystem.Info("Phat hanh chung thu so qua " + providerName + ", CCCD=" + this.currentCCCDInfo.identifyNumber);
+                if (isCmc && string.IsNullOrWhiteSpace(currentPatient.MOBILE) && string.IsNullOrWhiteSpace(currentPatient.PHONE) && string.IsNullOrWhiteSpace(currentPatient.EMAIL))
+                {
+                    WaitingManager.Hide();
+                    param.Messages.Add("Phát hành chứng thư số qua CMC cần số điện thoại hoặc email của bệnh nhân. Vui lòng cập nhật thông tin bệnh nhân trên HIS rồi phát hành lại.");
+                    MessageManager.Show(this.ParentForm, param, success);
+                    return;
                 }
                 string placeOfResidence = string.IsNullOrWhiteSpace(currentCCCDInfo.address) ? currentCCCDInfo.hometown : currentCCCDInfo.address;
                 EmrPatientCertificateRegisterSDO sdo = new EMR.SDO.EmrPatientCertificateRegisterSDO()
@@ -790,7 +834,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     faceImage = currentCCCDInfo.imageChip,
                     signatureImage = signatureBase64,
                     email = currentPatient.EMAIL,
-                    phone = currentPatient.PHONE,
+                    // CMC bat buoc dien thoai hoac email: uu tien so di dong nhu man tiep don
+                    phone = !string.IsNullOrWhiteSpace(currentPatient.MOBILE) ? currentPatient.MOBILE : currentPatient.PHONE,
                     PatientCode = currentPatient.PATIENT_CODE,
                     sodData = currentCCCDInfo.sodData,
                     dg1DataB64 = currentCCCDInfo.dg1DataBase64,
@@ -799,27 +844,21 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     dg14DataB64 = currentCCCDInfo.dg14DataBase64
                 };
 
-                var result = new Inventec.Common.Adapter.BackendAdapter(param)
-                    .Post<EMR_PATIENT_CERTIFICATE>(
-                        "api/EmrPatientCertificate/Register",
-                        ApiConsumers.EmrConsumer,
-                        sdo,
-                        param
-                    );
+                var result = new Inventec.Common.Adapter.BackendAdapter(param).Post<EMR_PATIENT_CERTIFICATE>("api/EmrPatientCertificate/Register",ApiConsumers.EmrConsumer,sdo,param);
 
                 if (result != null)
                 {
-                    WaitingManager.Show();
                     success = true;
-                    Inventec.Common.Logging.LogSystem.Info("Phát hành chứng thư thành công. ID = " + result.ID);
+                    Inventec.Common.Logging.LogSystem.Info("Phát hành chứng thư thành công qua " + providerName + ". ID = " + result.ID + ", SERIAL_NUMBER = " + result.SERIAL_NUMBER);
                     ProcessStore2IDStorage(result, sdo);
-                    XtraMessageBox.Show("Phát hành chứng thư thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     WaitingManager.Hide();
+                    XtraMessageBox.Show("Phát hành chứng thư số qua " + providerName + " thành công!" + (isCmc ? "\nMã chứng thư (certAlias): " + result.SERIAL_NUMBER : ""), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     btnRelease.Enabled = false;
                     this.Close();
                 }
                 else
                 {
+                    WaitingManager.Hide();
                     param.Messages.Add("Phát hành chứng thư thất bại. Không có dữ liệu trả về từ server.");
                 }
 
@@ -827,6 +866,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error("Lỗi phát hành chứng thư: " + ex.ToString());
                 XtraMessageBox.Show("Có lỗi khi phát hành chứng thư: " + ex.Message, "Thông báo");
             }
@@ -1060,8 +1100,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                     faceImages.Add(faceBase64);
 
-                    Inventec.Common.Logging.LogSystem.Debug(
-                        "ProcessStore2IDStorage: Added face image base64, length=" + faceBase64.Length);
+                    Inventec.Common.Logging.LogSystem.Debug("ProcessStore2IDStorage: Added face image base64, length=" + faceBase64.Length);
                 }
                 if (!string.IsNullOrWhiteSpace(sdo.signatureImage))
                 {
@@ -1069,8 +1108,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                     handSignatures.Add(signatureBase64);
 
-                    Inventec.Common.Logging.LogSystem.Debug(
-                        "ProcessStore2IDStorage: Added signature base64, length=" + signatureBase64.Length);
+                    Inventec.Common.Logging.LogSystem.Debug("ProcessStore2IDStorage: Added signature base64, length=" + signatureBase64.Length);
                 }
 
                 TwoIDStorageIntegrationProcessor processorInput = new TwoIDStorageIntegrationProcessor();
@@ -1085,16 +1123,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     expiredDate = DateTime.ParseExact(sdo.dateOfExpired, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"),
                     idCardVerifyResult = currentCCCDInfo.isPass ? "SUCCESS" : "FALSE"
                 };
-                bool storeResult = processor.StoreCitizenInfo(
-                    storageUrl,
-                    identify,
-                    fingerprints,
-                    faceImages,
-                    handSignatures,
-                    keyAuth,
-                    transactionId,
-                    hash
-                );
+                bool storeResult = processor.StoreCitizenInfo(storageUrl,identify,fingerprints,faceImages,handSignatures,keyAuth,transactionId,hash);
 
                 if (storeResult)
                 {

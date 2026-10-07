@@ -1289,6 +1289,41 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                     long expMestTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((gridView.GetRowCellValue(e.RowHandle, "EXP_MEST_TYPE_ID") ?? "").ToString());
                     string creator = (gridView.GetRowCellValue(e.RowHandle, "CREATOR") ?? "").ToString().Trim();
                     long currentDepartment = WorkPlace.GetDepartmentId();
+
+                    // 57576: phieu linh (PL) chi duyet/thuc xuat trong man chi tiet (nut con mat) qua cac API Aggr*.
+                    // Cac nut tren dong goi API cua phieu thuong (Approve/Export/Unapprove...) bi MOS chan nen khoa lai.
+                    if (expMestTypeId == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__PL)
+                    {
+                        if (e.Column.FieldName == "EDIT_DISPLAY")
+                        {
+                            e.RepositoryItem = ButtonDisableEdit;
+                            return;
+                        }
+                        else if (e.Column.FieldName == "DISCARD_DISPLAY")
+                        {
+                            e.RepositoryItem = ButtonDisableDiscard;
+                            return;
+                        }
+                        else if (e.Column.FieldName == "APPROVAL_DISPLAY")
+                        {
+                            e.RepositoryItem = ButtonDisableApproval;
+                            return;
+                        }
+                        else if (e.Column.FieldName == "EXPORT_DISPLAY")
+                        {
+                            if (statusIdCheckForButtonEdit == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
+                                e.RepositoryItem = Btn_HuyThucXuat_Disable;
+                            else
+                                e.RepositoryItem = ButtonDisableActualExport;
+                            return;
+                        }
+                        else if (e.Column.FieldName == "REQUEST_DISPLAY")
+                        {
+                            e.RepositoryItem = ButtonRequestDisable;
+                            return;
+                        }
+                    }
+
                     if (e.Column.FieldName == "EDIT_DISPLAY") // sửa
                     {
                         if (expMestTypeId != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT)
@@ -3792,16 +3827,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                         WaitingManager.Show();
                         var ExpMestData = row;
 
-                        if (ExpMestData.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__PL)
-                        {
-                            HIS.Desktop.ADO.ApproveAggrExpMestSDO exeMestView = new HIS.Desktop.ADO.ApproveAggrExpMestSDO(ExpMestData.ID, ExpMestData.EXP_MEST_STT_ID);
-                            List<object> listArgs = new List<object>();
-                            listArgs.Add(exeMestView);
-                            CallModule callModule = new CallModule(CallModule.ApproveAggrExpMest, this.roomId, this.roomTypeId, listArgs);
-
-                            WaitingManager.Hide();
-                        }
-                        else if (ExpMestData.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK)
+                        // 57576: phieu linh (PL) mo chung man AggrExpMestDetail voi THPK, giong nut con mat.
+                        if (ExpMestData.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__PL
+                            || ExpMestData.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK)
                         {
                             List<object> listArgs = new List<object>();
                             listArgs.Add(ExpMestData);

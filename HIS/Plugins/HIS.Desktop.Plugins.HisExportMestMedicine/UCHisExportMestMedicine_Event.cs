@@ -389,16 +389,11 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 V_HIS_EXP_MEST ExpMestData = new V_HIS_EXP_MEST();
                 Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST>(ExpMestData, rowDataExpMest);
 
-                if (ExpMestData.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__PL)
-                {
-                    HIS.Desktop.ADO.ApproveAggrExpMestSDO exeMestView = new HIS.Desktop.ADO.ApproveAggrExpMestSDO(ExpMestData.ID, ExpMestData.EXP_MEST_STT_ID);
-                    List<object> listArgs = new List<object>();
-                    listArgs.Add(exeMestView);
-                    CallModule callModule = new CallModule(CallModule.ApproveAggrExpMest, this.roomId, this.roomTypeId, listArgs);
-
-                    WaitingManager.Hide();
-                }
-                else if (ExpMestData.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK)
+                // 57576: phieu linh (PL) mo chung man AggrExpMestDetail voi THPK, giong man Danh sach phieu linh.
+                // Plugin ApproveAggrExpMest dang chay chi nhan V_HIS_EXP_MEST va loc phieu con theo AGGR_EXP_MEST_ID
+                // cua chinh phieu cha, nen truyen ApproveAggrExpMestSDO sang thi mo ra form trong.
+                if (ExpMestData.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__PL
+                    || ExpMestData.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK)
                 {
                     List<object> listArgs = new List<object>();
                     listArgs.Add(ExpMestData);
