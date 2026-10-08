@@ -425,6 +425,44 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "Ngày khám");
                     }
 
+                    if (!string.IsNullOrEmpty(item.TREATMENT_TYPE_CODE))
+                    {
+                        var treatmentType = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.IS_ACTIVE == 1 && o.TREATMENT_TYPE_CODE.ToLower() == item.TREATMENT_TYPE_CODE.Trim().ToLower());
+                        if (treatmentType != null)
+                        {
+                            kskAdo.TREATMENT_TYPE_ID = treatmentType.ID;
+                            kskAdo.TREATMENT_TYPE_CODE = treatmentType.TREATMENT_TYPE_CODE;
+                            kskAdo.TREATMENT_TYPE_NAME_STR = treatmentType.TREATMENT_TYPE_NAME;
+                        }
+                        else
+                        {
+                            kskAdo.TREATMENT_TYPE_NAME_STR = item.TREATMENT_TYPE_CODE;
+                            error += string.Format(Message.MessageImport.KhongTonTai, "Mã diện điều trị");
+                        }
+                    }
+                    else
+                    {
+                        error += string.Format(Message.MessageImport.ThieuTruongDL, "Diện điều trị");
+                    }
+
+                    if (!string.IsNullOrEmpty(item.ETHNIC_CODE))
+                    {
+                        var ethnic = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.IS_ACTIVE == 1 && o.ETHNIC_CODE.ToLower() == item.ETHNIC_CODE.Trim().ToLower());
+                        if (ethnic != null)
+                        {
+                            kskAdo.ETHNIC_CODE = ethnic.ETHNIC_CODE;
+                            kskAdo.ETHNIC_NAME = ethnic.ETHNIC_NAME;
+                            kskAdo.ETHNIC_NAME_STR = ethnic.ETHNIC_NAME;
+                        }
+                        else
+                        {
+                            kskAdo.ETHNIC_CODE = null;
+                            kskAdo.ETHNIC_NAME = null;
+                            kskAdo.ETHNIC_NAME_STR = item.ETHNIC_CODE;
+                            error += string.Format(Message.MessageImport.KhongTonTai, "Mã dân tộc");
+                        }
+                    }
+
 
                     if (!string.IsNullOrEmpty(item.AdditionKskId_STR))
                     {
@@ -1063,6 +1101,7 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                         sdo.IcdName = item.ICD_NAME;
                         sdo.IcdSubCode = item.ICD_SUB_CODE;
                         sdo.IcdText = item.ICD_TEXT;
+                        sdo.TreatmentTypeId = item.TREATMENT_TYPE_ID;
                         kskPatientSDOs.Add(sdo);
                     }
                 }
@@ -1449,7 +1488,9 @@ namespace HIS.Desktop.Plugins.HisImportKsk.FormLoad
                                     && string.IsNullOrEmpty(item.POSITION_CODE_STR)
                                     && string.IsNullOrEmpty(item.PATIENT_CLASSIFY_CODE_STR)
                                     && string.IsNullOrEmpty(item.CAREER_CODE_STR)
-                                    && string.IsNullOrEmpty(item.HT_ADDRESS_STR);
+                                    && string.IsNullOrEmpty(item.HT_ADDRESS_STR)
+                                    && string.IsNullOrEmpty(item.TREATMENT_TYPE_CODE)
+                                    && string.IsNullOrEmpty(item.ETHNIC_CODE);
 
                                 if (checkNull)
                                 {

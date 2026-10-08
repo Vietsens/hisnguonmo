@@ -272,6 +272,9 @@
     <Compile Include="UCExportXml___XmlBuilder.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExportXml___CsdlCtSign.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCExportXml___MdInsight.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -292,6 +295,7 @@
     <Compile Include="ADO\TreatmentImportADO.cs" />
     <Compile Include="Base\ConfigStore.cs" />
     <Compile Include="Base\Csdl4750Worker.cs" />
+    <Compile Include="Base\CsdlCt3176Worker.cs" />
     <Compile Include="Base\Hoc3176KcbWorker.cs" />
     <Compile Include="Base\VlgKcbHoanTatWorker.cs" />
     <Compile Include="Base\CustomProvider.cs" />
