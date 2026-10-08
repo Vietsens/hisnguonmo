@@ -16,6 +16,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
         L_HIS_TREATMENT_BED_ROOM bed = null;
         bool isEdit = false;
         HIS_SPECIALIST_EXAM exam = null;
+        V_HIS_SERVICE_REQ serviceReq = null;
         internal InviteSpecialistExamBehavior()
             : base()
         {
@@ -27,12 +28,24 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
             exam = hisExam;
             this.isEdit = isEdit;
         }
+        internal InviteSpecialistExamBehavior(Inventec.Desktop.Common.Modules.Module moduleData, V_HIS_SERVICE_REQ serviceReqData) : base()
+        {
+            Module = moduleData;
+            serviceReq = serviceReqData;
+        }
         object IinviteSpecialistExam.Run()
         {
             object result = null;
             try
             {
-                result = new frmInviteSpecialistExam(Module, bed, exam, isEdit);
+                if (serviceReq != null)
+                {
+                    result = new frmInviteSpecialistExam(Module, serviceReq);
+                }
+                else
+                {
+                    result = new frmInviteSpecialistExam(Module, bed, exam, isEdit);
+                }
                 if (result == null) throw new NullReferenceException(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Module), Module));
             }
             catch (Exception ex)

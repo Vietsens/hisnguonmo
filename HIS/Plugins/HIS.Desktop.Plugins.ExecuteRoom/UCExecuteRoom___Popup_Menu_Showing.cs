@@ -163,6 +163,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         case ExecuteRoomPopupMenuProcessor.ModuleType.MoiHoiChan:
                             MoiHoiChanClick(this.serviceReqRightClick);
                             break;
+                        case ExecuteRoomPopupMenuProcessor.ModuleType.MoiKhamChuyenKhoa:
+                            MoiKhamChuyenKhoaClick(this.serviceReqRightClick);
+                            break;
                         case ExecuteRoomPopupMenuProcessor.ModuleType.HisTransReqList:
                             try
                             {
@@ -321,6 +324,81 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                     ((Form)extenceInstance).ShowDialog();
                 }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Opens HIS.Desktop.Plugins.InviteSpecialistExam for the selected service request (specialist exam invite,
+        /// or pre-anesthesia exam when the user ticks "Kham tien gay me" on the form). Unlike MoiHoiChanClick there is
+        /// no pending-invite check, same as inviting from the bed room.
+        /// </summary>
+        private void MoiKhamChuyenKhoaClick(ADO.ServiceReqADO serviceReqRightClick)
+        {
+            try
+            {
+                if (serviceReqRightClick == null)
+                    return;
+
+                HisServiceReqViewFilter filterReq = new HisServiceReqViewFilter();
+                filterReq.ID = serviceReqRightClick.ID;
+
+                WaitingManager.Show();
+                var serviceReqView = new BackendAdapter(new CommonParam())
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>(
+                        "api/HisServiceReq/getView",
+                        ApiConsumers.MosConsumer,
+                        filterReq,
+                        new CommonParam())
+                    ?.FirstOrDefault();
+                WaitingManager.Hide();
+
+                if (serviceReqView == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("MoiKhamChuyenKhoaClick: V_HIS_SERVICE_REQ null"
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => filterReq), filterReq));
+                    return;
+                }
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .Where(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteSpecialistExam")
+                    .FirstOrDefault();
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.InviteSpecialistExam");
+                    MessageBox.Show(Resources.ResourceMessage.ChucNangDangPhatTrienLienHeQuanTri,
+                        Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "moduleLink = HIS.Desktop.Plugins.InviteSpecialistExam khong phai plugin hoac thieu ExtensionInfo."
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => moduleData), moduleData));
+                    MessageBox.Show(Resources.ResourceMessage.ChucNangDangPhatTrienLienHeQuanTri,
+                        Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var moduleWithRoom = PluginInstance.GetModuleWithWorkingRoom(
+                    moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId);
+
+                List<object> listArgs = new List<object>();
+                listArgs.Add(moduleWithRoom);
+                listArgs.Add(false);
+                listArgs.Add(serviceReqView);
+
+                var extenceInstance = PluginInstance.GetPluginInstance(moduleWithRoom, listArgs);
+                if (extenceInstance == null)
+                    throw new ArgumentNullException("Khong khoi tao duoc form Moi kham chuyen khoa");
+
+                ((Form)extenceInstance).ShowDialog();
             }
             catch (Exception ex)
             {

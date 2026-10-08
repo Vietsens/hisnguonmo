@@ -16,6 +16,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
             Inventec.Desktop.Common.Modules.Module moduleData = null;
             L_HIS_TREATMENT_BED_ROOM bed = null;
             HIS_SPECIALIST_EXAM exam = null;
+            V_HIS_SERVICE_REQ serviceReq = null;
             bool isEdit = false;
             try
             {
@@ -37,6 +38,10 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                             {
                                 exam = (HIS_SPECIALIST_EXAM)data[i];
                             }
+                            else if (data[i] is V_HIS_SERVICE_REQ)
+                            {
+                                serviceReq = (V_HIS_SERVICE_REQ)data[i];
+                            }
                             else if (data[i] is bool)
                             {
                                 isEdit = (bool)data[i];
@@ -45,7 +50,14 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
 
                         if (moduleData != null)
                         {
-                            result = new InviteSpecialistExamBehavior(moduleData, bed, exam, isEdit);
+                            if (serviceReq != null)
+                            {
+                                result = new InviteSpecialistExamBehavior(moduleData, serviceReq);
+                            }
+                            else
+                            {
+                                result = new InviteSpecialistExamBehavior(moduleData, bed, exam, isEdit);
+                            }
                         }
                     }
                 }
