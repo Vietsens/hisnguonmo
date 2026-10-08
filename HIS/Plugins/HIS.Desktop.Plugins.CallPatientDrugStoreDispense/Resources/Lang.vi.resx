@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmDispenseScreenConfig.Text" xml:space="preserve">
+    <value>Màn hình chờ phát thuốc nhà thuốc</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciMediStock.Text" xml:space="preserve">
+    <value>Nhà thuốc:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lblMediStock.NotMediStock" xml:space="preserve">
+    <value>Phòng đang làm việc không phải nhà thuốc</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciPreparing.Text" xml:space="preserve">
+    <value>Trạng thái xuất:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.chkPreparing.Properties.Caption" xml:space="preserve">
+    <value>Đang soạn</value>
+  </data>
+  <data name="frmDispenseScreenConfig.chkWaiting.Properties.Caption" xml:space="preserve">
+    <value>Chờ phát</value>
+  </data>
+  <data name="frmDispenseScreenConfig.chkDone.Properties.Caption" xml:space="preserve">
+    <value>Đã phát</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lblDisplayHeader.Text" xml:space="preserve">
+    <value>Tùy chỉnh hiển thị</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciTitleSize.Text" xml:space="preserve">
+    <value>Cỡ chữ tiêu đề:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciTitleColor.Text" xml:space="preserve">
+    <value>Màu chữ:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciListSize.Text" xml:space="preserve">
+    <value>Cỡ chữ danh sách:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciListColor.Text" xml:space="preserve">
+    <value>Màu chữ:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciCallingSize.Text" xml:space="preserve">
+    <value>Cỡ chữ đang gọi:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciCallingColor.Text" xml:space="preserve">
+    <value>Màu chữ:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciCallingBackColor.Text" xml:space="preserve">
+    <value>Màu nền:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciInviteText.Text" xml:space="preserve">
+    <value>Lời mời:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.btnOpen.Text" xml:space="preserve">
+    <value>Mở màn hình chờ</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.Text" xml:space="preserve">
+    <value>Màn hình chờ phát thuốc nhà thuốc</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.ScreenTitle" xml:space="preserve">
+    <value>HỆ THỐNG MÀN HÌNH CHỜ GỌI</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.ScreenName" xml:space="preserve">
+    <value>MÀN HÌNH 02 - GỌI PHÁT THUỐC</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.BigTitle" xml:space="preserve">
+    <value>MÀN HÌNH CHỜ PHÁT THUỐC</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.gcStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.gcPatientName.Caption" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.gcDobYear.Caption" xml:space="preserve">
+    <value>Năm sinh</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.gcStatus.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.StatusPreparing" xml:space="preserve">
+    <value>Đang soạn</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.StatusWaiting" xml:space="preserve">
+    <value>Chờ phát</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.StatusDone" xml:space="preserve">
+    <value>Đã phát</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.CallingLabel" xml:space="preserve">
+    <value>BỆNH NHÂN ĐANG GỌI:</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.DefaultInviteText" xml:space="preserve">
+    <value>MỜI ĐẾN QUẦY PHÁT THUỐC</value>
+  </data>
+</root>

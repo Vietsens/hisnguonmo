@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmDispenseScreenConfig.Text" xml:space="preserve">
+    <value>Pharmacy dispensing waiting screen</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciMediStock.Text" xml:space="preserve">
+    <value>Pharmacy:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lblMediStock.NotMediStock" xml:space="preserve">
+    <value>Current working room is not a pharmacy</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciPreparing.Text" xml:space="preserve">
+    <value>Export status:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.chkPreparing.Properties.Caption" xml:space="preserve">
+    <value>Preparing</value>
+  </data>
+  <data name="frmDispenseScreenConfig.chkWaiting.Properties.Caption" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="frmDispenseScreenConfig.chkDone.Properties.Caption" xml:space="preserve">
+    <value>Dispensed</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lblDisplayHeader.Text" xml:space="preserve">
+    <value>Display settings</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciTitleSize.Text" xml:space="preserve">
+    <value>Title font size:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciTitleColor.Text" xml:space="preserve">
+    <value>Text color:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciListSize.Text" xml:space="preserve">
+    <value>List font size:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciListColor.Text" xml:space="preserve">
+    <value>Text color:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciCallingSize.Text" xml:space="preserve">
+    <value>Calling font size:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciCallingColor.Text" xml:space="preserve">
+    <value>Text color:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciCallingBackColor.Text" xml:space="preserve">
+    <value>Back color:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.lciInviteText.Text" xml:space="preserve">
+    <value>Invitation:</value>
+  </data>
+  <data name="frmDispenseScreenConfig.btnOpen.Text" xml:space="preserve">
+    <value>Open waiting screen</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.Text" xml:space="preserve">
+    <value>Pharmacy dispensing waiting screen</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.ScreenTitle" xml:space="preserve">
+    <value>QUEUE DISPLAY SYSTEM</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.ScreenName" xml:space="preserve">
+    <value>SCREEN 02 - MEDICINE DISPENSING</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.BigTitle" xml:space="preserve">
+    <value>DISPENSING QUEUE</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.gcStt.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.gcPatientName.Caption" xml:space="preserve">
+    <value>Full name</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.gcDobYear.Caption" xml:space="preserve">
+    <value>Birth year</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.gcStatus.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.StatusPreparing" xml:space="preserve">
+    <value>Preparing</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.StatusWaiting" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.StatusDone" xml:space="preserve">
+    <value>Dispensed</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.CallingLabel" xml:space="preserve">
+    <value>NOW CALLING:</value>
+  </data>
+  <data name="frmDispenseWaitingScreen.DefaultInviteText" xml:space="preserve">
+    <value>PLEASE COME TO THE DISPENSING COUNTER</value>
+  </data>
+</root>
