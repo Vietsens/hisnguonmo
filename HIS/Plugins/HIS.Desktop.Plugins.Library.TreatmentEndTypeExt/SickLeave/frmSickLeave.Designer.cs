@@ -556,6 +556,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             this.txtSoThe.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtSoThe.Properties.Mask.EditMask = "(\\w{2}-\\d{1}-\\w{2}-\\w{2}-\\w{3}-\\w{5})|(\\w{2}-\\d{1}-\\w{2}-\\w{12})";
             this.txtSoThe.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
+            this.txtSoThe.Properties.Mask.ShowPlaceHolders = false;
             this.txtSoThe.Properties.Mask.UseMaskAsDisplayFormat = true;
             this.txtSoThe.Size = new System.Drawing.Size(176, 20);
             this.txtSoThe.StyleController = this.layoutControl1;

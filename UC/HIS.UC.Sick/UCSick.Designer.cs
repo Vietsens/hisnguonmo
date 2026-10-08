@@ -441,6 +441,7 @@ namespace HIS.UC.Sick
             this.txtHeinCard.Name = "txtHeinCard";
             this.txtHeinCard.Properties.Mask.EditMask = "(\\w{2}-\\d{1}-\\w{2}-\\w{2}-\\w{3}-\\w{5})|(\\w{2}-\\d{1}-\\w{2}-\\w{12})";
             this.txtHeinCard.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
+            this.txtHeinCard.Properties.Mask.ShowPlaceHolders = false;
             this.txtHeinCard.Size = new System.Drawing.Size(138, 20);
             this.txtHeinCard.StyleController = this.layoutControl1;
             this.txtHeinCard.TabIndex = 13;

@@ -106,7 +106,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                     else
                         cboWorkPlace.EditValue = null;
 
-                    txtSoThe.Text = TreatmentEndTypeExtData.SickHeinCardNumber;
+                    txtSoThe.Text = FormatHeinCardForMask(TreatmentEndTypeExtData.SickHeinCardNumber);
                     txtLoginName.Text = TreatmentEndTypeExtData.Loginname;
                     cboUser.EditValue = TreatmentEndTypeExtData.Loginname;
                     txtEndTypeExtNote.Text = TreatmentEndTypeExtData.EndTypeExtNote;
@@ -146,14 +146,14 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 }
                 else if (this.treatment != null)
                 {
-                    txtSoThe.Text = this.treatment.SICK_HEIN_CARD_NUMBER;
+                    txtSoThe.Text = FormatHeinCardForMask(this.treatment.SICK_HEIN_CARD_NUMBER);
                     if (!String.IsNullOrEmpty(this.treatment.SICK_HEIN_CARD_NUMBER))
                     {
                         txtSoThe.Enabled = false;
                     }
                     if (String.IsNullOrWhiteSpace(this.treatment.SICK_HEIN_CARD_NUMBER))
                     {
-                        txtSoThe.Text = this.treatment.TDL_HEIN_CARD_NUMBER;
+                        txtSoThe.Text = FormatHeinCardForMask(this.treatment.TDL_HEIN_CARD_NUMBER);
                     }
 
                     if (!string.IsNullOrEmpty(this.treatment.TDL_SOCIAL_INSURANCE_NUMBER))
