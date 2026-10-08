@@ -972,6 +972,9 @@
   <data name="UCExecuteRoom.btnMoiHoiChan.Text" xml:space="preserve">
     <value>Mời hội chẩn</value>
   </data>
+  <data name="UCExecuteRoom.btnMoiKhamChuyenKhoa.Text" xml:space="preserve">
+    <value>Mời khám chuyên khoa</value>
+  </data>
   <data name="UCExecuteRoom.lblPatientCode.AllergyToolTip" xml:space="preserve">
     <value>Bệnh nhân có thẻ dị ứng</value>
   </data>
