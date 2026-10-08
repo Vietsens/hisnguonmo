@@ -369,7 +369,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         {
                             if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                             {
-                                this._HeinCardData.HeinCardNumber = this.ResultDataADO.ResultHistoryLDO.maTheMoi;
+                                this._HeinCardData.HeinCardNumber = this.ResultDataADO.HeinCardData != null ? this.ResultDataADO.HeinCardData.HeinCardNumber : this.ResultDataADO.ResultHistoryLDO.maTheMoi;
                             }
                         }
                     }

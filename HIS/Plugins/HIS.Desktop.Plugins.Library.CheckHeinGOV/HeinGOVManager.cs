@@ -453,7 +453,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         else if(rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_004) && dtHanTheTu.Date <= dtIntructionTime.Date && dtHanTheDen.Date >= dtIntructionTime.Date)
                         {
                             //Trường hợp thế hết hạn nhưng ngày đăng ký nằm trong hạn thẻ cũ thì phải hiển thị thông tin thẻ cũ
-                            rsData.HeinCardData.HeinCardNumber = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheCu) ? rsData.ResultHistoryLDO.maTheCu : rsData.ResultHistoryLDO.maTheMoi;
+                            rsData.HeinCardData.HeinCardNumber = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheCu) ? rsData.ResultHistoryLDO.maTheCu : rsData.ResultHistoryLDO.maThe;
                             rsData.HeinCardData.FromDate = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.gtTheTu) ? rsData.ResultHistoryLDO.gtTheTu : rsData.ResultHistoryLDO.gtTheTuMoi;
                             rsData.HeinCardData.ToDate = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.gtTheDen) ? rsData.ResultHistoryLDO.gtTheDen : rsData.ResultHistoryLDO.gtTheDenMoi;
                             rsData.HeinCardData.Address = rsData.ResultHistoryLDO.diaChi;
@@ -1310,7 +1310,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         else if (rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_004) && dtHanTheTu.Date <= dtIntructionTime.Date && dtHanTheDen.Date >= dtIntructionTime.Date)
                         {
                             //Trường hợp thế hết hạn nhưng ngày đăng ký nằm trong hạn thẻ cũ thì phải hiển thị thông tin thẻ cũ
-                            rsData.HeinCardData.HeinCardNumber = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheCu) ? rsData.ResultHistoryLDO.maTheCu : rsData.ResultHistoryLDO.maTheMoi;
+                            rsData.HeinCardData.HeinCardNumber = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheCu) ? rsData.ResultHistoryLDO.maTheCu : rsData.ResultHistoryLDO.maThe;
                             rsData.HeinCardData.FromDate = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.gtTheTu) ? rsData.ResultHistoryLDO.gtTheTu : rsData.ResultHistoryLDO.gtTheTuMoi;
                             rsData.HeinCardData.ToDate = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.gtTheDen) ? rsData.ResultHistoryLDO.gtTheDen : rsData.ResultHistoryLDO.gtTheDenMoi;
                             rsData.HeinCardData.Address = rsData.ResultHistoryLDO.diaChi;

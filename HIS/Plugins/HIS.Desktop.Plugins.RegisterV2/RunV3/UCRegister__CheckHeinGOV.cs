@@ -143,7 +143,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     {
                         if (this.ucPatientRaw1.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
                         {
-                            heinCard.HeinCardNumber = this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.maTheMoi;
+                            heinCard.HeinCardNumber = this.ucPatientRaw1.ResultDataADO.HeinCardData != null ? this.ucPatientRaw1.ResultDataADO.HeinCardData.HeinCardNumber : this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.maTheMoi;
                         }
 
                         //data = this.CheckPatientOldByHeinCard(heinCard);
