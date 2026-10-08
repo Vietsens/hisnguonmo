@@ -82,6 +82,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.chkSyncKcb.CheckedChanged += new EventHandler(this.chkSyncKcb_CheckedChanged);
                 this.chkSyncKcbVlg.CheckedChanged += new EventHandler(this.chkSyncKcbVlg_CheckedChanged);
                 this.chkSyncKcbHoc.CheckedChanged += new EventHandler(this.chkSyncKcbHoc_CheckedChanged);
+                this.chkSyncKcbCt.CheckedChanged += new EventHandler(this.chkSyncKcbCt_CheckedChanged);
             }
             catch (Exception ex)
             {
@@ -595,6 +596,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     chkSyncKcb.Checked = configSync.isSyncKcb;
                     chkSyncKcbVlg.Checked = configSync.isSyncKcbVlg;
                     chkSyncKcbHoc.Checked = configSync.isSyncKcbHoc;
+                    chkSyncKcbCt.Checked = configSync.isSyncKcbCt;
                 }
             }
             catch (Exception ex)
@@ -657,6 +659,24 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
+        //Lưu NGAY khi tích/bỏ tích "Đồng bộ KCB lên Cổng CSDL Y tế Cần Thơ (QĐ 3176)" (như chkSyncKcb).
+        private void chkSyncKcbCt_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isLoadingConfig) return;              //đang nạp giá trị lúc mở form -> bỏ qua
+                if (this.configSync == null) return;
+                this.configSync.isSyncKcbCt = chkSyncKcbCt.Checked;
+                if (this.actAfterSave != null)
+                    this.actAfterSave(this.configSync);   //ghi ngay vào ControlState, KHÔNG đóng form
+                Inventec.Common.Logging.LogSystem.Info("frmSettingConfigSync - Luu ngay isSyncKcbCt=" + chkSyncKcbCt.Checked);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         //Ẩn/hiện checkbox đồng bộ KCB theo config MOS.CSDL_4750.IS_AUTO_SYNC (Bật/tắt toàn bộ liên thông CSDL 4750)
         //+ checkbox Cổng tiếp nhận VLG theo khóa MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO.
         private void ProcessVisibleSyncKcb()
@@ -690,6 +710,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 if (!enableHoc)
                 {
                     this.chkSyncKcbHoc.Checked = false;
+                }
+
+                //Cổng CSDL Y tế Cần Thơ (QĐ 3176): gate duy nhất là khóa HIS.CSDL_CANTHO_3176.CONNECTION_INFO.
+                bool enableCt = !string.IsNullOrWhiteSpace(HisConfigCFG.CSDL_CANTHO_3176__CONNECTION_INFO);
+                this.lciSyncKcbCt.Visibility = enableCt
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                if (!enableCt)
+                {
+                    this.chkSyncKcbCt.Checked = false;
                 }
             }
             catch (Exception ex)
@@ -754,6 +784,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.configSync.isSyncKcb = chkSyncKcb.Checked;
                 this.configSync.isSyncKcbVlg = chkSyncKcbVlg.Checked;
                 this.configSync.isSyncKcbHoc = chkSyncKcbHoc.Checked;
+                this.configSync.isSyncKcbCt = chkSyncKcbCt.Checked;
                 if (this.actAfterSave != null)
                 {
                     this.actAfterSave(this.configSync);

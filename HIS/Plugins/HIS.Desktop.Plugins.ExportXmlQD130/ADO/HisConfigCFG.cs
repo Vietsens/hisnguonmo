@@ -79,6 +79,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal const string MOS_HIS_KSK_SYNC__HSSK_HOC_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO";
         internal static string HSSK_HOC_2062__CONNECTION_INFO;
 
+        //Cổng CSDL Y tế Cần Thơ (CT), liên thông KCB theo QĐ 3176:
+        //BaseURL|username|password[|loginApi|importApi] (mặc định api/get-token, api/csdl-3176/import-csdl-3176-by-xml-file-khong-dong-bo).
+        //Không khai báo = viện chưa đấu nối = ẩn ô chọn, không phát sinh kết nối.
+        internal const string HIS_CSDL_CANTHO_3176__CONNECTION_INFO = "HIS.CSDL_CANTHO_3176.CONNECTION_INFO";
+        internal static string CSDL_CANTHO_3176__CONNECTION_INFO;
+
         internal static void LoadConfig()
         {
             try
@@ -100,6 +106,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 VLG_2062__CONNECTION_INFO = GetValue(MOS_HIS_KSK_SYNC__VLG_2062_CONNECTION_INFO);
                 //Trung tâm điều hành y tế (HOC) — liên thông KCB theo QĐ 3176
                 HSSK_HOC_2062__CONNECTION_INFO = GetValue(MOS_HIS_KSK_SYNC__HSSK_HOC_2062_CONNECTION_INFO);
+                //Cổng CSDL Y tế Cần Thơ — liên thông KCB theo QĐ 3176
+                CSDL_CANTHO_3176__CONNECTION_INFO = GetValue(HIS_CSDL_CANTHO_3176__CONNECTION_INFO);
             }
             catch (Exception ex)
             {
