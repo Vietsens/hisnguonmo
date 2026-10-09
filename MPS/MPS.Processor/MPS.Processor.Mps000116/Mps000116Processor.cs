@@ -167,10 +167,58 @@ namespace MPS.Processor.Mps000116
                             .ToList();
                     }
                 }
+                SetActiveIngredient();
                 Inventec.Common.Logging.LogSystem.Debug("_mps000116ADOs______________" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdo._Mps000116ADOs), rdo._Mps000116ADOs));
 
                 SetSingleKey(new KeyValue(Mps000116ExtendSingleKey.INTRUCTION_TIME_DAY, Inventec.Common.DateTime.Convert.TimeNumberToDateString((rdo._IntructionTime))));
                 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gan ma/ten hoat chat (danh muc thuoc) cho cac dong thuoc o ca danh sach gop lan danh sach chi tiet,
+        /// nhieu hoat chat noi bang " + ". Vat tu va thuoc ngoai danh muc (MEDI_MATY_TYPE_ID = 0) giu rong.
+        /// </summary>
+        private void SetActiveIngredient()
+        {
+            try
+            {
+                if (rdo._MedicineTypeAcins == null || rdo._MedicineTypeAcins.Count <= 0)
+                    return;
+
+                Dictionary<long, List<V_HIS_MEDICINE_TYPE_ACIN>> dicAcin = rdo._MedicineTypeAcins
+                    .GroupBy(o => o.MEDICINE_TYPE_ID)
+                    .ToDictionary(g => g.Key, g => g.GroupBy(o => o.ACTIVE_INGREDIENT_ID).Select(o => o.First()).ToList());
+
+                if (rdo._Mps000116ADOs != null)
+                {
+                    foreach (var item in rdo._Mps000116ADOs)
+                    {
+                        List<V_HIS_MEDICINE_TYPE_ACIN> acins = null;
+                        if (item.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC || !dicAcin.TryGetValue(item.MEDI_MATY_TYPE_ID, out acins))
+                            continue;
+
+                        item.ACTIVE_INGREDIENT_CODES = String.Join(" + ", acins.Select(o => o.ACTIVE_INGREDIENT_CODE));
+                        item.ACTIVE_INGREDIENT_NAMES = String.Join(" + ", acins.Select(o => o.ACTIVE_INGREDIENT_NAME));
+                    }
+                }
+
+                if (rdo._Mps000116DetailADOs != null)
+                {
+                    foreach (var item in rdo._Mps000116DetailADOs)
+                    {
+                        List<V_HIS_MEDICINE_TYPE_ACIN> acins = null;
+                        if (item.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC || !dicAcin.TryGetValue(item.MEDI_MATY_TYPE_ID, out acins))
+                            continue;
+
+                        item.ACTIVE_INGREDIENT_CODES = String.Join(" + ", acins.Select(o => o.ACTIVE_INGREDIENT_CODE));
+                        item.ACTIVE_INGREDIENT_NAMES = String.Join(" + ", acins.Select(o => o.ACTIVE_INGREDIENT_NAME));
+                    }
+                }
             }
             catch (Exception ex)
             {

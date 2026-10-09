@@ -38,6 +38,11 @@ namespace MPS.Processor.Mps000116.PDO
         public List<HIS_SERVICE_REQ_MATY> _SerMatys { get; set; }
         public List<HIS_SERVICE_REQ_METY> _SerMetys { get; set; }
         public SingleKeys _SingleKeys { get; set; }
+        /// <summary>
+        /// Hoat chat cua cac loai thuoc tren phieu (danh muc thuoc - HIS_MEDICINE_TYPE_ACIN).
+        /// Chuc nang goi in gan sau khi khoi tao; null thi cac key hoat chat de trong.
+        /// </summary>
+        public List<V_HIS_MEDICINE_TYPE_ACIN> _MedicineTypeAcins { get; set; }
     }
 
     public class Mps000116ADO
@@ -76,6 +81,14 @@ namespace MPS.Processor.Mps000116.PDO
         public string MEDICINE_USE_FORM_NAME { get; set; }
         /// <summary>Ma duong dung cua thuoc. Vat tu khong co duong dung nen luon rong.</summary>
         public string MEDICINE_USE_FORM_CODE { get; set; }
+        /// <summary>Ma hoat chat trong danh muc thuoc, nhieu hoat chat noi bang " + ". Vat tu luon rong.</summary>
+        public string ACTIVE_INGREDIENT_CODES { get; set; }
+        /// <summary>Ten hoat chat trong danh muc thuoc, nhieu hoat chat noi bang " + ". Vat tu luon rong.</summary>
+        public string ACTIVE_INGREDIENT_NAMES { get; set; }
+        /// <summary>Ma hoat chat BHYT cua thuoc. Vat tu luon rong.</summary>
+        public string ACTIVE_INGR_BHYT_CODE { get; set; }
+        /// <summary>Ten hoat chat BHYT cua thuoc. Vat tu luon rong.</summary>
+        public string ACTIVE_INGR_BHYT_NAME { get; set; }
         /// <summary>
         /// Toc do truyen da kem don vi, dung cho tag tren mau in. Rong khi y lenh khong nhap
         /// (vat tu luon rong) de mau in khong tro lai chu don vi o dong trong.
@@ -128,6 +141,8 @@ namespace MPS.Processor.Mps000116.PDO
                     this.HTU_TEXT = !String.IsNullOrEmpty(datas[0].HTU_TEXT) ? datas[0].HTU_TEXT : datas[0].HTU_NAME;
                     this.MEDICINE_USE_FORM_NAME = datas[0].MEDICINE_USE_FORM_NAME;
                     this.MEDICINE_USE_FORM_CODE = datas[0].MEDICINE_USE_FORM_CODE;
+                    this.ACTIVE_INGR_BHYT_CODE = datas[0].ACTIVE_INGR_BHYT_CODE;
+                    this.ACTIVE_INGR_BHYT_NAME = datas[0].ACTIVE_INGR_BHYT_NAME;
                     this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                 }
             }
@@ -221,6 +236,8 @@ namespace MPS.Processor.Mps000116.PDO
                             this.CONCENTRA = mediType.CONCENTRA;
                             this.MEDICINE_GROUP_NUM_ORDER = mediType.MEDICINE_GROUP_NUM_ORDER;
                             this.MEDICINE_USE_FORM_NUM_ORDER = mediType.MEDICINE_USE_FORM_NUM_ORDER;
+                            this.ACTIVE_INGR_BHYT_CODE = mediType.ACTIVE_INGR_BHYT_CODE;
+                            this.ACTIVE_INGR_BHYT_NAME = mediType.ACTIVE_INGR_BHYT_NAME;
                         }
                         this.MEDI_MATY_TYPE_ID = datas[0].MEDICINE_TYPE_ID ?? 0;
                     }
@@ -325,6 +342,14 @@ namespace MPS.Processor.Mps000116.PDO
         public decimal? NUM_ORDER { get; set; }
         public decimal? MEDICINE_GROUP_NUM_ORDER { get; set; }
         public decimal? MEDICINE_USE_FORM_NUM_ORDER { get; set; }
+        /// <summary>Ma hoat chat trong danh muc thuoc, nhieu hoat chat noi bang " + ". Vat tu luon rong.</summary>
+        public string ACTIVE_INGREDIENT_CODES { get; set; }
+        /// <summary>Ten hoat chat trong danh muc thuoc, nhieu hoat chat noi bang " + ". Vat tu luon rong.</summary>
+        public string ACTIVE_INGREDIENT_NAMES { get; set; }
+        /// <summary>Ma hoat chat BHYT cua thuoc. Vat tu luon rong.</summary>
+        public string ACTIVE_INGR_BHYT_CODE { get; set; }
+        /// <summary>Ten hoat chat BHYT cua thuoc. Vat tu luon rong.</summary>
+        public string ACTIVE_INGR_BHYT_NAME { get; set; }
 
         public Mps000116DetailADO() { }
 
@@ -354,6 +379,8 @@ namespace MPS.Processor.Mps000116.PDO
                 this.MEDICINE_GROUP_NUM_ORDER = data.MEDICINE_GROUP_NUM_ORDER;
                 this.MEDICINE_USE_FORM_NUM_ORDER = data.MEDICINE_USE_FORM_NUM_ORDER;
                 this.DESCRIPTION = data.DESCRIPTION;
+                this.ACTIVE_INGR_BHYT_CODE = data.ACTIVE_INGR_BHYT_CODE;
+                this.ACTIVE_INGR_BHYT_NAME = data.ACTIVE_INGR_BHYT_NAME;
                 this.TypeId = 1;
                 this.TYPE_NAME = "Lĩnh ở kho";
                 this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
@@ -431,6 +458,8 @@ namespace MPS.Processor.Mps000116.PDO
                 this.NUM_ORDER = data.NUM_ORDER;
                 this.MEDICINE_GROUP_NUM_ORDER = medicineType != null ? medicineType.MEDICINE_GROUP_NUM_ORDER : null;
                 this.MEDICINE_USE_FORM_NUM_ORDER = medicineType != null ? medicineType.MEDICINE_USE_FORM_NUM_ORDER : null;
+                this.ACTIVE_INGR_BHYT_CODE = medicineType != null ? medicineType.ACTIVE_INGR_BHYT_CODE : null;
+                this.ACTIVE_INGR_BHYT_NAME = medicineType != null ? medicineType.ACTIVE_INGR_BHYT_NAME : null;
                 this.TypeId = 1;
                 this.TYPE_NAME = "Tự mua";
                 this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
