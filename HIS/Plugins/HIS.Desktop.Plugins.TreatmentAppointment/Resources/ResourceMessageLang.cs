@@ -266,6 +266,28 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment.Resources
             }
         }
 
+        /// <summary>Tên gateway Zenify ZNS hiển thị trên popup (việc 57005)</summary>
+        internal static string GatewayZenifyZns
+        {
+            get
+            {
+                try { return Inventec.Common.Resource.Get.Value("GatewayZenifyZns", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()); }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                return "";
+            }
+        }
+
+        /// <summary>Thông báo khi API không trả về mẫu tin nào (chưa bật Zalo / thiếu cấu hình / chưa khai danh sách mẫu)</summary>
+        internal static string KhongLayDuocDanhSachTemplateZalo
+        {
+            get
+            {
+                try { return Inventec.Common.Resource.Get.Value("KhongLayDuocDanhSachTemplateZalo", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()); }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                return "";
+            }
+        }
+
         /// <summary>Format: "Nội dung xem trước (với bệnh nhân: {0} · {1})"</summary>
         internal static string NoiDungXemTruocVoiBenhNhanFormat
         {
