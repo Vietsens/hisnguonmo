@@ -22,6 +22,7 @@ using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO;
+using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Base;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Resources;
 using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
@@ -1975,9 +1976,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     intructionDateSelecteds.Add(intructionDate);
                 }
 
+                //Viec 59656: bat key thi chi tu chon san to dieu tri do chinh nguoi chi dinh tao (ke ca to truyen vao tu man Tao to dieu tri)
+                bool isTrackingOwnerCheck = this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None;
+                string trackingOwnerLoginName = isTrackingOwnerCheck ? this.GetRequestLoginNameForTrackingOwner() : null;
                 // long dateTimeNowInt64 = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                 var trackingTemps = trackings.Where(o => intructionDateSelecteds.Contains(o.TRACKING_TIME.ToString().Substring(0, 8))
-                    && o.DEPARTMENT_ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetDepartmentId(this.currentModule.RoomTypeId))
+                    && o.DEPARTMENT_ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetDepartmentId(this.currentModule.RoomTypeId)
+                    && (!isTrackingOwnerCheck || TrackingOwnerChecker.IsOwner(o.CREATOR, trackingOwnerLoginName)))
                     .OrderByDescending(o => o.TRACKING_TIME).ToList();
 
                 bool isShowDefault = true;
@@ -1996,7 +2001,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 }
                 trackingADOs = trackingADOs.OrderByDescending(o => o.TRACKING_TIME).ToList();
 
-                if (this.tracking != null)// && !isChangeData
+                if (this.tracking != null// && !isChangeData
+                    && (!isTrackingOwnerCheck || TrackingOwnerChecker.IsOwner(this.tracking.CREATOR, trackingOwnerLoginName)))
                 {
                     Inventec.Common.Logging.LogSystem.Debug("Ben ngoai truyen vao to dieu tri____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tracking), tracking));
                     if (this.ucDateProcessor.GetChkMultiDateState(this.ucDate) == false)
@@ -2052,7 +2058,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         Inventec.Common.Logging.LogSystem.Info("Truong hop co tracking ben ngoai truyen vao, gan vao doi tuong tracking de phuc vu cho nghiep vu load cac du lieu: + Mã bệnh chỉnh,+ Tên bệnh chính,+ Mã bệnh phụ,+ Tên bệnh phụ,+ Mã bệnh YHCT chính,+ Tên bệnh YHCT chính,+ Mã bệnh YHCT phụ,+ Tên bệnh YHCT phụ tu ban ghi tracking do");
                     }
                 }
-                else if (HisConfigCFG.IsDefaultTracking && isShowDefault)
+                else if ((HisConfigCFG.IsDefaultTracking || (isTrackingOwnerCheck && this.actionType != GlobalVariables.ActionEdit)) && isShowDefault)
                 {
                     if (this.ucDateProcessor.GetChkMultiDateState(this.ucDate) == false)
                     {

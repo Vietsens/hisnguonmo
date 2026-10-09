@@ -336,6 +336,9 @@
     <Compile Include="ADO\TrackingADO.cs" />
     <Compile Include="ADO\TreatmentOverReason.cs" />
     <Compile Include="AssignPrescription\AssignPrescriptionCheck.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__TrackingOwner.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AssignPrescription\frmIsExpendType.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -373,6 +376,7 @@
       <DependentUpon>frmWorkingMediStock.cs</DependentUpon>
     </Compile>
     <Compile Include="Base\MediMatyProcessor.cs" />
+    <Compile Include="Base\TrackingOwnerChecker.cs" />
     <Compile Include="Config\ControlStateConstan.cs" />
     <Compile Include="Config\PrescriptionTypeCFG.cs" />
     <Compile Include="ChooseICD\frmChooseICD.cs">
@@ -386,6 +390,7 @@
     <Compile Include="AssignPrescription\frmAssignPrescription__Edit.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="EnumTrackingOwnerOption.cs" />
     <Compile Include="MessageBoxForm\frmMessageBoxChooseVT.cs">
       <SubType>Form</SubType>
     </Compile>

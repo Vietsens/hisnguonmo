@@ -118,7 +118,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     else
                     {
                         var data = treeListServiceReq.GetDataRecordByNode(e.Node) as TreeSereServADO;
-                        if (data.IS_DISABLE == 1 || data.IS_TEMPORARY_PRES == 1)
+                        //Viec 59656 (che do chan): khong cho tich y lenh nguoi khac chi dinh chua gan to nay
+                        if (data.IS_DISABLE == 1 || data.IS_TEMPORARY_PRES == 1 || this.IsTrackingOwnerBlockedNode(data))
                         {
                             e.Node.UncheckAll();
                             e.State = CheckState.Unchecked;
@@ -147,7 +148,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 else
                 {
                     var data = treeListServiceReq.GetDataRecordByNode(e.Node) as TreeSereServADO;
-                    if (data.IS_DISABLE == 1 || data.IS_TEMPORARY_PRES == 1)
+                    if (data.IS_DISABLE == 1 || data.IS_TEMPORARY_PRES == 1 || this.IsTrackingOwnerBlockedNode(data))
                     {
                         e.ObjectArgs.State = DevExpress.Utils.Drawing.ObjectState.Disabled;
                     }
@@ -401,6 +402,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         node.UncheckAll();
                         CheckNodeYLFromBB(node);
                     }
+                    //Viec 59656: khong tu tich y lenh nguoi khac chi dinh chua gan to nay
+                    this.UncheckRequestOfOtherUserNodes(treeListNodes);
                 }
             }
             catch (Exception ex)
@@ -457,6 +460,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         node.CheckAll();
                         CheckNode(node);
                     }
+                    //Viec 59656: khong tu tich y lenh nguoi khac chi dinh chua gan to nay
+                    this.UncheckRequestOfOtherUserNodes(treeListNodes);
                 }
             }
             catch (Exception ex)
@@ -486,7 +491,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                                 childNode.UncheckAll();
                                 CheckNode(childNode);
                             }
-                            else if (nodeData.IS_TEMPORARY_PRES == 1 || nodeData.IS_DISABLE == 1)
+                            else if (nodeData.IS_TEMPORARY_PRES == 1 || nodeData.IS_DISABLE == 1 || this.IsTrackingOwnerBlockedNode(nodeData))
                             {
                                 childNode.UncheckAll();
                                 CheckNode(childNode);

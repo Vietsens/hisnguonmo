@@ -327,4 +327,16 @@
   <data name="DichVuTrongGoiKhongCoTrongDanhMuc" xml:space="preserve">
     <value>Một số dịch vụ trong gói không có trong danh mục dịch vụ của phòng: {0}.</value>
   </data>
+  <data name="TrackingOwner__ToDieuTriCuaNguoiKhac" xml:space="preserve">
+    <value>- Tờ điều trị {0} do {1} tạo, không phải của người chỉ định {2}.</value>
+  </data>
+  <data name="TrackingOwner__NguoiChiDinhChuaCoToDieuTri" xml:space="preserve">
+    <value>- Người chỉ định {0} chưa có tờ điều trị ngày {1}.</value>
+  </data>
+  <data name="TrackingOwner__ChanLuu" xml:space="preserve">
+    <value>Y lệnh chỉ được đưa vào tờ điều trị do chính người chỉ định tạo. Vui lòng chọn tờ điều trị của người chỉ định hoặc tạo tờ điều trị trước khi chỉ định.</value>
+  </data>
+  <data name="TrackingOwner__CanhBaoTiepTuc" xml:space="preserve">
+    <value>Y lệnh nên được đưa vào tờ điều trị do chính người chỉ định tạo. Bạn có muốn tiếp tục không?</value>
+  </data>
 </root>

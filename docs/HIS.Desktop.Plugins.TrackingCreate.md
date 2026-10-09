@@ -80,6 +80,7 @@ Không thay đổi trong phạm vi việc này. (Muốn in 5 chỉ số mới c�
 |------|-----------|-----------------|
 | 21/09/2026 | sinhnt | Việc 3352 (PT-56263): y lệnh dịch vụ nay có thể mang giờ phút trong `USE_TIME`. Thêm `IsAnticipateByUseTime` + `FormatUseTimeDisplay` (`frmTrackingCreate__Pluss__Load.cs`): **phân loại** y lệnh dự trù so theo **NGÀY** với y lệnh dịch vụ (đơn thuốc DONDT/DONTT giữ nguyên phép so cũ `USE_TIME > INTRUCTION_DATE`) nên y lệnh dự trù **cùng ngày** chỉ định vẫn là y lệnh thường đúng như trước khi có ô giờ; **nhãn** "Dự trù ngày …" và node ngày ở cây tab 2 hiển thị thêm `HH:mm` khi y lệnh dịch vụ có giờ. `frmTrackingCreate__Pluss__Task.cs` không sửa vì chỉ lọc đơn thuốc DONDT. |
 | 19/06/2026 | huannh | Bổ sung 5 chỉ số O2, FiO2, GCS, Mức độ ý thức (LOC), AVPU vào màn hình DHST (UC `HIS.UC.DHST`), đặt liền dưới SpO2; map lưu/đọc `HIS_DHST` trong `frmTrackingCreateNew`; cập nhật `CheckCtorDhst`/`CheckDhst`; thêm validation GCS(3–15)/FiO2(0–100)/O2(≥0); đa ngôn ngữ vi/en/my |
+| 09/10/2026 | dangth2 | Việc 59656: tờ điều trị chỉ ghi nhận y lệnh do chính người tạo tờ chỉ định. Bật key: sau khi dựng cây tab 1 `MarkRequestOfOtherUser` đánh dấu `TreeSereServADO.IsRequestOfOtherUser` cho y lệnh CHƯA gắn tờ này và người chỉ định khác người tạo tờ (tờ mới: tài khoản đăng nhập); `treeSereServ_CheckAllNode` / `CheckYLFromBB` không tick sẵn các y lệnh đó (trước đây tick hết y lệnh trong ngày của mọi bác sĩ, kể cả khi sửa tờ cũ chưa ký); key = 2 còn khóa tick tay (`BeforeCheckNode`, `CheckNode`, ô tick vẽ mờ); trước `api/HisTracking/Create|Update` (Lưu, Lưu ký) gọi `CheckTrackingOwnerBeforeSave`: key 1 hỏi, key 2 chặn. Y lệnh đã gắn tờ này giữ nguyên (BE coi danh sách gửi lên là danh sách cuối). Tab 2 'Thực hiện đơn dự trù' không đổi. Partial `frmTrackingCreate__Pluss__TrackingOwner.cs`, 3 message `TrackingOwner__*`. |
 
 ## 9. Test Cases
 
@@ -90,3 +91,10 @@ Không thay đổi trong phạm vi việc này. (Muốn in 5 chỉ số mới c�
 - [ ] Nhập GCS ngoài 3–15 → bị chặn / báo lỗi
 - [ ] Nhập FiO2 ngoài 0–100 → bị chặn / báo lỗi
 - [ ] Tờ điều trị chỉ nhập 1 trong 5 trường mới (vd chỉ GCS) → vẫn lưu được DHST
+
+### Việc 59656 - Y lệnh chỉ vào tờ điều trị của chính người chỉ định
+- [ ] Key trống: tạo/sửa tờ vẫn tick sẵn mọi y lệnh trong ngày (như cũ)
+- [ ] Key bật, A sửa tờ chưa ký của A sau khi B kê: y lệnh của B không được tick sẵn, Lưu không kéo y lệnh B vào tờ A
+- [ ] Key = 1: tick tay y lệnh của B rồi Lưu → hỏi Có/Không
+- [ ] Key = 2: không tick được y lệnh của B (ô tick mờ, tick cả nhóm cũng bỏ qua)
+- [ ] Y lệnh của B đã gắn tờ A từ trước vẫn giữ nguyên khi Lưu

@@ -777,6 +777,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         item.TDL_REQUEST_ROOM_ID = rsServiceReq.Where(o => o.ID == item.SERVICE_REQ_ID).Select(o => o.REQUEST_ROOM_ID).FirstOrDefault();
                         item.IS_TEMPORARY_PRES = rsServiceReq.Where(o => o.ID == item.SERVICE_REQ_ID).Select(o => o.IS_TEMPORARY_PRES).FirstOrDefault();
                     }
+                    //Viec 59656: danh dau y lenh chua gan to nay do nguoi khac chi dinh (key tat thi khong lam gi)
+                    this.MarkRequestOfOtherUser(SereServADOs);
                     SereServADOsFirstForm = SereServADOs;
                     BindingList<TreeSereServADO> records = new BindingList<TreeSereServADO>(SereServADOs);
                     treeListServiceReq.DataSource = records;
