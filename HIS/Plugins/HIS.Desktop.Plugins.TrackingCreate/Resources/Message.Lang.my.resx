@@ -150,4 +150,13 @@
   <data name="Plugin_TrackingCreate__Validate_Tracking_Time" xml:space="preserve">
     <value>ကုသမှုစာရွက်ဖန်တီးသည့်ရက်စွဲသည် ဝင်ခွင့်လက်ခံသည့်နေ့ထက် မနည်းသင့်ပါ။</value>
   </data>
+  <data name="TrackingOwner__YLenhNguoiKhacChiDinh" xml:space="preserve">
+    <value>- Y lệnh {0} do {1} chỉ định.</value>
+  </data>
+  <data name="TrackingOwner__ChanLuuToDieuTri" xml:space="preserve">
+    <value>Không cho phép đưa vào tờ điều trị của {0} các y lệnh do người khác chỉ định. Vui lòng bỏ chọn các y lệnh trên.</value>
+  </data>
+  <data name="TrackingOwner__CanhBaoLuuToDieuTri" xml:space="preserve">
+    <value>Tờ điều trị của {0} chỉ nên ghi nhận y lệnh do chính người này chỉ định. Bạn có muốn tiếp tục lưu không?</value>
+  </data>
 </root>

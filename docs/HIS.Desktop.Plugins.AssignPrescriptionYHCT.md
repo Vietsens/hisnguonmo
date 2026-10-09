@@ -95,6 +95,7 @@ Tham chiếu mô tả các option trong `HIS.Desktop.Plugins.AssignPrescriptionP
 | 2026-07-18 | huannh | Fix lỗi lọc kho trong `InitComboMediStockAllow` (`frmAssignPrescription__InitCombo.cs`): thiếu ngoặc ở điều kiện `IS_ACTIVE` khiến `&&` ưu tiên hơn `\|\|`, mọi kho có `IS_ACTIVE == null` (kể cả Kho Máu) lọt qua bất kể loại kho, và tick "Kho YHCT" không có tác dụng. Bọc ngoặc `(IS_ACTIVE == null \|\| IS_ACTIVE == 1)` ở cả 2 nhánh checked/unchecked để điều kiện loại kho (`IS_TRADITIONAL_MEDICINE`) áp dụng đúng. |
 | 2026-07-18 | huannh | Loại hẳn kho máu khỏi combo chọn kho: thêm lọc `IS_BLOOD = 1` (loại) vào đầu `FilterMestRoomByIsCabinet` (`frmAssignPrescription__InitCombo.cs`), theo đúng pattern plugin `AssignPrescriptionPK`. Áp dụng cho cả trường hợp tick/bỏ tick "Kho YHCT". |
 | 2026-07-18 | huannh | Fix checkbox "Kho YHCT" tick/bỏ tick không load lại danh sách kho: event `chkYhct.CheckedChanged` chưa được đăng ký ở đâu (handler `chkYhct_CheckedChanged` có sẵn nhưng không bao giờ chạy). Gắn event bằng code ở cuối `frmAssignPrescription_Load` (sau khi load lần đầu hoàn tất) để tránh fire trong lúc khởi tạo. |
+| 09/10/2026 | dangth2 | Việc 59656: như AssignPrescriptionPK — `LoadDataTracking` chỉ tự chọn tờ của người chỉ định (`cboUser`), bỏ tờ truyền vào của người khác; `CheckTrackingOwnerBeforeSave` sau `CheckTrackingRequiredOption4`. Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (1 cảnh báo, 2 chặn, trống = như cũ). Lớp logic `Base/TrackingOwnerChecker.cs` + `EnumTrackingOwnerOption.cs` (bản sao giống hệt ở 7 plugin). Tờ của bác sĩ = `HIS_TRACKING.CREATOR`, người chỉ định = `REQUEST_LOGINNAME` gửi BE (so không phân biệt hoa thường). Lỗi bất ngờ trong bước kiểm tra thì cho lưu (chỉ ghi log). Thêm 4 message `TrackingOwner__*`. |
 ## 9. Test Cases
 
 ### Option = 4, BN nội trú, chưa có tờ điều trị
@@ -113,3 +114,10 @@ Tham chiếu mô tả các option trong `HIS.Desktop.Plugins.AssignPrescriptionP
 
 ### Option ≠ 4
 - [ ] Hành vi với option `0/1/2/3` không thay đổi.
+
+### Việc 59656 - Y lệnh chỉ vào tờ điều trị của chính người chỉ định
+- [ ] Key trống: chọn tờ của người khác vẫn lưu được, không hỏi (như cũ)
+- [ ] Key = 2: chọn tờ điều trị của người khác → chặn, nêu tờ + người tạo
+- [ ] Key = 1: như trên nhưng hỏi Có/Không
+- [ ] Key bật, người chỉ định chưa có tờ trong ngày y lệnh → cảnh báo/chặn "chưa có tờ điều trị ngày ..."
+- [ ] Key bật, mở màn: tự chọn sẵn tờ của chính người chỉ định (không chọn tờ người khác, kể cả tờ truyền từ màn Tạo tờ điều trị)

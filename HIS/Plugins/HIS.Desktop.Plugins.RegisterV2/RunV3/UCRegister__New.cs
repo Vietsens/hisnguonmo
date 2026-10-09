@@ -45,6 +45,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.lstPreviousDebtTreatmentsRegister = new List<string>();
                 this.EmergencyBol = false;
                 this.treatmentTypeID = 0;
+                // Bắt đầu lượt tiếp đón mới -> bỏ lọc hồ sơ vừa lưu, nếu không tiếp đón lại chính BN đó
+                // sẽ mất cảnh báo nợ viện phí/chưa khóa viện phí cho hồ sơ vừa tạo (phải đóng tab mới hiện lại).
+                this.lastSavedTreatmentCode = null;
+                this.ucPatientRaw1.SetLastSavedTreatmentCode(null);
                 this.dataAddressPatient = new UC.AddressCombo.ADO.UCAddressADO();
                 this.ucHeinInfo1.RefreshUserControl();
                 this.ucPatientRaw1.RefreshUserControl();

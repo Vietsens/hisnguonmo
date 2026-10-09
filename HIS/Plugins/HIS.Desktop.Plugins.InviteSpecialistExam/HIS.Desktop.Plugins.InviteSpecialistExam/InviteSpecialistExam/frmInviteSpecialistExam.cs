@@ -34,6 +34,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
     {
         Inventec.Desktop.Common.Modules.Module moduleData;
         L_HIS_TREATMENT_BED_ROOM bedRoom;
+        V_HIS_SERVICE_REQ serviceReq;
         HIS_SPECIALIST_EXAM specialistExam;
         bool isEditMode = false;
         string DoctorLogin { get; set; }
@@ -73,6 +74,27 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 this.isEditMode = isEdit;
                 dteNgayMoi.DateTime = DateTime.Now;
                 lstICD = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_ICD>().Where(i=>i.IS_ACTIVE == 1 && i.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Opened from the exam room (HIS.Desktop.Plugins.ExecuteRoom): patient, treatment and ICD are taken from the
+        /// selected service request instead of a bed room, so the saved exam has no TREATMENT_BED_ROOM_ID.
+        /// </summary>
+        public frmInviteSpecialistExam(Inventec.Desktop.Common.Modules.Module module, V_HIS_SERVICE_REQ serviceReqData) : base(module)
+        {
+            try
+            {
+                InitializeComponent();
+                this.moduleData = module;
+                this.serviceReq = serviceReqData;
+                this.isEditMode = false;
+                dteNgayMoi.DateTime = DateTime.Now;
+                lstICD = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_ICD>().Where(i => i.IS_ACTIVE == 1 && i.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
             }
             catch (Exception ex)
             {
@@ -326,6 +348,22 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                         ICD_TEXT = bedRoom.ICD_TEXT
                     };
                     subIcdProcessor.Reload(ucSecondaryIcd,subAdo);
+                }
+                else if (serviceReq != null)
+                {
+                    HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
+                    {
+                        ICD_CODE = serviceReq.ICD_CODE,
+                        ICD_NAME = serviceReq.ICD_NAME
+                    };
+                    ((UCIcd)this.ucIcd).Reload(ado);
+
+                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subAdo = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO
+                    {
+                        ICD_SUB_CODE = serviceReq.ICD_SUB_CODE,
+                        ICD_TEXT = serviceReq.ICD_TEXT
+                    };
+                    subIcdProcessor.Reload(ucSecondaryIcd, subAdo);
                 }
                 else if(specialistExam != null)
                 {
@@ -664,6 +702,18 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                     hIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = bedRoom.TDL_PATIENT_ADDRESS;
                     hIS_SPECIALIST_EXAM.TREATMENT_ID = bedRoom.TREATMENT_ID;
                     hIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = bedRoom.ID;
+                }
+                else if (serviceReq != null)
+                {
+                    hIS_SPECIALIST_EXAM.TREATMENT_CODE = serviceReq.TREATMENT_CODE;
+                    hIS_SPECIALIST_EXAM.PATIENT_CODE = serviceReq.TDL_PATIENT_CODE;
+                    hIS_SPECIALIST_EXAM.TDL_PATIENT_NAME = serviceReq.TDL_PATIENT_NAME;
+                    hIS_SPECIALIST_EXAM.TDL_PATIENT_DOB = serviceReq.TDL_PATIENT_DOB;
+                    hIS_SPECIALIST_EXAM.TDL_PATIENT_GENDER_NAME = serviceReq.TDL_PATIENT_GENDER_NAME;
+                    hIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = serviceReq.TDL_PATIENT_ADDRESS;
+                    hIS_SPECIALIST_EXAM.TREATMENT_ID = serviceReq.TREATMENT_ID;
+                    // Invited from the exam room: the patient has no bed room yet
+                    hIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = null;
                 }
                 else if (specialistExam != null)
                 {

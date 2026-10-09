@@ -183,6 +183,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         internal static bool IsWarningOver15PercentBaseSalaryExam;
         internal static bool IsWarringUseDayAndExpTimeBHYT;
         internal static bool IsDefaultTracking;
+        /// <summary>
+        /// Task 59656 - HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption: orders may only be attached to treatment sheets
+        /// created by the ordering user. 1: warn, 2: block, other/empty: off (see EnumTrackingOwnerOption).
+        /// </summary>
+        internal static string AssignToOwnTrackingOption;
         internal static bool IsUsingServiceTime;
         internal static decimal WarningOverTotalPatientPrice;
         internal static long TutorialFormat;
@@ -420,6 +425,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
                 IsWarningOver15PercentBaseSalaryExam = GetValue(WARNING_OVER_15_PERCENT_BASE_SALARY__IS_CHECK_EXAM) == GlobalVariables.CommonStringTrue;
                 IsWarringUseDayAndExpTimeBHYT = GetValue(WARRING_USE_DAY_AND_EXP_TIME_BHYT) == GlobalVariables.CommonStringTrue;
                 IsDefaultTracking = GetValue(KEY_IS_DEFAULT_TRACKING) == GlobalVariables.CommonStringTrue;
+                AssignToOwnTrackingOption = GetValue(HIS.Desktop.Plugins.AssignPrescriptionCLS.Base.TrackingOwnerChecker.CONFIG_KEY);
                 MedicineHasPaymentLimitBHYT = GetValue(MEDICINE_HAS_PAYMENT_LIMIT_BHYT);
                 IsNotAllowingExpendWithoutHavingParent = (GetValue(MOS__HIS_SERVICE_REQ__IS_NOT_ALLOWING_EXPEND_WITHOUT_HAVING_PARENT) == "1");
                 IsReasonRequired = (GetValue(CONFIG_KEY__IS_REASON_REQUIRED) == "1");

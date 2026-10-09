@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmCashierScreenConfig.Text" xml:space="preserve">
+    <value>Pharmacy cashier waiting screen</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciMediStock.Text" xml:space="preserve">
+    <value>Pharmacy:</value>
+  </data>
+  <data name="frmCashierScreenConfig.lblMediStock.NotMediStock" xml:space="preserve">
+    <value>Current working room is not a pharmacy</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciBillFilter.Text" xml:space="preserve">
+    <value>Payment status:</value>
+  </data>
+  <data name="frmCashierScreenConfig.radioBillFilter.All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="frmCashierScreenConfig.radioBillFilter.NotBilled" xml:space="preserve">
+    <value>Unpaid</value>
+  </data>
+  <data name="frmCashierScreenConfig.radioBillFilter.Billed" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciHideAmount.Text" xml:space="preserve">
+    <value>Amount:</value>
+  </data>
+  <data name="frmCashierScreenConfig.chkHideAmount.Properties.Caption" xml:space="preserve">
+    <value>Hide amount on waiting screen</value>
+  </data>
+  <data name="frmCashierScreenConfig.lblDisplayHeader.Text" xml:space="preserve">
+    <value>Display settings</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciTitleSize.Text" xml:space="preserve">
+    <value>Title font size:</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciTitleColor.Text" xml:space="preserve">
+    <value>Text color:</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciListSize.Text" xml:space="preserve">
+    <value>List font size:</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciListColor.Text" xml:space="preserve">
+    <value>Text color:</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciCallingSize.Text" xml:space="preserve">
+    <value>Calling font size:</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciCallingColor.Text" xml:space="preserve">
+    <value>Text color:</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciCallingBackColor.Text" xml:space="preserve">
+    <value>Back color:</value>
+  </data>
+  <data name="frmCashierScreenConfig.lciInviteText.Text" xml:space="preserve">
+    <value>Invitation:</value>
+  </data>
+  <data name="frmCashierScreenConfig.btnOpen.Text" xml:space="preserve">
+    <value>Open waiting screen</value>
+  </data>
+  <data name="frmCashierWaitingScreen.Text" xml:space="preserve">
+    <value>Pharmacy cashier waiting screen</value>
+  </data>
+  <data name="frmCashierWaitingScreen.ScreenTitle" xml:space="preserve">
+    <value>QUEUE DISPLAY SYSTEM</value>
+  </data>
+  <data name="frmCashierWaitingScreen.ScreenName" xml:space="preserve">
+    <value>SCREEN 01 - PHARMACY CASHIER</value>
+  </data>
+  <data name="frmCashierWaitingScreen.BigTitle" xml:space="preserve">
+    <value>CASHIER QUEUE</value>
+  </data>
+  <data name="frmCashierWaitingScreen.gcStt.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmCashierWaitingScreen.gcPatientName.Caption" xml:space="preserve">
+    <value>Full name</value>
+  </data>
+  <data name="frmCashierWaitingScreen.gcDobYear.Caption" xml:space="preserve">
+    <value>Birth year</value>
+  </data>
+  <data name="frmCashierWaitingScreen.gcAmount.Caption" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmCashierWaitingScreen.gcStatus.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmCashierWaitingScreen.StatusBilled" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="frmCashierWaitingScreen.StatusNotBilled" xml:space="preserve">
+    <value>Unpaid</value>
+  </data>
+  <data name="frmCashierWaitingScreen.CallingLabel" xml:space="preserve">
+    <value>NOW CALLING:</value>
+  </data>
+  <data name="frmCashierWaitingScreen.AmountLabel" xml:space="preserve">
+    <value>AMOUNT:</value>
+  </data>
+  <data name="frmCashierWaitingScreen.DefaultInviteText" xml:space="preserve">
+    <value>PLEASE COME TO THE CASHIER</value>
+  </data>
+</root>

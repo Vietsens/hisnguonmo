@@ -271,6 +271,17 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
 
                 if (!Check()) return;
 
+                //Mask khong hien placeholder nua -> chan so the go do/sai khi luu (o bi khoa thi bo qua de khong ket du lieu cu)
+                string soTheCheck = HeinCardHelper.TrimHeinCardNumber(txtSoThe.Text);
+                if (txtSoThe.Enabled && !String.IsNullOrEmpty(soTheCheck) && !new MOS.LibraryHein.Bhyt.BhytHeinProcessor().IsValidHeinCardNumber(soTheCheck))
+                {
+                    this.dxErrorProvider1.SetError(this.txtSoThe, "Người dùng nhập số thẻ BHYT không hợp lệ");
+                    MessageBox.Show("Số thẻ BHYT không hợp lệ, vui lòng nhập đủ số thẻ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtSoThe.Focus();
+                    txtSoThe.SelectAll();
+                    return;
+                }
+
 
                 if (this.treatment != null)
                 {
@@ -871,6 +882,24 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             }
         }
 
+        /// <summary>
+        /// Chuan hoa so the truoc khi gan vao o co mask 15|17 ky tu: bo "-", "_", dau cach (du lieu cu)
+        /// roi chen gach dung khuon 15 (2-1-2-2-3-5) / 17 (2-1-2-12), tranh mask hieu nham the 15 thanh the 17 go do.
+        /// </summary>
+        private string FormatHeinCardForMask(string heinCardNumber)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(heinCardNumber)) return heinCardNumber;
+                return HeinCardHelper.SetHeinCardNumberDisplayByNumber(HeinCardHelper.TrimHeinCardNumber(heinCardNumber));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return heinCardNumber;
+            }
+        }
+
         private void txtSoThe_Leave(object sender, EventArgs e)
         {
             try
@@ -1116,7 +1145,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                     {
                         if (rsData.maKetQua == "000" || rsData.maKetQua == "001" || rsData.maKetQua == "002" || rsData.maKetQua == "004")
                         {
-                            txtSoThe.Text = rsData.maThe;
+                            txtSoThe.Text = FormatHeinCardForMask(rsData.maThe);
                             if (!string.IsNullOrEmpty(rsData.ngaySinh) && checkHistoryLDO.ngaySinh != rsData.ngaySinh && Patient != null && DevExpress.XtraEditors.XtraMessageBox.Show("Bạn có muốn cập nhật lại ngày sinh của bệnh nhân không?", "Cảnh báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                             {
                                 WaitingManager.Show();

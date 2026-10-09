@@ -78,6 +78,10 @@ namespace HIS.Desktop.Plugins.HisImportKsk.ADO
         public long? provinceId { get; set; }
         public long? districtId { get; set; }
         public long? nationalId { get; set; }
+        public string TREATMENT_TYPE_CODE { get; set; }
+        public string TREATMENT_TYPE_NAME_STR { get; set; }
+        public long? TREATMENT_TYPE_ID { get; set; }
+        public string ETHNIC_NAME_STR { get; set; }
 
         public KskImportADO()
         {
@@ -126,6 +130,18 @@ namespace HIS.Desktop.Plugins.HisImportKsk.ADO
                     }
 
                     this.CMND_CCCD = !string.IsNullOrEmpty(data.Patient.CCCD_NUMBER) ? data.Patient.CCCD_NUMBER : data.Patient.CMND_NUMBER;
+                    this.ETHNIC_NAME_STR = data.Patient.ETHNIC_NAME;
+
+                    if (data.TreatmentTypeId.HasValue)
+                    {
+                        var treatmentType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == data.TreatmentTypeId.Value);
+                        if (treatmentType != null)
+                        {
+                            this.TREATMENT_TYPE_ID = treatmentType.ID;
+                            this.TREATMENT_TYPE_CODE = treatmentType.TREATMENT_TYPE_CODE;
+                            this.TREATMENT_TYPE_NAME_STR = treatmentType.TREATMENT_TYPE_NAME;
+                        }
+                    }
 
                     var gender = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == data.Patient.GENDER_ID);
                     if (gender != null)

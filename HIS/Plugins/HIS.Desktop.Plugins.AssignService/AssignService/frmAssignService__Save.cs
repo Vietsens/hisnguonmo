@@ -238,6 +238,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     isValid = isValid && CheckTimeInDepartment(this.intructionTimeSelecteds);
                 }
+                //Viec 59656: y lenh chi duoc dua vao to dieu tri do chinh nguoi chi dinh tao (key tat thi bo qua)
+                isValid = isValid && this.CheckTrackingOwnerBeforeSave();
 
                 ValidConsultationReqiured(serviceCheckeds__Send, this.treatmentId);
 

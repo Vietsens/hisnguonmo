@@ -811,6 +811,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             {
                 if (data != null)
                 {
+                    // Người dùng chủ động tìm BN (kể cả tìm lại đúng BN vừa lưu mà chưa bấm Mới) -> lượt tiếp đón mới,
+                    // bỏ lọc hồ sơ vừa lưu để không mất cảnh báo nợ viện phí/chưa khóa viện phí.
+                    this.lastSavedTreatmentCode = null;
+                    this.ucPatientRaw1.SetLastSavedTreatmentCode(null);
                     this.IsReadCardTheViet = false;
                     string heinCardNumber = "";
                     Inventec.Common.QrCodeBHYT.HeinCardData dataCheck = new Inventec.Common.QrCodeBHYT.HeinCardData();

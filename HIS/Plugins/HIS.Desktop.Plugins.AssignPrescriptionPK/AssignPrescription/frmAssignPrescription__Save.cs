@@ -1121,6 +1121,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 valid = valid && CheckMultiIntructionTime();
                 validFolow += "valid.23=" + valid + ";";
 
+                //Viec 59656: y lenh chi duoc dua vao to dieu tri do chinh nguoi chi dinh tao (key tat thi bo qua)
+                valid = valid && this.CheckTrackingOwnerBeforeSave();
+                validFolow += "valid.23.1=" + valid + ";";
+
                 valid = valid && CheckUseTime();
                 validFolow += "valid.24=" + valid + ";";
 

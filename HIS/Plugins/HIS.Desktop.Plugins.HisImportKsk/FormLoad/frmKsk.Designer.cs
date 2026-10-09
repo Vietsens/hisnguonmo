@@ -126,6 +126,8 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.gridColumn34 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn35 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn36 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboLogin.Properties)).BeginInit();
@@ -372,6 +374,8 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn3,
             this.gridColumn13,
             this.gridColumn34,
+            this.gridColumn35,
+            this.gridColumn36,
             this.gridColumn4,
             this.gridColumn5,
             this.gridColumn6,
@@ -740,6 +744,26 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
             this.gridColumn23.Visible = true;
             this.gridColumn23.VisibleIndex = 34;
             this.gridColumn23.Width = 150;
+            //
+            // gridColumn35
+            //
+            this.gridColumn35.Caption = "Diện điều trị";
+            this.gridColumn35.FieldName = "TREATMENT_TYPE_NAME_STR";
+            this.gridColumn35.Name = "gridColumn35";
+            this.gridColumn35.OptionsColumn.AllowEdit = false;
+            this.gridColumn35.Visible = true;
+            this.gridColumn35.VisibleIndex = 35;
+            this.gridColumn35.Width = 150;
+            //
+            // gridColumn36
+            //
+            this.gridColumn36.Caption = "Dân tộc";
+            this.gridColumn36.FieldName = "ETHNIC_NAME_STR";
+            this.gridColumn36.Name = "gridColumn36";
+            this.gridColumn36.OptionsColumn.AllowEdit = false;
+            this.gridColumn36.Visible = true;
+            this.gridColumn36.VisibleIndex = 36;
+            this.gridColumn36.Width = 100;
             // 
             // Btn_ErrorLine
             // 
@@ -1034,5 +1058,7 @@ namespace   HIS.Desktop.Plugins.HisImportKsk.FormLoad
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn30;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn33;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn34;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn35;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn36;
     }
 }

@@ -358,6 +358,9 @@
     <Compile Include="AssignPrescription\frmAssignPrescription__SearchHightLight.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AssignPrescription\frmAssignPrescription__TrackingOwner.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AssignPrescription\frmTreatmentMethod.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -365,6 +368,7 @@
       <DependentUpon>frmTreatmentMethod.cs</DependentUpon>
     </Compile>
     <Compile Include="Base\MediMatyProcessor.cs" />
+    <Compile Include="Base\TrackingOwnerChecker.cs" />
     <Compile Include="Config\PrescriptionTypeCFG.cs" />
     <Compile Include="ChooseICD\frmChooseICD.cs">
       <SubType>Form</SubType>
@@ -373,6 +377,7 @@
       <DependentUpon>frmChooseICD.cs</DependentUpon>
     </Compile>
     <Compile Include="EnumOptionChonVatTuThayThe.cs" />
+    <Compile Include="EnumTrackingOwnerOption.cs" />
     <Compile Include="MessageBoxForm\frmMessageBoxChooseVT.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -113,6 +113,7 @@ In đơn thuốc, biên lai, giấy tờ kết thúc điều trị qua các Prin
 | 17/07/2026 | huannh | **Fix NRE khi lưu thiếu cđ chính** — `ProcessSaveData` (`frmAssignPrescription__Save.cs`) crash `NullReferenceException` tại `txtIcdCode.EditValue.ToString()` / `txtIcdMainText.EditValue.ToString()` khi ô cđ chính trống (xảy ra rõ khi nạp đơn mẫu chạy thận không mang ICD). Sửa null-safe: `EditValue == null ? "" : EditValue.ToString()`. Sau fix, các validation sẵn có (`CheckIcd`...) chạy đúng thay vì crash "xử lý thất bại". |
 | 17/07/2026 | huannh | **Chặn sớm khi thiếu cđ chính** — `ProcessSaveData` kiểm tra `txtIcdCode.Text` trống trước khi map: set `ErrorText` tại control + báo `ChuaNhapChanDoanChinh` + focus lại ô cđ chính, `return`. Thêm message `ChuaNhapChanDoanChinh` (vi/en/my) + accessor `ResourceMessage`. Thay vì lưu ICD rỗng, người dùng được báo rõ phải nhập cđ chính. |
 | 18/07/2026 | huannh | **Fix cột MV (Mang về) không load khi chọn đơn mẫu** — Constructor `MediMatyTypeADO(V_HIS_EMTE_MEDICINE_TYPE...)` không set `IsHomePresMedicine` nên cột MV trống khi nạp thuốc từ đơn mẫu. Bổ sung `this.IsHomePresMedicine = (mety.IS_HOME_PRES_MEDICINE == 1)` — lấy mặc định theo danh mục `V_HIS_MEDICINE_TYPE`, đồng nhất với luồng thêm dòng (`RowAdd/AddAbstract`). Lưu ý: đơn mẫu chưa lưu MV riêng theo dòng → MV load theo cờ danh mục, chưa nhớ tick thủ công (cần BE thêm cột nếu muốn nhớ đúng tick). |
+| 09/10/2026 | dangth2 | Việc 59656: y lệnh thuốc/vật tư chỉ vào tờ điều trị do chính người chỉ định tạo. Bật key: `LoadDataTracking` bỏ tờ truyền vào (`AssignPrescriptionADO.Tracking`) nếu không do người chỉ định tạo, tự chọn tờ của người chỉ định cả khi IsDefaultTracking tắt (trừ sửa đơn); `InitComboTracking` nhiều ngày tương tự; `ProcessSaveData` thêm `CheckTrackingOwnerBeforeSave` sau `CheckMultiIntructionTime` (bỏ qua: combo ẩn/tắt, đơn tạm, kê nhiều BN; sửa đơn giữ tờ cũ của đơn và không báo thiếu tờ). Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (1 cảnh báo, 2 chặn, trống = như cũ). Lớp logic `Base/TrackingOwnerChecker.cs` + `EnumTrackingOwnerOption.cs` (bản sao giống hệt ở 7 plugin). Tờ của bác sĩ = `HIS_TRACKING.CREATOR`, người chỉ định = `REQUEST_LOGINNAME` gửi BE (so không phân biệt hoa thường). Lỗi bất ngờ trong bước kiểm tra thì cho lưu (chỉ ghi log). Thêm 4 message `TrackingOwner__*`. |
 
 ## 9. Test Cases
 
@@ -147,3 +148,10 @@ In đơn thuốc, biên lai, giấy tờ kết thúc điều trị qua các Prin
 - [ ] Key bật: 2 dòng giống hệt cả cách dùng (chỉ khác khoảng trắng đầu/cuối) → gộp 1 dòng.
 - [ ] Key bật: mở sửa đơn / chọn đơn mẫu / đơn cũ có 2 dòng khác cách dùng → lưới giữ 2 dòng.
 - [ ] Thuốc ngoài kho, tự túc, vật tư: vẫn gộp như cũ.
+
+### Việc 59656 - Y lệnh chỉ vào tờ điều trị của chính người chỉ định
+- [ ] Key trống: chọn tờ của người khác vẫn lưu được, không hỏi (như cũ)
+- [ ] Key = 2: chọn tờ điều trị của người khác → chặn, nêu tờ + người tạo
+- [ ] Key = 1: như trên nhưng hỏi Có/Không
+- [ ] Key bật, người chỉ định chưa có tờ trong ngày y lệnh → cảnh báo/chặn "chưa có tờ điều trị ngày ..."
+- [ ] Key bật, mở màn: tự chọn sẵn tờ của chính người chỉ định (không chọn tờ người khác, kể cả tờ truyền từ màn Tạo tờ điều trị)

@@ -82,7 +82,8 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
             ChonMayXuLy,
             TuberclusisTreatment,
             HisTransReqList,
-            MoiHoiChan
+            MoiHoiChan,
+            MoiKhamChuyenKhoa
         }
         internal ModuleType moduleType { get; set; }
 
@@ -332,6 +333,10 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
                 BarButtonItem itemMoiHoiChan = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnMoiHoiChan.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture()), 2);
                 itemMoiHoiChan.Tag = ModuleType.MoiHoiChan;
                 itemMoiHoiChan.ItemClick += new ItemClickEventHandler(executeRoomMouseRightClick);
+
+                BarButtonItem itemMoiKhamChuyenKhoa = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnMoiKhamChuyenKhoa.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture()), 2);
+                itemMoiKhamChuyenKhoa.Tag = ModuleType.MoiKhamChuyenKhoa;
+                itemMoiKhamChuyenKhoa.ItemClick += new ItemClickEventHandler(executeRoomMouseRightClick);
                 if (this.serviceReqRightClick != null)
                 {
                     menu.AddItems(new BarItem[] { itemDetailMedicalRecord });
@@ -383,11 +388,11 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
                         itemAnalyzeMedicalImageAI.Tag = ModuleType.AnalyzeMedicalImageAI;
                         itemAnalyzeMedicalImageAI.ItemClick += new ItemClickEventHandler(executeRoomMouseRightClick);
                         // Thêm menu vào dưới menu "Hồ sơ điều trị"
-                        menu.AddItems(new BarItem[] { itemBordereau, itemAggrHospitalFees, itemTreatmentList, itemAnalyzeMedicalImageAI, itemServiceReqList, itemTreatmentHistory, itemOtherForm, itemBenhAnNgoaiTru, itemDebate, itemMoiHoiChan, itemAssignPaan, itemPhanLoaiBenhNhan, itemAllergyCard, itemThongTinChuyenDen });
+                        menu.AddItems(new BarItem[] { itemBordereau, itemAggrHospitalFees, itemTreatmentList, itemAnalyzeMedicalImageAI, itemServiceReqList, itemTreatmentHistory, itemOtherForm, itemBenhAnNgoaiTru, itemDebate, itemMoiHoiChan, itemMoiKhamChuyenKhoa, itemAssignPaan, itemPhanLoaiBenhNhan, itemAllergyCard, itemThongTinChuyenDen });
                     }
                     else
                     {
-                        menu.AddItems(new BarItem[] { itemBordereau, itemAggrHospitalFees, itemTreatmentList, itemServiceReqList, itemTreatmentHistory, itemOtherForm, itemBenhAnNgoaiTru, itemDebate, itemMoiHoiChan, itemAssignPaan, itemPhanLoaiBenhNhan, itemAllergyCard, itemThongTinChuyenDen });
+                        menu.AddItems(new BarItem[] { itemBordereau, itemAggrHospitalFees, itemTreatmentList, itemServiceReqList, itemTreatmentHistory, itemOtherForm, itemBenhAnNgoaiTru, itemDebate, itemMoiHoiChan, itemMoiKhamChuyenKhoa, itemAssignPaan, itemPhanLoaiBenhNhan, itemAllergyCard, itemThongTinChuyenDen });
                     }
                     menu.AddItems(new BarItem[] { itemSummaryInforTreatmentRecords });
 

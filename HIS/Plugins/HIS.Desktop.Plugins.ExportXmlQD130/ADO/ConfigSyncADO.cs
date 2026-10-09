@@ -42,5 +42,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         public bool isSyncKcbVlg { get; set; }
         //Đồng bộ KCB theo QĐ 3176 lên Trung tâm điều hành y tế (cổng dữ liệu y tế)
         public bool isSyncKcbHoc { get; set; }
+        //Đồng bộ KCB theo QĐ 3176 lên Cổng CSDL Y tế Cần Thơ
+        public bool isSyncKcbCt { get; set; }
     }
 }

@@ -21,6 +21,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.ADO;
+using HIS.Desktop.Plugins.AssignPrescriptionPK.Base;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.ChooseMediStock;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Resources; 
@@ -2556,6 +2557,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 trackingADOs = trackingADOs.OrderByDescending(o => o.TRACKING_TIME).ToList();
                 long trackIdSet = 0;
                 List<HIS_TRACKING> trackingTemps = new List<HIS_TRACKING>();
+                //Viec 59656: bat key thi khong tu chon san to dieu tri cua nguoi khac (ke ca to truyen vao tu man Tao to dieu tri),
+                //chi chon to do chinh nguoi chi dinh tao trong ngay y lenh
+                bool isTrackingOwnerCheck = this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None;
+                string trackingOwnerLoginName = isTrackingOwnerCheck ? this.GetRequestLoginNameForTrackingOwner() : null;
+                if (isTrackingOwnerCheck && this.Listtrackings != null && this.Listtrackings.Count > 0 && !isChangeData
+                    && !TrackingOwnerChecker.IsOwner(this.Listtrackings[0].CREATOR, trackingOwnerLoginName))
+                {
+                    Inventec.Common.Logging.LogSystem.Info("LoadDataTracking: bo to dieu tri truyen vao vi khong do nguoi chi dinh tao___trackingId=" + this.Listtrackings[0].ID
+                        + "; creator=" + this.Listtrackings[0].CREATOR + "; requestLoginName=" + trackingOwnerLoginName);
+                    this.Listtrackings = null;
+                }
                 if (this.Listtrackings != null && this.Listtrackings.Count > 0 && !isChangeData)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("Ben ngoai truyen vao to dieu tri____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Listtrackings), Listtrackings));
@@ -2570,11 +2582,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     trackingTemps = trackings.Where(o => intructionDateSelectedProcess.Contains(o.TRACKING_TIME.ToString().Substring(0, 8))
                         //&& o.DEPARTMENT_ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetDepartmentId(this.currentModule.RoomTypeId))
-                        && o.CREATOR.ToUpper() == this.txtLoginName.Text.ToUpper())
+                        && (isTrackingOwnerCheck
+                            ? TrackingOwnerChecker.IsOwner(o.CREATOR, trackingOwnerLoginName)
+                            : o.CREATOR.ToUpper() == this.txtLoginName.Text.ToUpper()))
                         .OrderByDescending(o => o.TRACKING_TIME).ToList();
 
+                    //Bat key 59656: tu chon to cua nguoi chi dinh ca khi IsDefaultTracking tat, tru luc sua don (giu to dieu tri cu cua don)
                     if (trackingTemps != null && trackingTemps.Count > 0
-                        && HisConfigCFG.IsDefaultTracking
+                        && (HisConfigCFG.IsDefaultTracking || (isTrackingOwnerCheck && this.actionType != GlobalVariables.ActionEdit))
                         && chkMultiIntructionTime.Checked == false
                         )
                     {
