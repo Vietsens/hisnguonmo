@@ -162,6 +162,12 @@
   <data name="GatewayFnsZns" xml:space="preserve">
     <value>FNS ZNS (FPT)</value>
   </data>
+  <data name="GatewayZenifyZns" xml:space="preserve">
+    <value>Zenify ZNS</value>
+  </data>
+  <data name="KhongLayDuocDanhSachTemplateZalo" xml:space="preserve">
+    <value>Không lấy được danh sách mẫu tin Zalo. Vui lòng kiểm tra cấu hình gửi Zalo (mẫu tin và thông tin kết nối) hoặc liên hệ quản trị hệ thống.</value>
+  </data>
   <data name="NoiDungXemTruocVoiBenhNhanFormat" xml:space="preserve">
     <value>Nội dung xem trước (với bệnh nhân: {0} · {1})</value>
   </data>

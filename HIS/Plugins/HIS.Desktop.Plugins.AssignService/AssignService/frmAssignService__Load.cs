@@ -29,6 +29,7 @@ using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignService.ADO;
+using HIS.Desktop.Plugins.AssignService.Base;
 using HIS.Desktop.Plugins.AssignService.Config;
 using HIS.Desktop.Plugins.AssignService.Resources;
 using HIS.Desktop.Plugins.Library.AlertWarningFee;
@@ -3354,6 +3355,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 bool btnEn = cboTracking.Enabled;
                 cboTracking.Enabled = true;
+                //Viec 59656: bat key thi chi tu chon san to dieu tri do chinh nguoi chi dinh tao (ke ca to truyen vao tu man Tao to dieu tri)
+                bool isTrackingOwnerCheck = this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None;
+                string trackingOwnerLoginName = isTrackingOwnerCheck ? this.GetRequestLoginNameForTrackingOwner() : null;
                 if (!chkMultiIntructionTime.Checked)
                 {
                     this.isInitTracking = false;
@@ -3368,19 +3372,21 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
 
                     long trackIdSet = 0;
-                    if (this.tracking != null && !isUseTrackingInputWhileChangeTrackingTime)
+                    if (this.tracking != null && !isUseTrackingInputWhileChangeTrackingTime
+                        && (!isTrackingOwnerCheck || TrackingOwnerChecker.IsOwner(this.tracking.CREATOR, trackingOwnerLoginName)))
                     {
                         trackIdSet = this.tracking.ID;
                     }
                     else
                     {
                         var trackingTemps = trackings.Where(o => intructionDateSelectedProcess.Contains(o.TRACKING_TIME.ToString().Substring(0, 8))
-                            && o.DEPARTMENT_ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetDepartmentId(this.currentModule.RoomTypeId))
+                            && o.DEPARTMENT_ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetDepartmentId(this.currentModule.RoomTypeId)
+                            && (!isTrackingOwnerCheck || TrackingOwnerChecker.IsOwner(o.CREATOR, trackingOwnerLoginName)))
                             .OrderByDescending(o => o.TRACKING_TIME).ToList();
 
                         if (trackingTemps != null
                             && trackingTemps.Count > 0
-                            && HisConfigCFG.IsDefaultTracking == "1"
+                            && (HisConfigCFG.IsDefaultTracking == "1" || isTrackingOwnerCheck)
                             )
                         {
                             trackIdSet = trackingTemps[0].ID;
@@ -3417,10 +3423,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     cboTracking.ShowPopup();
                     cboTracking.ClosePopup();
 
-                    if (HisConfigCFG.IsDefaultTracking == "1")
+                    if (HisConfigCFG.IsDefaultTracking == "1" || isTrackingOwnerCheck)
                     {
                         var trackingTemps = result.Where(o => intructionDateSelectedProcess.Contains(o.TRACKING_TIME.ToString().Substring(0, 8))
-                            && o.CREATOR.ToUpper() == this.txtLoginName.Text.ToUpper())
+                            && (isTrackingOwnerCheck
+                                ? TrackingOwnerChecker.IsOwner(o.CREATOR, trackingOwnerLoginName)
+                                : o.CREATOR.ToUpper() == this.txtLoginName.Text.ToUpper()))
                             .GroupBy(o => o.TRACKING_TIME.ToString().Substring(0, 8));
 
                         List<TrackingAdo> LstTrackingADOs = new List<TrackingAdo>();

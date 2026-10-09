@@ -209,6 +209,11 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         /// </summary>
         internal static string WarningOver15PercentBaseSalary__IsCheckExam;
         internal static string IsDefaultTracking;
+        /// <summary>
+        /// Task 59656 - HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption: orders may only be attached to treatment sheets
+        /// created by the ordering user. 1: warn, 2: block, other/empty: off (see EnumTrackingOwnerOption).
+        /// </summary>
+        internal static string AssignToOwnTrackingOption;
         internal static string ServiceHasPaymentLimitBHYT;
         internal static string IsSetPrimaryPatientType;
         internal static string IsUsingServerTime;
@@ -347,6 +352,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 WarningOverTotalPatientPrice__IsCheckOutpatient = GetValue(CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK_OUTPATIENT);
                 WarningOver15PercentBaseSalary__IsCheckExam = GetValue(CONFIG_KEY__WARNING_OVER_15_PERCENT_BASE_SALARY__IS_CHECK_EXAM);
                 IsDefaultTracking = GetValue(CONFIG_KEY__IS_DEFAULT_TRACKING);
+                AssignToOwnTrackingOption = GetValue(HIS.Desktop.Plugins.AssignService.Base.TrackingOwnerChecker.CONFIG_KEY);
                 AssignPrintTEST = (GetValue(CONFIG_KEY__AssignServicePrintTEST) == GlobalVariables.CommonStringTrue);
                 TreatmentTypeCode__Exam = GetTreatmentTypeById(IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM).TREATMENT_TYPE_CODE;
                 TreatmentTypeCode__TreatIn = GetTreatmentTypeById(IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU).TREATMENT_TYPE_CODE;

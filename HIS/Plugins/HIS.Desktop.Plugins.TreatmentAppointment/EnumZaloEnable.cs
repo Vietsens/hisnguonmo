@@ -2,6 +2,8 @@
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  */
+using System;
+
 namespace HIS.Desktop.Plugins.TreatmentAppointment
 {
     /// <summary>
@@ -17,6 +19,22 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
         OneSms = 1,
 
         /// <summary>BẬT gateway FNS ZNS (FPT)</summary>
-        FnsZns = 2
+        FnsZns = 2,
+
+        /// <summary>BẬT gateway Zenify ZNS (msghub.zenify.vn — việc 57005, BVĐK Ninh Thuận)</summary>
+        ZenifyZns = 3
+    }
+
+    /// <summary>
+    /// Nơi DUY NHẤT của plugin quyết định "giá trị cấu hình này có phải chế độ đang bật gửi Zalo".
+    /// Thêm gateway mới chỉ cần khai thêm 1 member trong EnumZaloEnable, không phải sửa các form.
+    /// </summary>
+    internal static class EnumZaloEnableHelper
+    {
+        internal static bool IsSendingMode(int configValue)
+        {
+            return configValue != (int)EnumZaloEnable.Disabled
+                && Enum.IsDefined(typeof(EnumZaloEnable), configValue);
+        }
     }
 }

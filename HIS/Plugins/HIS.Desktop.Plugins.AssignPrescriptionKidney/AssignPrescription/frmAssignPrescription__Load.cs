@@ -1284,12 +1284,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     trackingADOs.Add(tracking);
                 }
                 trackingADOs = trackingADOs.OrderByDescending(o => o.TRACKING_TIME).ToList();
-                if (HisConfigCFG.IsDefaultTracking)
+                //Viec 59656: bat key thi chi tu chon san to dieu tri do chinh nguoi chi dinh tao (ke ca khi IsDefaultTracking tat, tru luc sua don)
+                bool isTrackingOwnerCheck = this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None;
+                if (HisConfigCFG.IsDefaultTracking || (isTrackingOwnerCheck && this.actionType != GlobalVariables.ActionEdit))
                 {
                     if (this.ucDateProcessor.GetChkMultiDateState(this.ucDate) == false)
                     {
-                        cboPhieuDieuTri.EditValue = trackingTemps[0].ID;
-                        cboPhieuDieuTri.Properties.Buttons[1].Visible = true;
+                        string trackingOwnerLoginName = isTrackingOwnerCheck ? this.GetRequestLoginNameForTrackingOwner() : null;
+                        var defaultTracking = isTrackingOwnerCheck
+                            ? trackingTemps.FirstOrDefault(o => HIS.Desktop.Plugins.AssignPrescriptionKidney.Base.TrackingOwnerChecker.IsOwner(o.CREATOR, trackingOwnerLoginName))
+                            : trackingTemps[0];
+                        if (defaultTracking != null)
+                        {
+                            cboPhieuDieuTri.EditValue = defaultTracking.ID;
+                            cboPhieuDieuTri.Properties.Buttons[1].Visible = true;
+                        }
                     }
                 }
 

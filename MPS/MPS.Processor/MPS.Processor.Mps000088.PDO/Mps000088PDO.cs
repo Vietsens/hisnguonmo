@@ -32,6 +32,11 @@ namespace MPS.Processor.Mps000088.PDO
         public V_HIS_TREATMENT currentTreatment { get; set; }
         public SingleKeys _SingleKeys { get; set; }
         public V_HIS_BED_LOG _vHisBedLog { get; set; }
+        /// <summary>
+        /// Hoat chat cua cac loai thuoc tren phieu (danh muc thuoc - HIS_MEDICINE_TYPE_ACIN).
+        /// Chuc nang goi in gan sau khi khoi tao; null thi cac key hoat chat de trong.
+        /// </summary>
+        public List<V_HIS_MEDICINE_TYPE_ACIN> _MedicineTypeAcins { get; set; }
        
         public Mps000088PDO() { }
 
@@ -81,6 +86,10 @@ namespace MPS.Processor.Mps000088.PDO
     {
         public long Service_Type_Id { get; set; }
         public string AMOUNT_STRING { get; set; }
+        /// <summary>Ma hoat chat trong danh muc thuoc, nhieu hoat chat noi bang " + ". Vat tu, mau luon rong.</summary>
+        public string ACTIVE_INGREDIENT_CODES { get; set; }
+        /// <summary>Ten hoat chat trong danh muc thuoc, nhieu hoat chat noi bang " + ". Vat tu, mau luon rong.</summary>
+        public string ACTIVE_INGREDIENT_NAMES { get; set; }
         public decimal Day1 { get; set; }
         public decimal Day2 { get; set; }
         public decimal Day3 { get; set; }

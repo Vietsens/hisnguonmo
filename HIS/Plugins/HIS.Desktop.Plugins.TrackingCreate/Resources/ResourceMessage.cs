@@ -186,5 +186,55 @@ namespace HIS.Desktop.Plugins.TrackingCreate.Resources
             }
         }
 
+        /// <summary>Viec 59656: - Y lenh {0} do {1} chi dinh.</summary>
+        internal static string TrackingOwner__YLenhNguoiKhacChiDinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TrackingOwner__YLenhNguoiKhacChiDinh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Viec 59656: chan luu to dieu tri co y lenh nguoi khac chi dinh.</summary>
+        internal static string TrackingOwner__ChanLuuToDieuTri
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TrackingOwner__ChanLuuToDieuTri", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Viec 59656: canh bao luu to dieu tri co y lenh nguoi khac chi dinh.</summary>
+        internal static string TrackingOwner__CanhBaoLuuToDieuTri
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TrackingOwner__CanhBaoLuuToDieuTri", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

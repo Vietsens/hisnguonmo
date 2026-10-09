@@ -193,6 +193,12 @@ namespace HIS.Desktop.Plugins.AssignPaan
         {
             try
             {
+                //Viec 59656: bat key thi chi tu chon san to dieu tri do chinh nguoi chi dinh tao (ke ca to truyen vao tu man Tao to dieu tri)
+                if (this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None)
+                {
+                    this.SetDefaultOwnTrackingCombo(result);
+                    return;
+                }
                 if (isDefaultTracking == "0" && currentTracking != null)
                 {
                     cboTracking.EditValue = currentTracking.ID;

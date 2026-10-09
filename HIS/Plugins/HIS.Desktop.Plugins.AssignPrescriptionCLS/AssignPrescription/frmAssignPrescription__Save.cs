@@ -343,6 +343,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 valid = valid && this.CheckTrackingRequiredOption4();
                 validFolow += "valid.TrackingOption4=" + valid + ";";
                 if (!valid) return;
+                //Viec 59656: y lenh chi duoc dua vao to dieu tri do chinh nguoi chi dinh tao (key tat thi bo qua)
+                valid = valid && this.CheckTrackingOwnerBeforeSave();
+                validFolow += "valid.TrackingOwner=" + valid + ";";
+                if (!valid) return;
                 valid = valid && this.CheckMaxExpend();
                 //validFolow += "valid.3=" + valid + ";";
                 //valid = valid && this.CheckTreatmentFinish();

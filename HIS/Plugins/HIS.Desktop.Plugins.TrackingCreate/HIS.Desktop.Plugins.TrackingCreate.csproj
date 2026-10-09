@@ -269,9 +269,11 @@
     <Compile Include="ADO\HisSereServADONumOrder.cs" />
     <Compile Include="ADO\HisTrackingADO.cs" />
     <Compile Include="ADO\TreeSereServADO.cs" />
+    <Compile Include="Base\TrackingOwnerChecker.cs" />
     <Compile Include="CallModule.cs" />
     <Compile Include="ConfigKeyss.cs" />
     <Compile Include="Config\ControlStateConstan.cs" />
+    <Compile Include="EnumTrackingOwnerOption.cs" />
     <Compile Include="FormKetLuanHoiChan\frmKetLuanHoiChan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -301,6 +303,9 @@
     </Compile>
     <Compile Include="frmGhiChu\frmInstructionNote.Designer.cs">
       <DependentUpon>frmInstructionNote.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTrackingCreate__Pluss__TrackingOwner.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTrackingCreateNew.cs">
       <SubType>Form</SubType>

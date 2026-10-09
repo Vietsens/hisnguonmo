@@ -626,6 +626,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this.loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 this.currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
                 this.trackingCreateOptionCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CREATE_OPTION);
+                //Viec 59656: to dieu tri chi ghi nhan y lenh do chinh nguoi tao to chi dinh
+                this.trackingOwnerOptionCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HIS.Desktop.Plugins.TrackingCreate.Base.TrackingOwnerChecker.CONFIG_KEY);
                 this.StartTimeMustBeGreaterThanInstructionTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_StartTimeMustBeGreaterThanInstructionTime);
                 this.ASSIGN_SERVICE_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
                 this.ASSIGN_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_ASSIGN_SIMULTANEITY_OPTION);
@@ -3271,6 +3273,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         return;
                     }
 
+                    //Viec 59656: to dieu tri chi ghi nhan y lenh do chinh nguoi tao to chi dinh
+                    if (!this.CheckTrackingOwnerBeforeSave())
+                        return;
                     if (!CheckBeforeCallApiUpdate())
                         return;
                     trackingOutSave = new HIS_TRACKING();
@@ -3318,6 +3323,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         ShowMessageGetDataToSaveFailed();
                         return;
                     }
+                    //Viec 59656: to dieu tri chi ghi nhan y lenh do chinh nguoi tao to chi dinh
+                    if (!this.CheckTrackingOwnerBeforeSave())
+                        return;
                     if (!CheckBeforeCallApiUpdate())
                         return;
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("api/HisTracking/Update this.trackingSDOs: ", this.trackingSDOs));
@@ -3893,6 +3901,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         return;
                     }
 
+                    //Viec 59656: to dieu tri chi ghi nhan y lenh do chinh nguoi tao to chi dinh
+                    if (!this.CheckTrackingOwnerBeforeSave())
+                        return;
                     if (!CheckBeforeCallApiUpdate())
                         return;
                     trackingOutSave = new HIS_TRACKING();
@@ -3933,6 +3944,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         ShowMessageGetDataToSaveFailed();
                         return;
                     }
+                    //Viec 59656: to dieu tri chi ghi nhan y lenh do chinh nguoi tao to chi dinh
+                    if (!this.CheckTrackingOwnerBeforeSave())
+                        return;
                     if (!CheckBeforeCallApiUpdate())
                         return;
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("api/HisTracking/Update this.trackingSDOs: ", this.trackingSDOs));
