@@ -210,6 +210,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 }
 
                 FillDataPatientToControl(this.currentVHisPatientDTO);//2
+                // 58919: bật cấu hình mãn tính theo đợt điều trị thì ô "BN mãn tính" lấy theo hồ sơ đích
+                LoadChronicByTreatment();
                 // Checklist PN mang thai / cho con bú (MIMS) — chỉ tạo khi config bật
                 InitMimsWomanClassify();
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT.MUST_HAVE_NCS_INFO_FOR_CHILD") == "1" && MOS.LibraryHein.Bhyt.BhytPatientTypeData.IsChild(dtPatientDob.DateTime))
@@ -1343,7 +1345,12 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 patientDTO.EMAIL = txtEmail.Text;
                 patientDTO.RELATIVE_ADDRESS = txtContact.Text;
                 patientDTO.RELATIVE_NAME = txtPersonFamily.Text;
-                patientDTO.IS_CHRONIC = (short)(chkBNManTinh.Checked ? 1 : 0);
+                // 58919: bật cấu hình mãn tính theo đợt điều trị thì giữ nguyên cờ bệnh nhân đang lưu,
+                // cờ của hồ sơ gửi qua TreatmentIsChronic (ApplyTreatmentChronic)
+                if (!Config.IsChronicChangeTreatmentType)
+                {
+                    patientDTO.IS_CHRONIC = (short)(chkBNManTinh.Checked ? 1 : 0);
+                }
                 patientDTO.IS_CAPD = chkCAPD.Checked ? (short?)1 : (short?)null;
                 patientDTO.IS_TUBERCULOSIS = (short)(chkIsTuberculosis.Checked ? 1 : 0);
                 patientDTO.IS_HIV = (short)(chkIsHiv.Checked ? 1 : 0);
@@ -2624,6 +2631,12 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 {
                     chkEmrUpdate.Enabled = false;
                     chkEmrUpdate.Checked = false;
+                }
+
+                // 58919: đổi "Sửa HSĐT mới nhất" thì hồ sơ đích của ô "BN mãn tính" đổi theo
+                if (this.isChronicInitialized)
+                {
+                    LoadChronicByTreatment();
                 }
             }
         }
