@@ -143,6 +143,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 FillDataToControlsForm();
                 SetIcon();
                 FillDataPatientToControl(this.currentVHisPatientDTO);
+                SetChronicLock();
                 if (MOS.LibraryHein.Bhyt.BhytPatientTypeData.IsChild(dtDOB.DateTime))
                 {
                     isGKS = true;
@@ -160,6 +161,28 @@ namespace HIS.Desktop.Plugins.PatientInfo
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// 58919: bật MOS.HIS_TREATMENT.FINISH.CHRONIC_CHANGE_TREATMENT_TYPE_OPTION thì cờ mãn tính chỉ có nghĩa theo đợt
+        /// điều trị, cờ bệnh nhân không còn tác dụng (backend cũng giữ nguyên cờ bệnh nhân khi cập nhật) -> khoá ô,
+        /// đánh dấu tại "Sửa thông tin bệnh nhân" hoặc "Xử lý khám".
+        /// </summary>
+        private void SetChronicLock()
+        {
+            try
+            {
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.FINISH.CHRONIC_CHANGE_TREATMENT_TYPE_OPTION") == "1")
+                {
+                    chkBNManTinh.Checked = false;
+                    chkBNManTinh.Enabled = false;
+                    chkBNManTinh.ToolTip = "Mãn tính đánh dấu theo đợt điều trị tại Sửa thông tin bệnh nhân hoặc Xử lý khám";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -2383,6 +2406,7 @@ namespace HIS.Desktop.Plugins.PatientInfo
                 txtContact.Text = patientDto.RELATIVE_ADDRESS;
                 txtEmail.Text = patientDto.EMAIL;
                 chkBNManTinh.Checked = (patientDto.IS_CHRONIC == 1 ? true : false);
+                SetChronicLock();
 
                 if (this.CheDoHienThiNoiLamViecManHinhDangKyTiepDon != 1
                     && workPlaceProcessor != null
