@@ -1631,19 +1631,15 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                         _ThongTinDieuTri.ChanDoan_KhiVaoKhoaDieuTri = hasInIcd ? _Treatment.IN_ICD_NAME : _Treatment.ICD_NAME;
                         _ThongTinDieuTri.MaICD_KhiVaoKhoaDieuTri = hasInIcd ? _Treatment.IN_ICD_CODE : _Treatment.ICD_CODE;
 
+                        bool hasInSubIcd = !string.IsNullOrWhiteSpace(_Treatment.IN_ICD_SUB_CODE) || !string.IsNullOrWhiteSpace(_Treatment.IN_ICD_TEXT);
+                        _ThongTinDieuTri.BenhKemTheo = hasInSubIcd ? _Treatment.IN_ICD_TEXT : _Treatment.ICD_TEXT;
+                        _ThongTinDieuTri.MaICD_BenhKemTheo = hasInSubIcd ? _Treatment.IN_ICD_SUB_CODE : _Treatment.ICD_SUB_CODE;
+
                         _BenhAnDaLieuTW.MaCSKCB = _Treatment.TRANSFER_IN_MEDI_ORG_CODE;
                         _BenhAnDaLieuTW.CSKCB = _Treatment.TRANSFER_IN_MEDI_ORG_NAME;
                         _BenhAnDaLieuTW.BacSyChuyenVaoVien = _Treatment.IN_LOGINNAME;
                     }
-                    // EMR đọc bệnh kèm theo vào khoa từ jsonbenhan; model EMR25 chưa có hai trường này.
-                    var benhAnDaLieuTWJson = Newtonsoft.Json.Linq.JObject.FromObject(_BenhAnDaLieuTW);
-                    if (_Treatment != null)
-                    {
-                        bool hasInSubIcd = !string.IsNullOrWhiteSpace(_Treatment.IN_ICD_SUB_CODE) || !string.IsNullOrWhiteSpace(_Treatment.IN_ICD_TEXT);
-                        benhAnDaLieuTWJson["ChanDoanPhu"] = hasInSubIcd ? _Treatment.IN_ICD_TEXT : _Treatment.ICD_TEXT;
-                        benhAnDaLieuTWJson["MAICD_ChanDoanPhu"] = hasInSubIcd ? _Treatment.IN_ICD_SUB_CODE : _Treatment.ICD_SUB_CODE;
-                    }
-                    json = benhAnDaLieuTWJson.ToString(Newtonsoft.Json.Formatting.None);
+                    json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnDaLieuTW);
                     #endregion
                 }
                 else if (_TYpe == LoaiBenhAnEMR.PhucHoiChucNangNhi)
