@@ -431,6 +431,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
 
                     var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(sdo, currentHisTreatment, bedLogs, currentModule != null ? currentModule.RoomId : 0);
+                    PrintServiceReqProcessor.IsSplitByPatientType = HIS.Desktop.Plugins.AssignService.Config.HisConfigCFG.IsPrintSplitByPatientType;
                     PrintServiceReqProcessor.Print(printTypeCode, printNow);
                 }
             }

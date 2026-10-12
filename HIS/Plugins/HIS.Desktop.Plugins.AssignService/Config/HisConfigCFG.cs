@@ -120,6 +120,15 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         /// Khac 1 (hoac khong khai bao): khong hien dong nay, giu nguyen hanh vi hien tai.
         /// </summary>
         internal const string CONFIG_KEY__IsPrintTemBarcodeBartender = "HIS.Desktop.Plugins.IsPrintTemBarcodeBartender";
+        /// <summary>
+        /// 1: chi dinh che pham mau theo tui - dong che pham mau (dich vu loai XN, nhom BHYT Mau) co nut "Xet nghiem tui mau",
+        /// khi luu moi tui 1 y lenh (backend doc cung khoa nay)
+        /// </summary>
+        private const string CONFIG_KEY__SplitBloodServiceByBag = "MOS.HIS_SERVICE_REQ.SPLIT_BLOOD_SERVICE_BY_BAG";
+        /// <summary>
+        /// 1: in phieu chi dinh tu man Chi dinh dich vu tach to theo doi tuong thanh toan trong cung 1 y lenh
+        /// </summary>
+        private const string CONFIG_KEY__PrintSplitByPatientType = "HIS.Desktop.Plugins.AssignService.PrintSplitByPatientType";
 
         /// <summary>
         /// Hien thi thong bao xac nhan phong xu ly khi luu chi dinh dich vu ky thuat.
@@ -252,6 +261,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         internal static string SuggestAssignServicesInfo;
         internal static bool IsSeparateSignAndPrint;
         internal static bool IsPrintTemBarcodeBartender;
+        internal static bool IsSplitBloodServiceByBag;
+        internal static bool IsPrintSplitByPatientType;
         internal static string IsWarningOption;
         internal static string UsageCheckInterval;
         internal static string ServicePatyForServicePackage;
@@ -364,6 +375,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 SuggestAssignServicesInfo = GetValue(CONFIG_KEY__SuggestAssignServicesInfo);
                 IsSeparateSignAndPrint = GetValue(CONFIG_KEY__IsSeparateSignAndPrint) == GlobalVariables.CommonStringTrue;
                 IsPrintTemBarcodeBartender = GetValue(CONFIG_KEY__IsPrintTemBarcodeBartender) == GlobalVariables.CommonStringTrue;
+                IsSplitBloodServiceByBag = GetValue(CONFIG_KEY__SplitBloodServiceByBag) == GlobalVariables.CommonStringTrue;
+                IsPrintSplitByPatientType = GetValue(CONFIG_KEY__PrintSplitByPatientType) == GlobalVariables.CommonStringTrue;
                 IsConfirmExecuteRoomWhenSave = GetValue(CONFIG_KEY__ConfirmExecuteRoomWhenSave) == GlobalVariables.CommonStringTrue;
 
                 IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
