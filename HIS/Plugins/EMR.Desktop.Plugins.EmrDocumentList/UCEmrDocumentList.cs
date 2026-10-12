@@ -507,31 +507,40 @@ namespace EMR.Desktop.Plugins.EmrDocumentList
                                     }
                                 }
 
-                                Stream currentStream = File.Open(temFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-
-                                var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
-
-                                var pages = new List<int>();
-                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
-
-                                foreach (var file in joinStreams)
+                                if (joinStreams.Count == 1)
                                 {
-                                    iTextSharp.text.pdf.PdfReader pdfReader = null;
-                                    pdfReader = new iTextSharp.text.pdf.PdfReader(file);
-                                    pages = new List<int>();
-                                    for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                                    // Chi co 1 file PDF: giu nguyen file goc tu EMR. Ghep qua PdfConcatenate se sinh file moi,
+                                    // chu ky so trong file (ByteRange) khong con khop => khong xac thuc duoc.
+                                    File.Copy(joinStreams[0], temFile, true);
+                                }
+                                else
+                                {
+                                    Stream currentStream = File.Open(temFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+                                    var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
+
+                                    var pages = new List<int>();
+                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
+
+                                    foreach (var file in joinStreams)
                                     {
-                                        pages.Add(i);
+                                        iTextSharp.text.pdf.PdfReader pdfReader = null;
+                                        pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                                        pages = new List<int>();
+                                        for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                                        {
+                                            pages.Add(i);
+                                        }
+                                        pdfReader.SelectPages(pages);
+                                        pdfConcat.AddPages(pdfReader);
+                                        pdfReader.Close();
                                     }
-                                    pdfReader.SelectPages(pages);
-                                    pdfConcat.AddPages(pdfReader);
-                                    pdfReader.Close();
+                                    try
+                                    {
+                                        pdfConcat.Close();
+                                    }
+                                    catch { }
                                 }
-                                try
-                                {
-                                    pdfConcat.Close();
-                                }
-                                catch { }
 
                                 foreach (var file in joinStreams)
                                 {
@@ -1063,31 +1072,40 @@ namespace EMR.Desktop.Plugins.EmrDocumentList
                             }
                         }
 
-                        Stream currentStream = File.Open(temFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-
-                        var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
-
-                        var pages = new List<int>();
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
-
-                        foreach (var file in joinStreams)
+                        if (joinStreams.Count == 1)
                         {
-                            iTextSharp.text.pdf.PdfReader pdfReader = null;
-                            pdfReader = new iTextSharp.text.pdf.PdfReader(file);
-                            pages = new List<int>();
-                            for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                            // Chi co 1 file PDF: giu nguyen file goc tu EMR. Ghep qua PdfConcatenate se sinh file moi,
+                            // chu ky so trong file (ByteRange) khong con khop => khong xac thuc duoc.
+                            File.Copy(joinStreams[0], temFile, true);
+                        }
+                        else
+                        {
+                            Stream currentStream = File.Open(temFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+                            var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
+
+                            var pages = new List<int>();
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
+
+                            foreach (var file in joinStreams)
                             {
-                                pages.Add(i);
+                                iTextSharp.text.pdf.PdfReader pdfReader = null;
+                                pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                                pages = new List<int>();
+                                for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                                {
+                                    pages.Add(i);
+                                }
+                                pdfReader.SelectPages(pages);
+                                pdfConcat.AddPages(pdfReader);
+                                pdfReader.Close();
                             }
-                            pdfReader.SelectPages(pages);
-                            pdfConcat.AddPages(pdfReader);
-                            pdfReader.Close();
+                            try
+                            {
+                                pdfConcat.Close();
+                            }
+                            catch { }
                         }
-                        try
-                        {
-                            pdfConcat.Close();
-                        }
-                        catch { }
 
                         foreach (var file in joinStreams)
                         {
