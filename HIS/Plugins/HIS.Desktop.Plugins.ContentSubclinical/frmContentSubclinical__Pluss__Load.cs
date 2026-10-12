@@ -597,6 +597,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 leafXN.TDL_SERVICE_CODE = leaf.TDL_SERVICE_CODE;
                                 leafXN.TDL_SERVICE_NAME = leaf.TDL_SERVICE_NAME;
                                 leafXN.ID = item.ID;
+                                leafXN.SERVICE_REQ_ID = item.SERVICE_REQ_ID;   // để tra người thực hiện y lệnh (cờ WITH_EXECUTOR)
                                 // Lưu thời gian chỉ định để chọn bản chỉ số MỚI NHẤT khi tự động lấy theo nhóm (không ảnh hưởng sắp xếp tree theo TDL_INTRUCTION_DATE).
                                 leafXN.TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME;
 

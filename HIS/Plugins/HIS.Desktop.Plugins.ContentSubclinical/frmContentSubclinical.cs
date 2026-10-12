@@ -80,6 +80,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         bool isAutoTestIndexGroup = false;
         // Danh sách dữ liệu đã load (gồm cả leaf chỉ số XN) — dùng cho chế độ headless.
         internal List<TreeSereServADO> loadedSereServADOs;
+
+        /// <summary>
+        /// Plugin gọi truyền cờ WITH_EXECUTOR (ContentSubclinicalBehavior.ARG__WITH_EXECUTOR): kết quả dạng
+        /// chuỗi gửi qua _DelegateSelectData được bọc ContentSubclinicalResultADO kèm người thực hiện y lệnh
+        /// (xem SendStringResult). Mặc định false → gửi string như cũ.
+        /// </summary>
+        internal bool IsWithExecutor { get; set; }
         // Chế độ headless theo serviceIds: ép danh sách "đã chọn" thay cho GetListCheck (không xét trạng thái tích).
         internal List<TreeSereServADO> overrideChecks = null;
 
@@ -667,6 +674,71 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             return false;
         }
 
+        /// <summary>
+        /// Gửi kết quả CHUỖI về plugin gọi. Mặc định gửi string như cũ; có cờ WITH_EXECUTOR thì bọc
+        /// ContentSubclinicalResultADO kèm người thực hiện y lệnh của dòng đầu tiên (theo NUM_ORDER)
+        /// đã có người thực hiện trong các dòng được lấy/được tick.
+        /// </summary>
+        private void SendStringResult(string text, List<TreeSereServADO> dataChecks)
+        {
+            if (this._DelegateSelectData == null) return;
+            if (!this.IsWithExecutor)
+            {
+                this._DelegateSelectData(text);
+                return;
+            }
+            ContentSubclinicalResultADO ado = new ContentSubclinicalResultADO();
+            ado.RESULT = text;
+            ado.EXECUTE_LOGINNAMES = new List<string>();
+            try
+            {
+                List<HIS_SERVICE_REQ> reqs = FindExecutedServiceReqs(dataChecks);
+                if (reqs.Count > 0)
+                {
+                    ado.EXECUTE_LOGINNAME = reqs[0].EXECUTE_LOGINNAME;
+                    ado.EXECUTE_USERNAME = reqs[0].EXECUTE_USERNAME;
+                    ado.EXECUTE_LOGINNAMES = reqs.Select(r => r.EXECUTE_LOGINNAME).ToList();
+                }
+                Inventec.Common.Logging.LogSystem.Debug("ContentSubclinical.SendStringResult: checks="
+                    + (dataChecks == null ? -1 : dataChecks.Count) + ", executors=" + ado.EXECUTE_LOGINNAMES.Count
+                    + ", first=" + (ado.EXECUTE_LOGINNAME ?? "null"));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            this._DelegateSelectData(ado);
+        }
+
+        /// <summary>
+        /// Các y lệnh ĐÃ CÓ người thực hiện (EXECUTE_LOGINNAME) của các dòng trong danh sách, theo thứ tự NUM_ORDER,
+        /// mỗi người thực hiện chỉ lấy 1 lần (giữ lần gặp đầu). Phần tử đầu = "người đầu tiên của mục".
+        /// Dòng chỉ số XN (leafXN) có thể thiếu SERVICE_REQ_ID → dò qua ID sere_serv trong loadedSereServADOs.
+        /// Dòng ngày/loại dịch vụ (ID = 0) bỏ qua.
+        /// </summary>
+        private List<HIS_SERVICE_REQ> FindExecutedServiceReqs(List<TreeSereServADO> dataChecks)
+        {
+            List<HIS_SERVICE_REQ> result = new List<HIS_SERVICE_REQ>();
+            if (dataChecks == null || dataChecks.Count == 0) return result;
+            if (this.listServiceReq == null || this.listServiceReq.Count == 0) return result;
+            HashSet<string> seen = new HashSet<string>();
+            foreach (var node in dataChecks.Where(o => o != null).OrderBy(o => o.NUM_ORDER ?? long.MaxValue))
+            {
+                long? reqId = node.SERVICE_REQ_ID;
+                if ((reqId == null || reqId <= 0) && node.ID > 0 && this.loadedSereServADOs != null)
+                {
+                    var owner = this.loadedSereServADOs.FirstOrDefault(p => p != null && p.ID == node.ID && p.SERVICE_REQ_ID != null && p.SERVICE_REQ_ID > 0);
+                    if (owner != null) reqId = owner.SERVICE_REQ_ID;
+                }
+                if (reqId == null || reqId <= 0) continue;
+                long id = reqId.Value;
+                var req = this.listServiceReq.FirstOrDefault(r => r != null && r.ID == id);
+                if (req == null || string.IsNullOrWhiteSpace(req.EXECUTE_LOGINNAME)) continue;
+                if (seen.Add(req.EXECUTE_LOGINNAME)) result.Add(req);
+            }
+            return result;
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -846,7 +918,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                             {
                                 _strNews = string.Join(Environment.NewLine, _str);
                             }
-                            this._DelegateSelectData(_strNews);
+                            SendStringResult(_strNews, dataChecks);
                         }
                         else
                         {
@@ -1070,7 +1142,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     content += "\r\n";
                                 }
 
-                                this._DelegateSelectData(content);
+                                SendStringResult(content, dataChecks);
                             }
                         }
                     }

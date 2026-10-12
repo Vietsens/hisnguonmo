@@ -345,6 +345,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 ResetControlOverEighteen();
+                ResetOtherClsExaminerSource();   // combo Người khám (4)/(5) về danh mục đầy đủ trước khi nạp bản ghi
                 SetDataCboRank(cboDhstRank2);
                 SetDataCboRank(cboExamCirculationRank2);
                 SetDataCboRank(cboExamRespiratoryRank2);
@@ -384,6 +385,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // 2 combo "Người khám" mới ở mục "Kết quả khám Cận lâm sàng khác" (giống các combo khác).
                 SetDataCboExamLoginName(cboExamSubclinicalLoginName2);
                 SetDataCboExamLoginName(cboExamSubclinicalLoginName2_2);
+                // Xóa trống kết quả mục 4 / KSK định kỳ (bỏ dịch vụ) → trả combo Người khám về danh mục đầy đủ.
+                txtResultSubclinical2.TextChanged -= txtResultOtherCls_TextChanged;
+                txtResultSubclinical2.TextChanged += txtResultOtherCls_TextChanged;
+                txtResultSubclinical2_2.TextChanged -= txtResultOtherCls_TextChanged;
+                txtResultSubclinical2_2.TextChanged += txtResultOtherCls_TextChanged;
                 // Combo Đối tượng (chọn nhiều) + Nguồn chi trả (chọn 1) — danh mục cố định QĐ 1551.
                 InitAdminCombos();
                 FillDataOverEighteen();
