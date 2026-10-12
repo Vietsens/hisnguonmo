@@ -196,6 +196,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\CongMuaSamChecker.cs" />
+    <Compile Include="UCHisImportMestMedicine_CongMuaSam.cs" />
     <Compile Include="Base\ControlCode.cs" />
     <Compile Include="Base\RepayReasonCode.cs" />
     <Compile Include="Base\ExportListCodeRDO.cs" />

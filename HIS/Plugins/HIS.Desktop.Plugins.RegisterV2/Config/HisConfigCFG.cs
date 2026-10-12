@@ -63,6 +63,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
 
         private const string CONFIG_KEY__WarningOverMonth = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
         private const string CONFIG_KEY__PatientAdvance = "HIS.Desktop.Plugins.RegisterV2.PatientAdvance";
+        private const string CONFIG_KEY__IsAutoChronicPatient = "HIS.Desktop.Plugins.RegisterV2.IsAutoChronicPatient";
         const string valueString__true = "1";
         const int valueInt__true = 1;
 
@@ -277,6 +278,16 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
         internal static bool IsAutoSetPatientTypeBhytByHeinCard()
         {
             return GetValue(CONFIG_KEY__CHECK_HEIN_BY_CCCD_WITHOUT_PATIENT_TYPE) == valueString__true;
+        }
+
+        /// <summary>
+        /// Khoa HIS.Desktop.Plugins.RegisterV2.IsAutoChronicPatient - mac dinh tich "Man tinh" khi tim BN cu co HIS_PATIENT.IS_CHRONIC = 1.
+        /// = 1: KHONG tu dong tich (man tinh tich theo tung dot dieu tri).
+        /// Khac 1 hoac chua khai bao (MAC DINH): tu dong tich nhu cu.
+        /// </summary>
+        internal static bool IsNotAutoCheckChronicPatient()
+        {
+            return GetValue(CONFIG_KEY__IsAutoChronicPatient) == valueString__true;
         }
 
         private static string GetValue(string key)

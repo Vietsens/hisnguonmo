@@ -31,6 +31,12 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
 {
     class Print
     {
+        /// <summary>
+        /// Hau to gan vao ten van ban ky so (VD: ten doi tuong thanh toan khi in tach phieu theo doi tuong).
+        /// Chi co gia tri trong luc in tach, in xong tra ve null.
+        /// </summary>
+        internal static string DocumentNameSuffix { get; set; }
+
         internal static void PrintData(string printTypeCode, string fileName, object data, bool printNow,
             ref bool result, long? roomId, bool isView, MPS.ProcessorBase.PrintConfig.PreviewType? PreviewType,
             int count, Action<int, Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> savedData, string treatmentCode, Action<DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned)
@@ -52,6 +58,10 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Config.IsmergePrint), Config.IsmergePrint));
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatmentCode, printTypeCode, roomId);
+                if (!String.IsNullOrWhiteSpace(DocumentNameSuffix))
+                {
+                    inputADO.DocumentName = String.Format("{0} - {1}", inputADO.DocumentName, DocumentNameSuffix);
+                }
                 inputADO.DlgSendResultSigned = DlgSendResultSigned;
                 Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo ado = null;
                 if (isView)

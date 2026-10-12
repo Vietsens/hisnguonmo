@@ -43,6 +43,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save
         protected string IcdSubCode { get; set; }
         protected string IcdText { get; set; }
         protected bool? IsChronic { get; set; }
+        protected bool? IsRemoveChronic { get; set; }
         protected bool IsTemporary { get; set; }
         protected long TreatmentEndTypeId { get; set; }
         protected long TreatmentFinishTime { get; set; }
@@ -135,6 +136,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save
                 if (Form.chkChronic.Checked)
                 {
                     this.IsChronic = true;
+                }
+                else if (Config.ConfigKey.IsAllowEditChronic && Form.isChronicWhenLoad)
+                {
+                    //Nguoi dung bo tich "BN man tinh" cua dot dang man tinh
+                    this.IsRemoveChronic = true;
                 }
 
                 if (Form.lciDoctorName.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && !String.IsNullOrEmpty(Form.txtDoctorLogginName.Text.Trim()))

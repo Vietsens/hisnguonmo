@@ -242,6 +242,9 @@ namespace HIS.UC.Hospitalize.Run
                 UpdateCheckPrintAndSign();
                 checkIcdManager = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(dlgRefeshIcd, treatment);
                 ApplyGenerateNewInCodeState(this.hospitalizeInitADO);
+                // Tich / bo tich Cap cuu => tinh lai ma doi tuong KCB (gan sau khi da set gia tri ban dau)
+                chkEmergency.CheckedChanged -= chkEmergency_CheckedChangedHeinPatientTypeCode;
+                chkEmergency.CheckedChanged += chkEmergency_CheckedChangedHeinPatientTypeCode;
                 // Hien thi ma doi tuong KCB tuong ung trang thai hien tai (chi de xem, khong luu)
                 RefreshHeinPatientTypeCode();
                 IsFirstLoad = false;

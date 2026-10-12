@@ -423,12 +423,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.txtProvinceCodeKS.Text = bornProvinceCode;
                 this.cboProvinceKS.EditValue = bornProvinceCode;
 
-                // 58919: bật cấu hình mãn tính theo đợt điều trị thì không tích sẵn theo bệnh nhân cũ
-                // (IS_CHRONIC của HisPatientSDO lấy từ view, rơi về cờ của đợt điều trị trước)
-                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.FINISH.CHRONIC_CHANGE_TREATMENT_TYPE_OPTION") == "1")
-                    this.chkIsChronic.Checked = false;
-                else
-                    this.chkIsChronic.Checked = (patientDTO.IS_CHRONIC == 1);
+                this.chkIsChronic.Checked = (patientDTO.IS_CHRONIC == 1 && !HIS.Desktop.Plugins.Register.Config.HisConfigCFG.IsNotAutoCheckChronicPatient());
                 this.chkCAPD.Checked = (patientDTO.IS_CAPD == 1);
                 //this.AutoCheckPriorityByPriorityType(patientDTO);
                 this.cboPatientClassify.EditValue = patientDTO.PATIENT_CLASSIFY_ID;

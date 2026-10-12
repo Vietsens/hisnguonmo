@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Death
                     result.IcdSubCode = this.IcdSubCode;
                     result.IcdText = this.IcdText;
                     result.IsChronic = this.IsChronic;
+                    result.IsRemoveChronic = this.IsRemoveChronic;
                     result.IsTemporary = this.IsTemporary;
                     result.DoctorLoginname = this.DoctorLoginname;
                     result.DoctorUsernname = this.DoctorUsernname;

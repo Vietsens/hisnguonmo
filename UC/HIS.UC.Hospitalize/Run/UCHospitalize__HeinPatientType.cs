@@ -244,10 +244,45 @@ namespace HIS.UC.Hospitalize.Run
                 if (cboTreatmentType.EditValue != null)
                     treatmentTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentType.EditValue ?? "").ToString());
 
+                // Key bat + tich Cap cuu => uu tien ban ghi danh muc co Truong hop = Cap cuu.
+                // Danh muc khong co ban ghi cap cuu phu hop => tinh theo truong hop cua ho so nhu cu.
+                bool isUseEmergency = Config.HisConfig.IsHeinPatientTypeCodeByEmergency && chkEmergency.Checked;
+                HIS_HEIN_PATIENT_TYPE matched = null;
+                if (isUseEmergency)
+                    matched = FindHeinPatientType(pta, RIGHT_ROUTE_TYPE_CODE__EMERGENCY, treatmentTypeId);
+                if (matched == null)
+                    matched = FindHeinPatientType(pta, pta.RIGHT_ROUTE_TYPE_CODE, treatmentTypeId);
+
+                SetHeinPatientTypeCodeText(matched != null ? matched.HEIN_PATIENT_TYPE_CODE : null);
+
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "HienThiMaDoiTuongKCB_NhapVien: treatmentId={0}___tuyen={1}___truongHop={2}___dienDieuTri={3}___maDKKCBBanDau={4}___capCuu={5}___maHienThi={6}",
+                    this.hospitalizeInitADO != null && this.hospitalizeInitADO.TreatmentId.HasValue ? this.hospitalizeInitADO.TreatmentId.Value : 0,
+                    pta.RIGHT_ROUTE_CODE, pta.RIGHT_ROUTE_TYPE_CODE, treatmentTypeId,
+                    pta.HEIN_MEDI_ORG_CODE, isUseEmergency, GetHeinPatientTypeCodeValue()));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Ma truong hop Cap cuu (RIGHT_ROUTE_TYPE_CODE) trong danh muc Doi tuong KCB.</summary>
+        private const string RIGHT_ROUTE_TYPE_CODE__EMERGENCY = "CC";
+
+        /// <summary>
+        /// Do danh muc Doi tuong KCB theo tuyen cua ho so + truong hop + dien dieu tri + ma co so KCB ban dau.
+        /// Buoc 1: ban ghi trung dung tuyen cua ho so (giu nguyen hanh vi cu).
+        /// Buoc 2: chi khi buoc 1 khong ra ban ghi nao => xet ban ghi de trong Tuyen
+        ///         (quy uoc "de trong = dung chung moi tuyen", giong man Tiep don).
+        /// </summary>
+        private HIS_HEIN_PATIENT_TYPE FindHeinPatientType(V_HIS_PATIENT_TYPE_ALTER pta, string rightRouteTypeCode, long treatmentTypeId)
+        {
+            try
+            {
                 var heinList = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                    .Where(o => o.RIGHT_ROUTE_CODE == pta.RIGHT_ROUTE_CODE)
-                    .Where(o => o.RIGHT_ROUTE_TYPE_CODE == pta.RIGHT_ROUTE_TYPE_CODE)
+                    .Where(o => o.RIGHT_ROUTE_TYPE_CODE == rightRouteTypeCode)
                     .ToList();
 
                 if (treatmentTypeId > 0)
@@ -258,14 +293,24 @@ namespace HIS.UC.Hospitalize.Run
                     ).ToList();
                 }
 
-                var matched = GetHeinPatientTypeByMediOrgPriority(heinList, (pta.HEIN_MEDI_ORG_CODE ?? "").Trim());
-                SetHeinPatientTypeCodeText(matched != null ? matched.HEIN_PATIENT_TYPE_CODE : null);
+                string dkbdCode = (pta.HEIN_MEDI_ORG_CODE ?? "").Trim();
+                var matched = GetHeinPatientTypeByMediOrgPriority(heinList.Where(o => o.RIGHT_ROUTE_CODE == pta.RIGHT_ROUTE_CODE).ToList(), dkbdCode);
+                if (matched == null)
+                    matched = GetHeinPatientTypeByMediOrgPriority(heinList.Where(o => string.IsNullOrEmpty(o.RIGHT_ROUTE_CODE)).ToList(), dkbdCode);
+                return matched;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
 
-                Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                    "HienThiMaDoiTuongKCB_NhapVien: treatmentId={0}___tuyen={1}___truongHop={2}___dienDieuTri={3}___maDKKCBBanDau={4}___soBanGhiSauLoc={5}___maHienThi={6}",
-                    this.hospitalizeInitADO != null && this.hospitalizeInitADO.TreatmentId.HasValue ? this.hospitalizeInitADO.TreatmentId.Value : 0,
-                    pta.RIGHT_ROUTE_CODE, pta.RIGHT_ROUTE_TYPE_CODE, treatmentTypeId,
-                    pta.HEIN_MEDI_ORG_CODE, heinList.Count, GetHeinPatientTypeCodeValue()));
+        private void chkEmergency_CheckedChangedHeinPatientTypeCode(object sender, EventArgs e)
+        {
+            try
+            {
+                RefreshHeinPatientTypeCode();
             }
             catch (Exception ex)
             {
