@@ -154,6 +154,37 @@ namespace MPS.Processor.Mps000088
                 {
                     rdo.mps000088ByMediEndMate = rdo.mps000088ByMediEndMate.OrderBy(o => o.Service_Type_Id).ThenByDescending(o => o.MEDICINE_GROUP_NUM_ORDER).ThenByDescending(o => o.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(o => o.NUM_ORDER).ThenBy(o => o.MEDICINE_TYPE_NAME).ToList();
                 }
+                SetActiveIngredient(rdo.mps000088ByMediEndMate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gan ma/ten hoat chat (danh muc thuoc) cho cac dong thuoc tren phieu, nhieu hoat chat noi bang " + ".
+        /// Dong vat tu/mau dung MEDICINE_TYPE_ID de chua id vat tu/mau nen phai loc theo Service_Type_Id.
+        /// </summary>
+        private void SetActiveIngredient(List<Mps000088ByMediEndMate> rows)
+        {
+            try
+            {
+                if (rows == null || rows.Count <= 0 || rdo._MedicineTypeAcins == null || rdo._MedicineTypeAcins.Count <= 0)
+                    return;
+
+                Dictionary<long, List<V_HIS_MEDICINE_TYPE_ACIN>> dicAcin = rdo._MedicineTypeAcins
+                    .GroupBy(o => o.MEDICINE_TYPE_ID)
+                    .ToDictionary(g => g.Key, g => g.GroupBy(o => o.ACTIVE_INGREDIENT_ID).Select(o => o.First()).ToList());
+                foreach (var row in rows)
+                {
+                    List<V_HIS_MEDICINE_TYPE_ACIN> acins = null;
+                    if (row.Service_Type_Id != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC || !dicAcin.TryGetValue(row.MEDICINE_TYPE_ID, out acins))
+                        continue;
+
+                    row.ACTIVE_INGREDIENT_CODES = String.Join(" + ", acins.Select(o => o.ACTIVE_INGREDIENT_CODE));
+                    row.ACTIVE_INGREDIENT_NAMES = String.Join(" + ", acins.Select(o => o.ACTIVE_INGREDIENT_NAME));
+                }
             }
             catch (Exception ex)
             {

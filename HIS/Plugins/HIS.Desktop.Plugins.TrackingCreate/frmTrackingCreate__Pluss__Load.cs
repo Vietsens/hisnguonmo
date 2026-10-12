@@ -78,13 +78,22 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         }
 
         /// <summary>
+        /// Key HIS.Desktop.Plugins.TrackingCreate.BedAnticipateByDate = 1: y lenh GIUONG chi la du tru khi
+        /// ngay thuc hien (USE_TIME) sau ngay chi dinh; cung ngay la y lenh thuong du gio khac nhau.
+        /// (Lich su giuong luon luu thoi gian thuc hien, mac dinh = thoi gian chi dinh.)
+        /// </summary>
+        bool IsBedAnticipateByDate { get; set; }
+
+        /// <summary>
         /// Viec 3352: y lenh DICH VU nay co the mang gio phut trong USE_TIME (truoc day luon 000000).
         /// Dich vu -> so theo NGAY de du tru CUNG NGAY chi dinh van la y lenh thuong nhu truoc khi co o gio.
         /// Don thuoc -> giu nguyen phep so cu, khong doi hanh vi dang chay.
         /// </summary>
-        private static bool IsAnticipateByUseTime(HIS_SERVICE_REQ req)
+        private bool IsAnticipateByUseTime(HIS_SERVICE_REQ req)
         {
             if (req == null || req.USE_TIME == null) return false;
+            if (IsBedAnticipateByDate && req.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G)
+                return ((req.USE_TIME.Value / 1000000) * 1000000) > req.INTRUCTION_DATE;
             if (IsUseTimeWithHourBefore3352(req.SERVICE_REQ_TYPE_ID)) return req.USE_TIME > req.INTRUCTION_DATE;
             return ((req.USE_TIME.Value / 1000000) * 1000000) > req.INTRUCTION_DATE;
         }
@@ -777,6 +786,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         item.TDL_REQUEST_ROOM_ID = rsServiceReq.Where(o => o.ID == item.SERVICE_REQ_ID).Select(o => o.REQUEST_ROOM_ID).FirstOrDefault();
                         item.IS_TEMPORARY_PRES = rsServiceReq.Where(o => o.ID == item.SERVICE_REQ_ID).Select(o => o.IS_TEMPORARY_PRES).FirstOrDefault();
                     }
+                    //Viec 59656: danh dau y lenh chua gan to nay do nguoi khac chi dinh (key tat thi khong lam gi)
+                    this.MarkRequestOfOtherUser(SereServADOs);
                     SereServADOsFirstForm = SereServADOs;
                     BindingList<TreeSereServADO> records = new BindingList<TreeSereServADO>(SereServADOs);
                     treeListServiceReq.DataSource = records;

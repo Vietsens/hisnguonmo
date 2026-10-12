@@ -242,10 +242,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         intructionDateSelectedProcess.Add(intructionDate);
                     }
 
-                    if (HisConfigCFG.IsDefaultTracking)
+                    //Viec 59656: bat key thi tu chon to cua chinh nguoi chi dinh cho tung ngay (ke ca khi IsDefaultTracking tat, tru luc sua don)
+                    bool isTrackingOwnerCheck = this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None;
+                    string trackingOwnerLoginName = isTrackingOwnerCheck ? this.GetRequestLoginNameForTrackingOwner() : null;
+                    if (HisConfigCFG.IsDefaultTracking || (isTrackingOwnerCheck && this.actionType != GlobalVariables.ActionEdit))
                     {
                         var trackingTemps = this.trackingADOs.Where(o => intructionDateSelectedProcess.Contains(o.TRACKING_TIME.ToString().Substring(0, 8))
-                            && o.CREATOR.ToUpper() == this.txtLoginName.Text.ToUpper())
+                            && (isTrackingOwnerCheck
+                                ? HIS.Desktop.Plugins.AssignPrescriptionPK.Base.TrackingOwnerChecker.IsOwner(o.CREATOR, trackingOwnerLoginName)
+                                : o.CREATOR.ToUpper() == this.txtLoginName.Text.ToUpper()))
                             .GroupBy(o => o.TRACKING_TIME.ToString().Substring(0, 8));
 
                         List<TrackingADO> LstTrackingADOs = new List<TrackingADO>();

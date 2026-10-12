@@ -252,4 +252,16 @@
   <data name="DonNgayDungDenNgay" xml:space="preserve">
     <value>prescribed on {0}, until {1}</value>
   </data>
+  <data name="TrackingOwner__ToDieuTriCuaNguoiKhac" xml:space="preserve">
+    <value>- Treatment sheet {0} was created by {1}, not by the ordering user {2}.</value>
+  </data>
+  <data name="TrackingOwner__NguoiChiDinhChuaCoToDieuTri" xml:space="preserve">
+    <value>- The ordering user {0} has no treatment sheet on {1}.</value>
+  </data>
+  <data name="TrackingOwner__ChanLuu" xml:space="preserve">
+    <value>Orders can only be added to treatment sheets created by the ordering user. Please select a treatment sheet of the ordering user or create one before prescribing.</value>
+  </data>
+  <data name="TrackingOwner__CanhBaoTiepTuc" xml:space="preserve">
+    <value>Orders should be added to treatment sheets created by the ordering user. Do you want to continue?</value>
+  </data>
 </root>

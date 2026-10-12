@@ -354,6 +354,9 @@
     <Compile Include="AssignService\frmAssignService__Dispose.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AssignService\frmAssignService__TrackingOwner.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AssignService\frmAssignService__Save.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -464,6 +467,7 @@
     <Compile Include="Config\ControlStateConstan.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\SereServCFG.cs" />
+    <Compile Include="Base\TrackingOwnerChecker.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="FormContraindicated\frmContraindicated.cs">
       <SubType>Form</SubType>
@@ -501,6 +505,7 @@
     <Compile Include="frmSettingAssignOld.Designer.cs">
       <DependentUpon>frmSettingAssignOld.cs</DependentUpon>
     </Compile>
+    <Compile Include="EnumTrackingOwnerOption.cs" />
     <Compile Include="IcdUtil.cs" />
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

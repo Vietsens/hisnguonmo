@@ -489,7 +489,12 @@ namespace HIS.UC.UCOtherServiceReqInfo
             try
             {
                 this.patientSdo = data;
-                this.chkIsChronic.Checked = data.IS_CHRONIC == 1;
+                // 58919: bật cấu hình mãn tính theo đợt điều trị thì không tích sẵn theo bệnh nhân cũ
+                // (IS_CHRONIC của HisPatientSDO lấy từ view, rơi về cờ của đợt điều trị trước)
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.FINISH.CHRONIC_CHANGE_TREATMENT_TYPE_OPTION") == "1")
+                    this.chkIsChronic.Checked = false;
+                else
+                    this.chkIsChronic.Checked = data.IS_CHRONIC == 1;
                 this.chkTuberculosis.Checked = data.IS_TUBERCULOSIS == 1;
                 this.cboPatientClassify.EditValue = null;
                 //qtcode

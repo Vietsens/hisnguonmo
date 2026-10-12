@@ -139,6 +139,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         internal static string AtcCodeOverlarWarningOption;
         internal static bool IsServiceReqIcdOption;
         internal static bool IsDefaultTracking;
+        /// <summary>
+        /// Task 59656 - HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption: orders may only be attached to treatment sheets
+        /// created by the ordering user. 1: warn, 2: block, other/empty: off (see EnumTrackingOwnerOption).
+        /// </summary>
+        internal static string AssignToOwnTrackingOption;
 
         internal static string GuaranteeConnectionInfo;
 
@@ -378,6 +383,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
                 IsServiceReqIcdOption = GetValue(CONFIG_KEY__SERVICE_REQ_ICD_OPTION) == GlobalVariables.CommonStringTrue;
                 TutorialFormat = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(TUTORIAL_FORMAT));
                 IsDefaultTracking = GetValue(KEY_IS_DEFAULT_TRACKING) == GlobalVariables.CommonStringTrue;
+                AssignToOwnTrackingOption = GetValue(HIS.Desktop.Plugins.AssignPrescriptionYHCT.Base.TrackingOwnerChecker.CONFIG_KEY);
                 IsTrackingRequired = GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_PRESCRIPTION_IS_TRACKING_REQUIRED) == GlobalVariables.CommonStringTrue;
                 int.TryParse(GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_PRESCRIPTION_IS_TRACKING_REQUIRED), out TrackingRequiredOption);
                 UserMustHaveDiploma = GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_REQ_USER_MUST_HAVE_DIPLOMA) == GlobalVariables.CommonStringTrue;

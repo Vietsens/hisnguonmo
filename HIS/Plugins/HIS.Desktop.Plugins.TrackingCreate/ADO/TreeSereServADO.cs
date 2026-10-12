@@ -53,6 +53,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate.ADO
         public bool IsServiceUseForTracking { get; set; }
         public short? IS_TEMPORARY_PRES { get; set; }
         public short? IS_DISABLE { get; set; }
+        /// <summary>
+        /// Task 59656 (key HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption on): order not attached to this sheet yet
+        /// and requested by someone other than the sheet creator - never pre-checked, cannot be checked in block mode.
+        /// </summary>
+        public bool IsRequestOfOtherUser { get; set; }
         public TAB_TYPE? tabType { get; set; }
         public enum TAB_TYPE
 		{

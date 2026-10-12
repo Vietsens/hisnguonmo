@@ -803,12 +803,21 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 bool isCmc = EmrPatientCertificateRegisterBehavior.IsCmcPlatform();
                 string providerName = isCmc ? "CMC" : "2ID";
                 Inventec.Common.Logging.LogSystem.Info("Phat hanh chung thu so qua " + providerName + ", CCCD=" + this.currentCCCDInfo.identifyNumber);
-                if (isCmc && string.IsNullOrWhiteSpace(currentPatient.MOBILE) && string.IsNullOrWhiteSpace(currentPatient.PHONE) && string.IsNullOrWhiteSpace(currentPatient.EMAIL))
+                // CMC bat buoc dien thoai hoac email: uu tien so di dong nhu man tiep don
+                string phone = !string.IsNullOrWhiteSpace(currentPatient.MOBILE) ? currentPatient.MOBILE : currentPatient.PHONE;
+                string email = currentPatient.EMAIL;
+                if (isCmc && string.IsNullOrWhiteSpace(phone) && string.IsNullOrWhiteSpace(email))
                 {
+                    // Thong tin lien he la cua NGUOI DANG KY (chu the CCCD vua doc). Nguoi nha ky thuong khong phai benh nhan tren HIS,
+                    // benh nhan cung co the chua khai => cho nhap tai cho thay vi chan phat hanh
                     WaitingManager.Hide();
-                    param.Messages.Add("Phát hành chứng thư số qua CMC cần số điện thoại hoặc email của bệnh nhân. Vui lòng cập nhật thông tin bệnh nhân trên HIS rồi phát hành lại.");
-                    MessageManager.Show(this.ParentForm, param, success);
-                    return;
+                    if (!PromptRegistrantContact(this.currentCCCDInfo.name, ref phone, ref email))
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("Phat hanh chung thu so qua CMC: nguoi dung huy nhap dien thoai/email cua nguoi dang ky");
+                        return;
+                    }
+                    Inventec.Common.Logging.LogSystem.Info("Phat hanh chung thu so qua CMC: da nhap tai cho " + (!string.IsNullOrWhiteSpace(phone) ? "so dien thoai" : "") + (!string.IsNullOrWhiteSpace(phone) && !string.IsNullOrWhiteSpace(email) ? ", " : "") + (!string.IsNullOrWhiteSpace(email) ? "email" : "") + " cua nguoi dang ky");
+                    WaitingManager.Show();
                 }
                 string placeOfResidence = string.IsNullOrWhiteSpace(currentCCCDInfo.address) ? currentCCCDInfo.hometown : currentCCCDInfo.address;
                 EmrPatientCertificateRegisterSDO sdo = new EMR.SDO.EmrPatientCertificateRegisterSDO()
@@ -833,9 +842,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     otherName = currentCCCDInfo.otherName,
                     faceImage = currentCCCDInfo.imageChip,
                     signatureImage = signatureBase64,
-                    email = currentPatient.EMAIL,
-                    // CMC bat buoc dien thoai hoac email: uu tien so di dong nhu man tiep don
-                    phone = !string.IsNullOrWhiteSpace(currentPatient.MOBILE) ? currentPatient.MOBILE : currentPatient.PHONE,
+                    email = email,
+                    phone = phone,
                     PatientCode = currentPatient.PATIENT_CODE,
                     sodData = currentCCCDInfo.sodData,
                     dg1DataB64 = currentCCCDInfo.dg1DataBase64,
@@ -1034,6 +1042,104 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
         }
 
        
+        /// <summary>
+        /// CMC bat buoc so dien thoai hoac email cua nguoi dang ky chung thu (chu the CCCD vua doc). Khi HIS khong co (nguoi nha ky,
+        /// benh nhan chua khai) thi hien hop cho nhap tai cho. Tra ve false neu nguoi dung huy.
+        /// </summary>
+        private bool PromptRegistrantContact(string registrantName, ref string phone, ref string email)
+        {
+            using (XtraForm frm = new XtraForm())
+            {
+                frm.Text = "Thông tin liên hệ người đăng ký chứng thư số";
+                frm.FormBorderStyle = FormBorderStyle.FixedDialog;
+                frm.StartPosition = FormStartPosition.CenterParent;
+                frm.MinimizeBox = false;
+                frm.MaximizeBox = false;
+                frm.ShowInTaskbar = false;
+                frm.ClientSize = new Size(470, 200);
+
+                LabelControl lblNote = new LabelControl();
+                lblNote.AutoSizeMode = LabelAutoSizeMode.Vertical;
+                lblNote.Location = new Point(15, 12);
+                lblNote.Width = 440;
+                lblNote.Text = "CMC yêu cầu số điện thoại hoặc email của người đăng ký chứng thư số"
+                    + (string.IsNullOrWhiteSpace(registrantName) ? "" : " (" + registrantName.Trim() + ")")
+                    + ". Nhập ít nhất một trong hai thông tin:";
+
+                LabelControl lblPhone = new LabelControl();
+                lblPhone.Text = "Số điện thoại:";
+                lblPhone.Location = new Point(15, 72);
+                TextEdit txtPhone = new TextEdit();
+                txtPhone.Location = new Point(110, 69);
+                txtPhone.Width = 345;
+                txtPhone.Properties.MaxLength = 20;
+                txtPhone.Text = phone ?? "";
+
+                LabelControl lblEmail = new LabelControl();
+                lblEmail.Text = "Email:";
+                lblEmail.Location = new Point(15, 106);
+                TextEdit txtEmail = new TextEdit();
+                txtEmail.Location = new Point(110, 103);
+                txtEmail.Width = 345;
+                txtEmail.Properties.MaxLength = 100;
+                txtEmail.Text = email ?? "";
+
+                SimpleButton btnOk = new SimpleButton();
+                btnOk.Text = "Đồng ý";
+                btnOk.Location = new Point(270, 150);
+                btnOk.Size = new Size(90, 28);
+                SimpleButton btnCancel = new SimpleButton();
+                btnCancel.Text = "Hủy";
+                btnCancel.Location = new Point(365, 150);
+                btnCancel.Size = new Size(90, 28);
+                btnCancel.DialogResult = DialogResult.Cancel;
+
+                string okPhone = null, okEmail = null;
+                btnOk.Click += delegate (object s, EventArgs e)
+                {
+                    // Bo khoang trang, dau cham, gach noi, ngoac: "0912 345.678" => "0912345678"
+                    string p = System.Text.RegularExpressions.Regex.Replace(txtPhone.Text ?? "", @"[\s\.\-\(\)]", "");
+                    string m = (txtEmail.Text ?? "").Trim();
+                    if (p.Length == 0 && m.Length == 0)
+                    {
+                        XtraMessageBox.Show(frm, "Vui lòng nhập số điện thoại hoặc email.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtPhone.Focus();
+                        return;
+                    }
+                    if (p.Length > 0 && !System.Text.RegularExpressions.Regex.IsMatch(p, @"^(\+?84|0)\d{8,10}$"))
+                    {
+                        XtraMessageBox.Show(frm, "Số điện thoại không hợp lệ (ví dụ: 0912345678 hoặc +84912345678).", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtPhone.Focus();
+                        return;
+                    }
+                    if (m.Length > 0 && !System.Text.RegularExpressions.Regex.IsMatch(m, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    {
+                        XtraMessageBox.Show(frm, "Email không hợp lệ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtEmail.Focus();
+                        return;
+                    }
+                    // Dua ve dang 0xxxxxxxxx nhu so luu tren HIS: +84912345678 / 84912345678 => 0912345678
+                    if (p.StartsWith("+84")) p = "0" + p.Substring(3);
+                    else if (p.StartsWith("84") && p.Length == 11) p = "0" + p.Substring(2);
+                    okPhone = p;
+                    okEmail = m;
+                    frm.DialogResult = DialogResult.OK;
+                };
+
+                frm.Controls.AddRange(new Control[] { lblNote, lblPhone, txtPhone, lblEmail, txtEmail, btnOk, btnCancel });
+                frm.AcceptButton = btnOk;
+                frm.CancelButton = btnCancel;
+
+                if (frm.ShowDialog(this) != DialogResult.OK)
+                {
+                    return false;
+                }
+                phone = okPhone;
+                email = okEmail;
+                return true;
+            }
+        }
+
         private void ProcessStore2IDStorage(EMR_PATIENT_CERTIFICATE certificate, EmrPatientCertificateRegisterSDO sdo)
         {
             try

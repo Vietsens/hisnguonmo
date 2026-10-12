@@ -243,6 +243,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 valid = valid && this.CheckAmoutWarringNumber();
                 valid = valid && this.ProcessValidMedicineTypeAge();
                 valid = valid && this.ValidFee15PercentBaseSalaryForExam();
+                valid = valid && this.CheckTrackingOwnerBeforeSave(); //Viec 59656: y lenh chi duoc dua vao to dieu tri do chinh nguoi chi dinh tao (key tat thi bo qua)
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("frmAssignPrescription.valid", valid));
                 if (!valid) return;

@@ -15,6 +15,13 @@
 ### Luồng chính
 Chọn phiếu xuất bán → nhập thông tin người mua/hình thức thanh toán/sổ → Lưu (Ctrl S) / Lưu In (Ctrl I) / Lưu ký (Ctrl A). Lưu ký = tạo bill + phát hành HĐĐT rồi mở màn XEM PDF hóa đơn.
 
+### Phòng TN chọn sẵn (việc 59724 — 09/10/2026)
+- Danh sách Phòng TN: phòng thu ngân tài khoản được gán (`V_HIS_USER_ROOM` loại TN, cùng chi nhánh, đang hoạt động).
+- Mở form: nếu ControlState của máy (KEY `cboCashierRoom`, VALUE = ID phòng thu ngân) còn nằm trong danh sách thì chọn phòng đó, không thì phòng đầu tiên (`SetDafaultCashierRoom` → `GetSavedCashierRoom`).
+- Thu ngân đổi Phòng TN (chọn trong popup hoặc gõ mã + Enter) → `cboCashierRoom_EditValueChanged` ghi ControlState (`SaveCashierRoomState`). Lúc phần mềm tự chọn sẵn (cờ `isSettingDefaultCashierRoom`) không ghi, để tài khoản không có quyền phòng đã lưu không xóa lựa chọn của máy.
+- Sổ thu chi nạp theo Phòng TN đã chọn sẵn; sổ nhớ trong phiên (`GlobalVariables.DefaultAccountBookMedicineSaleBill`) vẫn được chọn lại.
+- Chế độ tự động (3082, form ẩn) dùng chung luật chọn sẵn.
+
 ### Checkbox "In" (việc 3082 — bản v3 25/08/2026)
 Chỉ hiện khi config `HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport` = 1 và nút Lưu ký đang hiện; trạng thái tick được nhớ giữa các phiên (ControlState). Tooltip: "In hóa đơn điện tử".
 
@@ -94,7 +101,7 @@ Hàng nút đáy form: Ngoài giờ | Không hiển thị HĐ ĐT | **In (chkAut
 |---------|----------|
 | HIS.Desktop.Plugins.Library.ElectronicBill | Phát hành/lấy link HĐĐT (CREATE_INVOICE, GET_INVOICE_LINK) |
 | Inventec.Common.DocumentViewer | Run (mở viewer) / Print (in thẳng — 3082) |
-| HIS.Desktop.Library.CacheClient.ControlStateWorker | Nhớ trạng thái checkbox In (3082) |
+| HIS.Desktop.Library.CacheClient.ControlStateWorker | Nhớ trạng thái checkbox In (3082), Phòng TN đã chọn trên máy (59724) |
 | HIS.Desktop.Plugins.CreateTransReqQR | Thanh toán QR |
 
 ### Inter-Plugin (được gọi từ)
@@ -111,6 +118,7 @@ In HĐĐT: link PDF từ nhà cung cấp → DocumentViewerManager (viewer khi L
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 09/10/2026 | dangth2 | Việc 59724 (BVND115): Phòng TN mặc định là phòng thu ngân đã chọn lần trước trên cùng máy (ControlState KEY `cboCashierRoom`), không còn quyền/không hoạt động thì về phòng đầu tiên như cũ. Thêm `GetSavedCashierRoom`, `SaveCashierRoomState`, cờ `isSettingDefaultCashierRoom`. Không đổi DB/BE/resource. |
 | 29/08/2026 | nampp | Việc 3082 v3.2 (bổ sung): chế độ tự động chạy **ẨN** (constructor: `Opacity = 0`, `ShowInTaskbar = false`, vị trí ngoài màn hình) — người dùng chỉ thấy WaitingManager + popup lỗi; mọi nhánh của `RunAutoSaveSignPrint`/`RunAutoIssueExistingBill` đều đóng form qua `CloseAutoForm()` (kể cả `finally`) để không kẹt form ẩn dạng modal. |
 | 29/08/2026 | nampp | Việc 3082 **v3.2**: thêm chế độ tự động `AUTO_ISSUE_EXISTING_BILL` + `TRANSACTION_ID=` (Config) cho bill đã tạo lúc lưu phiếu (màn Xuất bán tick "Xuất biên lai/hóa đơn" + Lưu ký in): `IsAutoIssueExistingBill`, `GetAutoTransactionId`, `LoadExpMest` không lọc HAS_BILL_ID, `RunAutoIssueExistingBill` (tải giao dịch → đồng bộ sổ/hình thức → check tồn → `IssueElectronicInvoiceForExistingBill` → Approve/Export → in → đóng), `IssueElectronicInvoiceForExistingBill` (tách từ khối phát hành trong `SaveProcess`). |
 | 25/08/2026 | nampp | Việc 3082 **v3** (tài liệu 3082 cập nhật 25/08: checkbox "In" đặt tại màn Xuất bán, nút Lưu in chạy cả chuỗi). Form nhận thêm `List<string> autoActions` (Behavior parse + constructor `_autoActions`); marker `Config.AUTO_ACTION__SAVE_SIGN_PRINT` → `Shown` → `RunAutoSaveSignPrint()`: tự Lưu ký + duyệt/thực xuất + in rồi tự đóng (thiếu tồn → đóng; fail khác → giữ mở). Tách `ProcessSaveSignPrintCore(autoExportPrint)` dùng chung cho nút Lưu ký và chế độ tự động, trả `SaveSignPrintResult`. **Khôi phục** `CheckStockBeforeExport` + `AutoApproveExportExpMests` từ commit 95ad34d8a (đã bỏ 07/08) theo hướng "tự thích nghi": `GetExpMestsFresh()` đọc trạng thái mới nhất, bỏ qua phiếu HOÀN THÀNH (kho tự thực xuất khi lưu / BE tự xuất khi tạo bill), sau Approve đọc `ExpMest.EXP_MEST_STT_ID` trả về để không gọi Export thừa. `PrintInvoiceNow()` trả `bool`. Không tick In → luồng cũ 100%. |
@@ -133,6 +141,14 @@ In HĐĐT: link PDF từ nhà cung cấp → DocumentViewerManager (viewer khi L
 - [ ] Config bật: bấm **Lưu** (Ctrl S) → không đụng gì tới HĐĐT.
 - [ ] Config tắt + `PrintNow` = `Mps000339`: nút Lưu In giữ nguyên luồng cũ (vẫn tải HĐĐT).
 - [ ] Cả 2 màn Xuất bán (V1 + V2): checkbox "Xuất biên lai/hóa đơn" dùng bình thường như code gốc (khóa 08/08 đã gỡ 29/08); màn V1 bấm "Lưu ký in" khi đang tick → cảnh báo, không chạy.
+
+### Việc 59724 (09/10/2026)
+- [ ] Máy chưa chọn bao giờ: Phòng TN = phòng đầu tiên.
+- [ ] Chọn phòng B → mở form cho bệnh nhân sau: chọn sẵn B, Sổ thu chi là sổ của B.
+- [ ] Gõ mã phòng + Enter cũng được nhớ; tắt/mở lại client vẫn nhớ.
+- [ ] Tài khoản khác cùng máy không có quyền B: phòng đầu tiên; đăng nhập lại tài khoản cũ vẫn ra B.
+- [ ] Phòng B bị khóa: phòng đầu tiên, không lỗi.
+- [ ] Ô "Không hiển thị HĐ ĐT" vẫn nhớ trạng thái như cũ.
 
 ### Việc 3082 v3 (25/08/2026)
 - [ ] Chế độ bill đã có: màn Xuất bán tick "Xuất biên lai/hóa đơn" + Lưu ký in → form tải giao dịch, phát hành HĐĐT cho bill (INVOICE_CODE cập nhật), thực xuất, in, đóng; bill đã có INVOICE_CODE → bỏ qua phát hành; lỗi bất kỳ → popup + đóng form.

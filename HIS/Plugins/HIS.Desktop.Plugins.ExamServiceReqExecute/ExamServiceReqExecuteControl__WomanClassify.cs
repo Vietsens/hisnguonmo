@@ -4,7 +4,9 @@
  * All rights reserved.
  * Tab "Phân loại phụ nữ" — checklist Phụ nữ mang thai / Phụ nữ cho con bú
  * phục vụ cảnh báo thuốc MIMS (Drug Pregnancy / Drug Lactation).
- * Tab được tạo RUNTIME (không sửa designer), chỉ hiện khi config bật và bệnh nhân nữ.
+ * Tab được tạo RUNTIME (không sửa designer), chỉ hiện với bệnh nhân nữ:
+ *   - HIS.Desktop.Mims.IsCheckPregnancyLactation = 1: đầy đủ (mang thai, số tháng, tuần tuổi thai, cho con bú).
+ *   - Key không thiết lập / khác 1: chỉ hiện ô "Tuần tuổi thai".
  * Dữ liệu lưu bảng HIS_MIMS_PATIENT_PROFILE (1 bản ghi active / bệnh nhân, update tại chỗ).
  */
 using HIS.Desktop.MIMS.Integration.Core;
@@ -42,24 +44,30 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         /// Chặn event CheckedChanged khi đang fill dữ liệu từ DB lên control.
         /// </summary>
         bool isWomanClassifyFilling = false;
+
+        /// <summary>
+        /// true = key HIS.Desktop.Mims.IsCheckPregnancyLactation không thiết lập / khác 1:
+        /// tab chỉ hiện ô "Tuần tuổi thai", các control còn lại vẫn tạo nhưng không add lên tab.
+        /// </summary>
+        bool isWomanClassifyWeekOnly = false;
         #endregion
 
         /// <summary>
-        /// Tạo tab "Phân loại phụ nữ" trên vùng tab phải (xtraTabControlInfo).
-        /// Chỉ tạo khi config HIS.Desktop.Mims.IsCheckPregnancyLactation = 1 và bệnh nhân nữ.
+        /// Tạo tab "Phân loại phụ nữ" trên vùng tab phải (xtraTabControlInfo) cho bệnh nhân nữ.
+        /// Key HIS.Desktop.Mims.IsCheckPregnancyLactation = 1 → đầy đủ; khác 1 → chỉ ô tuần tuổi thai.
         /// Gọi trong ExamServiceReqExecuteControl_Load sau khi this.treatment đã có dữ liệu.
         /// </summary>
         private void InitWomanClassifyTab()
         {
             try
             {
-                if (!HisConfigCFG.IsCheckMimsPregnancyLactation)
-                    return;
                 if (this.treatment == null
                     || this.treatment.TDL_PATIENT_GENDER_ID != IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__FEMALE)
                     return;
                 if (this.xtraTabPageWomanClassify != null)
                     return;
+
+                this.isWomanClassifyWeekOnly = !HisConfigCFG.IsCheckMimsPregnancyLactation;
 
                 this.xtraTabPageWomanClassify = new DevExpress.XtraTab.XtraTabPage();
                 this.xtraTabPageWomanClassify.Name = "xtraTabPageWomanClassify";
@@ -133,17 +141,32 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.lblMimsLactatingMonthUnit.Text = "(tháng)";
                 this.lblMimsLactatingMonthUnit.Location = new System.Drawing.Point(248, 138);
 
-                this.xtraTabPageWomanClassify.Controls.Add(this.chkMimsPregnant);
-                this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantMonth);
-                this.xtraTabPageWomanClassify.Controls.Add(this.spinMimsPregnantMonth);
-                this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantMonthUnit);
-                this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantWeek);
-                this.xtraTabPageWomanClassify.Controls.Add(this.spinMimsPregnantWeek);
-                this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantWeekUnit);
-                this.xtraTabPageWomanClassify.Controls.Add(this.chkMimsLactating);
-                this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsLactatingMonth);
-                this.xtraTabPageWomanClassify.Controls.Add(this.spinMimsLactatingMonth);
-                this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsLactatingMonthUnit);
+                if (this.isWomanClassifyWeekOnly)
+                {
+                    // Week-only mode: move the week row to the top, always editable (no "pregnant" checkbox shown)
+                    this.lblMimsPregnantWeek.Location = new System.Drawing.Point(8, 17);
+                    this.spinMimsPregnantWeek.Bounds = new System.Drawing.Rectangle(158, 14, 62, 20);
+                    this.lblMimsPregnantWeekUnit.Location = new System.Drawing.Point(226, 17);
+                    this.spinMimsPregnantWeek.Enabled = true;
+
+                    this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantWeek);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.spinMimsPregnantWeek);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantWeekUnit);
+                }
+                else
+                {
+                    this.xtraTabPageWomanClassify.Controls.Add(this.chkMimsPregnant);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantMonth);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.spinMimsPregnantMonth);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantMonthUnit);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantWeek);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.spinMimsPregnantWeek);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsPregnantWeekUnit);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.chkMimsLactating);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsLactatingMonth);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.spinMimsLactatingMonth);
+                    this.xtraTabPageWomanClassify.Controls.Add(this.lblMimsLactatingMonthUnit);
+                }
 
                 this.xtraTabControlInfo.TabPages.Add(this.xtraTabPageWomanClassify);
 
@@ -285,6 +308,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 // Loại trừ nhau: bên kia đang tick thì disable bên này (checkbox đang tick luôn thao tác được để bỏ tick)
                 this.chkMimsPregnant.Enabled = isPregnant || !isLactating;
                 this.chkMimsLactating.Enabled = isLactating || !isPregnant;
+                if (this.isWomanClassifyWeekOnly)
+                    this.spinMimsPregnantWeek.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -308,6 +333,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             short uiLactatingMonth = (short)this.spinMimsLactatingMonth.Value;
 
             var record = this.mimsPatientProfileRecord;
+            if (this.isWomanClassifyWeekOnly)
+            {
+                // Only the week field is shown — compare that field alone
+                return record == null
+                    ? uiPregnantWeek > 0
+                    : (record.PREGNANT_WEEK ?? 0) != uiPregnantWeek;
+            }
             if (record == null)
                 return uiPregnant == 1 || uiLactating == 1;
 
@@ -328,6 +360,19 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 if (this.xtraTabPageWomanClassify == null) return true;
+                if (this.isWomanClassifyWeekOnly)
+                {
+                    // Week is optional here (0 / empty = not entered); only reject out-of-range typed values
+                    if (this.spinMimsPregnantWeek.Value < 0 || this.spinMimsPregnantWeek.Value > 42)
+                    {
+                        this.xtraTabControlInfo.SelectedTabPage = this.xtraTabPageWomanClassify;
+                        this.spinMimsPregnantWeek.ErrorText = "Nhập tuần tuổi thai (1-42)";
+                        this.spinMimsPregnantWeek.Focus();
+                        return false;
+                    }
+                    this.spinMimsPregnantWeek.ErrorText = "";
+                    return true;
+                }
                 if (this.chkMimsPregnant.Checked && (this.spinMimsPregnantMonth.Value < 1 || this.spinMimsPregnantMonth.Value > 9))
                 {
                     this.xtraTabControlInfo.SelectedTabPage = this.xtraTabPageWomanClassify;
@@ -364,6 +409,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (this.xtraTabPageWomanClassify == null || this.treatment == null) return;
                 if (!IsWomanClassifyChanged()) return;
+                if (this.isWomanClassifyWeekOnly)
+                {
+                    SaveWomanClassifyWeekOnly();
+                    return;
+                }
                 if (this.chkMimsPregnant.Checked
                     && ((this.spinMimsPregnantMonth.Value < 1 || this.spinMimsPregnantMonth.Value > 9)
                         || (this.spinMimsPregnantWeek.Value < 1 || this.spinMimsPregnantWeek.Value > 42)))
@@ -394,6 +444,63 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             this.mimsPatientProfileRecord = saved;
                         else
                             Inventec.Common.Logging.LogSystem.Warn("SaveWomanClassify: luu HIS_MIMS_PATIENT_PROFILE that bai"
+                                + Inventec.Common.Logging.LogUtil.TraceData(
+                                    Inventec.Common.Logging.LogUtil.GetMemberName(() => record), record));
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lưu khi tab chỉ có ô "Tuần tuổi thai" (key IsCheckPregnancyLactation khác 1).
+        /// Chỉ ghi PREGNANT_WEEK; các trường không hiển thị giữ nguyên giá trị đang có trong DB.
+        /// Nhập tuần > 0 → đánh dấu IS_PREGNANT = 1 và bỏ cho con bú (2 trạng thái loại trừ nhau).
+        /// </summary>
+        private void SaveWomanClassifyWeekOnly()
+        {
+            try
+            {
+                short uiPregnantWeek = (short)this.spinMimsPregnantWeek.Value;
+                if (uiPregnantWeek < 0 || uiPregnantWeek > 42)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SaveWomanClassifyWeekOnly: tuan tuoi thai ngoai khoang 0-42, bo qua luu HIS_MIMS_PATIENT_PROFILE");
+                    return;
+                }
+
+                var record = this.mimsPatientProfileRecord;
+                if (record == null)
+                    record = new MimsPatientProfileRecord();
+                record.PATIENT_ID = this.treatment.PATIENT_ID;
+                record.TREATMENT_ID = this.treatmentId;
+                if (uiPregnantWeek > 0)
+                {
+                    record.PREGNANT_WEEK = uiPregnantWeek;
+                    record.IS_PREGNANT = 1;
+                    record.IS_LACTATING = 0;
+                    record.LACTATING_MONTH = null;
+                }
+                else
+                {
+                    record.PREGNANT_WEEK = null;
+                }
+
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        var saved = MimsPatientProfileWorker.Save(record);
+                        if (saved != null)
+                            this.mimsPatientProfileRecord = saved;
+                        else
+                            Inventec.Common.Logging.LogSystem.Warn("SaveWomanClassifyWeekOnly: luu HIS_MIMS_PATIENT_PROFILE that bai"
                                 + Inventec.Common.Logging.LogUtil.TraceData(
                                     Inventec.Common.Logging.LogUtil.GetMemberName(() => record), record));
                     }

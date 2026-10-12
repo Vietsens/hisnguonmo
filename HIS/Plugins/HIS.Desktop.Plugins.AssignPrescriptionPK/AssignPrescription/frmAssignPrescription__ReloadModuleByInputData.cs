@@ -93,6 +93,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.patientDob = data.PatientDob;
                 this.genderName = data.GenderName;
 
+                this.isTrackingOwnerInputTracking = (data.Tracking != null);
                 if (data.Tracking != null)
                 {
                     this.Listtrackings = new List<HIS_TRACKING>();
