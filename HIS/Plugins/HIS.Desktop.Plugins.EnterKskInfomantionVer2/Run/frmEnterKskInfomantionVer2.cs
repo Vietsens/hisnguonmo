@@ -2211,13 +2211,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         {
                             text = (string)data;
                         }
+                        // Set "Người khám" theo người thực hiện y lệnh — ĐỘC LẬP với kết quả: dòng 1b chỉ lấy người thực hiện
+                        // (ô kết quả có thể trống/khóa) vẫn phải điền được ô Người khám; SetExaminerByExecuteLoginname tự kiểm tra
+                        // examiner.Enabled riêng.
+                        if (examiner != null) SetExaminerByExecuteLoginname(examiner, executeLoginname, target.Name);
                         if (text == null || !target.Enabled) return;
                         string val = JoinResultBySemicolon(text);
                         if (string.IsNullOrEmpty(val)) return;
                         // fillTarget = false (ô 1b Sinh hóa máu/1c): chỉ lấy Người thực hiện, KHÔNG đè ô kết quả
                         // (giữ giá trị trần do OpenTestIndexGroupHeadless điền, tránh định dạng "dịch vụ: kết quả").
                         if (fillTarget) target.Text = val;
-                        if (examiner != null) SetExaminerByExecuteLoginname(examiner, executeLoginname, target.Name);
                     };
                     listArgs.Add(del);
                     listArgs.Add(serviceIds); // string -> ContentSubclinical chạy chế độ headless theo serviceIds
