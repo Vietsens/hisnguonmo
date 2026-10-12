@@ -1593,8 +1593,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                     Inventec.Common.Logging.LogSystem.Debug("3.2.1");
 
-                    this.MachineIdChoose = sereServExt != null ? sereServExt.MACHINE_ID : null;
                     ProcessLoadSereServExt(sereServ, ref sereServExt);
+                    //phai lay may SAU khi nap ext cua dong vua chon; dat truoc thi van dang la ext cua dong truoc do
+                    //=> key <#MACHINE_NAME;>/<#MACHINE_NAMES;> do sai may hoac bi rong.
+                    this.MachineIdChoose = sereServExt != null ? sereServExt.MACHINE_ID : null;
                     ProcessDescriptionContent();
                     ProcessLoadSereServExtDescriptionPrint(sereServExt);
 
