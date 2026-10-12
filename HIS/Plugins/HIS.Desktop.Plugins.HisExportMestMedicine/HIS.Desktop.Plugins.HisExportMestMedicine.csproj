@@ -223,6 +223,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\CongMuaSamChecker.cs" />
+    <Compile Include="UCHisExportMestMedicine_CongMuaSam.cs" />
     <Compile Include="ADO\ExpDetailADO.cs" />
     <Compile Include="ADO\ExpMestBloodADO.cs" />
     <Compile Include="Base\AmountADO.cs" />

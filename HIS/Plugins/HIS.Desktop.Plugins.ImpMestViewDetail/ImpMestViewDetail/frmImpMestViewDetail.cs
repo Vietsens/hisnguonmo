@@ -159,6 +159,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 ValidateControlForm();
                 WaitingManager.Hide();
                 ItemGridLookUpEdit_BloodName.CloseUpKey = new DevExpress.Utils.KeyShortcut(Keys.Enter);
+                this.BeginInvoke(new Action(this.CheckCongMuaSam));// 58605 - hoi Cong mua sam sau khi form hien thi
             }
             catch (Exception ex)
             {

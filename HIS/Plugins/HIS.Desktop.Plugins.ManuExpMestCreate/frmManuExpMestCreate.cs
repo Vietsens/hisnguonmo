@@ -93,6 +93,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
                 this._MediStockId = expMest.MEDI_STOCK_ID;
                 this._ExpMestId = expMest.ID;
                 this.txtDescription.Text = expMest.DESCRIPTION;
+                this.txtRecipient.Text = expMest.RECIPIENT;// 58605
                 this.cboExpMestReason.EditValue = expMest.EXP_MEST_REASON_ID;
                 btnNew.Enabled = false;
                 LoadDataExpMest(expMest.ID);
@@ -800,6 +801,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
                 manuExpMest.ManuImpMestId = this._ImpMestId;
                 manuExpMest.ReqRoomId = this.currentModule.RoomId;
                 manuExpMest.Description = txtDescription.Text;
+                manuExpMest.Recipient = String.IsNullOrWhiteSpace(txtRecipient.Text) ? null : txtRecipient.Text.Trim();// 58605 - nguoi nhan hang tra
                 if (cboExpMestReason.EditValue!= null)
                     manuExpMest.ExpMestReasonId = Convert.ToInt64(cboExpMestReason.EditValue);
                 manuExpMest.MediStockId = this._MediStockId;
@@ -975,6 +977,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
                 WaitingManager.Show();
                 this.manuExpMestResult = new HisExpMestResultSDO();
                 txtDescription.Text = "";
+                txtRecipient.Text = "";
                 cboExpMestReason.EditValue = null;
                 this.Action = GlobalVariables.ActionAdd;
                 SetEnableControl(Action);

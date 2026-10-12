@@ -135,6 +135,9 @@ namespace HIS.Desktop.Plugins.ManuImpMestEdit
 
 
                 LoadDataToComboSupplier(listSupplier);
+
+                // 58605 - hoi Cong mua sam sau khi form hien thi
+                this.BeginInvoke(new Action(this.CheckCongMuaSam));
             }
             catch (Exception ex)
             {

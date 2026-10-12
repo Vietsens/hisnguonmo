@@ -1074,6 +1074,11 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                             {
                                 text = (view.GetRowCellValue(lastRowHandle, "IMP_MEST_STT_NAME") ?? "").ToString();
                             }
+                            else
+                            {
+                                // 58605 - ly do Cong mua sam khoa nut
+                                text = GetCongMuaSamTooltip(view.GetRow(lastRowHandle) as V_HIS_IMP_MEST, info.Column.FieldName) ?? "";
+                            }
                             lastInfo = new ToolTipControlInfo(new DevExpress.XtraGrid.GridToolTipInfo(view, new DevExpress.XtraGrid.Views.Base.CellToolTipInfo(info.RowHandle, info.Column, "Text")), text);
                         }
                         e.Info = lastInfo;
@@ -1493,6 +1498,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                             e.RepositoryItem = repositoryItemButtonPrintRepayDisable;
                         }
                     }
+
+                    // 58605 - Cong mua sam khong cho sua/xoa thi khoa them nut
+                    CongMuaSamOverrideButton(data, e);
                 }
             }
             catch (Exception ex)
@@ -1917,6 +1925,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             {
                 var view = sender as GridView;
                 if (view == null) return;
+
+                // 58605 - hoi Cong mua sam de khoa san nut cua phieu nhap NCC
+                CheckCongMuaSamAsync(view.GetRow(e.RowHandle) as V_HIS_IMP_MEST);
 
                 // Chỉ xử lý khi click chuột trái 1 lần
                 if (e.Button == MouseButtons.Left && e.Clicks == 1)
