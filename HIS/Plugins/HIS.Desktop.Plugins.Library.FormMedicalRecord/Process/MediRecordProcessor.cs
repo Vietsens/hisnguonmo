@@ -1626,6 +1626,15 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     Inventec.Common.Mapper.DataObjectMapper.Map<BenhAnDaLieuTW>(_BenhAnDaLieuTW, _BenhAnCommonADO);
                     if (_Treatment != null)
                     {
+                        // Chẩn đoán vào viện của vỏ Da Liễu TW lấy từ hồ sơ điều trị; dự phòng theo cặp mã và tên.
+                        bool hasInIcd = !string.IsNullOrWhiteSpace(_Treatment.IN_ICD_CODE) || !string.IsNullOrWhiteSpace(_Treatment.IN_ICD_NAME);
+                        _ThongTinDieuTri.ChanDoan_KhiVaoKhoaDieuTri = hasInIcd ? _Treatment.IN_ICD_NAME : _Treatment.ICD_NAME;
+                        _ThongTinDieuTri.MaICD_KhiVaoKhoaDieuTri = hasInIcd ? _Treatment.IN_ICD_CODE : _Treatment.ICD_CODE;
+
+                        bool hasInSubIcd = !string.IsNullOrWhiteSpace(_Treatment.IN_ICD_SUB_CODE) || !string.IsNullOrWhiteSpace(_Treatment.IN_ICD_TEXT);
+                        _ThongTinDieuTri.BenhKemTheo = hasInSubIcd ? _Treatment.IN_ICD_TEXT : _Treatment.ICD_TEXT;
+                        _ThongTinDieuTri.MaICD_BenhKemTheo = hasInSubIcd ? _Treatment.IN_ICD_SUB_CODE : _Treatment.ICD_SUB_CODE;
+
                         _BenhAnDaLieuTW.MaCSKCB = _Treatment.TRANSFER_IN_MEDI_ORG_CODE;
                         _BenhAnDaLieuTW.CSKCB = _Treatment.TRANSFER_IN_MEDI_ORG_NAME;
                         _BenhAnDaLieuTW.BacSyChuyenVaoVien = _Treatment.IN_LOGINNAME;
