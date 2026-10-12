@@ -35,6 +35,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Config
         private const string CONFIG_KEY__IS_ROUND_PRICE_BASE = "HIS.Desktop.Plugins.Transaction.RoundPriceBase";
         // Bật/tắt ô tra cứu theo mã đơn thuốc điện tử trên màn hình Xuất bán (mặc định tắt)
         private const string CONFIG_KEY__ELECTRONIC_CODE_SEARCH = "MOS.HIS_EXP_MEST.ELECTRONIC_CODE_SEARCH";
+        // Viec 58006: o "Benh nhan" chon benh nhan co don chua tao phieu xuat trong ngay (mac dinh tat)
+        private const string CONFIG_KEY__IS_SHOW_PENDING_PATIENT_LIST = "HIS.Desktop.Plugins.ExpMestSaleCreate.IsShowPendingPatientList";
 
         internal static bool IS_JOIN_NAME_WITH_CONCENTRA;
         internal static bool IS_MUST_BE_FINISHED_BEFORED_PRINTING;
@@ -42,6 +44,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Config
         internal static bool IS_AUTO_SELECT_ACCOUNT_BOOK_IF_HAS_ONE;
         internal static string IS_ROUND_PRICE_BASE;
         internal static bool IS_ENABLE_ELECTRONIC_CODE_SEARCH;
+        internal static bool IS_SHOW_PENDING_PATIENT_LIST;
 
         internal static void LoadConfig()
         {
@@ -53,6 +56,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Config
                 IS_AUTO_SELECT_ACCOUNT_BOOK_IF_HAS_ONE = GetValue(CONFIG_KEY__IS_AUTO_SELECT_ACCOUNT_BOOK_IF_HAS_ONE) == "1";
                 IS_ROUND_PRICE_BASE = GetValue(CONFIG_KEY__IS_ROUND_PRICE_BASE);
                 IS_ENABLE_ELECTRONIC_CODE_SEARCH = GetValue(CONFIG_KEY__ELECTRONIC_CODE_SEARCH) == "1";
+                IS_SHOW_PENDING_PATIENT_LIST = GetValue(CONFIG_KEY__IS_SHOW_PENDING_PATIENT_LIST) == "1";
             }
             catch (Exception ex)
             {

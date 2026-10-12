@@ -524,6 +524,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 // Viec 57853: luu phieu thanh cong -> dinh kem don thuoc da chon truoc khi luu
                 ProcessAttachPrescriptionAfterSave(success);
 
+                // Viec 58006: luu thanh cong -> nap lai danh sach benh nhan cho xuat
+                ReloadPendingPatientsAfterSave(success);
+
                 if (this.savePrintInvoice)
                 {
                     // Viec 3082: nut "Luu ky in" (tick "Xuat HDDT") -> mo form Xuat hoa don o che do tu dong

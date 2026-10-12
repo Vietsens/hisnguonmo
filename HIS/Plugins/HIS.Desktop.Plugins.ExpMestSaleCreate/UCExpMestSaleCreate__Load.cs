@@ -1123,6 +1123,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     txtPatientPhone.Enabled = false;
                     txtEmail.Enabled = false;
                 }
+                SetPendingPatientMode();
             }
             catch (Exception ex)
             {
