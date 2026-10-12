@@ -190,6 +190,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                     Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtDatePublic.DateTime) ?? 0,
                     __SingleKeys
                     );
+                mps000116RDO._MedicineTypeAcins = GetMedicineTypeAcins();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (chkSign.Checked)
                 {
@@ -535,6 +536,49 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Lay hoat chat (danh muc thuoc) cua cac thuoc tren phieu cho key ACTIVE_INGREDIENT_CODES/NAMES.
+        /// Goi API 1 lan cho ca danh sach gop va chi tiet; loi thi van in, cac key hoat chat de trong.
+        /// </summary>
+        private List<V_HIS_MEDICINE_TYPE_ACIN> GetMedicineTypeAcins()
+        {
+            List<V_HIS_MEDICINE_TYPE_ACIN> result = null;
+            try
+            {
+                HashSet<long> medicineTypeIds = new HashSet<long>();
+                if (this._Mps000116ADOs != null)
+                {
+                    foreach (var item in this._Mps000116ADOs)
+                    {
+                        if (item.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && item.MEDI_MATY_TYPE_ID > 0)
+                            medicineTypeIds.Add(item.MEDI_MATY_TYPE_ID);
+                    }
+                }
+                if (this._Mps000116DetailADOs != null)
+                {
+                    foreach (var item in this._Mps000116DetailADOs)
+                    {
+                        if (item.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && item.MEDI_MATY_TYPE_ID > 0)
+                            medicineTypeIds.Add(item.MEDI_MATY_TYPE_ID);
+                    }
+                }
+                if (medicineTypeIds.Count <= 0)
+                {
+                    return result;
+                }
+
+                CommonParam param = new CommonParam();
+                HisMedicineTypeAcinViewFilter acinFilter = new HisMedicineTypeAcinViewFilter();
+                acinFilter.MEDICINE_TYPE_IDs = medicineTypeIds.ToList();
+                result = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE_ACIN>>(HisRequestUriStore.HIS_MEDICINE_TYPE_ACIN_GETVIEW, ApiConsumers.MosConsumer, acinFilter, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         /// <summary>

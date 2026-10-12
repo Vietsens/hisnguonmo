@@ -4910,6 +4910,24 @@ namespace HIS.Desktop.Plugins.BedHistory
                 }
                 // Cảnh báo T7/CN tự hiển thị trên grid (IDXDataErrorInfo), KHÔNG chặn lưu — người dùng tự quyết định.
 
+                // Nhắc khi quên sửa: Thời gian thực hiện vẫn trùng Thời gian chỉ định (so đến phút như hiển thị trên lưới).
+                if (this.IsUseTimeBedHistoryOn && dataBedServiceTypeForSave != null)
+                {
+                    var sameTimeRows = dataBedServiceTypeForSave
+                        .Where(o => o.UseTime.HasValue && o.UseTime.Value.ToString("yyyyMMddHHmm") == o.IntructionTime.ToString("yyyyMMddHHmm"))
+                        .ToList();
+                    if (sameTimeRows.Count > 0)
+                    {
+                        string message = "Các dịch vụ giường sau có Thời gian thực hiện trùng Thời gian chỉ định:\r\n"
+                            + string.Join("\r\n", sameTimeRows.Select(o => "- " + o.BED_SERVICE_TYPE_NAME + ": " + o.IntructionTime.ToString("dd/MM/yyyy HH:mm")))
+                            + "\r\nBạn có muốn tiếp tục?";
+                        if (XtraMessageBox.Show(message, ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                        {
+                            return;
+                        }
+                    }
+                }
+
                 bool valid = true;
 
                 CommonParam param = new CommonParam();

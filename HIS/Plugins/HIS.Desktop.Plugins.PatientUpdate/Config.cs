@@ -53,5 +53,18 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(IsCheckMimsPregnancyLactationOption) == "1";
             }
         }
+
+        private const string ChronicChangeTreatmentTypeOption = "MOS.HIS_TREATMENT.FINISH.CHRONIC_CHANGE_TREATMENT_TYPE_OPTION";
+        /// <summary>
+        /// "1" = cờ mãn tính theo đợt điều trị (việc 54036/58919): ô "BN mãn tính" hiển thị và ghi theo hồ sơ điều trị đích,
+        /// không ghi cờ bệnh nhân.
+        /// </summary>
+        public static bool IsChronicChangeTreatmentType
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ChronicChangeTreatmentTypeOption) == "1";
+            }
+        }
     }
 }

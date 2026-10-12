@@ -44,8 +44,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             try
             {
                 this.currentZaloEnable = ReadZaloEnableConfig();
-                bool isEnabled = this.currentZaloEnable == (int)EnumZaloEnable.OneSms
-                    || this.currentZaloEnable == (int)EnumZaloEnable.FnsZns;
+                bool isEnabled = EnumZaloEnableHelper.IsSendingMode(this.currentZaloEnable);
 
                 this.lciBtnSendZalo.Visibility = isEnabled
                     ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
@@ -190,8 +189,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                     return;
                 }
 
-                if (this.currentZaloEnable != (int)EnumZaloEnable.OneSms
-                    && this.currentZaloEnable != (int)EnumZaloEnable.FnsZns)
+                if (!EnumZaloEnableHelper.IsSendingMode(this.currentZaloEnable))
                 {
                     XtraMessageBox.Show(
                         Resources.ResourceMessageLang.ChucNangGuiZaloChuaDuocBat,
@@ -253,6 +251,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                     ApiConsumers.MosConsumer, filter, param);
                 WaitingManager.Hide();
 
+                FillMissingTreatmentInfo(result, selected);
                 bool success = result != null && result.TotalSuccess > 0;
                 ShowSendResultDialog(result);
 
@@ -267,6 +266,40 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             {
                 WaitingManager.Hide();
                 LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Màn kết quả gửi in từng dòng lỗi theo dạng "• mã điều trị (tên BN): lý do", nhưng Backend
+        /// (SendAppointmentZaloItemSDO) chỉ trả TreatmentId/PatientCode, không có mã điều trị và tên BN
+        /// => dòng lỗi ra "•  (): lý do", người dùng không biết BN nào. Điền phần còn trống từ chính danh
+        /// sách đã tích (khớp theo TreatmentId); giá trị Backend đã trả thì giữ nguyên.
+        /// </summary>
+        private static void FillMissingTreatmentInfo(SendAppointmentZaloResultADO result, List<TreatmentAppointmentADO> selected)
+        {
+            try
+            {
+                if (result == null || result.Details == null || selected == null || selected.Count == 0) return;
+
+                Dictionary<long, TreatmentAppointmentADO> byId = selected
+                    .Where(o => o != null)
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.First());
+
+                foreach (var item in result.Details)
+                {
+                    if (item == null) continue;
+
+                    TreatmentAppointmentADO treatment;
+                    if (!byId.TryGetValue(item.TreatmentId, out treatment)) continue;
+
+                    if (string.IsNullOrWhiteSpace(item.TreatmentCode)) item.TreatmentCode = treatment.TREATMENT_CODE;
+                    if (string.IsNullOrWhiteSpace(item.PatientName)) item.PatientName = treatment.TDL_PATIENT_NAME;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
             }
         }
 

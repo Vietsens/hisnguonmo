@@ -150,4 +150,13 @@
   <data name="Plugin_TrackingCreate__Validate_Tracking_Time" xml:space="preserve">
     <value>The date on which the sheet is created should not be less than the date of admission</value>
   </data>
+  <data name="TrackingOwner__YLenhNguoiKhacChiDinh" xml:space="preserve">
+    <value>- Order {0} was requested by {1}.</value>
+  </data>
+  <data name="TrackingOwner__ChanLuuToDieuTri" xml:space="preserve">
+    <value>Orders requested by other users cannot be added to the treatment sheet of {0}. Please uncheck the orders above.</value>
+  </data>
+  <data name="TrackingOwner__CanhBaoLuuToDieuTri" xml:space="preserve">
+    <value>The treatment sheet of {0} should only record orders requested by this user. Do you want to continue saving?</value>
+  </data>
 </root>

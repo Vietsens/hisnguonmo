@@ -40,6 +40,7 @@ HIS_ICD (`IS_DEATH_CAUSE_ONLY`, `IS_NOT_RECOMMEND_MAIN`, `IS_TRADITIONAL`), HIS_
 | 23/07/2026 | nampp | Việc 46465: bổ sung 2 cảnh báo viện phí theo config mới — (1) key `HIS.Desktop.WarningOverTotalPatientPrice__IsCheckOutpatient` = 1: mở rộng cảnh báo thiếu viện phí (vượt tạm ứng) cho BN **điều trị ngoại trú** (dùng chung ngưỡng `HIS.Desktop.WarningOverTotalPatientPrice`, ngưỡng trống coi như 0); (2) key `HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam` = 1: khi Lưu, cảnh báo BN **diện khám** nếu tổng chi phí (hồ sơ + đang kê) vượt 15% Lương cơ bản (`HIS_BHYT_PARAM.BASE_SALARY` theo hiệu lực FROM_TIME/TO_TIME) — hàm mới `ValidFee15PercentBaseSalaryForExam()`, message mới `TongChiPhiVuot15PhanTramLuongCoBan` (vi/en). Bỏ qua BN bảo lãnh; thiếu Tham số BHYT hoặc lỗi check thì cho đi tiếp (chỉ log). Mặc định 2 key tắt — không đổi hành vi hiện tại. |
 | 16/06/2026 | huyvu20 | **Việc 2.6**: Ẩn chẩn đoán nguyên nhân tử vong (`IS_DEATH_CAUSE_ONLY`) khỏi danh sách chọn bệnh chính + phụ (giữ giá trị đã lưu, trừ YHCT); cảnh báo `IS_NOT_RECOMMEND_MAIN` khi chọn/sửa bệnh chính; thêm message `BenhKhongKhuyenKhichDungLamBenhChinh` (vi/en). Không có kiểm tra khi lưu (plugin không có kết thúc điều trị). |
 | 17/06/2026 | huyvu20 | **Việc 2.6 (bổ sung)**: `IS_DEATH_CAUSE_ONLY` vẫn lọt qua khi gõ tay & khi load hồ sơ đã lưu. Chặn nốt: gõ/chọn bệnh chính (`LoadIcdCombo`, `ChangecboChanDoanTD`) + gõ bệnh phụ (`CheckIcdWrongCode`) → báo + loại; load bệnh chính (`LoadIcdToControl`) + phụ (`LoadDataToIcdSub`, `LoadIcdToControlIcdSub` qua helper `RemoveDeathCauseFromSubIcd`) → bỏ qua không load. Thêm message `BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan` (vi/en). |
+| 09/10/2026 | dangth2 | Việc 59656: bật key thì `SetDefaultComboPhieuDieuTri` chọn tờ mới nhất của người chỉ định trong ngày y lệnh, không có thì để trống (hết lỗi `FirstOrDefault().ID` ném NullReference làm giữ nguyên tờ của người trước — chỉ khi bật key); `CheckTrackingOwnerBeforeSave` sau `CheckTrackingRequiredOption4`; combo luôn hiện nên chỉ báo 'chưa có tờ' với diện nội trú/ngoại trú điều trị. Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (1 cảnh báo, 2 chặn, trống = như cũ). Lớp logic `Base/TrackingOwnerChecker.cs` + `EnumTrackingOwnerOption.cs` (bản sao giống hệt ở 7 plugin). Tờ của bác sĩ = `HIS_TRACKING.CREATOR`, người chỉ định = `REQUEST_LOGINNAME` gửi BE (so không phân biệt hoa thường). Lỗi bất ngờ trong bước kiểm tra thì cho lưu (chỉ ghi log). Thêm 4 message `TrackingOwner__*`. |
 
 ## 6. Test Cases
 
@@ -66,3 +67,10 @@ HIS_ICD (`IS_DEATH_CAUSE_ONLY`, `IS_NOT_RECOMMEND_MAIN`, `IS_TRADITIONAL`), HIS_
 - [ ] Mở hồ sơ đã lưu có ICD nguyên nhân tử vong ở chính/phụ → mã đó bị bỏ khỏi ô (không load).
 - [ ] Chọn/gõ ICD chính có cờ `IS_NOT_RECOMMEND_MAIN` → cảnh báo; chọn Không → xóa. Mở hồ sơ đã lưu → KHÔNG cảnh báo.
 - [ ] YHCT không bị ảnh hưởng.
+
+### Việc 59656 - Y lệnh chỉ vào tờ điều trị của chính người chỉ định
+- [ ] Key trống: chọn tờ của người khác vẫn lưu được, không hỏi (như cũ)
+- [ ] Key = 2: chọn tờ điều trị của người khác → chặn, nêu tờ + người tạo
+- [ ] Key = 1: như trên nhưng hỏi Có/Không
+- [ ] Key bật, người chỉ định chưa có tờ trong ngày y lệnh → cảnh báo/chặn "chưa có tờ điều trị ngày ..."
+- [ ] Key bật, mở màn: tự chọn sẵn tờ của chính người chỉ định (không chọn tờ người khác, kể cả tờ truyền từ màn Tạo tờ điều trị)

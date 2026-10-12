@@ -3075,5 +3075,73 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Resources
                 return "";
             }
         }
-}
+
+        /// <summary>Viec 59656: - To dieu tri {0} do {1} tao, khong phai cua nguoi chi dinh {2}.</summary>
+        internal static string TrackingOwner__ToDieuTriCuaNguoiKhac
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TrackingOwner__ToDieuTriCuaNguoiKhac", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Viec 59656: - Nguoi chi dinh {0} chua co to dieu tri ngay {1}.</summary>
+        internal static string TrackingOwner__NguoiChiDinhChuaCoToDieuTri
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TrackingOwner__NguoiChiDinhChuaCoToDieuTri", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Viec 59656: chan luu khi to dieu tri khong phai cua nguoi chi dinh.</summary>
+        internal static string TrackingOwner__ChanLuu
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TrackingOwner__ChanLuu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Viec 59656: canh bao, hoi co tiep tuc khong.</summary>
+        internal static string TrackingOwner__CanhBaoTiepTuc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TrackingOwner__CanhBaoTiepTuc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+    }
 }

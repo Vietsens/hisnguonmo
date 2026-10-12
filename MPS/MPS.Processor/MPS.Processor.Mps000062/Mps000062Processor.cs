@@ -5358,7 +5358,6 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_MERGE_HTU_TREATMENT___DATA = "";
                         item.MEDICINES_MERGE_HTU_HOME_PRES___DATA = "";
                         long intructionTimeMergeTreatment26771 = 0;
-                        long intructionTimeMergeHomePres26771 = 0;
                         int demMergeTreatment26771 = 0;
                         int demMergeHomePres26771 = 0;
                         int countMergeTreatment26771 = medicine_Merges.Count(o => o.IS_HOME_PRES != 1);
@@ -5462,11 +5461,7 @@ namespace MPS.Processor.Mps000062
                                     item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Thuốc cấp về (BN mang về):", FontStyle.Bold);
                                     item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
-                                if (intructionTimeMergeHomePres26771 != medi.INTRUCTION_TIME)
-                                {
-                                    intructionTimeMergeHomePres26771 = medi.INTRUCTION_TIME;
-                                    item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(medi.INTRUCTION_TIME), FontStyle.Bold);
-                                }
+                                //Khong in dong "Ngay su dung" cho thuoc cap ve (vien yeu cau bo - thuoc dung sau khi ra vien)
                                 item.MEDICINES_MERGE_HTU_HOME_PRES___DATA += rowMergeHtu26771;
                                 if ((medi.REMEDY_COUNT ?? 0) <= 0)
                                 {
@@ -5550,7 +5545,6 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_TREATMENT___DATA3 = "";
                         item.MEDICINES_HOME_PRES___DATA3 = "";
                         long intructionDateTreatment26771 = 0;
-                        long intructionDateHomePres26771 = 0;
                         int demTreatment26771 = 0;
                         int demHomePres26771 = 0;
                         int countTreatment26771 = medicines.Count(o => o.IS_HOME_PRES != 1);
@@ -5692,11 +5686,7 @@ namespace MPS.Processor.Mps000062
                                     item.MEDICINES_HOME_PRES___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Thuốc cấp về (BN mang về):", FontStyle.Bold);
                                     item.MEDICINES_HOME_PRES___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
-                                if (medi.INTRUCTION_DATE != intructionDateHomePres26771)
-                                {
-                                    intructionDateHomePres26771 = medi.INTRUCTION_DATE;
-                                    item.MEDICINES_HOME_PRES___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(medi.INTRUCTION_DATE), FontStyle.Bold);
-                                }
+                                //Khong in dong "Ngay su dung" cho thuoc cap ve (vien yeu cau bo - thuoc dung sau khi ra vien)
                                 item.MEDICINES_HOME_PRES___DATA3 += rowMedi26771;
                                 if ((medi.REMEDY_COUNT ?? 0) <= 0)
                                 {

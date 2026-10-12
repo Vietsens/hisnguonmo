@@ -153,6 +153,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_Treatment != null ? _Treatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
 
                 List<MPS.Processor.Mps000088.PDO.Mps000088PDO> lstmps000088RDO = new List<MPS.Processor.Mps000088.PDO.Mps000088PDO>();
+                List<V_HIS_MEDICINE_TYPE_ACIN> medicineTypeAcins = GetMedicineTypeAcins();
 
                 foreach (var ado88 in mps000088ADO)
                 {
@@ -162,6 +163,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
     ado88.Mps000088ByMediEndMateADOs,
     __SingleKeys,
     vHisBedLog);
+                    mps000088RDO._MedicineTypeAcins = medicineTypeAcins;
 
                     lstmps000088RDO.Add(mps000088RDO);
                 }
@@ -298,6 +300,9 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                             sereServPrint.NUM_ORDER = group.First().NUM_ORDER;
                             sereServPrint.TUTORIAL = group.First().TUTORIAL;
                             sereServPrint.CONCENTRA = group.First().CONCENTRA;
+                            //Chi dong thuoc co gia tri (map tu V_HIS_EXP_MEST_MEDICINE); vat tu, mau de trong
+                            sereServPrint.ACTIVE_INGR_BHYT_CODE = group.First().ACTIVE_INGR_BHYT_CODE;
+                            sereServPrint.ACTIVE_INGR_BHYT_NAME = group.First().ACTIVE_INGR_BHYT_NAME;
 
                             // Tổng amount trong trang hiện tại
                             sereServPrint.AMOUNT = group.ToList()
@@ -391,6 +396,42 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Lay hoat chat (danh muc thuoc) cua cac thuoc dang chon in cho key ACTIVE_INGREDIENT_CODES/NAMES.
+        /// Dong vat tu/mau dung MEDICINE_TYPE_ID de chua id vat tu/mau nen chi lay dong thuoc.
+        /// Goi API 1 lan cho moi trang in; loi thi van in, cac key hoat chat de trong.
+        /// </summary>
+        private List<V_HIS_MEDICINE_TYPE_ACIN> GetMedicineTypeAcins()
+        {
+            List<V_HIS_MEDICINE_TYPE_ACIN> result = null;
+            try
+            {
+                if (ExpMestMediAndMateADOPrint == null || ExpMestMediAndMateADOPrint.Count <= 0)
+                {
+                    return result;
+                }
+                List<long> medicineTypeIds = ExpMestMediAndMateADOPrint
+                    .Where(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && o.MEDICINE_TYPE_ID > 0)
+                    .Select(o => o.MEDICINE_TYPE_ID)
+                    .Distinct()
+                    .ToList();
+                if (medicineTypeIds.Count <= 0)
+                {
+                    return result;
+                }
+
+                CommonParam param = new CommonParam();
+                HisMedicineTypeAcinViewFilter acinFilter = new HisMedicineTypeAcinViewFilter();
+                acinFilter.MEDICINE_TYPE_IDs = medicineTypeIds;
+                result = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE_ACIN>>(HisRequestUriStore.HIS_MEDICINE_TYPE_ACIN_GETVIEW, ApiConsumers.MosConsumer, acinFilter, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         private decimal FormatSessionOfDay(string dt)

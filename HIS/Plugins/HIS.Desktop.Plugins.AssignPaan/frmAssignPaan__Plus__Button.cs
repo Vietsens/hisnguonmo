@@ -53,6 +53,9 @@ namespace HIS.Desktop.Plugins.AssignPaan
 
                 if (!btnSavePrint.Enabled || !dxValidationProvider1.Validate() || this.treatment == null)
                     return;
+                //Viec 59656: y lenh chi duoc dua vao to dieu tri do chinh nguoi chi dinh tao (key tat thi bo qua)
+                if (!this.CheckTrackingOwnerBeforeSave())
+                    return;
 
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
@@ -82,6 +85,9 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 if (!subIcdProcessor.GetValidate(ucSecondaryIcd))
                     return;
                 if (!btnSave.Enabled || !dxValidationProvider1.Validate() || this.treatment == null)
+                    return;
+                //Viec 59656: y lenh chi duoc dua vao to dieu tri do chinh nguoi chi dinh tao (key tat thi bo qua)
+                if (!this.CheckTrackingOwnerBeforeSave())
                     return;
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();

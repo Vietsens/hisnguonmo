@@ -162,6 +162,12 @@
   <data name="GatewayFnsZns" xml:space="preserve">
     <value>FNS ZNS (FPT)</value>
   </data>
+  <data name="GatewayZenifyZns" xml:space="preserve">
+    <value>Zenify ZNS</value>
+  </data>
+  <data name="KhongLayDuocDanhSachTemplateZalo" xml:space="preserve">
+    <value>Cannot load the Zalo template list. Please check the Zalo sending configuration (templates and connection settings) or contact the system administrator.</value>
+  </data>
   <data name="NoiDungXemTruocVoiBenhNhanFormat" xml:space="preserve">
     <value>Preview content (with patient: {0} · {1})</value>
   </data>

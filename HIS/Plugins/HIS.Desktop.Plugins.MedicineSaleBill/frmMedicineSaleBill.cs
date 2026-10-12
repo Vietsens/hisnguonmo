@@ -93,6 +93,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool isNotLoadWhileChangeControlStateInFirst;
+        /// <summary>Viec 59724: dang chon san phong thu ngan (khong phai nguoi dung chon) -> khong ghi ControlState</summary>
+        bool isSettingDefaultCashierRoom = false;
         V_HIS_TRANSACTION originalTransaction;
         /// <summary>Viec 3082: hanh dong tu dong do man Xuat ban truyen vao qua args (chua Config.AUTO_ACTION__SAVE_SIGN_PRINT)</summary>
         List<string> autoActions = null;
@@ -445,9 +447,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             {
                 if (cboCashierRoom.EditValue == null)
                 {
-                    var data = cashierRoom.FirstOrDefault();
+                    // Viec 59724: uu tien phong thu ngan da chon lan truoc tren may nay, khong con thi lay phong dau tien
+                    var data = GetSavedCashierRoom() ?? cashierRoom.FirstOrDefault();
                     if (data != null)
                     {
+                        isSettingDefaultCashierRoom = true;
                         txtCashierRoomCode.Text = data.CASHIER_ROOM_CODE;
                         cboCashierRoom.EditValue = data.ID;
                     }
@@ -456,6 +460,69 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                isSettingDefaultCashierRoom = false;
+            }
+        }
+
+        /// <summary>
+        /// Viec 59724: phong thu ngan luu o ControlState (theo may), chi nhan khi phong van nam trong danh sach phong cua tai khoan
+        /// </summary>
+        private V_HIS_CASHIER_ROOM GetSavedCashierRoom()
+        {
+            V_HIS_CASHIER_ROOM result = null;
+            try
+            {
+                var saved = (this.currentControlStateRDO != null) ? this.currentControlStateRDO.FirstOrDefault(o => o.KEY == cboCashierRoom.Name && o.MODULE_LINK == module.ModuleLink) : null;
+                long savedId;
+                if (saved != null && cashierRoom != null && long.TryParse(saved.VALUE, out savedId))
+                {
+                    result = cashierRoom.FirstOrDefault(o => o.ID == savedId);
+                }
+                Inventec.Common.Logging.LogSystem.Debug("GetSavedCashierRoom: savedValue=" + (saved != null ? saved.VALUE : "") + ", found=" + (result != null));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Viec 59724: ghi phong thu ngan nguoi dung vua chon vao ControlState de lan thu sau tren may nay chon san
+        /// </summary>
+        private void SaveCashierRoomState(long cashierRoomId)
+        {
+            try
+            {
+                if (this.controlStateWorker == null || module == null)
+                    return;
+
+                string value = cashierRoomId.ToString();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null) ? this.currentControlStateRDO.FirstOrDefault(o => o.KEY == cboCashierRoom.Name && o.MODULE_LINK == module.ModuleLink) : null;
+                if (csAddOrUpdate != null)
+                {
+                    if (csAddOrUpdate.VALUE == value)
+                        return;
+                    csAddOrUpdate.VALUE = value;
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = cboCashierRoom.Name;
+                    csAddOrUpdate.VALUE = value;
+                    csAddOrUpdate.MODULE_LINK = module.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -2750,6 +2817,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     LoadDataToComboAccountBook();
                     SetDefaultAccountBook();
                     WaitingManager.Hide();
+                }
+                if (!isSettingDefaultCashierRoom && cboCashierRoom.EditValue != null)
+                {
+                    SaveCashierRoomState(Inventec.Common.TypeConvert.Parse.ToInt64(cboCashierRoom.EditValue.ToString()));
                 }
             }
             catch (Exception ex)

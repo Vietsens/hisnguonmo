@@ -138,7 +138,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 //Nếu mở từ hồ sơ bệnh nhân thì currentPatient!=null và không có TreatmentId trong HisPatientUpdateSDO
                 //Nếu mở từ hồ sơ điều trị thì TreatmentId !=null và có TreatmentId trong HisPatientUpdateSDO
 
-                this.patientUpdateSdo = new MOS.SDO.HisPatientUpdateSDO();
+                HIS.Desktop.Plugins.PatientUpdate.ADO.HisPatientUpdateChronicSDO chronicSdo = new HIS.Desktop.Plugins.PatientUpdate.ADO.HisPatientUpdateChronicSDO();
+                this.patientUpdateSdo = chronicSdo;
                 MOS.EFMODEL.DataModels.HIS_PATIENT currentPatientDTO = new MOS.EFMODEL.DataModels.HIS_PATIENT();
 
                 LoadCurrentPatient(this.PatientId, ref currentPatientDTO);
@@ -155,6 +156,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 {
                     this.patientUpdateSdo.TreatmentId = this.TreatmentId;
                 }
+
+                // 58919: cờ mãn tính của hồ sơ đích, chỉ gửi khi người dùng đổi ô
+                ApplyTreatmentChronic(chronicSdo);
 
                 this.patientUpdateSdo.IsUpdateVaccinationExam = chkUpdate.Checked ? true : false;
 

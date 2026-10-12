@@ -5130,6 +5130,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 cboPhieuDieuTri.EditValue = serviceReq.TRACKING_ID;
             }
+            else if (this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None
+                && (HisConfigCFG.IsDefaultTracking || this.actionType != GlobalVariables.ActionEdit))
+            {
+                //Viec 59656: chon to dieu tri cua chinh nguoi chi dinh trong ngay y lenh; khong co thi de trong (khong giu to cua nguoi khac)
+                cboPhieuDieuTri.EditValue = this.GetDefaultOwnTrackingId();
+            }
             else if (HisConfigCFG.IsDefaultTracking && trackingADOs.Count > 0 && cboUser.EditValue != null && InstructionTime != 0)
             {
                 cboPhieuDieuTri.EditValue = trackingADOs.Where(o => o.CREATOR == cboUser.EditValue.ToString() && o.TRACKING_TIME.ToString().Substring(0, 8) == InstructionTime.ToString().Substring(0, 8)).OrderByDescending(o => o.TRACKING_TIME).FirstOrDefault().ID;
