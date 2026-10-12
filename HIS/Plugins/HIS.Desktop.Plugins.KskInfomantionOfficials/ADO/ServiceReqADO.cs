@@ -19,6 +19,12 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials.ADO
 
         public HIS_KSK_OCCUPATIONAL KSK_OCCUPATIONAL { get; set; }
 
+        /// <summary>
+        /// Ket qua tien su/trieu chung (HIS_DISEASE_DETAIL_RESULT) cua KSK_GENERAL,
+        /// da loc dung KSK_GENERAL_ID + dedup theo DISEASE_DETAIL_ID (giu ban moi nhat).
+        /// </summary>
+        public List<HIS_DISEASE_DETAIL_RESULT> DISEASE_DETAIL_RESULTS { get; set; }
+
         public ServiceReqADO()
         {
 

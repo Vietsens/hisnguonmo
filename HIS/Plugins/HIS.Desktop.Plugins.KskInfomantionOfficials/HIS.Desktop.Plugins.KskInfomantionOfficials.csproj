@@ -58,6 +58,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.ADO">
+      <HintPath>..\..\HIS.Desktop.ADO\bin\Debug\HIS.Desktop.ADO.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Common, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
@@ -255,6 +262,10 @@
     <Compile Include="ADO\DiseaseDetailResultADO.cs" />
     <Compile Include="ADO\KSKContractADO.cs" />
     <Compile Include="ADO\ServiceReqADO.cs" />
+    <Compile Include="ADO\TemplateFieldADO.cs" />
+    <Compile Include="ADO\TemplateEntryADO.cs" />
+    <Compile Include="ADO\TemplateItemADO.cs" />
+    <Compile Include="ADO\TemplateSectionADO.cs" />
     <Compile Include="Config\ControlStateConstant.cs" />
     <Compile Include="KskInfomantionOfficialsProcessor.cs" />
     <Compile Include="KskInfomantionOfficials\KskInfomantionOfficialsBehavior.cs" />
@@ -279,6 +290,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmKskInfomantionOfficials.Process.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmKskInfomantionOfficials.Prefetch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmKskInfomantionOfficials.Template.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmKskInfomantionOfficials.SetResources.cs">

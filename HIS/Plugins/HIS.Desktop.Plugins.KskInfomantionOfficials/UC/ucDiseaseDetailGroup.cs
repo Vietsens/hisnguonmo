@@ -147,6 +147,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials.UC
 
                 // === 1 TableLayoutPanel chung: cot 0 = title (Absolute), cot 1..5 = items ===
                 var table = new TableLayoutPanel();
+                // Tat tinh bo cuc khi them tung o — TableLayoutPanel (AutoSize) tinh lai sau MOI control them vao
+                table.SuspendLayout();
                 table.Dock = DockStyle.Fill;
                 table.AutoSize = true;
                 table.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -205,6 +207,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials.UC
                 }
 
                 this.Height = rowCount * ROW_HEIGHT + 2;
+                table.ResumeLayout(false);
                 this.Controls.Add(table);
                 this.ResumeLayout(true);
             }
