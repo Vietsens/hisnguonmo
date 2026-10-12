@@ -60,6 +60,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lblNhaCungCap = new DevExpress.XtraEditors.LabelControl();
             this.txtDescription = new DevExpress.XtraEditors.TextEdit();
+            this.txtRecipient = new DevExpress.XtraEditors.TextEdit();
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
@@ -142,6 +143,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDescription = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciExpMestReason = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciRecipient = new DevExpress.XtraLayout.LayoutControlItem();
             this.imageListIcon = new System.Windows.Forms.ImageList();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
@@ -151,6 +153,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRecipient.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
             this.xtraTabPageMedicine.SuspendLayout();
@@ -191,6 +194,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDescription)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExpMestReason)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciRecipient)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -200,6 +204,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             this.layoutControl1.Controls.Add(this.cboExpMestReason);
             this.layoutControl1.Controls.Add(this.lblNhaCungCap);
             this.layoutControl1.Controls.Add(this.txtDescription);
+            this.layoutControl1.Controls.Add(this.txtRecipient);
             this.layoutControl1.Controls.Add(this.btnNew);
             this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Controls.Add(this.btnPrint);
@@ -215,7 +220,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             // 
             // cboExpMestReason
             // 
-            this.cboExpMestReason.Location = new System.Drawing.Point(591, 46);
+            this.cboExpMestReason.Location = new System.Drawing.Point(763, 46);
             this.cboExpMestReason.MenuManager = this.barManager1;
             this.cboExpMestReason.Name = "cboExpMestReason";
             this.cboExpMestReason.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -225,7 +230,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExpMestReason.Properties.NullText = "";
             this.cboExpMestReason.Properties.View = this.gridLookUpEdit1View;
-            this.cboExpMestReason.Size = new System.Drawing.Size(435, 20);
+            this.cboExpMestReason.Size = new System.Drawing.Size(263, 20);
             this.cboExpMestReason.StyleController = this.layoutControl1;
             this.cboExpMestReason.TabIndex = 10;
             this.cboExpMestReason.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboExpMestReason_ButtonClick);
@@ -334,9 +339,19 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             this.txtDescription.Location = new System.Drawing.Point(97, 46);
             this.txtDescription.MenuManager = this.barManager1;
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(415, 20);
+            this.txtDescription.Size = new System.Drawing.Size(244, 20);
             this.txtDescription.StyleController = this.layoutControl1;
             this.txtDescription.TabIndex = 8;
+            // 
+            // txtRecipient
+            // 
+            this.txtRecipient.Location = new System.Drawing.Point(422, 46);
+            this.txtRecipient.MenuManager = this.barManager1;
+            this.txtRecipient.Name = "txtRecipient";
+            this.txtRecipient.Properties.MaxLength = 160;
+            this.txtRecipient.Size = new System.Drawing.Size(262, 20);
+            this.txtRecipient.StyleController = this.layoutControl1;
+            this.txtRecipient.TabIndex = 9;
             // 
             // btnNew
             // 
@@ -1273,6 +1288,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             this.layoutNew,
             this.layoutControlItem7,
             this.lciDescription,
+            this.lciRecipient,
             this.lciExpMestReason});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
@@ -1346,20 +1362,33 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             this.lciDescription.Control = this.txtDescription;
             this.lciDescription.Location = new System.Drawing.Point(0, 44);
             this.lciDescription.Name = "lciDescription";
-            this.lciDescription.Size = new System.Drawing.Size(514, 24);
+            this.lciDescription.Size = new System.Drawing.Size(343, 24);
             this.lciDescription.Text = "Mô tả:";
             this.lciDescription.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciDescription.TextSize = new System.Drawing.Size(90, 20);
             this.lciDescription.TextToControlDistance = 5;
+            // 
+            // lciRecipient
+            // 
+            this.lciRecipient.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciRecipient.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciRecipient.Control = this.txtRecipient;
+            this.lciRecipient.Location = new System.Drawing.Point(343, 44);
+            this.lciRecipient.Name = "lciRecipient";
+            this.lciRecipient.Size = new System.Drawing.Size(343, 24);
+            this.lciRecipient.Text = "Người nhận:";
+            this.lciRecipient.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciRecipient.TextSize = new System.Drawing.Size(70, 20);
+            this.lciRecipient.TextToControlDistance = 5;
             // 
             // lciExpMestReason
             // 
             this.lciExpMestReason.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciExpMestReason.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciExpMestReason.Control = this.cboExpMestReason;
-            this.lciExpMestReason.Location = new System.Drawing.Point(514, 44);
+            this.lciExpMestReason.Location = new System.Drawing.Point(686, 44);
             this.lciExpMestReason.Name = "lciExpMestReason";
-            this.lciExpMestReason.Size = new System.Drawing.Size(514, 24);
+            this.lciExpMestReason.Size = new System.Drawing.Size(342, 24);
             this.lciExpMestReason.Text = "Lý do xuất:";
             this.lciExpMestReason.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciExpMestReason.TextSize = new System.Drawing.Size(70, 20);
@@ -1406,6 +1435,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRecipient.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
             this.xtraTabControl1.ResumeLayout(false);
             this.xtraTabPageMedicine.ResumeLayout(false);
@@ -1446,6 +1476,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDescription)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciExpMestReason)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciRecipient)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
@@ -1535,6 +1566,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
         private DevExpress.XtraEditors.SimpleButton btnNew;
         private DevExpress.XtraLayout.LayoutControlItem layoutNew;
         private DevExpress.XtraEditors.TextEdit txtDescription;
+        private DevExpress.XtraEditors.TextEdit txtRecipient;
         private DevExpress.XtraLayout.LayoutControlItem lciDescription;
         private DevExpress.XtraBars.BarButtonItem barButtonItem__New;
         private DevExpress.XtraEditors.LabelControl lblNhaCungCap;
@@ -1550,6 +1582,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
         private DevExpress.XtraEditors.GridLookUpEdit cboExpMestReason;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem lciExpMestReason;
+        private DevExpress.XtraLayout.LayoutControlItem lciRecipient;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
         private DevExpress.XtraEditors.TextEdit txtKeyworkBloodInStock;

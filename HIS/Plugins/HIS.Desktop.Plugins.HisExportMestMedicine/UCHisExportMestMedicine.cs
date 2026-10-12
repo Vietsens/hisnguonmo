@@ -1858,6 +1858,9 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                             }
                         }
                     }
+
+                    // 58605 - Cong mua sam khong cho xoa/huy thi khoa them nut
+                    CongMuaSamOverrideButton(pData, e);
                 }
             }
             catch (Exception ex)
@@ -1931,6 +1934,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                                     }
                                 }
                             }
+
+                            // 58605 - ly do Cong mua sam khoa nut
+                            string congMuaSamText = GetCongMuaSamTooltip(view.GetRow(lastRowHandle) as V_HIS_EXP_MEST_2, info.Column.FieldName);
+                            if (congMuaSamText != null) text = congMuaSamText;
 
                             lastInfo = new ToolTipControlInfo(new DevExpress.XtraGrid.GridToolTipInfo(view, new DevExpress.XtraGrid.Views.Base.CellToolTipInfo(info.RowHandle, info.Column, "Text")), text);
                         }
@@ -2752,6 +2759,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                 var row = (V_HIS_EXP_MEST_2)gridView.GetFocusedRow();
                 if (row != null)
                 {
+                    CheckCongMuaSamAsync(row);// 58605
                     LoadInfoClick(row);
                     LoadVisibility(row);
                     ShowPopupDetail(row, e);
@@ -3610,6 +3618,7 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                     int rowHandle = gridView.GetVisibleRowHandle(hi.RowHandle);
 
                     rowFocusGrid = (V_HIS_EXP_MEST_2)gridView.GetRow(rowHandle);
+                    CheckCongMuaSamAsync(rowFocusGrid);// 58605
                     V_HIS_EXP_MEST row = new V_HIS_EXP_MEST();
                     Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST>(row, rowFocusGrid);
                     if (row != null)
@@ -3673,7 +3682,8 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                             ThucXuat(this.rightClickData);
                             break;
                         case PopupMenuProcessor.ItemType.HuyThucXuat:
-                            HuyThucXuat(this.rightClickData);
+                            if (!IsCongMuaSamBlockCancelExport(this.rightClickData))// 58605
+                                HuyThucXuat(this.rightClickData);
                             break;
                         case PopupMenuProcessor.ItemType.HoanThanh:
                             HoanThanh(this.rightClickData);

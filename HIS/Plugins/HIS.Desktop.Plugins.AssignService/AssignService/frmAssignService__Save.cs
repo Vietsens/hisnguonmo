@@ -1604,15 +1604,18 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (result.ServiceReqDetails != null && result.ServiceReqDetails.Count > 0
                     && serviceFollows != null && serviceFollows.Count > 0)
                 {
-                    List<long> serviceIds = result.ServiceReqDetails.Select(o => o.ServiceId).Distinct().ToList();
+                    //Dong thuoc tui mau (co ma tui) da duoc chon xet nghiem trong bang "Xet nghiem tui mau" => khong xet dich vu di kem
+                    List<long> serviceIds = result.ServiceReqDetails.Where(o => string.IsNullOrEmpty(o.BloodBagCode)).Select(o => o.ServiceId).Distinct().ToList();
                     long defaultPatientTypeId = pTypeId;
                     List<long> allowPatientTypeIds = this.currentPatientTypeAllows != null ? this.currentPatientTypeAllows
                         .Where(o => o.PATIENT_TYPE_ID == defaultPatientTypeId)
                         .Select(o => o.PATIENT_TYPE_ALLOW_ID).ToList() : null;
                     //qtcode
                     Dictionary<long, List<V_HIS_SERVICE_FOLLOW>> followByServiceId = new Dictionary<long, List<V_HIS_SERVICE_FOLLOW>>();
-                    foreach (ServiceReqDetailSDO sdo in result.ServiceReqDetails) // duyệt từng thằng dịch vụ mình chọn 
+                    foreach (ServiceReqDetailSDO sdo in result.ServiceReqDetails) // duyệt từng thằng dịch vụ mình chọn
                     {
+                        if (!string.IsNullOrEmpty(sdo.BloodBagCode))
+                            continue;
                         List<V_HIS_SERVICE_FOLLOW> follows = serviceFollows.Where(o => o.SERVICE_ID == sdo.ServiceId).ToList();
                         // lọc ra các dịch vụ đi kèm có service_id = id của thằng dịch vụ mình chọn 
                         if (follows != null && follows.Count > 0)
@@ -1947,6 +1950,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             sdo.PatientPackageId = pkgIdForSv;
                         serviceReqSDO.ServiceReqDetails.Add(sdo);
                     }
+                }
+
+                //Chi dinh che pham mau theo tui: moi tui 1 dong che pham + xet nghiem cua tui (chi khi bat cau hinh)
+                if (!this.ExpandBloodBags(serviceReqSDO, dataSereServModel))
+                {
+                    isDupicate = true;
+                    return;
                 }
 
                 serviceReqSDO.RequestRoomId = GetRoomId();
