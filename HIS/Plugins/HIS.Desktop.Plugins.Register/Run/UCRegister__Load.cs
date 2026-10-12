@@ -423,7 +423,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.txtProvinceCodeKS.Text = bornProvinceCode;
                 this.cboProvinceKS.EditValue = bornProvinceCode;
 
-                this.chkIsChronic.Checked = (patientDTO.IS_CHRONIC == 1);
+                this.chkIsChronic.Checked = (patientDTO.IS_CHRONIC == 1 && !HIS.Desktop.Plugins.Register.Config.HisConfigCFG.IsNotAutoCheckChronicPatient());
                 this.chkCAPD.Checked = (patientDTO.IS_CAPD == 1);
                 //this.AutoCheckPriorityByPriorityType(patientDTO);
                 this.cboPatientClassify.EditValue = patientDTO.PATIENT_CLASSIFY_ID;

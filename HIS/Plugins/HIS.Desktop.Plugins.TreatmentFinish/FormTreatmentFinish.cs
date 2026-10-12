@@ -86,6 +86,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         //internal MOS.EFMODEL.DataModels.HIS_TREATMENT currentHisTreatment_ = null;
         internal int positionHandle = -1;
         internal MOS.SDO.HisTreatmentFinishSDO currentTreatmentFinishSDO = null;
+        /// <summary>
+        /// Dot dieu tri dang mang co man tinh luc nap man hinh
+        /// </summary>
+        internal bool isChronicWhenLoad = false;
         internal MOS.SDO.HisTreatmentFinishSDO hisTreatmentFinishSDO_process { get; set; }
         internal CloseTreatment.FormDeath FormDeath { get; set; }
         internal CloseTreatment.FormTTCDHienThiTrenGiayRaVien FormTTCDHienThiTrenGiayRaVien_ { get; set; }
@@ -1640,7 +1644,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         cboTreatmentEndType.EditValue = null;
                     }
 
-                    if (data.IS_CHRONIC.HasValue && data.IS_CHRONIC.Value == Base.GlobalStore.IS_TRUE)
+                    this.isChronicWhenLoad = data.IS_CHRONIC.HasValue && data.IS_CHRONIC.Value == Base.GlobalStore.IS_TRUE;
+                    if (this.isChronicWhenLoad && Config.ConfigKey.IsAllowEditChronic)
+                    {
+                        //Cho phep bo tich "BN man tinh" cua dot dang man tinh; bo tich thi gui IsRemoveChronic khi luu
+                        chkChronic.Checked = true;
+                        lciChkChronic.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    }
+                    else if (this.isChronicWhenLoad)
                     {
                         chkChronic.Checked = true;
                         lciChkChronic.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;

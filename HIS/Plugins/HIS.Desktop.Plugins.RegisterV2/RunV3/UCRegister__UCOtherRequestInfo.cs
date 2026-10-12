@@ -38,6 +38,33 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             try
             {
                 this.ucOtherServiceReqInfo1.SetValueByPatientInfo(data);
+                if (data != null && data.IS_CHRONIC == 1 && HIS.Desktop.Plugins.RegisterV2.Config.HisConfigCFG.IsNotAutoCheckChronicPatient())
+                    this.ucOtherServiceReqInfo1.SetValueChronic(false);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tich lai "Man tinh" theo BN cu sau khi UC thong tin khac bi RefreshUserControl
+        /// (luong preview sau tim BN theo ma chay SAU luc da tich theo BN => mat tich).
+        /// Chi tich lai khi o Ma BN dang hien dung ma cua BN nay - tranh tich nham theo BN tim truoc do.
+        /// </summary>
+        private void ReCheckChronicByPatient(HisPatientSDO patient)
+        {
+            try
+            {
+                if (patient == null || patient.IS_CHRONIC != 1 || String.IsNullOrEmpty(patient.PATIENT_CODE))
+                    return;
+                if (HIS.Desktop.Plugins.RegisterV2.Config.HisConfigCFG.IsNotAutoCheckChronicPatient())
+                    return;
+                UCPatientRawADO patientRaw = this.ucPatientRaw1 != null ? this.ucPatientRaw1.GetValue() : null;
+                if (patientRaw == null || patientRaw.IS_FIND_BY_PATIENT_CODE != 1
+                    || patientRaw.EMPLOYEE_CODE != patient.PATIENT_CODE)
+                    return;
+                this.ucOtherServiceReqInfo1.SetValueChronic(true);
             }
             catch (Exception ex)
             {
