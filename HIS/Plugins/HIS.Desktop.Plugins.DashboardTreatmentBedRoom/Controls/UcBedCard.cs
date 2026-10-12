@@ -50,6 +50,12 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
         private const int PAD_LEFT = BAR_WIDTH + 12;
         private const int PAD_RIGHT = 12;
 
+        /// <summary>
+        /// Tam an cum Mach / Nhiet do / Huyet ap tren the. Chi an, khong xoa:
+        /// can hien lai thi doi thanh true, the tu cao len va bo tri lai nhu cu.
+        /// </summary>
+        private static readonly bool SHOW_VITAL_SIGN = false;
+
         private TreatmentBedRoomDashboardBedSDO data;
         private string signature;
         private bool hovered;
@@ -209,7 +215,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
                 : string.Empty;
             string bloodPressure = (t.BloodPressure ?? string.Empty).Trim();
 
-            hasVitalSign = pulse.Length > 0 || temp.Length > 0 || bloodPressure.Length > 0;
+            hasVitalSign = SHOW_VITAL_SIGN && (pulse.Length > 0 || temp.Length > 0 || bloodPressure.Length > 0);
             displayColor = BoardTheme.ParseDisplayColor(t.DisplayColor);
 
             lblEmptyCode.Visible = false;
