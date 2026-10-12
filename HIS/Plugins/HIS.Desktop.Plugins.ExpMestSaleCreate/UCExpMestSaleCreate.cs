@@ -214,6 +214,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 this.Action = GlobalDataStore.ActionAdd;
                 ResetControl();
                 InitMenuPrint(null);
+                InitPendingPatientCombo();
                 EnableByCheckIsVisitor();
                 // CheckStockIsBusiness();
                 SetEnableControlPriceByCheckBox();

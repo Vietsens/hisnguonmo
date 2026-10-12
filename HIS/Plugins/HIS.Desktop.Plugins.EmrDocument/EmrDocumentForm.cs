@@ -113,6 +113,11 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
         string loginName = null;
         List<ACS.EFMODEL.DataModels.ACS_CONTROL> controlAcs;
+        //vCong57965: nút phân quyền xem văn bản đã hủy
+        const string CONTROL_CODE__XEM_VAN_BAN_DA_HUY = "EMR000005";
+        bool isViewDeletedByControl = false;
+        const string STATUS__DA_HUY = "Đã hủy";
+        List<DevExpress.XtraTreeList.Columns.TreeListColumn> cancelInfoColumns;
 
         bool isStore = false;
         bool isInit = true;
@@ -256,6 +261,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     lciIncludeDelete.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
+                this.InitCancelInfoColumns();
                 this.InitControlState();
                 this.ProcessGroupRow();
                 MeShow();
@@ -312,13 +318,29 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("filter1", filter));
                 var hisEmployeedatas = new BackendAdapter(param).Get<List<HIS_EMPLOYEE>>("/api/HisEmployee/Get", ApiConsumers.MosConsumer, filter, param);
                 var hisEmployeedata = (hisEmployeedatas != null && hisEmployeedatas.Count > 0) ? hisEmployeedatas.FirstOrDefault() : null;
-                if (hisEmployeedata != null && hisEmployeedata.IS_ADMIN == 1)
+                bool isAdmin = hisEmployeedata != null && hisEmployeedata.IS_ADMIN == 1;
+                //vCong57965: có nút "Xem văn bản đã hủy" thì xử lý mới; không có nút thì giữ như cũ
+                this.isViewDeletedByControl = controlAcs != null && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == CONTROL_CODE__XEM_VAN_BAN_DA_HUY) != null;
+                if (isAdmin || this.isViewDeletedByControl)
                 {
                     checkIncludeDelete.Enabled = true;
                 }
                 else
                 {
                     checkIncludeDelete.Enabled = false;
+                }
+
+                if (this.isViewDeletedByControl)
+                {
+                    if (!cboStatus.Properties.Items.Contains(STATUS__DA_HUY))
+                    {
+                        cboStatus.Properties.Items.Add(STATUS__DA_HUY);
+                    }
+                    //Mặc định tích "Bao gồm hủy" (tải lại danh sách qua sự kiện CheckedChanged)
+                    if (Config.ConfigKey.IsHasConnectionEmr && lciIncludeDelete.Visibility != DevExpress.XtraLayout.Utils.LayoutVisibility.Never && !checkIncludeDelete.Checked)
+                    {
+                        checkIncludeDelete.Checked = true;
+                    }
                 }
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
@@ -552,6 +574,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 Inventec.Common.Logging.LogSystem.Debug("FillDatagctFormList.1");
                 WaitingManager.Show();
+                SetCancelInfoColumnsVisible(this.isViewDeletedByControl && (IsStatusDaHuy() || checkIncludeDelete.Checked));
 
                 if (checkGroupType.Checked)
                 {
@@ -674,7 +697,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
                 paramCommon = (checkGroupType.Checked) ? new CommonParam() : new CommonParam(startPage, limit);
                 #region
-                if (chkMergeDoc.Checked || chkMerge.Checked)
+                if ((chkMergeDoc.Checked || chkMerge.Checked) && !IsStatusDaHuy())
                 {
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.3.1");
                     EmrDocumentMergeViewFilter filter = new EmrDocumentMergeViewFilter();
@@ -1168,8 +1191,14 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     filter.HAS_REJECTER = true;
                     filter.IS_DELETE = false;
                 }
+                else if (IsStatusDaHuy())
+                {
+                    filter.HAS_NEXT_SIGNER_OR_NOT_SIGNERS = null;
+                    filter.HAS_REJECTER = null;
+                    filter.IS_DELETE = true;
+                }
 
-                if (!checkIncludeDelete.Checked)
+                if (!checkIncludeDelete.Checked && !IsStatusDaHuy())
                 {
                     filter.IS_DELETE = false;
                 }
@@ -1217,7 +1246,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     }
                 }
 
-                if (chkMergeDoc.Checked)
+                if (chkMergeDoc.Checked && !IsStatusDaHuy())
                 {
                     filter.IS_DELETE = false;
                 }
@@ -1340,7 +1369,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data.MERGE_CODE), data.MERGE_CODE) + "chkMergeDoc.Checked=" + chkMergeDoc.Checked);
-                if ((chkMergeDoc.Checked || chkMerge.Checked) && !String.IsNullOrEmpty(data.MERGE_CODE))
+                if ((chkMergeDoc.Checked || chkMerge.Checked) && !IsStatusDaHuy() && !String.IsNullOrEmpty(data.MERGE_CODE))
                 {
                     LoadPdfMergeViewer(data);
                 }
@@ -2339,6 +2368,74 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
         }
 
+        /// <summary>
+        /// Đang chọn trạng thái "Đã hủy": chỉ hiển thị văn bản đã xóa/hủy, không áp dụng chế độ xem gộp
+        /// </summary>
+        private bool IsStatusDaHuy()
+        {
+            return STATUS__DA_HUY.Equals(cboStatus.EditValue as string);
+        }
+
+        private void InitCancelInfoColumns()
+        {
+            try
+            {
+                this.cancelInfoColumns = new List<DevExpress.XtraTreeList.Columns.TreeListColumn>();
+                this.cancelInfoColumns.Add(CreateCancelInfoColumn("Người hủy", "CANCEL_USER_DISPLAY", 150));
+                this.cancelInfoColumns.Add(CreateCancelInfoColumn("Lý do hủy", "CANCEL_REASON_DISPLAY", 150));
+                this.cancelInfoColumns.Add(CreateCancelInfoColumn("Thời gian hủy", "CANCEL_TIME_DISPLAY", 110));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private DevExpress.XtraTreeList.Columns.TreeListColumn CreateCancelInfoColumn(string caption, string fieldName, int width)
+        {
+            DevExpress.XtraTreeList.Columns.TreeListColumn column = this.treeListDocument.Columns.Add();
+            column.Caption = caption;
+            column.FieldName = fieldName;
+            column.Name = "treeListColumn" + fieldName;
+            column.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.String;
+            column.OptionsColumn.AllowEdit = false;
+            column.Width = width;
+            column.Visible = false;
+            return column;
+        }
+
+        /// <summary>
+        /// Hiện 3 cột Người hủy, Lý do hủy, Thời gian hủy ngay sau cột Trạng thái khi đang xem văn bản hủy
+        /// </summary>
+        private void SetCancelInfoColumnsVisible(bool isShow)
+        {
+            try
+            {
+                if (this.cancelInfoColumns == null || this.cancelInfoColumns.Count == 0)
+                    return;
+
+                if (!isShow)
+                {
+                    foreach (var column in this.cancelInfoColumns)
+                    {
+                        column.Visible = false;
+                    }
+                    return;
+                }
+
+                int index = treeListColumn5.Visible ? treeListColumn5.VisibleIndex + 1 : this.treeListDocument.VisibleColumns.Count;
+                foreach (var column in this.cancelInfoColumns)
+                {
+                    column.VisibleIndex = index;
+                    index++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void checkGroupType_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -2462,6 +2559,28 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         else if (e.Column.FieldName == "DOCUMENT_TIME_DISPLAY")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(pData.DOCUMENT_TIME ?? 0);
+                        }
+                        else if (e.Column.FieldName == "CANCEL_USER_DISPLAY")
+                        {
+                            if (pData.IS_DELETE == 1)
+                            {
+                                e.Value = String.IsNullOrWhiteSpace(pData.CANCEL_LOGINNAME) ? pData.CANCEL_USERNAME : String.Format("{0} ({1})", pData.CANCEL_USERNAME, pData.CANCEL_LOGINNAME);
+                            }
+                        }
+                        else if (e.Column.FieldName == "CANCEL_REASON_DISPLAY")
+                        {
+                            if (pData.IS_DELETE == 1)
+                            {
+                                e.Value = pData.CANCEL_REASON;
+                            }
+                        }
+                        else if (e.Column.FieldName == "CANCEL_TIME_DISPLAY")
+                        {
+                            //Không có trường thời gian hủy riêng: văn bản đã hủy thì thời gian sửa cuối là lúc hủy
+                            if (pData.IS_DELETE == 1 && pData.MODIFY_TIME.HasValue)
+                            {
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(pData.MODIFY_TIME.Value);
+                            }
                         }
                     }
                 }
@@ -3896,7 +4015,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 WaitingManager.Show();
                 listDataTrueStatic = listDataTrue;
 
-                IsMergeDocument = chkMergeDoc.Checked || chkMerge.Checked;
+                IsMergeDocument = (chkMergeDoc.Checked || chkMerge.Checked) && !IsStatusDaHuy();
 
                 //Dang o che do "Hien thi van ban gop" va cac dong da chon thuoc ma loai GOP NGANG
                 //-> moi dong dai dien mot MERGE_CODE: gop ngang tat ca van ban cung ma roi in
@@ -4436,7 +4555,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                 if (openFolder.ShowDialog() == DialogResult.OK)
                 {
-                    IsMergeDocument = chkMergeDoc.Checked || chkMerge.Checked;
+                    IsMergeDocument = (chkMergeDoc.Checked || chkMerge.Checked) && !IsStatusDaHuy();
                     if (IsMergeDocument)
                     {
                         loadDictionary();
