@@ -42,6 +42,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
         int dataTotal = 0;
         int startPage = 0;
         internal V_HIS_SPECIALIST_EXAM currentHisSpecialistExam { get; set; }
+        // Toàn bộ dữ liệu đã lọc quyền xem — nguồn để phân trang phía client
+        List<V_HIS_SPECIALIST_EXAM> lstDataFiltered = new List<V_HIS_SPECIALIST_EXAM>();
 
         /// <summary>
         /// Cau hinh bat/tat muc do Thuong/Khan. Bang "1" = bat, khac "1" hoac de trong = tat.
@@ -389,7 +391,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
         {
             try
             {
-                if (currentHisSpecialistExam != null)
+                // Lấy dòng đang focus lúc bấm, không dùng currentHisSpecialistExam: nạp lại lưới mà FocusedRowHandle giữ nguyên thì FocusedRowChanged không bắn -> biến đó có thể là dòng cũ
+                var rowData = gridView1.GetFocusedRow() as V_HIS_SPECIALIST_EXAM;
+                if (rowData != null)
                 {
                     Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ApprovaleDebate").FirstOrDefault();
                     if (moduleData == null) throw new ArgumentNullException("khong tim thay moduleLink = HIS.Desktop.Plugins.ApprovaleDebate");
@@ -397,7 +401,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                     {
                         List<object> listArgs = new List<object>();
                         Inventec.Desktop.Common.Modules.Module currentModule = new Inventec.Desktop.Common.Modules.Module();
-                        listArgs.Add(currentHisSpecialistExam);
+                        listArgs.Add(rowData);
                         listArgs.Add((HIS.Desktop.Common.RefeshReference)RefreshData);
                         var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
@@ -417,7 +421,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
         {
             try
             {
-                if (currentHisSpecialistExam != null)
+                // Lấy dòng đang focus lúc bấm (xem btnYes_Click)
+                var rowData = gridView1.GetFocusedRow() as V_HIS_SPECIALIST_EXAM;
+                if (rowData != null)
                 {
                     Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.DebateDiagnostic").FirstOrDefault();
                     if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.DebateDiagnostic");
@@ -426,7 +432,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                     {
                         CommonParam param = new CommonParam();
                         MOS.Filter.HisServiceReqFilter filter = new MOS.Filter.HisServiceReqFilter();
-                        filter.TREATMENT_ID = currentHisSpecialistExam.TREATMENT_ID;
+                        filter.TREATMENT_ID = rowData.TREATMENT_ID;
                         filter.ORDER_DIRECTION = "DESC";
                         filter.ORDER_FIELD = "MODIFY_TIME";
                         HIS_SERVICE_REQ rs = new HIS_SERVICE_REQ();
@@ -454,7 +460,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
         {
             try
             {
-                if (currentHisSpecialistExam == null)
+                // Lấy dòng đang focus lúc bấm (xem btnYes_Click)
+                var rowData = gridView1.GetFocusedRow() as V_HIS_SPECIALIST_EXAM;
+                if (rowData == null)
                 {
                     MessageBox.Show("Vui lòng chọn một dòng dữ liệu.");
                     return;
@@ -463,15 +471,15 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                 using (frmRejectApproval frmRA = new frmRejectApproval())
                 {
 
-                    if (currentHisSpecialistExam.IS_APPROVAL == 2)
+                    if (rowData.IS_APPROVAL == 2)
                     {
-                        frmRA.RejectReason = currentHisSpecialistExam.REJECT_APPROVAL_REASON;
+                        frmRA.RejectReason = rowData.REJECT_APPROVAL_REASON;
                     }
                     if (frmRA.ShowDialog() == DialogResult.OK)
                     {
                         CommonParam param = new CommonParam();
                         HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, currentHisSpecialistExam);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, rowData);
                         datamapper.REJECT_APPROVAL_REASON = frmRA.RejectReason;
                         datamapper.IS_APPROVAL = 2; // Từ chối:  IS_APPROVAL= 2
                         datamapper.EXAM_TIME = null;
@@ -924,11 +932,12 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             {
                 WaitingManager.Show();
                 int pagingSize = ucPaging2.pagingGrid != null ? ucPaging2.pagingGrid.PageSize : (int)ConfigApplications.NumPageSize;
-                GridPaging(new CommonParam(0, pagingSize));
+                LoadDataFromServer(); // lấy toàn bộ dữ liệu + lọc quyền xem TRƯỚC khi phân trang
+                GridPaging(new CommonParam(0, pagingSize)); // nạp dữ liệu cho trang đầu tiên
                 CommonParam param = new CommonParam();
                 param.Limit = rowCount;
-                param.Count = dataTotal;
-                ucPaging2.Init(GridPaging, param, pagingSize);
+                param.Count = dataTotal; // tổng = số dòng sau lọc quyền xem
+                ucPaging2.Init(GridPaging, param, pagingSize, this.gridControl1);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -990,52 +999,68 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             }
         }
 
+        /// <summary>
+        /// Phân trang phía client: cắt trang trên tập đã lọc quyền xem (lstDataFiltered), không gọi lại server.
+        /// </summary>
         private void GridPaging(object param)
         {
             try
             {
                 startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
-                CommonParam paramCommon = new CommonParam(startPage, limit);
+                if (limit <= 0) limit = lstDataFiltered.Count;
                 gridControl1.DataSource = null;
-                ApiResultObject<List<MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM>> apiResult = null;
+
+                List<V_HIS_SPECIALIST_EXAM> listData = lstDataFiltered.Skip(startPage).Take(limit).ToList();
+                rowCount = listData.Count;
+
+                gridView1.BeginUpdate();
+                gridControl1.DataSource = listData.Count > 0 ? listData : null;
+                gridView1.EndUpdate();
+
+                // Lưới nhóm theo mã điều trị: mở rộng toàn bộ nhóm sau mỗi lần nạp dữ liệu
+                gridView1.ExpandAllGroups();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy toàn bộ dữ liệu từ server theo bộ lọc trên màn hình (không phân trang) rồi lọc quyền xem.
+        /// Bắt buộc lọc trước khi phân trang: nếu để server cắt trang rồi mới lọc thì trang bị hụt dòng và tổng số sai.
+        /// </summary>
+        private void LoadDataFromServer()
+        {
+            try
+            {
+                lstDataFiltered = new List<V_HIS_SPECIALIST_EXAM>();
+                dataTotal = 0;
+
                 MOS.Filter.HisSpecialistExamViewFilter filter = new MOS.Filter.HisSpecialistExamViewFilter();
                 SetFilter(ref filter);
-                gridView1.BeginUpdate();
-                apiResult = new Inventec.Common.Adapter.BackendAdapter
+                CommonParam paramCommon = new CommonParam();
+                var apiResult = new Inventec.Common.Adapter.BackendAdapter
                     (paramCommon).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM>>
                     ("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
 
-                if (apiResult != null)
+                if (apiResult != null && apiResult.Data != null)
                 {
-
-                    Inventec.Common.Logging.LogSystem.Debug(apiResult.Data.Count + "");
-                    Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => paramCommon), paramCommon));
-                    string UserName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    long? currentDepartmentId = GetCurrentDepartmentId();
 
                     // Dieu kien loc muc do dat cung cho loc quyen xem: backend chua ho tro loc theo URGENCY_LEVEL
                     short? urgencyFilter = GetUrgencyFilter();
 
-                    var data = apiResult.Data.Where(x => x.IS_ACTIVE == 1 && x.IS_DELETE != 1 && x.INVITE_TYPE == 2 && ((x.EXAM_EXECUTE_LOGINNAME != null && x.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(UserName))
-                    || (x.EXAM_EXECUTE_LOGINNAME == null && x.EXAM_EXECUTE_DEPARMENT_ID != null && x.EXAM_EXECUTE_DEPARMENT_ID == BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID)
-                    || (x.INVITE_DEPARMENT_ID == BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID)
-                    || (x.INVITE_DOCTOR_LOGINNAME == UserName))
-                    && IsMatchUrgencyFilter(x.URGENCY_LEVEL, urgencyFilter)).ToList();
+                    lstDataFiltered = apiResult.Data.Where(x => x.IS_ACTIVE == 1 && x.IS_DELETE != 1 && x.INVITE_TYPE == 2
+                        && IsVisibleToCurrentUser(x, loginName, currentDepartmentId)
+                        && IsMatchUrgencyFilter(x.URGENCY_LEVEL, urgencyFilter)).ToList();
 
-                    if (data != null && data.Count > 0)
-                    {
-                        gridControl1.DataSource = data;
-                        rowCount = (data == null ? 0 : data.Count);
-                        dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
-                    }
-                    else
-                    {
-                        gridControl1.DataSource = null;
-                        rowCount = (data == null ? 0 : data.Count);
-                        dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
-                    }
+                    dataTotal = lstDataFiltered.Count;
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format("FillDataToGrid: server tra ve {0} dong, sau loc quyen xem con {1} dong, departmentId = {2}",
+                        apiResult.Data.Count, dataTotal, currentDepartmentId));
                 }
-                gridView1.EndUpdate();
 
                 #region Process has exception
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(paramCommon);
@@ -1044,6 +1069,55 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Quyền xem 1 yêu cầu — thỏa 1 trong 4 điều kiện:
+        /// khoa thực hiện = khoa của phòng làm việc; khoa mời = khoa của phòng làm việc;
+        /// người đăng nhập có trong danh sách người thực hiện (EXAM_EXECUTE_LOGINNAME); người đăng nhập là bác sĩ mời.
+        /// </summary>
+        private bool IsVisibleToCurrentUser(V_HIS_SPECIALIST_EXAM data, string loginName, long? currentDepartmentId)
+        {
+            if (data == null) return false;
+            if (currentDepartmentId.HasValue && data.EXAM_EXECUTE_DEPARMENT_ID == currentDepartmentId) return true;
+            if (currentDepartmentId.HasValue && data.INVITE_DEPARMENT_ID == currentDepartmentId) return true;
+            if (IsLoginNameInList(data.EXAM_EXECUTE_LOGINNAME, loginName)) return true;
+            if (!string.IsNullOrWhiteSpace(loginName) && string.Equals(data.INVITE_DOCTOR_LOGINNAME, loginName, StringComparison.OrdinalIgnoreCase)) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Tên đăng nhập có nằm trong danh sách cách nhau dấu phẩy hay không.
+        /// So từng phần tử sau khi tách + trim, không phân biệt hoa thường (không so chuỗi con).
+        /// </summary>
+        private bool IsLoginNameInList(string loginNames, string loginName)
+        {
+            if (string.IsNullOrWhiteSpace(loginNames) || string.IsNullOrWhiteSpace(loginName)) return false;
+            string login = loginName.Trim();
+            return loginNames.Split(',').Any(s => string.Equals(s.Trim(), login, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Khoa của phòng đang làm việc — dùng để lọc quyền xem
+        /// </summary>
+        private long? GetCurrentDepartmentId()
+        {
+            try
+            {
+                if (this.currentModule == null) return null;
+                var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
+                if (room == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format("Khong tim thay phong lam viec trong cache. RoomId = {0}", this.currentModule.RoomId));
+                    return null;
+                }
+                return room.DEPARTMENT_ID;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
         }
 

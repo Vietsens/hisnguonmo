@@ -125,6 +125,14 @@
   <ItemGroup>
     <Compile Include="ADO\TrackingListADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="ADO\SubclinicalResultADO.cs" />
+    <Compile Include="PatientInfo\PatientInfoHeader.cs" />
+    <Compile Include="Search\PhraseSearch.cs" />
+    <Compile Include="Subclinical\SubclinicalResultLoader.cs" />
+    <Compile Include="Tracking\TrackingOrderText.cs" />
+    <Compile Include="UCSubclinicalResult.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ApprovaleDebate\frmApprovaleDebate.cs">
       <SubType>Form</SubType>
     </Compile>
