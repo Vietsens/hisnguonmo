@@ -186,6 +186,57 @@ namespace HIS.Desktop.Plugins.TransactionCancel.Base
             }
         }
 
+        /// <summary>Hủy kèm các phiếu thu cùng lần thanh toán hai sổ. {0}: mã giao dịch đang hủy, {1}: mã các giao dịch hủy kèm.</summary>
+        internal static string HuyKemGiaoDichCungLanThanhToan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionDepositCancel__HuyKemGiaoDichCungLanThanhToan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Hủy kèm phiếu thu và phiếu hoàn ứng cùng lần thanh toán hai sổ. {0}: mã giao dịch đang hủy, {1}: mã các phiếu thu, {2}: mã các phiếu hoàn ứng.</summary>
+        internal static string HuyKemGiaoDichVaPhieuHoanUngCungLanThanhToan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionDepositCancel__HuyKemGiaoDichVaPhieuHoanUngCungLanThanhToan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Hủy kèm phiếu hoàn ứng cùng lần thanh toán hai sổ. {0}: mã giao dịch đang hủy, {1}: mã các phiếu hoàn ứng.</summary>
+        internal static string HuyKemPhieuHoanUngCungLanThanhToan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionDepositCancel__HuyKemPhieuHoanUngCungLanThanhToan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         /// <summary>Chưa nhập mã hủy lấy từ máy POS nên không thể tiếp tục hủy giao dịch.</summary>
         internal static string ChuaNhapMaHuyTrenMayPos
         {

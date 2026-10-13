@@ -150,4 +150,13 @@
   <data name="Plugins_TransactionDepositCancel__ChuaNhapMaHuyTrenMayPos" xml:space="preserve">
     <value>Bạn chưa nhập mã hủy lấy từ máy POS nên không thể tiếp tục hủy giao dịch. Việc này nhằm tránh lệch đối soát giữa phần mềm và ngân hàng.</value>
   </data>
+  <data name="Plugins_TransactionDepositCancel__HuyKemGiaoDichCungLanThanhToan" xml:space="preserve">
+    <value>Khi hủy mã giao dịch {0} này thì phần mềm sẽ tự động hủy thêm mã giao dịch {1} do cùng 1 lần thanh toán, bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="Plugins_TransactionDepositCancel__HuyKemGiaoDichVaPhieuHoanUngCungLanThanhToan" xml:space="preserve">
+    <value>Khi hủy mã giao dịch {0} này thì phần mềm sẽ tự động hủy thêm mã giao dịch {1} và phiếu hoàn ứng {2} do cùng 1 lần thanh toán, bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="Plugins_TransactionDepositCancel__HuyKemPhieuHoanUngCungLanThanhToan" xml:space="preserve">
+    <value>Khi hủy mã giao dịch {0} này thì phần mềm sẽ tự động hủy thêm phiếu hoàn ứng {1} do cùng 1 lần thanh toán, bạn có muốn tiếp tục không?</value>
+  </data>
 </root>

@@ -94,12 +94,14 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 this.InitComboDoctor();
                 this.LoadDataToCombo();
                 AddUc();
+                this.AddPatientInfoHeader();
                 gridViewTreatment.FocusedRowHandle = -1;
                 SetDefaultValueControl();
                 FillDataToGridTreatment();
                 if (this.currentSpecialistExam != null)
                 {
                     LoadDataSereServByTreatmentId(this.currentSpecialistExam);
+                    this.LoadSubclinicalResultTab();
                     ShowHideBtnSave(this.currentSpecialistExam.IS_APPROVAL);
                 }
 
@@ -170,6 +172,80 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 
                 pcGP.Controls.Add(ucGiaiPhau);
                 ucGiaiPhau.Dock = DockStyle.Fill;
+
+                //Tab Ket qua CLS dat ngay sau tab To dieu tri
+                tabKetQuaCLS = new XtraTabPage();
+                tabKetQuaCLS.Name = "tabKetQuaCLS";
+                tabKetQuaCLS.Text = "Kết quả CLS";
+                ucKetQuaCLS = new UCSubclinicalResult();
+                ucKetQuaCLS.Dock = DockStyle.Fill;
+                tabKetQuaCLS.Controls.Add(ucKetQuaCLS);
+                tabAll.TabPages.Insert(tabAll.TabPages.IndexOf(xtraTabPage19) + 1, tabKetQuaCLS);
+
+                //O tim kiem luon hien tab To dieu tri: tim theo Dien bien va Y lenh
+                trackingSearch = new Search.GridViewPhraseSearch(gridViewTreatment, this.GetTrackingSearchText, panelControl1, this.BuildTrackingSearchSummary);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        UCSubclinicalResult ucKetQuaCLS;
+        XtraTabPage tabKetQuaCLS;
+        Search.GridViewPhraseSearch trackingSearch;
+
+        private string GetTrackingSearchText(object row)
+        {
+            TreatmentNoteADO data = row as TreatmentNoteADO;
+            return data != null ? data.Content + " " + data.Medical_order : null;
+        }
+
+        /// <summary>
+        /// "Tim thay N to dieu tri - ngay ...". DatetimeFormatted dang dd/MM/yyyy HH:mm.
+        /// </summary>
+        private string BuildTrackingSearchSummary(List<object> matchedRows)
+        {
+            List<string> dates = matchedRows
+                .OfType<TreatmentNoteADO>()
+                .Where(o => !String.IsNullOrEmpty(o.DatetimeFormatted))
+                .Select(o => o.DatetimeFormatted.Length >= 10 ? o.DatetimeFormatted.Substring(0, 10) : o.DatetimeFormatted)
+                .ToList();
+            if (dates.Count == 0)
+                return null;
+            string dateText = String.Join(", ", dates.GroupBy(o => o).Select(g => g.Count() > 1 ? String.Format("{0} ({1} tờ)", g.Key, g.Count()) : g.Key));
+            return String.Format("<b>Tìm thấy {0} tờ điều trị</b> - ngày {1}", dates.Count, dateText);
+        }
+
+        /// <summary>
+        /// Tab Ket qua CLS: ket qua can lam sang cua ho so theo moc thoi gian chi dinh.
+        /// </summary>
+        private void LoadSubclinicalResultTab()
+        {
+            try
+            {
+                if (this.currentSpecialistExam == null || !this.currentSpecialistExam.TREATMENT_ID.HasValue)
+                    return;
+                WaitingManager.Show();
+                List<SubclinicalResultADO> data = Subclinical.SubclinicalResultLoader.Load(this.currentSpecialistExam.TREATMENT_ID.Value);
+                ucKetQuaCLS.ReLoad(data);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void AddPatientInfoHeader()
+        {
+            try
+            {
+                if (this.currentSpecialistExam == null)
+                    return;
+                HIS_TREATMENT treatment = PatientInfo.PatientInfoHeader.GetTreatment(this.currentSpecialistExam.TREATMENT_ID);
+                PatientInfo.PatientInfoHeader.AddToForm(this, this.layoutControl1, PatientInfo.PatientInfoHeader.BuildText(this.currentSpecialistExam, treatment));
             }
             catch (Exception ex)
             {
@@ -227,10 +303,21 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 List<DHisSereServ2> sereServList = new BackendAdapter(paramCommon).Get<List<DHisSereServ2>>(
                     UriApi.HIS_SERE_SERV_2_GET,
                     ApiConsumers.MosConsumer, sereServFilter, paramCommon
+                ) ?? new List<DHisSereServ2>();
+
+                //Y lenh cua ho so: doc IS_NOT_SHOW_MEDICINE_TRACKING (an thuoc tren to dieu tri)
+                HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
+                serviceReqFilter.TREATMENT_ID = currentSpecialistExam.TREATMENT_ID;
+                List<HIS_SERVICE_REQ> serviceReqs = new BackendAdapter(paramCommon).Get<List<HIS_SERVICE_REQ>>(
+                    HisRequestUriStore.HIS_SERVICE_REQ_GET,
+                    ApiConsumers.MosConsumer, serviceReqFilter, paramCommon
                 );
+                Dictionary<long, HIS_SERVICE_REQ> dicServiceReq = serviceReqs != null
+                    ? serviceReqs.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First())
+                    : new Dictionary<long, HIS_SERVICE_REQ>();
 
                 List<TreatmentNoteADO> noteList = new List<TreatmentNoteADO>();
-                foreach (var tracking in trackings.OrderBy(t => t.TRACKING_TIME))
+                foreach (var tracking in (trackings ?? new List<HIS_TRACKING>()).OrderBy(t => t.TRACKING_TIME))
                 {
                     V_HIS_EMPLOYEE emp = null;
                     if (!string.IsNullOrEmpty(tracking.CREATOR) && empDict.ContainsKey(tracking.CREATOR))
@@ -238,12 +325,14 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                         emp = empDict[tracking.CREATOR];
                     }
                     var SServ = sereServList.Where(o => o.TRACKING_ID == tracking.ID).ToList();
-                    TreatmentNoteADO note = new TreatmentNoteADO(tracking, emp, SServ);
+                    TreatmentNoteADO note = new TreatmentNoteADO(tracking, emp, SServ, dicServiceReq);
                     noteList.Add(note);
                 }
                 gridControl1.BeginUpdate();
                 gridControl1.DataSource = noteList;
                 gridControl1.EndUpdate();
+                if (this.trackingSearch != null)
+                    this.trackingSearch.UpdateSummary();
 
                 gridViewTreatment.OptionsSelection.EnableAppearanceFocusedCell = false;
                 gridViewTreatment.OptionsSelection.EnableAppearanceFocusedRow = false;

@@ -19,7 +19,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ADO
         public string ICD_SUB_CODE { get; set; }
         public string ICD_TEXT { get; set; }
 
-        public TreatmentNoteADO(HIS_TRACKING tracking, V_HIS_EMPLOYEE employee, List<DHisSereServ2> allSereServ2)
+        public TreatmentNoteADO(HIS_TRACKING tracking, V_HIS_EMPLOYEE employee, List<DHisSereServ2> allSereServ2, Dictionary<long, HIS_SERVICE_REQ> dicServiceReq)
         {
             try
             {
@@ -38,25 +38,11 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ADO
                     UserName = employee.TDL_USERNAME + " - " + employee.DIPLOMA;
                 }
 
-                List<string> lst = new List<string>();
-                if (!string.IsNullOrWhiteSpace(tracking.MEDICAL_INSTRUCTION))
+                //Y lenh: thuoc, chi dinh can lam sang, y lenh chu cua to (cuoi o); khong hien ma y lenh, vat tu
+                string medicalOrder = Tracking.TrackingOrderText.Build(allSereServ2, dicServiceReq, tracking.MEDICAL_INSTRUCTION);
+                if (!string.IsNullOrEmpty(medicalOrder))
                 {
-                    lst.Add(tracking.MEDICAL_INSTRUCTION);
-                }
-
-                if (allSereServ2 != null && allSereServ2.Count > 0)
-                {
-                    var groupServiceReq = allSereServ2.GroupBy(o => o.SERVICE_REQ_CODE).ToList(); 
-                    foreach (var item in groupServiceReq)
-                    {
-                        lst.Add(string.Format("{0}:\r\n{1}", item.Key, string.Join("\r\n", item.ToList().Select(o => string.Format("- {0} x{1} {2}", o.SERVICE_NAME, o.AMOUNT, o.SERVICE_UNIT_NAME)))));
-
-                    }
-                }
-
-                if (lst.Count > 0)
-                {
-                    Medical_order = string.Join("\r\n", lst);
+                    Medical_order = medicalOrder;
                 }
 
                 ICD_CODE = tracking.ICD_CODE;
