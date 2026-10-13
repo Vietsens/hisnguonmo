@@ -52,7 +52,7 @@
       <HintPath>..\..\..\Lib\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Library.CacheClient">
-      <HintPath>..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.Library.CacheClient.dll</HintPath>
+      <HintPath>..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Branch">
       <HintPath>..\..\..\Lib\HIS\HIS.Desktop.LocalStorage.Branch\HIS.Desktop.LocalStorage.Branch.dll</HintPath>
@@ -61,7 +61,7 @@
       <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
-      <HintPath>..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
+      <HintPath>..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
