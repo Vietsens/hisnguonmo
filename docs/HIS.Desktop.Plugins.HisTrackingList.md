@@ -104,6 +104,15 @@ long previousUseDay = (rdo._WorkPlaceSDO.UsedDayCountingAddPreviousUseDay == 1)
 | `MPS.Processor.Mps000062.PDO` (DLL) | Chứa `Mps000062SingleKey` — carrier các option in |
 | `MPS.Processor.Mps000062` (DLL) | Render mẫu in, dùng `GetUsedDayCounting` |
 | `HIS.Desktop.LocalStorage.HisConfig.HisConfigs` | Đọc cấu hình hệ thống |
+| `HIS.Desktop.Plugins.TrackingCreate` (gọi vào) | Tab "DS tờ điều trị" gọi module này ở **chế độ chỉ xem**: `listArgs = { treatmentId (long), true (bool), module }` → Behavior trả `TrackingView.UcTrackingListView` (UserControl) thay vì mở `frmHisTrackingList` |
+
+### Khung xem phiếu và chế độ chỉ xem (việc 57960)
+
+- `TrackingView/TrackingDocumentPlanner` — xếp tờ theo `TRACKING_TIME` giảm dần (cùng thời gian thì `ID` lớn trước); tờ có văn bản ký = `V_EMR_DOCUMENT.HIS_CODE` chứa **đúng mục** `HIS_TRACKING:<ID>` (tách theo dấu cách/phẩy, không so tiền tố); nhiều văn bản → lấy `CREATE_TIME` lớn nhất; văn bản chứa nhiều tờ hiện 1 lần tại tờ mới nhất.
+- `TrackingView/TrackingSheetRenderer` — tải `api/HisTracking/GetData` (dùng chung cho form), dựng PDO Mps000062 (`BuildPdo`, form In cũng gọi), dựng **mỗi tờ một bản** (SaveFile, không ghi nhật ký in), trang báo "Không hiển thị được tờ điều trị số {0} lúc {1}" (RichEditDocumentServer, A4).
+- `TrackingView/UcTrackingListView` — UserControl chỉ xem: tải toàn bộ tờ của hồ sơ trên luồng nền (STA), trạng thái Đang tải / Chưa có tờ / Lỗi + nút Thử lại.
+- `UcViewEmrDocument` — không tự xếp lại tăng dần nữa (giữ thứ tự truyền vào); `SetViewOnlyMode()` ẩn In/Phóng to màn hình/Mở/Lưu/Tìm, luôn ghép dạng ảnh, bỏ menu chuột phải, xóa vùng chọn, chặn Ctrl+C/Insert/A/X/P/S/O/F.
+- Nút In của màn danh sách **giữ nguyên** thứ tự tăng dần.
 
 ## 7. Build & Deploy (QUAN TRỌNG — thứ tự bắt buộc)
 
@@ -122,6 +131,7 @@ Thứ tự build (VS2022 / MSBuild):
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 06/07/2026 | phuongnm | Bổ sung cấu hình `HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingAddPreviousUseDay`. Sửa `Mps000062.GetUsedDayCounting` để cộng thêm `PREVIOUS_USING_COUNT` vào số đếm ngày dùng thuốc trên bản in `.repx` (tương đương key Excel `USING_COUNT_NUMBER`). Áp dụng đồng bộ cho HisTrackingList và TrackingCreate. |
+| 13/10/2026 | phuongnm | Việc 57960 (NTP): khung xem phiếu bên phải hiển thị các tờ được tích **từ tờ mới nhất đến cũ nhất**, mỗi tờ một bản (không dựng chung nhiều tờ chưa ký), khớp văn bản ký đúng mục `HIS_TRACKING:<ID>`, vị trí văn bản ký theo `TRACKING_TIME` (không theo `DOCUMENT_TIME`), tờ không dựng được thì chèn trang báo. Thêm chế độ chỉ xem (Behavior nhận `bool`) trả `UcTrackingListView` cho tab "DS tờ điều trị" của TrackingCreate. Tách tải dữ liệu `GetData` + dựng PDO Mps000062 ra `TrackingView/TrackingSheetRenderer` dùng chung form/khung xem. Thêm tham chiếu `DevExpress.Office.v15.2.Core`. Nút In không đổi. |
 
 ## 9. Test Cases
 

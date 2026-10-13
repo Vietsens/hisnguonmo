@@ -117,16 +117,85 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 // trong Lang.{culture}.resx thi override; khong co thi giu nguyen mac dinh.
                 // Caption cua o loc nam tren LayoutControlItem (khong con LabelControl rieng).
                 SetLayoutText(lciKskType, "lblKskType.Text");
-                SetLayoutText(lciConclusionFrom, "lblConclusionFrom.Text");
+                SetLayoutText(lciTimeType, "UCKskSyncList.lciTimeType.Text");
+                SetLayoutText(lciConclusionFrom, "UCKskSyncList.lciConclusionFrom.Text");
                 SetLayoutText(lciConclusionTo, "lblConclusionTo.Text");
                 SetLayoutText(lciSyncStatus, "lblSyncStatus.Text");
                 SetText(btnSearch, "btnSearch.Text");
                 SetText(btnRefresh, "btnRefresh.Text");
                 SetText(btnPreview, "btnPreview.Text");
+                SetColumnCaption(colHealthExamRank, "UCKskSyncList.colHealthExamRank.Caption");
+                SetTimeTypeItems();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private string GetLanguageValue(string key)
+        {
+            try
+            {
+                return Inventec.Common.Resource.Get.Value(key, Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private void SetColumnCaption(DevExpress.XtraGrid.Columns.GridColumn column, string key)
+        {
+            try
+            {
+                string value = GetLanguageValue(key);
+                if (!string.IsNullOrEmpty(value)) column.Caption = value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Items of "Loc theo" combo from Lang resource. Order must stay 0 = IN_TIME, 1 = CONCLUSION_TIME,
+        /// 2 = OUT_TIME, 3 = FEE_LOCK_TIME because SetFilter maps by SelectedIndex. Missing key keeps the
+        /// Designer text of that item.
+        /// </summary>
+        private void SetTimeTypeItems()
+        {
+            try
+            {
+                string[] keys = new string[]
+                {
+                    "UCKskSyncList.cboTimeType.InTime",
+                    "UCKskSyncList.cboTimeType.ConclusionTime",
+                    "UCKskSyncList.cboTimeType.OutTime",
+                    "UCKskSyncList.cboTimeType.FeeLockTime"
+                };
+                var items = cboTimeType.Properties.Items;
+                if (items.Count != keys.Length) return;
+                int selected = cboTimeType.SelectedIndex;
+                items.BeginUpdate();
+                try
+                {
+                    for (int i = 0; i < keys.Length; i++)
+                    {
+                        string value = GetLanguageValue(keys[i]);
+                        if (!string.IsNullOrEmpty(value)) items[i] = value;
+                    }
+                }
+                finally
+                {
+                    items.EndUpdate();
+                }
+                cboTimeType.SelectedIndex = selected;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -178,6 +247,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 txtPatientCode.Text = "";
                 txtTreatmentCode.Text = "";
                 if (cboKskType.Properties.Items.Count > 0) cboKskType.SelectedIndex = 0;
+                cboTimeType.SelectedIndex = 0; // Mac dinh loc theo Ngay vao vien (giong KskSyncListQD831)
                 cboSyncStatus.SelectedIndex = 0;
                 btnSync.Enabled = false;
                 UpdateSyncBadge(0);
@@ -338,7 +408,20 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 }
                 else
                 {
-                    filter.ORDER_FIELD = "CONCLUSION_TIME";
+                    // Moc loc thoi gian theo combo "Loc theo" (giong KskSyncListQD831):
+                    // 0 = Ngay vao vien (mac dinh), 1 = Ngay ket luan, 2 = Ngay ra vien, 3 = Ngay khoa vien phi.
+                    // Gan qua SetPropSafe: vien chay MOS.Filter cu thieu truong IN_/OUT_/FEE_LOCK_TIME_* thi chi
+                    // bo qua dieu kien do, khong lam hong ca ham tim kiem.
+                    string fromProp, toProp, orderField;
+                    switch (cboTimeType.SelectedIndex)
+                    {
+                        case 1: fromProp = "CONCLUSION_TIME_FROM"; toProp = "CONCLUSION_TIME_TO"; orderField = "CONCLUSION_TIME"; break;
+                        case 2: fromProp = "OUT_TIME_FROM"; toProp = "OUT_TIME_TO"; orderField = "OUT_TIME"; break;
+                        case 3: fromProp = "FEE_LOCK_TIME_FROM"; toProp = "FEE_LOCK_TIME_TO"; orderField = "FEE_LOCK_TIME"; break;
+                        default: fromProp = "IN_TIME_FROM"; toProp = "IN_TIME_TO"; orderField = "IN_TIME"; break;
+                    }
+
+                    filter.ORDER_FIELD = orderField;
                     filter.ORDER_DIRECTION = "DESC";
                     filter.KEY_WORD = txtKeyWord.Text.Trim();
 
@@ -347,11 +430,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         filter.KSK_TYPE_ID = kskType.KSK_TYPE_ID;
 
                     if (dtConclusionFrom.EditValue != null && dtConclusionFrom.DateTime != DateTime.MinValue)
-                        filter.CONCLUSION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
-                            Convert.ToDateTime(dtConclusionFrom.EditValue).ToString("yyyyMMdd") + "000000");
+                        SetPropSafe(filter, fromProp, Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dtConclusionFrom.EditValue).ToString("yyyyMMdd") + "000000"));
                     if (dtConclusionTo.EditValue != null && dtConclusionTo.DateTime != DateTime.MinValue)
-                        filter.CONCLUSION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
-                            Convert.ToDateTime(dtConclusionTo.EditValue).ToString("yyyyMMdd") + "235959");
+                        SetPropSafe(filter, toProp, Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dtConclusionTo.EditValue).ToString("yyyyMMdd") + "235959"));
 
                     switch (cboSyncStatus.SelectedIndex)
                     {

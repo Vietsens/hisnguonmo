@@ -40,6 +40,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
         /// </summary>
         public const string ARG__VIEW_ONLY = "VIEW_ONLY";
 
+        /// <summary>
+        /// Cờ trong List&lt;string&gt; args: kết quả dạng CHUỖI trả về qua DelegateSelectData được bọc
+        /// thành HIS.Desktop.ADO.ContentSubclinicalResultADO (RESULT + người thực hiện y lệnh) thay cho
+        /// string thuần. Không truyền cờ → trả string như cũ (QD831 và các plugin khác không đổi).
+        /// </summary>
+        public const string ARG__WITH_EXECUTOR = "WITH_EXECUTOR";
+
         object[] entity;
         Inventec.Desktop.Common.Modules.Module currentModule;
         long treatmentId = 0;
@@ -66,6 +73,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                     HIS.Desktop.Common.DelegateSelectData _DelegateSelectData = null;
                     HIS.Desktop.Common.DelegateSelectTestIndexGroupData _DelegateTestIndexGroup = null;
                     string _serviceIds = null; // có = chế độ headless lấy kết quả theo serviceIds
+                    bool withExecutor = false; // cờ WITH_EXECUTOR: kết quả chuỗi bọc kèm người thực hiện y lệnh
 
                     foreach (var item in entity)
                     {
@@ -103,6 +111,10 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                             {
                                 isViewOnly = true;
                             }
+                            if (flags.Contains(ARG__WITH_EXECUTOR))
+                            {
+                                withExecutor = true;
+                            }
                         }
 
                     }
@@ -123,12 +135,15 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                     {
                         // Headless: lấy kết quả các dịch vụ con theo serviceIds đã cấu hình, trả chuỗi (giống "+").
                         frmContentSubclinical frm = new frmContentSubclinical(currentModule, treatmentId, _DelegateSelectData, false);
+                        frm.IsWithExecutor = withExecutor;
                         frm.RunHeadlessByServiceIds(_serviceIds);
                         result = frm; // plugin gọi sẽ Dispose
                     }
                     else if (currentModule != null && treatmentId > 0 && _DelegateSelectData != null)
                     {
-                        result = new frmContentSubclinical(currentModule, treatmentId, _DelegateSelectData, returnObject);
+                        frmContentSubclinical frm = new frmContentSubclinical(currentModule, treatmentId, _DelegateSelectData, returnObject);
+                        frm.IsWithExecutor = withExecutor;
+                        result = frm;
                     }
                     else if (isViewOnly && currentModule != null && treatmentId > 0)
                     {

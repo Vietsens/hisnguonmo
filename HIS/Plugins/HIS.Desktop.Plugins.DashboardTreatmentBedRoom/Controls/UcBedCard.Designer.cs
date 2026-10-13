@@ -115,7 +115,7 @@ namespace HIS.Desktop.Plugins.DashboardTreatmentBedRoom.Controls
             //
             // lblDoctor
             //
-            this.lblDoctor.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.lblDoctor.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblDoctor.Appearance.ForeColor = System.Drawing.Color.FromArgb(148, 156, 168);
             this.lblDoctor.Appearance.Options.UseFont = true;
             this.lblDoctor.Appearance.Options.UseForeColor = true;

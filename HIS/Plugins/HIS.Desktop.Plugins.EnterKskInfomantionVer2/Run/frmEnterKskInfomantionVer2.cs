@@ -101,6 +101,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
         public ENameSItem? NameSItem { get; set; }
 
+        /// <summary>
+        /// Cờ truyền cho plugin ContentSubclinical (ContentSubclinicalBehavior.ARG__WITH_EXECUTOR): kết quả chuỗi
+        /// trả về được bọc ContentSubclinicalResultADO kèm người thực hiện y lệnh → đổ ô "Người khám" của mục CLS.
+        /// </summary>
+        private const string CONTENT_SUBCLINICAL_ARG__WITH_EXECUTOR = "WITH_EXECUTOR";
+
+        /// <summary>
+        /// Combo "Người khám" đang bị THU HẸP datasource theo người thực hiện y lệnh (mục 4 KQ khám CLS khác → combo (4),
+        /// KSK định kỳ → combo (5)). Nguồn: Tự động lấy CLS theo cấu hình hoặc nút "+" chọn tay (THAY THẾ, không gộp).
+        /// Xóa trống kết quả / không còn ai thực hiện / nạp bản ghi khác → trả combo về danh mục đầy đủ (RestoreExamLoginCombo).
+        /// </summary>
+        private readonly HashSet<DevExpress.XtraEditors.GridLookUpEdit> narrowedExamLoginCombos = new HashSet<DevExpress.XtraEditors.GridLookUpEdit>();
+
         public enum ENameOtherItem
         {
             SL_HC_2,
@@ -215,7 +228,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Wire event cho checkbox tự động lấy kết quả (KHÔNG lưu/khôi phục trạng thái tích).
                 this.chkAutoTestIndex.CheckedChanged += new System.EventHandler(this.chkAutoTestIndex_CheckedChanged);
                 InitAutoClsSettingButtonIcon();
-                // 2 n�t Xu�t m�u / Nh�p m�u Excel (vi�c 57621).
+                // 2 n�t Xu�t m�u / Nh�p m�u Excel (vi�c 57621).
                 UpdateKskExcelButtonState();
                 // Tab trên 18 tuổi đã tách vùng XN vào sub-tab "Cận lâm sàng" — cập nhật enable khi đổi sub-tab.
                 this.xtraTabControl2.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl2_SelectedPageChanged);
@@ -1066,25 +1079,30 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
                 // Chỉ hiển thị đúng tài khoản đang đăng nhập (dùng khi ô người khám chưa có dữ liệu và không phải admin).
                 var data = onlyCurrentLogin ? cachedEmpListOnlyLogin : cachedEmpListFull;
-
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 100, 1));
-                columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ tên", 150, 2));
-                columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "Khoa", 150, 3));
-
-                ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "TDL_USERNAME", columnInfos, true, 400);
-                ControlEditorLoader.Load(cbo, data, controlEditorADO);
-
-                cbo.Properties.ValueMember = "LOGINNAME";
-                cbo.Properties.DisplayMember = "TDL_USERNAME";
-                cbo.Properties.NullText = "";
-                cbo.Properties.ImmediatePopup = true;
-                cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
+                LoadExamLoginCombo(cbo, data);
             }
             catch (System.Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>Đổ 1 danh sách nhân viên bất kỳ vào combo "Người khám" (cột, ValueMember, popup... dùng chung).</summary>
+        private void LoadExamLoginCombo(DevExpress.XtraEditors.GridLookUpEdit cbo, List<V_HIS_EMPLOYEE> data)
+        {
+            List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+            columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 100, 1));
+            columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ tên", 150, 2));
+            columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "Khoa", 150, 3));
+
+            ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "TDL_USERNAME", columnInfos, true, 400);
+            ControlEditorLoader.Load(cbo, data, controlEditorADO);
+
+            cbo.Properties.ValueMember = "LOGINNAME";
+            cbo.Properties.DisplayMember = "TDL_USERNAME";
+            cbo.Properties.NullText = "";
+            cbo.Properties.ImmediatePopup = true;
+            cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
         }
 
         /// <summary>
@@ -1474,7 +1492,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 UpdateKskNumberDisplay(); // doi tab -> cap nhat so thu tu KSK cua tab dang mo
                 // Đổi tab: cập nhật trạng thái cho phép tích "Tự động lấy kết quả xét nghiệm".
                 UpdateAutoTestIndexEnableByTab();
-                // �i m�u kh�m: b�t/m� 2 n�t Xu�t m�u / Nh�p m�u theo m�u kh�m �.
+                // �i m�u kh�m: b�t/m� 2 n�t Xu�t m�u / Nh�p m�u theo m�u kh�m �.
                 UpdateKskExcelButtonState();
                 bool IsEnable = false;
                 btnSave.Enabled = true;
@@ -1672,6 +1690,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     listArgs.Add(this.currentServiceReq.TREATMENT_ID);
                     listArgs.Add(ReturnObject);
                     listArgs.Add((HIS.Desktop.Common.DelegateSelectData)DelegateSelectDataContentSubclinical);
+                    // Mục 4 (KQ khám CLS khác) / KSK định kỳ có tick "Lấy người thực hiện" trong Thiết lập: nhận kèm người thực hiện
+                    // y lệnh của kết quả bác sĩ chọn để thu hẹp combo "Người khám" (xem DelegateSelectDataContentSubclinical).
+                    if (!ReturnObject && IsOtherClsExaminerSourceTicked(NameSItem))
+                        listArgs.Add(new List<string>() { CONTENT_SUBCLINICAL_ARG__WITH_EXECUTOR });
                     var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     ((Form)extenceInstance).ShowDialog();
@@ -1687,6 +1709,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
+                List<string> executeLoginnames = null;
+                if (data is ContentSubclinicalResultADO)
+                {
+                    // Chuỗi kết quả kèm người thực hiện y lệnh (cờ WITH_EXECUTOR ở GetSpecInformation, mục 4 + KSK định kỳ).
+                    var resultAdo = (ContentSubclinicalResultADO)data;
+                    executeLoginnames = resultAdo.EXECUTE_LOGINNAMES;
+                    data = resultAdo.RESULT ?? "";
+                }
                 if (data != null && data is String)
                 {
                     switch (NameSItem)
@@ -1711,9 +1741,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             break;
                         case ENameSItem.KET_QUA_2:
                             txtResultSubclinical2.Text = data.ToString();
+                            // Có tick "Lấy người thực hiện" → nhận ADO (executeLoginnames != null) → combo (4) chỉ liệt kê người thực hiện,
+                            // bác sĩ tự chọn; không tick → chuỗi thuần → trả combo về danh mục đầy đủ nếu đang thu hẹp.
+                            if (executeLoginnames != null) SetOtherClsExaminerSource(cboExamSubclinicalLoginName2, executeLoginnames, "KET_QUA_2");
+                            else RestoreExamLoginCombo(cboExamSubclinicalLoginName2, "KET_QUA_2");
                             break;
                         case ENameSItem.KET_QUA_2_2:
                             txtResultSubclinical2_2.Text = data.ToString();
+                            if (executeLoginnames != null) SetOtherClsExaminerSource(cboExamSubclinicalLoginName2_2, executeLoginnames, "KET_QUA_2_2");
+                            else RestoreExamLoginCombo(cboExamSubclinicalLoginName2_2, "KET_QUA_2_2");
                             break;
                         case ENameSItem.KET_QUA_3:
                             txtResultSubclinical3.Text = data.ToString();
@@ -1895,25 +1931,41 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 OpenTestIndexGroupHeadless();
 
                 // (2) Các ô theo dịch vụ đã cấu hình (key nào chưa cấu hình -> OpenClsByServiceIds tự bỏ qua).
+                //     Examiner = ô "Người khám" của mục; chỉ truyền khi dòng đó tick "Lấy người thực hiện" trong Thiết lập
+                //     (6 dòng nhóm máu chung ô (1) nên form Thiết lập chỉ cho tick 1 dòng). Mục 4 + KSK định kỳ không có
+                //     tùy chọn này: SourceCombo = combo Người khám của mục, nạp lại datasource = người thực hiện (bác sĩ tự chọn).
+                //     FillTarget = false (các ô 1b Sinh hóa máu + 1c XN máu khác): CHỈ lấy Người thực hiện, KHÔNG điền kết quả
+                //     (giữ nguyên giá trị trần do OpenTestIndexGroupHeadless điền ở (1) — tránh đè thành định dạng "dịch vụ: kết quả").
                 var autoClsTargets = new[]
                 {
-                    new { Key = frmAutoClsSetting.KEY_BLOOD,              Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodFormula2 },   // 1a. Công thức máu
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_GLUCO,        Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodGluco2 },     // 1b. Đường máu
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_URE,          Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodUre2 },       // 1b. Urê
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_CREATININ,    Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodCreatinin2 }, // 1b. Creatinin
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_ASAT,         Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodAsat2 },      // 1b. ASAT (GOT)
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_ALAT,         Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodAlat2 },      // 1b. ALAT (GPT)
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_OTHER,        Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodOther2 },     // 1c. XN máu - Khác
-                    new { Key = frmAutoClsSetting.KEY_URINE,              Target = (DevExpress.XtraEditors.BaseEdit)txtTestUrineFormula2 },   // 2. XN nước tiểu
-                    new { Key = frmAutoClsSetting.KEY_DIIM,               Target = (DevExpress.XtraEditors.BaseEdit)txtResultDiim2 },         // 3. CĐHA - Kết quả
-                    new { Key = frmAutoClsSetting.KEY_OTHER_PARACLINICAL, Target = (DevExpress.XtraEditors.BaseEdit)txtResultSubclinical2 },  // 4. KQ khám CLS khác
-                    new { Key = frmAutoClsSetting.KEY_PERIODIC,           Target = (DevExpress.XtraEditors.BaseEdit)txtResultSubclinical2_2 },// KSK định kỳ - Kết quả
+                    new { Key = frmAutoClsSetting.KEY_BLOOD,              Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodFormula2,    Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = true  }, // 1a. Công thức máu
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_GLUCO,        Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodGluco2,      Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false }, // 1b. Đường máu
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_URE,          Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodUre2,        Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false }, // 1b. Urê
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_CREATININ,    Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodCreatinin2,  Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false }, // 1b. Creatinin
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_ASAT,         Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodAsat2,       Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false }, // 1b. ASAT (GOT)
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_ALAT,         Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodAlat2,       Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false }, // 1b. ALAT (GPT)
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_OTHER,        Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodOther2,      Examiner = (DevExpress.XtraEditors.GridLookUpEdit)null, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false },                  // 1c. XN máu - Khác
+                    new { Key = frmAutoClsSetting.KEY_URINE,              Target = (DevExpress.XtraEditors.BaseEdit)txtTestUrineFormula2,    Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestUrineLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = true  }, // 2. XN nước tiểu
+                    new { Key = frmAutoClsSetting.KEY_DIIM,               Target = (DevExpress.XtraEditors.BaseEdit)txtResultDiim2,          Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboDiimLoginName2, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = true  },     // 3. CĐHA - Kết quả
+                    new { Key = frmAutoClsSetting.KEY_OTHER_PARACLINICAL, Target = (DevExpress.XtraEditors.BaseEdit)txtResultSubclinical2,   Examiner = (DevExpress.XtraEditors.GridLookUpEdit)null, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)cboExamSubclinicalLoginName2, FillTarget = true  },                  // 4. KQ khám CLS khác
+                    new { Key = frmAutoClsSetting.KEY_PERIODIC,           Target = (DevExpress.XtraEditors.BaseEdit)txtResultSubclinical2_2, Examiner = (DevExpress.XtraEditors.GridLookUpEdit)null, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)cboExamSubclinicalLoginName2_2, FillTarget = true  },                  // KSK định kỳ - Kết quả
                 };
                 foreach (var item in autoClsTargets)
                 {
                     string serviceIds = GetAutoClsStateValue(states, item.Key);
-                    Inventec.Common.Logging.LogSystem.Debug("AutoCls.Open: key=" + item.Key + " serviceIds=[" + serviceIds + "]");
-                    OpenClsByServiceIds(serviceIds, item.Target);
+                    bool takeExaminer = item.Examiner != null
+                        && GetAutoClsStateValue(states, frmAutoClsSetting.ExaminerStateKey(item.Key)) == "1";
+                    Inventec.Common.Logging.LogSystem.Debug("AutoCls.Open: key=" + item.Key + " serviceIds=[" + serviceIds + "] takeExaminer=" + takeExaminer);
+                    // Mục 4 / KSK định kỳ: CHỈ khi dòng tick "Lấy người thực hiện" mới thu hẹp combo Người khám của khối (THAY THẾ
+                    // danh sách lần trước; không ai thực hiện → danh mục đầy đủ). Không tick → trả combo về danh mục đầy đủ nếu đang thu hẹp.
+                    bool narrowSource = item.SourceCombo != null
+                        && GetAutoClsStateValue(states, frmAutoClsSetting.ExaminerStateKey(item.Key)) == "1";
+                    List<string> executors = narrowSource ? new List<string>() : null;
+                    OpenClsByServiceIds(serviceIds, item.Target, takeExaminer ? item.Examiner : null, executors, item.FillTarget);
+                    if (item.SourceCombo != null && !narrowSource)
+                        RestoreExamLoginCombo(item.SourceCombo, item.Key);
+                    else if (executors != null && !string.IsNullOrEmpty(serviceIds))
+                        SetOtherClsExaminerSource(item.SourceCombo, executors, item.Key);
                 }
             }
             catch (Exception ex)
@@ -1926,6 +1978,163 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             var it = states.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == frmAutoClsSetting.MODULE_LINK);
             return it != null ? it.VALUE : null;
+        }
+
+        /// <summary>Dòng "4. KQ khám CLS khác" / "KSK định kỳ" trong Thiết lập có tick "Lấy người thực hiện" không (đọc ControlState lúc gọi).</summary>
+        private bool IsOtherClsExaminerSourceTicked(ENameSItem? item)
+        {
+            try
+            {
+                string key = item == ENameSItem.KET_QUA_2 ? frmAutoClsSetting.KEY_OTHER_PARACLINICAL
+                           : item == ENameSItem.KET_QUA_2_2 ? frmAutoClsSetting.KEY_PERIODIC : null;
+                if (key == null) return false;
+                var csw = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                var states = csw.GetData(frmAutoClsSetting.MODULE_LINK) ?? new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                return GetAutoClsStateValue(states, frmAutoClsSetting.ExaminerStateKey(key)) == "1";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Đổ người thực hiện y lệnh vào ô "Người khám" của mục CLS (đi cùng kết quả vừa đổ nên GHI ĐÈ giá trị cũ).
+        /// Bỏ qua khi: y lệnh chưa có người thực hiện; ô đang khóa (người khám khác, không phải admin);
+        /// loginname không có trong danh mục nhân viên (đã khóa) — tránh lưu giá trị không hiển thị được.
+        /// Combo đang thu hẹp theo tài khoản đăng nhập (SetDataCboExamLoginName(cbo, true)) thì nạp lại danh sách
+        /// đầy đủ — cùng quy tắc "ô đã có người khám thì load toàn bộ employee để hiển thị đúng người".
+        /// </summary>
+        private void SetExaminerByExecuteLoginname(DevExpress.XtraEditors.GridLookUpEdit examiner, string executeLoginname, string context)
+        {
+            try
+            {
+                if (examiner == null) return;
+                string name = examiner.Name;
+                if (string.IsNullOrWhiteSpace(executeLoginname))
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("AutoCls.Examiner[" + context + "]: y lệnh chưa có người thực hiện -> giữ nguyên " + name);
+                    return;
+                }
+                if (!examiner.Enabled)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("AutoCls.Examiner[" + context + "]: " + name + " đang khóa -> bỏ qua");
+                    return;
+                }
+                if (IsLoginNameInCombo(examiner, executeLoginname) == false)
+                {
+                    SetDataCboExamLoginName(examiner);
+                    if (IsLoginNameInCombo(examiner, executeLoginname) == false)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("AutoCls.Examiner[" + context + "]: loginname không có trong danh mục nhân viên -> bỏ qua " + name);
+                        return;
+                    }
+                }
+                examiner.EditValue = executeLoginname;
+                Inventec.Common.Logging.LogSystem.Debug("AutoCls.Examiner[" + context + "]: " + name + " <- người thực hiện y lệnh");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>true/false = loginname có/không trong datasource combo; null = không đọc được datasource (không chặn).</summary>
+        private static bool? IsLoginNameInCombo(DevExpress.XtraEditors.GridLookUpEdit cbo, string loginname)
+        {
+            var ds = cbo.Properties.DataSource as IEnumerable<V_HIS_EMPLOYEE>;
+            if (ds == null) return null;
+            return ds.Any(o => o != null && o.LOGINNAME == loginname);
+        }
+
+        /// <summary>Nạp bản ghi khác: trả mọi combo Người khám đang thu hẹp về danh mục đầy đủ (giá trị bản ghi mới mới hiển thị được).</summary>
+        private void ResetOtherClsExaminerSource()
+        {
+            try
+            {
+                foreach (var cbo in this.narrowedExamLoginCombos.ToList())
+                    RestoreExamLoginCombo(cbo, "Reset");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Thu hẹp datasource combo Người khám của mục (4 KQ khám CLS khác / KSK định kỳ) = CHỈ người thực hiện y lệnh của các
+        /// dịch vụ hiện có (cộng người đang chọn để không mất hiển thị). THAY THẾ danh sách lần trước nên bỏ dịch vụ thì người
+        /// thực hiện của nó cũng biến mất; không còn ai → trả combo về danh mục đầy đủ. Bác sĩ tự chọn, không tự điền.
+        /// </summary>
+        private void SetOtherClsExaminerSource(DevExpress.XtraEditors.GridLookUpEdit cbo, IEnumerable<string> loginnames, string context)
+        {
+            try
+            {
+                if (cbo == null) return;
+                var executors = new HashSet<string>();
+                if (loginnames != null)
+                    foreach (string ln in loginnames)
+                        if (!string.IsNullOrWhiteSpace(ln)) executors.Add(ln);
+                if (executors.Count == 0)
+                {
+                    RestoreExamLoginCombo(cbo, context);
+                    return;
+                }
+                if (this.cachedEmpListFull == null) SetDataCboExamLoginName(cbo);   // dựng cache danh mục nhân viên
+                if (this.cachedEmpListFull == null) return;
+                string current = cbo.EditValue == null ? null : cbo.EditValue.ToString();
+                var data = this.cachedEmpListFull
+                    .Where(o => o != null && (executors.Contains(o.LOGINNAME) || (!string.IsNullOrEmpty(current) && o.LOGINNAME == current)))
+                    .ToList();
+                Inventec.Common.Logging.LogSystem.Debug("AutoCls.ExaminerSource[" + context + "]: " + cbo.Name
+                    + " executors=" + executors.Count + " rows=" + data.Count);
+                if (data.Count == 0)
+                {
+                    RestoreExamLoginCombo(cbo, context);   // người thực hiện không còn trong danh mục nhân viên đang hoạt động
+                    return;
+                }
+                LoadExamLoginCombo(cbo, data);
+                cbo.EditValue = current;       // ControlEditorLoader.Load có thể xóa EditValue
+                this.narrowedExamLoginCombos.Add(cbo);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Trả combo Người khám về danh mục đầy đủ ban đầu (chỉ khi đang thu hẹp), giữ giá trị đang chọn.</summary>
+        private void RestoreExamLoginCombo(DevExpress.XtraEditors.GridLookUpEdit cbo, string context)
+        {
+            try
+            {
+                if (cbo == null || !this.narrowedExamLoginCombos.Remove(cbo)) return;
+                object current = cbo.EditValue;
+                SetDataCboExamLoginName(cbo);
+                cbo.EditValue = current;
+                Inventec.Common.Logging.LogSystem.Debug("AutoCls.ExaminerSource[" + context + "]: " + cbo.Name + " -> danh muc day du");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Ô kết quả mục 4 / KSK định kỳ bị xóa trống (bỏ dịch vụ) → combo Người khám của mục về danh mục đầy đủ.</summary>
+        private void txtResultOtherCls_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var memo = sender as DevExpress.XtraEditors.BaseEdit;
+                if (memo == null || !string.IsNullOrWhiteSpace(memo.Text)) return;
+                if (ReferenceEquals(memo, txtResultSubclinical2)) RestoreExamLoginCombo(cboExamSubclinicalLoginName2, "ClearResult");
+                else if (ReferenceEquals(memo, txtResultSubclinical2_2)) RestoreExamLoginCombo(cboExamSubclinicalLoginName2_2, "ClearResult");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         /// <summary>
@@ -1961,8 +2170,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
-        /// <summary>Mở ContentSubclinical headless theo serviceIds -> nhận chuỗi kết quả -> điền vào ô (nối ";").</summary>
-        private void OpenClsByServiceIds(string serviceIds, DevExpress.XtraEditors.BaseEdit target)
+        /// <summary>
+        /// Mở ContentSubclinical headless theo serviceIds -> nhận chuỗi kết quả -> điền vào ô (nối ";").
+        /// <paramref name="examiner"/> != null: truyền cờ WITH_EXECUTOR, nhận người thực hiện ĐẦU TIÊN của mục
+        /// và đổ vào ô "Người khám" (chỉ khi kết quả đã điền được vào ô).
+        /// <paramref name="collectExecutors"/> != null: truyền cờ WITH_EXECUTOR, gom TẤT CẢ người thực hiện vào list
+        /// (mục 4 + KSK định kỳ → nạp lại datasource combo Người khám cho bác sĩ tự chọn).
+        /// </summary>
+        private void OpenClsByServiceIds(string serviceIds, DevExpress.XtraEditors.BaseEdit target, DevExpress.XtraEditors.GridLookUpEdit examiner = null, List<string> collectExecutors = null, bool fillTarget = true)
         {
             if (string.IsNullOrEmpty(serviceIds) || target == null) return;
             try
@@ -1980,14 +2195,37 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     listArgs.Add(this.currentServiceReq.TREATMENT_ID);
                     HIS.Desktop.Common.DelegateSelectData del = (data) =>
                     {
-                        if (data != null && data is string && target.Enabled)
+                        string text = null;
+                        string executeLoginname = null;
+                        if (data is ContentSubclinicalResultADO)
                         {
-                            string val = JoinResultBySemicolon(data.ToString());
-                            if (!string.IsNullOrEmpty(val)) target.Text = val;
+                            // Có cờ WITH_EXECUTOR: chuỗi kết quả + người thực hiện y lệnh.
+                            var resultAdo = (ContentSubclinicalResultADO)data;
+                            text = resultAdo.RESULT;
+                            executeLoginname = resultAdo.EXECUTE_LOGINNAME;
+                            // Gom người thực hiện (mục 4 + KSK định kỳ) kể cả khi ô kết quả đang khóa — combo vẫn cần đúng danh sách.
+                            if (collectExecutors != null && resultAdo.EXECUTE_LOGINNAMES != null)
+                                collectExecutors.AddRange(resultAdo.EXECUTE_LOGINNAMES);
                         }
+                        else if (data is string)
+                        {
+                            text = (string)data;
+                        }
+                        // Set "Người khám" theo người thực hiện y lệnh — ĐỘC LẬP với kết quả: dòng 1b chỉ lấy người thực hiện
+                        // (ô kết quả có thể trống/khóa) vẫn phải điền được ô Người khám; SetExaminerByExecuteLoginname tự kiểm tra
+                        // examiner.Enabled riêng.
+                        if (examiner != null) SetExaminerByExecuteLoginname(examiner, executeLoginname, target.Name);
+                        if (text == null || !target.Enabled) return;
+                        string val = JoinResultBySemicolon(text);
+                        if (string.IsNullOrEmpty(val)) return;
+                        // fillTarget = false (ô 1b Sinh hóa máu/1c): chỉ lấy Người thực hiện, KHÔNG đè ô kết quả
+                        // (giữ giá trị trần do OpenTestIndexGroupHeadless điền, tránh định dạng "dịch vụ: kết quả").
+                        if (fillTarget) target.Text = val;
                     };
                     listArgs.Add(del);
                     listArgs.Add(serviceIds); // string -> ContentSubclinical chạy chế độ headless theo serviceIds
+                    if (examiner != null || collectExecutors != null)
+                        listArgs.Add(new List<string>() { CONTENT_SUBCLINICAL_ARG__WITH_EXECUTOR });
                     var extenceInstance = PluginInstance.GetPluginInstance(
                         HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     var contentForm = extenceInstance as System.Windows.Forms.Form;

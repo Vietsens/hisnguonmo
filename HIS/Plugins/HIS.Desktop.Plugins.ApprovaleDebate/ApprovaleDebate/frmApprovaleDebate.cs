@@ -144,9 +144,11 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.InitComboICD_YHCT();
                 this.InitCheckTaoToDieuTri();
                 this.InitCheckPrintSigned();
+                this.ApplyHideApproveAndSign();
                 this.ValidControl();
                 if (this.currentHisSpecialistExam != null)
                 {
+                    this.AddPatientInfoHeader();
                     this.txtYKienBacSi.Text = this.currentHisSpecialistExam.EXAM_EXECUTE_CONTENT;
                     this.txtDienBien.Text = this.currentHisSpecialistExam.CONTENT;
                     this.txtPPXuLy.Text = this.currentHisSpecialistExam.MEDICAL_INSTRUCTION;
@@ -171,6 +173,11 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
 
         UCTreeListService ucCDHA, ucXetNghiem, ucThuocVatTu, ucSieuAm, ucPTTT, ucGPB;
         UCTreeListTracking ucAll;
+        UCSubclinicalResult ucKetQuaCLS;
+        XtraTabPage tabKetQuaCLS;
+        //Du lieu dung lai khi nap lai tab To dieu tri sau khi duyet
+        List<DHisSereServ2> treatmentSereServs = new List<DHisSereServ2>();
+        List<HIS_SERVICE_REQ> treatmentServiceReqs = new List<HIS_SERVICE_REQ>();
         private void AddUc()
         {
             try
@@ -178,6 +185,15 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 ucAll = new UCTreeListTracking(imageCollection1, currentModule);
                 tabToDieuTri.Controls.Add(ucAll);
                 ucAll.Dock = DockStyle.Fill;
+
+                //Tab Ket qua CLS dat ngay sau tab To dieu tri
+                tabKetQuaCLS = new XtraTabPage();
+                tabKetQuaCLS.Name = "tabKetQuaCLS";
+                tabKetQuaCLS.Text = "Kết quả CLS";
+                ucKetQuaCLS = new UCSubclinicalResult();
+                ucKetQuaCLS.Dock = DockStyle.Fill;
+                tabKetQuaCLS.Controls.Add(ucKetQuaCLS);
+                xtraTabControl1.TabPages.Insert(xtraTabControl1.TabPages.IndexOf(tabToDieuTri) + 1, tabKetQuaCLS);
 
                 //
                 ucCDHA = new UCTreeListService(imageCollection1, currentModule);
@@ -369,75 +385,15 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         }
                     }
                 }
+                this.treatmentSereServs = dataNew ?? new List<DHisSereServ2>();
+                this.treatmentServiceReqs = dataServiceReq ?? new List<HIS_SERVICE_REQ>();
+                //Tab To dieu tri hien khi ho so co to dieu tri, ke ca khi ho so chua co dich vu
+                this.LoadTrackingTab();
+                this.LoadSubclinicalResultTab();
                 if (SereServADOs != null && SereServADOs.Count > 0)
                 {
 
                     SereServADOs = SereServADOs.OrderBy(o => o.PARENT_ID__IN_SETY).ThenBy(p => p.SERVICE_CODE).ThenBy(o => o.SERVICE_NAME).ToList();
-                    try
-                    {
-                        CommonParam paramCommon = new CommonParam();
-                        MOS.Filter.HisTrackingViewFilter trackingFilter = new MOS.Filter.HisTrackingViewFilter();
-                        trackingFilter.TREATMENT_ID = currentHisServiceReq.TREATMENT_ID;
-                        trackingFilter.ORDER_FIELD = "TRACKING_TIME";
-                        trackingFilter.ORDER_DIRECTION = "DESC";
-                        var resultTracking = new BackendAdapter(paramCommon).Get<List<HIS_TRACKING>>(HisRequestUriStore.HIS_TRACKING_GET, ApiConsumers.MosConsumer, trackingFilter, paramCommon);
-                        if (resultTracking != null)
-                        {
-                            //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataNew), dataNew));
-                            var Employees = BackendDataWorker.Get<V_HIS_EMPLOYEE>()/*.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)*/.ToList();
-                            List<TrackingListADO> listTracking = (from a in resultTracking
-                                                                  join b in dataNew on a.ID equals b.TRACKING_ID
-                                                                  into AB
-                                                                  from ab in AB.DefaultIfEmpty()
-                                                                  join c in Employees on a.CREATOR equals c.LOGINNAME
-                                                                  into AC
-                                                                  from ac in AC.DefaultIfEmpty()
-                                                                  select new
-                                                                  {
-                                                                      TRACKING_ID = a.ID,
-                                                                      TRACKING_TIME = a.TRACKING_TIME,
-                                                                      USER_NAME = ac?.TDL_USERNAME,
-                                                                      DIPLOMA = ac?.DIPLOMA,
-                                                                      CONTENT = a.CONTENT,
-                                                                      SERVICE_NAME = ab?.SERVICE_NAME,
-                                                                      SERVICE_REQ_CODE = ab?.SERVICE_REQ_CODE,
-                                                                      AMOUNT = ab?.AMOUNT,
-                                                                      SERVICE_UNIT_NAME = ab?.SERVICE_UNIT_NAME,
-                                                                      ICD_CODE = a.ICD_CODE,
-                                                                      ICD_NAME = a.ICD_NAME,
-                                                                      ICD_SUB_CODE = a.ICD_SUB_CODE,
-                                                                      ICD_TEXT = a.ICD_TEXT,
-                                                                   })
-                                                                  .GroupBy(g => g.TRACKING_ID)
-                                                                  .Select((s, i) =>
-                                                                  {
-                                                                      var ret = s.First();
-                                                                      return new TrackingListADO()
-                                                                      {
-                                                                          CONCRETE_ID__IN_SETY = (i + 1).ToString(),
-                                                                          TRACKING_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(ret.TRACKING_TIME)
-                                                                                        .Replace(" ", Environment.NewLine),
-                                                                          USER_NAME = ret.USER_NAME + " - " + ret.DIPLOMA,
-                                                                          CONTENT = ret.CONTENT,
-                                                                          ICD_CODE = ret.ICD_CODE,
-                                                                          ICD_NAME = ret.ICD_NAME,
-                                                                          ICD_SUB_CODE = ret.ICD_SUB_CODE,
-                                                                          ICD_TEXT = ret.ICD_TEXT,
-                                                                          MEDICAL_INSTRUCTION = currentHisServiceReq.MEDICAL_INSTRUCTION,
-                                                                          SERVICE = string.Join(Environment.NewLine, s.Where(w => !string.IsNullOrEmpty(w.SERVICE_NAME))
-                                                                          .Select(ss => ss.SERVICE_REQ_CODE + " - " + ss.SERVICE_NAME + " x " + ss.AMOUNT + " " + ss.SERVICE_UNIT_NAME))
-                                                                      };
-                                                                  })
-                                                                  .ToList();
-                            Inventec.Common.Logging.LogSystem.Info("listTracking12: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listTracking), listTracking));
-                            tabToDieuTri.PageVisible = true;
-                            ucAll.ReLoad(treeView_Click, listTracking, currentHisSpecialistExam);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Inventec.Common.Logging.LogSystem.Error(ex);
-                    }
 
                     // Tab Chẩn đoán hình ảnh: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 3
                     List<SereServADO> listCDHA = new List<SereServADO>();
@@ -507,12 +463,12 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         ucGPB.tc_RequestDepartmentName.Visible = false;
                     }
                     ucGPB.ReLoad(treeView_Click, listGPT, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
-                    //
-                    foreach (XtraTabPage tab in xtraTabControl1.TabPages.Where(w => w.PageVisible))
-                    {
-                        xtraTabControl1.SelectedTabPage = tab;
-                        break;
-                    }
+                }
+                //
+                foreach (XtraTabPage tab in xtraTabControl1.TabPages.Where(w => w.PageVisible))
+                {
+                    xtraTabControl1.SelectedTabPage = tab;
+                    break;
                 }
             }
             catch (Exception ex)
@@ -523,6 +479,114 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             finally
             {
                 WaitingManager.Hide();
+            }
+        }
+
+        /// <summary>
+        /// Tab To dieu tri: to dieu tri cua ho so (moi nhat o tren), cot Y lenh chi gom thuoc, chi dinh CLS va y lenh chu cua to.
+        /// </summary>
+        private void LoadTrackingTab()
+        {
+            try
+            {
+                if (this.currentHisSpecialistExam == null || !this.currentHisSpecialistExam.TREATMENT_ID.HasValue)
+                    return;
+                CommonParam paramCommon = new CommonParam();
+                MOS.Filter.HisTrackingViewFilter trackingFilter = new MOS.Filter.HisTrackingViewFilter();
+                trackingFilter.TREATMENT_ID = this.currentHisSpecialistExam.TREATMENT_ID;
+                trackingFilter.ORDER_FIELD = "TRACKING_TIME";
+                trackingFilter.ORDER_DIRECTION = "DESC";
+                var resultTracking = new BackendAdapter(paramCommon).Get<List<HIS_TRACKING>>(HisRequestUriStore.HIS_TRACKING_GET, ApiConsumers.MosConsumer, trackingFilter, paramCommon);
+                if (resultTracking == null || resultTracking.Count == 0)
+                {
+                    tabToDieuTri.PageVisible = false;
+                    return;
+                }
+
+                var employees = BackendDataWorker.Get<V_HIS_EMPLOYEE>().ToLookup(o => o.LOGINNAME);
+                Dictionary<long, HIS_SERVICE_REQ> dicServiceReq = this.treatmentServiceReqs.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First());
+                Dictionary<long, List<DHisSereServ2>> dicSereServByTracking = this.treatmentSereServs
+                    .Where(o => o.TRACKING_ID.HasValue)
+                    .GroupBy(o => o.TRACKING_ID.Value)
+                    .ToDictionary(g => g.Key, g => g.ToList());
+
+                List<TrackingListADO> listTracking = new List<TrackingListADO>();
+                foreach (HIS_TRACKING tracking in resultTracking)
+                {
+                    V_HIS_EMPLOYEE employee = tracking.CREATOR != null ? employees[tracking.CREATOR].FirstOrDefault() : null;
+                    List<DHisSereServ2> sereServs = null;
+                    dicSereServByTracking.TryGetValue(tracking.ID, out sereServs);
+                    listTracking.Add(new TrackingListADO()
+                    {
+                        CONCRETE_ID__IN_SETY = (listTracking.Count + 1).ToString(),
+                        TRACKING_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(tracking.TRACKING_TIME).Replace(" ", Environment.NewLine),
+                        USER_NAME = (employee != null ? employee.TDL_USERNAME : null) + " - " + (employee != null ? employee.DIPLOMA : null),
+                        CONTENT = tracking.CONTENT,
+                        ICD_CODE = tracking.ICD_CODE,
+                        ICD_NAME = tracking.ICD_NAME,
+                        ICD_SUB_CODE = tracking.ICD_SUB_CODE,
+                        ICD_TEXT = tracking.ICD_TEXT,
+                        MEDICAL_INSTRUCTION = tracking.MEDICAL_INSTRUCTION,
+                        SERVICE = Tracking.TrackingOrderText.Build(sereServs, dicServiceReq, tracking.MEDICAL_INSTRUCTION)
+                    });
+                }
+                tabToDieuTri.PageVisible = true;
+                ucAll.ReLoad(treeView_Click, listTracking, currentHisSpecialistExam);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tab Ket qua CLS: ket qua can lam sang cua ho so theo moc thoi gian chi dinh.
+        /// </summary>
+        private void LoadSubclinicalResultTab()
+        {
+            try
+            {
+                if (this.currentHisSpecialistExam == null || !this.currentHisSpecialistExam.TREATMENT_ID.HasValue)
+                    return;
+                List<SubclinicalResultADO> data = Subclinical.SubclinicalResultLoader.Load(this.currentHisSpecialistExam.TREATMENT_ID.Value);
+                ucKetQuaCLS.ReLoad(data);
+                tabKetQuaCLS.PageVisible = data.Count > 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void AddPatientInfoHeader()
+        {
+            try
+            {
+                HIS_TREATMENT treatment = PatientInfo.PatientInfoHeader.GetTreatment(this.currentHisSpecialistExam.TREATMENT_ID);
+                PatientInfo.PatientInfoHeader.AddToForm(this, this.layoutControl1, PatientInfo.PatientInfoHeader.BuildText(this.currentHisSpecialistExam, treatment));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// IsHideApproveAndSign = 1: an nut "Duyet va ky (Ctrl K)", o "In van ban da ky" va phim tat Ctrl K.
+        /// </summary>
+        private void ApplyHideApproveAndSign()
+        {
+            try
+            {
+                if (!Key.HisConfigCFG.IsHideApproveAndSign)
+                    return;
+                this.lciBtnApproveAndSign.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.lciChkPrintSigned.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.bbtnApproveAndSign.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -647,11 +711,13 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             {
                 this.isNotLoadWhileChangeControlStateInFirst = true;
                 bool isChecked = Key.HisConfigCFG.GhiToDieuTriKhiDuyetHoiChan;
+                bool isHideWriteTracking = Key.HisConfigCFG.IsHideWriteTracking;
                 try
                 {
                     this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
                     this.currentControlStateRDO = this.controlStateWorker.GetData(MODULE_LINK__CONTROL_STATE);
-                    if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    //WriteTrackingOption = 2: bo qua lua chon da luu tren may tram, luon khong ghi to dieu tri
+                    if (!isHideWriteTracking && this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
                     {
                         var state = this.currentControlStateRDO.FirstOrDefault(o => o.KEY == CONTROL_STATE_KEY__TAO_TO_DIEU_TRI);
                         if (state != null)
@@ -662,7 +728,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 {
                     Inventec.Common.Logging.LogSystem.Error(ex);
                 }
-                this.chkTaoToDieuTri.Checked = isChecked;
+                this.chkTaoToDieuTri.Checked = isChecked && !isHideWriteTracking;
+                this.layoutControlItemTaoToDieuTri.Visibility = isHideWriteTracking
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             }
             catch (Exception ex)
             {
@@ -924,27 +993,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 {
                     try
                     {
-                        var existingData = ucAll.treeSereServ.DataSource as BindingList<TrackingListADO>;
-                        if (existingData != null && existingData.Count > 0)
-                        {
-                            if (isTaoToDieuTri)
-                            {
-                                // update dòng đầu tiên (do đang ORDER_DIRECTION = DESC, dòng đầu là mới nhất)
-                                existingData[0].CONTENT = this.txtDienBien.Text.Trim();
-                                existingData[0].MEDICAL_INSTRUCTION = this.txtPPXuLy.Text.Trim();
-                            }
-
-                            existingData[0].ICD_CODE = this.txtICD_YHCT.Text;
-                            existingData[0].ICD_NAME = this.cboICD_YHCT.Text;
-                            existingData[0].ICD_SUB_CODE = this.txtICDsub.Text;
-                            existingData[0].ICD_TEXT = this.txtICDsubName.Text;
-
-                            ucAll.treeSereServ.RefreshDataSource();
-                            ucAll.treeSereServ.Refresh();
-                        }
-
-                        tabToDieuTri.PageVisible = true;
-                        xtraTabControl1.SelectedTabPage = tabToDieuTri;
+                        //Nap lai to dieu tri tu may chu (to vua ghi co the khong phai dong dau tien)
+                        this.LoadTrackingTab();
+                        if (tabToDieuTri.PageVisible)
+                            xtraTabControl1.SelectedTabPage = tabToDieuTri;
                         this.btnSave.Enabled = false;
                         this.btnTracking.Enabled = true;
                         if (this.bbtnSave != null) this.bbtnSave.Enabled = false;
@@ -968,6 +1020,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
             try
             {
+                //IsHideApproveAndSign = 1: bo phim tat Ctrl K
+                if (Key.HisConfigCFG.IsHideApproveAndSign)
+                    return;
                 if (this.btnApproveAndSign.Enabled)
                     this.btnApproveAndSign_Click(null, null);
             }
@@ -1650,12 +1705,16 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO =
-                    new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                //IsHideApproveAndSign = 1: chi in, khong gan thong tin ky so EMR
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = null;
+                if (!Key.HisConfigCFG.IsHideApproveAndSign)
+                {
+                    inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
                         .GenerateInputADOWithPrintTypeCode(
                             currentHisSpecialistExam.TREATMENT_CODE ?? "",
                             printTypeCode,
                             this.currentModule != null ? this.currentModule.RoomId : 0);
+                }
 
                 WaitingManager.Hide();
 
@@ -1676,9 +1735,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     previewType = MPS.ProcessorBase.PrintConfig.PreviewType.Show;
                 }
 
-                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
-                    printTypeCode, fileName, pdo, previewType, printerName)
-                { EmrInputADO = inputADO });
+                MPS.ProcessorBase.Core.PrintData printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, previewType, printerName);
+                if (inputADO != null)
+                    printData.EmrInputADO = inputADO;
+                result = MPS.MpsPrinter.Run(printData);
 
                 if (isSign)
                 {

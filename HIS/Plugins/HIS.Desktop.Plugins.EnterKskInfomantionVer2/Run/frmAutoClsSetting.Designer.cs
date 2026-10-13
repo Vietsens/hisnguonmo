@@ -56,6 +56,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciDiim = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciOtherPara = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPeriodic = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkExaminerBlood = new DevExpress.XtraEditors.CheckEdit();
+            this.chkExaminerBloodGluco = new DevExpress.XtraEditors.CheckEdit();
+            this.chkExaminerBloodUre = new DevExpress.XtraEditors.CheckEdit();
+            this.chkExaminerBloodCreatinin = new DevExpress.XtraEditors.CheckEdit();
+            this.chkExaminerBloodAsat = new DevExpress.XtraEditors.CheckEdit();
+            this.chkExaminerBloodAlat = new DevExpress.XtraEditors.CheckEdit();
+            this.chkExaminerUrine = new DevExpress.XtraEditors.CheckEdit();
+            this.chkExaminerDiim = new DevExpress.XtraEditors.CheckEdit();
+            this.lciExaminerBlood = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExaminerBloodGluco = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExaminerBloodUre = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExaminerBloodCreatinin = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExaminerBloodAsat = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExaminerBloodAlat = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExaminerUrine = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExaminerDiim = new DevExpress.XtraLayout.LayoutControlItem();
+            this.esiExaminerBloodOther = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.chkExaminerOtherPara = new DevExpress.XtraEditors.CheckEdit();
+            this.lciExaminerOtherPara = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkExaminerPeriodic = new DevExpress.XtraEditors.CheckEdit();
+            this.lciExaminerPeriodic = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.tabUnderSixDefault = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
@@ -133,6 +154,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.lciDiim)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciOtherPara)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPeriodic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBlood.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBloodGluco.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBloodUre.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBloodCreatinin.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBloodAsat.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBloodAlat.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerUrine.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerDiim.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBlood)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBloodGluco)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBloodUre)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBloodCreatinin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBloodAsat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBloodAlat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerUrine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerDiim)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.esiExaminerBloodOther)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerOtherPara.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerOtherPara)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerPeriodic.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerPeriodic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             this.tabUnderSixDefault.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -207,6 +249,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl1.Controls.Add(this.cboDiim);
             this.layoutControl1.Controls.Add(this.cboOtherPara);
             this.layoutControl1.Controls.Add(this.cboPeriodic);
+            this.layoutControl1.Controls.Add(this.chkExaminerBlood);
+            this.layoutControl1.Controls.Add(this.chkExaminerBloodGluco);
+            this.layoutControl1.Controls.Add(this.chkExaminerBloodUre);
+            this.layoutControl1.Controls.Add(this.chkExaminerBloodCreatinin);
+            this.layoutControl1.Controls.Add(this.chkExaminerBloodAsat);
+            this.layoutControl1.Controls.Add(this.chkExaminerBloodAlat);
+            this.layoutControl1.Controls.Add(this.chkExaminerUrine);
+            this.layoutControl1.Controls.Add(this.chkExaminerDiim);
+            this.layoutControl1.Controls.Add(this.chkExaminerOtherPara);
+            this.layoutControl1.Controls.Add(this.chkExaminerPeriodic);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
@@ -222,7 +274,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboBlood.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboBlood.Properties.View = this.gridViewBlood;
-            this.cboBlood.Size = new System.Drawing.Size(585, 20);
+            this.cboBlood.Size = new System.Drawing.Size(445, 20);
             this.cboBlood.StyleController = this.layoutControl1;
             this.cboBlood.TabIndex = 0;
             //
@@ -240,7 +292,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboUrine.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboUrine.Properties.View = this.gridViewUrine;
-            this.cboUrine.Size = new System.Drawing.Size(585, 20);
+            this.cboUrine.Size = new System.Drawing.Size(445, 20);
             this.cboUrine.StyleController = this.layoutControl1;
             this.cboUrine.TabIndex = 7;
             //
@@ -258,7 +310,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboDiim.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboDiim.Properties.View = this.gridViewDiim;
-            this.cboDiim.Size = new System.Drawing.Size(585, 20);
+            this.cboDiim.Size = new System.Drawing.Size(445, 20);
             this.cboDiim.StyleController = this.layoutControl1;
             this.cboDiim.TabIndex = 8;
             //
@@ -276,7 +328,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboBloodGluco.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboBloodGluco.Properties.View = this.gridViewBloodGluco;
-            this.cboBloodGluco.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodGluco.Size = new System.Drawing.Size(445, 20);
             this.cboBloodGluco.StyleController = this.layoutControl1;
             this.cboBloodGluco.TabIndex = 1;
             //
@@ -294,7 +346,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboBloodUre.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboBloodUre.Properties.View = this.gridViewBloodUre;
-            this.cboBloodUre.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodUre.Size = new System.Drawing.Size(445, 20);
             this.cboBloodUre.StyleController = this.layoutControl1;
             this.cboBloodUre.TabIndex = 2;
             //
@@ -312,7 +364,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboBloodCreatinin.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboBloodCreatinin.Properties.View = this.gridViewBloodCreatinin;
-            this.cboBloodCreatinin.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodCreatinin.Size = new System.Drawing.Size(445, 20);
             this.cboBloodCreatinin.StyleController = this.layoutControl1;
             this.cboBloodCreatinin.TabIndex = 3;
             //
@@ -330,7 +382,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboBloodAsat.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboBloodAsat.Properties.View = this.gridViewBloodAsat;
-            this.cboBloodAsat.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodAsat.Size = new System.Drawing.Size(445, 20);
             this.cboBloodAsat.StyleController = this.layoutControl1;
             this.cboBloodAsat.TabIndex = 4;
             //
@@ -348,7 +400,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboBloodAlat.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboBloodAlat.Properties.View = this.gridViewBloodAlat;
-            this.cboBloodAlat.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodAlat.Size = new System.Drawing.Size(445, 20);
             this.cboBloodAlat.StyleController = this.layoutControl1;
             this.cboBloodAlat.TabIndex = 5;
             //
@@ -366,7 +418,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboBloodOther.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboBloodOther.Properties.View = this.gridViewBloodOther;
-            this.cboBloodOther.Size = new System.Drawing.Size(585, 20);
+            this.cboBloodOther.Size = new System.Drawing.Size(445, 20);
             this.cboBloodOther.StyleController = this.layoutControl1;
             this.cboBloodOther.TabIndex = 6;
             //
@@ -384,7 +436,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboOtherPara.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboOtherPara.Properties.View = this.gridViewOtherPara;
-            this.cboOtherPara.Size = new System.Drawing.Size(585, 20);
+            this.cboOtherPara.Size = new System.Drawing.Size(445, 20);
             this.cboOtherPara.StyleController = this.layoutControl1;
             this.cboOtherPara.TabIndex = 9;
             //
@@ -402,7 +454,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboPeriodic.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboPeriodic.Properties.View = this.gridViewPeriodic;
-            this.cboPeriodic.Size = new System.Drawing.Size(585, 20);
+            this.cboPeriodic.Size = new System.Drawing.Size(445, 20);
             this.cboPeriodic.StyleController = this.layoutControl1;
             this.cboPeriodic.TabIndex = 10;
             //
@@ -412,6 +464,106 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.gridViewPeriodic.Name = "gridViewPeriodic";
             this.gridViewPeriodic.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridViewPeriodic.OptionsView.ShowGroupPanel = false;
+            // 
+            // chkExaminerBlood
+            // 
+            this.chkExaminerBlood.Location = new System.Drawing.Point(608, 12);
+            this.chkExaminerBlood.Name = "chkExaminerBlood";
+            this.chkExaminerBlood.Properties.Caption = "Lấy người thực hiện";
+            this.chkExaminerBlood.Size = new System.Drawing.Size(134, 19);
+            this.chkExaminerBlood.StyleController = this.layoutControl1;
+            this.chkExaminerBlood.TabIndex = 11;
+            this.chkExaminerBlood.ToolTip = "Tick: ô \"Người khám\" của mục này lấy người thực hiện y lệnh của dịch vụ cấu hình ở dòng (khi Tự động lấy kết quả CLS).";
+            // 
+            // chkExaminerBloodGluco
+            // 
+            this.chkExaminerBloodGluco.Location = new System.Drawing.Point(608, 36);
+            this.chkExaminerBloodGluco.Name = "chkExaminerBloodGluco";
+            this.chkExaminerBloodGluco.Properties.Caption = "Lấy người thực hiện";
+            this.chkExaminerBloodGluco.Size = new System.Drawing.Size(134, 19);
+            this.chkExaminerBloodGluco.StyleController = this.layoutControl1;
+            this.chkExaminerBloodGluco.TabIndex = 12;
+            this.chkExaminerBloodGluco.ToolTip = "Tick: ô \"Người khám\" của mục này lấy người thực hiện y lệnh của dịch vụ cấu hình ở dòng (khi Tự động lấy kết quả CLS).";
+            // 
+            // chkExaminerBloodUre
+            // 
+            this.chkExaminerBloodUre.Location = new System.Drawing.Point(608, 60);
+            this.chkExaminerBloodUre.Name = "chkExaminerBloodUre";
+            this.chkExaminerBloodUre.Properties.Caption = "Lấy người thực hiện";
+            this.chkExaminerBloodUre.Size = new System.Drawing.Size(134, 19);
+            this.chkExaminerBloodUre.StyleController = this.layoutControl1;
+            this.chkExaminerBloodUre.TabIndex = 13;
+            this.chkExaminerBloodUre.ToolTip = "Tick: ô \"Người khám\" của mục này lấy người thực hiện y lệnh của dịch vụ cấu hình ở dòng (khi Tự động lấy kết quả CLS).";
+            // 
+            // chkExaminerBloodCreatinin
+            // 
+            this.chkExaminerBloodCreatinin.Location = new System.Drawing.Point(608, 84);
+            this.chkExaminerBloodCreatinin.Name = "chkExaminerBloodCreatinin";
+            this.chkExaminerBloodCreatinin.Properties.Caption = "Lấy người thực hiện";
+            this.chkExaminerBloodCreatinin.Size = new System.Drawing.Size(134, 19);
+            this.chkExaminerBloodCreatinin.StyleController = this.layoutControl1;
+            this.chkExaminerBloodCreatinin.TabIndex = 14;
+            this.chkExaminerBloodCreatinin.ToolTip = "Tick: ô \"Người khám\" của mục này lấy người thực hiện y lệnh của dịch vụ cấu hình ở dòng (khi Tự động lấy kết quả CLS).";
+            // 
+            // chkExaminerBloodAsat
+            // 
+            this.chkExaminerBloodAsat.Location = new System.Drawing.Point(608, 108);
+            this.chkExaminerBloodAsat.Name = "chkExaminerBloodAsat";
+            this.chkExaminerBloodAsat.Properties.Caption = "Lấy người thực hiện";
+            this.chkExaminerBloodAsat.Size = new System.Drawing.Size(134, 19);
+            this.chkExaminerBloodAsat.StyleController = this.layoutControl1;
+            this.chkExaminerBloodAsat.TabIndex = 15;
+            this.chkExaminerBloodAsat.ToolTip = "Tick: ô \"Người khám\" của mục này lấy người thực hiện y lệnh của dịch vụ cấu hình ở dòng (khi Tự động lấy kết quả CLS).";
+            // 
+            // chkExaminerBloodAlat
+            // 
+            this.chkExaminerBloodAlat.Location = new System.Drawing.Point(608, 132);
+            this.chkExaminerBloodAlat.Name = "chkExaminerBloodAlat";
+            this.chkExaminerBloodAlat.Properties.Caption = "Lấy người thực hiện";
+            this.chkExaminerBloodAlat.Size = new System.Drawing.Size(134, 19);
+            this.chkExaminerBloodAlat.StyleController = this.layoutControl1;
+            this.chkExaminerBloodAlat.TabIndex = 16;
+            this.chkExaminerBloodAlat.ToolTip = "Tick: ô \"Người khám\" của mục này lấy người thực hiện y lệnh của dịch vụ cấu hình ở dòng (khi Tự động lấy kết quả CLS).";
+            // 
+            // chkExaminerUrine
+            // 
+            this.chkExaminerUrine.Location = new System.Drawing.Point(608, 180);
+            this.chkExaminerUrine.Name = "chkExaminerUrine";
+            this.chkExaminerUrine.Properties.Caption = "Lấy người thực hiện";
+            this.chkExaminerUrine.Size = new System.Drawing.Size(134, 19);
+            this.chkExaminerUrine.StyleController = this.layoutControl1;
+            this.chkExaminerUrine.TabIndex = 17;
+            this.chkExaminerUrine.ToolTip = "Tick: ô \"Người khám\" của mục này lấy người thực hiện y lệnh của dịch vụ cấu hình ở dòng (khi Tự động lấy kết quả CLS).";
+            // 
+            // chkExaminerDiim
+            // 
+            this.chkExaminerDiim.Location = new System.Drawing.Point(608, 204);
+            this.chkExaminerDiim.Name = "chkExaminerDiim";
+            this.chkExaminerDiim.Properties.Caption = "Lấy người thực hiện";
+            this.chkExaminerDiim.Size = new System.Drawing.Size(134, 19);
+            this.chkExaminerDiim.StyleController = this.layoutControl1;
+            this.chkExaminerDiim.TabIndex = 18;
+            this.chkExaminerDiim.ToolTip = "Tick: ô \"Người khám\" của mục này lấy người thực hiện y lệnh của dịch vụ cấu hình ở dòng (khi Tự động lấy kết quả CLS).";
+            // 
+            // chkExaminerOtherPara
+            // 
+            this.chkExaminerOtherPara.Location = new System.Drawing.Point(608, 228);
+            this.chkExaminerOtherPara.Name = "chkExaminerOtherPara";
+            this.chkExaminerOtherPara.Properties.Caption = "Lấy người thực hiện";
+            this.chkExaminerOtherPara.Size = new System.Drawing.Size(134, 19);
+            this.chkExaminerOtherPara.StyleController = this.layoutControl1;
+            this.chkExaminerOtherPara.TabIndex = 19;
+            this.chkExaminerOtherPara.ToolTip = "Tick: combo \"Người khám\" của khối này chỉ liệt kê người thực hiện y lệnh của các dịch vụ cấu hình ở dòng (và kết quả chọn bằng nút +) để bác sĩ tự chọn; xóa trống kết quả thì trả lại danh mục đầy đủ.";
+            // 
+            // chkExaminerPeriodic
+            // 
+            this.chkExaminerPeriodic.Location = new System.Drawing.Point(608, 252);
+            this.chkExaminerPeriodic.Name = "chkExaminerPeriodic";
+            this.chkExaminerPeriodic.Properties.Caption = "Lấy người thực hiện";
+            this.chkExaminerPeriodic.Size = new System.Drawing.Size(134, 19);
+            this.chkExaminerPeriodic.StyleController = this.layoutControl1;
+            this.chkExaminerPeriodic.TabIndex = 20;
+            this.chkExaminerPeriodic.ToolTip = "Tick: combo \"Người khám\" của khối này chỉ liệt kê người thực hiện y lệnh của các dịch vụ cấu hình ở dòng (và kết quả chọn bằng nút +) để bác sĩ tự chọn; xóa trống kết quả thì trả lại danh mục đầy đủ.";
             //
             // layoutControlGroup1
             //
@@ -429,6 +581,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciDiim,
             this.lciOtherPara,
             this.lciPeriodic,
+            this.lciExaminerBlood,
+            this.lciExaminerBloodGluco,
+            this.lciExaminerBloodUre,
+            this.lciExaminerBloodCreatinin,
+            this.lciExaminerBloodAsat,
+            this.lciExaminerBloodAlat,
+            this.lciExaminerUrine,
+            this.lciExaminerDiim,
+            this.esiExaminerBloodOther,
+            this.lciExaminerOtherPara,
+            this.lciExaminerPeriodic,
             this.emptySpaceItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
@@ -442,7 +605,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBlood.Control = this.cboBlood;
             this.lciBlood.Location = new System.Drawing.Point(0, 0);
             this.lciBlood.Name = "lciBlood";
-            this.lciBlood.Size = new System.Drawing.Size(734, 24);
+            this.lciBlood.Size = new System.Drawing.Size(594, 24);
             this.lciBlood.Text = "1a. Công thức máu:";
             this.lciBlood.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBlood.TextSize = new System.Drawing.Size(140, 20);
@@ -455,7 +618,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBloodGluco.Control = this.cboBloodGluco;
             this.lciBloodGluco.Location = new System.Drawing.Point(0, 24);
             this.lciBloodGluco.Name = "lciBloodGluco";
-            this.lciBloodGluco.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodGluco.Size = new System.Drawing.Size(594, 24);
             this.lciBloodGluco.Text = "1b. Đường máu:";
             this.lciBloodGluco.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBloodGluco.TextSize = new System.Drawing.Size(140, 20);
@@ -468,7 +631,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBloodUre.Control = this.cboBloodUre;
             this.lciBloodUre.Location = new System.Drawing.Point(0, 48);
             this.lciBloodUre.Name = "lciBloodUre";
-            this.lciBloodUre.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodUre.Size = new System.Drawing.Size(594, 24);
             this.lciBloodUre.Text = "1b. Urê:";
             this.lciBloodUre.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBloodUre.TextSize = new System.Drawing.Size(140, 20);
@@ -481,7 +644,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBloodCreatinin.Control = this.cboBloodCreatinin;
             this.lciBloodCreatinin.Location = new System.Drawing.Point(0, 72);
             this.lciBloodCreatinin.Name = "lciBloodCreatinin";
-            this.lciBloodCreatinin.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodCreatinin.Size = new System.Drawing.Size(594, 24);
             this.lciBloodCreatinin.Text = "1b. Creatinin:";
             this.lciBloodCreatinin.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBloodCreatinin.TextSize = new System.Drawing.Size(140, 20);
@@ -494,7 +657,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBloodAsat.Control = this.cboBloodAsat;
             this.lciBloodAsat.Location = new System.Drawing.Point(0, 96);
             this.lciBloodAsat.Name = "lciBloodAsat";
-            this.lciBloodAsat.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodAsat.Size = new System.Drawing.Size(594, 24);
             this.lciBloodAsat.Text = "1b. ASAT (GOT):";
             this.lciBloodAsat.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBloodAsat.TextSize = new System.Drawing.Size(140, 20);
@@ -507,7 +670,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBloodAlat.Control = this.cboBloodAlat;
             this.lciBloodAlat.Location = new System.Drawing.Point(0, 120);
             this.lciBloodAlat.Name = "lciBloodAlat";
-            this.lciBloodAlat.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodAlat.Size = new System.Drawing.Size(594, 24);
             this.lciBloodAlat.Text = "1b. ALAT (GPT):";
             this.lciBloodAlat.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBloodAlat.TextSize = new System.Drawing.Size(140, 20);
@@ -520,7 +683,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBloodOther.Control = this.cboBloodOther;
             this.lciBloodOther.Location = new System.Drawing.Point(0, 144);
             this.lciBloodOther.Name = "lciBloodOther";
-            this.lciBloodOther.Size = new System.Drawing.Size(734, 24);
+            this.lciBloodOther.Size = new System.Drawing.Size(594, 24);
             this.lciBloodOther.Text = "1c. XN máu - Khác:";
             this.lciBloodOther.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBloodOther.TextSize = new System.Drawing.Size(140, 20);
@@ -533,7 +696,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciUrine.Control = this.cboUrine;
             this.lciUrine.Location = new System.Drawing.Point(0, 168);
             this.lciUrine.Name = "lciUrine";
-            this.lciUrine.Size = new System.Drawing.Size(734, 24);
+            this.lciUrine.Size = new System.Drawing.Size(594, 24);
             this.lciUrine.Text = "2. XN nước tiểu:";
             this.lciUrine.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciUrine.TextSize = new System.Drawing.Size(140, 20);
@@ -546,7 +709,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciDiim.Control = this.cboDiim;
             this.lciDiim.Location = new System.Drawing.Point(0, 192);
             this.lciDiim.Name = "lciDiim";
-            this.lciDiim.Size = new System.Drawing.Size(734, 24);
+            this.lciDiim.Size = new System.Drawing.Size(594, 24);
             this.lciDiim.Text = "3. Chẩn đoán hình ảnh:";
             this.lciDiim.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciDiim.TextSize = new System.Drawing.Size(140, 20);
@@ -559,7 +722,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciOtherPara.Control = this.cboOtherPara;
             this.lciOtherPara.Location = new System.Drawing.Point(0, 216);
             this.lciOtherPara.Name = "lciOtherPara";
-            this.lciOtherPara.Size = new System.Drawing.Size(734, 24);
+            this.lciOtherPara.Size = new System.Drawing.Size(594, 24);
             this.lciOtherPara.Text = "4. KQ khám CLS khác:";
             this.lciOtherPara.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciOtherPara.TextSize = new System.Drawing.Size(140, 20);
@@ -572,11 +735,109 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciPeriodic.Control = this.cboPeriodic;
             this.lciPeriodic.Location = new System.Drawing.Point(0, 240);
             this.lciPeriodic.Name = "lciPeriodic";
-            this.lciPeriodic.Size = new System.Drawing.Size(734, 24);
+            this.lciPeriodic.Size = new System.Drawing.Size(594, 24);
             this.lciPeriodic.Text = "KSK định kỳ - Kết quả:";
             this.lciPeriodic.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPeriodic.TextSize = new System.Drawing.Size(140, 20);
             this.lciPeriodic.TextToControlDistance = 5;
+            // 
+            // lciExaminerBlood
+            // 
+            this.lciExaminerBlood.Control = this.chkExaminerBlood;
+            this.lciExaminerBlood.Location = new System.Drawing.Point(594, 0);
+            this.lciExaminerBlood.Name = "lciExaminerBlood";
+            this.lciExaminerBlood.Size = new System.Drawing.Size(140, 24);
+            this.lciExaminerBlood.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExaminerBlood.TextVisible = false;
+            // 
+            // lciExaminerBloodGluco
+            // 
+            this.lciExaminerBloodGluco.Control = this.chkExaminerBloodGluco;
+            this.lciExaminerBloodGluco.Location = new System.Drawing.Point(594, 24);
+            this.lciExaminerBloodGluco.Name = "lciExaminerBloodGluco";
+            this.lciExaminerBloodGluco.Size = new System.Drawing.Size(140, 24);
+            this.lciExaminerBloodGluco.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExaminerBloodGluco.TextVisible = false;
+            // 
+            // lciExaminerBloodUre
+            // 
+            this.lciExaminerBloodUre.Control = this.chkExaminerBloodUre;
+            this.lciExaminerBloodUre.Location = new System.Drawing.Point(594, 48);
+            this.lciExaminerBloodUre.Name = "lciExaminerBloodUre";
+            this.lciExaminerBloodUre.Size = new System.Drawing.Size(140, 24);
+            this.lciExaminerBloodUre.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExaminerBloodUre.TextVisible = false;
+            // 
+            // lciExaminerBloodCreatinin
+            // 
+            this.lciExaminerBloodCreatinin.Control = this.chkExaminerBloodCreatinin;
+            this.lciExaminerBloodCreatinin.Location = new System.Drawing.Point(594, 72);
+            this.lciExaminerBloodCreatinin.Name = "lciExaminerBloodCreatinin";
+            this.lciExaminerBloodCreatinin.Size = new System.Drawing.Size(140, 24);
+            this.lciExaminerBloodCreatinin.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExaminerBloodCreatinin.TextVisible = false;
+            // 
+            // lciExaminerBloodAsat
+            // 
+            this.lciExaminerBloodAsat.Control = this.chkExaminerBloodAsat;
+            this.lciExaminerBloodAsat.Location = new System.Drawing.Point(594, 96);
+            this.lciExaminerBloodAsat.Name = "lciExaminerBloodAsat";
+            this.lciExaminerBloodAsat.Size = new System.Drawing.Size(140, 24);
+            this.lciExaminerBloodAsat.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExaminerBloodAsat.TextVisible = false;
+            // 
+            // lciExaminerBloodAlat
+            // 
+            this.lciExaminerBloodAlat.Control = this.chkExaminerBloodAlat;
+            this.lciExaminerBloodAlat.Location = new System.Drawing.Point(594, 120);
+            this.lciExaminerBloodAlat.Name = "lciExaminerBloodAlat";
+            this.lciExaminerBloodAlat.Size = new System.Drawing.Size(140, 24);
+            this.lciExaminerBloodAlat.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExaminerBloodAlat.TextVisible = false;
+            // 
+            // lciExaminerUrine
+            // 
+            this.lciExaminerUrine.Control = this.chkExaminerUrine;
+            this.lciExaminerUrine.Location = new System.Drawing.Point(594, 168);
+            this.lciExaminerUrine.Name = "lciExaminerUrine";
+            this.lciExaminerUrine.Size = new System.Drawing.Size(140, 24);
+            this.lciExaminerUrine.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExaminerUrine.TextVisible = false;
+            // 
+            // lciExaminerDiim
+            // 
+            this.lciExaminerDiim.Control = this.chkExaminerDiim;
+            this.lciExaminerDiim.Location = new System.Drawing.Point(594, 192);
+            this.lciExaminerDiim.Name = "lciExaminerDiim";
+            this.lciExaminerDiim.Size = new System.Drawing.Size(140, 24);
+            this.lciExaminerDiim.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExaminerDiim.TextVisible = false;
+            // 
+            // esiExaminerBloodOther
+            // 
+            this.esiExaminerBloodOther.AllowHotTrack = false;
+            this.esiExaminerBloodOther.Location = new System.Drawing.Point(594, 144);
+            this.esiExaminerBloodOther.Name = "esiExaminerBloodOther";
+            this.esiExaminerBloodOther.Size = new System.Drawing.Size(140, 24);
+            this.esiExaminerBloodOther.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // lciExaminerOtherPara
+            // 
+            this.lciExaminerOtherPara.Control = this.chkExaminerOtherPara;
+            this.lciExaminerOtherPara.Location = new System.Drawing.Point(594, 216);
+            this.lciExaminerOtherPara.Name = "lciExaminerOtherPara";
+            this.lciExaminerOtherPara.Size = new System.Drawing.Size(140, 24);
+            this.lciExaminerOtherPara.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExaminerOtherPara.TextVisible = false;
+            // 
+            // lciExaminerPeriodic
+            // 
+            this.lciExaminerPeriodic.Control = this.chkExaminerPeriodic;
+            this.lciExaminerPeriodic.Location = new System.Drawing.Point(594, 240);
+            this.lciExaminerPeriodic.Name = "lciExaminerPeriodic";
+            this.lciExaminerPeriodic.Size = new System.Drawing.Size(140, 24);
+            this.lciExaminerPeriodic.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExaminerPeriodic.TextVisible = false;
             //
             // emptySpaceItem1
             //
@@ -1044,6 +1305,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.lciBloodUre)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBloodGluco)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBlood)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBlood.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBloodGluco.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBloodUre.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBloodCreatinin.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBloodAsat.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerBloodAlat.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerUrine.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerDiim.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBlood)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBloodGluco)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBloodUre)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBloodCreatinin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBloodAsat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerBloodAlat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerUrine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerDiim)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.esiExaminerBloodOther)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerOtherPara.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerOtherPara)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkExaminerPeriodic.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExaminerPeriodic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewPeriodic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPeriodic.Properties)).EndInit();
@@ -1118,6 +1400,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraLayout.LayoutControlItem lciDiim;
         private DevExpress.XtraLayout.LayoutControlItem lciOtherPara;
         private DevExpress.XtraLayout.LayoutControlItem lciPeriodic;
+        private DevExpress.XtraEditors.CheckEdit chkExaminerBlood;
+        private DevExpress.XtraEditors.CheckEdit chkExaminerBloodGluco;
+        private DevExpress.XtraEditors.CheckEdit chkExaminerBloodUre;
+        private DevExpress.XtraEditors.CheckEdit chkExaminerBloodCreatinin;
+        private DevExpress.XtraEditors.CheckEdit chkExaminerBloodAsat;
+        private DevExpress.XtraEditors.CheckEdit chkExaminerBloodAlat;
+        private DevExpress.XtraEditors.CheckEdit chkExaminerUrine;
+        private DevExpress.XtraEditors.CheckEdit chkExaminerDiim;
+        private DevExpress.XtraLayout.LayoutControlItem lciExaminerBlood;
+        private DevExpress.XtraLayout.LayoutControlItem lciExaminerBloodGluco;
+        private DevExpress.XtraLayout.LayoutControlItem lciExaminerBloodUre;
+        private DevExpress.XtraLayout.LayoutControlItem lciExaminerBloodCreatinin;
+        private DevExpress.XtraLayout.LayoutControlItem lciExaminerBloodAsat;
+        private DevExpress.XtraLayout.LayoutControlItem lciExaminerBloodAlat;
+        private DevExpress.XtraLayout.LayoutControlItem lciExaminerUrine;
+        private DevExpress.XtraLayout.LayoutControlItem lciExaminerDiim;
+        private DevExpress.XtraLayout.EmptySpaceItem esiExaminerBloodOther;
+        private DevExpress.XtraEditors.CheckEdit chkExaminerOtherPara;
+        private DevExpress.XtraLayout.LayoutControlItem lciExaminerOtherPara;
+        private DevExpress.XtraEditors.CheckEdit chkExaminerPeriodic;
+        private DevExpress.XtraLayout.LayoutControlItem lciExaminerPeriodic;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraLayout.LayoutControl layoutControl2;
         private DevExpress.XtraGrid.GridControl grdDefault;

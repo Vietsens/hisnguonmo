@@ -549,7 +549,19 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         Inventec.Common.RichEditor.ProcessTag.ProcessSingleTag processSingleTag = new Inventec.Common.RichEditor.ProcessTag.ProcessSingleTag();
                         Inventec.Common.RichEditor.ProcessTag.ProcessImageTag processImageTag = new Inventec.Common.RichEditor.ProcessTag.ProcessImageTag();
 
-                        processSingleTag.ProcessData(store, this.dicParam);
+                        //Chua co may thi KHONG thay key may bang rong, de giu nguyen key tren noi dung:
+                        //nguoi dung chon may sau do (repositoryItemMachineId_Closed goi lai ham nay) thi key moi do duoc
+                        //ten may. Key con sot lai se duoc thay khi in (ProcessDocumentBeforePrint / dicParam khi in).
+                        Dictionary<string, object> dicParamForView = this.dicParam;
+                        object machineNamesForView = this.dicParam.ContainsKey("MACHINE_NAMES") ? this.dicParam["MACHINE_NAMES"] : null;
+                        if (machineNamesForView == null || String.IsNullOrWhiteSpace(machineNamesForView.ToString()))
+                        {
+                            dicParamForView = this.dicParam
+                                .Where(o => o.Key != "MACHINE_NAME" && o.Key != "MACHINE_NAMES")
+                                .ToDictionary(o => o.Key, o => o.Value);
+                        }
+
+                        processSingleTag.ProcessData(store, dicParamForView);
 
                         if (this.dicImage != null && this.dicImage.Count > 0)
                             processImageTag.ProcessData(store, this.dicImage);
@@ -870,29 +882,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     dicParam[ServiceExecuteCFG.SingleKeyAllInOne] = this.sereServ.TDL_SERVICE_NAME;
                 }
-                dicParam["MACHINE_NAME"] = currentServiceReq.MACHINE_NAMES;
-                if (!String.IsNullOrWhiteSpace(this.MachineNamesChoose))
-                {
-                    //nguoi dung tich nhieu may tren combo may => in day du ten cac may da tich
-                    dicParam["MACHINE_NAME"] = this.MachineNamesChoose;
-                    dicParam["MACHINE_NAMES"] = this.MachineNamesChoose;
-                    Inventec.Common.Logging.LogSystem.Info("MachineNamesChoose: " + this.MachineNamesChoose);
-                }
-                else if (this.MachineIdChoose.HasValue)
-                {
-                    var allMachines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
-                    var machine = allMachines != null ? allMachines.FirstOrDefault(o => o.ID == MachineIdChoose.Value) : null;
-
-                    Inventec.Common.Logging.LogSystem.Info(MachineIdChoose + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => machine), machine));
-                    if (machine != null)
-                    {
-                        dicParam["MACHINE_NAME"] = machine.MACHINE_NAME;
-                        dicParam["MACHINE_NAMES"] = machine.MACHINE_NAME;
-                        //log nay truoc day nam ngoai guard => NRE khi may khong co trong BackendData,
-                        //nuot ca cac key duoc set sau do vi ProcessDicParam bat het exception
-                        Inventec.Common.Logging.LogSystem.Info(machine.MACHINE_NAME);
-                    }
-                }
+                //Ten may thuc hien cho key <#MACHINE_NAME;> va <#MACHINE_NAMES;>.
+                //Truoc day chi lay theo MachineIdChoose nen luc nap bieu mau (SereServClickRow) key bi thay bang rong:
+                //thoi diem do MachineIdChoose chua nhan duoc may cua dong dang mo, con HIS_SERVICE_REQ.MACHINE_NAMES
+                //chi co du lieu SAU khi luu. Nay lay them may dang chon tren luoi nen vua mo mau la co ngay ten may.
+                string machineNamesForKey = GetMachineNamesForKey();
+                dicParam["MACHINE_NAME"] = machineNamesForKey;
+                dicParam["MACHINE_NAMES"] = machineNamesForKey;
+                Inventec.Common.Logging.LogSystem.Info("MACHINE_NAMES: " + (machineNamesForKey ?? ""));
                 if (this.sereServExt != null)
                 {
                     //không thêm key để khi sửa vẫn giữ lại key trên template.
@@ -1109,6 +1106,51 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Ten may thuc hien do vao key <#MACHINE_NAME;> / <#MACHINE_NAMES;> cua bieu mau.
+        /// Thu tu uu tien:
+        ///  1. Chuoi may nguoi dung vua tich tren popup may (tich nhieu may)
+        ///  2. May nguoi dung vua chon tren popup may (chon 1 may)
+        ///  3. May dang chon cua dong dich vu tren luoi — nguon duy nhat co du lieu NGAY khi nap bieu mau
+        ///     (may lay tu HIS_SERE_SERV_EXT da luu hoac may tu dong theo phong)
+        ///  4. HIS_SERE_SERV_EXT cua dong dang xu ly
+        ///  5. HIS_SERVICE_REQ.MACHINE_NAMES — chi co du lieu sau khi da luu xu ly
+        /// </summary>
+        private string GetMachineNamesForKey()
+        {
+            try
+            {
+                if (!String.IsNullOrWhiteSpace(this.MachineNamesChoose)) return this.MachineNamesChoose;
+
+                List<long> machineIds = new List<long>();
+                if (this.MachineIdChoose.HasValue && this.MachineIdChoose.Value > 0)
+                    machineIds.Add(this.MachineIdChoose.Value);
+
+                if (machineIds.Count == 0)
+                    machineIds = GetMachineIdsOfRow(this.sereServ);
+
+                if (machineIds.Count == 0 && this.sereServExt != null
+                    && this.sereServExt.MACHINE_ID.HasValue && this.sereServExt.MACHINE_ID.Value > 0)
+                    machineIds.Add(this.sereServExt.MACHINE_ID.Value);
+
+                List<string> names = new List<string>();
+                foreach (long machineId in machineIds)
+                {
+                    var machine = GetMachineById(machineId);
+                    if (machine == null || String.IsNullOrWhiteSpace(machine.MACHINE_NAME)) continue;
+                    if (names.Contains(machine.MACHINE_NAME)) continue;
+                    names.Add(machine.MACHINE_NAME);
+                }
+
+                if (names.Count > 0) return String.Join(", ", names);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return currentServiceReq != null ? currentServiceReq.MACHINE_NAMES : null;
         }
 
         /// <summary>

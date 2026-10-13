@@ -56,6 +56,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.btnExportPath = new DevExpress.XtraEditors.SimpleButton();
             this.btnClsMap = new DevExpress.XtraEditors.SimpleButton();
             this.cboKskType = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.cboTimeType = new DevExpress.XtraEditors.ComboBoxEdit();
             this.dtConclusionFrom = new DevExpress.XtraEditors.DateEdit();
             this.dtConclusionTo = new DevExpress.XtraEditors.DateEdit();
             this.cboSyncStatus = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -80,6 +81,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colGender = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colConclusionTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colConclusion = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colHealthExamRank = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colConcluder = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colRoom = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colSyncStatus = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -94,6 +96,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.grpFilter = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciKskType = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciTimeType = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciConclusionFrom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciConclusionTo = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciSyncStatus = new DevExpress.XtraLayout.LayoutControlItem();
@@ -116,6 +119,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboKskType.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTimeType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionFrom.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionFrom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionTo.Properties.CalendarTimeProperties)).BeginInit();
@@ -132,6 +136,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grpFilter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciKskType)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTimeType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSyncStatus)).BeginInit();
@@ -228,6 +233,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.layoutControl1.Controls.Add(this.btnExportPath);
             this.layoutControl1.Controls.Add(this.btnClsMap);
             this.layoutControl1.Controls.Add(this.cboKskType);
+            this.layoutControl1.Controls.Add(this.cboTimeType);
             this.layoutControl1.Controls.Add(this.dtConclusionFrom);
             this.layoutControl1.Controls.Add(this.dtConclusionTo);
             this.layoutControl1.Controls.Add(this.cboSyncStatus);
@@ -289,20 +295,37 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             // cboKskType
             // 
-            this.cboKskType.Location = new System.Drawing.Point(85, 6);
+            this.cboKskType.Location = new System.Drawing.Point(71, 6);
             this.cboKskType.MenuManager = this.barManager1;
             this.cboKskType.Name = "cboKskType";
             this.cboKskType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboKskType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboKskType.Size = new System.Drawing.Size(133, 20);
+            this.cboKskType.Size = new System.Drawing.Size(116, 20);
             this.cboKskType.StyleController = this.layoutControl1;
             this.cboKskType.TabIndex = 1;
-            // 
+            //
+            // cboTimeType
+            //
+            this.cboTimeType.Location = new System.Drawing.Point(251, 6);
+            this.cboTimeType.MenuManager = this.barManager1;
+            this.cboTimeType.Name = "cboTimeType";
+            this.cboTimeType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboTimeType.Properties.Items.AddRange(new object[] {
+            "Ngày vào viện",
+            "Ngày kết luận",
+            "Ngày ra viện",
+            "Ngày khóa viện phí"});
+            this.cboTimeType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboTimeType.Size = new System.Drawing.Size(126, 20);
+            this.cboTimeType.StyleController = this.layoutControl1;
+            this.cboTimeType.TabIndex = 2;
+            //
             // dtConclusionFrom
-            // 
+            //
             this.dtConclusionFrom.EditValue = null;
-            this.dtConclusionFrom.Location = new System.Drawing.Point(321, 6);
+            this.dtConclusionFrom.Location = new System.Drawing.Point(436, 6);
             this.dtConclusionFrom.MenuManager = this.barManager1;
             this.dtConclusionFrom.Name = "dtConclusionFrom";
             this.dtConclusionFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -313,14 +336,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.dtConclusionFrom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtConclusionFrom.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dtConclusionFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtConclusionFrom.Size = new System.Drawing.Size(143, 20);
+            this.dtConclusionFrom.Size = new System.Drawing.Size(91, 20);
             this.dtConclusionFrom.StyleController = this.layoutControl1;
             this.dtConclusionFrom.TabIndex = 3;
             // 
             // dtConclusionTo
             // 
             this.dtConclusionTo.EditValue = null;
-            this.dtConclusionTo.Location = new System.Drawing.Point(514, 6);
+            this.dtConclusionTo.Location = new System.Drawing.Point(561, 6);
             this.dtConclusionTo.MenuManager = this.barManager1;
             this.dtConclusionTo.Name = "dtConclusionTo";
             this.dtConclusionTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -331,13 +354,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.dtConclusionTo.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtConclusionTo.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dtConclusionTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtConclusionTo.Size = new System.Drawing.Size(153, 20);
+            this.dtConclusionTo.Size = new System.Drawing.Size(91, 20);
             this.dtConclusionTo.StyleController = this.layoutControl1;
             this.dtConclusionTo.TabIndex = 5;
             // 
             // cboSyncStatus
             // 
-            this.cboSyncStatus.Location = new System.Drawing.Point(772, 6);
+            this.cboSyncStatus.Location = new System.Drawing.Point(757, 6);
             this.cboSyncStatus.MenuManager = this.barManager1;
             this.cboSyncStatus.Name = "cboSyncStatus";
             this.cboSyncStatus.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -348,7 +371,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             "Đã đồng bộ",
             "Thất bại"});
             this.cboSyncStatus.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboSyncStatus.Size = new System.Drawing.Size(50, 20);
+            this.cboSyncStatus.Size = new System.Drawing.Size(65, 20);
             this.cboSyncStatus.StyleController = this.layoutControl1;
             this.cboSyncStatus.TabIndex = 7;
             // 
@@ -491,6 +514,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colGender,
             this.colConclusionTime,
             this.colConclusion,
+            this.colHealthExamRank,
             this.colConcluder,
             this.colRoom,
             this.colSyncStatus,
@@ -608,7 +632,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colConclusion.Visible = true;
             this.colConclusion.VisibleIndex = 9;
             this.colConclusion.Width = 220;
-            // 
+            //
+            // colHealthExamRank
+            //
+            this.colHealthExamRank.Caption = "Phân loại";
+            this.colHealthExamRank.FieldName = "HEALTH_EXAM_RANK_NAME";
+            this.colHealthExamRank.Name = "colHealthExamRank";
+            this.colHealthExamRank.OptionsColumn.AllowEdit = false;
+            this.colHealthExamRank.Visible = true;
+            this.colHealthExamRank.VisibleIndex = 10;
+            this.colHealthExamRank.Width = 80;
+            //
             // colConcluder
             // 
             this.colConcluder.Caption = "Người kết luận";
@@ -616,7 +650,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colConcluder.Name = "colConcluder";
             this.colConcluder.OptionsColumn.AllowEdit = false;
             this.colConcluder.Visible = true;
-            this.colConcluder.VisibleIndex = 10;
+            this.colConcluder.VisibleIndex = 11;
             this.colConcluder.Width = 150;
             // 
             // colRoom
@@ -626,7 +660,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colRoom.Name = "colRoom";
             this.colRoom.OptionsColumn.AllowEdit = false;
             this.colRoom.Visible = true;
-            this.colRoom.VisibleIndex = 11;
+            this.colRoom.VisibleIndex = 12;
             this.colRoom.Width = 150;
             // 
             // colSyncStatus
@@ -639,7 +673,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colSyncStatus.OptionsColumn.AllowEdit = false;
             this.colSyncStatus.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colSyncStatus.Visible = true;
-            this.colSyncStatus.VisibleIndex = 12;
+            this.colSyncStatus.VisibleIndex = 13;
             this.colSyncStatus.Width = 110;
             // 
             // colSyncTime
@@ -650,7 +684,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colSyncTime.OptionsColumn.AllowEdit = false;
             this.colSyncTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colSyncTime.Visible = true;
-            this.colSyncTime.VisibleIndex = 13;
+            this.colSyncTime.VisibleIndex = 14;
             this.colSyncTime.Width = 100;
             // 
             // colFailReason
@@ -660,7 +694,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colFailReason.Name = "colFailReason";
             this.colFailReason.OptionsColumn.AllowEdit = false;
             this.colFailReason.Visible = true;
-            this.colFailReason.VisibleIndex = 14;
+            this.colFailReason.VisibleIndex = 15;
             this.colFailReason.Width = 250;
             // 
             // colTransaction
@@ -670,7 +704,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colTransaction.Name = "colTransaction";
             this.colTransaction.OptionsColumn.AllowEdit = false;
             this.colTransaction.Visible = true;
-            this.colTransaction.VisibleIndex = 15;
+            this.colTransaction.VisibleIndex = 16;
             this.colTransaction.Width = 150;
             // 
             // colPush
@@ -685,7 +719,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPush.OptionsColumn.ShowCaption = false;
             this.colPush.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colPush.Visible = true;
-            this.colPush.VisibleIndex = 16;
+            this.colPush.VisibleIndex = 17;
             this.colPush.Width = 30;
             // 
             // repositoryItemButtonEdit_PUSH
@@ -708,7 +742,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPreview.OptionsColumn.ShowCaption = false;
             this.colPreview.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colPreview.Visible = true;
-            this.colPreview.VisibleIndex = 17;
+            this.colPreview.VisibleIndex = 18;
             this.colPreview.Width = 30;
             // 
             // repositoryItemButtonEdit_PREVIEW
@@ -747,6 +781,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.grpFilter.GroupBordersVisible = false;
             this.grpFilter.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lciKskType,
+            this.lciTimeType,
             this.lciConclusionFrom,
             this.lciConclusionTo,
             this.lciSyncStatus,
@@ -776,49 +811,68 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciKskType.Control = this.cboKskType;
             this.lciKskType.Location = new System.Drawing.Point(0, 0);
             this.lciKskType.Name = "lciKskType";
-            this.lciKskType.Size = new System.Drawing.Size(216, 26);
+            this.lciKskType.Size = new System.Drawing.Size(185, 26);
             this.lciKskType.Text = "Loại KSK:";
             this.lciKskType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciKskType.TextSize = new System.Drawing.Size(74, 13);
+            this.lciKskType.TextSize = new System.Drawing.Size(60, 20);
             this.lciKskType.TextToControlDistance = 5;
-            // 
+            //
+            // lciTimeType
+            //
+            this.lciTimeType.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTimeType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTimeType.Control = this.cboTimeType;
+            this.lciTimeType.Location = new System.Drawing.Point(185, 0);
+            this.lciTimeType.MinSize = new System.Drawing.Size(190, 26);
+            this.lciTimeType.Name = "lciTimeType";
+            this.lciTimeType.Size = new System.Drawing.Size(190, 26);
+            this.lciTimeType.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciTimeType.Text = "Lọc theo:";
+            this.lciTimeType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTimeType.TextSize = new System.Drawing.Size(55, 20);
+            this.lciTimeType.TextToControlDistance = 5;
+            //
             // lciConclusionFrom
-            // 
+            //
             this.lciConclusionFrom.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConclusionFrom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConclusionFrom.Control = this.dtConclusionFrom;
-            this.lciConclusionFrom.Location = new System.Drawing.Point(216, 0);
+            this.lciConclusionFrom.Location = new System.Drawing.Point(375, 0);
+            this.lciConclusionFrom.MinSize = new System.Drawing.Size(150, 26);
             this.lciConclusionFrom.Name = "lciConclusionFrom";
-            this.lciConclusionFrom.Size = new System.Drawing.Size(246, 26);
-            this.lciConclusionFrom.Text = "Ngày kết luận từ:";
+            this.lciConclusionFrom.Size = new System.Drawing.Size(150, 26);
+            this.lciConclusionFrom.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciConclusionFrom.Text = "Từ ngày:";
             this.lciConclusionFrom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciConclusionFrom.TextSize = new System.Drawing.Size(94, 13);
+            this.lciConclusionFrom.TextSize = new System.Drawing.Size(50, 20);
             this.lciConclusionFrom.TextToControlDistance = 5;
-            // 
+            //
             // lciConclusionTo
-            // 
+            //
             this.lciConclusionTo.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConclusionTo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConclusionTo.Control = this.dtConclusionTo;
-            this.lciConclusionTo.Location = new System.Drawing.Point(462, 0);
+            this.lciConclusionTo.Location = new System.Drawing.Point(525, 0);
+            this.lciConclusionTo.MinSize = new System.Drawing.Size(125, 26);
             this.lciConclusionTo.Name = "lciConclusionTo";
-            this.lciConclusionTo.Size = new System.Drawing.Size(203, 26);
+            this.lciConclusionTo.Size = new System.Drawing.Size(125, 26);
+            this.lciConclusionTo.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciConclusionTo.Text = "đến:";
             this.lciConclusionTo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciConclusionTo.TextSize = new System.Drawing.Size(41, 13);
+            this.lciConclusionTo.TextSize = new System.Drawing.Size(25, 20);
             this.lciConclusionTo.TextToControlDistance = 5;
-            // 
+            //
             // lciSyncStatus
-            // 
+            //
             this.lciSyncStatus.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSyncStatus.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSyncStatus.Control = this.cboSyncStatus;
-            this.lciSyncStatus.Location = new System.Drawing.Point(665, 0);
+            this.lciSyncStatus.Location = new System.Drawing.Point(650, 0);
             this.lciSyncStatus.Name = "lciSyncStatus";
-            this.lciSyncStatus.Size = new System.Drawing.Size(155, 26);
+            this.lciSyncStatus.Size = new System.Drawing.Size(170, 26);
             this.lciSyncStatus.Text = "Trạng thái đẩy:";
             this.lciSyncStatus.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciSyncStatus.TextSize = new System.Drawing.Size(96, 13);
+            this.lciSyncStatus.TextSize = new System.Drawing.Size(96, 20);
             this.lciSyncStatus.TextToControlDistance = 5;
             // 
             // lciBtnVlgStatus
@@ -985,6 +1039,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cboKskType.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTimeType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionFrom.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionFrom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionTo.Properties.CalendarTimeProperties)).EndInit();
@@ -1001,6 +1056,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grpFilter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciKskType)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTimeType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionFrom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionTo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSyncStatus)).EndInit();
@@ -1036,6 +1092,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraEditors.ComboBoxEdit cboKskType;
+        private DevExpress.XtraEditors.ComboBoxEdit cboTimeType;
         private DevExpress.XtraEditors.DateEdit dtConclusionFrom;
         private DevExpress.XtraEditors.DateEdit dtConclusionTo;
         private DevExpress.XtraEditors.ComboBoxEdit cboSyncStatus;
@@ -1058,6 +1115,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraGrid.Columns.GridColumn colGender;
         private DevExpress.XtraGrid.Columns.GridColumn colConclusionTime;
         private DevExpress.XtraGrid.Columns.GridColumn colConclusion;
+        private DevExpress.XtraGrid.Columns.GridColumn colHealthExamRank;
         private DevExpress.XtraGrid.Columns.GridColumn colConcluder;
         private DevExpress.XtraGrid.Columns.GridColumn colRoom;
         private DevExpress.XtraGrid.Columns.GridColumn colSyncStatus;
@@ -1072,6 +1130,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraLayout.LayoutControlGroup Root;
         private DevExpress.XtraLayout.LayoutControlGroup grpFilter;
         private DevExpress.XtraLayout.LayoutControlItem lciKskType;
+        private DevExpress.XtraLayout.LayoutControlItem lciTimeType;
         private DevExpress.XtraLayout.LayoutControlItem lciConclusionFrom;
         private DevExpress.XtraLayout.LayoutControlItem lciConclusionTo;
         private DevExpress.XtraLayout.LayoutControlItem lciSyncStatus;

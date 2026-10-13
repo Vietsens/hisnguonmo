@@ -201,8 +201,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// </summary>
         public const string JSON_TYPE_LEGACY = "KSK_UNDER_SIX_DEFAULT";
 
-        /// <summary>Phiên bản cấu trúc file — 1 = chỉ ROWS, 2 = thêm AUTO_CLS (3 mục), 3 = AUTO_CLS đủ 11 mục (việc 56156).</summary>
-        public const int JSON_VERSION = 3;
+        /// <summary>
+        /// Phiên bản cấu trúc file — 1 = chỉ ROWS, 2 = thêm AUTO_CLS (3 mục), 3 = AUTO_CLS đủ 11 mục (việc 56156),
+        /// 4 = thêm AUTO_CLS_EXAMINER (cờ "Lấy người thực hiện" theo dòng).
+        /// </summary>
+        public const int JSON_VERSION = 4;
 
         /// <summary>
         /// Dựng JSON để xuất cả 2 tab. Phần mặc định ghi kèm caption (Mục / Nội dung / Giá trị) và
@@ -252,6 +255,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
             }
 
+            // Cờ "Lấy người thực hiện" theo dòng (true/false), cùng key với AUTO_CLS.
+            var autoClsExaminer = new Newtonsoft.Json.Linq.JObject();
+            if (data.AUTO_CLS_EXAMINER != null)
+            {
+                foreach (var pair in data.AUTO_CLS_EXAMINER)
+                {
+                    if (string.IsNullOrEmpty(pair.Key)) continue;
+                    autoClsExaminer[pair.Key] = pair.Value;
+                }
+            }
+
             var root = new Newtonsoft.Json.Linq.JObject();
             root["TYPE"] = JSON_TYPE;
             root["VERSION"] = JSON_VERSION;
@@ -259,6 +273,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             root["AUTO_APPLY"] = data.AUTO_APPLY;
             root["ROWS"] = arrRows;
             root["AUTO_CLS"] = autoCls;
+            root["AUTO_CLS_EXAMINER"] = autoClsExaminer;
             return root.ToString(Newtonsoft.Json.Formatting.Indented);
         }
 
@@ -355,6 +370,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     {
                         if (prop == null || string.IsNullOrWhiteSpace(prop.Name)) continue;
                         data.AUTO_CLS[prop.Name.Trim()] = ParseServiceArray(prop.Value as Newtonsoft.Json.Linq.JArray);
+                    }
+                }
+
+                // Cờ "Lấy người thực hiện" theo dòng — file bản 3 trở xuống không có, form nhập sẽ giữ cờ đang có.
+                var clsExaminer = root["AUTO_CLS_EXAMINER"] as Newtonsoft.Json.Linq.JObject;
+                if (clsExaminer != null)
+                {
+                    foreach (var prop in clsExaminer.Properties())
+                    {
+                        if (prop == null || string.IsNullOrWhiteSpace(prop.Name) || prop.Value == null) continue;
+                        bool b;
+                        if (bool.TryParse(prop.Value.ToString(), out b)) data.AUTO_CLS_EXAMINER[prop.Name.Trim()] = b;
                     }
                 }
 

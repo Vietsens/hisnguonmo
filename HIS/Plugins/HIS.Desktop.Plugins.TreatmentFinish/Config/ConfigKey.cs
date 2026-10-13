@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string HIS_DESKTOP_ALLOW_PRINT_FINISH = "HIS.Desktop.AllowPrint.Finish";
         private const string ShowDoctor = "HIS.Desktop.Plugins.AssignConfig.ShowRequestUser";
         private const string MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.MAX_OF_APPOINTMENT_DAYS";
+        private const string ALLOW_EDIT_CHRONIC_OPTION = "MOS.HIS_TREATMENT.FINISH.ALLOW_EDIT_CHRONIC_OPTION";
         private const string WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS";
 
         /// <summary>
@@ -165,6 +166,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static string CheckPrescriptionEnd;
         internal static string CheckUsedDrugQuantityMismatch;
 
+        /// <summary>
+        /// Cho phep tich / bo tich "BN man tinh" ke ca khi dot da man tinh; bo tich thi gui IsRemoveChronic khi luu
+        /// </summary>
+        internal static bool IsAllowEditChronic;
+
 
         internal static void GetConfigKey()
         {
@@ -237,6 +243,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 IsBlockAppointmentWhenOutPatientMediRecordOverOneYear = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR) == IS__TRUE;
                 TimeToCreateNewTreatmentInNewMonth = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__TIME_TO_CREATE_NEW_TREATMENT_IN_NEW_MONTH);
                 SubclinicalResultOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__SUBCLINICAL_RESULT_OPTION);
+                IsAllowEditChronic = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ALLOW_EDIT_CHRONIC_OPTION) == IS__TRUE;
                 ExportXml2076Option = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CONFIG_XML2076_EXPORT_OPTION);
                 IsAllowTreatmentFinishDepartmentIsActiveFee = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__IsAllowTreatmentFinishDepartmentIsActiveFee);
                 IsAutoMapIcd10WithIcdYhct = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__HIS_DESKTOP_PLUGINS_HISICD_AUTOMAPICD10WITHICDYHCT) == IS__TRUE;

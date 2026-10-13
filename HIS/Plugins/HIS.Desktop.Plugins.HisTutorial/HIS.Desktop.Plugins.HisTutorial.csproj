@@ -72,10 +72,10 @@
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Controls.Session">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCTransPati\HIS.Desktop.Controls.Session.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.Controls.Session.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData">
-      <HintPath>..\..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>

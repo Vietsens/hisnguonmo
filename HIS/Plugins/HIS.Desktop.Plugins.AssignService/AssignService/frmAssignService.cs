@@ -1210,6 +1210,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.IsFirstloadConditionService = true;
                 this.isNotLoadWhileChangeInstructionTimeInFirst = true;
                 gridViewServiceProcess.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;//ẩn panel filter editor mặc định của grid khi gõ tìm kiếm ở các ô
+                this.InitBloodBagColumn();//cot "XN tui mau" - chi khi bat cau hinh chi dinh che pham mau theo tui
                 this.currentPatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 this.currentPatientTypeAllows = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALLOW>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 if (this.serviceReqParentId.HasValue && this.serviceReqParentId > 0)
@@ -6270,6 +6271,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 serviceReqSDO.ServiceReqDetails = new List<ServiceReqDetailSDO>();
                                 bool isDupicate = false;
                                 this.ProcessServiceReqSDO(serviceReqSDO, serviceCheckeds__Send, ref isDupicate, item.TREATMENT_ID, false);
+                                //Du lieu tui mau khong hop le (da hien thong bao) => dung luu
+                                if (isDupicate)
+                                {
+                                    this.ChangeLockButtonWhileProcess(true);
+                                    return;
+                                }
                                 //foreach (var detail in serviceReqSDO.ServiceReqDetails)
                                 //{
                                 //    var matchedService = serviceCheckeds__Send.FirstOrDefault(s => s.SERVICE_ID == detail.ServiceId);
@@ -6902,6 +6909,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (LblBtnPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && BtnPrint.Enabled)
                 {
                     PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
+                    PrintServiceReqProcessor.IsSplitByPatientType = HisConfigCFG.IsPrintSplitByPatientType;
 
                     InPhieuYeuCauDichVu(true);
 

@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         Inventec.Desktop.Common.Modules.Module currentModule;
         List<SereServADO> dataSource = null;
         List<HIS_SERVICE_REQ> listDataServiceReq = null;
+        Search.TreeListPhraseSearch phraseSearch;
         public UCTreeListTracking(ImageCollection image, Inventec.Desktop.Common.Modules.Module _currentModule)
         {
             InitializeComponent();
@@ -76,6 +77,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 this.currentModule = _currentModule;
                 this.wkRoomId = currentModule != null ? currentModule.RoomId : 0;
                 this.wkRoomTypeId = currentModule != null ? currentModule.RoomTypeId : 0;
+                //O tim kiem luon hien: tim theo Dien bien va Y lenh
+                this.phraseSearch = new Search.TreeListPhraseSearch(this.treeSereServ, this.GetSearchText, this, this.BuildSearchSummary);
 
             }
             catch (Exception ex)
@@ -110,7 +113,12 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                     treeSereServ.ExpandAll();
                     Expand(true);
                 }
+                else
+                {
+                    treeSereServ.DataSource = null;
+                }
                 treeSereServ.EndUpdate();
+                this.phraseSearch.UpdateSummary();
                 try
                 {
                     //this.treeSereServ.BestFitColumns();
@@ -126,6 +134,28 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private string GetSearchText(TreeListNode node)
+        {
+            TrackingListADO data = node != null ? treeSereServ.GetDataRecordByNode(node) as TrackingListADO : null;
+            return data != null ? data.CONTENT + " " + data.SERVICE : null;
+        }
+
+        /// <summary>
+        /// "Tim thay N to dieu tri - ngay ...". TRACKING_TIME dang "dd/MM/yyyy" + xuong dong + "HH:mm".
+        /// </summary>
+        private string BuildSearchSummary(List<TreeListNode> matchedNodes)
+        {
+            List<string> dates = matchedNodes
+                .Select(o => treeSereServ.GetDataRecordByNode(o) as TrackingListADO)
+                .Where(o => o != null && !String.IsNullOrEmpty(o.TRACKING_TIME))
+                .Select(o => o.TRACKING_TIME.Length >= 10 ? o.TRACKING_TIME.Substring(0, 10) : o.TRACKING_TIME)
+                .ToList();
+            if (dates.Count == 0)
+                return null;
+            string dateText = String.Join(", ", dates.GroupBy(o => o).Select(g => g.Count() > 1 ? String.Format("{0} ({1} tờ)", g.Key, g.Count()) : g.Key));
+            return String.Format("<b>Tìm thấy {0} tờ điều trị</b> - ngày {1}", dates.Count, dateText);
         }
 
         public void Expand(bool isExpand)

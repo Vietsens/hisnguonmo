@@ -1183,7 +1183,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 new KskExcelColumn("Tên chức vụ", (o, i) => o.TDL_PATIENT_POSITION_NAME),
                 new KskExcelColumn("Tên Đoàn", (o, i) => o.WORK_PLACE_NAME),
                 new KskExcelColumn("Nơi làm việc", (o, i) => o.PATIENT_WORK_PLACE_NAME),
-                new KskExcelColumn("Số khám sức khỏe", (o, i) => o.KSK_NUMBER),
+                // Lấy "STT hồ sơ KSK" giống cột trên grid danh sách (V_HIS_TREATMENT_4.KSK_ORDER),
+                // thay cho mã KSK_*_CODE (KSK_NUMBER) để khớp với giá trị hiển thị ở màn hình.
+                new KskExcelColumn("Số khám sức khỏe", (o, i) => o.KSK_ORDER),
                 new KskExcelColumn("Số nhà", (o, i) => o.TDL_PATIENT_ADDRESS),
                 new KskExcelColumn("Số CMND", (o, i) => o.TDL_PATIENT_CMND_NUMBER),
                 new KskExcelColumn("SĐT", (o, i) => o.PHONE),

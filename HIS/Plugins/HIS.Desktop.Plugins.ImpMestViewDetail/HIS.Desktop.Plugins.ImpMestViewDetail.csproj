@@ -302,6 +302,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\CongMuaSamChecker.cs" />
+    <Compile Include="ImpMestViewDetail\frmImpMestViewDetail_CongMuaSam.cs" />
     <Compile Include="ADO\ImpMestBloodSDODetail.cs" />
     <Compile Include="ADO\ImpMestMaterialSDODetail.cs" />
     <Compile Include="ADO\ImpMestMedicineSDODetail.cs" />

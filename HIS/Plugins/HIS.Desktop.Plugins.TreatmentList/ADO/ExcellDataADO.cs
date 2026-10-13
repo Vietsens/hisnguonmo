@@ -155,10 +155,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                 HIS_KSK_GENERAL currentGenaral = (kskData != null && kskData.HisKskGenerals != null)
                     ? kskData.HisKskGenerals.FirstOrDefault() : null;
 
-                // Phần khám lâm sàng + vitals lấy theo loại KSK (dựa KSK_TYPE_ID như EnterKskInfomantionVer2):
-                // KSK_TYPE_ID = 2 (trên 18 tuổi / nghề nghiệp) không lấy ở HIS_KSK_GENERAL mà ở bảng chuyên biệt.
-                // Xác định bằng bảng nào có bản ghi trong SDO — THỨ TỰ ƯU TIÊN:
-                // trên-18 → dưới-18 → dưới-6 → nghề nghiệp → general.
+                // Phần khám lâm sàng + vitals lấy theo loại KSK (dựa KSK_TYPE_ID như EnterKskInfomantionVer2).
                 HIS_KSK_OVER_EIGHTEEN kskOverEighteen = (kskData != null && kskData.HisKskOverEighteens != null)
                     ? kskData.HisKskOverEighteens.FirstOrDefault() : null;
                 HIS_KSK_UNDER_EIGHTEEN kskUnderEighteen = (kskData != null && kskData.HisKskUnderEighteens != null)
@@ -167,8 +164,16 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                     ? kskData.HisKskUnderSixs.FirstOrDefault() : null;
                 HIS_KSK_OCCUPATIONAL kskOccupational = (kskData != null && kskData.HisKskOccupationals != null)
                     ? kskData.HisKskOccupationals.FirstOrDefault() : null;
-                object examRecord = (object)kskOverEighteen ?? (object)kskUnderEighteen ?? (object)kskUnderSix
-                    ?? (object)kskOccupational ?? (object)currentGenaral;
+
+                // Loại mẫu KSK đã lưu (HIS_KSK_GENERAL.KSK_TYPE_ID) — xác định TRƯỚC khi chọn bản ghi khám.
+                // 1 lượt khám có thể còn sót bản ghi thừa của loại khác (vd đợt dưới-18 vẫn còn 1 bản
+                // HIS_KSK_OVER_EIGHTEEN rỗng). Nếu chọn theo thứ tự ưu tiên cứng (over-18 trước) sẽ nhặt
+                // nhầm bản rỗng → trống toàn bộ cột khám/vitals. Phải chọn theo đúng KSK_TYPE_ID như form nhập.
+                long? kskTypeId = GetLong(currentGenaral, "KSK_TYPE_ID")
+                    ?? ResolveKskTypeId(kskOverEighteen, kskUnderEighteen, kskUnderSix, data, currentGenaral);
+
+                object examRecord = PickExamRecordByType(kskTypeId,
+                    kskOverEighteen, kskUnderEighteen, kskUnderSix, kskOccupational, currentGenaral);
                 if (examRecord != null)
                 {
                     // Tên field mỗi bảng một khác nên truyền kèm tên thay thế (Pick thử lần lượt trên bản ghi
@@ -253,23 +258,26 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                     ?? GetLong(kskUnderSix, "KSK_PAY_SOURCE");
                 KSK_PAY_SOURCE_NAME = MapKskPaySourceName(kskPaySource);
 
-                // Nhóm tuổi: theo KSK_TYPE_ID đã lưu ở HIS_KSK_GENERAL. Bản ghi cũ chưa có KSK_TYPE_ID
-                // thì tự phân theo đúng cách EnterKskInfomantionVer2 xác định loại mẫu KSK.
-                long? kskTypeId = GetLong(currentGenaral, "KSK_TYPE_ID")
-                    ?? ResolveKskTypeId(kskOverEighteen, kskUnderEighteen, kskUnderSix, data, currentGenaral);
+                // Nhóm tuổi: theo KSK_TYPE_ID đã lưu ở HIS_KSK_GENERAL (đã tính ở trên khi chọn bản ghi khám).
                 KSK_AGE_GROUP_NAME = MapKskAgeGroupName(kskTypeId);
 
                 // Cột "Số khám sức khỏe" (ksk_number ở form nhập KSK — backend tự sinh qua PKG_KSK_CODE,
-                // FE chỉ hiển thị). Mỗi mẫu lưu ở cột CODE riêng → lấy theo đúng thứ tự ưu tiên mẫu KSK.
+                // FE chỉ hiển thị). Mỗi mẫu lưu ở cột CODE riêng → lấy theo ĐÚNG loại mẫu (KSK_TYPE_ID)
+                // để không nhặt nhầm mã của bản ghi thừa loại khác (vd lấy mã over-18 trong khi đợt là dưới-18).
                 object kskOther = (kskData != null && kskData.HisKskOthers != null)
                     ? kskData.HisKskOthers.FirstOrDefault() : null;
-                KSK_NUMBER = FirstNotEmpty(
-                    GetStr(kskOverEighteen, "KSK_OVER_EIGHTEEN_CODE"),
-                    GetStr(kskUnderEighteen, "KSK_UNDER_EIGHTEEN_CODE"),
-                    GetStr(kskUnderSix, "KSK_UNDER_SIX_CODE"),
-                    GetStr(kskOccupational, "KSK_OCCUPATIONAL_CODE"),
-                    GetStr(kskOther, "KSK_OTHER_CODE"),
-                    GetStr(currentGenaral, "KSK_GENERAL_CODE"));
+                string codeOver18 = GetStr(kskOverEighteen, "KSK_OVER_EIGHTEEN_CODE");
+                string codeUnder18 = GetStr(kskUnderEighteen, "KSK_UNDER_EIGHTEEN_CODE");
+                string codeUnder6 = GetStr(kskUnderSix, "KSK_UNDER_SIX_CODE");
+                string codeOccupational = GetStr(kskOccupational, "KSK_OCCUPATIONAL_CODE");
+                string codeOther = GetStr(kskOther, "KSK_OTHER_CODE");
+                string codeGeneral = GetStr(currentGenaral, "KSK_GENERAL_CODE");
+                if (kskTypeId == 1)
+                    KSK_NUMBER = FirstNotEmpty(codeUnder18, codeGeneral, codeOver18, codeOccupational, codeOther, codeUnder6);
+                else if (kskTypeId >= 6 && kskTypeId <= 13)
+                    KSK_NUMBER = FirstNotEmpty(codeUnder6, codeGeneral, codeUnder18, codeOver18, codeOccupational, codeOther);
+                else
+                    KSK_NUMBER = FirstNotEmpty(codeOver18, codeOccupational, codeOther, codeGeneral, codeUnder18, codeUnder6);
 
                 // Các cột ICD LUÔN lấy từ HIS_KSK_GENERAL (mọi loại KSK đều ghi ICD về bảng general).
                 if (currentGenaral != null)
@@ -407,6 +415,24 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
         /// EnterKskInfomantionVer2 xác định (ResolveKskTypeIdByTab): tab nào có dữ liệu thì lấy loại của tab đó,
         /// riêng trẻ dưới 6 tuổi thì tính theo số ngày tuổi tại thời điểm kết luận.
         /// </summary>
+        /// <summary>
+        /// Chọn bản ghi khám theo ĐÚNG KSK_TYPE_ID (biểu mẫu QĐ 1551) — giống cách form nhập xác định tab:
+        ///   1 = dưới 18 tuổi → HIS_KSK_UNDER_EIGHTEEN;
+        ///   6..13 = dưới 6 tuổi → HIS_KSK_UNDER_SIX;
+        ///   2 / khác / null = nhóm người lớn → HIS_KSK_OVER_EIGHTEEN → nghề nghiệp → general.
+        /// Mỗi nhánh vẫn fallback sang bản ghi khác (và general) để không null khi dữ liệu không trọn vẹn.
+        /// Mục đích: tránh nhặt nhầm bản ghi thừa của loại khác khi 1 lượt khám còn sót nhiều bảng.
+        /// </summary>
+        private static object PickExamRecordByType(long? kskTypeId,
+            object over18, object under18, object under6, object occupational, object general)
+        {
+            if (kskTypeId == 1)
+                return under18 ?? general ?? over18 ?? occupational ?? under6;
+            if (kskTypeId >= 6 && kskTypeId <= 13)
+                return under6 ?? general ?? under18 ?? over18 ?? occupational;
+            return over18 ?? occupational ?? general ?? under18 ?? under6;
+        }
+
         private static long? ResolveKskTypeId(object kskOverEighteen, object kskUnderEighteen, object kskUnderSix,
             V_HIS_TREATMENT_4 data, HIS_KSK_GENERAL general)
         {

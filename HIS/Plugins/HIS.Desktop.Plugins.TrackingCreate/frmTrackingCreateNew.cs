@@ -635,6 +635,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this.IsReadOnlyCareInstruction = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_IsReadOnlyCareInstruction);
                 this.IsCheckSubIcdExceedLimit = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_IsCheckSubIcdExceedLimit);
                 BloodPresOption = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.BloodPresOption") == "1");
+                IsBedAnticipateByDate = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingCreate.BedAnticipateByDate") == "1");
                 this.ServiceReqIcdOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_TRACKING_SERVICE_REQ_ICD_OPTION);
                 this.AIConnectionInfo = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.HIS_DESKTOP_AI_CONNECTIONINFO);
                 ApplyAmountDecimalNumber();
@@ -3348,6 +3349,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 HisTrackingADO = LoadTrackingOld();
                 InitComboTrackingOld(HisTrackingADO);
+                if (success)
+                    SetTrackingListNeedReload();
                 WaitingManager.Hide();
                 #region Show message
                 MessageManager.Show(this.ParentForm, param, success);
@@ -3969,6 +3972,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 HisTrackingADO = LoadTrackingOld();
                 InitComboTrackingOld(HisTrackingADO);
+                if (success)
+                    SetTrackingListNeedReload();
 
                 #region Show message
                 MessageManager.Show(this.ParentForm, param, success);
@@ -4954,6 +4959,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 //            }
                 //            IsFirstLoadForm = false;
 
+                ProcessSelectTrackingListTab();
             }
             catch (Exception ex)
             {
@@ -5183,6 +5189,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this.layoutControlItem55.Text = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.layoutControlItem55.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem56.Text = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.layoutControlItem56.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.xtraTabPage5.Text = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.xtraTabPage5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.xtraTabPageTrackingList.Text = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.xtraTabPageTrackingList.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl5.Text = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.layoutControl5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn_ServiceReq_Edit_Preventive.Caption = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.gridColumn_ServiceReq_Edit_Preventive.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn_ServiceReq_Delete_Preventive.Caption = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.gridColumn_ServiceReq_Delete_Preventive.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

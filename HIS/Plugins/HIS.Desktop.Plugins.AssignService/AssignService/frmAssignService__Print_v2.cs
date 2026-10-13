@@ -173,6 +173,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, null, currentModule != null ? currentModule.RoomId : 0);
                     PrintServiceReqProcessor.IsView = isSaveAndShow;
                 }
+                PrintServiceReqProcessor.IsSplitByPatientType = HisConfigCFG.IsPrintSplitByPatientType;
 
                 switch (printTypeCode)
                 {
@@ -301,6 +302,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
                     var PrintServiceReqProcessor = previewType != null ? new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, (currentModule != null ? currentModule.RoomId : 0), previewType.Value, GetDocmentSigned)
                         : new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, (currentModule != null ? currentModule.RoomId : 0));
+                    PrintServiceReqProcessor.IsSplitByPatientType = HisConfigCFG.IsPrintSplitByPatientType;
                     PrintServiceReqProcessor.SaveNPrint(isSaveAndShow);
                                            
                     if (this.serviceReqComboResultSDO.SereServs != null)
@@ -556,6 +558,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
                     }
                     var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, currentModule != null ? currentModule.RoomId : 0, previewType);
+                    PrintServiceReqProcessor.IsSplitByPatientType = HisConfigCFG.IsPrintSplitByPatientType;
                     PrintServiceReqProcessor.SaveNPrint(false);
 
                     if (this.serviceReqComboResultSDO.SereServs != null)
@@ -588,6 +591,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
                     }
                     var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, currentModule != null ? currentModule.RoomId : 0, MPS.ProcessorBase.PrintConfig.PreviewType.EmrShow);
+                    PrintServiceReqProcessor.IsSplitByPatientType = HisConfigCFG.IsPrintSplitByPatientType;
                     PrintServiceReqProcessor.ERMOpen();
                 }
             }

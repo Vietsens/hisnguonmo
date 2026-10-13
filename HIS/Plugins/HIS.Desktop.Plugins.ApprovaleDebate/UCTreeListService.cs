@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
         Inventec.Desktop.Common.Modules.Module currentModule;
         List<SereServADO> dataSource = null;
         List<HIS_SERVICE_REQ> listDataServiceReq = null;
+        Search.TreeListPhraseSearch phraseSearch;
         public UCTreeListService(ImageCollection image, Inventec.Desktop.Common.Modules.Module _currentModule)
         {
             InitializeComponent();
@@ -76,13 +77,57 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 this.currentModule = _currentModule;
                 this.wkRoomId = currentModule != null ? currentModule.RoomId : 0;
                 this.wkRoomTypeId = currentModule != null ? currentModule.RoomTypeId : 0;
-
+                //O tim kiem luon hien: tim theo ma, ten dich vu
+                this.phraseSearch = new Search.TreeListPhraseSearch(this.treeSereServ, this.GetSearchText, this, this.BuildSearchSummary);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        private string GetSearchText(TreeListNode node)
+        {
+            SereServADO data = node != null ? treeSereServ.GetDataRecordByNode(node) as SereServADO : null;
+            return data != null ? data.SERVICE_CODE + " " + data.SERVICE_NAME : null;
+        }
+
+        /// <summary>
+        /// "Tim thay N dich vu - ngay ...": dem dong dich vu (la cua cay) khop hoac thuoc dong cha khop.
+        /// Ngay chi dinh lay o dong phieu cha (NOTE_ADO dang dd/MM/yyyy HH:mm).
+        /// </summary>
+        private string BuildSearchSummary(List<TreeListNode> matchedNodes)
+        {
+            List<TreeListNode> leaves = new List<TreeListNode>();
+            foreach (TreeListNode node in matchedNodes)
+                this.CollectLeaves(node, leaves);
+            if (leaves.Count == 0)
+                return null;
+            List<string> dates = new List<string>();
+            foreach (TreeListNode leaf in leaves)
+            {
+                SereServADO parent = leaf.ParentNode != null ? treeSereServ.GetDataRecordByNode(leaf.ParentNode) as SereServADO : null;
+                string note = parent != null ? parent.NOTE_ADO : null;
+                if (!String.IsNullOrEmpty(note) && note.Length >= 10)
+                    dates.Add(note.Substring(0, 10));
+            }
+            string dateText = String.Join(", ", dates.GroupBy(o => o).Select(g => g.Count() > 1 ? String.Format("{0} ({1} lần)", g.Key, g.Count()) : g.Key));
+            return String.IsNullOrEmpty(dateText)
+                ? String.Format("<b>Tìm thấy {0} dịch vụ</b>", leaves.Count)
+                : String.Format("<b>Tìm thấy {0} dịch vụ</b> - ngày {1}", leaves.Count, dateText);
+        }
+
+        private void CollectLeaves(TreeListNode node, List<TreeListNode> leaves)
+        {
+            if (!node.HasChildren)
+            {
+                if (!leaves.Contains(node))
+                    leaves.Add(node);
+                return;
+            }
+            foreach (TreeListNode child in node.Nodes)
+                this.CollectLeaves(child, leaves);
         }
 
         private void UCTreeListService_Load(object sender, EventArgs e)
@@ -137,6 +182,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                     treeSereServ.DataSource = null;
                 }
                 treeSereServ.EndUpdate();
+                this.phraseSearch.UpdateSummary();
                 try
                 {
                     this.treeSereServ.BestFitColumns();

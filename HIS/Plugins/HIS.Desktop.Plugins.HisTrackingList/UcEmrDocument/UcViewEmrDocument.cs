@@ -65,6 +65,89 @@ namespace HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument
         {
             this.menuTemplate = menuTemplate;
         }
+
+        bool isViewOnly;
+
+        /// <summary>
+        /// Read only viewer: keeps page navigation and zoom only, no print/save/open/maximize,
+        /// pages are always shown as images and content cannot be selected or copied.
+        /// </summary>
+        internal void SetViewOnlyMode()
+        {
+            try
+            {
+                this.isViewOnly = true;
+                pdfCommandBar1.Visible = true;
+                foreach (DevExpress.XtraBars.BarItem item in new DevExpress.XtraBars.BarItem[] { pdfFilePrintBarItem1, bbtnMaximize, pdfFileOpenBarItem1, pdfFileSaveAsBarItem1, pdfFindTextBarItem1, pdfExportFormDataBarItem1, pdfImportFormDataBarItem1 })
+                {
+                    item.Enabled = false;
+                    item.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+                }
+                this.pdfViewer1.ReadOnly = true;
+                this.pdfViewer1.AllowDrop = false;
+                this.pdfViewer1.PopupMenuShowing += pdfViewer1_ViewOnly_PopupMenuShowing;
+                this.pdfViewer1.SelectionStarted += pdfViewer1_ViewOnly_Selection;
+                this.pdfViewer1.SelectionContinued += pdfViewer1_ViewOnly_Selection;
+                this.pdfViewer1.KeyDown += pdfViewer1_ViewOnly_KeyDown;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void pdfViewer1_ViewOnly_PopupMenuShowing(object sender, DevExpress.XtraPdfViewer.PdfPopupMenuShowingEventArgs e)
+        {
+            try
+            {
+                // Context menu has copy/select all/print commands: not shown in read only mode
+                e.ItemLinks.Clear();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void pdfViewer1_ViewOnly_Selection(object sender, DevExpress.XtraPdfViewer.PdfSelectionEventArgs e)
+        {
+            try
+            {
+                this.BeginInvoke(new MethodInvoker(delegate
+                {
+                    try
+                    {
+                        if (!this.IsDisposed && this.pdfViewer1.HasSelection)
+                            this.pdfViewer1.ClearSelection();
+                    }
+                    catch (Exception exClear)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exClear);
+                    }
+                }));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void pdfViewer1_ViewOnly_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Control && (e.KeyCode == Keys.C || e.KeyCode == Keys.Insert || e.KeyCode == Keys.A || e.KeyCode == Keys.X
+                    || e.KeyCode == Keys.P || e.KeyCode == Keys.S || e.KeyCode == Keys.O || e.KeyCode == Keys.F))
+                {
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void UcViewEmrDocument_Load(object sender, EventArgs e)
         {
             try
@@ -183,16 +266,86 @@ namespace HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument
         //    }
         //}
 
+        /// <summary>
+        /// Shows the documents joined in the given order (the caller decides the order).
+        /// </summary>
         public void ReloadDocument(List<DocumentTrackingADO> streamFiles, bool showBar = false)
         {
             try
             {
-                bbtnMaximize.Enabled = true;
+                bbtnMaximize.Enabled = !this.isViewOnly;
                 this.streamFiles = streamFiles;
-                //Inventec.Common.Logging.LogSystem.Debug("ReloadDocument.1");
                 pdfCommandBar1.Visible = showBar;
-                List<DocumentTrackingADO> documentData = new List<DocumentTrackingADO>();
+                WaitingManager.Show();
+                string temFile = BuildViewFile(streamFiles);
+                ShowViewFile(temFile);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
+        /// <summary>
+        /// Converts the documents to PDF and joins them, in the given order, into a temporary PDF file.
+        /// Does not touch any control so it can run on a background thread. Returns null when there is nothing to show.
+        /// </summary>
+        internal string BuildViewFile(List<DocumentTrackingADO> streamFiles)
+        {
+            string result = null;
+            try
+            {
+                if (streamFiles == null || streamFiles.Count == 0)
+                    return null;
+                List<DocumentTrackingADO> documentData = ConvertToPdfDocuments(streamFiles);
+                result = JoinDocuments(documentData, this.isViewOnly);
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Loads the file built by BuildViewFile into the viewer (UI thread), then deletes the file.
+        /// </summary>
+        internal void ShowViewFile(string temFile)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(temFile) && File.Exists(temFile))
+                {
+                    this.pdfViewer1.DetachStreamAfterLoadComplete = true;
+                    this.pdfViewer1.LoadDocument(temFile);
+                    try
+                    {
+                        System.IO.File.Delete(temFile);
+                    }
+                    catch (Exception exDelete)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exDelete);
+                    }
+                }
+                else
+                {
+                    this.pdfViewer1.CloseDocument();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private List<DocumentTrackingADO> ConvertToPdfDocuments(List<DocumentTrackingADO> streamFiles)
+        {
+            List<DocumentTrackingADO> documentData = new List<DocumentTrackingADO>();
+            try
+            {
                 foreach (var item in streamFiles)
                 {
                     if (String.IsNullOrEmpty(item.FullTemplateFileName) || item.FullTemplateFileName.ToLower().EndsWith(".pdf") || item.FullTemplateFileName.ToLower().EndsWith(".repx"))
@@ -270,31 +423,28 @@ namespace HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument
                         }
                     }
                 }
-
-                
-                //Inventec.Common.Logging.LogSystem.Debug("ReloadDocument.11");
-                documentData = documentData.OrderBy(p => p.TRACKING_TIME).ToList();
-                ProcessJoinDocument(documentData);
-                //Inventec.Common.Logging.LogSystem.Debug("ReloadDocument.12");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            return documentData;
         }
 
-        private void ProcessJoinDocument(List<DocumentTrackingADO> streamFiles)
+        /// <summary>
+        /// Joins the PDF documents into one temporary PDF file. When forceImage is false and there is only one document,
+        /// the document is used as is; otherwise every page is converted into an image.
+        /// </summary>
+        private string JoinDocuments(List<DocumentTrackingADO> streamFiles, bool forceImage)
         {
+            string result = null;
             try
             {
-                WaitingManager.Show();
-                //Inventec.Common.Logging.LogSystem.Debug("ProcessJoinDocument.1");
                 if (streamFiles != null && streamFiles.Count > 0)
                 {
-                    //Inventec.Common.Logging.LogSystem.Debug("ProcessJoinDocument.2");
                     string temFile = System.IO.Path.GetTempFileName();
                     temFile = temFile.Replace(".tmp", ".pdf");
-                    if (streamFiles.Count == 1)
+                    if (streamFiles.Count == 1 && !forceImage)
                     {
                         //Inventec.Common.Logging.LogSystem.Debug("ProcessJoinDocument.3");
                         using (var fileStream = System.IO.File.Create(temFile))
@@ -329,7 +479,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument
                         }
                         //Inventec.Common.Logging.LogSystem.Debug("ProcessJoinDocument.7");
                         if (readerWorking == null)
-                            return;
+                            return null;
 
                         int pageCount = readerWorking.NumberOfPages;
                         iTextSharp.text.Rectangle pageSize = readerWorking.GetPageSizeWithRotation(readerWorking.NumberOfPages);
@@ -361,6 +511,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument
 
                                 foreach (var item in streamFiles)
                                 {
+                                    item.DocumentFile.Position = 0;
                                     imageFiles.AddRange(ConvertPdfPageToListImage(item.DocumentFile));
                                 }
 
@@ -401,29 +552,15 @@ namespace HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument
                             }
                         }
                     }
-                    //Inventec.Common.Logging.LogSystem.Debug("ProcessJoinDocument.10");
-                    //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => temFile), temFile));
-                    this.pdfViewer1.DetachStreamAfterLoadComplete = true;
-                    this.pdfViewer1.LoadDocument(temFile);
-                    //Inventec.Common.Logging.LogSystem.Debug("ProcessJoinDocument.11");
-                    try
-                    {
-                        System.IO.File.Delete(temFile);//TODO
-                    }
-                    catch (Exception) { }
+                    result = temFile;
                 }
-                else
-                {
-                    this.pdfViewer1.CloseDocument();// = new DevExpress.XtraPdfViewer.PdfViewer();
-                }
-
-                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
+                result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            return result;
         }
 
         private float GetOginalHeight(MemoryStream memoryStream)

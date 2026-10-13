@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO
         {
             this.ROWS = new List<KskDefaultRowADO>();
             this.AUTO_CLS = new Dictionary<string, List<KskServiceRefADO>>();
+            this.AUTO_CLS_EXAMINER = new Dictionary<string, bool>();
         }
 
         // ===== Tab "Mặc định nhập KSK (trẻ dưới 6 tuổi)" =====
@@ -48,6 +49,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO
         /// file thì khi nhập được BỎ QUA (không xóa thiết lập đang có).
         /// </summary>
         public Dictionary<string, List<KskServiceRefADO>> AUTO_CLS { get; set; }
+
+        /// <summary>
+        /// Cờ "Lấy người thực hiện" theo từng dòng cấu hình (key trùng key AUTO_CLS). Dòng tick = ô "Người khám"
+        /// của mục đó lấy người thực hiện y lệnh của dịch vụ cấu hình ở dòng. File cũ không có phần này
+        /// → khi nhập giữ nguyên cờ đang có trên máy.
+        /// </summary>
+        public Dictionary<string, bool> AUTO_CLS_EXAMINER { get; set; }
+
+        /// <summary>File có phần cờ "Lấy người thực hiện" hay không.</summary>
+        public bool HasAutoClsExaminer
+        {
+            get { return AUTO_CLS_EXAMINER != null && AUTO_CLS_EXAMINER.Count > 0; }
+        }
 
         /// <summary>File có phần "Tự động lấy CLS" hay không (dùng để báo và để bỏ qua khi nhập).</summary>
         public bool HasAutoCls

@@ -7,6 +7,11 @@
  *  Tab 1 "Tự động lấy CLS" — cấu hình dịch vụ cho "Tự động lấy kết quả CLS".
  *      Đổ datasource V_HIS_SERVICE theo loại (XN cho Máu & Nước tiểu, CĐHA cho Chẩn đoán hình ảnh),
  *      cho chọn NHIỀU (GridCheckMarksSelection - nhái cboObject), LƯU/HIỂN LẠI qua ControlState.
+ *      Cạnh combo các dòng 1a, 1b (5 dòng), 2, 3, 4, KSK định kỳ có CheckEdit "Lấy người thực hiện":
+ *      - 1a/1b/2/3: tick → ô "Người khám" của mục đó (tab ≥18) tự điền người thực hiện y lệnh ĐẦU TIÊN của
+ *        dịch vụ cấu hình ở dòng. Nhóm 1 (1a + 1b) cùng đổ về 1 ô nên chỉ tick được 1 dòng.
+ *      - 4 / KSK định kỳ: tick → combo "Người khám" của khối chỉ liệt kê người thực hiện các dịch vụ
+ *        (bác sĩ tự chọn); không tick → combo giữ danh mục đầy đủ. Dòng 1c không có tùy chọn này.
  *
  *  Tab 2 "Mặc định nhập KSK (trẻ dưới 6 tuổi)" — lưới 5 cột người dùng TỰ THÊM/BỚT dòng:
  *      Dùng → Mục → Nội dung → Giá trị mặc định (3 cột sau phụ thuộc nhau), cột 5 là nút +/-.
@@ -52,16 +57,29 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         internal const string KEY_OTHER_PARACLINICAL = "AutoCls_OtherPara";    // 4. KQ khám CLS khác
         internal const string KEY_PERIODIC = "AutoCls_Periodic";               // KSK định kỳ - Kết quả
 
-        /// <summary>1 dòng cấu hình: combo + key ControlState + key trong file JSON xuất/nhập.</summary>
+        /// <summary>
+        /// Hậu tố key ControlState của cờ "Lấy người thực hiện" theo dòng (giá trị "1"/"0"), ghép với key dịch vụ
+        /// (vd AutoCls_Blood → AutoCls_Blood_Examiner). Form nhập KSK đọc qua ExaminerStateKey().
+        /// </summary>
+        internal const string KEY_EXAMINER_SUFFIX = "_Examiner";
+
+        /// <summary>1 dòng cấu hình: combo + key ControlState + key trong file JSON xuất/nhập + cờ "Lấy người thực hiện".</summary>
         private class AutoClsComboDef
         {
             public GridLookUpEdit Cbo;
             public string StateKey;
             public string JsonKey;
+            /// <summary>CheckEdit "Lấy người thực hiện" cạnh combo; null = dòng không có tùy chọn này (chỉ 1c).</summary>
+            public CheckEdit ChkExaminer;
+            /// <summary>Nhóm dùng chung 1 ô "Người khám": 1 = "1. Xét nghiệm máu" (1a + 5 dòng 1b) → chỉ tick 1 dòng; 0 = độc lập.</summary>
+            public int ExaminerGroup;
         }
 
         // 11 dòng cấu hình — Init/Load/Save/Export/Import đều chạy vòng lặp trên danh sách này.
         private List<AutoClsComboDef> comboDefs;
+
+        // Đang tự bỏ tick các dòng khác cùng nhóm → chặn CheckedChanged chạy đệ quy.
+        private bool isSyncingExaminerGroup;
 
         // Danh sách dịch vụ đang tick theo từng combo (giống objectSelecteds ở cboObject).
         private readonly Dictionary<GridLookUpEdit, List<V_HIS_SERVICE>> selecteds = new Dictionary<GridLookUpEdit, List<V_HIS_SERVICE>>();
@@ -133,17 +151,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // JsonKey BLOOD/URINE/DIIM giữ nguyên tên cũ để file JSON đã xuất trước đây vẫn nhập được.
             this.comboDefs = new List<AutoClsComboDef>()
             {
-                new AutoClsComboDef() { Cbo = this.cboBlood,          StateKey = KEY_BLOOD,              JsonKey = "BLOOD" },
-                new AutoClsComboDef() { Cbo = this.cboBloodGluco,     StateKey = KEY_BLOOD_GLUCO,        JsonKey = "BLOOD_GLUCO" },
-                new AutoClsComboDef() { Cbo = this.cboBloodUre,       StateKey = KEY_BLOOD_URE,          JsonKey = "BLOOD_URE" },
-                new AutoClsComboDef() { Cbo = this.cboBloodCreatinin, StateKey = KEY_BLOOD_CREATININ,    JsonKey = "BLOOD_CREATININ" },
-                new AutoClsComboDef() { Cbo = this.cboBloodAsat,      StateKey = KEY_BLOOD_ASAT,         JsonKey = "BLOOD_ASAT" },
-                new AutoClsComboDef() { Cbo = this.cboBloodAlat,      StateKey = KEY_BLOOD_ALAT,         JsonKey = "BLOOD_ALAT" },
-                new AutoClsComboDef() { Cbo = this.cboBloodOther,     StateKey = KEY_BLOOD_OTHER,        JsonKey = "BLOOD_OTHER" },
-                new AutoClsComboDef() { Cbo = this.cboUrine,          StateKey = KEY_URINE,              JsonKey = "URINE" },
-                new AutoClsComboDef() { Cbo = this.cboDiim,           StateKey = KEY_DIIM,               JsonKey = "DIIM" },
-                new AutoClsComboDef() { Cbo = this.cboOtherPara,      StateKey = KEY_OTHER_PARACLINICAL, JsonKey = "OTHER_PARACLINICAL" },
-                new AutoClsComboDef() { Cbo = this.cboPeriodic,       StateKey = KEY_PERIODIC,           JsonKey = "PERIODIC" },
+                new AutoClsComboDef() { Cbo = this.cboBlood,          StateKey = KEY_BLOOD,              JsonKey = "BLOOD",                ChkExaminer = this.chkExaminerBlood, ExaminerGroup = 1 },
+                new AutoClsComboDef() { Cbo = this.cboBloodGluco,     StateKey = KEY_BLOOD_GLUCO,        JsonKey = "BLOOD_GLUCO",          ChkExaminer = this.chkExaminerBloodGluco, ExaminerGroup = 1 },
+                new AutoClsComboDef() { Cbo = this.cboBloodUre,       StateKey = KEY_BLOOD_URE,          JsonKey = "BLOOD_URE",            ChkExaminer = this.chkExaminerBloodUre, ExaminerGroup = 1 },
+                new AutoClsComboDef() { Cbo = this.cboBloodCreatinin, StateKey = KEY_BLOOD_CREATININ,    JsonKey = "BLOOD_CREATININ",      ChkExaminer = this.chkExaminerBloodCreatinin, ExaminerGroup = 1 },
+                new AutoClsComboDef() { Cbo = this.cboBloodAsat,      StateKey = KEY_BLOOD_ASAT,         JsonKey = "BLOOD_ASAT",           ChkExaminer = this.chkExaminerBloodAsat, ExaminerGroup = 1 },
+                new AutoClsComboDef() { Cbo = this.cboBloodAlat,      StateKey = KEY_BLOOD_ALAT,         JsonKey = "BLOOD_ALAT",           ChkExaminer = this.chkExaminerBloodAlat, ExaminerGroup = 1 },
+                new AutoClsComboDef() { Cbo = this.cboBloodOther,     StateKey = KEY_BLOOD_OTHER,        JsonKey = "BLOOD_OTHER",          ChkExaminer = null, ExaminerGroup = 0 },
+                new AutoClsComboDef() { Cbo = this.cboUrine,          StateKey = KEY_URINE,              JsonKey = "URINE",                ChkExaminer = this.chkExaminerUrine, ExaminerGroup = 0 },
+                new AutoClsComboDef() { Cbo = this.cboDiim,           StateKey = KEY_DIIM,               JsonKey = "DIIM",                 ChkExaminer = this.chkExaminerDiim, ExaminerGroup = 0 },
+                new AutoClsComboDef() { Cbo = this.cboOtherPara,      StateKey = KEY_OTHER_PARACLINICAL, JsonKey = "OTHER_PARACLINICAL",   ChkExaminer = this.chkExaminerOtherPara, ExaminerGroup = 0 },
+                new AutoClsComboDef() { Cbo = this.cboPeriodic,       StateKey = KEY_PERIODIC,           JsonKey = "PERIODIC",             ChkExaminer = this.chkExaminerPeriodic, ExaminerGroup = 0 },
             };
 
             foreach (var def in this.comboDefs)
@@ -155,6 +173,36 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 else ds = xn.ToList();
                 SetupMultiCombo(def.Cbo, ds);
             }
+
+            // Nhóm "1. Xét nghiệm máu": 6 dòng cùng đổ về 1 ô "Người khám (1)" → tick dòng này thì bỏ tick dòng kia.
+            foreach (var def in this.comboDefs)
+            {
+                if (def.ChkExaminer == null || def.ExaminerGroup == 0) continue;
+                def.ChkExaminer.CheckedChanged -= ChkExaminer_CheckedChanged;
+                def.ChkExaminer.CheckedChanged += ChkExaminer_CheckedChanged;
+            }
+        }
+
+        /// <summary>Tick 1 dòng trong nhóm thì bỏ tick các dòng khác cùng nhóm (kiểu radio, nhưng vẫn cho bỏ tick hết).</summary>
+        private void ChkExaminer_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.isSyncingExaminerGroup || this.comboDefs == null) return;
+                CheckEdit chk = sender as CheckEdit;
+                if (chk == null || !chk.Checked) return;
+                var def = this.comboDefs.FirstOrDefault(o => ReferenceEquals(o.ChkExaminer, chk));
+                if (def == null || def.ExaminerGroup == 0) return;
+                this.isSyncingExaminerGroup = true;
+                try
+                {
+                    foreach (var other in this.comboDefs)
+                        if (other != def && other.ChkExaminer != null && other.ExaminerGroup == def.ExaminerGroup)
+                            other.ChkExaminer.Checked = false;
+                }
+                finally { this.isSyncingExaminerGroup = false; }
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
         }
 
         /// <summary>Cấu hình 1 GridLookUpEdit thành combo chọn nhiều (GridCheckMarksSelection) — nhái cboObject.</summary>
@@ -303,12 +351,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             else currentControlStateRDO.Add(new ControlStateRDO() { KEY = key, VALUE = value, MODULE_LINK = MODULE_LINK });
         }
 
-        /// <summary>Đọc CSV ID đã lưu và tick lại trên từng combo.</summary>
+        /// <summary>Key ControlState của cờ "Lấy người thực hiện" ứng với key dịch vụ của dòng (AutoCls_X → AutoCls_X_Examiner).</summary>
+        internal static string ExaminerStateKey(string serviceStateKey)
+        {
+            return serviceStateKey + KEY_EXAMINER_SUFFIX;
+        }
+
+        /// <summary>Đọc CSV ID đã lưu và tick lại trên từng combo + nạp cờ "Lấy người thực hiện" của dòng.</summary>
         private void LoadSavedSelection()
         {
             if (this.comboDefs == null) return;
             foreach (var def in this.comboDefs)
+            {
                 ApplySavedToCombo(def.Cbo, GetStateValue(def.StateKey));
+                if (def.ChkExaminer != null)
+                    def.ChkExaminer.Checked = GetStateValue(ExaminerStateKey(def.StateKey)) == "1";
+            }
         }
 
         private void ApplySavedToCombo(GridLookUpEdit cbo, string csvIds)
@@ -363,7 +421,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             if (this.controlStateWorker != null && this.currentControlStateRDO != null && this.comboDefs != null)
             {
                 foreach (var def in this.comboDefs)
+                {
                     SetStateValue(def.StateKey, GetCsvIds(def.Cbo));
+                    if (def.ChkExaminer != null)
+                        SetStateValue(ExaminerStateKey(def.StateKey), def.ChkExaminer.Checked ? "1" : "0");
+                }
                 controlStateWorker.SetData(currentControlStateRDO);
             }
 
@@ -622,7 +684,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             if (this.comboDefs != null)
             {
                 foreach (var def in this.comboDefs)
+                {
                     data.AUTO_CLS[def.JsonKey] = ToServiceRefs(def.Cbo);
+                    if (def.ChkExaminer != null) data.AUTO_CLS_EXAMINER[def.JsonKey] = def.ChkExaminer.Checked;
+                }
             }
             if (this.defaultRows != null)
             {
@@ -699,6 +764,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     else
                     {
                         report.Append("Tự động lấy CLS: file không có phần này → giữ nguyên\r\n");
+                    }
+
+                    // Cờ "Lấy người thực hiện": chỉ nhận dòng có trong file; file bản cũ (VERSION ≤ 3) không có → giữ nguyên.
+                    if (data.HasAutoClsExaminer && this.comboDefs != null)
+                    {
+                        int tick = 0;
+                        foreach (var def in this.comboDefs)
+                        {
+                            bool flag;
+                            if (def.ChkExaminer == null || !data.AUTO_CLS_EXAMINER.TryGetValue(def.JsonKey, out flag)) continue;
+                            def.ChkExaminer.Checked = flag;   // CheckedChanged tự bỏ tick dòng khác cùng nhóm máu
+                            if (flag) tick++;
+                        }
+                        report.Append("Lấy người thực hiện: ").Append(tick).Append(" dòng đang tick\r\n");
                     }
 
                     // ===== Tab 2: Mặc định nhập KSK =====

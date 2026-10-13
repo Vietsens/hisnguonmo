@@ -153,4 +153,13 @@
   <data name="Plugins_TransactionDepositCancel__ChuaNhapMaHuyTrenMayPos" xml:space="preserve">
     <value>The void code from the POS device has not been entered, so the transaction cannot be cancelled. This prevents reconciliation mismatches between the software and the bank.</value>
   </data>
+  <data name="Plugins_TransactionDepositCancel__HuyKemGiaoDichCungLanThanhToan" xml:space="preserve">
+    <value>Cancelling transaction {0} will also cancel transaction {1} from the same payment. Do you want to continue?</value>
+  </data>
+  <data name="Plugins_TransactionDepositCancel__HuyKemGiaoDichVaPhieuHoanUngCungLanThanhToan" xml:space="preserve">
+    <value>Cancelling transaction {0} will also cancel transaction {1} and repayment {2} from the same payment. Do you want to continue?</value>
+  </data>
+  <data name="Plugins_TransactionDepositCancel__HuyKemPhieuHoanUngCungLanThanhToan" xml:space="preserve">
+    <value>Cancelling transaction {0} will also cancel repayment {1} from the same payment. Do you want to continue?</value>
+  </data>
 </root>

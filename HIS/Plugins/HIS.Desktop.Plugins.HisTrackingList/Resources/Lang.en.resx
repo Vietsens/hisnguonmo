@@ -210,4 +210,19 @@
   <data name="UcViewEmrDocument.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
+  <data name="UcTrackingListView.lblStatus.Loading" xml:space="preserve">
+    <value>Loading treatment sheets...</value>
+  </data>
+  <data name="UcTrackingListView.lblStatus.Empty" xml:space="preserve">
+    <value>There are no treatment sheets in this treatment</value>
+  </data>
+  <data name="UcTrackingListView.lblStatus.LoadFailed" xml:space="preserve">
+    <value>Could not load the treatment sheets. Please try again.</value>
+  </data>
+  <data name="UcTrackingListView.btnRetry.Text" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="UcTrackingListView.SheetNotShown" xml:space="preserve">
+    <value>Could not display treatment sheet no. {0} at {1}</value>
+  </data>
 </root>

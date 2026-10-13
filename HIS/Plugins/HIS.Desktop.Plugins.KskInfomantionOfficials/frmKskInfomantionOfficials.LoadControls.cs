@@ -41,7 +41,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
                 InitServiceReqSttCheck();
                 InitComboServiceReqStt();
-                loadcomboBSketluan();
                 InitComboKSKContract();
                 InitComboHealthExamRank_ForAll();
                 InitCheck(cboDepartmentToSearch, SelectionGrid__DepartmentToSearch);

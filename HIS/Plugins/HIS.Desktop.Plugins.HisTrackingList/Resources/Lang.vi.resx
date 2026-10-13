@@ -210,4 +210,19 @@
   <data name="UcViewEmrDocument.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
+  <data name="UcTrackingListView.lblStatus.Loading" xml:space="preserve">
+    <value>Đang tải danh sách tờ điều trị...</value>
+  </data>
+  <data name="UcTrackingListView.lblStatus.Empty" xml:space="preserve">
+    <value>Chưa có tờ điều trị trong đợt điều trị này</value>
+  </data>
+  <data name="UcTrackingListView.lblStatus.LoadFailed" xml:space="preserve">
+    <value>Không tải được danh sách tờ điều trị. Vui lòng thử lại.</value>
+  </data>
+  <data name="UcTrackingListView.btnRetry.Text" xml:space="preserve">
+    <value>Thử lại</value>
+  </data>
+  <data name="UcTrackingListView.SheetNotShown" xml:space="preserve">
+    <value>Không hiển thị được tờ điều trị số {0} lúc {1}</value>
+  </data>
 </root>

@@ -33,7 +33,13 @@ namespace HIS.UC.Hospitalize.Config
         private const string RELATIVES_INFOR="HIS.Desktop.Plugins.Hospitalize.RelativesInforOption";
         private const string IS_IN_HOSPITALIZATION_REASON_REQUIRED = "HIS.Desktop.Plugins.ExamServiceReqExecute.InHospitalizationReasonRequired";
         private const string CHECK_ICD_WHEN_SAVE = "HIS.Desktop.Plugins.CheckIcdWhenSave";
+        private const string HEIN_PATIENT_TYPE_CODE_BY_EMERGENCY_OPTION = "HIS.Desktop.Plugins.Hospitalize.HeinPatientTypeCodeByEmergencyOption";
         internal static string CheckIcdWhenSave;
+        /// <summary>
+        /// 1: tich Cap cuu tren form nhap vien => ma doi tuong KCB do danh muc theo Truong hop = Cap cuu
+        /// (danh muc khong co ban ghi cap cuu phu hop thi tinh nhu cu). Khac 1: o Cap cuu khong tham gia tinh ma.
+        /// </summary>
+        internal static bool IsHeinPatientTypeCodeByEmergency;
         public static bool IsUsingServerTime;
         public static string RelativesInforOption;
         public static bool IsInHospitalizationReasonRequired;
@@ -43,6 +49,7 @@ namespace HIS.UC.Hospitalize.Config
             IsUsingServerTime = GetValue(IS_USING_SERVER_TIME) == GlobalVariables.CommonStringTrue;
             RelativesInforOption = GetValue(RELATIVES_INFOR);
             IsInHospitalizationReasonRequired = GetValue(IS_IN_HOSPITALIZATION_REASON_REQUIRED) == GlobalVariables.CommonStringTrue;
+            IsHeinPatientTypeCodeByEmergency = GetValue(HEIN_PATIENT_TYPE_CODE_BY_EMERGENCY_OPTION) == GlobalVariables.CommonStringTrue;
         }
 
         private static string GetValue(string code)

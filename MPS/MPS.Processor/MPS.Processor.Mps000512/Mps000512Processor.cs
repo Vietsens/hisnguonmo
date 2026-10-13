@@ -546,10 +546,10 @@ namespace MPS.Processor.Mps000512
             return r;
         }
 
-        private void ProcessSingleKey() 
+        private void ProcessSingleKey()
         {
             try
-            { 
+            {
                 if (rdo.ServiceReqs != null &&
                     rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && o.START_TIME != null).ToList() != null &&
                     rdo.ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && o.START_TIME != null).ToList().Count > 0)
@@ -922,14 +922,25 @@ namespace MPS.Processor.Mps000512
                     tongtienbenhnhantutra_new = sereServADOs.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
 
                     totalNumberFilm = (long)sereServADOs.Sum(o => ((o.NUMBER_OF_FILM ?? 0) * o.AMOUNT));
+                    // Key lẻ TOTAL_NUMBER_FILM = tổng (số phim x số lượng) của toàn bộ dịch vụ. Luôn được set để template gắn thẳng <#TOTAL_NUMBER_FILM;>
+                    // (không còn lỗi "not defined" khi không có phim: khi đó trả về chuỗi rỗng).
                     if (totalNumberFilm > 0)
                     {
                         SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_NUMBER_FILM, totalNumberFilm));
                         SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_NUMBER_FILM_STR, String.Format("Bệnh nhân đã nhận đủ số phim . Số phim {0}", totalNumberFilm)));
                     }
+                    else
+                    {
+                        SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_NUMBER_FILM, ""));
+                        SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_NUMBER_FILM_STR, ""));
+                    }
 
                     tongTienBenhNhan = sereServADOs.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0);
                 }
+
+                // Mặc định khi không có phim -> mẫu đặt key số phim không bị lỗi "not defined" (SetSingleKey giữ giá trị gán trước nên phải đặt SAU nhánh gán ở trên)
+                //SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_NUMBER_FILM, ""));
+                //SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_NUMBER_FILM_STR, ""));
 
                 if (this.sereServADONoExamZero != null && this.sereServADONoExamZero.Count > 0)
                 {
@@ -969,7 +980,7 @@ namespace MPS.Processor.Mps000512
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_PRICE_OTHER_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(nguonkhac_tong).ToString())));
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_PRICE_PATIENT_VIR, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongTienBenhNhan, 0)));
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_PRICE_PATIENT_VIR_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(tongTienBenhNhan).ToString())));
-                 
+
                 // Tổng tiền xuất ăn: sereServADOSAs chứa TẤT CẢ dịch vụ (cờ groupSuatAn chỉ đổi cách gom dòng suất ăn, không lọc),
                 // nên phải lọc riêng SERVICE_TYPE_ID == ID__AN rồi mới cộng thành tiền (VIR_TOTAL_PRICE_NO_EXPEND) - cùng cột với TOTAL_PRICE. 
                 decimal tongTienSuatAn = (this.sereServADOSAs != null)

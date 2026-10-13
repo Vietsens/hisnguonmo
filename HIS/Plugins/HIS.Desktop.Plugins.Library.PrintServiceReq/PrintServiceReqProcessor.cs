@@ -40,6 +40,11 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
     {
         private bool printNow;
         public bool IsView;
+        /// <summary>
+        /// true: tach to phieu chi dinh theo doi tuong thanh toan trong cung 1 y lenh (moi doi tuong 1 to).
+        /// Mac dinh false: in nhu cu. Chi man hinh goi thu vien bat tuy chon nay.
+        /// </summary>
+        public bool IsSplitByPatientType { get; set; }
         private Dictionary<long, List<V_HIS_SERVICE_REQ>> dicServiceReqData;
         private Dictionary<long, List<V_HIS_SERE_SERV>> dicSereServData;
         private Dictionary<long, HIS_SERE_SERV_EXT> dicSereServExtData;
@@ -886,6 +891,25 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                     }
                     if (!string.IsNullOrEmpty(gate) && chiDinhDichVuADO != null)
                         chiDinhDichVuADO.Gate = gate;
+
+                    //In tach theo doi tuong thanh toan: moi vong chi giu dong dich vu cua 1 doi tuong, chay nguyen luong in cu
+                    List<HIS_PATIENT_TYPE> splitPatientTypes = this.GetSplitPatientTypes(printTypeCode);
+                    Dictionary<long, List<V_HIS_SERVICE_REQ>> rawServiceReqData = dicServiceReqData;
+                    Dictionary<long, List<V_HIS_SERE_SERV>> rawSereServData = dicSereServData;
+                    int loopCount = splitPatientTypes != null ? splitPatientTypes.Count : 1;
+                    try
+                    {
+                    for (int splitIndex = 0; splitIndex < loopCount; splitIndex++)
+                    {
+                    if (splitPatientTypes != null)
+                    {
+                        if (this.CancelPrint)
+                            break;
+                        this.ApplyPatientTypeFilter(splitPatientTypes[splitIndex].ID, rawServiceReqData, rawSereServData);
+                        if (dicServiceReqData == null || dicServiceReqData.Count == 0)
+                            continue;
+                        HIS.Desktop.Plugins.Library.PrintServiceReq.Print.DocumentNameSuffix = splitPatientTypes[splitIndex].PATIENT_TYPE_NAME;
+                    }
                     switch (printTypeCode)
                     {
                         case PrintTypeCodeStore.IN__MPS000001__KHAM:
@@ -946,6 +970,18 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                         default:
                             break;
                     }
+                    }
+                    }
+                    finally
+                    {
+                        //Tra lai du lieu goc sau khi in tach
+                        if (splitPatientTypes != null)
+                        {
+                            dicServiceReqData = rawServiceReqData;
+                            dicSereServData = rawSereServData;
+                            HIS.Desktop.Plugins.Library.PrintServiceReq.Print.DocumentNameSuffix = null;
+                        }
+                    }
                 }
                 WaitingManager.Hide();
             }
@@ -956,6 +992,80 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                 result = false;
             }
             return result;
+        }
+
+        /// <summary>
+        /// Danh sach doi tuong thanh toan can tach to phieu. Tra ve null neu khong tach (tuy chon tat,
+        /// phieu dich vu ngoai KCB, hoac luot in chi co 1 doi tuong). Doi tuong chinh cua ho so dung dau, con lai theo ten.
+        /// </summary>
+        private List<HIS_PATIENT_TYPE> GetSplitPatientTypes(string printTypeCode)
+        {
+            List<HIS_PATIENT_TYPE> result = null;
+            try
+            {
+                if (!this.IsSplitByPatientType || printTypeCode == PrintTypeCodeStore.IN__MPS000502__DICHVU_NGOAI_KCB
+                    || dicSereServData == null || dicSereServData.Count == 0)
+                {
+                    return null;
+                }
+
+                List<long> patientTypeIds = dicSereServData.Values.Where(o => o != null).SelectMany(o => o).Select(o => o.PATIENT_TYPE_ID).Distinct().ToList();
+                if (patientTypeIds.Count <= 1)
+                {
+                    return null;
+                }
+
+                long? mainPatientTypeId = chiDinhDichVuADO != null && chiDinhDichVuADO.patientTypeAlter != null ? (long?)chiDinhDichVuADO.patientTypeAlter.PATIENT_TYPE_ID : null;
+                List<HIS_PATIENT_TYPE> patientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => patientTypeIds.Contains(o.ID)).ToList();
+                result = patientTypes
+                    .OrderBy(o => mainPatientTypeId.HasValue && o.ID == mainPatientTypeId.Value ? 0 : 1)
+                    .ThenBy(o => o.PATIENT_TYPE_NAME)
+                    .ToList();
+
+                //Doi tuong khong co trong danh muc cache thi van tach, ten de trong
+                foreach (long id in patientTypeIds.Where(o => !result.Exists(t => t.ID == o)))
+                {
+                    result.Add(new HIS_PATIENT_TYPE() { ID = id });
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = null;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gan du lieu in chi gom dong dich vu cua 1 doi tuong thanh toan (va cac y lenh con dong dich vu)
+        /// </summary>
+        private void ApplyPatientTypeFilter(long patientTypeId, Dictionary<long, List<V_HIS_SERVICE_REQ>> rawServiceReqData, Dictionary<long, List<V_HIS_SERE_SERV>> rawSereServData)
+        {
+            Dictionary<long, List<V_HIS_SERE_SERV>> sereServData = new Dictionary<long, List<V_HIS_SERE_SERV>>();
+            foreach (var item in rawSereServData)
+            {
+                List<V_HIS_SERE_SERV> lines = item.Value != null ? item.Value.Where(o => o.PATIENT_TYPE_ID == patientTypeId).ToList() : null;
+                if (lines != null && lines.Count > 0)
+                {
+                    sereServData[item.Key] = lines;
+                }
+            }
+
+            Dictionary<long, List<V_HIS_SERVICE_REQ>> serviceReqData = new Dictionary<long, List<V_HIS_SERVICE_REQ>>();
+            if (rawServiceReqData != null)
+            {
+                foreach (var item in rawServiceReqData)
+                {
+                    List<V_HIS_SERVICE_REQ> reqs = item.Value != null ? item.Value.Where(o => sereServData.ContainsKey(o.ID)).ToList() : null;
+                    if (reqs != null && reqs.Count > 0)
+                    {
+                        serviceReqData[item.Key] = reqs;
+                    }
+                }
+            }
+
+            dicSereServData = sereServData;
+            dicServiceReqData = serviceReqData;
         }
 
         private bool ProcessDataBeforePrint()

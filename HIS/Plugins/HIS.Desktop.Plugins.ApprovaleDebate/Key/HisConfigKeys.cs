@@ -29,8 +29,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.Key
         internal const string HIS_CONFIG_KEY__PATIENT_TYPE_CODE__VP = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE";//Doi tuong VP
         internal const string HIS_CONFIG_KEY__FormClosingOption = "HIS.Desktop.FormClosingOption";
         internal const string HIS_CONFIG_KEY__ModuleLinkApply = "HIS.Desktop.FormClosingOption.ModuleLinkApply";
-        //Trang thai mac dinh cua check "Ghi dien bien, PP xu ly vao to dieu tri" khi duyet hoi chan
-        //0: khong tich (khong tao to dieu tri), khac 0/rong: tich (giu hanh vi cu)
-        internal const string HIS_CONFIG_KEY__GhiToDieuTriKhiDuyetHoiChan = "HIS.Desktop.Plugins.ApprovaleDebate.GhiToDieuTriKhiDuyet";
+        //O "Ghi dien bien, PP xu ly vao to dieu tri" khi duyet hoi chan
+        //rong/1: hien o, mac dinh tich; 0: hien o, mac dinh khong tich; 2: an o cung 2 o Dien bien, PP xu ly, khong ghi to dieu tri
+        internal const string HIS_CONFIG_KEY__WriteTrackingOption = "HIS.Desktop.Plugins.ApprovaleDebate.WriteTrackingOption";
+        //1: an nut "Duyet va ky (Ctrl K)", o "In van ban da ky"; nut In phieu duyet hoi chan chi in, khong ky
+        internal const string HIS_CONFIG_KEY__IsHideApproveAndSign = "HIS.Desktop.Plugins.ApprovaleDebate.IsHideApproveAndSign";
     }
 }

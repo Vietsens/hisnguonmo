@@ -37,6 +37,15 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.Key
                 return ptBHYT;
             }
         }
+        private static string WriteTrackingOption
+        {
+            get
+            {
+                var value = HisConfigs.Get<string>(Key.HisConfigKeys.HIS_CONFIG_KEY__WriteTrackingOption);
+                return value != null ? value.Trim() : "";
+            }
+        }
+
         /// <summary>
         /// Mac dinh co ghi Dien bien/PP xu ly vao to dieu tri khi duyet hoi chan hay khong.
         /// Config khong khai bao => true (giu hanh vi cu truoc viec 45333).
@@ -45,10 +54,30 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.Key
         {
             get
             {
-                var value = HisConfigs.Get<string>(Key.HisConfigKeys.HIS_CONFIG_KEY__GhiToDieuTriKhiDuyetHoiChan);
+                string value = WriteTrackingOption;
                 if (string.IsNullOrWhiteSpace(value))
                     return true;
-                return value.Trim() != "0";
+                return value != "0" && value != "2";
+            }
+        }
+
+        /// <summary>
+        /// WriteTrackingOption = 2: an o ghi dien bien cung 2 o Dien bien, PP xu ly, khong ghi to dieu tri khi duyet.
+        /// </summary>
+        internal static bool IsHideWriteTracking
+        {
+            get
+            {
+                return WriteTrackingOption == "2";
+            }
+        }
+
+        internal static bool IsHideApproveAndSign
+        {
+            get
+            {
+                var value = HisConfigs.Get<string>(Key.HisConfigKeys.HIS_CONFIG_KEY__IsHideApproveAndSign);
+                return value != null && value.Trim() == "1";
             }
         }
 

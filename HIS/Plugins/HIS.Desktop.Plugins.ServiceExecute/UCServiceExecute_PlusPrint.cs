@@ -609,6 +609,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
 
                     result.RtfText = document.RtfText;
+
+                    //ProcessDescriptionContent giu lai key may khi chua chon may => tra ket qua bang duong in truc tiep
+                    //van phai do/xoa key, tuyet doi khong de lot chu <#MACHINE_NAMES;> ra phieu.
+                    string machineNamesForKey = GetMachineNamesForKey() ?? "";
+                    result.Document.ReplaceAll("<#MACHINE_NAMES;>", machineNamesForKey, SearchOptions.CaseSensitive);
+                    result.Document.ReplaceAll("<#MACHINE_NAME;>", machineNamesForKey, SearchOptions.CaseSensitive);
+
                     if (!String.IsNullOrWhiteSpace(thoiGianKetThuc))
                     {
                         foreach (var section in result.Document.Sections)
