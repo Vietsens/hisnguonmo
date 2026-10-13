@@ -911,4 +911,13 @@
   <data name="UC_ConnectionTest.xtraTabPage3.Text" xml:space="preserve">
     <value>Kết luận</value>
   </data>
+  <data name="UC_ConnectionTest.chkPrintBarcodeCG300.Properties.Caption" xml:space="preserve">
+    <value>In tem CG300</value>
+  </data>
+  <data name="UC_ConnectionTest.chkPrintBarcodeCG300.ToolTip" xml:space="preserve">
+    <value>In tem qua máy CG300: quét mã để tìm, quét lại cùng mã để in tem và nhả ống</value>
+  </data>
+  <data name="UC_ConnectionTest.txtSearchKey.NullValuePromptCG300" xml:space="preserve">
+    <value>Quét barcode...</value>
+  </data>
 </root>

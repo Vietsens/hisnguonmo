@@ -318,6 +318,11 @@
     <Compile Include="ADO\SignConfigADO.cs" />
     <Compile Include="ADO\TestLisResultADO.cs" />
     <Compile Include="ComboADO.cs" />
+    <Compile Include="CG300\Cg300ConnectionChecker.cs" />
+    <Compile Include="CG300\Cg300FileWriter.cs" />
+    <Compile Include="CG300\Cg300LabelADO.cs" />
+    <Compile Include="CG300\Cg300LabelBuilder.cs" />
+    <Compile Include="Config\Cg300CFG.cs" />
     <Compile Include="Config\ConfigKey.cs" />
     <Compile Include="Config\ControlStateConstant.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
@@ -391,6 +396,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UC_ConnectionTest___InKQTongHop.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UC_ConnectionTest___CG300.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Validation\ConditionValidationRule.cs" />
