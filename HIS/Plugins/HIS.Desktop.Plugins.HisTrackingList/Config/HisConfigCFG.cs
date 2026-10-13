@@ -42,5 +42,13 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Config
                 return result;
             }
         }
+
+        internal static bool IsViewTrackingNewestFirst
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_HISTRACKINGLIST_IS_VIEW_TRACKING_NEWEST_FIRST) == "1";
+            }
+        }
     }
 }
