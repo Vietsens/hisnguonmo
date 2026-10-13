@@ -2578,6 +2578,77 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
         #endregion
 
+        #region Viec 57554: hien dich vu cua y lenh ngay tren luoi danh sach benh nhan
+
+        // Oracle chi cho toi da 1000 phan tu trong menh de IN (ORA-01795) ma co the chon trang > 1000 dong
+        private const int SERE_SERV_INFO_CHUNK_SIZE = 500;
+        private const string SERE_SERV_INFO_SEPARATOR = "; ";
+
+        /// <summary>
+        /// Nap dich vu cua cac y lenh tren trang hien tai (chung 1 lan goi api/HisSereServ/Get cho ca trang)
+        /// roi gan san chuoi hien thi vao tung dong cho 4 cot Ten dich vu / So luong / Gia / DTTT.
+        /// Cung du lieu voi luoi "Dich vu yeu cau" ben phai (TDL_SERVICE_NAME, AMOUNT, VIR_TOTAL_PRICE);
+        /// bo dich vu "khong thuc hien" vi o gop khong gach ngang rieng tung dich vu nhu luoi ben phai.
+        /// Loi API chi ghi log, luoi van hien thi binh thuong voi 4 cot de trong.
+        /// </summary>
+        private void LoadSereServInfoOfServiceReqs(List<ServiceReqADO> serviceReqs)
+        {
+            try
+            {
+                if (serviceReqs == null || serviceReqs.Count == 0) return;
+
+                List<long> serviceReqIds = serviceReqs.Select(o => o.ID).Distinct().ToList();
+                List<HIS_SERE_SERV> sereServs = new List<HIS_SERE_SERV>();
+                for (int skip = 0; skip < serviceReqIds.Count; skip += SERE_SERV_INFO_CHUNK_SIZE)
+                {
+                    CommonParam paramSereServ = new CommonParam();
+                    HisSereServFilter sereServFilter = new HisSereServFilter();
+                    sereServFilter.SERVICE_REQ_IDs = serviceReqIds.Skip(skip).Take(SERE_SERV_INFO_CHUNK_SIZE).ToList();
+                    var result = new BackendAdapter(paramSereServ)
+                        .Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, sereServFilter, paramSereServ);
+                    if (result != null)
+                        sereServs.AddRange(result);
+                }
+
+                Dictionary<long, List<HIS_SERE_SERV>> sereServByServiceReq = sereServs
+                    .Where(o => o.SERVICE_REQ_ID.HasValue && o.IS_NO_EXECUTE != 1)
+                    .GroupBy(o => o.SERVICE_REQ_ID.Value)
+                    .ToDictionary(g => g.Key, g => g.ToList());
+
+                Dictionary<long, string> patientTypeNameDict = (lstPatientType ?? BackendDataWorker.Get<HIS_PATIENT_TYPE>())
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.First().PATIENT_TYPE_NAME);
+
+                foreach (var row in serviceReqs)
+                {
+                    List<HIS_SERE_SERV> items;
+                    if (!sereServByServiceReq.TryGetValue(row.ID, out items) || items.Count == 0)
+                    {
+                        row.SERVICE_NAMES_DISPLAY = null;
+                        row.SERVICE_AMOUNTS_DISPLAY = null;
+                        row.SERVICE_PRICES_DISPLAY = null;
+                        row.SERVICE_PATIENT_TYPES_DISPLAY = null;
+                        continue;
+                    }
+
+                    row.SERVICE_NAMES_DISPLAY = string.Join(SERE_SERV_INFO_SEPARATOR, items.Select(o => o.TDL_SERVICE_NAME));
+                    row.SERVICE_AMOUNTS_DISPLAY = string.Join(SERE_SERV_INFO_SEPARATOR, items.Select(o => o.AMOUNT.ToString("#,##0.####")));
+                    row.SERVICE_PRICES_DISPLAY = string.Join(SERE_SERV_INFO_SEPARATOR, items.Select(o => (o.VIR_TOTAL_PRICE ?? 0).ToString("#,##0.####")));
+                    row.SERVICE_PATIENT_TYPES_DISPLAY = string.Join(SERE_SERV_INFO_SEPARATOR, items.Select(o =>
+                    {
+                        string patientTypeName;
+                        return patientTypeNameDict.TryGetValue(o.PATIENT_TYPE_ID, out patientTypeName) ? patientTypeName : "";
+                    }));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
+
         // ===== SKSS (2844/47156): danh dau ho so da khai bao / lien thong suc khoe sinh san (dich vu MCH) =====
         private Dictionary<string, short> mchStatusDict;
         private DevExpress.Utils.ToolTipController mchTooltipController;
