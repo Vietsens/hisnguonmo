@@ -909,4 +909,13 @@
   <data name="UC_ConnectionTest.xtraTabPage3.Text" xml:space="preserve">
     <value>ကောက်ချက်ချ</value>
   </data>
+  <data name="UC_ConnectionTest.chkPrintBarcodeCG300.Properties.Caption" xml:space="preserve">
+    <value>CG300 label</value>
+  </data>
+  <data name="UC_ConnectionTest.chkPrintBarcodeCG300.ToolTip" xml:space="preserve">
+    <value>Print labels via CG300: scan to search, scan the same code again to print the label and release the tube</value>
+  </data>
+  <data name="UC_ConnectionTest.txtSearchKey.NullValuePromptCG300" xml:space="preserve">
+    <value>Scan barcode...</value>
+  </data>
 </root>

@@ -403,6 +403,58 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
         }
 
+        /// <summary>
+        /// After a barcode label is printed (Bartender / CG300): move a not-taken/rejected sample to "taken"
+        /// and update the row in place. Respects LIS.LIS_SAMPLE.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE = 1 (keep status).
+        /// Returns true when the sample status was updated.
+        /// </summary>
+        private bool UpdateSampleTakenAfterPrint(LisSampleADO sample)
+        {
+            bool result = false;
+            try
+            {
+                if (sample == null) return false;
+                if (sample.SAMPLE_STT_ID != IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
+                    && sample.SAMPLE_STT_ID != IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
+                    return false;
+                if (LisConfigCFG.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE == "1")
+                    return false;
+
+                CommonParam param = new CommonParam();
+                LisSampleSampleSDO sdo = new LisSampleSampleSDO();
+                sdo.SampleId = sample.ID;
+                sdo.RequestRoomCode = room != null ? room.ROOM_CODE : null;
+                var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
+                if (curentSTT != null)
+                {
+                    var sampleType = this.SampleTypeAllList != null && this.SampleTypeAllList.Count > 0
+                        ? this.SampleTypeAllList.FirstOrDefault(o => o.ID == curentSTT.SAMPLE_TYPE_ID)
+                        : null;
+
+                    sample.SAMPLE_TYPE_CODE = sampleType != null ? sampleType.SAMPLE_TYPE_CODE : "";
+                    sample.SAMPLE_TYPE_NAME = sampleType != null ? sampleType.SAMPLE_TYPE_NAME : "";
+                    sample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
+                    sample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
+                    sample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
+                    sample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
+                    sample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
+                    sample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
+                    result = true;
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Cap nhat lay mau sau khi in barcode that bai. Barcode=" + sample.BARCODE
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
+                }
+                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
         private void PrintBarcodeByBartender()
         {
             try
@@ -433,37 +485,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     else
                     {
-                        if (LisConfigCFG.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE == "1")
+                        if (UpdateSampleTakenAfterPrint(rowSample))
                         {
-                            // Không tự động cập nhật, giữ nguyên SAMPLE_STT_ID
-                            // Không làm gì thêm
+                            FillDataToGridControl();
+                            gridViewSample.RefreshData();
                         }
-                        else
-                        {
-                            CommonParam param = new CommonParam();
-                            LisSampleSampleSDO sdo = new LisSampleSampleSDO();
-                            sdo.SampleId = rowSample.ID;
-                            sdo.RequestRoomCode = room.ROOM_CODE;
-                            var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
-                            if (curentSTT != null)
-                            {
-                                var sampleType = this.SampleTypeAllList != null && this.SampleTypeAllList.Count > 0
-                                    ? this.SampleTypeAllList.FirstOrDefault(o => o.ID == curentSTT.SAMPLE_TYPE_ID)
-                                    : null;
-
-                                rowSample.SAMPLE_TYPE_CODE = sampleType != null ? sampleType.SAMPLE_TYPE_CODE : "";
-                                rowSample.SAMPLE_TYPE_NAME = sampleType != null ? sampleType.SAMPLE_TYPE_NAME : "";
-                                rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
-                                rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
-                                rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
-                                rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
-                                rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
-                                rowSample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
-                                FillDataToGridControl();
-                                gridViewSample.RefreshData();
-                            }
-                        }
-
                     }
                 }
                 if (StartAppPrintBartenderProcessor.OpenAppPrintBartender())

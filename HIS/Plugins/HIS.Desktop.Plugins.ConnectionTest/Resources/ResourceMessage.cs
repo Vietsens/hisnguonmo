@@ -218,5 +218,158 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Resources
                 return "";
             }
         }
+
+        /// <summary>Không ghi được dữ liệu sang máy CG300 vào thư mục {0}. Vui lòng kiểm tra cấu hình/quyền thư mục.</summary>
+        internal static string CG300KhongGhiDuocFile
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CG300KhongGhiDuocFile", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Các mẫu chưa có barcode, không gửi sang CG300 (mã y lệnh): {0}</summary>
+        internal static string CG300MauChuaCoBarcode
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CG300MauChuaCoBarcode", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Dịch vụ chưa được gán loại mẫu bệnh phẩm (không xác định được ống): {0}</summary>
+        internal static string CG300DichVuChuaGanLoaiMau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CG300DichVuChuaGanLoaiMau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Không có dữ liệu hợp lệ để gửi sang CG300.</summary>
+        internal static string CG300KhongCoDuLieuIn
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CG300KhongCoDuLieuIn", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Mất kết nối máy CG300: {0}. Vui lòng kiểm tra phần mềm CG và thư mục trao đổi.</summary>
+        internal static string CG300MatKetNoi
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CG300MatKetNoi", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Thư mục {0} không tồn tại</summary>
+        internal static string CG300LyDoThuMucKhongTonTai
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CG300LyDoThuMucKhongTonTai", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Không có quyền ghi thư mục {0}</summary>
+        internal static string CG300LyDoKhongGhiDuoc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CG300LyDoKhongGhiDuoc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Phần mềm điều khiển CG300 ({0}) chưa chạy</summary>
+        internal static string CG300LyDoPhanMemChuaChay
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CG300LyDoPhanMemChuaChay", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Barcode {0} đã được in tem qua CG300. Bạn có muốn in lại (máy sẽ nhả thêm ống) không?</summary>
+        internal static string CG300MauDaInTemInLai
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CG300MauDaInTemInLai", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

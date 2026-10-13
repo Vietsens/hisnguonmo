@@ -263,6 +263,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                 LoadUser();
                 this.InitControlState();
+                // CG300: checkbox only visible when this workstation is connected to the CG300
+                this.InitCG300();
                 GetControlAcs();
 
                 if (cboKskContract.Visible)
@@ -2096,6 +2098,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             try
             {
                 GetNewestBarcode();
+                // Re-check CG300 connection (show/hide checkbox) on each manual search
+                RefreshConnectCG300();
                 FillDataToGridControl();
             }
             catch (Exception ex)
@@ -2590,7 +2594,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    FillDataToGridControl();
+                    if (IsCG300Mode())
+                        ProcessScanCG300(txtSearchKey.Text);
+                    else
+                        FillDataToGridControl();
                 }
             }
             catch (Exception ex)

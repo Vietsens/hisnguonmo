@@ -34,5 +34,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Config
         internal const string CHECK_SHOW_SAMPLE_GROUP = "chkShowSampleGroup";
         internal const string CHECK_PRINT_PREVIEW = "chkPrintPreview";
         internal const string CHECK_ORDER_BY_EMERGENCY_PRIORITY = "chOrderByEmergencyPriority";
+        /// <summary>Checkbox "In tem CG300"</summary>
+        internal const string CHECK_PRINT_BARCODE_CG300 = "chkPrintBarcodeCG300";
     }
 }
