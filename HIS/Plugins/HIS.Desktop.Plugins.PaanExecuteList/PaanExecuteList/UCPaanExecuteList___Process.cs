@@ -139,6 +139,7 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
         /// </summary>
         private void OpenServiceExecute(long serviceReqId)
         {
+            bool isStarted = false;
             try
             {
                 WaitingManager.Show();
@@ -153,6 +154,27 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                     MessageBox.Show("Không lấy được thông tin y lệnh!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
+                }
+
+                // 1b. Y lenh CHUA XU LY -> goi "Bat dau" truoc khi mo man Tra ket qua,
+                //     giong man cu (UCExecuteRoom___Load.cs:3013 StartEvent).
+                //     Man Tra ket qua chi sinh so GPBL khi y lenh DANG XU LY
+                //     (UCServiceExecute.cs:1417) va lay START_TIME lam nam cua so,
+                //     nen phai lay lai y lenh sau khi bat dau.
+                if (serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
+                {
+                    if (!StartEvent(serviceReq.ID)) return;
+                    isStarted = true;
+
+                    WaitingManager.Show();
+                    serviceReq = GetVServiceReqById(serviceReqId);
+                    if (serviceReq == null)
+                    {
+                        WaitingManager.Hide();
+                        MessageBox.Show("Không lấy được thông tin y lệnh!", "Thông báo",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
                 }
 
                 // 2. Tra bang anh xa de biet mo module nao.
@@ -246,7 +268,61 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
             finally
             {
                 WaitingManager.Hide();
+
+                // Da bat dau thi trang thai y lenh da doi -> nap lai luoi va so dem,
+                // ke ca khi khong mo duoc man Tra ket qua.
+                if (isStarted)
+                {
+                    FillDataToGridControl();
+                    LoadServiceReqCount();
+                    LoadSereServCount();
+                }
             }
+        }
+
+        /// <summary>
+        /// Goi API bat dau - dua y lenh tu Chua xu ly sang Dang xu ly.
+        /// Chep phan goi API tu UCExecuteRoom___Process.cs:166 (StartEvent).
+        /// Man nay khong co o chon thu ky nen bo SECRETARY_LOGINNAME/USERNAME.
+        /// </summary>
+        private bool StartEvent(long serviceReqId)
+        {
+            bool result = false;
+            try
+            {
+                CommonParam param = new CommonParam();
+                WaitingManager.Show();
+
+                MOS.SDO.HisServiceReqStartSDO startSdo = new MOS.SDO.HisServiceReqStartSDO();
+                startSdo.ID = serviceReqId;
+
+                var serviceReq = new BackendAdapter(param)
+                    .Post<HIS_SERVICE_REQ>(
+                        HIS.Desktop.ApiConsumer.HisRequestUriStore.HIS_SERVICE_REQ_START,
+                        ApiConsumers.MosConsumer, startSdo, param);
+
+                WaitingManager.Hide();
+
+                if (serviceReq != null && serviceReq.ID > 0)
+                {
+                    result = true;
+                }
+                else
+                {
+                    #region Show message
+                    MessageManager.Show(this.ParentForm, param, false);
+                    #endregion
+                    Inventec.Common.Logging.LogSystem.Warn("StartEvent fail, SERVICE_REQ_ID = " + serviceReqId
+                        + Inventec.Common.Logging.LogUtil.TraceData("param", param));
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         /// <summary>
