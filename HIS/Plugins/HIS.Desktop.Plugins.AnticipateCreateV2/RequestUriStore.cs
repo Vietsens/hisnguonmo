@@ -37,5 +37,9 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
 		internal const string HIS_ANTICIPATE_METY_GETVIEW = "api/HisAnticipateMety/GetView";
 		internal const string HIS_ANTICIPATE_MATY_GETVIEW = "api/HisAnticipateMaty/GetView";
 		internal const string HIS_ANTICIPATE_BLTY_GETVIEW = "api/HisAnticipateBlty/GetView";
+
+		// BHYT info filter (Thong tin): type ids matching IS_MISS_BHYT_INFO.
+		internal const string HIS_MEDICINE_TYPE_GET_VIEW_DYNAMIC = "api/HisMedicineType/GetViewDynamic";
+		internal const string HIS_MATERIAL_TYPE_GET_VIEW_DYNAMIC = "api/HisMaterialType/GetViewDynamic";
 	}
 }

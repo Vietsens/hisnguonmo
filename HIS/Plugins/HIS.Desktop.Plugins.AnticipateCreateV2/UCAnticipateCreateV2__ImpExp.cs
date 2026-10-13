@@ -134,6 +134,9 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                     itemToDate.Size = new System.Drawing.Size(220, 26);
                     itemToDate.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
 
+                    // BHYT info filter ("Thong tin") between the keyword box and Tu ngay
+                    InitBhytInfoFilter(lciSearch, itemFromDate);
+
                     // 2) 2 radio "Chi tiết / Thu gọn tất cả" cạnh phải itemToDate
                     CreateCollapseRadios(itemToDate);
                 }

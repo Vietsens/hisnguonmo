@@ -243,6 +243,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
             {
                 var chk = sender as DevExpress.XtraEditors.CheckEdit;
                 if (chk == null || !chk.Checked) return;   // chỉ xử lý radio vừa được chọn
+                // Before the formLoaded check: Mau may be restored from ControlState while the screen opens
+                UpdateBhytInfoEnabled();
                 // Radio nhóm 5 loại trừ lẫn nhau → lưu "1" cho radio chọn, "" cho 2 radio còn lại.
                 if (rdoThuocNew != null) SaveCheckState(rdoThuocNew.Name, rdoThuocNew.Checked);
                 if (rdoVatTuNew != null) SaveCheckState(rdoVatTuNew.Name, rdoVatTuNew.Checked);

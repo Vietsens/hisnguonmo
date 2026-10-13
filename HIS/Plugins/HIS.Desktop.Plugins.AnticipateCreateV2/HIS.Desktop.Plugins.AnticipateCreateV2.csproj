@@ -446,6 +446,10 @@
     <Compile Include="UCAnticipateCreateV2__Control.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCAnticipateCreateV2__BhytInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnumBhytInfoFilter.cs" />
     <Compile Include="UCAnticipateCreateV2.cs">
       <SubType>UserControl</SubType>
     </Compile>
