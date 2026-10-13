@@ -172,6 +172,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem60 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage5 = new DevExpress.XtraTab.XtraTabPage();
+            this.xtraTabPageTrackingList = new DevExpress.XtraTab.XtraTabPage();
+            this.lblTrackingListMessage = new DevExpress.XtraEditors.LabelControl();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.treeListPreventive = new DevExpress.XtraTreeList.TreeList();
             this.gridColumn_ServiceReq_Edit_Preventive = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -397,6 +399,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).BeginInit();
             this.xtraTabPage5.SuspendLayout();
+            this.xtraTabPageTrackingList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
             this.layoutControl5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeListPreventive)).BeginInit();
@@ -894,7 +897,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.xtraTabControl2.TabIndex = 10;
             this.xtraTabControl2.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage1,
-            this.xtraTabPage5});
+            this.xtraTabPage5,
+            this.xtraTabPageTrackingList});
             this.xtraTabControl2.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl2_SelectedPageChanged);
             // 
             // xtraTabPage1
@@ -1457,7 +1461,30 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.xtraTabPage5.Name = "xtraTabPage5";
             this.xtraTabPage5.Size = new System.Drawing.Size(615, 481);
             this.xtraTabPage5.Text = "Thực hiện đơn dự trù";
-            // 
+            //
+            // xtraTabPageTrackingList
+            //
+            this.xtraTabPageTrackingList.Controls.Add(this.lblTrackingListMessage);
+            this.xtraTabPageTrackingList.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.xtraTabPageTrackingList.Name = "xtraTabPageTrackingList";
+            this.xtraTabPageTrackingList.Size = new System.Drawing.Size(615, 481);
+            this.xtraTabPageTrackingList.Text = "DS tờ điều trị";
+            //
+            // lblTrackingListMessage
+            //
+            this.lblTrackingListMessage.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F);
+            this.lblTrackingListMessage.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.lblTrackingListMessage.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.lblTrackingListMessage.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.lblTrackingListMessage.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblTrackingListMessage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTrackingListMessage.Location = new System.Drawing.Point(0, 0);
+            this.lblTrackingListMessage.Name = "lblTrackingListMessage";
+            this.lblTrackingListMessage.Padding = new System.Windows.Forms.Padding(20);
+            this.lblTrackingListMessage.Size = new System.Drawing.Size(615, 481);
+            this.lblTrackingListMessage.TabIndex = 0;
+            this.lblTrackingListMessage.Visible = false;
+            //
             // layoutControl5
             // 
             this.layoutControl5.Controls.Add(this.treeListPreventive);
@@ -3621,6 +3648,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).EndInit();
             this.xtraTabPage5.ResumeLayout(false);
+            this.xtraTabPageTrackingList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).EndInit();
             this.layoutControl5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.treeListPreventive)).EndInit();
@@ -3969,6 +3997,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 		private DevExpress.XtraTab.XtraTabControl xtraTabControl2;
 		private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
 		private DevExpress.XtraTab.XtraTabPage xtraTabPage5;
+		private DevExpress.XtraTab.XtraTabPage xtraTabPageTrackingList;
+		private DevExpress.XtraEditors.LabelControl lblTrackingListMessage;
 		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem52;
 		private DevExpress.XtraLayout.LayoutControl layoutControl4;
 		private DevExpress.XtraEditors.SimpleButton btnSearchNew;

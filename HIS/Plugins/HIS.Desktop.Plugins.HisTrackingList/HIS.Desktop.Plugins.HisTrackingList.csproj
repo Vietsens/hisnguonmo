@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Docs.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Office.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Pdf.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Pdf.v15.2.Drawing, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -293,6 +294,15 @@
     <Compile Include="Run\IHisTrackingList.cs" />
     <Compile Include="Run\HisTrackingListBehavior.cs" />
     <Compile Include="Run\HisTrackingListFactory.cs" />
+    <Compile Include="TrackingView\TrackingDocumentPlanner.cs" />
+    <Compile Include="TrackingView\TrackingPrintData.cs" />
+    <Compile Include="TrackingView\TrackingSheetRenderer.cs" />
+    <Compile Include="TrackingView\UcTrackingListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrackingView\UcTrackingListView.Designer.cs">
+      <DependentUpon>UcTrackingListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="UcEmrDocument\LicenceProcess.cs" />
     <Compile Include="UcEmrDocument\UcViewEmrDocument.cs">
       <SubType>UserControl</SubType>

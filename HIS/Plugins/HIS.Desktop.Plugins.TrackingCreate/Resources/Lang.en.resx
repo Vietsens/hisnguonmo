@@ -951,6 +951,15 @@
   <data name="frmTrackingCreateNew.xtraTabPage5.Text" xml:space="preserve">
     <value>Execution of provisional orders</value>
   </data>
+  <data name="frmTrackingCreateNew.xtraTabPageTrackingList.Text" xml:space="preserve">
+    <value>Sheet list</value>
+  </data>
+  <data name="frmTrackingCreateNew.lblTrackingListMessage.NoPermission" xml:space="preserve">
+    <value>Your account does not have the treatment sheet list function</value>
+  </data>
+  <data name="frmTrackingCreateNew.lblTrackingListMessage.CannotOpen" xml:space="preserve">
+    <value>Could not open the treatment sheet list</value>
+  </data>
   <data name="frmTrackingCreateNew.xtraTabPageDhst.Text" xml:space="preserve">
     <value>Vital signs</value>
   </data>
