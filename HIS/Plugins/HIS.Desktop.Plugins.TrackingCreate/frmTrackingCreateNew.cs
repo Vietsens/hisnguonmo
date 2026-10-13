@@ -3348,6 +3348,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 HisTrackingADO = LoadTrackingOld();
                 InitComboTrackingOld(HisTrackingADO);
+                if (success)
+                    SetTrackingListNeedReload();
                 WaitingManager.Hide();
                 #region Show message
                 MessageManager.Show(this.ParentForm, param, success);
@@ -3969,6 +3971,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                 HisTrackingADO = LoadTrackingOld();
                 InitComboTrackingOld(HisTrackingADO);
+                if (success)
+                    SetTrackingListNeedReload();
 
                 #region Show message
                 MessageManager.Show(this.ParentForm, param, success);
@@ -4954,6 +4958,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 //            }
                 //            IsFirstLoadForm = false;
 
+                ProcessSelectTrackingListTab();
             }
             catch (Exception ex)
             {
@@ -5183,6 +5188,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this.layoutControlItem55.Text = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.layoutControlItem55.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem56.Text = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.layoutControlItem56.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.xtraTabPage5.Text = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.xtraTabPage5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.xtraTabPageTrackingList.Text = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.xtraTabPageTrackingList.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl5.Text = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.layoutControl5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn_ServiceReq_Edit_Preventive.Caption = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.gridColumn_ServiceReq_Edit_Preventive.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn_ServiceReq_Delete_Preventive.Caption = Inventec.Common.Resource.Get.Value("frmTrackingCreateNew.gridColumn_ServiceReq_Delete_Preventive.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

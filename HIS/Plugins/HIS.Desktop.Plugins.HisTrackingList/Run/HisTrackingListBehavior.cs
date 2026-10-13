@@ -41,6 +41,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
         long treatmentId = 0;
         HIS_DHST currentDhst;
         HisTreatmentBedRoomLViewFilter dataTransferTreatmentBedRoomFilter;
+        bool isViewOnly;
 
         public HisTrackingListBehavior()
             : base()
@@ -78,8 +79,17 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                         {
                             dataTransferTreatmentBedRoomFilter = (HisTreatmentBedRoomLViewFilter)item;
                         }
+                        else if (item is bool)
+                        {
+                            isViewOnly = (bool)item;
+                        }
                     }
-                    if (currentModule != null && treatmentId > 0 && currentDhst != null)
+                    if (currentModule != null && treatmentId > 0 && isViewOnly)
+                    {
+                        //Read only treatment sheet view embedded in another module (tab "DS tờ điều trị" of TrackingCreate)
+                        result = new HIS.Desktop.Plugins.HisTrackingList.TrackingView.UcTrackingListView(currentModule, treatmentId);
+                    }
+                    else if (currentModule != null && treatmentId > 0 && currentDhst != null)
                     {
                         result = new frmHisTrackingList(currentModule, treatmentId, currentDhst, dataTransferTreatmentBedRoomFilter);
                     }
