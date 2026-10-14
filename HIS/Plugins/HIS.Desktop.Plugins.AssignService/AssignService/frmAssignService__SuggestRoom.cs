@@ -55,6 +55,42 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private string suggestRoomLastKey = null;
 
         /// <summary>
+        /// Cache ket qua kiem tra phong lam viec co tick "Gioi han chi dinh phong thuc hien" hay khong
+        /// (phong lam viec khong doi trong suot vong doi form nen chi can tra cuu 1 lan).
+        /// </summary>
+        private bool? isLoadBalanceWorkingRoom = null;
+
+        /// <summary>
+        /// Can bang tai CHI ap dung khi phong dang lam viec (phong chi dinh) co tick
+        /// "Gioi han chi dinh phong thuc hien" (HIS_ROOM.IS_RESTRICT_EXECUTE_ROOM = 1), theo chot voi benh vien.
+        /// Phong khong tick chay theo luong cu: key HIS.Desktop.Plugins.AssignService.ShowDefaultExecuteRoom
+        /// (gia tri 1 = tu dien phong cung phong lam viec -> cung khoa -> cung chi nhanh, khong xet tai).
+        /// Neu chi xet moi key toan cuc ASSIGN_ROOM_PRIORITY_OPTION thi phong khong tick cung an theo
+        /// can bang tai: lan dau tai hoa nhau nen chon dung phong cua khoa, tu lan 2 nhay sang khoa khac.
+        /// </summary>
+        private bool IsLoadBalanceForWorkingRoom()
+        {
+            try
+            {
+                if (!HisConfigCFG.IsAssignRoomByLoadBalance)
+                {
+                    return false;
+                }
+                if (this.isLoadBalanceWorkingRoom == null)
+                {
+                    var currentWorkingRoom = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
+                    this.isLoadBalanceWorkingRoom = (currentWorkingRoom != null && currentWorkingRoom.IS_RESTRICT_EXECUTE_ROOM == 1);
+                }
+                return this.isLoadBalanceWorkingRoom.Value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Dung dich vu dang tick thanh 1 chuoi de so sanh: service_id + doi tuong thanh toan
         /// (doi doi tuong thanh toan co the doi phong lam duoc nen phai tinh vao)
         /// </summary>
@@ -200,7 +236,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                if (!HisConfigCFG.IsAssignRoomByLoadBalance)
+                if (!this.IsLoadBalanceForWorkingRoom())
                 {
                     return;
                 }
@@ -278,7 +314,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                if (!HisConfigCFG.IsAssignRoomByLoadBalance)
+                if (!this.IsLoadBalanceForWorkingRoom())
                 {
                     return;
                 }
