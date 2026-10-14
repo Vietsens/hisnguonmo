@@ -614,6 +614,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 isNotLoadWhileChangeControlStateInFirst = true;
                 SetIconFrm();
                 this.SetCaptionByLanguageKey();
+                ApplyTrackingListTabVisibility();
                 if (this.action == GlobalVariables.ActionEdit)
                     lciUpdateTimeDHST.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 

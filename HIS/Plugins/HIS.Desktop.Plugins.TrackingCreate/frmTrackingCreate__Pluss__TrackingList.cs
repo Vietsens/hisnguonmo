@@ -32,9 +32,28 @@ namespace HIS.Desktop.Plugins.TrackingCreate
     public partial class frmTrackingCreateNew
     {
         private const string MODULE_LINK__HIS_TRACKING_LIST = "HIS.Desktop.Plugins.HisTrackingList";
+        // Việc 57960: khóa bật tính năng; khác 1 thì ẩn tab DS tờ điều trị (như trước 57960)
+        private const string CONFIG_KEY__IS_VIEW_TRACKING_NEWEST_FIRST = "HIS.Desktop.Plugins.HisTrackingList.IsViewTrackingNewestFirst";
 
         private Control trackingListView;
         private bool isTrackingListNeedReload;
+
+        /// <summary>
+        /// Shows the tab "DS tờ điều trị" only when the config key IsViewTrackingNewestFirst is 1.
+        /// Called once on form load, before the user can select the tab.
+        /// </summary>
+        private void ApplyTrackingListTabVisibility()
+        {
+            try
+            {
+                bool isEnabled = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IS_VIEW_TRACKING_NEWEST_FIRST) == "1";
+                this.xtraTabPageTrackingList.PageVisible = isEnabled;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         /// <summary>
         /// Called when the selected tab changes: builds the view the first time the tab is opened,
