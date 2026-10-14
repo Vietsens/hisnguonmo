@@ -472,6 +472,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 btnFind = null;
                 grdColPatientCode = null;
                 grdColVirPatientName = null;
+                grdColServiceNames = null;
+                grdColServiceAmounts = null;
+                grdColServicePrices = null;
+                grdColServicePatientTypes = null;
                 grdColServiceReqCode = null;
                 grdColNUM_ORDER = null;
                 repositoryItemPictureEdit2 = null;

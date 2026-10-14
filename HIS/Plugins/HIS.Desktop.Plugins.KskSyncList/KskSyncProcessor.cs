@@ -365,6 +365,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 string vlgMacskcb = vlgGtin ?? "";
                 KskVlgPusher vlgPusher = (vlgConfig != null) ? new KskVlgPusher(vlgConfig, vlgGtin) : null;
 
+                // Cổng Kho dữ liệu sức khỏe toàn dân — khóa RIÊNG đủ giá trị (kể cả mã đơn vị + khóa bí mật),
+                // KHÔNG đọc khóa cổng BYT. Chuỗi thiếu trường vẫn dựng pusher để báo đúng trường thiếu cho từng hồ sơ.
+                KskKdlskPusher kdlskPusher = null;
+                if (this.PushKdlsk && !string.IsNullOrWhiteSpace(this.KdlskConnectionInfo))
+                    kdlskPusher = new KskKdlskPusher(KskKdlskConfigParser.Parse(this.KdlskConnectionInfo));
+
                 // Các cổng do THƯ VIỆN đẩy (BYT/HSSK/HOC). Không có cổng nào -> KHÔNG gọi PushListMulti
                 // (gọi rỗng sẽ trả về "thành công" giả vì không cổng nào đánh dấu thất bại).
                 bool pushViaLibrary = this.pushByt || hsskConfig != null || hocConfig != null;
@@ -375,6 +381,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 // Ghi log giá trị cấu hình TỪNG CỔNG vừa lấy được (mật khẩu / khóa bí mật đã mask).
                 LogGatewayConfigs(bytConfig, hsskConfig, hocConfig, hccConfig, vlgConfig);
+                LogKdlskConfig(this.KdlskConnectionInfo, this.PushKdlsk, (kdlskPusher != null) ? kdlskPusher.Config : null);
 
                 // Cổng ĐÃ CHỌN + CÓ chuỗi cấu hình nhưng PARSE LỖI (sai định dạng) -> KHÔNG bỏ qua âm thầm:
                 // ghi nhận để đánh dấu hồ sơ thất bại kèm lý do (nếu không, hồ sơ vẫn "thành công" nhờ cổng khác).
@@ -406,6 +413,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         Inventec.Common.Logging.LogSystem.Warn("Dong bo KSK: cong HCC cau hinh json/base64 -> KHONG ky duoc"
                             + " CKS_ (chu ky chen theo the XML). Ban tin day sang HCC se de trong CHUKYDONVI."
                             + " Doi cau hinh HCC sang xml/base64 neu can chu ky.");
+                    if (kdlskPusher != null && kdlskPusher.Config != null && kdlskPusher.Config.IsJson())
+                        Inventec.Common.Logging.LogSystem.Warn("Dong bo KSK: cong KDLSK cau hinh json/base64 -> KHONG ky duoc"
+                            + " CKS_ (chu ky chen theo the XML). Ban tin day sang Kho se de trong CHUKYDONVI.");
                 }
 
                 // Ghi log CHỐT danh sách cổng thực sự đẩy của lần bấm này (để đối soát khi có nhiều cổng).
@@ -416,6 +426,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (hocConfig != null) gateways.Add("HOC");
                 if (hccConfig != null) gateways.Add("HCC" + (hccIsJson ? "(json)" : "(xml)"));
                 if (vlgConfig != null) gateways.Add("VLG(data-sync/push)");
+                if (kdlskPusher != null)
+                    gateways.Add("KDLSK" + ((kdlskPusher.Config != null && kdlskPusher.Config.IsJson()) ? "(json)" : "(xml)"));
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                     "Dong bo KSK: {0} ho so -> cong: {1}; ky so: {2}{3}",
                     rowList.Count,
@@ -423,7 +435,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     doSign ? "co" : "khong",
                     (configError != null) ? ("; LOI CAU HINH: " + configError) : ""));
                 // Có cổng nào NGOÀI VLG được đẩy trong lô không (quyết định lỗi cấu hình VLG có chặn cả hồ sơ không).
-                bool otherGatewaySelected = pushViaLibrary || hccPusher != null || this.PushSytHcm;
+                bool otherGatewaySelected = pushViaLibrary || hccPusher != null || this.PushSytHcm || kdlskPusher != null;
                 bool dupBytVlg = vlgConfig != null && (this.pushByt || hocConfig != null);
                 if (dupBytVlg)
                     Inventec.Common.Logging.LogSystem.Warn("Dong bo KSK: cong VLG (API V1.5) DA TU chuyen tiep ban tin sang"
@@ -523,7 +535,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 // Chặn cứng vì lỗi DỮ LIỆU: KHÔNG gọi push cổng nào. BuildResultAdo giữ
                                 // TRANSACTION_CODE/REGISTRATION_NO cũ (không mất mã đối soát của lần trước).
                                 ado = BuildResultAdo(rowList[i], null, null, KskVlgPushResult.Failure(vlgBlockReason),
-                                    syncTime, libSingleLabel, configError, null);
+                                    syncTime, libSingleLabel, configError, null, null);
                             }
                             else
                             {
@@ -553,8 +565,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             // cổng này KHÔNG làm hỏng kết quả của các cổng trên.
                             KskSytHcmPushResult sytResult = PushSytHcmOneRow(rowList[i]);
 
+                            // Cổng Kho dữ liệu sức khỏe toàn dân (nếu chọn) — bản tin riêng (mã đơn vị của khóa Kho),
+                            // tự bọc try/catch: lỗi cổng này không làm hỏng kết quả các cổng trên.
+                            KskKdlskPushResult kdlskResult = (kdlskPusher != null)
+                                ? PushKdlskOneRow(kdlskPusher, inp, dataSigner) : null;
+
                             ado = BuildResultAdo(rowList[i], r0, hccResult, vlgResult, syncTime,
-                                libSingleLabel, configError, sytResult);
+                                libSingleLabel, configError, sytResult, kdlskResult);
                             if (dupBytVlg && ado.SYNC_RESULT_TYPE == RESULT_SUCCESS)
                                 ado.SuccessNote = (string.IsNullOrEmpty(ado.SuccessNote) ? "" : (ado.SuccessNote + "; "))
                                     + "Lưu ý: đang tích cả cổng BYT/HOC và Vĩnh Long — Kho Vĩnh Long đã tự chuyển tiếp sang Bộ Y tế,"
@@ -2731,7 +2748,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             return res;
         }
 
-        private static readonly string[] GatewayLabels = { "BYT:", "HSSK:", "HOC:", "HCC:", "VLG:" };
+        private static readonly string[] GatewayLabels = { "BYT:", "HSSK:", "HOC:", "HCC:", "VLG:", KDLSK_LABEL };
 
         private static bool HasGatewayLabel(string value)
         {
@@ -2831,14 +2848,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
             if (value == null || value.Length <= SYNC_CODE_MAX_LEN) return value;
             var parts = new List<string>(value.Split(';'));
             int vi = parts.FindIndex(p => p.StartsWith("VLG:", StringComparison.OrdinalIgnoreCase));
+            // Doan "KDLSK:" cung giu nguyen: ma giao dich la cach DUY NHAT tra cuu ket qua xu ly tren web Kho.
+            int ki = parts.FindIndex(p => p.StartsWith(KDLSK_LABEL, StringComparison.OrdinalIgnoreCase));
             int over = value.Length - SYNC_CODE_MAX_LEN;
-            if (vi >= 0)
+            if (vi >= 0 || ki >= 0)
             {
                 while (over > 0)
                 {
                     int j = -1;
                     for (int k = 0; k < parts.Count; k++)
-                        if (k != vi && parts[k].Length > SEGMENT_MIN_KEEP && (j < 0 || parts[k].Length > parts[j].Length)) j = k;
+                        if (k != vi && k != ki && parts[k].Length > SEGMENT_MIN_KEEP && (j < 0 || parts[k].Length > parts[j].Length)) j = k;
                     if (j < 0) break;
                     int cut = Math.Min(over, parts[j].Length - SEGMENT_MIN_KEEP);
                     parts[j] = parts[j].Substring(0, parts[j].Length - cut);
@@ -3074,6 +3093,158 @@ namespace HIS.Desktop.Plugins.KskSyncList
             }
         }
 
+        #region ===== Cổng Kho dữ liệu sức khỏe toàn dân (KDLSK) =====
+        private const string KDLSK_LABEL = "KDLSK:";
+
+        /// <summary>
+        /// Có đẩy sang cổng Kho dữ liệu sức khỏe toàn dân hay không — theo ô tích trong bảng Cài đặt.
+        /// Đặt qua thuộc tính (như cổng Sở Y tế TP.HCM) để không đổi chữ ký hàm khởi tạo của các cổng cũ.
+        /// </summary>
+        internal bool PushKdlsk { get; set; }
+
+        /// <summary>Chuỗi cấu hình khóa MOS.HIS_KSK_SYNC.KDLSK_2062_CONNECTION_INFO theo chi nhánh (UI truyền vào).</summary>
+        internal string KdlskConnectionInfo { get; set; }
+
+        /// <summary>Thẻ hành chính BẮT BUỘC của Kho (Phụ lục mục I.1) -> tên hiển thị.</summary>
+        private static readonly KeyValuePair<string, string>[] KdlskRequiredTags = new[]
+        {
+            new KeyValuePair<string, string>("HO_TEN", "Họ tên"),
+            new KeyValuePair<string, string>("NGAY_SINH", "Ngày sinh"),
+            new KeyValuePair<string, string>("GIOI_TINH", "Giới tính"),
+            new KeyValuePair<string, string>("MATINH_CU_TRU", "Mã tỉnh cư trú"),
+            new KeyValuePair<string, string>("MAXA_CU_TRU", "Mã xã cư trú"),
+            new KeyValuePair<string, string>("SO_CCCD", "Số CCCD/mã định danh"),
+        };
+
+        /// <summary>
+        /// Đẩy 1 hồ sơ lên Kho: kiểm cấu hình -> dựng XML (mã đơn vị của khóa Kho) -> kiểm 6 trường hành chính ->
+        /// ký CKS_ (nếu tích ký số; đã tích mà ký lỗi thì KHÔNG gửi) -> gửi. Lỗi ở đây chỉ làm cổng Kho thất bại.
+        /// </summary>
+        private KskKdlskPushResult PushKdlskOneRow(KskKdlskPusher pusher, Qd1551KskInput input,
+            Func<string, string> dataSigner)
+        {
+            try
+            {
+                string cfgError = pusher.ValidateConfig();
+                if (cfgError != null) return KskKdlskPushResult.NotSent(cfgError);
+                if (input == null) return KskKdlskPushResult.NotSent("KDLSK: không dựng được dữ liệu hồ sơ.");
+
+                KskKdlskConfig cfg = pusher.Config;
+                string senderId = cfg.SenderId.Trim();
+                string xml = BuildKdlskContent(input, senderId, false);
+                if (string.IsNullOrEmpty(xml)) return KskKdlskPushResult.NotSent("KDLSK: không dựng được bản tin hồ sơ.");
+
+                string missing = ValidateKdlskAdmin(xml);
+                if (missing != null) return KskKdlskPushResult.NotSent(missing);
+
+                string content;
+                if (cfg.IsJson())
+                {
+                    // JSON theo mục 2.5 Phụ lục (khóa chữ thường, bọc tên khối); giới tính giữ chuẩn QĐ 2062.
+                    content = KskHccJsonConverter.ToKdlskJson(BuildKdlskContent(input, senderId, true));
+                }
+                else
+                {
+                    content = xml;
+                    if (dataSigner != null)
+                    {
+                        string signed = dataSigner(xml);
+                        if (string.IsNullOrEmpty(signed))
+                            return KskKdlskPushResult.NotSent("KDLSK: ký số thất bại (CKS_BENH_VIEN/CKS_NGUOI_KET_LUAN)"
+                                + " — không đẩy bản tin chưa ký. Kiểm tra cấu hình chứng thư / HSM / USB token.");
+                        content = signed;
+                    }
+                }
+                if (string.IsNullOrEmpty(content)) return KskKdlskPushResult.NotSent("KDLSK: không dựng được bản tin hồ sơ.");
+                DumpDebug("BanTin_KDLSK_" + (cfg.IsJson() ? "json" : "xml"), content);
+                return pusher.Push(content);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return KskKdlskPushResult.NotSent("KDLSK: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Bản tin KHAMSUCKHOE 1 hồ sơ cho Kho: THONGTINDONVI/MACSKCB và MA_GTIN_CSKCB = mã đơn vị của khóa Kho
+        /// (đặt tạm vào input rồi trả lại, không ảnh hưởng bản tin các cổng khác). XML chuẩn hóa khai báo utf-8.
+        /// </summary>
+        private static string BuildKdlskContent(Qd1551KskInput input, string senderId, bool asJson)
+        {
+            string oldGtin = input.MaGtinCskcb;
+            try
+            {
+                input.MaGtinCskcb = senderId;
+                string content = KskEnvelopeBuilder.Build(new List<Qd1551KskInput> { input }, senderId, asJson);
+                return asJson ? content : FixXmlDeclarationUtf8(content);
+            }
+            finally
+            {
+                input.MaGtinCskcb = oldGtin;
+            }
+        }
+
+        /// <summary>Kiểm 6 thẻ hành chính bắt buộc trên XML sẽ gửi (giải NOIDUNGFILE base64). Đủ -> null.</summary>
+        private static string ValidateKdlskAdmin(string xml)
+        {
+            HashSet<string> filled = KskVlgLengthRules.CollectNonEmptyTagNames(xml);
+            if (filled == null) return null;   // không đọc được bản tin -> không chặn nhầm, để Kho báo lỗi
+            var missing = new List<string>();
+            foreach (var kv in KdlskRequiredTags)
+                if (!filled.Contains(kv.Key)) missing.Add(kv.Value + " (" + kv.Key + ")");
+            if (missing.Count == 0) return null;
+            return "KDLSK: KHÔNG đẩy hồ sơ — thiếu thông tin hành chính bắt buộc: " + string.Join(", ", missing.ToArray())
+                + " — bổ sung ở thông tin hành chính bệnh nhân rồi đẩy lại.";
+        }
+
+        /// <summary>Đoạn "KDLSK:" trong chuỗi mã giao dịch / trạng thái đã lưu; không có -> null.</summary>
+        private static string GetKdlskSegment(string stored)
+        {
+            if (string.IsNullOrEmpty(stored)) return null;
+            foreach (string p in stored.Split(';'))
+                if (p.StartsWith(KDLSK_LABEL, StringComparison.OrdinalIgnoreCase))
+                    return EmptyToNull(p.Substring(KDLSK_LABEL.Length).Trim());
+            return null;
+        }
+
+        /// <summary>
+        /// Ghi/xóa đoạn "KDLSK:" mà KHÔNG mất giá trị cổng khác. Đoạn KDLSK luôn có nhãn; chuỗi trần của cổng VLG
+        /// được gắn nhãn "VLG:" trước khi ghép (không thì đối soát VLG không còn nhận ra giá trị của mình).
+        /// </summary>
+        private static string SetKdlskSegment(string existing, string value, bool isTxn)
+        {
+            if (string.IsNullOrEmpty(value) && GetKdlskSegment(existing) == null) return existing;
+            var parts = new List<string>();
+            if (!string.IsNullOrEmpty(existing))
+            {
+                if (!HasGatewayLabel(existing) && IsVlgBareValue(existing, isTxn))
+                    parts.Add("VLG:" + existing.Trim());
+                else
+                    foreach (string p in existing.Split(';'))
+                        if (p.Length > 0 && !p.StartsWith(KDLSK_LABEL, StringComparison.OrdinalIgnoreCase)) parts.Add(p);
+            }
+            if (!string.IsNullOrEmpty(value)) parts.Add(KDLSK_LABEL + value);
+            return (parts.Count > 0) ? string.Join(";", parts.ToArray()) : null;
+        }
+
+        /// <summary>Log 1 dòng cấu hình cổng KDLSK (mật khẩu, khóa bí mật chỉ ghi có/không + độ dài).</summary>
+        private static void LogKdlskConfig(string rawValue, bool selected, KskKdlskConfig cfg)
+        {
+            try
+            {
+                if (!LogConfigState("KDLSK", KskKdlskConfigParser.CONFIG_KEY, rawValue, selected, cfg == null)) return;
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "Cau hinh KDLSK ({0}): Username={1}; Password={2}; SenderId={3}; PrivateKey={4}; TokenUrl={5};"
+                    + " PushUrl={6}; DataType={7}; Version={8}; ReceiverId={9}",
+                    KskKdlskConfigParser.CONFIG_KEY, Show(cfg.Username), Mask(cfg.Password), Show(cfg.SenderId),
+                    Mask(cfg.PrivateKey), Show(cfg.TokenUrl), Show(cfg.PushUrl), Show(cfg.DataType),
+                    Show(cfg.Version), Show(cfg.ReceiverId)));
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+        #endregion
+
         #region log cau hinh cong (mask thong tin bi mat)
         private const string CFG_KEY_BYT = "MOS.HIS_KSK_SYNC.CONNECTION_INFO";
         private const string CFG_KEY_HSSK = "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO";
@@ -3236,7 +3407,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         private KskSyncResultADO BuildResultAdo(V_HIS_KSK_SYNC row, ResultADO pushResult,
             KskHccPushResult hccResult, KskVlgPushResult vlgResult, long syncTime,
-            string libSingleLabel, string configError, KskSytHcmPushResult sytResult)
+            string libSingleLabel, string configError, KskSytHcmPushResult sytResult, KskKdlskPushResult kdlskResult)
         {
             KskSyncResultADO ado = NewResult(row, syncTime);
             PushResponse resp = ExtractResponse(pushResult);
@@ -3246,15 +3417,18 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // Cổng Sở Y tế TP.HCM cũng tính vào kết quả chung, nếu không thì lượt CHỈ tích riêng cổng
             // này sẽ bị ghi nhầm là "chưa chọn cổng nào để đẩy".
             bool hasSyt = sytResult != null;
+            bool hasKdlsk = kdlskResult != null;
 
             bool libOk = hasLib && pushResult.Success;
             bool hccOk = hasHcc && hccResult.Success;
             bool vlgOk = hasVlg && vlgResult.Success;
             bool sytOk = hasSyt && sytResult.Success;
+            bool kdlskOk = hasKdlsk && kdlskResult.Success;
 
-            bool success = (hasLib || hasHcc || hasVlg || hasSyt)
+            bool success = (hasLib || hasHcc || hasVlg || hasSyt || hasKdlsk)
                         && (!hasLib || libOk) && (!hasHcc || hccOk)
                         && (!hasVlg || vlgOk) && (!hasSyt || sytOk)
+                        && (!hasKdlsk || kdlskOk)
                         && string.IsNullOrEmpty(configError);
 
             ado.SYNC_RESULT_TYPE = success ? RESULT_SUCCESS : RESULT_FAILED;
@@ -3287,6 +3461,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 vlgTxn = GetVlgSegment(storedTxn, true);
                 vlgReg = GetVlgSegment(storedReg, false);
             }
+            // KDLSK: doan "KDLSK:" rieng (ma giao dich Kho de tra cuu tren web) — lan nay gui (da toi Kho) -> gia tri
+            // moi; chua gui duoc / khong day KDLSK -> giu doan cua lan truoc.
+            string storedKdlskTxn = GetKdlskSegment(storedTxn);
+            string storedKdlskReg = GetKdlskSegment(storedReg);
+            bool kdlskSent = hasKdlsk && kdlskResult.State != KskKdlskPushResult.STATE_NOT_SENT;
+            string kdlskTxn = kdlskSent ? EmptyToNull(kdlskResult.TxnCode) : storedKdlskTxn;
+            string kdlskReg = hasKdlsk ? kdlskResult.State : storedKdlskReg;
+            bool kdlskInvolved = hasKdlsk || storedKdlskTxn != null || storedKdlskReg != null;
             bool otherSource = hasLib || hasHcc;
             if (!hasVlg && !otherSource)
             {
@@ -3303,9 +3485,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
             else
             {
                 // Nhieu cong: gan nhan theo cong THAM GIA (khong theo gia tri co/khong) de doan VLG luon co nhan.
-                bool forceLabel = otherSource && (hasVlg || !string.IsNullOrEmpty(vlgTxn) || !string.IsNullOrEmpty(vlgReg));
+                bool forceLabel = otherSource && (hasVlg || !string.IsNullOrEmpty(vlgTxn) || !string.IsNullOrEmpty(vlgReg)
+                    || kdlskInvolved);
                 ado.TRANSACTION_CODE = JoinGatewayValue(txn, hasHcc ? hccResult.TxnCode : null, vlgTxn, libSingleLabel, forceLabel);
                 ado.REGISTRATION_NO = JoinGatewayValue(regState, hasHcc ? hccResult.State : null, vlgReg, libSingleLabel, forceLabel);
+            }
+            if (kdlskInvolved)
+            {
+                ado.TRANSACTION_CODE = SetKdlskSegment(ado.TRANSACTION_CODE, kdlskTxn, true);
+                ado.REGISTRATION_NO = SetKdlskSegment(ado.REGISTRATION_NO, kdlskReg, false);
             }
             // Lan day nay KHONG co ma giao dich/trang thai (bi chan truoc khi gui, mat mang...) -> GIU
             // gia tri da luu cua ho so (backend upsert ghi de nguyen cot — null se XOA tracking_id cua
@@ -3325,6 +3513,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     notes.Add("VLG lưu ý: " + vlgResult.Warning);
                 if (notes.Count > 0) ado.SuccessNote = string.Join("; ", notes.ToArray());
             }
+            // Kho du lieu suc khoe toan dan: status 200 CHI la "da tiep nhan cho xu ly" — noi ro de nhan vien tra cuu
+            // ket qua xu ly tren web theo ma giao dich, khong day lai.
+            if (success && hasKdlsk && kdlskOk)
+            {
+                string note = "KDLSK: Kho đã tiếp nhận" + (string.IsNullOrEmpty(kdlskResult.TxnCode) ? "" : " (mã giao dịch " + kdlskResult.TxnCode + ")")
+                    + " — tra cứu kết quả xử lý trên hososuckhoe.com.vn theo mã giao dịch";
+                ado.SuccessNote = string.IsNullOrEmpty(ado.SuccessNote) ? note : (ado.SuccessNote + "; " + note);
+            }
             if (!success)
             {
                 var reasons = new List<string>();
@@ -3335,6 +3531,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (hasSyt && !sytOk)
                     reasons.Add("SYT TP.HCM: " + (!string.IsNullOrEmpty(sytResult.Message)
                         ? sytResult.Message : "đồng bộ thất bại"));
+                if (hasKdlsk && !kdlskOk)
+                    reasons.Add(!string.IsNullOrEmpty(kdlskResult.Message) ? kdlskResult.Message : "KDLSK: đồng bộ thất bại");
                 if (!string.IsNullOrEmpty(configError)) reasons.Add(configError);
                 // Ly do VLG xep CUOI: "Cap nhat KQ cong" doc phan truoc " | VLG:" la loi cong khac (OtherGatewayReason).
                 if (hasVlg && !vlgOk)
@@ -3345,7 +3543,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 }
                 // Chi khi KHONG co cong nao duoc day (truoc day thieu !hasVlg + cau "if" treo: ho so chi day VLG
                 // ma that bai luon bi noi them "Chua chon cong", ly do loi SYT bi nuot, configError ghi 2 lan).
-                if (!hasLib && !hasHcc && !hasVlg && !hasSyt && string.IsNullOrEmpty(configError))
+                if (!hasLib && !hasHcc && !hasVlg && !hasSyt && !hasKdlsk && string.IsNullOrEmpty(configError))
                     reasons.Add("Chưa chọn cổng liên thông để đẩy");
                 ado.SYNC_FAILD_REASON = string.Join(" | ", reasons);
             }

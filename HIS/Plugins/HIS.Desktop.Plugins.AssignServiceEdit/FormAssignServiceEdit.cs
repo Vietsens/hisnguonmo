@@ -1030,8 +1030,12 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 }
                 if (hasUpdate)
                 {
+                    //Chi tinh dong da thu tien co thay doi 5 truong tien; dong chi sua ghi chu thi van cho luu
+                    HashSet<long> moneyChangedIds = new HashSet<long>(this.allSereServ
+                        .Where(o => o.serviceType == Base.GlobalStore.SERE_SERV_TYPE && this.IsSereServChanged(o))
+                        .Select(o => o.ID));
                     touchedPaidIds.AddRange(serviceReqUpdate.UpdateServices
-                        .Where(o => o.SereServId.HasValue && paidIds.Contains(o.SereServId.Value))
+                        .Where(o => o.SereServId.HasValue && paidIds.Contains(o.SereServId.Value) && moneyChangedIds.Contains(o.SereServId.Value))
                         .Select(o => o.SereServId.Value).ToList());
                 }
                 touchedPaidIds = touchedPaidIds.Distinct().ToList();
@@ -2509,11 +2513,9 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
 
                 // gan du lieu cho sereServs Update
                 serviceReqUpdate.UpdateServices = new List<ServiceReqDetailSDO>();
-                //Chi gui len nhung dong THUC SU thay doi so voi luc nap len form.
-                //Gui thua se lam bat oan cac chot kiem tra dich vu da thu tien o backend.
-                List<HisSereServADO> SereServUpdates = lstdata
-                    .Where(o => o.serviceType == Base.GlobalStore.SERE_SERV_TYPE && this.IsSereServChanged(o))
-                    .ToList();
+                //Gui len tat ca dong cu con tick (nhu truoc viec 54055) de cac truong ngoai 5 truong tien
+                //(ghi chu, khong huong BHYT, ...) van duoc luu. Backend chi chan dich vu da thu tien khi 5 truong tien thay doi.
+                List<HisSereServADO> SereServUpdates = lstdata.Where(o => o.serviceType == Base.GlobalStore.SERE_SERV_TYPE).ToList();
 
                 foreach (var item in SereServUpdates)
                 {

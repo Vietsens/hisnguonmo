@@ -426,6 +426,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 }
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
+                CommonParam bhytParam = new CommonParam();   // BHYT info filter call (Thong tin)
+                bool bhytSuccess = true;
                 if (IsMedicineChecked)
                 {
                     // Thuốc — cây tồn GỘP theo loại trên các kho đã chọn (không gửi INCLUDE_MEDI_STOCK;
@@ -436,6 +438,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                     mediFilter.INCLUDE_BASE_AMOUNT = isIncludeBaseAmount;
 
                     lstMediInStocks = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, mediFilter, param);
+                    bhytSuccess = LoadBhytInfoTypeIds(true, bhytParam);
                     BuildImpExpDictionary(true, impFromTime, impToTime);
                     BuildAnticipateData(true, impFromTime, impToTime);   // vCong 52461 — số liệu dự trù theo loại
 
@@ -484,6 +487,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                     mateFilter.INCLUDE_BASE_AMOUNT = isIncludeBaseAmount;
 
                     lstMateInStocks = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, mateFilter, param);
+                    bhytSuccess = LoadBhytInfoTypeIds(false, bhytParam);
                     BuildImpExpDictionary(false, impFromTime, impToTime);
                     BuildAnticipateData(false, impFromTime, impToTime);   // vCong 52461 — số liệu dự trù theo loại
 
@@ -544,6 +548,12 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 // BV HAGL — sửa phiếu: điền lại cột tồn/thầu cho các dòng đã nạp (số liệu theo loại vừa dựng xong ở trên)
                 FillEditingLineFigures();
                 WaitingManager.Hide();
+                if (!bhytSuccess)
+                {
+                    // BHYT info filter call failed: the list above stays empty, show the system message
+                    MessageManager.Show(bhytParam, false);
+                    HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(bhytParam);
+                }
             }
             catch (Exception ex)
             {
@@ -671,6 +681,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 if (pluginTxtTreeSearch != null) pluginTxtTreeSearch.Text = "";
                 currentTreeKeyword = "";
                 ResetImpExpFilterDefault();                  // Từ ngày = 01 tháng hiện tại, Đến ngày = hôm nay
+                ResetBhytInfoFilter();                       // Thong tin = Tat ca
                 formLoaded = prevLoaded;
 
                 // ----- Xóa kết quả -----

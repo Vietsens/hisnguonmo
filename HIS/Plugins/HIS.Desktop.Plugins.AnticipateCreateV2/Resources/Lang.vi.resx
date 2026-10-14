@@ -441,4 +441,19 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_DESCRIPTION" xml:space="preserve">
     <value>Ghi chú</value>
   </data>
+  <data name="UCAnticipateCreateV2.lciBhytInfo.Text" xml:space="preserve">
+    <value>Thông tin</value>
+  </data>
+  <data name="UCAnticipateCreateV2.lciBhytInfo.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lọc theo thông tin BHYT khai trong danh mục loại thuốc, vật tư</value>
+  </data>
+  <data name="UCAnticipateCreateV2.cboBhytInfo.All" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="UCAnticipateCreateV2.cboBhytInfo.Full" xml:space="preserve">
+    <value>Đầy đủ thông tin BHYT</value>
+  </data>
+  <data name="UCAnticipateCreateV2.cboBhytInfo.Missing" xml:space="preserve">
+    <value>Thiếu thông tin BHYT</value>
+  </data>
 </root>

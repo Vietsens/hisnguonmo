@@ -335,6 +335,14 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                             o => (o.IS_LEAF ?? 0) == 1 && allowed.Contains(o.MEDICINE_TYPE_ID),
                             o => o.NodeId, o => o.ParentNodeId);
                     }
+                    // BHYT info filter (Thong tin): leaf types of the latest search's set + their ancestor groups
+                    if (allowedMedicineTypeIdsByBhyt != null)
+                    {
+                        var allowedBhyt = allowedMedicineTypeIdsByBhyt;
+                        src = FilterAlertMinStock(src.ToList(),
+                            o => (o.IS_LEAF ?? 0) == 1 && allowedBhyt.Contains(o.MEDICINE_TYPE_ID),
+                            o => o.NodeId, o => o.ParentNodeId);
+                    }
                     if (!string.IsNullOrEmpty(currentTreeKeyword))
                     {
                         string kw = currentTreeKeyword.ToLower();
@@ -368,6 +376,14 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                         var allowed = allowedTypeIdsByBid;
                         src = FilterAlertMinStock(src.ToList(),
                             o => (o.IS_LEAF ?? 0) == 1 && allowed.Contains(o.MATERIAL_TYPE_ID),
+                            o => o.NodeId, o => o.ParentNodeId);
+                    }
+                    // BHYT info filter (Thong tin): leaf types of the latest search's set + their ancestor groups
+                    if (allowedMaterialTypeIdsByBhyt != null)
+                    {
+                        var allowedBhyt = allowedMaterialTypeIdsByBhyt;
+                        src = FilterAlertMinStock(src.ToList(),
+                            o => (o.IS_LEAF ?? 0) == 1 && allowedBhyt.Contains(o.MATERIAL_TYPE_ID),
                             o => o.NodeId, o => o.ParentNodeId);
                     }
                     if (!string.IsNullOrEmpty(currentTreeKeyword))

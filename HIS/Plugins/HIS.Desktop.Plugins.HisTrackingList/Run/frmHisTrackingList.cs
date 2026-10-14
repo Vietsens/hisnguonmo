@@ -235,13 +235,161 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
                 if (this.treatmentId > 0)
                 {
-                    long treatmentIdLoad = this.treatmentId;
-                    TrackingPrintData printData = await Task.Factory.StartNew(() => TrackingSheetRenderer.LoadData(treatmentIdLoad));
-                    if (printData != null)
+                    if (HisConfigCFG.IsViewTrackingNewestFirst)
                     {
-                        ApplyPrintData(printData);
-                        IsLoad = false;
+                        long treatmentIdLoad = this.treatmentId;
+                        TrackingPrintData printData = await Task.Factory.StartNew(() => TrackingSheetRenderer.LoadData(treatmentIdLoad));
+                        if (printData != null)
+                        {
+                            ApplyPrintData(printData);
+                            IsLoad = false;
+                        }
+                        return;
                     }
+
+                    CommonParam param = new CommonParam();
+                    //danh sach yeu cau
+                    bool IncludeMaterial = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_IS_MATERIAL) == "1";
+                    bool IncludeMoveBackMediMate = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_IS_MEDI_MATE_TH) == "1";
+                    bool BloodPresOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CREATE_BLOOD_PRES_OPTION) == "1";
+                    TrackingDataInputSDO sdo = new TrackingDataInputSDO();
+                    sdo.IncludeMaterial = IncludeMaterial;
+                    sdo.TreatmentId = treatmentId;
+                    sdo.IncludeMoveBackMediMate = IncludeMoveBackMediMate;
+                    sdo.IncludeBloodPres = BloodPresOption;
+                    var TrackingDataSDO = await new BackendAdapter(param).GetAsync<HisTrackingDataSDO>("api/HisTracking/GetData", ApiConsumers.MosConsumer, sdo, param);
+
+                    if (TrackingDataSDO != null)
+                    {
+                        _Treatment = TrackingDataSDO.Treatment;
+                        _TreatmentBedRooms = TrackingDataSDO.TreatmentBedRooms;
+                        _MobaImpMests = TrackingDataSDO.vImpMests2;
+                        _ImpMestMedicines_TL = TrackingDataSDO.vImpMestMedicines;
+                        _ImpMestMaterial_TL = TrackingDataSDO.vImpMestMaterials;
+                        _ImpMestBlood_TL = TrackingDataSDO.vImpMestBloods;
+                        ListDhst = TrackingDataSDO.HisDHSTs;
+                        _SereServRation = TrackingDataSDO.vSereServRations;
+                        ExpMestBltyReq2 = TrackingDataSDO.vExpMestBityReqs2;
+                        ListCares = TrackingDataSDO.HisCares;
+                        _SereServExts = TrackingDataSDO.SereServExts;
+                        if (TrackingDataSDO.CareDetails != null && TrackingDataSDO.CareDetails.Count > 0)
+                            ListCareDetails.AddRange(TrackingDataSDO.CareDetails);
+
+                        #region ProcessList
+                        //LIST<HIS_SERVICE_REQ>
+                        var _ServiceReqs = TrackingDataSDO.ServiceReqs;
+                        foreach (var item in _ServiceReqs)
+                        {
+                            if (!dicServiceReqs.ContainsKey(item.ID))
+                            {
+                                dicServiceReqs[item.ID] = new HIS_SERVICE_REQ();
+                                dicServiceReqs[item.ID] = item;
+                            }
+                        }
+                        //LIST<HIS_EXP_MEST>
+                        var expMestDatas = TrackingDataSDO.ExpMests;
+                        foreach (var item in expMestDatas)
+                        {
+                            if (!dicExpMests.ContainsKey(item.SERVICE_REQ_ID ?? 0))
+                            {
+                                dicExpMests[item.SERVICE_REQ_ID ?? 0] = new HIS_EXP_MEST();
+                                dicExpMests[item.SERVICE_REQ_ID ?? 0] = (item);
+                            }
+                            else
+                                dicExpMests[item.SERVICE_REQ_ID ?? 0] = (item);
+                        }
+                        if (IsNotShowOutMediAndMate)
+                        {
+                            //List<HIS_SERVICE_REQ_METY>
+                            var metyDatas = TrackingDataSDO.ServiceReqMetys;
+                            foreach (var item in metyDatas)
+                            {
+                                if (!dicServiceReqMetys.ContainsKey(item.SERVICE_REQ_ID))
+                                {
+                                    dicServiceReqMetys[item.SERVICE_REQ_ID] = new List<HIS_SERVICE_REQ_METY>();
+                                    dicServiceReqMetys[item.SERVICE_REQ_ID].Add(item);
+                                }
+                                else
+                                    dicServiceReqMetys[item.SERVICE_REQ_ID].Add(item);
+                            }
+                            //List<HIS_SERVICE_REQ_MATY>
+                            var matyDatas = TrackingDataSDO.ServiceReqMatys;
+                            foreach (var item in matyDatas)
+                            {
+                                if (!dicServiceReqMatys.ContainsKey(item.SERVICE_REQ_ID))
+                                {
+                                    dicServiceReqMatys[item.SERVICE_REQ_ID] = new List<HIS_SERVICE_REQ_MATY>();
+                                    dicServiceReqMatys[item.SERVICE_REQ_ID].Add(item);
+                                }
+                                else
+                                    dicServiceReqMatys[item.SERVICE_REQ_ID].Add(item);
+                            }
+                        }
+
+                        //List<HIS_SERE_SERV>
+                        _SereServs = TrackingDataSDO.SereServs;
+                        if (_SereServs != null && _SereServs.Count > 0)
+                        {
+                            foreach (var item in _SereServs)
+                            {
+                                if (!dicSereServs.ContainsKey(item.SERVICE_REQ_ID ?? 0))
+                                {
+                                    dicSereServs[item.SERVICE_REQ_ID ?? 0] = new List<HIS_SERE_SERV>();
+                                }
+
+                                dicSereServs[item.SERVICE_REQ_ID ?? 0].Add(item);
+                            }
+                        }
+
+                        //List<HIS_EXP_MEST_MEDICINE>
+                        this._ExpMestMedicines = TrackingDataSDO.ExpMestMedicines;
+                        if (this._ExpMestMedicines != null && this._ExpMestMedicines.Count > 0)
+                        {
+                            var dataGroups = this._ExpMestMedicines.Where(p => p.IS_NOT_PRES != 1).GroupBy(p => new { p.TDL_MEDICINE_TYPE_ID, p.EXP_MEST_ID, p.TUTORIAL }).Select(p => p.ToList()).ToList();
+                            foreach (var item in dataGroups)
+                            {
+                                HIS_EXP_MEST_MEDICINE ado = new HIS_EXP_MEST_MEDICINE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_MEDICINE>(ado, item[0]);
+                                ado.AMOUNT = item.Sum(p => p.AMOUNT);
+                                ado.TH_AMOUNT = item.Sum(p => p.TH_AMOUNT);
+                                if (!dicExpMestMedicines.ContainsKey(ado.EXP_MEST_ID ?? 0))
+                                {
+                                    dicExpMestMedicines[ado.EXP_MEST_ID ?? 0] = new List<HIS_EXP_MEST_MEDICINE>();
+                                    dicExpMestMedicines[ado.EXP_MEST_ID ?? 0].Add(ado);
+                                }
+                                else
+                                    dicExpMestMedicines[item[0].EXP_MEST_ID ?? 0].Add(ado);
+                            }
+                        }
+
+                        //List<HIS_EXP_MEST_MATERIAL>
+                        this._ExpMestMaterials = TrackingDataSDO.ExpMestMaterials;
+                        if (this._ExpMestMaterials != null && this._ExpMestMaterials.Count > 0)
+                        {
+                            if (this.keyDoNotShowExpendMaterial == "1")
+                                this._ExpMestMaterials = this._ExpMestMaterials.Where(o => o.IS_EXPEND != 1).ToList();
+
+                            var dataGroups = this._ExpMestMaterials.Where(p => p.IS_NOT_PRES != 1).GroupBy(p => new { p.TDL_MATERIAL_TYPE_ID, p.EXP_MEST_ID }).Select(p => p.ToList()).ToList();
+                            foreach (var item in dataGroups)
+                            {
+                                HIS_EXP_MEST_MATERIAL ado = new HIS_EXP_MEST_MATERIAL();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_MATERIAL>(ado, item[0]);
+                                ado.AMOUNT = item.Sum(p => p.AMOUNT);
+                                ado.TH_AMOUNT = item.Sum(p => p.TH_AMOUNT);
+                                if (!dicExpMestMaterials.ContainsKey(ado.EXP_MEST_ID ?? 0))
+                                {
+                                    dicExpMestMaterials[ado.EXP_MEST_ID ?? 0] = new List<HIS_EXP_MEST_MATERIAL>();
+                                    dicExpMestMaterials[ado.EXP_MEST_ID ?? 0].Add(ado);
+                                }
+                                else
+                                    dicExpMestMaterials[item[0].EXP_MEST_ID ?? 0].Add(ado);
+                            }
+                        }
+                        IsLoad = false;
+                        #endregion
+
+                    }
+                    //this.CheckGetDataForPrint = Task.WhenAll(taskall);
                 }
 
             }
@@ -1037,11 +1185,167 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
         //        Inventec.Common.Logging.LogSystem.Error(ex);
         //    }
         //}
+        private void LoadDataPrint(List<V_HIS_TRACKING> trackingSelecteds = null)
+        {
+            try
+            {
+                if (HisConfigCFG.IsViewTrackingNewestFirst)
+                {
+                    LoadDataPrintNewestFirst(trackingSelecteds);
+                    return;
+                }
+
+                if (trackingSelecteds == null || trackingSelecteds.Count == 0)
+                {
+                    ucViewEmrDocument1.ClearDocument();
+                    return;
+                }
+
+                trackingSelecteds = trackingSelecteds.OrderBy(o => o.TRACKING_TIME).ToList();
+
+                if (this.IsLoad)
+                {
+                    StopTimer(this.currentModule.ModuleLink, timer1);
+                    MessageBox.Show("Dữ liệu dịch vụ của hồ sơ chưa tải xong chưa thể xem trước nội dung vui lòng thử lại sau ít phút.");
+                    return;
+                }
+
+                WaitingManager.Show();
+
+                DisposeMemoryStream(documentTrackingADOs);
+                documentTrackingADOs = new List<DocumentTrackingADO>();
+
+                var trackingSelectedHasDocument = new List<V_HIS_TRACKING>();
+                var trackingSelectedNotHasDocument = new List<V_HIS_TRACKING>();
+
+                foreach (var tracking in trackingSelecteds)
+                {
+                    string hisCode = "HIS_TRACKING:" + tracking.ID;
+                    if (this.listEmrDocument != null && this.listEmrDocument.Any(o => !string.IsNullOrWhiteSpace(o.HIS_CODE) && o.HIS_CODE.Contains(hisCode)))
+                    {
+                        trackingSelectedHasDocument.Add(tracking);
+                    }
+                    else
+                    {
+                        trackingSelectedNotHasDocument.Add(tracking);
+                    }
+                }
+
+                if (trackingSelectedNotHasDocument.Count > 0)
+                {
+                    List<TrackingListADO> listTrackingMps = new List<TrackingListADO>();
+                    TrackingListADO tempTrackingListADO = new TrackingListADO { Trackings = new List<V_HIS_TRACKING>() };
+
+                    for (int i = 0; i < trackingSelectedNotHasDocument.Count; i++)
+                    {
+                        var current = trackingSelectedNotHasDocument[i];
+                        bool valid = (i < trackingSelectedNotHasDocument.Count - 1 &&
+                                      (trackingSelectedHasDocument == null || !trackingSelectedHasDocument.Any(k => k.TRACKING_TIME > current.TRACKING_TIME && k.TRACKING_TIME < trackingSelectedNotHasDocument[i + 1].TRACKING_TIME)));
+
+                        tempTrackingListADO.Trackings.Add(current);
+
+                        if (!valid || i == trackingSelectedNotHasDocument.Count - 1)
+                        {
+                            AutoMapper.Mapper.CreateMap<TrackingListADO, TrackingListADO>();
+                            listTrackingMps.Add(AutoMapper.Mapper.Map<TrackingListADO>(tempTrackingListADO));
+                            tempTrackingListADO = new TrackingListADO { Trackings = new List<V_HIS_TRACKING>() };
+                        }
+                    }
+
+                    var lstTrackingNoHasDocument = listTrackingMps.SelectMany(o => o.Trackings).ToList();
+
+                    if (trackingSelectedHasDocument.Count > 0)
+                    {
+                        long timeMin = trackingSelectedHasDocument.First().TRACKING_TIME;
+                        long timeMax = trackingSelectedHasDocument.Last().TRACKING_TIME;
+
+                        for (int i = 0; i < trackingSelectedHasDocument.Count; i++)
+                        {
+                            var item = trackingSelectedHasDocument[i];
+                            List<V_HIS_TRACKING> lstrs;
+
+                            if (i == 0)
+                                lstrs = lstTrackingNoHasDocument.Where(o => o.TRACKING_TIME < timeMin).ToList();
+                            else
+                                lstrs = lstTrackingNoHasDocument.Where(o => o.TRACKING_TIME > trackingSelectedHasDocument[i - 1].TRACKING_TIME && o.TRACKING_TIME < item.TRACKING_TIME).ToList();
+
+                            AddDocumentTrackingADOs(lstrs);
+                            timeMin = item.TRACKING_TIME;
+
+                            if (i == trackingSelectedHasDocument.Count - 1)
+                            {
+                                lstrs = lstTrackingNoHasDocument.Where(o => o.TRACKING_TIME > timeMax).ToList();
+                                AddDocumentTrackingADOs(lstrs);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        AddDocumentTrackingADOs(lstTrackingNoHasDocument);
+                    }
+
+                    WaitingManager.Show();
+                }
+
+                if (trackingSelectedHasDocument.Count > 0)
+                {
+                    var listHisCodes = trackingSelectedHasDocument.Select(o => "HIS_TRACKING:" + o.ID).ToList();
+                    var listData = this.listEmrDocument.Where(o => !string.IsNullOrWhiteSpace(o.HIS_CODE) && listHisCodes.Any(k => o.HIS_CODE.Contains(k))).ToList();
+
+                    var documents = GetEmrDocumentFile(listData.Select(o => o.ID).ToList(), false, null, null);
+                    if (documents != null && documents.Count > 0)
+                    {
+                        foreach (var item in documents)
+                        {
+                            try
+                            {
+                                if (item.Extension.ToLower().Equals("pdf"))
+                                {
+                                    var emrDocument = listData.FirstOrDefault(o => o.ID == item.DocumentId);
+                                    documentTrackingADOs.Add(new DocumentTrackingADO
+                                    {
+                                        DocumentFile = new MemoryStream(Convert.FromBase64String(item.Base64Data)),
+                                        TRACKING_TIME = emrDocument?.DOCUMENT_TIME ?? GetTackingTimeFromDocument(emrDocument, vHisTrackingList)
+                                    });
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                    }
+                }
+
+                if (documentTrackingADOs.Any())
+                {
+                    ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, true);
+                    if (ucViewEmrDocument1.frmEmr != null && Form.ActiveForm == ucViewEmrDocument1.frmEmr)
+                    {
+                        ucViewEmrDocument1.frmEmr.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, true);
+                    }
+                }
+                else
+                {
+                    ucViewEmrDocument1.ClearDocument();
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                WaitingManager.Hide();
+            }
+        }
+
         /// <summary>
         /// Shows the selected trackings in the viewer, newest treatment time first: one block per tracking
         /// (signed document when the tracking has one, otherwise the tracking rendered alone with Mps000062).
         /// </summary>
-        private void LoadDataPrint(List<V_HIS_TRACKING> trackingSelecteds = null)
+        private void LoadDataPrintNewestFirst(List<V_HIS_TRACKING> trackingSelecteds)
         {
             try
             {
@@ -1150,6 +1454,34 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void AddDocumentTrackingADOs(List<V_HIS_TRACKING> item)
+        {
+            try
+            {
+                WaitingManager.Show();
+                MemoryStream streamFile = new MemoryStream();
+                bool result = false;
+                Mps000062(PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_YEU_CAU_IN_TO_DIEU_TRI__MPS000062, FullTemplateFileName, ref result, true, streamFile, item);
+                if ((streamFile != null && streamFile.Length > 0) || (!String.IsNullOrEmpty(this.saveFilePath) && File.Exists(this.saveFilePath)))
+                {
+                    streamFile.Position = 0;
+                    documentTrackingADOs.Add(new DocumentTrackingADO()
+                    {
+                        DocumentFile = streamFile,
+                        TRACKING_TIME = item[0].TRACKING_TIME,
+                        FullTemplateFileName = FullTemplateFileName,
+                        saveFilePath = saveFilePath
+                    });
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

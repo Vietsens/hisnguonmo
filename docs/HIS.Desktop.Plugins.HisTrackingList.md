@@ -59,6 +59,7 @@ frmHisTrackingList / frmTrackingCreate  (nút In)
 | `HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingFormatOption` | Định dạng hiển thị (1 = đọc số thành chữ cho GN/HT) | 1 / khác | — | HisTrackingList |
 | `HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingOutStockOption` | Đếm cả thuốc ngoài kho | 1 / khác | — | HisTrackingList |
 | **`HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingAddPreviousUseDay`** (MỚI) | **Cộng thêm Số lần SD thuốc trước đó (PREVIOUS_USING_COUNT) khi đếm số ngày dùng thuốc** | **1 = Có; Khác = Không** | **Trống (⇒ Không)** | **HisTrackingList** |
+| `HIS.Desktop.Plugins.HisTrackingList.IsViewTrackingNewestFirst` (việc 57960, CONFIG_CODE 01469) | Khung xem các tờ đang chọn: mới nhất trước, mỗi tờ một phần riêng | 1 = bật; khác 1 = như cũ (chạy nguyên code trước 57960) | 0 | HisTrackingList |
 
 > **Không có UI cấu hình riêng** cho các key này — quản trị qua màn hình cấu hình hệ thống chung (HIS_CONFIG), giống các key `UsedDayCounting*` sẵn có. Do đó feature này **không tạo/không sửa Form/UC** ⇒ không phát sinh phần thiết kế giao diện DevExpress/LayoutControl.
 
@@ -108,6 +109,8 @@ long previousUseDay = (rdo._WorkPlaceSDO.UsedDayCountingAddPreviousUseDay == 1)
 
 ### Khung xem phiếu và chế độ chỉ xem (việc 57960)
 
+Trên màn Danh sách tờ điều trị, mọi phần dưới đây chỉ chạy khi `HIS.Desktop.Plugins.HisTrackingList.IsViewTrackingNewestFirst = 1`. Khóa khác 1 thì màn chạy **nguyên văn code trước 57960** ở cả 4 chỗ: tải dữ liệu `LoadDataForPrint`, khung xem `LoadDataPrint` + `AddDocumentTrackingADOs`, dựng PDO khi In (`CreateMps000062PDO`), xếp tăng dần trong `UcViewEmrDocument.BuildViewFile`. Tab "DS tờ điều trị" của TrackingCreate (chế độ chỉ xem, `UcTrackingListView`) luôn hiện; khóa chỉ quyết định thứ tự: 1 = tờ mới nhất ở trên, khác 1 = đảo lại (`units.Reverse()` sau `TrackingDocumentPlanner.Plan`), tờ cũ nhất ở trên như khung xem cũ.
+
 - `TrackingView/TrackingDocumentPlanner` — xếp tờ theo `TRACKING_TIME` giảm dần (cùng thời gian thì `ID` lớn trước); tờ có văn bản ký = `V_EMR_DOCUMENT.HIS_CODE` chứa **đúng mục** `HIS_TRACKING:<ID>` (tách theo dấu cách/phẩy, không so tiền tố); nhiều văn bản → lấy `CREATE_TIME` lớn nhất; văn bản chứa nhiều tờ hiện 1 lần tại tờ mới nhất.
 - `TrackingView/TrackingSheetRenderer` — tải `api/HisTracking/GetData` (dùng chung cho form), dựng PDO Mps000062 (`BuildPdo`, form In cũng gọi), dựng **mỗi tờ một bản** (SaveFile, không ghi nhật ký in), trang báo "Không hiển thị được tờ điều trị số {0} lúc {1}" (RichEditDocumentServer, A4).
 - `TrackingView/UcTrackingListView` — UserControl chỉ xem: tải toàn bộ tờ của hồ sơ trên luồng nền (STA), trạng thái Đang tải / Chưa có tờ / Lỗi + nút Thử lại.
@@ -132,6 +135,8 @@ Thứ tự build (VS2022 / MSBuild):
 |------|-----------|-----------------|
 | 06/07/2026 | phuongnm | Bổ sung cấu hình `HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingAddPreviousUseDay`. Sửa `Mps000062.GetUsedDayCounting` để cộng thêm `PREVIOUS_USING_COUNT` vào số đếm ngày dùng thuốc trên bản in `.repx` (tương đương key Excel `USING_COUNT_NUMBER`). Áp dụng đồng bộ cho HisTrackingList và TrackingCreate. |
 | 13/10/2026 | phuongnm | Việc 57960 (NTP): khung xem phiếu bên phải hiển thị các tờ được tích **từ tờ mới nhất đến cũ nhất**, mỗi tờ một bản (không dựng chung nhiều tờ chưa ký), khớp văn bản ký đúng mục `HIS_TRACKING:<ID>`, vị trí văn bản ký theo `TRACKING_TIME` (không theo `DOCUMENT_TIME`), tờ không dựng được thì chèn trang báo. Thêm chế độ chỉ xem (Behavior nhận `bool`) trả `UcTrackingListView` cho tab "DS tờ điều trị" của TrackingCreate. Tách tải dữ liệu `GetData` + dựng PDO Mps000062 ra `TrackingView/TrackingSheetRenderer` dùng chung form/khung xem. Thêm tham chiếu `DevExpress.Office.v15.2.Core`. Nút In không đổi. |
+| 13/10/2026 | phuongnm | Việc 57960: thêm khóa `HIS.Desktop.Plugins.HisTrackingList.IsViewTrackingNewestFirst` (mặc định 0). Màn Danh sách tờ điều trị chỉ dùng cách hiển thị mới khi khóa = 1; khóa khác 1 chạy lại nguyên văn code cũ (tải dữ liệu, khung xem, dựng PDO khi In, xếp tăng dần). |
+| 14/10/2026 | phuongnm | Việc 57960: chế độ chỉ xem (`UcTrackingListView`, tab của TrackingCreate) xếp theo khóa — khác 1 thì đảo danh sách sau khi Plan, tờ cũ nhất ở trên; tab vẫn luôn hiện. |
 
 ## 9. Test Cases
 

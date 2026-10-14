@@ -18,6 +18,7 @@
 using EMR.EFMODEL.DataModels;
 using EMR.SDO;
 using HIS.Desktop.Plugins.HisTrackingList.ADO;
+using HIS.Desktop.Plugins.HisTrackingList.Config;
 using HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument;
 using MOS.EFMODEL.DataModels;
 using System;
@@ -164,6 +165,9 @@ namespace HIS.Desktop.Plugins.HisTrackingList.TrackingView
                     bool isEmrError;
                     List<V_EMR_DOCUMENT> emrDocuments = TrackingSheetRenderer.GetSignedDocuments(trackings.First().TREATMENT_CODE, out isEmrError);
                     List<TrackingDisplayUnit> units = TrackingDocumentPlanner.Plan(trackings, emrDocuments);
+                    //Khóa tắt thì hiển thị từ tờ cũ nhất đến tờ mới nhất, cùng chiều với khung xem của màn Danh sách tờ điều trị
+                    if (!HisConfigCFG.IsViewTrackingNewestFirst)
+                        units.Reverse();
 
                     TrackingPrintData printData = null;
                     if (!isEmrError && units.Any(o => o.Document == null))

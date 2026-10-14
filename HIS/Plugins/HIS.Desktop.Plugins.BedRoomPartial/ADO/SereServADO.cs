@@ -63,6 +63,17 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.ADO
         /// </summary>
         public bool IS_ANTICIPATE { get; set; }
 
+        /// <summary>
+        /// 53745 - Cot HP (hao phi): gia tri o HP. Null voi dong ngay / loai dich vu / y lenh (o de trong),
+        /// true/false voi dong dich vu theo IS_EXPEND.
+        /// </summary>
+        public bool? IsExpendCheck { get; set; }
+
+        /// <summary>
+        /// 53745 - O HP bam duoc: dong co HIS_SERE_SERV, ho so chua ket thuc, duoc phep hao phi theo danh muc.
+        /// </summary>
+        public bool IsEnableExpend { get; set; }
+
         public SereServADO() { }
 
         public SereServADO(DHisSereServ2 data)

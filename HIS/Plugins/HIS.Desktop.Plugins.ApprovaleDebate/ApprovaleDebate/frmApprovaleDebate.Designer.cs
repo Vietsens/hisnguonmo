@@ -159,7 +159,7 @@
             // 
             // btnTracking
             // 
-            this.btnTracking.Location = new System.Drawing.Point(1323, 2);
+            this.btnTracking.Location = new System.Drawing.Point(1212, 2);
             this.btnTracking.Name = "btnTracking";
             this.btnTracking.Size = new System.Drawing.Size(118, 22);
             this.btnTracking.StyleController = this.layoutControl1;
@@ -170,7 +170,7 @@
             // btnChiTietBenhAn
             // 
             this.btnChiTietBenhAn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnChiTietBenhAn.Location = new System.Drawing.Point(2, 628);
+            this.btnChiTietBenhAn.Location = new System.Drawing.Point(1334, 2);
             this.btnChiTietBenhAn.Name = "btnChiTietBenhAn";
             this.btnChiTietBenhAn.Size = new System.Drawing.Size(107, 22);
             this.btnChiTietBenhAn.StyleController = this.layoutControl1;
@@ -181,9 +181,9 @@
             // btnPrint
             // 
             this.btnPrint.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPrint.Location = new System.Drawing.Point(113, 628);
+            this.btnPrint.Location = new System.Drawing.Point(2, 628);
             this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(145, 22);
+            this.btnPrint.Size = new System.Drawing.Size(256, 22);
             this.btnPrint.StyleController = this.layoutControl1;
             this.btnPrint.TabIndex = 9;
             this.btnPrint.Text = "In phiếu duyệt hội chẩn";
@@ -617,9 +617,9 @@
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnChiTietBenhAn;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 626);
-            this.layoutControlItem11.MaxSize = new System.Drawing.Size(0, 26);
-            this.layoutControlItem11.MinSize = new System.Drawing.Size(89, 26);
+            this.layoutControlItem11.Location = new System.Drawing.Point(1332, 0);
+            this.layoutControlItem11.MaxSize = new System.Drawing.Size(111, 26);
+            this.layoutControlItem11.MinSize = new System.Drawing.Size(111, 26);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(111, 26);
             this.layoutControlItem11.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -629,11 +629,11 @@
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.btnPrint;
-            this.layoutControlItem12.Location = new System.Drawing.Point(111, 626);
+            this.layoutControlItem12.Location = new System.Drawing.Point(0, 626);
             this.layoutControlItem12.MaxSize = new System.Drawing.Size(0, 26);
             this.layoutControlItem12.MinSize = new System.Drawing.Size(126, 26);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(149, 26);
+            this.layoutControlItem12.Size = new System.Drawing.Size(260, 26);
             this.layoutControlItem12.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
@@ -645,14 +645,14 @@
             this.emptySpaceItem4.MaxSize = new System.Drawing.Size(0, 26);
             this.emptySpaceItem4.MinSize = new System.Drawing.Size(10, 26);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(1321, 26);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(1210, 26);
             this.emptySpaceItem4.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnTracking;
-            this.layoutControlItem9.Location = new System.Drawing.Point(1321, 0);
+            this.layoutControlItem9.Location = new System.Drawing.Point(1210, 0);
             this.layoutControlItem9.MaxSize = new System.Drawing.Size(122, 26);
             this.layoutControlItem9.MinSize = new System.Drawing.Size(122, 26);
             this.layoutControlItem9.Name = "layoutControlItem9";
