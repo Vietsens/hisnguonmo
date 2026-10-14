@@ -92,6 +92,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.tc_Number = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.tc_NoteAdo = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.tc_RequestDepartmentName = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.tc_IsExpend = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.tc_TdlMedicineConcentra = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.tc_InstructionDate = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.tc_UseDate = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -103,6 +104,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.rep_btnEdit_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.rep_btnDelete_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.rep_btnDelete_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.rep_chkExpend_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.rep_chkExpend_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.rep_txtExpend_Empty = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.toolTipController2 = new DevExpress.Utils.ToolTipController();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -117,6 +121,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnEdit_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnDelete_Enable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnDelete_Disable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rep_chkExpend_Enable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rep_chkExpend_Disable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rep_txtExpend_Empty)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             this.SuspendLayout();
@@ -147,6 +154,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.tc_Number,
             this.tc_NoteAdo,
             this.tc_RequestDepartmentName,
+            this.tc_IsExpend,
             this.tc_TdlMedicineConcentra,
             this.tc_InstructionDate,
             this.tc_UseDate});
@@ -181,7 +189,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.rep_btnEdit_Enable,
             this.rep_btnEdit_Disable,
             this.rep_btnDelete_Enable,
-            this.rep_btnDelete_Disable});
+            this.rep_btnDelete_Disable,
+            this.rep_chkExpend_Enable,
+            this.rep_chkExpend_Disable,
+            this.rep_txtExpend_Empty});
             this.treeSereServ.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
             this.treeSereServ.Size = new System.Drawing.Size(1053, 491);
             this.treeSereServ.TabIndex = 4;
@@ -332,15 +343,32 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.tc_RequestDepartmentName.Visible = true;
             this.tc_RequestDepartmentName.VisibleIndex = 11;
             this.tc_RequestDepartmentName.Width = 200;
-            // 
+            //
+            // tc_IsExpend
+            //
+            this.tc_IsExpend.AppearanceCell.Options.UseTextOptions = true;
+            this.tc_IsExpend.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            this.tc_IsExpend.AppearanceHeader.Options.UseTextOptions = true;
+            this.tc_IsExpend.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.tc_IsExpend.Caption = "HP";
+            this.tc_IsExpend.ColumnEdit = this.rep_chkExpend_Enable;
+            this.tc_IsExpend.FieldName = "IsExpendCheck";
+            this.tc_IsExpend.Name = "tc_IsExpend";
+            this.tc_IsExpend.OptionsColumn.AllowEdit = false;
+            this.tc_IsExpend.OptionsColumn.AllowSort = false;
+            this.tc_IsExpend.ToolTip = "Hao phí";
+            this.tc_IsExpend.Visible = true;
+            this.tc_IsExpend.VisibleIndex = 12;
+            this.tc_IsExpend.Width = 40;
+            //
             // tc_TdlMedicineConcentra
-            // 
+            //
             this.tc_TdlMedicineConcentra.Caption = "Hàm lượng";
             this.tc_TdlMedicineConcentra.FieldName = "TDL_MEDICINE_CONCENTRA";
             this.tc_TdlMedicineConcentra.Name = "tc_TdlMedicineConcentra";
             this.tc_TdlMedicineConcentra.OptionsColumn.AllowEdit = false;
             this.tc_TdlMedicineConcentra.Visible = true;
-            this.tc_TdlMedicineConcentra.VisibleIndex = 12;
+            this.tc_TdlMedicineConcentra.VisibleIndex = 13;
             this.tc_TdlMedicineConcentra.Width = 180;
             //
             // tc_InstructionDate
@@ -350,7 +378,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.tc_InstructionDate.Name = "tc_InstructionDate";
             this.tc_InstructionDate.OptionsColumn.AllowEdit = false;
             this.tc_InstructionDate.Visible = false;
-            this.tc_InstructionDate.VisibleIndex = 13;
+            this.tc_InstructionDate.VisibleIndex = 14;
             this.tc_InstructionDate.Width = 80;
             //
             // tc_UseDate
@@ -360,7 +388,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.tc_UseDate.Name = "tc_UseDate";
             this.tc_UseDate.OptionsColumn.AllowEdit = false;
             this.tc_UseDate.Visible = false;
-            this.tc_UseDate.VisibleIndex = 14;
+            this.tc_UseDate.VisibleIndex = 15;
             this.tc_UseDate.Width = 115;
             //
             // repositoryItemButton__Send
@@ -432,6 +460,27 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("rep_btnDelete_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Xóa", null, null, true)});
             this.rep_btnDelete_Disable.Name = "rep_btnDelete_Disable";
             this.rep_btnDelete_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            //
+            // rep_chkExpend_Enable
+            //
+            this.rep_chkExpend_Enable.AutoHeight = false;
+            this.rep_chkExpend_Enable.Name = "rep_chkExpend_Enable";
+            this.rep_chkExpend_Enable.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.rep_chkExpend_Enable.ReadOnly = true;
+            //
+            // rep_chkExpend_Disable
+            //
+            this.rep_chkExpend_Disable.AutoHeight = false;
+            this.rep_chkExpend_Disable.Enabled = false;
+            this.rep_chkExpend_Disable.Name = "rep_chkExpend_Disable";
+            this.rep_chkExpend_Disable.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.rep_chkExpend_Disable.ReadOnly = true;
+            //
+            // rep_txtExpend_Empty
+            //
+            this.rep_txtExpend_Empty.AutoHeight = false;
+            this.rep_txtExpend_Empty.Name = "rep_txtExpend_Empty";
+            this.rep_txtExpend_Empty.ReadOnly = true;
             // 
             // toolTipController2
             // 
@@ -476,6 +525,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnEdit_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnDelete_Enable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnDelete_Disable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rep_chkExpend_Enable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rep_chkExpend_Disable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rep_txtExpend_Empty)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             this.ResumeLayout(false);
@@ -513,5 +565,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         private DevExpress.XtraTreeList.Columns.TreeListColumn tc_TdlMedicineConcentra;
         private DevExpress.XtraTreeList.Columns.TreeListColumn tc_InstructionDate;
         private DevExpress.XtraTreeList.Columns.TreeListColumn tc_UseDate;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn tc_IsExpend;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit rep_chkExpend_Enable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit rep_chkExpend_Disable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit rep_txtExpend_Empty;
     }
 }

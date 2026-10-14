@@ -353,6 +353,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 ucMediMate.Dock = DockStyle.Fill;
                 panelControl4.Controls.Add(ucOrther);
                 ucOrther.Dock = DockStyle.Fill;
+                // 53745 - Cot HP: bam o HP tren cay y lenh thi cap nhat hao phi
+                ucAll.SetExpendCheckClick(ExpendCheck_Click);
+                ucMediMate.SetExpendCheckClick(ExpendCheck_Click);
+                ucCLS.SetExpendCheckClick(ExpendCheck_Click);
+                ucOrther.SetExpendCheckClick(ExpendCheck_Click);
             }
             catch (Exception ex)
             {
@@ -2509,6 +2514,41 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 #region Process has exception
                 SessionManager.ProcessTokenLost(paramCommon);
                 #endregion
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// 53745 - Cot HP: tich / bo tich hao phi cho dong dich vu qua api/HisSereServ/UpdateExpend.
+        /// Thanh cong thi tai lai cay y lenh cua ngay dang chon; that bai thi hien thong bao may chu tra ve, o giu nguyen.
+        /// </summary>
+        private void ExpendCheck_Click(SereServADO data)
+        {
+            try
+            {
+                if (data == null || !data.SERE_SERV_ID.HasValue)
+                    return;
+
+                CommonParam param = new CommonParam();
+                HisSereServUpdateExpendSDO sdo = new HisSereServUpdateExpendSDO();
+                sdo.SereServId = data.SERE_SERV_ID.Value;
+                sdo.IsExpend = data.IS_EXPEND != 1;
+
+                WaitingManager.Show();
+                HIS_SERE_SERV result = new BackendAdapter(param).Post<HIS_SERE_SERV>("api/HisSereServ/UpdateExpend", ApiConsumers.MosConsumer, sdo, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                WaitingManager.Hide();
+
+                bool success = result != null;
+                MessageManager.Show(this.ParentForm, param, success);
+                SessionManager.ProcessTokenLost(param);
+                if (success)
+                {
+                    LoadDataSereServByTreatmentId(this.rowClickByDate);
+                }
             }
             catch (Exception ex)
             {
