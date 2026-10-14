@@ -3326,7 +3326,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         async Task LoadDataToTrackingCombo()
         {
             Inventec.Common.Logging.LogSystem.Debug("LoadDataToTrackingCombo.1");
-            List<TrackingAdo> result = new List<TrackingAdo>();
             try
             {
                 CommonParam param = new CommonParam();
@@ -3338,11 +3337,39 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 trackingFilter.DEPARTMENT_ID = this.requestRoom != null ? (long?)this.requestRoom.DEPARTMENT_ID : null;
                 this.trackings = await new BackendAdapter(param).GetAsync<List<HIS_TRACKING>>("api/HisTracking/Get", ApiConsumer.ApiConsumers.MosConsumer, trackingFilter, param);
                 this.trackings = this.trackings != null && this.trackings.Count > 0 ? this.trackings.OrderByDescending(o => o.TRACKING_TIME).ToList() : trackings;
+                //Viec 59656: tach phan do du lieu vao combo de doi nguoi chi dinh thi loc lai tu this.trackings, khong goi lai API
+                this.FillDataToTrackingCombo();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Binds the loaded treatment sheets (this.trackings) to cboTracking and selects the default sheet(s).
+        /// Task 59656: key AssignToOwnTrackingOption = 1 -> only the sheets created by the ordering user are listed;
+        /// also called when the ordering user changes (ReloadTrackingComboByRequestUser).
+        /// </summary>
+        private void FillDataToTrackingCombo()
+        {
+            List<TrackingAdo> result = new List<TrackingAdo>();
+            try
+            {
                 foreach (var tracking in this.trackings)
                 {
                     var trackingAdo = new TrackingAdo(tracking);
                     result.Add(trackingAdo);
                 }
+
+                //Viec 59656: bat key thi combo chi hien to dieu tri do nguoi chi dinh tao
+                bool isTrackingOwnerCheck = this.GetTrackingOwnerOption() == EnumTrackingOwnerOption.OwnOnly;
+                string trackingOwnerLoginName = isTrackingOwnerCheck ? this.GetRequestLoginNameForTrackingOwner() : null;
+                if (isTrackingOwnerCheck)
+                {
+                    result = this.FilterTrackingAdosByOwner(result, trackingOwnerLoginName, null);
+                }
+                this.trackingOwnerFilterLoginName = trackingOwnerLoginName;
 
                 this.trackingAdos = result;
 
@@ -3355,9 +3382,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 bool btnEn = cboTracking.Enabled;
                 cboTracking.Enabled = true;
-                //Viec 59656: bat key thi chi tu chon san to dieu tri do chinh nguoi chi dinh tao (ke ca to truyen vao tu man Tao to dieu tri)
-                bool isTrackingOwnerCheck = this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None;
-                string trackingOwnerLoginName = isTrackingOwnerCheck ? this.GetRequestLoginNameForTrackingOwner() : null;
                 if (!chkMultiIntructionTime.Checked)
                 {
                     this.isInitTracking = false;
@@ -3371,6 +3395,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     //SetDefautTrackingCombo(result, HisConfigCFG.IsDefaultTracking);
 
 
+                    //Viec 59656: bat key thi chi tu chon san to do nguoi chi dinh tao (ke ca to truyen vao tu man Tao to dieu tri), tu chon ca khi IsDefaultTracking tat
                     long trackIdSet = 0;
                     if (this.tracking != null && !isUseTrackingInputWhileChangeTrackingTime
                         && (!isTrackingOwnerCheck || TrackingOwnerChecker.IsOwner(this.tracking.CREATOR, trackingOwnerLoginName)))
@@ -3423,6 +3448,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     cboTracking.ShowPopup();
                     cboTracking.ClosePopup();
 
+                    //Viec 59656: bat key thi moi ngay y lenh tu chon san to moi nhat cua nguoi chi dinh
                     if (HisConfigCFG.IsDefaultTracking == "1" || isTrackingOwnerCheck)
                     {
                         var trackingTemps = result.Where(o => intructionDateSelectedProcess.Contains(o.TRACKING_TIME.ToString().Substring(0, 8))

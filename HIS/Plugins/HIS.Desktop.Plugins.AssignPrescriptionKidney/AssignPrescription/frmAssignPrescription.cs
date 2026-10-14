@@ -1572,6 +1572,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 GridLookUpEdit cbo = sender as GridLookUpEdit;
                 if (cbo != null && cbo.ContainsFocus)
                     this.OpionGroupSelectedChanged();
+                //Viec 59656: key = 1 thi doi nguoi chi dinh -> loc lai combo to dieu tri va chon to moi nhat cua nguoi moi
+                if (cbo != null && cbo.ContainsFocus && cbo.EditValue != null)
+                    this.ReloadTrackingByRequestUser(cbo.EditValue.ToString());
             }
             catch (Exception ex)
             {
@@ -1676,6 +1679,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                             this.txtLoginName.Text = searchResult[0].LOGINNAME;
 
                             //this.OpionGroupSelectedChanged();
+                            this.ReloadTrackingByRequestUser(searchResult[0].LOGINNAME); //Viec 59656: key = 1 thi loc lai combo to dieu tri theo nguoi chi dinh moi
 
                             this.ResetFocusMediMaty(true);
                         }
@@ -1705,6 +1709,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                         if (data != null)
                         {
                             this.txtLoginName.Text = data.LOGINNAME;
+                            this.ReloadTrackingByRequestUser(data.LOGINNAME); //Viec 59656: du phong khi EditValueChanged khong co focus (cung nguoi thi bo qua)
                         }
                     }
 

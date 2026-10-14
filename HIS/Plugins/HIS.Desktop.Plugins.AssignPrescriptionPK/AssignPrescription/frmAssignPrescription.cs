@@ -428,7 +428,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.patientDob = data.PatientDob;
                 this.genderName = data.GenderName;
                 this.patientId = data.PatientId;
-                this.isTrackingOwnerInputTracking = (data.Tracking != null);
                 if (data.Tracking != null)
                 {
                     this.Listtrackings = new List<HIS_TRACKING>();
@@ -4611,6 +4610,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 GridLookUpEdit cbo = sender as GridLookUpEdit;
                 if (cbo != null && cbo.ContainsFocus)
                     this.OpionGroupSelectedChanged();
+                //Viec 59656: doi nguoi chi dinh thi loc lai combo to dieu tri theo nguoi chi dinh moi (key tat thi bo qua)
+                this.ReloadTrackingComboByRequestUser();
             }
             catch (Exception ex)
             {
@@ -4620,7 +4621,15 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
         private void txtLoginName_EditValueChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                //Viec 59656: doi nguoi chi dinh thi loc lai combo to dieu tri theo nguoi chi dinh moi (key tat thi bo qua)
+                this.ReloadTrackingComboByRequestUser();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void cboUser_Closed(object sender, ClosedEventArgs e)

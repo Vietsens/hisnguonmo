@@ -178,7 +178,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("TrackingTimeStr", "", 150, 1));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("TrackingTimeStr", "ID", columnInfos, false, 200);
-                ControlEditorLoader.Load(this.cboTracking, result, controlEditorADO);
+                //Viec 59656: bat key thi combo chi hien to dieu tri do chinh nguoi chi dinh tao (result van giu day du de loc lai khi doi nguoi chi dinh)
+                ControlEditorLoader.Load(this.cboTracking, this.GetTrackingDataSourceByOwner(result), controlEditorADO);
                 SetDefautTrackingCombo(result, AppConfig.IsDefaultTracking);
             }
             catch (Exception ex)

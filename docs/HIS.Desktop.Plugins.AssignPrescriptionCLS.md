@@ -20,6 +20,17 @@ Chẩn đoán **chính** và **phụ** dùng control tùy chỉnh (không qua UC
   - Load hồ sơ đã lưu (`LoadIcdToControl` cho chính; `LoadDataToIcdSub`/`LoadIcdToControlIcdSub` qua helper `RemoveDeathCauseFromSubIcd` cho phụ): bỏ qua, không đổ vào ô.
 - **Không có kiểm tra khi lưu (B)**: plugin này KHÔNG có luồng kết thúc điều trị (đã comment), nên không áp dụng kiểm tra death-cause khi lưu — việc chặn ở các đường nhập/load nêu trên là cơ chế duy nhất.
 
+### Tờ điều trị theo người chỉ định (Việc 59656, sửa 14/10/2026)
+
+Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (`HisConfigCFG.AssignToOwnTrackingOption`, giá trị theo `EnumTrackingOwnerOption`):
+- **Trống/khác 1**: như trước 59656 — combo "Tờ điều trị" hiện mọi tờ của hồ sơ, chọn mặc định theo `HIS.Desktop.Plugins.AssignPrescription.IsDefaultTracking`.
+- **= 1**: combo chỉ hiện tờ do **người chỉ định** tạo (`HIS_TRACKING.CREATOR` = người chỉ định, so không phân biệt hoa thường) và chọn sẵn tờ mới nhất của người đó trong ngày y lệnh, không có thì để trống. Người chỉ định = `cboUser`, trống thì `txtLoginName`, trống nữa thì tài khoản đăng nhập.
+  - Đổi người chỉ định (chọn ở combo, hoặc gõ tài khoản + Enter): lọc lại danh sách theo người mới và chọn lại tờ mới nhất trong ngày y lệnh — dùng lại danh sách đã tải (`trackingADOs` luôn giữ đủ tờ), không gọi lại API.
+  - Sửa đơn: tờ đơn đang gắn (`oldServiceReq.TRACKING_ID`) luôn có trong danh sách và được chọn lại, kể cả tờ của người khác.
+  - Màn này không nhận tờ truyền từ màn gọi (không dùng `AssignPrescriptionADO.Tracking`).
+  - Khi lưu **không** còn cảnh báo/chặn tờ của người khác hay "chưa có tờ điều trị".
+- Code: `AssignPrescription/frmAssignPrescription__TrackingOwner.cs` (`GetTrackingDataSourceForCombo`, `ReloadComboPhieuDieuTriByOrderingUser`, `GetDefaultOwnTrackingId`), gọi từ `InitComboPhieuDieuTri`, `cboUser_EditValueChanged`, `SetDefaultComboPhieuDieuTri` (`frmAssignPrescription.cs`); logic chung `Base/TrackingOwnerChecker.cs` (`FilterOwn`, `GetLatestOwnTracking`).
+
 ## 3. EFMODEL
 HIS_ICD (`IS_DEATH_CAUSE_ONLY`, `IS_NOT_RECOMMEND_MAIN`, `IS_TRADITIONAL`), HIS_EXP_MEST, HIS_SERVICE_REQ.
 
@@ -40,7 +51,8 @@ HIS_ICD (`IS_DEATH_CAUSE_ONLY`, `IS_NOT_RECOMMEND_MAIN`, `IS_TRADITIONAL`), HIS_
 | 23/07/2026 | nampp | Việc 46465: bổ sung 2 cảnh báo viện phí theo config mới — (1) key `HIS.Desktop.WarningOverTotalPatientPrice__IsCheckOutpatient` = 1: mở rộng cảnh báo thiếu viện phí (vượt tạm ứng) cho BN **điều trị ngoại trú** (dùng chung ngưỡng `HIS.Desktop.WarningOverTotalPatientPrice`, ngưỡng trống coi như 0); (2) key `HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam` = 1: khi Lưu, cảnh báo BN **diện khám** nếu tổng chi phí (hồ sơ + đang kê) vượt 15% Lương cơ bản (`HIS_BHYT_PARAM.BASE_SALARY` theo hiệu lực FROM_TIME/TO_TIME) — hàm mới `ValidFee15PercentBaseSalaryForExam()`, message mới `TongChiPhiVuot15PhanTramLuongCoBan` (vi/en). Bỏ qua BN bảo lãnh; thiếu Tham số BHYT hoặc lỗi check thì cho đi tiếp (chỉ log). Mặc định 2 key tắt — không đổi hành vi hiện tại. |
 | 16/06/2026 | huyvu20 | **Việc 2.6**: Ẩn chẩn đoán nguyên nhân tử vong (`IS_DEATH_CAUSE_ONLY`) khỏi danh sách chọn bệnh chính + phụ (giữ giá trị đã lưu, trừ YHCT); cảnh báo `IS_NOT_RECOMMEND_MAIN` khi chọn/sửa bệnh chính; thêm message `BenhKhongKhuyenKhichDungLamBenhChinh` (vi/en). Không có kiểm tra khi lưu (plugin không có kết thúc điều trị). |
 | 17/06/2026 | huyvu20 | **Việc 2.6 (bổ sung)**: `IS_DEATH_CAUSE_ONLY` vẫn lọt qua khi gõ tay & khi load hồ sơ đã lưu. Chặn nốt: gõ/chọn bệnh chính (`LoadIcdCombo`, `ChangecboChanDoanTD`) + gõ bệnh phụ (`CheckIcdWrongCode`) → báo + loại; load bệnh chính (`LoadIcdToControl`) + phụ (`LoadDataToIcdSub`, `LoadIcdToControlIcdSub` qua helper `RemoveDeathCauseFromSubIcd`) → bỏ qua không load. Thêm message `BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan` (vi/en). |
-| 09/10/2026 | dangth2 | Việc 59656: bật key thì `SetDefaultComboPhieuDieuTri` chọn tờ mới nhất của người chỉ định trong ngày y lệnh, không có thì để trống (hết lỗi `FirstOrDefault().ID` ném NullReference làm giữ nguyên tờ của người trước — chỉ khi bật key); `CheckTrackingOwnerBeforeSave` sau `CheckTrackingRequiredOption4`; combo luôn hiện nên chỉ báo 'chưa có tờ' với diện nội trú/ngoại trú điều trị. Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (1 cảnh báo, 2 chặn, trống = như cũ). Lớp logic `Base/TrackingOwnerChecker.cs` + `EnumTrackingOwnerOption.cs` (bản sao giống hệt ở 7 plugin). Tờ của bác sĩ = `HIS_TRACKING.CREATOR`, người chỉ định = `REQUEST_LOGINNAME` gửi BE (so không phân biệt hoa thường). Lỗi bất ngờ trong bước kiểm tra thì cho lưu (chỉ ghi log). Thêm 4 message `TrackingOwner__*`. |
+| 09/10/2026 | dangth2 | Việc 59656: bật key thì `SetDefaultComboPhieuDieuTri` chọn tờ mới nhất của người chỉ định trong ngày y lệnh, không có thì để trống (hết lỗi `FirstOrDefault().ID` ném NullReference làm giữ nguyên tờ của người trước — chỉ khi bật key); `CheckTrackingOwnerBeforeSave` sau `CheckTrackingRequiredOption4`; combo luôn hiện nên chỉ báo 'chưa có tờ' với diện nội trú/ngoại trú điều trị. Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (1 cảnh báo, 2 chặn, trống = như cũ). Lớp logic `Base/TrackingOwnerChecker.cs` + `EnumTrackingOwnerOption.cs` (bản sao giống hệt ở 7 plugin). Tờ của bác sĩ = `HIS_TRACKING.CREATOR`, người chỉ định = `REQUEST_LOGINNAME` gửi BE (so không phân biệt hoa thường). Lỗi bất ngờ trong bước kiểm tra thì cho lưu (chỉ ghi log). Thêm 4 message `TrackingOwner__*`. _(Cảnh báo/chặn khi lưu đã bỏ ở bản 14/10/2026 bên dưới.)_ |
+| 14/10/2026 | dangth | **Việc 59656 (sửa theo test chị Hân 14/10)**: key `AssignToOwnTrackingOption` = 1 chỉ hiện và chọn sẵn tờ điều trị do người chỉ định tạo, đổi người chỉ định thì lọc/chọn lại; bỏ cảnh báo/chặn khi lưu. Key trống/khác 1 = như trước 59656 (combo hiện mọi tờ). `InitComboPhieuDieuTri` vẫn tải đủ tờ vào `trackingADOs`, combo bind `GetTrackingDataSourceForCombo()` (lọc `CREATOR` = người chỉ định qua `TrackingOwnerChecker.FilterOwn`); `cboUser_EditValueChanged` (cả đường gõ tài khoản + Enter và chọn ở popup) gọi `ReloadComboPhieuDieuTriByOrderingUser()` dùng lại danh sách đã tải (không gọi lại API) rồi `SetDefaultComboPhieuDieuTri` chọn tờ mới nhất của người chỉ định trong ngày y lệnh, không có thì để trống — sửa lỗi test: đăng nhập nhunghtt đổi người chỉ định sang hant thì combo vẫn hiện mọi tờ, không chọn tờ của hant. Sửa đơn: tờ đơn đang gắn luôn có trong danh sách và được chọn lại dù của người khác. Màn này không nhận tờ truyền từ màn gọi. Bỏ `CheckTrackingOwnerBeforeSave` (+ dòng `validFolow` TrackingOwner trong `__Save.cs`), `ShowTrackingOwnerMessage`, `GetUserDisplayForTrackingOwner`, `IsTreatmentTypeUsingTracking`; bỏ 4 message `TrackingOwner__*` (vi/en, `ResourceMessage.cs` về đúng bản trước 59656). `EnumTrackingOwnerOption` còn `None = 0`, `OwnOnly = 1`. |
 
 ## 6. Test Cases
 
@@ -68,9 +80,11 @@ HIS_ICD (`IS_DEATH_CAUSE_ONLY`, `IS_NOT_RECOMMEND_MAIN`, `IS_TRADITIONAL`), HIS_
 - [ ] Chọn/gõ ICD chính có cờ `IS_NOT_RECOMMEND_MAIN` → cảnh báo; chọn Không → xóa. Mở hồ sơ đã lưu → KHÔNG cảnh báo.
 - [ ] YHCT không bị ảnh hưởng.
 
-### Việc 59656 - Y lệnh chỉ vào tờ điều trị của chính người chỉ định
-- [ ] Key trống: chọn tờ của người khác vẫn lưu được, không hỏi (như cũ)
-- [ ] Key = 2: chọn tờ điều trị của người khác → chặn, nêu tờ + người tạo
-- [ ] Key = 1: như trên nhưng hỏi Có/Không
-- [ ] Key bật, người chỉ định chưa có tờ trong ngày y lệnh → cảnh báo/chặn "chưa có tờ điều trị ngày ..."
-- [ ] Key bật, mở màn: tự chọn sẵn tờ của chính người chỉ định (không chọn tờ người khác, kể cả tờ truyền từ màn Tạo tờ điều trị)
+### Việc 59656 - Combo tờ điều trị chỉ hiện tờ của người chỉ định (sửa 14/10/2026)
+- [ ] Key trống/khác 1: combo hiện mọi tờ, chọn mặc định như cũ (theo `IsDefaultTracking`); chọn tờ của người khác vẫn lưu được, không hỏi
+- [ ] Key = 1, kê mới: combo chỉ có tờ do người chỉ định (mặc định = tài khoản đăng nhập) tạo; chọn sẵn tờ mới nhất của người đó trong ngày y lệnh, không có thì để trống
+- [ ] Key = 1, đổi người chỉ định (chọn ở combo hoặc gõ tài khoản + Enter), ví dụ đăng nhập nhunghtt đổi sang hant: combo lọc lại chỉ còn tờ của hant, chọn sẵn tờ mới nhất của hant trong ngày y lệnh (hant không có tờ thì để trống)
+- [ ] Key = 1, đổi ngày y lệnh: chọn lại tờ mới nhất của người chỉ định trong ngày mới
+- [ ] Key = 1, sửa đơn đang gắn tờ của người khác: tờ đó vẫn có trong danh sách và vẫn được chọn
+- [ ] Key = 1, bấm "+" tạo tờ điều trị: danh sách tải lại vẫn chỉ hiện tờ của người chỉ định
+- [ ] Key = 1, bấm Lưu: không còn hộp cảnh báo/chặn "tờ của người khác" hay "chưa có tờ điều trị"

@@ -1747,7 +1747,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 GridLookUpEdit cbo = sender as GridLookUpEdit;
                 if (cbo != null && cbo.ContainsFocus)
                     this.OpionGroupSelectedChanged();
-                SetDefaultComboPhieuDieuTri();
+                //Viec 59656: key = 1 -> loc lai to dieu tri theo nguoi chi dinh moi (dung lai danh sach da tai) roi chon lai to mac dinh
+                this.ReloadComboPhieuDieuTriByOrderingUser();
+                //Viec 59656: dang sua don thi giu to dieu tri cua don (khong chon lai to mac dinh)
+                if (!this.KeepEditTrackingSelection())
+                    SetDefaultComboPhieuDieuTri();
             }
             catch (Exception ex)
             {
@@ -5114,7 +5118,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 columnInfos.Add(new ColumnInfo("TrackingTimeStr", "Thời gian", 250, 1));
                 columnInfos.Add(new ColumnInfo("CREATOR", "Người tạo", 100, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("TrackingTimeStr", "ID", columnInfos, true, 350);
-                ControlEditorLoader.Load(cboPhieuDieuTri, trackingADOs, controlEditorADO);
+                //Viec 59656: key = 1 -> combo chi hien to dieu tri do nguoi chi dinh tao (sua don giu them to cu); trackingADOs van giu du danh sach
+                ControlEditorLoader.Load(cboPhieuDieuTri, this.GetTrackingDataSourceForCombo(), controlEditorADO);
                 SetDefaultComboPhieuDieuTri();
             }
             catch (Exception ex)
@@ -5130,10 +5135,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 cboPhieuDieuTri.EditValue = serviceReq.TRACKING_ID;
             }
-            else if (this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None
+            else if (this.IsTrackingOwnOnly()
                 && (HisConfigCFG.IsDefaultTracking || this.actionType != GlobalVariables.ActionEdit))
             {
-                //Viec 59656: chon to dieu tri cua chinh nguoi chi dinh trong ngay y lenh; khong co thi de trong (khong giu to cua nguoi khac)
+                //Viec 59656: key = 1 -> chon to dieu tri moi nhat cua nguoi chi dinh trong ngay y lenh; khong co thi de trong
                 cboPhieuDieuTri.EditValue = this.GetDefaultOwnTrackingId();
             }
             else if (HisConfigCFG.IsDefaultTracking && trackingADOs.Count > 0 && cboUser.EditValue != null && InstructionTime != 0)

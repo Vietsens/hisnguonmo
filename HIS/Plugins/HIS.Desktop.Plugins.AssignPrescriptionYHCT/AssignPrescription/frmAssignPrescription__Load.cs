@@ -1976,9 +1976,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     intructionDateSelecteds.Add(intructionDate);
                 }
 
-                //Viec 59656: bat key thi chi tu chon san to dieu tri do chinh nguoi chi dinh tao (ke ca to truyen vao tu man Tao to dieu tri)
-                bool isTrackingOwnerCheck = this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None;
+                //Viec 59656: bat key (1) thi combo chi hien to do chinh nguoi chi dinh tao (loc o InitComboTracking, trackingADOs van du) va chi tu chon san to cua nguoi chi dinh (ke ca to truyen vao tu man Tao to dieu tri)
+                bool isTrackingOwnerCheck = this.GetTrackingOwnerOption() == EnumTrackingOwnerOption.OwnOnly;
                 string trackingOwnerLoginName = isTrackingOwnerCheck ? this.GetRequestLoginNameForTrackingOwner() : null;
+                //Viec 59656: bat key + sua don: giu to dieu tri cua don dang chon, khong tu chon lai
+                bool isKeepEditTracking = isTrackingOwnerCheck && this.actionType == GlobalVariables.ActionEdit && cboPhieuDieuTri.EditValue != null;
                 // long dateTimeNowInt64 = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                 var trackingTemps = trackings.Where(o => intructionDateSelecteds.Contains(o.TRACKING_TIME.ToString().Substring(0, 8))
                     && o.DEPARTMENT_ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetDepartmentId(this.currentModule.RoomTypeId)
@@ -2058,7 +2060,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         Inventec.Common.Logging.LogSystem.Info("Truong hop co tracking ben ngoai truyen vao, gan vao doi tuong tracking de phuc vu cho nghiep vu load cac du lieu: + Mã bệnh chỉnh,+ Tên bệnh chính,+ Mã bệnh phụ,+ Tên bệnh phụ,+ Mã bệnh YHCT chính,+ Tên bệnh YHCT chính,+ Mã bệnh YHCT phụ,+ Tên bệnh YHCT phụ tu ban ghi tracking do");
                     }
                 }
-                else if ((HisConfigCFG.IsDefaultTracking || (isTrackingOwnerCheck && this.actionType != GlobalVariables.ActionEdit)) && isShowDefault)
+                else if ((HisConfigCFG.IsDefaultTracking || (isTrackingOwnerCheck && this.actionType != GlobalVariables.ActionEdit)) && isShowDefault && !isKeepEditTracking)
                 {
                     if (this.ucDateProcessor.GetChkMultiDateState(this.ucDate) == false)
                     {
