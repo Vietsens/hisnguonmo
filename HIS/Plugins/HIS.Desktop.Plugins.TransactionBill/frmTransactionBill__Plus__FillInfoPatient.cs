@@ -72,25 +72,26 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         HisPatientFilter filter = new HisPatientFilter();
                         filter.ID = data.PATIENT_ID;
                         var patient = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
-                        if (patient != null && patient.Count > 0)
+                        var patientData = (patient != null && patient.Count > 0) ? patient.FirstOrDefault() : null;
+                        if (patientData != null)
                         {
-                            txtBuyerEmail.Text = patient.FirstOrDefault().EMAIL;
+                            txtBuyerEmail.Text = patientData.EMAIL;
                         }
-                        txtBuyerAccountNumber.Text = data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
-                        txtBuyerAddress.Text = data.TDL_PATIENT_ADDRESS ?? "";
+                        txtBuyerAccountNumber.Text = patientData?.ACCOUNT_NUMBER ?? data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
+                        txtBuyerAddress.Text = patientData?.ADDRESS ?? data.TDL_PATIENT_ADDRESS ?? "";
                         txtSDT.Text = data.TDL_PATIENT_PHONE ?? "";
                         if (chkAddressBhyt.Checked && resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
                         {
                             txtBuyerAddress.Text = resultPatientType.ADDRESS;
                         }
                         txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
-                        if (data != null && !string.IsNullOrEmpty(data.TDL_PATIENT_BUD_REL_UNIT_CODE))
+                        if (patientData != null && !string.IsNullOrEmpty(patientData.BUD_REL_UNIT_CODE))
+                        {
+                            txtMaQH.Text = patientData.BUD_REL_UNIT_CODE;
+                        }
+                        else if (!string.IsNullOrEmpty(data.TDL_PATIENT_BUD_REL_UNIT_CODE))
                         {
                             txtMaQH.Text = data.TDL_PATIENT_BUD_REL_UNIT_CODE;
-                        }
-                        else if (patient != null && patient.FirstOrDefault() != null && !string.IsNullOrEmpty(patient.FirstOrDefault().BUD_REL_UNIT_CODE))
-                        {
-                            txtMaQH.Text = patient.FirstOrDefault().BUD_REL_UNIT_CODE;
                         }
                         else
                         {
@@ -98,23 +99,25 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         }
                         string autoLoadData = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TransactionBill.AutoLoadOrgAndTaxCodeByPatient");
 
-                        txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE ?? "";
-                        txtBuyerTaxCode2.Text = (autoLoadData == "1") ? (data?.TDL_PATIENT_TAX_CODE ?? "") : "";
+                        string patientTaxCode = patientData?.TAX_CODE ?? data.TDL_PATIENT_TAX_CODE;
+                        txtBuyerTaxCode.Text = patientTaxCode ?? "";
+                        txtBuyerTaxCode2.Text = (autoLoadData == "1") ? (patientTaxCode ?? "") : "";
 
-                        if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
+                        long? workPlaceId = patientData?.WORK_PLACE_ID ?? data.TDL_PATIENT_WORK_PLACE_ID;
+                        string workPlaceName = patientData?.WORK_PLACE ?? data.TDL_PATIENT_WORK_PLACE;
+                        if (workPlaceId.HasValue)
                         {
-                            //cboBuyerOrganization.EditValue = dtWorkPlace.Where(o => o.ID == data.TDL_PATIENT_WORK_PLACE_ID).FirstOrDefault().ID;
-                            cboBuyerOrganization.EditValue = (autoLoadData == "1") ? data.TDL_PATIENT_WORK_PLACE_ID : null;
+                            cboBuyerOrganization.EditValue = (autoLoadData == "1") ? workPlaceId : null;
                             txtBuyerOrganization.Text = "";
                             chkOther.Checked = false;
 
-                            cboBuyerOrganzation2.EditValue = (autoLoadData == "1") ? data.TDL_PATIENT_WORK_PLACE_ID : null;
-                            txtBuyerTaxCode2.Text = (autoLoadData == "1") ? (data?.TDL_PATIENT_TAX_CODE ?? dtWorkPlace?.FirstOrDefault(o => o.ID == data?.TDL_PATIENT_WORK_PLACE_ID)?.TAX_CODE) : null;
+                            cboBuyerOrganzation2.EditValue = (autoLoadData == "1") ? workPlaceId : null;
+                            txtBuyerTaxCode2.Text = (autoLoadData == "1") ? (patientTaxCode ?? dtWorkPlace?.FirstOrDefault(o => o.ID == workPlaceId)?.TAX_CODE) : null;
                         }
-                        else if (!string.IsNullOrEmpty(data.TDL_PATIENT_WORK_PLACE))
+                        else if (!string.IsNullOrEmpty(workPlaceName))
                         {
                             cboBuyerOrganization.EditValue = null;
-                            txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE;
+                            txtBuyerOrganization.Text = workPlaceName;
                             chkOther.Checked = true;
                         }
                         else
