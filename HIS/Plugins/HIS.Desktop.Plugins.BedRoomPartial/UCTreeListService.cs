@@ -514,6 +514,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     {
                         e.Appearance.ForeColor = Color.Black;
                     }
+
+                    // 53745 - Cot HP: o khong bam duoc to nen xam de phan biet voi o bam duoc
+                    if (e.Column == tc_IsExpend && !e.Node.HasChildren && !data.IsEnableExpend)
+                    {
+                        e.Appearance.BackColor = Color.FromArgb(224, 224, 224);
+                    }
                 }
             }
             catch (Exception ex)
