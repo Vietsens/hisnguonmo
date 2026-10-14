@@ -69,6 +69,20 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// <summary>Chuyen chuoi JSON cua thu vien -> JSON dung chuan HCC. Tra chuoi goc neu khong xu ly duoc.</summary>  
         internal static string ToHccJson(string libraryJson)
         {
+            return ConvertLibraryJson(libraryJson, true);
+        }
+
+        /// <summary>
+        /// Cung cau truc JSON (muc 2.5 Phu luc Kho du lieu suc khoe toan dan trung mau HCC) nhung KHONG quy doi
+        /// gioi_tinh — Kho dung chuan QD 2062 (1=Nam, 2=Nu).
+        /// </summary>
+        internal static string ToKdlskJson(string libraryJson)
+        {
+            return ConvertLibraryJson(libraryJson, false);
+        }
+
+        private static string ConvertLibraryJson(string libraryJson, bool remapGioiTinhHcc)
+        {
             try
             {
                 if (string.IsNullOrWhiteSpace(libraryJson)) return libraryJson;
@@ -87,7 +101,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 {
                     Inventec.Common.Logging.LogSystem.Warn("KskHccJsonConverter: khong thay " + PATH_DANHSACHHOSO
                         + " -> chi ha chu thuong ten khoa.");
-                    return FinalizeHccJson(root);
+                    return FinalizeHccJson(root, remapGioiTinhHcc);
                 }
 
                 // Thu vien xuat HOSO la MANG ([{FILEHOSO:[...]}]); tai lieu HCC yeu cau hoso la DOI TUONG.   
@@ -100,7 +114,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         + PATH_DANHSACHHOSO + "." + NODE_HOSO + "." + NODE_FILEHOSO
                         + " -> chi ha chu thuong ten khoa.");
 
-                return FinalizeHccJson(root);
+                return FinalizeHccJson(root, remapGioiTinhHcc);
             }
             catch (Exception ex)
             {
@@ -197,10 +211,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Hoàn tất JSON HCC: (1) hạ chữ thường mọi khoá; (2) quy đổi gioi_tinh về DOMAIN HCC (0=Nữ, 1=Nam)
         /// — KHÁC chuẩn QĐ2062 (1=Nam, 2=Nữ). Chạy trên cây ĐÃ hạ chữ thường nên khoá chắc chắn là "gioi_tinh".
         /// </summary>
-        private static string FinalizeHccJson(JObject root)
+        private static string FinalizeHccJson(JObject root, bool remapGioiTinhHcc)
         {
             JToken lowered = LowercaseKeys(root);
-            RemapGioiTinhHcc(lowered);
+            if (remapGioiTinhHcc) RemapGioiTinhHcc(lowered);
             return lowered.ToString(Newtonsoft.Json.Formatting.None);
         }
 
