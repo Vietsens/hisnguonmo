@@ -102,6 +102,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     rsServiceReq = rsServiceReq.Where(o => o.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN || (o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN && o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)).ToList();
                 }
                 this.listServiceReq = rsServiceReq ?? new List<HIS_SERVICE_REQ>();
+                // Viec 57966: y lenh theo ID cho LoadDataService (module thuc hien - nhanh ket luan; trang thai + thoi gian ket thuc - Ngay KQ xet nghiem)
+                Dictionary<long, HIS_SERVICE_REQ> serviceReqById = this.listServiceReq.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First());
 
                 rsSereServ = new List<HisSereServADONumOrder>();
                 List<long> _ServiceReqIds = new List<long>();
@@ -260,11 +262,11 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                             int t = 0;
                                             foreach (var item in itemParent)
                                             {
-                                                LoadDataService(item, ssServiceParent, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, ref SereServADOs, ref t);
+                                                LoadDataService(item, ssServiceParent, serviceReqById, dicSereServExt, _SereServTeins, _LisSamples, ref SereServADOs, ref t);
                                             }
                                         }
                                         else
-                                            LoadDataMicrobiologicalResult(itemParent, ssServiceParent, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
+                                            LoadDataMicrobiologicalResult(itemParent, ssServiceParent, serviceReqById, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
                                     }
                                     else
                                     {
@@ -273,12 +275,12 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                             int t = 0;
                                             foreach (var item in itemParent)
                                             {
-                                                LoadDataService(item, ssServiceType, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, ref SereServADOs, ref t);
+                                                LoadDataService(item, ssServiceType, serviceReqById, dicSereServExt, _SereServTeins, _LisSamples, ref SereServADOs, ref t);
                                             }
                                         }
                                         else
                                         {
-                                            LoadDataMicrobiologicalResult(itemParent, ssServiceType, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
+                                            LoadDataMicrobiologicalResult(itemParent, ssServiceType, serviceReqById, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
                                         }
                                     }
                                 }
@@ -290,11 +292,11 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     int t = 0;
                                     foreach (var item in itemSS)
                                     {
-                                        LoadDataService(item, ssServiceType, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, ref SereServADOs, ref t);
+                                        LoadDataService(item, ssServiceType, serviceReqById, dicSereServExt, _SereServTeins, _LisSamples, ref SereServADOs, ref t);
                                     }
                                 }
                                 else
-                                    LoadDataMicrobiologicalResult(itemSS, ssServiceType, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
+                                    LoadDataMicrobiologicalResult(itemSS, ssServiceType, serviceReqById, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
                             }
                         }
                     }
@@ -437,7 +439,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             }
         }
 
-        private void LoadDataMicrobiologicalResult(IGrouping<long, HisSereServADONumOrder> itemParent, TreeSereServADO ssServiceParent, List<HIS_SERVICE_REQ> rsServiceReq, Dictionary<long, HIS_SERE_SERV_EXT> dicSereServExt, List<V_HIS_SERE_SERV_TEIN> _SereServTeins, List<LIS_SAMPLE> lisSamples, List<LIS_SAMPLE_SERVICE> lisSampleServices, List<LIS_RESULT> lisResults, ref List<TreeSereServADO> SereServADOs)
+        private void LoadDataMicrobiologicalResult(IGrouping<long, HisSereServADONumOrder> itemParent, TreeSereServADO ssServiceParent, Dictionary<long, HIS_SERVICE_REQ> serviceReqById, Dictionary<long, HIS_SERE_SERV_EXT> dicSereServExt, List<V_HIS_SERE_SERV_TEIN> _SereServTeins, List<LIS_SAMPLE> lisSamples, List<LIS_SAMPLE_SERVICE> lisSampleServices, List<LIS_RESULT> lisResults, ref List<TreeSereServADO> SereServADOs)
         {
             try
             {
@@ -500,19 +502,19 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     }
                                     else
                                     {
-                                        LoadDataService(item, ssServiceParent, rsServiceReq, dicSereServExt, _SereServTeins, lisSamples, ref SereServADOs, ref t);
+                                        LoadDataService(item, ssServiceParent, serviceReqById, dicSereServExt, _SereServTeins, lisSamples, ref SereServADOs, ref t);
                                     }
                                 }
                             }
                             else
                             {
-                                LoadDataService(item, ssServiceParent, rsServiceReq, dicSereServExt, _SereServTeins, lisSamples, ref SereServADOs, ref t);
+                                LoadDataService(item, ssServiceParent, serviceReqById, dicSereServExt, _SereServTeins, lisSamples, ref SereServADOs, ref t);
                             }
                         }
                     }
                     else
                     {
-                        LoadDataService(item, ssServiceParent, rsServiceReq, dicSereServExt, _SereServTeins, lisSamples, ref SereServADOs, ref t);
+                        LoadDataService(item, ssServiceParent, serviceReqById, dicSereServExt, _SereServTeins, lisSamples, ref SereServADOs, ref t);
                     }
                 }
 
@@ -523,7 +525,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             }
         }
 
-        private void LoadDataService(HisSereServADONumOrder item, TreeSereServADO ssServiceParent, List<HIS_SERVICE_REQ> rsServiceReq, Dictionary<long, HIS_SERE_SERV_EXT> dicSereServExt, List<V_HIS_SERE_SERV_TEIN> _SereServTeins, List<LIS_SAMPLE> lisSamples, ref List<TreeSereServADO> SereServADOs, ref int t)
+        private void LoadDataService(HisSereServADONumOrder item, TreeSereServADO ssServiceParent, Dictionary<long, HIS_SERVICE_REQ> serviceReqById, Dictionary<long, HIS_SERE_SERV_EXT> dicSereServExt, List<V_HIS_SERE_SERV_TEIN> _SereServTeins, List<LIS_SAMPLE> lisSamples, ref List<TreeSereServADO> SereServADOs, ref int t)
         {
             try
             {
@@ -538,8 +540,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 leaf.SERVICE_ID = item.SERVICE_ID;
                 leaf.TDL_SERVICE_CODE = item.TDL_SERVICE_CODE;
                 leaf.TDL_SERVICE_NAME = item.TDL_SERVICE_NAME;
+                long? testResultTime = null; // Viec 57966: Ngay KQ dong dich vu XN = lan tra ket qua moi nhat cua cac chi so
                 if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                 {
+                    HIS_SERVICE_REQ serviceReq = null;
+                    if (item.SERVICE_REQ_ID.HasValue && serviceReqById != null)
+                        serviceReqById.TryGetValue(item.SERVICE_REQ_ID.Value, out serviceReq);
+
                     if (!chkImportant.Checked && chkShowMicrobiological.Checked)
                     {
                         var sample = lisSamples.FirstOrDefault(o => o.SERVICE_REQ_CODE == item.TDL_SERVICE_REQ_CODE);
@@ -555,7 +562,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     // không có EXT thì early-return bên dưới không bao giờ xảy ra -> bỏ qua để khỏi quét list mỗi dòng.
                     if (dicSereServExt.Count > 0)
                     {
-                        var dataSer = rsServiceReq.FirstOrDefault(p => p.ID == item.SERVICE_REQ_ID);
+                        var dataSer = serviceReq;
                         if (dataSer != null && dataSer.ID > 0 && dataSer.EXE_SERVICE_MODULE_ID > 0)
                         {
                             List<HIS_EXE_SERVICE_MODULE> exeServiceModules = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EXE_SERVICE_MODULE>();
@@ -603,6 +610,10 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
 
                                 leafXN.TEST_INDEX_UNIT_CODE = itemT.TEST_INDEX_UNIT_CODE;
                                 leafXN.TEST_INDEX_UNIT_NAME = itemT.TEST_INDEX_UNIT_NAME;
+                                long? indexResultTime = GetTestIndexResultTime(itemT, serviceReq);
+                                leafXN.END_TIME = ResultTimeToString(indexResultTime);
+                                if (indexResultTime.HasValue && (!testResultTime.HasValue || indexResultTime.Value > testResultTime.Value))
+                                    testResultTime = indexResultTime;
                                 ProcessCheckNormal(ref leafXN);
                                 SereServADOs.Add(leafXN);
                             }
@@ -618,7 +629,12 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                         leaf.VALUE_RANGE = dicSereServExt[leaf.ID].CONCLUDE;
                     }
                 }
-                if (dicSereServExt.ContainsKey(leaf.ID) && dicSereServExt[leaf.ID].END_TIME.HasValue)
+                if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
+                {
+                    // Viec 57966: LIS/LABCON tra ket qua khong ghi EXT.END_TIME -> dong dich vu theo Ngay KQ cua cac chi so
+                    leaf.END_TIME = ResultTimeToString(testResultTime);
+                }
+                else if (dicSereServExt.ContainsKey(leaf.ID) && dicSereServExt[leaf.ID].END_TIME.HasValue)
                 {
                     leaf.END_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(dicSereServExt[leaf.ID].END_TIME.Value);
                 }
@@ -629,6 +645,79 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Viec 57966: Ngay KQ cua 1 chi so xet nghiem. Chi co khi y lenh da Hoan thanh va chi so co gia tri.
+        /// Uu tien thoi gian tra ket qua cua chi so (RESULT_TIME), khong co thi lay thoi gian ket thuc y lenh
+        /// (FINISH_TIME - LABCON gui kem khi tra ket qua). Thieu ca 2 thi de trong, khong lay gio khac thay the.
+        /// </summary>
+        private long? GetTestIndexResultTime(V_HIS_SERE_SERV_TEIN sereServTein, HIS_SERVICE_REQ serviceReq)
+        {
+            long? result = null;
+            try
+            {
+                if (sereServTein != null && serviceReq != null
+                    && serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT
+                    && !String.IsNullOrWhiteSpace(sereServTein.VALUE))
+                {
+                    long? indexResultTime = GetSereServTeinResultTime(sereServTein);
+                    if (indexResultTime.HasValue && indexResultTime.Value > 0)
+                        result = indexResultTime.Value;
+                    else if (serviceReq.FINISH_TIME.HasValue && serviceReq.FINISH_TIME.Value > 0)
+                        result = serviceReq.FINISH_TIME.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Viec 57966: V_HIS_SERE_SERV_TEIN.RESULT_TIME doc QUA REFLECTION, khong phu thuoc compile-time (cach lam nhu 62ddc7801).
+        /// Ly do: plugin chay tren nhieu ban client; MOS.EFMODEL truoc 23/03/2026 chua co cot nay -> goi thang property se nem
+        /// MissingMethodException ngay khi JIT, roi vao catch cua LoadDataService va mat ca dong xet nghiem tren cay.
+        /// Khong co cot thi coi nhu chi so khong co gio rieng (GetTestIndexResultTime lay thoi gian ket thuc y lenh).
+        /// </summary>
+        static readonly System.Reflection.PropertyInfo sereServTeinResultTimeProperty = typeof(V_HIS_SERE_SERV_TEIN).GetProperty("RESULT_TIME");
+
+        private long? GetSereServTeinResultTime(V_HIS_SERE_SERV_TEIN sereServTein)
+        {
+            long? result = null;
+            try
+            {
+                if (sereServTein != null && sereServTeinResultTimeProperty != null)
+                    result = sereServTeinResultTimeProperty.GetValue(sereServTein, null) as long?;
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Viec 57966: doi thoi gian (yyyyMMddHHmmss) sang chuoi hien thi cot Ngay KQ (dd/MM/yyyy HH:mm:ss, giong thu thuat).
+        /// Khong co gio thi de trong.
+        /// </summary>
+        private string ResultTimeToString(long? time)
+        {
+            string result = null;
+            try
+            {
+                if (time.HasValue && time.Value > 0)
+                    result = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(time.Value);
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
         private void LoadImage(List<TreeSereServADO> SereServADOs)
         {
