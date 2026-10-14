@@ -2580,6 +2580,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 SessionManager.ProcessTokenLost(param);
                 if (success)
                 {
+                    // Che do don du tru theo ngay du tru: cay loc tu cache dong dich vu toan dot,
+                    // phai nap lai cache truoc khi tai cay, neu khong o HP van hien gia tri cu
+                    if (this.isShowAnticipateByUseDate && this.allSereServOfTreatment != null && this.cachedTreatmentId > 0)
+                    {
+                        LoadAllSereServOfTreatment(this.cachedTreatmentId);
+                    }
                     LoadDataSereServByTreatmentId(this.rowClickByDate);
                 }
             }

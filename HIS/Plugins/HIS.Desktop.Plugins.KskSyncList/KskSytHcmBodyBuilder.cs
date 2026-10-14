@@ -1863,7 +1863,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             if (c.Length > 0 && !map.ContainsKey(c)) map[c] = it;
                         }
                     }
-                    byNameItemCache[catalogCode] = map;
+                    // Danh mục chưa có tại máy -> KHÔNG ghi nhớ bảng rỗng, để lần sau đọc lại đĩa.
+                    if (items != null) byNameItemCache[catalogCode] = map;
                 }
 
                 KskSytCatalogItem found;
@@ -1916,7 +1917,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             if (c.Length > 0 && !map.ContainsKey(c)) map[c] = id;
                         }
                     }
-                    byNameCache[catalogCode] = map;
+                    // Danh mục chưa có tại máy -> KHÔNG ghi nhớ bảng rỗng, để lần sau đọc lại đĩa.
+                    if (items != null) byNameCache[catalogCode] = map;
                 }
 
                 long found;
@@ -1946,7 +1948,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 if (icdByCode == null)
                 {
-                    icdByCode = new Dictionary<string, long>();
+                    var bang = new Dictionary<string, long>();
                     var items = KskSytHcmPayload.ReadCachedCatalog(CAT__ICD);
                     if (items != null)
                     {
@@ -1956,11 +1958,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             long id;
                             if (!long.TryParse(it.Id, out id)) continue;
                             string code = ExtractIcdCode(it.Code, it.Name);
-                            if (code.Length > 0 && !icdByCode.ContainsKey(code)) icdByCode[code] = id;
+                            if (code.Length > 0 && !bang.ContainsKey(code)) bang[code] = id;
                         }
                     }
                     Inventec.Common.Logging.LogSystem.Info(
-                        "SytHcm: bang tra ma benh cua cong co " + icdByCode.Count + " ma");
+                        "SytHcm: bang tra ma benh cua cong co " + bang.Count + " ma");
+                    // Danh mục chưa có tại máy -> KHÔNG ghi nhớ bảng rỗng, để lần sau đọc lại đĩa.
+                    if (items == null) return null;
+                    icdByCode = bang;
                 }
 
                 long found;
@@ -2036,7 +2041,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private static string Norm(string s)
         {
             if (string.IsNullOrWhiteSpace(s)) return "";
-            return s.Trim().ToLowerInvariant();
+            string v = s.Trim().ToLowerInvariant();
+
+            // Danh mục của Sở trộn hai cách mã hóa dấu tiếng Việt: "Phường Tân Mỹ" có chữ "ỹ" viết
+            // rời thành y + dấu ngã (U+0079 U+0303), còn HIS lưu chữ liền (U+1EF9). Hai chuỗi nhìn
+            // y hệt nhau nhưng so sánh thẳng thì KHÁC NHAU. Đưa cả hai bên về dạng liền (NFC) rồi
+            // mới so. 252 mục của cổng dính lỗi này: 201 mã ICD, 27 nơi công tác, 13 xã/phường,
+            // 11 cơ sở khám chữa bệnh.
+            try { v = v.Normalize(System.Text.NormalizationForm.FormC); }
+            catch (ArgumentException) { /* chuỗi có ký tự lạ -> giữ nguyên, vẫn so được */ }
+            return v;
         }
 
         #endregion

@@ -2585,6 +2585,42 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string SERE_SERV_INFO_SEPARATOR = "; ";
 
         /// <summary>
+        /// Dua 4 cot dich vu ve ngay sau cot "Ten benh nhan", dung thu tu Ten dich vu / So luong / Gia / DTTT.
+        /// Goi moi lan fill, NGAY sau restore layout: file layout luoi luu tu ban truoc khong co 4 cot nay nen khi restore
+        /// cac cot cu lay lai vi tri da luu, 4 cot moi giu VisibleIndex cua Designer -> bi xen ke (Ten dich vu dung truoc
+        /// Ten benh nhan), roi file layout luu lai dung thu tu sai do.
+        /// Chi dat lai khi thu tu dang sai; cot nguoi dung da an (chon cot) giu nguyen an.
+        /// </summary>
+        private void EnsureServiceInfoColumnsOrder()
+        {
+            try
+            {
+                if (grdColVirPatientName == null || !grdColVirPatientName.Visible) return;
+
+                List<GridColumn> serviceCols = new List<GridColumn> { grdColServiceNames, grdColServiceAmounts, grdColServicePrices, grdColServicePatientTypes }
+                    .Where(o => o != null && o.Visible)
+                    .ToList();
+                if (serviceCols.Count == 0) return;
+
+                List<GridColumn> visibleCols = gridViewServiceReq.VisibleColumns.Cast<GridColumn>().OrderBy(o => o.VisibleIndex).ToList();
+                List<int> slots = visibleCols.Select(o => o.VisibleIndex).ToList();
+                List<GridColumn> desired = visibleCols.Where(o => !serviceCols.Contains(o)).ToList();
+                desired.InsertRange(desired.IndexOf(grdColVirPatientName) + 1, serviceCols);
+
+                // Gan lan luot tu trai sang phai: cot thu i vao dung o thu i thi cac cot ben trai da dung cho, khong bi xo lech
+                for (int i = 0; i < desired.Count; i++)
+                {
+                    if (desired[i].VisibleIndex != slots[i])
+                        desired[i].VisibleIndex = slots[i];
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
         /// Nap dich vu cua cac y lenh tren trang hien tai (chung 1 lan goi api/HisSereServ/Get cho ca trang)
         /// roi gan san chuoi hien thi vao tung dong cho 4 cot Ten dich vu / So luong / Gia / DTTT.
         /// Cung du lieu voi luoi "Dich vu yeu cau" ben phai (TDL_SERVICE_NAME, AMOUNT, VIR_TOTAL_PRICE);

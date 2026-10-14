@@ -69,6 +69,7 @@ Không thay đổi. Lưu qua SDO tờ điều trị hiện có (`trackingSDOs`).
 
 ### Tab "DS tờ điều trị" (việc 57960)
 
+- Tab luôn hiện, không phụ thuộc cấu hình. Thứ tự các tờ trong khung do khóa `HIS.Desktop.Plugins.HisTrackingList.IsViewTrackingNewestFirst` quyết định (xử lý bên HisTrackingList, `UcTrackingListView`): 1 = tờ mới nhất ở trên; khác 1 = tờ cũ nhất ở trên.
 - Tab thứ 3 của `xtraTabControl2`, ngay sau "Thực hiện đơn dự trù"; có cả khi tạo mới và khi sửa tờ; tab mặc định vẫn là "Y lệnh".
 - Lần đầu chọn tab mới dựng khung xem; đổi tab qua lại không tải lại (giữ vị trí cuộn, mức thu phóng).
 - Sau Lưu / Lưu ký thành công (`SetTrackingListNeedReload`): đang ở tab thì tải lại ngay, không thì tải lại ở lần chọn tab kế tiếp.
@@ -90,6 +91,7 @@ Không thay đổi trong phạm vi việc này. (Muốn in 5 chỉ số mới c�
 | 19/06/2026 | huannh | Bổ sung 5 chỉ số O2, FiO2, GCS, Mức độ ý thức (LOC), AVPU vào màn hình DHST (UC `HIS.UC.DHST`), đặt liền dưới SpO2; map lưu/đọc `HIS_DHST` trong `frmTrackingCreateNew`; cập nhật `CheckCtorDhst`/`CheckDhst`; thêm validation GCS(3–15)/FiO2(0–100)/O2(≥0); đa ngôn ngữ vi/en/my |
 | 09/10/2026 | dangth2 | Việc 59656: tờ điều trị chỉ ghi nhận y lệnh do chính người tạo tờ chỉ định. Bật key: sau khi dựng cây tab 1 `MarkRequestOfOtherUser` đánh dấu `TreeSereServADO.IsRequestOfOtherUser` cho y lệnh CHƯA gắn tờ này và người chỉ định khác người tạo tờ (tờ mới: tài khoản đăng nhập); `treeSereServ_CheckAllNode` / `CheckYLFromBB` không tick sẵn các y lệnh đó (trước đây tick hết y lệnh trong ngày của mọi bác sĩ, kể cả khi sửa tờ cũ chưa ký); key = 2 còn khóa tick tay (`BeforeCheckNode`, `CheckNode`, ô tick vẽ mờ); trước `api/HisTracking/Create|Update` (Lưu, Lưu ký) gọi `CheckTrackingOwnerBeforeSave`: key 1 hỏi, key 2 chặn. Y lệnh đã gắn tờ này giữ nguyên (BE coi danh sách gửi lên là danh sách cuối). Tab 2 'Thực hiện đơn dự trù' không đổi. Partial `frmTrackingCreate__Pluss__TrackingOwner.cs`, 3 message `TrackingOwner__*`. |
 | 13/10/2026 | phuongnm | Việc 57960 (NTP): thêm tab "DS tờ điều trị" sau tab "Thực hiện đơn dự trù", nhúng khung xem chỉ xem của HisTrackingList (toàn bộ tờ của hồ sơ, tờ mới nhất ở trên, không in/ký/sao chép); kiểm quyền theo module HisTrackingList; tải lại sau Lưu/Lưu ký. Partial `frmTrackingCreate__Pluss__TrackingList.cs`. |
+| 14/10/2026 | phuongnm | Việc 57960: chốt lại theo yêu cầu — tab "DS tờ điều trị" luôn hiện, khóa `IsViewTrackingNewestFirst` chỉ quyết định thứ tự tờ trong khung (1 = mới nhất trên cùng, khác 1 = cũ nhất trên cùng; code nằm bên HisTrackingList). Bỏ phương án ẩn tab đã làm trong ngày. |
 
 ## 9. Test Cases
 
@@ -109,7 +111,8 @@ Không thay đổi trong phạm vi việc này. (Muốn in 5 chỉ số mới c�
 - [ ] Y lệnh của B đã gắn tờ A từ trước vẫn giữ nguyên khi Lưu
 
 ### Việc 57960 - Tab "DS tờ điều trị"
-- [ ] Mở tạo tờ mới: tab mặc định "Y lệnh", tab "DS tờ điều trị" đứng sau "Thực hiện đơn dự trù"
+- [ ] Mở tạo tờ mới: tab mặc định "Y lệnh", tab "DS tờ điều trị" đứng sau "Thực hiện đơn dự trù" (luôn có, không phụ thuộc khóa)
+- [ ] Khóa IsViewTrackingNewestFirst = 1: trong tab tờ mới nhất ở trên; khóa khác 1: tờ cũ nhất ở trên, cuộn xuống là các tờ mới hơn
 - [ ] Bấm tab: hiện "Đang tải danh sách tờ điều trị...", sau đó các tờ nối tiếp, tờ mới nhất ở trên; vẫn nhập được tờ mới trong lúc tải
 - [ ] Hồ sơ chưa có tờ: "Chưa có tờ điều trị trong đợt điều trị này"
 - [ ] Tờ đã ký hiện văn bản ký; tờ chưa ký hiện bản dựng Mps000062 giống bản xem 1 tờ ở Danh sách tờ điều trị
