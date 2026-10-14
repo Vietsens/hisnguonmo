@@ -260,6 +260,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     this.Text = this.currentModule.text;
                 }
                 ApplyViewOnlyMode();
+                //Viec 57971: view-only screen opened from the Bed room (flag CLS_TAB) - group tab bar above the result tree
+                InitClsTabBar();
                 chkThisTreatment.Checked = true;
                 style = NumberStyles.Any;
                 ShowResultWhenReqComplete = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete");

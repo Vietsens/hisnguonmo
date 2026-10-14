@@ -234,4 +234,43 @@
   <data name="frmContentSubclinical.btnClose.Text" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="frmContentSubclinical.ClsTab.ALL.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.XN.Text" xml:space="preserve">
+    <value>Laboratory</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.SA.Text" xml:space="preserve">
+    <value>Ultrasound</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.XQ.Text" xml:space="preserve">
+    <value>X-ray</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.CTMRI.Text" xml:space="preserve">
+    <value>CT / MRI</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.TDCN.Text" xml:space="preserve">
+    <value>Functional tests</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.TDCN.ToolTip" xml:space="preserve">
+    <value>Functional exploration</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.NS.Text" xml:space="preserve">
+    <value>Endoscopy</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.GPBL.Text" xml:space="preserve">
+    <value>Pathology</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.TT.Text" xml:space="preserve">
+    <value>Procedure</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.KHAC.Text" xml:space="preserve">
+    <value>Other paraclinical</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.EmptyText" xml:space="preserve">
+    <value>No paraclinical results in the selected date range</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.EmptyFilteredText" xml:space="preserve">
+    <value>No results match the test filters</value>
+  </data>
 </root>

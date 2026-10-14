@@ -1059,4 +1059,34 @@
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DIEU_DUONG_DA_THUC_HIEN_Y_LENH" xml:space="preserve">
     <value>Nurse executed the order at</value>
   </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.XN.Text" xml:space="preserve">
+    <value>Laboratory</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.SA.Text" xml:space="preserve">
+    <value>Ultrasound</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.XQ.Text" xml:space="preserve">
+    <value>X-ray</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.CTMRI.Text" xml:space="preserve">
+    <value>CT / MRI</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.TDCN.Text" xml:space="preserve">
+    <value>Functional tests</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.TDCN.ToolTip" xml:space="preserve">
+    <value>Functional exploration</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.NS.Text" xml:space="preserve">
+    <value>Endoscopy</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.GPBL.Text" xml:space="preserve">
+    <value>Pathology</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.KHAC.Text" xml:space="preserve">
+    <value>Other paraclinical</value>
+  </data>
+  <data name="UCBedRoomPartial.ClsTab.EmptyText" xml:space="preserve">
+    <value>No orders in the selected date range</value>
+  </data>
 </root>

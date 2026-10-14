@@ -28,6 +28,11 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ADO
     {
         public string CONCRETE_ID__IN_SETY { get; set; }
         public string PARENT_ID__IN_SETY { get; set; }
+        /// <summary>
+        /// Viec 57971: parent of the row inside the result tab being shown (tree ParentFieldName in tab mode).
+        /// "Tất cả" = PARENT_ID__IN_SETY; group tabs = the date row for rows that hang under a service type row.
+        /// </summary>
+        public string PARENT_ID__IN_TAB { get; set; }
         public string SERVICE_REQ_CODE { get; set; }
         public string SERVICE_UNIT_NAME { get; set; }
         public long? NUM_ORDER { get; set; }

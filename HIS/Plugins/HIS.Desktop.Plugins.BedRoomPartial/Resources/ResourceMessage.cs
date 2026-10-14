@@ -578,5 +578,22 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Resources
                 return "";
             }
         }
+
+        /// <summary>Viec 57971: Phiếu {0} còn có dịch vụ thuộc nhóm {1}. Thao tác sẽ áp dụng cho toàn bộ phiếu. Bạn có muốn tiếp tục?</summary>
+        internal static string PhieuConDichVuThuocNhomKhac
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("PhieuConDichVuThuocNhomKhac", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

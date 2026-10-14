@@ -71,6 +71,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show("Bắt buộc chọn Hồ sơ điều trị", "Thông báo", MessageBoxButtons.OK);
                     }
+                    //Viec 57971: tab mode - clear the tabs / tree / images of the previous search
+                    this.ClearClsTabs();
                     return;
                 }
                 WaitingManager.Show();
@@ -185,7 +187,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     List<LIS_SAMPLE> _LisSamples = new List<LIS_SAMPLE>();
                     List<LIS_SAMPLE_SERVICE> _LisSampleServices = new List<LIS_SAMPLE_SERVICE>();
                     List<LIS_RESULT> _LisResults = new List<LIS_RESULT>();
-                    if (!chkImportant.Checked && chkShowMicrobiological.Checked)
+                    if (!this.IsImportantOnlyBuild && chkShowMicrobiological.Checked)
                     {
                         if (dataTests != null && dataTests.Count > 0)
                         {
@@ -257,7 +259,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                         ssServiceParent.SERVICE_REQ_CODE = (serviceParent != null ? serviceParent.SERVICE_NAME : "");
                                         ssServiceParent.IsParentServiceType = true;
                                         SereServADOs.Add(ssServiceParent);
-                                        if (chkImportant.Checked || !chkShowMicrobiological.Checked || _LisSampleServices == null || _LisSampleServices.Count == 0 || _LisResults == null || _LisResults.Count == 0)
+                                        if (this.IsImportantOnlyBuild || !chkShowMicrobiological.Checked || _LisSampleServices == null || _LisSampleServices.Count == 0 || _LisResults == null || _LisResults.Count == 0)
                                         {
                                             int t = 0;
                                             foreach (var item in itemParent)
@@ -270,7 +272,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     }
                                     else
                                     {
-                                        if (chkImportant.Checked || !chkShowMicrobiological.Checked || _LisSampleServices == null || _LisSampleServices.Count == 0 || _LisResults == null || _LisResults.Count == 0)
+                                        if (this.IsImportantOnlyBuild || !chkShowMicrobiological.Checked || _LisSampleServices == null || _LisSampleServices.Count == 0 || _LisResults == null || _LisResults.Count == 0)
                                         {
                                             int t = 0;
                                             foreach (var item in itemParent)
@@ -287,7 +289,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                             }
                             else
                             {
-                                if (chkImportant.Checked || !chkShowMicrobiological.Checked || _LisSampleServices == null || _LisSampleServices.Count == 0 || _LisResults == null || _LisResults.Count == 0)
+                                if (this.IsImportantOnlyBuild || !chkShowMicrobiological.Checked || _LisSampleServices == null || _LisSampleServices.Count == 0 || _LisResults == null || _LisResults.Count == 0)
                                 {
                                     int t = 0;
                                     foreach (var item in itemSS)
@@ -300,6 +302,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                             }
                         }
                     }
+                    //Viec 57971: rows before the test filters - "Tat ca" and the groups other than Test keep every result
+                    List<TreeSereServADO> clsTabSourceRows = this.IsClsTabActive ? SereServADOs.ToList() : null;
                     if (chkImportant.Checked)
                     {
                         var listSsImportant = SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
@@ -423,12 +427,26 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                         WaitingManager.Hide();
                         return;
                     }
-                    BindingList<TreeSereServADO> records = new BindingList<TreeSereServADO>(SereServADOs);
-                    treeListServiceReq.DataSource = records;
-                    treeListServiceReq.ExpandAll();
-                    treeSereServ_CheckAllNode(treeListServiceReq.Nodes, true, 1);
+                    if (this.IsClsTabActive && clsTabSourceRows != null)
+                    {
+                        //Viec 57971: group tabs instead of the single date tree
+                        clsTabSourceRows = clsTabSourceRows.OrderByDescending(o => o.TDL_INTRUCTION_DATE).ThenBy(p => p.NUM_ORDER).ToList();
+                        this.BindClsTabs(SereServADOs, clsTabSourceRows);
+                    }
+                    else
+                    {
+                        BindingList<TreeSereServADO> records = new BindingList<TreeSereServADO>(SereServADOs);
+                        treeListServiceReq.DataSource = records;
+                        treeListServiceReq.ExpandAll();
+                        treeSereServ_CheckAllNode(treeListServiceReq.Nodes, true, 1);
+                    }
                     #endregion
-                    LoadImage(SereServADOs);
+                    LoadImage(this.IsClsTabActive && clsTabSourceRows != null ? clsTabSourceRows : SereServADOs);
+                }
+                else
+                {
+                    //Viec 57971: no service request in the date range - tab mode clears the tabs / tree / images of the previous search
+                    this.ClearClsTabs();
                 }
                 WaitingManager.Hide();
             }
@@ -446,7 +464,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 int t = 0;
                 foreach (var item in itemParent)
                 {
-                    var lstSamples = lisSamples.Where(p => p.SERVICE_REQ_CODE == item.TDL_SERVICE_REQ_CODE && p.IS_ANTIBIOTIC_RESISTANCE == 1).ToList();
+                    var lstSamples = lisSamples != null ? lisSamples.Where(p => p.SERVICE_REQ_CODE == item.TDL_SERVICE_REQ_CODE && p.IS_ANTIBIOTIC_RESISTANCE == 1).ToList() : new List<LIS_SAMPLE>(); //Viec 57971: LIS not answering -> no sample, not an exception
                     if (lstSamples != null && lstSamples.Count > 0)
                     {
                         foreach (var sample in lstSamples)
@@ -470,6 +488,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                         leaff.VALUE_RANGE = sammpleService.MICROBIOLOGICAL_RESULT;
                                         leaff.DESCRIPTION = !string.IsNullOrEmpty(sample.NOTE) ? "Ghi chú: " + sample.NOTE : "";
                                         leaff.IS_SERE_SERV_HAS_MIC = true;
+                                        if (this.IsClsTabActive)
+                                            leaff.ID = item.ID; //Viec 57971: one service in the tab count, culture images in the tab
                                         SereServADOs.Add(leaff);
                                         int q = 0;
                                         var ssResult = lstResult.GroupBy(o => o.BACTERIUM_CODE).ToList();
@@ -547,9 +567,9 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     if (item.SERVICE_REQ_ID.HasValue && serviceReqById != null)
                         serviceReqById.TryGetValue(item.SERVICE_REQ_ID.Value, out serviceReq);
 
-                    if (!chkImportant.Checked && chkShowMicrobiological.Checked)
+                    if (!this.IsImportantOnlyBuild && chkShowMicrobiological.Checked)
                     {
-                        var sample = lisSamples.FirstOrDefault(o => o.SERVICE_REQ_CODE == item.TDL_SERVICE_REQ_CODE);
+                        var sample = lisSamples != null ? lisSamples.FirstOrDefault(o => o.SERVICE_REQ_CODE == item.TDL_SERVICE_REQ_CODE) : null; //Viec 57971: LIS not answering -> no note, the test row stays
                         if (sample != null)
                         {
                             string note = !string.IsNullOrEmpty(sample.NOTE) ? "Ghi chú: " + sample.NOTE : "";
@@ -739,12 +759,21 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     ImageADO ado = new ImageADO();
                     ado.SERVICE_REQ_NAME = data != null ? data.SERVICE_REQ_CODE : "";
                     ado.IMAGE_DISPLAY = Image.FromStream(stream);
+                    ado.SERE_SERV_ID = item.SERE_SERV_ID;
 
                     ImageADOs.Add(ado);
                 }
 
-                gridControl1.DataSource = ImageADOs;
-                gridControl1.RefreshDataSource();
+                if (this.IsClsTabActive)
+                {
+                    //Viec 57971: only the images of the selected tab
+                    this.BindClsTabImages();
+                }
+                else
+                {
+                    gridControl1.DataSource = ImageADOs;
+                    gridControl1.RefreshDataSource();
+                }
             }
             catch (Exception ex)
             {

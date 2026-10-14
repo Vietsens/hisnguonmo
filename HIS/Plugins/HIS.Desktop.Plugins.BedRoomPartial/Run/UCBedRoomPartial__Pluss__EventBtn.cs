@@ -492,7 +492,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         List<object> listArgs = new List<object>();
                         listArgs.Add(RowCellClickBedRoom.TREATMENT_ID);
                         // Cờ chế độ chỉ xem — ContentSubclinicalBehavior.ARG__VIEW_ONLY
-                        listArgs.Add(new List<string> { "VIEW_ONLY" });
+                        List<string> flags = new List<string> { "VIEW_ONLY" };
+                        // Viec 57971: key ClsTabOption on -> result screen with tabs, opened on the selected group tab
+                        flags.AddRange(this.GetClsTabFlagsForSubclinical());
+                        listArgs.Add(flags);
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
                         var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");

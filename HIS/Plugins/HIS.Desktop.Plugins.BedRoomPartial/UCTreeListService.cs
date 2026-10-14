@@ -1078,6 +1078,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 EditEnableButton_Click = null;
                 EditButton_Click = null;
                 ExpendCheck_Click = null;
+                this.DisposeClsTabData();
                 this.treeSereServ.GetStateImage -= new DevExpress.XtraTreeList.GetStateImageEventHandler(this.treeSereServ_GetStateImage);
                 this.treeSereServ.GetSelectImage -= new DevExpress.XtraTreeList.GetSelectImageEventHandler(this.treeSereServ_GetSelectImage);
                 this.treeSereServ.StateImageClick -= new DevExpress.XtraTreeList.NodeClickEventHandler(this.treeSereServ_StateImageClick);

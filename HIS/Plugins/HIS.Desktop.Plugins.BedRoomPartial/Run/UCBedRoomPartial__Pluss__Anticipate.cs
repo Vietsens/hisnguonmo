@@ -196,6 +196,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 if (ucCLS != null) ucCLS.SetAnticipateColumnsVisible(isShowAnticipateByUseDate);
                 if (ucMediMate != null) ucMediMate.SetAnticipateColumnsVisible(isShowAnticipateByUseDate);
                 if (ucOrther != null) ucOrther.SetAnticipateColumnsVisible(isShowAnticipateByUseDate);
+                //Viec 57971: CLS group tabs
+                this.SetClsTabAnticipateColumnsVisible();
             }
             catch (Exception ex)
             {

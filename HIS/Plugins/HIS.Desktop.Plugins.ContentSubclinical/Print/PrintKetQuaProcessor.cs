@@ -54,6 +54,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.Print
         private bool IsGroup = false;
         HIS_SERVICE_REQ currentServiceReqPrint;
         HIS_SERE_SERV_EXT sereServExtPrint = null;
+        /// <summary>Viec 57971: request fetched for the sheets being built (see GetSheetServiceReq)</summary>
+        HIS_SERVICE_REQ cachedSheetServiceReq;
         Dictionary<string, object> dicParam;
         Dictionary<string, Image> dicImage;
         internal V_HIS_SERE_SERV_4 sereServ;
@@ -128,30 +130,15 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.Print
                                 currentServiceReqPrint.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA ||
                                 currentServiceReqPrint.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN)
                             {
-
-                                MOS.Filter.HisSereServExtFilter hfilter = new MOS.Filter.HisSereServExtFilter();
-                                hfilter.TDL_SERVICE_REQ_ID = currentServiceReqPrint.ID;
-                                var sereServExt = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, hfilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
-
-                                if (sereServExt != null && sereServExt.Count > 0)
-                                {
-                                    sereServExtPrint = sereServExt.FirstOrDefault();
-                                    this.currentSarPrint = GetListPrintByDescriptionPrint(sereServExtPrint);
-                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentSarPrint), currentSarPrint));
-                                    if (currentSarPrint != null && currentSarPrint.ID > 0)
-                                    {
-
-                                        LoadTreatmentWithPaty();
-                                        ProcessDicParamForPrint();
-                                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Utility.TextLibHelper.BytesToStringConverted(currentSarPrint.CONTENT)), Utility.TextLibHelper.BytesToStringConverted(currentSarPrint.CONTENT)));
-
-                                        PrintDocumentKetQua(false, Utility.TextLibHelper.BytesToStringConverted(currentSarPrint.CONTENT), currentSarPrint);
-                                    }
-                                }
-
+                                //Viec 57971: one sheet per checked service of the request (a CDHA request can mix X-ray with CT / MRI).
+                                //The request is counted once, also when nothing can be printed (no result yet / no SAR template / error),
+                                //otherwise the merged print waits 40 s then says "Khong tim thay du lieu de in".
+                                this.PrintDocumentsOfServiceReq(currentServiceReqPrint);
+                                SetDataGroup(1, null);
                             }
                             else if (currentServiceReqPrint.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN)
                             {
+                                long printedBefore = this.CountServiceReqPrinted;
                                 Inventec.Common.Logging.LogSystem.Info("__IN__MPS000014__KQ_XET_NGHIEM:" + Inventec.Common.Logging.LogUtil.TraceData("currentServiceReqPrint: ", currentServiceReqPrint));
                                 Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
                                 // DLL Inventec.Common.RichEditor trên máy build backup chưa có SetActionCancelChooseTemplate
@@ -165,9 +152,25 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.Print
                                 WaitingManager.Hide();
                                 richEditorMain.RunPrintTemplate(PrintTypeCodeStore.IN__MPS000014__KQ_XET_NGHIEM, DelegateRunPrinter);
                                 WaitingManager.Show();
+                                //Viec 57971: RunPrintTemplate is synchronous (modal); a request it did not count (error while
+                                //building the sheet, template not chosen) is counted here so the merged print does not wait 40 s
+                                if (this.CountServiceReqPrinted == printedBefore && !this.CancelPrint)
+                                {
+                                    SetDataGroup(1, null);
+                                }
+                            }
+                            else
+                            {
+                                //Viec 57971: request type without a result template (e.g. procedure) - counted as processed
+                                SetDataGroup(1, null);
                             }
 
                             WaitingManager.Hide();
+                        }
+                        else
+                        {
+                            //Viec 57971: request not executed - not printed but counted as processed
+                            SetDataGroup(1, null);
                         }
 
                     }
@@ -204,12 +207,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.Print
 
                     if (this.GroupStreamPrint != null && this.GroupStreamPrint.Count() > 0)
                     {
-                        Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo adodata = this.GroupStreamPrint.First();
                         Inventec.Common.Logging.LogSystem.Debug("List MPS Group: " + string.Join("; ", this.GroupStreamPrint.Select(s => s.printTypeCode).Distinct()));
-                        Inventec.Common.Print.FlexCelPrintProcessor printProcess = new Inventec.Common.Print.FlexCelPrintProcessor(adodata.saveMemoryStream, adodata.printerName, adodata.fileName, adodata.numCopy, true,
-                            adodata.isAllowExport, adodata.TemplateKey, adodata.eventLog, adodata.eventPrint, adodata.EmrInputADO, adodata.PrintLog, adodata.ShowPrintLog, adodata.IsAllowEditTemplateFile, adodata.IsSingleCopy);
-                        printProcess.SetPartialFile(this.GroupStreamPrint);
-                        printProcess.PrintPreviewShow();
+                        this.ShowMergedPreview();
                         DisposePrint();
                     }
                     else
@@ -245,26 +244,154 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.Print
                 {
                     printDocument.ExportToPdf(pdfData);
 
-                    Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo ado = null;
-                    using (ado.saveMemoryStream = new System.IO.MemoryStream())
+                    //Viec 57971: the former code set the stream of a null item (NullReferenceException), so a CDHA/SA/NS/TDCN/GPBL
+                    //sheet never reached the merged print. The stream stays open: the merged preview reads it after this method.
+                    Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo ado = new Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo();
+                    ado.saveMemoryStream = new System.IO.MemoryStream();
+                    pdfData.Position = 0;
+                    pdfData.CopyTo(ado.saveMemoryStream);
+                    ado.saveMemoryStream.Position = 0;
+                    ado.IsPdfFile = true;
+                    ado.fileName = SarPrint.TITLE;
+                    ado.numCopy = 1;
+                    ado.EmrInputADO = inputADO;
+                    ado.IsAllowEditTemplateFile = false;
+                    // The request is counted once by the caller (a request can give several sheets)
+                    SetDataGroup(0, ado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 57971: result sheets (SAR template) of the checked services of one CDHA/GPBL/NS/SA/TDCN request.
+        /// </summary>
+        private void PrintDocumentsOfServiceReq(HIS_SERVICE_REQ serviceReq)
+        {
+            try
+            {
+                MOS.Filter.HisSereServExtFilter hfilter = new MOS.Filter.HisSereServExtFilter();
+                hfilter.TDL_SERVICE_REQ_ID = serviceReq.ID;
+                var sereServExt = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, hfilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                bool isTreatmentLoaded = false;
+                foreach (HIS_SERE_SERV_EXT ext in this.GetCheckedSereServExts(serviceReq.ID, sereServExt))
+                {
+                    this.sereServExtPrint = ext;
+                    this.currentSarPrint = GetListPrintByDescriptionPrint(this.sereServExtPrint);
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentSarPrint), currentSarPrint));
+                    if (currentSarPrint != null && currentSarPrint.ID > 0)
                     {
-                        if (pdfData != null)
+                        // Same treatment for every sheet of the request: loaded once
+                        if (!isTreatmentLoaded)
                         {
-                            ado = new Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo();
-                            pdfData.Position = 0;
-                            pdfData.CopyTo(ado.saveMemoryStream);
-                            ado.saveMemoryStream.Position = 0;
-                            ado.IsPdfFile = true;
-                            ado.fileName = SarPrint.TITLE;
-                            ado.IsAllowEditTemplateFile = false;
+                            LoadTreatmentWithPaty();
+                            isTreatmentLoaded = true;
                         }
-                        SetDataGroup(1, ado);
+                        ProcessDicParamForPrint();
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Utility.TextLibHelper.BytesToStringConverted(currentSarPrint.CONTENT)), Utility.TextLibHelper.BytesToStringConverted(currentSarPrint.CONTENT)));
+
+                        PrintDocumentKetQua(false, Utility.TextLibHelper.BytesToStringConverted(currentSarPrint.CONTENT), currentSarPrint);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 57971: results (HIS_SERE_SERV_EXT) of the services of the request checked on the screen, in the screen order.
+        /// When the screen gives no service of this request: the first result, as before.
+        /// </summary>
+        private List<HIS_SERE_SERV_EXT> GetCheckedSereServExts(long serviceReqId, List<HIS_SERE_SERV_EXT> sereServExts)
+        {
+            List<HIS_SERE_SERV_EXT> result = new List<HIS_SERE_SERV_EXT>();
+            try
+            {
+                if (sereServExts == null || sereServExts.Count == 0)
+                    return result;
+
+                List<long> checkedIds = this.listSereServ != null
+                    ? this.listSereServ.Where(o => o != null && o.ID > 0 && o.SERVICE_REQ_ID == serviceReqId).Select(o => o.ID).Distinct().ToList()
+                    : new List<long>();
+                if (checkedIds.Count == 0)
+                {
+                    result.Add(sereServExts.First());
+                    return result;
+                }
+
+                Dictionary<long, HIS_SERE_SERV_EXT> extBySereServ = new Dictionary<long, HIS_SERE_SERV_EXT>();
+                foreach (HIS_SERE_SERV_EXT ext in sereServExts)
+                {
+                    if (ext != null && !extBySereServ.ContainsKey(ext.SERE_SERV_ID))
+                        extBySereServ[ext.SERE_SERV_ID] = ext;
+                }
+                foreach (long sereServId in checkedIds)
+                {
+                    HIS_SERE_SERV_EXT ext;
+                    if (extBySereServ.TryGetValue(sereServId, out ext))
+                        result.Add(ext);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Viec 57971: merged preview of the result sheets. The test sheets (Excel) go first because the preview takes
+        /// the printer / copies / EMR settings from the first item. A single PDF sheet also goes to the merge preview
+        /// (PDF viewer): FlexCelPrintProcessor opens one item as an Excel workbook ("Document does not contain any pages").
+        /// </summary>
+        private void ShowMergedPreview()
+        {
+            try
+            {
+                List<Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> items = this.GroupStreamPrint.OrderBy(o => o.IsPdfFile ? 1 : 0).ToList();
+                Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo adodata = items.First();
+                if (items.Count == 1 && adodata.IsPdfFile)
+                {
+                    // The calling form gets the focus back when the preview closes (as the library merge preview does)
+                    System.Windows.Forms.Form callingForm = System.Windows.Forms.Form.ActiveForm;
+                    Inventec.Common.FlexCelPrint.frmSetupPrintPreviewMerge frmPreview = new Inventec.Common.FlexCelPrint.frmSetupPrintPreviewMerge("", adodata.printerName, adodata.fileName, adodata.numCopy, false,
+                        adodata.isAllowExport, adodata.TemplateKey, adodata.eventLog, adodata.eventPrint, adodata.EmrInputADO, adodata.PrintLog, adodata.ShowPrintLog, adodata.IsSingleCopy);
+                    if (adodata.ShowTutorialModule != null)
+                        frmPreview.SetTutorialModule(adodata.ShowTutorialModule);
+                    frmPreview.SetPartialFileList(items);
+                    frmPreview.FormClosed += (sender, e) => ActivateCallingForm(callingForm);
+                    frmPreview.Show(frmPreview.ParentForm);
+                    frmPreview.FocusOnLoad();
+                    frmPreview.Activate();
+                    return;
+                }
+
+                Inventec.Common.Print.FlexCelPrintProcessor printProcess = new Inventec.Common.Print.FlexCelPrintProcessor(adodata.saveMemoryStream, adodata.printerName, adodata.fileName, adodata.numCopy, true,
+                    adodata.isAllowExport, adodata.TemplateKey, adodata.eventLog, adodata.eventPrint, adodata.EmrInputADO, adodata.PrintLog, adodata.ShowPrintLog, adodata.IsAllowEditTemplateFile, adodata.IsSingleCopy);
+                printProcess.SetPartialFile(items);
+                printProcess.PrintPreviewShow();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private static void ActivateCallingForm(System.Windows.Forms.Form callingForm)
+        {
+            try
+            {
+                if (callingForm != null && !callingForm.IsDisposed && callingForm.Visible)
+                    callingForm.Activate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -364,13 +491,12 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.Print
                 if (document != null)
                 {
                     result = new RichEditControl();
-                    MOS.Filter.HisServiceReqFilter filter = new MOS.Filter.HisServiceReqFilter();
-                    filter.ID = sereServ.SERVICE_REQ_ID;
-                    var lstServiceReq = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                    //Viec 57971: one request can give several sheets - fetched once (GetSheetServiceReq); no request -> empty user name
+                    HIS_SERVICE_REQ sheetServiceReq = this.GetSheetServiceReq(this.sereServ != null ? this.sereServ.SERVICE_REQ_ID : (this.currentServiceReqPrint != null ? (long?)this.currentServiceReqPrint.ID : null));
                     long? finishTime = null;
-                    if (lstServiceReq != null && lstServiceReq.Count > 0)
+                    if (sheetServiceReq != null)
                     {
-                        finishTime = lstServiceReq.FirstOrDefault().FINISH_TIME;
+                        finishTime = sheetServiceReq.FINISH_TIME;
                     }
 
 
@@ -431,7 +557,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.Print
                         result.Document.ReplaceAll("<#CONCLUDE_PRINT;>", sereServExtPrint.CONCLUDE, DevExpress.XtraRichEdit.API.Native.SearchOptions.CaseSensitive);
                         result.Document.ReplaceAll("<#NOTE_PRINT;>", sereServExtPrint.NOTE, DevExpress.XtraRichEdit.API.Native.SearchOptions.CaseSensitive);
                         result.Document.ReplaceAll("<#DESCRIPTION_PRINT;>", sereServExtPrint.DESCRIPTION, DevExpress.XtraRichEdit.API.Native.SearchOptions.CaseSensitive);
-                        result.Document.ReplaceAll("<#CURRENT_USERNAME_PRINT;>", lstServiceReq.FirstOrDefault().EXECUTE_USERNAME, DevExpress.XtraRichEdit.API.Native.SearchOptions.CaseSensitive);
+                        result.Document.ReplaceAll("<#CURRENT_USERNAME_PRINT;>", sheetServiceReq != null ? sheetServiceReq.EXECUTE_USERNAME : "", DevExpress.XtraRichEdit.API.Native.SearchOptions.CaseSensitive);
 
                         foreach (var item in dicParam)
                         {
@@ -455,6 +581,33 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.Print
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Viec 57971: request of the sheet (FINISH_TIME, EXECUTE_USERNAME), fetched once for all the sheets of one request.
+        /// </summary>
+        private HIS_SERVICE_REQ GetSheetServiceReq(long? serviceReqId)
+        {
+            HIS_SERVICE_REQ result = null;
+            try
+            {
+                if (!serviceReqId.HasValue)
+                    return null;
+                if (this.cachedSheetServiceReq != null && this.cachedSheetServiceReq.ID == serviceReqId.Value)
+                    return this.cachedSheetServiceReq;
+
+                MOS.Filter.HisServiceReqFilter filter = new MOS.Filter.HisServiceReqFilter();
+                filter.ID = serviceReqId;
+                var lstServiceReq = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                result = lstServiceReq != null ? lstServiceReq.FirstOrDefault() : null;
+                this.cachedSheetServiceReq = result;
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
         }

@@ -183,6 +183,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 ResourceLangManager.InitResourceLanguageManager();
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.BedRoomPartial.Resources.Lang", typeof(HIS.Desktop.Plugins.BedRoomPartial.UCBedRoomPartial).Assembly);
                 this.SetCaptionByLanguageKey();
+                //Viec 57971: CLS group tabs (key ClsTabOption) - created once the language resources are set
+                this.InitClsTabs();
                 this.currentBedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.currentModule.RoomId);
                 this.DepartmentID = currentBedRoom != null ? currentBedRoom.DEPARTMENT_ID : 0;
                 this.ucViewEmrDocumentReq.ShowBar = true;
@@ -1146,16 +1148,21 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             }
         }
 
+        /// <summary>Viec 57971: treatment of the last main exam load (a late answer of the previous patient is dropped)</summary>
+        long examLoadingTreatmentId = 0;
+
         private async void LoadMainExamByTreatmentId(long treatmentId)
         {
             try
             {
-                
-                xtraTabPage5.PageVisible = true;
+
+                this.examLoadingTreatmentId = treatmentId;
+                this.SetExamTabVisible(true);
+                //Viec 57971: clear the previous patient's exam before the async load (the tab can stay selected)
+                ClearExamTab();
 
                 if (treatmentId <= 0)
                 {
-                    ClearExamTab();
                     return;
                 }
 
@@ -1166,6 +1173,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 try { filter.GetType().GetProperty("IS_MAIN_EXAM")?.SetValue(filter, true); } catch { }
 
                 var data = await new BackendAdapter(param).GetAsync<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                if (treatmentId != this.examLoadingTreatmentId)
+                    return;
                 if (data != null && data.Count > 0)
                 {
                     HIS_SERVICE_REQ currentHisServiceReq = data.FirstOrDefault();
@@ -1194,6 +1203,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         HisDhstFilter dhstFilter = new HisDhstFilter();
                         dhstFilter.ID = currentHisServiceReq.DHST_ID;
                         var dataDHST = await new BackendAdapter(param).GetAsync<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, dhstFilter, param);
+                        if (treatmentId != this.examLoadingTreatmentId)
+                            return;
                         if (dataDHST != null && dataDHST.Count > 0)
                         {
                             HIS_DHST currentDhst = dataDHST.FirstOrDefault();
@@ -1254,19 +1265,20 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         }
                     }
                     // show exam tab
-                    xtraTabPage5.PageVisible = true;
+                    this.SetExamTabVisible(true);
                 }
                 else
                 {
                     // no main exam -> hide page and clear
-                    xtraTabPage5.PageVisible = false;
+                    this.SetExamTabVisible(false);
                     ClearExamTab();
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                xtraTabPage5.PageVisible = false;
+                if (treatmentId == this.examLoadingTreatmentId)
+                    this.SetExamTabVisible(false);
             }
         }
 
@@ -2166,16 +2178,24 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 
                     #region CLS
 
-                    List<SereServADO> listCLS = new List<SereServADO>();
-                    listCLS.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN
-                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
-                        ));
+                    if (this.IsClsTabEnabled)
+                    {
+                        //Viec 57971: one tab per CLS service group instead of the merged CLS tab
+                        this.ReloadClsTabs(SereServADOs);
+                    }
+                    else
+                    {
+                        List<SereServADO> listCLS = new List<SereServADO>();
+                        listCLS.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA
+                            || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA
+                            || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS
+                            || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL
+                            || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN
+                            || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
+                            ));
 
-                    ucCLS.ReLoad(treeView_Click, listCLS, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
+                        ucCLS.ReLoad(treeView_Click, listCLS, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
+                    }
 
                     #endregion
 
@@ -2211,10 +2231,18 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     IsExpandList = true;
                     btnThuGon.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__BTN__THU_GON", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()); //"Thu gọn";                                       
 
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[3];
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[2];
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[1];
-                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[0];
+                    if (this.IsClsTabEnabled)
+                    {
+                        //Viec 57971: keep the tab chosen by the user (trees of never-shown tabs own a handle, no need to cycle through the tabs)
+                        this.ApplyClsTabSelection();
+                    }
+                    else
+                    {
+                        xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[3];
+                        xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[2];
+                        xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[1];
+                        xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[0];
+                    }
                     #endregion
 
                 }
@@ -2224,6 +2252,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     ucCLS.ReLoad(treeView_Click, null, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
                     ucMediMate.ReLoad(treeView_Click, null, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
                     ucOrther.ReLoad(treeView_Click, null, this.RowCellClickBedRoom, Edit_Click, Delete_Click);
+                    if (this.IsClsTabEnabled)
+                    {
+                        this.ClearClsTabs();
+                        this.ApplyClsTabSelection();
+                    }
                 }
 
             }
@@ -3581,6 +3614,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     ucMediMate.Expand(!IsExpandList);
                     ucCLS.Expand(!IsExpandList);
                     ucOrther.Expand(!IsExpandList);
+                    //Viec 57971: collapse / expand the CLS group tabs too
+                    this.ExpandClsTabTrees(!IsExpandList);
                     if (ucAll.getExpand())
                     {
                         btnThuGon.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__BTN__THU_GON", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()); //"Thu gọn";
