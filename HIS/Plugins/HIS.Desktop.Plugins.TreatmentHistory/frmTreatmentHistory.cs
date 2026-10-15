@@ -721,11 +721,10 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                         filter.DOB_FROM = year * 10000000000 + 101000000;
                         filter.DOB_TO = year * 10000000000 + 1231235959;
                     }
-                    // Mở khi MOS.Filter có HisTreatmentLViewFilter.TDL_PATIENT_ADDRESS
-                    //if (!String.IsNullOrEmpty(txtAddress.Text.Trim()))
-                    //{
-                    //    filter.TDL_PATIENT_ADDRESS = txtAddress.Text.Trim();
-                    //}
+                    if (!String.IsNullOrEmpty(txtAddress.Text.Trim()))
+                    {
+                        filter.TDL_PATIENT_ADDRESS = txtAddress.Text.Trim();
+                    }
                 }
 
                 //if (cboFind.EditValue != null)
