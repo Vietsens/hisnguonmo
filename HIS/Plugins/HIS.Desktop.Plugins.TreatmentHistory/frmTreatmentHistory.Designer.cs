@@ -301,7 +301,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             // 
             // cboStatus
             // 
-            this.cboStatus.Location = new System.Drawing.Point(1091, 2);
+            this.cboStatus.Location = new System.Drawing.Point(1001, 2);
             this.cboStatus.MenuManager = this.barManager1;
             this.cboStatus.Name = "cboStatus";
             this.cboStatus.Properties.AutoComplete = false;
@@ -325,7 +325,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(1216, 2);
+            this.btnSearch.Location = new System.Drawing.Point(1126, 2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(101, 22);
             this.btnSearch.StyleController = this.layoutControl1;
@@ -737,18 +737,18 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.txtDobYear.Properties.MaxLength = 4;
             this.txtDobYear.Properties.NullValuePrompt = "Năm sinh";
             this.txtDobYear.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtDobYear.Size = new System.Drawing.Size(106, 20);
+            this.txtDobYear.Size = new System.Drawing.Size(66, 20);
             this.txtDobYear.StyleController = this.layoutControl1;
             this.txtDobYear.TabIndex = 17;
             this.txtDobYear.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtDobYear_PreviewKeyDown);
             //
             // txtAddress
             //
-            this.txtAddress.Location = new System.Drawing.Point(796, 2);
+            this.txtAddress.Location = new System.Drawing.Point(756, 2);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Properties.NullValuePrompt = "Địa chỉ";
             this.txtAddress.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtAddress.Size = new System.Drawing.Size(196, 20);
+            this.txtAddress.Size = new System.Drawing.Size(146, 20);
             this.txtAddress.StyleController = this.layoutControl1;
             this.txtAddress.TabIndex = 18;
             this.txtAddress.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtAddress_PreviewKeyDown);
@@ -851,16 +851,16 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControlItem14.Control = this.txtDobYear;
             this.layoutControlItem14.Location = new System.Drawing.Point(684, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem14.Size = new System.Drawing.Size(70, 26);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             //
             // layoutControlItem15
             //
             this.layoutControlItem15.Control = this.txtAddress;
-            this.layoutControlItem15.Location = new System.Drawing.Point(794, 0);
+            this.layoutControlItem15.Location = new System.Drawing.Point(754, 0);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(200, 26);
+            this.layoutControlItem15.Size = new System.Drawing.Size(150, 26);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             //
@@ -876,9 +876,9 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(1319, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(1229, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(31, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(121, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem5
@@ -902,7 +902,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnSearch;
-            this.layoutControlItem11.Location = new System.Drawing.Point(1214, 0);
+            this.layoutControlItem11.Location = new System.Drawing.Point(1124, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(105, 26);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -913,7 +913,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem12.Control = this.cboStatus;
-            this.layoutControlItem12.Location = new System.Drawing.Point(994, 0);
+            this.layoutControlItem12.Location = new System.Drawing.Point(904, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Size = new System.Drawing.Size(220, 26);
             this.layoutControlItem12.Text = "Trạng thái";
