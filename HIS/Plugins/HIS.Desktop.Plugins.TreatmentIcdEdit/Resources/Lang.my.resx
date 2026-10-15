@@ -372,4 +372,10 @@
   <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__LCI_OUT_TIME" xml:space="preserve">
     <value>ဆေးရုံဆင်းမည့်ရက်-</value>
   </data>
+  <data name="FormTreatmentIcdEdit.lciChronic.Text" xml:space="preserve">
+    <value>နာတာရှည်:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.chkChronic.ToolTip" xml:space="preserve">
+    <value>Mark this treatment as chronic (does not apply to other treatments)</value>
+  </data>
 </root>
