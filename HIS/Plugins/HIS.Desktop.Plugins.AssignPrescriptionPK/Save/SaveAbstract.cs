@@ -71,6 +71,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
         protected long? TreatmentEndTypeExtId { get; set; }
         protected long TreatmentEndTypeId { get; set; }
         protected long AppointmentTime { get; set; }
+        protected long? PresAppointmentTime { get; set; }
         protected string AdviseFinish { get; set; }
         public long? SurgeryAppointmentTime { get; set; }
         public string AppointmentSurgery { get; set; }
@@ -182,6 +183,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
             this.SoNgay = (long)frmAssignPrescription.spinSoNgay.Value;
             this.RemedyCount = Inventec.Common.TypeConvert.Parse.ToInt64(frmAssignPrescription.txtLadder.Text);
             this.Advise = frmAssignPrescription.txtAdvise.Text;
+            if (frmAssignPrescription.dtPresAppointmentTime.EditValue != null && frmAssignPrescription.dtPresAppointmentTime.DateTime != DateTime.MinValue)
+                this.PresAppointmentTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(frmAssignPrescription.dtPresAppointmentTime.DateTime.Date);
             this.InteractionReason = frmAssignPrescription.txtInteractionReason.Text;
 
             if (frmAssignPrescription.currentMediStockNhaThuocSelecteds != null && frmAssignPrescription.currentMediStockNhaThuocSelecteds.Count > 0 && frmAssignPrescription.GetSelectedOpionGroup() == 2 && (HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsDrugStoreComboboxOption))

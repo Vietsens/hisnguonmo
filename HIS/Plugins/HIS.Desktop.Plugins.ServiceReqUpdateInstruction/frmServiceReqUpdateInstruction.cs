@@ -187,10 +187,125 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 VisibleResultApprover();
                 VisibleAppointmentTimeAndDes();
                 VisibleAssignTimeTo();
+                EnablePresAppointmentTime();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ngay hen kham theo don: chi cho sua voi don thuoc/vat tu (DONK, DONDT, DONTT) chua duyet/chua xuat.
+        /// Cac loai y lenh khac thi disable.
+        /// </summary>
+        private void EnablePresAppointmentTime()
+        {
+            try
+            {
+                bool isEnable = false;
+                string toolTip = "Chỉ sửa được ngày hẹn khám với đơn thuốc/vật tư";
+                if (currentServiceReq != null
+                    && (currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
+                        || currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
+                        || currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT))
+                {
+                    CommonParam param = new CommonParam();
+                    HisExpMestFilter expMestFilter = new HisExpMestFilter();
+                    expMestFilter.SERVICE_REQ_ID = currentServiceReq.ID;
+                    var expMests = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, expMestFilter, param);
+                    var expMest = expMests != null ? expMests.FirstOrDefault() : null;
+                    if (expMest != null
+                        && (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE
+                            || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE))
+                    {
+                        toolTip = "Đơn đã duyệt/đã xuất, không được sửa ngày hẹn khám";
+                    }
+                    else
+                    {
+                        isEnable = true;
+                        toolTip = "Ngày hẹn khám theo đơn thuốc/vật tư";
+                    }
+                }
+
+                dtPresAppointmentTime.Enabled = isEnable;
+                lciPresAppointmentTime.OptionsToolTip.ToolTip = toolTip;
+            }
+            catch (Exception ex)
+            {
+                dtPresAppointmentTime.Enabled = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Canh bao ngay hen kham cua don trung thu 7, chu nhat hoac ngay nghi (HIS_HOLIDAY_POLICIES co IS_WARNING_APPOINTMENT = 1).
+        /// Chi hoi khi nguoi dung doi ngay hen.
+        /// </summary>
+        private bool CheckPresAppointmentTime()
+        {
+            bool result = true;
+            try
+            {
+                if (!dtPresAppointmentTime.Enabled || dtPresAppointmentTime.EditValue == null || dtPresAppointmentTime.DateTime == DateTime.MinValue)
+                    return result;
+
+                DateTime appointmentDate = dtPresAppointmentTime.DateTime.Date;
+                if (currentServiceReq.PRES_APPOINTMENT_TIME == Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(appointmentDate))
+                    return result;
+
+                string message = null;
+                if (appointmentDate.DayOfWeek == DayOfWeek.Sunday)
+                    message = "Ngày hẹn khám hiện tại là ngày chủ nhật bạn có muốn tiếp tục không";
+                else if (appointmentDate.DayOfWeek == DayOfWeek.Saturday)
+                    message = "Ngày hẹn khám hiện tại là ngày thứ bảy bạn có muốn tiếp tục không";
+                else if (IsPresAppointmentDateMatchHolidayPolicy(appointmentDate))
+                    message = "Ngày hẹn khám hiện tại là ngày lễ, bạn có muốn tiếp tục không?";
+
+                if (!String.IsNullOrEmpty(message)
+                    && XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    dtPresAppointmentTime.Focus();
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Copy tu HIS.UC.TreatmentFinish FormAppointment.IsAppointmentDateMatchHolidayPolicy
+        /// </summary>
+        private bool IsPresAppointmentDateMatchHolidayPolicy(DateTime appointmentDate)
+        {
+            try
+            {
+                List<HIS_HOLIDAY_POLICIES> policies = BackendDataWorker.Get<HIS_HOLIDAY_POLICIES>();
+                if (policies == null || policies.Count == 0) return false;
+
+                short dayOfWeekValue = (short)((int)appointmentDate.DayOfWeek + 1);
+                short monthDayValue = (short)(appointmentDate.Month * 100 + appointmentDate.Day);
+                int yyyyMMddValue = appointmentDate.Year * 10000 + appointmentDate.Month * 100 + appointmentDate.Day;
+
+                return policies.Any(p =>
+                    p.IS_WARNING_APPOINTMENT == 1
+                    && p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && (p.IS_DELETE == null || p.IS_DELETE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                    && (
+                        (p.HOLIDAY_POLICIES_TYPE == 1 && p.DAY_OF_WEEK.HasValue && p.DAY_OF_WEEK.Value == dayOfWeekValue)
+                        || (p.HOLIDAY_POLICIES_TYPE == 2 && p.DAY_OF_YEAR.HasValue && p.DAY_OF_YEAR.Value == monthDayValue)
+                        || (p.HOLIDAY_POLICIES_TYPE == 3 && p.HOLIDAY.HasValue && p.HOLIDAY.Value == yyyyMMddValue)
+                    )
+                );
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
 
@@ -946,6 +1061,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     {
                         txtAppointmentDes.Text = serviceReq.APPOINTMENT_DESC;
                     }
+                    dtPresAppointmentTime.EditValue = serviceReq.PRES_APPOINTMENT_TIME.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReq.PRES_APPOINTMENT_TIME.Value) : null;
                     if (serviceReq.ASSIGN_TIME_TO != null && serviceReq.ASSIGN_TIME_TO > 0)
                     {
                         dtAssignTimeTo.DateTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReq.ASSIGN_TIME_TO ?? 0);
@@ -1152,6 +1268,11 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     currentServiceReq.APPOINTMENT_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtAppointmentTime.DateTime);
                     currentServiceReq.APPOINTMENT_DESC = txtAppointmentDes.Text;
                 }
+                //Ngay hen kham theo don: o bi disable (loai y lenh khac, don da duyet/da xuat) thi giu nguyen gia tri da nap
+                if (dtPresAppointmentTime.Enabled)
+                {
+                    currentServiceReq.PRES_APPOINTMENT_TIME = dtPresAppointmentTime.EditValue != null && dtPresAppointmentTime.DateTime != DateTime.MinValue ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtPresAppointmentTime.DateTime.Date) : null;
+                }
 
 
             }
@@ -1251,6 +1372,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     return;
                 vali = vali & CheckIntructionTimeWithInTime() & CheckMinDuration() & CheckHIS_DEPARTMENT_TRAN();
                 vali = vali && CheckStartTimeMainExam();
+                vali = vali && CheckPresAppointmentTime();
                 if (vali)
                 {
                     WaitingManager.Show();
