@@ -30,6 +30,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate
         internal const string HisServicePatyList = "HIS.Desktop.Plugins.HisServicePatyList";
         internal const string MaterialTypeCreateParent = "HIS.Desktop.Plugins.MaterialTypeCreateParent";
         internal const string MedicineTypeCreateParent = "HIS.Desktop.Plugins.MedicineTypeCreateParent";
+        internal const string HisServiceUnit = "HIS.Desktop.Plugins.HisServiceUnitEdit";
+        internal const string HisSupplier = "HIS.Desktop.Plugins.HisSupplier";
 
         public CallModule(string _moduleLink, long _roomId, long _roomTypeId, List<object> _listObj)
         {
