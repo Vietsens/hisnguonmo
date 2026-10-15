@@ -106,6 +106,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 
                             ((Form)extenceInstance).ShowDialog();
+                            ReloadOrdersOfCurrentPatient();
 
                         }
                         else
@@ -175,6 +176,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 						var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
 						if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 						((Form)extenceInstance).ShowDialog();
+						ReloadOrdersOfCurrentPatient();
 					}
 
                 }
@@ -213,6 +215,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 						var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
 						if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 						((Form)extenceInstance).ShowDialog();
+						ReloadOrdersOfCurrentPatient();
 					}
 
                 }
@@ -246,6 +249,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 
                         ((Form)extenceInstance).ShowDialog();
+                        ReloadOrdersOfCurrentPatient();
                     }
 
                 }

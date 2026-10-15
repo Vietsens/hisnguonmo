@@ -1642,10 +1642,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         }
 
         private bool IsLoadTreeListDateTime = false;
-        private void LoadDataDateByTreatmentToTreeList(long treatmentId)
+        /// <param name="keepSelectedDate">true: dung lai cay ngay nhung giu nguyen ngay dang xem (tai lai sau khi ke don, xoa, tich hao phi)</param>
+        private void LoadDataDateByTreatmentToTreeList(long treatmentId, bool keepSelectedDate = false)
         {
             try
             {
+                ServiceReqGroupByDateADO prevSelected = keepSelectedDate ? this.rowClickByDate : null;
                 List<HIS_TRACKING> ListTracking = null;
                 CommonParam param = new CommonParam();
                 // API tra ve Data:null khi dot dieu tri khong co y lenh nao (StatusCode 200, Success true).
@@ -1714,6 +1716,21 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 
                     if (Result.Count > 0)
                         this.rowClickByDate = Result[0];
+
+                    if (prevSelected != null && prevSelected.InstructionDate.HasValue)
+                    {
+                        // Giu nguyen ngay (hoac moc to dieu tri) dang xem neu van con trong cay
+                        var keep = Result.FirstOrDefault(o => o.isParent == prevSelected.isParent
+                            && o.InstructionDate == prevSelected.InstructionDate
+                            && o.TRACKING_ID == prevSelected.TRACKING_ID);
+                        if (keep != null)
+                        {
+                            this.rowClickByDate = keep;
+                            var keepNode = treeListDateTime.FindNodeByKeyID(keep.TREELIST_ID);
+                            if (keepNode != null)
+                                treeListDateTime.FocusedNode = keepNode;
+                        }
+                    }
                 }
                 IsLoadTreeListDateTime = false;
                 LoadDataSereServByTreatmentId(this.rowClickByDate);
@@ -2452,7 +2469,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                         result = new BackendAdapter(paramEmr).Post<bool>("api/EmrDocument/Delete", ApiConsumers.EmrConsumer, item.ID, paramEmr);
                                     }
                                     MessageManager.Show(this.ParentForm, paramEmr, result);
-                                    LoadDataSereServByTreatmentId(this.rowClickByDate);
+                                    ReloadOrdersOfCurrentPatient();
                                 }
                                 else
                                 {
@@ -2500,7 +2517,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 success = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Post<bool>("api/HisServiceReq/Delete", ApiConsumers.MosConsumer, sdo, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                 if (success)
                 {
-                    LoadDataSereServByTreatmentId(this.rowClickByDate);
+                    ReloadOrdersOfCurrentPatient();
                     if(data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
                     {
                         FillDataToGridTreatmentBedRoom();
@@ -2547,13 +2564,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 SessionManager.ProcessTokenLost(param);
                 if (success)
                 {
-                    // Che do don du tru theo ngay du tru: cay loc tu cache dong dich vu toan dot,
-                    // phai nap lai cache truoc khi tai cay, neu khong o HP van hien gia tri cu
-                    if (this.isShowAnticipateByUseDate && this.allSereServOfTreatment != null && this.cachedTreatmentId > 0)
-                    {
-                        LoadAllSereServOfTreatment(this.cachedTreatmentId);
-                    }
-                    LoadDataSereServByTreatmentId(this.rowClickByDate);
+                    ReloadOrdersOfCurrentPatient();
                 }
             }
             catch (Exception ex)
@@ -2668,13 +2679,34 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             }
         }
 
+        /// <summary>
+        /// Tai lai y lenh cua benh nhan dang chon sau khi ke don, chi dinh, xoa, tich hao phi...
+        /// Nap lai cache dong dich vu (che do don du tru theo ngay du tru), dung lai cay ngay va giu nguyen ngay dang xem.
+        /// Chi goi LoadDataSereServByTreatmentId thi o che do du tru cay van hien ban cu (53745).
+        /// </summary>
+        private void ReloadOrdersOfCurrentPatient()
+        {
+            try
+            {
+                if (this.RowCellClickBedRoom == null || this.RowCellClickBedRoom.TREATMENT_ID <= 0)
+                    return;
+                WaitingManager.Show();
+                LoadAnticipateCache(this.RowCellClickBedRoom.TREATMENT_ID);
+                LoadDataDateByTreatmentToTreeList(this.RowCellClickBedRoom.TREATMENT_ID, true);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void RefreshClick()
         {
             try
             {
-                WaitingManager.Show();
-                LoadDataSereServByTreatmentId(this.rowClickByDate);
-                WaitingManager.Hide();
+                ReloadOrdersOfCurrentPatient();
             }
             catch (Exception ex)
             {
@@ -2688,9 +2720,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             {
                 if (prescription != null)
                 {
-                    WaitingManager.Show();
-                    LoadDataSereServByTreatmentId(this.rowClickByDate);
-                    WaitingManager.Hide();
+                    ReloadOrdersOfCurrentPatient();
                 }
             }
             catch (Exception ex)
@@ -2883,7 +2913,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         {
             try
             {
-                LoadDataSereServByTreatmentId(rowClickByDate);
+                ReloadOrdersOfCurrentPatient();
             }
             catch (Exception ex)
             {
@@ -2927,6 +2957,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 
                         ((Form)extenceInstance).ShowDialog();
+                        ReloadOrdersOfCurrentPatient();
                     }
                 }
             }
