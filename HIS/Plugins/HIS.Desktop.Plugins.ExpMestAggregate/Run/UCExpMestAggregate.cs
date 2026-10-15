@@ -434,6 +434,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 this.grdColExpPrint.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColExpPrint.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColExpPrint.ToolTip = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColExpPrint.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColExpMestCode.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColExpMestCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColExpHomePres.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColExpHomePres.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColExpStockName.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColExpStockName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColExpCreateTime.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColExpCreateTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColExpCreator.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColExpCreator.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -454,6 +455,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 this.gridColEditPres.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.gridColEditPres.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColDelete.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.gridColDelete.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColServiceReqCode.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColServiceReqCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColHomePres.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColHomePres.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColExecuteRoomName.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColExecuteRoomName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColPatientName.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColPatientName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColExpTime.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.grdColExpTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -553,6 +555,10 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                     else if (e.Column.FieldName == "INTRUCTION_TIME_DISPLAY")
                     {
                         e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.TDL_INTRUCTION_TIME ?? 0);
+                    }
+                    else if (e.Column.FieldName == "IS_HOME_PRES_DISPLAY")
+                    {
+                        e.Value = data.IS_HOME_PRES == 1;
                     }
                 }
             }
@@ -962,6 +968,10 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                     else if (e.Column.FieldName == "MODIFY_TIME_DISPLAY")
                     {
                         e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.MODIFY_TIME ?? 0);
+                    }
+                    else if (e.Column.FieldName == "IS_HOME_PRES_DISPLAY")
+                    {
+                        e.Value = data.IS_HOME_PRES == 1;
                     }
                 }
             }

@@ -539,16 +539,20 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         }
                         else if (this.IsShowMessDocument)
                         {
-                            List<string> expMests = new List<string>();
-                            foreach (var item in manuImpMests)
+                            var duplicates = this.IsIgnoreEditingImpMestWhenCheckDocument ? manuImpMests.Where(o => o.ID != expMestIdEdit).ToList() : manuImpMests;
+                            if (duplicates.Count > 0)
                             {
-                                V_HIS_MEDI_STOCK stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == item.MEDI_STOCK_ID);
-                                string name = stock != null ? stock.MEDI_STOCK_NAME : "";
-                                expMests.Add(String.Format("{0}({1})", item.IMP_MEST_CODE, name));
+                                List<string> expMests = new List<string>();
+                                foreach (var item in duplicates)
+                                {
+                                    V_HIS_MEDI_STOCK stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == item.MEDI_STOCK_ID);
+                                    string name = stock != null ? stock.MEDI_STOCK_NAME : "";
+                                    expMests.Add(String.Format("{0}({1})", item.IMP_MEST_CODE, name));
+                                }
+                                string mess = string.Format("Đã tồn tại mã phiếu nhập '{0}' có số chứng từ '{1}',", string.Join(",", expMests), _document);
+                                DevExpress.XtraEditors.XtraMessageBox.Show(mess, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao);
+                                result = false;
                             }
-                            string mess = string.Format("Đã tồn tại mã phiếu nhập '{0}' có số chứng từ '{1}',", string.Join(",", expMests), _document);
-                            DevExpress.XtraEditors.XtraMessageBox.Show(mess, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao);
-                            result = false;
                         }
                     }
                 }
