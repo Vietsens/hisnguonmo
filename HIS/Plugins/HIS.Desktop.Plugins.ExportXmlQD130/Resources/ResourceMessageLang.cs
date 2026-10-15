@@ -840,6 +840,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         /// <summary>Không ghi được tệp danh sách lỗi. Kiểm tra lại quyền ghi của thư mục đã chọn.</summary>
         internal static string MdInsightXuatThatBai { get { return GetMdInsightValue("MdInsightXuatThatBai"); } }
 
+        /// <summary>(sơ bộ) — nhãn kết quả kiểm trước khi khóa viện phí (bản 3.0)</summary>
+        internal static string MdInsightNhanSoBo { get { return GetMdInsightValue("MdInsightNhanSoBo"); } }
+
+        /// <summary>cần kiểm lại — hồ sơ đã khóa viện phí sau khi kiểm sơ bộ (bản 3.0)</summary>
+        internal static string MdInsightNhanCanKiemLai { get { return GetMdInsightValue("MdInsightNhanCanKiemLai"); } }
+
+        /// <summary>dữ liệu đã đổi — hồ sơ được sửa sau khi kiểm (bản 3.0)</summary>
+        internal static string MdInsightNhanDuLieuDaDoi { get { return GetMdInsightValue("MdInsightNhanDuLieuDaDoi"); } }
+
         /// <summary>Doc chuoi hien thi theo ngon ngu dang dung. Loi thi tra rong, khong lam vo luong nghiep vu.</summary>
         private static string GetMdInsightValue(string key)
         {

@@ -303,55 +303,113 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 // gui di. Doc ket qua Postman ma khong doc script la ket luan nguoc.
                 //
                 // Vien nao con day vao truong 5 thi van bam nguyen van, khong pha luong dang chay.
-                bool bamBoKhoangTrang = !string.IsNullOrWhiteSpace(cfg.AuthBaseUrl)
+                // HAI LUẬT BĂM B — THỬ CẢ HAI THAY VÌ ĐOÁN.
+                //
+                // Thân bản tin gửi đi vốn đã gọn (Formatting.None), nên khác biệt giữa hai luật
+                // CHỈ là mấy chục dấu cách NẰM TRONG giá trị chuỗi: họ tên, địa chỉ, lý do khám.
+                //   - "bỏ khoảng trắng": băm bản đã cắt sạch, đúng mã mẫu của Sở
+                //         const normalizedBody = rawBody.replace(/\s+/g, '');
+                //   - "nguyên văn": băm đúng chuỗi được gửi đi, đúng nghĩa đen của SHA256(body)
+                //
+                // Quan sát thực tế KHÔNG nhất quán giữa các máy chủ và các thời điểm:
+                //   M3 -> trường 5 (-be),   nguyên văn      -> 200 (15/09)
+                //   M4 -> trường 4 (-apis), bỏ khoảng trắng -> 200 (19/09, 21/09)
+                //   M3 -> trường 4 (-apis), nguyên văn      -> 401 (28/09, 30/09)
+                //   M3 -> trường 4 (-apis), bỏ khoảng trắng -> 200 (Postman của Sở)
+                //   M3 -> trường 4 (-apis), bỏ khoảng trắng -> 401 (12/10, bản tin 15:56)
+                //
+                // Hai dòng cuối cùng máy chủ, cùng luật, trái kết quả — nên không suy ra được luật
+                // nào đúng cho máy chủ nào. Thay vì đoán tiếp: gửi luật quen trước, cổng chê CHỮ KÝ
+                // thì ký lại bằng luật kia rồi gửi thêm MỘT lượt.
+                //
+                // Gửi lại KHÔNG sợ trùng hồ sơ: cổng chê chữ ký nghĩa là nó chưa đọc tới thân bản
+                // tin, chưa tạo gì cả. Chỉ gửi lại đúng lời chê chữ ký, lỗi khác thì dừng ngay.
+                bool bamMacDinh = !string.IsNullOrWhiteSpace(cfg.AuthBaseUrl)
                     && string.Equals(baseUrl, cfg.AuthBaseUrl, StringComparison.OrdinalIgnoreCase);
-                string bodyForHash = bamBoKhoangTrang ? StripWhitespace(json) : json;
-                string hashB = KskPemUtil.Sha256HexUpperForSyt(bodyForHash);
-                string signature = KskPemUtil.SignRsaSha256HexUpper(hashA + "." + hashB, cfg.PrivateKeyPem);
-                if (string.IsNullOrEmpty(signature))
+
+                bool bamBoKhoangTrang = bamMacDinh;
+                string hashB = null;
+                string signature = null;
+                int status = 0;
+                string res = null;
+
+                for (int lan = 0; lan < 2; lan++)
                 {
-                    r.Message = "Khong ky duoc ban tin — kiem tra khoa rieng trong cau hinh";
-                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: " + r.Message);
-                    return r;
+                    bamBoKhoangTrang = (lan == 0) ? bamMacDinh : !bamMacDinh;
+
+                    // Lượt sau phải có DẤU THỜI GIAN VÀ SỐ DÙNG MỘT LẦN MỚI: chữ ký phủ lên cả hai
+                    // giá trị đó, dùng lại số cũ có thể bị cổng coi là gửi trùng.
+                    if (lan > 0)
+                    {
+                        timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                        nonce = Guid.NewGuid().ToString("N").Substring(0, 12);
+                        hashA = KskPemUtil.Sha256HexUpperForSyt(
+                            cfg.ClientId + "|" + timestamp + "|" + nonce);
+                    }
+
+                    string bodyForHash = bamBoKhoangTrang ? StripWhitespace(json) : json;
+                    hashB = KskPemUtil.Sha256HexUpperForSyt(bodyForHash);
+                    signature = KskPemUtil.SignRsaSha256HexUpper(hashA + "." + hashB, cfg.PrivateKeyPem);
+                    if (string.IsNullOrEmpty(signature))
+                    {
+                        r.Message = "Khong ky duoc ban tin — kiem tra khoa rieng trong cau hinh";
+                        Inventec.Common.Logging.LogSystem.Warn("SytHcm: " + r.Message);
+                        return r;
+                    }
+
+                    // Ghi lại đủ thứ để đối chiếu với Sở, TRỪ bản tin và khóa.
+                    Inventec.Common.Logging.LogSystem.Info(string.Format(
+                        "SytHcm: gui ban tin " + (isElderlyForm ? "M4" : "M3")
+                        + (lan > 0 ? " (luot 2 — doi luat bam)" : "")
+                        + " — X-Client-Id={0}; X-Timestamp={1}; X-Nonce={2}; "
+                        + "A={3}; B={4}; do dai ban tin={5} byte; may chu={6}; bam B={7}",
+                        cfg.ClientId, timestamp, nonce, hashA, hashB,
+                        Encoding.UTF8.GetByteCount(json), baseUrl,
+                        bamBoKhoangTrang ? "bo khoang trang" : "nguyen van"));
+
+                    if (DUMP_BODY_FOR_DEBUG) DumpBody(json);
+
+                    LogSignatureShape(SIG_FORMAT__HEX_UPPER, signature);
+
+                    // Sở báo lỗi "sai định dạng chữ ký số" thường do chuỗi chữ ký DƯ KHOẢNG TRẮNG.
+                    // Chuỗi ta sinh ra vốn không thể có khoảng trắng (ghép từng byte thành hex),
+                    // nhưng cắt sạch ở đây là chốt rẻ tiền, và NoWhitespace ghi nhật ký nếu thật sự
+                    // có — để biết khoảng trắng sinh ra ở đâu thay vì đoán.
+                    var headers = new System.Collections.Generic.Dictionary<string, string>();
+                    headers["X-Client-Id"] = NoWhitespace(cfg.ClientId, "X-Client-Id");
+                    headers["X-Timestamp"] = NoWhitespace(timestamp, "X-Timestamp");
+                    headers["X-Nonce"] = NoWhitespace(nonce, "X-Nonce");
+                    headers["X-API-Signature"] = NoWhitespace(signature, "X-API-Signature");
+
+                    res = HttpSend(baseUrl + uri, "POST", json, token, headers, out status);
+                    r.HttpStatus = status;
+
+                    if (status == 401)
+                    {
+                        // Phiếu truy cập hết hiệu lực giữa lượt gửi -> bỏ phiếu để lượt sau lấy lại.
+                        ResetToken();
+                        r.Message = "Xac thuc that bai (401) — da bo phieu truy cap, thu lai";
+                        Inventec.Common.Logging.LogSystem.Warn("SytHcm: " + r.Message);
+                        DumpBanTin(cfg, baseUrl + uri, json, timestamp, nonce, hashA, hashB,
+                            signature, isElderlyForm, bamBoKhoangTrang, r);
+                        return r;
+                    }
+
+                    r.Success = false;
+                    r.Code = null;
+                    r.Message = null;
+                    ParseResult(res, r);
+
+                    if (!CongCheChuKy(r)) break;
+
+                    if (lan == 0)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "SytHcm: cong che chu ky khi bam B theo luat \""
+                            + (bamBoKhoangTrang ? "bo khoang trang" : "nguyen van")
+                            + "\" (" + r.ToString() + ") -> ky lai theo luat kia va gui them mot luot");
+                    }
                 }
-
-                // Ghi lại đủ thứ để đối chiếu với Sở, TRỪ bản tin và khóa.
-                Inventec.Common.Logging.LogSystem.Info(string.Format(
-                    "SytHcm: gui ban tin " + (isElderlyForm ? "M4" : "M3")
-                    + " — X-Client-Id={0}; X-Timestamp={1}; X-Nonce={2}; "
-                    + "A={3}; B={4}; do dai ban tin={5} byte; may chu={6}; bam B={7}",
-                    cfg.ClientId, timestamp, nonce, hashA, hashB,
-                    Encoding.UTF8.GetByteCount(json), baseUrl,
-                    bamBoKhoangTrang ? "bo khoang trang" : "nguyen van"));
-
-                if (DUMP_BODY_FOR_DEBUG) DumpBody(json);
-
-                LogSignatureShape(SIG_FORMAT__HEX_UPPER, signature);
-
-                // Sở báo lỗi "sai định dạng chữ ký số" thường do chuỗi chữ ký DƯ KHOẢNG TRẮNG.
-                // Chuỗi ta sinh ra vốn không thể có khoảng trắng (ghép từng byte thành hex), nhưng
-                // cắt sạch ở đây là chốt rẻ tiền, và NoWhitespace ghi nhật ký nếu thật sự có —
-                // để biết khoảng trắng sinh ra ở đâu thay vì đoán.
-                var headers = new System.Collections.Generic.Dictionary<string, string>();
-                headers["X-Client-Id"] = NoWhitespace(cfg.ClientId, "X-Client-Id");
-                headers["X-Timestamp"] = NoWhitespace(timestamp, "X-Timestamp");
-                headers["X-Nonce"] = NoWhitespace(nonce, "X-Nonce");
-                headers["X-API-Signature"] = NoWhitespace(signature, "X-API-Signature");
-
-                int status;
-                string res = HttpSend(baseUrl + uri, "POST", json, token, headers, out status);
-                r.HttpStatus = status;
-
-                if (status == 401)
-                {
-                    // Phiếu truy cập hết hiệu lực giữa lượt gửi -> bỏ phiếu để lượt sau lấy lại.
-                    ResetToken();
-                    r.Message = "Xac thuc that bai (401) — da bo phieu truy cap, thu lai";
-                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: " + r.Message);
-                    return r;
-                }
-
-                ParseResult(res, r);
 
                 // Đầu mối M4 giải mã chữ ký bằng Base64 dù tài liệu ghi Hex viết hoa. Gặp đúng lời
                 // chê đó thì KÝ LẠI dạng Base64 và gửi thêm một lần — chứ không đổi cứng sang Base64,
@@ -500,6 +558,22 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Nhận rộng ra cũng không thiệt gì: gặp chữ ký sai khóa thì cùng lắm tốn thêm hai lượt gửi
         /// rồi hết danh sách dạng, không lặp vô hạn.
         /// </summary>
+        /// <summary>
+        /// Cổng chê CHỮ KÝ (khác với chê nội dung bản tin).
+        /// Gặp lời chê này nghĩa là cổng chưa đọc tới thân bản tin, chưa tạo gì — gửi lại an toàn.
+        /// </summary>
+        private static bool CongCheChuKy(KskSytHcmPushResult r)
+        {
+            try
+            {
+                if (r == null || r.Success) return false;
+                if (string.Equals(r.Code, "401", StringComparison.Ordinal)) return true;
+                string m = (r.Message ?? "").ToLowerInvariant();
+                return m.Contains("chữ ký") || m.Contains("signature");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
+        }
+
         private static bool IsSignatureFormatError(KskSytHcmPushResult r)
         {
             try

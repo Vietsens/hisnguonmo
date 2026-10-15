@@ -11,5 +11,6 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Resources
     {
         public static ResourceManager LanguageResource { get; set; }
         public static ResourceManager LanguageResource__UcViewEmrDocument { get; set; }
+        public static ResourceManager LanguageResource__UcTrackingListView { get; set; }
     }
 }

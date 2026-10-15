@@ -2030,6 +2030,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 lciForchkPreKidneyShift.Visibility = ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) || HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciForspinKidneyCount.Visibility = ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) || HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciForspinKidneyCount.Enabled = false;
+                //Ngay hen kham chi luu theo don ngoai tru (OutPatientPresSDO)
+                lciPresAppointmentTime.Visibility = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 lciForchkShowLo.Enabled = HisConfigCFG.IsAllowAssignPresByPackage ? true : false;
 
                 lciForpnlUCDateForMedi.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -2103,6 +2105,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 this.txtLadder.Text = "";
                 this.txtAdvise.Text = "";
+                this.dtPresAppointmentTime.EditValue = null;
 
                 this.spinSoNgay.Enabled = true;
                 this.spinTocDoTruyen.EditValue = null;

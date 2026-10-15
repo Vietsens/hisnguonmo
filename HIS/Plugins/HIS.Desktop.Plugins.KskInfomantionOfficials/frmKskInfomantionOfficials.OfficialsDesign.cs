@@ -86,11 +86,12 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 {
                     xtraTabControl1.SelectedPageChanged += (s, e) =>
                     {
-                        if (e != null && e.Page == xtraTabPage10)
+                        if (e != null && e.Page == xtraTabPage10 && !_builtClinicalGrids)
                         {
                             EnsureClinicalGridsBuilt();
-                            // Apply lai data neu da load row truoc do (vi luc do grid chua build)
-                            if (diseaseResults != null && diseaseResults.Count > 0)
+                            // Chi apply khi grid VUA duoc build tai day (row da load luc grid chua co).
+                            // Grid da build san thi KHONG apply lai — tranh ghi de tick/nhap chua Luu cua user.
+                            if (_builtClinicalGrids && diseaseResults != null && diseaseResults.Count > 0)
                             {
                                 UC.DiseaseDetailGridHelper.ApplyResults(gridView48, diseaseGridParent3, diseaseResults);
                                 UC.DiseaseDetailGridHelper.ApplyResults(gridView50, diseaseGridParent4, diseaseResults);
@@ -110,7 +111,40 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         {
             try
             {
-                var acsUsers = BackendDataWorker.Get<ACS_USER>().Where(o => o.IS_ACTIVE == 1).ToList();
+                // Danh sach tai khoan nap sau qua BindDoctorCombos (ACS_USER tai cham, khong chan mo form)
+
+                // Gắn event Delete button cho tất cả combo bác sĩ
+                var doctorCombos = new GridLookUpEdit[]
+                {
+                    cboExamCirculationLoginName, cboExamSurgeryLoginName,
+                    cboExamObstetricLoginName, cboExamDermatologyLoginName,
+                    cboExamStomatologyLoginName, cboExamENTLoginName,
+                    cboExamEyeLoginName, cboExamOtherLoginName,
+                    cboExamConcluderLoginName
+                };
+                foreach (var cbo in doctorCombos)
+                {
+                    if (cbo != null)
+                        cbo.Properties.ButtonClick += cboDoctor_Properties_ButtonClick;
+                }
+
+                // Health exam rank
+                InitHealthExamRankCombo(cboHealthExamRank);
+
+                // Conclusion time
+                InitConclusionTimeCombo();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Nap danh sach tai khoan (ACS_USER) vao 9 o nguoi kham / bac si ket luan.</summary>
+        private void BindDoctorCombos(List<ACS_USER> acsUsers)
+        {
+            try
+            {
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "", 150, 1));
                 columnInfos.Add(new ColumnInfo("USERNAME", "", 250, 2));
@@ -136,27 +170,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
                 // Conclusion doctor (GridLookUpEdit với 2 cột Mã + Tên)
                 ControlEditorLoader.Load(cboExamConcluderLoginName, acsUsers, controlEditorADO);
-
-                // Gắn event Delete button cho tất cả combo bác sĩ
-                var doctorCombos = new GridLookUpEdit[]
-                {
-                    cboExamCirculationLoginName, cboExamSurgeryLoginName,
-                    cboExamObstetricLoginName, cboExamDermatologyLoginName,
-                    cboExamStomatologyLoginName, cboExamENTLoginName,
-                    cboExamEyeLoginName, cboExamOtherLoginName,
-                    cboExamConcluderLoginName
-                };
-                foreach (var cbo in doctorCombos)
-                {
-                    if (cbo != null)
-                        cbo.Properties.ButtonClick += cboDoctor_Properties_ButtonClick;
-                }
-
-                // Health exam rank
-                InitHealthExamRankCombo(cboHealthExamRank);
-
-                // Conclusion time
-                InitConclusionTimeCombo();
             }
             catch (Exception ex)
             {
@@ -321,21 +334,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         {
             try
             {
-                if (_cachedDiseaseDetails == null)
-                {
-                    lock (_cachedDiseaseDetailsLock)
-                    {
-                        if (_cachedDiseaseDetails == null)
-                        {
-                            CommonParam param = new CommonParam();
-                            HisDiseaseDetailViewFilter filter = new HisDiseaseDetailViewFilter();
-                            var data = new BackendAdapter(param).Get<List<V_HIS_DISEASE_DETAIL>>(HisRequestUriStore.MOS_V_HIS_DISEASE_DETAIL_GET, ApiConsumers.MosConsumer, filter, param);
-                            _cachedDiseaseDetails = data ?? new List<V_HIS_DISEASE_DETAIL>();
-                            Inventec.Common.Logging.LogSystem.Debug("LoadDiseaseDefinitionData (FETCH) - diseaseDetails.Count=" + _cachedDiseaseDetails.Count);
-                        }
-                    }
-                }
-                diseaseDetails = _cachedDiseaseDetails;
+                EnsureDiseaseDetailCache();
+                diseaseDetails = _cachedDiseaseDetails ?? new List<V_HIS_DISEASE_DETAIL>();
             }
             catch (Exception ex)
             {
@@ -344,28 +344,76 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             }
         }
 
-        private void LoadDiseaseResults(long? kskGeneralId)
+        /// <summary>
+        /// Lay ket qua tien su/trieu chung cua 1 KSK_GENERAL. Khong doc/ghi field cua form → goi duoc tu thread nen.
+        /// HisDiseaseDetailResultFilter (backend) CHUA co KSK_GENERAL_ID → truong nay bi bo qua khi deserialize,
+        /// API tra ve TOAN BO bang (moi lan Luu backend INSERT them ~150 dong, khong xoa ban cu)
+        /// → mo phieu rat cham, bang lon thi timeout → exception → checkbox trang (bug "khong load thong tin da kham").
+        /// Khoanh vung tai server bang CREATE_TIME (FilterBase da ho tro): ket qua luon duoc INSERT trong request Luu,
+        /// ngay sau khi KSK_GENERAL duoc tao/cap nhat (da doi chieu DB test: 28/28 phieu nam trong [CREATE_TIME, MODIFY_TIME + 1s]).
+        ///   CREATE_TIME_FROM = KSK_GENERAL.CREATE_TIME
+        ///   CREATE_TIME_TO   = KSK_GENERAL.MODIFY_TIME + 5 phut (bien an toan)
+        /// Van gui KSK_GENERAL_ID: khi backend bo sung filter thi tu dong loc chinh xac, khong can sua lai FE.
+        /// </summary>
+        private List<HIS_DISEASE_DETAIL_RESULT> FetchDiseaseResults(HIS_KSK_GENERAL kskGeneral)
         {
             try
             {
-                diseaseResults = new List<HIS_DISEASE_DETAIL_RESULT>();
-                if (kskGeneralId == null || kskGeneralId <= 0)
-                    return;
+                if (kskGeneral == null || kskGeneral.ID <= 0)
+                    return new List<HIS_DISEASE_DETAIL_RESULT>();
+
+                long kskGeneralId = kskGeneral.ID;
+                long? createTimeTo = null;
+                if (kskGeneral.MODIFY_TIME.HasValue)
+                {
+                    var modifyTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(kskGeneral.MODIFY_TIME.Value);
+                    if (modifyTime.HasValue)
+                        createTimeTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(modifyTime.Value.AddMinutes(5));
+                }
+
                 CommonParam param = new CommonParam();
-                var filter = new { KSK_GENERAL_ID = kskGeneralId };
+                var filter = new
+                {
+                    KSK_GENERAL_ID = kskGeneralId,
+                    CREATE_TIME_FROM = kskGeneral.CREATE_TIME,
+                    CREATE_TIME_TO = createTimeTo
+                };
                 var data = new BackendAdapter(param).Get<List<HIS_DISEASE_DETAIL_RESULT>>(HisRequestUriStore.MOS_HIS_DISEASE_DETAIL_RESULT_GET, ApiConsumers.MosConsumer, filter, param);
-                // Filter đúng KSK_GENERAL_ID + dedup theo DISEASE_DETAIL_ID (giữ bản mới nhất)
-                diseaseResults = (data ?? new List<HIS_DISEASE_DETAIL_RESULT>())
-                    .Where(r => r.DISEASE_DETAIL_ID != null && r.KSK_GENERAL_ID == kskGeneralId)
-                    .GroupBy(r => r.DISEASE_DETAIL_ID)
-                    .Select(g => g.OrderByDescending(r => r.ID).First())
-                    .ToList();
-                Inventec.Common.Logging.LogSystem.Debug("LoadDiseaseResults: raw=" + (data != null ? data.Count : 0) + " filtered+dedup=" + diseaseResults.Count);
+                var result = DedupDiseaseResults(data, kskGeneralId);
+                Inventec.Common.Logging.LogSystem.Debug("FetchDiseaseResults: kskGeneralId=" + kskGeneralId + " raw=" + (data != null ? data.Count : 0) + " filtered+dedup=" + result.Count);
+                return result;
             }
             catch (Exception ex)
             {
-                diseaseResults = new List<HIS_DISEASE_DETAIL_RESULT>();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                return new List<HIS_DISEASE_DETAIL_RESULT>();
+            }
+        }
+
+        /// <summary>Loc dung KSK_GENERAL_ID + dedup theo DISEASE_DETAIL_ID (giu ban moi nhat — ID lon nhat).</summary>
+        private static List<HIS_DISEASE_DETAIL_RESULT> DedupDiseaseResults(List<HIS_DISEASE_DETAIL_RESULT> data, long kskGeneralId)
+        {
+            return (data ?? new List<HIS_DISEASE_DETAIL_RESULT>())
+                .Where(r => r.DISEASE_DETAIL_ID != null && r.KSK_GENERAL_ID == kskGeneralId)
+                .GroupBy(r => r.DISEASE_DETAIL_ID)
+                .Select(g => g.OrderByDescending(r => r.ID).First())
+                .ToList();
+        }
+
+        /// <summary>Tai danh muc V_HIS_DISEASE_DETAIL vao cache static (1 lan/phien). Goi duoc tu thread nen (tai truoc).</summary>
+        private static void EnsureDiseaseDetailCache()
+        {
+            if (_cachedDiseaseDetails != null) return;
+            lock (_cachedDiseaseDetailsLock)
+            {
+                if (_cachedDiseaseDetails != null) return;
+                CommonParam param = new CommonParam();
+                HisDiseaseDetailViewFilter filter = new HisDiseaseDetailViewFilter();
+                var data = new BackendAdapter(param).Get<List<V_HIS_DISEASE_DETAIL>>(HisRequestUriStore.MOS_V_HIS_DISEASE_DETAIL_GET, ApiConsumers.MosConsumer, filter, param);
+                // API loi (null) thi khong cache rong → lan mo sau thu lai
+                if (data != null)
+                    _cachedDiseaseDetails = data;
+                Inventec.Common.Logging.LogSystem.Debug("LoadDiseaseDefinitionData (FETCH) - diseaseDetails.Count=" + (data != null ? data.Count.ToString() : "null"));
             }
         }
 
@@ -505,7 +553,10 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 // Clear tat ca truoc khi load moi — dam bao khong con data cu khi chuyen row
                 ResetAllDiseaseStates();
 
-                LoadDiseaseResults(data != null && data.KSK_GENERAL != null ? (long?)data.KSK_GENERAL.ID : null);
+                // Ket qua da duoc GetServiceReqData tai san (song song voi DHST) — khong goi API tren UI thread
+                diseaseResults = (data != null && data.DISEASE_DETAIL_RESULTS != null)
+                    ? data.DISEASE_DETAIL_RESULTS
+                    : new List<HIS_DISEASE_DETAIL_RESULT>();
 
                 var general = data != null ? data.KSK_GENERAL : null;
                 var dhst = general != null ? general.HIS_DHST : null;
@@ -918,7 +969,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 {
                     string loginName = cboExamConcluderLoginName.EditValue.ToString();
                     kskGeneral.CONCLUDER_LOGINNAME = loginName;
-                    var user = BackendDataWorker.Get<ACS_USER>().FirstOrDefault(o => o.LOGINNAME.ToUpper() == loginName.ToUpper());
+                    var user = GetAcsUsers().FirstOrDefault(o => o.LOGINNAME.ToUpper() == loginName.ToUpper());
                     if (user != null) kskGeneral.CONCLUDER_USERNAME = user.USERNAME;
                 }
 

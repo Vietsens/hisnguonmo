@@ -36,6 +36,7 @@ using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisTrackingList.ADO;
 using HIS.Desktop.Plugins.HisTrackingList.Config;
+using HIS.Desktop.Plugins.HisTrackingList.TrackingView;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
@@ -234,6 +235,18 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
                 if (this.treatmentId > 0)
                 {
+                    if (HisConfigCFG.IsViewTrackingNewestFirst)
+                    {
+                        long treatmentIdLoad = this.treatmentId;
+                        TrackingPrintData printData = await Task.Factory.StartNew(() => TrackingSheetRenderer.LoadData(treatmentIdLoad));
+                        if (printData != null)
+                        {
+                            ApplyPrintData(printData);
+                            IsLoad = false;
+                        }
+                        return;
+                    }
+
                     CommonParam param = new CommonParam();
                     //danh sach yeu cau
                     bool IncludeMaterial = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_IS_MATERIAL) == "1";
@@ -384,6 +397,74 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void ApplyPrintData(TrackingPrintData printData)
+        {
+            try
+            {
+                _Treatment = printData.Treatment;
+                _TreatmentBedRooms = printData.TreatmentBedRooms;
+                _MobaImpMests = printData.MobaImpMests;
+                _ImpMestMedicines_TL = printData.ImpMestMedicinesTL;
+                _ImpMestMaterial_TL = printData.ImpMestMaterialsTL;
+                _ImpMestBlood_TL = printData.ImpMestBloodsTL;
+                ListDhst = printData.Dhsts;
+                _SereServRation = printData.SereServRations;
+                ExpMestBltyReq2 = printData.ExpMestBltyReq2s;
+                ListCares = printData.Cares;
+                _SereServExts = printData.SereServExts;
+                ListCareDetails = printData.CareDetails;
+                dicServiceReqs = printData.DicServiceReqs;
+                dicExpMests = printData.DicExpMests;
+                dicServiceReqMetys = printData.DicServiceReqMetys;
+                dicServiceReqMatys = printData.DicServiceReqMatys;
+                _SereServs = printData.SereServs;
+                dicSereServs = printData.DicSereServs;
+                _ExpMestMedicines = printData.ExpMestMedicines;
+                dicExpMestMedicines = printData.DicExpMestMedicines;
+                _ExpMestMaterials = printData.ExpMestMaterials;
+                dicExpMestMaterials = printData.DicExpMestMaterials;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private TrackingPrintData CreatePrintDataFromLoadedData()
+        {
+            TrackingPrintData result = new TrackingPrintData();
+            try
+            {
+                result.Treatment = _Treatment;
+                result.TreatmentBedRooms = _TreatmentBedRooms;
+                result.MobaImpMests = _MobaImpMests;
+                result.ImpMestMedicinesTL = _ImpMestMedicines_TL;
+                result.ImpMestMaterialsTL = _ImpMestMaterial_TL;
+                result.ImpMestBloodsTL = _ImpMestBlood_TL;
+                result.Dhsts = ListDhst;
+                result.SereServRations = _SereServRation;
+                result.ExpMestBltyReq2s = ExpMestBltyReq2;
+                result.Cares = ListCares;
+                result.SereServExts = _SereServExts;
+                result.CareDetails = ListCareDetails;
+                result.DicServiceReqs = dicServiceReqs;
+                result.DicExpMests = dicExpMests;
+                result.DicServiceReqMetys = dicServiceReqMetys;
+                result.DicServiceReqMatys = dicServiceReqMatys;
+                result.SereServs = _SereServs;
+                result.DicSereServs = dicSereServs;
+                result.ExpMestMedicines = _ExpMestMedicines;
+                result.DicExpMestMedicines = dicExpMestMedicines;
+                result.ExpMestMaterials = _ExpMestMaterials;
+                result.DicExpMestMaterials = dicExpMestMaterials;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private void SetCaptionByLanguageKey()
@@ -1108,6 +1189,12 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
         {
             try
             {
+                if (HisConfigCFG.IsViewTrackingNewestFirst)
+                {
+                    LoadDataPrintNewestFirst(trackingSelecteds);
+                    return;
+                }
+
                 if (trackingSelecteds == null || trackingSelecteds.Count == 0)
                 {
                     ucViewEmrDocument1.ClearDocument();
@@ -1228,6 +1315,92 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                             }
                         }
                     }
+                }
+
+                if (documentTrackingADOs.Any())
+                {
+                    ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, true);
+                    if (ucViewEmrDocument1.frmEmr != null && Form.ActiveForm == ucViewEmrDocument1.frmEmr)
+                    {
+                        ucViewEmrDocument1.frmEmr.ucViewEmrDocument1.ReloadDocument(documentTrackingADOs, true);
+                    }
+                }
+                else
+                {
+                    ucViewEmrDocument1.ClearDocument();
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                WaitingManager.Hide();
+            }
+        }
+
+        /// <summary>
+        /// Shows the selected trackings in the viewer, newest treatment time first: one block per tracking
+        /// (signed document when the tracking has one, otherwise the tracking rendered alone with Mps000062).
+        /// </summary>
+        private void LoadDataPrintNewestFirst(List<V_HIS_TRACKING> trackingSelecteds)
+        {
+            try
+            {
+                if (trackingSelecteds == null || trackingSelecteds.Count == 0)
+                {
+                    ucViewEmrDocument1.ClearDocument();
+                    return;
+                }
+
+                if (this.IsLoad)
+                {
+                    StopTimer(this.currentModule.ModuleLink, timer1);
+                    MessageBox.Show("Dữ liệu dịch vụ của hồ sơ chưa tải xong chưa thể xem trước nội dung vui lòng thử lại sau ít phút.");
+                    return;
+                }
+
+                WaitingManager.Show();
+
+                DisposeMemoryStream(documentTrackingADOs);
+                documentTrackingADOs = new List<DocumentTrackingADO>();
+
+                List<TrackingDisplayUnit> units = TrackingDocumentPlanner.Plan(trackingSelecteds, this.listEmrDocument);
+
+                Dictionary<long, EmrDocumentFileSDO> signedFiles = new Dictionary<long, EmrDocumentFileSDO>();
+                List<long> documentIds = units.Where(o => o.Document != null).Select(o => o.Document.ID).Distinct().ToList();
+                if (documentIds.Count > 0)
+                {
+                    var documents = GetEmrDocumentFile(documentIds, false, null, null);
+                    if (documents != null)
+                    {
+                        foreach (var item in documents)
+                        {
+                            if (item != null && item.DocumentId.HasValue && !signedFiles.ContainsKey(item.DocumentId.Value))
+                                signedFiles[item.DocumentId.Value] = item;
+                        }
+                    }
+                }
+
+                TrackingPrintData printData = null;
+                if (units.Any(o => o.Document == null))
+                {
+                    printData = CreatePrintDataFromLoadedData();
+                    TrackingSheetRenderer.PrepareForManyRenders(printData, this.treatmentId);
+                }
+
+                string noticeFormat = TrackingSheetRenderer.GetText(TrackingSheetRenderer.KEY__SHEET_NOT_SHOWN);
+                foreach (var unit in units)
+                {
+                    DocumentTrackingADO document = unit.Document != null
+                        ? TrackingSheetRenderer.CreateSignedDocument(unit, signedFiles)
+                        : TrackingSheetRenderer.RenderTracking(printData, unit.Tracking, FullTemplateFileName, this.currentModule, this.treatmentId);
+                    if (document == null)
+                        document = TrackingSheetRenderer.BuildNoticeDocument(TrackingSheetRenderer.FormatSheetNotShown(noticeFormat, unit.Tracking), unit.Tracking.TRACKING_TIME);
+                    if (document != null)
+                        documentTrackingADOs.Add(document);
                 }
 
                 if (documentTrackingADOs.Any())

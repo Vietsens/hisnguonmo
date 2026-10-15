@@ -374,4 +374,10 @@
   <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_ICD_EDIT__LCI_OUT_TIME" xml:space="preserve">
     <value>Ngày ra viện:</value>
   </data>
+  <data name="FormTreatmentIcdEdit.lciChronic.Text" xml:space="preserve">
+    <value>Mãn tính:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.chkChronic.ToolTip" xml:space="preserve">
+    <value>Đánh dấu mãn tính cho hồ sơ điều trị này (không áp dụng cho các đợt điều trị khác)</value>
+  </data>
 </root>

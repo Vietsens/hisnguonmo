@@ -201,6 +201,12 @@
   <data name="frmTreatmentHistory.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
     <value>Keyword search (F3)</value>
   </data>
+  <data name="frmTreatmentHistory.txtDobYear.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Year of birth</value>
+  </data>
+  <data name="frmTreatmentHistory.txtAddress.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Address</value>
+  </data>
   <data name="frmTreatmentHistory.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Patients code (F2)</value>
   </data>

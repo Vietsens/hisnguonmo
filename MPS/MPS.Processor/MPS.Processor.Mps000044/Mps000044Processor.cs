@@ -712,6 +712,8 @@ namespace MPS.Processor.Mps000044
                     }
                 }
                 AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.vHisPrescription5, false);
+                //Ngay hen kham theo don (dd/MM/yyyy). Set vo dieu kien de template luon co key
+                SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.PRES_APPOINTMENT_TIME_STR, (rdo.vHisPrescription5 != null && rdo.vHisPrescription5.PRES_APPOINTMENT_TIME.HasValue) ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.vHisPrescription5.PRES_APPOINTMENT_TIME.Value) : ""));
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.vHisPatientTypeAlter, false);
                 AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo.hisTreatment, false);
 

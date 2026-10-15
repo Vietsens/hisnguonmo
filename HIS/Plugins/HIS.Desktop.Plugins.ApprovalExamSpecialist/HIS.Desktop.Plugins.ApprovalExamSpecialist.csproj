@@ -251,6 +251,14 @@
     <Compile Include="ADO\SereServADO.cs" />
     <Compile Include="ADO\ServiceReqGroupByDateADO.cs" />
     <Compile Include="ADO\TreatmentNoteADO.cs" />
+    <Compile Include="ADO\SubclinicalResultADO.cs" />
+    <Compile Include="PatientInfo\PatientInfoHeader.cs" />
+    <Compile Include="Search\PhraseSearch.cs" />
+    <Compile Include="Subclinical\SubclinicalResultLoader.cs" />
+    <Compile Include="Tracking\TrackingOrderText.cs" />
+    <Compile Include="UCSubclinicalResult.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ApprovalExamSpecialist\ApprovalExamSpecialistBehavior.cs" />
     <Compile Include="ApprovalExamSpecialist\ApprovalExamSpecialistFactory.cs" />
     <Compile Include="ApprovalExamSpecialist\IApprovalExamSpecialist.cs" />

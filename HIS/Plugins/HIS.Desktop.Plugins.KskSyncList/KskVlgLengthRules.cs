@@ -255,6 +255,25 @@ namespace HIS.Desktop.Plugins.KskSyncList
             }
         }
 
+        /// <summary>
+        /// Ten cac the LA co gia tri trong ban tin (giai NOIDUNGFILE base64). Dung chung cho cong khac can kiem
+        /// truong bat buoc (cong Kho du lieu suc khoe toan dan). Khong doc duoc ban tin -> null.
+        /// </summary>
+        internal static HashSet<string> CollectNonEmptyTagNames(string xml)
+        {
+            try
+            {
+                var names = new HashSet<string>(StringComparer.Ordinal);
+                CollectNonEmptyNames(xml, names, 0);
+                return names;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("KskVlgLengthRules.CollectNonEmptyTagNames: " + ex.Message);
+                return null;
+            }
+        }
+
         internal static string Validate(string xml)
         {
             try

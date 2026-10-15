@@ -2464,13 +2464,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 HisPatientFilter ft = new HisPatientFilter();
                 ft.ID = data.PATIENT_ID;
                 var listPatient = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, ft, new CommonParam());
-                if (listPatient != null && listPatient.Count > 0)
+                HIS_PATIENT patientData = (listPatient != null && listPatient.Count > 0) ? listPatient.FirstOrDefault() : null;
+                if (patientData != null)
                 {
-                    HIS_PATIENT a = listPatient.FirstOrDefault();
-                    txtBuyerEmail.Text = a.EMAIL;
-                    if (!string.IsNullOrWhiteSpace(a.BUD_REL_UNIT_CODE))
+                    txtBuyerEmail.Text = patientData.EMAIL;
+                    if (!string.IsNullOrWhiteSpace(patientData.BUD_REL_UNIT_CODE))
                     {
-                        txtBuyerSocialRelationsCode.Text = a.BUD_REL_UNIT_CODE;
+                        txtBuyerSocialRelationsCode.Text = patientData.BUD_REL_UNIT_CODE;
                     }
                 }
 
@@ -2483,9 +2483,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     txtPatientType.Text = "";
                 }
 
-                txtBuyerAccountCode.Text = data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
-                txtBuyerAddress.Text = data.TDL_PATIENT_ADDRESS ?? "";
-
+                txtBuyerAccountCode.Text = patientData?.ACCOUNT_NUMBER ?? data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
+                txtBuyerAddress.Text = patientData?.ADDRESS ?? data.TDL_PATIENT_ADDRESS ?? "";
 
                 txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
                 //txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
@@ -2496,19 +2495,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 //txtBuyerOrganization2.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
                 txtBuyerTaxCode2.Text = data.WORK_PLACE_TAX_CODE ?? "";
 
+                string patientTaxCode = patientData?.TAX_CODE ?? data.TDL_PATIENT_TAX_CODE;
                 if (HisConfig.AutoLoad == "1")
                 {
-                    //var transaction = listTransaction.FirstOrDefault();
                     //Don vi
-                    long? workPlaceId = null;
-                    //if (transaction != null && transaction.BUYER_WORK_PLACE_ID != null)
-                    //{
-                    //    workPlaceId = transaction.BUYER_WORK_PLACE_ID;
-                    //}else 
-                    if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
-                    {
-                        workPlaceId = data.TDL_PATIENT_WORK_PLACE_ID;
-                    }
+                    long? workPlaceId = patientData?.WORK_PLACE_ID ?? data.TDL_PATIENT_WORK_PLACE_ID;
                     if (workPlaceId.HasValue)
                     {
                         cboBuyerOrganization.EditValue = workPlaceId;
@@ -2519,15 +2510,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         cboBuyerOrganization.EditValue = null;
                     }
                     //Ma so thue
-                    //if (transaction != null && transaction.BUYER_TAX_CODE != null)
-                    //    txtBuyerTaxCode.Text = transaction.BUYER_TAX_CODE;
-                    //else 
-                    if (data.TDL_PATIENT_TAX_CODE != null)
+                    if (patientTaxCode != null)
                     {
-                        txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE;
-                        //txtBuyerTaxCode2.Text = data.TDL_PATIENT_TAX_CODE;
+                        txtBuyerTaxCode.Text = patientTaxCode;
                     }
-                    else if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
+                    else if (workPlaceId.HasValue)
                     {
                         var focus = (HIS_WORK_PLACE)cboBuyerOrganization.Properties.View.GetFocusedRow();
                         if (focus != null)
@@ -2535,7 +2522,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                         var focus2 = (HIS_WORK_PLACE)cboBuyerOrganization2.Properties.View.GetFocusedRow();
                         if (focus2 != null)
-                            txtBuyerTaxCode2.Text = focus.TAX_CODE;
+                            txtBuyerTaxCode2.Text = focus2.TAX_CODE;
                     }
                 }
 

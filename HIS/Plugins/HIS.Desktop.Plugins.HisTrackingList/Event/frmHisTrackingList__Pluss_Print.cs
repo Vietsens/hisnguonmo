@@ -27,6 +27,7 @@ using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisTrackingList.ADO;
 using HIS.Desktop.Plugins.HisTrackingList.Config;
+using HIS.Desktop.Plugins.HisTrackingList.TrackingView;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
@@ -147,6 +148,151 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
         List<V_HIS_TRACKING> _TrackingPrintsProcesss;
 
+        /// <summary>
+        /// Builds the Mps000062 print data the way it was built before IsViewTrackingNewestFirst existed (key off).
+        /// Exceptions are handled by the caller, as before.
+        /// </summary>
+        private MPS.Processor.Mps000062.PDO.Mps000062PDO CreateMps000062PDO(CommonParam param)
+        {
+            //gán lại ngày y lệnh theo thời gian y lệnh do trong mps sửa ngày
+            if (dicServiceReqs != null && dicServiceReqs.Count > 0)
+            {
+                dicServiceReqs.Values.ToList().ForEach(o => o.INTRUCTION_DATE = o.INTRUCTION_TIME - (o.INTRUCTION_TIME % 1000000));
+            }
+
+            List<V_HIS_TREATMENT_BED_ROOM> treatmentBedRooms = new List<V_HIS_TREATMENT_BED_ROOM>();
+            foreach (var item in this._TrackingPrintsProcesss)
+            {
+                var treatmentBedRoom = this._TreatmentBedRooms.Where(o => o.ADD_TIME <= item.TRACKING_TIME && o.ROOM_ID == item.ROOM_ID).OrderByDescending(o => o.ADD_TIME).FirstOrDefault();
+                if (treatmentBedRoom != null)
+                    treatmentBedRooms.Add(treatmentBedRoom);
+            }
+
+            long keyVienTim = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_IS_NUMBER_BY_MEDICINE_TYPE));
+
+            #region keu cấu hiển thị key stt
+            long ShowKeySTT = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OPTION));
+            long FormatShowKeySTT = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_FORMAT_OPTION));
+            long UsedDayCountingOutStockOption = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OUT_STOCK_OPTION));
+            long UsedDayCountingAddPreviousUseDay = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_ADD_PREVIOUS_USE_DAY));
+            #endregion
+
+            //#region Dấu hiệu sinh tồn
+            //List<HIS_DHST> _Dhsts = new List<HIS_DHST>();
+            //if (this.ListDhst != null && this.ListDhst.Count > 0)
+            //{
+            //    _Dhsts = this.ListDhst.Where(o => trackingIds.Contains(o.TRACKING_ID ?? 0)).ToList();
+            //}
+            //#endregion
+
+            //#region Danh sách chăm sóc
+            //List<HIS_CARE> _Cares = new List<HIS_CARE>();
+            //List<V_HIS_CARE_DETAIL> _CareDetails = new List<V_HIS_CARE_DETAIL>();
+            //if (this.ListCares != null && this.ListCares.Count > 0)
+            //{
+            //    _Cares = this.ListCares.Where(o => trackingIds.Contains(o.TRACKING_ID ?? 0)).ToList();
+            //    _CareDetails = this.ListCareDetails.Where(o => _Cares.Exists(e => e.ID == o.CARE_ID)).ToList();
+            //}
+            //#endregion
+
+            #region Thông tin khoa phòng hiện tại
+            MOS.SDO.WorkPlaceSDO _workPlaceSDO = WorkPlace.WorkPlaceSDO.SingleOrDefault(p => p.RoomId == this.currentModule.RoomId);
+            MPS.Processor.Mps000062.PDO.Mps000062SingleKey singleKey = new MPS.Processor.Mps000062.PDO.Mps000062SingleKey(_workPlaceSDO);
+            singleKey.LOGIN_NAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+            singleKey.USER_NAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
+            #endregion
+
+            singleKey.IsShowMedicineLine = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.Library.Bordereau.IsShowMedicineLine") == "1");
+            //singleKey.IsOrderByType = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingPrint.IsOrderByType") == "1");
+            singleKey.IsOrderByType = Convert.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingPrint.OderOption"));
+            singleKey.keyVienTim = keyVienTim;
+            singleKey.UsedDayCountingOption = ShowKeySTT;
+            singleKey.UsedDayCountingFormatOption = FormatShowKeySTT;
+            singleKey.UsedDayCountingOutStockOption = UsedDayCountingOutStockOption;
+            singleKey.UsedDayCountingAddPreviousUseDay = UsedDayCountingAddPreviousUseDay;
+            #region Danh sách dịch vụ
+
+            #endregion
+
+            #region Dòng thuốc
+            List<HIS_MEDICINE_LINE> listMedicineLine = new List<HIS_MEDICINE_LINE>();
+            listMedicineLine = BackendDataWorker.Get<HIS_MEDICINE_LINE>();
+            #endregion
+            #region Dạng bào chế
+            List<HIS_DOSAGE_FORM> listDosage = new List<HIS_DOSAGE_FORM>();
+            listDosage = BackendDataWorker.Get<HIS_DOSAGE_FORM>();
+            #endregion
+
+            #region HisBedLog
+            V_HIS_BED_LOG selectedBedLog = null;
+            MOS.Filter.HisBedLogViewFilter bedLogViewFilter = new MOS.Filter.HisBedLogViewFilter();
+            bedLogViewFilter.TREATMENT_ID = _Treatment.ID;
+            var bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
+            if (bedLogs != null)
+            {
+                var minTrackingTime = _TrackingPrintsProcesss.Min(m => m.TRACKING_TIME);
+                var filteredBedLogs = bedLogs
+                    .Where(o => o.BED_ID != 0
+                        && (o.START_TIME <= minTrackingTime && (o.FINISH_TIME == null || minTrackingTime <= o.FINISH_TIME))
+                    )
+                    .ToList();
+                selectedBedLog = filteredBedLogs
+                    .OrderByDescending(o => o.START_TIME)
+                    .ThenByDescending(o => o.ID)
+                    .FirstOrDefault();
+            }
+            #endregion
+
+            #region Khoa hội chẩn
+            // Khoa phong moi hoi chan luu o HIS_SPECIALIST_EXAM (INVITE_TYPE = 2), cot EXAM_EXECUTE_DEPARMENT_ID.
+            List<V_HIS_SPECIALIST_EXAM> specialistExams = new List<V_HIS_SPECIALIST_EXAM>();
+            MOS.Filter.HisSpecialistExamViewFilter specialistExamViewFilter = new MOS.Filter.HisSpecialistExamViewFilter();
+            specialistExamViewFilter.TREATMENT_CODE = (_Treatment != null ? _Treatment.TREATMENT_CODE : "");
+            specialistExamViewFilter.INVITE_TYPE = 2;
+            var specialistExamViews = new BackendAdapter(param).Get<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, specialistExamViewFilter, param);
+            if (specialistExamViews != null && specialistExamViews.Count > 0)
+                specialistExams = specialistExamViews;
+            #endregion
+
+            var PatientTypeAlter = new BackendAdapter(new CommonParam()).Get<HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumers.MosConsumer, treatmentId, null);
+
+            MPS.Processor.Mps000062.PDO.Mps000062PDO mps000062RDO = new MPS.Processor.Mps000062.PDO.Mps000062PDO(
+            _Treatment,
+            treatmentBedRooms,
+            _TrackingPrintsProcesss,
+            this.ListDhst,
+            dicServiceReqs,
+            dicSereServs,
+            dicExpMests,
+            dicExpMestMedicines,
+            dicExpMestMaterials,
+            dicServiceReqMetys,
+            dicServiceReqMatys,
+            this.ListCares,
+            this.ListCareDetails,
+            singleKey,
+            BackendDataWorker.Get<HIS_ICD>(),
+            BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
+            BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
+            BackendDataWorker.Get<HIS_SERVICE_TYPE>(),
+            this._SereServExts,
+            BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>(),
+            this._SereServRation,
+            this._MobaImpMests,
+            this._ImpMestMedicines_TL,
+            this._ImpMestMaterial_TL,
+            this.ExpMestBltyReq2,
+            BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => _SereServs.Select(p => p.SERVICE_ID).Contains(o.ID)).ToList(),
+            this._ImpMestBlood_TL,
+            PatientTypeAlter,
+            listMedicineLine,
+            listDosage,
+            selectedBedLog
+            );
+            mps000062RDO._SpecialistExams = specialistExams;
+            return mps000062RDO;
+        }
+
         private void Mps000062(string printTypeCode, string fileName, ref bool result, bool saveFile = false, System.IO.MemoryStream saveFileStream = null, List<V_HIS_TRACKING> _TrackingPrintExts = null)
         {
             try
@@ -168,107 +314,6 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     trackingIds = _TrackingPrintsProcesss.Select(p => p.ID).ToList();
                 else
                     return;
-
-                //gán lại ngày y lệnh theo thời gian y lệnh do trong mps sửa ngày
-                if (dicServiceReqs != null && dicServiceReqs.Count > 0)
-                {
-                    dicServiceReqs.Values.ToList().ForEach(o => o.INTRUCTION_DATE = o.INTRUCTION_TIME - (o.INTRUCTION_TIME % 1000000));
-                }
-
-                List<V_HIS_TREATMENT_BED_ROOM> treatmentBedRooms = new List<V_HIS_TREATMENT_BED_ROOM>();
-                foreach (var item in this._TrackingPrintsProcesss)
-                {
-                    var treatmentBedRoom = this._TreatmentBedRooms.Where(o => o.ADD_TIME <= item.TRACKING_TIME && o.ROOM_ID == item.ROOM_ID).OrderByDescending(o => o.ADD_TIME).FirstOrDefault();
-                    if (treatmentBedRoom != null)
-                        treatmentBedRooms.Add(treatmentBedRoom);
-                }
-
-                long keyVienTim = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_IS_NUMBER_BY_MEDICINE_TYPE));
-
-                #region keu cấu hiển thị key stt
-                long ShowKeySTT = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OPTION));
-                long FormatShowKeySTT = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_FORMAT_OPTION));
-                long UsedDayCountingOutStockOption = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OUT_STOCK_OPTION));
-                long UsedDayCountingAddPreviousUseDay = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_ADD_PREVIOUS_USE_DAY));
-                #endregion
-
-                #endregion
-
-                //#region Dấu hiệu sinh tồn
-                //List<HIS_DHST> _Dhsts = new List<HIS_DHST>();
-                //if (this.ListDhst != null && this.ListDhst.Count > 0)
-                //{
-                //    _Dhsts = this.ListDhst.Where(o => trackingIds.Contains(o.TRACKING_ID ?? 0)).ToList();
-                //}
-                //#endregion
-
-                //#region Danh sách chăm sóc
-                //List<HIS_CARE> _Cares = new List<HIS_CARE>();
-                //List<V_HIS_CARE_DETAIL> _CareDetails = new List<V_HIS_CARE_DETAIL>();
-                //if (this.ListCares != null && this.ListCares.Count > 0)
-                //{
-                //    _Cares = this.ListCares.Where(o => trackingIds.Contains(o.TRACKING_ID ?? 0)).ToList();
-                //    _CareDetails = this.ListCareDetails.Where(o => _Cares.Exists(e => e.ID == o.CARE_ID)).ToList();
-                //}
-                //#endregion
-
-                #region Thông tin khoa phòng hiện tại
-                MOS.SDO.WorkPlaceSDO _workPlaceSDO = WorkPlace.WorkPlaceSDO.SingleOrDefault(p => p.RoomId == this.currentModule.RoomId);
-                MPS.Processor.Mps000062.PDO.Mps000062SingleKey singleKey = new MPS.Processor.Mps000062.PDO.Mps000062SingleKey(_workPlaceSDO);
-                singleKey.LOGIN_NAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                singleKey.USER_NAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
-                #endregion
-
-                singleKey.IsShowMedicineLine = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.Library.Bordereau.IsShowMedicineLine") == "1");
-                //singleKey.IsOrderByType = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingPrint.IsOrderByType") == "1");
-                singleKey.IsOrderByType = Convert.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TrackingPrint.OderOption"));
-                singleKey.keyVienTim = keyVienTim;
-                singleKey.UsedDayCountingOption = ShowKeySTT;
-                singleKey.UsedDayCountingFormatOption = FormatShowKeySTT;
-                singleKey.UsedDayCountingOutStockOption = UsedDayCountingOutStockOption;
-                singleKey.UsedDayCountingAddPreviousUseDay = UsedDayCountingAddPreviousUseDay;
-                #region Danh sách dịch vụ
-
-                #endregion
-
-                #region Dòng thuốc
-                List<HIS_MEDICINE_LINE> listMedicineLine = new List<HIS_MEDICINE_LINE>();
-                listMedicineLine = BackendDataWorker.Get<HIS_MEDICINE_LINE>();
-                #endregion
-                #region Dạng bào chế
-                List<HIS_DOSAGE_FORM> listDosage = new List<HIS_DOSAGE_FORM>();
-                listDosage = BackendDataWorker.Get<HIS_DOSAGE_FORM>();
-                #endregion
-
-                #region HisBedLog
-                V_HIS_BED_LOG selectedBedLog = null;
-                MOS.Filter.HisBedLogViewFilter bedLogViewFilter = new MOS.Filter.HisBedLogViewFilter();
-                bedLogViewFilter.TREATMENT_ID = _Treatment.ID;
-                var bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
-                if (bedLogs != null)
-                {
-                    var minTrackingTime = _TrackingPrintsProcesss.Min(m => m.TRACKING_TIME);
-                    var filteredBedLogs = bedLogs
-                        .Where(o => o.BED_ID != 0
-                            && (o.START_TIME <= minTrackingTime && (o.FINISH_TIME == null || minTrackingTime <= o.FINISH_TIME))
-                        )
-                        .ToList();
-                    selectedBedLog = filteredBedLogs
-                        .OrderByDescending(o => o.START_TIME)
-                        .ThenByDescending(o => o.ID)
-                        .FirstOrDefault();
-                }
-                #endregion
-
-                #region Khoa hội chẩn
-                // Khoa phong moi hoi chan luu o HIS_SPECIALIST_EXAM (INVITE_TYPE = 2), cot EXAM_EXECUTE_DEPARMENT_ID.
-                List<V_HIS_SPECIALIST_EXAM> specialistExams = new List<V_HIS_SPECIALIST_EXAM>();
-                MOS.Filter.HisSpecialistExamViewFilter specialistExamViewFilter = new MOS.Filter.HisSpecialistExamViewFilter();
-                specialistExamViewFilter.TREATMENT_CODE = (_Treatment != null ? _Treatment.TREATMENT_CODE : "");
-                specialistExamViewFilter.INVITE_TYPE = 2;
-                var specialistExamViews = new BackendAdapter(param).Get<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, specialistExamViewFilter, param);
-                if (specialistExamViews != null && specialistExamViews.Count > 0)
-                    specialistExams = specialistExamViews;
                 #endregion
 
                 #region Mps000062
@@ -292,57 +337,11 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                     }
                 }
 
-                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.MergeCode), inputADO.MergeCode));
-
-                //List<V_HIS_EXP_MEST_BLTY_REQ_2> ExpMestBltyReq2 = new List<V_HIS_EXP_MEST_BLTY_REQ_2>();
-                //if (HisConfigCFG.Config_TrackingCreate_BloodPresOption != null
-                //    && HisConfigCFG.Config_TrackingCreate_BloodPresOption.Trim() == "1")
-                //{
-                //    MOS.Filter.HisExpMestBltyReqView2Filter expMestBltyReqView2Filter = new HisExpMestBltyReqView2Filter();
-                //    expMestBltyReqView2Filter.TRACKING_IDs = trackingIds;
-                //    ExpMestBltyReq2 = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_BLTY_REQ_2>>("api/HisExpMestBltyReq/GetView2", ApiConsumers.MosConsumer, expMestBltyReqView2Filter, new CommonParam());
-                //}
-
-                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ExpMestBltyReq2), ExpMestBltyReq2));
-
-                var PatientTypeAlter = new BackendAdapter(new CommonParam()).Get<HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumers.MosConsumer, treatmentId, null);
-
-                
-
-                MPS.Processor.Mps000062.PDO.Mps000062PDO mps000062RDO = new MPS.Processor.Mps000062.PDO.Mps000062PDO(
-                _Treatment,
-                treatmentBedRooms,
-                _TrackingPrintsProcesss,
-                this.ListDhst,
-                dicServiceReqs,
-                dicSereServs,
-                dicExpMests,
-                dicExpMestMedicines,
-                dicExpMestMaterials,
-                dicServiceReqMetys,
-                dicServiceReqMatys,
-                this.ListCares,
-                this.ListCareDetails,
-                singleKey,
-                BackendDataWorker.Get<HIS_ICD>(),
-                BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
-                BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
-                BackendDataWorker.Get<HIS_SERVICE_TYPE>(),
-                this._SereServExts,
-                BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>(),
-                this._SereServRation,
-                this._MobaImpMests,
-                this._ImpMestMedicines_TL,
-                this._ImpMestMaterial_TL,
-                this.ExpMestBltyReq2,
-                BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => _SereServs.Select(p => p.SERVICE_ID).Contains(o.ID)).ToList(),
-                this._ImpMestBlood_TL,
-                PatientTypeAlter,
-                listMedicineLine,
-                listDosage,
-                selectedBedLog
-                );
-                mps000062RDO._SpecialistExams = specialistExams;
+                MPS.Processor.Mps000062.PDO.Mps000062PDO mps000062RDO = null;
+                if (HisConfigCFG.IsViewTrackingNewestFirst)
+                    mps000062RDO = TrackingSheetRenderer.BuildPdo(CreatePrintDataFromLoadedData(), _TrackingPrintsProcesss, this.currentModule, this.treatmentId);
+                else
+                    mps000062RDO = CreateMps000062PDO(param);
                 Inventec.Common.Logging.LogSystem.Debug("KT ------------Truyen data MPS======-------------");
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;

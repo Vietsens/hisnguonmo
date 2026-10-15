@@ -156,4 +156,31 @@
   <data name="NhomXNKhac" xml:space="preserve">
     <value>Others</value>
   </data>
+  <data name="CG300KhongGhiDuocFile" xml:space="preserve">
+    <value>Cannot write CG300 data to folder {0}. Please check the configuration/folder permission.</value>
+  </data>
+  <data name="CG300MauChuaCoBarcode" xml:space="preserve">
+    <value>Samples without barcode were not sent to CG300 (service request code): {0}</value>
+  </data>
+  <data name="CG300DichVuChuaGanLoaiMau" xml:space="preserve">
+    <value>Services without test sample type (tube cannot be determined): {0}</value>
+  </data>
+  <data name="CG300KhongCoDuLieuIn" xml:space="preserve">
+    <value>No valid data to send to CG300.</value>
+  </data>
+  <data name="CG300MatKetNoi" xml:space="preserve">
+    <value>CG300 is disconnected: {0}. Please check the CG software and the exchange folder.</value>
+  </data>
+  <data name="CG300LyDoThuMucKhongTonTai" xml:space="preserve">
+    <value>Folder {0} does not exist</value>
+  </data>
+  <data name="CG300LyDoKhongGhiDuoc" xml:space="preserve">
+    <value>No write permission on folder {0}</value>
+  </data>
+  <data name="CG300LyDoPhanMemChuaChay" xml:space="preserve">
+    <value>CG300 control software ({0}) is not running</value>
+  </data>
+  <data name="CG300MauDaInTemInLai" xml:space="preserve">
+    <value>Barcode {0} has already been printed via CG300. Print again (an extra tube will be released)?</value>
+  </data>
 </root>

@@ -1280,6 +1280,77 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return result;
         }
 
+        /// <summary>
+        /// Canh bao ngay hen kham cua don trung thu 7, chu nhat hoac ngay nghi (HIS_HOLIDAY_POLICIES co IS_WARNING_APPOINTMENT = 1)
+        /// </summary>
+        private bool CheckPresAppointmentTime()
+        {
+            bool result = true;
+            try
+            {
+                if (lciPresAppointmentTime.Visibility != DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    || dtPresAppointmentTime.EditValue == null
+                    || dtPresAppointmentTime.DateTime == DateTime.MinValue)
+                    return result;
+
+                DateTime appointmentDate = dtPresAppointmentTime.DateTime.Date;
+                string message = null;
+                if (appointmentDate.DayOfWeek == DayOfWeek.Sunday)
+                    message = "Ngày hẹn khám hiện tại là ngày chủ nhật bạn có muốn tiếp tục không";
+                else if (appointmentDate.DayOfWeek == DayOfWeek.Saturday)
+                    message = "Ngày hẹn khám hiện tại là ngày thứ bảy bạn có muốn tiếp tục không";
+                else if (IsPresAppointmentDateMatchHolidayPolicy(appointmentDate))
+                    message = "Ngày hẹn khám hiện tại là ngày lễ, bạn có muốn tiếp tục không?";
+
+                if (!String.IsNullOrEmpty(message)
+                    && DevExpress.XtraEditors.XtraMessageBox.Show(message,
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    dtPresAppointmentTime.Focus();
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Copy tu HIS.UC.TreatmentFinish FormAppointment.IsAppointmentDateMatchHolidayPolicy
+        /// </summary>
+        private bool IsPresAppointmentDateMatchHolidayPolicy(DateTime appointmentDate)
+        {
+            try
+            {
+                List<HIS_HOLIDAY_POLICIES> policies = BackendDataWorker.Get<HIS_HOLIDAY_POLICIES>();
+                if (policies == null || policies.Count == 0) return false;
+
+                short dayOfWeekValue = (short)((int)appointmentDate.DayOfWeek + 1);
+                short monthDayValue = (short)(appointmentDate.Month * 100 + appointmentDate.Day);
+                int yyyyMMddValue = appointmentDate.Year * 10000 + appointmentDate.Month * 100 + appointmentDate.Day;
+
+                return policies.Any(p =>
+                    p.IS_WARNING_APPOINTMENT == 1
+                    && p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && (p.IS_DELETE == null || p.IS_DELETE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                    && (
+                        (p.HOLIDAY_POLICIES_TYPE == 1 && p.DAY_OF_WEEK.HasValue && p.DAY_OF_WEEK.Value == dayOfWeekValue)
+                        || (p.HOLIDAY_POLICIES_TYPE == 2 && p.DAY_OF_YEAR.HasValue && p.DAY_OF_YEAR.Value == monthDayValue)
+                        || (p.HOLIDAY_POLICIES_TYPE == 3 && p.HOLIDAY.HasValue && p.HOLIDAY.Value == yyyyMMddValue)
+                    )
+                );
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
         private bool CheckUseDayAndExpTimeBHYT()
         {
             bool result = true;

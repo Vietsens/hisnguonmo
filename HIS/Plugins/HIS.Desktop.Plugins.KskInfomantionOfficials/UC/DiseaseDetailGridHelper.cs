@@ -345,6 +345,28 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials.UC
         }
         #endregion
 
+        #region Other Text
+        /// <summary>Doc phan chu "Khac" nguoi dung nhap (DISPLAY_NAME = "Ten: noi dung").</summary>
+        public static string GetOtherText(ADO.DiseaseDetailGridADO ado)
+        {
+            if (ado == null || !ado.HAS_OTHER) return string.Empty;
+            string prefix = GetPrefix(ado);
+            string displayText = ado.DISPLAY_NAME ?? "";
+            if (displayText.StartsWith(prefix) && displayText.Length > prefix.Length)
+                return displayText.Substring(prefix.Length).Trim();
+            return string.Empty;
+        }
+
+        /// <summary>Ghi phan chu "Khac" (giu dung tien to "Ten: " nhu khi nguoi dung nhap tren luoi).</summary>
+        public static void SetOtherText(ADO.DiseaseDetailGridADO ado, string text)
+        {
+            if (ado == null || !ado.HAS_OTHER) return;
+            string value = (text ?? "").Trim();
+            ado.OTHER_TEXT = value;
+            ado.DISPLAY_NAME = GetPrefix(ado) + value;
+        }
+        #endregion
+
         #region Collect Results
         public static List<ADO.DiseaseDetailResultADO> CollectResults(
             List<ADO.DiseaseDetailGridADO> adoList,

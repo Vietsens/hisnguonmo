@@ -951,6 +951,15 @@
   <data name="frmTrackingCreateNew.xtraTabPage5.Text" xml:space="preserve">
     <value>Thực hiện đơn dự trù</value>
   </data>
+  <data name="frmTrackingCreateNew.xtraTabPageTrackingList.Text" xml:space="preserve">
+    <value>DS tờ điều trị</value>
+  </data>
+  <data name="frmTrackingCreateNew.lblTrackingListMessage.NoPermission" xml:space="preserve">
+    <value>Tài khoản chưa được phân quyền chức năng Danh sách tờ điều trị</value>
+  </data>
+  <data name="frmTrackingCreateNew.lblTrackingListMessage.CannotOpen" xml:space="preserve">
+    <value>Không mở được danh sách tờ điều trị</value>
+  </data>
   <data name="frmTrackingCreateNew.xtraTabPageDhst.Text" xml:space="preserve">
     <value>Dấu hiệu sinh tồn</value>
   </data>

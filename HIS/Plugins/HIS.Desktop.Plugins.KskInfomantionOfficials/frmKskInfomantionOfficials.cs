@@ -110,6 +110,9 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         {
             try
             {
+                // Tai danh muc song song, chong len InitializeComponent; MeShow cho xong moi dung
+                StartPrefetchCatalogs();
+
                 InitializeComponent();
 
                 pagingGrid = new PagingGrid();
@@ -224,6 +227,9 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             {
                 if (data != null)
                 {
+                    var swLoad = System.Diagnostics.Stopwatch.StartNew();
+                    WaitingManager.Show();
+
                     currentTreatmentId = data.TREATMENT_ID;
                     this.listChooseFromGrid = new List<ADO.ServiceReqADO>() { data };
 
@@ -231,17 +237,31 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                     SetCurrentServiceReqSTT(data);
 
                     GetServiceReqData(data);
+                    long apiMs = swLoad.ElapsedMilliseconds;
 
-                    FillDataToEditorControl(data);
+                    // ~200 control (checkbox gen dong + text) → tat ve lai khi do du lieu, ve 1 lan sau cung
+                    SuspendDrawingControl(this);
+                    try
+                    {
+                        FillDataToEditorControl(data);
 
-                    EnableControlChanged(this.currentServiceReqSTT);
+                        EnableControlChanged(this.currentServiceReqSTT);
+                    }
+                    finally
+                    {
+                        ResumeDrawingControl(this);
+                    }
 
                     positionHandle = -1;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
+
+                    WaitingManager.Hide();
+                    Inventec.Common.Logging.LogSystem.Debug("KskOfficials.LoadRow: api=" + apiMs + " ms, fill=" + (swLoad.ElapsedMilliseconds - apiMs) + " ms, TOTAL=" + swLoad.ElapsedMilliseconds + " ms");
                 }
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -298,53 +318,39 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             {
                 if (data == null) return;
 
-                // 2 API doc lap (HisKskGeneral, HisKskOccupational) → load song song bang 2 thread
-                HIS_KSK_GENERAL resultKskGeneral = null;
-                HIS_KSK_OCCUPATIONAL resultKskOccupational = null;
+                // Vong 1: KSK_GENERAL — DHST va ket qua tien su/trieu chung deu phu thuoc ban ghi nay
+                HIS_KSK_GENERAL resultKskGeneral = LoadKskGeneralBySvrId(data.ID);
+                List<HIS_DISEASE_DETAIL_RESULT> resultDiseaseDetails = new List<HIS_DISEASE_DETAIL_RESULT>();
 
-                long serviceReqId = data.ID;
-                Thread t1 = new Thread(() => resultKskGeneral = LoadKskGeneralBySvrId(serviceReqId));
-                Thread t2 = new Thread(() => resultKskOccupational = LoadKskOccupationalBySvrId(serviceReqId));
-                try
-                {
-                    t1.Start();
-                    t2.Start();
-                    t1.Join();
-                    t2.Join();
-                }
-                catch (Exception exThread)
-                {
-                    Inventec.Common.Logging.LogSystem.Error(exThread);
-                    try { t1.Abort(); } catch { }
-                    try { t2.Abort(); } catch { }
-                }
-
-                // DHST con phu thuoc ket qua phia tren → giu tuan tu
                 if (resultKskGeneral != null)
                 {
+                    // Vong 2: DHST va ket qua benh doc lap nhau → chay song song (DHST thread rieng, ket qua thread hien tai)
+                    HIS_DHST resultDhst = null;
+                    Thread tDhst = null;
                     if (resultKskGeneral.DHST_ID != null && resultKskGeneral.DHST_ID > 0)
                     {
-                        resultKskGeneral.HIS_DHST = GetDHSTByID((long)resultKskGeneral.DHST_ID);
+                        long dhstId = resultKskGeneral.DHST_ID.Value;
+                        tDhst = new Thread(() => resultDhst = GetDHSTByID(dhstId));
+                        tDhst.IsBackground = true;
+                        tDhst.Start();
                     }
+
+                    resultDiseaseDetails = FetchDiseaseResults(resultKskGeneral);
+
+                    if (tDhst != null)
+                        tDhst.Join();
+
+                    resultKskGeneral.HIS_DHST = resultDhst;
                     data.KSK_GENERAL = resultKskGeneral;
                 }
                 else
                 {
                     data.KSK_GENERAL = new HIS_KSK_GENERAL();
                 }
+                data.DISEASE_DETAIL_RESULTS = resultDiseaseDetails;
 
-                if (resultKskOccupational != null)
-                {
-                    if (resultKskOccupational.DHST_ID != null && resultKskOccupational.DHST_ID > 0)
-                    {
-                        resultKskOccupational.HIS_DHST = GetDHSTByID((long)resultKskOccupational.DHST_ID);
-                    }
-                    data.KSK_OCCUPATIONAL = resultKskOccupational;
-                }
-                else
-                {
-                    data.KSK_OCCUPATIONAL = new HIS_KSK_OCCUPATIONAL();
-                }
+                // Form KSK can bo khong hien thi/luu/in KSK_OCCUPATIONAL → bo 2 API (ban ghi + DHST) moi lan chon dong
+                data.KSK_OCCUPATIONAL = new HIS_KSK_OCCUPATIONAL();
             }
             catch (Exception ex)
             {
@@ -363,26 +369,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 return new BackendAdapter(paramKskGeneral)
                     .Get<List<MOS.EFMODEL.DataModels.HIS_KSK_GENERAL>>(
                         "api/HisKskGeneral/Get", ApiConsumers.MosConsumer, filterKskGeneral, paramKskGeneral)
-                    .SingleOrDefault();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return null;
-            }
-        }
-
-        private HIS_KSK_OCCUPATIONAL LoadKskOccupationalBySvrId(long serviceReqId)
-        {
-            try
-            {
-                CommonParam paramKskOccupational = new CommonParam();
-                MOS.Filter.HisKskOccupationalFilter filterKskOccupational = new MOS.Filter.HisKskOccupationalFilter();
-                filterKskOccupational.SERVICE_REQ_ID = serviceReqId;
-                filterKskOccupational.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                return new BackendAdapter(paramKskOccupational)
-                    .Get<List<MOS.EFMODEL.DataModels.HIS_KSK_OCCUPATIONAL>>(
-                        "api/HisKskOccupational/Get", ApiConsumers.MosConsumer, filterKskOccupational, paramKskOccupational)
                     .SingleOrDefault();
             }
             catch (Exception ex)
@@ -1264,12 +1250,18 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             try
             {
                 this.SuspendLayout();
+                LogOpenStep("dung form xong");
+                WaitPrefetchCatalogs();
 
                 //Fill data into datasource combo
                 FillDataToControlsForm();
 
                 // Init disease controls gen dong — goi 1 lan khi mo form
                 InitializeOfficialsDesignIfNeeded();
+                LogOpenStep("dung control tien su/trieu chung xong");
+
+                // O nguoi kham / bac si ket luan: nap khi danh sach tai khoan tai xong (khong chan mo form)
+                BindAcsUserCombosWhenReady();
 
                 //Gan gia tri mac dinh
                 SetDefaultValue();
@@ -1312,6 +1304,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 SetCheckAllColumn(this.statecheckColumn);
 
                 this.ResumeLayout(false);
+                LogOpenStep("MeShow xong");
             }
             catch (Exception ex)
             {
@@ -1333,6 +1326,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                         {
                             try { EnsureClinicalGridsBuilt(); }
                             catch (Exception exBuild) { Inventec.Common.Logging.LogSystem.Error(exBuild); }
+                            // Nut mau sat chu tieu de theo co chu thuc te
+                            FitTemplateLabelItems();
                         }));
                     }
                 }
@@ -1353,11 +1348,10 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             xtraTabControl1.SelectedTabPage = xtraTabPage9;
         }
 
-        private void loadcomboBSketluan()
+        private void loadcomboBSketluan(List<ACS.EFMODEL.DataModels.ACS_USER> acsUser)
         {
             try
             {
-                var acsUser = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(o => o.IS_ACTIVE == 1).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "", 150, 1));
                 columnInfos.Add(new ColumnInfo("USERNAME", "", 250, 2));
@@ -1745,7 +1739,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             try
             {
                 var rowData = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
-                if (rowData != null)
+                // Su kien Click ngay truoc do da load dung dong nay → khong goi API lan 2
+                if (rowData != null && (this.currentData == null || this.currentData.ID != rowData.ID))
                 {
                     ChangedDataRow(rowData);
                 }

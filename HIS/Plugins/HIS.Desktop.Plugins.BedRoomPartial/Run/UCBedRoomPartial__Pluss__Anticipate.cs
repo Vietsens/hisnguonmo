@@ -236,9 +236,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     return;
                 }
 
-                // Chua doi benh nhan -> dung lai cache
-                if (cachedTreatmentId == treatmentId && dictEffectiveDateByReqId != null) return;
-
+                // Luon nap lai, ke ca cung benh nhan: ke don / xoa / tich hao phi xong ma dung lai cache
+                // thi cay y lenh van hien ban cu cho den khi doi benh nhan hoac mo lai chuc nang (53745)
                 ClearAnticipateCache();
 
                 CommonParam param = new CommonParam();

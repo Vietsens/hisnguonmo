@@ -164,10 +164,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
         private const int MEDI_ORG_CODE_MAX_LENGTH = 6;
 
         /// <summary>
-        /// So tep toi da moi luot gui. Nha cung cap CHUA cong bo gioi han (cau hoi B4 con treo),
-        /// nen dat tran phong ve o day: vuot thi tu chia nho, tot hon la ca nhom gui hong.
+        /// So tep toi da moi luot gui. Tai lieu dac ta khong ghi, nhung he ngoai THUC TE tu choi
+        /// lo tren 10 tep: HTTP 400 kem cau "So luong file gui len vuot qua 10 file"
+        /// (nhat ky Mat Thai Binh ngay 2026-10-07 - tra loi cau hoi B4). Vuot thi tu chia nho.
         /// </summary>
-        public const int MAX_FILE_PER_UPLOAD = 100;
+        public const int MAX_FILE_PER_UPLOAD = 10;
 
         private readonly MdInsightConfig config;
 
@@ -359,8 +360,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
 
                 if (items.Count > MAX_FILE_PER_UPLOAD)
                 {
-                    LogSystem.Warn("MdInsightWorker - Lo gui co " + items.Count
-                        + " tep, vuot tran phong ve " + MAX_FILE_PER_UPLOAD + ". Tu chia nho.");
+                    LogSystem.Info("MdInsightWorker - Lo gui co " + items.Count
+                        + " tep, vuot gioi han " + MAX_FILE_PER_UPLOAD + " tep moi luot cua he ngoai. Tu chia nho.");
                     return await UploadInChunksAsync(token, items, cancelToken);
                 }
 
@@ -456,6 +457,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             string token, List<MdInsightUploadItem> items, CancellationToken cancelToken)
         {
             MdInsightUploadResult merged = new MdInsightUploadResult { Outcome = EnumMdInsightCallOutcome.Success };
+            EnumMdInsightCallOutcome lastFailOutcome = EnumMdInsightCallOutcome.Failed;
+            int sentCount = 0;
 
             for (int i = 0; i < items.Count; i += MAX_FILE_PER_UPLOAD)
             {
@@ -463,17 +466,39 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 List<MdInsightUploadItem> chunk = items.GetRange(i, size);
 
                 MdInsightUploadResult part = await UploadFilesAsync(token, chunk, cancelToken);
-                merged.FailedFileNames.AddRange(part.FailedFileNames);
 
-                if (part.Outcome != EnumMdInsightCallOutcome.Success)
+                if (part.Outcome == EnumMdInsightCallOutcome.Cancelled)
                 {
-                    //Mot phan hong thi dung ca lo - cac tep chua gui se mang trang thai Khong kiem tra duoc
                     merged.Outcome = part.Outcome;
                     merged.Message = part.Message;
                     return merged;
                 }
+
+                if (part.Outcome != EnumMdInsightCallOutcome.Success)
+                {
+                    //Mot lo hong chi danh dau RIENG cac tep cua lo do la gui that bai, cac lo khac
+                    //van gui tiep. Neu tra that bai cho ca nhom thi cac tep DA GUI thanh cong o lo
+                    //truoc bi xoa ten tep, lan "Lay ket qua" sau khong tra duoc nua.
+                    merged.FailedFileNames.AddRange(chunk.Select(o => o.FileName));
+                    merged.Message = part.Message;
+                    lastFailOutcome = part.Outcome;
+                    LogSystem.Warn("MdInsightWorker - Lo gui tu tep thu " + (i + 1) + " (" + size
+                        + " tep) that bai. Danh dau rieng cac tep nay, cac lo con lai van gui tiep.");
+                    continue;
+                }
+
+                merged.FailedFileNames.AddRange(part.FailedFileNames);
+                sentCount += size;
             }
 
+            if (sentCount == 0)
+            {
+                //Khong lo nao gui duoc - tra ve dung ket qua that bai cua lo cuoi
+                merged.Outcome = lastFailOutcome;
+            }
+
+            LogSystem.Info("MdInsightWorker - Gui chia lo: " + sentCount + "/" + items.Count
+                + " tep gui thanh cong, toi da " + MAX_FILE_PER_UPLOAD + " tep moi lo.");
             return merged;
         }
 
@@ -698,9 +723,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     }
                     catch (JsonException)
                     {
-                        //Khong ghi than phan hoi ra nhat ky - co the chua du lieu benh nhan
+                        //Chi ghi than phan hoi khi du ngan (cau bao loi cua he ngoai) - than dai
+                        //co the chua du lieu benh nhan nen van khong ghi
                         LogSystem.Warn("MdInsightWorker - Phan hoi tu " + path
-                            + " khong phai JSON hop le, ma HTTP: " + (int)response.StatusCode);
+                            + " khong phai JSON hop le, ma HTTP: " + (int)response.StatusCode
+                            + DescribeShortBody(body));
                         result.Message = "He ngoai tra ve du lieu khong doc duoc";
                         return result;
                     }
@@ -883,8 +910,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 }
                 catch (JsonException)
                 {
-                    //Khong phai JSON - chi ghi do dai, khong ghi noi dung
-                    return "(khong phai JSON, " + body.Length + " ky tu)";
+                    //Khong phai JSON - chi ghi noi dung khi du ngan de chac chan la cau bao loi
+                    return "(khong phai JSON, " + body.Length + " ky tu)" + DescribeShortBody(body);
                 }
 
                 List<string> parts = new List<string>();
@@ -931,6 +958,35 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 LogSystem.Warn(ex);
                 return "(khong mo ta duoc)";
+            }
+        }
+
+        /// <summary>Do dai toi da cua than phan hoi KHONG phai JSON duoc phep ghi nhat ky</summary>
+        private const int MAX_LOGGABLE_RAW_BODY_LENGTH = 200;
+
+        /// <summary>
+        /// Ghi noi dung than phan hoi KHONG phai JSON khi du ngan.
+        ///
+        /// Ly do: he ngoai tra HTTP 400 kem mot cau bao loi dang chu tron (vi du 38 ky tu)
+        /// - khong doc duoc cau nay thi khong biet vi sao bi tu choi. Than ngan nhu vay chi co
+        /// the la thong bao loi, khong chua duoc noi dung tep ho so. Than dai hon nguong thi
+        /// VAN KHONG ghi (co the chua du lieu benh nhan - quy tac QT-28).
+        /// </summary>
+        private static string DescribeShortBody(string body)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(body) || body.Length > MAX_LOGGABLE_RAW_BODY_LENGTH)
+                {
+                    return "";
+                }
+
+                return " | noi dung=[" + body.Replace("\r", " ").Replace("\n", " ").Trim() + "]";
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return "";
             }
         }
 

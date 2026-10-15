@@ -64,6 +64,10 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
         Dictionary<long, HisBloodTypeInStockSDO> dicExpBloodInStock = new Dictionary<long, HisBloodTypeInStockSDO>();
 
         Dictionary<long, MediMateTypeADO> dicMediMateAdo = new Dictionary<long, MediMateTypeADO>();
+
+        // PTTK 57499: Quy cách đóng gói lấy từ danh mục loại thuốc / loại vật tư
+        Dictionary<long, string> dicMedicineTypePackingType = new Dictionary<long, string>();
+        Dictionary<long, string> dicMaterialTypePackingType = new Dictionary<long, string>();
         MediMateTypeADO currentMediMate = null;
 
         HisExpMestResultSDO resultSdo = null;
@@ -114,6 +118,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                 ResetValueControlDetail();
                 WaitingManager.Show();
                 LoadKeyUCLanguage();
+                InitPackingTypeColumn();
                 ValidControl();
                 //LoadChmsExpMest();
                 InitComboBloodABO();
@@ -1454,6 +1459,20 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                     {
                         e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString((long)data.EXPIRED_DATE);
                     }
+
+                    if (e.Column.FieldName == "PACKING_TYPE_NAME_STR" && data != null)
+                    {
+                        string packingTypeName;
+                        if (dicMedicineTypePackingType != null
+                            && dicMedicineTypePackingType.TryGetValue(data.MEDICINE_TYPE_ID, out packingTypeName))
+                        {
+                            e.Value = packingTypeName;
+                        }
+                        else
+                        {
+                            e.Value = "";
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1496,11 +1515,77 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                     {
                         e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.EXPIRED_DATE.ToString());
                     }
+
+                    if (e.Column.FieldName == "PACKING_TYPE_NAME_STR" && data != null)
+                    {
+                        string packingTypeName;
+                        if (dicMaterialTypePackingType != null
+                            && dicMaterialTypePackingType.TryGetValue(data.MATERIAL_TYPE_ID, out packingTypeName))
+                        {
+                            e.Value = packingTypeName;
+                        }
+                        else
+                        {
+                            e.Value = "";
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // PTTK 57499: Cột "Quy cách đóng gói" (chỉ đọc) ở cuối lưới tab Thuốc và Vật tư
+        private void InitPackingTypeColumn()
+        {
+            try
+            {
+                dicMedicineTypePackingType = BackendDataWorker.Get<HIS_MEDICINE_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().PACKING_TYPE_NAME : null);
+                dicMaterialTypePackingType = BackendDataWorker.Get<HIS_MATERIAL_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().PACKING_TYPE_NAME : null);
+
+                var cul = Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture();
+                string caption = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__GRID_CONTROL__COLUMN_PACKING_TYPE_NAME",
+                    Base.ResourceLangManager.LanguageUCExpMestChmsCreate, cul);
+                if (string.IsNullOrWhiteSpace(caption)) caption = "Quy cách đóng gói";
+
+                AddPackingTypeColumn(this.gridViewMedicine, caption);
+                AddPackingTypeColumn(this.gridViewMaterial, caption);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void AddPackingTypeColumn(DevExpress.XtraGrid.Views.Grid.GridView gv, string caption)
+        {
+            try
+            {
+                if (gv == null) return;
+                if (gv.Columns["PACKING_TYPE_NAME_STR"] != null) return;
+
+                var col = new DevExpress.XtraGrid.Columns.GridColumn();
+                col.Caption = caption;
+                col.FieldName = "PACKING_TYPE_NAME_STR";
+                col.Name = gv.Name + "_gcPackingTypeName";
+                col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+                col.OptionsColumn.AllowEdit = false;
+                col.Width = 150;
+                col.Visible = true;
+
+                // Không gán VisibleIndex: cột hiển thị được thêm sau cùng nên nằm cuối lưới
+                gv.Columns.Add(col);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

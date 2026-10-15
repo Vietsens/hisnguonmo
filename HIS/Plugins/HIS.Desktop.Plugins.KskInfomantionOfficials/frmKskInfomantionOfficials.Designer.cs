@@ -323,6 +323,32 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.labelControl175 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl174 = new DevExpress.XtraEditors.LabelControl();
             this.btnChonKQ = new DevExpress.XtraEditors.SimpleButton();
+            this.labelControlFamilyHistoryNote = new DevExpress.XtraEditors.LabelControl();
+            this.lciFamilyHistoryNote = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItemTemplateFamilyHistory = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.btnTemplateHabit = new DevExpress.XtraEditors.SimpleButton();
+            this.btnTemplateDiseaseHistory = new DevExpress.XtraEditors.SimpleButton();
+            this.btnTemplateFamilyHistory = new DevExpress.XtraEditors.SimpleButton();
+            this.btnTemplateFunctionalSymptom = new DevExpress.XtraEditors.SimpleButton();
+            this.btnTemplatePainSymptom = new DevExpress.XtraEditors.SimpleButton();
+            this.btnTemplateBody = new DevExpress.XtraEditors.SimpleButton();
+            this.btnTemplateInternal = new DevExpress.XtraEditors.SimpleButton();
+            this.btnTemplateSpecialist = new DevExpress.XtraEditors.SimpleButton();
+            this.lciBtnTemplateHabit = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnTemplateDiseaseHistory = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnTemplateFamilyHistory = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnTemplateFunctionalSymptom = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnTemplatePainSymptom = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnTemplateBody = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnTemplateInternal = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnTemplateSpecialist = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItemTemplateHabit = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItemTemplateDiseaseHistory = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItemTemplateFunctionalSymptom = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItemTemplatePainSymptom = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItemTemplateBody = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItemTemplateInternal = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItemTemplateSpecialist = new DevExpress.XtraLayout.EmptySpaceItem();
             this.txtSuclinicalResult = new DevExpress.XtraEditors.MemoEdit();
             this.labelControl134 = new DevExpress.XtraEditors.LabelControl();
             this.cboHealthExamRank = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -1208,6 +1234,23 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem632)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem631)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem633)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciFamilyHistoryNote)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateFamilyHistory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateHabit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateDiseaseHistory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateFamilyHistory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateFunctionalSymptom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplatePainSymptom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateBody)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateInternal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateSpecialist)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateHabit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateDiseaseHistory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateFunctionalSymptom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplatePainSymptom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateBody)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateInternal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateSpecialist)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem634)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem635)).BeginInit();
@@ -2046,11 +2089,15 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControl5.Controls.Add(this.xtraScrollableControl1);
             this.layoutControl5.Controls.Add(this.labelControl45);
             this.layoutControl5.Controls.Add(this.labelControl43);
+            this.layoutControl5.Controls.Add(this.labelControlFamilyHistoryNote);
             this.layoutControl5.Controls.Add(this.labelControl36);
             this.layoutControl5.Controls.Add(this.panelControl6);
             this.layoutControl5.Controls.Add(this.labelControl44);
             this.layoutControl5.Controls.Add(this.panelControl5);
             this.layoutControl5.Controls.Add(this.labelControl8);
+            this.layoutControl5.Controls.Add(this.btnTemplateHabit);
+            this.layoutControl5.Controls.Add(this.btnTemplateDiseaseHistory);
+            this.layoutControl5.Controls.Add(this.btnTemplateFamilyHistory);
             this.layoutControl5.Controls.Add(this.labelControl5);
             this.layoutControl5.Controls.Add(this.labelControl4);
             this.layoutControl5.Controls.Add(this.labelControl3);
@@ -2207,18 +2254,39 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.labelControl45.TabIndex = 16;
             this.labelControl45.Text = "a) Tiền sử dị ứng với thuốc, thức ăn (nếu có ghi cụ thể):";
             // 
+            // btnTemplateFamilyHistory
+            // 
+            this.btnTemplateFamilyHistory.Image = ((System.Drawing.Image)(resources.GetObject("btnTemplateFamilyHistory.Image")));
+            this.btnTemplateFamilyHistory.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnTemplateFamilyHistory.Location = new System.Drawing.Point(590, 386);
+            this.btnTemplateFamilyHistory.Name = "btnTemplateFamilyHistory";
+            this.btnTemplateFamilyHistory.Size = new System.Drawing.Size(24, 20);
+            this.btnTemplateFamilyHistory.StyleController = this.layoutControl5;
+            this.btnTemplateFamilyHistory.TabIndex = 952;
+            this.btnTemplateFamilyHistory.ToolTip = "Bấm để mở Thư viện mẫu của mục này:\r\n• Dùng mẫu: nhấp đúp 1 mẫu trong danh sách để điền vào mục.\r\n• Tạo mẫu: nội dung mục đang nhập đã được điền sẵn dạng JSON, nhập Tiêu đề rồi bấm Lưu.\r\n   Sửa mẫu: true = có, false = không; chữ ghi trong ngoặc kép.\r\nChỉ các mục có trong mẫu mới được điền đè; mục không có trong mẫu giữ nguyên.";
+            this.btnTemplateFamilyHistory.ToolTipTitle = "Mẫu: 2. Tiền sử gia đình";
+            this.btnTemplateFamilyHistory.Click += new System.EventHandler(this.btnTemplate_Click);
+            // 
+            // labelControlFamilyHistoryNote
+            // 
+            this.labelControlFamilyHistoryNote.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
+            this.labelControlFamilyHistoryNote.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.labelControlFamilyHistoryNote.Location = new System.Drawing.Point(482, 408);
+            this.labelControlFamilyHistoryNote.Name = "labelControlFamilyHistoryNote";
+            this.labelControlFamilyHistoryNote.Size = new System.Drawing.Size(477, 13);
+            this.labelControlFamilyHistoryNote.StyleController = this.layoutControl5;
+            this.labelControlFamilyHistoryNote.TabIndex = 960;
+            this.labelControlFamilyHistoryNote.Text = "trong gia đình có ông /bà, bố, mẹ, anh chị em ruột mắc các bệnh sau đây không? (Nếu có thì tích vào câu tương ứng)";
+            // 
             // labelControl43
             // 
-            this.labelControl43.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.labelControl43.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical;
-            this.labelControl43.Location = new System.Drawing.Point(482, 387);
+            this.labelControl43.Location = new System.Drawing.Point(482, 389);
             this.labelControl43.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl43.Name = "labelControl43";
-            this.labelControl43.Size = new System.Drawing.Size(477, 36);
+            this.labelControl43.Size = new System.Drawing.Size(104, 13);
             this.labelControl43.StyleController = this.layoutControl5;
             this.labelControl43.TabIndex = 15;
-            this.labelControl43.Text = "2. Tiền sử gia đình: trong gia đình có ông /bà, bố, mẹ, anh chị em ruột mắc các b" +
-    "ệnh sau đây không? (Nếu có thì tích vào câu tương ứng)";
+            this.labelControl43.Text = "2. Tiền sử gia đình:";
             // 
             // labelControl36
             // 
@@ -2287,13 +2355,26 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem386.TextLocation = DevExpress.Utils.Locations.Top;
             this.layoutControlItem386.TextSize = new System.Drawing.Size(45, 13);
             // 
+            // btnTemplateDiseaseHistory
+            // 
+            this.btnTemplateDiseaseHistory.Image = ((System.Drawing.Image)(resources.GetObject("btnTemplateDiseaseHistory.Image")));
+            this.btnTemplateDiseaseHistory.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnTemplateDiseaseHistory.Location = new System.Drawing.Point(124, 199);
+            this.btnTemplateDiseaseHistory.Name = "btnTemplateDiseaseHistory";
+            this.btnTemplateDiseaseHistory.Size = new System.Drawing.Size(24, 20);
+            this.btnTemplateDiseaseHistory.StyleController = this.layoutControl5;
+            this.btnTemplateDiseaseHistory.TabIndex = 951;
+            this.btnTemplateDiseaseHistory.ToolTip = "Bấm để mở Thư viện mẫu của mục này:\r\n• Dùng mẫu: nhấp đúp 1 mẫu trong danh sách để điền vào mục.\r\n• Tạo mẫu: nội dung mục đang nhập đã được điền sẵn dạng JSON, nhập Tiêu đề rồi bấm Lưu.\r\n   Sửa mẫu: true = có, false = không; chữ ghi trong ngoặc kép.\r\nChỉ các mục có trong mẫu mới được điền đè; mục không có trong mẫu giữ nguyên.";
+            this.btnTemplateDiseaseHistory.ToolTipTitle = "Mẫu: 1.2. Tiền sử mắc bệnh";
+            this.btnTemplateDiseaseHistory.Click += new System.EventHandler(this.btnTemplate_Click);
+            // 
             // labelControl44
             // 
             this.labelControl44.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.labelControl44.Location = new System.Drawing.Point(2, 200);
             this.labelControl44.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl44.Name = "labelControl44";
-            this.labelControl44.Size = new System.Drawing.Size(957, 18);
+            this.labelControl44.Size = new System.Drawing.Size(118, 18);
             this.labelControl44.StyleController = this.layoutControl5;
             this.labelControl44.TabIndex = 10;
             this.labelControl44.Text = "1.2. Tiền sử mắc bệnh";
@@ -2304,10 +2385,10 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.panelControl5.Appearance.Options.UseBackColor = true;
             this.panelControl5.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
             this.panelControl5.Controls.Add(this.layoutControl6);
-            this.panelControl5.Location = new System.Drawing.Point(2, 71);
+            this.panelControl5.Location = new System.Drawing.Point(2, 78);
             this.panelControl5.Margin = new System.Windows.Forms.Padding(2);
             this.panelControl5.Name = "panelControl5";
-            this.panelControl5.Size = new System.Drawing.Size(957, 125);
+            this.panelControl5.Size = new System.Drawing.Size(957, 118);
             this.panelControl5.TabIndex = 8;
             // 
             // layoutControl6
@@ -2355,9 +2436,22 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem276.TextLocation = DevExpress.Utils.Locations.Top;
             this.layoutControlItem276.TextSize = new System.Drawing.Size(18, 13);
             // 
+            // btnTemplateHabit
+            // 
+            this.btnTemplateHabit.Image = ((System.Drawing.Image)(resources.GetObject("btnTemplateHabit.Image")));
+            this.btnTemplateHabit.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnTemplateHabit.Location = new System.Drawing.Point(130, 37);
+            this.btnTemplateHabit.Name = "btnTemplateHabit";
+            this.btnTemplateHabit.Size = new System.Drawing.Size(24, 20);
+            this.btnTemplateHabit.StyleController = this.layoutControl5;
+            this.btnTemplateHabit.TabIndex = 950;
+            this.btnTemplateHabit.ToolTip = "Bấm để mở Thư viện mẫu của mục này:\r\n• Dùng mẫu: nhấp đúp 1 mẫu trong danh sách để điền vào mục.\r\n• Tạo mẫu: nội dung mục đang nhập đã được điền sẵn dạng JSON, nhập Tiêu đề rồi bấm Lưu.\r\n   Sửa mẫu: true = có, false = không; chữ ghi trong ngoặc kép.\r\nChỉ các mục có trong mẫu mới được điền đè; mục không có trong mẫu giữ nguyên.";
+            this.btnTemplateHabit.ToolTipTitle = "Mẫu: 1.1. Thói quen sinh hoạt";
+            this.btnTemplateHabit.Click += new System.EventHandler(this.btnTemplate_Click);
+            // 
             // labelControl8
             // 
-            this.labelControl8.Location = new System.Drawing.Point(2, 37);
+            this.labelControl8.Location = new System.Drawing.Point(2, 41);
             this.labelControl8.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl8.Name = "labelControl8";
             this.labelControl8.Size = new System.Drawing.Size(117, 13);
@@ -2388,7 +2482,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             // 
             // labelControl3
             // 
-            this.labelControl3.Location = new System.Drawing.Point(2, 54);
+            this.labelControl3.Location = new System.Drawing.Point(2, 61);
             this.labelControl3.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl3.Name = "labelControl3";
             this.labelControl3.Size = new System.Drawing.Size(275, 13);
@@ -2411,6 +2505,13 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlGroup9.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup9.GroupBordersVisible = false;
             this.layoutControlGroup9.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciFamilyHistoryNote,
+            this.emptySpaceItemTemplateFamilyHistory,
+            this.lciBtnTemplateHabit,
+            this.lciBtnTemplateDiseaseHistory,
+            this.lciBtnTemplateFamilyHistory,
+            this.emptySpaceItemTemplateHabit,
+            this.emptySpaceItemTemplateDiseaseHistory,
             this.layoutControlItem249,
             this.layoutControlItem250,
             this.layoutControlItem251,
@@ -2440,7 +2541,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             // layoutControlItem249
             // 
             this.layoutControlItem249.Control = this.labelControl3;
-            this.layoutControlItem249.Location = new System.Drawing.Point(0, 52);
+            this.layoutControlItem249.Location = new System.Drawing.Point(0, 59);
             this.layoutControlItem249.Name = "layoutControlItem249";
             this.layoutControlItem249.Size = new System.Drawing.Size(961, 17);
             this.layoutControlItem249.TextSize = new System.Drawing.Size(0, 0);
@@ -2464,34 +2565,80 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem251.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem251.TextVisible = false;
             // 
+            // lciBtnTemplateHabit
+            // 
+            this.lciBtnTemplateHabit.Control = this.btnTemplateHabit;
+            this.lciBtnTemplateHabit.Location = new System.Drawing.Point(128, 35);
+            this.lciBtnTemplateHabit.MaxSize = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateHabit.MinSize = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateHabit.Name = "lciBtnTemplateHabit";
+            this.lciBtnTemplateHabit.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
+            this.lciBtnTemplateHabit.Size = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateHabit.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnTemplateHabit.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnTemplateHabit.TextVisible = false;
+            // 
+            // emptySpaceItemTemplateHabit
+            // 
+            this.emptySpaceItemTemplateHabit.AllowHotTrack = false;
+            this.emptySpaceItemTemplateHabit.Location = new System.Drawing.Point(156, 35);
+            this.emptySpaceItemTemplateHabit.Name = "emptySpaceItemTemplateHabit";
+            this.emptySpaceItemTemplateHabit.Size = new System.Drawing.Size(805, 24);
+            this.emptySpaceItemTemplateHabit.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // layoutControlItem252
             // 
             this.layoutControlItem252.Control = this.labelControl8;
             this.layoutControlItem252.Location = new System.Drawing.Point(0, 35);
+            this.layoutControlItem252.MaxSize = new System.Drawing.Size(128, 24);
+            this.layoutControlItem252.MinSize = new System.Drawing.Size(128, 24);
             this.layoutControlItem252.Name = "layoutControlItem252";
-            this.layoutControlItem252.Size = new System.Drawing.Size(961, 17);
+            this.layoutControlItem252.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 6, 5);
+            this.layoutControlItem252.Size = new System.Drawing.Size(128, 24);
+            this.layoutControlItem252.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem252.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem252.TextVisible = false;
             // 
             // layoutControlItem253
             // 
             this.layoutControlItem253.Control = this.panelControl5;
-            this.layoutControlItem253.Location = new System.Drawing.Point(0, 69);
+            this.layoutControlItem253.Location = new System.Drawing.Point(0, 76);
             this.layoutControlItem253.MinSize = new System.Drawing.Size(11, 5);
             this.layoutControlItem253.Name = "layoutControlItem253";
-            this.layoutControlItem253.Size = new System.Drawing.Size(961, 129);
+            this.layoutControlItem253.Size = new System.Drawing.Size(961, 122);
             this.layoutControlItem253.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem253.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem253.TextVisible = false;
+            // 
+            // lciBtnTemplateDiseaseHistory
+            // 
+            this.lciBtnTemplateDiseaseHistory.Control = this.btnTemplateDiseaseHistory;
+            this.lciBtnTemplateDiseaseHistory.Location = new System.Drawing.Point(122, 198);
+            this.lciBtnTemplateDiseaseHistory.MaxSize = new System.Drawing.Size(28, 22);
+            this.lciBtnTemplateDiseaseHistory.MinSize = new System.Drawing.Size(28, 22);
+            this.lciBtnTemplateDiseaseHistory.Name = "lciBtnTemplateDiseaseHistory";
+            this.lciBtnTemplateDiseaseHistory.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 1, 1);
+            this.lciBtnTemplateDiseaseHistory.Size = new System.Drawing.Size(28, 22);
+            this.lciBtnTemplateDiseaseHistory.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnTemplateDiseaseHistory.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnTemplateDiseaseHistory.TextVisible = false;
+            // 
+            // emptySpaceItemTemplateDiseaseHistory
+            // 
+            this.emptySpaceItemTemplateDiseaseHistory.AllowHotTrack = false;
+            this.emptySpaceItemTemplateDiseaseHistory.Location = new System.Drawing.Point(150, 198);
+            this.emptySpaceItemTemplateDiseaseHistory.Name = "emptySpaceItemTemplateDiseaseHistory";
+            this.emptySpaceItemTemplateDiseaseHistory.Size = new System.Drawing.Size(811, 22);
+            this.emptySpaceItemTemplateDiseaseHistory.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem339
             // 
             this.layoutControlItem339.Control = this.labelControl44;
             this.layoutControlItem339.Location = new System.Drawing.Point(0, 198);
-            this.layoutControlItem339.MaxSize = new System.Drawing.Size(0, 1000);
-            this.layoutControlItem339.MinSize = new System.Drawing.Size(18, 22);
+            this.layoutControlItem339.MaxSize = new System.Drawing.Size(122, 22);
+            this.layoutControlItem339.MinSize = new System.Drawing.Size(122, 22);
             this.layoutControlItem339.Name = "layoutControlItem339";
-            this.layoutControlItem339.Size = new System.Drawing.Size(961, 22);
+            this.layoutControlItem339.Size = new System.Drawing.Size(122, 22);
             this.layoutControlItem339.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem339.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem339.TextVisible = false;
@@ -2526,14 +2673,49 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem358.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem358.TextVisible = false;
             // 
+            // lciBtnTemplateFamilyHistory
+            // 
+            this.lciBtnTemplateFamilyHistory.Control = this.btnTemplateFamilyHistory;
+            this.lciBtnTemplateFamilyHistory.Location = new System.Drawing.Point(588, 385);
+            this.lciBtnTemplateFamilyHistory.MaxSize = new System.Drawing.Size(28, 20);
+            this.lciBtnTemplateFamilyHistory.MinSize = new System.Drawing.Size(28, 20);
+            this.lciBtnTemplateFamilyHistory.Name = "lciBtnTemplateFamilyHistory";
+            this.lciBtnTemplateFamilyHistory.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 0, 0);
+            this.lciBtnTemplateFamilyHistory.Size = new System.Drawing.Size(28, 20);
+            this.lciBtnTemplateFamilyHistory.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnTemplateFamilyHistory.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnTemplateFamilyHistory.TextVisible = false;
+            // 
+            // emptySpaceItemTemplateFamilyHistory
+            // 
+            this.emptySpaceItemTemplateFamilyHistory.AllowHotTrack = false;
+            this.emptySpaceItemTemplateFamilyHistory.Location = new System.Drawing.Point(616, 385);
+            this.emptySpaceItemTemplateFamilyHistory.Name = "emptySpaceItemTemplateFamilyHistory";
+            this.emptySpaceItemTemplateFamilyHistory.Size = new System.Drawing.Size(345, 20);
+            this.emptySpaceItemTemplateFamilyHistory.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // lciFamilyHistoryNote
+            // 
+            this.lciFamilyHistoryNote.Control = this.labelControlFamilyHistoryNote;
+            this.lciFamilyHistoryNote.Location = new System.Drawing.Point(480, 405);
+            this.lciFamilyHistoryNote.MaxSize = new System.Drawing.Size(0, 20);
+            this.lciFamilyHistoryNote.MinSize = new System.Drawing.Size(60, 20);
+            this.lciFamilyHistoryNote.Name = "lciFamilyHistoryNote";
+            this.lciFamilyHistoryNote.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 3, 4);
+            this.lciFamilyHistoryNote.Size = new System.Drawing.Size(481, 20);
+            this.lciFamilyHistoryNote.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciFamilyHistoryNote.TextSize = new System.Drawing.Size(0, 0);
+            this.lciFamilyHistoryNote.TextVisible = false;
+            // 
             // layoutControlItem374
             // 
             this.layoutControlItem374.Control = this.labelControl43;
             this.layoutControlItem374.Location = new System.Drawing.Point(480, 385);
-            this.layoutControlItem374.MaxSize = new System.Drawing.Size(10000, 40);
-            this.layoutControlItem374.MinSize = new System.Drawing.Size(88, 40);
+            this.layoutControlItem374.MaxSize = new System.Drawing.Size(108, 20);
+            this.layoutControlItem374.MinSize = new System.Drawing.Size(108, 20);
             this.layoutControlItem374.Name = "layoutControlItem374";
-            this.layoutControlItem374.Size = new System.Drawing.Size(481, 40);
+            this.layoutControlItem374.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 4, 3);
+            this.layoutControlItem374.Size = new System.Drawing.Size(108, 20);
             this.layoutControlItem374.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem374.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem374.TextVisible = false;
@@ -2662,6 +2844,11 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControl11.Controls.Add(this.labelControl117);
             this.layoutControl11.Controls.Add(this.labelControl104);
             this.layoutControl11.Controls.Add(this.labelControl62);
+            this.layoutControl11.Controls.Add(this.btnTemplateFunctionalSymptom);
+            this.layoutControl11.Controls.Add(this.btnTemplatePainSymptom);
+            this.layoutControl11.Controls.Add(this.btnTemplateBody);
+            this.layoutControl11.Controls.Add(this.btnTemplateInternal);
+            this.layoutControl11.Controls.Add(this.btnTemplateSpecialist);
             this.layoutControl11.Controls.Add(this.labelControl60);
             this.layoutControl11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl11.Location = new System.Drawing.Point(0, 0);
@@ -2708,16 +2895,42 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.gridView50.OptionsView.ShowGroupPanel = false;
             this.gridView50.OptionsView.ShowIndicator = false;
             // 
+            // btnTemplateSpecialist
+            // 
+            this.btnTemplateSpecialist.Image = ((System.Drawing.Image)(resources.GetObject("btnTemplateSpecialist.Image")));
+            this.btnTemplateSpecialist.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnTemplateSpecialist.Location = new System.Drawing.Point(567, 256);
+            this.btnTemplateSpecialist.Name = "btnTemplateSpecialist";
+            this.btnTemplateSpecialist.Size = new System.Drawing.Size(24, 20);
+            this.btnTemplateSpecialist.StyleController = this.layoutControl11;
+            this.btnTemplateSpecialist.TabIndex = 957;
+            this.btnTemplateSpecialist.ToolTip = "Bấm để mở Thư viện mẫu của mục này:\r\n• Dùng mẫu: nhấp đúp 1 mẫu trong danh sách để điền vào mục.\r\n• Tạo mẫu: nội dung mục đang nhập đã được điền sẵn dạng JSON, nhập Tiêu đề rồi bấm Lưu.\r\n   Sửa mẫu: true = có, false = không; chữ ghi trong ngoặc kép.\r\nChỉ các mục có trong mẫu mới được điền đè; mục không có trong mẫu giữ nguyên.\r\nGồm: 9. Ngoại khoa, 10. Sản phụ khoa, 11. Da liễu, 12. Răng hàm mặt, 13. Tai mũi họng, 14. Mắt, kèm ô Người khám của từng mục (ghi tên đăng nhập hoặc họ tên).";
+            this.btnTemplateSpecialist.ToolTipTitle = "Mẫu: Khám ngoại khoa (mục 9 - 14)";
+            this.btnTemplateSpecialist.Click += new System.EventHandler(this.btnTemplate_Click);
+            // 
             // labelControl142
             // 
             this.labelControl142.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl142.Location = new System.Drawing.Point(415, 256);
             this.labelControl142.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl142.Name = "labelControl142";
-            this.labelControl142.Size = new System.Drawing.Size(544, 18);
+            this.labelControl142.Size = new System.Drawing.Size(148, 18);
             this.labelControl142.StyleController = this.layoutControl11;
             this.labelControl142.TabIndex = 40;
             this.labelControl142.Text = "     KHÁM NGOẠI KHOA";
+            // 
+            // btnTemplateInternal
+            // 
+            this.btnTemplateInternal.Image = ((System.Drawing.Image)(resources.GetObject("btnTemplateInternal.Image")));
+            this.btnTemplateInternal.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnTemplateInternal.Location = new System.Drawing.Point(138, 256);
+            this.btnTemplateInternal.Name = "btnTemplateInternal";
+            this.btnTemplateInternal.Size = new System.Drawing.Size(24, 20);
+            this.btnTemplateInternal.StyleController = this.layoutControl11;
+            this.btnTemplateInternal.TabIndex = 956;
+            this.btnTemplateInternal.ToolTip = "Bấm để mở Thư viện mẫu của mục này:\r\n• Dùng mẫu: nhấp đúp 1 mẫu trong danh sách để điền vào mục.\r\n• Tạo mẫu: nội dung mục đang nhập đã được điền sẵn dạng JSON, nhập Tiêu đề rồi bấm Lưu.\r\n   Sửa mẫu: true = có, false = không; chữ ghi trong ngoặc kép.\r\nChỉ các mục có trong mẫu mới được điền đè; mục không có trong mẫu giữ nguyên.\r\nKhông gồm chỉ số đo: tần số tim, huyết áp, nhịp thở. Không thay đổi người khám.";
+            this.btnTemplateInternal.ToolTipTitle = "Mẫu: Khám nội khoa (mục 3 - 8)";
+            this.btnTemplateInternal.Click += new System.EventHandler(this.btnTemplate_Click);
             // 
             // labelControl141
             // 
@@ -2725,7 +2938,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.labelControl141.Location = new System.Drawing.Point(2, 256);
             this.labelControl141.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl141.Name = "labelControl141";
-            this.labelControl141.Size = new System.Drawing.Size(409, 20);
+            this.labelControl141.Size = new System.Drawing.Size(132, 20);
             this.labelControl141.StyleController = this.layoutControl11;
             this.labelControl141.TabIndex = 39;
             this.labelControl141.Text = "     KHÁM NỘI KHOA";
@@ -4241,7 +4454,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             // 
             // txtTinhThan
             // 
-            this.txtTinhThan.Location = new System.Drawing.Point(487, 222);
+            this.txtTinhThan.Location = new System.Drawing.Point(487, 229);
             this.txtTinhThan.Margin = new System.Windows.Forms.Padding(2);
             this.txtTinhThan.MenuManager = this.barManager1;
             this.txtTinhThan.Name = "txtTinhThan";
@@ -4251,7 +4464,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             // 
             // txtToanThanKhac
             // 
-            this.txtToanThanKhac.Location = new System.Drawing.Point(874, 222);
+            this.txtToanThanKhac.Location = new System.Drawing.Point(874, 229);
             this.txtToanThanKhac.Margin = new System.Windows.Forms.Padding(2);
             this.txtToanThanKhac.MenuManager = this.barManager1;
             this.txtToanThanKhac.Name = "txtToanThanKhac";
@@ -4261,7 +4474,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             // 
             // txtHachNgoaiVi
             // 
-            this.txtHachNgoaiVi.Location = new System.Drawing.Point(683, 222);
+            this.txtHachNgoaiVi.Location = new System.Drawing.Point(683, 229);
             this.txtHachNgoaiVi.Margin = new System.Windows.Forms.Padding(2);
             this.txtHachNgoaiVi.MenuManager = this.barManager1;
             this.txtHachNgoaiVi.Name = "txtHachNgoaiVi";
@@ -4271,7 +4484,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             // 
             // txtLuoiHoiTho
             // 
-            this.txtLuoiHoiTho.Location = new System.Drawing.Point(294, 222);
+            this.txtLuoiHoiTho.Location = new System.Drawing.Point(294, 229);
             this.txtLuoiHoiTho.Margin = new System.Windows.Forms.Padding(2);
             this.txtLuoiHoiTho.MenuManager = this.barManager1;
             this.txtLuoiHoiTho.Name = "txtLuoiHoiTho";
@@ -4281,7 +4494,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             // 
             // txtDaNiemMac
             // 
-            this.txtDaNiemMac.Location = new System.Drawing.Point(70, 222);
+            this.txtDaNiemMac.Location = new System.Drawing.Point(70, 229);
             this.txtDaNiemMac.Margin = new System.Windows.Forms.Padding(2);
             this.txtDaNiemMac.MenuManager = this.barManager1;
             this.txtDaNiemMac.Name = "txtDaNiemMac";
@@ -4289,9 +4502,22 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.txtDaNiemMac.StyleController = this.layoutControl11;
             this.txtDaNiemMac.TabIndex = 31;
             // 
+            // btnTemplateBody
+            // 
+            this.btnTemplateBody.Image = ((System.Drawing.Image)(resources.GetObject("btnTemplateBody.Image")));
+            this.btnTemplateBody.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnTemplateBody.Location = new System.Drawing.Point(76, 205);
+            this.btnTemplateBody.Name = "btnTemplateBody";
+            this.btnTemplateBody.Size = new System.Drawing.Size(24, 20);
+            this.btnTemplateBody.StyleController = this.layoutControl11;
+            this.btnTemplateBody.TabIndex = 955;
+            this.btnTemplateBody.ToolTip = "Bấm để mở Thư viện mẫu của mục này:\r\n• Dùng mẫu: nhấp đúp 1 mẫu trong danh sách để điền vào mục.\r\n• Tạo mẫu: nội dung mục đang nhập đã được điền sẵn dạng JSON, nhập Tiêu đề rồi bấm Lưu.\r\n   Sửa mẫu: true = có, false = không; chữ ghi trong ngoặc kép.\r\nChỉ các mục có trong mẫu mới được điền đè; mục không có trong mẫu giữ nguyên.";
+            this.btnTemplateBody.ToolTipTitle = "Mẫu: 2. Toàn thân";
+            this.btnTemplateBody.Click += new System.EventHandler(this.btnTemplate_Click);
+            // 
             // labelControl135
             // 
-            this.labelControl135.Location = new System.Drawing.Point(2, 205);
+            this.labelControl135.Location = new System.Drawing.Point(2, 209);
             this.labelControl135.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl135.Name = "labelControl135";
             this.labelControl135.Size = new System.Drawing.Size(62, 13);
@@ -4382,12 +4608,25 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.labelControl121.TabIndex = 23;
             this.labelControl121.Text = "KHÁM THỰC THỂ VÀ TOÀN THÂN";
             // 
+            // btnTemplatePainSymptom
+            // 
+            this.btnTemplatePainSymptom.Image = ((System.Drawing.Image)(resources.GetObject("btnTemplatePainSymptom.Image")));
+            this.btnTemplatePainSymptom.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnTemplatePainSymptom.Location = new System.Drawing.Point(618, 19);
+            this.btnTemplatePainSymptom.Name = "btnTemplatePainSymptom";
+            this.btnTemplatePainSymptom.Size = new System.Drawing.Size(24, 20);
+            this.btnTemplatePainSymptom.StyleController = this.layoutControl11;
+            this.btnTemplatePainSymptom.TabIndex = 954;
+            this.btnTemplatePainSymptom.ToolTip = "Bấm để mở Thư viện mẫu của mục này:\r\n• Dùng mẫu: nhấp đúp 1 mẫu trong danh sách để điền vào mục.\r\n• Tạo mẫu: nội dung mục đang nhập đã được điền sẵn dạng JSON, nhập Tiêu đề rồi bấm Lưu.\r\n   Sửa mẫu: true = có, false = không; chữ ghi trong ngoặc kép.\r\nChỉ các mục có trong mẫu mới được điền đè; mục không có trong mẫu giữ nguyên.";
+            this.btnTemplatePainSymptom.ToolTipTitle = "Mẫu: Triệu chứng đau";
+            this.btnTemplatePainSymptom.Click += new System.EventHandler(this.btnTemplate_Click);
+            // 
             // labelControl117
             // 
             this.labelControl117.Location = new System.Drawing.Point(526, 20);
             this.labelControl117.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl117.Name = "labelControl117";
-            this.labelControl117.Size = new System.Drawing.Size(433, 18);
+            this.labelControl117.Size = new System.Drawing.Size(88, 18);
             this.labelControl117.StyleController = this.layoutControl11;
             this.labelControl117.TabIndex = 21;
             this.labelControl117.Text = "Triệu chứng đau";
@@ -4414,12 +4653,25 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.labelControl62.TabIndex = 5;
             this.labelControl62.Text = "A. HỎI BỆNH";
             // 
+            // btnTemplateFunctionalSymptom
+            // 
+            this.btnTemplateFunctionalSymptom.Image = ((System.Drawing.Image)(resources.GetObject("btnTemplateFunctionalSymptom.Image")));
+            this.btnTemplateFunctionalSymptom.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnTemplateFunctionalSymptom.Location = new System.Drawing.Point(114, 19);
+            this.btnTemplateFunctionalSymptom.Name = "btnTemplateFunctionalSymptom";
+            this.btnTemplateFunctionalSymptom.Size = new System.Drawing.Size(24, 20);
+            this.btnTemplateFunctionalSymptom.StyleController = this.layoutControl11;
+            this.btnTemplateFunctionalSymptom.TabIndex = 953;
+            this.btnTemplateFunctionalSymptom.ToolTip = "Bấm để mở Thư viện mẫu của mục này:\r\n• Dùng mẫu: nhấp đúp 1 mẫu trong danh sách để điền vào mục.\r\n• Tạo mẫu: nội dung mục đang nhập đã được điền sẵn dạng JSON, nhập Tiêu đề rồi bấm Lưu.\r\n   Sửa mẫu: true = có, false = không; chữ ghi trong ngoặc kép.\r\nChỉ các mục có trong mẫu mới được điền đè; mục không có trong mẫu giữ nguyên.";
+            this.btnTemplateFunctionalSymptom.ToolTipTitle = "Mẫu: Triệu chứng cơ năng";
+            this.btnTemplateFunctionalSymptom.Click += new System.EventHandler(this.btnTemplate_Click);
+            // 
             // labelControl60
             // 
             this.labelControl60.Location = new System.Drawing.Point(2, 20);
             this.labelControl60.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl60.Name = "labelControl60";
-            this.labelControl60.Size = new System.Drawing.Size(426, 18);
+            this.labelControl60.Size = new System.Drawing.Size(108, 18);
             this.labelControl60.StyleController = this.layoutControl11;
             this.labelControl60.TabIndex = 4;
             this.labelControl60.Text = "Triệu chứng cơ năng";
@@ -4429,6 +4681,16 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlGroup14.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup14.GroupBordersVisible = false;
             this.layoutControlGroup14.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciBtnTemplateFunctionalSymptom,
+            this.lciBtnTemplatePainSymptom,
+            this.lciBtnTemplateBody,
+            this.lciBtnTemplateInternal,
+            this.lciBtnTemplateSpecialist,
+            this.emptySpaceItemTemplateFunctionalSymptom,
+            this.emptySpaceItemTemplatePainSymptom,
+            this.emptySpaceItemTemplateBody,
+            this.emptySpaceItemTemplateInternal,
+            this.emptySpaceItemTemplateSpecialist,
             this.layoutControlItem414,
             this.layoutControlItem415,
             this.layoutControlItem376,
@@ -4462,14 +4724,35 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlGroup14.Size = new System.Drawing.Size(961, 681);
             this.layoutControlGroup14.TextVisible = false;
             // 
+            // lciBtnTemplateFunctionalSymptom
+            // 
+            this.lciBtnTemplateFunctionalSymptom.Control = this.btnTemplateFunctionalSymptom;
+            this.lciBtnTemplateFunctionalSymptom.Location = new System.Drawing.Point(112, 18);
+            this.lciBtnTemplateFunctionalSymptom.MaxSize = new System.Drawing.Size(28, 22);
+            this.lciBtnTemplateFunctionalSymptom.MinSize = new System.Drawing.Size(28, 22);
+            this.lciBtnTemplateFunctionalSymptom.Name = "lciBtnTemplateFunctionalSymptom";
+            this.lciBtnTemplateFunctionalSymptom.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 1, 1);
+            this.lciBtnTemplateFunctionalSymptom.Size = new System.Drawing.Size(28, 22);
+            this.lciBtnTemplateFunctionalSymptom.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnTemplateFunctionalSymptom.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnTemplateFunctionalSymptom.TextVisible = false;
+            // 
+            // emptySpaceItemTemplateFunctionalSymptom
+            // 
+            this.emptySpaceItemTemplateFunctionalSymptom.AllowHotTrack = false;
+            this.emptySpaceItemTemplateFunctionalSymptom.Location = new System.Drawing.Point(140, 18);
+            this.emptySpaceItemTemplateFunctionalSymptom.Name = "emptySpaceItemTemplateFunctionalSymptom";
+            this.emptySpaceItemTemplateFunctionalSymptom.Size = new System.Drawing.Size(290, 22);
+            this.emptySpaceItemTemplateFunctionalSymptom.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // layoutControlItem414
             // 
             this.layoutControlItem414.Control = this.labelControl60;
             this.layoutControlItem414.Location = new System.Drawing.Point(0, 18);
-            this.layoutControlItem414.MaxSize = new System.Drawing.Size(1000, 22);
-            this.layoutControlItem414.MinSize = new System.Drawing.Size(124, 22);
+            this.layoutControlItem414.MaxSize = new System.Drawing.Size(112, 22);
+            this.layoutControlItem414.MinSize = new System.Drawing.Size(112, 22);
             this.layoutControlItem414.Name = "layoutControlItem414";
-            this.layoutControlItem414.Size = new System.Drawing.Size(430, 22);
+            this.layoutControlItem414.Size = new System.Drawing.Size(112, 22);
             this.layoutControlItem414.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem414.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem414.TextVisible = false;
@@ -4495,14 +4778,35 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem376.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem376.TextVisible = false;
             // 
+            // lciBtnTemplatePainSymptom
+            // 
+            this.lciBtnTemplatePainSymptom.Control = this.btnTemplatePainSymptom;
+            this.lciBtnTemplatePainSymptom.Location = new System.Drawing.Point(616, 18);
+            this.lciBtnTemplatePainSymptom.MaxSize = new System.Drawing.Size(28, 22);
+            this.lciBtnTemplatePainSymptom.MinSize = new System.Drawing.Size(28, 22);
+            this.lciBtnTemplatePainSymptom.Name = "lciBtnTemplatePainSymptom";
+            this.lciBtnTemplatePainSymptom.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 1, 1);
+            this.lciBtnTemplatePainSymptom.Size = new System.Drawing.Size(28, 22);
+            this.lciBtnTemplatePainSymptom.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnTemplatePainSymptom.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnTemplatePainSymptom.TextVisible = false;
+            // 
+            // emptySpaceItemTemplatePainSymptom
+            // 
+            this.emptySpaceItemTemplatePainSymptom.AllowHotTrack = false;
+            this.emptySpaceItemTemplatePainSymptom.Location = new System.Drawing.Point(644, 18);
+            this.emptySpaceItemTemplatePainSymptom.Name = "emptySpaceItemTemplatePainSymptom";
+            this.emptySpaceItemTemplatePainSymptom.Size = new System.Drawing.Size(317, 22);
+            this.emptySpaceItemTemplatePainSymptom.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // layoutControlItem403
             // 
             this.layoutControlItem403.Control = this.labelControl117;
             this.layoutControlItem403.Location = new System.Drawing.Point(524, 18);
-            this.layoutControlItem403.MaxSize = new System.Drawing.Size(1000, 22);
-            this.layoutControlItem403.MinSize = new System.Drawing.Size(95, 22);
+            this.layoutControlItem403.MaxSize = new System.Drawing.Size(92, 22);
+            this.layoutControlItem403.MinSize = new System.Drawing.Size(92, 22);
             this.layoutControlItem403.Name = "layoutControlItem403";
-            this.layoutControlItem403.Size = new System.Drawing.Size(437, 22);
+            this.layoutControlItem403.Size = new System.Drawing.Size(92, 22);
             this.layoutControlItem403.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem403.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem403.TextVisible = false;
@@ -4594,12 +4898,37 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem561.TextSize = new System.Drawing.Size(30, 16);
             this.layoutControlItem561.TextToControlDistance = 5;
             // 
+            // lciBtnTemplateBody
+            // 
+            this.lciBtnTemplateBody.Control = this.btnTemplateBody;
+            this.lciBtnTemplateBody.Location = new System.Drawing.Point(74, 203);
+            this.lciBtnTemplateBody.MaxSize = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateBody.MinSize = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateBody.Name = "lciBtnTemplateBody";
+            this.lciBtnTemplateBody.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
+            this.lciBtnTemplateBody.Size = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateBody.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnTemplateBody.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnTemplateBody.TextVisible = false;
+            // 
+            // emptySpaceItemTemplateBody
+            // 
+            this.emptySpaceItemTemplateBody.AllowHotTrack = false;
+            this.emptySpaceItemTemplateBody.Location = new System.Drawing.Point(102, 203);
+            this.emptySpaceItemTemplateBody.Name = "emptySpaceItemTemplateBody";
+            this.emptySpaceItemTemplateBody.Size = new System.Drawing.Size(859, 24);
+            this.emptySpaceItemTemplateBody.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // layoutControlItem562
             // 
             this.layoutControlItem562.Control = this.labelControl135;
             this.layoutControlItem562.Location = new System.Drawing.Point(0, 203);
+            this.layoutControlItem562.MaxSize = new System.Drawing.Size(74, 24);
+            this.layoutControlItem562.MinSize = new System.Drawing.Size(74, 24);
             this.layoutControlItem562.Name = "layoutControlItem562";
-            this.layoutControlItem562.Size = new System.Drawing.Size(961, 17);
+            this.layoutControlItem562.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 6, 5);
+            this.layoutControlItem562.Size = new System.Drawing.Size(74, 24);
+            this.layoutControlItem562.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem562.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem562.TextVisible = false;
             // 
@@ -4608,7 +4937,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem563.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem563.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem563.Control = this.txtDaNiemMac;
-            this.layoutControlItem563.Location = new System.Drawing.Point(0, 220);
+            this.layoutControlItem563.Location = new System.Drawing.Point(0, 227);
             this.layoutControlItem563.Name = "layoutControlItem563";
             this.layoutControlItem563.Size = new System.Drawing.Size(187, 24);
             this.layoutControlItem563.Text = "Da, niêm mạc";
@@ -4619,7 +4948,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem564.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem564.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem564.Control = this.txtLuoiHoiTho;
-            this.layoutControlItem564.Location = new System.Drawing.Point(187, 220);
+            this.layoutControlItem564.Location = new System.Drawing.Point(187, 227);
             this.layoutControlItem564.Name = "layoutControlItem564";
             this.layoutControlItem564.Size = new System.Drawing.Size(193, 24);
             this.layoutControlItem564.Text = "Lưỡi, hơi thở";
@@ -4632,7 +4961,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem565.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem565.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem565.Control = this.txtHachNgoaiVi;
-            this.layoutControlItem565.Location = new System.Drawing.Point(576, 220);
+            this.layoutControlItem565.Location = new System.Drawing.Point(576, 227);
             this.layoutControlItem565.Name = "layoutControlItem565";
             this.layoutControlItem565.Size = new System.Drawing.Size(191, 24);
             this.layoutControlItem565.Text = "Hạch, ngoại vi";
@@ -4645,7 +4974,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem566.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem566.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem566.Control = this.txtToanThanKhac;
-            this.layoutControlItem566.Location = new System.Drawing.Point(767, 220);
+            this.layoutControlItem566.Location = new System.Drawing.Point(767, 227);
             this.layoutControlItem566.Name = "layoutControlItem566";
             this.layoutControlItem566.Size = new System.Drawing.Size(194, 24);
             this.layoutControlItem566.Text = "Khác";
@@ -4658,7 +4987,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem567.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem567.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem567.Control = this.txtTinhThan;
-            this.layoutControlItem567.Location = new System.Drawing.Point(380, 220);
+            this.layoutControlItem567.Location = new System.Drawing.Point(380, 227);
             this.layoutControlItem567.Name = "layoutControlItem567";
             this.layoutControlItem567.Size = new System.Drawing.Size(196, 24);
             this.layoutControlItem567.Text = "Tinh thần";
@@ -4693,14 +5022,35 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.emptySpaceItem24.Size = new System.Drawing.Size(33, 403);
             this.emptySpaceItem24.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // lciBtnTemplateInternal
+            // 
+            this.lciBtnTemplateInternal.Control = this.btnTemplateInternal;
+            this.lciBtnTemplateInternal.Location = new System.Drawing.Point(136, 254);
+            this.lciBtnTemplateInternal.MaxSize = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateInternal.MinSize = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateInternal.Name = "lciBtnTemplateInternal";
+            this.lciBtnTemplateInternal.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
+            this.lciBtnTemplateInternal.Size = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateInternal.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnTemplateInternal.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnTemplateInternal.TextVisible = false;
+            // 
+            // emptySpaceItemTemplateInternal
+            // 
+            this.emptySpaceItemTemplateInternal.AllowHotTrack = false;
+            this.emptySpaceItemTemplateInternal.Location = new System.Drawing.Point(164, 254);
+            this.emptySpaceItemTemplateInternal.Name = "emptySpaceItemTemplateInternal";
+            this.emptySpaceItemTemplateInternal.Size = new System.Drawing.Size(249, 24);
+            this.emptySpaceItemTemplateInternal.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // layoutControlItem151
             // 
             this.layoutControlItem151.Control = this.labelControl141;
             this.layoutControlItem151.Location = new System.Drawing.Point(0, 254);
-            this.layoutControlItem151.MaxSize = new System.Drawing.Size(1000, 24);
-            this.layoutControlItem151.MinSize = new System.Drawing.Size(152, 24);
+            this.layoutControlItem151.MaxSize = new System.Drawing.Size(136, 24);
+            this.layoutControlItem151.MinSize = new System.Drawing.Size(136, 24);
             this.layoutControlItem151.Name = "layoutControlItem151";
-            this.layoutControlItem151.Size = new System.Drawing.Size(413, 24);
+            this.layoutControlItem151.Size = new System.Drawing.Size(136, 24);
             this.layoutControlItem151.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem151.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem151.TextVisible = false;
@@ -4708,19 +5058,40 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             // emptySpaceItem25
             // 
             this.emptySpaceItem25.AllowHotTrack = false;
-            this.emptySpaceItem25.Location = new System.Drawing.Point(0, 244);
+            this.emptySpaceItem25.Location = new System.Drawing.Point(0, 251);
             this.emptySpaceItem25.Name = "emptySpaceItem25";
-            this.emptySpaceItem25.Size = new System.Drawing.Size(961, 10);
+            this.emptySpaceItem25.Size = new System.Drawing.Size(961, 3);
             this.emptySpaceItem25.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // lciBtnTemplateSpecialist
+            // 
+            this.lciBtnTemplateSpecialist.Control = this.btnTemplateSpecialist;
+            this.lciBtnTemplateSpecialist.Location = new System.Drawing.Point(565, 254);
+            this.lciBtnTemplateSpecialist.MaxSize = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateSpecialist.MinSize = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateSpecialist.Name = "lciBtnTemplateSpecialist";
+            this.lciBtnTemplateSpecialist.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
+            this.lciBtnTemplateSpecialist.Size = new System.Drawing.Size(28, 24);
+            this.lciBtnTemplateSpecialist.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnTemplateSpecialist.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnTemplateSpecialist.TextVisible = false;
+            // 
+            // emptySpaceItemTemplateSpecialist
+            // 
+            this.emptySpaceItemTemplateSpecialist.AllowHotTrack = false;
+            this.emptySpaceItemTemplateSpecialist.Location = new System.Drawing.Point(593, 254);
+            this.emptySpaceItemTemplateSpecialist.Name = "emptySpaceItemTemplateSpecialist";
+            this.emptySpaceItemTemplateSpecialist.Size = new System.Drawing.Size(368, 24);
+            this.emptySpaceItemTemplateSpecialist.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem593
             // 
             this.layoutControlItem593.Control = this.labelControl142;
             this.layoutControlItem593.Location = new System.Drawing.Point(413, 254);
-            this.layoutControlItem593.MaxSize = new System.Drawing.Size(1000, 22);
-            this.layoutControlItem593.MinSize = new System.Drawing.Size(95, 22);
+            this.layoutControlItem593.MaxSize = new System.Drawing.Size(152, 24);
+            this.layoutControlItem593.MinSize = new System.Drawing.Size(152, 24);
             this.layoutControlItem593.Name = "layoutControlItem593";
-            this.layoutControlItem593.Size = new System.Drawing.Size(548, 24);
+            this.layoutControlItem593.Size = new System.Drawing.Size(152, 24);
             this.layoutControlItem593.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem593.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem593.TextVisible = false;
@@ -12957,6 +13328,23 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem632)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem631)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem633)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciFamilyHistoryNote)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateFamilyHistory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateHabit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateDiseaseHistory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateFamilyHistory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateFunctionalSymptom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplatePainSymptom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateBody)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateInternal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnTemplateSpecialist)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateHabit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateDiseaseHistory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateFunctionalSymptom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplatePainSymptom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateBody)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateInternal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemTemplateSpecialist)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem634)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem635)).EndInit();
@@ -14432,6 +14820,32 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         private DevExpress.XtraEditors.LabelControl labelControl175;
         private DevExpress.XtraEditors.LabelControl labelControl174;
         private DevExpress.XtraEditors.SimpleButton btnChonKQ;
+        private DevExpress.XtraEditors.LabelControl labelControlFamilyHistoryNote;
+        private DevExpress.XtraLayout.LayoutControlItem lciFamilyHistoryNote;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemTemplateFamilyHistory;
+        private DevExpress.XtraEditors.SimpleButton btnTemplateHabit;
+        private DevExpress.XtraEditors.SimpleButton btnTemplateDiseaseHistory;
+        private DevExpress.XtraEditors.SimpleButton btnTemplateFamilyHistory;
+        private DevExpress.XtraEditors.SimpleButton btnTemplateFunctionalSymptom;
+        private DevExpress.XtraEditors.SimpleButton btnTemplatePainSymptom;
+        private DevExpress.XtraEditors.SimpleButton btnTemplateBody;
+        private DevExpress.XtraEditors.SimpleButton btnTemplateInternal;
+        private DevExpress.XtraEditors.SimpleButton btnTemplateSpecialist;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnTemplateHabit;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnTemplateDiseaseHistory;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnTemplateFamilyHistory;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnTemplateFunctionalSymptom;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnTemplatePainSymptom;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnTemplateBody;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnTemplateInternal;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnTemplateSpecialist;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemTemplateHabit;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemTemplateDiseaseHistory;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemTemplateFunctionalSymptom;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemTemplatePainSymptom;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemTemplateBody;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemTemplateInternal;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemTemplateSpecialist;
         private DevExpress.XtraEditors.MemoEdit txtSuclinicalResult;
         private DevExpress.XtraEditors.LabelControl labelControl134;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup21;

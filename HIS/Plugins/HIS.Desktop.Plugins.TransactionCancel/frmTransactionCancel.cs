@@ -78,6 +78,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
         List<V_HIS_TRANSACTION> listTranPrint { get; set; }
         bool isVisileCancelHIS = false;
         List<HIS_TRANSACTION> lstTransOriginal = new List<HIS_TRANSACTION>();
+        List<V_HIS_TRANSACTION> lstTransSession = null;//cac giao dich huy kem cung lan thanh toan hai so
         public frmTransactionCancel(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION data)
             : base(module)
         {
@@ -460,6 +461,17 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         return;
                     }
                 }
+
+                //Huy kem cac giao dich cung lan thanh toan hai so: hoi xac nhan truoc moi buoc huy
+                this.lstTransSession = this.GetTransactionSession();
+                if (this.lstTransSession != null)
+                {
+                    if (XtraMessageBox.Show(this.BuildSessionMessage(this.lstTransSession), ResourceMessageLang.TieuDeThongBao, MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    {
+                        return;
+                    }
+                }
+
                 listTranPrint = new List<V_HIS_TRANSACTION>();
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
@@ -627,7 +639,8 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         }
                     }
                 }
-                if(this.lstTransOriginal != null)
+                //Co nhom huy kem thi hoa don dieu chinh da nam trong nhom, khong hoi va khong huy rieng nua
+                if (this.lstTransOriginal != null && this.lstTransSession == null)
                 {
                     DialogResult dr = DevExpress.XtraEditors.XtraMessageBox.Show(
                             "Tồn tại hóa đơn điều chỉnh của hóa đơn hiện tại. Khi hủy, toàn bộ các giao dịch điều chỉnh đi kèm sẽ bị hủy theo. Bạn có chắc chắn muốn tiếp tục?",
@@ -643,12 +656,19 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                 }
                 if (this.cboCancelReason.Text.Trim() != "")
                     sdo.CancelReasonId = Convert.ToInt64(cboCancelReason.EditValue);
+                if (this.lstTransSession != null)
+                {
+                    sdo.RelatedTransactionIds = this.lstTransSession.Select(o => o.ID).ToList();
+                }
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, sdo, param);
+                //sdo con duoc dung lai o vong huy hoa don dieu chinh va AutoCancel nen bo danh sach huy kem
+                sdo.RelatedTransactionIds = null;
+                List<V_HIS_TRANSACTION> sessionCancels = null;
                 if (rs != null)
                 {
                     success = true;
-                    if (lstTransOriginal != null && lstTransOriginal.Count > 0)
+                    if (lstTransOriginal != null && lstTransOriginal.Count > 0 && this.lstTransSession == null)
                     {
                         foreach (var item in lstTransOriginal)
                         {
@@ -660,6 +680,13 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                     if (this.refreshDelegate != null) this.refreshDelegate(true);
                     TransactionCancelResult = GetViewTransaction(rs.ID);
                     listTranPrint.Add(this.TransactionCancelResult);
+
+                    //Doc lai cac giao dich huy kem, chi lay giao dich da huy that
+                    sessionCancels = this.GetSessionCancelled();
+                    if (sessionCancels != null && sessionCancels.Count > 0)
+                    {
+                        listTranPrint.AddRange(sessionCancels);
+                    }
                 }
                 WaitingManager.Hide();
                 if (success)
@@ -757,6 +784,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         {
                             this.CancelElectronicBill(sdo);
                         }
+                        this.CancelElectronicBillSession(sdo, sessionCancels);
                         if (HisConfigCFG.TransactionBill__AutoCancel == "1" && this.transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT && this.transaction.SALE_TYPE_ID == null)
                         {
                             AutoCancel(sdo);
@@ -1153,7 +1181,149 @@ namespace HIS.Desktop.Plugins.TransactionCancel
             return result;
         }
 
+        /// <summary>
+        /// Lay cac giao dich huy kem cung lan thanh toan hai so theo cau hinh AutoCancelBillTwoBookSession
+        /// 1: cac phieu thu; 2: cac phieu thu va phieu hoan ung. Kem hoa don dieu chinh cua giao dich dang huy va cac giao dich trong nhom
+        /// Tra ve null neu khong huy kem
+        /// </summary>
+        private List<V_HIS_TRANSACTION> GetTransactionSession()
+        {
+            List<V_HIS_TRANSACTION> result = null;
+            try
+            {
+                string option = HisConfigCFG.AutoCancelBillTwoBookSession;
+                if ((option != "1" && option != "2")
+                    || this.transaction == null
+                    || String.IsNullOrWhiteSpace(this.transaction.SESSION_CODE)
+                    || !this.transaction.TREATMENT_ID.HasValue
+                    || this.transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE)
+                {
+                    return null;
+                }
+
+                long typeTT = IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT;
+                long typeHU = IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU;
+                bool includeRepay = option == "2";
+                if (this.transaction.TRANSACTION_TYPE_ID != typeTT && !(includeRepay && this.transaction.TRANSACTION_TYPE_ID == typeHU))
+                {
+                    return null;
+                }
+
+                HisTransactionViewFilter filter = new HisTransactionViewFilter();
+                filter.TREATMENT_ID = this.transaction.TREATMENT_ID;
+                filter.IS_CANCEL = false;
+                List<V_HIS_TRANSACTION> trans = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filter, null);
+                if (trans == null || trans.Count == 0)
+                {
+                    return null;
+                }
+
+                List<V_HIS_TRANSACTION> session = trans.Where(o => o.ID != this.transaction.ID
+                    && o.IS_ADJUSTMENT != 1
+                    && o.SESSION_CODE == this.transaction.SESSION_CODE
+                    && (o.TRANSACTION_TYPE_ID == typeTT || (includeRepay && o.TRANSACTION_TYPE_ID == typeHU))).ToList();
+
+                List<long> originalIds = session.Select(o => o.ID).ToList();
+                originalIds.Add(this.transaction.ID);
+                session.AddRange(trans.Where(o => o.ID != this.transaction.ID
+                    && o.IS_ADJUSTMENT == 1
+                    && o.ORIGINAL_TRANSACTION_ID.HasValue
+                    && originalIds.Contains(o.ORIGINAL_TRANSACTION_ID.Value)));
+
+                result = session.Count > 0 ? session : null;
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Cau thong bao xac nhan huy kem: phieu thu vao {1}, phieu hoan ung vao phan "phieu hoan ung"
+        /// </summary>
+        private string BuildSessionMessage(List<V_HIS_TRANSACTION> session)
+        {
+            long typeHU = IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU;
+            string billCodes = String.Join(", ", session.Where(o => o.TRANSACTION_TYPE_ID != typeHU).Select(o => o.TRANSACTION_CODE));
+            string repayCodes = String.Join(", ", session.Where(o => o.TRANSACTION_TYPE_ID == typeHU).Select(o => o.TRANSACTION_CODE));
+            if (String.IsNullOrEmpty(repayCodes))
+            {
+                return String.Format(ResourceMessageLang.HuyKemGiaoDichCungLanThanhToan, this.transaction.TRANSACTION_CODE, billCodes);
+            }
+            if (String.IsNullOrEmpty(billCodes))
+            {
+                return String.Format(ResourceMessageLang.HuyKemPhieuHoanUngCungLanThanhToan, this.transaction.TRANSACTION_CODE, repayCodes);
+            }
+            return String.Format(ResourceMessageLang.HuyKemGiaoDichVaPhieuHoanUngCungLanThanhToan, this.transaction.TRANSACTION_CODE, billCodes, repayCodes);
+        }
+
+        /// <summary>
+        /// Doc lai cac giao dich huy kem sau khi goi huy, chi lay giao dich da huy (IS_CANCEL = 1)
+        /// </summary>
+        private List<V_HIS_TRANSACTION> GetSessionCancelled()
+        {
+            List<V_HIS_TRANSACTION> result = null;
+            try
+            {
+                if (this.lstTransSession == null || this.transaction == null || !this.transaction.TREATMENT_ID.HasValue)
+                {
+                    return null;
+                }
+                HisTransactionViewFilter filter = new HisTransactionViewFilter();
+                filter.TREATMENT_ID = this.transaction.TREATMENT_ID;
+                List<V_HIS_TRANSACTION> trans = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filter, null);
+                if (trans != null)
+                {
+                    List<long> ids = this.lstTransSession.Select(o => o.ID).ToList();
+                    result = trans.Where(o => ids.Contains(o.ID) && o.IS_CANCEL == 1).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Huy hoa don dien tu cua cac giao dich huy kem da huy that
+        /// </summary>
+        private void CancelElectronicBillSession(HisTransactionCancelSDO sdo, List<V_HIS_TRANSACTION> sessionCancels)
+        {
+            try
+            {
+                if (sessionCancels == null || sessionCancels.Count == 0)
+                {
+                    return;
+                }
+                //O "Khong tu dong huy HDDT" dang an thi coi nhu khong tich
+                if (lciNotCancelBill.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkNotCancelBill.Checked)
+                {
+                    return;
+                }
+                foreach (V_HIS_TRANSACTION item in sessionCancels)
+                {
+                    if (item.IS_CANCEL_EINVOICE != 1)
+                    {
+                        this.CancelElectronicBill(sdo, item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private bool CancelElectronicBill(HisTransactionCancelSDO sdo)
+        {
+            return this.CancelElectronicBill(sdo, this.transaction);
+        }
+
+        private bool CancelElectronicBill(HisTransactionCancelSDO sdo, V_HIS_TRANSACTION transaction)
         {
             bool result = true;
             try
@@ -1197,15 +1367,15 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                     {
                         CommonParam param = new CommonParam();
                         CancelInvoiceSDO cancelInvoiceSDO = new CancelInvoiceSDO();
-                        cancelInvoiceSDO.TransactionId = this.transaction.ID;
+                        cancelInvoiceSDO.TransactionId = transaction.ID;
                         cancelInvoiceSDO.CancelTime = sdo.CancelTime;
                         var apiResult = new BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/CancelInvoice", ApiConsumers.MosConsumer, cancelInvoiceSDO, param);
                         if (apiResult != null)
                         {
-                            if (apiResult.ID == this.transaction.ID)
+                            if (apiResult.ID == transaction.ID)
                             {
-                                this.transaction.IS_CANCEL_EINVOICE = apiResult.IS_CANCEL_EINVOICE;
-                                this.transaction.CANCEL_TIME = apiResult.CANCEL_TIME;
+                                transaction.IS_CANCEL_EINVOICE = apiResult.IS_CANCEL_EINVOICE;
+                                transaction.CANCEL_TIME = apiResult.CANCEL_TIME;
                             }
                         }
 
@@ -1226,7 +1396,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         XtraMessageBox.Show("Hủy hóa đơn điện tử thất bại." + mes + ". Vui lòng truy cập hệ thống hóa đơn điện tử để hủy giao dịch.");
                         if (XtraMessageBox.Show("Bạn có muốn hủy lại hóa đơn điện tử không?", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                         {
-                            this.CancelElectronicBill(sdo);
+                            this.CancelElectronicBill(sdo, transaction);
                         }
                     }
                     else

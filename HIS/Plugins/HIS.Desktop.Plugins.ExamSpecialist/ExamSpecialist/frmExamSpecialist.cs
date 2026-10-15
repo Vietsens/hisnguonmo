@@ -293,11 +293,8 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     // Dieu kien loc muc do dat cung cho loc quyen xem: backend chua ho tro loc theo URGENCY_LEVEL
                     short? urgencyFilter = GetUrgencyFilter();
 
-                    lstDataFiltered = result.Data.Where(x => x.IS_ACTIVE == 1 && x.IS_DELETE != 1 && x.INVITE_TYPE == 1 &&
-                    ((!string.IsNullOrEmpty(x.EXAM_EXECUTE_LOGINNAME) && x.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(userName))
-                    || (string.IsNullOrEmpty(x.EXAM_EXECUTE_LOGINNAME) && x.EXAM_EXECUTE_DEPARMENT_ID != null && currentDepartmentId != null && x.EXAM_EXECUTE_DEPARMENT_ID == currentDepartmentId)
-                    || (currentDepartmentId != null && x.INVITE_DEPARMENT_ID == currentDepartmentId)
-                    || (x.INVITE_DOCTOR_LOGINNAME == userName))
+                    lstDataFiltered = result.Data.Where(x => x.IS_ACTIVE == 1 && x.IS_DELETE != 1 && x.INVITE_TYPE == 1
+                    && IsVisibleToCurrentUser(x, userName, currentDepartmentId)
                     && IsMatchUrgencyFilter(x.URGENCY_LEVEL, urgencyFilter)).ToList();
 
                     dataTotal = lstDataFiltered.Count;
@@ -311,6 +308,32 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Quyền xem 1 yêu cầu — thỏa 1 trong 4 điều kiện:
+        /// khoa thực hiện = khoa của phòng làm việc; khoa mời = khoa của phòng làm việc;
+        /// người đăng nhập có trong danh sách người thực hiện (EXAM_EXECUTE_LOGINNAME); người đăng nhập là bác sĩ mời.
+        /// </summary>
+        private bool IsVisibleToCurrentUser(V_HIS_SPECIALIST_EXAM data, string loginName, long? currentDepartmentId)
+        {
+            if (data == null) return false;
+            if (currentDepartmentId.HasValue && data.EXAM_EXECUTE_DEPARMENT_ID == currentDepartmentId) return true;
+            if (currentDepartmentId.HasValue && data.INVITE_DEPARMENT_ID == currentDepartmentId) return true;
+            if (IsLoginNameInList(data.EXAM_EXECUTE_LOGINNAME, loginName)) return true;
+            if (!string.IsNullOrWhiteSpace(loginName) && string.Equals(data.INVITE_DOCTOR_LOGINNAME, loginName, StringComparison.OrdinalIgnoreCase)) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Tên đăng nhập có nằm trong danh sách cách nhau dấu phẩy hay không.
+        /// So từng phần tử sau khi tách + trim, không phân biệt hoa thường (không so chuỗi con).
+        /// </summary>
+        private bool IsLoginNameInList(string loginNames, string loginName)
+        {
+            if (string.IsNullOrWhiteSpace(loginNames) || string.IsNullOrWhiteSpace(loginName)) return false;
+            string login = loginName.Trim();
+            return loginNames.Split(',').Any(s => string.Equals(s.Trim(), login, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>

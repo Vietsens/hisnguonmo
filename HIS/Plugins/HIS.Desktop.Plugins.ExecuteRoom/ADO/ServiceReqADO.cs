@@ -39,6 +39,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom.ADO
         public long? SAMPLE_TIME { get; set; }
         public long status { get; set; }
         public short? IS_MAIN_EXAM_SERVICE { get; set; }
+        /// <summary>Viec 57554: ten cac dich vu cua y lenh, noi "; " theo cung thu tu voi 3 cot SL/Gia/DTTT (pre-compute truoc khi bind)</summary>
+        public string SERVICE_NAMES_DISPLAY { get; set; }
+        public string SERVICE_AMOUNTS_DISPLAY { get; set; }
+        public string SERVICE_PRICES_DISPLAY { get; set; }
+        public string SERVICE_PATIENT_TYPES_DISPLAY { get; set; }
         public ServiceReqADO() { }
         public ServiceReqADO(L_HIS_SERVICE_REQ data)
         {

@@ -119,9 +119,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
                 // 6. Disease Details (V_HIS_DISEASE_DETAIL)
                 var diseaseDetailList = diseaseDetails ?? new List<V_HIS_DISEASE_DETAIL>();
-                LoadDiseaseResults(kskGeneral.ID);
-                // 7. Disease Detail Results
-                var diseaseResultList = diseaseResults ?? new List<HIS_DISEASE_DETAIL_RESULT>();
+                // 7. Disease Detail Results — bien cuc bo, khong ghi de diseaseResults cua form (dang gan voi UI)
+                var diseaseResultList = FetchDiseaseResults(kskGeneral);
 
                 // 8. Employees (lay tu BackendDataWorker cache — phuc vu lookup ten BS theo loginname trong template)
                 var employees = BackendDataWorker.Get<V_HIS_EMPLOYEE>() ?? new List<V_HIS_EMPLOYEE>();

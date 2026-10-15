@@ -60,6 +60,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 {
                     success = true;
                     FillDataToGridControl();
+                    SyncCurrentDataAfterSave(resultData);
                 }
 
                 if (success)
@@ -81,6 +82,51 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Sau khi Luu, grid da load lai (listData la object moi) nhung currentData van la ADO cu:
+        /// KSK_GENERAL.ID = 0 / HIS_DHST.ID = 0 (lan Luu dau) → Luu tiep se tao them DHST moi moi lan,
+        /// trang thai y lenh (Chua xu ly → Dang xu ly/Hoan thanh) khong cap nhat, focus grid lech sang dong khac.
+        /// Dong bo lai tu ket qua API, khong goi them API.
+        /// </summary>
+        private void SyncCurrentDataAfterSave(MOS.SDO.KskOfficialsResultSDO resultData)
+        {
+            try
+            {
+                if (resultData == null || this.currentData == null) return;
+
+                long serviceReqId = this.currentData.ID;
+                HIS_KSK_GENERAL general = resultData.HisKskGeneral ?? this.currentData.KSK_GENERAL;
+                if (general != null && resultData.HisDhst != null)
+                    general.HIS_DHST = resultData.HisDhst;
+
+                List<HIS_DISEASE_DETAIL_RESULT> results = (general != null && general.ID > 0 && resultData.DiseaseDetailResults != null)
+                    ? DedupDiseaseResults(resultData.DiseaseDetailResults, general.ID)
+                    : this.currentData.DISEASE_DETAIL_RESULTS;
+
+                ADO.ServiceReqADO newRow = this.listData != null ? this.listData.FirstOrDefault(o => o.ID == serviceReqId) : null;
+                ADO.ServiceReqADO target = newRow ?? this.currentData;
+                target.KSK_GENERAL = general;
+                target.KSK_OCCUPATIONAL = this.currentData.KSK_OCCUPATIONAL;
+                target.DISEASE_DETAIL_RESULTS = results;
+
+                this.currentData = target;
+                this.listChooseFromGrid = new List<ADO.ServiceReqADO>() { target };
+                this.diseaseResults = results ?? new List<HIS_DISEASE_DETAIL_RESULT>();
+                SetCurrentServiceReqSTT(target);
+
+                if (newRow != null)
+                {
+                    int rowHandle = gridViewServiceReq.LocateByValue("ID", serviceReqId);
+                    if (rowHandle >= 0)
+                        gridViewServiceReq.FocusedRowHandle = rowHandle;
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

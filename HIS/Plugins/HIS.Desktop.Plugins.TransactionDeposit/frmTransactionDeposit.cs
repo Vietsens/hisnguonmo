@@ -1912,6 +1912,22 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             return result;
         }
 
+        /// <summary>
+        /// Co gui kem yeu cau tam ung (DepositReqId) hay khong.
+        /// Bat config DepositReqDiffAmountAsNormalDeposit va so tien thu khac so tien yeu cau => tam ung thuong (khong gui).
+        /// </summary>
+        private bool IsLinkDepositReq(decimal amount)
+        {
+            if (this.depositReq == null || this.depositReq.ID <= 0)
+                return false;
+            if (HisConfigCFG.IsDepositReqDiffAmountAsNormalDeposit && amount != this.depositReq.AMOUNT)
+            {
+                Inventec.Common.Logging.LogSystem.Info(string.Format("So tien tam ung {0} khac so tien yeu cau {1} (DEPOSIT_REQ_ID: {2}) => luu thanh tam ung thuong", amount, this.depositReq.AMOUNT, this.depositReq.ID));
+                return false;
+            }
+            return true;
+        }
+
         private void SaveDeposit(CommonParam param, ref bool success)
         {
             if (HisConfigCFG.IsMultiPayForm)
@@ -2056,7 +2072,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     }
                 }
 
-                if (this.depositReq != null && this.depositReq.ID > 0)
+                if (this.IsLinkDepositReq(data.Transaction.AMOUNT))
                 {
                     data.DepositReqId = this.depositReq.ID;
                 }
@@ -2364,7 +2380,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 if (cboReason.EditValue != null)
                     data.Transaction.TRANSACTION_REASON_ID = Convert.ToInt64(cboReason.EditValue);
 
-                if (this.depositReq != null && this.depositReq.ID > 0)
+                if (this.IsLinkDepositReq(data.Transaction.AMOUNT))
                     data.DepositReqId = this.depositReq.ID;
 
                 // Hình thức chính của giao dịch = dòng đầu tiên (chi tiết đầy đủ ở PayformDetails)
