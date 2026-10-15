@@ -144,6 +144,9 @@
   <data name="UCDepartmentTranReceive.grdColLogTime.Caption" xml:space="preserve">
     <value>Thời gian chuyển</value>
   </data>
+  <data name="UCDepartmentTranReceive.grdColRequestTime.Caption" xml:space="preserve">
+    <value>Thời gian chuyển từ khoa trước</value>
+  </data>
   <data name="UCDepartmentTranReceive.grdColDepartmentCode.Caption" xml:space="preserve">
     <value>Mã khoa chuyển</value>
   </data>

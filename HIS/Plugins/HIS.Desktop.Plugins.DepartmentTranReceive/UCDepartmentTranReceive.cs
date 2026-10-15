@@ -100,6 +100,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
                 this.grdColVirPatientName.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColVirPatientName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColDOB.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColDOB.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColLogTime.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColLogTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColRequestTime.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColRequestTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColDepartmentCode.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColDepartmentCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColDepartmentName.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColDepartmentName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColNextDepartmentCode.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColNextDepartmentCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -306,6 +307,11 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
                         else if (e.Column.FieldName == "LOG_TIME_DISPLAY")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.DEPARTMENT_IN_TIME ?? 0);
+                        }
+                        else if (e.Column.FieldName == "REQUEST_TIME_DISPLAY")
+                        {
+                            //Thoi gian chuyen tu khoa truoc toi = thoi gian yeu cau chuyen do khoa chuyen ghi nhan khi tao chuyen khoa
+                            e.Value = data.REQUEST_TIME.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.REQUEST_TIME.Value) : null;
                         }
                         //else if (e.Column.FieldName == "DEPARTMENT_NAME_DISPLAY" && data.PREVIOUS_ID != null)
                         //{

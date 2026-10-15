@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
             this.grdColVirPatientName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColDOB = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColLogTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColRequestTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColDepartmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColDepartmentName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColNextDepartmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -220,6 +221,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
             this.grdColVirPatientName,
             this.grdColDOB,
             this.grdColLogTime,
+            this.grdColRequestTime,
             this.grdColDepartmentCode,
             this.grdColDepartmentName,
             this.grdColNextDepartmentCode,
@@ -359,9 +361,24 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
             this.grdColLogTime.Visible = true;
             this.grdColLogTime.VisibleIndex = 5;
             this.grdColLogTime.Width = 114;
-            // 
+            //
+            // grdColRequestTime
+            //
+            this.grdColRequestTime.AppearanceCell.Options.UseTextOptions = true;
+            this.grdColRequestTime.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.grdColRequestTime.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColRequestTime.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.grdColRequestTime.Caption = "Thời gian chuyển từ khoa trước";
+            this.grdColRequestTime.FieldName = "REQUEST_TIME_DISPLAY";
+            this.grdColRequestTime.Name = "grdColRequestTime";
+            this.grdColRequestTime.OptionsColumn.AllowEdit = false;
+            this.grdColRequestTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColRequestTime.Visible = true;
+            this.grdColRequestTime.VisibleIndex = 6;
+            this.grdColRequestTime.Width = 160;
+            //
             // grdColDepartmentCode
-            // 
+            //
             this.grdColDepartmentCode.Caption = "Mã khoa chuyển";
             this.grdColDepartmentCode.FieldName = "DEPARTMENT_CODE";
             this.grdColDepartmentCode.Name = "grdColDepartmentCode";
@@ -375,7 +392,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
             this.grdColDepartmentName.Name = "grdColDepartmentName";
             this.grdColDepartmentName.OptionsColumn.AllowEdit = false;
             this.grdColDepartmentName.Visible = true;
-            this.grdColDepartmentName.VisibleIndex = 6;
+            this.grdColDepartmentName.VisibleIndex = 7;
             this.grdColDepartmentName.Width = 113;
             // 
             // grdColNextDepartmentCode
@@ -394,7 +411,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
             this.grdColNextDepartmentName.Name = "grdColNextDepartmentName";
             this.grdColNextDepartmentName.OptionsColumn.AllowEdit = false;
             this.grdColNextDepartmentName.Visible = true;
-            this.grdColNextDepartmentName.VisibleIndex = 7;
+            this.grdColNextDepartmentName.VisibleIndex = 8;
             this.grdColNextDepartmentName.Width = 100;
             // 
             // grdColInOut
@@ -414,7 +431,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
             this.grdColIsReceive.OptionsColumn.AllowEdit = false;
             this.grdColIsReceive.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColIsReceive.Visible = true;
-            this.grdColIsReceive.VisibleIndex = 8;
+            this.grdColIsReceive.VisibleIndex = 9;
             this.grdColIsReceive.Width = 88;
             // 
             // grdColBedRoomName
@@ -438,7 +455,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
             this.grdColCreateTime.OptionsColumn.AllowEdit = false;
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 9;
+            this.grdColCreateTime.VisibleIndex = 10;
             this.grdColCreateTime.Width = 123;
             // 
             // grdColCreate
@@ -448,7 +465,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
             this.grdColCreate.Name = "grdColCreate";
             this.grdColCreate.OptionsColumn.AllowEdit = false;
             this.grdColCreate.Visible = true;
-            this.grdColCreate.VisibleIndex = 10;
+            this.grdColCreate.VisibleIndex = 11;
             this.grdColCreate.Width = 70;
             // 
             // grdColModifyTime
@@ -459,7 +476,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
             this.grdColModifyTime.OptionsColumn.AllowEdit = false;
             this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifyTime.Visible = true;
-            this.grdColModifyTime.VisibleIndex = 11;
+            this.grdColModifyTime.VisibleIndex = 12;
             this.grdColModifyTime.Width = 78;
             // 
             // grdColModifier
@@ -469,7 +486,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
             this.grdColModifier.Name = "grdColModifier";
             this.grdColModifier.OptionsColumn.AllowEdit = false;
             this.grdColModifier.Visible = true;
-            this.grdColModifier.VisibleIndex = 12;
+            this.grdColModifier.VisibleIndex = 13;
             this.grdColModifier.Width = 63;
             // 
             // repositoryItemPictureEdit2
@@ -835,6 +852,7 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
         private DevExpress.XtraGrid.Columns.GridColumn grdColVirPatientName;
         private DevExpress.XtraGrid.Columns.GridColumn grdColDOB;
         private DevExpress.XtraGrid.Columns.GridColumn grdColLogTime;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColRequestTime;
         private DevExpress.XtraGrid.Columns.GridColumn grdColDepartmentCode;
         private DevExpress.XtraGrid.Columns.GridColumn grdColDepartmentName;
         private DevExpress.XtraGrid.Columns.GridColumn grdColNextDepartmentCode;
