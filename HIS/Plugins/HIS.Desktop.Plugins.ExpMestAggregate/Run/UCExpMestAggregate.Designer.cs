@@ -119,6 +119,8 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.grdColExpPrint = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEdit_Print = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.grdColExpMestCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColExpHomePres = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckExpHomePres = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.grdColExpStockName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColExpCreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColExpCreator = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -155,6 +157,8 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.gridColEditPres = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColDelete = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColServiceReqCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColHomePres = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckHomePres = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.grdColExecuteRoomName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColPatientName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColExpTime = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -321,6 +325,8 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Delete_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheck_E)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheck_D)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckExpHomePres)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckHomePres)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).BeginInit();
@@ -779,7 +785,8 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.repositoryItemButtonEdit_Delete,
             this.repositoryItemButtonEdit_Print,
             this.repositoryItemPictureEditStatus,
-            this.repositoryItemButtonEdit_DeleteDisable});
+            this.repositoryItemButtonEdit_DeleteDisable,
+            this.repositoryItemCheckExpHomePres});
             this.gridControlAggrExpMest.Size = new System.Drawing.Size(722, 290);
             this.gridControlAggrExpMest.TabIndex = 6;
             this.gridControlAggrExpMest.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -793,6 +800,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.grdColExpDelete,
             this.grdColExpPrint,
             this.grdColExpMestCode,
+            this.grdColExpHomePres,
             this.grdColExpStockName,
             this.grdColExpCreateTime,
             this.grdColExpCreator,
@@ -876,6 +884,24 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.grdColExpMestCode.Visible = true;
             this.grdColExpMestCode.VisibleIndex = 4;
             this.grdColExpMestCode.Width = 110;
+            //
+            // grdColExpHomePres
+            //
+            this.grdColExpHomePres.Caption = "Đơn mang về";
+            this.grdColExpHomePres.ColumnEdit = this.repositoryItemCheckExpHomePres;
+            this.grdColExpHomePres.FieldName = "IS_HOME_PRES_DISPLAY";
+            this.grdColExpHomePres.Name = "grdColExpHomePres";
+            this.grdColExpHomePres.OptionsColumn.AllowEdit = false;
+            this.grdColExpHomePres.UnboundType = DevExpress.Data.UnboundColumnType.Boolean;
+            this.grdColExpHomePres.Visible = true;
+            this.grdColExpHomePres.VisibleIndex = 9;
+            this.grdColExpHomePres.Width = 100;
+            //
+            // repositoryItemCheckExpHomePres
+            //
+            this.repositoryItemCheckExpHomePres.AutoHeight = false;
+            this.repositoryItemCheckExpHomePres.Name = "repositoryItemCheckExpHomePres";
+            this.repositoryItemCheckExpHomePres.ReadOnly = true;
             // 
             // grdColExpStockName
             // 
@@ -1183,7 +1209,8 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.repositoryItemButton__Delete,
             this.repositoryItemButton__Delete_Disable,
             this.repositoryItemCheck_E,
-            this.repositoryItemCheck_D});
+            this.repositoryItemCheck_D,
+            this.repositoryItemCheckHomePres});
             this.gridControlExpMestReq.Size = new System.Drawing.Size(724, 526);
             this.gridControlExpMestReq.TabIndex = 5;
             this.gridControlExpMestReq.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1197,6 +1224,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.gridColEditPres,
             this.gridColDelete,
             this.grdColServiceReqCode,
+            this.grdColHomePres,
             this.grdColExecuteRoomName,
             this.grdColPatientName,
             this.grdColExpTime,
@@ -1284,6 +1312,24 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.grdColServiceReqCode.Visible = true;
             this.grdColServiceReqCode.VisibleIndex = 2;
             this.grdColServiceReqCode.Width = 110;
+            //
+            // grdColHomePres
+            //
+            this.grdColHomePres.Caption = "Đơn mang về";
+            this.grdColHomePres.ColumnEdit = this.repositoryItemCheckHomePres;
+            this.grdColHomePres.FieldName = "IS_HOME_PRES_DISPLAY";
+            this.grdColHomePres.Name = "grdColHomePres";
+            this.grdColHomePres.OptionsColumn.AllowEdit = false;
+            this.grdColHomePres.UnboundType = DevExpress.Data.UnboundColumnType.Boolean;
+            this.grdColHomePres.Visible = true;
+            this.grdColHomePres.VisibleIndex = 10;
+            this.grdColHomePres.Width = 100;
+            //
+            // repositoryItemCheckHomePres
+            //
+            this.repositoryItemCheckHomePres.AutoHeight = false;
+            this.repositoryItemCheckHomePres.Name = "repositoryItemCheckHomePres";
+            this.repositoryItemCheckHomePres.ReadOnly = true;
             // 
             // grdColExecuteRoomName
             // 
@@ -2587,6 +2633,8 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Delete_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheck_E)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheck_D)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckExpHomePres)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckHomePres)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).EndInit();
@@ -2823,6 +2871,10 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnCheck;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheck_E;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheck_D;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColExpHomePres;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckExpHomePres;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColHomePres;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckHomePres;
         private System.Windows.Forms.ImageList imageListIcon;
         private DevExpress.XtraEditors.SimpleButton btnInTraDoiTongHop;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;

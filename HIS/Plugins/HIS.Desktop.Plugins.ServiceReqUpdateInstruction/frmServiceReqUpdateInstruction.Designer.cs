@@ -92,6 +92,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.dtStartTime = new DevExpress.XtraEditors.DateEdit();
             this.dtUseTime = new DevExpress.XtraEditors.DateEdit();
             this.dtAppointmentTime = new DevExpress.XtraEditors.DateEdit();
+            this.dtPresAppointmentTime = new DevExpress.XtraEditors.DateEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -121,6 +122,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.lciAppointmentDes = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciEmptyAppointmentTime = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciPresAppointmentTime = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItemyhct = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItemsubyhct = new DevExpress.XtraLayout.LayoutControlItem();
             this.ControlDtAssignTimeTo = new DevExpress.XtraLayout.LayoutControlItem();
@@ -177,6 +179,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             ((System.ComponentModel.ISupportInitialize)(this.dtUseTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtAppointmentTime.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtAppointmentTime.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtPresAppointmentTime.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtPresAppointmentTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
@@ -206,6 +210,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentDes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEmptyAppointmentTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPresAppointmentTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemyhct)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemsubyhct)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ControlDtAssignTimeTo)).BeginInit();
@@ -256,6 +261,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.layoutControl1.Controls.Add(this.dtStartTime);
             this.layoutControl1.Controls.Add(this.dtUseTime);
             this.layoutControl1.Controls.Add(this.dtAppointmentTime);
+            this.layoutControl1.Controls.Add(this.dtPresAppointmentTime);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 22);
             this.layoutControl1.Name = "layoutControl1";
@@ -792,6 +798,25 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.dtAppointmentTime.Size = new System.Drawing.Size(308, 20);
             this.dtAppointmentTime.StyleController = this.layoutControl1;
             this.dtAppointmentTime.TabIndex = 38;
+            //
+            // dtPresAppointmentTime
+            //
+            this.dtPresAppointmentTime.EditValue = null;
+            this.dtPresAppointmentTime.Location = new System.Drawing.Point(544, 291);
+            this.dtPresAppointmentTime.MenuManager = this.barManager1;
+            this.dtPresAppointmentTime.Name = "dtPresAppointmentTime";
+            this.dtPresAppointmentTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtPresAppointmentTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtPresAppointmentTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.dtPresAppointmentTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtPresAppointmentTime.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            this.dtPresAppointmentTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtPresAppointmentTime.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.dtPresAppointmentTime.Size = new System.Drawing.Size(181, 20);
+            this.dtPresAppointmentTime.StyleController = this.layoutControl1;
+            this.dtPresAppointmentTime.TabIndex = 39;
             // 
             // layoutControlGroup1
             // 
@@ -827,6 +852,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.lciAppointmentDes,
             this.emptySpaceItem1,
             this.lciEmptyAppointmentTime,
+            this.lciPresAppointmentTime,
             this.layoutControlItemyhct,
             this.layoutControlItemsubyhct,
             this.ControlDtAssignTimeTo,
@@ -1216,10 +1242,24 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             // lciEmptyAppointmentTime
             // 
             this.lciEmptyAppointmentTime.AllowHotTrack = false;
-            this.lciEmptyAppointmentTime.Location = new System.Drawing.Point(427, 289);
+            this.lciEmptyAppointmentTime.Location = new System.Drawing.Point(727, 289);
             this.lciEmptyAppointmentTime.Name = "lciEmptyAppointmentTime";
-            this.lciEmptyAppointmentTime.Size = new System.Drawing.Size(463, 24);
+            this.lciEmptyAppointmentTime.Size = new System.Drawing.Size(163, 24);
             this.lciEmptyAppointmentTime.TextSize = new System.Drawing.Size(0, 0);
+            //
+            // lciPresAppointmentTime
+            //
+            this.lciPresAppointmentTime.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciPresAppointmentTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciPresAppointmentTime.Control = this.dtPresAppointmentTime;
+            this.lciPresAppointmentTime.Location = new System.Drawing.Point(427, 289);
+            this.lciPresAppointmentTime.Name = "lciPresAppointmentTime";
+            this.lciPresAppointmentTime.OptionsToolTip.ToolTip = "Ngày hẹn khám theo đơn thuốc/vật tư";
+            this.lciPresAppointmentTime.Size = new System.Drawing.Size(300, 24);
+            this.lciPresAppointmentTime.Text = "Ngày hẹn khám:";
+            this.lciPresAppointmentTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciPresAppointmentTime.TextSize = new System.Drawing.Size(110, 20);
+            this.lciPresAppointmentTime.TextToControlDistance = 5;
             // 
             // layoutControlItemyhct
             // 
@@ -1415,6 +1455,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             ((System.ComponentModel.ISupportInitialize)(this.dtUseTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtAppointmentTime.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtAppointmentTime.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtPresAppointmentTime.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtPresAppointmentTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
@@ -1444,6 +1486,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentDes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEmptyAppointmentTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPresAppointmentTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemyhct)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemsubyhct)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ControlDtAssignTimeTo)).EndInit();
@@ -1535,6 +1578,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         private DevExpress.XtraLayout.LayoutControlItem lciAppointmentDes;
         private DevExpress.XtraEditors.DateEdit dtAppointmentTime;
         private DevExpress.XtraLayout.EmptySpaceItem lciEmptyAppointmentTime;
+        private DevExpress.XtraLayout.LayoutControlItem lciPresAppointmentTime;
+        private DevExpress.XtraEditors.DateEdit dtPresAppointmentTime;
         private DevExpress.XtraEditors.PanelControl panelControlICDSubYHCT;
         private DevExpress.XtraEditors.PanelControl panelControlCDYHCT;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItemyhct;

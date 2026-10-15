@@ -149,6 +149,18 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupControlContainerHomePres = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
+            this.layoutControlHomePres = new DevExpress.XtraLayout.LayoutControl();
+            this.rbtHomePresAll = new System.Windows.Forms.RadioButton();
+            this.rbtPresNormal = new System.Windows.Forms.RadioButton();
+            this.rbtHomePres = new System.Windows.Forms.RadioButton();
+            this.layoutControlGroupHomePres = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.lciHomePresAll = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciPresNormal = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciHomePres = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupHomePres = new DevExpress.XtraNavBar.NavBarGroup();
+            this.GcHomePres = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckHomePres = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.navBarGroupExpTime = new DevExpress.XtraNavBar.NavBarGroup();
             this.navBarGroupStatus = new DevExpress.XtraNavBar.NavBarGroup();
             this.navBarGroupPres = new DevExpress.XtraNavBar.NavBarGroup();
@@ -256,6 +268,14 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
+            this.navBarGroupControlContainerHomePres.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlHomePres)).BeginInit();
+            this.layoutControlHomePres.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupHomePres)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHomePresAll)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPresNormal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHomePres)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckHomePres)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
@@ -414,11 +434,13 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.navBarControlFilter.Controls.Add(this.navBarGroupControlContainer2);
             this.navBarControlFilter.Controls.Add(this.navBarGroupControlContainer3);
             this.navBarControlFilter.Controls.Add(this.navBarGroupControlContainer4);
+            this.navBarControlFilter.Controls.Add(this.navBarGroupControlContainerHomePres);
             this.navBarControlFilter.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] {
             this.navBarGroupCreateTime,
             this.navBarGroupExpTime,
             this.navBarGroupStatus,
-            this.navBarGroupPres});
+            this.navBarGroupPres,
+            this.navBarGroupHomePres});
             this.navBarControlFilter.Location = new System.Drawing.Point(2, 50);
             this.navBarControlFilter.Name = "navBarControlFilter";
             this.navBarControlFilter.OptionsNavPane.ExpandedWidth = 232;
@@ -783,6 +805,113 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.navBarGroupPres.GroupClientHeight = 96;
             this.navBarGroupPres.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.navBarGroupPres.Name = "navBarGroupPres";
+            //
+            // navBarGroupHomePres
+            //
+            this.navBarGroupHomePres.Caption = "Loại đơn";
+            this.navBarGroupHomePres.ControlContainer = this.navBarGroupControlContainerHomePres;
+            this.navBarGroupHomePres.Expanded = true;
+            this.navBarGroupHomePres.GroupClientHeight = 96;
+            this.navBarGroupHomePres.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
+            this.navBarGroupHomePres.Name = "navBarGroupHomePres";
+            //
+            // navBarGroupControlContainerHomePres
+            //
+            this.navBarGroupControlContainerHomePres.Appearance.BackColor = System.Drawing.SystemColors.Control;
+            this.navBarGroupControlContainerHomePres.Appearance.Options.UseBackColor = true;
+            this.navBarGroupControlContainerHomePres.Controls.Add(this.layoutControlHomePres);
+            this.navBarGroupControlContainerHomePres.Name = "navBarGroupControlContainerHomePres";
+            this.navBarGroupControlContainerHomePres.Size = new System.Drawing.Size(224, 92);
+            this.navBarGroupControlContainerHomePres.TabIndex = 4;
+            //
+            // layoutControlHomePres
+            //
+            this.layoutControlHomePres.Controls.Add(this.rbtHomePres);
+            this.layoutControlHomePres.Controls.Add(this.rbtPresNormal);
+            this.layoutControlHomePres.Controls.Add(this.rbtHomePresAll);
+            this.layoutControlHomePres.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControlHomePres.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlHomePres.Name = "layoutControlHomePres";
+            this.layoutControlHomePres.Root = this.layoutControlGroupHomePres;
+            this.layoutControlHomePres.Size = new System.Drawing.Size(224, 92);
+            this.layoutControlHomePres.TabIndex = 0;
+            this.layoutControlHomePres.Text = "layoutControlHomePres";
+            //
+            // rbtHomePresAll
+            //
+            this.rbtHomePresAll.Location = new System.Drawing.Point(57, 2);
+            this.rbtHomePresAll.Name = "rbtHomePresAll";
+            this.rbtHomePresAll.Size = new System.Drawing.Size(165, 25);
+            this.rbtHomePresAll.TabIndex = 4;
+            this.rbtHomePresAll.TabStop = true;
+            this.rbtHomePresAll.Text = "Tất cả";
+            this.rbtHomePresAll.UseVisualStyleBackColor = true;
+            //
+            // rbtPresNormal
+            //
+            this.rbtPresNormal.Location = new System.Drawing.Point(57, 31);
+            this.rbtPresNormal.Name = "rbtPresNormal";
+            this.rbtPresNormal.Size = new System.Drawing.Size(165, 25);
+            this.rbtPresNormal.TabIndex = 5;
+            this.rbtPresNormal.TabStop = true;
+            this.rbtPresNormal.Text = "Đơn thường";
+            this.rbtPresNormal.UseVisualStyleBackColor = true;
+            //
+            // rbtHomePres
+            //
+            this.rbtHomePres.Location = new System.Drawing.Point(57, 60);
+            this.rbtHomePres.Name = "rbtHomePres";
+            this.rbtHomePres.Size = new System.Drawing.Size(165, 25);
+            this.rbtHomePres.TabIndex = 6;
+            this.rbtHomePres.TabStop = true;
+            this.rbtHomePres.Text = "Đơn mang về";
+            this.rbtHomePres.UseVisualStyleBackColor = true;
+            //
+            // layoutControlGroupHomePres
+            //
+            this.layoutControlGroupHomePres.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
+            this.layoutControlGroupHomePres.GroupBordersVisible = false;
+            this.layoutControlGroupHomePres.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciHomePresAll,
+            this.lciPresNormal,
+            this.lciHomePres});
+            this.layoutControlGroupHomePres.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroupHomePres.Name = "layoutControlGroupHomePres";
+            this.layoutControlGroupHomePres.Size = new System.Drawing.Size(224, 92);
+            this.layoutControlGroupHomePres.TextVisible = false;
+            //
+            // lciHomePresAll
+            //
+            this.lciHomePresAll.Control = this.rbtHomePresAll;
+            this.lciHomePresAll.Location = new System.Drawing.Point(0, 0);
+            this.lciHomePresAll.Name = "lciHomePresAll";
+            this.lciHomePresAll.Size = new System.Drawing.Size(224, 29);
+            this.lciHomePresAll.Text = " ";
+            this.lciHomePresAll.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciHomePresAll.TextSize = new System.Drawing.Size(50, 20);
+            this.lciHomePresAll.TextToControlDistance = 5;
+            //
+            // lciPresNormal
+            //
+            this.lciPresNormal.Control = this.rbtPresNormal;
+            this.lciPresNormal.Location = new System.Drawing.Point(0, 29);
+            this.lciPresNormal.Name = "lciPresNormal";
+            this.lciPresNormal.Size = new System.Drawing.Size(224, 29);
+            this.lciPresNormal.Text = " ";
+            this.lciPresNormal.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciPresNormal.TextSize = new System.Drawing.Size(50, 20);
+            this.lciPresNormal.TextToControlDistance = 5;
+            //
+            // lciHomePres
+            //
+            this.lciHomePres.Control = this.rbtHomePres;
+            this.lciHomePres.Location = new System.Drawing.Point(0, 58);
+            this.lciHomePres.Name = "lciHomePres";
+            this.lciHomePres.Size = new System.Drawing.Size(224, 34);
+            this.lciHomePres.Text = " ";
+            this.lciHomePres.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciHomePres.TextSize = new System.Drawing.Size(50, 20);
+            this.lciHomePres.TextToControlDistance = 5;
             // 
             // txtKeyWord
             // 
@@ -889,7 +1018,8 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.ButtonReApprovalDisable,
             this.ButtonReApproval,
             this.Btn_HuyThucXuat_Enable,
-            this.Btn_HuyThucXuat_Disable});
+            this.Btn_HuyThucXuat_Disable,
+            this.repositoryItemCheckHomePres});
             this.gridControl.Size = new System.Drawing.Size(1076, 494);
             this.gridControl.TabIndex = 4;
             this.gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -924,7 +1054,8 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcModifyTime,
             this.GcModifier,
             this.GcExpMestCode2,
-            this.gridColumn4});
+            this.gridColumn4,
+            this.GcHomePres});
             this.gridView.GridControl = this.gridControl;
             this.gridView.Name = "gridView";
             this.gridView.OptionsFind.AllowFindPanel = false;
@@ -1311,6 +1442,24 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 10;
             this.gridColumn4.Width = 120;
+            //
+            // GcHomePres
+            //
+            this.GcHomePres.Caption = "Đơn mang về";
+            this.GcHomePres.ColumnEdit = this.repositoryItemCheckHomePres;
+            this.GcHomePres.FieldName = "IS_HOME_PRES_DISPLAY";
+            this.GcHomePres.Name = "GcHomePres";
+            this.GcHomePres.OptionsColumn.AllowEdit = false;
+            this.GcHomePres.UnboundType = DevExpress.Data.UnboundColumnType.Boolean;
+            this.GcHomePres.Visible = true;
+            this.GcHomePres.VisibleIndex = 22;
+            this.GcHomePres.Width = 100;
+            //
+            // repositoryItemCheckHomePres
+            //
+            this.repositoryItemCheckHomePres.AutoHeight = false;
+            this.repositoryItemCheckHomePres.Name = "repositoryItemCheckHomePres";
+            this.repositoryItemCheckHomePres.ReadOnly = true;
             // 
             // ButtonEditDisable
             // 
@@ -1571,6 +1720,14 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
+            this.navBarGroupControlContainerHomePres.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlHomePres)).EndInit();
+            this.layoutControlHomePres.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupHomePres)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHomePresAll)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPresNormal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHomePres)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckHomePres)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
@@ -1720,6 +1877,18 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
+        private DevExpress.XtraGrid.Columns.GridColumn GcHomePres;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckHomePres;
+        private DevExpress.XtraNavBar.NavBarGroup navBarGroupHomePres;
+        private DevExpress.XtraNavBar.NavBarGroupControlContainer navBarGroupControlContainerHomePres;
+        private DevExpress.XtraLayout.LayoutControl layoutControlHomePres;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroupHomePres;
+        private System.Windows.Forms.RadioButton rbtHomePresAll;
+        private System.Windows.Forms.RadioButton rbtPresNormal;
+        private System.Windows.Forms.RadioButton rbtHomePres;
+        private DevExpress.XtraLayout.LayoutControlItem lciHomePresAll;
+        private DevExpress.XtraLayout.LayoutControlItem lciPresNormal;
+        private DevExpress.XtraLayout.LayoutControlItem lciHomePres;
         private DevExpress.XtraGrid.Columns.GridColumn GcReqAreaName;
     }
 }

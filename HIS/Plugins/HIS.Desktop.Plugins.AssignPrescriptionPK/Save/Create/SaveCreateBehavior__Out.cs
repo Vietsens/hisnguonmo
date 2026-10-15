@@ -178,6 +178,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
                 if (this.RemedyCount > 0)
                     prescriptionSDO.RemedyCount = this.RemedyCount;
                 prescriptionSDO.Advise = this.Advise;
+                prescriptionSDO.PresAppointmentTime = this.PresAppointmentTime;
                 prescriptionSDO.RequestRoomId = this.RequestRoomId;
                 prescriptionSDO.RequestLoginName = this.RequestLoginname;
                 prescriptionSDO.RequestUserName = this.RequestUserName;
