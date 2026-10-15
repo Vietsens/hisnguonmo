@@ -37,5 +37,9 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
 		internal const string HIS_ANTICIPATE_METY_GETVIEW = "api/HisAnticipateMety/GetView";
 		internal const string HIS_ANTICIPATE_MATY_GETVIEW = "api/HisAnticipateMaty/GetView";
 		internal const string HIS_ANTICIPATE_BLTY_GETVIEW = "api/HisAnticipateBlty/GetView";
+
+		// BV HAGL - In Mps000117: lay NOTE (ghi chu du tru) tu bang vi view V_HIS_ANTICIPATE_METY/MATY khong co cot NOTE.
+		internal const string HIS_ANTICIPATE_METY_GET = "api/HisAnticipateMety/Get";
+		internal const string HIS_ANTICIPATE_MATY_GET = "api/HisAnticipateMaty/Get";
 	}
 }
