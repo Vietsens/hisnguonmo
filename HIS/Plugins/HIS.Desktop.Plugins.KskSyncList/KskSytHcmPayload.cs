@@ -340,7 +340,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     string json = File.ReadAllText(file, System.Text.Encoding.UTF8);
                     items = JsonConvert.DeserializeObject<List<KskSytCatalogItem>>(json);
                 }
-                catalogCache[code] = items;
+                // CHỈ ghi nhớ khi ĐỌC ĐƯỢC. Trước đây ghi nhớ cả lần hụt: nếu phiên đồng bộ đầu
+                // tiên chạy lúc máy chưa có tệp danh mục thì mọi mã bị ghi nhớ là rỗng, và vì
+                // bảng này là static nên từ đó đến khi tắt phần mềm plugin KHÔNG đọc đĩa nữa —
+                // tải danh mục về rồi đẩy lại vẫn trượt, phải thoát hẳn HIS mới hết.
+                if (items != null) catalogCache[code] = items;
                 return items;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }

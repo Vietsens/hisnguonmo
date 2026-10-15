@@ -40,11 +40,16 @@ namespace HIS.Desktop.Plugins.TransactionDeposit.Config
         private const string MOS_HIS_TRANSACTION_MULTI_PAYFORM = "MOS.HIS_TRANSACTION.MULTI_PAYFORM";
         /// <summary>True khi cho phép nhập nhiều hình thức thanh toán trên 1 giao dịch (UC lưới hình thức).</summary>
         internal static bool IsMultiPayForm;
+        private const string HIS_Desktop_Plugins_TransactionDeposit_DepositReqDiffAmountAsNormalDeposit = "HIS.Desktop.Plugins.TransactionDeposit.DepositReqDiffAmountAsNormalDeposit";
+        /// <summary>True khi tìm theo mã yêu cầu tạm ứng mà số tiền thu khác số yêu cầu thì lưu thành tạm ứng thường (không gửi DepositReqId).</summary>
+        internal static bool IsDepositReqDiffAmountAsNormalDeposit;
         internal static void LoadConfig()
         {
             try
             {
                 LogSystem.Debug("LoadConfig => 1");
+                //Doc truoc MinimumDepositAmount: decimal.Parse loi khi vien khong khai bao se bo qua cac dong sau
+                IsDepositReqDiffAmountAsNormalDeposit = GetValue(HIS_Desktop_Plugins_TransactionDeposit_DepositReqDiffAmountAsNormalDeposit) == "1";
                 IsEditTransactionTimeCFG = GetValue(His_Desktop_plugins_transactionTime_IsEditTransactionTime);
                 CashierRoomPaymentOption = GetValue(CONFIG__CASHIER_ROOM_PAYMENT_OPTION);
                 ShowServerTimeByDefault = GetValue(HIS_Desktop_ShowServerTimeByDefault);
