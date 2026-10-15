@@ -1143,7 +1143,7 @@
     <value>(Gầy độ III)</value>
   </data>
   <data name="ExamServiceReqExecuteControl.xtraTabPageWomanClassify.Text" xml:space="preserve">
-    <value>Phân loại phụ nữ</value>
+    <value>Thông tin sản khoa</value>
   </data>
   <data name="ExamServiceReqExecuteControl.chkMimsPregnant.Text" xml:space="preserve">
     <value>Phụ nữ mang thai</value>
