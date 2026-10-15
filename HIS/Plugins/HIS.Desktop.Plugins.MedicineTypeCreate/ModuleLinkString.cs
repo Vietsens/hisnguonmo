@@ -39,6 +39,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate
         internal const string HisATC = "HIS.Desktop.Plugins.HisATCSetUp";
         internal const string HisAtc = "HIS.Desktop.Plugins.HisAtc";
         internal const string HisSourceMedicine = "HIS.Desktop.Plugins.HisSourceMedicine";
+        internal const string HisServiceUnit = "HIS.Desktop.Plugins.HisServiceUnitEdit";
+        internal const string HisSupplier = "HIS.Desktop.Plugins.HisSupplier";
         internal const string HisAtcGroup = "HIS.Desktop.Plugins.HisAtcGroup";
 
         public CallModule(string _moduleLink, long _roomId, long _roomTypeId, List<object> _listObj)

@@ -42,6 +42,7 @@ namespace HIS.Desktop.Plugins.HisServiceUnitEdit.HisServiceUnitEdit
             try
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
+                DelegateSelectData _delegateSelect = null;
 
                 if (entity.GetType() == typeof(object[]))
                 {
@@ -57,12 +58,20 @@ namespace HIS.Desktop.Plugins.HisServiceUnitEdit.HisServiceUnitEdit
                             {
                                 serviceUnit = (MOS.EFMODEL.DataModels.HIS_SERVICE_UNIT)entity[i];
                             }
+                            if (entity[i] is DelegateSelectData)
+                            {
+                                _delegateSelect = (DelegateSelectData)entity[i];
+                            }
                         }
                     }
                 }
                 if (moduleData != null && serviceUnit != null && serviceUnit.ID != 0)
                 {
                     return new frmHisServiceUnitEdit(serviceUnit, moduleData);
+                }
+                if (_delegateSelect != null)
+                {
+                    return new frmHisServiceUnitEdit(moduleData, _delegateSelect);
                 }
                 return new frmHisServiceUnitEdit(moduleData);
             }
