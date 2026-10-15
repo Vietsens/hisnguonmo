@@ -5404,22 +5404,39 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 LogPatientSignInput(documentId, signAlls, callerTag, readerWorking);
                 DisplayConfig = ProcessFontSizeFit(DisplayConfig);
-                using (FileStream fs_ = File.Open(outPathFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
-                using (PdfStamper stam = new PdfStamper(readerWorking, fs_))
+
+                var signElectronics = (signAlls != null && signAlls.Count > 0)
+                    ? signAlls.Where(o => o.IS_SIGN_ELECTRONIC == 1
+                                       && o.COOR_X_RECTANGLE > 0
+                                       && o.COOR_Y_RECTANGLE > 0
+                                       && o.DOCUMENT_ID == documentId).ToList()
+                    : null;
+
+                LogSystem.Info(string.Format(
+                    "[FingerPrintSize][EmrDocument][{0}] Sau filter (IS_SIGN_ELECTRONIC=1, X>0, Y>0, DOCUMENT_ID={1}): con {2} dong ky de ve",
+                    callerTag, documentId, (signElectronics == null ? 0 : signElectronics.Count)));
+
+                // Khong co chu ky benh nhan cua van ban nay => giu nguyen byte file goc.
+                // Mo PdfStamper du khong ve gi cung ghi lai file => mat hieu luc chu ky so da co.
+                if (signElectronics == null || signElectronics.Count == 0)
                 {
-                    var signElectronics = (signAlls != null && signAlls.Count > 0)
-                        ? signAlls.Where(o => o.IS_SIGN_ELECTRONIC == 1
-                                           && o.COOR_X_RECTANGLE > 0
-                                           && o.COOR_Y_RECTANGLE > 0
-                                           && o.DOCUMENT_ID == documentId).ToList()
-                        : null;
+                    CopyOriginalPdf(readerWorking, outPathFile);
+                    return;
+                }
 
-                    LogSystem.Info(string.Format(
-                        "[FingerPrintSize][EmrDocument][{0}] Sau filter (IS_SIGN_ELECTRONIC=1, X>0, Y>0, DOCUMENT_ID={1}): con {2} dong ky de ve",
-                        callerTag, documentId, (signElectronics == null ? 0 : signElectronics.Count)));
+                // Append mode (incremental update): giu nguyen byte goc, chi noi them phan ve chu ky benh nhan
+                // => chu ky so da co trong file van xac thuc duoc. File bi loi xref (rebuilt) thi iText khong cho append.
+                bool isAppend = !readerWorking.IsRebuilt();
+                if (!isAppend)
+                {
+                    LogSystem.Warn(string.Format(
+                        "[EmrDocument][{0}] File PDF documentId={1} bi loi cau truc (rebuilt) => khong ghi append duoc, chu ky so (neu co) se mat hieu luc",
+                        callerTag, documentId));
+                }
 
-                    if (signElectronics == null || signElectronics.Count == 0) return;
-
+                using (FileStream fs_ = File.Open(outPathFile, FileMode.Create, FileAccess.Write, FileShare.Read))
+                using (PdfStamper stam = isAppend ? new PdfStamper(readerWorking, fs_, '\0', true) : new PdfStamper(readerWorking, fs_))
+                {
                     foreach (var itemSign in signElectronics)
                     {
                         try
@@ -5441,6 +5458,19 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 LogSystem.Error(ex);
                 throw; // cho caller biết để fallback về bản gốc
             }
+        }
+
+        /// <summary>
+        /// Ghi nguyen ven byte file PDF goc ma reader dang doc ra outPathFile (khong qua iText ghi lai).
+        /// </summary>
+        private static void CopyOriginalPdf(PdfReader readerWorking, string outPathFile)
+        {
+            RandomAccessFileOrArray source = readerWorking.SafeFile;
+            source.ReOpen();
+            source.Seek(0);
+            byte[] bytes = new byte[(int)source.Length];
+            source.ReadFully(bytes);
+            File.WriteAllBytes(outPathFile, bytes);
         }
 
         /// <summary>
