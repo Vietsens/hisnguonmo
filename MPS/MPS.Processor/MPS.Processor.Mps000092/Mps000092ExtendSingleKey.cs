@@ -65,5 +65,8 @@ namespace MPS.Processor.Mps000092
         internal static string NUM_ORDER = "NUM_ORDER";
 
         internal static string TRANSACTION_NUM_ORDER = "TRANSACTION_NUM_ORDER";
+
+        //QR ma tra cuu hoa don dien tu - chua So bao mat (INVOICE_LOOKUP_CODE)
+        internal static string INVOICE_LOOKUP_CODE_QR = "INVOICE_LOOKUP_CODE_QR";
     }
 }
