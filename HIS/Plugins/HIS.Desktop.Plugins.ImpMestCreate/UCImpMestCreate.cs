@@ -126,6 +126,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         internal bool IsDisableChkImprice = false;
         internal bool IsValidateInfoBid = false;
         internal bool IsAllowDuplicateDocument = false;//#24171
+        internal bool IsIgnoreEditingImpMestWhenCheckDocument = false;
         internal bool _VACCINE_EXP_PRICE_OPTION = false;//#87604
         internal string _SALE_RETURN_CODE = "";
 
@@ -299,6 +300,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 ValidatecboDosage(cboDosageForm, 1024);
                 this.IsShowMessDocument = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate__IsShowMessDocument") == "0" ? false : true;
                 this.IsAllowDuplicateDocument = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.AllowDuplicateDocumentNumberInTheSameSupplier") == "1" ? true : false;
+                this.IsIgnoreEditingImpMestWhenCheckDocument = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.IsIgnoreEditingImpMestWhenCheckDocument") == "1" ? true : false;
                 this.IsDisableChkImprice = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate__IsDisableChkImprice") == "1" ? true : false;
                 this.IsSetBhytInfoFromTypeByDefault = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_MEDICINE.IS_SET_BHYT_INFO_FROM_TYPE_BY_DEFAULT") == "1" ? true : false;
                 this.IsValidateInfoBid = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.ValidBid") == "1" ? true : false;
