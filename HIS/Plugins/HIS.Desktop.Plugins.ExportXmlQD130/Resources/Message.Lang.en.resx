@@ -477,4 +477,13 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
   <data name="MdInsightLyDoLechCoSo" xml:space="preserve">
     <value>The facility code of this record does not match the facility of the account in use, so the error-checking system cannot process it.</value>
   </data>
+  <data name="MdInsightNhanSoBo" xml:space="preserve">
+    <value>(preliminary)</value>
+  </data>
+  <data name="MdInsightNhanCanKiemLai" xml:space="preserve">
+    <value>re-check needed</value>
+  </data>
+  <data name="MdInsightNhanDuLieuDaDoi" xml:space="preserve">
+    <value>data changed</value>
+  </data>
 </root>

@@ -442,6 +442,9 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="TreatmentFinishProcessor.cs" />
+    <Compile Include="FormTreatmentFinish___XmlPrecheck.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormTreatmentFinish.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -592,6 +595,10 @@
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.csproj">
       <Project>{1b07baeb-f145-400d-b3c6-94957934a3a9}</Project>
       <Name>HIS.Desktop.Plugins.Library.TreatmentEndTypeExt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.XmlPrecheck\HIS.Desktop.Plugins.Library.XmlPrecheck.csproj">
+      <Project>{7C1F9D2E-5B3A-4E8F-9A6D-2F4B8C1D3E5A}</Project>
+      <Name>HIS.Desktop.Plugins.Library.XmlPrecheck</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

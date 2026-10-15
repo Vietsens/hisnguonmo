@@ -1074,6 +1074,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 else
                     btnSaveTemp.Visible = false;
 
+                //vCong MDInsight 3.0 - kiem tra loi XML so bo sau Luu tam; thoat som khi vien khong bat
+                InitXmlPrecheck();
+
                 btnDHST.Enabled = false;
             }
             catch (Exception ex)
@@ -4020,11 +4023,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 MessageManager.Show(this, new CommonParam(), true);
                 if (success)
                 {
-                  
+
                     SetPrintMenu(hisTreatmentFinishSDO.TreatmentEndTypeId, hisTreatmentFinishSDO.TreatmentEndTypeExtId, this.currentHisTreatment.TDL_TREATMENT_TYPE_ID);
                     BtnEndCode.Enabled = CheckTreatmentEndCode();
                     btnDeleteEndInfo.Enabled = true;
                     cboObjectCode.ReadOnly = true;
+
+                    //vCong MDInsight 3.0 - Luu tam xong thi cho phep kiem tra loi XML so bo (khong tu gui)
+                    OnXmlPrecheckSaveTempSucceeded();
                 }
             }
             catch (Exception ex)
@@ -5971,6 +5977,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     }
                 }
 
+                //vCong MDInsight 3.0 - kiem tra loi XML so bo voi he thong soat loi (he ngoai, bat dong bo).
+                //Dat CUOI chuoi de cac loi noi bo HIS hien truoc; vien khong bat khoa thi thoat som. Khong bao gio chan.
+                await this.CheckXmlPrecheck_ForKiemTraHoSo(this.warningADOs);
                 frmWarning form = new frmWarning(DelegateCheckSkipMethod, this.warningADOs, this._isSkipWarningForSave);
                 form.ShowDialog();
             }
