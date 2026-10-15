@@ -1020,6 +1020,12 @@
   <data name="UCTreeListService.tc_RequestDepartmentName.Caption" xml:space="preserve">
     <value>ဘာသာရပ်လိုအပ်သည်။</value>
   </data>
+  <data name="UCTreeListService.tc_IsExpend.Caption" xml:space="preserve">
+    <value>HP</value>
+  </data>
+  <data name="UCTreeListService.tc_IsExpend.ToolTip" xml:space="preserve">
+    <value>Expend</value>
+  </data>
   <data name="UCTreeListService.tc_SendTestServiceReq.Caption" xml:space="preserve">
     <value> </value>
   </data>

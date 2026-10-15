@@ -223,6 +223,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 this.txtLadder.Text = "";
                 this.txtAdvise.Text = "";
+                this.dtPresAppointmentTime.EditValue = null;
 
                 this.spinSoNgay.Enabled = true;
                 this.spinTocDoTruyen.EditValue = null;

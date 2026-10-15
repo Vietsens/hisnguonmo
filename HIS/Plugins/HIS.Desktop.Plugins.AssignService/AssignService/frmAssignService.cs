@@ -3193,7 +3193,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //Lay phong du kien do MOS phan cho CA NHOM dich vu dang tick, xem
                 //frmAssignService__SuggestRoom.cs. Chua co ket qua thi tra 0 (de o trong),
                 //luc Luu MOS van tu phan phong nen phieu khong bi thieu phong.
-                if (HisConfigCFG.IsAssignRoomByLoadBalance)
+                //CHI ap dung khi phong lam viec co tick "Gioi han chi dinh phong thuc hien";
+                //phong khong tick di tiep xuong luong cu ShowDefaultExecuteRoom ben duoi.
+                if (this.IsLoadBalanceForWorkingRoom())
                 {
                     return this.GetSuggestedRoomIdByExecuteRooms(excuteRoomList);
                 }
@@ -3256,7 +3258,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //MOS da xet phong uu tien bat buoc o vi tri thu 2 (tren ca can bang tai) roi,
                 //nen chi lay lai ket qua MOS da phan cho ca nhom dich vu dang tick.
                 //Xem frmAssignService__SuggestRoom.cs
-                if (HisConfigCFG.IsAssignRoomByLoadBalance)
+                //CHI ap dung khi phong lam viec co tick "Gioi han chi dinh phong thuc hien";
+                //phong khong tick di tiep xuong luong cu (uu tien bat buoc) ben duoi.
+                if (this.IsLoadBalanceForWorkingRoom())
                 {
                     return this.GetSuggestedRoomIdByExecuteRooms(excuteRoomList);
                 }

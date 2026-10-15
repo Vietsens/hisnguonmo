@@ -249,6 +249,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 col6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
                 gridViewMediMaty.Columns.Add(col6);
 
+                DevExpress.XtraGrid.Columns.GridColumn colDes = new DevExpress.XtraGrid.Columns.GridColumn();
+                colDes.FieldName = "DESCRIPTION";
+                colDes.Caption = Inventec.Common.Resource.Get.Value
+                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_DESCRIPTION",
+                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                colDes.Width = 150;
+                colDes.VisibleIndex = 9;//Cot Ghi chu dat ngay sau VAT de khong bi day ra cuoi bang
+                gridViewMediMaty.Columns.Add(colDes);
+
 
                 DevExpress.XtraGrid.Columns.GridColumn col6a = new DevExpress.XtraGrid.Columns.GridColumn();
                 col6a.FieldName = "TDL_PACKAGE_NUMBER";
@@ -257,7 +267,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col6a.Width = 100;
-                col6a.VisibleIndex = 9;
+                col6a.VisibleIndex = 10;
                 gridViewMediMaty.Columns.Add(col6a);
 
                 DevExpress.XtraGrid.Columns.GridColumn col6b = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -267,7 +277,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col6b.Width = 100;
-                col6b.VisibleIndex = 10;
+                col6b.VisibleIndex = 11;
                 gridViewMediMaty.Columns.Add(col6b);
 
                 DevExpress.XtraGrid.Columns.GridColumn col6c = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -278,7 +288,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col6c.Width = 100;
-                col6c.VisibleIndex = 11;
+                col6c.VisibleIndex = 12;
                 gridViewMediMaty.Columns.Add(col6c);
 
 
@@ -289,7 +299,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col10.Width = 150;
-                col10.VisibleIndex = 12;
+                col10.VisibleIndex = 13;
                 gridViewMediMaty.Columns.Add(col10);
 
                 DevExpress.XtraGrid.Columns.GridColumn col11 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -299,7 +309,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col11.Width = 80;
-                col11.VisibleIndex = 13;
+                col11.VisibleIndex = 14;
                 gridViewMediMaty.Columns.Add(col11);
 
 
@@ -310,7 +320,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col1.Width = 60;
-                col1.VisibleIndex = 14;
+                col1.VisibleIndex = 15;
                 gridViewMediMaty.Columns.Add(col1);
 
                 DevExpress.XtraGrid.Columns.GridColumn col16 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -320,7 +330,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col16.Width = 100;
-                col16.VisibleIndex = 15;
+                col16.VisibleIndex = 16;
                 gridViewMediMaty.Columns.Add(col16);
 
                 DevExpress.XtraGrid.Columns.GridColumn col15 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -330,19 +340,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col15.Width = 150;
-                col15.VisibleIndex = 16;
+                col15.VisibleIndex = 17;
                 gridViewMediMaty.Columns.Add(col15);
 
-
-                DevExpress.XtraGrid.Columns.GridColumn colDes = new DevExpress.XtraGrid.Columns.GridColumn();
-                colDes.FieldName = "DESCRIPTION";
-                colDes.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_DESCRIPTION",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                colDes.Width = 150;
-                colDes.VisibleIndex = 17;
-                gridViewMediMaty.Columns.Add(colDes);
 
                 if (!isTSD)
                 {
@@ -589,6 +589,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 col6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
                 gridViewMediMaty.Columns.Add(col6);
 
+                DevExpress.XtraGrid.Columns.GridColumn col15 = new DevExpress.XtraGrid.Columns.GridColumn();
+                col15.FieldName = "DESCRIPTION";
+                col15.Caption = Inventec.Common.Resource.Get.Value
+                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_DESCRIPTION",
+                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                col15.Width = 150;
+                col15.VisibleIndex = 9;//Cot Ghi chu dat ngay sau VAT de khong bi day ra cuoi bang
+                gridViewMediMaty.Columns.Add(col15);
+
 
                 DevExpress.XtraGrid.Columns.GridColumn col6a = new DevExpress.XtraGrid.Columns.GridColumn();
                 col6a.FieldName = "TDL_PACKAGE_NUMBER";
@@ -597,7 +607,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col6a.Width = 100;
-                col6a.VisibleIndex = 9;
+                col6a.VisibleIndex = 10;
                 gridViewMediMaty.Columns.Add(col6a);
 
                 DevExpress.XtraGrid.Columns.GridColumn col6b = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -607,7 +617,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col6b.Width = 100;
-                col6b.VisibleIndex = 10;
+                col6b.VisibleIndex = 11;
                 gridViewMediMaty.Columns.Add(col6b);
 
                 DevExpress.XtraGrid.Columns.GridColumn col6c = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -618,7 +628,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col6c.Width = 100;
-                col6c.VisibleIndex = 11;
+                col6c.VisibleIndex = 12;
                 gridViewMediMaty.Columns.Add(col6c);
 
 
@@ -629,7 +639,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col10.Width = 150;
-                col10.VisibleIndex = 12;
+                col10.VisibleIndex = 13;
                 gridViewMediMaty.Columns.Add(col10);
 
                 DevExpress.XtraGrid.Columns.GridColumn col11 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -639,7 +649,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col11.Width = 80;
-                col11.VisibleIndex = 13;
+                col11.VisibleIndex = 14;
                 gridViewMediMaty.Columns.Add(col11);
 
 
@@ -650,7 +660,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col1.Width = 60;
-                col1.VisibleIndex = 14;
+                col1.VisibleIndex = 15;
                 gridViewMediMaty.Columns.Add(col1);
 
                 DevExpress.XtraGrid.Columns.GridColumn col17 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -660,7 +670,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col17.Width = 100;
-                col17.VisibleIndex = 15;
+                col17.VisibleIndex = 16;
                 gridViewMediMaty.Columns.Add(col17);
 
                 DevExpress.XtraGrid.Columns.GridColumn col16 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -670,18 +680,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col16.Width = 150;
-                col16.VisibleIndex = 16;
+                col16.VisibleIndex = 17;
                 gridViewMediMaty.Columns.Add(col16);
-
-                DevExpress.XtraGrid.Columns.GridColumn col15 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col15.FieldName = "DESCRIPTION";
-                col15.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_DESCRIPTION",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col15.Width = 150;
-                col15.VisibleIndex = 17;
-                gridViewMediMaty.Columns.Add(col15);
 
                 if (!isTSD)
                 {

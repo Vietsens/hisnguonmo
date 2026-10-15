@@ -490,6 +490,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.chkEyeInfo = new DevExpress.XtraEditors.CheckEdit();
             this.chkPrint = new DevExpress.XtraEditors.CheckEdit();
             this.txtProvisionalDiagnosis = new DevExpress.XtraEditors.MemoEdit();
+            this.dtPresAppointmentTime = new DevExpress.XtraEditors.DateEdit();
             this.pnlUCDateForMedi = new System.Windows.Forms.Panel();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -690,6 +691,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciForpnlUCDateForMedi = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciFortxtProvisionalDiagnosis = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciPresAppointmentTime = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcibtnSave = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPrintAssignPrescription = new DevExpress.XtraLayout.LayoutControlItem();
@@ -951,6 +953,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.chkEyeInfo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrint.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtProvisionalDiagnosis.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtPresAppointmentTime.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtPresAppointmentTime.Properties)).BeginInit();
             this.pnlUCDateForMedi.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
             this.layoutControl5.SuspendLayout();
@@ -1153,6 +1157,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.lciForpnlUCDateForMedi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciFortxtProvisionalDiagnosis)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPresAppointmentTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcibtnSave)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPrintAssignPrescription)).BeginInit();
@@ -1485,6 +1490,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControl6.Controls.Add(this.chkEyeInfo);
             this.layoutControl6.Controls.Add(this.chkPrint);
             this.layoutControl6.Controls.Add(this.txtProvisionalDiagnosis);
+            this.layoutControl6.Controls.Add(this.dtPresAppointmentTime);
             this.layoutControl6.Controls.Add(this.pnlUCDateForMedi);
             this.layoutControl6.Controls.Add(this.chkShowLo);
             this.layoutControl6.Controls.Add(this.spinKidneyCount);
@@ -4901,13 +4907,32 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // txtProvisionalDiagnosis
             // 
-            this.txtProvisionalDiagnosis.Location = new System.Drawing.Point(464, 50);
+            this.txtProvisionalDiagnosis.Location = new System.Drawing.Point(574, 50);
             this.txtProvisionalDiagnosis.MenuManager = this.barManager1;
             this.txtProvisionalDiagnosis.Name = "txtProvisionalDiagnosis";
             this.txtProvisionalDiagnosis.Properties.MaxLength = 1000;
-            this.txtProvisionalDiagnosis.Size = new System.Drawing.Size(183, 20);
+            this.txtProvisionalDiagnosis.Size = new System.Drawing.Size(73, 20);
             this.txtProvisionalDiagnosis.StyleController = this.layoutControl6;
             this.txtProvisionalDiagnosis.TabIndex = 12;
+            //
+            // dtPresAppointmentTime
+            //
+            this.dtPresAppointmentTime.EditValue = null;
+            this.dtPresAppointmentTime.Location = new System.Drawing.Point(364, 50);
+            this.dtPresAppointmentTime.MenuManager = this.barManager1;
+            this.dtPresAppointmentTime.Name = "dtPresAppointmentTime";
+            this.dtPresAppointmentTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtPresAppointmentTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtPresAppointmentTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.dtPresAppointmentTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtPresAppointmentTime.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            this.dtPresAppointmentTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtPresAppointmentTime.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.dtPresAppointmentTime.Size = new System.Drawing.Size(106, 20);
+            this.dtPresAppointmentTime.StyleController = this.layoutControl6;
+            this.dtPresAppointmentTime.TabIndex = 12;
             // 
             // pnlUCDateForMedi
             // 
@@ -7187,6 +7212,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciForpnlUCDateForMedi,
             this.emptySpaceItem4,
             this.lciFortxtProvisionalDiagnosis,
+            this.lciPresAppointmentTime,
             this.layoutControlItem16,
             this.lcibtnSave,
             this.lciPrintAssignPrescription,
@@ -7645,7 +7671,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciForspinKidneyCount.Location = new System.Drawing.Point(138, 48);
             this.lciForspinKidneyCount.Name = "lciForspinKidneyCount";
             this.lciForspinKidneyCount.OptionsToolTip.ToolTip = "Số lần chạy thận";
-            this.lciForspinKidneyCount.Size = new System.Drawing.Size(224, 24);
+            this.lciForspinKidneyCount.Size = new System.Drawing.Size(164, 24);
             this.lciForspinKidneyCount.Text = "S/lần chạy thận:";
             this.lciForspinKidneyCount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciForspinKidneyCount.TextSize = new System.Drawing.Size(100, 20);
@@ -7690,13 +7716,27 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciFortxtProvisionalDiagnosis.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciFortxtProvisionalDiagnosis.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciFortxtProvisionalDiagnosis.Control = this.txtProvisionalDiagnosis;
-            this.lciFortxtProvisionalDiagnosis.Location = new System.Drawing.Point(362, 48);
+            this.lciFortxtProvisionalDiagnosis.Location = new System.Drawing.Point(472, 48);
             this.lciFortxtProvisionalDiagnosis.Name = "lciFortxtProvisionalDiagnosis";
-            this.lciFortxtProvisionalDiagnosis.Size = new System.Drawing.Size(287, 24);
+            this.lciFortxtProvisionalDiagnosis.Size = new System.Drawing.Size(177, 24);
             this.lciFortxtProvisionalDiagnosis.Text = "Ch/đoán sơ bộ:";
             this.lciFortxtProvisionalDiagnosis.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciFortxtProvisionalDiagnosis.TextSize = new System.Drawing.Size(95, 20);
             this.lciFortxtProvisionalDiagnosis.TextToControlDistance = 5;
+            //
+            // lciPresAppointmentTime
+            //
+            this.lciPresAppointmentTime.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciPresAppointmentTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciPresAppointmentTime.Control = this.dtPresAppointmentTime;
+            this.lciPresAppointmentTime.Location = new System.Drawing.Point(302, 48);
+            this.lciPresAppointmentTime.Name = "lciPresAppointmentTime";
+            this.lciPresAppointmentTime.OptionsToolTip.ToolTip = "Ngày hẹn khám";
+            this.lciPresAppointmentTime.Size = new System.Drawing.Size(170, 24);
+            this.lciPresAppointmentTime.Text = "Hẹn khám:";
+            this.lciPresAppointmentTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciPresAppointmentTime.TextSize = new System.Drawing.Size(55, 20);
+            this.lciPresAppointmentTime.TextToControlDistance = 5;
             // 
             // layoutControlItem16
             // 
@@ -8862,6 +8902,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.chkEyeInfo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrint.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtProvisionalDiagnosis.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtPresAppointmentTime.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtPresAppointmentTime.Properties)).EndInit();
             this.pnlUCDateForMedi.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).EndInit();
             this.layoutControl5.ResumeLayout(false);
@@ -9064,6 +9106,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.lciForpnlUCDateForMedi)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciFortxtProvisionalDiagnosis)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPresAppointmentTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcibtnSave)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPrintAssignPrescription)).EndInit();
@@ -9459,6 +9502,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem50;
         private DevExpress.XtraLayout.LayoutControlItem lciFortxtProvisionalDiagnosis;
         internal DevExpress.XtraEditors.MemoEdit txtProvisionalDiagnosis;
+        private DevExpress.XtraLayout.LayoutControlItem lciPresAppointmentTime;
+        internal DevExpress.XtraEditors.DateEdit dtPresAppointmentTime;
         private DevExpress.XtraEditors.CheckEdit chkPrint;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
         private DevExpress.XtraEditors.CheckEdit chkSignForDPK;

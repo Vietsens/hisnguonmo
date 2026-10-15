@@ -2,7 +2,7 @@
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  * All rights reserved.
- * Tab "Phân loại phụ nữ" — checklist Phụ nữ mang thai / Phụ nữ cho con bú
+ * Tab "Thông tin sản khoa" (trước đây "Phân loại phụ nữ") — checklist Phụ nữ mang thai / Phụ nữ cho con bú
  * phục vụ cảnh báo thuốc MIMS (Drug Pregnancy / Drug Lactation).
  * Tab được tạo RUNTIME (không sửa designer), chỉ hiện với bệnh nhân nữ:
  *   - HIS.Desktop.Mims.IsCheckPregnancyLactation = 1: đầy đủ (mang thai, số tháng, tuần tuổi thai, cho con bú).
@@ -72,7 +72,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.xtraTabPageWomanClassify = new DevExpress.XtraTab.XtraTabPage();
                 this.xtraTabPageWomanClassify.Name = "xtraTabPageWomanClassify";
                 this.xtraTabPageWomanClassify.Text = GetWomanClassifyLangText(
-                    "ExamServiceReqExecuteControl.xtraTabPageWomanClassify.Text", "Phân loại phụ nữ");
+                    "ExamServiceReqExecuteControl.xtraTabPageWomanClassify.Text", "Thông tin sản khoa");
 
                 this.chkMimsPregnant = new DevExpress.XtraEditors.CheckEdit();
                 this.chkMimsPregnant.Name = "chkMimsPregnant";

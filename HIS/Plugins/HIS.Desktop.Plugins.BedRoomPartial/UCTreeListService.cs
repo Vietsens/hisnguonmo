@@ -56,6 +56,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         Action<ADO.SereServADO> EditButton_Click;
         Action<ADO.SereServADO> EditEnableButton_Click;
         Action<ADO.SereServADO> DeleteEnableButton_Click;
+        /// <summary>
+        /// 53745 - Cot HP: bam o HP bam duoc thi goi man chinh cap nhat hao phi (api/HisSereServ/UpdateExpend).
+        /// </summary>
+        Action<ADO.SereServADO> ExpendCheck_Click;
         ImageCollection imageCollection;
         long wkRoomId = 0, wkRoomTypeId = 0;
         DHisSereServ2 TreeClickData;
@@ -145,6 +149,14 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             }
         }
 
+        /// <summary>
+        /// 53745 - Cot HP: man chinh truyen ham xu ly khi bam o HP bam duoc.
+        /// </summary>
+        public void SetExpendCheckClick(Action<ADO.SereServADO> expendCheckClick)
+        {
+            this.ExpendCheck_Click = expendCheckClick;
+        }
+
         public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs, L_HIS_TREATMENT_BED_ROOM _RowCellClickBedRoom, Action<ADO.SereServADO> EditEnableButton_Click, Action<ADO.SereServADO> DeleteEnableButton_Click)
         {
             try
@@ -153,6 +165,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.DeleteEnableButton_Click = DeleteEnableButton_Click;
                 EditButton_Click = editClick;
                 RowCellClickBedRoom = _RowCellClickBedRoom;
+                SetExpendInfo(SereServADOs);
                 treeSereServ.BeginUpdate();
                 if (SereServADOs != null && SereServADOs.Count > 0)
                 {
@@ -183,6 +196,74 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     treeSereServ.DataSource = null;
                 }
                 treeSereServ.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// 53745 - Cot HP: tinh san gia tri va trang thai o HP truoc khi gan vao cay.
+        /// Chi dong dich vu (dong khong co dong con) co o HP. O bam duoc khi dong co HIS_SERE_SERV,
+        /// ho so chua ket thuc dieu tri va duoc phep hao phi theo danh muc (cung quy tac Bang ke thanh toan):
+        /// thuoc luon duoc; vat tu duoc khi loai vat tu khong tich "Khong hao phi"; loai khac phai tich "Cho phep hao phi".
+        /// </summary>
+        private void SetExpendInfo(List<SereServADO> sereServADOs)
+        {
+            try
+            {
+                if (sereServADOs == null || sereServADOs.Count == 0)
+                    return;
+
+                HashSet<string> parentIds = new HashSet<string>(sereServADOs
+                    .Where(o => !String.IsNullOrEmpty(o.PARENT_ID__IN_SETY))
+                    .Select(o => o.PARENT_ID__IN_SETY));
+                bool isTreatmentPause = RowCellClickBedRoom != null && RowCellClickBedRoom.IS_PAUSE == 1;
+                Dictionary<long, V_HIS_SERVICE> dicService = null;
+                HashSet<long> notExpendMaterialServiceIds = null;
+
+                foreach (var ado in sereServADOs)
+                {
+                    ado.IsEnableExpend = false;
+                    if (ado.CONCRETE_ID__IN_SETY != null && parentIds.Contains(ado.CONCRETE_ID__IN_SETY))
+                    {
+                        ado.IsExpendCheck = null;
+                        continue;
+                    }
+
+                    ado.IsExpendCheck = ado.IS_EXPEND == 1;
+                    if (!ado.SERE_SERV_ID.HasValue || !ado.SERVICE_ID.HasValue || isTreatmentPause)
+                        continue;
+
+                    if (ado.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                    {
+                        ado.IsEnableExpend = true;
+                    }
+                    else if (ado.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+                    {
+                        if (notExpendMaterialServiceIds == null)
+                        {
+                            notExpendMaterialServiceIds = new HashSet<long>((BackendDataWorker.Get<HIS_MATERIAL_TYPE>() ?? new List<HIS_MATERIAL_TYPE>())
+                                .Where(o => o.IS_NOT_EXPEND == 1)
+                                .Select(o => o.SERVICE_ID));
+                        }
+                        ado.IsEnableExpend = !notExpendMaterialServiceIds.Contains(ado.SERVICE_ID.Value);
+                    }
+                    else
+                    {
+                        if (dicService == null)
+                        {
+                            dicService = new Dictionary<long, V_HIS_SERVICE>();
+                            foreach (var service in BackendDataWorker.Get<V_HIS_SERVICE>() ?? new List<V_HIS_SERVICE>())
+                            {
+                                dicService[service.ID] = service;
+                            }
+                        }
+                        V_HIS_SERVICE serviceOfRow = null;
+                        ado.IsEnableExpend = dicService.TryGetValue(ado.SERVICE_ID.Value, out serviceOfRow) && serviceOfRow.IS_ALLOW_EXPEND == 1;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -227,6 +308,15 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             try
             {
                 var data = (SereServADO)treeSereServ.GetDataRecordByNode(e.Node);
+                if (e.Column.FieldName == "IsExpendCheck")
+                {
+                    // 53745 - Cot HP: dong ngay / loai dich vu / y lenh de trong; dong dich vu hien o bam duoc hoac o mo
+                    if (data == null || e.Node.HasChildren)
+                        e.RepositoryItem = rep_txtExpend_Empty;
+                    else
+                        e.RepositoryItem = data.IsEnableExpend ? rep_chkExpend_Enable : rep_chkExpend_Disable;
+                    return;
+                }
                 if (data != null && data.SERVICE_REQ_STT_ID > 0)
                 {
                     if (e.Column.FieldName == "Delete")
@@ -423,6 +513,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     else
                     {
                         e.Appearance.ForeColor = Color.Black;
+                    }
+
+                    // 53745 - Cot HP: o khong bam duoc to nen xam de phan biet voi o bam duoc
+                    if (e.Column == tc_IsExpend && !e.Node.HasChildren && !data.IsEnableExpend)
+                    {
+                        e.Appearance.BackColor = Color.FromArgb(224, 224, 224);
                     }
                 }
             }
@@ -867,6 +963,13 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 TreeList tree = sender as TreeList;
                 TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
                 var data = (SereServADO)treeSereServ.GetDataRecordByNode(hi.Node);
+                // 53745 - Cot HP: bam o HP bam duoc thi cap nhat hao phi, khong nap van ban cua dong
+                if (data != null && hi.Column == tc_IsExpend && hi.Node != null && !hi.Node.HasChildren
+                    && data.IsEnableExpend && this.ExpendCheck_Click != null)
+                {
+                    this.ExpendCheck_Click(data);
+                    return;
+                }
                 if (data != null && this.EditButton_Click != null)
                 {
                     this.EditButton_Click(data);
@@ -903,6 +1006,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.tc_Number.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_Number.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.tc_NoteAdo.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_NoteAdo.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 this.tc_RequestDepartmentName.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_RequestDepartmentName.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
+                this.tc_IsExpend.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_IsExpend.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
+                this.tc_IsExpend.ToolTip = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_IsExpend.ToolTip", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 //qtcode
                 this.tc_TdlMedicineConcentra.Caption = Inventec.Common.Resource.Get.Value("UCTreeListService.tc_TdlMedicineConcentra.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
                 //qtcode
@@ -978,6 +1083,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 DeleteEnableButton_Click = null;
                 EditEnableButton_Click = null;
                 EditButton_Click = null;
+                ExpendCheck_Click = null;
                 this.treeSereServ.GetStateImage -= new DevExpress.XtraTreeList.GetStateImageEventHandler(this.treeSereServ_GetStateImage);
                 this.treeSereServ.GetSelectImage -= new DevExpress.XtraTreeList.GetSelectImageEventHandler(this.treeSereServ_GetSelectImage);
                 this.treeSereServ.StateImageClick -= new DevExpress.XtraTreeList.NodeClickEventHandler(this.treeSereServ_StateImageClick);
@@ -1008,6 +1114,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 repositoryItemButton__Send = null;
                 imageCollection1 = null;
                 tc_RequestDepartmentName = null;
+                tc_IsExpend = null;
+                rep_chkExpend_Enable = null;
+                rep_chkExpend_Disable = null;
+                rep_txtExpend_Empty = null;
                 //qtcode
                 tc_TdlMedicineConcentra = null; 
                 //qtcode

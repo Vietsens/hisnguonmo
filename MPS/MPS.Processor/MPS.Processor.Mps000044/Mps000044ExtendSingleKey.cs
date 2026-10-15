@@ -100,6 +100,7 @@ namespace MPS.Processor.Mps000044
         internal const string PART_EXAM_EYESIGHT_GLASS_RIGHT_STR = "PART_EXAM_EYESIGHT_GLASS_RIGHT_STR";
         internal const string PART_EXAM_HOLE_GLASS_LEFT_STR = "PART_EXAM_HOLE_GLASS_LEFT_STR";
         internal const string PART_EXAM_HOLE_GLASS_RIGHT_STR = "PART_EXAM_HOLE_GLASS_RIGHT_STR";
+        internal const string PRES_APPOINTMENT_TIME_STR = "PRES_APPOINTMENT_TIME_STR";
 
     }
 }

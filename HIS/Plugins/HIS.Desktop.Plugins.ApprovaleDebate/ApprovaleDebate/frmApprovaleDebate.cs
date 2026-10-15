@@ -1602,6 +1602,13 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     || string.IsNullOrWhiteSpace(this.currentHisSpecialistExam.TREATMENT_CODE)
                     || this.currentModule == null) return;
 
+                var moduleData = GlobalVariables.currentModuleRaws
+                    .FirstOrDefault(o => o.ModuleLink == EMR_DOCUMENT_MODULE_LINK);
+                if (moduleData == null || !moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                {
+                    return;
+                }
+
                 WaitingManager.Show();
                 List<object> listObj = new List<object>();
                 listObj.Add(this.currentHisSpecialistExam.TREATMENT_CODE);

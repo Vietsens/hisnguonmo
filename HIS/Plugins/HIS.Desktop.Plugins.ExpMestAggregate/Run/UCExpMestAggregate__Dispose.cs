@@ -171,6 +171,10 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 imageListIcon = null;
                 repositoryItemCheck_D = null;
                 repositoryItemCheck_E = null;
+                repositoryItemCheckExpHomePres = null;
+                repositoryItemCheckHomePres = null;
+                grdColExpHomePres = null;
+                grdColHomePres = null;
                 gridColumnCheck = null;
                 layoutControlItem26 = null;
                 gridLookUpEdit1View = null;

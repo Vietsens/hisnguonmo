@@ -39,6 +39,7 @@ using Inventec.Desktop.Common.Message;
 using DevExpress.XtraRichEdit;
 using DevExpress.Spreadsheet;
 using HIS.Desktop.Plugins.HisTrackingList.ADO;
+using HIS.Desktop.Plugins.HisTrackingList.Config;
 using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
 using DevExpress.Utils.Menu;
@@ -267,7 +268,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument
         //}
 
         /// <summary>
-        /// Shows the documents joined in the given order (the caller decides the order).
+        /// Shows the documents joined into one file, ordered as described in BuildViewFile.
         /// </summary>
         public void ReloadDocument(List<DocumentTrackingADO> streamFiles, bool showBar = false)
         {
@@ -289,7 +290,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument
         }
 
         /// <summary>
-        /// Converts the documents to PDF and joins them, in the given order, into a temporary PDF file.
+        /// Converts the documents to PDF and joins them into a temporary PDF file: in the given order in view only mode
+        /// or when IsViewTrackingNewestFirst is on, otherwise sorted by tracking time ascending as before.
         /// Does not touch any control so it can run on a background thread. Returns null when there is nothing to show.
         /// </summary>
         internal string BuildViewFile(List<DocumentTrackingADO> streamFiles)
@@ -300,6 +302,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument
                 if (streamFiles == null || streamFiles.Count == 0)
                     return null;
                 List<DocumentTrackingADO> documentData = ConvertToPdfDocuments(streamFiles);
+                if (!this.isViewOnly && !HisConfigCFG.IsViewTrackingNewestFirst)
+                    documentData = documentData.OrderBy(p => p.TRACKING_TIME).ToList();
                 result = JoinDocuments(documentData, this.isViewOnly);
             }
             catch (Exception ex)

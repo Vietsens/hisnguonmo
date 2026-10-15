@@ -249,4 +249,7 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__TXT_KEYWORD" xml:space="preserve">
     <value>Từ khóa tìm kiếm</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__HOME_PRES" xml:space="preserve">
+    <value>Đơn mang về</value>
+  </data>
 </root>

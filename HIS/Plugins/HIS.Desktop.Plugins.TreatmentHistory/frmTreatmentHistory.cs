@@ -200,6 +200,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 this.gridColInTime.Caption = Inventec.Common.Resource.Get.Value("frmTreatmentHistory.gridColInTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColOutTime.Caption = Inventec.Common.Resource.Get.Value("frmTreatmentHistory.gridColOutTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtKeyWord.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmTreatmentHistory.txtKeyWord.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtDobYear.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmTreatmentHistory.txtDobYear.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtAddress.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmTreatmentHistory.txtAddress.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtPatientCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmTreatmentHistory.txtPatientCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtTreatmentCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmTreatmentHistory.txtTreatmentCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmTreatmentHistory.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -540,6 +542,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             try
             {
                 txtKeyWord.Text = "";
+                txtDobYear.Text = "";
+                txtAddress.Text = "";
                 txtPatientCode.Text = "";
                 txtTreatmentCode.Text = "";
             }
@@ -710,6 +714,18 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                         filter.PATIENT_CODE__EXACT = code;
                         txtPatientCode.Text = code;
                     }
+                    string dobYear = txtDobYear.Text.Trim();
+                    if (dobYear.Length == 4)
+                    {
+                        long year = Convert.ToInt64(dobYear);
+                        filter.DOB_FROM = year * 10000000000 + 101000000;
+                        filter.DOB_TO = year * 10000000000 + 1231235959;
+                    }
+                    // Mở khi MOS.Filter có HisTreatmentLViewFilter.TDL_PATIENT_ADDRESS
+                    //if (!String.IsNullOrEmpty(txtAddress.Text.Trim()))
+                    //{
+                    //    filter.TDL_PATIENT_ADDRESS = txtAddress.Text.Trim();
+                    //}
                 }
 
                 //if (cboFind.EditValue != null)
@@ -1336,6 +1352,38 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
         }
 
         private void txtKeyWord_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    txtDobYear.Focus();
+                    txtDobYear.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtDobYear_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    txtAddress.Focus();
+                    txtAddress.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtAddress_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
             {

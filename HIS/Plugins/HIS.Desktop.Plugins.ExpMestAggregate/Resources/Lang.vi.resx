@@ -579,4 +579,10 @@
 	<data name="UCExpMestAggregate.navBarGroupArea.Caption" xml:space="preserve">
     <value>Khu vực</value>
   </data>
+  <data name="UCExpMestAggregate.grdColExpHomePres.Caption" xml:space="preserve">
+    <value>Đơn mang về</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColHomePres.Caption" xml:space="preserve">
+    <value>Đơn mang về</value>
+  </data>
 </root>
