@@ -119,6 +119,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.repositoryEditServiceReq__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemPictureEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.txtKeyWord = new DevExpress.XtraEditors.TextEdit();
+            this.txtDobYear = new DevExpress.XtraEditors.TextEdit();
+            this.txtAddress = new DevExpress.XtraEditors.TextEdit();
             this.txtPatientCode = new DevExpress.XtraEditors.TextEdit();
             this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
             this.cboFilterByDepartment = new DevExpress.XtraEditors.LookUpEdit();
@@ -136,6 +138,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -166,6 +170,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             ((System.ComponentModel.ISupportInitialize)(this.repositoryEditServiceReq__Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDobYear.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAddress.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboFilterByDepartment.Properties)).BeginInit();
@@ -183,6 +189,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -196,6 +204,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControl1.Controls.Add(this.ucPaging1);
             this.layoutControl1.Controls.Add(this.gridControlHisTreatment5);
             this.layoutControl1.Controls.Add(this.txtKeyWord);
+            this.layoutControl1.Controls.Add(this.txtDobYear);
+            this.layoutControl1.Controls.Add(this.txtAddress);
             this.layoutControl1.Controls.Add(this.txtPatientCode);
             this.layoutControl1.Controls.Add(this.txtTreatmentCode);
             this.layoutControl1.Controls.Add(this.cboFilterByDepartment);
@@ -291,7 +301,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             // 
             // cboStatus
             // 
-            this.cboStatus.Location = new System.Drawing.Point(781, 2);
+            this.cboStatus.Location = new System.Drawing.Point(1091, 2);
             this.cboStatus.MenuManager = this.barManager1;
             this.cboStatus.Name = "cboStatus";
             this.cboStatus.Properties.AutoComplete = false;
@@ -315,7 +325,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(906, 2);
+            this.btnSearch.Location = new System.Drawing.Point(1216, 2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(101, 22);
             this.btnSearch.StyleController = this.layoutControl1;
@@ -717,7 +727,32 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.txtKeyWord.StyleController = this.layoutControl1;
             this.txtKeyWord.TabIndex = 6;
             this.txtKeyWord.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtKeyWord_PreviewKeyDown);
-            // 
+            //
+            // txtDobYear
+            //
+            this.txtDobYear.Location = new System.Drawing.Point(686, 2);
+            this.txtDobYear.Name = "txtDobYear";
+            this.txtDobYear.Properties.Mask.EditMask = "\\d{0,4}";
+            this.txtDobYear.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
+            this.txtDobYear.Properties.MaxLength = 4;
+            this.txtDobYear.Properties.NullValuePrompt = "Năm sinh";
+            this.txtDobYear.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtDobYear.Size = new System.Drawing.Size(106, 20);
+            this.txtDobYear.StyleController = this.layoutControl1;
+            this.txtDobYear.TabIndex = 17;
+            this.txtDobYear.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtDobYear_PreviewKeyDown);
+            //
+            // txtAddress
+            //
+            this.txtAddress.Location = new System.Drawing.Point(796, 2);
+            this.txtAddress.Name = "txtAddress";
+            this.txtAddress.Properties.NullValuePrompt = "Địa chỉ";
+            this.txtAddress.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtAddress.Size = new System.Drawing.Size(196, 20);
+            this.txtAddress.StyleController = this.layoutControl1;
+            this.txtAddress.TabIndex = 18;
+            this.txtAddress.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtAddress_PreviewKeyDown);
+            //
             // txtPatientCode
             // 
             this.txtPatientCode.Location = new System.Drawing.Point(230, 2);
@@ -775,7 +810,9 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.emptySpaceItem2,
             this.layoutControlItem9,
             this.layoutControlItem10,
-            this.layoutControlItem13});
+            this.layoutControlItem13,
+            this.layoutControlItem14,
+            this.layoutControlItem15});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -808,7 +845,25 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControlItem3.Size = new System.Drawing.Size(228, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
-            // 
+            //
+            // layoutControlItem14
+            //
+            this.layoutControlItem14.Control = this.txtDobYear;
+            this.layoutControlItem14.Location = new System.Drawing.Point(684, 0);
+            this.layoutControlItem14.Name = "layoutControlItem14";
+            this.layoutControlItem14.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem14.TextVisible = false;
+            //
+            // layoutControlItem15
+            //
+            this.layoutControlItem15.Control = this.txtAddress;
+            this.layoutControlItem15.Location = new System.Drawing.Point(794, 0);
+            this.layoutControlItem15.Name = "layoutControlItem15";
+            this.layoutControlItem15.Size = new System.Drawing.Size(200, 26);
+            this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem15.TextVisible = false;
+            //
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.gridControlHisTreatment5;
@@ -821,9 +876,9 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(1009, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(1319, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(341, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(31, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem5
@@ -847,7 +902,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnSearch;
-            this.layoutControlItem11.Location = new System.Drawing.Point(904, 0);
+            this.layoutControlItem11.Location = new System.Drawing.Point(1214, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(105, 26);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -858,7 +913,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem12.Control = this.cboStatus;
-            this.layoutControlItem12.Location = new System.Drawing.Point(684, 0);
+            this.layoutControlItem12.Location = new System.Drawing.Point(994, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Size = new System.Drawing.Size(220, 26);
             this.layoutControlItem12.Text = "Trạng thái";
@@ -1001,6 +1056,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             ((System.ComponentModel.ISupportInitialize)(this.repositoryEditServiceReq__Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDobYear.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAddress.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboFilterByDepartment.Properties)).EndInit();
@@ -1018,6 +1075,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1099,5 +1158,9 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
+        private DevExpress.XtraEditors.TextEdit txtDobYear;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
+        private DevExpress.XtraEditors.TextEdit txtAddress;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
     }
 }
