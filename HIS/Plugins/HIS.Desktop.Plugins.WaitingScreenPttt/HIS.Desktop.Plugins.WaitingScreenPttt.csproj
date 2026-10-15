@@ -103,6 +103,11 @@
     <Compile Include="WaitingScreenPtttProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmWaitingScreenPttt.resx">
+      <DependentUpon>frmWaitingScreenPttt.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
