@@ -66,6 +66,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     //Nếu TDL_PATIENT_WORK_PLACE_ID không có thông tin và TDL_PATIENT_WORK_PLACE_NAME có thông tin thì hiển thị dữ liệu tại TDL_PATIENT_WORK_PLACE_NAME và tự động check vào checkbox “Khác”
                     //Nếu cả 2 trường đếu ko có thông tin thì mặc định bỏ check checkbox “Khác”
 
+                    Inventec.Common.Logging.LogSystem.Debug("TransactionBill.FillInfoPatient >>> IsPin=" + IsPin + " | TDL_PATIENT_WORK_PLACE_ID=" + data.TDL_PATIENT_WORK_PLACE_ID + " | TDL_PATIENT_WORK_PLACE_NAME=" + data.TDL_PATIENT_WORK_PLACE_NAME + " | TDL_PATIENT_WORK_PLACE=" + data.TDL_PATIENT_WORK_PLACE);
                     if (!IsPin)
                     {
                         radioBuyerUser.Checked = true;
@@ -78,12 +79,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             txtBuyerEmail.Text = patientData.EMAIL;
                         }
                         txtBuyerAccountNumber.Text = patientData?.ACCOUNT_NUMBER ?? data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
-                        txtBuyerAddress.Text = patientData?.ADDRESS ?? data.TDL_PATIENT_ADDRESS ?? "";
                         txtSDT.Text = data.TDL_PATIENT_PHONE ?? "";
-                        if (chkAddressBhyt.Checked && resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
-                        {
-                            txtBuyerAddress.Text = resultPatientType.ADDRESS;
-                        }
                         txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
                         if (patientData != null && !string.IsNullOrEmpty(patientData.BUD_REL_UNIT_CODE))
                         {
@@ -98,6 +94,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             txtMaQH.Text = "";
                         }
                         string autoLoadData = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TransactionBill.AutoLoadOrgAndTaxCodeByPatient");
+                        Inventec.Common.Logging.LogSystem.Debug("TransactionBill.FillInfoPatient >>> autoLoadData=[" + autoLoadData + "] | patientData null=" + (patientData == null) + " | patientData.WORK_PLACE_ID=" + patientData?.WORK_PLACE_ID + " | patientData.WORK_PLACE=" + patientData?.WORK_PLACE);
 
                         string patientTaxCode = patientData?.TAX_CODE ?? data.TDL_PATIENT_TAX_CODE;
                         txtBuyerTaxCode.Text = patientTaxCode ?? "";
@@ -105,27 +102,49 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                         long? workPlaceId = patientData?.WORK_PLACE_ID ?? data.TDL_PATIENT_WORK_PLACE_ID;
                         string workPlaceName = patientData?.WORK_PLACE ?? data.TDL_PATIENT_WORK_PLACE;
+                        Inventec.Common.Logging.LogSystem.Debug("TransactionBill.FillInfoPatient >>> workPlaceId=" + workPlaceId + " | workPlaceName=[" + workPlaceName + "]");
                         if (workPlaceId.HasValue)
                         {
+                            Inventec.Common.Logging.LogSystem.Debug("TransactionBill.FillInfoPatient >>> BRANCH: co workPlaceId");
                             cboBuyerOrganization.EditValue = (autoLoadData == "1") ? workPlaceId : null;
                             txtBuyerOrganization.Text = "";
                             chkOther.Checked = false;
 
+                            checkEdit1.Checked = false;
+                            txtBuyerOrganzation2.Text = "";
                             cboBuyerOrganzation2.EditValue = (autoLoadData == "1") ? workPlaceId : null;
                             txtBuyerTaxCode2.Text = (autoLoadData == "1") ? (patientTaxCode ?? dtWorkPlace?.FirstOrDefault(o => o.ID == workPlaceId)?.TAX_CODE) : null;
                         }
                         else if (!string.IsNullOrEmpty(workPlaceName))
                         {
+                            Inventec.Common.Logging.LogSystem.Debug("TransactionBill.FillInfoPatient >>> BRANCH: khong co ID, co text=[" + workPlaceName + "] -> chkOther=true, checkEdit1=" + (autoLoadData == "1"));
                             cboBuyerOrganization.EditValue = null;
                             txtBuyerOrganization.Text = workPlaceName;
                             chkOther.Checked = true;
+
+                            cboBuyerOrganzation2.EditValue = null;
+                            txtBuyerOrganzation2.Text = (autoLoadData == "1") ? workPlaceName : "";
+                            checkEdit1.Checked = (autoLoadData == "1");
                         }
                         else
                         {
+                            Inventec.Common.Logging.LogSystem.Debug("TransactionBill.FillInfoPatient >>> BRANCH: khong co ca ID lan text -> clear");
                             cboBuyerOrganization.EditValue = null;
                             txtBuyerOrganization.Text = "";
                             chkOther.Checked = false;
+
+                            cboBuyerOrganzation2.EditValue = null;
+                            txtBuyerOrganzation2.Text = "";
+                            checkEdit1.Checked = false;
                         }
+
+                        // Gán sau combo đơn vị vì EditValueChanged của combo ghi đè địa chỉ bằng địa chỉ đơn vị
+                        txtBuyerAddress.Text = !string.IsNullOrWhiteSpace(patientData?.VIR_ADDRESS) ? patientData.VIR_ADDRESS : (data.TDL_PATIENT_ADDRESS ?? "");
+                        if (chkAddressBhyt.Checked && resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
+                        {
+                            txtBuyerAddress.Text = resultPatientType.ADDRESS;
+                        }
+
                         if (!string.IsNullOrEmpty(data.TDL_PATIENT_CCCD_NUMBER))
                         {
                             txtBuyerIdentityNumber.Text = data.TDL_PATIENT_CCCD_NUMBER;
