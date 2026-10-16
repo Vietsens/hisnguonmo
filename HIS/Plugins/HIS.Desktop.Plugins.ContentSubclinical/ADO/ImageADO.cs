@@ -28,5 +28,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ADO
     {
         public string SERVICE_REQ_NAME { get; set; }
         public Image IMAGE_DISPLAY { get; set; }
+        /// <summary>Viec 57971: service of the image (HIS_SERE_SERV_FILE.SERE_SERV_ID) - images of the current result tab only</summary>
+        public long SERE_SERV_ID { get; set; }
     }
 }

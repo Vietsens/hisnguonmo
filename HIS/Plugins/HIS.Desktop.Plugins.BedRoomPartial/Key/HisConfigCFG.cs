@@ -111,6 +111,31 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
         }
 
         /// <summary>
+        /// Viec 57971: split the CLS order tab by service group. Any value other than 1, 2 = Off (former behaviour).
+        /// </summary>
+        internal static EnumClsTabOption ClsTabOption
+        {
+            get
+            {
+                try
+                {
+                    string value = HisConfigs.Get<string>(Key.HisConfigKeys.HIS_CONFIG_KEY__ClsTabOption);
+                    if (value != null)
+                        value = value.Trim();
+                    if (value == ((int)EnumClsTabOption.ShowMainTabs).ToString())
+                        return EnumClsTabOption.ShowMainTabs;
+                    if (value == ((int)EnumClsTabOption.ShowTabsWithData).ToString())
+                        return EnumClsTabOption.ShowTabsWithData;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return EnumClsTabOption.Off;
+            }
+        }
+
+        /// <summary>
         /// Viec 55703: cho phep tai khoan cung khoa chi dinh xoa y lenh do nguoi khac chi dinh.
         /// Mac dinh tat (khac "1") - giu nguyen quyen xoa nhu cu.
         /// </summary>
