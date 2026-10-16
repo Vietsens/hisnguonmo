@@ -360,10 +360,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.repositoryItemPictureEdit9 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.gridColumn24 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gcTreatmentHistory = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColServiceNames = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColServiceAmounts = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColServicePrices = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColServicePatientTypes = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItembtnTreatmentHistory = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton_CallPatient = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Send = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -3379,10 +3375,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn15,
             this.gridColumn22,
             this.grdColVirPatientName,
-            this.grdColServiceNames,
-            this.grdColServiceAmounts,
-            this.grdColServicePrices,
-            this.grdColServicePatientTypes,
             this.grdColDob,
             this.grdColPatientCode,
             this.gridColumnTreatmentCode,
@@ -3592,60 +3584,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColVirPatientName.Visible = true;
             this.grdColVirPatientName.VisibleIndex = 10;
             this.grdColVirPatientName.Width = 140;
-            //
-            // grdColServiceNames
-            //
-            this.grdColServiceNames.Caption = "Tên dịch vụ";
-            this.grdColServiceNames.ColumnEdit = this.repositoryItemTextEdit;
-            this.grdColServiceNames.FieldName = "SERVICE_NAMES_DISPLAY";
-            this.grdColServiceNames.Name = "grdColServiceNames";
-            this.grdColServiceNames.OptionsColumn.ReadOnly = true;
-            this.grdColServiceNames.Visible = true;
-            this.grdColServiceNames.VisibleIndex = 11;
-            this.grdColServiceNames.Width = 200;
-            //
-            // grdColServiceAmounts
-            //
-            this.grdColServiceAmounts.AppearanceCell.Options.UseTextOptions = true;
-            this.grdColServiceAmounts.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.grdColServiceAmounts.AppearanceHeader.Options.UseTextOptions = true;
-            this.grdColServiceAmounts.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.grdColServiceAmounts.Caption = "Số lượng";
-            this.grdColServiceAmounts.ColumnEdit = this.repositoryItemTextEdit;
-            this.grdColServiceAmounts.FieldName = "SERVICE_AMOUNTS_DISPLAY";
-            this.grdColServiceAmounts.Name = "grdColServiceAmounts";
-            this.grdColServiceAmounts.OptionsColumn.ReadOnly = true;
-            this.grdColServiceAmounts.Visible = true;
-            this.grdColServiceAmounts.VisibleIndex = 12;
-            this.grdColServiceAmounts.Width = 65;
-            //
-            // grdColServicePrices
-            //
-            this.grdColServicePrices.AppearanceCell.Options.UseTextOptions = true;
-            this.grdColServicePrices.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.grdColServicePrices.AppearanceHeader.Options.UseTextOptions = true;
-            this.grdColServicePrices.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.grdColServicePrices.Caption = "Giá";
-            this.grdColServicePrices.ColumnEdit = this.repositoryItemTextEdit;
-            this.grdColServicePrices.FieldName = "SERVICE_PRICES_DISPLAY";
-            this.grdColServicePrices.Name = "grdColServicePrices";
-            this.grdColServicePrices.OptionsColumn.ReadOnly = true;
-            this.grdColServicePrices.Visible = true;
-            this.grdColServicePrices.VisibleIndex = 13;
-            this.grdColServicePrices.Width = 90;
-            //
-            // grdColServicePatientTypes
-            //
-            this.grdColServicePatientTypes.Caption = "ĐTTT";
-            this.grdColServicePatientTypes.ColumnEdit = this.repositoryItemTextEdit;
-            this.grdColServicePatientTypes.FieldName = "SERVICE_PATIENT_TYPES_DISPLAY";
-            this.grdColServicePatientTypes.Name = "grdColServicePatientTypes";
-            this.grdColServicePatientTypes.OptionsColumn.ReadOnly = true;
-            this.grdColServicePatientTypes.ToolTip = "Đối tượng thanh toán";
-            this.grdColServicePatientTypes.Visible = true;
-            this.grdColServicePatientTypes.VisibleIndex = 14;
-            this.grdColServicePatientTypes.Width = 90;
-            //
+            // 
             // repositoryItemTextEdit
             // 
             this.repositoryItemTextEdit.AutoHeight = false;
@@ -3663,7 +3602,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColDob.OptionsColumn.ReadOnly = true;
             this.grdColDob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColDob.Visible = true;
-            this.grdColDob.VisibleIndex = 15;
+            this.grdColDob.VisibleIndex = 11;
             this.grdColDob.Width = 66;
             // 
             // grdColPatientCode
@@ -3678,7 +3617,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColPatientCode.Name = "grdColPatientCode";
             this.grdColPatientCode.OptionsColumn.ReadOnly = true;
             this.grdColPatientCode.Visible = true;
-            this.grdColPatientCode.VisibleIndex = 16;
+            this.grdColPatientCode.VisibleIndex = 12;
             this.grdColPatientCode.Width = 96;
             // 
             // gridColumnTreatmentCode
@@ -3691,7 +3630,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnTreatmentCode.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnTreatmentCode.OptionsColumn.ReadOnly = true;
             this.gridColumnTreatmentCode.Visible = true;
-            this.gridColumnTreatmentCode.VisibleIndex = 17;
+            this.gridColumnTreatmentCode.VisibleIndex = 13;
             this.gridColumnTreatmentCode.Width = 100;
             // 
             // grdColServiceReqCode
@@ -3702,7 +3641,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColServiceReqCode.Name = "grdColServiceReqCode";
             this.grdColServiceReqCode.OptionsColumn.ReadOnly = true;
             this.grdColServiceReqCode.Visible = true;
-            this.grdColServiceReqCode.VisibleIndex = 18;
+            this.grdColServiceReqCode.VisibleIndex = 14;
             this.grdColServiceReqCode.Width = 110;
             // 
             // gridColumnGender
@@ -3714,7 +3653,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnGender.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnGender.OptionsColumn.ReadOnly = true;
             this.gridColumnGender.Visible = true;
-            this.gridColumnGender.VisibleIndex = 19;
+            this.gridColumnGender.VisibleIndex = 15;
             this.gridColumnGender.Width = 62;
             // 
             // gridColumn9
@@ -3725,7 +3664,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn9.OptionsColumn.ReadOnly = true;
             this.gridColumn9.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 20;
+            this.gridColumn9.VisibleIndex = 16;
             this.gridColumn9.Width = 156;
             // 
             // gridColumn10
@@ -3736,7 +3675,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn10.OptionsColumn.ReadOnly = true;
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 21;
+            this.gridColumn10.VisibleIndex = 17;
             this.gridColumn10.Width = 149;
             // 
             // gridColumnInstructionTime
@@ -3748,7 +3687,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnInstructionTime.OptionsColumn.ReadOnly = true;
             this.gridColumnInstructionTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnInstructionTime.Visible = true;
-            this.gridColumnInstructionTime.VisibleIndex = 22;
+            this.gridColumnInstructionTime.VisibleIndex = 18;
             this.gridColumnInstructionTime.Width = 146;
             // 
             // gridColumn17
@@ -3760,7 +3699,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn17.OptionsFilter.AllowAutoFilter = false;
             this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 23;
+            this.gridColumn17.VisibleIndex = 19;
             this.gridColumn17.Width = 146;
             // 
             // gridColumnServiceReqBlock
@@ -3770,7 +3709,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnServiceReqBlock.Name = "gridColumnServiceReqBlock";
             this.gridColumnServiceReqBlock.OptionsColumn.AllowEdit = false;
             this.gridColumnServiceReqBlock.Visible = true;
-            this.gridColumnServiceReqBlock.VisibleIndex = 24;
+            this.gridColumnServiceReqBlock.VisibleIndex = 20;
             this.gridColumnServiceReqBlock.Width = 60;
             // 
             // gc_PatientClassify
@@ -3782,7 +3721,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gc_PatientClassify.ToolTip = "Phân loại bệnh nhân";
             this.gc_PatientClassify.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gc_PatientClassify.Visible = true;
-            this.gc_PatientClassify.VisibleIndex = 25;
+            this.gc_PatientClassify.VisibleIndex = 21;
             this.gc_PatientClassify.Width = 80;
             // 
             // grdColFinishTime
@@ -3794,7 +3733,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColFinishTime.OptionsColumn.ReadOnly = true;
             this.grdColFinishTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColFinishTime.Visible = true;
-            this.grdColFinishTime.VisibleIndex = 26;
+            this.grdColFinishTime.VisibleIndex = 22;
             this.grdColFinishTime.Width = 100;
             // 
             // grdColPatientType
@@ -3806,7 +3745,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColPatientType.OptionsColumn.ReadOnly = true;
             this.grdColPatientType.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColPatientType.Visible = true;
-            this.grdColPatientType.VisibleIndex = 27;
+            this.grdColPatientType.VisibleIndex = 23;
             this.grdColPatientType.Width = 100;
             // 
             // gridColumn19
@@ -3815,7 +3754,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn19.FieldName = "MACHINE_NAMES";
             this.gridColumn19.Name = "gridColumn19";
             this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 28;
+            this.gridColumn19.VisibleIndex = 24;
             this.gridColumn19.Width = 120;
             // 
             // grdColPRIORIRY_DISPLAY
@@ -5140,10 +5079,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private DevExpress.XtraGrid.Columns.GridColumn Gc_MedisoftHistory;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnMedisoftHistory;
         private DevExpress.XtraGrid.Columns.GridColumn gcTreatmentHistory;
-        private DevExpress.XtraGrid.Columns.GridColumn grdColServiceNames;
-        private DevExpress.XtraGrid.Columns.GridColumn grdColServiceAmounts;
-        private DevExpress.XtraGrid.Columns.GridColumn grdColServicePrices;
-        private DevExpress.XtraGrid.Columns.GridColumn grdColServicePatientTypes;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItembtnTreatmentHistory;
         private DevExpress.XtraLayout.LayoutControlItem lciRequestAndMaxRequest;
         private DevExpress.XtraEditors.ComboBoxEdit cboInDebt;

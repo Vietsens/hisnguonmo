@@ -1244,19 +1244,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
                 if (cboTreatmentEndType.EditValue == null)
                 {
-                    if (ConfigKey.SetDefaultTreatmentEndType == "1")
-                    {
-                        cboTreatmentEndType.EditValue = LstHisTreatmentEndType != null ? LstHisTreatmentEndType.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN).ID : 0;
-                    }
-                    else if (ConfigKey.SetDefaultTreatmentEndType == "2")
-                    {
-                        var heinRightRouteData = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteStore.GetByCode(this.patientTypeAlter.RIGHT_ROUTE_CODE);
-                        if (!string.IsNullOrWhiteSpace(this.currentHisTreatment.TRANSFER_IN_MEDI_ORG_CODE)
-                            && heinRightRouteData != null && heinRightRouteData.HeinRightRouteName == "Đúng tuyến")
-                        {
-                            cboTreatmentEndType.EditValue = LstHisTreatmentEndType != null ? LstHisTreatmentEndType.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN).ID : 0;
-                        }
-                    }
+                    this.SetDefaultTreatmentEndTypeByConfig();
                 }
             }
             catch (Exception ex)
@@ -1265,6 +1253,49 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
 
+
+        /// <summary>
+        /// Dat "Loai ra vien" mac dinh theo cau hinh SetDefaultTreatmentEndType.
+        /// Ho so dien Kham chi co cac loai IS_FOR_OUT_PATIENT = 1; neu loai mac dinh (Ra vien / Hen kham)
+        /// khong nam trong danh sach thi bo qua, KHONG nem loi (truoc day .FirstOrDefault(...).ID nem
+        /// NullReference lam FillDataCurrentTreatment dung giua chung -> mat checkbox man tinh, bac si...)
+        /// </summary>
+        private void SetDefaultTreatmentEndTypeByConfig()
+        {
+            try
+            {
+                if (LstHisTreatmentEndType == null)
+                {
+                    return;
+                }
+                HIS_TREATMENT_END_TYPE defaultType = null;
+                if (ConfigKey.SetDefaultTreatmentEndType == "1")
+                {
+                    defaultType = LstHisTreatmentEndType.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN);
+                }
+                else if (ConfigKey.SetDefaultTreatmentEndType == "2")
+                {
+                    var heinRightRouteData = this.patientTypeAlter != null ? MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteStore.GetByCode(this.patientTypeAlter.RIGHT_ROUTE_CODE) : null;
+                    if (this.currentHisTreatment != null && !string.IsNullOrWhiteSpace(this.currentHisTreatment.TRANSFER_IN_MEDI_ORG_CODE)
+                        && heinRightRouteData != null && heinRightRouteData.HeinRightRouteName == "Đúng tuyến")
+                    {
+                        defaultType = LstHisTreatmentEndType.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN);
+                    }
+                }
+                if (defaultType != null)
+                {
+                    cboTreatmentEndType.EditValue = defaultType.ID;
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SetDefaultTreatmentEndTypeByConfig: khong tim thay loai ra vien mac dinh trong danh sach, bo qua. Option=" + ConfigKey.SetDefaultTreatmentEndType);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         private async Task LoadCboDepartmentOut()
         {
@@ -1598,19 +1629,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             this.icdYhctProcessor.Reload(ucIcdYhct, icdYhct, Template.NoFocus);
                         }
                     }
-                    if (ConfigKey.SetDefaultTreatmentEndType == "1")
-                    {
-                        cboTreatmentEndType.EditValue = LstHisTreatmentEndType != null ? LstHisTreatmentEndType.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN).ID : 0;
-                    }
-                    else if (ConfigKey.SetDefaultTreatmentEndType == "2")
-                    {
-                        var heinRightRouteData = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteStore.GetByCode(this.patientTypeAlter.RIGHT_ROUTE_CODE);
-                        if (!string.IsNullOrWhiteSpace(this.currentHisTreatment.TRANSFER_IN_MEDI_ORG_CODE)
-                            && heinRightRouteData != null && heinRightRouteData.HeinRightRouteName == "Đúng tuyến")
-                        {
-                            cboTreatmentEndType.EditValue = LstHisTreatmentEndType != null ? LstHisTreatmentEndType.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN).ID : 0;
-                        }
-                    }
+                    this.SetDefaultTreatmentEndTypeByConfig();
                     if (data.TREATMENT_END_TYPE_ID.HasValue && (GetTreatmentEndType() == 0 || cboTreatmentEndType.EditValue == null))
                     {
                         this.isFinished = true;

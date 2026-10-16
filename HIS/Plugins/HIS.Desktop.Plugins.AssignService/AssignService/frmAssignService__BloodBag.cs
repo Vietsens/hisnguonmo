@@ -38,7 +38,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private RepositoryItemTextEdit repositoryItemBloodBagNone;
 
         /// <summary>
-        /// Dich vu la che pham mau: loai Xet nghiem va nhom BHYT "Mau"
+        /// Dich vu la che pham mau: loai Xet nghiem va nhom BHYT "Mau" hoac "Che pham mau"
         /// </summary>
         private bool IsBloodProductService(long serviceId)
         {
@@ -50,7 +50,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 V_HIS_SERVICE service = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == serviceId);
                 result = service != null
                     && service.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
-                    && service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__MAU;
+                    && (service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__MAU
+                        || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__CPM);
                 this.dicIsBloodProductService[serviceId] = result;
             }
             catch (Exception ex)

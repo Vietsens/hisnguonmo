@@ -24,12 +24,19 @@ using System.Threading.Tasks;
 namespace HIS.UC.Hospitalize.ADO
 {
 	/// <summary>
-	/// Dong du lieu cua o chon Buong benh: them cot Tong BN/Tong so giuong
+	/// Dong du lieu cua o chon Buong benh: them cot Tong BN/Tong giuong
 	/// ghep tu PATIENT_COUNT va BED_COUNT cua V_HIS_BED_ROOM (api/HisBedRoom/GetView).
 	/// </summary>
 	class BedRoomADO : MOS.EFMODEL.DataModels.V_HIS_BED_ROOM
 	{
 		public string TT_PATIENT_BED_STR { get; set; }
+
+		/// <summary>
+		/// So PATIENT_COUNT voi BED_COUNT (rong tinh la 0): -1 it hon (chu xanh la), 0 bang (chu xanh duong),
+		/// 1 nhieu hon (chu do). Giong o Buong benh man Tiep nhan chuyen khoa (BedRoomWithIn).
+		/// </summary>
+		public int PatientBedCompare { get; set; }
+
 		public BedRoomADO() { }
 		public BedRoomADO(MOS.EFMODEL.DataModels.V_HIS_BED_ROOM data)
 		{
@@ -39,6 +46,7 @@ namespace HIS.UC.Hospitalize.ADO
 				{
 					Inventec.Common.Mapper.DataObjectMapper.Map<BedRoomADO>(this, data);
 					this.TT_PATIENT_BED_STR = BuildPatientBedText(this.PATIENT_COUNT, this.BED_COUNT);
+					this.PatientBedCompare = decimal.Compare(this.PATIENT_COUNT ?? 0, this.BED_COUNT ?? 0);
 				}
 			}
 			catch (Exception ex)

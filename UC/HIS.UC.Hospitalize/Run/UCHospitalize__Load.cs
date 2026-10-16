@@ -367,8 +367,10 @@ namespace HIS.UC.Hospitalize.Run
 
 		/// <summary>
 		/// Đổ danh sách buồng vào ô chọn Buồng bệnh: bật dòng tiêu đề cột (Mã buồng, Tên buồng)
-		/// và thêm cột Tổng BN/Tổng số giường ghép từ PATIENT_COUNT/BED_COUNT của V_HIS_BED_ROOM,
+		/// và thêm cột Tổng BN/Tổng giường ghép từ PATIENT_COUNT/BED_COUNT của V_HIS_BED_ROOM,
 		/// cùng dữ liệu api/HisBedRoom/GetView đang gọi, không gọi thêm đường gọi nào.
+		/// Chữ cả dòng: đỏ khi PATIENT_COUNT > BED_COUNT, xanh dương khi bằng, xanh lá khi ít hơn
+		/// (giống ô Buồng bệnh màn Tiếp nhận chuyển khoa).
 		/// Nguồn của ô là BedRoomADO (kế thừa V_HIS_BED_ROOM) nên ValueMember ID không đổi,
 		/// các xử lý tra theo listBedRoom (gõ mã buồng, Closed, KeyUp) giữ nguyên.
 		/// </summary>
@@ -386,12 +388,83 @@ namespace HIS.UC.Hospitalize.Run
 			List<ColumnInfo> columnInfos = new List<ColumnInfo>();
 			columnInfos.Add(new ColumnInfo("BED_ROOM_CODE", GetBedRoomColumnCaption("UCHospitalize.cboBedRoom.ColBedRoomCode.Caption", "Mã buồng"), 70, 1));
 			columnInfos.Add(new ColumnInfo("BED_ROOM_NAME", GetBedRoomColumnCaption("UCHospitalize.cboBedRoom.ColBedRoomName.Caption", "Tên buồng"), 180, 2));
-			ColumnInfo patientBedColumn = new ColumnInfo("TT_PATIENT_BED_STR", GetBedRoomColumnCaption("UCHospitalize.cboBedRoom.ColPatientBed.Caption", "Tổng BN/Tổng số giường"), 130, 3);
+			ColumnInfo patientBedColumn = new ColumnInfo("TT_PATIENT_BED_STR", GetBedRoomColumnCaption("UCHospitalize.cboBedRoom.ColPatientBed.Caption", "Tổng BN/Tổng giường"), 130, 3);
 			patientBedColumn.horzAlignment = ColumnInfo.HorzAlignment.Center;
 			columnInfos.Add(patientBedColumn);
 
 			ControlEditorADO controlEditorADO = new ControlEditorADO("BED_ROOM_NAME", "ID", columnInfos, true, 400);
 			ControlEditorLoader.Load(cboBedRoom, dataSource, controlEditorADO);
+
+			DevExpress.XtraGrid.Views.Grid.GridView bedRoomView = cboBedRoom.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+			if (bedRoomView != null)
+			{
+				// Hàm nạp chạy lại mỗi lần chọn khoa: gỡ trước khi gắn để không đăng ký trùng.
+				bedRoomView.RowStyle -= BedRoomView_RowStyle;
+				bedRoomView.RowStyle += BedRoomView_RowStyle;
+				bedRoomView.FocusedRowChanged -= BedRoomView_FocusedRowChanged;
+				bedRoomView.FocusedRowChanged += BedRoomView_FocusedRowChanged;
+				ApplyFocusedBedRoomForeColor(bedRoomView);
+			}
+		}
+
+		/// <summary>
+		/// Tô màu chữ cả dòng buồng: đỏ khi số BN đang nằm vượt số giường, xanh dương khi bằng, xanh lá khi còn giường.
+		/// </summary>
+		private static void BedRoomView_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+		{
+			try
+			{
+				DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+				if (view == null || e.RowHandle < 0)
+					return;
+
+				BedRoomADO bedRoom = view.GetRow(e.RowHandle) as BedRoomADO;
+				if (bedRoom == null)
+					return;
+
+				e.Appearance.ForeColor = GetBedRoomForeColor(bedRoom);
+			}
+			catch (Exception ex)
+			{
+				Inventec.Common.Logging.LogSystem.Warn(ex);
+			}
+		}
+
+		private static Color GetBedRoomForeColor(BedRoomADO bedRoom)
+		{
+			if (bedRoom.PatientBedCompare > 0)
+				return Color.Red;
+			if (bedRoom.PatientBedCompare == 0)
+				return Color.Blue;
+			return Color.Green;
+		}
+
+		/// <summary>
+		/// Dòng đang chọn dùng kiểu hiển thị riêng của DevExpress nên màu RowStyle không áp vào.
+		/// Đặt màu chữ của kiểu dòng đang chọn theo đúng dòng đó, nền chọn của skin giữ nguyên.
+		/// </summary>
+		private static void BedRoomView_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+		{
+			try
+			{
+				ApplyFocusedBedRoomForeColor(sender as DevExpress.XtraGrid.Views.Grid.GridView);
+			}
+			catch (Exception ex)
+			{
+				Inventec.Common.Logging.LogSystem.Warn(ex);
+			}
+		}
+
+		private static void ApplyFocusedBedRoomForeColor(DevExpress.XtraGrid.Views.Grid.GridView view)
+		{
+			if (view == null)
+				return;
+
+			BedRoomADO bedRoom = view.GetFocusedRow() as BedRoomADO;
+			Color foreColor = bedRoom != null ? GetBedRoomForeColor(bedRoom) : Color.Empty;
+			view.Appearance.FocusedRow.ForeColor = foreColor;
+			view.Appearance.SelectedRow.ForeColor = foreColor;
+			view.Appearance.HideSelectionRow.ForeColor = foreColor;
 		}
 
 		private static string GetBedRoomColumnCaption(string languageKey, string defaultCaption)

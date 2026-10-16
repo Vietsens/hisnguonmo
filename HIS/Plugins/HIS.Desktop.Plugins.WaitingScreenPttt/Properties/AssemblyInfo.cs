@@ -18,6 +18,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
+[assembly: Inventec.Desktop.Core.Plugin]
 [assembly: AssemblyTitle("HIS.Desktop.Plugins.WaitingScreenPttt")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]

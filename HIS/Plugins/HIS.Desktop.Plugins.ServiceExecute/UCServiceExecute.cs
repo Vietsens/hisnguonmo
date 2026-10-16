@@ -9579,6 +9579,38 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     currentTimer = dtEndTime.DateTime;
                     dtEndTime.SelectionStart = 0;
                     StartTimer(moduleData.ModuleLink, "timer1");
+                    AutoCalculateResultTimeFromEndTime();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Cau hinh HIS.Desktop.Plugins.ServiceExecute.AUTO_ADD_MINUTES_TO_RESULT_TIME.
+        /// Khi co gia tri (so phut > 0): moi lan nguoi dung nhap xong "Ket thuc", tu dong
+        /// ghi de "Ngay KQ" = Ket thuc + so phut cau hinh, khong phan biet "Ngay KQ" dang
+        /// trong, dang chay theo dong ho he thong hay da duoc sua tay truoc do.
+        /// Khi cau hinh rong/0: giu nguyen hanh vi hien tai, khong lam gi them.
+        /// </summary>
+        private void AutoCalculateResultTimeFromEndTime()
+        {
+            try
+            {
+                int? minutes = Config.AppConfigKeys.AutoAddMinutesToResultTime;
+                if (!minutes.HasValue) return;
+                if (dtEndTime.EditValue == null || dtEndTime.DateTime == DateTime.MinValue) return;
+
+                isSettingTimeByCode = true;
+                try
+                {
+                    dtResult.DateTime = dtEndTime.DateTime.AddMinutes(minutes.Value);
+                }
+                finally
+                {
+                    isSettingTimeByCode = false;
                 }
             }
             catch (Exception ex)

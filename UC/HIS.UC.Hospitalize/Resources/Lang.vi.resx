@@ -211,6 +211,6 @@
     <value>Tên buồng</value>
   </data>
   <data name="UCHospitalize.cboBedRoom.ColPatientBed.Caption" xml:space="preserve">
-    <value>Tổng BN/Tổng số giường</value>
+    <value>Tổng BN/Tổng giường</value>
   </data>
 </root>
