@@ -2018,9 +2018,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 spinSoNgay.EditValue = 1;
                 spinSoLuongNgay.EditValue = 1;
                 spinTocDoTruyen.EditValue = null;
-                lciTocDoTruyen.Visibility = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                grcTocDoTruyen.Visible = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? true : false;
-                lciHtu.TextSize = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? new System.Drawing.Size(60, lciTocDoTruyen.Height) : new System.Drawing.Size(90, lciTocDoTruyen.Height);
+                // Việc 59680 — Tốc độ truyền: hiện ở chế độ điều trị (như cũ), hoặc ở chế độ tủ trực (cả nội trú lẫn phòng khám) khi viện bật key IsShowSpeedInCabinetPres
+                bool isShowTocDoTruyen = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
+                    || (GlobalStore.IsCabinet && HisConfigCFG.IsShowSpeedInCabinetPres);
+                lciTocDoTruyen.Visibility = isShowTocDoTruyen ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                grcTocDoTruyen.Visible = isShowTocDoTruyen;
+                lciHtu.TextSize = isShowTocDoTruyen ? new System.Drawing.Size(60, lciTocDoTruyen.Height) : new System.Drawing.Size(90, lciTocDoTruyen.Height);
                 repositoryItemchkIsExpendType_Disable.Enabled = false;
                 repositoryItemchkIsExpendType_Disable.ReadOnly = true;
                 repositoryItemChkIsExpend__MedicinePage_Disable.Enabled = false;

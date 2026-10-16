@@ -175,8 +175,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_AllowOverMaxExpendService = "HIS.Desktop.Plugins.AssignPrescription.AllowOverMaxExpendService";
         private const string CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
         private const string CONFIG_KEY__IS_CHECK_PHARMACOLOGY = "HIS.Desktop.Plugins.IsCheckPharmacology";
+        // Việc 59680 — Hiện ô "Tốc độ truyền" + cột "Tốc độ(giọt/phút)" và lưu tốc độ truyền ở màn Kê đơn tủ trực (cả 2 biến thể). 1 = bật; khác = tắt (mặc định)
+        private const string CONFIG_KEY__IS_SHOW_SPEED_IN_CABINET_PRES = "HIS.Desktop.Plugins.AssignPrescription.IsShowSpeedInCabinetPres";
 
         internal static string AllowKidneyPresOutPatient;
+        internal static bool IsShowSpeedInCabinetPres;
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
         internal static string IsSaveButtonOption;
         internal static string IsRequiredHtu;
@@ -753,6 +756,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 MestRoomOption = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(CONFIG_KEY__MestRoomOption));
                 DefaultPatientTypeOption = (GetValue(CONFIG_KEY__DefaultPatientTypeOption) == "1");
                 AllowKidneyPresOutPatient = GetValue(KEY_HIS_DESKTOP_PLUGINS_ASSIGNPRESCRIPTION_ALLOWKIDNEYPRESOUTPATIENT);
+                IsShowSpeedInCabinetPres = (GetValue(CONFIG_KEY__IS_SHOW_SPEED_IN_CABINET_PRES) == "1"); // Việc 59680
 
                 GroupOption = (GetValue(CONFIG_KEY__GroupOption) == "1");
                 IsReasonRequired = (GetValue(CONFIG_KEY__IS_REASON_REQUIRED) == "1");
