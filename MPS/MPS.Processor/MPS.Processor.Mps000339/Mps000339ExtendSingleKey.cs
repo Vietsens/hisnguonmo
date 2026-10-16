@@ -42,6 +42,18 @@ namespace MPS.Processor.Mps000339
 
         internal static string MOBA_IMP_MEST_COUNT = "MOBA_IMP_MEST_COUNT";
 
-        internal static string EXP_MEST_CODE = "EXP_MEST_CODE"; 
+        internal static string EXP_MEST_CODE = "EXP_MEST_CODE";
+
+        //Viec 59437: phieu thanh toan nha thuoc - noi dung thu gop 1 dong + thong tin nguoi benh theo phieu xuat
+        internal const string BILL_GOODS_DESCRIPTION = "BILL_GOODS_DESCRIPTION";
+        internal const string BILL_GOODS_DESCRIPTION_UNIT = "BILL_GOODS_DESCRIPTION_UNIT";
+        internal const string BILL_GOODS_NAMES = "BILL_GOODS_NAMES";
+        internal const string EXP_MEST_CODES = "EXP_MEST_CODES";
+        internal const string SALE_PATIENT_NAME = "SALE_PATIENT_NAME";
+        internal const string SALE_PATIENT_ADDRESS = "SALE_PATIENT_ADDRESS";
+        internal const string SALE_PATIENT_YEAR = "SALE_PATIENT_YEAR";
+        internal const string SALE_PATIENT_CODE = "SALE_PATIENT_CODE";
+        internal const string SALE_PATIENT_GENDER_NAME = "SALE_PATIENT_GENDER_NAME";
+        internal const string SALE_HEIN_CARD_NUMBER = "SALE_HEIN_CARD_NUMBER";
     }
 }

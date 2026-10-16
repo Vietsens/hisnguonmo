@@ -144,6 +144,9 @@
   <data name="frmDepartmentTran.lciDTLogTime.Text" xml:space="preserve">
     <value>Thời gian:</value>
   </data>
+  <data name="frmDepartmentTran.lciDTLogTime.Text.RequestTime" xml:space="preserve">
+    <value>Thời gian yêu cầu:</value>
+  </data>
   <data name="frmDepartmentTran.lciDepartmentTo.Text" xml:space="preserve">
     <value>Khoa đến:</value>
   </data>
