@@ -2484,12 +2484,12 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 //resultPatientType = null;
                 ResetFillPatientDefault();
                 LoadSearch();
+                ResetControlValue();
                 FillInfoPatient(currentTreatment);
                 LoadAccountBookToLocal();
                 LoadAccountBookRepayToLocal();
                 LoadDataToComboAccountBook();
                 FillDataToGirdTransaction();
-                ResetControlValue();
                 SetDefaultAccountBook();//TODO
                 SetDefaultAccountBookRepay();
                 SetDefaultAccountBookDeposit();

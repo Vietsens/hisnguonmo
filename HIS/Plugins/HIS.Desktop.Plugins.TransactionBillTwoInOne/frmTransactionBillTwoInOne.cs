@@ -2484,7 +2484,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 }
 
                 txtBuyerAccountCode.Text = patientData?.ACCOUNT_NUMBER ?? data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
-                txtBuyerAddress.Text = patientData?.ADDRESS ?? data.TDL_PATIENT_ADDRESS ?? "";
+                txtBuyerAddress.Text = !string.IsNullOrWhiteSpace(patientData?.VIR_ADDRESS) ? patientData.VIR_ADDRESS : (data.TDL_PATIENT_ADDRESS ?? "");
 
                 txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
                 //txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
