@@ -978,19 +978,4 @@
   <data name="UCExecuteRoom.lblPatientCode.AllergyToolTip" xml:space="preserve">
     <value>Bệnh nhân có thẻ dị ứng</value>
   </data>
-  <data name="UCExecuteRoom.grdColServiceNames.Caption" xml:space="preserve">
-    <value>Tên dịch vụ</value>
-  </data>
-  <data name="UCExecuteRoom.grdColServiceAmounts.Caption" xml:space="preserve">
-    <value>Số lượng</value>
-  </data>
-  <data name="UCExecuteRoom.grdColServicePrices.Caption" xml:space="preserve">
-    <value>Giá</value>
-  </data>
-  <data name="UCExecuteRoom.grdColServicePatientTypes.Caption" xml:space="preserve">
-    <value>ĐTTT</value>
-  </data>
-  <data name="UCExecuteRoom.grdColServicePatientTypes.ToolTip" xml:space="preserve">
-    <value>Đối tượng thanh toán</value>
-  </data>
 </root>

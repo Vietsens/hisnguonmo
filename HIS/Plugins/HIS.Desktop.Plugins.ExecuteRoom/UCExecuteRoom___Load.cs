@@ -527,7 +527,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 // "Muc CC" da luu trong file layout (file dung chung moi phong) nen phai go ca khi luoi rong.
                 EnsureEmergencyClassifyColumn();
                 EnsureUseTimeColumn();
-                EnsureServiceInfoColumnsOrder();
                 //transitionManager1.StartTransition(layoutControl2);
                 WaitingManager.Show();
                 int start = ((CommonParam)param).Start ?? 0;
@@ -885,7 +884,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         LoadEmergencyClassifyColorDict(serviceReqs);
                         LoadMchSyncStatusDict(serviceReqs);
                         EnsureMchStatusColumn();
-                        LoadSereServInfoOfServiceReqs(serviceReqs);
                         gridControlServiceReq.DataSource = serviceReqs;
                     }
                     else

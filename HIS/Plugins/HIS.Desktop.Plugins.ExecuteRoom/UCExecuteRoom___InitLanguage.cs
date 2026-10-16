@@ -100,11 +100,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 this.grdColNUM_ORDER.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColNUM_ORDER.Caption", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 //this.grdColServiceReqCode.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColServiceReqCode.Caption", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.grdColVirPatientName.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColVirPatientName.Caption", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
-                this.grdColServiceNames.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColServiceNames.Caption", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
-                this.grdColServiceAmounts.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColServiceAmounts.Caption", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
-                this.grdColServicePrices.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColServicePrices.Caption", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
-                this.grdColServicePatientTypes.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColServicePatientTypes.Caption", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
-                this.grdColServicePatientTypes.ToolTip = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColServicePatientTypes.ToolTip", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.grdColPatientCode.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.grdColPatientCode.Caption", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.btnFind.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnFind.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.txtSearchKey.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCExecuteRoom.txtSearchKey.Properties.NullValuePrompt", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
