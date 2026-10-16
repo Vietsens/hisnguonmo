@@ -234,4 +234,43 @@
   <data name="frmContentSubclinical.btnClose.Text" xml:space="preserve">
     <value>Đóng</value>
   </data>
+  <data name="frmContentSubclinical.ClsTab.ALL.Text" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.XN.Text" xml:space="preserve">
+    <value>Xét nghiệm</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.SA.Text" xml:space="preserve">
+    <value>Siêu âm</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.XQ.Text" xml:space="preserve">
+    <value>X-quang</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.CTMRI.Text" xml:space="preserve">
+    <value>CT / MRI</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.TDCN.Text" xml:space="preserve">
+    <value>TDCN</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.TDCN.ToolTip" xml:space="preserve">
+    <value>Thăm dò chức năng</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.NS.Text" xml:space="preserve">
+    <value>Nội soi</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.GPBL.Text" xml:space="preserve">
+    <value>Giải phẫu bệnh</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.TT.Text" xml:space="preserve">
+    <value>Thủ thuật</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.KHAC.Text" xml:space="preserve">
+    <value>CLS khác</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.EmptyText" xml:space="preserve">
+    <value>Không có kết quả cận lâm sàng trong khoảng ngày đã chọn</value>
+  </data>
+  <data name="frmContentSubclinical.ClsTab.EmptyFilteredText" xml:space="preserve">
+    <value>Không có kết quả phù hợp điều kiện lọc</value>
+  </data>
 </root>

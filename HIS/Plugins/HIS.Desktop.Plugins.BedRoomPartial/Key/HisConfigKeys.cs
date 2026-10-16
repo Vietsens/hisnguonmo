@@ -61,5 +61,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
         /// "1" = co ket noi he thong benh an dien tu (EMR).
         /// </summary>
         internal const string HIS_CONFIG_KEY__HasConnectionEmr = "MOS.HAS_CONNECTION_EMR";
+        /// <summary>
+        /// Viec 57971: split the CLS tab of the order tree into one tab per service group (Test, Ultrasound, X-ray, CT / MRI, Functional tests,
+        /// Endoscopy, Pathology, Other CLS); the result screen opened by the "Ket qua CLS" button shows tabs too.
+        /// "1" = main tabs always shown; "2" = only tabs with orders; other / not declared = former behaviour (see EnumClsTabOption).
+        /// </summary>
+        internal const string HIS_CONFIG_KEY__ClsTabOption = "HIS.Desktop.Plugins.BedRoomPartial.ClsTabOption";
     }
 }
