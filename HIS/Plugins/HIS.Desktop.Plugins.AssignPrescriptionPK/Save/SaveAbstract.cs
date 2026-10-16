@@ -903,6 +903,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         if (!string.IsNullOrEmpty(item.OVER_KIDNEY_REASON))
                             pres.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = frmAssignPrescription.InstructionTime, IsNoPrescription = false, OverKidneyReason = item.OVER_KIDNEY_REASON });
                     }
+                    // Việc 59680 — Đơn tủ trực: gửi tốc độ truyền của dòng thuốc khi viện bật key (cùng cách nhánh nội trú đang làm); tắt key → không gửi, như cũ
+                    if (GlobalStore.IsCabinet && HisConfigCFG.IsShowSpeedInCabinetPres)
+                        pres.Speed = item.Speed;
                     pres.HtuText = item.HTU_TEXT;
                     pres.UseOriginalUnitForPres = (item.IsUseOrginalUnitForPres ?? false);
                     pres.MedicineId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
