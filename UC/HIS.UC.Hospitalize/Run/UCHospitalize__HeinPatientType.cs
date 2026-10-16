@@ -248,10 +248,10 @@ namespace HIS.UC.Hospitalize.Run
                 HIS_HEIN_PATIENT_TYPE matched;
                 bool isStandardLookup = Config.HisConfig.IsHeinPatientTypeCodeLookup;
                 if (isStandardLookup)
-                    // Key bat: tra chuan theo danh muc (cot trong = moi gia tri, dong cu the hon thang), o Cap cuu tham gia
+                    // Key = 1 hoac 2: chi theo o Cap cuu + Dien dieu tri + ma CSKCB ban dau, bo qua Tuyen va Truong hop ho so
                     matched = FindHeinPatientTypeStandard(pta, treatmentTypeId, chkEmergency.Checked);
                 else
-                    // Key tat: tra nhu cu (tuyen + truong hop cua ho so trung khit)
+                    // Key khac: tra nhu cu (tuyen + truong hop cua ho so trung khit)
                     matched = FindHeinPatientType(pta, pta.RIGHT_ROUTE_TYPE_CODE, treatmentTypeId);
 
                 SetHeinPatientTypeCodeText(matched != null ? matched.HEIN_PATIENT_TYPE_CODE : null);
@@ -272,16 +272,14 @@ namespace HIS.UC.Hospitalize.Run
         private const string RIGHT_ROUTE_TYPE_CODE__EMERGENCY = "CC";
 
         /// <summary>
-        /// Tra CHUAN theo danh muc Doi tuong KCB (key HIS.Desktop.Plugins.Hospitalize.HeinPatientTypeCodeLookupOption = 1).
-        /// Nguyen tac: moi cot dieu kien tren dong danh muc DE TRONG = ap dung moi gia tri;
-        /// khai cu the thi phai khop voi ho so. Nhieu dong cung khop => dong khai CU THE HON thang.
-        /// Dieu kien so khop:
-        ///  - Tuyen: dong trong, hoac = tuyen cua ho so (ho so khong co tuyen => chi dong trong).
-        ///  - Truong hop: dong trong, hoac = truong hop dang xet. Truong hop dang xet = Cap cuu neu o Cap cuu tich;
-        ///    khong tich => truong hop cua ho so (neu ho so la Cap cuu ma nguoi dung bo tich => coi nhu trong).
+        /// Tra theo danh muc Doi tuong KCB khi key HIS.Desktop.Plugins.Hospitalize.HeinPatientTypeCodeLookupOption = 1 hoac 2.
+        /// CHI xet 3 thu: o Cap cuu + Dien dieu tri + ma CSKCB ban dau. BO QUA Tuyen va Truong hop cua ho so
+        /// (cot Tuyen tren danh muc cung khong xet).
+        /// Nguyen tac: cot de trong tren dong danh muc = ap dung moi gia tri; khai cu the thi phai khop.
+        ///  - Truong hop: o Cap cuu tich => dong Truong hop = Cap cuu; khong tich => chi dong de trong Truong hop.
         ///  - Dien dieu tri: dong trong, hoac chua dien dang chon.
         ///  - Ma CSKCB ban dau: dong trong / "*", hoac liet ke dung ma DKKCB cua the.
-        /// Thu tu uu tien khi nhieu dong khop (cu the > trong): Truong hop -> ma CSKCB -> Tuyen -> Dien dieu tri
+        /// Nhieu dong cung khop => dong khai cu the hon thang, thu tu: Truong hop -> ma CSKCB -> Dien dieu tri
         ///  -> NUM_ORDER nho nhat (null xep cuoi) -> ID lon nhat.
         ///  (Truong hop xep dau de dong Cap cuu thang dong ghi dich danh ma CSKCB: cap cuu => ma cap cuu voi moi the.)
         /// Moi ma deu lay tu danh muc, khong co ma nao co dinh trong code.
@@ -290,23 +288,16 @@ namespace HIS.UC.Hospitalize.Run
         {
             try
             {
-                string rightRouteCode = (pta.RIGHT_ROUTE_CODE ?? "").Trim();
-                string rightRouteTypeCode = (pta.RIGHT_ROUTE_TYPE_CODE ?? "").Trim();
-                if (isEmergencyChecked)
-                    rightRouteTypeCode = RIGHT_ROUTE_TYPE_CODE__EMERGENCY;
-                else if (rightRouteTypeCode == RIGHT_ROUTE_TYPE_CODE__EMERGENCY)
-                    rightRouteTypeCode = "";
+                string rightRouteTypeCode = isEmergencyChecked ? RIGHT_ROUTE_TYPE_CODE__EMERGENCY : "";
                 string dkbdCode = (pta.HEIN_MEDI_ORG_CODE ?? "").Trim();
                 string treatmentTypeIdStr = treatmentTypeId.ToString();
 
-                Func<HIS_HEIN_PATIENT_TYPE, bool> isRouteSpecific = o => !string.IsNullOrWhiteSpace(o.RIGHT_ROUTE_CODE);
                 Func<HIS_HEIN_PATIENT_TYPE, bool> isRouteTypeSpecific = o => !string.IsNullOrWhiteSpace(o.RIGHT_ROUTE_TYPE_CODE);
                 Func<HIS_HEIN_PATIENT_TYPE, bool> isTreatmentTypeSpecific = o => !string.IsNullOrWhiteSpace(o.TREATMENT_TYPE_IDS);
                 Func<HIS_HEIN_PATIENT_TYPE, bool> isMediOrgSpecific = o => IsMediOrgCodeListSpecific(o.HEIN_MEDI_ORG_CODES);
 
                 var matchedList = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                    .Where(o => !isRouteSpecific(o) || o.RIGHT_ROUTE_CODE.Trim() == rightRouteCode)
                     .Where(o => !isRouteTypeSpecific(o) || o.RIGHT_ROUTE_TYPE_CODE.Trim() == rightRouteTypeCode)
                     .Where(o => !isTreatmentTypeSpecific(o) || treatmentTypeId <= 0
                         || o.TREATMENT_TYPE_IDS.Split(',').Select(s => s.Trim()).Any(id => id == treatmentTypeIdStr))
@@ -320,7 +311,6 @@ namespace HIS.UC.Hospitalize.Run
                 return matchedList
                     .OrderByDescending(o => isRouteTypeSpecific(o) ? 1 : 0)
                     .ThenByDescending(o => isMediOrgSpecific(o) ? 1 : 0)
-                    .ThenByDescending(o => isRouteSpecific(o) ? 1 : 0)
                     .ThenByDescending(o => isTreatmentTypeSpecific(o) ? 1 : 0)
                     .ThenBy(o => o.NUM_ORDER == null ? 1 : 0)
                     .ThenBy(o => o.NUM_ORDER)
@@ -404,12 +394,15 @@ namespace HIS.UC.Hospitalize.Run
 
         /// <summary>
         /// Ma doi tuong KCB tren form khac ma dang luu tren ho so => hoi nguoi dung truoc khi luu nhap vien.
+        /// CHI hoi khi key HeinPatientTypeCodeLookupOption = 1 (key = 2 tu dong khong hoi; key khac khong hoi).
         /// true: duoc luu tiep; false: nguoi dung chon Khong.
         /// </summary>
         public bool ConfirmChangeHeinPatientTypeCode()
         {
             try
             {
+                if (!Config.HisConfig.IsConfirmChangeHeinPatientTypeCode) return true;
+
                 // O ma de trong => khong gui len, ho so giu ma cu => khong co gi de hoi
                 string newCode = GetHeinPatientTypeCodeValue();
                 if (string.IsNullOrEmpty(newCode)) return true;
