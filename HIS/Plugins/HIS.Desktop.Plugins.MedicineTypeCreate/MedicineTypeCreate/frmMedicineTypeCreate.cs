@@ -4115,6 +4115,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     txtServiceUnitCode.Focus();
                     txtServiceUnitCode.SelectAll();
                 }
+                else if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    OpenServiceUnitModule();
+                }
             }
             catch (Exception ex)
             {
@@ -9557,6 +9561,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
+                if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    OpenSupplierModule();
+                }
             }
             catch (Exception ex)
             {

@@ -477,4 +477,13 @@ Hồ sơ chưa kiểm tra được cũng bị chặn vì chưa thể khẳng đ�
   <data name="MdInsightLyDoLechCoSo" xml:space="preserve">
     <value>Mã cơ sở khám chữa bệnh của hồ sơ không khớp cơ sở của tài khoản đang dùng, nên hệ thống soát lỗi không xử lý được hồ sơ này.</value>
   </data>
+  <data name="MdInsightNhanSoBo" xml:space="preserve">
+    <value>(sơ bộ)</value>
+  </data>
+  <data name="MdInsightNhanCanKiemLai" xml:space="preserve">
+    <value>cần kiểm lại</value>
+  </data>
+  <data name="MdInsightNhanDuLieuDaDoi" xml:space="preserve">
+    <value>dữ liệu đã đổi</value>
+  </data>
 </root>

@@ -14,7 +14,7 @@
 ### Luồng chính
 1. Bác sĩ/điều dưỡng mở chức năng Buồng bệnh tại phòng điều trị
 2. Chọn buồng bệnh → load danh sách bệnh nhân + lịch sử giường
-3. Chọn bệnh nhân → load TreeList y lệnh (tab Tất cả / CLS / Thuốc-vật tư / Khác)
+3. Chọn bệnh nhân → load TreeList y lệnh (tab Tất cả / CLS / Thuốc-vật tư / Khác / Khám bệnh; key `ClsTabOption` bật thì tab CLS tách thành các tab nhóm — xem mục dưới)
 4. Thao tác y lệnh: sửa, xóa, theo dõi, ký EMR, in phiếu, đăng ký dịch vụ mới
 5. Tách dịch vụ, gán giường mới, kết thúc điều trị
 
@@ -36,6 +36,26 @@ Vế so sánh ngày bắt buộc vì các plugin `AssignPrescription*` gán `USE
 Chiến lược nạp: config bật → nạp toàn đợt 1 lần trong `LoadAnticipateCache` (gọi từ `SelectPatient`), đổi ngày lọc RAM (0 API call). Đợt > 90 ngày → fallback gọi API theo từng ngày kê nguồn.
 
 Đơn dự trù nhiều ngày đã được backend **tách sẵn thành nhiều `HIS_SERVICE_REQ`**, mỗi đơn 1 `USE_TIME` — không dùng `USE_TIME_TO`.
+
+### Tách tab CLS theo nhóm dịch vụ (việc 57971, key `HIS.Desktop.Plugins.BedRoomPartial.ClsTabOption`)
+
+Mặc định TẮT (trống / khác 1, 2) — 1 tab "CLS" như cũ, sau mỗi lần nạp cây luôn quay về tab Tất cả.
+
+| Giá trị | Hành vi |
+|---|---|
+| 1 | Ẩn tab "CLS", chèn các tab nhóm ngay sau "Tất cả"; **luôn hiện** Xét nghiệm, Siêu âm, X-quang, TDCN, Nội soi; CT / MRI, Giải phẫu bệnh, CLS khác, tab loại CĐHA khác chỉ hiện khi có y lệnh |
+| 2 | Như 1 nhưng chỉ hiện tab nhóm có y lệnh |
+
+- **Bảng nhóm** `Base/ClsTabGroupStore.cs` (bản sao y hệt ở plugin ContentSubclinical — sửa phải sửa cả 2): Xét nghiệm (XN), Siêu âm (SA), X-quang (CĐHA có `DIIM_TYPE_ID` = `HIS_DIIM_TYPE.ID__XQ`), CT / MRI (`ID__CT`/`ID__MRI`), tab tự sinh `DIIM<id>` cho loại CĐHA khác (tên = `DIIM_TYPE_NAME`), TDCN, Nội soi, Giải phẫu bệnh (GPBL), CLS khác (CĐHA chưa gán loại). Thủ thuật vẫn ở tab Khác. Loại CĐHA tra `V_HIS_SERVICE` theo `DHisSereServ2.SERVICE_ID` (MOS bản 53745), không có thì theo mã dịch vụ.
+- **Dữ liệu tab** (`Base/ClsTabDataBuilder.cs`): phân nhóm ở dòng dịch vụ; dòng loại DV và dòng phiếu được đưa vào mọi tab có dịch vụ của nó (giữ đúng bố cục tab CLS cũ, dòng dùng chung không nhân bản). Tên tab = tên + `(số dịch vụ)` trong ngày đang chọn ở cột Ngày.
+- **Giữ tab đang chọn** khi đổi bệnh nhân / ngày / nạp lại (bỏ vòng `TabPages[3..0]`; cây ở tab chưa mở được tạo handle sẵn bằng `UCTreeListService.EnsureTreeHandle()` nên nạp lại vẫn đúng). Tab nhớ bị ẩn → về Tất cả; BN sau có lại nhóm đó → quay lại tab đã nhớ. Bấm vào tiêu đề tab đang hiện (vd Tất cả sau khi bị đưa về) cũng tính là chọn (`xtraTabControl1_MouseDown` + `CalcHitInfo`). Sau mỗi lần nạp, tab đang chọn được cuộn tới (`MakePageVisible`) vì tab nhóm hiện thêm bên trái có thể đẩy nó ra sau nút cuộn. Ẩn/hiện tab Khám bệnh (nạp bất đồng bộ) đi qua `SetExamTabVisible` để không bị tính là người dùng chọn.
+- **Tab Khám bệnh** (sửa kèm, mọi chế độ): `LoadMainExamByTreatmentId` xóa nội dung khám + sinh hiệu của BN trước ngay khi bắt đầu tải (trước đây tab vẫn hiện thông tin BN trước trong lúc chờ, và giữ nguyên sinh hiệu cũ khi BN mới không có DHST); kết quả trả về muộn của BN trước bị bỏ (`examLoadingTreatmentId`).
+- Tạo tab nhóm lỗi (thiếu tab) → bỏ các tab đã tạo, giữ tab CLS cũ (key coi như tắt). Hỏi xác nhận sửa/xóa gặp lỗi → dừng thao tác (không bỏ qua câu hỏi).
+- **Sửa/xóa phiếu từ tab nhóm**: phiếu còn dịch vụ thuộc nhóm khác (thực tế: phiếu CĐHA lẫn X-quang với CT/MRI) → hỏi "Phiếu … còn có dịch vụ thuộc nhóm … Thao tác sẽ áp dụng cho toàn bộ phiếu. Bạn có muốn tiếp tục?" (tên nhóm đầy đủ `ClsTabPage.FullName`, vd TDCN → "Thăm dò chức năng") trước khi gọi `Edit_Click` / `Delete_Click`.
+- Tab nhóm trống vẽ dòng "Không có y lệnh trong khoảng ngày đã chọn" (`UCTreeListService.SetEmptyText`). Nút Thu gọn, cột dự trù (`SetAnticipateColumnsVisible`), cột HP (`SetExpendCheckClick`) áp dụng cho cả tab nhóm.
+- Nút "Kết quả CLS" truyền thêm cờ `CLS_TAB` (+ `CLS_TAB_INIT:<mã nhóm>` khi đang đứng ở tab nhóm) để màn kết quả hiện theo tab và mở sẵn đúng nhóm.
+- Code: `Run/UCBedRoomPartial__Pluss__ClsTab.cs` (tạo/nạp/ẩn hiện/chọn tab), `Run/UCBedRoomPartial__Pluss__ClsTabAction.cs` (xác nhận, cờ Kết quả CLS, Thu gọn, dọn dẹp), `UCTreeListService___ClsTab.cs`, `EnumClsTabOption.cs`.
+- **Phụ thuộc DLL**: cần `MOS.SDO.dll` bản 14/10/2026 (`DHisSereServ2.SERVICE_ID`, `IS_EXPEND` — việc 53745); plugin đã gồm code 53745 nên `MOS.SDO.dll` cũ hơn làm cây y lệnh trống (MissingMethodException khi nạp).
 
 ### Điều kiện enable nút "Xóa y lệnh" trong TreeList (`ssRootSety.IsEnableDelete`)
 Với `SERVICE_REQ_STT_ID == CXL` (chưa xử lý), enable khi thỏa **1 trong 5**:
@@ -62,6 +82,7 @@ Khi bấm Xóa (`Delete_Click`), y lệnh **chỉ** xóa được nhờ điều 
 | HIS_SERVICE_REQ | Table | Y lệnh |
 | HIS_SERE_SERV | Table | Sere-serv (chi tiết DV) |
 | V_HIS_DEPARTMENT_TRAN | View | Chuyển khoa |
+| V_HIS_SERVICE | View (cache) | Loại chẩn đoán hình ảnh (`DIIM_TYPE_ID`, `DIIM_TYPE_NAME`) để tách tab X-quang / CT / MRI (việc 57971) |
 
 ## 4. UI Layout
 
@@ -107,7 +128,7 @@ Plugin reference `ACS.EFMODEL.dll`. Load quyền qua `GlobalVariables.AcsAuthori
 ### Inter-Plugin
 | Plugin đích | Khi nào mở | Args truyền |
 |-------------|-----------|-------------|
-| HIS.Desktop.Plugins.ContentSubclinical | Nút "Kết quả CLS" (luôn hiện, không gate key config) | `long TREATMENT_ID` + `List<string> { "VIEW_ONLY" }` + `Module` — KHÔNG truyền `DelegateSelectData` (chế độ chỉ xem, không chèn kết quả) |
+| HIS.Desktop.Plugins.ContentSubclinical | Nút "Kết quả CLS" (luôn hiện, không gate key config) | `long TREATMENT_ID` + `List<string> { "VIEW_ONLY" }` + `Module` — KHÔNG truyền `DelegateSelectData` (chế độ chỉ xem, không chèn kết quả). Key `ClsTabOption` bật: list thêm `"CLS_TAB"` và `"CLS_TAB_INIT:<mã nhóm>"` khi đang ở tab nhóm (việc 57971) |
 | HIS.Desktop.Plugins.Debate, HisTrackingList, ServiceReqList, AggrHospitalFees, TreatmentHistory, BedHistory, ... | Các nút thanh chức năng còn lại | `TREATMENT_ID` + `Module` (pattern chung `__Pluss__EventBtn.cs`) |
 
 ## 7. Print
@@ -118,6 +139,7 @@ Plugin tích hợp nhiều mẫu in qua RichEditorStore + MpsPrinter, phụ thu�
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 14/10/2026 | dangth2 | Việc 57971 (BV Nguyễn Tri Phương): tách tab "CLS" của cây y lệnh thành tab theo nhóm dịch vụ (Xét nghiệm, Siêu âm, X-quang, CT / MRI, TDCN, Nội soi, Giải phẫu bệnh, CLS khác + tab tự sinh theo loại CĐHA khác), bật bằng key `HIS.Desktop.Plugins.BedRoomPartial.ClsTabOption` = 1 (luôn hiện tab chính) / 2 (chỉ tab có y lệnh), mặc định tắt. Tên tab kèm số dịch vụ, giữ tab đang chọn khi đổi bệnh nhân/ngày (thay vòng chọn lại `TabPages[3..0]` bằng `EnsureTreeHandle`), hỏi xác nhận khi sửa/xóa phiếu có dịch vụ nhóm khác, dòng trống cho tab không có y lệnh, nút "Kết quả CLS" gửi cờ `CLS_TAB`/`CLS_TAB_INIT:`. File mới `Base/ClsTabGroupStore.cs`, `Base/ClsTabDataBuilder.cs`, `Base/ClsTabPage.cs`, `EnumClsTabOption.cs`, `Run/UCBedRoomPartial__Pluss__ClsTab.cs`, `Run/UCBedRoomPartial__Pluss__ClsTabAction.cs`, `UCTreeListService___ClsTab.cs`; sửa `Run/UCBedRoomPartial.cs` (Load, `LoadDataSereServByTreatmentId`, `LoadMainExamByTreatmentId` → `SetExamTabVisible`, Thu gọn), `__Anticipate.cs`, `__Dispose.cs`, `__EventBtn.cs`, `Key/*`, resource vi/en/my (tên tab, dòng trống, câu xác nhận `PhieuConDichVuThuocNhomKhac`). Key tắt: hành vi như cũ, trừ sửa kèm tab Khám bệnh: xóa nội dung BN trước khi tải BN mới, sinh hiệu trống khi BN không có DHST, bỏ kết quả trả về muộn của BN trước. Cần `MOS.SDO.dll` bản 53745. |
 | 06/10/2026 | dangth2 | Việc 55703 (BV Nguyễn Tri Phương): cho phép người cùng khoa chỉ định xóa y lệnh do người khác chỉ định, bật bằng key `MOS.HIS_SERVICE_REQ.ALLOW_DELETE_BY_SAME_REQUEST_DEPARTMENT = 1` (mặc định tắt). Thêm điều kiện 5 vào 2 chỗ đặt `ssRootSety.IsEnableDelete` (`LoadDataSereServByTreatmentId`, `GroupDataByTracking`), đọc key 1 lần trước vòng lặp; nút y lệnh mang thêm `SERVICE_REQ_CREATOR` (ADO). `Delete_Click` gọi `CheckEmrDocumentBeforeSameDepartmentDelete` trước luồng cũ (file mới `Run/UCBedRoomPartial__Pluss__DeleteSameDepartment.cs`, `Base/SameDepartmentDeleteChecker.cs`). Key mới trong `Key/HisConfigKeys.cs` + `Key/HisConfigCFG.cs` (kèm `MOS.HAS_CONNECTION_EMR`), `UriApi.EMR_DOCUMENT_GET`, 4 thông báo `XoaCungKhoa*` (vi/en/my). Cần Backend MOS bản có cùng key. |
 | 21/09/2026 | sinhnt | Việc 3352 (PT-56263): nhãn `Dự trù: ...` ở cột "Khoa yêu cầu" (2 chỗ trong `Run/UCBedRoomPartial.cs`: `LoadDataSereServByTreatmentId` và `GroupDataByTracking`) và cột "Ngày dự trù" (`USE_DATE_STR`) hiển thị thêm **giờ phút** khi `USE_TIME` có giờ — helper `FormatUseTimeDisplay` đặt cạnh `ToDateNumber` trong `Run/UCBedRoomPartial__Pluss__Anticipate.cs`. Nới `tc_UseDate.Width` 90 → 115 cho đủ chuỗi `dd/MM/yyyy HH:mm`. **Không đụng** logic gom nhóm theo ngày (`ToDateNumber`, `IsAnticipateMedicinePres`, `GetEffectiveDate`) nên cây ngày bên trái không đổi. |
 | 22/05/2026 | dangth2 | Việc 44693 (Tài liệu 2671): Bổ sung điều kiện enable nút "Xóa y lệnh giường" trong `Run/UCBedRoomPartial.cs` (2 vị trí thiết lập `ssRootSety.IsEnableDelete`) — nếu loại y lệnh là Giường (`SERVICE_REQ_TYPE.ID__G`) VÀ tài khoản có quyền HIS000053 thì enable. Các trường hợp khác giữ nguyên. Thêm `Base/ControlCode.cs`, field `hasDeleteBedPermission`, method `LoadDeleteBedPermission()`. Reference `ACS.EFMODEL.dll`. |
@@ -129,6 +151,19 @@ Plugin tích hợp nhiều mẫu in qua RichEditorStore + MpsPrinter, phụ thu�
 | 19/08/2026 | nampp | Việc 3222 (BV Điện Biên): Lọc bệnh nhân chưa kê đơn trong ngày theo tài khoản bác sĩ điều trị. Cơ chế lọc đã có sẵn (`cboPatientFilter` = 2 → `NO_PRESCRIPTION_FROM/TO`; `cboEmployee` → `DOCTOR_LOGINNAME`) nhưng ô lọc bác sĩ không có nhãn nên người dùng không nhận ra. Sửa trong `Run/UCBedRoomPartial.cs`: `InitComboEmployee` đặt `NullText` = "Bác sĩ điều trị" + tooltip cho `layoutControlItem50`, lưu `lstDoctorFilter`; thêm `SetDoctorFilterByLoginUser()` tự điền tài khoản bác sĩ đang đăng nhập khi chọn chế độ "BN chưa kê đơn trong khoảng" (chỉ khi ô trống, rời chế độ chỉ hoàn tác giá trị hệ thống tự điền); gọi từ `cboPatientFilter_EditValueChanged`. Resource 3 ngôn ngữ `BacSiDieuTri`, `LocTheoBacSiDieuTri`. **Không sửa Designer.** Kèm sửa Backend `MOS.MANAGER/HisTreatmentBedRoom/HisTreatmentBedRoomGet.cs` — `GetLView` trước đây lọc "chưa kê đơn" SAU khi DAO đã phân trang nên mỗi trang khuyết bệnh nhân và tổng số bản ghi sai; nay lấy đủ dữ liệu, lọc, gán lại `param.Count` rồi mới `Skip/Take`. |
 
 ## 9. Test Cases
+
+### Tách tab CLS theo nhóm dịch vụ — việc 57971
+- [ ] Key trống: 5 tab như cũ (Tất cả, CLS, Thuốc vật tư máu, Khác, Khám bệnh), nạp BN/ngày luôn về Tất cả
+- [ ] Key = 1: không còn tab CLS; Tất cả | Xét nghiệm (n) | Siêu âm | X-quang (n) | TDCN (n) | Nội soi | Thuốc… | Khác | Khám bệnh; tab chính hiện cả khi rỗng (dòng "Không có y lệnh trong khoảng ngày đã chọn")
+- [ ] BN có CT/MRI, GPBL, CĐHA chưa gán loại → hiện thêm CT / MRI, Giải phẫu bệnh, CLS khác; BN sau không có → ẩn
+- [ ] Phiếu CĐHA X-quang + CT: tab X-quang chỉ dòng X-quang, tab CT / MRI chỉ dòng CT; Xóa/Sửa phiếu từ 1 tab → hỏi xác nhận nêu nhóm còn lại; Không → không làm gì
+- [ ] Đang ở tab Xét nghiệm, đổi BN / bấm ngày khác / tích HP → vẫn tab Xét nghiệm, số trên tab đổi theo dữ liệu
+- [ ] Đang ở tab Siêu âm bấm "Kết quả CLS" → màn kết quả mở sẵn tab Siêu âm
+- [ ] Key = 2: chỉ hiện tab nhóm có y lệnh
+- [ ] MOS cũ (chưa trả SERVICE_ID) vẫn tách X-quang / CT theo mã dịch vụ
+- [ ] Đang ở Siêu âm, BN sau không có siêu âm → Tất cả; bấm vào Tất cả rồi chọn BN có siêu âm → vẫn ở Tất cả (không bấm thì quay lại Siêu âm)
+- [ ] Màn 1366, BN nhiều nhóm, đang ở "Thuốc, vật tư, máu" / "Khám bệnh" → tab đó vẫn chọn và nhìn thấy trên thanh tab
+- [ ] Đang ở tab Khám bệnh chọn BN khác → trong lúc tải các ô để trống (không hiện BN trước); BN không có DHST → ô sinh hiệu trống (cả key tắt)
 
 ### Lọc BN chưa kê đơn theo bác sĩ điều trị — việc 3222
 - [ ] Chế độ "chưa kê đơn": BN đã ra viện / đã kết thúc điều trị KHÔNG xuất hiện; BN đã duyệt đủ ĐK ra viện nhưng chưa kết thúc VẪN xuất hiện (v2)

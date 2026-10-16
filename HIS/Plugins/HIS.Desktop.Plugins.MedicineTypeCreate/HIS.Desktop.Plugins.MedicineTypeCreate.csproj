@@ -294,6 +294,9 @@
     <Compile Include="MedicineTypeCreate\frmMedicineTypeCreate__Plus__Copy.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MedicineTypeCreate\frmMedicineTypeCreate__Plus__QuickCreateCatalog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MedicineTypeCreate\frmMedicineTypeUpdate_LoadComboControl.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -339,7 +339,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                 ValidationMaxLength(txtNationalName, 500);
                 ValidationMaxLength(txtManufacturedYear, 4);
                 ValidationMaxLength(txtUsedYear, 4);
-                ValidationMaxLength(txtCirculationNumber, 50);
+                ValidationMaxLength(txtCirculationNumber, 200);
 
 
             }

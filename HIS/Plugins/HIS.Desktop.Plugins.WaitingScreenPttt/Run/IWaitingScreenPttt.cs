@@ -15,23 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-namespace HIS.Desktop.Plugins.TrackingCreate
+namespace HIS.Desktop.Plugins.WaitingScreenPttt.Run
 {
-    /// <summary>
-    /// Task 59656 - value of HIS_CONFIG key HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption:
-    /// an order (medicine, material, technical service) may only be attached to a treatment sheet
-    /// (HIS_TRACKING) created by the ordering user (REQUEST_LOGINNAME).
-    /// </summary>
-    internal enum EnumTrackingOwnerOption
+    interface IWaitingScreenPttt
     {
-        /// <summary>Empty or any other value: no check, behavior unchanged.</summary>
-        None = 0,
-
-        /// <summary>1: warn and ask whether to continue.</summary>
-        Warning = 1,
-
-        /// <summary>2: block saving.</summary>
-        Block = 2
+        object Run();
     }
 }

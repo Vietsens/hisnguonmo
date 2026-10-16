@@ -611,6 +611,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 InitUcSubInIcd();
 
                 FillDataToControl();
+                // vCong58919: chronic checkbox of this treatment (config 54036)
+                InitChronicControl();
                 _isInitData = false;
                 WaitingManager.Hide();
 
@@ -1903,6 +1905,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     data.IsEmergency = false;
                 }
+                // vCong58919: null = no change
+                data.IsChronic = GetChronicValueToSave();
 
                 if (chkBHYT.Checked)
                 {

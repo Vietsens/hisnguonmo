@@ -22,6 +22,15 @@ Bác sĩ mở màn kê đơn từ ngữ cảnh điều trị thận nhân tạo 
   - Popup "Bệnh nhân đang thiếu viện phí…" — Không → đóng form.
 - **Vượt 15% lương cơ bản (BN diện khám):** khi Lưu đơn, hàm `ValidFee15PercentBaseSalaryForExam()` (key `HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam` = 1) so tổng chi phí (hồ sơ + đơn đang kê) với 15% × `HIS_BHYT_PARAM.BASE_SALARY` hiệu lực tại thời điểm y lệnh. Vượt → popup xác nhận; Không → không lưu. Bỏ qua BN bảo lãnh; thiếu Tham số BHYT/lỗi check → cho lưu (chỉ log).
 
+### Lọc tờ điều trị theo người chỉ định (việc 59656)
+Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (trống/khác = hiện tất cả tờ, như cũ):
+- **= 1:** combo "Tờ điều trị" chỉ hiện tờ do người chỉ định tạo (`HIS_TRACKING.CREATOR` = người chỉ định ở ô "Người chỉ định", không phân biệt hoa thường).
+- **Mở màn / đổi ngày y lệnh (thêm mới, 1 ngày y lệnh):** chọn sẵn tờ mới nhất của người chỉ định trong ngày y lệnh tại khoa đang làm việc; không có thì để trống (key bật thì không chọn theo `IsDefaultTracking`).
+- **Đổi người chỉ định** (combo hoặc ô mã + Enter): lọc lại từ danh sách tờ đã tải (không gọi lại API) và chọn lại tờ mới nhất trong ngày y lệnh của người mới, không có thì để trống.
+- **Sửa đơn:** tờ đơn đang gắn luôn có trong danh sách và giữ nguyên lựa chọn dù do người khác tạo; không tự chọn tờ khác.
+- Không còn kiểm tra/cảnh báo/chặn khi Lưu. Màn này không nhận tờ điều trị truyền vào từ màn gọi.
+- Code: `AssignPrescription/frmAssignPrescription__TrackingOwner.cs` (`ApplyTrackingOwnerFilter`, `ReloadTrackingByRequestUser`), gọi từ `LoadDataTracking`, `cboUser_EditValueChanged`, `cboUser_Closed`, `txtLoginName_PreviewKeyDown`; logic thuần ở `Base/TrackingOwnerChecker.cs`.
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -58,7 +67,8 @@ In đơn thuốc qua `HIS.Desktop.Plugins.Library.PrintPrescription`.
 | 28/07/2026 | nampp | Ho\u00e0n thi\u1ec7n 46465 theo test th\u1ef1c t\u1ebf: (1) c\u1ea3nh b\u00e1o v\u01b0\u1ee3t t\u1ea1m \u1ee9ng ngo\u1ea1i tr\u00fa ch\u1ec9 n\u1ed5 1 l\u1ea7n l\u00fac m\u1edf form (guard theo treatmentId), kh\u00f4ng n\u1ed5 l\u1ea1i sau L\u01b0u; b\u1ea5m n\u00fat M\u1edbi th\u00ec reset guard \u0111\u1ec3 c\u1ea3nh b\u00e1o l\u1ea1i; (2) ti\u1ec1n trong popup format vi-VN d\u1ea5u ch\u1ea5m, l\u00e0m tr\u00f2n s\u1ed1 nguy\u00ean (#,##0); (3) YHCT/Kidney: fix cross-thread (b\u1ecdc Invoke) v\u00e0 chuy\u1ec3n g\u1ecdi check t\u1eeb Task.Run \u0111\u1ea7u lu\u1ed3ng Load xu\u1ed1ng cu\u1ed1i lu\u1ed3ng \u0111\u1ec3 c\u1ea3nh b\u00e1o vi\u1ec7n ph\u00ed n\u1ed5 SAU c\u00e1c c\u1ea3nh b\u00e1o d\u1ecbch v\u1ee5. |
 | 23/07/2026 | nampp | Việc 46465: bổ sung 2 cảnh báo viện phí theo config mới — (1) key `HIS.Desktop.WarningOverTotalPatientPrice__IsCheckOutpatient` = 1: mở rộng cảnh báo thiếu viện phí (vượt tạm ứng) cho BN **điều trị ngoại trú** trong `CheckWarningOverTotalPatientPrice()`; (2) key `HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam` = 1: khi Lưu, cảnh báo BN **diện khám** nếu tổng chi phí vượt 15% Lương cơ bản (`HIS_BHYT_PARAM.BASE_SALARY`) — hàm mới `ValidFee15PercentBaseSalaryForExam()`, message mới `TongChiPhiVuot15PhanTramLuongCoBan` (vi/en). Bỏ qua BN bảo lãnh; thiếu Tham số BHYT hoặc lỗi check thì cho đi tiếp. Mặc định 2 key tắt. |
 | (trước 2026) | team | Tạo plugin kê đơn thận nhân tạo (kế thừa họ AssignPrescription). |
-| 09/10/2026 | dangth2 | Việc 59656: bật key thì `LoadDataTracking` chỉ tự chọn tờ của người chỉ định (cả khi IsDefaultTracking tắt, trừ sửa đơn); `ProcessSaveData` thêm `CheckTrackingOwnerBeforeSave`; chỉ báo 'chưa có tờ' với diện nội trú/ngoại trú điều trị. Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (1 cảnh báo, 2 chặn, trống = như cũ). Lớp logic `Base/TrackingOwnerChecker.cs` + `EnumTrackingOwnerOption.cs` (bản sao giống hệt ở 7 plugin). Tờ của bác sĩ = `HIS_TRACKING.CREATOR`, người chỉ định = `REQUEST_LOGINNAME` gửi BE (so không phân biệt hoa thường). Lỗi bất ngờ trong bước kiểm tra thì cho lưu (chỉ ghi log). Thêm 4 message `TrackingOwner__*`. |
+| 09/10/2026 | dangth2 | Việc 59656: bật key thì `LoadDataTracking` chỉ tự chọn tờ của người chỉ định (cả khi IsDefaultTracking tắt, trừ sửa đơn); `ProcessSaveData` thêm `CheckTrackingOwnerBeforeSave`; chỉ báo 'chưa có tờ' với diện nội trú/ngoại trú điều trị. Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (1 cảnh báo, 2 chặn, trống = như cũ). Lớp logic `Base/TrackingOwnerChecker.cs` + `EnumTrackingOwnerOption.cs` (bản sao giống hệt ở 7 plugin). Tờ của bác sĩ = `HIS_TRACKING.CREATOR`, người chỉ định = `REQUEST_LOGINNAME` gửi BE (so không phân biệt hoa thường). Lỗi bất ngờ trong bước kiểm tra thì cho lưu (chỉ ghi log). Thêm 4 message `TrackingOwner__*`. *(Cảnh báo/chặn khi lưu và 4 message đã bỏ ở bản 14/10/2026.)* |
+| 14/10/2026 | dangth | Việc 59656 (sửa theo test chị Hân 14/10): key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` = 1 chỉ hiện và chọn sẵn tờ điều trị do người chỉ định tạo, đổi người chỉ định thì lọc/chọn lại; bỏ cảnh báo/chặn khi lưu. Chi tiết: `LoadDataTracking` giữ bản đầy đủ `trackingADOsAll`, lọc `trackingADOs` theo người chỉ định (sửa đơn giữ tờ cũ trong danh sách và giữ chọn), thêm mới chọn tờ mới nhất của người chỉ định trong ngày y lệnh tại khoa (không có → trống); đổi người chỉ định (`cboUser_EditValueChanged`/`cboUser_Closed`/`txtLoginName_PreviewKeyDown`) lọc lại từ danh sách đã tải, không gọi API (sửa lỗi test: đổi sang người có tờ hôm nay vẫn không chọn và vẫn hiện tờ của mọi người). Key trống/khác = như trước 59656. Bỏ `CheckTrackingOwnerBeforeSave` và các hàm/4 message `TrackingOwner__*` chỉ dùng cho nó (Resources trả về như trước 59656). |
 
 ## 9. Test Cases
 
@@ -67,9 +77,11 @@ In đơn thuốc qua `HIS.Desktop.Plugins.Library.PrintPrescription`.
 - [ ] Config 15% bật, BN khám tổng chi phí vượt 15% lương cơ bản: popup khi Lưu; Không → không lưu, Có → lưu.
 - [ ] BN bảo lãnh / không có Tham số BHYT hiệu lực: không popup, không lỗi.
 
-### Việc 59656 - Y lệnh chỉ vào tờ điều trị của chính người chỉ định
-- [ ] Key trống: chọn tờ của người khác vẫn lưu được, không hỏi (như cũ)
-- [ ] Key = 2: chọn tờ điều trị của người khác → chặn, nêu tờ + người tạo
-- [ ] Key = 1: như trên nhưng hỏi Có/Không
-- [ ] Key bật, người chỉ định chưa có tờ trong ngày y lệnh → cảnh báo/chặn "chưa có tờ điều trị ngày ..."
-- [ ] Key bật, mở màn: tự chọn sẵn tờ của chính người chỉ định (không chọn tờ người khác, kể cả tờ truyền từ màn Tạo tờ điều trị)
+### Việc 59656 - Combo tờ điều trị chỉ hiện tờ của người chỉ định (sửa 14/10/2026)
+- [ ] Key trống/khác (kể cả 2): combo hiện tất cả tờ, chọn sẵn theo `IsDefaultTracking` như cũ; lưu không hỏi gì
+- [ ] Key = 1, mở màn thêm mới: combo chỉ có tờ do người chỉ định tạo, chọn sẵn tờ mới nhất của người đó trong ngày y lệnh; người đó chưa có tờ ngày y lệnh → để trống
+- [ ] Key = 1, đổi người chỉ định (VD đăng nhập nhunghtt, đổi sang hant có tờ hôm nay): combo chỉ còn tờ của hant và chọn sẵn tờ mới nhất hôm nay của hant; đổi sang người không có tờ ngày y lệnh → để trống
+- [ ] Key = 1, đổi người chỉ định bằng ô mã + Enter: kết quả như đổi bằng combo
+- [ ] Key = 1, đổi ngày y lệnh: lọc + chọn lại theo người chỉ định đang chọn; chọn nhiều ngày y lệnh → không tự chọn
+- [ ] Key = 1, sửa đơn đang gắn tờ của người khác: tờ đó vẫn có trong combo và vẫn được chọn; lưu không hỏi gì
+- [ ] Key = 1, lưu với tờ bất kỳ / không chọn tờ: không cảnh báo, không chặn

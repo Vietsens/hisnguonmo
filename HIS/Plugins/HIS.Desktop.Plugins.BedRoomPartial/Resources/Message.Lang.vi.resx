@@ -228,4 +228,7 @@
   <data name="XoaCungKhoaKhongKiemTraDuocVanBanKy" xml:space="preserve">
     <value>Không kiểm tra được văn bản ký trên bệnh án điện tử của y lệnh {0} nên chưa xóa. Vui lòng thử lại.</value>
   </data>
+  <data name="PhieuConDichVuThuocNhomKhac" xml:space="preserve">
+    <value>Phiếu {0} còn có dịch vụ thuộc nhóm {1}. Thao tác sẽ áp dụng cho toàn bộ phiếu. Bạn có muốn tiếp tục?</value>
+  </data>
 </root>

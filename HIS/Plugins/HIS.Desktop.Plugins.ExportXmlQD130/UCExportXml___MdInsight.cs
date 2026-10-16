@@ -233,7 +233,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 if (e.Column == this.gridColMdInsightResult)
                 {
-                    e.DisplayText = GetMdInsightStatusName(e.Value as short?);
+                    string statusText = GetMdInsightStatusName(e.Value as short?);
+
+                    //Ban 3.0: ket qua kiem SO BO (truoc khi khoa vien phi) phai mang nhan rieng - quy tac QT-32, QT-33.
+                    //Lay dong qua GetRowHandle de dung ca khi luoi dang sap xep / loc.
+                    V_HIS_TREATMENT_1 resultRow = this.gridViewTreatment.GetRow(
+                        this.gridViewTreatment.GetRowHandle(e.ListSourceRowIndex)) as V_HIS_TREATMENT_1;
+                    e.DisplayText = DecorateMdInsightStatus(statusText, resultRow);
                     return;
                 }
 
@@ -286,6 +292,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     return;
                 }
 
+                //Ban 3.0: ket qua so bo luon mau xam, bat ke trang thai - khong duoc nhin nham la ho so da sach
+                if (IsMdInsightPreliminary(row))
+                {
+                    e.Appearance.ForeColor = Color.Gray;
+                    return;
+                }
+
                 switch ((EnumXmlPrecheckStatus)row.XML_PRECHECK_RESULT.Value)
                 {
                     case EnumXmlPrecheckStatus.NoError:
@@ -330,6 +343,64 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Ket qua la SO BO khi ho so chua khoa vien phi, hoac moc kiem (thoi diem gui, khong co thi thoi diem
+        /// ket luan) som hon thoi gian khoa vien phi - quy tac QT-32. Suy tu cot da co, khong them cot.
+        /// Ban mot-dong cua XmlPrecheckLabel trong thu vien dung chung; se gop ve mot khi man nay chuyen sang thu vien.
+        /// </summary>
+        private static bool IsMdInsightPreliminary(V_HIS_TREATMENT_1 row)
+        {
+            if (row == null || !row.XML_PRECHECK_RESULT.HasValue)
+            {
+                return false;
+            }
+
+            long? mark = row.XML_PRECHECK_SEND_TIME.HasValue && row.XML_PRECHECK_SEND_TIME.Value > 0
+                ? row.XML_PRECHECK_SEND_TIME
+                : row.XML_PRECHECK_TIME;
+            if (!mark.HasValue || mark.Value <= 0)
+            {
+                return false;
+            }
+
+            if (!row.FEE_LOCK_TIME.HasValue || row.FEE_LOCK_TIME.Value <= 0)
+            {
+                return true;
+            }
+
+            return mark.Value < row.FEE_LOCK_TIME.Value;
+        }
+
+        /// <summary>Ghep nhan "(so bo) - can kiem lai · du lieu da doi" vao chu trang thai - quy tac QT-32, QT-33</summary>
+        private static string DecorateMdInsightStatus(string statusText, V_HIS_TREATMENT_1 row)
+        {
+            if (string.IsNullOrEmpty(statusText) || row == null)
+            {
+                return statusText;
+            }
+
+            string result = statusText;
+
+            if (IsMdInsightPreliminary(row))
+            {
+                result += " " + Resources.ResourceMessageLang.MdInsightNhanSoBo;
+                if (row.FEE_LOCK_TIME.HasValue && row.FEE_LOCK_TIME.Value > 0)
+                {
+                    result += " - " + Resources.ResourceMessageLang.MdInsightNhanCanKiemLai;
+                }
+            }
+
+            long? mark = row.XML_PRECHECK_SEND_TIME.HasValue && row.XML_PRECHECK_SEND_TIME.Value > 0
+                ? row.XML_PRECHECK_SEND_TIME
+                : row.XML_PRECHECK_TIME;
+            if (mark.HasValue && row.MODIFY_TIME.HasValue && row.MODIFY_TIME.Value > mark.Value)
+            {
+                result += " · " + Resources.ResourceMessageLang.MdInsightNhanDuLieuDaDoi;
+            }
+
+            return result;
         }
 
         internal string GetMdInsightStatusName(short? status)

@@ -452,6 +452,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         txtLoginname.Text = user.LOGINNAME;
                     }
                 }
+                //Viec 59656: bat key thi doi nguoi chi dinh -> loc lai combo to dieu tri va chon lai to cua nguoi chi dinh moi
+                this.ReloadTrackingComboByOwner();
                 if (cboUsername.EditValue != null ) CheckTimeSereServ();
             }
             catch (Exception ex)

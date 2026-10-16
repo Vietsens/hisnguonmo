@@ -4181,6 +4181,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             this.cboUser.EditValue = searchResult[0].LOGINNAME;
                             this.txtLoginName.Text = searchResult[0].LOGINNAME;
                             CheckAssignServiceSimultaneityOption();
+                            //Viec 59656: doi nguoi chi dinh thi loc va chon lai to dieu tri (key bat)
+                            this.ReloadTrackingComboByRequestUser();
                             this.FocusWhileSelectedUser();
                         }
                         else
@@ -4224,6 +4226,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             this.txtLoginName.Text = data.LOGINNAME;
 
                             CheckAssignServiceSimultaneityOption();
+                            //Viec 59656: doi nguoi chi dinh thi loc va chon lai to dieu tri (key bat)
+                            this.ReloadTrackingComboByRequestUser();
                         }
                     }
                     this.FocusWhileSelectedUser();
@@ -4246,6 +4250,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         ACS.EFMODEL.DataModels.ACS_USER data = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.LOGINNAME == ((this.cboUser.EditValue ?? "").ToString()));
                         if (data != null)
                         {
+                            //Viec 59656: doi nguoi chi dinh thi loc va chon lai to dieu tri (key bat), truoc khi chuyen focus
+                            this.ReloadTrackingComboByRequestUser();
                             this.FocusWhileSelectedUser();
                             this.txtLoginName.Text = data.LOGINNAME;
                             CheckAssignServiceSimultaneityOption();

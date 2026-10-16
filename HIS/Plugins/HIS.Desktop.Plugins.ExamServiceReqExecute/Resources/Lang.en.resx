@@ -1141,7 +1141,7 @@
     <value>(Level III Skinny)</value>
   </data>
   <data name="ExamServiceReqExecuteControl.xtraTabPageWomanClassify.Text" xml:space="preserve">
-    <value>Woman classification</value>
+    <value>Obstetric information</value>
   </data>
   <data name="ExamServiceReqExecuteControl.chkMimsPregnant.Text" xml:space="preserve">
     <value>Pregnant woman</value>

@@ -204,4 +204,13 @@
   <data name="UCHospitalize.SKINNY.III" xml:space="preserve">
     <value>(Gầy độ III)</value>
   </data>
+  <data name="UCHospitalize.cboBedRoom.ColBedRoomCode.Caption" xml:space="preserve">
+    <value>Mã buồng</value>
+  </data>
+  <data name="UCHospitalize.cboBedRoom.ColBedRoomName.Caption" xml:space="preserve">
+    <value>Tên buồng</value>
+  </data>
+  <data name="UCHospitalize.cboBedRoom.ColPatientBed.Caption" xml:space="preserve">
+    <value>Tổng BN/Tổng số giường</value>
+  </data>
 </root>

@@ -2863,6 +2863,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
         private void cboUser_EditValueChanged(object sender, EventArgs e)
         {
+            this.ReloadTrackingComboByRequestUser();//Viec 59656: doi nguoi chi dinh (chon cboUser hoac nhap txtLoginName) thi loc lai va chon lai to dieu tri cua nguoi chi dinh moi (key = 1, sau khi form load xong)
             GridLookUpEdit cbo = sender as GridLookUpEdit;
             if (cbo != null && cbo.ContainsFocus)
                 this.RebuildMediMatyWithInControlContainer(this.GetDataMediMatyInStock());

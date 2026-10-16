@@ -153,6 +153,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__GRID_CONTROL__COLUMN_NATIONAL_NAME" xml:space="preserve">
     <value>National</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__GRID_CONTROL__COLUMN_PACKING_TYPE_NAME" xml:space="preserve">
+    <value>Packing</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__GRID_CONTROL__COLUMN_SERVICE_UNIT_NAME" xml:space="preserve">
     <value>Unit</value>
   </data>

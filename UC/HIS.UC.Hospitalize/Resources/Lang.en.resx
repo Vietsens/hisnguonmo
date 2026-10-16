@@ -207,4 +207,13 @@
   <data name="UCHospitalize.SKINNY.III" xml:space="preserve">
     <value>(Skinny III)</value>
   </data>
+  <data name="UCHospitalize.cboBedRoom.ColBedRoomCode.Caption" xml:space="preserve">
+    <value>Room code</value>
+  </data>
+  <data name="UCHospitalize.cboBedRoom.ColBedRoomName.Caption" xml:space="preserve">
+    <value>Room name</value>
+  </data>
+  <data name="UCHospitalize.cboBedRoom.ColPatientBed.Caption" xml:space="preserve">
+    <value>Patients/Beds</value>
+  </data>
 </root>

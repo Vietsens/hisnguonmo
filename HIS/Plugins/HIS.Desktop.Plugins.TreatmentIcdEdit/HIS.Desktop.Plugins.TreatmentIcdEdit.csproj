@@ -201,6 +201,9 @@
     <Compile Include="FormTreatmentIcdEdit.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormTreatmentIcdEdit__Chronic.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormTreatmentIcdEdit.Designer.cs">
       <DependentUpon>FormTreatmentIcdEdit.cs</DependentUpon>
     </Compile>
