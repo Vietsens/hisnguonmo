@@ -92,6 +92,7 @@ Không thay đổi trong phạm vi việc này. (Muốn in 5 chỉ số mới c�
 | 09/10/2026 | dangth2 | Việc 59656: tờ điều trị chỉ ghi nhận y lệnh do chính người tạo tờ chỉ định. Bật key: sau khi dựng cây tab 1 `MarkRequestOfOtherUser` đánh dấu `TreeSereServADO.IsRequestOfOtherUser` cho y lệnh CHƯA gắn tờ này và người chỉ định khác người tạo tờ (tờ mới: tài khoản đăng nhập); `treeSereServ_CheckAllNode` / `CheckYLFromBB` không tick sẵn các y lệnh đó (trước đây tick hết y lệnh trong ngày của mọi bác sĩ, kể cả khi sửa tờ cũ chưa ký); key = 2 còn khóa tick tay (`BeforeCheckNode`, `CheckNode`, ô tick vẽ mờ); trước `api/HisTracking/Create|Update` (Lưu, Lưu ký) gọi `CheckTrackingOwnerBeforeSave`: key 1 hỏi, key 2 chặn. Y lệnh đã gắn tờ này giữ nguyên (BE coi danh sách gửi lên là danh sách cuối). Tab 2 'Thực hiện đơn dự trù' không đổi. Partial `frmTrackingCreate__Pluss__TrackingOwner.cs`, 3 message `TrackingOwner__*`. |
 | 13/10/2026 | phuongnm | Việc 57960 (NTP): thêm tab "DS tờ điều trị" sau tab "Thực hiện đơn dự trù", nhúng khung xem chỉ xem của HisTrackingList (toàn bộ tờ của hồ sơ, tờ mới nhất ở trên, không in/ký/sao chép); kiểm quyền theo module HisTrackingList; tải lại sau Lưu/Lưu ký. Partial `frmTrackingCreate__Pluss__TrackingList.cs`. |
 | 14/10/2026 | phuongnm | Việc 57960: chốt lại theo yêu cầu — tab "DS tờ điều trị" luôn hiện, khóa `IsViewTrackingNewestFirst` chỉ quyết định thứ tự tờ trong khung (1 = mới nhất trên cùng, khác 1 = cũ nhất trên cùng; code nằm bên HisTrackingList). Bỏ phương án ẩn tab đã làm trong ngày. |
+| 14/10/2026 | dangth2 | Việc 59656 (sửa theo test chị Hân 14/10): GỠ toàn bộ thay đổi 59656 ở màn này, trả về như trước ngày 09/10. Màn đã có ô "Tôi chỉ định" và key `HIS.Desktop.Plugins.TrackingCreate.IsMineCheckedByDefault` để chỉ lấy y lệnh của tài khoản đăng nhập. Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` không còn đọc ở màn này (chỉ lọc ô Tờ điều trị ở 6 màn kê đơn/chỉ định). |
 
 ## 9. Test Cases
 
@@ -103,12 +104,8 @@ Không thay đổi trong phạm vi việc này. (Muốn in 5 chỉ số mới c�
 - [ ] Nhập FiO2 ngoài 0–100 → bị chặn / báo lỗi
 - [ ] Tờ điều trị chỉ nhập 1 trong 5 trường mới (vd chỉ GCS) → vẫn lưu được DHST
 
-### Việc 59656 - Y lệnh chỉ vào tờ điều trị của chính người chỉ định
-- [ ] Key trống: tạo/sửa tờ vẫn tick sẵn mọi y lệnh trong ngày (như cũ)
-- [ ] Key bật, A sửa tờ chưa ký của A sau khi B kê: y lệnh của B không được tick sẵn, Lưu không kéo y lệnh B vào tờ A
-- [ ] Key = 1: tick tay y lệnh của B rồi Lưu → hỏi Có/Không
-- [ ] Key = 2: không tick được y lệnh của B (ô tick mờ, tick cả nhóm cũng bỏ qua)
-- [ ] Y lệnh của B đã gắn tờ A từ trước vẫn giữ nguyên khi Lưu
+### Việc 59656 - (đã gỡ 14/10/2026)
+- [ ] Key AssignToOwnTrackingOption bật hay tắt: màn Tạo/Sửa tờ điều trị chạy như cũ (lọc y lệnh của mình bằng ô "Tôi chỉ định")
 
 ### Việc 57960 - Tab "DS tờ điều trị"
 - [ ] Mở tạo tờ mới: tab mặc định "Y lệnh", tab "DS tờ điều trị" đứng sau "Thực hiện đơn dự trù" (luôn có, không phụ thuộc khóa)

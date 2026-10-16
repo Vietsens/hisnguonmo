@@ -2557,12 +2557,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 trackingADOs = trackingADOs.OrderByDescending(o => o.TRACKING_TIME).ToList();
                 long trackIdSet = 0;
                 List<HIS_TRACKING> trackingTemps = new List<HIS_TRACKING>();
-                //Viec 59656: bat key thi khong tu chon san to dieu tri cua nguoi khac (ke ca to truyen vao tu man Tao to dieu tri),
-                //chi chon to do chinh nguoi chi dinh tao trong ngay y lenh
+                //Viec 59656: bat key thi combo chi hien to cua nguoi chi dinh, khong tu chon san to dieu tri cua nguoi khac (ke ca to truyen vao
+                //tu man Tao to dieu tri, tru to cua don dang sua), chi chon to do chinh nguoi chi dinh tao trong ngay y lenh
                 bool isTrackingOwnerCheck = this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.None;
                 string trackingOwnerLoginName = isTrackingOwnerCheck ? this.GetRequestLoginNameForTrackingOwner() : null;
                 if (isTrackingOwnerCheck && this.Listtrackings != null && this.Listtrackings.Count > 0 && !isChangeData
-                    && !TrackingOwnerChecker.IsOwner(this.Listtrackings[0].CREATOR, trackingOwnerLoginName))
+                    && !TrackingOwnerChecker.IsOwner(this.Listtrackings[0].CREATOR, trackingOwnerLoginName)
+                    && !this.IsTrackingKeptForEdit(this.Listtrackings[0].ID))
                 {
                     Inventec.Common.Logging.LogSystem.Info("LoadDataTracking: bo to dieu tri truyen vao vi khong do nguoi chi dinh tao___trackingId=" + this.Listtrackings[0].ID
                         + "; creator=" + this.Listtrackings[0].CREATOR + "; requestLoginName=" + trackingOwnerLoginName);

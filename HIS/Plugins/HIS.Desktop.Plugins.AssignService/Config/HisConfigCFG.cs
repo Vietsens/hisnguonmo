@@ -219,8 +219,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         internal static string WarningOver15PercentBaseSalary__IsCheckExam;
         internal static string IsDefaultTracking;
         /// <summary>
-        /// Task 59656 - HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption: orders may only be attached to treatment sheets
-        /// created by the ordering user. 1: warn, 2: block, other/empty: off (see EnumTrackingOwnerOption).
+        /// Task 59656 - HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption. 1: the treatment sheet combo only shows sheets
+        /// created by the ordering user, other/empty: all sheets (see EnumTrackingOwnerOption).
         /// </summary>
         internal static string AssignToOwnTrackingOption;
         internal static string ServiceHasPaymentLimitBHYT;

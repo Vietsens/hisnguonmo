@@ -15,28 +15,52 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using ACS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.Base;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.Config;
-using HIS.Desktop.Plugins.AssignPrescriptionCLS.Resources;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 {
     /// <summary>
-    /// Task 59656: orders of the ordering user may only be attached to treatment sheets created by that user
-    /// (key HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption). Key off: nothing here changes the behavior.
+    /// Task 59656 (revised 14/10/2026 after QA): key HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption = 1 makes the
+    /// "Treatment sheet" combo list only the sheets created by the ordering user (cboUser/txtLoginName) and select that
+    /// user's latest sheet of the instruction date; changing the ordering user filters and selects again.
+    /// Edit mode keeps the sheet the order already has (even when created by someone else).
+    /// trackingADOs always keeps the full list loaded by InitComboPhieuDieuTri, the filter only changes the combo data source.
+    /// Key off: nothing here changes the behavior.
     /// </summary>
     public partial class frmAssignPrescription : HIS.Desktop.Utility.FormBase
     {
         private EnumTrackingOwnerOption GetTrackingOwnerOption()
         {
-            return TrackingOwnerChecker.ParseOption(HisConfigCFG.AssignToOwnTrackingOption);
+            try
+            {
+                return TrackingOwnerChecker.ParseOption(HisConfigCFG.AssignToOwnTrackingOption);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return EnumTrackingOwnerOption.None;
+            }
+        }
+
+        /// <summary>Key = 1: the sheet combo only lists the ordering user's sheets.</summary>
+        private bool IsTrackingOwnOnly()
+        {
+            try
+            {
+                return this.GetTrackingOwnerOption() == EnumTrackingOwnerOption.OwnOnly;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
         }
 
         /// <summary>Ordering user resolved exactly like SaveAbstract fills RequestLoginname (txtLoginName, else the logged-in user).</summary>
@@ -56,18 +80,123 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             return result;
         }
 
-        /// <summary>Latest sheet of the ordering user on the instruction date, null when none (an old sheet of another user is not kept).
-        /// Called while cboUser changes, so cboUser is read first (txtLoginName may not be synchronized yet).</summary>
+        /// <summary>Ordering user the sheets are filtered/selected for. cboUser is read first because its EditValueChanged
+        /// fires before txtLoginName is synchronized (txtLoginName Enter, cboUser popup).</summary>
+        private string GetOrderingUserForTracking()
+        {
+            string result = null;
+            try
+            {
+                result = this.cboUser.EditValue != null && !String.IsNullOrWhiteSpace(this.cboUser.EditValue.ToString())
+                    ? this.cboUser.EditValue.ToString()
+                    : this.GetRequestLoginNameForTrackingOwner();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Edit mode: sheet of the order being edited, kept in the list even when created by someone else.</summary>
+        private long? GetEditOrderTrackingId()
+        {
+            try
+            {
+                if (this.actionType == GlobalVariables.ActionEdit && this.oldServiceReq != null)
+                    return this.oldServiceReq.TRACKING_ID;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>Data source of cboPhieuDieuTri: the full list (trackingADOs) when the key is off, otherwise the ordering
+        /// user's sheets plus, in edit mode, the sheet of the order being edited (newest first, like trackingADOs).</summary>
+        private List<TrackingADO> GetTrackingDataSourceForCombo()
+        {
+            List<TrackingADO> result = this.trackingADOs;
+            try
+            {
+                if (this.trackingADOs == null || !this.IsTrackingOwnOnly())
+                    return this.trackingADOs;
+
+                string orderingUser = this.GetOrderingUserForTracking();
+                result = TrackingOwnerChecker.FilterOwn(this.trackingADOs, o => o.CREATOR, orderingUser);
+                long? editTrackingId = this.GetEditOrderTrackingId();
+                if (editTrackingId.HasValue && !result.Any(o => o.ID == editTrackingId.Value))
+                {
+                    TrackingADO editTracking = this.trackingADOs.FirstOrDefault(o => o.ID == editTrackingId.Value);
+                    if (editTracking != null)
+                    {
+                        result.Add(editTracking);
+                        result = result.OrderByDescending(o => o.TRACKING_TIME).ToList();
+                    }
+                }
+                Inventec.Common.Logging.LogSystem.Debug("GetTrackingDataSourceForCombo___orderingUser=" + orderingUser
+                    + "; editTrackingId=" + editTrackingId + "; total=" + this.trackingADOs.Count + "; shown=" + result.Count);
+            }
+            catch (Exception ex)
+            {
+                result = this.trackingADOs;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Key = 1: rebinds the sheet combo for the current ordering user, reusing the loaded list (no API call).
+        /// The caller then selects the default sheet (SetDefaultComboPhieuDieuTri).</summary>
+        private void ReloadComboPhieuDieuTriByOrderingUser()
+        {
+            try
+            {
+                if (this.trackingADOs == null || !this.IsTrackingOwnOnly())
+                    return;
+                this.cboPhieuDieuTri.Properties.DataSource = this.GetTrackingDataSourceForCombo();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Key = 1, edit mode, ordering user changed: keep the selected sheet when it is still listed, otherwise fall back to the
+        /// sheet of the order being edited, so saving the edit does not detach the order from its sheet. Returns false when the
+        /// caller must apply the normal default selection (key off or not editing).
+        /// </summary>
+        private bool KeepEditTrackingSelection()
+        {
+            try
+            {
+                if (!this.IsTrackingOwnOnly() || this.actionType != GlobalVariables.ActionEdit)
+                    return false;
+                List<TrackingADO> listed = this.cboPhieuDieuTri.Properties.DataSource as List<TrackingADO>;
+                long? selectedId = this.cboPhieuDieuTri.EditValue != null ? (long?)Inventec.Common.TypeConvert.Parse.ToInt64(this.cboPhieuDieuTri.EditValue.ToString()) : null;
+                if (selectedId.HasValue && listed != null && listed.Any(o => o.ID == selectedId.Value))
+                    return true;
+                long? editTrackingId = this.GetEditOrderTrackingId();
+                this.cboPhieuDieuTri.EditValue = (editTrackingId.HasValue && listed != null && listed.Any(o => o.ID == editTrackingId.Value)) ? (object)editTrackingId.Value : null;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        /// <summary>Latest sheet of the ordering user on the instruction date, null when none (a sheet of another user is not kept).</summary>
         private long? GetDefaultOwnTrackingId()
         {
             try
             {
                 if (this.trackingADOs == null || this.InstructionTime <= 0)
                     return null;
-                string owner = this.cboUser.EditValue != null && !String.IsNullOrWhiteSpace(this.cboUser.EditValue.ToString())
-                    ? this.cboUser.EditValue.ToString()
-                    : this.GetRequestLoginNameForTrackingOwner();
-                var own = TrackingOwnerChecker.GetLatestOwnTracking(this.trackingADOs.Select(o => ToTrackingOwnerItem(o)), this.InstructionTime, owner);
+                string orderingUser = this.GetOrderingUserForTracking();
+                var own = TrackingOwnerChecker.GetLatestOwnTracking(this.trackingADOs.Select(o => ToTrackingOwnerItem(o)), this.InstructionTime, orderingUser);
                 return own != null ? (long?)own.Id : null;
             }
             catch (Exception ex)
@@ -77,113 +206,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
 
-        /// <summary>"loginname - username" for messages.</summary>
-        private string GetUserDisplayForTrackingOwner(string loginName)
-        {
-            string result = loginName ?? "";
-            try
-            {
-                if (!String.IsNullOrWhiteSpace(loginName))
-                {
-                    var acsUser = BackendDataWorker.Get<ACS_USER>().FirstOrDefault(o => TrackingOwnerChecker.IsOwner(o.LOGINNAME, loginName));
-                    if (acsUser != null && !String.IsNullOrWhiteSpace(acsUser.USERNAME))
-                        result = acsUser.LOGINNAME + " - " + acsUser.USERNAME;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            return result;
-        }
-
         private static TrackingOwnerChecker.Item ToTrackingOwnerItem(HIS_TRACKING tracking)
         {
             return new TrackingOwnerChecker.Item() { Id = tracking.ID, TrackingTime = tracking.TRACKING_TIME, Creator = tracking.CREATOR };
-        }
-
-        /// <summary>The sheet combo is always visible on this screen: "no own sheet" is only reported for treatment types
-        /// that use treatment sheets (in-patient, out-patient treatment), like the service assignment screen.</summary>
-        private bool IsTreatmentTypeUsingTracking()
-        {
-            return this.currentHisPatientTypeAlter != null
-                && (this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
-                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU);
-        }
-
-        /// <summary>Check run before saving. Returns false when saving must stop.</summary>
-        private bool CheckTrackingOwnerBeforeSave()
-        {
-            bool result = true;
-            try
-            {
-                EnumTrackingOwnerOption option = this.GetTrackingOwnerOption();
-                if (option == EnumTrackingOwnerOption.None)
-                    return true;
-                if (!this.cboPhieuDieuTri.Enabled)
-                    return true;
-
-                string requestLoginName = this.GetRequestLoginNameForTrackingOwner();
-                List<TrackingOwnerChecker.Item> selecteds = new List<TrackingOwnerChecker.Item>();
-                if (this.cboPhieuDieuTri.EditValue != null)
-                {
-                    long trackingId = Inventec.Common.TypeConvert.Parse.ToInt64(this.cboPhieuDieuTri.EditValue.ToString());
-                    var tracking = this.trackingADOs != null ? this.trackingADOs.FirstOrDefault(o => o.ID == trackingId) : null;
-                    if (tracking == null)
-                    {
-                        Inventec.Common.Logging.LogSystem.Warn("CheckTrackingOwnerBeforeSave: khong tim thay to dieu tri dang chon trong danh sach, bo qua kiem tra___trackingId=" + trackingId);
-                        return true;
-                    }
-                    selecteds.Add(ToTrackingOwnerItem(tracking));
-                }
-
-                //Edit: keep the sheet the order already had (data before the key was turned on), check only a new sheet
-                bool isEdit = this.oldServiceReq != null && this.oldServiceReq.ID > 0;
-                if (isEdit && this.oldServiceReq.TRACKING_ID.HasValue)
-                    selecteds.RemoveAll(o => o.Id == this.oldServiceReq.TRACKING_ID.Value);
-
-                List<long> instructionTimes = (this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0)
-                    ? this.intructionTimeSelecteds
-                    : new List<long>() { this.InstructionTime };
-                List<TrackingOwnerChecker.Item> availables = this.trackingADOs != null ? this.trackingADOs.Select(o => ToTrackingOwnerItem(o)).ToList() : new List<TrackingOwnerChecker.Item>();
-                bool isCheckMissing = !isEdit && this.IsTreatmentTypeUsingTracking();
-                //One TrackingId is sent for every instruction date on this screen
-                var check = TrackingOwnerChecker.Check(requestLoginName, instructionTimes, selecteds, availables, true, isCheckMissing);
-                Inventec.Common.Logging.LogSystem.Info("CheckTrackingOwnerBeforeSave___option=" + option + "; requestLoginName=" + requestLoginName
-                    + "; selected=" + String.Join(",", selecteds.Select(o => o.Id + ":" + o.Creator))
-                    + "; otherOwner=" + check.OtherOwnerTrackings.Count + "; missingDates=" + String.Join(",", check.MissingDates)
-                    + "; isEdit=" + isEdit + "; isCheckMissing=" + isCheckMissing);
-                if (!check.HasViolation)
-                    return true;
-
-                result = this.ShowTrackingOwnerMessage(check, option, requestLoginName);
-            }
-            catch (Exception ex)
-            {
-                //Fail-open: an unexpected error here must not stop the prescription
-                result = true;
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return result;
-        }
-
-        /// <summary>Block: show and return false. Warning: ask, return true when the user chooses Yes.</summary>
-        private bool ShowTrackingOwnerMessage(TrackingOwnerChecker.Result check, EnumTrackingOwnerOption option, string requestLoginName)
-        {
-            bool isBlock = (option == EnumTrackingOwnerOption.Block);
-            string message = TrackingOwnerChecker.BuildMessage(check, this.GetUserDisplayForTrackingOwner(requestLoginName), this.GetUserDisplayForTrackingOwner,
-                ResourceMessage.TrackingOwner__ToDieuTriCuaNguoiKhac, ResourceMessage.TrackingOwner__NguoiChiDinhChuaCoToDieuTri,
-                isBlock ? ResourceMessage.TrackingOwner__ChanLuu : ResourceMessage.TrackingOwner__CanhBaoTiepTuc);
-            if (isBlock)
-            {
-                DevExpress.XtraEditors.XtraMessageBox.Show(message,
-                    HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            return DevExpress.XtraEditors.XtraMessageBox.Show(message,
-                HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
     }
 }
