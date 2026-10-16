@@ -1259,6 +1259,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         else
                         {
                             cboBuyerOrganization.EditValue = null;
+                            // Khong co WORK_PLACE_ID -> kiem tra text tu do (TDL_PATIENT_WORK_PLACE_NAME)
+                            string freeTextOrg = currentTreatment?.TDL_PATIENT_WORK_PLACE_NAME ?? currentTreatment?.TDL_PATIENT_WORK_PLACE;
+                            if (!string.IsNullOrWhiteSpace(freeTextOrg))
+                            {
+                                chkKhac.Checked = true;
+                                txtBuyerOrganization.Text = freeTextOrg;
+                            }
                         }
 
                         // Textbox “Mã số thuế”: ưu tiên MST của người bệnh, nếu không có thì lấy MST của đơn vị
