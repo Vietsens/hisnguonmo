@@ -495,7 +495,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         WaitingManager.Hide();
                         ((Form)extenceInstance).ShowDialog();
                         // Nap lai cay dich vu cua BN dang chon de icon "da thuc hien" hien / an ngay, khong can bam Tim
-                        LoadDataSereServByTreatmentId(this.rowClickByDate);
+                        ReloadOrdersOfCurrentPatient();
                     }
                 }
                 WaitingManager.Hide();
@@ -799,6 +799,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 
                         ((Form)extenceInstance).ShowDialog();
+                        ReloadOrdersOfCurrentPatient();
                     }
                 }
             }
@@ -828,6 +829,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 
                         ((Form)extenceInstance).ShowDialog();
+                        ReloadOrdersOfCurrentPatient();
                     }
                 }
             }
@@ -1964,6 +1966,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 
                             ((Form)extenceInstance).ShowDialog();
+                            ReloadOrdersOfCurrentPatient();
 
                         }
                         else
@@ -2060,6 +2063,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                         ((Form)extenceInstance).ShowDialog();
+                        ReloadOrdersOfCurrentPatient();
                     }
                 }
             }
@@ -2096,6 +2100,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                         ((Form)extenceInstance).ShowDialog();
+                        ReloadOrdersOfCurrentPatient();
                     }
                 }
             }
@@ -3266,6 +3271,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                         ((Form)extenceInstance).ShowDialog();
+                        ReloadOrdersOfCurrentPatient();
                     }
                 }
             }

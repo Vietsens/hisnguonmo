@@ -1075,6 +1075,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 validFolow += "valid.6=" + valid + ";";
                 valid = valid && this.CheckWarringIntructionUseDayNum();
                 validFolow += "valid.7=" + valid + ";";
+                valid = valid && this.CheckPresAppointmentTime();
+                validFolow += "valid.7.1=" + valid + ";";
                 valid = valid && this.CheckThuocKhangSinhTrongNgay();//TODO cần check với TH chọn nhiều BN kê
                 validFolow += "valid.8=" + valid + ";";
                 valid = valid && this.CheckCungHoatChat();

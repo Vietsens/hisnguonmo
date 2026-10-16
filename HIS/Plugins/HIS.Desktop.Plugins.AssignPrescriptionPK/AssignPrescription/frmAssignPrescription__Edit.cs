@@ -73,6 +73,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (this.oldServiceReq.REMEDY_COUNT.HasValue)
                     this.txtLadder.Text = this.oldServiceReq.REMEDY_COUNT.ToString();
                 this.txtAdvise.Text = this.oldServiceReq.ADVISE;
+                this.dtPresAppointmentTime.EditValue = this.oldServiceReq.PRES_APPOINTMENT_TIME.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.oldServiceReq.PRES_APPOINTMENT_TIME.Value) : null;
 
                 if (!String.IsNullOrEmpty(this.oldServiceReq.INTERACTION_REASON))
                 {

@@ -92,6 +92,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.txtGuaranteeCode = new DevExpress.XtraEditors.TextEdit();
             this.txtNumManager = new DevExpress.XtraEditors.TextEdit();
             this.chkTuberculosis = new DevExpress.XtraEditors.CheckEdit();
+            this.chkChronic = new DevExpress.XtraEditors.CheckEdit();
             this.chkNeedSickLeaveCert = new DevExpress.XtraEditors.CheckEdit();
             this.chkBHYT = new DevExpress.XtraEditors.CheckEdit();
             this.cboNoVienphi = new DevExpress.XtraEditors.LookUpEdit();
@@ -100,6 +101,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem35 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciChronic = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem36 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -247,6 +249,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             ((System.ComponentModel.ISupportInitialize)(this.txtGuaranteeCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumManager.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkTuberculosis.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChronic.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkNeedSickLeaveCert.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBHYT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboNoVienphi.Properties)).BeginInit();
@@ -255,6 +258,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChronic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
@@ -650,6 +654,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControl4.Controls.Add(this.txtGuaranteeCode);
             this.layoutControl4.Controls.Add(this.txtNumManager);
             this.layoutControl4.Controls.Add(this.chkTuberculosis);
+            this.layoutControl4.Controls.Add(this.chkChronic);
             this.layoutControl4.Controls.Add(this.chkNeedSickLeaveCert);
             this.layoutControl4.Controls.Add(this.chkBHYT);
             this.layoutControl4.Controls.Add(this.cboNoVienphi);
@@ -728,7 +733,17 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.chkTuberculosis.StyleController = this.layoutControl4;
             this.chkTuberculosis.TabIndex = 21;
             this.chkTuberculosis.CheckedChanged += new System.EventHandler(this.chkTuberculosis_CheckedChanged);
-            // 
+            //
+            // chkChronic
+            //
+            this.chkChronic.Location = new System.Drawing.Point(109, 63);
+            this.chkChronic.MenuManager = this.barManager1;
+            this.chkChronic.Name = "chkChronic";
+            this.chkChronic.Properties.Caption = "";
+            this.chkChronic.Size = new System.Drawing.Size(66, 19);
+            this.chkChronic.StyleController = this.layoutControl4;
+            this.chkChronic.TabIndex = 26;
+            //
             // chkNeedSickLeaveCert
             // 
             this.chkNeedSickLeaveCert.EnterMoveNextControl = true;
@@ -790,7 +805,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem45,
             this.emptySpaceItem10,
             this.layoutControlItem46,
-            this.emptySpaceItem11});
+            this.emptySpaceItem11,
+            this.lciChronic});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 5, 0);
@@ -850,6 +866,18 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem35.Size = new System.Drawing.Size(118, 50);
             this.layoutControlItem35.Text = "Bệnh lao:";
             this.layoutControlItem35.TextSize = new System.Drawing.Size(45, 13);
+            //
+            // lciChronic
+            //
+            this.lciChronic.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciChronic.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciChronic.Control = this.chkChronic;
+            this.lciChronic.Location = new System.Drawing.Point(59, 48);
+            this.lciChronic.Name = "lciChronic";
+            this.lciChronic.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 10, 2);
+            this.lciChronic.Size = new System.Drawing.Size(118, 50);
+            this.lciChronic.Text = "Mãn tính:";
+            this.lciChronic.TextSize = new System.Drawing.Size(45, 13);
             // 
             // layoutControlItem36
             // 
@@ -881,7 +909,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.emptySpaceItem4.AllowHotTrack = false;
             this.emptySpaceItem4.Location = new System.Drawing.Point(0, 48);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(177, 50);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(59, 50);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem44
@@ -2348,6 +2376,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             ((System.ComponentModel.ISupportInitialize)(this.txtGuaranteeCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumManager.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkTuberculosis.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChronic.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkNeedSickLeaveCert.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBHYT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboNoVienphi.Properties)).EndInit();
@@ -2356,6 +2385,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChronic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
@@ -2579,6 +2609,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         private DevExpress.XtraEditors.TextEdit txtNumManager;
         private DevExpress.XtraEditors.CheckEdit chkTuberculosis;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem35;
+        private DevExpress.XtraEditors.CheckEdit chkChronic;
+        private DevExpress.XtraLayout.LayoutControlItem lciChronic;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem36;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;

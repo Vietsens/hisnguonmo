@@ -243,4 +243,7 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__TXT_KEYWORD" xml:space="preserve">
     <value>Keyword search</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__HOME_PRES" xml:space="preserve">
+    <value>Take-away form</value>
+  </data>
 </root>

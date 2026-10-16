@@ -570,4 +570,10 @@
   <data name="UCExpMestAggregate.colReqAreaName1.Caption" xml:space="preserve">
     <value />
   </data>
+  <data name="UCExpMestAggregate.grdColExpHomePres.Caption" xml:space="preserve">
+    <value>Take-away form</value>
+  </data>
+  <data name="UCExpMestAggregate.grdColHomePres.Caption" xml:space="preserve">
+    <value>Take-away form</value>
+  </data>
 </root>

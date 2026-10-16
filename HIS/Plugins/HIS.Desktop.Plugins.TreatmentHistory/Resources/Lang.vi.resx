@@ -201,6 +201,12 @@
   <data name="frmTreatmentHistory.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
     <value>Từ khóa tìm kiếm (F3)</value>
   </data>
+  <data name="frmTreatmentHistory.txtDobYear.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Năm sinh</value>
+  </data>
+  <data name="frmTreatmentHistory.txtAddress.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
   <data name="frmTreatmentHistory.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Mã bệnh nhân (F2)</value>
   </data>

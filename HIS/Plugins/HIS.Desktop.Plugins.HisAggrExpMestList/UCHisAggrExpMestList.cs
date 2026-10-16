@@ -217,6 +217,10 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__EXP_MEST_CODE",
                     Resources.ResourceLanguageManager.LanguageUCHisAggrExpMestList,
                     cultureLang);
+                this.GcHomePres.Caption = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__HOME_PRES",
+                    Resources.ResourceLanguageManager.LanguageUCHisAggrExpMestList,
+                    cultureLang);
                 this.GcExpMestTypeName.Caption = Inventec.Common.Resource.Get.Value(
                     "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__EXP_MEST_TYPE_NAME",
                     Resources.ResourceLanguageManager.LanguageUCHisAggrExpMestList,
@@ -399,6 +403,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 dtExpTimeTo.EditValue = null;
                 SetDefaultValueStatus();
                 SetDefaultValuePres();
+                rbtHomePresAll.Checked = true;
                 long showbtn = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>(Base.GlobalStore.showButton));
 
                 if (showbtn == 1)
@@ -610,6 +615,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
 
                 SetFilterStatus(ref filter);
                 SetFilterPres(ref filter);
+                SetFilterHomePres(ref filter);
             }
             catch (Exception ex)
             {
@@ -663,6 +669,29 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void SetFilterHomePres(ref MOS.Filter.HisExpMestView3Filter filter)
+        {
+            try
+            {
+                if (rbtHomePresAll.Checked)
+                {
+                    filter.IS_HOME_PRES = null;
+                }
+                else if (rbtPresNormal.Checked)
+                {
+                    filter.IS_HOME_PRES = false;
+                }
+                else if (rbtHomePres.Checked)
+                {
+                    filter.IS_HOME_PRES = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void SetFilterPres(ref MOS.Filter.HisExpMestView3Filter filter)
         {
             try
@@ -924,6 +953,10 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                         if (e.Column.FieldName == "STT")
                         {
                             e.Value = e.ListSourceRowIndex + 1 + startPage;
+                        }
+                        else if (e.Column.FieldName == "IS_HOME_PRES_DISPLAY")
+                        {
+                            e.Value = data.IS_HOME_PRES == 1;
                         }
                         else if (e.Column.FieldName == "EXP_MEST_STT_ICON")// trạng thái
                         {
