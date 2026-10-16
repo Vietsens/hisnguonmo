@@ -178,6 +178,28 @@ namespace MPS.Processor.Mps000093
         /// Tao ra cac doi tuong du lieu xu dung trong thu vien xu ly file excel
         /// </summary>
         /// <returns></returns>
+        //Phieu nhap tong hop -> ma phieu nhap = ma phieu tong hop, kho nhap = kho cua phieu;
+        //ma khoa lay tu khoa da truyen san trong du lieu in (rdo.Department)
+        public override string ProcessEmrStockData()
+        {
+            try
+            {
+                if (rdo == null || rdo.AggrImpMest == null) return null;
+                var impMest = rdo.AggrImpMest;
+                return BuildEmrStockData(
+                    null,
+                    impMest.IMP_MEST_CODE,
+                    null,
+                    impMest.MEDI_STOCK_CODE,
+                    rdo.Department != null ? rdo.Department.DEPARTMENT_CODE : null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
         public override bool ProcessData()
         {
             bool result = false;

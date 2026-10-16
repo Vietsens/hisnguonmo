@@ -29,6 +29,20 @@ namespace MPS.Processor.Mps000117.PDO
         public decimal TotalMoney { get; set; }
         public decimal IN_STOCK_AMOUNT { get; set; }
 
+        // BV HAGL (10/2026) — key bổ sung cho mẫu Mps000117 (<#AnticipateMeties.X;>), do màn gọi in gán
+        // (Tạo dự trù 2 gán từ grid dự trù + danh mục). Màn khác không gán → null → in trống.
+        public string PARENT_CODE { get; set; }            // Nhóm cha: mã loại cha trong cây thuốc/vật tư
+        public string PARENT_NAME { get; set; }            // Nhóm cha: tên loại cha
+        public decimal? OPEN_QUANTITY { get; set; }        // Tồn đầu
+        public decimal? NEW_IMPORT_QUANTITY { get; set; }  // Nhập (Nhập mới)
+        public decimal? USED_QUANTITY { get; set; }        // Xuất (Số sử dụng)
+        public decimal? CLOSE_QUANTITY { get; set; }       // Tồn cuối
+        public decimal? MAX_EXPORT_QUANTITY { get; set; }  // Xuất max (Xuất nhiều nhất)
+        public int? MAX_EXPORT_MONTH { get; set; }         // Tháng có xuất max
+        public string MAX_EXPORT_DISPLAY { get; set; }     // "<SL> - Tháng <N>" như cột Xuất nhiều nhất trên grid
+        public string DESCRIPTION { get; set; }            // Ghi chú trong danh mục loại thuốc/vật tư
+        public string NOTE { get; set; }                   // Ghi chú dự trù nhập ở màn Tạo dự trù 2 (HIS_ANTICIPATE_METY/MATY.NOTE)
+
         public HisAnticipateMetyADO() { }
 
         public HisAnticipateMetyADO(MOS.EFMODEL.DataModels.HIS_ANTICIPATE_METY data, MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE mety)

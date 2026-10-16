@@ -386,6 +386,27 @@ namespace MPS.Processor.Mps000247
             return log;
         }
 
+        //Phieu cong khai theo benh nhan -> lay phieu xuat dau tien (cung phieu dung lam khoa dem ban in)
+        public override string ProcessEmrStockData()
+        {
+            try
+            {
+                if (rdo == null || rdo._ExpMests_Print == null || rdo._ExpMests_Print.Count == 0) return null;
+                var expMest = rdo._ExpMests_Print.First();
+                return BuildEmrStockData(
+                    expMest.EXP_MEST_CODE,
+                    null,
+                    expMest.MEDI_STOCK_CODE,
+                    GetMediStockCodeById(expMest.IMP_MEDI_STOCK_ID),
+                    expMest.REQ_DEPARTMENT_CODE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
         public override string ProcessUniqueCodeData()
         {
             string result = "";

@@ -243,6 +243,27 @@ namespace MPS.Processor.Mps000101
             return log;
         }
 
+        //Phieu tra (phieu nhap tong hop) -> ma phieu nhap = ma phieu tong hop, kho nhap = kho nhan tra
+        public override string ProcessEmrStockData()
+        {
+            try
+            {
+                if (rdo == null || rdo.AggrImpMest == null) return null;
+                var impMest = rdo.AggrImpMest;
+                return BuildEmrStockData(
+                    null,
+                    impMest.IMP_MEST_CODE,
+                    GetMediStockCodeById(impMest.CHMS_MEDI_STOCK_ID),
+                    impMest.MEDI_STOCK_CODE,
+                    impMest.REQ_DEPARTMENT_CODE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
         public override string ProcessUniqueCodeData()
         {
             string result = "";

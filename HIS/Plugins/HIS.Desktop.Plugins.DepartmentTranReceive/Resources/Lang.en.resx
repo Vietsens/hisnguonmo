@@ -165,6 +165,9 @@
   <data name="UCDepartmentTranReceive.grdColLogTime.Caption" xml:space="preserve">
     <value>Time switch</value>
   </data>
+  <data name="UCDepartmentTranReceive.grdColRequestTime.Caption" xml:space="preserve">
+    <value>Transfer time from previous department</value>
+  </data>
   <data name="UCDepartmentTranReceive.grdColModifier.Caption" xml:space="preserve">
     <value>Repairer</value>
   </data>

@@ -133,10 +133,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     this.ucAddressCombo1.SetValue(dataAddressPatient);
                 }
                 if (this.ucOtherServiceReqInfo1 != null)
-                {
                     this.ucOtherServiceReqInfo1.RefreshUserControl();
-                    this.ReCheckChronicByPatient(dt.HisPatientSDO ?? this.currentPatientSDO);
-                }
                 this.chkBaoLanh.Checked = false;
                 Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.7");
             }

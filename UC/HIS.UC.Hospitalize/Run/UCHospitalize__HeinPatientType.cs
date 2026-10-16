@@ -233,8 +233,9 @@ namespace HIS.UC.Hospitalize.Run
                 LoadPatientTypeAlterForHein();
                 var pta = this.currentPatientTypeAlterForHein;
 
-                // Khong phai BHYT (khong co tuyen) -> khong co ma doi tuong KCB
-                if (pta == null || string.IsNullOrWhiteSpace(pta.RIGHT_ROUTE_CODE))
+                // Khong phai doi tuong BHYT -> khong co ma doi tuong KCB.
+                // Ho so BHYT chua co tuyen (Dung/Trai tuyen) van tra duoc: chi xet ban ghi de trong Tuyen (xem FindHeinPatientType).
+                if (pta == null || !IsHeinPatientTypeAlter(pta))
                 {
                     SetHeinPatientTypeCodeText(null);
                     return;
@@ -244,22 +245,22 @@ namespace HIS.UC.Hospitalize.Run
                 if (cboTreatmentType.EditValue != null)
                     treatmentTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentType.EditValue ?? "").ToString());
 
-                // Key bat + tich Cap cuu => uu tien ban ghi danh muc co Truong hop = Cap cuu.
-                // Danh muc khong co ban ghi cap cuu phu hop => tinh theo truong hop cua ho so nhu cu.
-                bool isUseEmergency = Config.HisConfig.IsHeinPatientTypeCodeByEmergency && chkEmergency.Checked;
-                HIS_HEIN_PATIENT_TYPE matched = null;
-                if (isUseEmergency)
-                    matched = FindHeinPatientType(pta, RIGHT_ROUTE_TYPE_CODE__EMERGENCY, treatmentTypeId);
-                if (matched == null)
+                HIS_HEIN_PATIENT_TYPE matched;
+                bool isStandardLookup = Config.HisConfig.IsHeinPatientTypeCodeLookup;
+                if (isStandardLookup)
+                    // Key bat: tra chuan theo danh muc (cot trong = moi gia tri, dong cu the hon thang), o Cap cuu tham gia
+                    matched = FindHeinPatientTypeStandard(pta, treatmentTypeId, chkEmergency.Checked);
+                else
+                    // Key tat: tra nhu cu (tuyen + truong hop cua ho so trung khit)
                     matched = FindHeinPatientType(pta, pta.RIGHT_ROUTE_TYPE_CODE, treatmentTypeId);
 
                 SetHeinPatientTypeCodeText(matched != null ? matched.HEIN_PATIENT_TYPE_CODE : null);
 
                 Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                    "HienThiMaDoiTuongKCB_NhapVien: treatmentId={0}___tuyen={1}___truongHop={2}___dienDieuTri={3}___maDKKCBBanDau={4}___capCuu={5}___maHienThi={6}",
+                    "HienThiMaDoiTuongKCB_NhapVien: treatmentId={0}___traChuan={1}___tuyen={2}___truongHop={3}___dienDieuTri={4}___maDKKCBBanDau={5}___oCapCuu={6}___maHienThi={7}",
                     this.hospitalizeInitADO != null && this.hospitalizeInitADO.TreatmentId.HasValue ? this.hospitalizeInitADO.TreatmentId.Value : 0,
-                    pta.RIGHT_ROUTE_CODE, pta.RIGHT_ROUTE_TYPE_CODE, treatmentTypeId,
-                    pta.HEIN_MEDI_ORG_CODE, isUseEmergency, GetHeinPatientTypeCodeValue()));
+                    isStandardLookup, pta.RIGHT_ROUTE_CODE, pta.RIGHT_ROUTE_TYPE_CODE, treatmentTypeId,
+                    pta.HEIN_MEDI_ORG_CODE, chkEmergency.Checked, GetHeinPatientTypeCodeValue()));
             }
             catch (Exception ex)
             {
@@ -271,10 +272,103 @@ namespace HIS.UC.Hospitalize.Run
         private const string RIGHT_ROUTE_TYPE_CODE__EMERGENCY = "CC";
 
         /// <summary>
+        /// Tra CHUAN theo danh muc Doi tuong KCB (key HIS.Desktop.Plugins.Hospitalize.HeinPatientTypeCodeLookupOption = 1).
+        /// Nguyen tac: moi cot dieu kien tren dong danh muc DE TRONG = ap dung moi gia tri;
+        /// khai cu the thi phai khop voi ho so. Nhieu dong cung khop => dong khai CU THE HON thang.
+        /// Dieu kien so khop:
+        ///  - Tuyen: dong trong, hoac = tuyen cua ho so (ho so khong co tuyen => chi dong trong).
+        ///  - Truong hop: dong trong, hoac = truong hop dang xet. Truong hop dang xet = Cap cuu neu o Cap cuu tich;
+        ///    khong tich => truong hop cua ho so (neu ho so la Cap cuu ma nguoi dung bo tich => coi nhu trong).
+        ///  - Dien dieu tri: dong trong, hoac chua dien dang chon.
+        ///  - Ma CSKCB ban dau: dong trong / "*", hoac liet ke dung ma DKKCB cua the.
+        /// Thu tu uu tien khi nhieu dong khop (cu the > trong): Truong hop -> ma CSKCB -> Tuyen -> Dien dieu tri
+        ///  -> NUM_ORDER nho nhat (null xep cuoi) -> ID lon nhat.
+        ///  (Truong hop xep dau de dong Cap cuu thang dong ghi dich danh ma CSKCB: cap cuu => ma cap cuu voi moi the.)
+        /// Moi ma deu lay tu danh muc, khong co ma nao co dinh trong code.
+        /// </summary>
+        private HIS_HEIN_PATIENT_TYPE FindHeinPatientTypeStandard(V_HIS_PATIENT_TYPE_ALTER pta, long treatmentTypeId, bool isEmergencyChecked)
+        {
+            try
+            {
+                string rightRouteCode = (pta.RIGHT_ROUTE_CODE ?? "").Trim();
+                string rightRouteTypeCode = (pta.RIGHT_ROUTE_TYPE_CODE ?? "").Trim();
+                if (isEmergencyChecked)
+                    rightRouteTypeCode = RIGHT_ROUTE_TYPE_CODE__EMERGENCY;
+                else if (rightRouteTypeCode == RIGHT_ROUTE_TYPE_CODE__EMERGENCY)
+                    rightRouteTypeCode = "";
+                string dkbdCode = (pta.HEIN_MEDI_ORG_CODE ?? "").Trim();
+                string treatmentTypeIdStr = treatmentTypeId.ToString();
+
+                Func<HIS_HEIN_PATIENT_TYPE, bool> isRouteSpecific = o => !string.IsNullOrWhiteSpace(o.RIGHT_ROUTE_CODE);
+                Func<HIS_HEIN_PATIENT_TYPE, bool> isRouteTypeSpecific = o => !string.IsNullOrWhiteSpace(o.RIGHT_ROUTE_TYPE_CODE);
+                Func<HIS_HEIN_PATIENT_TYPE, bool> isTreatmentTypeSpecific = o => !string.IsNullOrWhiteSpace(o.TREATMENT_TYPE_IDS);
+                Func<HIS_HEIN_PATIENT_TYPE, bool> isMediOrgSpecific = o => IsMediOrgCodeListSpecific(o.HEIN_MEDI_ORG_CODES);
+
+                var matchedList = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .Where(o => !isRouteSpecific(o) || o.RIGHT_ROUTE_CODE.Trim() == rightRouteCode)
+                    .Where(o => !isRouteTypeSpecific(o) || o.RIGHT_ROUTE_TYPE_CODE.Trim() == rightRouteTypeCode)
+                    .Where(o => !isTreatmentTypeSpecific(o) || treatmentTypeId <= 0
+                        || o.TREATMENT_TYPE_IDS.Split(',').Select(s => s.Trim()).Any(id => id == treatmentTypeIdStr))
+                    .Where(o => !isMediOrgSpecific(o)
+                        || (!string.IsNullOrEmpty(dkbdCode)
+                            && o.HEIN_MEDI_ORG_CODES.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries).Any(c => c.Trim() == dkbdCode)))
+                    .ToList();
+
+                if (matchedList.Count == 0) return null;
+
+                return matchedList
+                    .OrderByDescending(o => isRouteTypeSpecific(o) ? 1 : 0)
+                    .ThenByDescending(o => isMediOrgSpecific(o) ? 1 : 0)
+                    .ThenByDescending(o => isRouteSpecific(o) ? 1 : 0)
+                    .ThenByDescending(o => isTreatmentTypeSpecific(o) ? 1 : 0)
+                    .ThenBy(o => o.NUM_ORDER == null ? 1 : 0)
+                    .ThenBy(o => o.NUM_ORDER)
+                    .ThenByDescending(o => o.ID)
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private long patientTypeIdBhyt = 0;
+
+        /// <summary>
+        /// Dong doi tuong gan nhat cua ho so co phai doi tuong BHYT khong
+        /// (ma doi tuong thanh toan BHYT lay tu key MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT, giong UC Ket thuc dieu tri).
+        /// </summary>
+        private bool IsHeinPatientTypeAlter(V_HIS_PATIENT_TYPE_ALTER pta)
+        {
+            try
+            {
+                if (this.patientTypeIdBhyt == 0)
+                {
+                    string code = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT");
+                    var patientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == code);
+                    if (patientType != null) this.patientTypeIdBhyt = patientType.ID;
+                }
+                // Khong doc duoc cau hinh -> fallback theo so the de khong mat chuc nang
+                if (this.patientTypeIdBhyt == 0)
+                    return !string.IsNullOrWhiteSpace(pta.HEIN_CARD_NUMBER);
+                return pta.PATIENT_TYPE_ID == this.patientTypeIdBhyt;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return !string.IsNullOrWhiteSpace(pta.HEIN_CARD_NUMBER);
+            }
+        }
+
+        /// <summary>
         /// Do danh muc Doi tuong KCB theo tuyen cua ho so + truong hop + dien dieu tri + ma co so KCB ban dau.
-        /// Buoc 1: ban ghi trung dung tuyen cua ho so (giu nguyen hanh vi cu).
-        /// Buoc 2: chi khi buoc 1 khong ra ban ghi nao => xet ban ghi de trong Tuyen
-        ///         (quy uoc "de trong = dung chung moi tuyen", giong man Tiep don).
+        /// Tuyen:
+        ///  - Ho so CO tuyen: buoc 1 ban ghi trung dung tuyen (giu nguyen hanh vi cu);
+        ///    buoc 2 chi khi buoc 1 khong ra ban ghi nao => xet ban ghi de trong Tuyen.
+        ///  - Ho so KHONG co tuyen: chi xet ban ghi de trong Tuyen, khong suy doan Dung/Trai tuyen.
+        ///  (quy uoc "de trong = dung chung moi tuyen", giong man Tiep don).
         /// </summary>
         private HIS_HEIN_PATIENT_TYPE FindHeinPatientType(V_HIS_PATIENT_TYPE_ALTER pta, string rightRouteTypeCode, long treatmentTypeId)
         {
@@ -294,15 +388,79 @@ namespace HIS.UC.Hospitalize.Run
                 }
 
                 string dkbdCode = (pta.HEIN_MEDI_ORG_CODE ?? "").Trim();
-                var matched = GetHeinPatientTypeByMediOrgPriority(heinList.Where(o => o.RIGHT_ROUTE_CODE == pta.RIGHT_ROUTE_CODE).ToList(), dkbdCode);
+                HIS_HEIN_PATIENT_TYPE matched = null;
+                if (!string.IsNullOrWhiteSpace(pta.RIGHT_ROUTE_CODE))
+                    matched = GetHeinPatientTypeByMediOrgPriority(heinList.Where(o => o.RIGHT_ROUTE_CODE == pta.RIGHT_ROUTE_CODE).ToList(), dkbdCode);
                 if (matched == null)
-                    matched = GetHeinPatientTypeByMediOrgPriority(heinList.Where(o => string.IsNullOrEmpty(o.RIGHT_ROUTE_CODE)).ToList(), dkbdCode);
+                    matched = GetHeinPatientTypeByMediOrgPriority(heinList.Where(o => string.IsNullOrWhiteSpace(o.RIGHT_ROUTE_CODE)).ToList(), dkbdCode);
                 return matched;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Ma doi tuong KCB tren form khac ma dang luu tren ho so => hoi nguoi dung truoc khi luu nhap vien.
+        /// true: duoc luu tiep; false: nguoi dung chon Khong.
+        /// </summary>
+        public bool ConfirmChangeHeinPatientTypeCode()
+        {
+            try
+            {
+                // O ma de trong => khong gui len, ho so giu ma cu => khong co gi de hoi
+                string newCode = GetHeinPatientTypeCodeValue();
+                if (string.IsNullOrEmpty(newCode)) return true;
+
+                string oldCode = (this.hospitalizeInitADO != null && this.hospitalizeInitADO.Treatment != null)
+                    ? (this.hospitalizeInitADO.Treatment.HEIN_PATIENT_TYPE_CODE ?? "").Trim()
+                    : "";
+                if (newCode == oldCode) return true;
+
+                string message = string.IsNullOrEmpty(oldCode)
+                    ? string.Format("Bạn có muốn chuyển mã ĐT KCB sang {0} không?", newCode)
+                    : string.Format("Bạn có muốn chuyển mã ĐT KCB từ {0} sang {1} không?", oldCode, newCode);
+                bool result = DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo",
+                    System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes;
+
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "XacNhanDoiMaDoiTuongKCB_NhapVien: treatmentId={0}___maCu={1}___maMoi={2}___dongY={3}",
+                    this.hospitalizeInitADO != null && this.hospitalizeInitADO.TreatmentId.HasValue ? this.hospitalizeInitADO.TreatmentId.Value : 0,
+                    oldCode, newCode, result));
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
+            }
+        }
+
+        /// <summary>Dua con tro ve o ma doi tuong KCB (sau khi nguoi dung chon Khong o thong bao xac nhan).</summary>
+        public void FocusHeinPatientTypeCode()
+        {
+            try
+            {
+                if (cboHeinPatientTypeCode == null) return;
+                // BeginInvoke: doi luong luu ket thuc roi moi focus, tranh bi control khac lay lai focus
+                this.BeginInvoke(new Action(() =>
+                {
+                    try
+                    {
+                        cboHeinPatientTypeCode.Focus();
+                        cboHeinPatientTypeCode.SelectAll();
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
