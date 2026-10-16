@@ -61,6 +61,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
         internal const string CONFIG_KEY__ConnectionInfo = "HIS.Desktop.AI.ConnectionInfo";
         internal const string CONFIG_KEY__MACHINE_SHOW_OPTION = "HIS.Desktop.Plugins.HisMachine_ShowOption";
         internal const string CONFIG_KEY__ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA = "HIS.DESKTOP.HIS_SERE_SERV_EXT.ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA";
+        internal const string CONFIG_KEY__AUTO_ADD_MINUTES_TO_RESULT_TIME = "HIS.Desktop.Plugins.ServiceExecute.AUTO_ADD_MINUTES_TO_RESULT_TIME";
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -283,6 +284,23 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
             get
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA);
+            }
+        }
+
+        /// <summary>
+        /// Tu dong cong them so phut vao "Ngay KQ" khi nguoi dung nhap xong "Ket thuc"
+        /// (man hinh xu ly CDHA/TDCN/Noi soi/Sieu am/GPBL). Cau hinh toan vien (HisConfigs).
+        /// Rong hoac khong hop le => null => KHONG tu dong tinh, giu nguyen hanh vi hien tai.
+        /// </summary>
+        internal static int? AutoAddMinutesToResultTime
+        {
+            get
+            {
+                string value = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__AUTO_ADD_MINUTES_TO_RESULT_TIME);
+                int minutes;
+                if (int.TryParse(value, out minutes) && minutes > 0)
+                    return minutes;
+                return null;
             }
         }
     }
