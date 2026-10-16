@@ -314,6 +314,22 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             }
         }
 
+        /// <summary>
+        /// Loc ban ghi danh muc theo cac yeu to ngoai Dung/Trai tuyen: Truong hop ho so va Dien dieu tri.
+        /// </summary>
+        private List<HIS_HEIN_PATIENT_TYPE> FilterHeinPatientTypeByOtherCriteria(List<HIS_HEIN_PATIENT_TYPE> source, string rightRouteTypeCode)
+        {
+            var result = source.Where(o => o.RIGHT_ROUTE_TYPE_CODE == rightRouteTypeCode).ToList();
+            if (this.TreatmentTypeId > 0)
+            {
+                result = result.Where(o =>
+                    string.IsNullOrEmpty(o.TREATMENT_TYPE_IDS) ||
+                    o.TREATMENT_TYPE_IDS.Split(',').Select(s => s.Trim()).Any(id => id == this.TreatmentTypeId.ToString())
+                ).ToList();
+            }
+            return result;
+        }
+
         private void InitComboPatientCode()
         {
             try
@@ -329,13 +345,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         rightRouteCode = "DT";
                     else if (rdoWrongRoute.Checked)
                         rightRouteCode = "TT";
-                    if (!string.IsNullOrEmpty(rightRouteCode))
-                        heinList = heinData.Where(o => o.RIGHT_ROUTE_CODE == rightRouteCode).ToList();
-                    else
-                        // Chua chon Loai (Dung tuyen/Trai tuyen): chi xet ban ghi danh muc cung de trong Tuyen
-                        // (dung chung moi tuyen), khong suy doan cho ban ghi da gan cu the Dung/Trai tuyen.
-                        heinList = heinData.Where(o => string.IsNullOrEmpty(o.RIGHT_ROUTE_CODE)).ToList();
-
                     string rightRouteTypeCode = null;
                     if (cboHeinRightRoute.EditValue != null)
                     {
@@ -343,15 +352,14 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         if (routeType == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.EMERGENCY || routeType == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.PRESENT || routeType == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT || routeType == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.OVER)
                             rightRouteTypeCode = routeType;
                     }
-                    heinList = heinList.Where(o => o.RIGHT_ROUTE_TYPE_CODE == rightRouteTypeCode).ToList();
 
-                    if (this.TreatmentTypeId > 0)
-                    {
-                        heinList = heinList.Where(o =>
-                            string.IsNullOrEmpty(o.TREATMENT_TYPE_IDS) ||
-                            o.TREATMENT_TYPE_IDS.Split(',').Select(s => s.Trim()).Any(id => id == this.TreatmentTypeId.ToString())
-                        ).ToList();
-                    }
+                    // Buoc 1: ban ghi danh muc khai dung Dung/Trai tuyen cua ho so (hanh vi cu).
+                    // Buoc 2 (du phong): ban ghi bo ca Dung tuyen va Trai tuyen => khong xet tuyen, chi xet cac yeu to con lai.
+                    // Chua chon Loai (Dung tuyen/Trai tuyen) thi chi co buoc 2.
+                    if (!string.IsNullOrEmpty(rightRouteCode))
+                        heinList = FilterHeinPatientTypeByOtherCriteria(heinData.Where(o => o.RIGHT_ROUTE_CODE == rightRouteCode).ToList(), rightRouteTypeCode);
+                    if (heinList.Count == 0)
+                        heinList = FilterHeinPatientTypeByOtherCriteria(heinData.Where(o => string.IsNullOrEmpty(o.RIGHT_ROUTE_CODE)).ToList(), rightRouteTypeCode);
 
                     if (heinList.Count > 0 && this.HeinPatientCode == null)
                     {
