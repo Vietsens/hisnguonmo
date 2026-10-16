@@ -560,7 +560,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 leaf.SERVICE_ID = item.SERVICE_ID;
                 leaf.TDL_SERVICE_CODE = item.TDL_SERVICE_CODE;
                 leaf.TDL_SERVICE_NAME = item.TDL_SERVICE_NAME;
-                long? testResultTime = null; // Viec 57966: Ngay KQ dong dich vu XN = thoi gian ket thuc y lenh (chi dong dich vu, dong chi so de trong)
+                long? testResultTime = null; // Viec 57966: Ngay KQ dong dich vu XN = EXT.END_TIME, trong thi thoi gian ket thuc y lenh (dong chi so de trong)
                 if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                 {
                     HIS_SERVICE_REQ serviceReq = null;
@@ -605,7 +605,6 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                         if (dtTests != null && dtTests.Count > 0)
                         {
                             int k = 0;
-                            bool hasTestValue = false;
                             foreach (var itemT in dtTests)
                             {
                                 k++;
@@ -631,15 +630,15 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
 
                                 leafXN.TEST_INDEX_UNIT_CODE = itemT.TEST_INDEX_UNIT_CODE;
                                 leafXN.TEST_INDEX_UNIT_NAME = itemT.TEST_INDEX_UNIT_NAME;
-                                if (!String.IsNullOrWhiteSpace(itemT.VALUE))
-                                    hasTestValue = true;
                                 ProcessCheckNormal(ref leafXN);
                                 SereServADOs.Add(leafXN);
                             }
-                            testResultTime = GetTestResultTime(serviceReq, hasTestValue);
                         }
                     }
-
+                    HIS_SERE_SERV_EXT sereServExt = null;
+                    if (dicSereServExt != null)
+                        dicSereServExt.TryGetValue(leaf.ID, out sereServExt);
+                    testResultTime = GetTestResultTime(sereServExt, serviceReq);
                 }
                 else
                 {
@@ -651,7 +650,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 }
                 if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                 {
-                    // Viec 57966: LIS/LABCON tra ket qua khong ghi EXT.END_TIME -> dong dich vu theo thoi gian ket thuc y lenh
+                    // Viec 57966: dong dich vu XN theo EXT.END_TIME, LIS/LABCON khong ghi thi theo thoi gian ket thuc y lenh (GetTestResultTime)
                     leaf.END_TIME = ResultTimeToString(testResultTime);
                 }
                 else if (dicSereServExt.ContainsKey(leaf.ID) && dicSereServExt[leaf.ID].END_TIME.HasValue)
@@ -668,17 +667,19 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         }
 
         /// <summary>
-        /// Viec 57966: Ngay KQ cua dong dich vu xet nghiem (HIS_SERE_SERV) = thoi gian ket thuc y lenh (HIS_SERVICE_REQ.FINISH_TIME,
-        /// cung la o "Thoi gian ket thuc" man Sua thong tin chung y lenh; LABCON gui kem khi tra ket qua).
-        /// Chi co khi y lenh da Hoan thanh va co it nhat 1 chi so co gia tri; thieu thi de trong, khong lay gio khac thay the.
-        /// Dong chi so (HIS_SERE_SERV_TEIN) khong hien gio (chot voi chi Han 16/10/2026).
+        /// Viec 57966 (chot voi chi Han 16/10/2026): Ngay KQ cua dong dich vu xet nghiem (HIS_SERE_SERV) = HIS_SERE_SERV_EXT.END_TIME
+        /// nhu truoc viec 57966; END_TIME trong (LIS/LABCON tra ket qua khong ghi) thi lay thoi gian ket thuc y lenh
+        /// (HIS_SERVICE_REQ.FINISH_TIME, LABCON gui kem khi tra ket qua) khi y lenh Hoan thanh. Khong xet chi so.
+        /// Thieu ca 2 thi de trong, khong lay gio khac thay the. Dong chi so (HIS_SERE_SERV_TEIN) khong hien gio.
         /// </summary>
-        private long? GetTestResultTime(HIS_SERVICE_REQ serviceReq, bool hasTestValue)
+        private long? GetTestResultTime(HIS_SERE_SERV_EXT sereServExt, HIS_SERVICE_REQ serviceReq)
         {
             long? result = null;
             try
             {
-                if (hasTestValue && serviceReq != null
+                if (sereServExt != null && sereServExt.END_TIME.HasValue && sereServExt.END_TIME.Value > 0)
+                    result = sereServExt.END_TIME.Value;
+                else if (serviceReq != null
                     && serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT
                     && serviceReq.FINISH_TIME.HasValue && serviceReq.FINISH_TIME.Value > 0)
                     result = serviceReq.FINISH_TIME.Value;
