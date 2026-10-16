@@ -220,6 +220,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 }
 
                 GeneratePopupMenu();
+                InitPrintPaymentSlipControl();
                 InvoiceTypeCreate = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.ElectronicBill.Type");
                 if (String.IsNullOrEmpty(InvoiceTypeCreate) || (InvoiceTypeCreate != invoiceTypeCreate__CreateInvoiceVnpt && InvoiceTypeCreate != invoiceTypeCreate__CreateInvoiceHIS))
                 {
@@ -706,7 +707,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     .Get<List<V_HIS_IMP_MEST>>("api/HisImpMest/GetVIew", ApiConsumers.MosConsumer, hisImpMestFilter, param);
 
 
-                MPS.Processor.Mps000339.PDO.Mps000339PDO rdo = new MPS.Processor.Mps000339.PDO.Mps000339PDO(transactionBillResult, billGoods, expMestMedicines, expMestMaterials, hisImpMest);
+                //Viec 59437: truyen them phieu xuat de mau co ma phieu xuat + thong tin nguoi benh (SALE_PATIENT_*)
+                MPS.Processor.Mps000339.PDO.Mps000339PDO rdo = new MPS.Processor.Mps000339.PDO.Mps000339PDO(transactionBillResult, billGoods, expMestMedicines, expMestMaterials, expMests, hisImpMest);
 
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
@@ -715,7 +717,12 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 }
 
                 MPS.ProcessorBase.Core.PrintData printdata = null;
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (this.paymentSlipPreviewType.HasValue)
+                {
+                    //Viec 59437: tu in sau khi luu theo che do cua tung nut (Luu in -> in thang)
+                    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, this.paymentSlipPreviewType.Value, printerName);
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
                     printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
                 }
@@ -1467,6 +1474,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 if (this.SaveProcess())
                 {
                     this.PrintReceiptAfterSave(MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
+                    //Viec 59437: tich "In phieu thu" -> Luu cung in phieu thanh toan (Mps000339)
+                    this.PrintPaymentSlipAfterSave();
                 }
                 if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
                 {
@@ -2194,8 +2203,16 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         }
                     }
 
-                    cboCashierRoom.Focus();
-                    cboCashierRoom.ShowPopup();
+                    if (valid)
+                    {
+                        //Go ma tim duoc dung 1 phong -> sang o tiep theo (Hinh thuc)
+                        cboPayFrom.Focus();
+                    }
+                    else
+                    {
+                        cboCashierRoom.Focus();
+                        cboCashierRoom.ShowPopup();
+                    }
 
                 }
             }
@@ -2218,15 +2235,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         if (gt != null)
                         {
                             txtCashierRoomCode.Text = gt.CASHIER_ROOM_CODE;
-                            cboCashierRoom.Focus();
-                            cboCashierRoom.ShowPopup();
                         }
                     }
-                    else
-                    {
-                        cboCashierRoom.Focus();
-                        cboCashierRoom.ShowPopup();
-                    }
+                    //Chon xong phong thu ngan -> sang o tiep theo (Hinh thuc), khong focus lai + mo lai popup
+                    cboPayFrom.Focus();
                 }
             }
             catch (Exception ex)
@@ -2246,8 +2258,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM gt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboCashierRoom.EditValue.ToString()));
                         if (gt != null)
                         {
-                            cboCashierRoom.Focus();
-                            cboCashierRoom.ShowPopup();
+                            //Enter khi da co phong -> sang o tiep theo (Hinh thuc)
+                            cboPayFrom.Focus();
                         }
                     }
                     else
@@ -2701,6 +2713,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         // Khong tick "In bien lai" (hoac hinh thuc QR) -> in Mps000092 nhu cu; tick thi da in thang o tren, khong in 2 lan
                         this.onClickInPhieuXuatBan(null, null);
                     }
+
+                    //Viec 59437: tich "In hoa don xuat ban" -> in them Mps000339 sau ban in hien tai, in thang (khong xem truoc)
+                    this.PrintPaymentSlipAfterSave(MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow);
                 }
                 if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
                 {
@@ -2891,6 +2906,12 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
                 menu.Items.Add(new DXMenuItem("In hóa đơn điện tử", new EventHandler(onClickInHoaDonDienTu)));
 
+                //Viec 59437: in lai bien lai (Mps000092 - mau Bien nhan thanh toan, cung duong in voi o "In bien lai" BVNTP)
+                menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__BTN_DROP_DOWN__ITEM_IN_BIEN_LAI", Base.ResourceLangManager.LanguagefrmMedicineSaleBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickInBienLai)));
+
+                //Viec 59437: in phieu thanh toan (Mps000339) cua giao dich vua luu
+                menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__BTN_DROP_DOWN__ITEM_IN_PHIEU_THU", Base.ResourceLangManager.LanguagefrmMedicineSaleBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickInPhieuThanhToan)));
+
                 ddBtnPrint.DropDownControl = menu;
             }
             catch (Exception ex)
@@ -3012,7 +3033,14 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 // Viec 3082 (v3 25/08/2026): tick checkbox "In" -> kiem tra ton -> Luu ky (bill + HDDT)
                 // -> tu dong duyet/thuc xuat phan con thieu -> in thang. Khong tick -> luong Luu ky cu.
                 bool autoExportPrint = (lciAutoExportPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoExportPrint.Checked);
-                ProcessSaveSignPrintCore(autoExportPrint);
+                SaveSignPrintResult saveSignResult = ProcessSaveSignPrintCore(autoExportPrint);
+
+                //Viec 59437: tich "In phieu thu" -> Luu ky thanh cong cung in phieu thanh toan (Mps000339).
+                //Goi o day (nut Luu ky) chu khong trong ProcessSaveSignPrintCore de che do tu dong (form an) khong mo hop in.
+                if (saveSignResult == SaveSignPrintResult.Success || saveSignResult == SaveSignPrintResult.ManualFlow)
+                {
+                    this.PrintPaymentSlipAfterSave();
+                }
             }
             catch (Exception ex)
             {
@@ -3930,6 +3958,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         if (item.KEY == chkPrintReceipt.Name)
                         {
                             chkPrintReceipt.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == chkPrintPaymentSlip.Name)
+                        {
+                            chkPrintPaymentSlip.Checked = item.VALUE == "1";
                         }
                     }
                 }
