@@ -32,9 +32,10 @@ namespace HIS.UC.Hospitalize.ADO
 		public string TT_PATIENT_BED_STR { get; set; }
 
 		/// <summary>
-		/// PATIENT_COUNT > BED_COUNT (rong tinh la 0): dong hien chu do, nguoc lai chu xanh duong.
+		/// So PATIENT_COUNT voi BED_COUNT (rong tinh la 0): -1 it hon (chu xanh la), 0 bang (chu xanh duong),
+		/// 1 nhieu hon (chu do). Giong o Buong benh man Tiep nhan chuyen khoa (BedRoomWithIn).
 		/// </summary>
-		public bool IsOverBedCount { get; set; }
+		public int PatientBedCompare { get; set; }
 
 		public BedRoomADO() { }
 		public BedRoomADO(MOS.EFMODEL.DataModels.V_HIS_BED_ROOM data)
@@ -45,7 +46,7 @@ namespace HIS.UC.Hospitalize.ADO
 				{
 					Inventec.Common.Mapper.DataObjectMapper.Map<BedRoomADO>(this, data);
 					this.TT_PATIENT_BED_STR = BuildPatientBedText(this.PATIENT_COUNT, this.BED_COUNT);
-					this.IsOverBedCount = (this.PATIENT_COUNT ?? 0) > (this.BED_COUNT ?? 0);
+					this.PatientBedCompare = decimal.Compare(this.PATIENT_COUNT ?? 0, this.BED_COUNT ?? 0);
 				}
 			}
 			catch (Exception ex)

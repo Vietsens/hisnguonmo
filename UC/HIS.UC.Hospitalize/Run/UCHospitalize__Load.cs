@@ -369,7 +369,8 @@ namespace HIS.UC.Hospitalize.Run
 		/// Đổ danh sách buồng vào ô chọn Buồng bệnh: bật dòng tiêu đề cột (Mã buồng, Tên buồng)
 		/// và thêm cột Tổng BN/Tổng giường ghép từ PATIENT_COUNT/BED_COUNT của V_HIS_BED_ROOM,
 		/// cùng dữ liệu api/HisBedRoom/GetView đang gọi, không gọi thêm đường gọi nào.
-		/// Chữ cả dòng màu đỏ khi PATIENT_COUNT > BED_COUNT, màu xanh dương khi PATIENT_COUNT <= BED_COUNT.
+		/// Chữ cả dòng: đỏ khi PATIENT_COUNT > BED_COUNT, xanh dương khi bằng, xanh lá khi ít hơn
+		/// (giống ô Buồng bệnh màn Tiếp nhận chuyển khoa).
 		/// Nguồn của ô là BedRoomADO (kế thừa V_HIS_BED_ROOM) nên ValueMember ID không đổi,
 		/// các xử lý tra theo listBedRoom (gõ mã buồng, Closed, KeyUp) giữ nguyên.
 		/// </summary>
@@ -407,7 +408,7 @@ namespace HIS.UC.Hospitalize.Run
 		}
 
 		/// <summary>
-		/// Tô màu chữ cả dòng buồng: đỏ khi số BN đang nằm vượt số giường, xanh dương khi còn lại.
+		/// Tô màu chữ cả dòng buồng: đỏ khi số BN đang nằm vượt số giường, xanh dương khi bằng, xanh lá khi còn giường.
 		/// </summary>
 		private static void BedRoomView_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
 		{
@@ -431,7 +432,11 @@ namespace HIS.UC.Hospitalize.Run
 
 		private static Color GetBedRoomForeColor(BedRoomADO bedRoom)
 		{
-			return bedRoom.IsOverBedCount ? Color.Red : Color.Blue;
+			if (bedRoom.PatientBedCompare > 0)
+				return Color.Red;
+			if (bedRoom.PatientBedCompare == 0)
+				return Color.Blue;
+			return Color.Green;
 		}
 
 		/// <summary>
