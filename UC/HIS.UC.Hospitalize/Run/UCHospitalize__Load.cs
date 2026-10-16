@@ -357,18 +357,61 @@ namespace HIS.UC.Hospitalize.Run
 
 					this.listBedRoom = this.listBedRoom.Where(o => o.DEPARTMENT_ID == hospitalizeInitADO.DepartmentId && (string.IsNullOrEmpty(o.TREATMENT_TYPE_IDS))).ToList();
 				}
-				List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-				columnInfos.Add(new ColumnInfo("BED_ROOM_CODE", "", 50, 1));
-				columnInfos.Add(new ColumnInfo("BED_ROOM_NAME", "", 250, 2));
-				ControlEditorADO controlEditorADO = new ControlEditorADO("BED_ROOM_NAME", "ID", columnInfos, false, 250);
-				ControlEditorLoader.Load(cboBedRoom, this.listBedRoom, controlEditorADO);
+				BindBedRoomCombo(cboBedRoom, this.listBedRoom);
 			}
 			catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Warn(ex);
 			}
 		}
-		
+
+		/// <summary>
+		/// Đổ danh sách buồng vào ô chọn Buồng bệnh: bật dòng tiêu đề cột (Mã buồng, Tên buồng)
+		/// và thêm cột Tổng BN/Tổng số giường ghép từ PATIENT_COUNT/BED_COUNT của V_HIS_BED_ROOM,
+		/// cùng dữ liệu api/HisBedRoom/GetView đang gọi, không gọi thêm đường gọi nào.
+		/// Nguồn của ô là BedRoomADO (kế thừa V_HIS_BED_ROOM) nên ValueMember ID không đổi,
+		/// các xử lý tra theo listBedRoom (gõ mã buồng, Closed, KeyUp) giữ nguyên.
+		/// </summary>
+		internal static void BindBedRoomCombo(DevExpress.XtraEditors.GridLookUpEdit cboBedRoom, List<V_HIS_BED_ROOM> bedRooms)
+		{
+			List<BedRoomADO> dataSource = new List<BedRoomADO>();
+			if (bedRooms != null)
+			{
+				foreach (V_HIS_BED_ROOM bedRoom in bedRooms)
+				{
+					dataSource.Add(new BedRoomADO(bedRoom));
+				}
+			}
+
+			List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+			columnInfos.Add(new ColumnInfo("BED_ROOM_CODE", GetBedRoomColumnCaption("UCHospitalize.cboBedRoom.ColBedRoomCode.Caption", "Mã buồng"), 70, 1));
+			columnInfos.Add(new ColumnInfo("BED_ROOM_NAME", GetBedRoomColumnCaption("UCHospitalize.cboBedRoom.ColBedRoomName.Caption", "Tên buồng"), 180, 2));
+			ColumnInfo patientBedColumn = new ColumnInfo("TT_PATIENT_BED_STR", GetBedRoomColumnCaption("UCHospitalize.cboBedRoom.ColPatientBed.Caption", "Tổng BN/Tổng số giường"), 130, 3);
+			patientBedColumn.horzAlignment = ColumnInfo.HorzAlignment.Center;
+			columnInfos.Add(patientBedColumn);
+
+			ControlEditorADO controlEditorADO = new ControlEditorADO("BED_ROOM_NAME", "ID", columnInfos, true, 400);
+			ControlEditorLoader.Load(cboBedRoom, dataSource, controlEditorADO);
+		}
+
+		private static string GetBedRoomColumnCaption(string languageKey, string defaultCaption)
+		{
+			try
+			{
+				if (HIS.UC.Hospitalize.Base.ResourceLangManager.LanguageUCHospitalize == null)
+				{
+					HIS.UC.Hospitalize.Base.ResourceLangManager.InitResourceLanguageManager();
+				}
+				string caption = Inventec.Common.Resource.Get.Value(languageKey, HIS.UC.Hospitalize.Base.ResourceLangManager.LanguageUCHospitalize, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+				return string.IsNullOrEmpty(caption) ? defaultCaption : caption;
+			}
+			catch (Exception ex)
+			{
+				Inventec.Common.Logging.LogSystem.Warn(ex);
+				return defaultCaption;
+			}
+		}
+
 		private void LoadBedCount(V_HIS_DEPARTMENT_1 data)
 		{
 			try
