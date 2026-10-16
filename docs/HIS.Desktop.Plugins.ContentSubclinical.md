@@ -41,12 +41,11 @@ Buồng bệnh bật key `HIS.Desktop.Plugins.BedRoomPartial.ClsTabOption` thì 
 - Chỉ hiện y lệnh trạng thái Hoàn thành/Đang xử lý; key `HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete` = 1 thì chỉ Hoàn thành, = 2 thì XN phải Hoàn thành.
 - Chế độ chỉ xem: `treatmentIdSearch <= 0` không popup "Bắt buộc chọn Hồ sơ điều trị" (chỉ popup ở chế độ chọn khi user chọn hồ sơ khác).
 - **Cột Ngày KQ (việc 57966)**:
-  - Xét nghiệm, dòng chỉ số: chỉ hiện khi y lệnh `SERVICE_REQ_STT_ID = HIS_SERVICE_REQ_STT.ID__HT` VÀ chỉ số có `VALUE`. Ưu tiên `V_HIS_SERE_SERV_TEIN.RESULT_TIME`, không có thì `HIS_SERVICE_REQ.FINISH_TIME` (giờ LABCON gửi kèm khi hoàn thành = ô "Thời gian kết thúc" màn Sửa thông tin y lệnh). Thiếu cả hai thì trống.
-  - Xét nghiệm, dòng dịch vụ: giờ lớn nhất của các dòng chỉ số con đang có giờ; KHÔNG lấy `HIS_SERE_SERV_EXT.END_TIME` (LIS/LABCON không ghi, chỉ có khi lưu Sửa thông tin y lệnh và còn lọt ở y lệnh chưa hoàn thành).
+  - Xét nghiệm, dòng dịch vụ (`HIS_SERE_SERV`): `HIS_SERVICE_REQ.FINISH_TIME` của y lệnh chứa dịch vụ (tra theo `HIS_SERE_SERV.SERVICE_REQ_ID`; giờ LABCON gửi kèm khi hoàn thành = ô "Thời gian kết thúc" màn Sửa thông tin chung y lệnh). Chỉ hiện khi y lệnh `SERVICE_REQ_STT_ID = HIS_SERVICE_REQ_STT.ID__HT`, có `FINISH_TIME` VÀ có ít nhất 1 chỉ số (`V_HIS_SERE_SERV_TEIN.VALUE`) có giá trị; thiếu thì trống. KHÔNG lấy `HIS_SERE_SERV_EXT.END_TIME` (LIS/LABCON không ghi, chỉ có khi lưu Sửa thông tin y lệnh và còn lọt ở y lệnh chưa hoàn thành).
+  - Xét nghiệm, dòng chỉ số (`HIS_SERE_SERV_TEIN`): luôn TRỐNG (chốt với chị Hân 16/10/2026: Ngày KQ là của dịch vụ, không phải của từng chỉ số). Không đọc `HIS_SERE_SERV_TEIN.RESULT_TIME` (cột có trong DB nhưng không phần mềm nào ghi). Chế độ Trên/Dưới ngưỡng cây chỉ còn danh sách chỉ số (không có dòng dịch vụ) nên cột Ngày KQ trống.
   - Loại khác (thủ thuật, CĐHA, NS, SA, TDCN, GPBL): giữ `HIS_SERE_SERV_EXT.END_TIME` như cũ.
   - XN nhánh kết luận (y lệnh có `EXE_SERVICE_MODULE` khác `TestServiceReqExcute` + có EXT, return sớm) và các node vi sinh/vi khuẩn/kháng sinh (tích "Hiển thị kháng sinh đồ"): vẫn TRỐNG như trước (chưa từng gán END_TIME). Tích "Hiển thị kháng sinh đồ" mà dịch vụ không có kết quả vi sinh thì rơi về nhánh thường và theo quy tắc XN ở trên.
-  - Hiện nay MOS chưa ghi `HIS_SERE_SERV_TEIN.RESULT_TIME` (HisTestIndexResultTDO không có trường giờ) nên thực tế luôn là `FINISH_TIME`. Hủy hoàn thành → MOS đặt `FINISH_TIME = null`, STT về ĐXL nhưng giữ `VALUE` → bắt buộc xét STT, không dựa vào có giờ hay có giá trị.
-  - `RESULT_TIME` đọc qua reflection (`PropertyInfo` cache, cách làm như 62ddc7801): client có MOS.EFMODEL cũ (trước 23/03/2026, chưa có cột) gọi thẳng property sẽ bị JIT ném MissingMethodException, rơi vào catch của `LoadDataService` và MẤT toàn bộ dòng XN (đã tái hiện: `PTTK\57966\harness_test_FE\efmodel_cu`). Không có cột thì coi như không có giờ riêng → lấy `FINISH_TIME`.
+  - Hủy hoàn thành → MOS đặt `FINISH_TIME = null`, STT về ĐXL nhưng giữ `VALUE` → bắt buộc xét STT, không dựa vào có giờ hay có giá trị.
 
 ## 3. EFMODEL Sử Dụng
 
@@ -55,7 +54,7 @@ Buồng bệnh bật key `HIS.Desktop.Plugins.BedRoomPartial.ClsTabOption` thì 
 | HIS_SERVICE_REQ | Table | Y lệnh của hồ sơ; `SERVICE_REQ_STT_ID` + `FINISH_TIME` dùng cho Ngày KQ xét nghiệm (việc 57966, tra qua Dictionary `serviceReqById` theo ID truyền vào `LoadDataService`) |
 | HIS_SERE_SERV | Table | Dịch vụ đã thực hiện (7 loại: CĐHA, NS, SA, TDCN, XN, TT, GPBL) |
 | HIS_SERE_SERV_EXT | Table | Ghi chú / nhận xét / kết luận |
-| V_HIS_SERE_SERV_TEIN | View | Chỉ số xét nghiệm + khoảng tham chiếu; `RESULT_TIME` (giờ trả theo chỉ số, hiện chưa có dữ liệu) ưu tiên cho Ngày KQ (việc 57966) |
+| V_HIS_SERE_SERV_TEIN | View | Chỉ số xét nghiệm + khoảng tham chiếu; `VALUE` dùng làm điều kiện hiện Ngày KQ ở dòng dịch vụ (việc 57966; không đọc `RESULT_TIME`) |
 | V_HIS_SERVICE, V_HIS_TEST_INDEX, HIS_TEST_INDEX_GROUP | Cache/API | Danh mục; `V_HIS_SERVICE.DIIM_TYPE_ID/DIIM_TYPE_NAME` tách tab X-quang / CT / MRI (việc 57971) |
 | HIS_SERE_SERV_FILE | API | Ảnh kết quả; `SERE_SERV_ID` gắn vào ảnh để lọc theo tab (việc 57971) |
 | LIS_SAMPLE / LIS_SAMPLE_SERVICE / LIS_RESULT | LIS | Kháng sinh đồ (khi tích chọn) |
@@ -92,7 +91,7 @@ Buồng bệnh bật key `HIS.Desktop.Plugins.BedRoomPartial.ClsTabOption` thì 
 
 In kết quả qua `Print/PrintKetQuaProcessor` (RichEditorStore + Mps000014 cho XN, template SAR cho CĐHA/GPBL/NS/SA/TDCN). Hoạt động ở CẢ 2 chế độ (in là thao tác chỉ đọc).
 
-Ngày KQ (việc 57966): phiếu Mps000014 in giờ trả kết quả từ `HIS_SERVICE_REQ.FINISH_TIME` (`FINISH_TIME_FULL_STR`). Màn hình ưu tiên `V_HIS_SERE_SERV_TEIN.RESULT_TIME` rồi mới tới `FINISH_TIME`. Hiện màn và phiếu cùng nguồn `FINISH_TIME` vì MOS chưa ghi `RESULT_TIME`; khi MOS bắt đầu ghi cột này thì phải sửa Mps000014 theo cùng quy tắc để phiếu không lệch màn hình. Phiếu không xét trạng thái y lệnh: y lệnh Đang xử lý còn sót `FINISH_TIME` (dữ liệu cũ, vd DB test hồ sơ 159350 y lệnh 000000867269) thì màn để trống nhưng phiếu vẫn in giờ — muốn khớp tuyệt đối thì sửa Mps000014 (việc riêng).
+Ngày KQ (việc 57966): phiếu Mps000014 in giờ trả kết quả từ `HIS_SERVICE_REQ.FINISH_TIME` (`FINISH_TIME_FULL_STR`), cùng nguồn với dòng dịch vụ trên màn. Phiếu không xét trạng thái y lệnh: y lệnh Đang xử lý còn sót `FINISH_TIME` (dữ liệu cũ, vd DB test hồ sơ 159350 y lệnh 000000867269) thì màn để trống nhưng phiếu vẫn in giờ — muốn khớp tuyệt đối thì sửa Mps000014 (việc riêng).
 
 In gộp: `Print()` chờ đến khi số y lệnh đã xử lý (`CountServiceReqPrinted`, tăng qua `SetDataGroup`) bằng số y lệnh cần in, tối đa `TIME_OUT_PRINT_MERGE` × 50 ms = 40 giây. Việc 57971 sửa lỗi có sẵn (mọi chế độ):
 - `PrintDocumentKetQua` gán `saveMemoryStream` cho `PrintMergeAdo` null → NullReferenceException, phiếu CĐHA/SA/NS/TDCN/GPBL không bao giờ vào bản in gộp, màn chờ đủ 40 giây rồi báo "Không tìm thấy dữ liệu để in!". Nay tạo `PrintMergeAdo` mới (PDF chép sang `MemoryStream` riêng, `numCopy = 1`, `EmrInputADO` của phiếu).
@@ -108,6 +107,8 @@ Lưu ý build máy backup: `RichEditorStore.SetActionCancelChooseTemplate` gọi
 | 13/08/2026 | nampp | Việc 3170 (BV Điện Biên): Thêm chế độ CHỈ XEM. Behavior nhận cờ `List<string>` chứa `ARG__VIEW_ONLY`, nhánh mới không đòi `DelegateSelectData` (đặt SAU các nhánh cũ — không ảnh hưởng luồng cũ). Form: constructor `(Module, long, bool isViewOnly)` + `ApplyViewOnlyMode()` (ẩn checkbox cây, ẩn btnSave + 6 tuỳ chọn chèn qua `LayoutVisibility.Never`, vô hiệu `barButtonItemSave` Ctrl+S, thêm `btnClose` runtime, tiêu đề "Kết quả cận lâm sàng"); guard `if (isViewOnly) return;` đầu `btnSave_Click`; không popup "Bắt buộc chọn Hồ sơ điều trị" khi chỉ xem. Resource 3 ngôn ngữ `frmContentSubclinical.Text.ViewOnly` + `btnClose.Text`. Sửa kèm: `SetActionCancelChooseTemplate` → reflection (mismatch DLL máy backup); xóa entry `licenses.licx` stale khỏi csproj. |
 | 13/10/2026 | dangth2 | Việc 57966 (BV Nguyễn Tri Phương): cột Ngày KQ của xét nghiệm trả từ LABCON. Dòng chỉ số: y lệnh Hoàn thành + chỉ số có giá trị → `RESULT_TIME` của chỉ số, không có thì `FINISH_TIME` y lệnh; chưa HT/hủy HT/chưa giá trị → trống. Dòng dịch vụ XN = giờ lớn nhất của chỉ số con (bỏ `EXT.END_TIME` với XN). Loại CLS khác giữ nguyên. Chỉ sửa `frmContentSubclinical__Pluss__Load.cs`: `LoadDataService`/`LoadDataMicrobiologicalResult` nhận `Dictionary<long, HIS_SERVICE_REQ> serviceReqById` (dựng 1 lần trong `LoadDataSS`) thay cho `List<HIS_SERVICE_REQ> rsServiceReq` (tra y lệnh O(1) thay `rsServiceReq.FirstOrDefault`, dùng cho cả nhánh kết luận lẫn Ngày KQ); thêm `GetTestIndexResultTime`, `GetSereServTeinResultTime` (đọc `RESULT_TIME` qua reflection, chịu được MOS.EFMODEL cũ), `ResultTimeToString`. Không thêm API, không đổi resource, không đổi dữ liệu trả về cho màn gọi. Phiếu Mps000014 in `FINISH_TIME` nên hiện cùng nguồn với màn (MOS chưa ghi `RESULT_TIME`); không sửa phiếu (xem mục 7). |
 | 14/10/2026 | dangth2 | Việc 57971 (BV Nguyễn Tri Phương): chế độ CHỈ XEM mở từ Buồng bệnh có cờ `CLS_TAB` → thay cây theo ngày bằng thanh tab ngang Tất cả + tab nhóm có kết quả (bảng nhóm dùng chung `Base/ClsTabGroupStore.cs`, có tab Thủ thuật), mở sẵn tab theo `CLS_TAB_INIT:<mã nhóm>`; tab nhóm Ngày → DV → chỉ số; mọi tab mở sẵn, không thu gọn; bộ lọc XN chỉ ở tab Xét nghiệm (Tất cả + tab khác luôn đủ kết quả), cột SRI ở Tất cả/Xét nghiệm; ảnh lọc theo tab; in đúng dịch vụ của tab; dọn cây/ảnh/tab khi không có kết quả. File mới `frmContentSubclinical__Pluss__ClsTab.cs`, `Base/ClsTabGroupStore.cs`; sửa Behavior (đọc cờ), `frmContentSubclinical.cs` (Load gọi `InitClsTabBar`), `__Pluss__Load.cs` (bản trước bộ lọc XN, `BindClsTabs`, `ClearClsTabs`, ảnh có `SERE_SERV_ID`), ADO `PARENT_ID__IN_TAB`, `ImageADO.SERE_SERV_ID`, resource vi/en/my. Không có cờ: mọi chế độ như cũ. Sửa kèm lỗi in có sẵn ở `Print/PrintKetQuaProcessor.cs` (mọi chế độ): phiếu CĐHA/SA/NS/TDCN/GPBL không vào bản in gộp và màn chờ 40 giây rồi báo "Không tìm thấy dữ liệu để in!"; nay mỗi dịch vụ đang tích 1 phiếu theo kết quả của chính dịch vụ, mỗi y lệnh tính xong 1 lần (cả XN lỗi), 1 phiếu PDF mở bằng form xem in gộp (mục 7). Chế độ tab: "Chỉ số quan trọng" chỉ lọc tab Xét nghiệm; cây mang tên riêng `treeListServiceReqClsTab` (file bố cục đã lưu riêng, không áp bố cục đã lưu). Sửa kèm: LIS không trả lời (`LisSample/Get` null) không còn làm mất cả dòng xét nghiệm. File tách: `…__ClsTab.cs`, `…__ClsTabRows.cs`, `…__ClsTabEvent.cs`. |
+
+| 16/10/2026 | dangth2 | Việc 57966 sửa theo test chị Hân: cột Ngày KQ của xét nghiệm chỉ hiện ở dòng dịch vụ (`HIS_SERE_SERV`) = `HIS_SERVICE_REQ.FINISH_TIME` khi y lệnh Hoàn thành và có chỉ số có giá trị; dòng chỉ số (`HIS_SERE_SERV_TEIN`) để trống. Bỏ `GetTestIndexResultTime`, `GetSereServTeinResultTime` (không còn đọc `RESULT_TIME` qua reflection), thêm `GetTestResultTime(serviceReq, hasTestValue)`. Chỉ sửa `frmContentSubclinical__Pluss__Load.cs`. |
 
 ## 9. Test Cases
 
@@ -125,11 +126,11 @@ Lưu ý build máy backup: `RichEditorStore.SetActionCancelChooseTemplate` gọi
 - [ ] Key Buồng bệnh trống → màn như cũ (cây); tờ điều trị "Chọn kết quả CLS" như cũ
 
 ### Ngày KQ xét nghiệm (việc 57966)
-- [ ] XN Hoàn thành, LABCON trả đủ (Điện giải đồ NATRI/KALI/CLO) → mỗi dòng chỉ số + dòng dịch vụ = Thời gian kết thúc y lệnh (`dd/MM/yyyy HH:mm:ss`), khớp màn Sửa thông tin y lệnh
-- [ ] XN Đang xử lý (chưa có hoặc đã có giá trị) → trống; chỉ số chưa có giá trị trong y lệnh Hoàn thành → riêng dòng đó trống
+- [ ] XN Hoàn thành, LABCON trả đủ (Điện giải đồ NATRI/KALI/CLO) → dòng dịch vụ = Thời gian kết thúc y lệnh (`dd/MM/yyyy HH:mm:ss`), khớp màn Sửa thông tin chung y lệnh; các dòng chỉ số NATRI/KALI/CLO trống
+- [ ] XN Đang xử lý (chưa có hoặc đã có giá trị) → trống; y lệnh Hoàn thành mà không chỉ số nào có giá trị → trống
 - [ ] Hủy hoàn thành → trống; Hoàn thành lại → giờ mới; sửa Thời gian kết thúc ở Sửa thông tin y lệnh → Ngày KQ đổi theo
 - [ ] XN cũ đã hoàn thành từ trước (lọc Ngày chỉ định từ/đến) → hiện giờ, không cần nhập bù
-- [ ] Thủ thuật/CĐHA giữ nguyên giờ như trước; bộ lọc Trên/Dưới ngưỡng, Chỉ số quan trọng, Hiển thị DV cha vẫn hiện giờ
+- [ ] Thủ thuật/CĐHA giữ nguyên giờ như trước; Chỉ số quan trọng, Hiển thị DV cha vẫn hiện giờ ở dòng dịch vụ; Trên/Dưới ngưỡng chỉ còn danh sách chỉ số → trống
 - [ ] Chọn kết quả CLS từ tờ điều trị/KSK/hội chẩn → nội dung chèn không đổi so với bản cũ
 - [ ] XN nhánh kết luận (thực hiện ở màn Xử lý dịch vụ) → Ngày KQ trống như cũ, kết luận vẫn hiện
 - [ ] Tích "Hiển thị kháng sinh đồ": dịch vụ không có kết quả vi sinh vẫn có giờ, dịch vụ Đang xử lý vẫn trống
