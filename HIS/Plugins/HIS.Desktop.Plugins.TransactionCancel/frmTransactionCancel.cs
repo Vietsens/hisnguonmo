@@ -463,10 +463,16 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                 }
 
                 //Huy kem cac giao dich cung lan thanh toan hai so: hoi xac nhan truoc moi buoc huy
+                //Co: huy ca nhom; Khong: chi huy giao dich dang chon; dong hop thoai: khong huy
                 this.lstTransSession = this.GetTransactionSession();
                 if (this.lstTransSession != null)
                 {
-                    if (XtraMessageBox.Show(this.BuildSessionMessage(this.lstTransSession), ResourceMessageLang.TieuDeThongBao, MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    DialogResult sessionConfirm = XtraMessageBox.Show(this.BuildSessionMessage(this.lstTransSession), ResourceMessageLang.TieuDeThongBao, MessageBoxButtons.YesNo);
+                    if (sessionConfirm == DialogResult.No)
+                    {
+                        this.lstTransSession = null;
+                    }
+                    else if (sessionConfirm != DialogResult.Yes)
                     {
                         return;
                     }
