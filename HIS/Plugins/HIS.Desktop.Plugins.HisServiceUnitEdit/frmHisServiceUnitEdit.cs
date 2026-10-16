@@ -69,10 +69,21 @@ namespace HIS.Desktop.Plugins.HisServiceUnitEdit
         HIS_SERVICE_UNIT updateDTO = new HIS_SERVICE_UNIT();
         List<HIS_SERVICE_UNIT> listServiceUnit;
         List<ServiceUnitADO> listServiceUnitADO { get; set; }
+        /// <summary>
+        /// Callback returns the newly created service unit to the caller screen.
+        /// Null when this screen is opened from the menu.
+        /// </summary>
+        HIS.Desktop.Common.DelegateSelectData delegateSelect = null;
 
         public frmHisServiceUnitEdit(Inventec.Desktop.Common.Modules.Module moduleData)
             : this(null, moduleData)
         {
+        }
+
+        public frmHisServiceUnitEdit(Inventec.Desktop.Common.Modules.Module moduleData, HIS.Desktop.Common.DelegateSelectData _delegateSelect)
+            : this(null, moduleData)
+        {
+            this.delegateSelect = _delegateSelect;
         }
 
         public frmHisServiceUnitEdit(HIS_SERVICE_UNIT serviceUnitEdit, Inventec.Desktop.Common.Modules.Module moduleData)
@@ -96,6 +107,25 @@ namespace HIS.Desktop.Plugins.HisServiceUnitEdit
             {
 
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Returns the newly created service unit to the caller screen.
+        /// Only runs when this screen is opened with a callback (quick create from another screen).
+        /// </summary>
+        private void RefeshDataAfterSave(HIS_SERVICE_UNIT resultData)
+        {
+            try
+            {
+                if (this.delegateSelect != null && resultData != null)
+                {
+                    this.delegateSelect(resultData);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -784,6 +814,7 @@ namespace HIS.Desktop.Plugins.HisServiceUnitEdit
                         success = true;
                         FillDataToGridControl();
                         ResetFormData();
+                        RefeshDataAfterSave(resultData);
                     }
                 }
                 else

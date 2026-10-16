@@ -16,22 +16,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace HIS.Desktop.Plugins.TrackingCreate
+namespace HIS.Desktop.Plugins.BedRoomPartial
 {
     /// <summary>
-    /// Task 59656 - value of HIS_CONFIG key HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption:
-    /// an order (medicine, material, technical service) may only be attached to a treatment sheet
-    /// (HIS_TRACKING) created by the ordering user (REQUEST_LOGINNAME).
+    /// Task 57971: values of config key HIS.Desktop.Plugins.BedRoomPartial.ClsTabOption
+    /// (split the "CLS" order tab of the Bed room screen into one tab per paraclinical group).
     /// </summary>
-    internal enum EnumTrackingOwnerOption
+    public enum EnumClsTabOption
     {
-        /// <summary>Empty or any other value: no check, behavior unchanged.</summary>
-        None = 0,
+        /// <summary>Empty / 0 / other value: former single "CLS" tab, Subclinical result screen as a tree</summary>
+        Off = 0,
 
-        /// <summary>1: warn and ask whether to continue.</summary>
-        Warning = 1,
+        /// <summary>1: group tabs; the main groups (Test, Ultrasound, X-ray, Functional, Endoscopy) are always shown, others only with orders</summary>
+        ShowMainTabs = 1,
 
-        /// <summary>2: block saving.</summary>
-        Block = 2
+        /// <summary>2: group tabs; only groups having orders are shown</summary>
+        ShowTabsWithData = 2
     }
 }

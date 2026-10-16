@@ -194,6 +194,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (trackingADOs == null)
                     return;
 
+                //Viec 59656: bat key thi combo chi hien to do nguoi chi dinh tao (sua don giu them to cua don), key tat = trackingADOs nhu cu
+                List<TrackingADO> trackingADOsForCombo = this.GetTrackingADOsForCombo();
+
                 if (cbo.EditValue == null)
                 {
                     if (this.actionType == GlobalVariables.ActionEdit)
@@ -226,12 +229,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     columnInfos.Add(new ColumnInfo("TrackingTimeStr", "Thời gian", 250, 1));
                     columnInfos.Add(new ColumnInfo("CREATOR", "Người tạo", 100, 2));
                     ControlEditorADO controlEditorADO = new ControlEditorADO("TrackingTimeStr", "ID", columnInfos, true, 350);
-                    ControlEditorLoader.Load(cbo, trackingADOs, controlEditorADO);
+                    ControlEditorLoader.Load(cbo, trackingADOsForCombo, controlEditorADO);
                 }
                 else
                 {
                     InitCheck(cbo, SelectionGrid__ToDieuTri);
-                    InitCombo(cbo, trackingADOs, "TrackingTimeStr", "CREATOR", "ID");
+                    InitCombo(cbo, trackingADOsForCombo, "TrackingTimeStr", "CREATOR", "ID");
 
                     cbo.ShowPopup();
                     cbo.ClosePopup();
@@ -247,7 +250,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     string trackingOwnerLoginName = isTrackingOwnerCheck ? this.GetRequestLoginNameForTrackingOwner() : null;
                     if (HisConfigCFG.IsDefaultTracking || (isTrackingOwnerCheck && this.actionType != GlobalVariables.ActionEdit))
                     {
-                        var trackingTemps = this.trackingADOs.Where(o => intructionDateSelectedProcess.Contains(o.TRACKING_TIME.ToString().Substring(0, 8))
+                        var trackingTemps = trackingADOsForCombo.Where(o => intructionDateSelectedProcess.Contains(o.TRACKING_TIME.ToString().Substring(0, 8))
                             && (isTrackingOwnerCheck
                                 ? HIS.Desktop.Plugins.AssignPrescriptionPK.Base.TrackingOwnerChecker.IsOwner(o.CREATOR, trackingOwnerLoginName)
                                 : o.CREATOR.ToUpper() == this.txtLoginName.Text.ToUpper()))

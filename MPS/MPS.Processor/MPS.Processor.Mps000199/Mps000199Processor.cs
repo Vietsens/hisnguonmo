@@ -39,6 +39,42 @@ namespace MPS.Processor.Mps000199
             _ListAdo = new List<Mps000199ADO>();
         }
 
+        //Mau in nhieu loai phieu: phieu nhap (dau ky / kiem ke / khac) -> ma phieu nhap;
+        //khong co phieu nhap ma co phieu xuat ban -> ma phieu xuat (lay phieu dau tien)
+        public override string ProcessEmrStockData()
+        {
+            try
+            {
+                if (rdo == null) return null;
+                var impMest = rdo._initImpMest ?? rdo._inveImpMest ?? rdo._otherImpMest;
+                if (impMest != null)
+                {
+                    return BuildEmrStockData(
+                        null,
+                        impMest.IMP_MEST_CODE,
+                        GetMediStockCodeById(impMest.CHMS_MEDI_STOCK_ID),
+                        impMest.MEDI_STOCK_CODE,
+                        impMest.REQ_DEPARTMENT_CODE);
+                }
+                if (rdo._SaleExpMests != null && rdo._SaleExpMests.Count > 0)
+                {
+                    var expMest = rdo._SaleExpMests.First();
+                    return BuildEmrStockData(
+                        expMest.EXP_MEST_CODE,
+                        null,
+                        expMest.MEDI_STOCK_CODE,
+                        GetMediStockCodeById(expMest.IMP_MEDI_STOCK_ID),
+                        expMest.REQ_DEPARTMENT_CODE);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
         public override bool ProcessData()
         {
             bool result = false;

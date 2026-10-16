@@ -2508,6 +2508,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     else
                     {
                         cboBuyerOrganization.EditValue = null;
+                        // Khong co WORK_PLACE_ID -> kiem tra text tu do (TDL_PATIENT_WORK_PLACE_NAME)
+                        string freeTextOrg = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE;
+                        if (!string.IsNullOrWhiteSpace(freeTextOrg))
+                        {
+                            chkOther.Checked = true;
+                            txtBuyerOrganization.Text = freeTextOrg;
+                        }
                     }
                     //Ma so thue
                     if (patientTaxCode != null)

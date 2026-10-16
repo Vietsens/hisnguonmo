@@ -273,6 +273,9 @@
     <Compile Include="Base\ControlCode.cs" />
     <Compile Include="Base\HasCoTreatmentADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
+    <Compile Include="Base\ClsTabDataBuilder.cs" />
+    <Compile Include="Base\ClsTabGroupStore.cs" />
+    <Compile Include="Base\ClsTabPage.cs" />
     <Compile Include="Base\SameDepartmentDeleteChecker.cs" />
     <Compile Include="Base\TabControlProcess.cs" />
     <Compile Include="Base\TreatmentBedRoomADO.cs">
@@ -348,6 +351,12 @@
     <Compile Include="Run\UCBedRoomPartial__Pluss__DeleteSameDepartment.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Run\UCBedRoomPartial__Pluss__ClsTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\UCBedRoomPartial__Pluss__ClsTabAction.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="Key\KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -366,6 +375,10 @@
     <Compile Include="UCTreeListService.Designer.cs">
       <DependentUpon>UCTreeListService.cs</DependentUpon>
     </Compile>
+    <Compile Include="UCTreeListService___ClsTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnumClsTabOption.cs" />
     <Compile Include="ValidateTime.cs" />
   </ItemGroup>
   <ItemGroup>

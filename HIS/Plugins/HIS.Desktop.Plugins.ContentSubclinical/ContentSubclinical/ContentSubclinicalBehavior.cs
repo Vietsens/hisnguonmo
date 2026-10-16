@@ -74,6 +74,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                     HIS.Desktop.Common.DelegateSelectTestIndexGroupData _DelegateTestIndexGroup = null;
                     string _serviceIds = null; // có = chế độ headless lấy kết quả theo serviceIds
                     bool withExecutor = false; // cờ WITH_EXECUTOR: kết quả chuỗi bọc kèm người thực hiện y lệnh
+                    bool isClsTab = false; // Viec 57971: flag CLS_TAB - view-only mode shows the results in service group tabs
+                    string clsTabInitCode = null; // Viec 57971: flag CLS_TAB_INIT:<group code> - tab opened first
 
                     foreach (var item in entity)
                     {
@@ -115,6 +117,15 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                             {
                                 withExecutor = true;
                             }
+                            if (flags.Contains(Base.ClsTabGroupStore.ARG__CLS_TAB))
+                            {
+                                isClsTab = true;
+                            }
+                            string initFlag = flags.FirstOrDefault(o => o != null && o.StartsWith(Base.ClsTabGroupStore.ARG__CLS_TAB_INIT_PREFIX, StringComparison.Ordinal));
+                            if (initFlag != null)
+                            {
+                                clsTabInitCode = initFlag.Substring(Base.ClsTabGroupStore.ARG__CLS_TAB_INIT_PREFIX.Length);
+                            }
                         }
 
                     }
@@ -149,7 +160,10 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                     {
                         // Chế độ CHỈ XEM (mở từ ngoài tờ điều trị, vd nút "Kết quả CLS" màn Buồng bệnh):
                         // không cần DelegateSelectData vì không trả dữ liệu về plugin gọi.
-                        result = new frmContentSubclinical(currentModule, treatmentId, true);
+                        frmContentSubclinical frm = new frmContentSubclinical(currentModule, treatmentId, true);
+                        frm.IsClsTabMode = isClsTab;
+                        frm.InitialClsTabCode = clsTabInitCode;
+                        result = frm;
                     }
 
                 }

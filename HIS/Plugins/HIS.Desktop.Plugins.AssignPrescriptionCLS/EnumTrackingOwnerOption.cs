@@ -19,19 +19,16 @@
 namespace HIS.Desktop.Plugins.AssignPrescriptionCLS
 {
     /// <summary>
-    /// Task 59656 - value of HIS_CONFIG key HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption:
-    /// an order (medicine, material, technical service) may only be attached to a treatment sheet
-    /// (HIS_TRACKING) created by the ordering user (REQUEST_LOGINNAME).
+    /// Task 59656 - value of HIS_CONFIG key HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption (revised 14/10/2026):
+    /// which treatment sheets (HIS_TRACKING) the "Treatment sheet" combo of the order screens shows.
     /// </summary>
     internal enum EnumTrackingOwnerOption
     {
-        /// <summary>Empty or any other value: no check, behavior unchanged.</summary>
+        /// <summary>Empty or any other value: all sheets, behavior unchanged.</summary>
         None = 0,
 
-        /// <summary>1: warn and ask whether to continue.</summary>
-        Warning = 1,
-
-        /// <summary>2: block saving.</summary>
-        Block = 2
+        /// <summary>1: only sheets created by the ordering user (CREATOR = REQUEST_LOGINNAME); the latest one of the
+        /// instruction date is selected by default.</summary>
+        OwnOnly = 1
     }
 }

@@ -33,6 +33,15 @@ Tham chiếu mô tả các option trong `HIS.Desktop.Plugins.AssignPrescriptionP
   - Nếu chưa chọn + `mediMatyTypeADOs` có ít nhất 1 thuốc → chặn lưu + cảnh báo `KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri`, focus combo.
   - Nếu chỉ vật tư → cho lưu bình thường.
 
+### Cấu hình `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (Việc 59656, sửa 14/10/2026)
+- Trống/khác `1`: combo "Tờ điều trị" hiện mọi tờ của hồ sơ, chọn sẵn như cũ.
+- `1`:
+  - Combo chỉ hiện tờ có `HIS_TRACKING.CREATOR` = người chỉ định (`cboUser`, trống thì lấy tài khoản đăng nhập), so không phân biệt hoa thường.
+  - Mở màn: chọn sẵn tờ mới nhất của người chỉ định trong ngày y lệnh tại khoa đang làm việc (chọn nhiều ngày y lệnh thì không chọn sẵn). Tờ truyền vào từ màn Tạo tờ điều trị chỉ hiện/được chọn khi do người chỉ định tạo.
+  - Đổi người chỉ định (chọn `cboUser` hoặc gõ `txtLoginName` + Enter): lọc lại combo và chọn lại tờ mới nhất của người mới trong ngày y lệnh; không có thì để trống.
+  - Sửa đơn: tờ đang gắn với đơn vẫn có trong combo và được giữ nguyên dù do người khác tạo.
+  - Khi lưu không kiểm tra, cảnh báo hay chặn gì thêm.
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -95,7 +104,8 @@ Tham chiếu mô tả các option trong `HIS.Desktop.Plugins.AssignPrescriptionP
 | 2026-07-18 | huannh | Fix lỗi lọc kho trong `InitComboMediStockAllow` (`frmAssignPrescription__InitCombo.cs`): thiếu ngoặc ở điều kiện `IS_ACTIVE` khiến `&&` ưu tiên hơn `\|\|`, mọi kho có `IS_ACTIVE == null` (kể cả Kho Máu) lọt qua bất kể loại kho, và tick "Kho YHCT" không có tác dụng. Bọc ngoặc `(IS_ACTIVE == null \|\| IS_ACTIVE == 1)` ở cả 2 nhánh checked/unchecked để điều kiện loại kho (`IS_TRADITIONAL_MEDICINE`) áp dụng đúng. |
 | 2026-07-18 | huannh | Loại hẳn kho máu khỏi combo chọn kho: thêm lọc `IS_BLOOD = 1` (loại) vào đầu `FilterMestRoomByIsCabinet` (`frmAssignPrescription__InitCombo.cs`), theo đúng pattern plugin `AssignPrescriptionPK`. Áp dụng cho cả trường hợp tick/bỏ tick "Kho YHCT". |
 | 2026-07-18 | huannh | Fix checkbox "Kho YHCT" tick/bỏ tick không load lại danh sách kho: event `chkYhct.CheckedChanged` chưa được đăng ký ở đâu (handler `chkYhct_CheckedChanged` có sẵn nhưng không bao giờ chạy). Gắn event bằng code ở cuối `frmAssignPrescription_Load` (sau khi load lần đầu hoàn tất) để tránh fire trong lúc khởi tạo. |
-| 09/10/2026 | dangth2 | Việc 59656: như AssignPrescriptionPK — `LoadDataTracking` chỉ tự chọn tờ của người chỉ định (`cboUser`), bỏ tờ truyền vào của người khác; `CheckTrackingOwnerBeforeSave` sau `CheckTrackingRequiredOption4`. Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (1 cảnh báo, 2 chặn, trống = như cũ). Lớp logic `Base/TrackingOwnerChecker.cs` + `EnumTrackingOwnerOption.cs` (bản sao giống hệt ở 7 plugin). Tờ của bác sĩ = `HIS_TRACKING.CREATOR`, người chỉ định = `REQUEST_LOGINNAME` gửi BE (so không phân biệt hoa thường). Lỗi bất ngờ trong bước kiểm tra thì cho lưu (chỉ ghi log). Thêm 4 message `TrackingOwner__*`. |
+| 09/10/2026 | dangth2 | Việc 59656: như AssignPrescriptionPK — `LoadDataTracking` chỉ tự chọn tờ của người chỉ định (`cboUser`), bỏ tờ truyền vào của người khác; `CheckTrackingOwnerBeforeSave` sau `CheckTrackingRequiredOption4`. Key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` (1 cảnh báo, 2 chặn, trống = như cũ). Lớp logic `Base/TrackingOwnerChecker.cs` + `EnumTrackingOwnerOption.cs` (bản sao giống hệt ở 7 plugin). Tờ của bác sĩ = `HIS_TRACKING.CREATOR`, người chỉ định = `REQUEST_LOGINNAME` gửi BE (so không phân biệt hoa thường). Lỗi bất ngờ trong bước kiểm tra thì cho lưu (chỉ ghi log). Thêm 4 message `TrackingOwner__*`. **(Đã thay bởi dòng 14/10/2026: bỏ cảnh báo/chặn khi lưu và 4 message, key chỉ còn giá trị 1.)** |
+| 14/10/2026 | dangth | Việc 59656 (sửa theo test chị Hân 14/10): key `HIS.Desktop.Plugins.Tracking.AssignToOwnTrackingOption` = 1 chỉ hiện và chọn sẵn tờ điều trị do người chỉ định tạo, đổi người chỉ định thì lọc/chọn lại; bỏ cảnh báo/chặn khi lưu. `trackingADOs` vẫn giữ đủ tờ của hồ sơ (`LoadDataTracking`), chỉ nguồn dữ liệu combo bị lọc (`InitComboTracking` → `GetTrackingADOsForCombo`). `cboUser_EditValueChanged` (chọn `cboUser` hoặc Enter ở `txtLoginName`) gọi `ReloadTrackingComboByRequestUser`: lọc lại từ danh sách đã tải (không gọi API), chọn tờ mới nhất của người chỉ định mới trong ngày y lệnh tại khoa đang làm việc (không có thì để trống); chỉ chạy sau khi form load xong. Sửa đơn: tờ của đơn (`oldServiceReq.TRACKING_ID`) luôn có trong combo dù của người khác và không bị tự chọn lại. Tờ truyền vào từ màn Tạo tờ điều trị của người khác: không hiện, không chọn. Bỏ `CheckTrackingOwnerBeforeSave` cùng các hàm phụ và 4 message `TrackingOwner__*` (vi/en). Key trống/khác 1 (kể cả giá trị 2 cũ): như trước Việc 59656. Files: `frmAssignPrescription__TrackingOwner.cs`, `__Load.cs`, `__InitCombo.cs`, `__Save.cs`, `frmAssignPrescription.cs`, `Config/HisConfigCFG.cs`, `Resources/Message.Lang.{vi,en}.resx` + `ResourceMessage.cs`. |
 ## 9. Test Cases
 
 ### Option = 4, BN nội trú, chưa có tờ điều trị
@@ -115,9 +125,11 @@ Tham chiếu mô tả các option trong `HIS.Desktop.Plugins.AssignPrescriptionP
 ### Option ≠ 4
 - [ ] Hành vi với option `0/1/2/3` không thay đổi.
 
-### Việc 59656 - Y lệnh chỉ vào tờ điều trị của chính người chỉ định
-- [ ] Key trống: chọn tờ của người khác vẫn lưu được, không hỏi (như cũ)
-- [ ] Key = 2: chọn tờ điều trị của người khác → chặn, nêu tờ + người tạo
-- [ ] Key = 1: như trên nhưng hỏi Có/Không
-- [ ] Key bật, người chỉ định chưa có tờ trong ngày y lệnh → cảnh báo/chặn "chưa có tờ điều trị ngày ..."
-- [ ] Key bật, mở màn: tự chọn sẵn tờ của chính người chỉ định (không chọn tờ người khác, kể cả tờ truyền từ màn Tạo tờ điều trị)
+### Việc 59656 - Combo tờ điều trị chỉ hiện tờ của người chỉ định (sửa 14/10/2026)
+- [ ] Key trống: combo hiện mọi tờ của hồ sơ, chọn sẵn và lưu như cũ (không hỏi, không chặn)
+- [ ] Key = 1, mở màn: combo chỉ có tờ do người chỉ định tạo, chọn sẵn tờ mới nhất ngày y lệnh của người đó
+- [ ] Key = 1, đăng nhập nhunghtt, đổi Người chỉ định sang hant (hant có tờ hôm nay): combo chỉ còn tờ của hant và chọn sẵn tờ hôm nay của hant (đổi bằng combo hoặc gõ tài khoản + Enter đều được)
+- [ ] Key = 1, đổi sang người chưa có tờ ngày y lệnh: ô tờ điều trị để trống
+- [ ] Key = 1, sửa đơn đang gắn tờ của BS khác: tờ đó vẫn hiện trong combo và vẫn được chọn
+- [ ] Key = 1, mở từ màn Tạo tờ điều trị với tờ của người khác: tờ đó không hiện, không được chọn
+- [ ] Key = 1, lưu đơn: không có cảnh báo/chặn nào về người tạo tờ

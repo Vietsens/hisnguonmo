@@ -507,7 +507,7 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.patientProfile.HisPatient.HT_PROVINCE_CODE = this.provinceNowCode;
                 this.patientProfile.IsChronic = this.chkChronic;
                 this.patientProfile.IsCAPD = this.chkIsCapd;
-                this.patientProfile.HisPatient.IS_CHRONIC = this.chkChronic ? (short?)1 : null;
+                this.patientProfile.HisPatient.IS_CHRONIC = this.GetPatientChronicToSave();
                 this.patientProfile.HisPatient.IS_CAPD = this.chkIsCapd ? (short?)1 : null;
 
                 if (!string.IsNullOrEmpty(this.hrmEmployeeCode))
@@ -522,6 +522,36 @@ namespace HIS.Desktop.Plugins.Register.Register
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        /// <summary>
+        /// Gia tri HIS_PATIENT.IS_CHRONIC gui len khi luu.
+        /// Tich "Man tinh": 1 (nhu cu).
+        /// Khong tich + khoa HIS.Desktop.Plugins.RegisterV2.IsAutoChronicPatient = 1 + BN cu: GIU co dang luu cua BN
+        /// (man tinh tich theo dot dieu tri, khong duoc xoa co cua BN). Doc lai HIS_PATIENT theo ID vi IS_CHRONIC
+        /// cua HisPatientSDO lay tu view D_HIS_PATIENT, roi ve co cua dot dieu tri khi co BN rong.
+        /// Con lai: null (nhu cu).
+        /// </summary>
+        private short? GetPatientChronicToSave()
+        {
+            if (this.chkChronic)
+                return 1;
+            if (this.patientId <= 0 || !HIS.Desktop.Plugins.Register.Config.HisConfigCFG.IsNotAutoCheckChronicPatient())
+                return null;
+            try
+            {
+                MOS.Filter.HisPatientFilter filter = new MOS.Filter.HisPatientFilter();
+                filter.ID = this.patientId;
+                var patients = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
+                if (patients != null && patients.Count > 0)
+                    return patients[0].IS_CHRONIC;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return this.patientData != null ? this.patientData.IS_CHRONIC : null;
+        }
+
         void ProcessExamRegister()
         {
             try

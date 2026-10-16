@@ -54,6 +54,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 IsExpandList = false;
                 this.ucViewEmrDocumentReq.ReloadDocument(new List<EMR.EFMODEL.DataModels.V_EMR_DOCUMENT>());
                 this.ucViewEmrDocumentResult.ReloadDocument(new List<EMR.EFMODEL.DataModels.V_EMR_DOCUMENT>());
+                //Viec 57971: CLS group tabs (catches its own errors, the dispose below always runs)
+                this.DisposeClsTabs();
                 ucAll.DisposeData();
                 ucMediMate.DisposeData();
                 ucCLS.DisposeData();

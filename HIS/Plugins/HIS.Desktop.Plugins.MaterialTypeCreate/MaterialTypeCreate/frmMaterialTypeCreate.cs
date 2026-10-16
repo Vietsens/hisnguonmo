@@ -1041,6 +1041,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                     txtServiceUnitCode.Focus();
                     txtServiceUnitCode.SelectAll();
                 }
+                else if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    OpenServiceUnitModule();
+                }
             }
             catch (Exception ex)
             {

@@ -5,6 +5,7 @@
  * Tao du tru 2: "Thong tin" filter (Tat ca / Day du thong tin BHYT / Thieu thong tin BHYT).
  * - The selected value is applied on each search (ShowUCControl): the type ids matching IS_MISS_BHYT_INFO
  *   are loaded from the type catalog and kept per item kind.
+ * - Picking a value searches right away (same as Tim); Lam lai resets it to Tat ca without searching.
  * - BindPivotTree keeps only leaf type rows whose type id is in that set (plus their ancestor groups).
  */
 using DevExpress.XtraEditors.Controls;
@@ -51,6 +52,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 cboBhytInfo.Properties.Items.Add(new ImageComboBoxItem(GetBhytInfoText("UCAnticipateCreateV2.cboBhytInfo.Full"), EnumBhytInfoFilter.Full, -1));
                 cboBhytInfo.Properties.Items.Add(new ImageComboBoxItem(GetBhytInfoText("UCAnticipateCreateV2.cboBhytInfo.Missing"), EnumBhytInfoFilter.Missing, -1));
                 cboBhytInfo.EditValue = EnumBhytInfoFilter.All;
+                cboBhytInfo.EditValueChanged += cboBhytInfo_EditValueChanged;
 
                 this.layoutControl3.BeginUpdate();
                 try
@@ -109,7 +111,25 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
             }
         }
 
-        /// <summary>Lam lai: back to Tat ca and drop the stored type id sets.</summary>
+        /// <summary>
+        /// Picking a value reloads the list at once, like Tim. Skipped while the screen opens and during Lam lai
+        /// (both run with formLoaded = false) and for blood (the box is disabled then).
+        /// Typed SL du tru / Ghi chu are kept: they live in the per-type dictionaries, cleared only by Moi.
+        /// </summary>
+        private void cboBhytInfo_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!formLoaded || IsBloodChecked) return;
+                ShowUCControl();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Lam lai: back to Tat ca and drop the stored type id sets (no search: formLoaded is false here).</summary>
         private void ResetBhytInfoFilter()
         {
             try

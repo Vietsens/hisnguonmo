@@ -228,4 +228,7 @@
   <data name="XoaCungKhoaKhongKiemTraDuocVanBanKy" xml:space="preserve">
     <value>Could not check the EMR signed documents of service request {0}, so it was not deleted. Please try again.</value>
   </data>
+  <data name="PhieuConDichVuThuocNhomKhac" xml:space="preserve">
+    <value>Service request {0} also has services of group(s) {1}. The action applies to the whole request. Do you want to continue?</value>
+  </data>
 </root>

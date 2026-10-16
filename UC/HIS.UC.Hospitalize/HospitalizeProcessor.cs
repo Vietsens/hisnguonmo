@@ -102,6 +102,41 @@ namespace HIS.UC.Hospitalize
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// Hoi xac nhan khi ma doi tuong KCB tren form khac ma dang luu tren ho so.
+        /// true: duoc luu tiep; false: nguoi dung chon Khong.
+        /// </summary>
+        public bool ConfirmChangeHeinPatientTypeCode(UserControl control)
+        {
+            bool result = true;
+            try
+            {
+                UCHospitalize ucHospitalize = (control ?? (uc as UserControl)) as UCHospitalize;
+                if (ucHospitalize != null)
+                    result = ucHospitalize.ConfirmChangeHeinPatientTypeCode();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Dua con tro ve o ma doi tuong KCB tren form nhap vien.</summary>
+        public void FocusHeinPatientTypeCode(UserControl control)
+        {
+            try
+            {
+                UCHospitalize ucHospitalize = (control ?? (uc as UserControl)) as UCHospitalize;
+                if (ucHospitalize != null)
+                    ucHospitalize.FocusHeinPatientTypeCode();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public bool ValidCheckIcd(UserControl control)
         {
             bool valid = false;

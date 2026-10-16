@@ -381,7 +381,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("TrackingTimeStr", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("TrackingTimeStr", "ID", columnInfos, false, 350);
-                ControlEditorLoader.Load(cbo, trackingADOs, controlEditorADO);
+                ControlEditorLoader.Load(cbo, this.GetTrackingADOsForCombo(), controlEditorADO);//Viec 59656: bat key (1) thi chi hien to do nguoi chi dinh tao (+ to cua don dang sua), tat key thi nhu cu
             }
             catch (Exception ex)
             {

@@ -612,6 +612,39 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             }
         }
 
+        /// <summary>BVNTP: che do in bien lai (Mps000092) sau khi luu; null = theo cau hinh che do in chung</summary>
+        private MPS.ProcessorBase.PrintConfig.PreviewType? receiptPreviewType = null;
+
+        /// <summary>
+        /// BVNTP: tick "In bien lai" -> sau khi Luu ky / Luu / Luu In tao giao dich thanh cong thi mo hop Chon mau in Mps000092
+        /// de nguoi dung chon mau Bien nhan thanh toan. Luu ky / Luu: xem truoc (ShowDialog); Luu In: in thang (PrintNow).
+        /// Luu / Luu In (hoac Luu ky phat hanh HDDT loi) khong co so bao mat -> o QR trong. Hinh thuc QR khong tu in.
+        /// Tra ve true neu da mo in bien lai.
+        /// </summary>
+        private bool PrintReceiptAfterSave(MPS.ProcessorBase.PrintConfig.PreviewType previewType)
+        {
+            bool result = false;
+            try
+            {
+                if (!chkPrintReceipt.Checked || this.transactionBillResult == null)
+                    return false;
+                if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
+                    return false;
+                this.receiptPreviewType = previewType;
+                this.onClickInPhieuXuatBan(null, null);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.receiptPreviewType = null;
+            }
+            return result;
+        }
+
         private bool deletePrintTemplate(string printTypeCode, string fileName)
         {
             bool result = false;
@@ -739,7 +772,12 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 Inventec.Common.Logging.LogSystem.Warn("InPhieuXuatBan_7");
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData printdata = null;
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (this.receiptPreviewType.HasValue)
+                {
+                    // BVNTP: in bien lai sau khi luu theo che do cua tung nut
+                    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, this.receiptPreviewType.Value, "");
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
                     printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
                 }
@@ -1259,6 +1297,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         else
                         {
                             cboBuyerOrganization.EditValue = null;
+                            // Khong co WORK_PLACE_ID -> kiem tra text tu do (TDL_PATIENT_WORK_PLACE_NAME)
+                            string freeTextOrg = currentTreatment?.TDL_PATIENT_WORK_PLACE_NAME ?? currentTreatment?.TDL_PATIENT_WORK_PLACE;
+                            if (!string.IsNullOrWhiteSpace(freeTextOrg))
+                            {
+                                chkKhac.Checked = true;
+                                txtBuyerOrganization.Text = freeTextOrg;
+                            }
                         }
 
                         // Textbox “Mã số thuế”: ưu tiên MST của người bệnh, nếu không có thì lấy MST của đơn vị
@@ -1419,7 +1464,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 positionHandle = -1;
                 if (!btnSave.Enabled || !dxValidationProviderEditorInfo.Validate())
                     return;
-                this.SaveProcess();
+                if (this.SaveProcess())
+                {
+                    this.PrintReceiptAfterSave(MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
+                }
                 if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
                 {
                     ShowModuleCreQr();
@@ -2645,9 +2693,12 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     if (Config.PrintNowMps == "Mps000339" && !Config.IsSaveSignPrintAutoExport)
                     {
                         this.onClickInHoaDonDienTu(null, null);
+                        // Nhanh nay khong in Mps000092 -> tick "In bien lai" thi in them bien lai (in thang)
+                        this.PrintReceiptAfterSave(MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow);
                     }
-                    else
+                    else if (!this.PrintReceiptAfterSave(MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow))
                     {
+                        // Khong tick "In bien lai" (hoac hinh thuc QR) -> in Mps000092 nhu cu; tick thi da in thang o tren, khong in 2 lan
                         this.onClickInPhieuXuatBan(null, null);
                     }
                 }
@@ -3039,6 +3090,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                             System.Threading.Thread.Sleep(2000);
                             //this.onClickInHoaDonDienTu(null, null);
                         }
+
+                        this.PrintReceiptAfterSave(MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
                     }
                 }
                 if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
@@ -3824,6 +3877,37 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             }
         }
 
+        private void chkPrintReceipt_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkPrintReceipt.Name && o.MODULE_LINK == module.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkPrintReceipt.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkPrintReceipt.Name;
+                    csAddOrUpdate.VALUE = (chkPrintReceipt.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = module.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void InitControlState()
         {
             try
@@ -3842,6 +3926,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         if (item.KEY == chkAutoExportPrint.Name)
                         {
                             chkAutoExportPrint.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == chkPrintReceipt.Name)
+                        {
+                            chkPrintReceipt.Checked = item.VALUE == "1";
                         }
                     }
                 }

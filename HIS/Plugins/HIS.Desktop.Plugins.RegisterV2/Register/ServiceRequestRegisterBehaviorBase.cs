@@ -770,10 +770,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                     this.patientProfile.HisPatient.MILITARY_RANK_ID = this.militaryId;
                 this.patientProfile.HisPatient.PHONE = this.phone;
                 this.patientProfile.IsChronic = this.chkChronic;
-                if (this.chkChronic)
-                    this.patientProfile.HisPatient.IS_CHRONIC = 1;
-                else
-                    this.patientProfile.HisPatient.IS_CHRONIC = null;
+                this.patientProfile.HisPatient.IS_CHRONIC = this.GetPatientChronicToSave();
                 this.patientProfile.HisPatient.IS_TUBERCULOSIS = chkTuberculosis ? (short?)1 : 0;
                 this.patientProfile.ImgAvatarData = this.img_avatar;
                 this.patientProfile.ImgBhytData = this.img_BHYT;
@@ -800,6 +797,36 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        /// <summary>
+        /// Gia tri HIS_PATIENT.IS_CHRONIC gui len khi luu.
+        /// Tich "Man tinh": 1 (nhu cu).
+        /// Khong tich + khoa HIS.Desktop.Plugins.RegisterV2.IsAutoChronicPatient = 1 + BN cu: GIU co dang luu cua BN
+        /// (man tinh tich theo dot dieu tri, khong duoc xoa co cua BN). Doc lai HIS_PATIENT theo ID vi IS_CHRONIC
+        /// cua HisPatientSDO lay tu view D_HIS_PATIENT, roi ve co cua dot dieu tri khi co BN rong.
+        /// Con lai: null (nhu cu).
+        /// </summary>
+        private short? GetPatientChronicToSave()
+        {
+            if (this.chkChronic)
+                return 1;
+            if (this.patientId <= 0 || !HIS.Desktop.Plugins.RegisterV2.Config.HisConfigCFG.IsNotAutoCheckChronicPatient())
+                return null;
+            try
+            {
+                MOS.Filter.HisPatientFilter filter = new MOS.Filter.HisPatientFilter();
+                filter.ID = this.patientId;
+                var patients = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
+                if (patients != null && patients.Count > 0)
+                    return patients[0].IS_CHRONIC;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return this.patientData != null ? this.patientData.IS_CHRONIC : null;
+        }
+
         //qtcode
         void ProcessHeinPatientTypeCode()
         {

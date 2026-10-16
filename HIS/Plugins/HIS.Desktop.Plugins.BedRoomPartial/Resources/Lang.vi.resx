@@ -1059,4 +1059,34 @@
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__DIEU_DUONG_DA_THUC_HIEN_Y_LENH" xml:space="preserve">
     <value>Điều dưỡng đã thực hiện y lệnh lúc</value>
   </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.XN.Text" xml:space="preserve">
+    <value>Xét nghiệm</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.SA.Text" xml:space="preserve">
+    <value>Siêu âm</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.XQ.Text" xml:space="preserve">
+    <value>X-quang</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.CTMRI.Text" xml:space="preserve">
+    <value>CT / MRI</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.TDCN.Text" xml:space="preserve">
+    <value>TDCN</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.TDCN.ToolTip" xml:space="preserve">
+    <value>Thăm dò chức năng</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.NS.Text" xml:space="preserve">
+    <value>Nội soi</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.GPBL.Text" xml:space="preserve">
+    <value>Giải phẫu bệnh</value>
+  </data>
+  <data name="UCBedRoomPartial.xtraTabPageCls.KHAC.Text" xml:space="preserve">
+    <value>CLS khác</value>
+  </data>
+  <data name="UCBedRoomPartial.ClsTab.EmptyText" xml:space="preserve">
+    <value>Không có y lệnh trong khoảng ngày đã chọn</value>
+  </data>
 </root>

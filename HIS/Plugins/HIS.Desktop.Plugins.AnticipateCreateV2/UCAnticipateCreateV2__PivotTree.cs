@@ -193,6 +193,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                     Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDICINE_TYPE_NAME", lang, culture),
                     isMedicine ? "MEDICINE_TYPE_NAME" : "MATERIAL_TYPE_NAME", 220, bound, null);
                 colTypeName.Fixed = DevExpress.XtraTreeList.Columns.FixedStyle.Left;
+                // Ghi chú khai trong danh mục loại thuốc/vật tư (chỉ xem) — phân biệt loại trùng tên khác mã
+                AddTreeColumn(treeListPivot, "Ghi chú danh mục", "TYPE_DESCRIPTION_DISPLAY", 150, unbStr, null);
                 if (isMedicine)
                 {
                     AddTreeColumn(treeListPivot,
@@ -623,6 +625,12 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                     {
                         var dicReg = medi != null ? dicMedicineTypeRegister : dicMaterialTypeRegister;
                         string v; e.Value = (dicReg != null && dicReg.TryGetValue(typeId, out v)) ? v : null;
+                        break;
+                    }
+                    case "TYPE_DESCRIPTION_DISPLAY":
+                    {
+                        var dicDes = medi != null ? dicMedicineTypeDescription : dicMaterialTypeDescription;
+                        string v; e.Value = (dicDes != null && dicDes.TryGetValue(typeId, out v)) ? v : null;
                         break;
                     }
                     case "BID_NUMBER_DISPLAY":

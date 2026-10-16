@@ -54,6 +54,7 @@ namespace MPS.Processor.Mps000092
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
                 SetSingleKey();
                 SetBarcodeKey();
+                SetQrCodeKey();
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 singleTag.ProcessData(store, singleValueDictionary);
                 objectTag.AddObjectData(store, "ListMediMate1", rdo.listAdo);
@@ -375,6 +376,23 @@ namespace MPS.Processor.Mps000092
 
                     dicImage.Add(Mps000092ExtendSingleKey.EXP_MEST_CODE_BAR, barcodeExpMestCode);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Sinh anh QR so bao mat hoa don dien tu (bien nhan thanh toan nha thuoc).
+        /// Goi SAU SetSingleKey() (can singleValueDictionary da nap key tu V_HIS_TRANSACTION).
+        /// Giao dich khong co so bao mat thi khong sinh anh -> o tren bieu mau de trong, khong loi.
+        /// </summary>
+        private void SetQrCodeKey()
+        {
+            try
+            {
+                SetQrCodeByKeyBase("INVOICE_LOOKUP_CODE", Mps000092ExtendSingleKey.INVOICE_LOOKUP_CODE_QR);
             }
             catch (Exception ex)
             {

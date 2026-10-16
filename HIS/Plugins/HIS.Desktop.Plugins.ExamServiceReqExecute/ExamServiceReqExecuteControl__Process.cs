@@ -2060,6 +2060,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             return false;
                         }
 
+                        // Ma doi tuong KCB tren form nhap vien khac ma dang luu tren ho so => hoi xac nhan.
+                        // Chon Khong => khong luu, quay ve tab chua form nhap vien va dua con tro ve o ma.
+                        if (!this.hospitalizeProcessor.ConfirmChangeHeinPatientTypeCode(this.ucHospitalize))
+                        {
+                            SelectTabPageContains(this.ucHospitalize);
+                            this.hospitalizeProcessor.FocusHeinPatientTypeCode(this.ucHospitalize);
+                            serviceReqUpdateSDO.HospitalizeSDO = null;
+                            return false;
+                        }
+
                         serviceReqUpdateSDO.HospitalizeSDO = new HisDepartmentTranHospitalizeSDO();
                         SetIsGenerateNewInCodeIfSupported(serviceReqUpdateSDO.HospitalizeSDO, hisDepartmentTranHospitalizeSDO.IsGenerateNewInCode);
                         if (hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO != null)
@@ -2138,6 +2148,26 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Chon cac tab dang chua control (tu trong ra ngoai) de control hien thi duoc tren man hinh.
+        /// </summary>
+        private void SelectTabPageContains(Control control)
+        {
+            try
+            {
+                for (Control parent = (control != null ? control.Parent : null); parent != null; parent = parent.Parent)
+                {
+                    DevExpress.XtraTab.XtraTabPage tabPage = parent as DevExpress.XtraTab.XtraTabPage;
+                    if (tabPage != null && tabPage.TabControl != null)
+                        tabPage.TabControl.SelectedTabPage = tabPage;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         /// <summary>
