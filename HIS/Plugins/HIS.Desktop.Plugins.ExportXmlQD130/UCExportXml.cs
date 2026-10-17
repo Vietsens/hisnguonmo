@@ -3972,16 +3972,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 if (this.configSync.isCheckCollinearXml)
                 {
                     listTreatmentSync = new List<V_HIS_TREATMENT_1>();
-                    //lay ho so khoa bhyt
-                    this.configSync.isCheckOutTime = true;
+                    //XML thông tuyến: lấy cả 2 nhóm hồ sơ. Tạm đổi cờ isCheckOutTime để GetTreatment() lọc theo từng mốc,
+                    //xong trả lại giá trị gốc để không ghi đè cấu hình người dùng đã lưu.
+                    bool isCheckOutTimeOrigin = this.configSync.isCheckOutTime;
+                    //lay ho so khoa vien phi (isCheckOutTime = false -> loc theo FEE_LOCK_TIME)
+                    this.configSync.isCheckOutTime = false;
                     var listTreatmentLockBHYT = this.GetTreatment();
                     if (listTreatmentLockBHYT != null)
                         listTreatmentSync.AddRange(listTreatmentLockBHYT);
-                    //lay ho so ket thuc dieu tri
-                    this.configSync.isCheckOutTime = false;
+                    //lay ho so ket thuc dieu tri (isCheckOutTime = true -> loc theo OUT_TIME + IS_PAUSE)
+                    this.configSync.isCheckOutTime = true;
                     var listTreatmentEnd = this.GetTreatment();
                     if (listTreatmentEnd != null)
                         listTreatmentSync.AddRange(listTreatmentEnd);
+                    this.configSync.isCheckOutTime = isCheckOutTimeOrigin;
                 }
                 else
                 {
@@ -4041,16 +4045,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             filter.HAS_IN_CODE = true;
                         }
                     }
-                   
-                    if (!configSync.isCheckOutTime)
+
+                    //isCheckOutTime = radio "Kết thúc điều trị" (frmSettingConfigSync.chkOutTime); false = radio "Khóa viện phí".
+                    //Mốc lọc: từ ĐẦU NGÀY HIỆN TẠI đến thời điểm hiện tại.
+                    if (configSync.isCheckOutTime)
                     {
-                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss")); 
+                        //Kết thúc điều trị: lọc theo OUT_TIME + đã kết thúc điều trị.
+                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.ToString("yyyyMMddHHmmss"));
                         filter.OUT_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                         filter.IS_PAUSE = true;
                     }
                     else
                     {
-                        filter.FEE_LOCK_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
+                        //Khóa viện phí: lọc theo FEE_LOCK_TIME.
+                        filter.FEE_LOCK_TIME_FROM = Convert.ToInt64(DateTime.Today.ToString("yyyyMMddHHmmss"));
                         filter.FEE_LOCK_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                     }
                     if (configSync.isCheckCollinearXml)
@@ -4086,15 +4094,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     if (kcbPatientTypeIds != null && kcbPatientTypeIds.Count > 0)
                         filter.TDL_PATIENT_TYPE_IDs = kcbPatientTypeIds;
                     //Loại thời gian: giống Luồng 2 (ra viện vs khoá viện phí) nhưng KHÔNG áp bộ lọc loại điều trị/trạng thái.
-                    if (!configSync.isCheckOutTime)
+                    //isCheckOutTime = radio "Kết thúc điều trị"; false = radio "Khóa viện phí". Mốc: đầu ngày hiện tại -> hiện tại.
+                    if (configSync.isCheckOutTime)
                     {
-                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
+                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.ToString("yyyyMMddHHmmss"));
                         filter.OUT_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                         filter.IS_PAUSE = true;
                     }
                     else
                     {
-                        filter.FEE_LOCK_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
+                        filter.FEE_LOCK_TIME_FROM = Convert.ToInt64(DateTime.Today.ToString("yyyyMMddHHmmss"));
                         filter.FEE_LOCK_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                     }
                     LogSystem.Debug("KCB4750 Filter (Luong 1): " + LogUtil.TraceData("Filter", filter));
