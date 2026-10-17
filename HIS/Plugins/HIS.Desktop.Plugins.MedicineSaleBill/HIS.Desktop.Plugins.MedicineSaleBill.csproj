@@ -203,6 +203,9 @@
     <Compile Include="frmMedicineSaleBill.Designer.cs">
       <DependentUpon>frmMedicineSaleBill.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmMedicineSaleBill__PhieuThanhToan.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MedicineSaleBill\IMedicineSaleBill.cs" />
     <Compile Include="MedicineSaleBill\MedicineSaleBillBehavior.cs" />
     <Compile Include="MedicineSaleBill\MedicineSaleBillFactory.cs" />

@@ -164,6 +164,10 @@
     <value>Time:</value>
     <comment>Thời gian:</comment>
   </data>
+  <data name="frmDepartmentTran.lciDTLogTime.Text.RequestTime" xml:space="preserve">
+    <value>Request time:</value>
+    <comment>Thời gian yêu cầu:</comment>
+  </data>
   <data name="frmDepartmentTran.Text" xml:space="preserve">
     <value>specialty</value>
     <comment>Chuyển khoa</comment>
