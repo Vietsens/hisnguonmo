@@ -388,7 +388,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
 
         private Inventec.Common.EHoaDon.InvoiceWS SetInvoice()
         {
-            Inventec.Common.EHoaDon.InvoiceWS invoiceWS = new Inventec.Common.EHoaDon.InvoiceWS();
+            BkavInvoiceWS invoiceWS = new BkavInvoiceWS();
             invoiceWS.InvoiceTypeID = 1;
             invoiceWS.InvoiceDate = DateTime.Now;
             invoiceWS.InvoiceForm = this.ElectronicBillDataInput.TemplateCode;
@@ -405,6 +405,26 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
             invoiceWS.BuyerAddress = adoInfo.BuyerAddress ?? "";
             invoiceWS.BuyerUnitName = adoInfo.BuyerOrganization ?? "";
             invoiceWS.BuyerTaxCode = adoInfo.BuyerTaxCode ?? "";
+
+            //Giay to tuy than: ho chieu -> PassportNumber, con lai (CCCD/CMND) -> CCCD
+            invoiceWS.CCCD = "";
+            invoiceWS.PassportNumber = "";
+            if (adoInfo.BuyerIdentityType == "3" && !String.IsNullOrWhiteSpace(adoInfo.BuyerIdentityNumber))
+            {
+                invoiceWS.PassportNumber = adoInfo.BuyerIdentityNumber.Trim();
+                invoiceWS.CCCD = adoInfo.BuyerCCCD ?? "";
+            }
+            else if (!String.IsNullOrWhiteSpace(adoInfo.BuyerIdentityNumber))
+            {
+                invoiceWS.CCCD = adoInfo.BuyerIdentityNumber.Trim();
+            }
+            else
+            {
+                invoiceWS.CCCD = adoInfo.BuyerCCCD ?? "";
+            }
+
+            //Ma ngan sach (ma quan he ngan sach cua don vi mua)
+            invoiceWS.FiscalCodes = (this.ElectronicBillDataInput.Transaction != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE)) ? this.ElectronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE.Trim() : "";
 
             invoiceWS.PayMethodID = 1;
 
