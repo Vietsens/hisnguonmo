@@ -183,4 +183,13 @@
   <data name="CG300MauDaInTemInLai" xml:space="preserve">
     <value>Barcode {0} đã được in tem qua CG300. Bạn có muốn in lại (máy sẽ nhả thêm ống) không?</value>
   </data>
+  <data name="VuiLongLuuTruocKhiDuyet" xml:space="preserve">
+    <value>Có kết quả chưa lưu. Vui lòng lưu kết quả trước khi duyệt.</value>
+  </data>
+  <data name="DuyetApDungToanBoMau" xml:space="preserve">
+    <value>Duyệt kết quả áp dụng cho toàn bộ dịch vụ của mẫu {0}. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="BanCoMuonHuyDuyetKetQuaMau" xml:space="preserve">
+    <value>Bạn có muốn hủy duyệt kết quả mẫu {0}?</value>
+  </data>
 </root>

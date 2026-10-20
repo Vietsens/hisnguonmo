@@ -49,6 +49,7 @@ namespace MPS.Processor.Mps000096
         List<TestLisResultADO> ListTestChild = new List<TestLisResultADO>();
         List<V_HIS_SERVICE> ListServiceParent = new List<V_HIS_SERVICE>();
         List<TestLisResultADO> ListTestParentService = new List<TestLisResultADO>();
+        List<ServiceApproverADO> ListServiceApprover = new List<ServiceApproverADO>();
 
 
         public void SetBarcodeKey()
@@ -1027,6 +1028,24 @@ namespace MPS.Processor.Mps000096
         }
 
         /// <summary>
+        /// Key người duyệt KQ theo nhóm cha dịch vụ: object "ServiceApprover" + single key SERVICE_APPROVER_STR.
+        /// </summary>
+        private void SetServiceApproverKey()
+        {
+            try
+            {
+                this.ListServiceApprover = ServiceApproverBuilder.Build(new List<V_LIS_SAMPLE> { rdo.currentSample }, rdo.lstLisResult, rdo.ListTestService);
+                SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.SERVICE_APPROVER_STR, ServiceApproverBuilder.ToKeyString(this.ListServiceApprover)));
+                SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.RESULT_APPROVAL_TIME_STR, rdo.currentSample != null && rdo.currentSample.RESULT_APPROVAL_TIME.HasValue
+                    ? Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(rdo.currentSample.RESULT_APPROVAL_TIME.Value) : ""));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
         /// Ham xu ly du lieu da qua xu ly
         /// Tao ra cac doi tuong du lieu xu dung trong thu vien xu ly file excel
         /// </summary>
@@ -1050,9 +1069,11 @@ namespace MPS.Processor.Mps000096
                 SetTreatmentQrCodeBase();
 
                 this.SetSignatureKeyImageByCFG();
+                this.SetServiceApproverKey();
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
+                objectTag.AddObjectData(store, "ServiceApprover", this.ListServiceApprover);
                 objectTag.AddObjectData(store, "ListTestParent", this.ListTestParent);
                 objectTag.AddObjectData(store, "ListTestChild", this.ListTestChild);
                 objectTag.AddObjectData(store, "ServiceParent", this.ListServiceParent);

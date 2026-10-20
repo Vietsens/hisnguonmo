@@ -371,5 +371,56 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Resources
                 return "";
             }
         }
+
+        /// <summary>Có kết quả chưa lưu. Vui lòng lưu kết quả trước khi duyệt.</summary>
+        internal static string VuiLongLuuTruocKhiDuyet
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("VuiLongLuuTruocKhiDuyet", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Duyệt kết quả áp dụng cho toàn bộ dịch vụ của mẫu {0}. Bạn có muốn tiếp tục?</summary>
+        internal static string DuyetApDungToanBoMau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("DuyetApDungToanBoMau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Bạn có muốn hủy duyệt kết quả mẫu {0}?</summary>
+        internal static string BanCoMuonHuyDuyetKetQuaMau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BanCoMuonHuyDuyetKetQuaMau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

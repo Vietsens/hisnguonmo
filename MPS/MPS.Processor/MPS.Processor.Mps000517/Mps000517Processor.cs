@@ -44,6 +44,7 @@ namespace MPS.Processor.Mps000517
         List<TestLisResultADO> ListTestParent = new List<TestLisResultADO>();
         List<TestLisResultADO> ListTestChild = new List<TestLisResultADO>();
         List<V_HIS_SERVICE> ListServiceParent = new List<V_HIS_SERVICE>();
+        List<ServiceApproverADO> ListServiceApprover = new List<ServiceApproverADO>();
 
         // Mps000517: tầng gom nhóm "Loại XN" (Huyết học / Sinh hóa / Miễn dịch / Vi sinh...)
         List<TestTypeADO> ListTestType = new List<TestTypeADO>();
@@ -1054,6 +1055,22 @@ namespace MPS.Processor.Mps000517
         }
 
         /// <summary>
+        /// Key người duyệt KQ theo nhóm cha dịch vụ: object "ServiceApprover" + single key SERVICE_APPROVER_STR.
+        /// </summary>
+        private void SetServiceApproverKey()
+        {
+            try
+            {
+                this.ListServiceApprover = ServiceApproverBuilder.Build(rdo.currentSamples, rdo.lstLisResult, rdo.ListTestService);
+                SetSingleKey(new KeyValue(Mps000517ExtendSingleKey.SERVICE_APPROVER_STR, ServiceApproverBuilder.ToKeyString(this.ListServiceApprover)));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
         /// Ham xu ly du lieu da qua xu ly
         /// Tao ra cac doi tuong du lieu su dung trong thu vien xu ly file excel
         /// </summary>
@@ -1075,10 +1092,12 @@ namespace MPS.Processor.Mps000517
                 SetTreatmentQrCodeBase();
 
                 this.SetSignatureKeyImageByCFG();
+                this.SetServiceApproverKey();
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
 
+                objectTag.AddObjectData(store, "ServiceApprover", this.ListServiceApprover);
                 objectTag.AddObjectData(store, "ServiceParent", this.ListServiceParent);
                 objectTag.AddObjectData(store, "ListTestType", this.ListTestType);
                 objectTag.AddObjectData(store, "ListTestParent", this.ListTestParent);

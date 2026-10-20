@@ -395,6 +395,9 @@
     <Compile Include="UC_ConnectionTest___NhomXN.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UC_ConnectionTest___DuyetKetQua.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UC_ConnectionTest___InKQTongHop.cs">
       <SubType>UserControl</SubType>
     </Compile>

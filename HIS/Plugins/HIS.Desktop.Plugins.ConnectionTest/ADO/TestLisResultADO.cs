@@ -83,5 +83,15 @@ namespace HIS.Desktop.Plugins.ConnectionTest.ADO
         public string ADDRESS { get; set; }
 
         public long? PATIENT_TYPE_ID_BY_SERE_SERV { get; set; }
+
+        /// <summary>
+        /// Người duyệt KQ — LIS_SAMPLE.RESULT_APPROVAL_USERNAME của mẫu (Duyệt KQ theo mẫu), chỉ gán cho dòng dịch vụ.
+        /// </summary>
+        public string RESULT_APPROVER_USERNAME { get; set; }
+
+        /// <summary>
+        /// TG duyệt — LIS_SAMPLE.RESULT_APPROVAL_TIME của mẫu, dạng dd/MM/yyyy HH:mm, chỉ gán cho dòng dịch vụ.
+        /// </summary>
+        public string RESULT_APPROVE_TIME_STR { get; set; }
     }
 }

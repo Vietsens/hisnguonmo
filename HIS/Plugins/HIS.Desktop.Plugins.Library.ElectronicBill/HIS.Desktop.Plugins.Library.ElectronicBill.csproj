@@ -263,6 +263,7 @@
     <Compile Include="InvoiceInfo\InvoiceInfoProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProviderBehavior\BKAV\BKAVBehavior.cs" />
+    <Compile Include="ProviderBehavior\BKAV\BkavInvoiceWS.cs" />
     <Compile Include="ProviderBehavior\BKAV\UserDefineADO.cs" />
     <Compile Include="ProviderBehavior\MISA\MISABehavior.cs" />
     <Compile Include="ProviderBehavior\MISA\MISABehaviorV2.cs" />

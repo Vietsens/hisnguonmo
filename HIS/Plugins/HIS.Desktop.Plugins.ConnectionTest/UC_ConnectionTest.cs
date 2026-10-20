@@ -284,6 +284,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 this.colMachineResult.ToolTip = !String.IsNullOrEmpty(machineResultToolTip) ? machineResultToolTip : "Kết quả từ máy xét nghiệm";
                 // key = 1 -> hiện cột "KQ từ máy"; khác 1 -> ẩn cột (không hiển thị)
                 this.colMachineResult.Visible = HisConfigCFG.IsResultLisMachine;
+                // Nút Duyệt KQ / Hủy duyệt KQ + cột Người duyệt KQ, TG duyệt (sau restore layout)
+                InitApproveResultControls();
                 GetNewestBarcode();
                 FillDataToGridControl();
                 LoadCboMachine();
@@ -957,6 +959,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 dxValidationProviderEditorInfo.RemoveControlError(DateLM);
                 ValidationSampleTime(rowSample.INTRUCTION_TIME ?? 0);
                 CheckConfigSignWarningOption(rowSample);
+                UpdateApproveResultButton();
 
                 WaitingManager.Hide();
             }
@@ -3239,6 +3242,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 // KQ từ máy: khi config IsResultLisMachine = 1 thì lấy kết quả từ máy (màn hình "Trả kết quả xét nghiệm từ máy")
                 // map sang chỉ số xét nghiệm theo mã y lệnh hiện tại; khác 1 -> để trống như hiện tại.
                 FillMachineResultValueFromLisMachine(lstLisResultADOs);
+                // Người duyệt KQ / TG duyệt: lấy từ LIS_SAMPLE.RESULT_APPROVAL_* của mẫu đang chọn
+                FillApproveResultInfo(lstLisResultADOs);
                 // treeList
                 records = new BindingList<TestLisResultADO>(lstLisResultADOs);
                 this.treeListSereServTein.RefreshDataSource();
@@ -6812,6 +6817,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     MessageManager.Show(this.ParentForm, param, result);
                 #endregion
 
+                if (result && row != null)
+                {
+                    SyncApproveResultToTree(row.ID);
+                }
+
                 if (result && LisConfigCFG.IS_PRINT_WHEN_APPROVE_RESULT == "1")
                 {
                     this.PrintOption = PRINT_OPTION.IN;
@@ -6897,6 +6907,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         sampleRow.APPROVAL_TIME = curentSTT.APPROVAL_TIME;
                         sampleRow.APPROVAL_LOGINNAME = curentSTT.APPROVAL_LOGINNAME;
                         sampleRow.APPROVAL_USERNAME = curentSTT.APPROVAL_USERNAME;
+                        sampleRow.RESULT_APPROVAL_TIME = curentSTT.RESULT_APPROVAL_TIME;
+                        sampleRow.RESULT_APPROVAL_LOGINNAME = curentSTT.RESULT_APPROVAL_LOGINNAME;
+                        sampleRow.RESULT_APPROVAL_USERNAME = curentSTT.RESULT_APPROVAL_USERNAME;
                         sampleRow.IS_SAMPLE_ORDER_REQUEST = curentSTT.IS_SAMPLE_ORDER_REQUEST;
                         gridControlSample.RefreshDataSource();
                         gridViewSample.FocusedRowHandle = gridViewSample.FocusedRowHandle - 1;
@@ -6909,6 +6922,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 #region Show message
                 MessageManager.Show(this.ParentForm, param, result);
                 #endregion
+
+                if (result && row != null)
+                {
+                    SyncApproveResultToTree(row.ID);
+                }
 
                 #region Process has exception
                 SessionManager.ProcessTokenLost(param);
