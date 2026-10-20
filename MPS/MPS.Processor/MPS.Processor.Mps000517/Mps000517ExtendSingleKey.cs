@@ -87,5 +87,8 @@ namespace MPS.Processor.Mps000517
         // Mps000517: gộp mã barcode/y lệnh nhiều mẫu để in lên header
         internal const string SAMPLE_BARCODEs = "SAMPLE_BARCODEs";
         internal const string SERVICE_REQ_CODEs = "SERVICE_REQ_CODEs";
+
+        // Người duyệt KQ theo nhóm cha (gộp nhiều mẫu): "Việt - XNSH - 12/10/2026 10:00, Duy - XNHH - 12/10/2026 10:10"
+        internal const string SERVICE_APPROVER_STR = "SERVICE_APPROVER_STR";
     }
 }

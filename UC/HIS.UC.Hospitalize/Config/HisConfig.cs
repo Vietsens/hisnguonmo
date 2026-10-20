@@ -36,10 +36,13 @@ namespace HIS.UC.Hospitalize.Config
         private const string HEIN_PATIENT_TYPE_CODE_LOOKUP_OPTION = "HIS.Desktop.Plugins.Hospitalize.HeinPatientTypeCodeLookupOption";
         internal static string CheckIcdWhenSave;
         /// <summary>
-        /// 1: ma doi tuong KCB tren form nhap vien tra CHUAN theo danh muc (cot de trong = moi gia tri,
-        /// dong cu the hon thang, o Cap cuu tham gia). Khac 1: tra nhu cu (tuyen + truong hop ho so trung khit).
+        /// Key = 1 hoac 2: ma doi tuong KCB tren form nhap vien tra danh muc CHI theo o Cap cuu + Dien dieu tri
+        /// + ma CSKCB ban dau (bo qua Tuyen va Truong hop cua ho so). Khac: tra nhu cu (tuyen + truong hop ho so trung khit).
         /// </summary>
-        internal static bool IsHeinPatientTypeCodeLookup;        public static bool IsUsingServerTime;
+        internal static bool IsHeinPatientTypeCodeLookup;
+        /// <summary>Key = 1: khi Luu, ma tren form khac ma ho so thi hoi xac nhan. Key = 2 hoac khac: khong hoi.</summary>
+        internal static bool IsConfirmChangeHeinPatientTypeCode;
+        public static bool IsUsingServerTime;
         public static string RelativesInforOption;
         public static bool IsInHospitalizationReasonRequired;
         public static void LoadConfig()
@@ -48,7 +51,10 @@ namespace HIS.UC.Hospitalize.Config
             IsUsingServerTime = GetValue(IS_USING_SERVER_TIME) == GlobalVariables.CommonStringTrue;
             RelativesInforOption = GetValue(RELATIVES_INFOR);
             IsInHospitalizationReasonRequired = GetValue(IS_IN_HOSPITALIZATION_REASON_REQUIRED) == GlobalVariables.CommonStringTrue;
-            IsHeinPatientTypeCodeLookup = GetValue(HEIN_PATIENT_TYPE_CODE_LOOKUP_OPTION) == GlobalVariables.CommonStringTrue;        }
+            string lookupOption = (GetValue(HEIN_PATIENT_TYPE_CODE_LOOKUP_OPTION) ?? "").Trim();
+            IsHeinPatientTypeCodeLookup = lookupOption == "1" || lookupOption == "2";
+            IsConfirmChangeHeinPatientTypeCode = lookupOption == "1";
+        }
 
         private static string GetValue(string code)
         {

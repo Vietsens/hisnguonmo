@@ -205,9 +205,64 @@ namespace MPS.Processor.Mps000339
                     if (expMest != null)
                     {
                         AddObjectKeyIntoListkey(expMest, false);
-                        SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.EXP_MEST_CODE, expMest.EXP_MEST_CODE)); 
+                        SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.EXP_MEST_CODE, expMest.EXP_MEST_CODE));
                     }
                 }
+
+                ProcessSaleReceiptKey();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 59437: key cho mau "Phieu thanh toan" nha thuoc.
+        /// - BILL_GOODS_DESCRIPTION: "Ten (SL) [thanh tien], ..." lay theo danh sach dong in (ListAdo).
+        /// - SALE_PATIENT_*: giao dich ban le thuong khong gan ho so nen lay theo phieu xuat, khong co thi theo nguoi mua.
+        /// Chi them key moi, khong doi key cu.
+        /// </summary>
+        void ProcessSaleReceiptKey()
+        {
+            try
+            {
+                if (ListAdo != null && ListAdo.Count > 0)
+                {
+                    List<string> descriptions = new List<string>();
+                    List<string> descriptionsWithUnit = new List<string>();
+                    foreach (var ado in ListAdo)
+                    {
+                        string amountStr = String.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.TOTAL_AMOUNT));
+                        string totalPriceStr = Inventec.Common.Number.Convert.NumberToString(ado.SUM_TOTAL_PRICE_ROUND);
+                        descriptions.Add(String.Format("{0} ({1}) [{2}]", ado.MEDI_MATE_TYPE_NAME, amountStr, totalPriceStr));
+                        string amountUnitStr = String.IsNullOrWhiteSpace(ado.SERVICE_UNIT_NAME) ? amountStr : (amountStr + " " + ado.SERVICE_UNIT_NAME);
+                        descriptionsWithUnit.Add(String.Format("{0} ({1}) [{2}]", ado.MEDI_MATE_TYPE_NAME, amountUnitStr, totalPriceStr));
+                    }
+                    SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.BILL_GOODS_DESCRIPTION, String.Join(", ", descriptions)));
+                    SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.BILL_GOODS_DESCRIPTION_UNIT, String.Join(", ", descriptionsWithUnit)));
+                    SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.BILL_GOODS_NAMES, String.Join(", ", ListAdo.Select(o => o.MEDI_MATE_TYPE_NAME).Distinct())));
+                }
+
+                V_HIS_EXP_MEST expMest = null;
+                if (rdo.ListExpMest != null && rdo.ListExpMest.Count > 0)
+                {
+                    SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.EXP_MEST_CODES, String.Join(", ", rdo.ListExpMest.Select(o => o.EXP_MEST_CODE).Distinct())));
+                    expMest = rdo.ListExpMest.FirstOrDefault(o => !String.IsNullOrWhiteSpace(o.TDL_PATIENT_NAME)) ?? rdo.ListExpMest.FirstOrDefault();
+                }
+
+                V_HIS_TRANSACTION tran = rdo.Transaction;
+                string patientName = (expMest != null && !String.IsNullOrWhiteSpace(expMest.TDL_PATIENT_NAME)) ? expMest.TDL_PATIENT_NAME : (tran != null ? tran.BUYER_NAME : null);
+                string address = (expMest != null && !String.IsNullOrWhiteSpace(expMest.TDL_PATIENT_ADDRESS)) ? expMest.TDL_PATIENT_ADDRESS : (tran != null ? tran.BUYER_ADDRESS : null);
+                long? dob = expMest != null ? expMest.TDL_PATIENT_DOB : null;
+                string year = (dob.HasValue && dob.Value.ToString().Length >= 4) ? dob.Value.ToString().Substring(0, 4) : null;
+
+                SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.SALE_PATIENT_NAME, patientName));
+                SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.SALE_PATIENT_ADDRESS, address));
+                SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.SALE_PATIENT_YEAR, year));
+                SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.SALE_PATIENT_CODE, expMest != null ? expMest.TDL_PATIENT_CODE : null));
+                SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.SALE_PATIENT_GENDER_NAME, expMest != null ? expMest.TDL_PATIENT_GENDER_NAME : null));
+                SetSingleKey(new KeyValue(Mps000339ExtendSingleKey.SALE_HEIN_CARD_NUMBER, expMest != null ? expMest.TDL_HEIN_CARD_NUMBER : null));
             }
             catch (Exception ex)
             {

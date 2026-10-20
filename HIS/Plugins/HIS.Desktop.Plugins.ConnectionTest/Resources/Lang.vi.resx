@@ -920,4 +920,34 @@
   <data name="UC_ConnectionTest.txtSearchKey.NullValuePromptCG300" xml:space="preserve">
     <value>Quét barcode...</value>
   </data>
+  <data name="UC_ConnectionTest.btnApproveResult.Text" xml:space="preserve">
+    <value>Duyệt KQ</value>
+  </data>
+  <data name="UC_ConnectionTest.btnApproveResult.TextUnapprove" xml:space="preserve">
+    <value>Hủy duyệt KQ</value>
+  </data>
+  <data name="UC_ConnectionTest.btnApproveResult.ToolTip" xml:space="preserve">
+    <value>Duyệt kết quả xét nghiệm của mẫu đang chọn</value>
+  </data>
+  <data name="UC_ConnectionTest.btnApproveResult.ToolTipUnapprove" xml:space="preserve">
+    <value>Hủy duyệt kết quả xét nghiệm của mẫu đang chọn</value>
+  </data>
+  <data name="UC_ConnectionTest.btnApproveResult.ToolTipReturned" xml:space="preserve">
+    <value>Mẫu đã trả kết quả, cần hủy trả kết quả trước khi hủy duyệt</value>
+  </data>
+  <data name="UC_ConnectionTest.btnApproveResult.ToolTipNoResult" xml:space="preserve">
+    <value>Mẫu chưa có kết quả hoặc không ở trạng thái được duyệt</value>
+  </data>
+  <data name="UC_ConnectionTest.colResultApprover.Caption" xml:space="preserve">
+    <value>Người duyệt KQ</value>
+  </data>
+  <data name="UC_ConnectionTest.colResultApprover.ToolTip" xml:space="preserve">
+    <value>Người duyệt kết quả</value>
+  </data>
+  <data name="UC_ConnectionTest.colResultApproveTime.Caption" xml:space="preserve">
+    <value>TG duyệt</value>
+  </data>
+  <data name="UC_ConnectionTest.colResultApproveTime.ToolTip" xml:space="preserve">
+    <value>Thời gian duyệt kết quả</value>
+  </data>
 </root>

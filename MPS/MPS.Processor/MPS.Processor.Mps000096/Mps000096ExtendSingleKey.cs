@@ -84,5 +84,10 @@ namespace MPS.Processor.Mps000096
         internal const string CARTRIDGE_LOT = "CARTRIDGE_LOT";
         internal const string CARTRIDGE_CAL = "CARTRIDGE_CAL";
         internal const string RANGE_TIMES = "RANGE_TIMES";
+
+        // Người duyệt KQ theo nhóm cha: "Việt - XNSH - 12/10/2026 10:00, Duy - XNHH - 12/10/2026 10:10"
+        internal const string SERVICE_APPROVER_STR = "SERVICE_APPROVER_STR";
+        // Thời gian duyệt KQ của mẫu, dd/MM/yyyy HH:mm
+        internal const string RESULT_APPROVAL_TIME_STR = "RESULT_APPROVAL_TIME_STR";
     }
 }

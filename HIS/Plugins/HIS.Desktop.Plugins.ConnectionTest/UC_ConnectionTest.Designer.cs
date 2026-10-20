@@ -201,6 +201,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListColumn_ReRun = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn3 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.colMachineResult = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.colResultApprover = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.colResultApproveTime = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.grdCollDonvitinh = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.grdColVallue = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -318,6 +320,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.checkPrintNow = new DevExpress.XtraEditors.CheckEdit();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
+            this.btnApproveResult = new DevExpress.XtraEditors.SimpleButton();
             this.chkReturnResult = new DevExpress.XtraEditors.CheckEdit();
             this.txtPatientCode = new DevExpress.XtraEditors.TextEdit();
             this.lblNewestBarcode = new DevExpress.XtraEditors.LabelControl();
@@ -453,6 +456,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControlItem46 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciApproveResult = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.cboUserKQView = new HIS.Desktop.Utilities.Extensions.CustomGridView();
@@ -678,6 +682,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem46)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciApproveResult)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboUserKQView)).BeginInit();
@@ -728,6 +733,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControl1.Controls.Add(this.checkPrintNow);
             this.layoutControl1.Controls.Add(this.btnPrint);
             this.layoutControl1.Controls.Add(this.btnSave);
+            this.layoutControl1.Controls.Add(this.btnApproveResult);
             this.layoutControl1.Controls.Add(this.chkReturnResult);
             this.layoutControl1.Controls.Add(this.txtPatientCode);
             this.layoutControl1.Controls.Add(this.lblNewestBarcode);
@@ -1062,7 +1068,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListColumnForOldValue,
             this.treeListColResultDescription,
             this.treeListColumnForButtonResultDesciption,
-            this.treeListModifier});
+            this.treeListModifier,
+            this.colResultApprover,
+            this.colResultApproveTime});
             this.treeListSereServTein.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeListSereServTein.Location = new System.Drawing.Point(2, 146);
             this.treeListSereServTein.Name = "treeListSereServTein";
@@ -1369,6 +1377,28 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListModifier.Visible = true;
             this.treeListModifier.VisibleIndex = 16;
             this.treeListModifier.Width = 30;
+            // 
+            // colResultApprover
+            // 
+            this.colResultApprover.Caption = "Người duyệt KQ";
+            this.colResultApprover.FieldName = "RESULT_APPROVER_USERNAME";
+            this.colResultApprover.Name = "colResultApprover";
+            this.colResultApprover.OptionsColumn.AllowEdit = false;
+            this.colResultApprover.ToolTip = "Người duyệt kết quả";
+            this.colResultApprover.Visible = true;
+            this.colResultApprover.VisibleIndex = 17;
+            this.colResultApprover.Width = 60;
+            // 
+            // colResultApproveTime
+            // 
+            this.colResultApproveTime.Caption = "TG duyệt";
+            this.colResultApproveTime.FieldName = "RESULT_APPROVE_TIME_STR";
+            this.colResultApproveTime.Name = "colResultApproveTime";
+            this.colResultApproveTime.OptionsColumn.AllowEdit = false;
+            this.colResultApproveTime.ToolTip = "Thời gian duyệt kết quả";
+            this.colResultApproveTime.Visible = true;
+            this.colResultApproveTime.VisibleIndex = 18;
+            this.colResultApproveTime.Width = 60;
             // 
             // repositoryItemCheckEdit1
             // 
@@ -2458,6 +2488,19 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.btnPrint.Text = "In (Ctrl P)";
             this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
+            // btnApproveResult
+            // 
+            this.btnApproveResult.Enabled = false;
+            this.btnApproveResult.Location = new System.Drawing.Point(768, 490);
+            this.btnApproveResult.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnApproveResult.Name = "btnApproveResult";
+            this.btnApproveResult.Size = new System.Drawing.Size(96, 22);
+            this.btnApproveResult.StyleController = this.layoutControl1;
+            this.btnApproveResult.TabIndex = 120;
+            this.btnApproveResult.Text = "Duyệt KQ";
+            this.btnApproveResult.ToolTip = "Duyệt kết quả xét nghiệm của mẫu đang chọn";
+            this.btnApproveResult.Click += new System.EventHandler(this.btnApproveResult_Click);
+            // 
             // btnSave
             // 
             this.btnSave.Enabled = false;
@@ -3484,7 +3527,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControlItem47,
             this.layoutControlItem13,
             this.layoutControlItem2,
-            this.layoutControlItem14});
+            this.layoutControlItem14,
+            this.lciApproveResult});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -3941,7 +3985,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.emptySpaceItem5.AllowHotTrack = false;
             this.emptySpaceItem5.Location = new System.Drawing.Point(620, 488);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(246, 26);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(146, 26);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem37
@@ -4099,6 +4143,15 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControlItem47.Size = new System.Drawing.Size(90, 26);
             this.layoutControlItem47.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem47.TextVisible = false;
+            // 
+            // lciApproveResult
+            // 
+            this.lciApproveResult.Control = this.btnApproveResult;
+            this.lciApproveResult.Location = new System.Drawing.Point(766, 488);
+            this.lciApproveResult.Name = "lciApproveResult";
+            this.lciApproveResult.Size = new System.Drawing.Size(100, 26);
+            this.lciApproveResult.TextSize = new System.Drawing.Size(0, 0);
+            this.lciApproveResult.TextVisible = false;
             // 
             // layoutControlItem13
             // 
@@ -4425,6 +4478,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem46)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciApproveResult)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboUserKQView)).EndInit();
@@ -4483,6 +4537,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private System.Windows.Forms.ImageList imageList1;
         private DevExpress.XtraEditors.SimpleButton btnSave;
+        private DevExpress.XtraEditors.SimpleButton btnApproveResult;
+        private DevExpress.XtraLayout.LayoutControlItem lciApproveResult;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn colResultApprover;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn colResultApproveTime;
         private DevExpress.XtraEditors.SimpleButton btnPrint;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
         private DevExpress.XtraEditors.TextEdit txtSERVICE_REQ_CODE__EXACT;

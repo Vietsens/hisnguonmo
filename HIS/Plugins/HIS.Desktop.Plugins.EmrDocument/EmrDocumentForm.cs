@@ -4862,6 +4862,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         Inventec.Common.Logging.LogSystem.Info(
     String.Format("[Download] showWatermark={0}, NumberOfDocumentsToFetch={1}",
                   showWatermark, listDataTrue.Count));
+                        // Duong tai tu FSS (EMR.DOWNLOAD_FILE_OPTION=1) client tu ve chu ky BN va can
+                        // PATIENT_SIGNATURE_DISPLAY_TYPE cua van ban -> phai gan nhu cac nhanh in/xem.
+                        listDataTrueStatic = listDataTrue;
                         var documents = GetEmrDocumentFile(
                             null,
                             listDataTrue.Select(o => o.ID).ToList(),
@@ -5554,17 +5557,16 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     float widthImagePercent = GetWidthImagePercent(DisplayConfig.TextPosition);
                     float imageSpacing = 10f;
                     float plusH = SignPdfAsynchronous.ProcessHeightPlus(widthImagePercent, DisplayConfig);
-                    float maxWidth;
-                    float maxHeight;
-                    if (isFingerPrintImg)
+                    // Dong bo WaterMarkProcess (xem/in): van tay dung CUNG co ban voi chu ky thuong, chi phong to khi
+                    // cau hinh EMR.EMR_SIGN.FINGERPRINT_SIZE_OPTION co fill != 1. Truoc day lap kin ca khung => qua to.
+                    float fingerPrintFill = GetFingerPrintDisplayFill();
+                    bool isFingerPrintZoom = isFingerPrintImg && fingerPrintFill != 1.0f;
+                    float maxWidth = DisplayConfig.WidthRectangle * widthImagePercent / 100f;
+                    float maxHeight = DisplayConfig.HeightRectangle - plusH - imageSpacing;
+                    if (isFingerPrintZoom)
                     {
-                        maxWidth = DisplayConfig.WidthRectangle * FINGERPRINT_DISPLAY_FILL;
-                        maxHeight = DisplayConfig.HeightRectangle * FINGERPRINT_DISPLAY_FILL;
-                    }
-                    else
-                    {
-                        maxWidth = DisplayConfig.WidthRectangle * widthImagePercent / 100f;
-                        maxHeight = DisplayConfig.HeightRectangle - plusH - imageSpacing;
+                        maxWidth = maxWidth * fingerPrintFill;
+                        maxHeight = maxHeight * fingerPrintFill;
                     }
 
                     float rawWidth = image.Width;
@@ -5574,10 +5576,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         "[FingerPrintSize][EmrDocument][{0}][KichThuocAnh] Anh {1} {2}x{3}, ratio(W/H)={4}, nguong<={5} => gioi han maxWidth={6}, maxHeight={7} (fill={8}, widthImagePercent={9}, plusH={10}, imageSpacing={11}) => ve ra {12}x{13}",
                         callerTag, (isFingerPrintImg ? "VAN TAY" : "CHU KY THUONG"), rawWidth, rawHeight,
                         (rawHeight > 0 ? rawWidth / rawHeight : 0f), FINGERPRINT_ASPECT_MAX,
-                        maxWidth, maxHeight, FINGERPRINT_DISPLAY_FILL, widthImagePercent, plusH, imageSpacing,
+                        maxWidth, maxHeight, fingerPrintFill, widthImagePercent, plusH, imageSpacing,
                         image.ScaledWidth, image.ScaledHeight));
 
-                    if (!isFingerPrintImg && DisplayConfig.SignaltureImageWidth > 0 && image.ScaledWidth > DisplayConfig.SignaltureImageWidth)
+                    if (!isFingerPrintZoom && DisplayConfig.SignaltureImageWidth > 0 && image.ScaledWidth > DisplayConfig.SignaltureImageWidth)
                     {
                         float scaleRatio = DisplayConfig.SignaltureImageWidth / image.ScaledWidth;
                         image.ScaleAbsolute(image.ScaledWidth * scaleRatio, image.ScaledHeight * scaleRatio);
@@ -5598,7 +5600,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         centerX, posY, posY + image.ScaledHeight, textY, pageNum,
                         (pageSizeLog == null ? 0 : pageSizeLog.Width), (pageSizeLog == null ? 0 : pageSizeLog.Height),
                         (anhNamNgoaiTrang ? " *** ANH NAM NGOAI VUNG TRANG => KHONG HIEN THI ***" : "")));
-                    var document = listDataTrueStatic.FirstOrDefault(o => o.ID == documentId);
+                    // listDataTrueStatic co the null (luong goi chua gan) -> khong duoc nem loi, ve theo mac dinh ANH + CHU.
+                    var document = listDataTrueStatic != null ? listDataTrueStatic.FirstOrDefault(o => o.ID == documentId) : null;
                     int displayType = document != null && document.PATIENT_SIGNATURE_DISPLAY_TYPE.HasValue
                         ? (int)document.PATIENT_SIGNATURE_DISPLAY_TYPE.Value
                         : -1;
@@ -5660,7 +5663,41 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
         // Đồng bộ với thư viện SignLibrary (WaterMarkProcess): ngưỡng nhận diện ảnh vân tay + hệ số lấp đầy khung khi hiển thị.
         private const float FINGERPRINT_ASPECT_MAX = 1.3f;
-        private const float FINGERPRINT_DISPLAY_FILL = 1.0f;
+        private const float FINGERPRINT_SCALE_MIN = 0.5f;
+        private const float FINGERPRINT_SCALE_MAX = 3.0f;
+        private const string FINGERPRINT_SIZE_OPTION_KEY = "EMR.EMR_SIGN.FINGERPRINT_SIZE_OPTION";
+
+        /// <summary>
+        /// He so phong to anh van tay (tham so fill trong EMR.EMR_SIGN.FINGERPRINT_SIZE_OPTION, vd "rs:1|fill:1.5|ov:1").
+        /// Doc giong SignLibrary.GlobalStore (internal nen plugin khong goi truc tiep duoc). Khong cau hinh => 1.
+        /// </summary>
+        private static float GetFingerPrintDisplayFill()
+        {
+            try
+            {
+                var configs = GlobalStore.EmrConfigs;
+                if (configs == null) return 1.0f;
+                var cfg = configs.FirstOrDefault(o => o.KEY == FINGERPRINT_SIZE_OPTION_KEY);
+                if (cfg == null) return 1.0f;
+                string vl = !String.IsNullOrWhiteSpace(cfg.VALUE) ? cfg.VALUE : cfg.DEFAULT_VALUE;
+                if (String.IsNullOrWhiteSpace(vl)) return 1.0f;
+                foreach (string option in vl.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var detail = option.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (detail.Length < 2 || detail[0].Trim().ToLower() != "fill") continue;
+                    float value;
+                    if (float.TryParse(detail[1].Trim().Replace(',', '.'), System.Globalization.NumberStyles.Float,
+                            System.Globalization.CultureInfo.InvariantCulture, out value)
+                        && value >= FINGERPRINT_SCALE_MIN && value <= FINGERPRINT_SCALE_MAX)
+                        return value;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+            return 1.0f;
+        }
 
         // Nhận diện ảnh vân tay theo tỉ lệ khung ảnh (dọc/gần vuông) — giống WaterMarkProcess.IsFingerPrintImage.
         private static bool IsFingerPrintImage(iTextSharp.text.Image image)

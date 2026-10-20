@@ -72,6 +72,8 @@ namespace HIS.Desktop.Plugins.TransDepartment
         V_HIS_DEPARTMENT_TRAN departmentTran = null;
 
         bool isView = false;
+        //// Viec 59683: nguoi dung da chon "Co" o canh bao thoi gian chuyen nho hon thoi gian ket thuc giuong
+        bool isConfirmBedFinishTime = false;
         HIS.UC.Icd.IcdProcessor icdProcessor = null;
         UserControl ucIcd = null;
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -156,9 +158,19 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 {
                     InitControl(true);
                     dtLogTime.EditValue = DateTime.Now;
-                    dtLogTime.Enabled = false;
-                    lciDTLogTime.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    this.Size = new Size(this.Size.Width, this.Size.Height - 24);
+                    if (ConfigKey.AllowEditTransferTime)
+                    {
+                        //// Viec 59683: cho nguoi dung sua thoi gian chuyen khoa, mac dinh gio hien tai.
+                        //// Nhan "Thoi gian yeu cau:" dai hon cot nhan 90px -> noi cot nhan sau khi gan caption (xem AlignLabelColumnForTransferTime).
+                        dtLogTime.Enabled = true;
+                        lciDTLogTime.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    }
+                    else
+                    {
+                        dtLogTime.Enabled = false;
+                        lciDTLogTime.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        this.Size = new Size(this.Size.Width, this.Size.Height - 24);
+                    }
                     LoadDataFillForm();
 
                 }
@@ -205,6 +217,10 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 LoadDefault();
 
                 SetCaptionByLanguageKey();
+                if (this.departmentTran == null && ConfigKey.AllowEditTransferTime)
+                {
+                    AlignLabelColumnForTransferTime();
+                }
             }
             catch (Exception ex)
             {
@@ -281,12 +297,48 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmDepartmentTran.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboDepartment.Properties.NullText = Inventec.Common.Resource.Get.Value("frmDepartmentTran.cboDepartment.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciDTLogTime.Text = Inventec.Common.Resource.Get.Value("frmDepartmentTran.lciDTLogTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                if (this.departmentTran == null && ConfigKey.AllowEditTransferTime)
+                {
+                    //// Viec 59683: tao moi + bat cau hinh -> o thoi gian la thoi gian yeu cau chuyen khoa (REQUEST_TIME)
+                    this.lciDTLogTime.Text = Inventec.Common.Resource.Get.Value("frmDepartmentTran.lciDTLogTime.Text.RequestTime", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
                 this.lciDepartmentTo.Text = Inventec.Common.Resource.Get.Value("frmDepartmentTran.lciDepartmentTo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmDepartmentTran.layoutControlItem3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
                 if (this.currentModuleBase != null)
                 {
                     this.Text = this.currentModuleBase.text;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 59683: nhan "Thoi gian yeu cau:" dai hon cot nhan 90px cua form. Noi deu cot nhan cua cac dong
+        /// Thoi gian / Khoa den / Dien dieu tri va day 2 panel chan doan (nhan nam trong UC) sang phai cung
+        /// mot khoang, de cac o nhap van thang hang. Chi goi khi tao moi + bat cau hinh.
+        /// </summary>
+        private void AlignLabelColumnForTransferTime()
+        {
+            try
+            {
+                int oldWidth = lciDTLogTime.TextSize.Width;
+                int newWidth = TextRenderer.MeasureText(lciDTLogTime.Text, lciDTLogTime.AppearanceItemCaption.GetFont()).Width + 4;
+                if (newWidth <= oldWidth)
+                    return;
+                int delta = newWidth - oldWidth;
+
+                lciDTLogTime.TextSize = new Size(newWidth, lciDTLogTime.TextSize.Height);
+                lciDepartmentTo.TextSize = new Size(newWidth, lciDepartmentTo.TextSize.Height);
+                layoutControlItem3.TextSize = new Size(newWidth, layoutControlItem3.TextSize.Height);
+
+                foreach (DevExpress.XtraLayout.LayoutControlItem item in new[] { layoutControlItem7, layoutControlItem6 })
+                {
+                    DevExpress.XtraLayout.Utils.Padding p = item.Padding;
+                    item.Padding = new DevExpress.XtraLayout.Utils.Padding(p.Left + delta, p.Right, p.Top, p.Bottom);
                 }
             }
             catch (Exception ex)
@@ -539,6 +591,11 @@ namespace HIS.Desktop.Plugins.TransDepartment
             hisDepartmentTranSDO.RequestRoomId = this.roomId;
             hisDepartmentTranSDO.TreatmentId = this.treatmentId;
             hisDepartmentTranSDO.Time = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtLogTime.DateTime) ?? 0;
+            if (this.isConfirmBedFinishTime)
+            {
+                //// Viec 59683: nguoi dung da chon "Co" -> BE bo qua kiem tra thoi gian ket thuc giuong khi roi buong
+                hisDepartmentTranSDO.IsConfirmBedFinishTime = true;
+            }
 
             UpdateDepartmentTranFromDataForm(ref hisDepartmentTranSDO);
 
@@ -935,6 +992,11 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 // Dat truoc cac popup Yes/No phia duoi de khong hoi nguoi dung khi da chac chan
                 // khong cho luu.
                 if (!IsAllowTransByRequiredService())
+                    return;
+
+                // Viec 59683: kiem tra thoi gian chuyen khoa nguoi dung nhap (chi khi bat cau hinh, tao moi).
+                // Dat truoc cac popup Yes/No hien co de cac canh bao do dung dung thoi gian da nhap.
+                if (!IsValidTransferTime())
                     return;
 
                 //minhnq

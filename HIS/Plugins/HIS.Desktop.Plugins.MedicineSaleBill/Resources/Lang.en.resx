@@ -117,4 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-</root>
+  <data name="IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__BTN_DROP_DOWN__ITEM_IN_PHIEU_THU" xml:space="preserve">
+    <value>Print sale invoice</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__BTN_DROP_DOWN__ITEM_IN_BIEN_LAI" xml:space="preserve">
+    <value>Print receipt slip</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__LCI_PRINT_PAYMENT_SLIP" xml:space="preserve">
+    <value>Print sale invoice:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__CHK_PRINT_PAYMENT_SLIP__TOOLTIP" xml:space="preserve">
+    <value>Check to print the sale invoice (Mps000339) automatically on Save / Save and print / Save and sign. Save and print: print directly, no preview</value>
+  </data></root>

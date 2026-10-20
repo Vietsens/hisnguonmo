@@ -168,4 +168,15 @@
   <data name="IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__PRINT_MENU__ITEM_IN_PHIEU_XUAT_BAN" xml:space="preserve">
     <value>In phiếu xuất bán</value>
   </data>
-</root>
+  <data name="IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__BTN_DROP_DOWN__ITEM_IN_PHIEU_THU" xml:space="preserve">
+    <value>In hóa đơn xuất bán</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__BTN_DROP_DOWN__ITEM_IN_BIEN_LAI" xml:space="preserve">
+    <value>In biên lai</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__LCI_PRINT_PAYMENT_SLIP" xml:space="preserve">
+    <value>In hóa đơn xuất bán:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_MEDICINE_SALE_BILL__CHK_PRINT_PAYMENT_SLIP__TOOLTIP" xml:space="preserve">
+    <value>Tích để tự động in hóa đơn xuất bán (Mps000339) khi ấn Lưu / Lưu in / Lưu ký. Lưu in: in thẳng, không xem trước</value>
+  </data></root>

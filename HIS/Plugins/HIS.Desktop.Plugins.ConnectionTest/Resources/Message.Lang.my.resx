@@ -183,4 +183,13 @@
   <data name="CG300MauDaInTemInLai" xml:space="preserve">
     <value>Barcode {0} has already been printed via CG300. Print again (an extra tube will be released)?</value>
   </data>
+  <data name="VuiLongLuuTruocKhiDuyet" xml:space="preserve">
+    <value>There are unsaved results. Please save before approving.</value>
+  </data>
+  <data name="DuyetApDungToanBoMau" xml:space="preserve">
+    <value>Approval applies to all services of sample {0}. Do you want to continue?</value>
+  </data>
+  <data name="BanCoMuonHuyDuyetKetQuaMau" xml:space="preserve">
+    <value>Do you want to unapprove the result of sample {0}?</value>
+  </data>
 </root>

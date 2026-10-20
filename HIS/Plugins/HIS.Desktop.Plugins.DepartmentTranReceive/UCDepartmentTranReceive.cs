@@ -100,7 +100,6 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
                 this.grdColVirPatientName.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColVirPatientName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColDOB.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColDOB.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColLogTime.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColLogTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColRequestTime.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColRequestTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColDepartmentCode.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColDepartmentCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColDepartmentName.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColDepartmentName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColNextDepartmentCode.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColNextDepartmentCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -108,7 +107,10 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
                 this.grdColInOut.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColInOut.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsReceive.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColIsReceive.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColBedRoomName.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColBedRoomName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCreateTime.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColCreateTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //Key = 1: doi ten cot thanh "Thoi gian yeu cau" (hien thi REQUEST_TIME). Key = 0: giu ten "Thoi gian tao" (hien thi CREATE_TIME)
+                this.grdColCreateTime.Caption = (HisConfigs.Get<string>("MOS.HIS_DEPARTMENT_TRAN.SHOW_REQUEST_TIME_WHEN_RECEIVING") == "1")
+                    ? Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColCreateTime.RequestTimeCaption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture())
+                    : Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColCreateTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColCreate.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColCreate.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColModifyTime.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColModifyTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColModifier.Caption = Inventec.Common.Resource.Get.Value("UCDepartmentTranReceive.grdColModifier.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -270,23 +272,17 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
                         }
                         else if (e.Column.FieldName == "CREATE_TIME_DISPLAY")
                         {
-                            var pdata = BackendDataWorker.Get<HIS_DEPARTMENT_TRAN>().Where(o => o.TREATMENT_ID == treatmentID);
+                            //Key = 1: cot doi ten thanh "Thoi gian yeu cau", hien thi theo REQUEST_TIME (thoi gian yeu cau chuyen)
+                            //Key = 0 (hoac khac 1): giu ten "Thoi gian tao", hien thi theo CREATE_TIME cua ban ghi
                             if (HisConfigs.Get<string>("MOS.HIS_DEPARTMENT_TRAN.SHOW_REQUEST_TIME_WHEN_RECEIVING") == "1")
                             {
-                                foreach (var item in pdata)
-                                {
-
-                                    if (item.REQUEST_TIME != null)
-                                    {
-                                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item.REQUEST_TIME ?? 0);
-                                    }
-                                    else
-                                        e.Value = DateTime.Now;
-                                    }
+                                e.Value = data.REQUEST_TIME.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.REQUEST_TIME.Value) : null;
                             }
-                                }
-                                
-                                
+                            else
+                            {
+                                e.Value = data.CREATE_TIME.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CREATE_TIME.Value) : null;
+                            }
+                        }
 
                         else if (e.Column.FieldName == "MODIFY_TIME_DISPLAY")
                         {
@@ -307,11 +303,6 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
                         else if (e.Column.FieldName == "LOG_TIME_DISPLAY")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.DEPARTMENT_IN_TIME ?? 0);
-                        }
-                        else if (e.Column.FieldName == "REQUEST_TIME_DISPLAY")
-                        {
-                            //Thoi gian chuyen tu khoa truoc toi = thoi gian yeu cau chuyen do khoa chuyen ghi nhan khi tao chuyen khoa
-                            e.Value = data.REQUEST_TIME.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.REQUEST_TIME.Value) : null;
                         }
                         //else if (e.Column.FieldName == "DEPARTMENT_NAME_DISPLAY" && data.PREVIOUS_ID != null)
                         //{

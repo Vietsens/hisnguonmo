@@ -560,7 +560,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 leaf.SERVICE_ID = item.SERVICE_ID;
                 leaf.TDL_SERVICE_CODE = item.TDL_SERVICE_CODE;
                 leaf.TDL_SERVICE_NAME = item.TDL_SERVICE_NAME;
-                long? testResultTime = null; // Viec 57966: Ngay KQ dong dich vu XN = lan tra ket qua moi nhat cua cac chi so
+                long? testResultTime = null; // Viec 57966: Ngay KQ dong dich vu XN = EXT.END_TIME, trong thi thoi gian ket thuc y lenh (dong chi so de trong)
                 if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                 {
                     HIS_SERVICE_REQ serviceReq = null;
@@ -630,16 +630,15 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
 
                                 leafXN.TEST_INDEX_UNIT_CODE = itemT.TEST_INDEX_UNIT_CODE;
                                 leafXN.TEST_INDEX_UNIT_NAME = itemT.TEST_INDEX_UNIT_NAME;
-                                long? indexResultTime = GetTestIndexResultTime(itemT, serviceReq);
-                                leafXN.END_TIME = ResultTimeToString(indexResultTime);
-                                if (indexResultTime.HasValue && (!testResultTime.HasValue || indexResultTime.Value > testResultTime.Value))
-                                    testResultTime = indexResultTime;
                                 ProcessCheckNormal(ref leafXN);
                                 SereServADOs.Add(leafXN);
                             }
                         }
                     }
-
+                    HIS_SERE_SERV_EXT sereServExt = null;
+                    if (dicSereServExt != null)
+                        dicSereServExt.TryGetValue(leaf.ID, out sereServExt);
+                    testResultTime = GetTestResultTime(sereServExt, serviceReq);
                 }
                 else
                 {
@@ -651,7 +650,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 }
                 if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                 {
-                    // Viec 57966: LIS/LABCON tra ket qua khong ghi EXT.END_TIME -> dong dich vu theo Ngay KQ cua cac chi so
+                    // Viec 57966: dong dich vu XN theo EXT.END_TIME, LIS/LABCON khong ghi thi theo thoi gian ket thuc y lenh (GetTestResultTime)
                     leaf.END_TIME = ResultTimeToString(testResultTime);
                 }
                 else if (dicSereServExt.ContainsKey(leaf.ID) && dicSereServExt[leaf.ID].END_TIME.HasValue)
@@ -668,49 +667,22 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         }
 
         /// <summary>
-        /// Viec 57966: Ngay KQ cua 1 chi so xet nghiem. Chi co khi y lenh da Hoan thanh va chi so co gia tri.
-        /// Uu tien thoi gian tra ket qua cua chi so (RESULT_TIME), khong co thi lay thoi gian ket thuc y lenh
-        /// (FINISH_TIME - LABCON gui kem khi tra ket qua). Thieu ca 2 thi de trong, khong lay gio khac thay the.
+        /// Viec 57966 (chot voi chi Han 16/10/2026): Ngay KQ cua dong dich vu xet nghiem (HIS_SERE_SERV) = HIS_SERE_SERV_EXT.END_TIME
+        /// nhu truoc viec 57966; END_TIME trong (LIS/LABCON tra ket qua khong ghi) thi lay thoi gian ket thuc y lenh
+        /// (HIS_SERVICE_REQ.FINISH_TIME, LABCON gui kem khi tra ket qua) khi y lenh Hoan thanh. Khong xet chi so.
+        /// Thieu ca 2 thi de trong, khong lay gio khac thay the. Dong chi so (HIS_SERE_SERV_TEIN) khong hien gio.
         /// </summary>
-        private long? GetTestIndexResultTime(V_HIS_SERE_SERV_TEIN sereServTein, HIS_SERVICE_REQ serviceReq)
+        private long? GetTestResultTime(HIS_SERE_SERV_EXT sereServExt, HIS_SERVICE_REQ serviceReq)
         {
             long? result = null;
             try
             {
-                if (sereServTein != null && serviceReq != null
+                if (sereServExt != null && sereServExt.END_TIME.HasValue && sereServExt.END_TIME.Value > 0)
+                    result = sereServExt.END_TIME.Value;
+                else if (serviceReq != null
                     && serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT
-                    && !String.IsNullOrWhiteSpace(sereServTein.VALUE))
-                {
-                    long? indexResultTime = GetSereServTeinResultTime(sereServTein);
-                    if (indexResultTime.HasValue && indexResultTime.Value > 0)
-                        result = indexResultTime.Value;
-                    else if (serviceReq.FINISH_TIME.HasValue && serviceReq.FINISH_TIME.Value > 0)
-                        result = serviceReq.FINISH_TIME.Value;
-                }
-            }
-            catch (Exception ex)
-            {
-                result = null;
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Viec 57966: V_HIS_SERE_SERV_TEIN.RESULT_TIME doc QUA REFLECTION, khong phu thuoc compile-time (cach lam nhu 62ddc7801).
-        /// Ly do: plugin chay tren nhieu ban client; MOS.EFMODEL truoc 23/03/2026 chua co cot nay -> goi thang property se nem
-        /// MissingMethodException ngay khi JIT, roi vao catch cua LoadDataService va mat ca dong xet nghiem tren cay.
-        /// Khong co cot thi coi nhu chi so khong co gio rieng (GetTestIndexResultTime lay thoi gian ket thuc y lenh).
-        /// </summary>
-        static readonly System.Reflection.PropertyInfo sereServTeinResultTimeProperty = typeof(V_HIS_SERE_SERV_TEIN).GetProperty("RESULT_TIME");
-
-        private long? GetSereServTeinResultTime(V_HIS_SERE_SERV_TEIN sereServTein)
-        {
-            long? result = null;
-            try
-            {
-                if (sereServTein != null && sereServTeinResultTimeProperty != null)
-                    result = sereServTeinResultTimeProperty.GetValue(sereServTein, null) as long?;
+                    && serviceReq.FINISH_TIME.HasValue && serviceReq.FINISH_TIME.Value > 0)
+                    result = serviceReq.FINISH_TIME.Value;
             }
             catch (Exception ex)
             {
