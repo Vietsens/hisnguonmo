@@ -156,6 +156,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.lcTransferAmountNew = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcSwipeAmountNew = new DevExpress.XtraLayout.LayoutControlItem();
             this.chkPrintNow = new DevExpress.XtraEditors.CheckEdit();
+            this.chkInHDSD = new DevExpress.XtraEditors.CheckEdit();
             this.btnNewExpMest = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancelExport = new DevExpress.XtraEditors.SimpleButton();
             this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer(this.components);
@@ -261,6 +262,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciInHDSD = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -286,7 +288,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem51 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem55 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem56 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxValidationProvider_Add = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
@@ -356,6 +357,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.lcTransferAmountNew)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcSwipeAmountNew)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintNow.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkInHDSD.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).BeginInit();
             this.popupControlContainerMediMaty.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMediMaty)).BeginInit();
@@ -442,6 +444,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciInHDSD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
@@ -467,7 +470,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem51)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem55)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Save)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Add)).BeginInit();
@@ -494,6 +496,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControl1.Controls.Add(this.btnDebt);
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Controls.Add(this.chkPrintNow);
+            this.layoutControl1.Controls.Add(this.chkInHDSD);
             this.layoutControl1.Controls.Add(this.btnNewExpMest);
             this.layoutControl1.Controls.Add(this.btnCancelExport);
             this.layoutControl1.Controls.Add(this.popupControlContainerMediMaty);
@@ -693,7 +696,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.chkSign.MenuManager = this.barManager1;
             this.chkSign.Name = "chkSign";
             this.chkSign.Properties.Caption = "";
-            this.chkSign.Size = new System.Drawing.Size(56, 19);
+            this.chkSign.Size = new System.Drawing.Size(25, 19);
             this.chkSign.StyleController = this.layoutControl1;
             this.chkSign.TabIndex = 93;
             this.chkSign.CheckedChanged += new System.EventHandler(this.chkSign_CheckedChanged);
@@ -1778,6 +1781,17 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.chkPrintNow.StyleController = this.layoutControl1;
             this.chkPrintNow.TabIndex = 73;
             this.chkPrintNow.CheckedChanged += new System.EventHandler(this.chkPrintNow_CheckedChanged);
+            //
+            // chkInHDSD
+            //
+            this.chkInHDSD.Location = new System.Drawing.Point(563, 617);
+            this.chkInHDSD.MenuManager = this.barManager1;
+            this.chkInHDSD.Name = "chkInHDSD";
+            this.chkInHDSD.Properties.Caption = "";
+            this.chkInHDSD.Size = new System.Drawing.Size(21, 19);
+            this.chkInHDSD.StyleController = this.layoutControl1;
+            this.chkInHDSD.TabIndex = 96;
+            this.chkInHDSD.CheckedChanged += new System.EventHandler(this.chkInHDSD_CheckedChanged);
             // 
             // btnNewExpMest
             // 
@@ -2704,6 +2718,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem21,
             this.layoutControlItem10,
             this.layoutControlItem2,
+            this.lciInHDSD,
             this.layoutControlItem18,
             this.layoutControlItem1,
             this.layoutControlItem31,
@@ -2729,7 +2744,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem51,
             this.emptySpaceItem5,
             this.layoutControlItem55,
-            this.emptySpaceItem1,
             this.layoutControlItem56});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
@@ -3195,13 +3209,27 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem2.Control = this.chkPrintNow;
-            this.layoutControlItem2.Location = new System.Drawing.Point(456, 615);
+            this.layoutControlItem2.Location = new System.Drawing.Point(378, 615);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(130, 26);
             this.layoutControlItem2.Text = "Xem trước khi in:";
             this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem2.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem2.TextToControlDistance = 5;
+            //
+            // lciInHDSD (viec 56651)
+            //
+            this.lciInHDSD.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciInHDSD.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciInHDSD.Control = this.chkInHDSD;
+            this.lciInHDSD.Location = new System.Drawing.Point(508, 615);
+            this.lciInHDSD.Name = "lciInHDSD";
+            this.lciInHDSD.OptionsToolTip.ToolTip = "In hướng dẫn sử dụng thuốc ngay sau khi lưu thành công";
+            this.lciInHDSD.Size = new System.Drawing.Size(78, 26);
+            this.lciInHDSD.Text = "In HDSD:";
+            this.lciInHDSD.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciInHDSD.TextSize = new System.Drawing.Size(50, 20);
+            this.lciInHDSD.TextToControlDistance = 5;
             // 
             // layoutControlItem18
             // 
@@ -3224,7 +3252,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem31
             // 
             this.layoutControlItem31.Control = this.chkAutoShow;
-            this.layoutControlItem31.Location = new System.Drawing.Point(47, 615);
+            this.layoutControlItem31.Location = new System.Drawing.Point(0, 615);
             this.layoutControlItem31.Name = "layoutControlItem31";
             this.layoutControlItem31.Size = new System.Drawing.Size(224, 26);
             this.layoutControlItem31.Text = "Tự động hiển thị tồn kho các nhà thuốc";
@@ -3475,21 +3503,13 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem55.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem55.Control = this.chkSign;
             this.layoutControlItem55.CustomizationFormText = "Ký đơn nhà thuốc";
-            this.layoutControlItem55.Location = new System.Drawing.Point(271, 615);
+            this.layoutControlItem55.Location = new System.Drawing.Point(224, 615);
             this.layoutControlItem55.Name = "layoutControlItem55";
-            this.layoutControlItem55.Size = new System.Drawing.Size(185, 26);
+            this.layoutControlItem55.Size = new System.Drawing.Size(154, 26);
             this.layoutControlItem55.Text = "Ký đơn nhà thuốc";
             this.layoutControlItem55.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem55.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem55.TextToControlDistance = 5;
-            // 
-            // emptySpaceItem1
-            // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 615);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(47, 26);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem56
             // 
@@ -3590,6 +3610,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.lcTransferAmountNew)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcSwipeAmountNew)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintNow.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkInHDSD.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).EndInit();
             this.popupControlContainerMediMaty.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMediMaty)).EndInit();
@@ -3676,6 +3697,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciInHDSD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
@@ -3701,7 +3723,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem51)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem55)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Save)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Add)).EndInit();
@@ -3842,6 +3863,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private DevExpress.XtraEditors.SpinEdit spinTransferAmount;
         private DevExpress.XtraEditors.CheckEdit chkPrintNow;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
+        private DevExpress.XtraEditors.CheckEdit chkInHDSD;
+        private DevExpress.XtraLayout.LayoutControlItem lciInHDSD;
         private DevExpress.XtraLayout.LayoutControl layoutControl2;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
@@ -3936,7 +3959,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraEditors.CheckEdit chkSign;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem55;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn11;
         private DevExpress.XtraEditors.SpinEdit spinSwipeAmountNew;
         private DevExpress.XtraEditors.SpinEdit spinTransferAmountNew;

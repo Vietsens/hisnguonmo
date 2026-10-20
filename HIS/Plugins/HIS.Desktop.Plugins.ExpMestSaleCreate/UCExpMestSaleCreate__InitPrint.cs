@@ -73,6 +73,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         HIS_SERVICE_REQ currentServiceReqPrint;
         Inventec.Desktop.Common.Modules.Module currentModule;
         MPS.ProcessorBase.PrintConfig.PreviewType previewType;
+        bool isAutoPrintHdsd;
         internal V_HIS_TREATMENT VHistreatment;
         private void InitMenuPrint(MOS.EFMODEL.DataModels.V_HIS_EXP_MEST expMest, bool? isListResult = null)
         {
@@ -372,6 +373,24 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // Viec 56651: tick "In HDSD" -> print Mps000099 right after a successful save
+        private void PrintHdsdAfterSave()
+        {
+            try
+            {
+                this.isAutoPrintHdsd = true;
+                onClickInHuongDanSuDung(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.isAutoPrintHdsd = false;
             }
         }
 
@@ -993,19 +1012,28 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                 MPS.Processor.Mps000099.PDO.Mps000099PDO rdo = new MPS.Processor.Mps000099.PDO.Mps000099PDO(expMests, expMestMedicines);
 
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
-                }
-                else
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                }
+                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, GetHdsdPreviewType(), ""));
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // Viec 56651: auto print after save follows "Xem truoc khi in" like the sale slip; menu print keeps app config
+        private MPS.ProcessorBase.PrintConfig.PreviewType GetHdsdPreviewType()
+        {
+            try
+            {
+                if (this.isAutoPrintHdsd)
+                    return chkPrintNow.Checked ? MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog : MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                return ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
             }
         }
 

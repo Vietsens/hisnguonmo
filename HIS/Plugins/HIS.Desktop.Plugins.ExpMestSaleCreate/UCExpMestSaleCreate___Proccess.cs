@@ -518,6 +518,12 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 }
                 this.savePrint = false;
 
+                // Viec 56651: tick "In HDSD" -> in huong dan su dung sau moi lan luu thanh cong (Luu, Luu in, Luu ky in)
+                if (success && chkInHDSD.Checked)
+                {
+                    PrintHdsdAfterSave();
+                }
+
                 MessageManager.Show(this.ParentForm, param, success);
                 SessionManager.ProcessTokenLost(param);
 
@@ -1842,7 +1848,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         }
                         else if (item.KEY == ControlStateConstant.SPIN_BASE_VALUE)
                         {
-                            spinBaseValue.Value = Convert.ToInt64(item.VALUE);
+                            // Viec 56651: value is saved by decimal.ToString() ("1000,5"), ToInt64 threw and stopped restoring later keys
+                            spinBaseValue.Value = Convert.ToDecimal(item.VALUE);
                         }
                         else if (item.KEY == ControlStateConstant.CHK_KetNoiPos)
                         {
@@ -1851,6 +1858,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         else if (item.KEY == ControlStateConstant.CHK_Sign)
                         {
                             chkSign.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == ControlStateConstant.CHK_IN_HDSD)
+                        {
+                            chkInHDSD.Checked = item.VALUE == "1";
                         }
                     }
                 }
@@ -1862,6 +1873,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             }
             catch (Exception ex)
             {
+                isNotLoadWhileChangeControlStateInFirst = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

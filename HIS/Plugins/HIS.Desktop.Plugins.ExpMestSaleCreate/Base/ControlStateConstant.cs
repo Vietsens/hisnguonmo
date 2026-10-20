@@ -33,5 +33,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Base
         internal const string SPIN_BASE_VALUE = "SPIN_BASE_VALUE";
         internal const string CHK_KetNoiPos = "CHK_KetNoiPos";
         internal const string CHK_Sign = "chkSign";
+        internal const string CHK_IN_HDSD = "chkInHDSD";
     }
 }
