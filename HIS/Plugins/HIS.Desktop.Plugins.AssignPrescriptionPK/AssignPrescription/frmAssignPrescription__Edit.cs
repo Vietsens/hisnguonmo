@@ -1,4 +1,4 @@
-﻿/* IVT
+/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
