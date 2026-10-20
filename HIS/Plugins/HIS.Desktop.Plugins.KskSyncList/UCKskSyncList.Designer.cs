@@ -79,6 +79,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPatientName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colDob = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colGender = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCccd = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colTreatmentType = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colConclusionTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colConclusion = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colHealthExamRank = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -313,10 +315,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.cboTimeType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboTimeType.Properties.Items.AddRange(new object[] {
-            "Ngày vào viện",
-            "Ngày kết luận",
-            "Ngày ra viện",
-            "Ngày khóa viện phí"});
+            "Ngày khám",
+            "Ngày kết luận"});
             this.cboTimeType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.cboTimeType.Size = new System.Drawing.Size(126, 20);
             this.cboTimeType.StyleController = this.layoutControl1;
@@ -512,6 +512,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPatientName,
             this.colDob,
             this.colGender,
+            this.colCccd,
+            this.colTreatmentType,
             this.colConclusionTime,
             this.colConclusion,
             this.colHealthExamRank,
@@ -611,7 +613,27 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colGender.Visible = true;
             this.colGender.VisibleIndex = 7;
             this.colGender.Width = 70;
-            // 
+            //
+            // colCccd
+            //
+            this.colCccd.Caption = "CCCD";
+            this.colCccd.FieldName = "CCCD_NUMBER";
+            this.colCccd.Name = "colCccd";
+            this.colCccd.OptionsColumn.AllowEdit = false;
+            this.colCccd.Visible = true;
+            this.colCccd.VisibleIndex = 8;
+            this.colCccd.Width = 100;
+            //
+            // colTreatmentType
+            //
+            this.colTreatmentType.Caption = "Diện điều trị";
+            this.colTreatmentType.FieldName = "TREATMENT_TYPE_NAME";
+            this.colTreatmentType.Name = "colTreatmentType";
+            this.colTreatmentType.OptionsColumn.AllowEdit = false;
+            this.colTreatmentType.Visible = true;
+            this.colTreatmentType.VisibleIndex = 9;
+            this.colTreatmentType.Width = 120;
+            //
             // colConclusionTime
             // 
             this.colConclusionTime.Caption = "Ngày kết luận";
@@ -620,7 +642,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colConclusionTime.OptionsColumn.AllowEdit = false;
             this.colConclusionTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colConclusionTime.Visible = true;
-            this.colConclusionTime.VisibleIndex = 8;
+            this.colConclusionTime.VisibleIndex = 10;
             this.colConclusionTime.Width = 100;
             // 
             // colConclusion
@@ -630,7 +652,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colConclusion.Name = "colConclusion";
             this.colConclusion.OptionsColumn.AllowEdit = false;
             this.colConclusion.Visible = true;
-            this.colConclusion.VisibleIndex = 9;
+            this.colConclusion.VisibleIndex = 11;
             this.colConclusion.Width = 220;
             //
             // colHealthExamRank
@@ -640,7 +662,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colHealthExamRank.Name = "colHealthExamRank";
             this.colHealthExamRank.OptionsColumn.AllowEdit = false;
             this.colHealthExamRank.Visible = true;
-            this.colHealthExamRank.VisibleIndex = 10;
+            this.colHealthExamRank.VisibleIndex = 12;
             this.colHealthExamRank.Width = 80;
             //
             // colConcluder
@@ -650,7 +672,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colConcluder.Name = "colConcluder";
             this.colConcluder.OptionsColumn.AllowEdit = false;
             this.colConcluder.Visible = true;
-            this.colConcluder.VisibleIndex = 11;
+            this.colConcluder.VisibleIndex = 13;
             this.colConcluder.Width = 150;
             // 
             // colRoom
@@ -660,7 +682,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colRoom.Name = "colRoom";
             this.colRoom.OptionsColumn.AllowEdit = false;
             this.colRoom.Visible = true;
-            this.colRoom.VisibleIndex = 12;
+            this.colRoom.VisibleIndex = 14;
             this.colRoom.Width = 150;
             // 
             // colSyncStatus
@@ -673,7 +695,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colSyncStatus.OptionsColumn.AllowEdit = false;
             this.colSyncStatus.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colSyncStatus.Visible = true;
-            this.colSyncStatus.VisibleIndex = 13;
+            this.colSyncStatus.VisibleIndex = 15;
             this.colSyncStatus.Width = 110;
             // 
             // colSyncTime
@@ -684,7 +706,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colSyncTime.OptionsColumn.AllowEdit = false;
             this.colSyncTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colSyncTime.Visible = true;
-            this.colSyncTime.VisibleIndex = 14;
+            this.colSyncTime.VisibleIndex = 16;
             this.colSyncTime.Width = 100;
             // 
             // colFailReason
@@ -694,7 +716,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colFailReason.Name = "colFailReason";
             this.colFailReason.OptionsColumn.AllowEdit = false;
             this.colFailReason.Visible = true;
-            this.colFailReason.VisibleIndex = 15;
+            this.colFailReason.VisibleIndex = 17;
             this.colFailReason.Width = 250;
             // 
             // colTransaction
@@ -704,7 +726,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colTransaction.Name = "colTransaction";
             this.colTransaction.OptionsColumn.AllowEdit = false;
             this.colTransaction.Visible = true;
-            this.colTransaction.VisibleIndex = 16;
+            this.colTransaction.VisibleIndex = 18;
             this.colTransaction.Width = 150;
             // 
             // colPush
@@ -719,7 +741,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPush.OptionsColumn.ShowCaption = false;
             this.colPush.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colPush.Visible = true;
-            this.colPush.VisibleIndex = 17;
+            this.colPush.VisibleIndex = 19;
             this.colPush.Width = 30;
             // 
             // repositoryItemButtonEdit_PUSH
@@ -742,7 +764,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPreview.OptionsColumn.ShowCaption = false;
             this.colPreview.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colPreview.Visible = true;
-            this.colPreview.VisibleIndex = 18;
+            this.colPreview.VisibleIndex = 20;
             this.colPreview.Width = 30;
             // 
             // repositoryItemButtonEdit_PREVIEW
@@ -1113,6 +1135,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraGrid.Columns.GridColumn colPatientName;
         private DevExpress.XtraGrid.Columns.GridColumn colDob;
         private DevExpress.XtraGrid.Columns.GridColumn colGender;
+        private DevExpress.XtraGrid.Columns.GridColumn colCccd;
+        private DevExpress.XtraGrid.Columns.GridColumn colTreatmentType;
         private DevExpress.XtraGrid.Columns.GridColumn colConclusionTime;
         private DevExpress.XtraGrid.Columns.GridColumn colConclusion;
         private DevExpress.XtraGrid.Columns.GridColumn colHealthExamRank;

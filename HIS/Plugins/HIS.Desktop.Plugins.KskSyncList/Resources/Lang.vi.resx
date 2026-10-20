@@ -64,19 +64,19 @@
   <data name="UCKskSyncList.lciConclusionFrom.Text" xml:space="preserve">
     <value>Từ ngày:</value>
   </data>
-  <data name="UCKskSyncList.cboTimeType.InTime" xml:space="preserve">
-    <value>Ngày vào viện</value>
+  <data name="UCKskSyncList.cboTimeType.ExamTime" xml:space="preserve">
+    <value>Ngày khám</value>
   </data>
   <data name="UCKskSyncList.cboTimeType.ConclusionTime" xml:space="preserve">
     <value>Ngày kết luận</value>
   </data>
-  <data name="UCKskSyncList.cboTimeType.OutTime" xml:space="preserve">
-    <value>Ngày ra viện</value>
-  </data>
-  <data name="UCKskSyncList.cboTimeType.FeeLockTime" xml:space="preserve">
-    <value>Ngày khóa viện phí</value>
-  </data>
   <data name="UCKskSyncList.colHealthExamRank.Caption" xml:space="preserve">
     <value>Phân loại</value>
+  </data>
+  <data name="UCKskSyncList.colCccd.Caption" xml:space="preserve">
+    <value>CCCD</value>
+  </data>
+  <data name="UCKskSyncList.colTreatmentType.Caption" xml:space="preserve">
+    <value>Diện điều trị</value>
   </data>
 </root>

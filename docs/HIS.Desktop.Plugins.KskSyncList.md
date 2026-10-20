@@ -42,7 +42,7 @@ Format value VLG: `MaDonVi|Username|Password|TokenUrl|PushUrl|SenderGtin` (tối
 
 | Entity | Loại | Mục đích |
 |--------|------|----------|
-| V_HIS_KSK_SYNC | View | Lưới danh sách hồ sơ + trạng thái đồng bộ |
+| V_HIS_KSK_SYNC | View | Lưới danh sách hồ sơ + trạng thái đồng bộ. Từ 58348: `HEALTH_EXAM_RANK_*` (Phân loại), `IN_TIME`/`OUT_TIME`/`FEE_LOCK_TIME` (HIS_TREATMENT), `CCCD_NUMBER` (HIS_PATIENT, cùng nguồn SO_CCCD gửi cổng), `TDL_TREATMENT_TYPE_ID`/`TREATMENT_TYPE_CODE`/`TREATMENT_TYPE_NAME` (diện điều trị của HIS_TREATMENT) |
 | HIS_KSK_SYNC | Table | Lưu kết quả đồng bộ (upsert theo KSK_TYPE_ID + KSK_RECORD_ID) |
 | HIS_KSK_GENERAL / UNDER_SIX / UNDER_EIGHTEEN / OVER_EIGHTEEN | Table | Dữ liệu KSK theo mẫu phiếu |
 | HIS_DHST, HIS_TREATMENT, HIS_PATIENT, HIS_SERVICE_REQ | Table | Hành chính + sinh hiệu (XML1/2/3/10) |
@@ -54,10 +54,12 @@ Format value VLG: `MaDonVi|Username|Password|TokenUrl|PushUrl|SenderGtin` (tối
 
 ```
 +--------------------------------------------------------------------------+
-| [Loại KSK] [KL từ ngày] [đến ngày] [Trạng thái ĐB] [Từ khóa] [Tìm] [Mới] |
+| [Loại KSK] [Lọc theo ▾] [Từ ngày] [đến ngày] [Trạng thái ĐB] [Từ khóa]   |
+|   Lọc theo: Ngày khám (mặc định, = HIS_TREATMENT.IN_TIME) | Ngày kết luận |
 +--------------------------------------------------------------------------+
-| Grid V_HIS_KSK_SYNC: STT|Mã ĐT|Mã BN|Họ tên|NS|Loại KSK|Kết luận|TG KL   |
-|                      |Trạng thái ĐB|TG ĐB|Đẩy(↑)|Xem(👁)                  |
+| Grid V_HIS_KSK_SYNC: STT|Loại KSK|Mã ĐT|Mã BN|Họ tên|NS|Giới tính|CCCD   |
+|   |Diện điều trị|Ngày KL|Kết luận|Phân loại|Người KL|Phòng|Trạng thái ĐB |
+|   |TG ĐB|Lý do lỗi|Mã GD|Đẩy(↑)|Xem(👁)                                   |
 +--------------------------------------------------------------------------+
 | [Ký số ⚙] [Cài đặt cổng ▾(5 checkbox)] [Xuất XML 📁] [Đồng bộ lên cổng]  |
 +--------------------------------------------------------------------------+
@@ -93,6 +95,8 @@ Không có chức năng in.
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 20/10/2026 | phuongnm + Claude | 58348 (chốt câu 4): combo "Lọc theo" chỉ còn **Ngày khám** (IN_TIME, mặc định) và **Ngày kết luận**; thêm cột **CCCD** (`CCCD_NUMBER` từ HIS_PATIENT) và **Diện điều trị** (`TREATMENT_TYPE_NAME`) sau Giới tính. Cột bind theo FieldName, code không gọi thẳng property mới → chạy được với MOS.EFMODEL cũ (2 cột để trống). Cần view V_HIS_KSK_SYNC mới + MOS.EFMODEL. Khoá Lang: bỏ `cboTimeType.InTime/OutTime/FeeLockTime`, thêm `cboTimeType.ExamTime`, `colCccd.Caption`, `colTreatmentType.Caption`. |
+| 13/10/2026 | phuongnm + Claude | 58348: cột **Phân loại** (`HEALTH_EXAM_RANK_NAME`, đọc 3 bảng theo nhóm KSK_TYPE_ID giống luồng đẩy cổng) + combo "Lọc theo" 4 mốc như KskSyncListQD831 (gán IN_/CONCLUSION_/OUT_/FEE_LOCK_TIME_FROM/TO qua SetPropSafe). |
 | 02/10/2026 | dangth2 | (BV Nguyễn Đình Chiểu báo: bác sĩ chưa nhập Phân loại vẫn đẩy cổng thành công) Từ 25/09 Lưu ở màn nhập KSK không bắt mục kết luận nữa (chỉ bắt khi Kết thúc khám) nhưng lưới đồng bộ (`V_HIS_KSK_SYNC`) lấy mọi hồ sơ đã có thời gian kết luận → hồ sơ Lưu mà chưa Kết thúc khám vẫn đẩy được. Thêm `KskConclusionRules.cs` + chặn trong `PushList` trước mọi cổng: thiếu Phân loại / Người khám (trẻ dưới 6: Xếp loại + Bác sĩ khám + Kết luận về sức khỏe) → không đẩy, Thất bại + lý do. Áp mọi viện/mọi cổng, đọc cột bằng reflection (EFMODEL cũ thiếu cột → bỏ qua điều kiện đó). Kiểm thử reflection 30/30 + soi IL thứ tự gọi trong PushList. |
 | 24/09/2026 | nampp + Claude | **VLG V1.5 — vòng review 3 (sau khi đẩy Develop):** 67 agent, 11 lỗi được cả 2 phản biện giữ, sửa theo hướng gốc: "Cập nhật KQ cổng" xác định **đúng lần gửi VLG gần nhất** (VLG_CHUA_GUI = lần này chưa gửi được → chỉ hiển thị; `MSG:<msg_id>` → đối soát; mã theo dõi → `GET /api/kham-suc-khoe/qd-2062/lan-gui/trang-thai?tracking_id`, có lỗi chi tiết) và chỉ nâng hồ sơ Thất bại khi lần gửi Kho giữ không cũ hơn `SYNC_TIME` − 15 phút; hồ sơ "Có chỉnh sửa" (4) không bao giờ bị ghi đè và luôn gửi bản mới; `FromKnownRequest` theo danh sách cho phép (QUEUED/PROCESSING/PROCESSED/Bộ nhận; VALIDATION_FAILED/TECHNICAL_FAILED/Bộ lỗi/lạ → gửi lại); pre-send failure ghi `VLG_CHUA_GUI` (giữ `VLG_CHUA_RO` nếu đang chưa rõ) và giữ danh tính lần gửi trước; ghép mã gắn nhãn theo cổng tham gia, đẩy cổng khác không xóa đoạn `VLG:`; `FitSyncCode` giữ nguyên đoạn VLG, cắt đoạn cổng khác; lý do lỗi cổng khác xếp trước VLG; đối soát: requests[] không thấy ≠ không có (giữ dấu, đối soát lại); 2xx không có dấu hiệu Kho / 5xx mã lạ / 503 ký lỗi kèm tracking / Brotli / 503 rồi lỗi xác thực ở lần thử lại → chưa rõ; GetStatus/lan-gui chỉ tin 404 mã NOT_FOUND; PushUrl cũ giữ host của chính nó; MA_GTIN_CSKCB theo mã 13 số VLG; ghi chú trên dialog khi tích cả BYT/HOC và VLG. VlgPortalLookup: sắp xếp lần gửi theo thời gian thật. **Vòng 4 (review 38 agent, 5 lỗi giữ 2/2):** hồ sơ "Có chỉnh sửa" không mang dấu VLG_CHUA_RO sang lần sau (ghi VLG_CHUA_GUI); VLG_CHUA_GUI chỉ hiển thị ở mọi trạng thái; bản tin xác định đúng bằng MSG + CHUA_RO không áp mốc thời gian; Bộ đã nhận / Kho tự gửi lại được xét trước khi quyết định gửi lại; 503 kèm mã lạ vẫn là chưa rõ; 2xx/Brotli không làm dừng lô; mã theo dõi V1.5 không còn trên Kho → chỉ hiển thị; nhận diện thêm mã 4xx của Kho. Kiểm thử: 64/64 (mock + dev), kịch bản đẩy trọn lô bằng bản build dữ liệu giả. |
 | 24/09/2026 | nampp + Claude | **Chuyển cổng VLG sang API V1.5** (API V1.3 bị Kho khóa, 410 từ 18/09 — mọi hồ sơ đồng bộ từ 18/09 thất bại): `KskVlgPusher` đẩy `/api/platform/data-sync/push` bằng envelope trục BYT (sender_id = GTIN 13 số, msg_id = sender_id + yyMMdd + UUID), serialize 1 lần, đọc `X-HOC-Tracking-Id`, phân loại `res_code` 2 lớp Kho/Bộ; khóa cấu hình thêm trường 6 SenderGtin, PushUrl cũ tự nâng; XML dựng y trục BYT (MACSKCB 13 số, ngày 12 số — bỏ `NormalizeVlgDates`); "Cập nhật KQ cổng" xét Kho + Bộ (`byt_status`/`byt_res_code`); sửa câu `if` treo trong `BuildResultAdo`. **Sau review đối kháng (6 lỗi xác nhận):** chống gửi trùng dùng API đối soát theo sender_id + msg_id và xét đúng lần gửi đó; kết quả VLG biết trước (thiếu GTIN / lần trước đã vào Kho) chỉ bỏ lệnh đẩy VLG, các cổng khác vẫn đẩy; "Cập nhật KQ cổng" không nâng hồ sơ mất phản hồi khi bản tin chưa vào Kho và chỉ thay đoạn `VLG:` trong mã ghép; `BuildSyncEntity` cắt TRANSACTION_CODE/REGISTRATION_NO vừa 100 ký tự (rút `MSG:` còn UUID); 504/5xx không kèm dấu hiệu Kho → chưa rõ; 2 lần mất phản hồi liên tiếp → dừng lô; phản hồi Brotli bỏ body; `received_at` so theo thời gian; TokenUrl lạ giữ host (không rơi về prod); `BuildFailedResult` giữ mã cũ. Kiểm trên cổng dev + máy chủ giả: 32/32 kiểm thử và 5/5 kịch bản "Cập nhật KQ cổng" đạt. |
@@ -103,6 +107,12 @@ Không có chức năng in.
 | 09/08/2026 | nampp + Claude | Fix theo review đối kháng (5 findings): (1) fail-fast cả lô khi login VLG lỗi không tự hết (0/401/403/429) — tránh N lần POST token sai làm cổng khóa tài khoản / lô treo N×120s; (2) tích Ký số mà ký thất bại → KHÔNG đẩy bản tin chưa ký lên VLG, đánh dấu thất bại rõ lý do (nhất quán ExportXmlFiles); (3) ACCEPTED_WITH_WARNING/warnings[] hiện lên dialog kết quả (KskVlgPushResult.Warning); (4) ControlState bản cũ (JSON thiếu SyncVlg) → auto-tick cổng VLG theo config một lần khi viện vừa khai key; (5) dialog kết quả ghi rõ "VLG: đã tiếp nhận (QUEUED — cổng xử lý sau, tra cứu bằng mã giao dịch)" (SuccessNote trong KskSyncResultADO). |
 
 ## 9. Test Cases
+
+### Bộ lọc thời gian + cột CCCD, Diện điều trị (58348)
+- [ ] Mở màn → "Lọc theo" = Ngày khám, chỉ có 2 lựa chọn Ngày khám / Ngày kết luận; danh sách xếp theo mốc đang chọn giảm dần
+- [ ] Hồ sơ khám tháng trước, kết luận tháng này: lọc Ngày khám trong tháng này không thấy, đổi sang Ngày kết luận thì thấy
+- [ ] Cột CCCD = số CCCD trên hồ sơ bệnh nhân (trống nếu chưa nhập); cột Diện điều trị hiện Khám / Điều trị ngoại trú / ... theo hồ sơ điều trị
+- [ ] Máy trạm còn MOS.EFMODEL cũ → màn vẫn mở, lọc bình thường, 2 cột mới để trống
 
 ### Mục kết luận trước khi đẩy (mọi viện)
 - [ ] Hồ sơ KSK từ 18 tuổi Lưu thiếu Phân loại (chưa Kết thúc khám) → Đồng bộ: Thất bại "KHÔNG đẩy hồ sơ — chưa đủ mục kết luận: thiếu Phân loại sức khỏe…", cổng không nhận bản tin

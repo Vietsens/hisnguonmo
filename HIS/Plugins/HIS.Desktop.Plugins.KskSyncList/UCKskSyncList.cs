@@ -129,6 +129,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 SetText(btnRefresh, "btnRefresh.Text");
                 SetText(btnPreview, "btnPreview.Text");
                 SetColumnCaption(colHealthExamRank, "UCKskSyncList.colHealthExamRank.Caption");
+                SetColumnCaption(colCccd, "UCKskSyncList.colCccd.Caption");
+                SetColumnCaption(colTreatmentType, "UCKskSyncList.colTreatmentType.Caption");
                 SetTimeTypeItems();
             }
             catch (Exception ex)
@@ -164,8 +166,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>
-        /// Items of "Loc theo" combo from Lang resource. Order must stay 0 = IN_TIME, 1 = CONCLUSION_TIME,
-        /// 2 = OUT_TIME, 3 = FEE_LOCK_TIME because SetFilter maps by SelectedIndex. Missing key keeps the
+        /// Items of "Loc theo" combo from Lang resource. Order must stay 0 = Ngay kham (IN_TIME),
+        /// 1 = CONCLUSION_TIME because SetFilter maps by SelectedIndex. Missing key keeps the
         /// Designer text of that item.
         /// </summary>
         private void SetTimeTypeItems()
@@ -174,10 +176,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 string[] keys = new string[]
                 {
-                    "UCKskSyncList.cboTimeType.InTime",
-                    "UCKskSyncList.cboTimeType.ConclusionTime",
-                    "UCKskSyncList.cboTimeType.OutTime",
-                    "UCKskSyncList.cboTimeType.FeeLockTime"
+                    "UCKskSyncList.cboTimeType.ExamTime",
+                    "UCKskSyncList.cboTimeType.ConclusionTime"
                 };
                 var items = cboTimeType.Properties.Items;
                 if (items.Count != keys.Length) return;
@@ -251,7 +251,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 txtPatientCode.Text = "";
                 txtTreatmentCode.Text = "";
                 if (cboKskType.Properties.Items.Count > 0) cboKskType.SelectedIndex = 0;
-                cboTimeType.SelectedIndex = 0; // Mac dinh loc theo Ngay vao vien (giong KskSyncListQD831)
+                cboTimeType.SelectedIndex = 0; // Mac dinh loc theo Ngay kham
                 cboSyncStatus.SelectedIndex = 0;
                 btnSync.Enabled = false;
                 UpdateSyncBadge(0);
@@ -412,16 +412,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 }
                 else
                 {
-                    // Moc loc thoi gian theo combo "Loc theo" (giong KskSyncListQD831):
-                    // 0 = Ngay vao vien (mac dinh), 1 = Ngay ket luan, 2 = Ngay ra vien, 3 = Ngay khoa vien phi.
-                    // Gan qua SetPropSafe: vien chay MOS.Filter cu thieu truong IN_/OUT_/FEE_LOCK_TIME_* thi chi
+                    // Moc loc thoi gian theo combo "Loc theo": 0 = Ngay kham (mac dinh), 1 = Ngay ket luan.
+                    // Ngay kham cua ho so KSK = ngay vao vien cua dot dieu tri (HIS_TREATMENT.IN_TIME).
+                    // Gan qua SetPropSafe: vien chay MOS.Filter cu thieu truong IN_TIME_* thi chi
                     // bo qua dieu kien do, khong lam hong ca ham tim kiem.
                     string fromProp, toProp, orderField;
                     switch (cboTimeType.SelectedIndex)
                     {
                         case 1: fromProp = "CONCLUSION_TIME_FROM"; toProp = "CONCLUSION_TIME_TO"; orderField = "CONCLUSION_TIME"; break;
-                        case 2: fromProp = "OUT_TIME_FROM"; toProp = "OUT_TIME_TO"; orderField = "OUT_TIME"; break;
-                        case 3: fromProp = "FEE_LOCK_TIME_FROM"; toProp = "FEE_LOCK_TIME_TO"; orderField = "FEE_LOCK_TIME"; break;
                         default: fromProp = "IN_TIME_FROM"; toProp = "IN_TIME_TO"; orderField = "IN_TIME"; break;
                     }
 
