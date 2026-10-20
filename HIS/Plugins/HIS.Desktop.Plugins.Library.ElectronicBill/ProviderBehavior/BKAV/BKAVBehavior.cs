@@ -113,7 +113,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
 
                     Inventec.Common.EHoaDon.EHoaDonManager eHoaDon = new Inventec.Common.EHoaDon.EHoaDonManager(serviceUrl, bkavPartner, invoiceDataWSs);
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoiceDataWSs), invoiceDataWSs));
+                    //Chuoi JSON dung nhu EHoaDon gui sang BKAV (serialize theo kieu runtime, co ca truong cua BkavInvoiceWS)
+                    Inventec.Common.Logging.LogSystem.Info("[BKAV_CCCD_v2] Du lieu gui BKAV (cmdType=" + cmdType + "): " + Newtonsoft.Json.JsonConvert.SerializeObject(invoiceDataWSs));
                     List<Inventec.Common.EHoaDon.InvoiceResult> invoiceResults = eHoaDon.Run(cmdType);
+                    Inventec.Common.Logging.LogSystem.Info("[BKAV_CCCD_v2] Ket qua BKAV tra ve: " + Newtonsoft.Json.JsonConvert.SerializeObject(invoiceResults));
 
                     bool IsError = false;
 
@@ -425,6 +428,20 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
 
             //Ma ngan sach (ma quan he ngan sach cua don vi mua)
             invoiceWS.FiscalCodes = (this.ElectronicBillDataInput.Transaction != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE)) ? this.ElectronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE.Trim() : "";
+
+            HIS_TRANSACTION logTran = this.ElectronicBillDataInput.Transaction;
+            Inventec.Common.Logging.LogSystem.Info("[BKAV_CCCD_v2] Dau vao: "
+                + "TRANSACTION_CODE=" + (logTran != null ? logTran.TRANSACTION_CODE : "null")
+                + ", BUYER_TYPE=" + (logTran != null ? logTran.BUYER_TYPE + "" : "null")
+                + ", BUYER_IDENTITY_NUMBER=" + (logTran != null ? logTran.BUYER_IDENTITY_NUMBER : "null")
+                + ", BUYER_IDENTITY_TYPE=" + (logTran != null ? logTran.BUYER_IDENTITY_TYPE + "" : "null")
+                + ", BUYER_SOCIAL_RELATIONS_CODE=" + (logTran != null ? logTran.BUYER_SOCIAL_RELATIONS_CODE : "null")
+                + ", TDL_PATIENT_CCCD_NUMBER=" + (this.ElectronicBillDataInput.Treatment != null ? this.ElectronicBillDataInput.Treatment.TDL_PATIENT_CCCD_NUMBER : "null")
+                + ", TDL_PATIENT_PASSPORT_NUMBER=" + (this.ElectronicBillDataInput.Treatment != null ? this.ElectronicBillDataInput.Treatment.TDL_PATIENT_PASSPORT_NUMBER : "null")
+                + " | Sau chuan hoa: BuyerIdentityNumber=" + adoInfo.BuyerIdentityNumber
+                + ", BuyerIdentityType=" + adoInfo.BuyerIdentityType
+                + ", BuyerCCCD=" + adoInfo.BuyerCCCD);
+            Inventec.Common.Logging.LogSystem.Info("[BKAV_CCCD_v2] Dau ra: CCCD=" + invoiceWS.CCCD + ", PassportNumber=" + invoiceWS.PassportNumber + ", FiscalCodes=" + invoiceWS.FiscalCodes);
 
             invoiceWS.PayMethodID = 1;
 
