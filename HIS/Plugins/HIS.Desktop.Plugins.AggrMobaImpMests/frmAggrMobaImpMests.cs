@@ -440,8 +440,12 @@ namespace HIS.Desktop.Plugins.AggrMobaImpMests
             CommonParam param = new CommonParam();
             try
             {
-                //Lây các kho được cấu hình là kho lẻ thuộc khoa yêu cầu tổng hợp phiếu trả.
-                List<V_HIS_MEDI_STOCK> _DataMediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => p.IS_ODD == 1 && p.IS_ACTIVE == 1 && WorkPlace.WorkPlaceSDO.FirstOrDefault(s => s.RoomId == this.currentModule.RoomId).DepartmentId == p.DEPARTMENT_ID).ToList();
+                //Lây các kho được cấu hình là kho lẻ thuộc khoa yêu cầu tổng hợp phiếu trả
+                //hoặc kho lẻ được cấu hình Kho - Phòng với phòng đang làm việc (kho lẻ đặt ở khoa khác, vd Khoa Dược).
+                var workPlace = WorkPlace.WorkPlaceSDO.FirstOrDefault(s => s.RoomId == this.currentModule.RoomId);
+                long departmentId = workPlace != null ? workPlace.DepartmentId : 0;
+                List<long> mestRoomStockIds = BackendDataWorker.Get<V_HIS_MEST_ROOM>().Where(p => p.ROOM_ID == this.currentModule.RoomId && p.IS_ACTIVE == 1).Select(p => p.MEDI_STOCK_ID).ToList();
+                List<V_HIS_MEDI_STOCK> _DataMediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => p.IS_ODD == 1 && p.IS_ACTIVE == 1 && (p.DEPARTMENT_ID == departmentId || mestRoomStockIds.Contains(p.ID))).ToList();
 
                 cboMediStockImport.Properties.DataSource = _DataMediStocks;
                 cboMediStockImport.Properties.DisplayMember = "MEDI_STOCK_NAME";
