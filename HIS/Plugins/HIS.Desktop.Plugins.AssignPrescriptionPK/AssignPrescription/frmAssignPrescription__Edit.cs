@@ -440,11 +440,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         System.DateTime dtInstructionTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.oldServiceReq.USE_TIME ?? this.oldServiceReq.INTRUCTION_TIME).Value;
                         TimeSpan diff__Day = (dtUseTimeTo.Date - dtInstructionTime.Date);
                         item.UseDays = diff__Day.Days + 1;
-                        // Sửa y lệnh: nạp TG thực hiện đã lưu (USE_TIME của đơn cũ, fallback thời gian chỉ định)
-                        if (!item.ExecutionTime.HasValue || item.ExecutionTime.Value <= 0)
-                            item.ExecutionTime = (this.oldServiceReq.USE_TIME.HasValue && this.oldServiceReq.USE_TIME.Value > 0)
-                                ? this.oldServiceReq.USE_TIME
-                                : this.oldServiceReq.INTRUCTION_TIME;
+                        // TG thực hiện chỉ lấy từ USED_TIME đã lưu (nạp ở ProcessGetServiceReqMaty), không gán thời gian khác thay thế
                     }
                 }
             }

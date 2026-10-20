@@ -64,19 +64,19 @@
   <data name="UCKskSyncList.lciConclusionFrom.Text" xml:space="preserve">
     <value>From:</value>
   </data>
-  <data name="UCKskSyncList.cboTimeType.InTime" xml:space="preserve">
-    <value>Admission date</value>
+  <data name="UCKskSyncList.cboTimeType.ExamTime" xml:space="preserve">
+    <value>Exam date</value>
   </data>
   <data name="UCKskSyncList.cboTimeType.ConclusionTime" xml:space="preserve">
     <value>Conclusion date</value>
   </data>
-  <data name="UCKskSyncList.cboTimeType.OutTime" xml:space="preserve">
-    <value>Discharge date</value>
-  </data>
-  <data name="UCKskSyncList.cboTimeType.FeeLockTime" xml:space="preserve">
-    <value>Fee lock date</value>
-  </data>
   <data name="UCKskSyncList.colHealthExamRank.Caption" xml:space="preserve">
     <value>Health rank</value>
+  </data>
+  <data name="UCKskSyncList.colCccd.Caption" xml:space="preserve">
+    <value>Citizen ID</value>
+  </data>
+  <data name="UCKskSyncList.colTreatmentType.Caption" xml:space="preserve">
+    <value>Treatment type</value>
   </data>
 </root>
