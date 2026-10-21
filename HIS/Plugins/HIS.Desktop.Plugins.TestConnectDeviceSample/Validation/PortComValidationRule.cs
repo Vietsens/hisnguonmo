@@ -26,7 +26,7 @@ namespace HIS.Desktop.Plugins.TestConnectDeviceSample.Validation
 {
     class PortComValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
-        internal DevExpress.XtraEditors.LookUpEdit cboPortCom;
+        internal DevExpress.XtraEditors.ComboBoxEdit cboPortCom;
 
         public override bool Validate(System.Windows.Forms.Control control, object value)
         {

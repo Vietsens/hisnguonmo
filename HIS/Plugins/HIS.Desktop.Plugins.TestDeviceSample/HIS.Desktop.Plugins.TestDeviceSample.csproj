@@ -151,7 +151,11 @@
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
+    <Reference Include="SDA.SDO">
+      <HintPath>..\..\..\..\LIB\SDA\SDA.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -164,9 +168,6 @@
   <ItemGroup>
     <Compile Include="Base\ModuleExecuteType.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
-    <Compile Include="frmTestDeviceSample__Load.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="frmTestDeviceSample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,6 +183,7 @@
     <Compile Include="TestDeviceSample\ITestDeviceSample.cs" />
     <Compile Include="TestDeviceSample\TestDeviceSampleBehavior.cs" />
     <Compile Include="TestDeviceSample\TestDeviceSampleFactory.cs" />
+    <Compile Include="Worker\SdaEventLogCreate.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmTestDeviceSample.resx">
@@ -257,6 +259,7 @@ if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAsse
 xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
 xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\plugins\Module" /Y /I
 xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
+xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
 
 if errorlevel 1 goto BuildEventFailed
 

@@ -76,6 +76,8 @@ namespace LIS.Desktop.Plugins.SampleInfo
         bool IsFirstLoadForm { get; set; }
         bool IsSaveAndPrint;
         private bool isSaving = false;
+        // 60557: set when opened from a scanner (TestConnectDeviceSample): sample time = scan time, close after save
+        private DateTime? scanTime = null;
         public frmSampleInfo(Inventec.Desktop.Common.Modules.Module module, List<V_LIS_SAMPLE> data)
            : base(module)
         {
@@ -96,11 +98,12 @@ namespace LIS.Desktop.Plugins.SampleInfo
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        public frmSampleInfo(Inventec.Desktop.Common.Modules.Module module, V_LIS_SAMPLE data)
+        public frmSampleInfo(Inventec.Desktop.Common.Modules.Module module, V_LIS_SAMPLE data, DateTime? scanTime = null)
             : base(module)
         {
             InitializeComponent();
             this.sample = data;
+            this.scanTime = scanTime;
             LisConfigCFG.LoadConfig();
         }
 
@@ -418,9 +421,11 @@ namespace LIS.Desktop.Plugins.SampleInfo
                 if (lciBarcode.Visible)
                 {
                     txtBarcode.Text = this.sample.BARCODE ?? "";
-                    txtBarcode.ReadOnly = LisConfigCFG.IS_AUTO_CREATE_BARCODE == "1";
+                    // The scanned barcode is already on the sample: keep it from being overwritten by stray keystrokes
+                    txtBarcode.ReadOnly = LisConfigCFG.IS_AUTO_CREATE_BARCODE == "1"
+                        || (this.scanTime.HasValue && !String.IsNullOrWhiteSpace(this.sample.BARCODE));
                 }
-                dtSampleTime.DateTime = DateTime.Now;
+                dtSampleTime.DateTime = GetDefaultSampleTime();
                 MessageWarning();
                 if (sampleList == null || sampleList.Count == 0)
                 {
@@ -490,6 +495,34 @@ namespace LIS.Desktop.Plugins.SampleInfo
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// 60557: default sample time. Scanner flow uses the scan time; a sample already taken keeps its recorded
+        /// time so that correcting the sampler does not overwrite it; otherwise the current time as before.
+        /// </summary>
+        private DateTime GetDefaultSampleTime()
+        {
+            try
+            {
+                if (this.scanTime.HasValue)
+                    return this.scanTime.Value;
+
+                if ((this.sampleList == null || this.sampleList.Count == 0)
+                    && this.sample != null
+                    && this.sample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                    && this.sample.SAMPLE_TIME.HasValue)
+                {
+                    DateTime? recordedTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sample.SAMPLE_TIME.Value);
+                    if (recordedTime.HasValue)
+                        return recordedTime.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return DateTime.Now;
         }
 
         private List<long> GetListIds(string str)
@@ -983,6 +1016,10 @@ namespace LIS.Desktop.Plugins.SampleInfo
                 if (!IsNotSave)
                     MessageManager.Show(this, param, success);
 
+                // 60557: opened from a scanner -> close and report the save to TestConnectDeviceSample
+                if (success && this.scanTime.HasValue)
+                    this.DialogResult = DialogResult.OK;
+
                 #region Process has exception
                 SessionManager.ProcessTokenLost(param);
                 #endregion
@@ -1254,6 +1291,9 @@ namespace LIS.Desktop.Plugins.SampleInfo
                 CommonParam param = new CommonParam();
                 bool IsNotSave = false;
                 success = ProcessSave(ref param, ref IsNotSave);
+                // 60557: a failed "Lưu in" must be retryable (the scanner flow recommends it); a successful one stays blocked
+                if (!success)
+                    isSaving = false;
                 WaitingManager.Hide();
                 if (!IsNotSave)
                 {
@@ -1264,7 +1304,9 @@ namespace LIS.Desktop.Plugins.SampleInfo
                         System.Threading.Thread.Sleep(1000);
                         this.onClickBtnPrintBarCode();
                         IsSaveAndPrint = false;
-                        if (chkCloseAfterPrint.Checked)
+                        if (this.scanTime.HasValue)
+                            this.DialogResult = DialogResult.OK; // 60557: close and report the save to TestConnectDeviceSample
+                        else if (chkCloseAfterPrint.Checked)
                             this.Close();
                     }
                 }

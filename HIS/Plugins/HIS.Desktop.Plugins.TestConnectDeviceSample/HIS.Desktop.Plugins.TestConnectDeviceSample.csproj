@@ -124,7 +124,29 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="SDA.SDO">
+      <HintPath>..\..\..\..\LIB\SDA\SDA.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -137,20 +159,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\ConnectConstant.cs" />
-    <Compile Include="Base\ConnectStore.cs" />
-    <Compile Include="Base\LocalDataStore.cs" />
-    <Compile Include="Base\MessageConstant.cs" />
-    <Compile Include="Base\ReceiveBase.cs" />
+    <Compile Include="ADO\PendingScanADO.cs" />
+    <Compile Include="ADO\ScanLogADO.cs" />
+    <Compile Include="Base\ModuleLinkString.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
-    <Compile Include="Delegate.cs" />
-    <Compile Include="ReceiveMessage\ConnectDisconnectBehavior.cs" />
-    <Compile Include="ReceiveMessage\ProcessBehavior.cs" />
-    <Compile Include="ReceiveMessage\IRun.cs" />
-    <Compile Include="ReceiveMessage\PingBehavior.cs" />
-    <Compile Include="ReceiveMessage\ReceiveMessageFactory.cs" />
-    <Compile Include="ReceiveMessage\SendDevice.cs" />
-    <Compile Include="GenerateMessageId.cs" />
+    <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="TestConnectDeviceSample\ITestConnectDeviceSample.cs" />
     <Compile Include="TestConnectDeviceSample\TestConnectDeviceSampleBehavior.cs" />
     <Compile Include="TestConnectDeviceSample\TestConnectDeviceSampleFactory.cs" />
@@ -163,23 +176,41 @@
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestConnectDeviceSampleProcessor.cs" />
-    <Compile Include="UCTestConnectDeviceSample___Process.cs">
+    <Compile Include="UCTestConnectDeviceSample___Port.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTestConnectDeviceSample___Scan.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTestConnectDeviceSample___View.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Validation\PortComValidationRule.cs" />
+    <Compile Include="Worker\AccountLookupWorker.cs" />
+    <Compile Include="Worker\ComPortReader.cs" />
+    <Compile Include="Worker\SampleCollectionRoomRefresher.cs" />
+    <Compile Include="Worker\SampleLookupWorker.cs" />
+    <Compile Include="Worker\ScanTextUtil.cs" />
+    <Compile Include="Worker\SdaEventLogCreate.cs" />
+    <Compile Include="Worker\SessionStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UCTestConnectDeviceSample.resx">
       <DependentUpon>UCTestConnectDeviceSample.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\SHAREUTIL\Inventec.Common\Inventec.Common.Rs232\Inventec.Common.Rs232.csproj">
-      <Project>{fa981fe2-ea7f-48fc-9c60-2a6fa1642498}</Project>
-      <Name>Inventec.Common.Rs232</Name>
+    <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
+      <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
+      <Name>HIS.Desktop.Controls.Session</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>

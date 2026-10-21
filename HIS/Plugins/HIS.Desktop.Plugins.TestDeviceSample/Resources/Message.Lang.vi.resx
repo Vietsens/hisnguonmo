@@ -123,4 +123,16 @@
   <data name="TestDeviceSample__ThoiGianKhongDuocNhoHonThoiGianVaoVien" xml:space="preserve">
     <value>Thời gian yêu cầu không được nhỏ hơn thời gian vào viện</value>
   </data>
+  <data name="TestDeviceSample__XacNhanDangXuat" xml:space="preserve">
+    <value>Đăng xuất tài khoản {0} khỏi {1}? Cổng vẫn kết nối; tài khoản khác quét thẻ để đăng nhập.</value>
+  </data>
+  <data name="TestDeviceSample__PhienDaThayDoi" xml:space="preserve">
+    <value>Phiên đăng nhập trên cổng này đã thay đổi. Danh sách đã được tải lại.</value>
+  </data>
+  <data name="TestDeviceSample__NhatKyDangXuat" xml:space="preserve">
+    <value>Kết nối thiết bị lấy mẫu: {0} đăng xuất tài khoản {1}. Lý do: {2}.</value>
+  </data>
+  <data name="TestDeviceSample__LyDoDangXuatTaiMan" xml:space="preserve">
+    <value>đăng xuất ở màn Thiết bị lấy thông tin mẫu bệnh phẩm</value>
+  </data>
 </root>

@@ -314,4 +314,7 @@
   <data name="frmEmpUser.chkAllowBlockConcurrentCLS.ToolTip" xml:space="preserve">
     <value>Chặn trong trường hợp một bác sỹ tham gia nhiều dịch vụ trong cùng 1 thời điểm. Loại dịch vụ bao gồm: CĐHA, TDCN, Nội soi, Siêu âm, GPBL</value>
   </data>
+  <data name="frmEmpUser.gridColumnPrintBarcode.Caption" xml:space="preserve">
+    <value>Print account barcode (card to sign in on sampling scanners)</value>
+  </data>
 </root>

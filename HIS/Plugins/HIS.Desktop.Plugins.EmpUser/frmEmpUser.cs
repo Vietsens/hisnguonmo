@@ -1406,6 +1406,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 this.ActionType = GlobalVariables.ActionAdd;
                 EnableControlChanged(this.ActionType);
                 SetCaptionByLanguageKey();
+                InitPrintBarcodeColumn();
                 ValidateForm();
                 SetDefaultValue();
                 InitControlState();

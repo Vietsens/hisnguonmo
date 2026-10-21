@@ -117,61 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="frmTestDeviceSample.bar1.Text" xml:space="preserve">
-    <value>Tools</value>
+  <data name="frmTestDeviceSample.lblHint.Text" xml:space="preserve">
+    <value>Accounts signed in on the scanners of this workstation, by COM port. Sign out so another account can scan its card on that port; the port stays connected.</value>
   </data>
-  <data name="frmTestDeviceSample.barButtonItem1.Caption" xml:space="preserve">
-    <value>Ctrl F</value>
+  <data name="frmTestDeviceSample.gcStt.Caption" xml:space="preserve">
+    <value>No.</value>
   </data>
-  <data name="frmTestDeviceSample.barButtonItem2.Caption" xml:space="preserve">
-    <value>Ctrl S</value>
+  <data name="frmTestDeviceSample.gcPortName.Caption" xml:space="preserve">
+    <value>Port</value>
   </data>
-  <data name="frmTestDeviceSample.barButtonItem3.Caption" xml:space="preserve">
-    <value>Ctrl R</value>
+  <data name="frmTestDeviceSample.gcLoginname.Caption" xml:space="preserve">
+    <value>Account</value>
   </data>
-  <data name="frmTestDeviceSample.btnFind.Text" xml:space="preserve">
-    <value>Find (Ctrl + F)</value>
+  <data name="frmTestDeviceSample.gcUsername.Caption" xml:space="preserve">
+    <value>Full name</value>
+  </data>
+  <data name="frmTestDeviceSample.gcSessionTime.Caption" xml:space="preserve">
+    <value>Signed in at</value>
+  </data>
+  <data name="frmTestDeviceSample.repositoryItemButtonLogout.Caption" xml:space="preserve">
+    <value>Sign out</value>
   </data>
   <data name="frmTestDeviceSample.btnRefesh.Text" xml:space="preserve">
-    <value>Redo (Ctrl R)</value>
-  </data>
-  <data name="frmTestDeviceSample.btnSave.Text" xml:space="preserve">
-    <value>Save (Ctrl S)</value>
-  </data>
-  <data name="frmTestDeviceSample.cboExamServiceReq.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="frmTestDeviceSample.cboRoom.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="frmTestDeviceSample.chkPrioritize.Properties.Caption" xml:space="preserve">
-    <value>Prioritize</value>
-  </data>
-  <data name="frmTestDeviceSample.layoutControl1.Text" xml:space="preserve">
-    <value>layoutControl1</value>
-  </data>
-  <data name="frmTestDeviceSample.layoutControlItem1.Text" xml:space="preserve">
-    <value>Code requirements:</value>
-  </data>
-  <data name="frmTestDeviceSample.layoutControlItem11.Text" xml:space="preserve">
-    <value>Patient's name:</value>
-  </data>
-  <data name="frmTestDeviceSample.layoutControlItem12.Text" xml:space="preserve">
-    <value>Birthday:</value>
-  </data>
-  <data name="frmTestDeviceSample.layoutControlItem2.Text" xml:space="preserve">
-    <value>Status:</value>
-  </data>
-  <data name="frmTestDeviceSample.layoutControlItem3.Text" xml:space="preserve">
-    <value>Clinic:</value>
-  </data>
-  <data name="frmTestDeviceSample.layoutControlItem5.Text" xml:space="preserve">
-    <value>Care services:</value>
-  </data>
-  <data name="frmTestDeviceSample.layoutControlItem7.Text" xml:space="preserve">
-    <value>Time:</value>
-  </data>
-  <data name="frmTestDeviceSample.Text" xml:space="preserve">
-    <value>Modify services examination</value>
+    <value>Reload (Ctrl R)</value>
   </data>
 </root>

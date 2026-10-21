@@ -123,4 +123,16 @@
   <data name="TestDeviceSample__ThoiGianKhongDuocNhoHonThoiGianVaoVien" xml:space="preserve">
     <value />
   </data>
+  <data name="TestDeviceSample__XacNhanDangXuat" xml:space="preserve">
+    <value>Sign {0} out of {1}? The port stays connected; another account scans its card to sign in.</value>
+  </data>
+  <data name="TestDeviceSample__PhienDaThayDoi" xml:space="preserve">
+    <value>The session on this port has changed. The list was reloaded.</value>
+  </data>
+  <data name="TestDeviceSample__NhatKyDangXuat" xml:space="preserve">
+    <value>Sampling device: {1} signed out of {0}. Reason: {2}.</value>
+  </data>
+  <data name="TestDeviceSample__LyDoDangXuatTaiMan" xml:space="preserve">
+    <value>signed out on the sampling device screen</value>
+  </data>
 </root>
