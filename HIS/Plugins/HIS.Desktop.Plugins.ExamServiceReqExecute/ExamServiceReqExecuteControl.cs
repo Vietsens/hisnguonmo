@@ -518,7 +518,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 // Doc1: khong lay CD YHCT tu kham chinh sang kham them khi key IsAutoFillInformationAndIcdExam khac "1"
-                if (IsNotAutoFillExamInfoFromMainExam())
+                // 59372: IsKeepIcdWhenUnstart = 1 -> still load the addition exam's own YHCT diagnosis, never the treatment's
+                bool isOwnIcdOnly = IsNotAutoFillExamInfoFromMainExam();
+                if (isOwnIcdOnly && !HisConfigCFG.IsKeepIcdWhenUnstart)
                     return;
                 if (HisServiceReqView != null && !string.IsNullOrEmpty(HisServiceReqView.TRADITIONAL_ICD_CODE))
                 {
@@ -540,7 +542,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         subIcdProcessorYHCT.Reload(ucSecondaryIcdYHCT, subIcd);
                     }
                 }
-                else if (treatment != null && !string.IsNullOrEmpty(treatment.TRADITIONAL_ICD_CODE))
+                else if (!isOwnIcdOnly && treatment != null && !string.IsNullOrEmpty(treatment.TRADITIONAL_ICD_CODE))
                 {
                     HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
                     Icd.ICD_CODE = treatment.TRADITIONAL_ICD_CODE;

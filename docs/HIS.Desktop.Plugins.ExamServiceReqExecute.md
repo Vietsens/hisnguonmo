@@ -126,6 +126,13 @@
 | `HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount` | Ngưỡng tối đa số mã ICD phụ ra viện | Mặc định = **12** |
 | `MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES` | Danh sách TREATMENT_END_TYPE_CODE bật popup HisDeathInfo | Không bật popup |
 | `HIS.Desktop.Mims.IsCheckPregnancyLactation` | "1" → tab "Thông tin sản khoa" (trước đây "Phân loại phụ nữ") đầy đủ (mang thai, số tháng, tuần tuổi thai, cho con bú) + kê đơn gửi hồ sơ thai sản sang MIMS. Khác "1" → tab chỉ hiện ô "Tuần tuổi thai" (không bắt buộc), không gửi MIMS | Tab chỉ hiện ô "Tuần tuổi thai" (BN nữ) |
+| `HIS.Desktop.Plugins.ExamServiceReqExecute.IsKeepIcdWhenUnstart` | (59372) "1" → mở lại y lệnh **khám thêm** (sau Hủy bắt đầu, hoặc đóng tab rồi Xử lý lại) vẫn hiện CĐ chính/phụ/nguyên nhân/YHCT mà **chính y lệnh đó** đã lưu, kể cả khi `IsAutoFillInformationAndIcdExam` khác "1". Không lấy chẩn đoán của hồ sơ/khám chính. Chỉ có tác dụng khi `IsAutoFillInformationAndIcdExam` khác "1" (= "1" thì vốn đã hiện) | Như cũ: khám thêm mở lại trống chẩn đoán khi `IsAutoFillInformationAndIcdExam` khác "1" |
+
+### Giữ chẩn đoán khám thêm khi mở lại (59372)
+
+- **Gốc lỗi**: `LoadDataFromTreatment` (`__InitUC.cs`) và `FillDatatoCDYHCT` (`ExamServiceReqExecuteControl.cs`) bỏ qua toàn bộ việc nạp chẩn đoán khi `IsNotAutoFillExamInfoFromMainExam()` = true (mọi khám thêm khi `IsAutoFillInformationAndIcdExam` khác "1", việc 45721) — chặn cả chẩn đoán phòng khám thêm tự lưu. BE Hủy bắt đầu/Bắt đầu KHÔNG xóa ICD (`HisServiceReqUpdateStart` chỉ UPDATE START_TIME/STT/người xử lý); BE tạo khám thêm KHÔNG chép ICD khám chính (`HisServiceReqExamAddition.ProcessServiceReq`) → ICD có trên y lệnh khám thêm luôn do chính phòng đó lưu.
+- **Sửa**: key = "1" và nhánh trên bị chặn → nạp `HisServiceReqView.ICD_CODE/NAME`, `ICD_CAUSE_*`, `ICD_SUB_CODE/ICD_TEXT` (qua `LoadDataToIcdSub`, đã ưu tiên y lệnh khi y lệnh có ICD) và `TRADITIONAL_ICD_*` của y lệnh; KHÔNG fallback sang `treatment` (hồ sơ giữ ICD khám chính). Key đọc ở đầu `LoadConfig` (khối đọc sớm) để không bị bỏ qua khi một key phía sau ném lỗi.
+- **Không đổi**: các ô khám (khám toàn thân, bộ phận...), Hướng điều trị của khám thêm vẫn theo `IsAutoFillInformationAndIcdExam` (BE chép các ô này từ khám chính khi tạo khám thêm nên không phân biệt được của phòng nào). Khám chính, và khi `IsAutoFillInformationAndIcdExam` = "1": giữ nguyên.
 
 ### Chi tiết kiểm tra số ICD phụ ra viện (PTTK 4.1.2)
 
@@ -169,6 +176,7 @@
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 21/10/2026 | dangth2 | **59372 (BV HAGL) Giữ chẩn đoán khi hủy bắt đầu ở phòng khám thêm** — Key mới `HIS.Desktop.Plugins.ExamServiceReqExecute.IsKeepIcdWhenUnstart` (mặc định tắt). Bật = 1: mở lại khám thêm hiện CĐ chính/phụ/nguyên nhân/YHCT của chính y lệnh dù `IsAutoFillInformationAndIcdExam` khác 1; không lấy chẩn đoán hồ sơ/khám chính. Chi tiết §7B. Files: `Config/HisConfigCFG.cs` (+`IsKeepIcdWhenUnstart`, đọc ở khối đọc sớm), `ExamServiceReqExecuteControl__InitUC.cs` (`LoadDataFromTreatment` thêm nhánh else-if), `ExamServiceReqExecuteControl.cs` (`FillDatatoCDYHCT` bỏ nhánh hồ sơ khi chỉ lấy của y lệnh). SQL key: `PTTK/59372 - SQL them key giu chan doan khi huy bat dau.sql`. |
 | 15/10/2026 | vuongnd | **MIMS — Đổi tên tab "Phân loại phụ nữ" thành "Thông tin sản khoa"** (en: "Obstetric information"). Chỉ đổi caption, không đổi logic. Files: `Resources/Lang.{vi,en}.resx` (key `ExamServiceReqExecuteControl.xtraTabPageWomanClassify.Text`), `ExamServiceReqExecuteControl__WomanClassify.cs` (giá trị mặc định khi thiếu key, dùng cho bản `my`). |
 | 10/10/2026 | vuongnd | **MIMS — Tab "Phân loại phụ nữ" hiển thị cả khi key `HIS.Desktop.Mims.IsCheckPregnancyLactation` không thiết lập / khác 1** — Trước đây tab chỉ tạo khi key = 1. Nay BN nữ luôn có tab: key = 1 giữ nguyên toàn bộ hành vi cũ; key khác 1 (`isWomanClassifyWeekOnly`) chỉ add ô "Tuần tuổi thai" (dời lên dòng đầu, luôn enable), các control khác vẫn tạo nhưng không add lên tab. Ô tuần KHÔNG bắt buộc (0 = không nhập), chỉ chặn giá trị gõ tay ngoài 0..42. Lưu qua `SaveWomanClassifyWeekOnly()`: chỉ ghi `PREGNANT_WEEK`, các trường ẩn giữ nguyên giá trị DB; tuần > 0 → `IS_PREGNANT = 1`, bỏ cho con bú; dirty-check chỉ so tuần. Kê đơn (AssignPrescription*) vẫn so `!= "1"` nên không gửi hồ sơ thai sản sang MIMS khi key khác 1 — không sửa. Files: `ExamServiceReqExecuteControl__WomanClassify.cs`. |
 | 28/09/2026 | khainq | **55058 Cảnh báo ICD chính là bệnh mãn tính** — Khi BS phòng khám "Lưu và kết thúc" mà ICD chính có `HIS_ICD.IS_CHRONIC = 1` nhưng chưa tích "Mãn tính" (ô đang hiện, cho tích) → hỏi Yes/No; No → không lưu, focus ô Mãn tính. Chi tiết §7C. Files: `ExamServiceReqExecuteControl__CheckChronicIcd.cs` (MỚI), `__Process.cs`, `Resources/Message.Lang.{vi,en,my}.resx` + `ResourceMessage.cs`; UC `HIS.UC.ExamTreatmentFinish` (+`IsChronicEditable`, +`FocusChronic()`). Phụ thuộc cột mới `HIS_ICD.IS_CHRONIC` (`docs/SQL_55058_HisIcd_IsChronic.sql`) + MOS.EFMODEL mới. |
@@ -180,6 +188,14 @@
 | 16/05/2026 | tuanln | **PTTK 4.1.2** Thay hằng số 12 bằng ngưỡng động `IcdSubMaxCount` cho kiểm tra số ICD phụ ra viện. Chỉ kiểm tra ICD phụ ra viện ở `HIS.UC.ExamTreatmentFinish` (bỏ kiểm tra ICD phụ phần khám). Đọc qua `HisConfigCFG.IsCheckSubIcdExceedLimit` + `HisConfigCFG.IcdSubMaxCount` (mặc định 12). Source data đọc theo thứ tự ưu tiên: `ShowIcdText` → `ShowIcdSubCode` → `IcdSubCode` (đúng dữ liệu in trên giấy ra viện). Message chuyển sang resource đa ngôn ngữ, MessageBox dùng `XtraMessageBox` với icon Warning/Question. Files: `Config/HisConfigCFG.cs`, `ExamServiceReqExecuteControl.cs` (`ValidIcdLen()`), `Resources/Message.Lang.{vi,en,my}.resx` + `ResourceMessage.cs` (`ChanDoanPhuRaVienVuotQuaSoLuongChan` / `...CanhBao`). |
 
 ## 9. Test Cases
+
+### Giữ chẩn đoán khám thêm (59372) — viện để `IsAutoFillInformationAndIcdExam` khác 1
+
+- [ ] Key `IsKeepIcdWhenUnstart` trống/0: khám thêm lưu ICD → Hủy bắt đầu → Xử lý lại → ô chẩn đoán trống (như cũ).
+- [ ] Key = 1: như trên → hiện đúng CĐ chính, CĐ phụ, nguyên nhân ngoài, CĐ YHCT đã lưu ở phòng khám thêm (tên sửa tay giữ nguyên, ô "Sửa" tích).
+- [ ] Key = 1, đóng tab khám thêm rồi Xử lý lại (không hủy bắt đầu): vẫn hiện chẩn đoán đã lưu.
+- [ ] Key = 1, khám thêm chưa lưu chẩn đoán lần nào: ô chẩn đoán trống, KHÔNG lấy chẩn đoán khám chính.
+- [ ] Key = 1: khám chính, và viện `IsAutoFillInformationAndIcdExam` = 1: như cũ.
 
 ### Luồng cũ (giữ nguyên 100%)
 
