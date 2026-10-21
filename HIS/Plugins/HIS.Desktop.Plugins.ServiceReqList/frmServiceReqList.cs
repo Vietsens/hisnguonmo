@@ -4096,6 +4096,16 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 #region
                                 if (MessageBox.Show("Y lệnh này đã tồn tại văn bản ký, bạn có muốn hủy dữ liệu?", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                                 {
+                                    if (HisConfigCFG.ServiceReqAndChild == "1" && checkParent)
+                                    {
+                                        DevExpress.XtraEditors.XtraMessageBox.Show("Đã có y lệnh đính kèm (CLS). Vui lòng xóa y lệnh đính kèm trước khi xóa y lệnh cha.", "Thông báo");
+                                        return;
+                                    }
+
+                                    if (checkParent && DevExpress.XtraEditors.XtraMessageBox.Show("Đã có y lệnh đính kèm (CLS). Bạn có chắc chắn muốn xóa không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                                    {
+                                        return;
+                                    }
                                     WaitingManager.Show();
                                     MOS.SDO.HisServiceReqSDO sdo = new MOS.SDO.HisServiceReqSDO();
                                     sdo.Id = data.ID;

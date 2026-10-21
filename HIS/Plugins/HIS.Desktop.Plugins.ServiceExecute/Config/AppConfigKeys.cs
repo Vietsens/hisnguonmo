@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
     {
         internal const string CONFIG_KEY__MODULE_CAMERA__SHORTCUT_KEY = "CONFIG_KEY__MODULE_CAMERA__SHORTCUT_KEY";
         private const string AUTO_SELECT_IMAGE_CAPTURE_CFG = "CONFIG_KEY__MODULE_SERVICE_EXECUTE__AUTO_SELECT_IMAGE_CAPTURE";
+        private const string AUTO_SELECT_IMAGE_BY_TEMPLATE_CFG = "HIS.Desktop.Plugins.ServiceExecute.IsAutoSelectImageByTemplate";
 
         internal const string HIS_DESKTOP_SURGSERVICEREQEXECUTE_EXECUTE_ROLE_DEFAULT = "HIS.DESKTOP.PLUGINS.SURGSERVICEREQEXECUTE.EXECUTE_ROLE_DEFAULT";
 
@@ -245,6 +246,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
             get
             {
                 return HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(AUTO_SELECT_IMAGE_CAPTURE_CFG) == "1";
+            }
+        }
+
+        /// <summary>
+        /// 1: ảnh thêm vào (chọn từ máy, chụp camera) tự tích theo thứ tự thêm đến khi đủ số key ảnh của mẫu kết quả,
+        /// tích quá số key thì cảnh báo. Khác 1: xử lý như cũ
+        /// </summary>
+        internal static bool IsAutoSelectImageByTemplate
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AUTO_SELECT_IMAGE_BY_TEMPLATE_CFG) == "1";
             }
         }
 
