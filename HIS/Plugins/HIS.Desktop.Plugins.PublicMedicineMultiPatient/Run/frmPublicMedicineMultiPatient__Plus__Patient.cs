@@ -24,7 +24,9 @@ using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
@@ -197,6 +199,58 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Find panel: the whole typed phrase (not word by word) inside treatment code, patient code, patient name or bed,
+        /// ignoring case and Vietnamese diacritics. Bed room, gender, date of birth are not searched.
+        /// </summary>
+        private void gridViewPatient_CustomRowFilter(object sender, DevExpress.XtraGrid.Views.Base.RowFilterEventArgs e)
+        {
+            try
+            {
+                string key = NormalizeSearchText((this.gridViewPatient.FindFilterText ?? "").Trim().Trim('"'));
+                if (String.IsNullOrEmpty(key) || this.treatmentBedRoomADOs == null || e.ListSourceRow < 0 || e.ListSourceRow >= this.treatmentBedRoomADOs.Count)
+                    return;
+                TreatmentBedRoomADO row = this.treatmentBedRoomADOs[e.ListSourceRow];
+                e.Visible = row != null
+                    && (NormalizeSearchText(row.TREATMENT_CODE).Contains(key)
+                        || NormalizeSearchText(row.TDL_PATIENT_CODE).Contains(key)
+                        || NormalizeSearchText(row.TDL_PATIENT_NAME).Contains(key)
+                        || NormalizeSearchText(row.BED_NAME).Contains(key));
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lower case, đ to d, diacritics removed, runs of white space collapsed to one space
+        /// </summary>
+        private static string NormalizeSearchText(string text)
+        {
+            if (String.IsNullOrWhiteSpace(text))
+                return "";
+            string decomposed = text.Trim().ToLower().Replace('đ', 'd').Normalize(NormalizationForm.FormD);
+            StringBuilder sb = new StringBuilder(decomposed.Length);
+            bool lastSpace = false;
+            foreach (char c in decomposed)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark)
+                    continue;
+                if (Char.IsWhiteSpace(c))
+                {
+                    if (!lastSpace)
+                        sb.Append(' ');
+                    lastSpace = true;
+                    continue;
+                }
+                lastSpace = false;
+                sb.Append(c);
+            }
+            return sb.ToString();
         }
 
         private void gridViewPatient_ColumnFilterChanged(object sender, EventArgs e)

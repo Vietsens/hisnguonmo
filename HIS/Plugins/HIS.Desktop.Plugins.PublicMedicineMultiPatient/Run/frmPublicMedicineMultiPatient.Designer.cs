@@ -188,6 +188,8 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
             //
             // lblSelectedCount
             //
+            this.lblSelectedCount.Appearance.Options.UseTextOptions = true;
+            this.lblSelectedCount.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.lblSelectedCount.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblSelectedCount.Location = new System.Drawing.Point(2, 536);
             this.lblSelectedCount.Name = "lblSelectedCount";
@@ -342,6 +344,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
             this.gridViewPatient.Name = "gridViewPatient";
             this.gridViewPatient.OptionsBehavior.Editable = false;
             this.gridViewPatient.OptionsFind.AlwaysVisible = true;
+            this.gridViewPatient.OptionsFind.FindFilterColumns = "TREATMENT_CODE;TDL_PATIENT_CODE;TDL_PATIENT_NAME;BED_NAME";
             this.gridViewPatient.OptionsFind.FindNullPrompt = "Từ khóa tìm kiếm (mã điều trị, mã BN, tên bệnh nhân, giường)";
             this.gridViewPatient.OptionsFind.ShowClearButton = false;
             this.gridViewPatient.OptionsFind.ShowFindButton = false;
@@ -350,6 +353,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
             this.gridViewPatient.OptionsView.ShowIndicator = false;
             this.gridViewPatient.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridViewPatient_CustomDrawColumnHeader);
             this.gridViewPatient.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewPatient_CustomUnboundColumnData);
+            this.gridViewPatient.CustomRowFilter += new DevExpress.XtraGrid.Views.Base.RowFilterEventHandler(this.gridViewPatient_CustomRowFilter);
             this.gridViewPatient.ColumnFilterChanged += new System.EventHandler(this.gridViewPatient_ColumnFilterChanged);
             this.gridViewPatient.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewPatient_KeyDown);
             this.gridViewPatient.Click += new System.EventHandler(this.gridViewPatient_Click);
@@ -923,8 +927,11 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
             //
             this.lciSelectedCount.Control = this.lblSelectedCount;
             this.lciSelectedCount.Location = new System.Drawing.Point(0, 534);
+            this.lciSelectedCount.MaxSize = new System.Drawing.Size(0, 26);
+            this.lciSelectedCount.MinSize = new System.Drawing.Size(14, 26);
             this.lciSelectedCount.Name = "lciSelectedCount";
             this.lciSelectedCount.Size = new System.Drawing.Size(502, 26);
+            this.lciSelectedCount.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciSelectedCount.TextSize = new System.Drawing.Size(0, 0);
             this.lciSelectedCount.TextVisible = false;
             //
@@ -934,8 +941,11 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
             this.lciTachHDSD.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTachHDSD.Control = this.chkTachHDSD;
             this.lciTachHDSD.Location = new System.Drawing.Point(502, 534);
+            this.lciTachHDSD.MaxSize = new System.Drawing.Size(126, 26);
+            this.lciTachHDSD.MinSize = new System.Drawing.Size(126, 26);
             this.lciTachHDSD.Name = "lciTachHDSD";
             this.lciTachHDSD.Size = new System.Drawing.Size(126, 26);
+            this.lciTachHDSD.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciTachHDSD.Text = "Tách HDSD:";
             this.lciTachHDSD.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTachHDSD.TextSize = new System.Drawing.Size(90, 20);
@@ -947,8 +957,11 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
             this.lciSign.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSign.Control = this.chkSign;
             this.lciSign.Location = new System.Drawing.Point(628, 534);
+            this.lciSign.MaxSize = new System.Drawing.Size(105, 26);
+            this.lciSign.MinSize = new System.Drawing.Size(105, 26);
             this.lciSign.Name = "lciSign";
             this.lciSign.Size = new System.Drawing.Size(105, 26);
+            this.lciSign.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciSign.Text = "Ký:";
             this.lciSign.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSign.TextSize = new System.Drawing.Size(70, 20);
@@ -960,8 +973,11 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
             this.lciPrintDocumentSigned.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPrintDocumentSigned.Control = this.chkPrintDocumentSigned;
             this.lciPrintDocumentSigned.Location = new System.Drawing.Point(733, 534);
+            this.lciPrintDocumentSigned.MaxSize = new System.Drawing.Size(126, 26);
+            this.lciPrintDocumentSigned.MinSize = new System.Drawing.Size(126, 26);
             this.lciPrintDocumentSigned.Name = "lciPrintDocumentSigned";
             this.lciPrintDocumentSigned.Size = new System.Drawing.Size(126, 26);
+            this.lciPrintDocumentSigned.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciPrintDocumentSigned.Text = "In văn bản ký:";
             this.lciPrintDocumentSigned.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPrintDocumentSigned.TextSize = new System.Drawing.Size(90, 20);
@@ -971,8 +987,11 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
             //
             this.lciCreate.Control = this.btnCreate;
             this.lciCreate.Location = new System.Drawing.Point(859, 534);
+            this.lciCreate.MaxSize = new System.Drawing.Size(107, 26);
+            this.lciCreate.MinSize = new System.Drawing.Size(107, 26);
             this.lciCreate.Name = "lciCreate";
             this.lciCreate.Size = new System.Drawing.Size(107, 26);
+            this.lciCreate.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciCreate.TextSize = new System.Drawing.Size(0, 0);
             this.lciCreate.TextVisible = false;
             //
