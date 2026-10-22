@@ -1385,8 +1385,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.colResultApprover.Name = "colResultApprover";
             this.colResultApprover.OptionsColumn.AllowEdit = false;
             this.colResultApprover.ToolTip = "Người duyệt kết quả";
-            this.colResultApprover.Visible = true;
-            this.colResultApprover.VisibleIndex = 17;
             this.colResultApprover.Width = 60;
             // 
             // colResultApproveTime
@@ -1396,8 +1394,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.colResultApproveTime.Name = "colResultApproveTime";
             this.colResultApproveTime.OptionsColumn.AllowEdit = false;
             this.colResultApproveTime.ToolTip = "Thời gian duyệt kết quả";
-            this.colResultApproveTime.Visible = true;
-            this.colResultApproveTime.VisibleIndex = 18;
             this.colResultApproveTime.Width = 60;
             // 
             // repositoryItemCheckEdit1
