@@ -245,6 +245,26 @@
     <value>No</value>
     <comment>STT</comment>
   </data>
+  <data name="frmHisFund.lciSurchargeRatio.Text" xml:space="preserve">
+    <value>Surcharge ratio (%):</value>
+    <comment>Tỷ lệ phụ thu (%):</comment>
+  </data>
+  <data name="frmHisFund.spSurchargeRatio.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Leave blank for no surcharge</value>
+    <comment>Để trống nếu không phụ thu</comment>
+  </data>
+  <data name="frmHisFund.spSurchargeRatio.ToolTip" xml:space="preserve">
+    <value>Default surcharge rate of the co-payer, from 0 to 100; leave blank for no surcharge</value>
+    <comment>Tỷ lệ phụ thu mặc định của đơn vị cùng chi trả, nhập từ 0 đến 100, để trống là không phụ thu</comment>
+  </data>
+  <data name="frmHisFund.grdColSurchargeRatio.Caption" xml:space="preserve">
+    <value>Surcharge ratio (%)</value>
+    <comment>Tỷ lệ phụ thu (%)</comment>
+  </data>
+  <data name="frmHisFund.grdColSurchargeRatio.ToolTip" xml:space="preserve">
+    <value>Surcharge ratio (%)</value>
+    <comment>Tỷ lệ phụ thu (%)</comment>
+  </data>
   <data name="frmHisFund.Text" xml:space="preserve">
     <value>Category</value>
     <comment>Danh mục</comment>

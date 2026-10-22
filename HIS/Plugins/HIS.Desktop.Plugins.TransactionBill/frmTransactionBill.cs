@@ -829,6 +829,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         IsNeedAccountBook = false;
                     }
                 }
+                if (this.IsFundAllocationLocked())
+                {
+                    this.SetEnableButtonSave(false);
+                }
 
             }
             catch (Exception ex)
@@ -1989,6 +1993,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.LciBillFund.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 this.ListBillFund = new List<VHisBillFundADO>();
                 this.ProcessFundTreatment(totalHcmPrice);
+                this.ApplyFundAllocationState();
             }
             catch (Exception ex)
             {
@@ -2000,6 +2005,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
+                if (this.IsFundAllocationFinished())
+                {
+                    this.ProcessFundAllocationFund();
+                    return;
+                }
                 HIS_FUND fund = (this.currentTreatment != null && (this.currentTreatment.FUND_ID ?? 0) > 0) ? BackendDataWorker.Get<HIS_FUND>().FirstOrDefault(o => o.ID == this.currentTreatment.FUND_ID) : null;
                 if (fund != null)
                 {
@@ -2857,6 +2867,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
+                this.LoadFundAllocation();
                 if (currentTreatment != null && currentTreatment.FUND_ID.HasValue)
                 {
                     ListBillFundPay = new List<V_HIS_BILL_FUND>();

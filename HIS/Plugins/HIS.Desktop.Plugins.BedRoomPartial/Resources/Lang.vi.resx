@@ -339,6 +339,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_THUOC_THEO_NGAY" xml:space="preserve">
     <value>Công khai thuốc theo ngày</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_THUOC_NHIEU_BN" xml:space="preserve">
+    <value>Công khai thuốc nhiều BN</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__DANH_SACH_YEU_CAU" xml:space="preserve">
     <value>Danh sách y lệnh</value>
   </data>

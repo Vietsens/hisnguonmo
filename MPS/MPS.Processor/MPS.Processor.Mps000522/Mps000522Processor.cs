@@ -1,0 +1,408 @@
+/* IVT
+ * @Project : hisnguonmo
+ * Copyright (C) 2017 INVENTEC
+ *  
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MPS.Processor.Mps000522.PDO;
+using MPS.ProcessorBase.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MPS.Processor.Mps000522
+{
+    class Mps000522Processor : AbstractProcessor
+    {
+        Mps000522PDO rdo;
+        public Mps000522Processor(CommonParam param, PrintData printData)
+            : base(param, printData)
+        {
+            rdo = (Mps000522PDO)rdoBase;
+        }
+
+        public override bool ProcessData()
+        {
+            bool result = false;
+            try
+            {
+                Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
+                Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
+                Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
+                SetSingleKey();
+                store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
+                singleTag.ProcessData(store, singleValueDictionary);
+                //barCodeTag.ProcessData(store, dicImage);
+                if (rdo.mps000522ByMediEndMate != null && rdo.mps000522ByMediEndMate.Count > 0)
+                {
+                    List<ServiceTypeADO> _ServiceTypeADOs = new List<ServiceTypeADO>();
+
+                    var _Medicine = rdo.mps000522ByMediEndMate.FirstOrDefault(p => p.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC);
+                    if (_Medicine != null)
+                    {
+                        ServiceTypeADO ado = new ServiceTypeADO();
+                        ado.Service_Type_Id = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
+                        ado.TYPE_NAME = "Thuốc";
+                        _ServiceTypeADOs.Add(ado);
+                    }
+
+                    var _Material = rdo.mps000522ByMediEndMate.FirstOrDefault(p => p.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT);
+                    if (_Material != null)
+                    {
+                        ServiceTypeADO ado = new ServiceTypeADO();
+                        ado.Service_Type_Id = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT;
+                        ado.TYPE_NAME = "Vật tư";
+                        _ServiceTypeADOs.Add(ado);
+                    }
+
+                    var _Blood = rdo.mps000522ByMediEndMate.FirstOrDefault(p => p.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU);
+                    if (_Blood != null)
+                    {
+                        ServiceTypeADO ado = new ServiceTypeADO();
+                        ado.Service_Type_Id = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU;
+                        ado.TYPE_NAME = "Máu";
+                        _ServiceTypeADOs.Add(ado);
+                    }
+                    objectTag.AddObjectData(store, "ServiceType", _ServiceTypeADOs);
+                    objectTag.AddObjectData(store, "SereServ", rdo.mps000522ByMediEndMate);
+                    objectTag.AddRelationship(store, "ServiceType", "SereServ", "Service_Type_Id", "Service_Type_Id");
+                }
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+
+        private void SetSingleKey()
+        {
+            try
+            {
+                if (rdo.mps000522ADO != null && rdo.mps000522ADO.Count > 0)
+                {
+                    foreach (var item in rdo.mps000522ADO)
+                    {
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day1, item.Day1));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day2, item.Day2));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day3, item.Day3));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day4, item.Day4));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day5, item.Day5));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day6, item.Day6));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day7, item.Day7));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day8, item.Day8));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day9, item.Day9));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day10, item.Day10));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day11, item.Day11));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day12, item.Day12));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day13, item.Day13));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day14, item.Day14));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day15, item.Day15));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day16, item.Day16));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day17, item.Day17));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day18, item.Day18));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day19, item.Day19));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day20, item.Day20));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day21, item.Day21));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day22, item.Day22));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day23, item.Day23));
+                        SetSingleKey(new KeyValue(Mps000522ExtendSingleKey.Day24, item.Day24));
+
+                    }
+                }
+                if (rdo.currentTreatment != null)
+                {
+                    SetSingleKey((new KeyValue(Mps000522ExtendSingleKey.IN_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.currentTreatment.IN_TIME))));
+                    if (rdo.currentTreatment.OUT_TIME != null)
+                        SetSingleKey((new KeyValue(Mps000522ExtendSingleKey.OUT_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.currentTreatment.OUT_TIME ?? 0))));
+                    if (rdo.currentTreatment.CLINICAL_IN_TIME != null)
+                        SetSingleKey((new KeyValue(Mps000522ExtendSingleKey.CLINICAL_IN_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.currentTreatment.CLINICAL_IN_TIME ?? 0))));
+                    SetSingleKey((new KeyValue(Mps000522ExtendSingleKey.AGE, AgeUtil.CalculateFullAge(rdo.currentTreatment.TDL_PATIENT_DOB))));
+                }
+                AddObjectKeyIntoListkey<SingleKeys>(rdo._SingleKeys);
+
+                AddObjectKeyIntoListkey<V_HIS_TREATMENT>(rdo.currentTreatment);
+
+                if (rdo._vHisBedLog != null)
+                {
+                    AddObjectKeyIntoListkey<V_HIS_BED_LOG>(rdo._vHisBedLog);
+                }
+
+                
+                rdo.mps000522ByMediEndMate = GroupByService(rdo.mps000522ByMediEndMate);
+                if (rdo.mps000522ByMediEndMate != null && rdo.mps000522ByMediEndMate.Count > 0 && rdo._SingleKeys.IsOderMedicine == 1)
+                {
+                    rdo.mps000522ByMediEndMate = rdo.mps000522ByMediEndMate.OrderBy(o => o.Service_Type_Id).ThenByDescending(o => o.MEDICINE_GROUP_NUM_ORDER).ThenByDescending(o => o.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(o => o.NUM_ORDER).ThenBy(o => o.MEDICINE_TYPE_NAME).ToList();
+                }
+                SetActiveIngredient(rdo.mps000522ByMediEndMate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gan ma/ten hoat chat (danh muc thuoc) cho cac dong thuoc tren phieu, nhieu hoat chat noi bang " + ".
+        /// Dong vat tu/mau dung MEDICINE_TYPE_ID de chua id vat tu/mau nen phai loc theo Service_Type_Id.
+        /// </summary>
+        private void SetActiveIngredient(List<Mps000522ByMediEndMate> rows)
+        {
+            try
+            {
+                if (rows == null || rows.Count <= 0 || rdo._MedicineTypeAcins == null || rdo._MedicineTypeAcins.Count <= 0)
+                    return;
+
+                Dictionary<long, List<V_HIS_MEDICINE_TYPE_ACIN>> dicAcin = rdo._MedicineTypeAcins
+                    .GroupBy(o => o.MEDICINE_TYPE_ID)
+                    .ToDictionary(g => g.Key, g => g.GroupBy(o => o.ACTIVE_INGREDIENT_ID).Select(o => o.First()).ToList());
+                foreach (var row in rows)
+                {
+                    List<V_HIS_MEDICINE_TYPE_ACIN> acins = null;
+                    if (row.Service_Type_Id != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC || !dicAcin.TryGetValue(row.MEDICINE_TYPE_ID, out acins))
+                        continue;
+
+                    row.ACTIVE_INGREDIENT_CODES = String.Join(" + ", acins.Select(o => o.ACTIVE_INGREDIENT_CODE));
+                    row.ACTIVE_INGREDIENT_NAMES = String.Join(" + ", acins.Select(o => o.ACTIVE_INGREDIENT_NAME));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private List<Mps000522ByMediEndMate> GroupByService(List<Mps000522ByMediEndMate> _Mps000225BySereServs)
+        {
+            List<MPS.Processor.Mps000522.PDO.Mps000522ByMediEndMate> result = new List<MPS.Processor.Mps000522.PDO.Mps000522ByMediEndMate>();
+            if (_Mps000225BySereServs != null && _Mps000225BySereServs.Count > 0)
+            {
+                if (rdo._SingleKeys.IsTachHDSD)
+                {
+                    var rsGroup = _Mps000225BySereServs.GroupBy(p => new { p.SERVICE_ID, p.TUTORIAL, p.PRICE, p.Service_Type_Id, p.CONCENTRA, p.VAT_RATIO, p.MORNING_Day1, p.AFTERNOON_Day1, p.NOON_Day1, p.EVENING_Day1 }).ToList();
+                    foreach (var itemGroup in rsGroup)
+                    {
+                        MPS.Processor.Mps000522.PDO.Mps000522ByMediEndMate ado = new MPS.Processor.Mps000522.PDO.Mps000522ByMediEndMate();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<Mps000522ByMediEndMate>(ado, itemGroup.First());
+                        ado.Service_Type_Id = itemGroup.FirstOrDefault().Service_Type_Id;
+                        ado.AMOUNT = itemGroup.Sum(p => p.AMOUNT);
+                        PropertyInfo[] ps = Inventec.Common.Repository.Properties.Get<MPS.Processor.Mps000522.PDO.Mps000522ByMediEndMate>();
+                        foreach (var item in itemGroup)
+                        {
+                            for (int j = 0; j < 60; j++)
+                            {
+                                decimal itemValue = 0;
+                                decimal itemValue2 = 0;
+                                decimal itemValue3 = 0;
+                                decimal itemValue4 = 0;
+                                decimal itemValue5 = 0;
+
+                                PropertyInfo propertyInfo = ps.FirstOrDefault(o => o.Name == string.Format("Day{0}", j + 1));
+                                if (propertyInfo != null)
+                                {
+                                    itemValue = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo.GetValue(item) ?? "0").ToString());
+                                    if (item != itemGroup.First())
+                                        itemValue = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo.GetValue(ado) ?? "0").ToString());
+
+                                    if (itemValue > 0)
+                                    {
+                                        propertyInfo.SetValue(ado, itemValue);
+                                    }
+                                }
+                                PropertyInfo propertyInfo2 = ps.FirstOrDefault(o => o.Name == string.Format("MORNING_Day{0}", j + 1));
+                                if (propertyInfo2 != null)
+                                {
+                                    itemValue2 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo2.GetValue(item) ?? "0").ToString());
+                                    if (item != itemGroup.First())
+                                        itemValue2 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo2.GetValue(ado) ?? "0").ToString());
+
+                                    if (itemValue2 > 0)
+                                    {
+                                        propertyInfo2.SetValue(ado, itemValue2.ToString());
+                                    }
+                                }
+                                PropertyInfo propertyInfo3 = ps.FirstOrDefault(o => o.Name == string.Format("NOON_Day{0}", j + 1));
+                                if (propertyInfo3 != null)
+                                {
+                                    itemValue3 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo3.GetValue(item) ?? "0").ToString());
+                                    if (item != itemGroup.First())
+                                        itemValue3 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo3.GetValue(ado) ?? "0").ToString());
+
+                                    if (itemValue3 > 0)
+                                    {
+                                        propertyInfo3.SetValue(ado, itemValue3.ToString());
+                                    }
+                                }
+                                PropertyInfo propertyInfo4 = ps.FirstOrDefault(o => o.Name == string.Format("AFTERNOON_Day{0}", j + 1));
+                                if (propertyInfo4 != null)
+                                {
+                                    itemValue4 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo4.GetValue(item) ?? "0").ToString());
+
+                                    if (item != itemGroup.First())
+                                        itemValue4 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo4.GetValue(ado) ?? "0").ToString());
+
+                                    if (itemValue4 > 0)
+                                    {
+                                        propertyInfo4.SetValue(ado, itemValue4.ToString());
+                                    }
+                                }
+                                PropertyInfo propertyInfo5 = ps.FirstOrDefault(o => o.Name == string.Format("EVENING_Day{0}", j + 1));
+                                if (propertyInfo5 != null)
+                                {
+                                    itemValue5 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo5.GetValue(item) ?? "0").ToString());
+
+                                    if (item != itemGroup.First())
+                                        itemValue5 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo5.GetValue(ado) ?? "0").ToString());
+
+                                    if (itemValue5 > 0)
+                                    {
+                                        propertyInfo5.SetValue(ado, itemValue5.ToString());
+                                    }
+                                }
+                                PropertyInfo propertyInfo6 = ps.FirstOrDefault(o => o.Name == string.Format("SUM_Day{0}", j + 1));
+                                if (propertyInfo6 != null)
+                                {
+                                    decimal sum_Day = itemValue2 + itemValue3 + itemValue4 + itemValue5;
+                                    if (sum_Day > 0)
+                                    {
+                                        propertyInfo6.SetValue(ado, sum_Day.ToString());
+                                    }
+                                }
+                            }
+                        }
+
+                        result.Add(ado);
+                    }
+                }
+                else
+                {
+                    var rsGroup = _Mps000225BySereServs.GroupBy(p => new { p.SERVICE_ID, p.PRICE, p.Service_Type_Id, p.CONCENTRA, p.VAT_RATIO, p.MORNING_Day1, p.AFTERNOON_Day1, p.NOON_Day1, p.EVENING_Day1 }).ToList();
+                    
+                    foreach (var itemGroup in rsGroup)
+                    {
+                        MPS.Processor.Mps000522.PDO.Mps000522ByMediEndMate ado = new MPS.Processor.Mps000522.PDO.Mps000522ByMediEndMate();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<Mps000522ByMediEndMate>(ado, itemGroup.First());
+                        ado.Service_Type_Id = itemGroup.FirstOrDefault().Service_Type_Id;
+                        ado.AMOUNT = itemGroup.Sum(p => p.AMOUNT);
+                        PropertyInfo[] ps = Inventec.Common.Repository.Properties.Get<MPS.Processor.Mps000522.PDO.Mps000522ByMediEndMate>();
+                        foreach (var item in itemGroup)
+                        {
+                            for (int j = 0; j < 60; j++)
+                            {
+                                decimal itemValue = 0;
+                                decimal itemValue2 = 0;
+                                decimal itemValue3 = 0;
+                                decimal itemValue4 = 0;
+                                decimal itemValue5 = 0;
+
+                                PropertyInfo propertyInfo = ps.FirstOrDefault(o => o.Name == string.Format("Day{0}", j + 1));
+                                if (propertyInfo != null)
+                                {
+                                    itemValue = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo.GetValue(item) ?? "0").ToString());
+                                    if (item != itemGroup.First())
+                                        itemValue = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo.GetValue(ado) ?? "0").ToString());
+
+                                    if (itemValue > 0)
+                                    {
+                                        propertyInfo.SetValue(ado, itemValue);
+                                    }
+                                }
+                                PropertyInfo propertyInfo2 = ps.FirstOrDefault(o => o.Name == string.Format("MORNING_Day{0}", j + 1));
+                                if (propertyInfo2 != null)
+                                {
+                                    itemValue2 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo2.GetValue(item) ?? "0").ToString());
+                                    if (item != itemGroup.First())
+                                        itemValue2 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo2.GetValue(ado) ?? "0").ToString());
+
+                                    if (itemValue2 > 0)
+                                    {
+                                        propertyInfo2.SetValue(ado, itemValue2.ToString());
+                                    }
+                                }
+                                PropertyInfo propertyInfo3 = ps.FirstOrDefault(o => o.Name == string.Format("NOON_Day{0}", j + 1));
+                                if (propertyInfo3 != null)
+                                {
+                                    itemValue3 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo3.GetValue(item) ?? "0").ToString());
+                                    if (item != itemGroup.First())
+                                        itemValue3 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo3.GetValue(ado) ?? "0").ToString());
+
+                                    if (itemValue3 > 0)
+                                    {
+                                        propertyInfo3.SetValue(ado, itemValue3.ToString());
+                                    }
+                                }
+                                PropertyInfo propertyInfo4 = ps.FirstOrDefault(o => o.Name == string.Format("AFTERNOON_Day{0}", j + 1));
+                                if (propertyInfo4 != null)
+                                {
+                                    itemValue4 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo4.GetValue(item) ?? "0").ToString());
+
+                                    if (item != itemGroup.First())
+                                        itemValue4 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo4.GetValue(ado) ?? "0").ToString());
+
+                                    if (itemValue4 > 0)
+                                    {
+                                        propertyInfo4.SetValue(ado, itemValue4.ToString());
+                                    }
+                                }
+                                PropertyInfo propertyInfo5 = ps.FirstOrDefault(o => o.Name == string.Format("EVENING_Day{0}", j + 1));
+                                if (propertyInfo5 != null)
+                                {
+                                    itemValue5 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo5.GetValue(item) ?? "0").ToString());
+
+                                    if (item != itemGroup.First())
+                                        itemValue5 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo5.GetValue(ado) ?? "0").ToString());
+
+                                    if (itemValue5 > 0)
+                                    {
+                                        propertyInfo5.SetValue(ado, itemValue5.ToString());
+                                    }
+                                }
+                                PropertyInfo propertyInfo6 = ps.FirstOrDefault(o => o.Name == string.Format("SUM_Day{0}", j + 1));
+                                if (propertyInfo6 != null)
+                                {
+                                    decimal sum_Day = itemValue2 + itemValue3 + itemValue4 + itemValue5;
+                                    if (sum_Day > 0)
+                                    {
+                                        propertyInfo6.SetValue(ado, sum_Day.ToString());
+                                    }
+                                }
+                            }
+                        }
+
+                        result.Add(ado);
+                    }
+                }
+            }
+
+            return result;
+        }
+    }
+
+
+
+    public class ServiceTypeADO
+    {
+        public long Service_Type_Id { get; set; }
+        public string TYPE_NAME { get; set; }
+    }
+}

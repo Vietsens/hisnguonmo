@@ -329,8 +329,53 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder.Popup
                 {
                     this.txtInput.Text = current + key;
                 }
-                this.lblResult.Text = "";
-                this.btnConfirm.Enabled = false;
+                // Viec kiem tra va bat nut Xac nhan nam o txtInput_EditValueChanged.
+                // Tra tieu diem ve o nhap de phim vat ly hoac dau doc van vao dung o.
+                this.txtInput.Focus();
+                this.txtInput.SelectionStart = (this.txtInput.Text ?? "").Length;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hai hinh thuc go tay khong co phim Enter tren ban phim so cua man, nen phai kiem tra
+        /// ngay moi khi o nhap doi gia tri: du so hop le thi bat nut Xac nhan luon.
+        /// Hai hinh thuc quet QR van cho Enter tu dau doc, khong xu ly o day.
+        /// </summary>
+        private void txtInput_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentType != EnumIdentityType.CccdManual && this.currentType != EnumIdentityType.Bhyt)
+                {
+                    return;
+                }
+                this.ResetIdleTimer();
+
+                string input = (this.txtInput.Text ?? "").Trim();
+                IdentityInfoADO info = null;
+                if (!String.IsNullOrWhiteSpace(input))
+                {
+                    info = (this.currentType == EnumIdentityType.CccdManual)
+                        ? this.ReadFromCccdManual(input)
+                        : this.ReadFromHeinCard(input);
+                }
+
+                if (info == null)
+                {
+                    // Chua du so hoac sai dinh dang: chi tat nut, khong bao loi do de nguoi benh go tiep
+                    this.Identity = null;
+                    this.lblResult.Text = "";
+                    this.btnConfirm.Enabled = false;
+                    return;
+                }
+
+                // Khong chuyen tieu diem sang nut Xac nhan de nguoi benh go tiep duoc
+                // (9 so CMND hop le nhung co the dang go tiep thanh 12 so CCCD)
+                this.SetIdentityResult(info);
             }
             catch (Exception ex)
             {
@@ -393,16 +438,7 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder.Popup
                     return;
                 }
 
-                info.SelectedType = this.currentType;
-                info.IssueTime = Inventec.Common.DateTime.Get.Now().ToString();
-                this.Identity = info;
-
-                this.lblResult.Appearance.ForeColor = Color.Green;
-                this.lblResult.Appearance.Options.UseForeColor = true;
-                this.lblResult.Text = String.IsNullOrWhiteSpace(info.PatientName)
-                    ? info.GetMaskedNumber()
-                    : info.PatientName + Environment.NewLine + info.GetMaskedNumber();
-                this.btnConfirm.Enabled = true;
+                this.SetIdentityResult(info);
                 this.btnConfirm.Focus();
             }
             catch (Exception ex)
@@ -410,6 +446,21 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder.Popup
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 this.ShowInputError();
             }
+        }
+
+        /// <summary>Ghi nhan thong tin da doc duoc, hien ket qua mau xanh va bat nut Xac nhan</summary>
+        private void SetIdentityResult(IdentityInfoADO info)
+        {
+            info.SelectedType = this.currentType;
+            info.IssueTime = Inventec.Common.DateTime.Get.Now().ToString();
+            this.Identity = info;
+
+            this.lblResult.Appearance.ForeColor = Color.Green;
+            this.lblResult.Appearance.Options.UseForeColor = true;
+            this.lblResult.Text = String.IsNullOrWhiteSpace(info.PatientName)
+                ? info.GetMaskedNumber()
+                : info.PatientName + Environment.NewLine + info.GetMaskedNumber();
+            this.btnConfirm.Enabled = true;
         }
 
         /// <summary>Chuoi QR the can cuoc va chuoi QR tren ung dung VNeID dung chung mot dinh dang</summary>

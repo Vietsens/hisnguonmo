@@ -188,7 +188,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Add.MediStockD1SDO
                     valid = valid && this.ValidTutorialAndUseForm();
                     valid = valid && HIS.Desktop.Plugins.AssignPrescriptionKidney.ValidAcinInteractiveWorker.Valid(this.DataRow, MediMatyTypeADOs);
                     valid = valid && this.ValidThuocDaKeTrongNgay();
-                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob);
+                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds);
                 }
                 valid = valid && this.ValidKhaDungThuocTrongKho();
                 valid = valid && this.CheckPatientTypeHasValue();

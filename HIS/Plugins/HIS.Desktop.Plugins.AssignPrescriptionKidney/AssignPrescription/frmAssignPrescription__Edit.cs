@@ -209,6 +209,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                         }
 
                         WaitingManager.Hide();
+                        this.ProcessNotifyMedicineTypeAgeOnEdit();
                     }
                 }
             }

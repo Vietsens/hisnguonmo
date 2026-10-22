@@ -160,6 +160,10 @@
     <Compile Include="frmTreatmentList.Designer.cs">
       <DependentUpon>frmTreatmentList.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmTreatmentList__FundAllocation.cs">
+      <DependentUpon>frmTreatmentList.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FundPay\frmFundPay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -230,6 +234,10 @@
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
+      <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
+      <Name>HIS.Desktop.ModuleExt</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
@@ -247,6 +255,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
   </ItemGroup>
