@@ -1357,7 +1357,7 @@ namespace MPS.ProcessorBase.Core
 
         protected void SetCommonFunctionRun()
         {
-            Store.EmployeeInfoHandler = (loginName, infoKey) =>
+            Func<string, string, string> employeeInfoHandler = (loginName, infoKey) =>
             {
                 if (string.IsNullOrWhiteSpace(loginName))
                     return string.Empty;
@@ -1373,6 +1373,9 @@ namespace MPS.ProcessorBase.Core
                 }
                 return string.Empty;
             };
+            //Excel (FlexCel) va Word (Templater) dung chung 1 handler tra thong tin nhan vien
+            Store.EmployeeInfoHandler = new Store.EmployeeInfoDelegate(employeeInfoHandler);
+            Inventec.Common.TemplaterExport.Store.EmployeeInfoHandler = new Inventec.Common.TemplaterExport.EmployeeInfoDelegate(employeeInfoHandler);
             switch (this.templateType)
             {
                 case PrintConfig.TemplateType.Excel:

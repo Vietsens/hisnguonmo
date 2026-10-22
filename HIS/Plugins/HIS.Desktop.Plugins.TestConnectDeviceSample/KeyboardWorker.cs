@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.TestConnectDeviceSample
 {
-    [KeyboardAction("BtnConnect", "HIS.Desktop.Plugins.TestConnectDeviceSample.UCTestConnectDeviceSample", "Connect", KeyStroke = XKeys.Control | XKeys.C)]
+    [KeyboardAction("BtnConnect", "HIS.Desktop.Plugins.TestConnectDeviceSample.UCTestConnectDeviceSample", "Connect", KeyStroke = XKeys.Control | XKeys.K)]
     [KeyboardAction("BtnDisconnect", "HIS.Desktop.Plugins.TestConnectDeviceSample.UCTestConnectDeviceSample", "Disconnect", KeyStroke = XKeys.Control | XKeys.D)]
     [KeyboardAction("BtnRefresh", "HIS.Desktop.Plugins.TestConnectDeviceSample.UCTestConnectDeviceSample", "Refresh", KeyStroke = XKeys.Control | XKeys.R)]
     [ExtensionOf(typeof(DesktopToolExtensionPoint))]

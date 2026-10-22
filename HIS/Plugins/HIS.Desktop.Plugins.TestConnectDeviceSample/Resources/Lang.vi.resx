@@ -117,22 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="IVT_LANGUAGE_KEY__UC_SALE_TRANSACTION__BTN_CLOSE_HOST" xml:space="preserve">
-    <value>Đóng dịch vụ (Ctrl I)</value>
+  <data name="UCTestConnectDeviceSample.lblGuide.Text" xml:space="preserve">
+    <value>1. Chọn cổng COM của máy quét rồi bấm Kết nối (lặp lại cho từng máy quét).   2. Quét thẻ nhân viên (in ở màn Tài khoản/Nhân viên, nút In barcode) để đăng nhập máy quét.   3. Quét barcode mẫu hoặc phiếu chỉ định: mở Thông tin lấy mẫu, điền sẵn người lấy mẫu và giờ lấy mẫu.</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_SALE_TRANSACTION__BTN_CONNECT" xml:space="preserve">
-    <value>Kết nối (Ctrl C)</value>
+  <data name="UCTestConnectDeviceSample.lciPortCom.Text" xml:space="preserve">
+    <value>Cổng:</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_SALE_TRANSACTION__BTN_DISCONNECT" xml:space="preserve">
+  <data name="UCTestConnectDeviceSample.cboPortCom.NullText" xml:space="preserve">
+    <value>Chọn cổng COM</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.btnConnect.Text" xml:space="preserve">
+    <value>Kết nối (Ctrl K)</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.btnDisconnect.Text" xml:space="preserve">
     <value>Ngắt kết nối (Ctrl D)</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_SALE_TRANSACTION__BTN_OPEN_HOST" xml:space="preserve">
-    <value>Mở dịch vụ (Ctrl O)</value>
+  <data name="UCTestConnectDeviceSample.btnDisconnect.ToolTip" xml:space="preserve">
+    <value>Ngắt kết nối cổng đang chọn (bấm vào ô của cổng để chọn). Tài khoản đang đăng nhập trên cổng đó bị đăng xuất.</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_SALE_TRANSACTION__BTN_REFRESH" xml:space="preserve">
-    <value>Làm lại (Ctrl R)</value>
+  <data name="UCTestConnectDeviceSample.btnRefresh.Text" xml:space="preserve">
+    <value>Làm mới (Ctrl R)</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_SALE_TRANSACTION__LAYOUT_PORT_COM" xml:space="preserve">
-    <value>Cổng:</value>
+  <data name="UCTestConnectDeviceSample.btnDeviceList.Text" xml:space="preserve">
+    <value>DS đăng nhập</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.btnDeviceList.ToolTip" xml:space="preserve">
+    <value>Mở màn Thiết bị lấy thông tin mẫu bệnh phẩm: tài khoản đang đăng nhập theo từng cổng, đăng xuất từng tài khoản.</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.lcgPorts.Text" xml:space="preserve">
+    <value>Máy quét đang kết nối</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.lcgScanLog.Text" xml:space="preserve">
+    <value>Nhật ký quét</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.gcScanTime.Caption" xml:space="preserve">
+    <value>Thời gian</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.gcPortName.Caption" xml:space="preserve">
+    <value>Cổng</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.gcCode.Caption" xml:space="preserve">
+    <value>Mã quét</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.gcResult.Caption" xml:space="preserve">
+    <value>Kết quả</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.lblPending.Text" xml:space="preserve">
+    <value>Đang chờ xử lý: {0} lượt quét</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.Tile.ChoQuetThe" xml:space="preserve">
+    <value>Chờ quét thẻ nhân viên</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.Tile.MatKetNoi" xml:space="preserve">
+    <value>Mất kết nối máy quét</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.Tile.DangNhapLuc" xml:space="preserve">
+    <value>Đăng nhập lúc {0}</value>
+  </data>
+  <data name="UCTestConnectDeviceSample.Tile.LuotGanNhat" xml:space="preserve">
+    <value>Gần nhất {0}: {1}</value>
   </data>
 </root>

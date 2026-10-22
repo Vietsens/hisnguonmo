@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -41,7 +41,12 @@ namespace Inventec.Common.TemplaterExport
 
                 if (dicData.Count > 0)
                 {
-                    store.templateDoc.Process(dicData);
+                    //Dang ky key don truoc khi Process de FuncCalc tra duoc key don khac trong cung dictionary
+                    foreach (KeyValuePair<string, object> pair in dicData)
+                    {
+                        store.DictionaryTemplateKey[pair.Key] = pair.Value;
+                    }
+                    store.templateDoc.Process(store.PrepareCalcData(dicData));
                     foreach (KeyValuePair<string, object> pair in dicData)
                     {
                         if (store.DictionaryTemplateKey.ContainsKey(pair.Key))
@@ -93,7 +98,11 @@ namespace Inventec.Common.TemplaterExport
                     }
                     else
                     {
-                        store.templateDoc.Process(dicData);
+                        foreach (KeyValuePair<string, object> pair in dicData)
+                        {
+                            store.DictionaryTemplateKey[pair.Key] = pair.Value;
+                        }
+                        store.templateDoc.Process(store.PrepareCalcData(dicData));
                     }
 
                     foreach (KeyValuePair<string, object> pair in dicData)

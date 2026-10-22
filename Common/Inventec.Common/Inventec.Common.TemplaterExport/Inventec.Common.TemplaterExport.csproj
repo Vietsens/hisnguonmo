@@ -112,6 +112,9 @@
     <Compile Include="ProcessSingleTag.cs" />
     <Compile Include="ApplicationLocationStore.cs" />
     <Compile Include="Store.cs" />
+    <Compile Include="StoreCommonFunctions.cs" />
+    <Compile Include="StoreCalcFunctions.cs" />
+    <Compile Include="CalcEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

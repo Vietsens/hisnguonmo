@@ -35,6 +35,7 @@ namespace HIS.Desktop.Plugins.SampleInfo.SampleInfo
             V_LIS_SAMPLE sample = null;
             string serviceReqCode = null;
             List< V_LIS_SAMPLE> sampleList = null;
+            DateTime? scanTime = null;
             try
             {
                 if (data.GetType() == typeof(object[]))
@@ -58,11 +59,16 @@ namespace HIS.Desktop.Plugins.SampleInfo.SampleInfo
                             {
                                 sampleList = (List<V_LIS_SAMPLE>)data[i];
                             }
+                            else if (data[i] is DateTime)
+                            {
+                                // 60557: barcode scan time, passed only by TestConnectDeviceSample
+                                scanTime = (DateTime)data[i];
+                            }
                         }
 
                         if (moduleData != null && sample != null)
                         {
-                            result = new SampleInfoBehavior(moduleData, param, sample);
+                            result = new SampleInfoBehavior(moduleData, param, sample, scanTime);
                         }
                         else if (moduleData != null && serviceReqCode != null)
                         {

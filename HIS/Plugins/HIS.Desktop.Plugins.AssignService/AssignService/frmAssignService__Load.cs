@@ -1608,7 +1608,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     var serviceTypeSereS = BackendDataWorker.Get<HIS_SERVICE_TYPE>().Where(o => serviceTypeIds.Exists(p => p == o.ID)).ToList();
                     bool IsExistSplitReqBySampleType = serviceTypeSereS.Exists(o => o.IS_SPLIT_REQ_BY_SAMPLE_TYPE == 1);
-                    if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && IsExistSplitReqBySampleType)
+                    if ((!((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1"))) && IsExistSplitReqBySampleType)
                     {
                         grcSampleType.VisibleIndex = 21;
                         serviceTypeIdSplitReq.AddRange(serviceTypeSereS.Where(o => o.IS_SPLIT_REQ_BY_SAMPLE_TYPE == 1).Select(o => o.ID));
@@ -4626,7 +4626,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && data.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == data.SERVICE_TYPE_ID))
+                if ((!((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1"))) && data.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == data.SERVICE_TYPE_ID))
                 {
                     InitComboSampleType(sampleTypeCombo);
                 }

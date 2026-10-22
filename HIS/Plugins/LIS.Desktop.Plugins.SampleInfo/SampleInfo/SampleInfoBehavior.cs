@@ -37,6 +37,7 @@ namespace HIS.Desktop.Plugins.SampleInfo.SampleInfo
         List<V_LIS_SAMPLE> sampleList = null;
         Inventec.Desktop.Common.Modules.Module Module;
         string serviceReqCode = null;
+        DateTime? scanTime = null;
         internal SampleInfoBehavior()
             : base()
         {
@@ -48,11 +49,12 @@ namespace HIS.Desktop.Plugins.SampleInfo.SampleInfo
             this.Module = module;
             this.sampleList = data;
         }
-        internal SampleInfoBehavior(Inventec.Desktop.Common.Modules.Module module, CommonParam param, V_LIS_SAMPLE data)
+        internal SampleInfoBehavior(Inventec.Desktop.Common.Modules.Module module, CommonParam param, V_LIS_SAMPLE data, DateTime? scanTime = null)
             : base()
         {
             this.Module = module;
             this.sample = data;
+            this.scanTime = scanTime;
         }
         internal SampleInfoBehavior(Inventec.Desktop.Common.Modules.Module module, CommonParam param, string data)
             : base()
@@ -73,7 +75,7 @@ namespace HIS.Desktop.Plugins.SampleInfo.SampleInfo
             {
                 if (sample != null)
                 {
-                    result = new frmSampleInfo(Module, sample);
+                    result = new frmSampleInfo(Module, sample, scanTime);
                     if (result == null) throw new NullReferenceException(LogUtil.TraceData("sample", sample));
                 }
                 else if (sampleList != null)
