@@ -1348,6 +1348,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             var tasks2 = new List<System.Threading.Tasks.Task>();
             List<long> patientIds = (treatments != null) ? treatments.Select(t => t.PATIENT_ID).Distinct().ToList() : new List<long>();
             List<string> loginnames = CollectLoginnames(underSixes, under18s, over18s, generals, dhsts, clsExts);
+            // + nguoi thuc hien y lenh CLS (V_HIS_SERE_SERV_2.EXECUTE_LOGINNAME) -> chu ky CKDT_KET_QUA_CLS (XML11).
+            loginnames = AddClsExecutorLoginnames(loginnames, clsSereServs);
             List<long> chronicTrIds = (treatments != null)
                 ? treatments.Where(t => t != null && (t.TDL_TREATMENT_TYPE_ID ?? 0) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU && t.IS_CHRONIC == 1)
                             .Select(t => t.ID).Distinct().ToList()
@@ -2258,6 +2260,23 @@ namespace HIS.Desktop.Plugins.KskSyncList
             return set.ToList();
         }
 
+        /// <summary>
+        /// Them loginname NGUOI THUC HIEN cac y lenh CLS da thuc hien (V_HIS_SERE_SERV_2.EXECUTE_LOGINNAME) vao
+        /// danh sach tra emr_signer — nguon chu ky CKDT_KET_QUA_CLS (XML11), giong EnterKskInfomantionVer2
+        /// "Lay nguoi thuc hien". Khong dua ca view vao CollectLoginnames vi se gom thua REQUEST_LOGINNAME...
+        /// </summary>
+        private static List<string> AddClsExecutorLoginnames(List<string> loginnames, List<V_HIS_SERE_SERV_2> sereServs)
+        {
+            var set = new HashSet<string>(loginnames ?? new List<string>(), StringComparer.OrdinalIgnoreCase);
+            if (sereServs != null)
+                foreach (var ss in sereServs)
+                {
+                    if (ss == null || ss.IS_NO_EXECUTE != null) continue;
+                    if (!string.IsNullOrWhiteSpace(ss.EXECUTE_LOGINNAME)) set.Add(ss.EXECUTE_LOGINNAME.Trim());
+                }
+            return set.ToList();
+        }
+
         /// <summary>emr_signer -> map loginname -> base64(SIGN_IMAGE). Khong co chu ky -> bo qua loginname do.</summary>
         private static Dictionary<string, string> BuildSignMap(List<EMR.EFMODEL.DataModels.EMR_SIGNER> signers)
         {
@@ -2426,7 +2445,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 HIS_SERE_SERV_EXT ext = ValOrNull(extBySs, ss.ID);
                 string moTa = (ext != null) ? (ext.DESCRIPTION ?? "") : "";
                 string ketLuan = (ext != null) ? (ext.CONCLUDE ?? "") : "";
-                string bacSi = (ext != null) ? (ext.SUBCLINICAL_RESULT_LOGINNAME ?? "") : "";
+                // CKDT_KET_QUA_CLS = chu ky NGUOI THUC HIEN y lenh (HIS_SERVICE_REQ.EXECUTE_LOGINNAME, co san tren
+                // V_HIS_SERE_SERV_2) — giong o "Nguoi kham" muc CLS cua EnterKskInfomantionVer2 ("Lay nguoi thuc hien").
+                // Y lenh chua co nguoi thuc hien -> du phong nguoi doc ket qua (HIS_SERE_SERV_EXT.SUBCLINICAL_RESULT_LOGINNAME) nhu cu.
+                string bacSi = (ss.EXECUTE_LOGINNAME ?? "").Trim();
+                if (bacSi.Length == 0 && ext != null) bacSi = (ext.SUBCLINICAL_RESULT_LOGINNAME ?? "").Trim();
                 string maDichVu = ss.TDL_HEIN_SERVICE_BHYT_CODE ?? "";
                 string tenDichVu = ss.TDL_HEIN_SERVICE_BHYT_NAME ?? "";
 
