@@ -258,6 +258,63 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__TXT_KEY_WORD_NULL_VALUE" xml:space="preserve">
     <value>Keyword</value>
   </data>
+  <data name="frmTreatmentList.grFundAllocation.Caption" xml:space="preserve">
+    <value>Allocate</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocation.ToolTip" xml:space="preserve">
+    <value>Guarantee insurance cost allocation</value>
+  </data>
+  <data name="frmTreatmentList.repositoryItembtnFundAllocation.Caption" xml:space="preserve">
+    <value>Allocate</value>
+  </data>
+  <data name="frmTreatmentList.repositoryItembtnFundAllocation.ToolTip" xml:space="preserve">
+    <value>Guarantee insurance cost allocation</value>
+  </data>
+  <data name="frmTreatmentList.grIsFundPay.ToolTip" xml:space="preserve">
+    <value>Mark as paid by fund</value>
+  </data>
+  <data name="frmTreatmentList.ToolTip.FundPay" xml:space="preserve">
+    <value>Mark as paid by fund</value>
+  </data>
+  <data name="frmTreatmentList.ToolTip.FundUnPay" xml:space="preserve">
+    <value>Unmark paid by fund</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationStatus.Caption" xml:space="preserve">
+    <value>Allocation status</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationStatus.ToolTip" xml:space="preserve">
+    <value>Allocation status</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationFinishUser.Caption" xml:space="preserve">
+    <value>Finalized by</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationFinishUser.ToolTip" xml:space="preserve">
+    <value>Finalized by</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationFinishTime.Caption" xml:space="preserve">
+    <value>Finalized time</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationFinishTime.ToolTip" xml:space="preserve">
+    <value>Finalized time</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationTotalPrice.Caption" xml:space="preserve">
+    <value>Allocated amount</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationTotalPrice.ToolTip" xml:space="preserve">
+    <value>Allocated insurance amount</value>
+  </data>
+  <data name="frmTreatmentList.FundAllocationStatus.NotAllocated" xml:space="preserve">
+    <value>Not allocated</value>
+  </data>
+  <data name="frmTreatmentList.FundAllocationStatus.Saved" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="frmTreatmentList.FundAllocationStatus.Finished" xml:space="preserve">
+    <value>Finalized</value>
+  </data>
+  <data name="frmTreatmentList.FundAllocationStatus.CostChanged" xml:space="preserve">
+    <value> - Costs changed</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__TXT_TREATMENT_CODE_NULL_VALUE" xml:space="preserve">
     <value>Treatment code (F1)</value>
   </data>

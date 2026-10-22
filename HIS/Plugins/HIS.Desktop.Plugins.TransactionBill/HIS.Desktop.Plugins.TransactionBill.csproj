@@ -342,6 +342,9 @@
     <Compile Include="frmTransactionBill__Plus__Control.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmTransactionBill__Plus__FundAllocation.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTransactionBill__Plus__GridFund.cs">
       <SubType>Form</SubType>
     </Compile>
