@@ -1755,9 +1755,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     .OrderBy(d => listNumOrderDocument.FindIndex(o => o.IdDocument == d.ID))
                     .ToList();
 
-                // Lấy tất cả sign (chỉ dùng khi không merge)
+                // Lay tat ca sign: ve vao TUNG van ban truoc, sau do moi ghep (neu tick gop) => tick gop van co van tay.
+                // Truoc day bo qua khi IsMerge => tai van ban gop mat chu ky benh nhan.
                 List<EMR_SIGN> allSigns = new List<EMR_SIGN>();
-                bool needInsertSign = (IsMerge != true && IsShowPatientSign == true);
+                bool needInsertSign = (IsShowPatientSign == true);
                 if (needInsertSign)
                 {
                     EmrSignViewFilter signFilter = new EmrSignViewFilter();
