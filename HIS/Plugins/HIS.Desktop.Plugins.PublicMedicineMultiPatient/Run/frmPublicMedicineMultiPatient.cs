@@ -155,7 +155,8 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
         }
 
         /// <summary>
-        /// Defaults: Tạo từ 00:00 - Tạo đến 23:59 of today, Khoa/Phòng yêu cầu = department/room of the working room, ĐTTT = all
+        /// Defaults: Tạo từ 00:00 - Tạo đến 23:59 of today, Khoa yêu cầu = department of the working room, ĐTTT = all.
+        /// Phòng yêu cầu stays empty: the ticked patients may lie in other bed rooms whose prescriptions are requested from those rooms.
         /// </summary>
         private void SetDefaultValue()
         {
@@ -173,8 +174,8 @@ namespace HIS.Desktop.Plugins.PublicMedicineMultiPatient
                     this.cboDepartment.EditValue = workplace.DepartmentId;
                     this.cboDepartment.Properties.Buttons[1].Visible = true;
                     LoadDataCboRoom(workplace.DepartmentId);
-                    this.cboRoom.EditValue = this.currentModule.RoomId;
-                    this.cboRoom.Properties.Buttons[1].Visible = true;
+                    this.cboRoom.EditValue = null;
+                    this.cboRoom.Properties.Buttons[1].Visible = false;
                 }
                 else
                 {
