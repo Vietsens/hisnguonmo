@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace Inventec.Common.TemplaterExport
 {
-    public class Store
+    public partial class Store
     {
         string templatePath;
         public Dictionary<string, object> DictionaryTemplateKey { get; set; }
@@ -53,6 +53,7 @@ namespace Inventec.Common.TemplaterExport
             bool result = false;
             try
             {
+                ResetCommonFunctionState();
                 string extension = Path.GetExtension(path);
                 if (extension == ".doc")
                 {
@@ -102,6 +103,7 @@ namespace Inventec.Common.TemplaterExport
             bool result = false;
             try
             {
+                ResetCommonFunctionState();
                 this.templatePath = Utils.GenerateTempFileWithin(templateType);
                 Utils.ByteToFile(Utils.StreamToByte(inputStream), this.templatePath);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => templatePath), templatePath));
@@ -138,6 +140,7 @@ namespace Inventec.Common.TemplaterExport
         {
             try
             {
+                this.ProcessCalcTags();
                 this.RemoveTagsWithMissing(this.templateDoc.Templater);
                 this.templateDoc.Dispose();
                 this.ProcessLisence();
@@ -234,6 +237,7 @@ namespace Inventec.Common.TemplaterExport
             MemoryStream result = null;
             try
             {
+                this.ProcessCalcTags();
                 this.RemoveTagsWithMissing(this.templateDoc.Templater);
                 this.templateDoc.Dispose();
                 this.ProcessLisence();
@@ -297,6 +301,11 @@ namespace Inventec.Common.TemplaterExport
             object result = arg1;
             try
             {
+                object resultExt = null;
+                if (arg2 != null && TryCommonFunctionExt(arg1, arg2, out resultExt))
+                {
+                    return resultExt;
+                }
                 if (arg1 != null && arg2 != null)
                 {
                     if (arg2 == "FuncPathImage")
@@ -366,6 +375,22 @@ namespace Inventec.Common.TemplaterExport
             try
             {
                 string result = "";
+                if (argument == null) return argument;
+                //Giong FlFuncNumberToString: gia tri dang phan so "a/b" -> chia roi lam tron theo tham so 1 (mac dinh 2)
+                string rawValue = argument.ToString();
+                if (rawValue.Contains("/"))
+                {
+                    var arrNumber = rawValue.Split('/');
+                    if (arrNumber.Length > 1)
+                    {
+                        decimal amountInput = System.Convert.ToDecimal(arrNumber[0]) / System.Convert.ToDecimal(arrNumber[1]);
+                        int fracDigit = 2;
+                        var fracParams = GetFunctionParameters(metadata, "FuncNumberToString");
+                        if (fracParams.Count > 0 && !int.TryParse(fracParams[0], out fracDigit)) fracDigit = 2;
+                        return Inventec.Common.Number.Convert.NumberToStringRoundAuto(amountInput, fracDigit);
+                    }
+                    return rawValue;
+                }
 
                 string uiGSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberGroupSeparator;
                 string uiDSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
@@ -506,6 +531,24 @@ namespace Inventec.Common.TemplaterExport
                 string uiGSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberGroupSeparator;
                 string uiDSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
                 vString = vString.Replace(uiGSep, "");
+                //Giong FlFuncSpeechNumberToString: tham so 1 = doc ca phan le, 2 = lam tron roi doc, mac dinh = cat phan le
+                string speechFull = "";
+                var parameters = GetFunctionParameters(metadata, "FuncSpeechNumberToString");
+                if (parameters.Count > 0) speechFull = parameters[0];
+                if (speechFull == "1")
+                {
+                    return Inventec.Common.String.Convert.CurrencyToVneseString(vString);
+                }
+                else if (speechFull == "2")
+                {
+                    decimal number;
+                    if (decimal.TryParse(vString, out number))
+                    {
+                        number = Math.Round(number, 0, MidpointRounding.AwayFromZero);
+                        return Inventec.Common.String.Convert.CurrencyToVneseString(number.ToString("0"));
+                    }
+                    return "";
+                }
                 string temp = vString.Split(new System.String[] { uiDSep }, StringSplitOptions.None)[0];
                 string values = Inventec.Common.String.Convert.CurrencyToVneseString(temp);
                 return values;
