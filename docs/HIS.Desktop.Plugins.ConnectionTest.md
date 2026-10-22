@@ -60,7 +60,10 @@ Chi tiết: `docs/A_NghiepVu_ConnectionTest_DuyetKetQua.docx`, `docs/B_KyThuat_C
 - Bổ sung riêng cho nút: còn giá trị/ghi chú chỉ số sửa chưa lưu (`Item_Edit_Value = 1`) → yêu cầu lưu trước; chỉ tích một phần dịch vụ → xác nhận "duyệt áp dụng cho toàn bộ mẫu"; Hủy duyệt → hỏi xác nhận.
 - Khóa sửa kết quả khi đã duyệt: **giữ nguyên hành vi luồng cũ** (trạng thái DUYET_KQ khóa ô giá trị, chọn giá trị, ghi chú, giá trị cũ, mô tả); không khóa thêm nút.
 - Sau Duyệt/Hủy duyệt (từ nút mới hoặc cột lưới mẫu): `SyncApproveResultToTree` cập nhật ngay trạng thái mẫu vào cây chỉ số (khóa/mở ô) và 2 cột người duyệt, không load lại kết quả. Hủy duyệt từ cột lưới mẫu nay cập nhật lại `RESULT_APPROVAL_*` trên dòng mẫu.
-- Hiển thị nút + 2 cột cùng điều kiện với cột "Duyệt KQ" trên lưới mẫu: `LIS.LIS_SAMPLE.IS_SHOW_BUTTON_APPROVE_SAMPLE = 1` hoặc `LIS.LIS_SAMPLE.MUST_APPROVE_RESULT_BEFORE_RETURN = 1`.
+- **Điều kiện hiển thị** nút + 2 cột (cùng điều kiện với cột "Duyệt KQ" `gc_ApproveResult` trên lưới mẫu): `LIS.LIS_SAMPLE.MUST_APPROVE_RESULT_BEFORE_RETURN = 1` **hoặc** `LIS.LIS_SAMPLE.IS_SHOW_BUTTON_APPROVE_SAMPLE = 1` (đọc qua `LisConfigs` trong `LisConfigCFG.LoadConfig()`, áp dụng ở `InitApproveResultControls()`). Cả 2 khác 1 → ẩn hoàn toàn.
+  - Config chỉ đọc khi mở màn hình → đổi config phải mở lại màn hình Kết nối xét nghiệm.
+  - Đã hiển thị nhưng mẫu đang chọn không ở CHAP_NHAN/CO_KQ/DUYET_KQ → nút **mờ**, không ẩn.
+  - Không thấy nút: lưới mẫu không có cột "Duyệt KQ" → bật config; có cột "Duyệt KQ" mà không có nút → máy trạm chưa nhận DLL `HIS.Desktop.Plugins.ConnectionTest.dll` mới.
 - Giới hạn: duyệt theo **mẫu (barcode)** → mọi dịch vụ của 1 mẫu cùng 1 người duyệt.
 
 ## 3. EFMODEL Sử Dụng
@@ -155,6 +158,7 @@ Luồng in tổng hợp: `RichEditorStore.RunPrintTemplate("Mps000517", Delegate
 | 13/10/2026 | vuongnd | **In tem barcode qua máy CG300 (Method 2)**: checkbox "In tem CG300" chỉ hiện khi máy trạm kết nối được CG300 (config `..._CG300_FOLDER` / `..._CG300_PROCESS_NAME`); quét mã để tìm, quét lại cùng mã để ghi file JSON `FyLabelResponseModel` vào thư mục `ALL` (ContainerCode = mã loại mẫu bệnh phẩm gán cho dịch vụ). Thêm partial `UC_ConnectionTest___CG300.cs`, thư mục `CG300/` (ADO, builder, file writer, connection checker), `Config/Cg300CFG.cs`; tách hàm dùng chung `UpdateSampleTakenAfterPrint` từ nhánh in Bartender; resource vi/en/my. |
 
 | 17/10/2026 | vuongnd | **Duyệt / Hủy duyệt KQ ở khu kết quả + key Người duyệt KQ** (dùng lại luồng Duyệt KQ cấp mẫu, không đổi DB, không phân quyền): nút `btnApproveResult` đổi trạng thái theo mẫu, 2 cột chỉ đọc "Người duyệt KQ", "TG duyệt" cuối cây chỉ số; đồng bộ trạng thái duyệt vào cây sau Duyệt/Hủy duyệt; Hủy duyệt từ cột lưới mẫu cập nhật lại `RESULT_APPROVAL_*`. Partial mới `UC_ConnectionTest___DuyetKetQua.cs`, resource vi/en/my. Mps000096/Mps000517: object `ServiceApprover` + key `SERVICE_APPROVER_STR` (Mps000096 thêm `RESULT_APPROVAL_TIME_STR`). |
+| 22/10/2026 | vuongnd | Tài liệu: bổ sung điều kiện hiển thị nút Duyệt KQ / 2 cột người duyệt (`MUST_APPROVE_RESULT_BEFORE_RETURN = 1` hoặc `IS_SHOW_BUTTON_APPROVE_SAMPLE = 1`) và bảng kiểm tra khi không thấy nút (mục 2; A_NghiepVu mục 4.1; B_KyThuat mục 6.1). |
 
 ## 9. Test Cases
 
