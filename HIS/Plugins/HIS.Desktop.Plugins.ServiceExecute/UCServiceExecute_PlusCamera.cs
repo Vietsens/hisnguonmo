@@ -121,7 +121,12 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     image.IMAGE_DISPLAY = i;
                     image.CREATOR = Loginname;
 
-                    if (AppConfigKeys.IsAutoSelectImageCapture)
+                    if (AppConfigKeys.IsAutoSelectImageByTemplate)
+                    {
+                        //Cấu hình tự tích theo key ảnh của mẫu được ưu tiên hơn cấu hình tự tích ảnh chụp
+                        Base.ImageCheckProcess.CheckNewImage(listImage, image, this.maxImageKeyOfTemplate);
+                    }
+                    else if (AppConfigKeys.IsAutoSelectImageCapture)
                     {
                         image.IsChecked = true;
                         int maxSTT = (listImage != null && listImage.Count > 0) ? listImage.Max(o => o.STTImage ?? 0) : 0;

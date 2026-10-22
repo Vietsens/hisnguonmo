@@ -945,7 +945,7 @@ namespace EMR.Desktop.Plugins.EmrTreatmentList
                         {
                             // popup yêu cầu xem
                             List<object> _listObj = new List<object>();
-                            _listObj.Add(row.ID);
+                            _listObj.Add(row.TREATMENT_CODE);
                             WaitingManager.Hide();
                             HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.EmrDocument", moduleData.RoomId, moduleData.RoomTypeId, _listObj);
                         }

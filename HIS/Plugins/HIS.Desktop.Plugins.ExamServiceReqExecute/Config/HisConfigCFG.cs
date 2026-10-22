@@ -188,6 +188,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal static bool FastTrackingCreateByServiceReq;
 
         /// <summary>
+        /// Cấu hình: HIS.Desktop.Plugins.ExamServiceReqExecute.IsKeepIcdWhenUnstart (việc 59372)
+        /// - BẬT (= 1): mở lại y lệnh khám thêm (sau Hủy bắt đầu, hoặc đóng tab rồi Xử lý lại) vẫn hiện
+        ///   chẩn đoán chính/phụ/nguyên nhân/YHCT mà chính phòng khám thêm đã lưu, kể cả khi
+        ///   IsAutoFillInformationAndIcdExam khác 1. Không lấy chẩn đoán của khám chính/hồ sơ.
+        /// - TẮT (= 0 / null — mặc định): giữ nguyên hành vi cũ.
+        /// </summary>
+        private const string CONFIG_KEY__IS_KEEP_ICD_WHEN_UNSTART = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsKeepIcdWhenUnstart";
+        internal static bool IsKeepIcdWhenUnstart;
+
+        /// <summary>
         /// Cấu hình: MOS.HIS_SERVICE_REQ.NOT_COPY_PATHOLOGICAL_PROCESS_TO_ADDITION_EXAM
         /// (dùng chung key với Backend — Backend chặn copy lúc tạo y lệnh, Frontend chặn copy lúc mở màn hình)
         /// - BẬT (= 1): KHÔNG lấy Quá trình bệnh lý từ khám chính sang khám thêm. Bác sĩ phòng khám
@@ -222,6 +232,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
 
                 EnableTreatmentPrescription = GetValue(CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION) == GlobalVariables.CommonStringTrue;
                 FastTrackingCreateByServiceReq = GetValue(CONFIG_KEY__FAST_TRACKING_CREATE_BY_SERVICE_REQ) == GlobalVariables.CommonStringTrue;
+                IsKeepIcdWhenUnstart = GetValue(CONFIG_KEY__IS_KEEP_ICD_WHEN_UNSTART) == GlobalVariables.CommonStringTrue;
 
                 IsCheckValueMaxlengthOption = GetValue(KEY_IsCheckValueMaxlengthOption);
                 IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY_IsCheckServiceFollowWhenOut) == GlobalVariables.CommonStringTrue;

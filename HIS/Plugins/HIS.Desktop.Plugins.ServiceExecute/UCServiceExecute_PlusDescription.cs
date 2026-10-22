@@ -206,6 +206,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
+
+                    if (Config.AppConfigKeys.IsAutoSelectImageByTemplate)
+                    {
+                        //Đếm key ảnh trước ProcessDescriptionContent vì hàm đó thay key bằng ảnh đang tích.
+                        //Mẫu mới ít key ảnh hơn thì bỏ tích phần thừa trước khi đổ ảnh vào mẫu
+                        this.maxImageKeyOfTemplate = Base.ImageCheckProcess.GetMaxImageKey(GettxtDescription());
+                        if (Base.ImageCheckProcess.UncheckOverImageKey(this.listImage, this.maxImageKeyOfTemplate))
+                        {
+                            cardControl.RefreshDataSource();
+                            lblNumberOfImageSelected.Text = this.listImage.Count(o => o.IsChecked).ToString() + ResourceMessage.TieuDeChonAnh;
+                        }
+                    }
                     ProcessDescriptionContent();
 
                     positionProtect = "";

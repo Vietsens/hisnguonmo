@@ -190,6 +190,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\SDA\SDA.SDO.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="Inventec.Common.RichEditor">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS">
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase">
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000521.PDO">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000521.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -219,10 +233,14 @@
     <Compile Include="frmEmpUser.Designer.cs">
       <DependentUpon>frmEmpUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmEmpUser__PrintBarcode.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="Popup\PopupMenuProcessor.cs" />
+    <Compile Include="PrintTypeCodeWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

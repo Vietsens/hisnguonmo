@@ -114,6 +114,29 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
         }
 
         /// <summary>
+        /// Đặt Content-Disposition cho 1 phần của multipart, tên trường (và tên tệp) BỌC NHÁY KÉP.
+        ///
+        /// .NET Framework tự sinh ra dạng KHÔNG bọc nháy: <c>Content-Disposition: form-data; name=username</c>.
+        /// Tầng tường lửa trước Cổng CSDL Y tế Cần Thơ từ chối bản tin dạng này, trả về trang HTML 404
+        /// "The specified URL cannot be found" (kiểm chứng 20/10/2026: cùng URL, chỉ khác dấu nháy —
+        /// không nháy trả 404, có nháy trả đúng phản hồi của cổng). RFC 7578 cũng quy định tham số name
+        /// là chuỗi bọc nháy. Vì vậy phải tự đặt header thay cho hàm Add(content, name) của .NET.
+        ///
+        /// CHỈ áp cho cổng Cần Thơ — các worker đẩy cổng khác giữ nguyên cách gọi cũ.
+        /// </summary>
+        private static HttpContent NameFormData(HttpContent content, string name, string fileName = null)
+        {
+            var disposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
+            disposition.Name = "\"" + name + "\"";
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                disposition.FileName = "\"" + fileName + "\"";
+            }
+            content.Headers.ContentDisposition = disposition;
+            return content;
+        }
+
+        /// <summary>
         /// Ghép BaseURL + path. BaseURL khai sẵn đuôi "/api" mà path cũng bắt đầu bằng "api/"
         /// thì bỏ bớt một lần để không thành ".../api/api/...".
         /// </summary>
@@ -150,8 +173,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 using (MultipartFormDataContent content = new MultipartFormDataContent())
                 {
                     client.Timeout = TimeSpan.FromSeconds(HTTP_TIMEOUT_SECOND);
-                    content.Add(new StringContent(this.username), "username");
-                    content.Add(new StringContent(this.password), "password");
+                    content.Add(NameFormData(new StringContent(this.username), "username"));
+                    content.Add(NameFormData(new StringContent(this.password), "password"));
 
                     string loginUrl = BuildUrl(this.loginApi);
                     HttpResponseMessage response = await client.PostAsync(loginUrl, content);
@@ -269,8 +292,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     ByteArrayContent fileContent = new ByteArrayContent(xmlBytes);
                     fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/xml");
                     string fileName = (string.IsNullOrEmpty(maLk) ? "data" : maLk) + ".xml";
-                    content.Add(fileContent, "file", fileName);
-                    content.Add(new StringContent("3176"), "type");
+                    content.Add(NameFormData(fileContent, "file", fileName));
+                    content.Add(NameFormData(new StringContent("3176"), "type"));
 
                     string importUrl = BuildUrl(this.importApi);
                     HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, importUrl);

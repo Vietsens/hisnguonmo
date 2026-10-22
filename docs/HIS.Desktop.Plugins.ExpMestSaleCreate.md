@@ -25,6 +25,12 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 - Flag `savePrintInvoice` reset trong `finally` của `btnSaveSignPrint_Click` và catch của `ProcessSave`.
 - Nút "Lưu in" giữ nguyên luồng cũ.
 
+### Ô tích "In HDSD" (việc 56651 — 20/10/2026, BV HAGL)
+- Ô `chkInHDSD` **"In HDSD:"** ngay sau "Xem trước khi in" (tooltip "In hướng dẫn sử dụng thuốc ngay sau khi lưu thành công"). Mặc định không tích, nhớ theo máy (ControlState khóa `chkInHDSD`). Không key config.
+- Tích → `ProcessSave`, sau khối in của Lưu in và sau khi trả `savePrint = false`: `if (success && chkInHDSD.Checked) PrintHdsdAfterSave()` → in **Mps000099** sau mọi lần lưu thành công (Lưu, Lưu in, Lưu ký in), trước `MessageManager.Show` và trước form Xuất hóa đơn (Lưu ký in / key `Show_MedicineSaleBill`).
+- `PrintHdsdAfterSave` bật cờ `isAutoPrintHdsd` rồi gọi `onClickInHuongDanSuDung` (đường in có sẵn, nhiều bệnh nhân → mỗi bệnh nhân 1 bản). `GetHdsdPreviewType`: in tự động theo "Xem trước khi in" (tích → ShowDialog, không tích → PrintNow); in từ menu In giữ theo `CheDoInChoCacChucNangTrongPhanMem`.
+- Key `IS_MUST_BE_FINISHED_BEFORED_PRINTING` chỉ chặn phiếu xuất bán, không chặn HDSD (như in HDSD từ menu).
+
 ### Đính kèm đơn thuốc (việc 57853 — 29/09/2026)
 - Gate: `MOS.HAS_CONNECTION_EMR = 1` **và** `HIS.Desktop.Plugins.ExpMestSaleCreate.AttachPrescription.IsEnable = 1` (mặc định 0). Tắt → **không tạo nút**, giao diện như cũ.
 - Nút **"Đính kèm đơn"** tạo lúc runtime (`InitAttachPrescriptionButton`, partial `UCExpMestSaleCreate___AttachPrescription.cs`), chèn bên trái "Hủy xuất" bằng item-move (`LayoutControlItem.Move(layoutControlItem1, InsertType.Left)`), cố định 120px.
@@ -61,7 +67,7 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 | Chọn thuốc/vật tư (Ctrl F) | Số lượng | Số ngày | Giá | VAT | Chiết khấu ...  |
 | Lưới thuốc/vật tư đã kê                         | Lưới tồn kho (bên phải)    |
 +------------------------------------------------------------------------------+
-| Tự động hiển thị tồn ☐ | Ký đơn nhà thuốc ☐ | Xem trước khi in ☑              |
+| Tự động hiển thị tồn ☐ | Ký đơn nhà thuốc ☐ | Xem trước khi in ☑ | In HDSD ☐  |
 | Hủy xuất (Ctrl H) | [Lưu ký in (Ctrl E)] | Lưu in (F9) | Lưu (F5) | Mới | Đơn mới |
 | In ▾ | QR | Xuất hóa đơn (F10) | Xác nhận nợ                                    |
 +------------------------------------------------------------------------------+
@@ -101,7 +107,7 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 ### Library
 | Library | Mục đích |
 |---------|----------|
-| HIS.Desktop.Library.CacheClient.ControlStateWorker | Nhớ checkbox (Xem trước khi in, Xuất biên lai/hóa đơn, POS, Ký đơn) |
+| HIS.Desktop.Library.CacheClient.ControlStateWorker | Nhớ checkbox (Xem trước khi in, Xuất biên lai/hóa đơn, POS, Ký đơn, In HDSD) |
 | Inventec.Common.RichEditor.RichEditorStore | In phiếu xuất bán / hóa đơn biên lai / HDSD |
 | **HIS.Desktop.Plugins.Library.ExpMestAttachFile** (mới, 57853) | Chọn tệp/chụp ảnh (HIS.Desktop.Plugins.Camera), kiểm tra định dạng/dung lượng, gộp PDF, lưu EMR (EXPSA), danh sách đơn đính kèm |
 
@@ -111,13 +117,14 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 |---------|--------------|---------|
 | Phiếu xuất bán | theo `InitMenuPrint` (menu In) | `onClickInPhieuXuatBan` — Lưu in không tick "Xuất biên lai/hóa đơn" |
 | Hóa đơn/biên lai xuất bán | Mps000339 | `onClickInHoaDonBienLaiXuatBan` — Lưu in khi tick "Xuất biên lai/hóa đơn" |
-| Hướng dẫn sử dụng thuốc | Mps000099 | menu In |
+| Hướng dẫn sử dụng thuốc | Mps000099 | menu In (theo cấu hình máy); tự in sau mọi lần lưu thành công khi tích "In HDSD" (theo "Xem trước khi in") — việc 56651 |
 | Hóa đơn điện tử (3082) | — | In thẳng tại form MedicineSaleBill (DocumentViewerManager.Print) sau "Lưu ký in" |
 
 ## 8. Changelog
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 20/10/2026 | dangth | **Việc 56651 (BV HAGL)** — Ô tích "In HDSD" sau "Xem trước khi in": tích thì tự in Hướng dẫn sử dụng thuốc (Mps000099) sau mọi lần lưu thành công, chế độ in theo "Xem trước khi in"; nhớ theo máy (ControlState `chkInHDSD`). Hàng nút dưới: bỏ `emptySpaceItem1` (47px), thu "Ký đơn nhà thuốc" 185→154px; các nút từ "Hủy xuất" giữ nguyên vị trí. In HDSD từ menu In không đổi. Sửa kèm `InitControlState`: `SPIN_BASE_VALUE` đọc bằng `Convert.ToDecimal` (lưu bằng `decimal.ToString()`, `ToInt64` ném lỗi với giá trị lẻ làm dừng nạp các khóa sau) và trả cờ `isNotLoadWhileChangeControlStateInFirst` trong catch. |
 | 02/10/2026 | nampp | **Việc 57853 (chỉ enable khi đã lưu)** — Nút "Đính kèm đơn" chỉ enable khi phiếu xuất đã lưu (EDIT + có phiếu); phiếu chưa lưu disable. `moduleAction` đổi từ auto-property sang property có setter gọi `RefreshAttachPrescriptionButtonState` (về ADD thì bỏ `attachExpMests`). Bỏ chế độ giữ tệp tạm trên màn Xuất bán (gỡ hỏi xác nhận ở Mới / Đơn mới, giải phóng ảnh khi đóng tab). Bán nhiều bệnh nhân → cảnh báo đính kèm tại Danh sách xuất. |
 | 02/10/2026 | nampp | **Việc 57853 (tên văn bản mặc định)** — Tên mặc định đổi thành **"Đơn thuốc ngoại viện của mã phiếu xuất {EXP_MEST_CODE}"** (key `frmExpMestAttachFile.DefaultDocumentName` có `{0}`). Phiếu đã lưu: điền sẵn theo mã phiếu. Phiếu chưa lưu: ô tên để trống + gợi ý (`...txtDocumentName.NullText.Pending`), lưu phiếu xong tên được dựng theo mã của TỪNG phiếu (`ExpMestAttachFileProcessor.GetDefaultDocumentName`); người dùng tự gõ tên thì giữ nguyên. |
 | 02/10/2026 | nampp | **Việc 57853 (gắn đúng mã hồ sơ + mã xuất)** — Tài liệu EMR: `TreatmentCode` = `TDL_TREATMENT_CODE` (bán vãng lai không có hồ sơ → `EXP_MEST_CODE`), vẫn `IsOutsideTreatment = true`; `HIS_CODE` thêm khối chuẩn `|EXP_MEST_CODE:x|EXP_STOCK:y|REQ_DEPT:z` để EMR (`HisCodeStockParser`) ghi cột `EMR_DOCUMENT.EXP_MEST_CODE` / `EXP_MEDI_STOCK_CODE` / `REQ_DEPARTMENT_CODE` (trước đây không có `|` nên các cột này NULL). Danh sách đơn + đánh dấu lọc `TREATMENT_CODEs` = mã hồ sơ + mã phiếu rồi khớp theo `EMR_DOCUMENT.EXP_MEST_CODE` (fallback tách từ `HIS_CODE`) → tài liệu tạo trước đó vẫn nhận ra. |
@@ -156,3 +163,13 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 - [ ] Sau lưu bấm Mới / Đơn mới → nút disable lại; Lưu thất bại → nút vẫn disable.
 - [ ] Mở sửa phiếu từ Danh sách xuất / tìm theo mã đơn đã có phiếu → nút enable ngay.
 - [ ] Tài khoản không có quyền module Camera → bấm Chụp ảnh báo thông báo, không lỗi.
+
+### Việc 56651 — Ô tích "In HDSD"
+- [ ] Mở màn: ô "In HDSD" ngay sau "Xem trước khi in", chưa tích, có tooltip; 1366x768 không mất chữ hàng nút.
+- [ ] Không tích + Lưu in: chỉ in phiếu xuất bán như cũ.
+- [ ] Tích "In HDSD" + tích "Xem trước khi in" + Lưu in: xem trước phiếu xuất bán → đóng → xem trước HDSD đúng thuốc của phiếu.
+- [ ] Bỏ tích "Xem trước khi in" + Lưu in: in thẳng phiếu xuất bán rồi HDSD, không mở màn nào.
+- [ ] Tích "Xuất biên lai/hóa đơn" + Lưu in: in hóa đơn/biên lai rồi HDSD.
+- [ ] Lưu (Ctrl S / F5): chỉ in HDSD. Lưu ký in: HDSD rồi luồng HĐĐT 3082 như cũ.
+- [ ] Lưu thất bại: không in HDSD. Nhiều bệnh nhân 1 lượt: mỗi bệnh nhân 1 bản HDSD.
+- [ ] Đóng mở lại màn / tắt client: ô giữ trạng thái; máy khác chưa tích vẫn chưa tích. Menu In ▸ Hướng dẫn sử dụng thuốc như cũ.

@@ -339,6 +339,7 @@
     <Compile Include="ADO\ThreadSereServADO.cs" />
     <Compile Include="ApplicationCaptureTypeWorker.cs" />
     <Compile Include="Base\AcsUserADO.cs" />
+    <Compile Include="Base\ImageCheckProcess.cs" />
     <Compile Include="ConfigKeys.cs" />
     <Compile Include="Config\AppConfigKeys.cs" />
     <Compile Include="Config\ServiceExecuteCFG.cs" />

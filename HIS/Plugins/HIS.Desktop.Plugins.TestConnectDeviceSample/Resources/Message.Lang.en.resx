@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CongDangDuocSuDung" xml:space="preserve">
+    <value>Port {0} is in use by another program.</value>
+  </data>
+  <data name="KhongMoDuocCong" xml:space="preserve">
+    <value>Cannot open port {0}: the scanner is not plugged in or the port does not exist.</value>
+  </data>
+  <data name="KhongMoDuocCongLoiKhac" xml:space="preserve">
+    <value>Cannot open port {0}.</value>
+  </data>
+  <data name="CongDaKetNoi" xml:space="preserve">
+    <value>Port {0} is already connected.</value>
+  </data>
+  <data name="DaKetNoiCong" xml:space="preserve">
+    <value>{0} connected. Scan a staff card to sign in.</value>
+  </data>
+  <data name="DaNgatKetNoiCong" xml:space="preserve">
+    <value>{0} disconnected.</value>
+  </data>
+  <data name="CongChuaKetNoi" xml:space="preserve">
+    <value>Port {0} is not connected.</value>
+  </data>
+  <data name="TaiKhoanKhongTonTai" xml:space="preserve">
+    <value>Card {0}: no active account found.</value>
+  </data>
+  <data name="TaiKhoanDaKhoa" xml:space="preserve">
+    <value>Card {0}: the account is locked.</value>
+  </data>
+  <data name="KhongTraCuuDuocTaiKhoan" xml:space="preserve">
+    <value>Cannot look up account {0}.</value>
+  </data>
+  <data name="DaDangNhap" xml:space="preserve">
+    <value>{0}: {1} signed in.</value>
+  </data>
+  <data name="CongDangDangNhapTaiKhoan" xml:space="preserve">
+    <value>{0} is already signed in as {1}.</value>
+  </data>
+  <data name="ChuyenTaiKhoanSangCongKhac" xml:space="preserve">
+    <value>{0}: {1} signed out because the account signed in on {2}.</value>
+  </data>
+  <data name="CongChuaCoNguoiLayMau" xml:space="preserve">
+    <value>{0} has no sampler. Please scan an account card first.</value>
+  </data>
+  <data name="KhongXacDinhPhongLamViec" xml:space="preserve">
+    <value>The working room is unknown. Reopen the device connection screen from the sampling room.</value>
+  </data>
+  <data name="LoiTraCuuMau" xml:space="preserve">
+    <value>Cannot look up samples for code {0}.</value>
+  </data>
+  <data name="KhongCoMauChoLay" xml:space="preserve">
+    <value>No sample is waiting for code {0} since {1} in this room. Older samples: scan the requisition or pick it on the Sample collection screen.</value>
+  </data>
+  <data name="MauDaLay" xml:space="preserve">
+    <value>Sample {0} was collected at {1} by {2}.</value>
+  </data>
+  <data name="TrungMauNhieuHoSo" xml:space="preserve">
+    <value>Code {0} matches samples of {1} treatments ({2}). Pick it on the Sample collection screen.</value>
+  </data>
+  <data name="HoSoDaKetThucDieuTri" xml:space="preserve">
+    <value>The treatment has ended. Sampling is not allowed.</value>
+  </data>
+  <data name="YLenhHenGio" xml:space="preserve">
+    <value>Order {0} is scheduled at {1}; the sample cannot be collected yet.</value>
+  </data>
+  <data name="ChuaCoQuyenThongTinLayMau" xml:space="preserve">
+    <value>The signed-in account has no permission for the Sample information function.</value>
+  </data>
+  <data name="ChuaCoQuyenThietBiLayMau" xml:space="preserve">
+    <value>The signed-in account has no permission for the sampling device function.</value>
+  </data>
+  <data name="TieuDePopupLayMau" xml:space="preserve">
+    <value>{0} – {1} – Sampler: {2}</value>
+  </data>
+  <data name="DaLayMau" xml:space="preserve">
+    <value>{0}: sample {1} collected – {2} – sampler {3}.</value>
+  </data>
+  <data name="DongPopupChuaLuu" xml:space="preserve">
+    <value>{0}: Sample information {1} closed without saving.</value>
+  </data>
+  <data name="DaNhanChoXuLy" xml:space="preserve">
+    <value>{0}: received {1}; it will be processed when the open window closes ({2} waiting).</value>
+  </data>
+  <data name="MatKetNoiCong" xml:space="preserve">
+    <value>{0}: scanner connection lost. Reconnect and scan the card.</value>
+  </data>
+  <data name="NhatKyDangNhap" xml:space="preserve">
+    <value>Sampling device: {1} signed in on {0} at {2}.</value>
+  </data>
+  <data name="NhatKyDangXuat" xml:space="preserve">
+    <value>Sampling device: {1} signed out of {0}. Reason: {2}.</value>
+  </data>
+  <data name="NhatKyChanThe" xml:space="preserve">
+    <value>Sampling device: {0} is signed in as {1}; card {2} was blocked.</value>
+  </data>
+  <data name="NhatKyDoiNguoiLayMau" xml:space="preserve">
+    <value>Sampling device: sample {0} (order {1}) scanned on {2} signed in as {3}; the saved sampler is {4}.</value>
+  </data>
+  <data name="LyDoNgatKetNoi" xml:space="preserve">
+    <value>port disconnected</value>
+  </data>
+  <data name="LyDoDongMan" xml:space="preserve">
+    <value>device connection screen closed</value>
+  </data>
+  <data name="LyDoMatKetNoi" xml:space="preserve">
+    <value>scanner connection lost</value>
+  </data>
+  <data name="LyDoChuyenCong" xml:space="preserve">
+    <value>the account signed in on {0}</value>
+  </data>
+  <data name="BoLuotQuetDoCongNgat" xml:space="preserve">
+    <value>{0}: scan {1} dropped because the port was disconnected or lost. Reconnect, scan the card, then scan again.</value>
+  </data>
+  <data name="KhongCoMauChoLayTheoMaYLenh" xml:space="preserve">
+    <value>No sample is waiting for code {0} in this room (searched by barcode since {1} and by order code). Pick it on the Sample collection screen.</value>
+  </data>
+  <data name="CongDangDangNhapNguoiKhac" xml:space="preserve">
+    <value>{0} is signed in as {1} since {2}. Click "Signed-in list" → Sign out {1} (or Disconnect and Connect {0} again), then scan the card again.</value>
+  </data>
+</root>

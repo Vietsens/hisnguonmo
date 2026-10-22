@@ -99,6 +99,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         private Dictionary<string, object> dicParam;
         private Dictionary<string, Image> dicImage;
         private List<ADO.ImageADO> listImage;
+        //Số key ảnh IMAGE_DATA_n lớn nhất của mẫu đang chọn - dùng khi bật AppConfigKeys.IsAutoSelectImageByTemplate. null: chưa chọn mẫu
+        private int? maxImageKeyOfTemplate;
         private ADO.ImageADO currentDataClick;
         private Common.DelegateRefresh RefreshData;
         private List<ADO.ServiceADO> listServiceADO;
@@ -1590,6 +1592,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     txtSereServTempCode.Text = "";
                     cboSereServTemp.EditValue = null;
                     cboSereServTemp.Properties.Buttons[1].Visible = false;
+                    this.maxImageKeyOfTemplate = null;
 
                     Inventec.Common.Logging.LogSystem.Debug("3.2.1");
 
@@ -3005,6 +3008,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     cboSereServTemp.EditValue = null;
                     ClearDocument();
                     cboSereServTemp.Properties.Buttons[1].Visible = false;
+                    this.maxImageKeyOfTemplate = null;
                 }
             }
             catch (Exception ex)
@@ -3144,7 +3148,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                if (obj != null)
+                if (obj != null && AppConfigKeys.IsAutoSelectImageByTemplate)
+                {
+                    //Form xem ảnh tích ảnh riêng => kiểm tra lại số key ảnh khi trả về
+                    Base.ImageCheckProcess.ReorderCheckedStt(obj);
+                    if (Base.ImageCheckProcess.UncheckOverImageKey(obj, this.maxImageKeyOfTemplate))
+                        XtraMessageBox.Show("Đã đủ số ảnh theo mẫu kết quả", ResourceMessage.ThongBao);
+                    this.listImage = ProcessOrderImage(obj);
+
+                    cardControl.RefreshDataSource();
+                    lblNumberOfImageSelected.Text = (((listImage != null && listImage.Count > 0) ? listImage.Where(o => o.IsChecked).Count() : 0).ToString()) + ResourceMessage.TieuDeChonAnh;
+                }
+                else if (obj != null)
                 {
                     this.listImage = ProcessOrderImage(obj);
                     Inventec.Common.Logging.LogSystem.Info("SaveImageData");
@@ -3186,6 +3201,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         {
                             tileView1.DeleteRow(dataItem.RowHandle);
                         }
+
+                        if (AppConfigKeys.IsAutoSelectImageByTemplate)
+                        {
+                            //Xóa 1 ảnh đang tích => các ảnh sau dồn lên cho liền số
+                            Base.ImageCheckProcess.ReorderCheckedStt(listImage);
+                            cardControl.RefreshDataSource();
+                            lblNumberOfImageSelected.Text = (((listImage != null && listImage.Count > 0) ? listImage.Where(o => o.IsChecked).Count() : 0).ToString()) + ResourceMessage.TieuDeChonAnh;
+                        }
                     }
                 }
             }
@@ -3206,6 +3229,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkedRows), checkedRows));
                     if (checkedRows != null && checkedRows.Count() > 0)
                     {
+                        //Ảnh được tự tích nên Delete (xóa mọi ảnh đang tích) dễ xóa nhầm => hỏi trước
+                        if (AppConfigKeys.IsAutoSelectImageByTemplate
+                            && XtraMessageBox.Show(String.Format("Xóa {0} ảnh đang chọn?", this.listImage.Count(o => o.IsChecked)), ResourceMessage.ThongBao, MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            return;
+
                         var listImagedelete = this.listImage.Where(o => o.IsChecked == true).ToList();
                         string clientCode = currentServiceReq.TDL_TREATMENT_CODE;
                         List<Image> images = null;
@@ -3405,7 +3433,17 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             try
             {
                 StopTimer(moduleData.ModuleLink, "timerDoubleClick");
-                if (this.currentDataClick != null)
+                if (this.currentDataClick != null && AppConfigKeys.IsAutoSelectImageByTemplate
+                    && this.currentDataClick.IsChecked && Base.ImageCheckProcess.IsOverImageKey(this.listImage, this.maxImageKeyOfTemplate))
+                {
+                    //Chặn ở đây (sau khi hết thời gian chờ double click) để không phá cơ chế click/double click của tileView
+                    this.currentDataClick.IsChecked = false;
+                    this.currentDataClick.STTImage = null;
+                    this.currentDataClick = null;
+                    cardControl.RefreshDataSource();
+                    XtraMessageBox.Show("Đã đủ số ảnh theo mẫu kết quả", ResourceMessage.ThongBao);
+                }
+                else if (this.currentDataClick != null)
                 {
                     ProcessRefeshImageOrder(this.currentDataClick);
 
@@ -3506,7 +3544,19 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                if (currentData.IsChecked)
+                if (AppConfigKeys.IsAutoSelectImageByTemplate)
+                {
+                    //Tích: nhận STT cuối. Bỏ tích: các ảnh sau dồn lên, giữ nguyên thứ tự (không sắp theo tên file)
+                    if (currentData.IsChecked)
+                    {
+                        currentData.STTImage = listImage.Where(o => o != currentData && o.IsChecked).Select(o => o.STTImage ?? 0).DefaultIfEmpty(0).Max() + 1;
+                    }
+                    else
+                    {
+                        Base.ImageCheckProcess.ReorderCheckedStt(listImage);
+                    }
+                }
+                else if (currentData.IsChecked)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("ProcessRefeshImageOrder.1");
                     List<int> listSTT = listImage != null ? listImage.Select(o => o.STTImage ?? 0).Distinct().ToList() : new List<int>();
@@ -4296,7 +4346,33 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     ofd.FilterIndex = 0;
                     ofd.Multiselect = true;
 
-                    if (ofd.ShowDialog() == DialogResult.OK)
+                    DialogResult dialogResult = ofd.ShowDialog();
+                    if (dialogResult == DialogResult.OK && AppConfigKeys.IsAutoSelectImageByTemplate)
+                    {
+                        if (listImage == null) listImage = new List<ADO.ImageADO>();
+
+                        //Thứ tự FileNames phụ thuộc thao tác chọn chuột nên sắp theo tên file.
+                        //Ảnh thêm trước được tích trước, đến khi đủ số key ảnh của mẫu
+                        foreach (var file in ofd.FileNames.OrderBy(o => o))
+                        {
+                            Image img = Image.FromFile(file);
+                            string fileName = file.Split('\\').LastOrDefault();
+
+                            if (listImage.Exists(o => o.FileName == fileName)) continue;
+
+                            ADO.ImageADO image = new ADO.ImageADO();
+                            image.CREATOR = Loginname;
+                            image.FileName = fileName;
+                            image.IsChecked = false;
+                            image.IMAGE_DISPLAY = img;
+                            byte[] buff = System.IO.File.ReadAllBytes(file);
+                            image.streamImage = new System.IO.MemoryStream(buff);
+                            Base.ImageCheckProcess.CheckNewImage(listImage, image, this.maxImageKeyOfTemplate);
+
+                            listImage.Add(image);
+                        }
+                    }
+                    else if (dialogResult == DialogResult.OK)
                     {
                         if (listImage == null) listImage = new List<ADO.ImageADO>();
 
@@ -4382,6 +4458,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         }
 
                         ProcessChangeImage(edit, img);
+                        if (AppConfigKeys.IsAutoSelectImageByTemplate)
+                        {
+                            //Đổi ảnh xong ảnh bị bỏ tích (STT = null) => các ảnh sau dồn lên cho liền số
+                            Base.ImageCheckProcess.ReorderCheckedStt(listImage);
+                        }
 
                         cardControl.RefreshDataSource();
                         lblNumberOfImageSelected.Text = (((listImage != null && listImage.Count > 0) ? listImage.Where(o => o.IsChecked).Count() : 0).ToString()) + ResourceMessage.TieuDeChonAnh;
@@ -9766,6 +9847,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     ProcessLoadGridImage(listImage);
                     StartCamera();
                 }, (int)cboConnectionType.EditValue, currentServiceReq, camMonikerString, Loginname, SelectedFolderForSaveImage, chkAutoCapture.Checked, Int32.Parse(spnTotalCapture.Value.ToString()));
+                frm.MaxImageKeyOfTemplate = this.maxImageKeyOfTemplate;
                 frm.ShowDialog();
             }
             catch (Exception ex)

@@ -8225,7 +8225,40 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             }
         }
 
-       
+        private void chkInHDSD_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (UCExpMestSaleCreate.currentControlStateRDO != null && UCExpMestSaleCreate.currentControlStateRDO.Count > 0) ? UCExpMestSaleCreate.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.CHK_IN_HDSD && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkInHDSD.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.CHK_IN_HDSD;
+                    csAddOrUpdate.VALUE = (chkInHDSD.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (UCExpMestSaleCreate.currentControlStateRDO == null)
+                        UCExpMestSaleCreate.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    UCExpMestSaleCreate.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                UCExpMestSaleCreate.controlStateWorker.SetData(UCExpMestSaleCreate.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
     public class BankInfo
     {
