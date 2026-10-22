@@ -19,7 +19,6 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.Plugins.ConnectionTest.ADO;
-using HIS.Desktop.Plugins.ConnectionTest.Config;
 using Inventec.Desktop.Common.LanguageManager;
 using System;
 using System.Collections.Generic;
@@ -45,25 +44,22 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         #region DuyetKetQua - Init
 
         /// <summary>
-        /// Gán caption/tooltip + ẩn/hiện nút và 2 cột người duyệt.
+        /// Gán caption/tooltip nút và 2 cột người duyệt.
         /// Gọi SAU InitRestoreLayoutTreeListFromXml: layout XML cũ không chứa 2 cột mới.
-        /// Hiển thị cùng điều kiện với cột "Duyệt KQ" trên lưới mẫu (VisibleColumnSample).
+        /// Nút luôn hiển thị như nút "Duyệt KQ theo lô" (không phụ thuộc config); Enabled/Caption theo trạng thái mẫu.
+        /// 2 cột mặc định ẩn như các cột ẩn khác của cây chỉ số, người dùng tự bật qua Column Chooser
+        /// (trạng thái ẩn/hiện được lưu bởi InitRestoreLayoutTreeListFromXml) -> không set Visible ở đây.
         /// </summary>
         private void InitApproveResultControls()
         {
             try
             {
-                bool isVisible = LisConfigCFG.SHOW_BUTTON_APPROVE == "1" || LisConfigCFG.MUST_APPROVE_RESULT == "1";
-                this.lciApproveResult.Visibility = isVisible
-                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
-                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.lciApproveResult.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
                 this.colResultApprover.Caption = GetLangValue("UC_ConnectionTest.colResultApprover.Caption", "Người duyệt KQ");
                 this.colResultApprover.ToolTip = GetLangValue("UC_ConnectionTest.colResultApprover.ToolTip", "Người duyệt kết quả");
                 this.colResultApproveTime.Caption = GetLangValue("UC_ConnectionTest.colResultApproveTime.Caption", "TG duyệt");
                 this.colResultApproveTime.ToolTip = GetLangValue("UC_ConnectionTest.colResultApproveTime.ToolTip", "Thời gian duyệt kết quả");
-                this.colResultApprover.Visible = isVisible;
-                this.colResultApproveTime.Visible = isVisible;
 
                 UpdateApproveResultButton();
             }

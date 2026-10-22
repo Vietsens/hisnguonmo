@@ -60,10 +60,11 @@ Chi tiết: `docs/A_NghiepVu_ConnectionTest_DuyetKetQua.docx`, `docs/B_KyThuat_C
 - Bổ sung riêng cho nút: còn giá trị/ghi chú chỉ số sửa chưa lưu (`Item_Edit_Value = 1`) → yêu cầu lưu trước; chỉ tích một phần dịch vụ → xác nhận "duyệt áp dụng cho toàn bộ mẫu"; Hủy duyệt → hỏi xác nhận.
 - Khóa sửa kết quả khi đã duyệt: **giữ nguyên hành vi luồng cũ** (trạng thái DUYET_KQ khóa ô giá trị, chọn giá trị, ghi chú, giá trị cũ, mô tả); không khóa thêm nút.
 - Sau Duyệt/Hủy duyệt (từ nút mới hoặc cột lưới mẫu): `SyncApproveResultToTree` cập nhật ngay trạng thái mẫu vào cây chỉ số (khóa/mở ô) và 2 cột người duyệt, không load lại kết quả. Hủy duyệt từ cột lưới mẫu nay cập nhật lại `RESULT_APPROVAL_*` trên dòng mẫu.
-- **Điều kiện hiển thị** nút + 2 cột (cùng điều kiện với cột "Duyệt KQ" `gc_ApproveResult` trên lưới mẫu): `LIS.LIS_SAMPLE.MUST_APPROVE_RESULT_BEFORE_RETURN = 1` **hoặc** `LIS.LIS_SAMPLE.IS_SHOW_BUTTON_APPROVE_SAMPLE = 1` (đọc qua `LisConfigs` trong `LisConfigCFG.LoadConfig()`, áp dụng ở `InitApproveResultControls()`). Cả 2 khác 1 → ẩn hoàn toàn.
-  - Config chỉ đọc khi mở màn hình → đổi config phải mở lại màn hình Kết nối xét nghiệm.
-  - Đã hiển thị nhưng mẫu đang chọn không ở CHAP_NHAN/CO_KQ/DUYET_KQ → nút **mờ**, không ẩn.
-  - Không thấy nút: lưới mẫu không có cột "Duyệt KQ" → bật config; có cột "Duyệt KQ" mà không có nút → máy trạm chưa nhận DLL `HIS.Desktop.Plugins.ConnectionTest.dll` mới.
+- **Điều kiện hiển thị** (22/10/2026 — theo nút "Duyệt KQ theo lô"):
+  - Nút `btnApproveResult` **luôn hiển thị**, không phụ thuộc config (giống `btnApproveListResult`). Mẫu đang chọn không ở CHAP_NHAN/CO_KQ/DUYET_KQ → nút **mờ**.
+  - 2 cột "Người duyệt KQ", "TG duyệt" **mặc định ẩn** như các cột ẩn khác của cây chỉ số; người dùng bật qua chuột phải tiêu đề cột → Column Chooser. Ẩn/hiện được lưu bởi `InitRestoreLayoutTreeListFromXml` (config `HIS.Desktop.ApplyRestoreLayout.ModuleLinks`).
+  - Lý do bỏ điều kiện config: config `LIS.*` chỉ nạp khi HIS cấu hình LIS nội bộ (`MOS.LIS.INTEGRATION_VERSION`/`INTEGRATE_OPTION`/`INTEGRATION_TYPE`); môi trường không nạp được thì nút bị ẩn dù `IS_SHOW_BUTTON_APPROVE_SAMPLE = 1`.
+  - Không thấy nút → máy trạm chưa nhận DLL `HIS.Desktop.Plugins.ConnectionTest.dll` mới.
 - Giới hạn: duyệt theo **mẫu (barcode)** → mọi dịch vụ của 1 mẫu cùng 1 người duyệt.
 
 ## 3. EFMODEL Sử Dụng
@@ -93,8 +94,8 @@ Chi tiết: `docs/A_NghiepVu_ConnectionTest_DuyetKetQua.docx`, `docs/B_KyThuat_C
 | `cboServiceGroup` ("Nhóm XN:") | CheckedComboBoxEdit | Khu filter, cạnh "Phòng" (`lciServiceGroup`) | Multi-select; `SeparatorChar=';'`, `SelectAllItemVisible=true` ("(Tất cả)") |
 | `btnInKetQuaTongHop` ("In KQ tổng hợp") | SimpleButton | Nhóm nút dưới-trái, cạnh "Duyệt KQ theo lô" (`lciInKetQuaTongHop`) | — |
 | `chkPrintBarcodeCG300` ("In tem CG300") | CheckEdit (tạo runtime) | Bên phải ô tìm kiếm (`lciPrintBarcodeCG300`) | Chỉ hiện khi kết nối CG300; nhớ trạng thái qua ControlState `chkPrintBarcodeCG300` |
-| `btnApproveResult` ("Duyệt KQ" / "Hủy duyệt KQ") | SimpleButton | Hàng nút dưới, trước "Thêm người ký" (`lciApproveResult`) | Hiện theo config duyệt KQ (mục 2) |
-| `colResultApprover` ("Người duyệt KQ"), `colResultApproveTime` ("TG duyệt") | TreeListColumn chỉ đọc | Cuối cây chỉ số (`treeListSereServTein`) | FieldName `RESULT_APPROVER_USERNAME`, `RESULT_APPROVE_TIME_STR` (ADO `TestLisResultADO`), chỉ có giá trị ở dòng dịch vụ |
+| `btnApproveResult` ("Duyệt KQ" / "Hủy duyệt KQ") | SimpleButton | Hàng nút dưới, trước "Thêm người ký" (`lciApproveResult`) | Luôn hiển thị (như "Duyệt KQ theo lô") |
+| `colResultApprover` ("Người duyệt KQ"), `colResultApproveTime` ("TG duyệt") | TreeListColumn chỉ đọc, **mặc định ẩn** (bật qua Column Chooser) | Cuối cây chỉ số (`treeListSereServTein`) | FieldName `RESULT_APPROVER_USERNAME`, `RESULT_APPROVE_TIME_STR` (ADO `TestLisResultADO`), chỉ có giá trị ở dòng dịch vụ |
 
 Cả hai hiển thị mặc định, **không cần config bật/tắt**.
 
@@ -159,6 +160,7 @@ Luồng in tổng hợp: `RichEditorStore.RunPrintTemplate("Mps000517", Delegate
 
 | 17/10/2026 | vuongnd | **Duyệt / Hủy duyệt KQ ở khu kết quả + key Người duyệt KQ** (dùng lại luồng Duyệt KQ cấp mẫu, không đổi DB, không phân quyền): nút `btnApproveResult` đổi trạng thái theo mẫu, 2 cột chỉ đọc "Người duyệt KQ", "TG duyệt" cuối cây chỉ số; đồng bộ trạng thái duyệt vào cây sau Duyệt/Hủy duyệt; Hủy duyệt từ cột lưới mẫu cập nhật lại `RESULT_APPROVAL_*`. Partial mới `UC_ConnectionTest___DuyetKetQua.cs`, resource vi/en/my. Mps000096/Mps000517: object `ServiceApprover` + key `SERVICE_APPROVER_STR` (Mps000096 thêm `RESULT_APPROVAL_TIME_STR`). |
 | 22/10/2026 | vuongnd | Tài liệu: bổ sung điều kiện hiển thị nút Duyệt KQ / 2 cột người duyệt (`MUST_APPROVE_RESULT_BEFORE_RETURN = 1` hoặc `IS_SHOW_BUTTON_APPROVE_SAMPLE = 1`) và bảng kiểm tra khi không thấy nút (mục 2; A_NghiepVu mục 4.1; B_KyThuat mục 6.1). |
+| 22/10/2026 | vuongnd | Nút "Duyệt KQ / Hủy duyệt KQ" **luôn hiển thị** như nút "Duyệt KQ theo lô" (bỏ điều kiện config `MUST_APPROVE_RESULT_BEFORE_RETURN`/`IS_SHOW_BUTTON_APPROVE_SAMPLE` — môi trường không nạp được config LIS thì nút bị ẩn); 2 cột "Người duyệt KQ", "TG duyệt" mặc định ẩn, bật qua Column Chooser. Cập nhật A_NghiepVu mục 4.1/4.2/8/9/11, B_KyThuat mục 4/6.1/9/10. |
 
 ## 9. Test Cases
 
@@ -185,7 +187,7 @@ Luồng in tổng hợp: `RichEditorStore.RunPrintTemplate("Mps000517", Delegate
 - [ ] Hồi quy: In barcode Bartender vẫn cập nhật trạng thái lấy mẫu như trước.
 
 ### Duyệt / Hủy duyệt KQ ở khu kết quả
-- [ ] Config duyệt KQ tắt → không thấy nút "Duyệt KQ" và 2 cột người duyệt.
+- [ ] Mở màn hình với mọi cấu hình → luôn có nút "Duyệt KQ"; 2 cột người duyệt mặc định ẩn, bật qua Column Chooser, mở lại màn hình vẫn giữ.
 - [ ] Mẫu Có KQ → bấm "Duyệt KQ" → mẫu Duyệt KQ, cột Người duyệt = tài khoản đăng nhập, TG duyệt = giờ bấm, ô kết quả bị khóa, nút đổi "Hủy duyệt KQ".
 - [ ] Sửa giá trị chỉ số chưa lưu rồi bấm Duyệt → yêu cầu lưu trước.
 - [ ] Bỏ tích một số dịch vụ rồi bấm Duyệt → hỏi xác nhận duyệt toàn bộ mẫu.
