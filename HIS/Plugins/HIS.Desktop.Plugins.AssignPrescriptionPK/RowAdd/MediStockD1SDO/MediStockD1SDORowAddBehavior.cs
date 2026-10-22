@@ -268,7 +268,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
                     valid = valid && this.ValidTutorialAndUseForm();
                     valid = valid && ValidAcinInteractiveWorker.ValidGrade(this.DataRow, MediMatyTypeADOs, ref frmAssignPrescription.txtInteractionReason, frmAssignPrescription);
                     valid = valid && this.ValidThuocDaKeTrongNgay();
-                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob);
+                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds);
                     valid = valid && ValidThuocWithContraindicaterWarningOption();
                     valid = valid && WarningOddConvertWorker.CheckWarningOddConvertAmount(frmAssignPrescription.currentMedicineTypeADOForEdit, this.Amount, frmAssignPrescription.ResetFocusMediMaty);
                     valid = valid && ValidAcinInteractiveWorker.ValidSameAcin(MediMatyTypeADOs, frmAssignPrescription.currentMedicineTypeADOForEdit);

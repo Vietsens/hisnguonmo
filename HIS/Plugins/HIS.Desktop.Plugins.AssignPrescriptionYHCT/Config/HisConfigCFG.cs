@@ -348,11 +348,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         }
 
         bool isCheckAssignServiceSimultaneityOption = false;
+        /// <summary>
+        /// Việc 59043 — Tuỳ chọn khi kê thuốc cho bệnh nhân ngoài khoảng "Tuổi từ - Tuổi đến" của thuốc:
+        /// 1 = Cảnh báo (hộp thoại xác nhận, cho phép tiếp tục kê); 0 / trống / khác = Chặn (mặc định, như hiện nay)
+        /// </summary>
+        private const string CONFIG_KEY__MedicineAgeLimitOption = "HIS.Desktop.Plugins.AssignPrescription.MedicineAgeLimitOption";
+        internal static string MedicineAgeLimitOption;
+
         internal static void LoadConfig()
         {
             try
             {
                 IsCheckPharmacology = GetValue(CONFIG_KEY__IS_CHECK_PHARMACOLOGY);
+                MedicineAgeLimitOption = GetValue(CONFIG_KEY__MedicineAgeLimitOption);
                 ConnectDrugInterventionInfo = GetValue(CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO);
                 IsCheckMimsPregnancyLactation = GetValue(CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION);
 

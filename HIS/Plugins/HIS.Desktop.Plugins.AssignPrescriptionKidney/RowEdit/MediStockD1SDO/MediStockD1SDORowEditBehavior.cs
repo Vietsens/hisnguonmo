@@ -178,7 +178,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Edit.MediStockD1SDO
                 {
                     valid = valid && this.ValidTutorial();
                     valid = valid && ValidAcinInteractiveWorker.Valid(this.DataRow, MediMatyTypeADOs);
-                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob);
+                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds);
                 }
 
                 valid = valid && this.ValidKhaDungThuocTrongKho();
