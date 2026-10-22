@@ -5624,23 +5624,16 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         case 2:
                             // Đồng bộ với thư viện: type 2 = ẢNH + CHỮ "đã ký" (trước đây bị coi là chỉ ảnh giống case 0).
                             cbo.AddImage(image);
-                            cbo.ShowTextAligned(
-                                PdfContentByte.ALIGN_CENTER, signText,
-                                (float)itemSign.COOR_X_RECTANGLE, textY, 0f);
+                            DrawSignText(cbo, signText, (float)itemSign.COOR_X_RECTANGLE, textY);
                             break;
 
                         case 1:
-                            // KHÔNG BeginText/EndText — ShowTextAligned tự lo text state
-                            cbo.ShowTextAligned(
-                                PdfContentByte.ALIGN_CENTER, signText,
-                                (float)itemSign.COOR_X_RECTANGLE, textY, 0f);
+                            DrawSignText(cbo, signText, (float)itemSign.COOR_X_RECTANGLE, textY);
                             break;
 
                         default:
                             cbo.AddImage(image);
-                            cbo.ShowTextAligned(
-                                PdfContentByte.ALIGN_CENTER, signText,
-                                (float)itemSign.COOR_X_RECTANGLE, textY, 0f);
+                            DrawSignText(cbo, signText, (float)itemSign.COOR_X_RECTANGLE, textY);
                             break;
                     }
                 }
@@ -5649,12 +5642,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     LogSystem.Warn(string.Format(
                         "[FingerPrintSize][EmrDocument][{0}] Dong ky ID={1} KHONG CO SIGN_IMAGE => chi ve dong chu tai (X={2}, Y={3}). Neu server da bake anh vao PDF thi anh phai co san trong file goc",
                         callerTag, itemSign.ID, itemSign.COOR_X_RECTANGLE, (float)itemSign.COOR_Y_RECTANGLE - signShiftDown));
-                    cbo.ShowTextAligned(
-                        PdfContentByte.ALIGN_CENTER, signText,
-                        (float)itemSign.COOR_X_RECTANGLE,
-                        (float)itemSign.COOR_Y_RECTANGLE - signShiftDown, 0f);
+                    DrawSignText(cbo, signText, (float)itemSign.COOR_X_RECTANGLE, (float)itemSign.COOR_Y_RECTANGLE - signShiftDown);
                 }
-                // ⚠ KHÔNG gọi cbo.EndText() ở đây — chưa từng BeginText thủ công!
             }
             finally
             {
@@ -5663,6 +5652,23 @@ namespace HIS.Desktop.Plugins.EmrDocument
         }
 
         // Đồng bộ với thư viện SignLibrary (WaterMarkProcess): ngưỡng nhận diện ảnh vân tay + hệ số lấp đầy khung khi hiển thị.
+        /// <summary>
+        /// Ve dong chu "... da ky" can giua tai (x, y). PHAI boc BeginText/EndText: iTextSharp chi tu mo BT khi tai lieu
+        /// tagged, con PdfStamper thuong thi ShowTextAligned ghi Tj ngoai BT/ET => chu khong hien khi in (giong WaterMarkProcess).
+        /// </summary>
+        private static void DrawSignText(PdfContentByte cbo, string text, float x, float y)
+        {
+            cbo.BeginText();
+            try
+            {
+                cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, text, x, y, 0f);
+            }
+            finally
+            {
+                cbo.EndText();
+            }
+        }
+
         private const float FINGERPRINT_ASPECT_MAX = 1.3f;
         private const float FINGERPRINT_SCALE_MIN = 0.5f;
         private const float FINGERPRINT_SCALE_MAX = 3.0f;
