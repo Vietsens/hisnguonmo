@@ -259,6 +259,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         this.isNotChangeTutorial = false;
                         WaitingManager.Hide();
                         LogSystem.Debug("LoadPrescriptionForEdit => 8");
+                        this.ProcessNotifyMedicineTypeAgeOnEdit();
                     }
                     else
                         CheckAssignServiceSimultaneityOption();

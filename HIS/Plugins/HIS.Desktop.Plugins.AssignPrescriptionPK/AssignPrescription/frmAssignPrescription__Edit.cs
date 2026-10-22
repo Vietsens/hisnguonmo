@@ -393,6 +393,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                         this.isNotProcessWhileChangedTextSubIcd = false;
                         WaitingManager.Hide();
+                        this.ProcessNotifyMedicineTypeAgeOnEdit();
                     }
                 }
             }
