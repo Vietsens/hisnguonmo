@@ -807,6 +807,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     this.LoadDataToIcdSub();
                 }
+                else if (HisConfigCFG.IsKeepIcdWhenUnstart
+                    && (!String.IsNullOrEmpty(this.HisServiceReqView.ICD_CODE) || !String.IsNullOrEmpty(this.HisServiceReqView.ICD_SUB_CODE)))
+                {
+                    // 59372: addition exam keeps the diagnosis its own room saved (BE never copies the main exam's ICD
+                    // into an addition exam), so this does not bring back the main exam/treatment ICD blocked above.
+                    this.LoadIcdToControl(this.HisServiceReqView.ICD_CODE, this.HisServiceReqView.ICD_NAME);
+                    this.LoadIcdCauseToControl(this.HisServiceReqView.ICD_CAUSE_CODE, this.HisServiceReqView.ICD_CAUSE_NAME);
+                    this.LoadDataToIcdSub();
+                }
 
                 this.btnAggrExam.Enabled = (this.treatment != null && this.treatment.IS_PAUSE == 1);
             }
