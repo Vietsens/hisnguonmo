@@ -1487,6 +1487,20 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             }
         }
 
+        private void ValidationHeinCardNumber()
+        {
+            try
+            {
+                ValidateHeinCardNumber valid = new ValidateHeinCardNumber();
+                valid.txtControl = txtHeinCardNumber;
+                dxValidationProvider1.SetValidationRule(txtHeinCardNumber, valid);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void ValidateAgeRelativeName()
         {
             try
@@ -1534,7 +1548,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 //ValidationMaxLength(txtSickUserName, 50);
                 //ValidationMaxLength(txtWorkPlace, 100);
                 ValidationMaxLength(txtTreatmentMethod, 3000);
-                ValidationMaxLength(txtHeinCardNumber, 20);
+                ValidationHeinCardNumber();
                 ValidationMaxLength(txtEndTypeExtNote, 1000);
                 ValidMaxLengthRequired(false, txtPregnancyTerminationReason, 1000, null);
                 ValidateRelativeType();
