@@ -61,6 +61,22 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
         #region Declare
         int rowCount = 0;
         int dataTotal = 0;
+
+        /// <summary>
+        /// Cot can lay tu V_EMR_DOCUMENT cho man nay (gui qua ColumnParams de backend chi SELECT dung cac cot nay
+        /// thay vi D.* ~110 cot). Gom: cot luoi (FieldName), cot nguon cua cot unbound, va cot code dang doc.
+        /// Dung them thuoc tinh nao cua dong van ban thi PHAI bo sung vao day, neu khong gia tri se la null.
+        /// </summary>
+        private static readonly List<string> ViewColumns = new List<string>
+        {
+            "ID", "TREATMENT_ID", "TREATMENT_CODE", "PATIENT_CODE", "VIR_PATIENT_NAME", "DOB", "IS_HAS_NOT_DAY_DOB", "GENDER_NAME",
+            "DOCUMENT_CODE", "DOCUMENT_NAME", "DOCUMENT_TYPE_ID", "DOCUMENT_TYPE_CODE", "DOCUMENT_TYPE_NAME", "DOCUMENT_FILE_TYPE", "MERGE_CODE",
+            "CREATE_TIME", "CREATE_DATE", "CREATOR", "MODIFY_TIME", "MODIFIER", "IS_ACTIVE", "IS_DELETE", "IS_OUTSIDE_TREATMENT",
+            "NEXT_SIGNER", "REJECTER", "REJECT_REASON", "REJECT_TIME", "COUNT_RESIGN_WAIT", "COUNT_RESIGN_FAILED", "COUNT_RESIGN_SUCCESS",
+            "STORE_TIME", "DEPARTMENT_CODE", "CURRENT_DEPARTMENT_CODE", "CURRENT_DEPARTMENT_NAME",
+            "EXP_MEST_CODE", "IMP_MEST_CODE", "EXP_MEDI_STOCK_CODE", "IMP_MEDI_STOCK_CODE", "REQ_DEPARTMENT_CODE",
+            "RAW_KIND", "PAPER_NAME", "WIDTH", "HEIGHT", "HIS_CODE", "CANCEL_LOGINNAME", "CANCEL_USERNAME", "CANCEL_REASON"
+        };
         int startPage = 0;
         private string LoggingName = "";
         long roomId = 0;
@@ -374,6 +390,8 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             {
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 filter.ORDER_DIRECTION = "DESC";
+                //Chi lay dung cac cot man nay dung (xem ViewColumns) -> tang ngoai cua backend khong keo ~110 cot/dong.
+                filter.ColumnParams = ViewColumns;
 
                 if (!String.IsNullOrEmpty(txtKeyWord.Text))
                 {
@@ -428,12 +446,15 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
 
                 if (dtCreateTimeFrom.EditValue != null && dtCreateTimeFrom.DateTime != DateTime.MinValue)
                 {
-                    filter.CREATE_TIME_FROM = Convert.ToInt64(dtCreateTimeFrom.DateTime.ToString("yyyyMMdd") + "000000");
+                    //Loc theo CREATE_DATE (yyyyMMdd000000) thay vi CREATE_TIME: o ngay tren form la ngay tron nen ket qua
+                    //khong doi, nhung EMR_DOCUMENT co index theo CREATE_DATE (EMR_DOCUMENT_INDEX5 tu 2020) con CREATE_TIME
+                    //thi khong co index dung dau -> vien du lieu lon bi quet ca bang, mo man cham/treo.
+                    filter.CREATE_DATE_FROM = Convert.ToInt64(dtCreateTimeFrom.DateTime.ToString("yyyyMMdd") + "000000");
                 }
 
                 if (dtCreateTimeTo.EditValue != null && dtCreateTimeTo.DateTime != DateTime.MinValue)
                 {
-                    filter.CREATE_TIME_TO = Convert.ToInt64(dtCreateTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
+                    filter.CREATE_DATE_TO = Convert.ToInt64(dtCreateTimeTo.DateTime.ToString("yyyyMMdd") + "000000");
                 }
 
                 if (this.documentTypeSelecteds != null && this.documentTypeSelecteds.Count() > 0)
@@ -691,6 +712,8 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
 
                 InitComboSTT(LoadDataToComboStatus());
                 InitStatusChkOtherDocuments();
+                //Nap cau hinh EMR_CONFIG cua man (so ngay loc mac dinh) truoc khi gan gia tri mac dinh
+                EMR.Desktop.Plugins.EmrDocumentListAll.Config.ConfigKey.GetConfigKey();
                 //Gan gia tri mac dinh
                 SetDefaultValueControl();
 
@@ -1501,9 +1524,21 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                 //ResetWarehouseCombo cung ban SelectionChanged; nut Lam lai da tu tim roi
                 //nen tat co, tranh tim 2 lan.
                 warehouseComboDirty = false;
+                //Khoang ngay tao mac dinh: EMR_CONFIG "EMR.EMR_DOCUMENT.LIST_ALL.DAY_NUMBER" > 0 -> tu hom nay lui n ngay den hom nay
+                //(vien du lieu lon nen dat 7); khong cau hinh -> dau thang den cuoi thang nhu truoc.
                 DateTime now = DateTime.Now;
-                var startDate = new DateTime(now.Year, now.Month, 1);
-                var endDate = startDate.AddMonths(1).AddDays(-1);
+                DateTime startDate;
+                DateTime endDate;
+                if (EMR.Desktop.Plugins.EmrDocumentListAll.Config.ConfigKey.ListAllDayNumber > 0)
+                {
+                    startDate = now.Date.AddDays(-EMR.Desktop.Plugins.EmrDocumentListAll.Config.ConfigKey.ListAllDayNumber);
+                    endDate = now.Date;
+                }
+                else
+                {
+                    startDate = new DateTime(now.Year, now.Month, 1);
+                    endDate = startDate.AddMonths(1).AddDays(-1);
+                }
 
                 dtCreateTimeFrom.DateTime = startDate;
                 dtCreateTimeTo.DateTime = endDate;

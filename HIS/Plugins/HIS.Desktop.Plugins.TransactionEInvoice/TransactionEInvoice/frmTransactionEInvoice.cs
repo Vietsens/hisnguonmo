@@ -181,8 +181,11 @@ namespace HIS.Desktop.Plugins.TransactionEInvoice.TransactionEInvoice
                 {
                     ElectronicBillDataInput DataInput = new ElectronicBillDataInput();
                     //DataInput.Transaction = AutoMapper.Mapper.Map<HIS_TRANSACTION>(HisTransaction);
+                    DataInput.Transaction = new HIS_TRANSACTION();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(DataInput.Transaction, this.HisTransaction);
                     //DataInput.Transaction = HisTransaction;
+                    DataInput.EinvoiceTypeId = HisTransaction.EINVOICE_TYPE_ID;
+                    DataInput.TransactionCode = HisTransaction.TRANSACTION_CODE;
                     DataInput.InvoiceCode = txtInvoiceCode.Text.Trim();
                     DataInput.ENumOrder = txtEinvoiceNumOrder.Text.Trim();
                     DataInput.TemplateCode = HisTransaction.TEMPLATE_CODE;

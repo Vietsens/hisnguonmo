@@ -125,6 +125,7 @@ namespace HIS.UC.UCHeniInfo
                 this.txtSoThe.EditValueChanged -= new System.EventHandler(this.txtSoThe_EditValueChanged);
                 this.txtSoThe.TextChanged -= new System.EventHandler(this.txtSoThe_TextChanged);
                 this.txtSoThe.KeyDown -= new System.Windows.Forms.KeyEventHandler(this.txtSoThe_KeyDown);
+                this.txtSoThe.Properties.BeforeShowMenu -= this.txtSoThe_Properties_BeforeShowMenu;
                 this.txtSoThe.Leave -= new System.EventHandler(this.txtSoThe_Leave);
                 this.cboSoThe.Properties.GetNotInListValue -= new DevExpress.XtraEditors.Controls.GetNotInListValueEventHandler(this.cboSoThe_Properties_GetNotInListValue);
                 this.cboSoThe.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboSoThe_Closed);

@@ -131,6 +131,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             try
             {
                 InitializeComponent();
+                this.txtSoThe.Properties.BeforeShowMenu += this.txtSoThe_Properties_BeforeShowMenu;
                 if (data != null)
                 {
                     this.entity = data;
@@ -330,6 +331,27 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             return result;
         }
 
+        /// <summary>
+        /// Chon ma doi tuong KCB tu danh muc. Thu lan luot tung nhom, nhom dau cho ra ket qua thi dung:
+        /// 1. Ban ghi khai Dung/Trai tuyen trung voi ho so (hanh vi cu).
+        /// 2. Ban ghi bo ca Dung tuyen va Trai tuyen => khong xet tuyen, chi xet cac yeu to con lai.
+        /// Chua chon Loai (Dung tuyen/Trai tuyen) thi chi co nhom 2.
+        /// </summary>
+        private HIS_HEIN_PATIENT_TYPE ChooseHeinPatientType(List<HIS_HEIN_PATIENT_TYPE> heinData, string rightRouteCode, string rightRouteTypeCode, string dkbdCode)
+        {
+            if (!string.IsNullOrEmpty(rightRouteCode))
+            {
+                var byRoute = FilterHeinPatientTypeByOtherCriteria(heinData.Where(o => o.RIGHT_ROUTE_CODE == rightRouteCode).ToList(), rightRouteTypeCode);
+                if (byRoute.Count > 0)
+                {
+                    var item = GetHeinPatientTypeByMediOrgPriority(byRoute, dkbdCode);
+                    if (item != null) return item;
+                }
+            }
+            var noRoute = FilterHeinPatientTypeByOtherCriteria(heinData.Where(o => string.IsNullOrEmpty(o.RIGHT_ROUTE_CODE)).ToList(), rightRouteTypeCode);
+            return noRoute.Count > 0 ? GetHeinPatientTypeByMediOrgPriority(noRoute, dkbdCode) : null;
+        }
+
         private void InitComboPatientCode()
         {
             try
@@ -353,17 +375,9 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                             rightRouteTypeCode = routeType;
                     }
 
-                    // Buoc 1: ban ghi danh muc khai dung Dung/Trai tuyen cua ho so (hanh vi cu).
-                    // Buoc 2 (du phong): ban ghi bo ca Dung tuyen va Trai tuyen => khong xet tuyen, chi xet cac yeu to con lai.
-                    // Chua chon Loai (Dung tuyen/Trai tuyen) thi chi co buoc 2.
-                    if (!string.IsNullOrEmpty(rightRouteCode))
-                        heinList = FilterHeinPatientTypeByOtherCriteria(heinData.Where(o => o.RIGHT_ROUTE_CODE == rightRouteCode).ToList(), rightRouteTypeCode);
-                    if (heinList.Count == 0)
-                        heinList = FilterHeinPatientTypeByOtherCriteria(heinData.Where(o => string.IsNullOrEmpty(o.RIGHT_ROUTE_CODE)).ToList(), rightRouteTypeCode);
-
-                    if (heinList.Count > 0 && this.HeinPatientCode == null)
+                    if (this.HeinPatientCode == null)
                     {
-                        var minItem = GetHeinPatientTypeByMediOrgPriority(heinList, (txtMaDKKCBBD.Text ?? "").Trim());
+                        var minItem = ChooseHeinPatientType(heinData, rightRouteCode, rightRouteTypeCode, (txtMaDKKCBBD.Text ?? "").Trim());
                         cboPatientCode.EditValue = minItem != null ? minItem.HEIN_PATIENT_TYPE_CODE : null;
                     }
                     else
@@ -2026,6 +2040,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 this.txtSoThe.InvalidValue -= new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.txtSoThe_InvalidValue);
                 this.txtSoThe.EditValueChanged -= new System.EventHandler(this.txtSoThe_EditValueChanged);
                 this.txtSoThe.KeyDown -= new System.Windows.Forms.KeyEventHandler(this.txtSoThe_KeyDown);
+                this.txtSoThe.Properties.BeforeShowMenu -= this.txtSoThe_Properties_BeforeShowMenu;
 
                 this.cboSoThe.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboSoThe_Closed);
                 this.cboSoThe.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.cboSoThe_KeyUp);

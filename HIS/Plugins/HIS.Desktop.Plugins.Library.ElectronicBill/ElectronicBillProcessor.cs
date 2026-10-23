@@ -479,6 +479,30 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             var vnpt = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT);
                             serviceConfig = string.Format("{0}|{1}", ProviderType.VNPT, vnpt != null ? vnpt.VALUE : "");
                             break;
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__CTO:
+                            var cto = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__CTO);
+                            serviceConfig = string.Format("{0}|{1}", ProviderType.CTO, cto != null ? cto.VALUE : "");
+                            break;
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__MOBIFONE:
+                            var mobifone = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__MOBIFONE);
+                            serviceConfig = string.Format("{0}|{1}", ProviderType.MOBIFONE, mobifone != null ? mobifone.VALUE : "");
+                            break;
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__CYBERBILL:
+                            var cyberbill = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__CYBERBILL);
+                            serviceConfig = string.Format("{0}|{1}", ProviderType.CYBERBILL, cyberbill != null ? cyberbill.VALUE : "");
+                            break;
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__SOFTDREAM:
+                            var sodr = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__SOFTDREAM);
+                            serviceConfig = string.Format("{0}|{1}", ProviderType.SoftDream, sodr != null ? sodr.VALUE : "");
+                            break;
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__MINVOICE:
+                            var minvoice = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__MINVOICE);
+                            serviceConfig = string.Format("{0}|{1}", ProviderType.MINVOICE, minvoice != null ? minvoice.VALUE : "");
+                            break;
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNINVOICE:
+                            var vninvoice = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNINVOICE);
+                            serviceConfig = string.Format("{0}|{1}", ProviderType.VNINVOICE, vninvoice != null ? vninvoice.VALUE : "");
+                            break;
                         default:
                             break;
                     }
@@ -549,7 +573,38 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                         invoiceCode = _electronicBillDataInput.InvoiceCode;
                         result = true;
                         break;
+                    case ProviderType.BACH_MAI:
+                        invoiceSys = ProviderType.BACH_MAI;
+                        invoiceCode = _electronicBillDataInput.InvoiceCode;
+                        result = true;
+                        break;
+                    case ProviderType.MOBIFONE:
+                        invoiceSys = ProviderType.MOBIFONE;
+                        invoiceCode = _electronicBillDataInput.InvoiceCode;
+                        result = true;
+                        break;
+                    case ProviderType.CYBERBILL:
+                        // CyberBill: INVOICE_CODE = magiaodich do CyberBill tra ve khi tao hoa don (dung lai khi huy/chuyen doi)
+                        invoiceSys = ProviderType.CYBERBILL;
+                        invoiceCode = _electronicBillDataInput.InvoiceCode;
+                        result = true;
+                        break;
+                    case ProviderType.MINVOICE:
+                        invoiceSys = ProviderType.MINVOICE;
+                        invoiceCode = _electronicBillDataInput.InvoiceCode;
+                        result = true;
+                        break;
+                    case ProviderType.VNINVOICE:
+                        invoiceSys = ProviderType.VNINVOICE;
+                        invoiceCode = _electronicBillDataInput.InvoiceCode;
+                        result = true;
+                        break;
                     default:
+                        if (errorMess == null) errorMess = "";
+                        if (String.IsNullOrEmpty(provider))
+                            errorMess += "Không xác định được nhà cung cấp hóa đơn điện tử. Vui lòng kiểm tra loại HĐĐT của giao dịch/sổ thu chi hoặc key cấu hình HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.CONFIG.";
+                        else
+                            errorMess += string.Format("Chức năng liên kết hóa đơn điện tử chưa hỗ trợ nhà cung cấp '{0}'.", provider);
                         break;
                 }
             }
