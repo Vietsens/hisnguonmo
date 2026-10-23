@@ -192,14 +192,24 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
         private void btnApproveResult_Click(object sender, EventArgs e)
         {
+            long? sampleId = null;
             try
             {
-                var row = (LisSampleADO)gridViewSample.GetFocusedRow();
-                if (row == null || rowSample == null || row.ID != rowSample.ID)
+                // Thao tác trên mẫu đang hiển thị kết quả (rowSample), không phụ thuộc dòng đang focus:
+                // handler Duyệt/Hủy duyệt cấp mẫu làm mới lưới bằng FocusedRowHandle - 1 / + 1 -> mẫu ở dòng đầu bị đẩy focus sang dòng 2.
+                if (rowSample == null)
                 {
                     UpdateApproveResultButton();
                     return;
                 }
+                sampleId = rowSample.ID;
+                // Handler cấp mẫu đọc dòng đang focus -> đưa focus về đúng mẫu đang hiển thị
+                if (!FocusSampleRow(sampleId.Value))
+                {
+                    UpdateApproveResultButton();
+                    return;
+                }
+                var row = (LisSampleADO)gridViewSample.GetFocusedRow();
 
                 if (this.isApproveResultMode)
                 {
@@ -221,6 +231,40 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            finally
+            {
+                // Trả focus về mẫu vừa thao tác (handler cấp mẫu có thể đã đẩy focus sang dòng khác)
+                if (sampleId.HasValue)
+                    FocusSampleRow(sampleId.Value);
+                UpdateApproveResultButton();
+            }
+        }
+
+        /// <summary>
+        /// Focus dòng mẫu theo ID trên lưới mẫu. Trả về false nếu mẫu không còn trên lưới.
+        /// </summary>
+        private bool FocusSampleRow(long sampleId)
+        {
+            bool result = false;
+            try
+            {
+                for (int i = 0; i < gridViewSample.DataRowCount; i++)
+                {
+                    var data = gridViewSample.GetRow(i) as LisSampleADO;
+                    if (data != null && data.ID == sampleId)
+                    {
+                        if (gridViewSample.FocusedRowHandle != i)
+                            gridViewSample.FocusedRowHandle = i;
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         /// <summary>
