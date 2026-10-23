@@ -628,7 +628,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                 Inventec.Common.Logging.LogSystem.Debug("LoadPaging.1");
                 EMR.Filter.EmrTreatmentFilter Emrfilter = new EMR.Filter.EmrTreatmentFilter();
-                if (chkSTORE_CODE.Checked)
+                //Chi loc theo ma luu tru khi ho so THUC SU co ma luu tru; khong co thi roi ve ma dieu tri,
+                //tranh gui EmrTreatment/Get voi filter trong.
+                bool filterByStoreCode = chkSTORE_CODE.Checked && !String.IsNullOrWhiteSpace(emrTreatmentStoreCode);
+                if (filterByStoreCode)
                 {
                     Emrfilter.STORE_CODE__EXACT = emrTreatmentStoreCode;
                 }
@@ -646,7 +649,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         txtTreatmentCode.Text = code;
                     }
 
-                    if (!chkSTORE_CODE.Checked)
+                    if (!filterByStoreCode)
                     {
                         Emrfilter.TREATMENT_CODE__EXACT = code;
                     }
@@ -657,11 +660,37 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     Emrfilter.TREATMENT_CODEs = this.treatmentCodes;
                 }
 
+                //CHOT CHAN 1: khong xac dinh duoc ho so dieu tri thi KHONG goi API.
+                //Truoc day EmrTreatment/Get va EmrDocument/GetView van duoc goi voi filter trong
+                //(payload chi co IS_DELETE + ORDER_FIELD) -> backend quet ca bang, may tram treo.
+                bool hasTreatmentFilter = !String.IsNullOrWhiteSpace(Emrfilter.TREATMENT_CODE__EXACT)
+                    || !String.IsNullOrWhiteSpace(Emrfilter.STORE_CODE__EXACT)
+                    || (Emrfilter.TREATMENT_CODEs != null && Emrfilter.TREATMENT_CODEs.Count > 0);
+                if (!hasTreatmentFilter)
+                {
+                    string msgNoTreatment = (String.IsNullOrWhiteSpace(this.treatmentCode) && this._TreatmentId > 0)
+                        ? String.Format("Không tìm thấy hồ sơ điều trị (ID {0}) trên hệ thống EMR. Vui lòng kiểm tra lại.", this._TreatmentId)
+                        : "Chưa có mã điều trị. Vui lòng nhập mã điều trị để xem văn bản.";
+                    StopLoadWithoutTreatment(msgNoTreatment);
+                    return;
+                }
+
                 Inventec.Common.Logging.LogSystem.Debug("LoadPaging.1.1");
 
                 var treatments = new BackendAdapter(new CommonParam()).Get<List<EMR_TREATMENT>>("api/EmrTreatment/Get", ApiConsumer.ApiConsumers.EmrConsumer, Emrfilter, null);
 
                 Inventec.Common.Logging.LogSystem.Debug("LoadPaging.1.2");
+
+                //CHOT CHAN 2: ma dieu tri phai ton tai tren EMR (EMR_TREATMENT). Khong co thi bao nguoi dung
+                //va dung, KHONG goi EmrDocument/GetView.
+                if (treatments == null || treatments.Count == 0)
+                {
+                    string codeNotFound = !String.IsNullOrWhiteSpace(Emrfilter.TREATMENT_CODE__EXACT) ? Emrfilter.TREATMENT_CODE__EXACT
+                        : (!String.IsNullOrWhiteSpace(Emrfilter.STORE_CODE__EXACT) ? ("mã lưu trữ " + Emrfilter.STORE_CODE__EXACT)
+                        : String.Join(", ", Emrfilter.TREATMENT_CODEs));
+                    StopLoadWithoutTreatment(String.Format("Không tìm thấy hồ sơ điều trị {0} trên hệ thống EMR. Vui lòng kiểm tra lại mã điều trị.", codeNotFound));
+                    return;
+                }
 
                 if (treatments != null && treatments.Count > 0)
                 {
@@ -721,6 +750,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
 
+                    //Bao dam luon co dieu kien ho so khi goi GetView: SetFilterNavBar khong gan duoc
+                    //thi dung chinh danh sach ho so vua xac thuc tren EMR o tren (treatments).
+                    if (!HasTreatmentCondition(filter.TREATMENT_ID, filter.TREATMENT_IDs))
+                    {
+                        filter.TREATMENT_IDs = treatments.Select(o => o.ID).Distinct().ToList();
+                    }
                     apiResult = new BackendAdapter(paramCommon).GetRO<List<EmrDocumentADO>>(HIS.Desktop.Plugins.EmrDocument.EmrRequestUriStore.EMR_DOCUMENT_GET_MERGE_VIEW, ApiConsumers.EmrConsumer, filter, paramCommon);
 
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.4.1");
@@ -751,6 +786,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
 
+                    //Bao dam luon co dieu kien ho so khi goi GetView: SetFilterNavBar khong gan duoc
+                    //thi dung chinh danh sach ho so vua xac thuc tren EMR o tren (treatments).
+                    if (!HasTreatmentCondition(filter.TREATMENT_ID, filter.TREATMENT_IDs))
+                    {
+                        filter.TREATMENT_IDs = treatments.Select(o => o.ID).Distinct().ToList();
+                    }
                     apiResult = new BackendAdapter(paramCommon).GetRO<List<EmrDocumentADO>>(HIS.Desktop.Plugins.EmrDocument.EmrRequestUriStore.EMR_DOCUMENT_GET_VIEW, ApiConsumers.EmrConsumer, filter, paramCommon);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => apiResult), apiResult));
 
@@ -1120,6 +1161,37 @@ namespace HIS.Desktop.Plugins.EmrDocument
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Co dieu kien ho so dieu tri (1 ID hoac danh sach ID) de loc van ban hay khong.
+        /// </summary>
+        private bool HasTreatmentCondition(long? treatmentId, List<long> treatmentIds)
+        {
+            return (treatmentId.HasValue && treatmentId.Value > 0) || (treatmentIds != null && treatmentIds.Count > 0);
+        }
+
+        /// <summary>
+        /// Dung tai van ban khi khong xac dinh duoc ho so dieu tri: xoa luoi, dua so dong ve 0 va bao nguoi dung.
+        /// KHONG goi bat ky API nao o day.
+        /// </summary>
+        private void StopLoadWithoutTreatment(string message)
+        {
+            try
+            {
+                listData = new List<EmrDocumentADO>();
+                lstDataPage = new List<EmrDocumentADO>();
+                treeListDocument.DataSource = new BindingList<EmrDocumentADO>();
+                rowCount = 0;
+                dataTotal = 0;
+                Inventec.Common.Logging.LogSystem.Warn("EmrDocumentForm.LoadPaging: khong goi API vi khong xac dinh duoc ho so dieu tri. " + message);
+                WaitingManager.Hide();
+                DevExpress.XtraEditors.XtraMessageBox.Show(message, Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         
