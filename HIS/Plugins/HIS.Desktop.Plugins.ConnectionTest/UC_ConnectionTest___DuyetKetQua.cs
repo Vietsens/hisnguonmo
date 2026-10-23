@@ -17,9 +17,14 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraTreeList.Nodes;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.Plugins.ConnectionTest.ADO;
-using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Common.Adapter;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using LIS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,27 +33,36 @@ using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.ConnectionTest
 {
     /// <summary>
-    /// Nút "Duyệt KQ / Hủy duyệt KQ" ở khu kết quả + cột "Người duyệt KQ", "TG duyệt" trên cây chỉ số.
-    /// Dùng lại nguyên luồng Duyệt KQ / Hủy duyệt KQ cấp mẫu (cột "Duyệt KQ" trên lưới mẫu, Duyệt KQ theo lô):
-    /// api/LisSample/ApproveResult, api/LisSample/UnapproveResult, dữ liệu LIS_SAMPLE.RESULT_APPROVAL_*.
+    /// Duyệt / Hủy duyệt kết quả THEO TỪNG DỊCH VỤ (LIS_SAMPLE_SERVICE.SERVICE_APPROVER_* / SERVICE_APPROVE_TIME).
+    /// - Nút "Duyệt KQ / Hủy duyệt KQ" luôn hiển thị (như "Duyệt KQ theo lô"), áp dụng cho các dịch vụ được tích.
+    /// - Bật khi có dịch vụ được tích đã đủ kết quả (Đã có KQ / Đã trả KQ) và chưa duyệt; mẫu chưa chấp nhận -> mờ.
+    /// - Dịch vụ đã duyệt: khóa ô kết quả (như trạng thái Duyệt KQ của mẫu); cột Người duyệt KQ / TG duyệt theo dịch vụ.
+    /// API: api/LisSampleService/Get (đọc), api/LisSampleService/ApproveResult, api/LisSampleService/UnapproveResult.
     /// </summary>
     public partial class UC_ConnectionTest : HIS.Desktop.Utility.UserControlBase
     {
         #region DuyetKetQua - Declare
 
+        private const string URI_SAMPLE_SERVICE_GET = "api/LisSampleService/Get";
+        private const string URI_SAMPLE_SERVICE_APPROVE_RESULT = "api/LisSampleService/ApproveResult";
+        private const string URI_SAMPLE_SERVICE_UNAPPROVE_RESULT = "api/LisSampleService/UnapproveResult";
+
         /// <summary>true: nút đang ở chế độ Duyệt KQ; false: Hủy duyệt KQ.</summary>
         private bool isApproveResultMode = true;
+
+        /// <summary>Thông tin duyệt theo dịch vụ của mẫu đang chọn, key = LIS_SAMPLE_SERVICE.ID.</summary>
+        private Dictionary<long, SampleServiceApproveADO> dicSampleServiceApprove = new Dictionary<long, SampleServiceApproveADO>();
+
+        /// <summary>Dịch vụ sẽ gửi khi bấm nút (tính trong UpdateApproveResultButton).</summary>
+        private List<SampleServiceApproveADO> approveTargetServices = new List<SampleServiceApproveADO>();
 
         #endregion
 
         #region DuyetKetQua - Init
 
         /// <summary>
-        /// Gán caption/tooltip nút và 2 cột người duyệt.
-        /// Gọi SAU InitRestoreLayoutTreeListFromXml: layout XML cũ không chứa 2 cột mới.
-        /// Nút luôn hiển thị như nút "Duyệt KQ theo lô" (không phụ thuộc config); Enabled/Caption theo trạng thái mẫu.
-        /// 2 cột mặc định ẩn như các cột ẩn khác của cây chỉ số, người dùng tự bật qua Column Chooser
-        /// (trạng thái ẩn/hiện được lưu bởi InitRestoreLayoutTreeListFromXml) -> không set Visible ở đây.
+        /// Gán caption/tooltip nút và 2 cột người duyệt. Gọi SAU InitRestoreLayoutTreeListFromXml.
+        /// Nút luôn hiển thị như "Duyệt KQ theo lô"; 2 cột mặc định ẩn (bật qua Column Chooser) -> không set Visible.
         /// </summary>
         private void InitApproveResultControls()
         {
@@ -71,40 +85,90 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
         #endregion
 
-        #region DuyetKetQua - Button state
+        #region DuyetKetQua - Load data
 
         /// <summary>
-        /// Caption/Enabled/Tooltip nút theo trạng thái mẫu đang chọn:
-        /// CHAP_NHAN, CO_KQ -> "Duyệt KQ"; DUYET_KQ -> "Hủy duyệt KQ";
-        /// TRA_KQ -> "Hủy duyệt KQ" (disable, cần hủy trả KQ trước); khác -> "Duyệt KQ" (disable).
+        /// Nạp thông tin duyệt theo dịch vụ của mẫu (1 lần gọi api/LisSampleService/Get theo SAMPLE_ID).
         /// </summary>
-        private void UpdateApproveResultButton()
+        private void LoadSampleServiceApprove(long? sampleId)
         {
             try
             {
-                long? sampleSttId = rowSample != null ? (long?)rowSample.SAMPLE_STT_ID : null;
-                bool isApproved = sampleSttId == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ;
-                bool isReturned = sampleSttId == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ;
-                bool canApprove = sampleSttId == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ
-                    || sampleSttId == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHAP_NHAN;
+                this.dicSampleServiceApprove = new Dictionary<long, SampleServiceApproveADO>();
+                if (!sampleId.HasValue || sampleId.Value <= 0)
+                    return;
 
-                this.isApproveResultMode = !(isApproved || isReturned);
-                if (this.isApproveResultMode)
+                CommonParam param = new CommonParam();
+                LisSampleServiceFilter filter = new LisSampleServiceFilter();
+                filter.SAMPLE_ID = sampleId.Value;
+                var data = new BackendAdapter(param).Get<List<SampleServiceApproveADO>>(URI_SAMPLE_SERVICE_GET, ApiConsumers.LisConsumer, filter, param);
+                if (data != null)
                 {
-                    this.btnApproveResult.Text = GetLangValue("UC_ConnectionTest.btnApproveResult.Text", "Duyệt KQ");
-                    this.btnApproveResult.ToolTip = canApprove
-                        ? GetLangValue("UC_ConnectionTest.btnApproveResult.ToolTip", "Duyệt kết quả xét nghiệm của mẫu đang chọn")
-                        : GetLangValue("UC_ConnectionTest.btnApproveResult.ToolTipNoResult", "Mẫu chưa có kết quả hoặc không ở trạng thái được duyệt");
-                    this.btnApproveResult.Enabled = canApprove;
+                    this.dicSampleServiceApprove = data.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First());
                 }
-                else
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gán cờ IS_SERVICE_APPROVED cho mọi dòng của dịch vụ đã duyệt (khóa ô kết quả)
+        /// và "Người duyệt KQ", "TG duyệt" cho dòng dịch vụ (dòng cha).
+        /// </summary>
+        private void FillApproveResultInfo(List<TestLisResultADO> dataList)
+        {
+            try
+            {
+                if (dataList == null || !dataList.Any())
+                    return;
+
+                foreach (var item in dataList)
                 {
-                    this.btnApproveResult.Text = GetLangValue("UC_ConnectionTest.btnApproveResult.TextUnapprove", "Hủy duyệt KQ");
-                    this.btnApproveResult.ToolTip = isApproved
-                        ? GetLangValue("UC_ConnectionTest.btnApproveResult.ToolTipUnapprove", "Hủy duyệt kết quả xét nghiệm của mẫu đang chọn")
-                        : GetLangValue("UC_ConnectionTest.btnApproveResult.ToolTipReturned", "Mẫu đã trả kết quả, cần hủy trả kết quả trước khi hủy duyệt");
-                    this.btnApproveResult.Enabled = isApproved;
+                    SampleServiceApproveADO info = null;
+                    if (item.SAMPLE_SERVICE_ID.HasValue)
+                        this.dicSampleServiceApprove.TryGetValue(item.SAMPLE_SERVICE_ID.Value, out info);
+
+                    bool isApproved = info != null && info.SERVICE_APPROVE_TIME.HasValue;
+                    item.IS_SERVICE_APPROVED = isApproved;
+                    bool isServiceRow = item.IS_PARENT == 1;
+                    item.RESULT_APPROVER_USERNAME = isServiceRow && isApproved ? info.SERVICE_APPROVER_USERNAME : null;
+                    item.RESULT_APPROVE_TIME_STR = isServiceRow && isApproved
+                        ? Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(info.SERVICE_APPROVE_TIME.Value)
+                        : null;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Sau Duyệt / Hủy duyệt KQ cấp mẫu (cột lưới mẫu): đồng bộ trạng thái mẫu vào cây chỉ số (khóa/mở ô theo DUYET_KQ).
+        /// </summary>
+        private void SyncApproveResultToTree(long sampleId)
+        {
+            try
+            {
+                var sample = lstSampleAll != null ? lstSampleAll.FirstOrDefault(o => o.ID == sampleId) : null;
+                if (sample != null && rowSample != null && rowSample.ID == sampleId)
+                {
+                    if (!Object.ReferenceEquals(sample, rowSample))
+                    {
+                        rowSample.SAMPLE_STT_ID = sample.SAMPLE_STT_ID;
+                        rowSample.RESULT_APPROVAL_TIME = sample.RESULT_APPROVAL_TIME;
+                        rowSample.RESULT_APPROVAL_LOGINNAME = sample.RESULT_APPROVAL_LOGINNAME;
+                        rowSample.RESULT_APPROVAL_USERNAME = sample.RESULT_APPROVAL_USERNAME;
+                    }
+                    if (lstLisResultADOs != null && lstLisResultADOs.Any())
+                    {
+                        lstLisResultADOs.ForEach(o => o.SAMPLE_STT_ID = rowSample.SAMPLE_STT_ID);
+                        this.treeListSereServTein.RefreshDataSource();
+                    }
+                }
+                UpdateApproveResultButton();
             }
             catch (Exception ex)
             {
@@ -114,71 +178,96 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
         #endregion
 
-        #region DuyetKetQua - Tree columns
+        #region DuyetKetQua - Button state
 
         /// <summary>
-        /// Điền "Người duyệt KQ", "TG duyệt" của mẫu (LIS_SAMPLE.RESULT_APPROVAL_*) vào các dòng dịch vụ (dòng cha).
-        /// Duyệt KQ theo mẫu nên mọi dịch vụ của mẫu cùng 1 người duyệt.
+        /// Dịch vụ (LIS_SAMPLE_SERVICE) đang được tích trên cây — tích dòng chỉ số quy về dịch vụ của nó. Bỏ dịch vụ không thực hiện.
         /// </summary>
-        private void FillApproveResultInfo(List<TestLisResultADO> dataList)
+        private List<SampleServiceApproveADO> GetCheckedSampleServices()
         {
+            List<SampleServiceApproveADO> result = new List<SampleServiceApproveADO>();
             try
             {
-                if (dataList == null || !dataList.Any())
-                    return;
-
-                string approverUsername = null;
-                string approveTimeStr = null;
-                if (rowSample != null && rowSample.RESULT_APPROVAL_TIME.HasValue)
+                HashSet<long> ids = new HashSet<long>();
+                List<TreeListNode> checkedNodes = this.treeListSereServTein.GetAllCheckedNodes();
+                if (checkedNodes != null)
                 {
-                    approverUsername = rowSample.RESULT_APPROVAL_USERNAME;
-                    approveTimeStr = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(rowSample.RESULT_APPROVAL_TIME.Value);
+                    foreach (var node in checkedNodes)
+                    {
+                        var data = this.treeListSereServTein.GetDataRecordByNode(node) as TestLisResultADO;
+                        if (data != null && data.SAMPLE_SERVICE_ID.HasValue)
+                            ids.Add(data.SAMPLE_SERVICE_ID.Value);
+                    }
                 }
-
-                foreach (var item in dataList)
+                foreach (var id in ids)
                 {
-                    bool isServiceRow = item.IS_PARENT == 1 && item.IS_NO_EXECUTE != 1;
-                    item.RESULT_APPROVER_USERNAME = isServiceRow ? approverUsername : null;
-                    item.RESULT_APPROVE_TIME_STR = isServiceRow ? approveTimeStr : null;
+                    SampleServiceApproveADO info;
+                    if (this.dicSampleServiceApprove.TryGetValue(id, out info) && info.IS_NO_EXECUTE != 1)
+                        result.Add(info);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            return result;
+        }
+
+        private static bool IsServiceHasFullResult(SampleServiceApproveADO info)
+        {
+            return info.SAMPLE_SERVICE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_SERVICE_STT.ID__DA_CO_KQ
+                || info.SAMPLE_SERVICE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_SERVICE_STT.ID__DA_TRA_KQ;
         }
 
         /// <summary>
-        /// Sau Duyệt / Hủy duyệt KQ (từ nút mới, cột lưới mẫu hoặc form chọn giờ duyệt):
-        /// đồng bộ trạng thái + người duyệt của mẫu vào rowSample và cây chỉ số, không load lại kết quả.
-        /// Cây dùng SAMPLE_STT_ID để khóa/mở ô kết quả như luồng Duyệt KQ hiện có.
+        /// Caption/Enabled/Tooltip theo các dịch vụ được tích:
+        /// có dịch vụ đủ KQ chưa duyệt -> "Duyệt KQ" (mờ nếu mẫu chưa chấp nhận);
+        /// còn lại toàn dịch vụ đã duyệt -> "Hủy duyệt KQ" (mờ nếu mẫu đã trả KQ);
+        /// không có dịch vụ đủ KQ -> "Duyệt KQ" mờ.
         /// </summary>
-        private void SyncApproveResultToTree(long sampleId)
+        private void UpdateApproveResultButton()
         {
             try
             {
-                var sample = lstSampleAll != null ? lstSampleAll.FirstOrDefault(o => o.ID == sampleId) : null;
-                if (sample == null || rowSample == null || rowSample.ID != sampleId)
-                {
-                    UpdateApproveResultButton();
-                    return;
-                }
+                this.approveTargetServices = new List<SampleServiceApproveADO>();
+                long? sampleSttId = rowSample != null ? (long?)rowSample.SAMPLE_STT_ID : null;
+                bool isSampleNotAccepted = sampleSttId == null
+                    || sampleSttId == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
+                    || sampleSttId == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DA_LM
+                    || sampleSttId == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI;
+                bool isSampleReturned = sampleSttId == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ;
 
-                if (!Object.ReferenceEquals(sample, rowSample))
-                {
-                    rowSample.SAMPLE_STT_ID = sample.SAMPLE_STT_ID;
-                    rowSample.RESULT_APPROVAL_TIME = sample.RESULT_APPROVAL_TIME;
-                    rowSample.RESULT_APPROVAL_LOGINNAME = sample.RESULT_APPROVAL_LOGINNAME;
-                    rowSample.RESULT_APPROVAL_USERNAME = sample.RESULT_APPROVAL_USERNAME;
-                }
+                var checkedServices = rowSample != null ? GetCheckedSampleServices() : new List<SampleServiceApproveADO>();
+                var approvable = checkedServices.Where(o => !o.SERVICE_APPROVE_TIME.HasValue && IsServiceHasFullResult(o)).ToList();
+                var approved = checkedServices.Where(o => o.SERVICE_APPROVE_TIME.HasValue).ToList();
 
-                if (lstLisResultADOs != null && lstLisResultADOs.Any())
+                if (approvable.Any())
                 {
-                    lstLisResultADOs.ForEach(o => o.SAMPLE_STT_ID = rowSample.SAMPLE_STT_ID);
-                    FillApproveResultInfo(lstLisResultADOs);
-                    this.treeListSereServTein.RefreshDataSource();
+                    this.isApproveResultMode = true;
+                    this.approveTargetServices = approvable;
+                    this.btnApproveResult.Text = GetLangValue("UC_ConnectionTest.btnApproveResult.Text", "Duyệt KQ");
+                    this.btnApproveResult.Enabled = !isSampleNotAccepted;
+                    this.btnApproveResult.ToolTip = isSampleNotAccepted
+                        ? GetLangValue("UC_ConnectionTest.btnApproveResult.ToolTipNotAccepted", "Mẫu chưa được chấp nhận, chưa thể duyệt kết quả")
+                        : GetLangValue("UC_ConnectionTest.btnApproveResult.ToolTip", "Duyệt kết quả các dịch vụ được tích");
                 }
-                UpdateApproveResultButton();
+                else if (approved.Any())
+                {
+                    this.isApproveResultMode = false;
+                    this.approveTargetServices = approved;
+                    this.btnApproveResult.Text = GetLangValue("UC_ConnectionTest.btnApproveResult.TextUnapprove", "Hủy duyệt KQ");
+                    this.btnApproveResult.Enabled = !isSampleReturned;
+                    this.btnApproveResult.ToolTip = isSampleReturned
+                        ? GetLangValue("UC_ConnectionTest.btnApproveResult.ToolTipReturned", "Mẫu đã trả kết quả, cần hủy trả kết quả trước khi hủy duyệt")
+                        : GetLangValue("UC_ConnectionTest.btnApproveResult.ToolTipUnapprove", "Hủy duyệt kết quả các dịch vụ được tích");
+                }
+                else
+                {
+                    this.isApproveResultMode = true;
+                    this.btnApproveResult.Text = GetLangValue("UC_ConnectionTest.btnApproveResult.Text", "Duyệt KQ");
+                    this.btnApproveResult.Enabled = false;
+                    this.btnApproveResult.ToolTip = GetLangValue("UC_ConnectionTest.btnApproveResult.ToolTipNoResult", "Dịch vụ được tích chưa có đủ kết quả");
+                }
             }
             catch (Exception ex)
             {
@@ -195,58 +284,55 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             try
             {
                 var row = (LisSampleADO)gridViewSample.GetFocusedRow();
-                if (row == null || rowSample == null || row.ID != rowSample.ID)
+                if (row == null || rowSample == null || row.ID != rowSample.ID || this.approveTargetServices == null || !this.approveTargetServices.Any())
                 {
                     UpdateApproveResultButton();
                     return;
                 }
 
+                var targets = this.approveTargetServices.ToList();
+                string serviceNames = String.Join(", ", targets.Select(o => !String.IsNullOrWhiteSpace(o.SERVICE_NAME) ? o.SERVICE_NAME : o.SERVICE_CODE));
                 if (this.isApproveResultMode)
                 {
-                    if (!CheckBeforeApproveResult(row))
+                    if (!CheckNoUnsavedResult(targets))
                         return;
-                    repositoryDuyetKetQuaE_ButtonClick(null, null);
                 }
-                else
+                else if (XtraMessageBox.Show(
+                    String.Format(Resources.ResourceMessage.BanCoMuonHuyDuyetKetQuaDichVu, serviceNames),
+                    MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 {
-                    if (XtraMessageBox.Show(
-                        String.Format(Resources.ResourceMessage.BanCoMuonHuyDuyetKetQuaMau, row.BARCODE),
-                        MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-                        return;
-                    repositoryHuyDuyetKetQuaE_ButtonClick(null, null);
+                    return;
                 }
+
+                this.btnApproveResult.Enabled = false;
+                ProcessApproveServices(row, targets, this.isApproveResultMode);
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                UpdateApproveResultButton();
             }
         }
 
         /// <summary>
-        /// Kiểm tra bổ sung chỉ cho nút ở khu kết quả (các kiểm tra của luồng Duyệt KQ giữ nguyên):
-        /// 1. Có giá trị / ghi chú chỉ số đã sửa mà chưa lưu -> yêu cầu lưu trước.
-        /// 2. Chỉ tích một phần dịch vụ -> xác nhận duyệt áp dụng cho toàn bộ mẫu.
+        /// Không cho duyệt khi còn giá trị / ghi chú chỉ số của dịch vụ được duyệt đã sửa mà chưa lưu.
         /// </summary>
-        private bool CheckBeforeApproveResult(LisSampleADO row)
+        private bool CheckNoUnsavedResult(List<SampleServiceApproveADO> targets)
         {
             bool result = true;
             try
             {
                 this.treeListSereServTein.PostEditor();
-                if (lstLisResultADOs != null && lstLisResultADOs.Any(o => o.Item_Edit_Value == 1))
+                var targetIds = new HashSet<long>(targets.Select(o => o.ID));
+                if (lstLisResultADOs != null && lstLisResultADOs.Any(o => o.Item_Edit_Value == 1 && o.SAMPLE_SERVICE_ID.HasValue && targetIds.Contains(o.SAMPLE_SERVICE_ID.Value)))
                 {
                     XtraMessageBox.Show(Resources.ResourceMessage.VuiLongLuuTruocKhiDuyet,
                         MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                    return false;
-                }
-
-                if (IsPartialServiceChecked()
-                    && XtraMessageBox.Show(
-                        String.Format(Resources.ResourceMessage.DuyetApDungToanBoMau, row.BARCODE),
-                        MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-                {
                     result = false;
                 }
             }
@@ -258,44 +344,42 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         }
 
         /// <summary>
-        /// true khi có ≥1 dịch vụ được tích (tích dòng chỉ số quy về dịch vụ cha) nhưng chưa tích đủ các dịch vụ thực hiện của mẫu.
+        /// Gọi api/LisSampleService/ApproveResult hoặc UnapproveResult cho các dịch vụ, cập nhật cây chỉ số theo kết quả trả về.
         /// </summary>
-        private bool IsPartialServiceChecked()
+        private void ProcessApproveServices(LisSampleADO sample, List<SampleServiceApproveADO> targets, bool isApprove)
         {
-            bool result = false;
+            CommonParam param = new CommonParam();
+            bool success = false;
             try
             {
-                if (lstLisResultADOs == null || !lstLisResultADOs.Any())
-                    return false;
+                WaitingManager.Show();
+                SampleServiceApproveSDO sdo = new SampleServiceApproveSDO();
+                sdo.SampleId = sample.ID;
+                sdo.SampleServiceIds = targets.Select(o => o.ID).ToList();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
 
-                var allServiceKeys = new HashSet<string>(lstLisResultADOs
-                    .Where(o => o.IS_PARENT == 1 && o.IS_NO_EXECUTE != 1)
-                    .Select(o => o.CHILD_ID));
-                if (!allServiceKeys.Any())
-                    return false;
-
-                var checkedServiceKeys = new HashSet<string>();
-                List<TreeListNode> checkedNodes = this.treeListSereServTein.GetAllCheckedNodes();
-                if (checkedNodes != null)
+                var rs = new BackendAdapter(param).Post<List<SampleServiceApproveADO>>(
+                    isApprove ? URI_SAMPLE_SERVICE_APPROVE_RESULT : URI_SAMPLE_SERVICE_UNAPPROVE_RESULT,
+                    ApiConsumers.LisConsumer, sdo, param);
+                if (rs != null)
                 {
-                    foreach (var node in checkedNodes)
+                    success = true;
+                    foreach (var item in rs)
                     {
-                        var data = this.treeListSereServTein.GetDataRecordByNode(node) as TestLisResultADO;
-                        if (data == null)
-                            continue;
-                        string serviceKey = data.IS_PARENT == 1 ? data.CHILD_ID : data.PARENT_ID;
-                        if (allServiceKeys.Contains(serviceKey))
-                            checkedServiceKeys.Add(serviceKey);
+                        this.dicSampleServiceApprove[item.ID] = item;
                     }
+                    FillApproveResultInfo(lstLisResultADOs);
+                    this.treeListSereServTein.RefreshDataSource();
                 }
-
-                result = checkedServiceKeys.Any() && checkedServiceKeys.Count < allServiceKeys.Count;
+                WaitingManager.Hide();
+                MessageManager.Show(this.ParentForm, param, success);
+                SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            return result;
         }
 
         #endregion

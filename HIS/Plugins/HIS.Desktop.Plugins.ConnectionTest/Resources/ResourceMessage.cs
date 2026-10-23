@@ -389,31 +389,14 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Resources
             }
         }
 
-        /// <summary>Duyệt kết quả áp dụng cho toàn bộ dịch vụ của mẫu {0}. Bạn có muốn tiếp tục?</summary>
-        internal static string DuyetApDungToanBoMau
+        /// <summary>Bạn có muốn hủy duyệt kết quả dịch vụ: {0}?</summary>
+        internal static string BanCoMuonHuyDuyetKetQuaDichVu
         {
             get
             {
                 try
                 {
-                    return Inventec.Common.Resource.Get.Value("DuyetApDungToanBoMau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(ex);
-                }
-                return "";
-            }
-        }
-
-        /// <summary>Bạn có muốn hủy duyệt kết quả mẫu {0}?</summary>
-        internal static string BanCoMuonHuyDuyetKetQuaMau
-        {
-            get
-            {
-                try
-                {
-                    return Inventec.Common.Resource.Get.Value("BanCoMuonHuyDuyetKetQuaMau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    return Inventec.Common.Resource.Get.Value("BanCoMuonHuyDuyetKetQuaDichVu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {
