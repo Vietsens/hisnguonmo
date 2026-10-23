@@ -162,4 +162,49 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__BTN_SAVE_PAYFORM" xml:space="preserve">
     <value>Lưu hình thức thanh toán</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_EXECUTE_STATUS" xml:space="preserve">
+    <value>Trạng thái thực hiện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_REFUNDED_AMOUNT" xml:space="preserve">
+    <value>Tiền đã hoàn</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__EXECUTE_STATUS__EXECUTED" xml:space="preserve">
+    <value>Đã thực hiện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__EXECUTE_STATUS__NOT_EXECUTED" xml:space="preserve">
+    <value>Chưa thực hiện</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__BTN_REPAY_BY_SERVICE" xml:space="preserve">
+    <value>Hoàn ứng DV</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__REPAY_BY_SERVICE_DISABLED__E_INVOICE" xml:space="preserve">
+    <value>Giao dịch đã xuất hóa đơn điện tử, không cho phép hoàn ứng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__REPAY_BY_SERVICE_DISABLED__LOCKED" xml:space="preserve">
+    <value>Giao dịch đang bị khóa, không cho phép hoàn ứng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__REPAY_BY_SERVICE_DISABLED__EXEMPTION_OR_FUND" xml:space="preserve">
+    <value>Giao dịch có miễn giảm hoặc quỹ chi trả, không cho phép hoàn ứng theo dịch vụ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__REPAY_BY_SERVICE_DISABLED__NO_PERMISSION" xml:space="preserve">
+    <value>Bạn không có quyền hoàn ứng tại phòng đang làm việc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__MESSAGE__SERVICE_EXECUTED" xml:space="preserve">
+    <value>Dịch vụ {0} đã được thực hiện, không cho phép hoàn ứng.</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__MESSAGE__SERVICE_REFUNDED" xml:space="preserve">
+    <value>Dịch vụ {0} đã được hoàn ứng tại giao dịch {1}.</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__MESSAGE__SERVICE_MEDICINE_MATERIAL_BLOOD" xml:space="preserve">
+    <value>Dịch vụ {0} là thuốc, vật tư hoặc máu, không cho phép hoàn ứng theo dịch vụ.</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__MESSAGE__SERVICE_PRICE_CHANGED" xml:space="preserve">
+    <value>Dịch vụ {0} đã bị thay đổi giá</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__MESSAGE__CONFIRM_NO_EXECUTE" xml:space="preserve">
+    <value>Bạn có muốn đánh dấu Không thực hiện cho các dịch vụ vừa hoàn ứng không?</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__MESSAGE__TITLE" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
 </root>

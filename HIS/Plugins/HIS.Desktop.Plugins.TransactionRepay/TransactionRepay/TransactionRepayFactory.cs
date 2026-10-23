@@ -32,6 +32,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay.TransactionRepay
             ITransactionRepay result = null;
             Inventec.Desktop.Common.Modules.Module moduleData = null;
             TransactionRepayADO ado = null;
+            KeyValuePair<long, List<long>>? billService = null;
             try
             {
                 if (data.GetType() == typeof(object[]))
@@ -48,11 +49,16 @@ namespace HIS.Desktop.Plugins.TransactionRepay.TransactionRepay
                             {
                                 moduleData = (Inventec.Desktop.Common.Modules.Module)data[i];
                             }
+                            else if (data[i] is KeyValuePair<long, List<long>>)
+                            {
+                                //KSK - hoan ung dich vu cua giao dich thanh toan: Key = BillId, Value = SereServBillIds
+                                billService = (KeyValuePair<long, List<long>>)data[i];
+                            }
                         }
 
                         if (moduleData != null && ado != null)
                         {
-                            result = new TransactionRepayBehavior(moduleData, param, ado);
+                            result = new TransactionRepayBehavior(moduleData, param, ado, billService);
                         }
                     }
                 }

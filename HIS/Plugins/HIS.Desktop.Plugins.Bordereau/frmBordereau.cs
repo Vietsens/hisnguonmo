@@ -94,6 +94,15 @@ namespace HIS.Desktop.Plugins.Bordereau
         internal string statusTreatmentOut { get; set; }
         internal List<SereServADO> SereServADOs { get; set; }
         internal List<HIS_SERE_SERV_BILL> SereServBills { get; set; }
+        /// <summary>
+        /// Cac dong hoan ung theo dich vu thanh toan (HIS_SESE_BILL_REPAY) chua huy cua ho so.
+        /// </summary>
+        internal List<V_HIS_SESE_BILL_REPAY> SeseBillRepays { get; set; }
+        /// <summary>
+        /// Dich vu da hoan ung theo dich vu thanh toan: moi dong HIS_SERE_SERV_BILL chua huy cua dich vu
+        /// deu co dong HIS_SESE_BILL_REPAY chua huy. Chi dung de bo chan "da thanh toan" o cot Khong thuc hien.
+        /// </summary>
+        internal HashSet<long> RefundedSereServIds { get; set; }
         internal Inventec.Desktop.Common.Modules.Module currentModule { get; set; }
         internal List<HIS_DEPARTMENT> DepartmentPremissionEdits { get; set; }
         HIS_DEPARTMENT currentDepartment = null;
@@ -376,7 +385,8 @@ namespace HIS.Desktop.Plugins.Bordereau
                     return vali;
                 }
 
-                if (isPay)
+                //Dich vu da hoan ung theo dich vu thanh toan van cho phep tich/bo tich Khong thuc hien
+                if (isPay && !(comlumnType == ComlumnType.NO_EXECUTE && IsRefundedSereServ(data.ID)))
                 {
                     vali = false;
                     mess = String.Format("({0}) {1} dịch vụ đã thanh toán", data.TDL_SERVICE_REQ_CODE, data.TDL_SERVICE_CODE);
@@ -481,6 +491,24 @@ namespace HIS.Desktop.Plugins.Bordereau
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Dich vu da duoc hoan ung theo dich vu thanh toan (HIS_SESE_BILL_REPAY)
+        /// </summary>
+        private bool IsRefundedSereServ(long sereServId)
+        {
+            bool result = false;
+            try
+            {
+                result = RefundedSereServIds != null && RefundedSereServIds.Contains(sereServId);
+            }
+            catch (Exception ex)
+            {
+                result = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;

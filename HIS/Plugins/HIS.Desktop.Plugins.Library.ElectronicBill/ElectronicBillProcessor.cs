@@ -206,6 +206,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
 
                 if (this.Check(ref result, serviceConfig, accountConfig, type))
                 {
+                    if (type == ElectronicBillType.ENUM.CREATE_INVOICE)
+                    {
+                        ProcessSeseBillRepay();
+                    }
+
                     string provider = GetProvider(serviceConfig);
                     IRun iRun = null;
                     switch (provider)
@@ -272,6 +277,70 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Hoan ung theo dich vu thanh toan (HIS_SESE_BILL_REPAY): khi tao hoa don, bo cac dich vu da hoan ung
+        /// cua cac giao dich dang xuat hoa don va tru so tien da hoan khoi tong tien.
+        /// Chi xu ly khi co cau hinh MOS.HIS_TRANSACTION.REPAY_BY_BILL_SERVICE.PATIENT_TYPE_CODES.
+        /// </summary>
+        private void ProcessSeseBillRepay()
+        {
+            try
+            {
+                string patientTypeCodes = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.REPAY_BY_BILL_SERVICE__PATIENT_TYPE_CODES);
+                if (String.IsNullOrWhiteSpace(patientTypeCodes) || this.ElectronicBillDataInput == null)
+                    return;
+
+                List<long> billIds = new List<long>();
+                if (this.ElectronicBillDataInput.Transaction != null && this.ElectronicBillDataInput.Transaction.ID > 0)
+                {
+                    billIds.Add(this.ElectronicBillDataInput.Transaction.ID);
+                }
+                if (this.ElectronicBillDataInput.ListTransaction != null && this.ElectronicBillDataInput.ListTransaction.Count > 0)
+                {
+                    billIds.AddRange(this.ElectronicBillDataInput.ListTransaction.Where(o => o.ID > 0).Select(o => o.ID));
+                }
+                billIds = billIds.Distinct().ToList();
+                if (billIds.Count == 0)
+                    return;
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisSeseBillRepayFilter filter = new MOS.Filter.HisSeseBillRepayFilter();
+                filter.TDL_BILL_IDs = billIds;
+                filter.IS_CANCEL = false;
+                List<HIS_SESE_BILL_REPAY> seseBillRepays = new BackendAdapter(param).Get<List<HIS_SESE_BILL_REPAY>>("api/HisSeseBillRepay/Get", ApiConsumers.MosConsumer, filter, param);
+                if (seseBillRepays != null)
+                {
+                    seseBillRepays = seseBillRepays.Where(o => o.IS_CANCEL != 1).ToList();
+                }
+                if (seseBillRepays == null || seseBillRepays.Count == 0)
+                    return;
+
+                Inventec.Common.Logging.LogSystem.Info("Loai bo dich vu da hoan ung theo dich vu thanh toan khoi hoa don: " + Inventec.Common.Logging.LogUtil.TraceData("seseBillRepays", seseBillRepays));
+
+                HashSet<long> sereServBillIds = new HashSet<long>(seseBillRepays.Select(o => o.SERE_SERV_BILL_ID));
+                HashSet<long> sereServIds = new HashSet<long>(seseBillRepays.Select(o => o.TDL_SERE_SERV_ID));
+
+                if (this.ElectronicBillDataInput.SereServBill != null && this.ElectronicBillDataInput.SereServBill.Count > 0)
+                {
+                    this.ElectronicBillDataInput.SereServBill = this.ElectronicBillDataInput.SereServBill.Where(o => !sereServBillIds.Contains(o.ID)).ToList();
+                }
+
+                if (this.ElectronicBillDataInput.SereServs != null && this.ElectronicBillDataInput.SereServs.Count > 0)
+                {
+                    this.ElectronicBillDataInput.SereServs = this.ElectronicBillDataInput.SereServs.Where(o => !sereServIds.Contains(o.ID)).ToList();
+                }
+
+                if (this.ElectronicBillDataInput.Amount.HasValue)
+                {
+                    this.ElectronicBillDataInput.Amount = this.ElectronicBillDataInput.Amount.Value - seseBillRepays.Sum(o => o.AMOUNT);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         /// <summary>

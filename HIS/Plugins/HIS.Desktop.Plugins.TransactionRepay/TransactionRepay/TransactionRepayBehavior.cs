@@ -32,6 +32,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay.TransactionRepay
     {
         Inventec.Desktop.Common.Modules.Module moduleData;
         TransactionRepayADO ado;
+        KeyValuePair<long, List<long>>? billService;
 
         internal TransactionRepayBehavior()
             : base()
@@ -40,10 +41,16 @@ namespace HIS.Desktop.Plugins.TransactionRepay.TransactionRepay
         }
 
         internal TransactionRepayBehavior(Inventec.Desktop.Common.Modules.Module module, CommonParam param, TransactionRepayADO data)
+            : this(module, param, data, null)
+        {
+        }
+
+        internal TransactionRepayBehavior(Inventec.Desktop.Common.Modules.Module module, CommonParam param, TransactionRepayADO data, KeyValuePair<long, List<long>>? billService)
             : base()
         {
             moduleData = module;
             ado = data;
+            this.billService = billService;
         }
 
         object ITransactionRepay.Run()
@@ -51,7 +58,12 @@ namespace HIS.Desktop.Plugins.TransactionRepay.TransactionRepay
             object result = null;
             try
             {
-                result = new frmTransactionRepay(moduleData, ado);
+                frmTransactionRepay form = new frmTransactionRepay(moduleData, ado);
+                if (billService.HasValue)
+                {
+                    form.SetRepayBillService(billService.Value.Key, billService.Value.Value);
+                }
+                result = form;
                 if (result == null) throw new NullReferenceException(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ado), ado));
             }
             catch (Exception ex)
