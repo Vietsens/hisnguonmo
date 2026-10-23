@@ -165,4 +165,10 @@
   <data name="Plugins_TransactionBillTwoInOne__BNChuaCoThongTinThuHuong" xml:space="preserve">
     <value>BN chưa có thông tin thụ hưởng. Vui lòng nhập thông tin thụ hưởng trước.</value>
   </data>
+  <data name="Plugins_TransactionBillTwoInOne__DangPhanBoBaoLanhChuaChot" xml:space="preserve">
+    <value>Hồ sơ đang phân bổ chi phí bảo hiểm bảo lãnh chưa chốt, không cho phép thanh toán.</value>
+  </data>
+  <data name="Plugins_TransactionBillTwoInOne__ChiPhiBaoHiemThayDoiSauChot" xml:space="preserve">
+    <value>Dịch vụ đã phân bổ cho bảo hiểm có chi phí thay đổi sau khi chốt phân bổ. Vui lòng Sửa sau chốt để phân bổ lại trước khi thanh toán.</value>
+  </data>
 </root>

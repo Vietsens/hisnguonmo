@@ -2675,7 +2675,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 string repay = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TransactionBill.Repay");
                 if (repay == "1")
                 {
-                    if (btnSave.Enabled == false || lciBtnSave.Enabled == false)
+                    //Nut luu dang khoa do phan bo bao hiem bao lanh (chua thanh toan) thi khong hoi hoan ung
+                    if ((btnSave.Enabled == false || lciBtnSave.Enabled == false) && !this.IsFundAllocationLocked())
                     {
                         LoadSearch();
                         resultTranBill = null;
