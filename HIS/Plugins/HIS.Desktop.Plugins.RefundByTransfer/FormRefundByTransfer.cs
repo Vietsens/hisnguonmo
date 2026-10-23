@@ -166,6 +166,13 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
         {
             try
             {
+                if (!CheckAllowRefundByTransfer())
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Đã có yêu cầu hoàn tiền chưa hoàn thành hoặc yêu cầu hoàn tiền đã được phê duyệt xin vui lòng kiểm tra lại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+
                 InitComboBankPayer();
 
                 CommonParam param = new CommonParam();
@@ -221,6 +228,47 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Chỉ cho hoàn tiền khi giao dịch chưa có yêu cầu hoàn tiền (TRANS_REQ_ID null)
+        /// hoặc yêu cầu hoàn tiền đã thất bại/bị hủy (TRANS_REQ_STT_ID = 3, 4).
+        /// </summary>
+        private bool CheckAllowRefundByTransfer()
+        {
+            bool result = false;
+            try
+            {
+                if (this.transaction == null) return true;
+
+                // Lấy lại giao dịch từ server, tránh dữ liệu cũ do màn hình gọi truyền vào
+                long? transReqId = this.transaction.TRANS_REQ_ID;
+                CommonParam param = new CommonParam();
+                HisTransactionFilter tranFilter = new HisTransactionFilter();
+                tranFilter.ID = this.transaction.ID;
+                var transactions = new BackendAdapter(param).Get<List<HIS_TRANSACTION>>("api/HisTransaction/Get", ApiConsumers.MosConsumer, tranFilter, param);
+                if (transactions != null && transactions.Count > 0)
+                    transReqId = transactions.First().TRANS_REQ_ID;
+
+                if (!transReqId.HasValue)
+                    return true;
+
+                HisTransReqFilter transReqFilter = new HisTransReqFilter();
+                transReqFilter.ID = transReqId.Value;
+                var transReqs = new BackendAdapter(param).Get<List<HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumers.MosConsumer, transReqFilter, param);
+                var transReq = transReqs != null ? transReqs.FirstOrDefault() : null;
+                result = transReq != null
+                    && (transReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FAILED
+                        || transReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__CANCEL);
+
+                Inventec.Common.Logging.LogSystem.Debug("CheckAllowRefundByTransfer: TRANSACTION_ID=" + this.transaction.ID + ", TRANS_REQ_ID=" + transReqId + ", TRANS_REQ_STT_ID=" + (transReq != null ? transReq.TRANS_REQ_STT_ID + "" : "NULL") + ", result=" + result);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
         }
 
         private async Task FillInfoPatient(V_HIS_TREATMENT_FEE data)

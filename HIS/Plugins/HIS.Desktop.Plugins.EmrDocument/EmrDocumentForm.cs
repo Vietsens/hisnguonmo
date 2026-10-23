@@ -5532,6 +5532,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 return;
             }
 
+            // Ha anh + dong chu xuong 20 so voi diem ky. Thu vien SignLibrary (man hinh xem) dung CUNG khoang nay
+            // (WaterMarkProcess.PATIENT_SIGN_SHIFT_DOWN) de xem va In/Tai trung vi tri (viec 60846).
             const float signShiftDown = 20f;
             PdfContentByte cbo = stam.GetOverContent(pageNum);
 
@@ -5552,9 +5554,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     var image = iTextSharp.text.Image.GetInstance(itemSign.SIGN_IMAGE);
 
-                    // Đồng bộ với thư viện SignLibrary (WaterMarkProcess): ảnh vân tay (dọc/gần vuông) lấp đầy trọn khung ký;
-                    // chữ ký bảng ký giữ logic cũ (trừ plusH cho dòng text). Bị chặn trong khung × hệ số nên không phình.
-                    bool isFingerPrintImg = IsFingerPrintImage(image);
+                    // Dung chung quy tac nhan dien van tay cua thu vien SignLibrary (ti le khung anh + loai tru anh net muc bang ky),
+                    // de chu ky bang ky gan vuong khong bi phong theo fill (viec 60846).
+                    bool isFingerPrintImg = WaterMarkProcess.IsFingerPrintImage(itemSign.SIGN_IMAGE);
                     float widthImagePercent = GetWidthImagePercent(DisplayConfig.TextPosition);
                     float imageSpacing = 10f;
                     float plusH = SignPdfAsynchronous.ProcessHeightPlus(widthImagePercent, DisplayConfig);
@@ -5568,6 +5570,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     {
                         maxWidth = maxWidth * fingerPrintFill;
                         maxHeight = maxHeight * fingerPrintFill;
+                    }
+                    // Anh bang ky/chu ky thuong: lay dung chieu rong server EMR ve o khung ky (giong thu vien khi xem), viec 60846.
+                    if (!isFingerPrintImg)
+                    {
+                        float stampWidth = WaterMarkProcess.GetStampImageWidth(image, DisplayConfig, widthImagePercent, plusH);
+                        if (stampWidth > 0 && stampWidth < maxWidth)
+                        {
+                            maxWidth = stampWidth;
+                        }
                     }
 
                     float rawWidth = image.Width;
@@ -5637,8 +5648,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             break;
                     }
                 }
-                else if (itemSign.COOR_X_RECTANGLE.HasValue && itemSign.COOR_Y_RECTANGLE.HasValue)
+                else if (itemSign.COOR_X_RECTANGLE.HasValue && itemSign.COOR_Y_RECTANGLE.HasValue
+                    && (itemSign.IS_SIGN_BOARD ?? 0) != 1 && itemSign.IS_SIGN_ELECTRONIC == pageNum)
                 {
+                    // Dieu kien giong thu vien khi xem: ky bang ky ma khong co anh (server da ve san vao file) thi KHONG ve them chu.
                     LogSystem.Warn(string.Format(
                         "[FingerPrintSize][EmrDocument][{0}] Dong ky ID={1} KHONG CO SIGN_IMAGE => chi ve dong chu tai (X={2}, Y={3}). Neu server da bake anh vao PDF thi anh phai co san trong file goc",
                         callerTag, itemSign.ID, itemSign.COOR_X_RECTANGLE, (float)itemSign.COOR_Y_RECTANGLE - signShiftDown));
@@ -5706,19 +5719,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             return 1.0f;
         }
 
-        // Nhận diện ảnh vân tay theo tỉ lệ khung ảnh (dọc/gần vuông) — giống WaterMarkProcess.IsFingerPrintImage.
-        private static bool IsFingerPrintImage(iTextSharp.text.Image image)
-        {
-            try
-            {
-                if (image == null || image.Height <= 0) return false;
-                return (image.Width / image.Height) <= FINGERPRINT_ASPECT_MAX;
-            }
-            catch
-            {
-                return false;
-            }
-        }
 
         // Tách logic mapping TextPosition → percent ra cho sạch (không đổi logic)
         private static float GetWidthImagePercent(Constans.TEXT_POSITON textPosition)
