@@ -243,7 +243,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Edit.MediStockD1SDO
                 {
                     valid = valid && this.ValidTutorial();
                     valid = valid && ValidAcinInteractiveWorker.ValidGrade(this.DataRow, MediMatyTypeADOs);
-                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob);
+                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds);
                     valid = valid && WarningOddConvertWorker.CheckWarningOddConvertAmount(frmAssignPrescription.currentMedicineTypeADOForEdit, this.Amount, frmAssignPrescription.ResetFocusMediMaty);
                 }
 

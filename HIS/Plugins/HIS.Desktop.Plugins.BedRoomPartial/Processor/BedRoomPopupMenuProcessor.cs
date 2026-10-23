@@ -122,7 +122,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             BeneficiaryInfo,
             AnalyzeMedicalImage,
             MedicalTreamentOut,
-            CareLevel
+            CareLevel,
+            PublicMedicineMultiPatient
         }
         internal ModuleType moduleType { get; set; }
 
@@ -296,6 +297,16 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 itemPublicMedicineByDate.Tag = ModuleType.PublicMedicineByDate;
                 itemPublicMedicineByDate.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
                 subCongKhai.AddItem(itemPublicMedicineByDate);
+
+                // Chi them muc khi tai khoan duoc phan quyen module Cong khai thuoc nhieu BN
+                if (GlobalVariables.currentModuleRaws != null
+                    && GlobalVariables.currentModuleRaws.Any(o => o.ModuleLink == "HIS.Desktop.Plugins.PublicMedicineMultiPatient"))
+                {
+                    BarButtonItem itemPublicMedicineMultiPatient = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_THUOC_NHIEU_BN", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 2);
+                    itemPublicMedicineMultiPatient.Tag = ModuleType.PublicMedicineMultiPatient;
+                    itemPublicMedicineMultiPatient.ItemClick += new ItemClickEventHandler(bedRoomMouseRightClick);
+                    subCongKhai.AddItem(itemPublicMedicineMultiPatient);
+                }
 
 
                 BarButtonItem itemPublicService_NT = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__MOUSE_RIGHT__CONG_KHAI_DICH_VU_KHAM_CHUA_BENH_NOT_TRU", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 2);

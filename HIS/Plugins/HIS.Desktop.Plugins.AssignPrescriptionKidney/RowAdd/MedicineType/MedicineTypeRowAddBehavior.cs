@@ -67,7 +67,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Add.MedicineType
             {
                 if (this.CheckValidPre()
                     && this.ValidThuocDaKeTrongNgay()
-                    && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob)
+                    && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds)
                     && ValidAcinInteractiveWorker.Valid(this.DataRow, MediMatyTypeADOs)
                     && ValidKidneyShift())
                 {

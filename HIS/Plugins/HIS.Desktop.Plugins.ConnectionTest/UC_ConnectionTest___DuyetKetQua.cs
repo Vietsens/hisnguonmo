@@ -283,8 +283,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
-                var row = (LisSampleADO)gridViewSample.GetFocusedRow();
-                if (row == null || rowSample == null || row.ID != rowSample.ID || this.approveTargetServices == null || !this.approveTargetServices.Any())
+                // Thao tác trên mẫu đang hiển thị kết quả (rowSample), không phụ thuộc dòng đang focus trên lưới mẫu
+                // (focus có thể bị đổi bởi bàn phím hoặc handler Duyệt KQ cấp mẫu: FocusedRowHandle - 1 / + 1).
+                var row = rowSample;
+                if (row == null || this.approveTargetServices == null || !this.approveTargetServices.Any())
                 {
                     UpdateApproveResultButton();
                     return;

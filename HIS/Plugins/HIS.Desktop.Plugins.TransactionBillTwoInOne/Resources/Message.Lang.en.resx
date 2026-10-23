@@ -165,4 +165,10 @@
   <data name="Plugins_TransactionBillTwoInOne__BNChuaCoThongTinThuHuong" xml:space="preserve">
     <value>The patient has no beneficiary information. Please enter beneficiary information first.</value>
   </data>
+  <data name="Plugins_TransactionBillTwoInOne__DangPhanBoBaoLanhChuaChot" xml:space="preserve">
+    <value>The guarantee insurance cost allocation of this treatment has not been finalized, payment is not allowed.</value>
+  </data>
+  <data name="Plugins_TransactionBillTwoInOne__ChiPhiBaoHiemThayDoiSauChot" xml:space="preserve">
+    <value>A service allocated to the insurer changed its cost after the allocation was finalized. Please use Edit after finalize to reallocate before payment.</value>
+  </data>
 </root>

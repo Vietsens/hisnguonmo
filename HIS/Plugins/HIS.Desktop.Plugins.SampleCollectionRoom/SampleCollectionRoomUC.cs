@@ -601,7 +601,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
 
         internal void FillDataToGridControl()
         {
-            FocusTreatmentCode();
+            FocusDefaultControl();
 
             FillDataToGridSample(new CommonParam(0, (int)ConfigApplications.NumPageSize));
 
@@ -2481,7 +2481,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                FocusTreatmentCode();
+                FocusDefaultControl();
             }
             catch (Exception ex)
             {
@@ -2493,7 +2493,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                FocusTreatmentCode();
+                FocusDefaultControl();
             }
             catch (Exception ex)
             {
@@ -3640,22 +3640,38 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void FocusTreatmentCode()
+        /// <summary>
+        /// vCong59787: dua con tro ve o mac dinh theo key LIS.LIS_SAMPLE.TAKE_SAMPLE.DEFAULT_FOCUS_FIELD
+        /// (1 = Ma y lenh, 2 = Ma dieu tri, 3 = Barcode, 4 = Tu khoa; trong/khac = Ma dieu tri nhu truoc)
+        /// </summary>
+        private void FocusDefaultControl()
         {
             try
             {
                 this.BeginInvoke((MethodInvoker)(() =>
                 {
-                    if (txtFindTreamentCode != null && txtFindTreamentCode.Enabled && txtFindTreamentCode.Visible)
+                    DevExpress.XtraEditors.TextEdit target = GetDefaultFocusControl();
+                    if (target != null && target.Enabled && target.Visible)
                     {
-                        txtFindTreamentCode.Focus();
-                        txtFindTreamentCode.SelectAll();
+                        target.Focus();
+                        target.SelectAll();
                     }
                 }));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private DevExpress.XtraEditors.TextEdit GetDefaultFocusControl()
+        {
+            switch ((LisConfigCFG.DEFAULT_FOCUS_FIELD ?? "").Trim())
+            {
+                case "1": return txtFindServiceReqCode;
+                case "3": return txtFindServiceBarCode;
+                case "4": return txtSearchKey;
+                default: return txtFindTreamentCode;
             }
         }
 

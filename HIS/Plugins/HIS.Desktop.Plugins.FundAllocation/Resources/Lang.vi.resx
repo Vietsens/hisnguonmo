@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmFundAllocation.Text" xml:space="preserve">
+    <value>Phân bổ chi phí bảo hiểm bảo lãnh</value>
+  </data>
+  <data name="frmFundAllocation.lciTreatmentCode.Text" xml:space="preserve">
+    <value>Mã hồ sơ:</value>
+  </data>
+  <data name="frmFundAllocation.lciPatient.Text" xml:space="preserve">
+    <value>Bệnh nhân:</value>
+  </data>
+  <data name="frmFundAllocation.lciFund.Text" xml:space="preserve">
+    <value>Đơn vị cùng chi trả:</value>
+  </data>
+  <data name="frmFundAllocation.lciFundNumber.Text" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="frmFundAllocation.lciFundTime.Text" xml:space="preserve">
+    <value>Thời hạn thẻ:</value>
+  </data>
+  <data name="frmFundAllocation.lciStatus.Text" xml:space="preserve">
+    <value>Trạng thái:</value>
+  </data>
+  <data name="frmFundAllocation.lciVersion.Text" xml:space="preserve">
+    <value>Phiên bản:</value>
+  </data>
+  <data name="frmFundAllocation.lciFundBudget.Text" xml:space="preserve">
+    <value>Hạn mức:</value>
+  </data>
+  <data name="frmFundAllocation.lciSurchargeRatio.Text" xml:space="preserve">
+    <value>Tỷ lệ phụ thu (%):</value>
+  </data>
+  <data name="frmFundAllocation.tabPageAllocation.Text" xml:space="preserve">
+    <value>Phân bổ</value>
+  </data>
+  <data name="frmFundAllocation.tabPageHistory.Text" xml:space="preserve">
+    <value>Lịch sử phân bổ</value>
+  </data>
+  <data name="frmFundAllocation.lblFundCaption.Text" xml:space="preserve">
+    <value>Bảo hiểm trả</value>
+  </data>
+  <data name="frmFundAllocation.lblPatientCaption.Text" xml:space="preserve">
+    <value>Bệnh nhân trả</value>
+  </data>
+  <data name="frmFundAllocation.btnMoveToFund.Text" xml:space="preserve">
+    <value>Chuyển sang BH trả</value>
+  </data>
+  <data name="frmFundAllocation.btnMoveToPatient.Text" xml:space="preserve">
+    <value>Chuyển sang BN trả</value>
+  </data>
+  <data name="frmFundAllocation.lblMoveHint.Text" xml:space="preserve">
+    <value>Chọn dòng rồi bấm để chuyển trọn dòng sang bên kia</value>
+  </data>
+  <data name="frmFundAllocation.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmFundAllocation.btnFinish.Text" xml:space="preserve">
+    <value>Chốt</value>
+  </data>
+  <data name="frmFundAllocation.btnReopen.Text" xml:space="preserve">
+    <value>Sửa sau chốt</value>
+  </data>
+  <data name="frmFundAllocation.btnCancelAllocation.Text" xml:space="preserve">
+    <value>Hủy phân bổ</value>
+  </data>
+  <data name="frmFundAllocation.btnMoveToFund.ToolTip" xml:space="preserve">
+    <value>Chuyển trọn các dòng đang chọn ở bảng Bệnh nhân trả sang bảng Bảo hiểm trả</value>
+  </data>
+  <data name="frmFundAllocation.btnMoveToPatient.ToolTip" xml:space="preserve">
+    <value>Chuyển trọn các dòng đang chọn ở bảng Bảo hiểm trả sang bảng Bệnh nhân trả</value>
+  </data>
+  <data name="frmFundAllocation.btnSave.ToolTip" xml:space="preserve">
+    <value>Lưu phân bổ (Ctrl S)</value>
+  </data>
+  <data name="frmFundAllocation.btnFinish.ToolTip" xml:space="preserve">
+    <value>Chốt phân bổ, hồ sơ chỉ thanh toán được sau khi chốt</value>
+  </data>
+  <data name="frmFundAllocation.btnReopen.ToolTip" xml:space="preserve">
+    <value>Sửa phân bổ đã chốt, sinh phiên bản mới và giữ nguyên phiên bản cũ. Chỉ người chốt được dùng</value>
+  </data>
+  <data name="frmFundAllocation.btnCancelAllocation.ToolTip" xml:space="preserve">
+    <value>Hủy phân bổ của hồ sơ, phải nhập lý do</value>
+  </data>
+  <data name="frmFundAllocation.spinFundBudget.ToolTip" xml:space="preserve">
+    <value>Hạn mức bảo hiểm của hồ sơ (H), tổng tiền bảo hiểm trả không được vượt hạn mức</value>
+  </data>
+  <data name="frmFundAllocation.spinSurchargeRatio.ToolTip" xml:space="preserve">
+    <value>Tỷ lệ phụ thu tính trên tổng tiền bảo hiểm trả, từ 0 đến 100</value>
+  </data>
+  <data name="frmFundAllocation.Status.ChuaPhanBo" xml:space="preserve">
+    <value>Chưa phân bổ</value>
+  </data>
+  <data name="frmFundAllocation.Status.DaLuu" xml:space="preserve">
+    <value>Đã lưu</value>
+  </data>
+  <data name="frmFundAllocation.Status.DaChot" xml:space="preserve">
+    <value>Đã chốt</value>
+  </data>
+  <data name="frmFundAllocation.Status.DaHuy" xml:space="preserve">
+    <value>Đã hủy</value>
+  </data>
+  <data name="frmFundAllocation.Status.CoThayDoiChiPhi" xml:space="preserve">
+    <value>Có thay đổi chi phí</value>
+  </data>
+  <data name="frmFundAllocation.Message.ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="frmFundAllocation.Message.HoSoChuaCoDonViCungChiTra" xml:space="preserve">
+    <value>Hồ sơ chưa có thông tin đơn vị cùng chi trả.</value>
+  </data>
+  <data name="frmFundAllocation.Message.LuuTruocKhiChot" xml:space="preserve">
+    <value>Vui lòng lưu phân bổ trước khi chốt.</value>
+  </data>
+  <data name="frmFundAllocation.Message.XacNhanChot" xml:space="preserve">
+    <value>Sau khi chốt chỉ người chốt được sửa phân bổ. Bạn có muốn chốt không?</value>
+  </data>
+  <data name="frmFundAllocation.Message.SoLuongKhongHopLe" xml:space="preserve">
+    <value>Số lượng phân bổ phải là số nguyên từ 0 đến {0}.</value>
+  </data>
+  <data name="frmFundAllocation.Message.DonGiaKhongHopLe" xml:space="preserve">
+    <value>Đơn giá phân bổ không được âm.</value>
+  </data>
+  <data name="frmFundAllocation.Message.ThanhTienKhongHopLe" xml:space="preserve">
+    <value>Thành tiền phân bổ phải từ 0 đến {0}.</value>
+  </data>
+  <data name="frmFundAllocation.Message.BenSoLuong0KhongNhanThanhTien" xml:space="preserve">
+    <value>Bên còn lại có số lượng bằng 0 nên không nhận được thành tiền, vui lòng chuyển số lượng trước.</value>
+  </data>
+  <data name="frmFundAllocation.Message.SoLuongLonHon0ThanhTienPhaiLonHon0" xml:space="preserve">
+    <value>Dòng có số lượng lớn hơn 0 thì thành tiền phải lớn hơn 0.</value>
+  </data>
+  <data name="frmFundAllocation.Message.NhapLyDoHuy" xml:space="preserve">
+    <value>Vui lòng nhập lý do hủy phân bổ.</value>
+  </data>
+  <data name="frmFundAllocation.Note.DongMoi" xml:space="preserve">
+    <value>Mới</value>
+  </data>
+  <data name="frmFundAllocation.Note.DongThayDoi" xml:space="preserve">
+    <value>Thay đổi, trước đây BH trả {0} - {1}</value>
+  </data>
+  <data name="frmFundAllocation.Note.DongKhongCon" xml:space="preserve">
+    <value>Không còn</value>
+  </data>
+  <data name="frmFundAllocation.Total.TongChiPhi" xml:space="preserve">
+    <value>Tổng chi phí C: {0}</value>
+  </data>
+  <data name="frmFundAllocation.Total.TongBaoHiemTra" xml:space="preserve">
+    <value>Tổng BH trả B: {0}</value>
+  </data>
+  <data name="frmFundAllocation.Total.TongBenhNhanTra" xml:space="preserve">
+    <value>Tổng BN trả N: {0}</value>
+  </data>
+  <data name="frmFundAllocation.Total.HanMuc" xml:space="preserve">
+    <value>Hạn mức H: {0}</value>
+  </data>
+  <data name="frmFundAllocation.Total.HanMucConLai" xml:space="preserve">
+    <value>Hạn mức còn lại: {0}</value>
+  </data>
+  <data name="frmFundAllocation.Total.TyLePhuThu" xml:space="preserve">
+    <value>Tỷ lệ phụ thu r: {0}%</value>
+  </data>
+  <data name="frmFundAllocation.Total.PhuThu" xml:space="preserve">
+    <value>Phụ thu F: {0}</value>
+  </data>
+  <data name="frmFundAllocation.Total.TongBaoHiemThanhToan" xml:space="preserve">
+    <value>Tổng BH thanh toán A: {0}</value>
+  </data>
+  <data name="frmFundAllocation.Column.ServiceCode" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="frmFundAllocation.Column.ServiceName" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="frmFundAllocation.Column.ServiceType" xml:space="preserve">
+    <value>Loại</value>
+  </data>
+  <data name="frmFundAllocation.Column.ServiceUnit" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmFundAllocation.Column.IntructionTime" xml:space="preserve">
+    <value>Ngày chỉ định</value>
+  </data>
+  <data name="frmFundAllocation.Column.RequestRoom" xml:space="preserve">
+    <value>Nơi chỉ định</value>
+  </data>
+  <data name="frmFundAllocation.Column.InPackage" xml:space="preserve">
+    <value>Trong gói</value>
+  </data>
+  <data name="frmFundAllocation.Column.Amount" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmFundAllocation.Column.Price" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="frmFundAllocation.Column.TotalPrice" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+  <data name="frmFundAllocation.Column.Note" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="frmFundAllocation.History.Version" xml:space="preserve">
+    <value>Phiên bản</value>
+  </data>
+  <data name="frmFundAllocation.History.Status" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="frmFundAllocation.History.SaveUser" xml:space="preserve">
+    <value>Người lưu</value>
+  </data>
+  <data name="frmFundAllocation.History.FinishUser" xml:space="preserve">
+    <value>Người chốt</value>
+  </data>
+  <data name="frmFundAllocation.History.FinishTime" xml:space="preserve">
+    <value>Thời gian chốt</value>
+  </data>
+  <data name="frmFundAllocation.History.TotalFundPrice" xml:space="preserve">
+    <value>Tổng BH trả</value>
+  </data>
+  <data name="frmFundAllocation.History.SurchargeAmount" xml:space="preserve">
+    <value>Phụ thu</value>
+  </data>
+  <data name="frmFundAllocation.History.TotalFundPay" xml:space="preserve">
+    <value>Tổng BH thanh toán</value>
+  </data>
+  <data name="frmFundAllocation.History.CancelUser" xml:space="preserve">
+    <value>Người hủy</value>
+  </data>
+  <data name="frmFundAllocation.History.CancelTime" xml:space="preserve">
+    <value>Thời gian hủy</value>
+  </data>
+  <data name="frmFundAllocation.History.CancelReason" xml:space="preserve">
+    <value>Lý do hủy</value>
+  </data>
+  <data name="frmFundAllocation.History.Transactions" xml:space="preserve">
+    <value>Giao dịch</value>
+  </data>
+  <data name="frmFundAllocation.History.GiaoDichDaHuy" xml:space="preserve">
+    <value>Đã hủy</value>
+  </data>
+  <data name="frmCancelReason.Text" xml:space="preserve">
+    <value>Hủy phân bổ</value>
+  </data>
+  <data name="frmCancelReason.lblReason.Text" xml:space="preserve">
+    <value>Lý do hủy phân bổ:</value>
+  </data>
+  <data name="frmCancelReason.btnOk.Text" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="frmCancelReason.btnCancel.Text" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+</root>

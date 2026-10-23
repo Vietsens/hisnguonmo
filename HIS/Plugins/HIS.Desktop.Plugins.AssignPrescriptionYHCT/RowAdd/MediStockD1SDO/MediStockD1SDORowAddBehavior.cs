@@ -201,7 +201,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Add.MediStockD1SDO
                     valid = valid && this.ValidUseForm();
                     valid = valid && HIS.Desktop.Plugins.AssignPrescriptionYHCT.ValidAcinInteractiveWorker.Valid(this.DataRow, MediMatyTypeADOs, this.LstExpMestMedicine);
                     valid = valid && this.ValidThuocDaKeTrongNgay();
-                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob);
+                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds);
                 }
                 valid = valid && this.ValidKhaDungThuocTrongKho();
                 valid = valid && this.CheckPatientTypeHasValue();

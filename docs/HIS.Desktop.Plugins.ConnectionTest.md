@@ -165,6 +165,7 @@ Luồng in tổng hợp: `RichEditorStore.RunPrintTemplate("Mps000517", Delegate
 | 22/10/2026 | vuongnd | Tài liệu: bổ sung điều kiện hiển thị nút Duyệt KQ / 2 cột người duyệt (`MUST_APPROVE_RESULT_BEFORE_RETURN = 1` hoặc `IS_SHOW_BUTTON_APPROVE_SAMPLE = 1`) và bảng kiểm tra khi không thấy nút (mục 2; A_NghiepVu mục 4.1; B_KyThuat mục 6.1). |
 | 22/10/2026 | vuongnd | Nút "Duyệt KQ / Hủy duyệt KQ" **luôn hiển thị** như nút "Duyệt KQ theo lô" (bỏ điều kiện config `MUST_APPROVE_RESULT_BEFORE_RETURN`/`IS_SHOW_BUTTON_APPROVE_SAMPLE` — môi trường không nạp được config LIS thì nút bị ẩn); 2 cột "Người duyệt KQ", "TG duyệt" mặc định ẩn, bật qua Column Chooser. Cập nhật A_NghiepVu mục 4.1/4.2/8/9/11, B_KyThuat mục 4/6.1/9/10. |
 | 22/10/2026 | vuongnd | **Duyệt KQ theo từng dịch vụ**: thêm 3 cột `LIS_SAMPLE_SERVICE.SERVICE_APPROVER_*`/`SERVICE_APPROVE_TIME` (SQL `SQL_ConnectionTest_DuyetKetQuaTheoDichVu.sql`), API LIS `api/LisSampleService/ApproveResult`/`UnapproveResult` (backend SVN); nút Duyệt/Hủy duyệt áp dụng cho dịch vụ được tích, bật khi dịch vụ đủ KQ (không chờ cả mẫu), khóa ô riêng dịch vụ đã duyệt, cột người duyệt theo dịch vụ; Mps000096/Mps000517 lấy người duyệt từng dịch vụ (dự phòng cấp mẫu). Thêm `ADO/SampleServiceApproveADO.cs`, `IS_SERVICE_APPROVED`. |
+| 23/10/2026 | vuongnd | Nút "Duyệt KQ / Hủy duyệt KQ" thao tác trên mẫu đang hiển thị kết quả (`rowSample`), không so với dòng đang focus — trước đây focus bị đổi (bàn phím / handler cấp mẫu `FocusedRowHandle - 1 / + 1`) khiến nút bấm không có tác dụng. |
 
 ## 9. Test Cases
 

@@ -333,31 +333,6 @@ namespace MPS.Processor.Mps000044
             return result;
         }
 
-        //Phieu xuat theo don -> chi co ban ghi goc HIS_EXP_MEST (ID kho / ID khoa), tra ma tu danh muc da cache
-        public override string ProcessEmrStockData()
-        {
-            try
-            {
-                if (rdo == null || rdo.HisExpMest == null) return null;
-                var expMest = rdo.HisExpMest;
-                string reqDepartmentCode = null;
-                var reqDepartment = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_DEPARTMENT>()
-                    .FirstOrDefault(o => o.ID == expMest.REQ_DEPARTMENT_ID);
-                if (reqDepartment != null) reqDepartmentCode = reqDepartment.DEPARTMENT_CODE;
-                return BuildEmrStockData(
-                    expMest.EXP_MEST_CODE,
-                    null,
-                    GetMediStockCodeById(expMest.MEDI_STOCK_ID),
-                    GetMediStockCodeById(expMest.IMP_MEDI_STOCK_ID),
-                    reqDepartmentCode);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return null;
-            }
-        }
-
         public override string ProcessUniqueCodeData()
         {
             string result = "";

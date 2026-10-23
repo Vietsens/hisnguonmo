@@ -565,6 +565,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 FormatControl(ConfigApplications.NumberSeperator, spinRecieptDiscountPrice);
                 FormatControl(ConfigApplications.NumberSeperator, spinInvoiceDiscountPrice);
                 FormatControl(ConfigApplications.NumberSeperator, repositoryItemSpinFundAmount);
+                //Dong quy khong sua (dong quy phan bo bao hiem bao lanh) hien so tien cung dinh dang, khong de 4 so le
+                FormatControl(ConfigApplications.NumberSeperator, repositoryItemSpinFundAmountDisable);
             }
             catch (Exception ex)
             {
@@ -1696,6 +1698,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 listBillFundReciept = new List<VHisBillFundADO>();
+                //Ho so co phan bo bao hiem bao lanh da chot: dong quy lay theo tien bao hiem phan bo
+                if (this.ProcessFundAllocation())
+                {
+                    return;
+                }
                 if (this.treatment == null) return;
                 if (listRecieptData == null || listRecieptData.Count <= 0)
                 {
@@ -1817,6 +1824,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                this.RefreshFundAllocationRow();
                 var listRecieptFund = bindingSource1.DataSource as List<VHisBillFundADO>;
                 decimal totalFund = 0;
                 decimal discount = 0;
@@ -1829,6 +1837,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     discount += HisConfig.EnableMultiDiscount
                         ? GetTotalRecieptDiscount()
                         : spinRecieptDiscountPrice.Value;
+                }
+                else if (this.fundAllocationRow != null)
+                {
+                    //Khong thu so vien phi: tien quy phan bo bao hiem bao lanh con lai nam o so dich vu
+                    totalFund += this.fundAllocationRow.AMOUNT;
                 }
                 if (!checkNotInvoice.Checked)
                 {
@@ -1857,7 +1870,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     if (HisConfig.SelectPayForm == "1")
                     {
                         // Trừ chiết khấu (discount đã gồm cả 2 sổ, đã bỏ qua sổ "Không TT", hỗ trợ cả multi-discount lẫn spin cũ).
-                        lblCanThu.Text = (totalInvoice + totalReciept - discount - tongTienDaNhap).ToString();
+                        // Ho so co phan bo bao hiem bao lanh: tru them tien quy
+                        decimal fundAllocationAmount = this.fundAllocationRow != null ? totalFund : 0;
+                        lblCanThu.Text = (totalInvoice + totalReciept - discount - tongTienDaNhap - fundAllocationAmount).ToString();
                     }
                     else // <--- ĐÂY LÀ NHÁNH CHẠY CHO CẤU HÌNH == 2 CỦA BẠN
                     {
@@ -3173,7 +3188,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 string repay = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TransactionBill.Repay");
                 if (repay == "1")
                 {
-                    if (btnSave.Enabled == false || layoutControlItem10.Enabled == false)
+                    //Nut luu dang khoa do phan bo bao hiem bao lanh (chua thanh toan) thi khong hoi hoan ung
+                    if ((btnSave.Enabled == false || layoutControlItem10.Enabled == false) && !this.IsFundAllocationLocked())
                     {
                         LoadSearch();
                         resultRecieptBill = null;

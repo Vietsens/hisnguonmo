@@ -954,6 +954,13 @@ namespace HIS.Desktop.Plugins.TransactionBill
             bool? success = false;
             try
             {
+                //Moi loi vao luu (nut, Ctrl+S/I/A, Luu ky Emr) deu qua day: phan bo bao hiem bao lanh dang chan thi khong goi CreateBill
+                if (this.IsFundAllocationLocked())
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show(this, this.GetFundAllocationLockMessage(), ResourceMessageLang.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
                 decimal currentVal = 0;
                 string cleanTienBaoLanh = (this.tienBaoLanh ?? "").Replace(".", "").Replace(",", "");
                 decimal.TryParse(cleanTienBaoLanh, out currentVal);
@@ -4050,10 +4057,12 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
-                btnSave.Enabled = enable ?? true;
-                btnSaveAndSign.Enabled = enable ?? true;
-                btnSavePrint.Enabled = enable ?? true;
-                btnAddSignEmr.Enabled = enable ?? true;
+                //Phan bo bao hiem bao lanh dang chan thanh toan thi khong bat lai nut luu
+                bool value = (enable ?? true) && !this.IsFundAllocationLocked();
+                btnSave.Enabled = value;
+                btnSaveAndSign.Enabled = value;
+                btnSavePrint.Enabled = value;
+                btnAddSignEmr.Enabled = value;
             }
             catch (Exception ex)
             {

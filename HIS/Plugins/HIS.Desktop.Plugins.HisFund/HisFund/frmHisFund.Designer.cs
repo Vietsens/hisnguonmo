@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.HisFund
             this.btnGEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.grdColBedTypeCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColBedTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColSurchargeRatio = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColCreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColCreator = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -102,11 +103,13 @@ namespace HIS.Desktop.Plugins.HisFund
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
             this.txtFundCode = new DevExpress.XtraEditors.TextEdit();
             this.txtFundName = new DevExpress.XtraEditors.TextEdit();
+            this.spSurchargeRatio = new DevExpress.XtraEditors.SpinEdit();
             this.dnNavigation = new DevExpress.XtraEditors.DataNavigator();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBedTypeCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBedTypeName = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciSurchargeRatio = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -151,10 +154,12 @@ namespace HIS.Desktop.Plugins.HisFund
             this.lcEditorInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtFundCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFundName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spSurchargeRatio.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBedTypeCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBedTypeName)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSurchargeRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
@@ -243,6 +248,7 @@ namespace HIS.Desktop.Plugins.HisFund
             this.gridColumnEdit,
             this.grdColBedTypeCode,
             this.grdColBedTypeName,
+            this.grdColSurchargeRatio,
             this.gridColumn2,
             this.grdColCreateTime,
             this.grdColCreator,
@@ -340,6 +346,23 @@ namespace HIS.Desktop.Plugins.HisFund
             this.grdColBedTypeName.VisibleIndex = 5;
             this.grdColBedTypeName.Width = 212;
             // 
+            // grdColSurchargeRatio
+            // 
+            this.grdColSurchargeRatio.AppearanceCell.Options.UseTextOptions = true;
+            this.grdColSurchargeRatio.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.grdColSurchargeRatio.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColSurchargeRatio.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.grdColSurchargeRatio.Caption = "Tỷ lệ phụ thu (%)";
+            this.grdColSurchargeRatio.DisplayFormat.FormatString = "#,##0.00##";
+            this.grdColSurchargeRatio.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.grdColSurchargeRatio.FieldName = "SURCHARGE_RATIO";
+            this.grdColSurchargeRatio.Name = "grdColSurchargeRatio";
+            this.grdColSurchargeRatio.OptionsColumn.AllowEdit = false;
+            this.grdColSurchargeRatio.ToolTip = "Tỷ lệ phụ thu (%)";
+            this.grdColSurchargeRatio.Visible = true;
+            this.grdColSurchargeRatio.VisibleIndex = 6;
+            this.grdColSurchargeRatio.Width = 100;
+            // 
             // gridColumn2
             // 
             this.gridColumn2.Caption = "Trạng thái";
@@ -348,7 +371,7 @@ namespace HIS.Desktop.Plugins.HisFund
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 6;
+            this.gridColumn2.VisibleIndex = 7;
             this.gridColumn2.Width = 73;
             // 
             // grdColCreateTime
@@ -360,7 +383,7 @@ namespace HIS.Desktop.Plugins.HisFund
             this.grdColCreateTime.ToolTip = "CREATE_TIME";
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 7;
+            this.grdColCreateTime.VisibleIndex = 8;
             this.grdColCreateTime.Width = 112;
             // 
             // grdColCreator
@@ -371,7 +394,7 @@ namespace HIS.Desktop.Plugins.HisFund
             this.grdColCreator.OptionsColumn.AllowEdit = false;
             this.grdColCreator.ToolTip = "CREATOR";
             this.grdColCreator.Visible = true;
-            this.grdColCreator.VisibleIndex = 8;
+            this.grdColCreator.VisibleIndex = 9;
             this.grdColCreator.Width = 86;
             // 
             // grdColModifyTime
@@ -383,7 +406,7 @@ namespace HIS.Desktop.Plugins.HisFund
             this.grdColModifyTime.ToolTip = "MODIFY_TIME";
             this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifyTime.Visible = true;
-            this.grdColModifyTime.VisibleIndex = 9;
+            this.grdColModifyTime.VisibleIndex = 10;
             this.grdColModifyTime.Width = 112;
             // 
             // grdColModifier
@@ -394,7 +417,7 @@ namespace HIS.Desktop.Plugins.HisFund
             this.grdColModifier.OptionsColumn.AllowEdit = false;
             this.grdColModifier.ToolTip = "MODIFIER";
             this.grdColModifier.Visible = true;
-            this.grdColModifier.VisibleIndex = 10;
+            this.grdColModifier.VisibleIndex = 11;
             this.grdColModifier.Width = 93;
             // 
             // grdColTreatment
@@ -522,6 +545,7 @@ namespace HIS.Desktop.Plugins.HisFund
             this.lcEditorInfo.Controls.Add(this.btnEdit);
             this.lcEditorInfo.Controls.Add(this.txtFundCode);
             this.lcEditorInfo.Controls.Add(this.txtFundName);
+            this.lcEditorInfo.Controls.Add(this.spSurchargeRatio);
             this.lcEditorInfo.Controls.Add(this.dnNavigation);
             this.lcEditorInfo.Location = new System.Drawing.Point(902, 2);
             this.lcEditorInfo.Name = "lcEditorInfo";
@@ -533,7 +557,7 @@ namespace HIS.Desktop.Plugins.HisFund
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(225, 73);
+            this.btnRefresh.Location = new System.Drawing.Point(225, 97);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(105, 22);
             this.btnRefresh.StyleController = this.lcEditorInfo;
@@ -543,7 +567,7 @@ namespace HIS.Desktop.Plugins.HisFund
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(114, 73);
+            this.btnAdd.Location = new System.Drawing.Point(114, 97);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(107, 22);
             this.btnAdd.StyleController = this.lcEditorInfo;
@@ -553,7 +577,7 @@ namespace HIS.Desktop.Plugins.HisFund
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(2, 73);
+            this.btnEdit.Location = new System.Drawing.Point(2, 97);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(108, 22);
             this.btnEdit.StyleController = this.lcEditorInfo;
@@ -564,22 +588,47 @@ namespace HIS.Desktop.Plugins.HisFund
             // txtFundCode
             // 
             this.txtFundCode.EnterMoveNextControl = true;
-            this.txtFundCode.Location = new System.Drawing.Point(97, 25);
+            this.txtFundCode.Location = new System.Drawing.Point(117, 25);
             this.txtFundCode.Name = "txtFundCode";
             this.txtFundCode.Properties.MaxLength = 6;
-            this.txtFundCode.Size = new System.Drawing.Size(233, 20);
+            this.txtFundCode.Size = new System.Drawing.Size(213, 20);
             this.txtFundCode.StyleController = this.lcEditorInfo;
             this.txtFundCode.TabIndex = 0;
             // 
             // txtFundName
             // 
             this.txtFundName.EnterMoveNextControl = true;
-            this.txtFundName.Location = new System.Drawing.Point(97, 49);
+            this.txtFundName.Location = new System.Drawing.Point(117, 49);
             this.txtFundName.Name = "txtFundName";
             this.txtFundName.Properties.MaxLength = 100;
-            this.txtFundName.Size = new System.Drawing.Size(233, 20);
+            this.txtFundName.Size = new System.Drawing.Size(213, 20);
             this.txtFundName.StyleController = this.lcEditorInfo;
             this.txtFundName.TabIndex = 1;
+            // 
+            // spSurchargeRatio
+            // 
+            this.spSurchargeRatio.EditValue = null;
+            this.spSurchargeRatio.Location = new System.Drawing.Point(117, 73);
+            this.spSurchargeRatio.Name = "spSurchargeRatio";
+            this.spSurchargeRatio.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.spSurchargeRatio.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spSurchargeRatio.Properties.DisplayFormat.FormatString = "#,##0.00##";
+            this.spSurchargeRatio.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.spSurchargeRatio.Properties.EditFormat.FormatString = "#,##0.####";
+            this.spSurchargeRatio.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.spSurchargeRatio.Properties.Mask.EditMask = "n4";
+            this.spSurchargeRatio.Properties.MaxValue = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.spSurchargeRatio.Properties.NullValuePrompt = "Để trống nếu không phụ thu";
+            this.spSurchargeRatio.Properties.NullValuePromptShowForEmptyValue = true;
+            this.spSurchargeRatio.Size = new System.Drawing.Size(213, 20);
+            this.spSurchargeRatio.StyleController = this.lcEditorInfo;
+            this.spSurchargeRatio.TabIndex = 2;
+            this.spSurchargeRatio.KeyDown += new System.Windows.Forms.KeyEventHandler(this.spSurchargeRatio_KeyDown);
             // 
             // dnNavigation
             // 
@@ -605,6 +654,7 @@ namespace HIS.Desktop.Plugins.HisFund
             this.layoutControlItem8,
             this.lciBedTypeCode,
             this.lciBedTypeName,
+            this.lciSurchargeRatio,
             this.emptySpaceItem1,
             this.layoutControlItem6,
             this.layoutControlItem7,
@@ -637,7 +687,7 @@ namespace HIS.Desktop.Plugins.HisFund
             this.lciBedTypeCode.Size = new System.Drawing.Size(332, 24);
             this.lciBedTypeCode.Text = "Mã:";
             this.lciBedTypeCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciBedTypeCode.TextSize = new System.Drawing.Size(90, 20);
+            this.lciBedTypeCode.TextSize = new System.Drawing.Size(110, 20);
             this.lciBedTypeCode.TextToControlDistance = 5;
             // 
             // lciBedTypeName
@@ -652,21 +702,34 @@ namespace HIS.Desktop.Plugins.HisFund
             this.lciBedTypeName.Size = new System.Drawing.Size(332, 24);
             this.lciBedTypeName.Text = "Tên:";
             this.lciBedTypeName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciBedTypeName.TextSize = new System.Drawing.Size(90, 20);
+            this.lciBedTypeName.TextSize = new System.Drawing.Size(110, 20);
             this.lciBedTypeName.TextToControlDistance = 5;
+            // 
+            // lciSurchargeRatio
+            // 
+            this.lciSurchargeRatio.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciSurchargeRatio.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciSurchargeRatio.Control = this.spSurchargeRatio;
+            this.lciSurchargeRatio.Location = new System.Drawing.Point(0, 71);
+            this.lciSurchargeRatio.Name = "lciSurchargeRatio";
+            this.lciSurchargeRatio.Size = new System.Drawing.Size(332, 24);
+            this.lciSurchargeRatio.Text = "Tỷ lệ phụ thu (%):";
+            this.lciSurchargeRatio.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciSurchargeRatio.TextSize = new System.Drawing.Size(110, 20);
+            this.lciSurchargeRatio.TextToControlDistance = 5;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 97);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 121);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(332, 381);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(332, 357);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnEdit;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 71);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 95);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(112, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -675,7 +738,7 @@ namespace HIS.Desktop.Plugins.HisFund
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(112, 71);
+            this.layoutControlItem7.Location = new System.Drawing.Point(112, 95);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(111, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -684,7 +747,7 @@ namespace HIS.Desktop.Plugins.HisFund
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnRefresh;
-            this.layoutControlItem9.Location = new System.Drawing.Point(223, 71);
+            this.layoutControlItem9.Location = new System.Drawing.Point(223, 95);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(109, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -872,10 +935,12 @@ namespace HIS.Desktop.Plugins.HisFund
             this.lcEditorInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtFundCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFundName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spSurchargeRatio.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBedTypeCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBedTypeName)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSurchargeRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
@@ -958,5 +1023,8 @@ namespace HIS.Desktop.Plugins.HisFund
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit1;
         private DevExpress.XtraGrid.Columns.GridColumn grdColTreatment;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItembtnTreatment;
+        private DevExpress.XtraEditors.SpinEdit spSurchargeRatio;
+        private DevExpress.XtraLayout.LayoutControlItem lciSurchargeRatio;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColSurchargeRatio;
     }
 }

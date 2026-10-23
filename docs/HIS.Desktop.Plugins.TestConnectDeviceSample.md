@@ -101,6 +101,7 @@ Không in trực tiếp. Thẻ nhân viên in ở `HIS.Desktop.Plugins.EmpUser` 
 |------|-----------|-----------------|
 | 24/07/2024 | ninhdd | Bản đầu: giao thức terminal riêng qua Inventec.Common.Rs232 |
 | 21/10/2026 | dangth | **Việc 60557 (BV Yên Bái)** — Viết lại toàn bộ: đọc máy quét chế độ COM (`Worker\ComPortReader`, chống thoát HIS khi rút cáp), nhiều cổng, thẻ `TK-` + tài khoản, quy tắc quét theo thiết kế I.4, mở popup SampleInfo điền sẵn người/giờ lấy mẫu, làm mới màn Lấy mẫu bệnh phẩm, giao diện ô theo cổng + nhật ký quét + thông báo nổi, nút DS đăng nhập, phím tắt Kết nối đổi Ctrl C → Ctrl K, nhật ký SDA. Bỏ giao thức terminal cũ và tham chiếu Rs232. Thiết kế: `PTTK\60557 - Thiet ke - Quet barcode tai khoan nhan dien nguoi lay mau theo cong COM.md` |
+| 23/10/2026 | dangth | **Việc 60557** — Sửa lỗi tại viện: mọi lượt quét kẹt mãi ở “sẽ xử lý khi cửa sổ đang mở được đóng”. HIS mở frmMain bằng `ShowDialog` nên `Form.Modal` của frmMain luôn đúng; `IsModalWindowOpen` bỏ duyệt `Application.OpenForms`, chỉ xét cửa sổ chứa màn có bị Windows khóa không (`TopLevelControl` + `IsWindowEnabled`) |
 
 ## 9. Test Cases
 

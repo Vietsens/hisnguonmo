@@ -135,6 +135,7 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             {
                 WaitingManager.Show();
                 LoadKeyFrmLanguage();
+                SetCaptionByLanguageKey();
                 SetDefaultValueControl();
                 LoadCheckColumn();
                 FillDataToGrid();
@@ -373,6 +374,8 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
                     rowCount = (listTreatment == null ? 0 : listTreatment.Count);
                     dataTotal = (result.Param == null ? 0 : result.Param.Count ?? 0);
                 }
+                //Fill fund allocation info of the current page (1 API call for the whole page)
+                ProcessFundAllocationInfo(listTreatment);
                 gridControlTreatmentList.BeginUpdate();
                 gridControlTreatmentList.DataSource = listTreatment;
                 gridControlTreatmentList.EndUpdate();
@@ -624,12 +627,52 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
                             e.RepositoryItem = repositoryItembtnFunPay;
                         }
                     }
-                   
+
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void toolTipController1_GetActiveObjectInfo(object sender, DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs e)
+        {
+            try
+            {
+                if (e.Info == null && e.SelectedControl == gridControlTreatmentList)
+                {
+                    GridView view = gridControlTreatmentList.FocusedView as GridView;
+                    if (view == null)
+                        return;
+
+                    GridHitInfo info = view.CalcHitInfo(e.ControlMousePosition);
+                    if (!info.InRowCell || info.Column == null)
+                        return;
+
+                    V_HIS_TREATMENT_FEE_2D data = view.GetRow(info.RowHandle) as V_HIS_TREATMENT_FEE_2D;
+                    if (data == null)
+                        return;
+
+                    string text = "";
+                    if (info.Column.FieldName == "IS_FUND_PAY")
+                    {
+                        text = data.FUND_PAY_TIME != null ? GetLanguageValue("frmTreatmentList.ToolTip.FundUnPay") : GetLanguageValue("frmTreatmentList.ToolTip.FundPay");
+                    }
+                    else if (info.Column.FieldName == "FUND_ALLOCATION_BTN")
+                    {
+                        text = GetLanguageValue("frmTreatmentList.repositoryItembtnFundAllocation.ToolTip");
+                    }
+
+                    if (!String.IsNullOrEmpty(text))
+                    {
+                        e.Info = new DevExpress.Utils.ToolTipControlInfo(new DevExpress.XtraGrid.GridToolTipInfo(view, new CellToolTipInfo(info.RowHandle, info.Column, "Text")), text);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -639,10 +682,15 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             {
                 if (e.RowHandle >= 0)
                 {
-                    var data = (V_HIS_TREATMENT_FEE_2D)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    //RowHandle la thu tu hien thi (sau sap xep/loc), khong phai chi so trong DataSource
+                    var data = ((GridView)sender).GetRow(e.RowHandle) as V_HIS_TREATMENT_FEE_2D;
                     if (data != null)
                     {
-                        if (data.FUND_PAY_TIME != null)
+                        if (data.IS_FUND_ALLOCATION_COST_CHANGED)
+                        {
+                            e.Appearance.ForeColor = Color.Red; //Costs changed after the fund allocation was saved => red
+                        }
+                        else if (data.FUND_PAY_TIME != null)
                         {
                             e.Appearance.ForeColor = Color.Blue; //Đã đánh dấu quỹ thanh toán=> Màu xanh nước biển
                         }
@@ -833,6 +881,55 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void SetCaptionByLanguageKey()
+        {
+            try
+            {
+                Base.ResourceLangManager.LanguageFrmTreatmentList = new System.Resources.ResourceManager("HIS.Desktop.Plugins.TreatmentFundList.Resources.Lang", typeof(HIS.Desktop.Plugins.TreatmentFundList.frmTreatmentList).Assembly);
+
+                this.grIsFundPay.ToolTip = GetLanguageValue("frmTreatmentList.grIsFundPay.ToolTip");
+
+                //Fund allocation columns
+                this.grFundAllocation.Caption = GetLanguageValue("frmTreatmentList.grFundAllocation.Caption");
+                this.grFundAllocation.ToolTip = GetLanguageValue("frmTreatmentList.grFundAllocation.ToolTip");
+                if (this.repositoryItembtnFundAllocation.Buttons.Count > 0)
+                {
+                    this.repositoryItembtnFundAllocation.Buttons[0].Caption = GetLanguageValue("frmTreatmentList.repositoryItembtnFundAllocation.Caption");
+                    this.repositoryItembtnFundAllocation.Buttons[0].ToolTip = GetLanguageValue("frmTreatmentList.repositoryItembtnFundAllocation.ToolTip");
+                }
+                this.grFundAllocationStatus.Caption = GetLanguageValue("frmTreatmentList.grFundAllocationStatus.Caption");
+                this.grFundAllocationStatus.ToolTip = GetLanguageValue("frmTreatmentList.grFundAllocationStatus.ToolTip");
+                this.grFundAllocationFinishUser.Caption = GetLanguageValue("frmTreatmentList.grFundAllocationFinishUser.Caption");
+                this.grFundAllocationFinishUser.ToolTip = GetLanguageValue("frmTreatmentList.grFundAllocationFinishUser.ToolTip");
+                this.grFundAllocationFinishTime.Caption = GetLanguageValue("frmTreatmentList.grFundAllocationFinishTime.Caption");
+                this.grFundAllocationFinishTime.ToolTip = GetLanguageValue("frmTreatmentList.grFundAllocationFinishTime.ToolTip");
+                this.grFundAllocationTotalPrice.Caption = GetLanguageValue("frmTreatmentList.grFundAllocationTotalPrice.Caption");
+                this.grFundAllocationTotalPrice.ToolTip = GetLanguageValue("frmTreatmentList.grFundAllocationTotalPrice.ToolTip");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private string GetLanguageValue(string key)
+        {
+            string result = "";
+            try
+            {
+                if (Base.ResourceLangManager.LanguageFrmTreatmentList == null)
+                {
+                    Base.ResourceLangManager.LanguageFrmTreatmentList = new System.Resources.ResourceManager("HIS.Desktop.Plugins.TreatmentFundList.Resources.Lang", typeof(HIS.Desktop.Plugins.TreatmentFundList.frmTreatmentList).Assembly);
+                }
+                result = Inventec.Common.Resource.Get.Value(key, Base.ResourceLangManager.LanguageFrmTreatmentList, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         private void repositoryItembtnFundUnPay_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
