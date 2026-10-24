@@ -424,36 +424,57 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
         {
             try
             {
-                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON)).FirstOrDefault();
-                if(currentRoom != null)
+                //Lay yeu cau thanh toan TRUOC, vi cau hinh ngan hang phai tra theo phong cua chinh
+                //yeu cau do (REQUEST_ROOM_ID) chu khong phai phong dang mo man hinh. Don thuoc mua
+                //ngoai co diem thu rieng cua nha thuoc; in lai don o phong khac cung phai ra dung ma.
+                List<long> ids = transReqId == null ? null : transReqId.Where(o => o > 0).Distinct().ToList();
+                if (ids != null && ids.Count > 0)
+                {
+                    CommonParam paramTransReq = new CommonParam();
+                    HisTransReqFilter filterTransReq = new HisTransReqFilter();
+                    filterTransReq.IDs = ids;
+                    lstTransReq = new Inventec.Common.Adapter.BackendAdapter(paramTransReq)
+                      .Get<List<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filterTransReq, paramTransReq);
+                }
+
+                long configRoomId = this.currentModule != null ? this.currentModule.RoomId : 0;
+                if (lstTransReq != null && lstTransReq.Count > 0)
+                {
+                    var transReqHasRoom = lstTransReq.FirstOrDefault(o => o.REQUEST_ROOM_ID.HasValue && o.REQUEST_ROOM_ID.Value > 0);
+                    if (transReqHasRoom != null)
+                    {
+                        configRoomId = transReqHasRoom.REQUEST_ROOM_ID.Value;
+                    }
+                }
+
+                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == configRoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON)).FirstOrDefault();
+                if (currentRoom != null)
                 {
                     if (this.lstConfig == null)
                         lstConfig = new List<HIS_CONFIG>();
                     lstConfig.Clear();
                     ConfigInfo _config = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigInfo>(currentRoom.QR_CONFIG_JSON);
+                    if (_config == null || string.IsNullOrWhiteSpace(_config.BANK))
+                    {
+                        //Thieu ten ngan hang thi khong the suy ra khoa cau hinh. Dung lai o day,
+                        //neu di tiep se nem NullReference va mat ma QR ma khong ro nguyen nhan.
+                        Inventec.Common.Logging.LogSystem.Warn("Cau hinh thieu thong tin ngan hang.roomID: (" + configRoomId + "). Cau hinh: " + currentRoom.QR_CONFIG_JSON);
+                        return;
+                    }
                     HIS_CONFIG _cf = new HIS_CONFIG();
-                    if (string.IsNullOrWhiteSpace(_config.BANK))
-                        Inventec.Common.Logging.LogSystem.Warn("Cau hinh thieu thong tin ngan hang.roomID: (" + this.currentModule.RoomId + "). Cau hinh: " + currentRoom.QR_CONFIG_JSON);
                     _cf.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", _config.BANK.Trim());
                     _cf.VALUE = _config.VALUE;
                     lstConfig.Add(_cf);
                 }
-                else 
+                else
                     lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
-                if (lstConfig != null && lstConfig.Count > 0 && transReqId != null && transReqId.Count > 0)
-                {
-                    CommonParam param = new CommonParam();
-                    HisTransReqFilter filter = new HisTransReqFilter();
-                    filter.IDs = transReqId;
-                    lstTransReq = new Inventec.Common.Adapter.BackendAdapter(param)
-                      .Get<List<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private bool ProcessDataForPrint()
         {
             bool result = false;
