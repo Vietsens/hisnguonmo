@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         {
             try
             {
+                searchCode = searchCode ?? "";
                 // Lấy danh sách tỉnh phù hợp với trạng thái toggle
                 List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
                 cboProvince.Properties.DataSource = GetProvincesForCurrentToggle(searchCode);
@@ -137,11 +138,15 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 if (!String.IsNullOrEmpty(districtCode))
                 {
                     List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                    listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.DISTRICT_CODE.Contains(districtCode)).ToList();
+                    listResult = (BackendDataWorker.Get<V_SDA_DISTRICT>() ?? new List<V_SDA_DISTRICT>())
+                        .Where(o => o != null && o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
+                        .Where(o => (o.DISTRICT_CODE ?? "").Contains(districtCode)).ToList();
                     if (listResult.Count == 1)
                     {
                         var result = listResult.FirstOrDefault().PROVINCE_CODE;
-                        var resultProvince = BackendDataWorker.Get<V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.PROVINCE_CODE.Contains(result)).ToList();
+                        var resultProvince = (BackendDataWorker.Get<V_SDA_PROVINCE>() ?? new List<V_SDA_PROVINCE>())
+                            .Where(o => o != null && o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
+                            .Where(o => !String.IsNullOrEmpty(result) && (o.PROVINCE_CODE ?? "").Contains(result)).ToList();
                         province = resultProvince.FirstOrDefault();
                     }
                 }
@@ -157,6 +162,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         {
             try
             {
+                searchCode = searchCode ?? "";
                 // Lấy danh sách tỉnh phù hợp với trạng thái toggle
                 List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
                 cboHTProvinceName.Properties.DataSource = GetProvincesForCurrentToggle(searchCode);
@@ -235,6 +241,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         {
             try
             {
+                searchCode = (searchCode ?? "").ToUpper();
                 if (IsAddressLevel2()) // Nếu đang ở chế độ Tỉnh-Xã (không có huyện)
                 {
                     // Ẩn/reset control huyện, chỉ load xã theo tỉnh
@@ -253,11 +260,11 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 }
 
                 // Chế độ Tỉnh-Huyện-Xã (mặc định)
-                List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = BackendDataWorker.Get<V_SDA_DISTRICT>()
-                    .Where(o => o.PROVINCE_CODE == provinceCode)
+                List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = (BackendDataWorker.Get<V_SDA_DISTRICT>() ?? new List<V_SDA_DISTRICT>())
+                    .Where(o => o != null && o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.PROVINCE_CODE == provinceCode)
                     .ToList();
 
-                listResult = listResult.Where(o => (o.DISTRICT_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) || (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper())).ToList();
+                listResult = listResult.Where(o => (o.DISTRICT_CODE ?? "").ToUpper().Contains(searchCode) || (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode)).ToList();
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
@@ -365,6 +372,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         {
             try
             {
+                searchCode = (searchCode ?? "").ToUpper();
                 if (IsAddressLevel2()) // Nếu đang ở chế độ Tỉnh-Xã (không có huyện)
                 {
                     // Ẩn/reset control huyện, chỉ load xã theo tỉnh
@@ -382,8 +390,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     return;
                 }
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
-                listResult = listResult.Where(o => (o.DISTRICT_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) || (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper())).ToList();
+                listResult = (BackendDataWorker.Get<V_SDA_DISTRICT>() ?? new List<V_SDA_DISTRICT>())
+                    .Where(o => o != null && o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                listResult = listResult.Where(o => (o.DISTRICT_CODE ?? "").ToUpper().Contains(searchCode) || (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode)).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
                 columnInfos.Add(new ColumnInfo("DISTRICT_NAME", "", 200, 2));
@@ -449,6 +458,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         {
             try
             {
+                searchCode = searchCode ?? "";
                 List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> communes = GetCommunesForCurrentToggle(provinceCode, districtCode, searchCode);
                 cboCommune.Properties.DataSource = communes;
 
@@ -547,6 +557,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         {
             try
             {
+                searchCode = searchCode ?? "";
                 List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> communes = GetCommunesForCurrentToggle(provinceCode, districtCode, searchCode);
                 cboHTCommuneName.Properties.DataSource = communes;
 

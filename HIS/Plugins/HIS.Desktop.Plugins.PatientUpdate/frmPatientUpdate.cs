@@ -1075,8 +1075,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
 
         private List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> GetProvincesForCurrentToggle(string searchCode = null)
         {
-            var filtered = this.vSdaProvince
-                    .Where(p => (IsAddressLevel2() ? p.IS_NO_DISTRICT == 1 : p.IS_NO_DISTRICT != 1) && p.IS_ACTIVE == 1)
+            searchCode = (searchCode ?? "").ToUpper();
+            var filtered = (this.vSdaProvince ?? new List<V_SDA_PROVINCE>())
+                    .Where(p => p != null && (IsAddressLevel2() ? p.IS_NO_DISTRICT == 1 : p.IS_NO_DISTRICT != 1) && p.IS_ACTIVE == 1)
                     .ToList();
             if (!string.IsNullOrEmpty(searchCode))
                 filtered = filtered.Where(p => (p.PROVINCE_CODE ?? "").ToUpper().Contains(searchCode) || (p.SEARCH_CODE ?? "").ToUpper().Contains(searchCode)).ToList();
@@ -1090,12 +1091,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
 
         private List<SDA.EFMODEL.DataModels.V_SDA_COMMUNE> GetCommunesForCurrentToggle(string provinceCode, string districtCode, string searchCode)
         {
-            var filtered = vSdaCommune.Where(c => c.IS_ACTIVE == 1 && (IsAddressLevel2() ? c.IS_NO_DISTRICT == 1 : c.IS_NO_DISTRICT != 1)).ToList();
-            if (!string.IsNullOrEmpty(searchCode))
-            {
-                filtered = filtered.Where(c => (c.COMMUNE_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) || (c.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper())).ToList();
-
-            }
+            searchCode = (searchCode ?? "").ToUpper();
+            var filtered = (vSdaCommune ?? new List<V_SDA_COMMUNE>())
+                .Where(c => c != null && c.IS_ACTIVE == 1 && (IsAddressLevel2() ? c.IS_NO_DISTRICT == 1 : c.IS_NO_DISTRICT != 1)).ToList();
             if (IsAddressLevel2())
             {
                 if (!string.IsNullOrEmpty(provinceCode))
@@ -1106,6 +1104,10 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             else
             {
                 filtered = filtered.Where(o => (string.IsNullOrEmpty(districtCode) || o.DISTRICT_CODE == districtCode)).ToList();
+            }
+            if (!string.IsNullOrEmpty(searchCode))
+            {
+                filtered = filtered.Where(c => (c.COMMUNE_CODE ?? "").ToUpper().Contains(searchCode) || (c.SEARCH_CODE ?? "").ToUpper().Contains(searchCode)).ToList();
             }
             return filtered.ToList();
         }

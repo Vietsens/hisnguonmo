@@ -61,10 +61,17 @@ In tem barcode / phiếu YC khám qua `ProcessPrint()` + `LoadConfigHisAcc()` (S
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 24/10/2026 | Codex | Sửa danh sách Huyện/Xã bị trống khi danh mục hoặc mã tìm kiếm có giá trị null; lọc đơn vị đang hoạt động và địa chỉ cha trước khi tìm kiếm, áp dụng cả địa chỉ thường trú và hiện tại. Giữ chế độ địa chỉ hai cấp/ba cấp. |
 | 16/09/2026 | nampp (Claude) | Việc 2841/56781 (phản hồi test chị Hân "Cập nhật thông tin BN không có cấp 2/3/4"): combo chọn nghề nghiệp `cboCareer` chuyển từ `FillDataToGridLookupedit` (2 cột, không tiêu đề) sang hàm mới `InitComboCareer` trong `frmPatientUpdate__LoadCombo.cs`: bật tiêu đề cột, caption "Mã" (100) / "Tên nghề nghiệp" (250), thêm cột "Nhóm cấp 2/3/4" (180 mỗi cột) theo key `MOS.HIS_CAREER.IS_SHOW_LEVEL_2/3/4` (rỗng = ẩn, mặc định như cũ), `PopupFormWidth` cộng dồn, giữ `ImmediatePopup = true`. Màn này trước đó bị bỏ sót ngoài 9 vị trí đã sửa. |
 | 29/07/2026 | nampp | **MIMS — Checklist PN mang thai / cho con bú** — Thêm nhóm control runtime vào group "Thông tin bệnh" (config `HIS.Desktop.Mims.IsCheckPregnancyLactation`, mặc định TẮT). Nữ mới enable; đổi giới tính → clear + disable; tick mang thai bắt buộc nhập số tháng 1-9 (chặn lưu); load async / lưu sau UpdateSdo thành công vào `HIS_MIMS_PATIENT_PROFILE` (dùng chung với màn Xử trí khám + 4 form kê đơn). Files: `frmPatientUpdate__Mims.cs` (MỚI), `frmPatientUpdate.cs` (gọi `InitMimsWomanClassify` sau `FillDataPatientToControl`), `frmPatientUpdate__Event.cs` (validate + save trong `btnSave_Click`), `Config.cs` (`IsCheckMimsPregnancyLactation`), csproj (+ ref `HIS.Desktop.MIMS.Integration`). |
 
 ## 9. Test Cases
+
+### Danh sách địa chỉ
+
+Đã kiểm tra 24 trường hợp trên module triển khai: tìm huyện theo tỉnh, xã theo huyện hoặc tỉnh, tìm bằng mã số, địa chỉ hiện tại, chuyển chế độ hai cấp/ba cấp và tham số tìm kiếm null. Tất cả đạt. Dữ liệu danh mục có 720 huyện và 14.496 xã; tỉnh mã 91 trả về 15 huyện đang hoạt động ở chế độ ba cấp.
+
+Khi triển khai bản sửa, build và cập nhật `HIS.Desktop.Plugins.PatientUpdate.dll` trong `Plugins/Module`, cùng resource ngôn ngữ và dependency hiện có của module; đóng và mở lại HIS để nạp DLL mới.
 
 ### Checklist Phân loại phụ nữ
 - [ ] Config tắt → không có nhóm control mới, form như cũ.
