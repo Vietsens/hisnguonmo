@@ -39,6 +39,13 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 - **Phiếu đã lưu (EDIT)** — sau lưu, mở sửa từ danh sách, tìm theo đơn (`SetAttachExpMests` ở `LoadDataExpMestByEdit` / `LoadDataExpMestByEditMulti` / `LoadDataExpMestBySearch` / `ProcessAttachPrescriptionAfterSave`): 1 phiếu → mở **Danh sách đơn đính kèm** (xem/in, đính kèm mới, xóa theo trạng thái); nhiều phiếu cùng bệnh nhân → chọn tệp rồi đính kèm cho từng phiếu (tên văn bản theo mã của từng phiếu).
 - Không cho xóa khi phiếu Hoàn thành / có `BILL_ID` / có `DEBT_ID` (phiếu đã chốt kỳ kho luôn Hoàn thành). **Chặn ở frontend** — xem rủi ro trong docs thư viện.
 
+### Form DS (F3) — hiện thuốc/vật tư đã kê (việc 57699, tài liệu 3485 — 24/10/2026, BV HAGL)
+- Form `FormChoosePrescription/FormPrescription` ("Danh sách đơn mua ngoài"): lưới phải (đơn đã chọn) là master-detail. Mỗi dòng bệnh nhân có nút +/− ở đầu dòng; mở rộng thì hiện bảng thuốc/vật tư đã kê: Tên ("STT - tên"), Mã thuốc, Hàm lượng, Hoạt chất, Số lượng, ĐVT. Dòng bệnh nhân giữ nguyên cột cũ.
+- Tích chọn (`gridViewServiceReqSearch_SelectionChanged`) → `LoadMediMateByServiceReqs`: chỉ lấy các y lệnh chưa có trong `dicMediMateByServiceReq`, gọi `api/HisServiceReqMety/Get` + `api/HisServiceReqMaty/Get` (`SERVICE_REQ_IDs`, tối đa 100/lượt). Một trong hai trả null (lỗi) → không ghi nhớ, lần tích sau lấy lại. **Chỉ đọc, không TakeBean** — giá/tồn vẫn chỉ tính khi bấm Đồng ý.
+- Dựng dòng giống `ProcessorSearch` của màn chính: gộp theo loại trong cùng y lệnh (cộng AMOUNT), bỏ dòng không có `MEDICINE_TYPE_ID`/`MATERIAL_TYPE_ID`, mã/hàm lượng/hoạt chất/ĐVT từ `V_HIS_MEDICINE_TYPE`/`V_HIS_MATERIAL_TYPE` (ĐVT dự phòng `UNIT_NAME`), tên nối hàm lượng khi `HIS.HIS_MEDI_STOCK.IS_JOIN_NAME_WITH_CONCENTRA` = 1, sắp theo `NUM_ORDER` rồi tên. Không có cột giá (giá trên dòng kê không phải giá bán).
+- `UpdateDataGridSelect` gắn lại lưới rồi `ExpandMediMateRows`: `CollapseAllDetails` rồi mở mọi dòng trừ dòng người dùng đã thu gọn (`collapsedServiceReqIds`, ghi bởi `MasterRowCollapsed/Expanded`, bỏ qua lúc đang gắn lưới). **Bẫy DevExpress 15.2:** gán lại cùng List vào `DataSource` không làm gì, chi tiết đang mở bám theo row handle → sau khi xóa dòng sẽ hiện thuốc của bệnh nhân khác nếu không thu hết trước. Xóa dòng thì quên trạng thái thu gọn của dòng đó. Y lệnh không có thuốc/vật tư → `MasterRowEmpty` → nút mở rộng mờ (`SmartDetailExpandButtonMode = CheckAllDetails`).
+- View con `EnableMasterViewMode = false` (ADO có `List<long> BeanIds` → DevExpress tự tạo quan hệ cấp 3). Cột Tên `Fixed = Left`. Cột STT dòng bệnh nhân 30 → 45 px vì nút +/− nằm trong ô STT. Lấy dữ liệu có `WaitingManager` (chỉ hiện khi quá `PendingTime`).
+
 ### Điều kiện nghiệp vụ
 - Không kê vượt tồn khả dụng (validation khi thêm dòng).
 - Hình thức Tiền mặt/CK, Tiền mặt/QT: số tiền CK/QT không vượt tổng phải thanh toán.
@@ -54,6 +61,8 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 | HIS_EXP_MEST | Table | Phiếu xuất bán (EXP_MEST_STT_ID, BILL_ID) |
 | HIS_TRANSACTION | Table | Bill tạo khi tick "Xuất biên lai/hóa đơn" (ID truyền sang form hóa đơn) |
 | V_HIS_SERVICE_REQ_11 | View | Đơn thuốc nguồn |
+| HIS_SERVICE_REQ_METY / HIS_SERVICE_REQ_MATY | Table | Thuốc/vật tư kê ngoài kho của đơn — bảng chi tiết ở form DS (F3) (57699) |
+| V_HIS_MEDICINE_TYPE / V_HIS_MATERIAL_TYPE | View (cache) | Mã, hàm lượng, hoạt chất, ĐVT cho bảng chi tiết form DS (F3) |
 | HIS_PATIENT | Table | Bệnh nhân |
 | HIS_PAY_FORM, V_HIS_ACCOUNT_BOOK, V_HIS_CASHIER_ROOM | Table/View | Hình thức thanh toán, sổ, phòng thu |
 
@@ -90,6 +99,8 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 | Lưu phiếu bán nhiều BN | api/HisExpMest/SaleCreateBillList | MosConsumer |
 | Sửa phiếu bán | api/HisExpMest/SaleUpdateListSdo | MosConsumer |
 | Đơn thuốc nguồn | api/HisServiceReq/Get | MosConsumer |
+| Form DS (F3) — danh sách đơn | api/HisServiceReq/GetView11 | MosConsumer |
+| Form DS (F3) — thuốc/vật tư đã kê của đơn đã chọn (57699, chỉ đọc) | api/HisServiceReqMety/Get, api/HisServiceReqMaty/Get — `SERVICE_REQ_IDs` ≤ 100/lượt | MosConsumer |
 | Bệnh nhân | api/HisPatient/Get | MosConsumer |
 | Đính kèm đơn — tạo tài liệu (57853) | api/EmrDocument/CreateByTdo (qua Library.ExpMestAttachFile) | EmrConsumer |
 | Đơn đính kèm của phiếu / đánh dấu (57853) | api/EmrDocument/GetView — `TREATMENT_CODEs` = EXP_MEST_CODE + `DOCUMENT_TYPE_ID` = EXPSA + `IS_DELETE=false` | EmrConsumer |
@@ -124,6 +135,7 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 24/10/2026 | dangth | **Việc 57699 / tài liệu 3485 (BV HAGL)** — Form DS (F3) "Danh sách đơn mua ngoài": lưới đơn đã chọn thành master-detail, mỗi dòng bệnh nhân có nút +/− hiện/ẩn thuốc/vật tư đã kê (Tên, Mã thuốc, Hàm lượng, Hoạt chất, Số lượng, ĐVT). Lấy bằng `api/HisServiceReqMety/Get` + `api/HisServiceReqMaty/Get` theo y lệnh mới chọn (chỉ đọc, không giữ tồn, ghi nhớ trong lần mở form), dựng dòng như `ProcessorSearch` của màn chính; mặc định mở rộng, nhớ dòng người dùng thu gọn. Không có cột giá. Partial mới `FormPrescription__MediMate.cs`. Đồng ý và màn chính không đổi. |
 | 20/10/2026 | dangth | **Việc 56651 (BV HAGL)** — Ô tích "In HDSD" sau "Xem trước khi in": tích thì tự in Hướng dẫn sử dụng thuốc (Mps000099) sau mọi lần lưu thành công, chế độ in theo "Xem trước khi in"; nhớ theo máy (ControlState `chkInHDSD`). Hàng nút dưới: bỏ `emptySpaceItem1` (47px), thu "Ký đơn nhà thuốc" 185→154px; các nút từ "Hủy xuất" giữ nguyên vị trí. In HDSD từ menu In không đổi. Sửa kèm `InitControlState`: `SPIN_BASE_VALUE` đọc bằng `Convert.ToDecimal` (lưu bằng `decimal.ToString()`, `ToInt64` ném lỗi với giá trị lẻ làm dừng nạp các khóa sau) và trả cờ `isNotLoadWhileChangeControlStateInFirst` trong catch. |
 | 02/10/2026 | nampp | **Việc 57853 (chỉ enable khi đã lưu)** — Nút "Đính kèm đơn" chỉ enable khi phiếu xuất đã lưu (EDIT + có phiếu); phiếu chưa lưu disable. `moduleAction` đổi từ auto-property sang property có setter gọi `RefreshAttachPrescriptionButtonState` (về ADD thì bỏ `attachExpMests`). Bỏ chế độ giữ tệp tạm trên màn Xuất bán (gỡ hỏi xác nhận ở Mới / Đơn mới, giải phóng ảnh khi đóng tab). Bán nhiều bệnh nhân → cảnh báo đính kèm tại Danh sách xuất. |
 | 02/10/2026 | nampp | **Việc 57853 (tên văn bản mặc định)** — Tên mặc định đổi thành **"Đơn thuốc ngoại viện của mã phiếu xuất {EXP_MEST_CODE}"** (key `frmExpMestAttachFile.DefaultDocumentName` có `{0}`). Phiếu đã lưu: điền sẵn theo mã phiếu. Phiếu chưa lưu: ô tên để trống + gợi ý (`...txtDocumentName.NullText.Pending`), lưu phiếu xong tên được dựng theo mã của TỪNG phiếu (`ExpMestAttachFileProcessor.GetDefaultDocumentName`); người dùng tự gõ tên thì giữ nguyên. |
@@ -173,3 +185,10 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 - [ ] Lưu (Ctrl S / F5): chỉ in HDSD. Lưu ký in: HDSD rồi luồng HĐĐT 3082 như cũ.
 - [ ] Lưu thất bại: không in HDSD. Nhiều bệnh nhân 1 lượt: mỗi bệnh nhân 1 bản HDSD.
 - [ ] Đóng mở lại màn / tắt client: ô giữ trạng thái; máy khác chưa tích vẫn chưa tích. Menu In ▸ Hướng dẫn sử dụng thuốc như cũ.
+
+### Việc 57699 — Form DS (F3) hiện thuốc/vật tư đã kê
+- [ ] Tích đơn có thuốc + vật tư: dòng bệnh nhân như cũ, ngay dưới là bảng thuốc/vật tư (Tên "1 - ...", Mã thuốc, Hàm lượng, Hoạt chất, Số lượng, ĐVT) khớp đơn kê, mở sẵn.
+- [ ] Đơn kê 1 thuốc 2 dòng: hiện 1 dòng, số lượng cộng. Đơn không có thuốc/vật tư: nút "+" mờ, bấm không mở. Từ 10 đơn trở lên: STT hiện đủ số.
+- [ ] Bấm "−" → chỉ còn dòng bệnh nhân; tích thêm đơn khác → dòng đó vẫn thu gọn, đơn mới mở sẵn; "+" → hiện lại.
+- [ ] Xóa dòng rồi tích lại: hiện lại, mở sẵn. Mất mạng khi tích: dòng vẫn thêm, chưa có chi tiết; tích tiếp thì tự lấy lại.
+- [ ] Đồng ý: màn Xuất bán nhận đúng các đơn, giá/tồn như cũ. Đóng form không Đồng ý: không giữ tồn.
