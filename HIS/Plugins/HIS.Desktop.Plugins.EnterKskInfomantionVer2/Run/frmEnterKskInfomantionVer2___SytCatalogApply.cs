@@ -147,16 +147,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 bool okSuggest = ApplySytToSuggestCombo();
                 bool okPlace = ApplySytToExamPlaceCombo();
                 bool okWorkPlace = ApplySytToWorkPlaceCombos();
+                // Ô chọn trong tab Hỏi bệnh (nơi đang điều trị...) cũng dựng trước khi
+                // danh mục về, phải gắn lại nguồn — nếu không hồ sơ cũ hiện trắng.
+                bool okIhcm = ApplySytToInterviewHcmCombos();
                 bool okTooth = ApplySytToToothStatus();
                 bool okIcd = ApplySytToIcd();
                 bool any = okObject || okPay || okPayDetail || okSuggest || okPlace || okTooth
-                    || okIcd || okWorkPlace;
+                    || okIcd || okWorkPlace || okIhcm;
 
                 LogSystem.Warn(string.Format(
                     "SytCatalog: do danh muc vao o nhap — Doi tuong={0}, Nguon chi tra={1}, "
                     + "Hinh thuc chi tra={2}, De nghi={3}, Dia diem kham={4}, Tinh trang rang={5},"
-                    + " ICD={6}, Noi cong tac={7}",
-                    okObject, okPay, okPayDetail, okSuggest, okPlace, okTooth, okIcd, okWorkPlace));
+                    + " ICD={6}, Noi cong tac={7}, O chon tab Hoi benh={8}",
+                    okObject, okPay, okPayDetail, okSuggest, okPlace, okTooth, okIcd, okWorkPlace,
+                    okIhcm));
 
                 // Danh mục Đối tượng khám vừa về -> giờ mới tra được mục "Người cao tuổi".
                 // Lượt gọi lúc nạp hồ sơ có thể đã chạy khi danh mục chưa có và bỏ qua. Hàm này tự
