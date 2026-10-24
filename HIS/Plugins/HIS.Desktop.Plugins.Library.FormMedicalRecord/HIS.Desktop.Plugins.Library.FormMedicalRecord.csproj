@@ -11,6 +11,8 @@
     <AssemblyName>HIS.Desktop.Plugins.Library.FormMedicalRecord</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <_HisEffectiveEmrReleaseRoot Condition="'$(HisEmrReleaseRoot)' != ''">$(HisEmrReleaseRoot)</_HisEffectiveEmrReleaseRoot>
+    <_HisEffectiveEmrReleaseRoot Condition="'$(HisEmrReleaseRoot)' == ''">$(MSBuildProjectDirectory)\..\..\..\..\lib\EMRLinksoft</_HisEffectiveEmrReleaseRoot>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,9 +55,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\EMR\EMR.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="EMR_MAIN, Version=25.1.12.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="EMR_MAIN">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR_MAIN.dll</HintPath>
+      <HintPath>$(_HisEffectiveEmrReleaseRoot)\EMR_MAIN.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="EMR_MAIN.Library">
+      <Aliases>global,EmrLibrary</Aliases>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(_HisEffectiveEmrReleaseRoot)\EMR_MAIN.Library.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HIS.Common.Treatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -136,9 +145,10 @@
     <Reference Include="MPS">
       <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>$(_HisEffectiveEmrReleaseRoot)\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\lib\SDA\SDA.EFMODEL.dll</HintPath>
@@ -225,6 +235,12 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="ValidateEmrRelease" BeforeTargets="ResolveAssemblyReferences" Condition="'$(DesignTimeBuild)' != 'true'">
+    <ItemGroup>
+      <_HisRequiredEmrLibrary Include="$(_HisEffectiveEmrReleaseRoot)\EMR_MAIN.dll;$(_HisEffectiveEmrReleaseRoot)\EMR_MAIN.Library.dll;$(_HisEffectiveEmrReleaseRoot)\Newtonsoft.Json.dll" />
+    </ItemGroup>
+    <Error Condition="!Exists('%(_HisRequiredEmrLibrary.Identity)')" Text="Missing EMR release library: %(_HisRequiredEmrLibrary.Identity). Download https://14.224.177.62:4433/ChuongTrinh/EMRRelease and set HisEmrReleaseRoot to the extracted release folder." />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
