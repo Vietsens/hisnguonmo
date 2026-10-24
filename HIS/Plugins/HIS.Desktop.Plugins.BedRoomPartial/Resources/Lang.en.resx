@@ -651,6 +651,9 @@
   <data name="UCBedRoomPartial.grdColAddTime.Caption" xml:space="preserve">
     <value>Time in</value>
   </data>
+  <data name="UCBedRoomPartial.grdColBedCode.Caption" xml:space="preserve">
+    <value>Bed code</value>
+  </data>
   <data name="UCBedRoomPartial.grdColBedName.Caption" xml:space="preserve">
     <value>Bed</value>
   </data>

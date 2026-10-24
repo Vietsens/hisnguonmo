@@ -288,6 +288,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColAddTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColBedCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColBedName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -2827,6 +2828,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn4,
             this.gridColumn9,
             this.grdColAddTime,
+            this.grdColBedCode,
             this.grdColBedName,
             this.gridColumn7,
             this.gridColumn11,
@@ -2848,6 +2850,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridViewTreatmentBedRoom.OptionsFind.ShowClearButton = false;
             this.gridViewTreatmentBedRoom.OptionsFind.ShowCloseButton = false;
             this.gridViewTreatmentBedRoom.OptionsFind.ShowFindButton = false;
+            this.gridViewTreatmentBedRoom.OptionsLayout.LayoutVersion = "1";
             this.gridViewTreatmentBedRoom.OptionsView.ColumnAutoWidth = false;
             this.gridViewTreatmentBedRoom.OptionsView.ShowGroupPanel = false;
             this.gridViewTreatmentBedRoom.OptionsView.ShowIndicator = false;
@@ -2859,6 +2862,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridViewTreatmentBedRoom.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.gridViewTreatmentBedRoom_PopupMenuShowing);
             this.gridViewTreatmentBedRoom.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewTreatmentBedRoom_CustomUnboundColumnData);
             this.gridViewTreatmentBedRoom.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewTreatmentBedRoom_MouseDown);
+            this.gridViewTreatmentBedRoom.LayoutUpgrade += new DevExpress.Utils.LayoutUpgradeEventHandler(this.gridViewTreatmentBedRoom_LayoutUpgrade);
             // 
             // grdColSTT
             // 
@@ -2975,6 +2979,16 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.grdColAddTime.VisibleIndex = 10;
             this.grdColAddTime.Width = 114;
             // 
+            // grdColBedCode
+            // 
+            this.grdColBedCode.Caption = "Mã giường";
+            this.grdColBedCode.FieldName = "BED_CODE";
+            this.grdColBedCode.Name = "grdColBedCode";
+            this.grdColBedCode.OptionsColumn.AllowEdit = false;
+            this.grdColBedCode.Visible = true;
+            this.grdColBedCode.VisibleIndex = 11;
+            this.grdColBedCode.Width = 80;
+            // 
             // grdColBedName
             // 
             this.grdColBedName.Caption = "Giường";
@@ -2982,7 +2996,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.grdColBedName.Name = "grdColBedName";
             this.grdColBedName.OptionsColumn.AllowEdit = false;
             this.grdColBedName.Visible = true;
-            this.grdColBedName.VisibleIndex = 11;
+            this.grdColBedName.VisibleIndex = 12;
             this.grdColBedName.Width = 222;
             // 
             // gridColumn7
@@ -2992,7 +3006,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 12;
+            this.gridColumn7.VisibleIndex = 13;
             // 
             // gridColumn11
             // 
@@ -3003,7 +3017,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 13;
+            this.gridColumn11.VisibleIndex = 14;
             // 
             // gridColumn12
             // 
@@ -3014,7 +3028,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 14;
+            this.gridColumn12.VisibleIndex = 15;
             // 
             // grdColRoomName
             // 
@@ -3024,7 +3038,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.grdColRoomName.OptionsColumn.AllowEdit = false;
             this.grdColRoomName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColRoomName.Visible = true;
-            this.grdColRoomName.VisibleIndex = 15;
+            this.grdColRoomName.VisibleIndex = 16;
             this.grdColRoomName.Width = 100;
             // 
             // gridColumn1
@@ -3036,7 +3050,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn1.ToolTip = "Số ngày điều trị tạm tính căn cứ theo thời gian nhập viện đến thời điểm hiện tại";
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 16;
+            this.gridColumn1.VisibleIndex = 17;
             this.gridColumn1.Width = 96;
             // 
             // gridColumn5
@@ -3045,7 +3059,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn5.FieldName = "LAST_DEPARTMENT_NAME";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 17;
+            this.gridColumn5.VisibleIndex = 18;
             this.gridColumn5.Width = 99;
             // 
             // gc_ClassifyName
@@ -3055,7 +3069,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gc_ClassifyName.Name = "gc_ClassifyName";
             this.gc_ClassifyName.ToolTip = "Phân loại bệnh nhân";
             this.gc_ClassifyName.Visible = true;
-            this.gc_ClassifyName.VisibleIndex = 18;
+            this.gc_ClassifyName.VisibleIndex = 19;
             this.gc_ClassifyName.Width = 80;
             //
             // gc_CareLevelName
@@ -3067,7 +3081,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gc_CareLevelName.OptionsColumn.ReadOnly = true;
             this.gc_CareLevelName.ToolTip = "Phân loại chăm sóc (phân cấp chăm sóc) của hồ sơ điều trị";
             this.gc_CareLevelName.Visible = true;
-            this.gc_CareLevelName.VisibleIndex = 19;
+            this.gc_CareLevelName.VisibleIndex = 20;
             this.gc_CareLevelName.Width = 120;
             //
             // gridColumn3
@@ -3078,7 +3092,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 20;
+            this.gridColumn3.VisibleIndex = 21;
             this.gridColumn3.Width = 150;
             // 
             // gridColumn8
@@ -3089,7 +3103,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.ToolTip = "Số điện thoại của bệnh nhân";
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 21;
+            this.gridColumn8.VisibleIndex = 22;
             this.gridColumn8.Width = 100;
             // 
             // gc_MedisoftH
@@ -3914,6 +3928,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         private DevExpress.XtraGrid.Columns.GridColumn grdColSTT;
         private DevExpress.XtraGrid.Columns.GridColumn grdColPatientName;
         private DevExpress.XtraGrid.Columns.GridColumn grdColTreatmentCode;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColBedCode;
         private DevExpress.XtraGrid.Columns.GridColumn grdColBedName;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.LayoutControl layoutControl4;

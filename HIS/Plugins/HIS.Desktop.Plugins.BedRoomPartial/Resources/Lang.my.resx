@@ -651,6 +651,9 @@
   <data name="UCBedRoomPartial.grdColAddTime.Caption" xml:space="preserve">
     <value>ဝင်ချိန်</value>
   </data>
+  <data name="UCBedRoomPartial.grdColBedCode.Caption" xml:space="preserve">
+    <value>အိပ်ရာကုဒ်</value>
+  </data>
   <data name="UCBedRoomPartial.grdColBedName.Caption" xml:space="preserve">
     <value>အိပ်ရာဝင်</value>
   </data>
