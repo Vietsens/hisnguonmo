@@ -153,4 +153,7 @@
   <data name="Plugins_ExpMestSaleCreate__XuLyThatBai" xml:space="preserve">
     <value>Process fail.</value>
   </data>
+  <data name="Plugins_ExpMestSaleCreate__NgoaiDanhMuc" xml:space="preserve">
+    <value>not in catalog</value>
+  </data>
 </root>

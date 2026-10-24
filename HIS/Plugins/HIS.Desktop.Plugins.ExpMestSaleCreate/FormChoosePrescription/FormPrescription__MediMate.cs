@@ -81,14 +81,14 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
                         continue;
                     }
 
-                    // Same rows as the sale screen loads after "Đồng ý": only items having a medicine/material type
-                    ILookup<long, HIS_SERVICE_REQ_METY> metyLookup = metys.Where(o => o.MEDICINE_TYPE_ID.HasValue).ToLookup(o => o.SERVICE_REQ_ID);
-                    ILookup<long, HIS_SERVICE_REQ_MATY> matyLookup = matys.Where(o => o.MATERIAL_TYPE_ID.HasValue).ToLookup(o => o.SERVICE_REQ_ID);
+                    // Also items prescribed outside the catalog (no medicine/material type, name only): BA VIETNT 24/10 wants them shown
+                    ILookup<long, HIS_SERVICE_REQ_METY> metyLookup = metys.ToLookup(o => o.SERVICE_REQ_ID);
+                    ILookup<long, HIS_SERVICE_REQ_MATY> matyLookup = matys.ToLookup(o => o.SERVICE_REQ_ID);
                     foreach (long serviceReqId in batchIds)
                     {
                         List<MediMateTypeADO> mediMates = new List<MediMateTypeADO>();
-                        mediMates.AddRange(metyLookup[serviceReqId].GroupBy(o => o.MEDICINE_TYPE_ID.Value).Select(g => CreateMedicineAdo(g.ToList(), dicMedicineType)));
-                        mediMates.AddRange(matyLookup[serviceReqId].GroupBy(o => o.MATERIAL_TYPE_ID.Value).Select(g => CreateMaterialAdo(g.ToList(), dicMaterialType)));
+                        mediMates.AddRange(metyLookup[serviceReqId].GroupBy(o => GetMediMateGroupKey(o.MEDICINE_TYPE_ID, o.MEDICINE_TYPE_NAME)).Select(g => CreateMedicineAdo(g.ToList(), dicMedicineType)));
+                        mediMates.AddRange(matyLookup[serviceReqId].GroupBy(o => GetMediMateGroupKey(o.MATERIAL_TYPE_ID, o.MATERIAL_TYPE_NAME)).Select(g => CreateMaterialAdo(g.ToList(), dicMaterialType)));
                         dicMediMateByServiceReq[serviceReqId] = mediMates.OrderBy(o => o.NUM_ORDER ?? 9999).ThenBy(o => o.MEDI_MATE_TYPE_NAME).ToList();
                     }
                 }
@@ -101,17 +101,33 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             }
         }
 
+        // Catalog items group by type; items outside the catalog group by prescribed name
+        private static string GetMediMateGroupKey(long? typeId, string typeName)
+        {
+            return typeId.HasValue ? "T" + typeId.Value : "N" + (typeName ?? "").Trim().ToLower();
+        }
+
+        private static string AppendOutOfCatalogNote(string name)
+        {
+            return String.Format("{0} ({1})", name, ResourceMessageLang.NgoaiDanhMuc);
+        }
+
         private MediMateTypeADO CreateMedicineAdo(List<HIS_SERVICE_REQ_METY> metys, Dictionary<long, V_HIS_MEDICINE_TYPE> dicMedicineType)
         {
             HIS_SERVICE_REQ_METY first = metys[0];
             MediMateTypeADO ado = new MediMateTypeADO();
             ado.IsMedicine = true;
-            ado.MEDI_MATE_TYPE_ID = first.MEDICINE_TYPE_ID.Value;
+            ado.MEDI_MATE_TYPE_ID = first.MEDICINE_TYPE_ID ?? 0;
             ado.MEDI_MATE_TYPE_NAME = first.MEDICINE_TYPE_NAME;
             ado.SERVICE_UNIT_NAME = first.UNIT_NAME;
             ado.EXP_AMOUNT = metys.Sum(o => o.AMOUNT);
             ado.NUM_ORDER = first.NUM_ORDER;
             ado.SERVICE_REQ_ID = first.SERVICE_REQ_ID;
+            if (!first.MEDICINE_TYPE_ID.HasValue)
+            {
+                ado.MEDI_MATE_TYPE_NAME = AppendOutOfCatalogNote(ado.MEDI_MATE_TYPE_NAME);
+                return ado;
+            }
             V_HIS_MEDICINE_TYPE medicineType;
             if (dicMedicineType.TryGetValue(ado.MEDI_MATE_TYPE_ID, out medicineType))
             {
@@ -133,12 +149,17 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             HIS_SERVICE_REQ_MATY first = matys[0];
             MediMateTypeADO ado = new MediMateTypeADO();
             ado.IsMaterial = true;
-            ado.MEDI_MATE_TYPE_ID = first.MATERIAL_TYPE_ID.Value;
+            ado.MEDI_MATE_TYPE_ID = first.MATERIAL_TYPE_ID ?? 0;
             ado.MEDI_MATE_TYPE_NAME = first.MATERIAL_TYPE_NAME;
             ado.SERVICE_UNIT_NAME = first.UNIT_NAME;
             ado.EXP_AMOUNT = matys.Sum(o => o.AMOUNT);
             ado.NUM_ORDER = first.NUM_ORDER;
             ado.SERVICE_REQ_ID = first.SERVICE_REQ_ID;
+            if (!first.MATERIAL_TYPE_ID.HasValue)
+            {
+                ado.MEDI_MATE_TYPE_NAME = AppendOutOfCatalogNote(ado.MEDI_MATE_TYPE_NAME);
+                return ado;
+            }
             V_HIS_MATERIAL_TYPE materialType;
             if (dicMaterialType.TryGetValue(ado.MEDI_MATE_TYPE_ID, out materialType))
             {
@@ -240,6 +261,37 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
                 V_HIS_SERVICE_REQ_11 row = ((GridView)sender).GetRow(e.RowHandle) as V_HIS_SERVICE_REQ_11;
                 if (row != null)
                     collapsedServiceReqIds.Add(row.ID);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnCollapseAll_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                for (int i = 0; i < gridViewSelecteServiceReq.DataRowCount; i++)
+                {
+                    V_HIS_SERVICE_REQ_11 row = gridViewSelecteServiceReq.GetRow(i) as V_HIS_SERVICE_REQ_11;
+                    if (row != null)
+                        collapsedServiceReqIds.Add(row.ID);
+                }
+                gridViewSelecteServiceReq.CollapseAllDetails();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnExpandAll_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                collapsedServiceReqIds.Clear();
+                ExpandMediMateRows();
             }
             catch (Exception ex)
             {

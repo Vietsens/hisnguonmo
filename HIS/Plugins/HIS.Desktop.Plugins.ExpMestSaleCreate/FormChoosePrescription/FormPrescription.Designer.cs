@@ -54,6 +54,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnChoose = new DevExpress.XtraEditors.SimpleButton();
+            this.btnCollapseAll = new DevExpress.XtraEditors.SimpleButton();
+            this.btnExpandAll = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlServiceReqSearch = new DevExpress.XtraGrid.GridControl();
             this.gridViewServiceReqSearch = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gvS_Gc_Stt = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -103,7 +105,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciCollapseAll = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExpandAll = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciServiceReqCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTreatmentCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPatientCode = new DevExpress.XtraLayout.LayoutControlItem();
@@ -145,7 +148,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCollapseAll)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExpandAll)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceReqCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).BeginInit();
@@ -157,6 +161,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             // layoutControl1
             // 
             this.layoutControl1.Controls.Add(this.btnChoose);
+            this.layoutControl1.Controls.Add(this.btnCollapseAll);
+            this.layoutControl1.Controls.Add(this.btnExpandAll);
             this.layoutControl1.Controls.Add(this.gridControlServiceReqSearch);
             this.layoutControl1.Controls.Add(this.ucPaging1);
             this.layoutControl1.Controls.Add(this.btnSearch);
@@ -185,7 +191,29 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.btnChoose.TabIndex = 15;
             this.btnChoose.Text = "Đồng ý (Ctrl A)";
             this.btnChoose.Click += new System.EventHandler(this.btnChoose_Click);
-            // 
+            //
+            // btnCollapseAll
+            //
+            this.btnCollapseAll.Location = new System.Drawing.Point(772, 508);
+            this.btnCollapseAll.Name = "btnCollapseAll";
+            this.btnCollapseAll.Size = new System.Drawing.Size(106, 22);
+            this.btnCollapseAll.StyleController = this.layoutControl1;
+            this.btnCollapseAll.TabIndex = 16;
+            this.btnCollapseAll.Text = "Thu gọn tất cả";
+            this.btnCollapseAll.ToolTip = "Ẩn thuốc/vật tư của tất cả bệnh nhân, chỉ còn dòng bệnh nhân";
+            this.btnCollapseAll.Click += new System.EventHandler(this.btnCollapseAll_Click);
+            //
+            // btnExpandAll
+            //
+            this.btnExpandAll.Location = new System.Drawing.Point(882, 508);
+            this.btnExpandAll.Name = "btnExpandAll";
+            this.btnExpandAll.Size = new System.Drawing.Size(106, 22);
+            this.btnExpandAll.StyleController = this.layoutControl1;
+            this.btnExpandAll.TabIndex = 17;
+            this.btnExpandAll.Text = "Mở rộng tất cả";
+            this.btnExpandAll.ToolTip = "Hiện thuốc/vật tư của tất cả bệnh nhân";
+            this.btnExpandAll.Click += new System.EventHandler(this.btnExpandAll_Click);
+            //
             // gridControlServiceReqSearch
             // 
             this.gridControlServiceReqSearch.Location = new System.Drawing.Point(2, 52);
@@ -676,7 +704,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.layoutControlItem3,
             this.layoutControlItem10,
             this.layoutControlItem12,
-            this.emptySpaceItem2,
+            this.lciCollapseAll,
+            this.lciExpandAll,
             this.lciServiceReqCode,
             this.lciTreatmentCode,
             this.lciPatientCode,
@@ -768,13 +797,23 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
-            // emptySpaceItem2
-            // 
-            this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(770, 506);
-            this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(220, 26);
-            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            // lciCollapseAll
+            //
+            this.lciCollapseAll.Control = this.btnCollapseAll;
+            this.lciCollapseAll.Location = new System.Drawing.Point(770, 506);
+            this.lciCollapseAll.Name = "lciCollapseAll";
+            this.lciCollapseAll.Size = new System.Drawing.Size(110, 26);
+            this.lciCollapseAll.TextSize = new System.Drawing.Size(0, 0);
+            this.lciCollapseAll.TextVisible = false;
+            //
+            // lciExpandAll
+            //
+            this.lciExpandAll.Control = this.btnExpandAll;
+            this.lciExpandAll.Location = new System.Drawing.Point(880, 506);
+            this.lciExpandAll.Name = "lciExpandAll";
+            this.lciExpandAll.Size = new System.Drawing.Size(110, 26);
+            this.lciExpandAll.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExpandAll.TextVisible = false;
             // 
             // lciServiceReqCode
             // 
@@ -940,7 +979,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCollapseAll)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExpandAll)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceReqCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).EndInit();
@@ -983,7 +1023,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraEditors.SimpleButton btnCollapseAll;
+        private DevExpress.XtraEditors.SimpleButton btnExpandAll;
+        private DevExpress.XtraLayout.LayoutControlItem lciCollapseAll;
+        private DevExpress.XtraLayout.LayoutControlItem lciExpandAll;
         private DevExpress.XtraGrid.Columns.GridColumn gvS_Gc_Stt;
         private DevExpress.XtraGrid.Columns.GridColumn gvS_Gc_ServiceReqCode;
         private DevExpress.XtraGrid.Columns.GridColumn gvS_Gc_TreatmentCode;
