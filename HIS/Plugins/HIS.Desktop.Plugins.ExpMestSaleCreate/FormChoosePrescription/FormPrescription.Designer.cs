@@ -602,7 +602,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             //
             this.gvSmm_gc_Name.Caption = "Tên";
             this.gvSmm_gc_Name.FieldName = "MEDI_MATE_TYPE_NAME_STR";
-            this.gvSmm_gc_Name.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gvSmm_gc_Name.Name = "gvSmm_gc_Name";
             this.gvSmm_gc_Name.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gvSmm_gc_Name.Visible = true;
