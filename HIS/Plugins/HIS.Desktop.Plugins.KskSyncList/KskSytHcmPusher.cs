@@ -269,6 +269,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 // Dựng chuỗi JSON MỘT LẦN rồi dùng cho cả băm lẫn gửi.
                 string json = JsonConvert.SerializeObject(body, Formatting.None);
+
+                // Quy dinh cua So: truong so KHONG duoc co duoi 0 thua (15 chu khong phai
+                // 15.0; 2.7 chu khong phai 2.70). Cong dung lai JSON roi moi bam, thu vien
+                // JSON cua cong tu rut gon "2.70" thanh 2.7 -> lech ma bam -> 401.
+                // Chuan hoa NGAY SAU khi dung chuoi, truoc khi bam va truoc khi gui, de
+                // chuoi dem bam va chuoi gui di luon la MOT.
+                json = KskSytHcmBodyBuilder.ChuanHoaSoTrongJson(json);
                 string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 string nonce = Guid.NewGuid().ToString("N").Substring(0, 12);
 

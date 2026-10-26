@@ -35,6 +35,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel.Config
         private const string CONFIG_KEY__CASHIER_ROOM_PAYMENT_OPTION = "MOS.EPAYMENT.CASHIER_ROOM_PAYMENT_OPTION";
         private const string CONFIG_KEY__ALLOW_WHEN_REQUEST = "HIS.HIS_TRANSACTION.TRANSACTION_CANCEL.ALLOW_WHEN_REQUEST";
         private const string CONFIG_KEY__AUTO_CANCEL_BILL_TWO_BOOK_SESSION = "HIS.Desktop.Plugins.TransactionCancel.AutoCancelBillTwoBookSession";
+        private const string CONFIG_KEY__REPAY_BY_BILL_SERVICE__PATIENT_TYPE_CODES = "MOS.HIS_TRANSACTION.REPAY_BY_BILL_SERVICE.PATIENT_TYPE_CODES";
 
         internal static string Auto__Replace__Invoice__On__Cancel;
         internal static string TransactionBill__Select;
@@ -45,6 +46,10 @@ namespace HIS.Desktop.Plugins.TransactionCancel.Config
         /// Huy kem giao dich cung lan thanh toan hai so. 1: huy kem phieu thu; 2: huy kem phieu thu va phieu hoan ung; khac: chi huy giao dich dang chon
         /// </summary>
         internal static string AutoCancelBillTwoBookSession;
+        /// <summary>
+        /// KSK - Hoan ung dich vu cua giao dich thanh toan: danh sach ma doi tuong BN (cach nhau dau phay). Rong/null = tat tinh nang
+        /// </summary>
+        internal static string RepayByBillServicePatientTypeCodes;
         internal static void LoadConfig()
         {
             try
@@ -55,6 +60,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel.Config
                 TransactionBill__CashierRoomPaymentOption = GetValue(CONFIG_KEY__CASHIER_ROOM_PAYMENT_OPTION);
                 TransactionBill__AllowWhenRequest = GetValue(CONFIG_KEY__ALLOW_WHEN_REQUEST);
                 AutoCancelBillTwoBookSession = GetValue(CONFIG_KEY__AUTO_CANCEL_BILL_TWO_BOOK_SESSION);
+                RepayByBillServicePatientTypeCodes = GetValue(CONFIG_KEY__REPAY_BY_BILL_SERVICE__PATIENT_TYPE_CODES);
             }
             catch (Exception ex)
             {

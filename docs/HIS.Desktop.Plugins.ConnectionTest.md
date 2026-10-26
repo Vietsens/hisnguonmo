@@ -99,6 +99,13 @@ Chi tiết: `docs/A_NghiepVu_ConnectionTest_DuyetKetQua.docx`, `docs/B_KyThuat_C
 
 Cả hai hiển thị mặc định, **không cần config bật/tắt**.
 
+### Ghi nhớ ẩn/hiện cột (cấu hình lưu bố cục)
+Bảng chỉ số (`treeListSereServTein`) chỉ lưu và khôi phục độ rộng, vị trí, ẩn/hiện cột khi key cấu hình HIS `HIS.Desktop.ApplyRestoreLayout.ModuleLinks` **có `HIS.Desktop.Plugins.ConnectionTest`** (kiểm tra trong `CustomizaButtonAndRestoreLayoutInControlProcess.IsAllowRestoreLayout`).
+- Chưa có trong key → log `isRestoreLayout:false`, không có thư mục `ModuleDesign\HIS.Desktop.Plugins.ConnectionTest` → bật cột (VD "KQ từ máy", "Người duyệt KQ", "TG duyệt") rồi mở lại là mất.
+- **Cách xử lý:** thêm `HIS.Desktop.Plugins.ConnectionTest` vào giá trị key (phân cách `,` hoặc `;`) → đăng nhập lại HIS → bật cột qua chuột phải tiêu đề cột → Column Chooser **một lần**; phần mềm ghi file `ModuleDesign\HIS.Desktop.Plugins.ConnectionTest\*.xml` (khi đổi độ rộng / vị trí / bộ lọc / ẩn-hiện cột) và tự khôi phục ở lần mở sau.
+- Lưu ý: bật key thì **mọi** lưới / cây của ConnectionTest đều lưu và khôi phục bố cục **theo từng máy trạm** (file nằm trong thư mục cài HIS của máy đó).
+- Key là cấu hình HIS (HisConfig) → không phụ thuộc việc nạp cấu hình LIS.
+
 ### Đa ngôn ngữ
 Khai báo trong `Resources/Lang.vi|en|my.resx`:
 `UC_ConnectionTest.btnInKetQuaTongHop.Text/.ToolTip`, `UC_ConnectionTest.lciServiceGroup.Text` — set trong `SetCaptionByLanguageKey()`.
