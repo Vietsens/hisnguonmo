@@ -2991,7 +2991,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             // 
             // grdColBedName
             // 
-            this.grdColBedName.Caption = "Giường";
+            this.grdColBedName.Caption = "Tên Giường";
             this.grdColBedName.FieldName = "BED_NAME";
             this.grdColBedName.Name = "grdColBedName";
             this.grdColBedName.OptionsColumn.AllowEdit = false;

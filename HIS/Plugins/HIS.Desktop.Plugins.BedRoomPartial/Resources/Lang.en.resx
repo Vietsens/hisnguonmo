@@ -655,7 +655,7 @@
     <value>Bed code</value>
   </data>
   <data name="UCBedRoomPartial.grdColBedName.Caption" xml:space="preserve">
-    <value>Bed</value>
+    <value>Bed name</value>
   </data>
   <data name="UCBedRoomPartial.grdColPatientCode.Caption" xml:space="preserve">
     <value>Patient code</value>

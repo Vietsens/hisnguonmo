@@ -655,7 +655,7 @@
     <value>Mã giường</value>
   </data>
   <data name="UCBedRoomPartial.grdColBedName.Caption" xml:space="preserve">
-    <value>Giường</value>
+    <value>Tên Giường</value>
   </data>
   <data name="UCBedRoomPartial.grdColPatientCode.Caption" xml:space="preserve">
     <value>Mã bệnh nhân</value>

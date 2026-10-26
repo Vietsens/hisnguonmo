@@ -655,7 +655,7 @@
     <value>အိပ်ရာကုဒ်</value>
   </data>
   <data name="UCBedRoomPartial.grdColBedName.Caption" xml:space="preserve">
-    <value>အိပ်ရာဝင်</value>
+    <value>အိပ်ရာအမည်</value>
   </data>
   <data name="UCBedRoomPartial.grdColPatientCode.Caption" xml:space="preserve">
     <value>လူနာကုဒ်</value>
