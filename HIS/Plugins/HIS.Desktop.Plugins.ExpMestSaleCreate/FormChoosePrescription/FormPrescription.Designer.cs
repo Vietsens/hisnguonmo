@@ -483,6 +483,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gridViewSelecteServiceReq.OptionsView.ColumnAutoWidth = false;
             this.gridViewSelecteServiceReq.OptionsView.ShowGroupPanel = false;
             this.gridViewSelecteServiceReq.OptionsView.ShowIndicator = false;
+            this.gridViewSelecteServiceReq.LevelIndent = 45;
+            this.gridViewSelecteServiceReq.LeftCoordChanged += new System.EventHandler(this.gridViewSelecteServiceReq_LeftCoordChanged);
+            this.gridViewSelecteServiceReq.TopRowChanged += new System.EventHandler(this.gridViewSelecteServiceReq_LeftCoordChanged);
             this.gridViewSelecteServiceReq.MasterRowEmpty += new DevExpress.XtraGrid.Views.Grid.MasterRowEmptyEventHandler(this.gridViewSelecteServiceReq_MasterRowEmpty);
             this.gridViewSelecteServiceReq.MasterRowExpanded += new DevExpress.XtraGrid.Views.Grid.CustomMasterRowEventHandler(this.gridViewSelecteServiceReq_MasterRowExpanded);
             this.gridViewSelecteServiceReq.MasterRowCollapsed += new DevExpress.XtraGrid.Views.Grid.CustomMasterRowEventHandler(this.gridViewSelecteServiceReq_MasterRowCollapsed);
@@ -588,6 +591,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gridViewSelectMediMate.OptionsCustomization.AllowFilter = false;
             this.gridViewSelectMediMate.OptionsCustomization.AllowSort = false;
             this.gridViewSelectMediMate.OptionsDetail.EnableMasterViewMode = false;
+            this.gridViewSelectMediMate.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
+            this.gridViewSelectMediMate.LeftCoordChanged += new System.EventHandler(this.gridViewSelectMediMate_LeftCoordChanged);
             this.gridViewSelectMediMate.OptionsView.ColumnAutoWidth = false;
             this.gridViewSelectMediMate.OptionsView.ShowGroupPanel = false;
             this.gridViewSelectMediMate.OptionsView.ShowIndicator = false;

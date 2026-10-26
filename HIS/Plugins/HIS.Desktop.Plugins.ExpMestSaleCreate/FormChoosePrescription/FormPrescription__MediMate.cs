@@ -44,6 +44,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
         Dictionary<long, List<MediMateTypeADO>> dicMediMateByServiceReq = new Dictionary<long, List<MediMateTypeADO>>();
         HashSet<long> collapsedServiceReqIds = new HashSet<long>();
         bool isUpdatingGridSelect = false;
+        bool isSyncingLeftCoord = false;
 
         private void LoadMediMateByServiceReqs(List<V_HIS_SERVICE_REQ_11> serviceReqs)
         {
@@ -195,6 +196,58 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
                     if (row != null && !collapsedServiceReqIds.Contains(row.ID))
                         gridViewSelecteServiceReq.SetMasterRowExpanded(i, true);
                 }
+                SyncDetailLeftCoord();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // Details have no horizontal scrollbar of their own (tester 26/10): they scroll with the master one
+        private void SyncDetailLeftCoord()
+        {
+            if (isSyncingLeftCoord)
+                return;
+            isSyncingLeftCoord = true;
+            try
+            {
+                int left = gridViewSelecteServiceReq.LeftCoord;
+                for (int i = 0; i < gridViewSelecteServiceReq.DataRowCount; i++)
+                {
+                    if (!gridViewSelecteServiceReq.GetMasterRowExpanded(i))
+                        continue;
+                    GridView detail = gridViewSelecteServiceReq.GetDetailView(i, 0) as GridView;
+                    if (detail != null && detail.LeftCoord != left)
+                        detail.LeftCoord = left;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                isSyncingLeftCoord = false;
+            }
+        }
+
+        // TopRowChanged too: a detail laid out off screen could not take the scroll offset yet
+        private void gridViewSelecteServiceReq_LeftCoordChanged(object sender, EventArgs e)
+        {
+            SyncDetailLeftCoord();
+        }
+
+        // A detail scrolled itself (click on a partly hidden cell): put it back, only the master scrollbar moves the details
+        private void gridViewSelectMediMate_LeftCoordChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                GridView detail = sender as GridView;
+                if (isSyncingLeftCoord || detail == null || detail == gridViewSelectMediMate)
+                    return;
+                if (detail.LeftCoord != gridViewSelecteServiceReq.LeftCoord)
+                    SyncDetailLeftCoord();
             }
             catch (Exception ex)
             {
@@ -240,6 +293,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
         {
             try
             {
+                SyncDetailLeftCoord();
                 if (isUpdatingGridSelect)
                     return;
                 V_HIS_SERVICE_REQ_11 row = ((GridView)sender).GetRow(e.RowHandle) as V_HIS_SERVICE_REQ_11;
