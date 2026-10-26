@@ -241,6 +241,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 var approvable = checkedServices.Where(o => !o.SERVICE_APPROVE_TIME.HasValue && IsServiceHasFullResult(o)).ToList();
                 var approved = checkedServices.Where(o => o.SERVICE_APPROVE_TIME.HasValue).ToList();
 
+                // Chẩn đoán trạng thái nút: 1 dòng log mỗi lần tính (không log trong vòng lặp)
+                Inventec.Common.Logging.LogSystem.Debug("UpdateApproveResultButton: SAMPLE_ID=" + (rowSample != null ? rowSample.ID.ToString() : "null")
+                    + "; SAMPLE_STT_ID=" + (sampleSttId.HasValue ? sampleSttId.Value.ToString() : "null")
+                    + "; loadedServices=" + this.dicSampleServiceApprove.Count
+                    + "; checked=[" + String.Join(", ", checkedServices.Select(o => o.ID + ":" + o.SERVICE_CODE + "/stt=" + o.SAMPLE_SERVICE_STT_ID + "/noExecute=" + o.IS_NO_EXECUTE + "/approved=" + o.SERVICE_APPROVE_TIME.HasValue)) + "]"
+                    + "; approvable=" + approvable.Count + "; approved=" + approved.Count);
+
                 if (approvable.Any())
                 {
                     this.isApproveResultMode = true;
