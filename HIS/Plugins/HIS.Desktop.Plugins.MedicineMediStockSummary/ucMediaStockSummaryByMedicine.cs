@@ -209,6 +209,9 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                         }
                         MedicineTypeDatas = ListMedicineTypeTemp;
 
+                        //Mỗi lần gọi 100 kho trả 1 dòng/loại -> gộp lại để 1 loại chỉ còn 1 dòng
+                        MedicineTypeDatas = MergeTypeDatasByType(MedicineTypeDatas, MediStockCodes, FIELD_NAME__MEDICINE_TYPE_CODE);
+
                         //Bỏ kho trùng nhưng giữ đúng cặp mã kho - tên kho (2 kho khác nhau vẫn có thể trùng tên)
                         List<string> distinctMediStockCodes = null;
                         List<string> distinctMediStockNames = null;
@@ -303,6 +306,9 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                             ListMaterialTypeTemp.Add(item);
                         }
                         MaterialTypeDatas = ListMaterialTypeTemp;
+
+                        //Mỗi lần gọi 100 kho trả 1 dòng/loại -> gộp lại để 1 loại chỉ còn 1 dòng
+                        MaterialTypeDatas = MergeTypeDatasByType(MaterialTypeDatas, MediStockCodes, FIELD_NAME__MATERIAL_TYPE_CODE);
 
                         //Bỏ kho trùng nhưng giữ đúng cặp mã kho - tên kho (2 kho khác nhau vẫn có thể trùng tên)
                         List<string> distinctMateStockCodes = null;
@@ -734,6 +740,59 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gộp các dòng cùng loại thuốc/vật tư (cùng ID) trả về từ các lần gọi API theo lô 100 kho, cộng tồn các cột kho.
+        /// Không gộp thì 1 loại có tồn ở kho thuộc nhiều lần gọi sẽ ra nhiều dòng, mỗi dòng chỉ mang tồn của 1 phần kho
+        /// nhưng lại gắn đủ lô của tất cả kho -> tổng tồn của loại lệch với tổng các lô.
+        /// </summary>
+        private List<ExpandoObject> MergeTypeDatasByType(List<ExpandoObject> typeDatas, List<string> mediStockCodes, string typeCodeFieldName)
+        {
+            if (typeDatas == null || typeDatas.Count == 0)
+                return typeDatas;
+
+            try
+            {
+                List<string> amountFieldNames = (mediStockCodes ?? new List<string>()).Distinct().ToList();
+                amountFieldNames.Add(FIELD_NAME__TOTAL_AMOUNT);
+
+                List<ExpandoObject> result = new List<ExpandoObject>();
+                Dictionary<string, IDictionary<string, object>> typeDataByKey = new Dictionary<string, IDictionary<string, object>>();
+                foreach (var typeData in typeDatas)
+                {
+                    IDictionary<string, object> typeDataFields = (IDictionary<string, object>)typeData;
+                    string typeKey = GetFieldString(typeDataFields, "ID");
+                    if (String.IsNullOrEmpty(typeKey))
+                        typeKey = GetFieldString(typeDataFields, typeCodeFieldName);
+
+                    if (String.IsNullOrEmpty(typeKey) || !typeDataByKey.ContainsKey(typeKey))
+                    {
+                        if (!String.IsNullOrEmpty(typeKey))
+                            typeDataByKey.Add(typeKey, typeDataFields);
+                        result.Add(typeData);
+                        continue;
+                    }
+
+                    IDictionary<string, object> mergedFields = typeDataByKey[typeKey];
+                    foreach (string amountFieldName in amountFieldNames)
+                    {
+                        if (!typeDataFields.ContainsKey(amountFieldName))
+                            continue;
+                        decimal mergedAmount = ToDecimal(mergedFields.ContainsKey(amountFieldName) ? mergedFields[amountFieldName] : null);
+                        mergedFields[amountFieldName] = mergedAmount + ToDecimal(typeDataFields[amountFieldName]);
+                    }
+                }
+
+                if (result.Count != typeDatas.Count)
+                    Inventec.Common.Logging.LogSystem.Debug("MergeTypeDatasByType: " + typeDatas.Count + " dong -> " + result.Count + " loai");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return typeDatas;
             }
         }
 
