@@ -662,6 +662,61 @@ namespace HIS.Desktop.Plugins.Bordereau
             }
         }
 
+        /// <summary>
+        /// Load cac dong hoan ung theo dich vu thanh toan (HIS_SESE_BILL_REPAY) chua huy cua ho so
+        /// </summary>
+        private void LoadSeseBillRepay()
+        {
+            try
+            {
+                HisSeseBillRepayViewFilter seseBillRepayFilter = new HisSeseBillRepayViewFilter();
+                seseBillRepayFilter.TDL_TREATMENT_ID = treatmentId;
+                seseBillRepayFilter.IS_CANCEL = false;
+                SeseBillRepays = new BackendAdapter(new CommonParam())
+                .Get<List<V_HIS_SESE_BILL_REPAY>>("api/HisSeseBillRepay/GetView", ApiConsumers.MosConsumer, seseBillRepayFilter, new CommonParam());
+            }
+            catch (Exception ex)
+            {
+                SeseBillRepays = null;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dich vu da hoan ung = moi dong HIS_SERE_SERV_BILL chua huy cua dich vu deu co dong HIS_SESE_BILL_REPAY chua huy.
+        /// Goi sau khi da load xong SereServBills va SeseBillRepays.
+        /// </summary>
+        private void ProcessRefundedSereServIds()
+        {
+            try
+            {
+                HashSet<long> refundedSereServIds = new HashSet<long>();
+                if (SereServBills != null && SereServBills.Count > 0 && SeseBillRepays != null && SeseBillRepays.Count > 0)
+                {
+                    HashSet<long> refundedSereServBillIds = new HashSet<long>(SeseBillRepays
+                        .Where(o => o.IS_CANCEL != 1)
+                        .Select(o => o.SERE_SERV_BILL_ID));
+
+                    var noCancelBillGroups = SereServBills
+                        .Where(o => o.IS_CANCEL != 1)
+                        .GroupBy(o => o.SERE_SERV_ID);
+                    foreach (var group in noCancelBillGroups)
+                    {
+                        if (group.All(o => refundedSereServBillIds.Contains(o.ID)))
+                        {
+                            refundedSereServIds.Add(group.Key);
+                        }
+                    }
+                }
+                RefundedSereServIds = refundedSereServIds;
+            }
+            catch (Exception ex)
+            {
+                RefundedSereServIds = new HashSet<long>();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private V_HIS_PATIENT_TYPE_ALTER GetPatientTypeAlterInstructionTime(long instructionTime)
         {
             V_HIS_PATIENT_TYPE_ALTER result = null;
@@ -963,11 +1018,14 @@ namespace HIS.Desktop.Plugins.Bordereau
                 methods.Add(LoadCurrentTreatmentData);
                 methods.Add(LoadSereServBill);
                 methods.Add(LoadSereServDeposit);
+                methods.Add(LoadSeseBillRepay);
                 methods.Add(() => { hisSereServs = LoadSereServ(); });
                 methods.Add(LoadCurrentPatientTypeAlter);
                 WaitingManager.Show();
 
                 ThreadCustomManager.MultipleThreadWithJoin(methods);
+
+                ProcessRefundedSereServIds();
 
                 if (hisSereServs != null && hisSereServs.Count > 0)
                 {

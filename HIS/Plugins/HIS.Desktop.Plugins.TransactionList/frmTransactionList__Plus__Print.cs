@@ -3003,7 +3003,10 @@ namespace HIS.Desktop.Plugins.TransactionList
                 filterTran.TREATMENT_ID = transactionPrint.TREATMENT_ID;
                 //filterTran.TRANSACTION_TYPE_IDs = new List<long>() { IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT };
                 filterTran.IS_CANCEL = false;
-                List<V_HIS_TRANSACTION> transa = new BackendAdapter(paramtreatment).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filterTran, paramtreatment);
+                // KSK - Hoan ung dich vu thanh toan (TDL_SESE_BILL_REPAY_COUNT > 0): phieu chi truyen giao dich thanh toan goc
+                List<V_HIS_TRANSACTION> transa = (repay.TDL_SESE_BILL_REPAY_COUNT ?? 0) > 0
+                    ? this.GetOriginalBillOfBillServiceRepay(repay.ID)
+                    : new BackendAdapter(paramtreatment).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filterTran, paramtreatment);
                 if (transa == null) transa = new List<V_HIS_TRANSACTION>();
 
                 MPS.Processor.Mps000113.PDO.Mps000113PDO rdo = new MPS.Processor.Mps000113.PDO.Mps000113PDO(
@@ -3043,6 +3046,36 @@ namespace HIS.Desktop.Plugins.TransactionList
             {
                 WaitingManager.Hide();
             }
+        }
+
+        /// <summary>
+        /// KSK - Hoan ung dich vu thanh toan: lay giao dich thanh toan goc cua giao dich hoan ung
+        /// (TDL_BILL_ID cua HIS_SESE_BILL_REPAY theo REPAY_ID, gom ca dong da huy de in lai phieu da huy)
+        /// </summary>
+        private List<V_HIS_TRANSACTION> GetOriginalBillOfBillServiceRepay(long repayId)
+        {
+            List<V_HIS_TRANSACTION> result = new List<V_HIS_TRANSACTION>();
+            try
+            {
+                HisSeseBillRepayFilter seseBillRepayFilter = new HisSeseBillRepayFilter();
+                seseBillRepayFilter.REPAY_ID = repayId;
+                var seseBillRepays = new BackendAdapter(new CommonParam()).Get<List<HIS_SESE_BILL_REPAY>>(RequestUri.HIS_SESE_BILL_REPAY_GET, ApiConsumers.MosConsumer, seseBillRepayFilter, null);
+                if (seseBillRepays != null && seseBillRepays.Count > 0)
+                {
+                    HisTransactionViewFilter billFilter = new HisTransactionViewFilter();
+                    billFilter.IDs = seseBillRepays.Select(o => o.TDL_BILL_ID).Distinct().ToList();
+                    var bills = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, billFilter, null);
+                    if (bills != null && bills.Count > 0)
+                    {
+                        result = bills;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private void InHoaDonTTTheoYeuCauDichVu(string printTypeCode, string fileName, ref bool result)

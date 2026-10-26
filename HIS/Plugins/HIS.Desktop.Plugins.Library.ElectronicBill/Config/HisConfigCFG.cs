@@ -32,6 +32,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Config
         internal const string ELECTRONIC_BILL__CONFIG = "HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.CONFIG";
         internal const string SERVICE_INDEPENDENT_DISPLAY = "HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.SERVICE_INDEPENDENT_DISPLAY";
 
+        //Doi tuong benh nhan (PATIENT_TYPE_CODE, phan cach dau phay) duoc hoan ung theo dich vu thanh toan. Rong = tat tinh nang
+        internal const string REPAY_BY_BILL_SERVICE__PATIENT_TYPE_CODES = "MOS.HIS_TRANSACTION.REPAY_BY_BILL_SERVICE.PATIENT_TYPE_CODES";
+
         // ==== Cấu hình gửi Zalo thông báo hóa đơn (mới) ====
         internal const string SEND_ZALO = "HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.SEND_ZALO";
         internal const string LOOKUP_URL = "HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.LOOKUP_URL";

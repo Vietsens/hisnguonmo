@@ -189,6 +189,7 @@
     <Compile Include="Validation\ValidateAgeRelativeName.cs" />
     <Compile Include="Validation\ValidateBHXHCode.cs" />
     <Compile Include="Validation\ValidateCombo.cs" />
+    <Compile Include="Validation\ValidateHeinCardNumber.cs" />
     <Compile Include="Validation\ValidateMaxLength.cs" />
     <Compile Include="Validation\ValidateRelativeType.cs" />
     <Compile Include="Validation\ValidateTimeFromTo.cs" />
