@@ -35,8 +35,9 @@ namespace HIS.Desktop.Plugins.TextLibrary.ShareAccount
     public partial class frmShareAccount : HIS.Desktop.Utility.FormBase
     {
         #region Declare
-        /// <summary>Max length of HIS_TEXT_LIB.PUBLIC_LOGINNAMES (VARCHAR2(4000)).</summary>
-        internal const int PUBLIC_LOGINNAMES_MAX_LENGTH = 4000;
+        /// <summary>Max bytes of HIS_TEXT_LIB.PUBLIC_LOGINNAMES: MOS matches ',' || PUBLIC_LOGINNAMES || ','
+        /// and Oracle (MAX_STRING_SIZE=STANDARD) raises ORA-01489 above 4000, so keep 2 bytes for the commas.</summary>
+        internal const int PUBLIC_LOGINNAMES_MAX_LENGTH = 3998;
 
         List<string> inputLoginnames;
         string creatorLoginname;

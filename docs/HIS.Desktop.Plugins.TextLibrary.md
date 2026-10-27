@@ -27,7 +27,7 @@
   - Nguồn: danh mục Tài khoản nhân viên trong bộ nhớ (`V_HIS_EMPLOYEE`): `IS_ACTIVE = 1`, `IS_DELETE != 1`, có `LOGINNAME`, khác người tạo nội dung (bản ghi mới = người đăng nhập, đang sửa = `CREATOR`); sắp theo họ tên. Tài khoản đã chọn được tích sẵn.
   - Ô tìm (mã NV, họ tên, tên đăng nhập — không phân biệt hoa thường, có dấu/không dấu) + combo Khoa (khoa đang hoạt động, nút xóa để bỏ lọc). Lọc chỉ ẩn dòng, trạng thái tích ngoài kết quả lọc được giữ. Lưới tắt lọc tiêu đề cột và ô tìm Ctrl+F riêng (chỉ lọc qua ô tìm + combo Khoa, để "Chọn tất cả" đúng theo dòng đang hiện).
   - "Chọn tất cả" tích/bỏ tích mọi dòng đang hiện; tự cập nhật khi đổi lọc hoặc tích từng dòng.
-  - **Đồng ý**: kết quả = tài khoản đang tích + tài khoản đầu vào không có trong popup (bị khóa / không còn trong danh mục — giữ lại), bỏ người tạo, bỏ trùng. Nếu chuỗi ghép dấu phẩy > 4000 byte UTF-8 (cột VARCHAR2(4000) tính theo byte; bằng số ký tự khi tên đăng nhập ASCII) → báo `DanhSachTaiKhoanChiaSeVuotQuaGioiHan`, không đóng. **Đóng** → không đổi danh sách.
+  - **Đồng ý**: kết quả = tài khoản đang tích + tài khoản đầu vào không có trong popup (bị khóa / không còn trong danh mục — giữ lại), bỏ người tạo, bỏ trùng. Nếu chuỗi ghép dấu phẩy > 3998 byte UTF-8 (cột VARCHAR2(4000) tính theo byte; MOS so khớp `','||PUBLIC_LOGINNAMES||','` nên phải chừa 2 byte, quá 4000 Oracle báo ORA-01489) → báo `DanhSachTaiKhoanChiaSeVuotQuaGioiHan`, không đóng. **Đóng** → không đổi danh sách.
   - Kết quả chỉ ghi xuống CSDL khi bấm Lưu ở màn chính.
 - Lưu: `IS_PUBLIC_IN_ACCOUNT = 1/0` theo ô tích; `PUBLIC_LOGINNAMES` = loginname ngăn bằng dấu phẩy, không khoảng trắng; danh sách rỗng → `null`.
 
@@ -120,7 +120,7 @@ Không có chức năng in.
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 27/10/2026 | DANGTH | Tạo tài liệu module. Việc 59771 (tài liệu phân tích 3604): thêm **Chia sẻ theo tài khoản** — ô tích + nút "+" + nhãn "(N tài khoản)" (`FormTextLibrary__ShareAccount.cs`), popup `ShareAccount\frmShareAccount` (+ `ADO\ShareAccountADO`), lưu `IS_PUBLIC_IN_ACCOUNT`/`PUBLIC_LOGINNAMES`; khóa ô/nút khi không phải người tạo/quản trị. Sửa lỗi có sẵn: Chọn trên nội dung người khác không còn gọi Update; Mới mở lại nút Lưu. Gõ viết tắt (`HIS.Desktop.Utility.ShortcutReplace.GetUsableTextLibs`) thêm điều kiện chia sẻ theo tài khoản (nhân viên phải đang hoạt động). Resource vi/en/my, thông báo vượt 4000 ký tự. Thêm tham chiếu Inventec.Common.String, Inventec.Common.Controls.EditorLoader. Cần MOS.EFMODEL mới (2 thuộc tính) + MOS đã vá `HisTextLibFilterQuery`. |
-| 27/10/2026 | DANGTH | Việc 59771 sửa theo phản biện: popup tắt lọc tiêu đề cột/ô tìm Ctrl+F của lưới (Chọn tất cả chỉ theo dòng đang hiện); "Chọn tất cả" không còn tích khi kết quả lọc rỗng; giới hạn 4000 tính theo byte UTF-8; `ShortcutReplace` dùng hằng `IMSys.DbConfig` thay số 1 và cập nhật chú thích hàm `ProcesseShortcutReplaceWithModuleServiceExecute`. |
+| 27/10/2026 | DANGTH | Việc 59771 sửa theo phản biện: popup tắt lọc tiêu đề cột/ô tìm Ctrl+F của lưới (Chọn tất cả chỉ theo dòng đang hiện); "Chọn tất cả" không còn tích khi kết quả lọc rỗng; giới hạn tính theo byte UTF-8 và hạ xuống 3998 (tránh ORA-01489 khi MOS nối dấu phẩy 2 đầu, đã tái hiện trên CSDL test MAX_STRING_SIZE=STANDARD); `ShortcutReplace` dùng hằng `IMSys.DbConfig` thay số 1 và cập nhật chú thích hàm `ProcesseShortcutReplaceWithModuleServiceExecute`. |
 
 ## 9. Test Cases
 
@@ -133,7 +133,7 @@ Không có chức năng in.
 - [ ] Mới: "+" mờ; tích Chia sẻ theo tài khoản → "+" sáng; popup không có người tạo, chỉ tài khoản đang hoạt động.
 - [ ] Tìm không dấu / theo mã NV / tên đăng nhập; lọc khoa; "Chọn tất cả" chỉ tích dòng đang hiện; bỏ lọc → dòng khoa khác không bị tích; Đóng → nhãn không đổi.
 - [ ] Đồng ý → "(N tài khoản)" → Lưu; bấm lại dòng: ô tích + số giữ nguyên, popup tích sẵn.
-- [ ] Danh sách > 4000 ký tự → Đồng ý bị chặn, báo bỏ bớt.
+- [ ] Danh sách > 3998 byte → Đồng ý bị chặn, báo bỏ bớt; đúng 3998 → Đồng ý được.
 - [ ] Người được chia sẻ: thấy nội dung; Lưu, Xóa, ô Chia sẻ theo tài khoản, "+" bị khóa; gõ mã tắt + dấu cách → thay nội dung (sau khi đăng nhập lại).
 - [ ] Người được chia sẻ bấm Chọn (mở từ hồ sơ) → nội dung vào hồ sơ, `MODIFIER`/`MODIFY_TIME` của nội dung gốc không đổi.
 - [ ] Bỏ tích A → Đồng ý → Lưu: A không còn thấy. Bỏ tích ô → Lưu: không ai trong danh sách thấy; tích lại → thấy lại (danh sách còn).
