@@ -97,7 +97,7 @@ namespace HIS.Desktop.Utility
                     && (o.CREATOR == loginName
                         || o.IS_PUBLIC == 1
                         || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && departmentId.HasValue && o.DEPARTMENT_ID == departmentId)
-                        || (isActiveEmployee && o.IS_PUBLIC_IN_ACCOUNT == 1 && o.PUBLIC_LOGINNAMES != null && ("," + o.PUBLIC_LOGINNAMES + ",").Contains(publicLoginName))))
+                        || (isActiveEmployee && o.IS_PUBLIC_IN_ACCOUNT == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE &&o.PUBLIC_LOGINNAMES != null && ("," + o.PUBLIC_LOGINNAMES + ",").Contains(publicLoginName))))
                 .ToList();
         }
 
@@ -165,6 +165,7 @@ namespace HIS.Desktop.Utility
         ///- Là mẫu do người dùng tạo (CREATOR của HIS_TEXT_LIB)
         ///- Là mẫu do khoa người dùng làm việc tạo và có check "công khai theo khoa" (HIS_TEXT_LIB có IS_PUBLIC_IN_DEPARTMENT = 1 và DEPARTMENT_ID = khoa tương ứng với tài khoản người dùng được thiết lập trong danh mục tài khoản nhân viên)
         ///- Là mẫu được check "công khai toàn viện" (HIS_TEXT_LIB)có IS_PUBLIC = 1)
+        ///- Là mẫu được check "chia sẻ theo tài khoản" (IS_PUBLIC_IN_ACCOUNT = 1) và tên đăng nhập nằm trong PUBLIC_LOGINNAMES, khi tài khoản nhân viên đang hoạt động
         /// </summary>
         /// <param name="key"></param>
         /// <param name="rtfRepValue"></param>

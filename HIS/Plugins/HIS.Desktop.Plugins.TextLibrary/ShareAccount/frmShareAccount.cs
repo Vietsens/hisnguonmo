@@ -295,6 +295,8 @@ namespace HIS.Desktop.Plugins.TextLibrary.ShareAccount
                     item.IsChecked = chkSelectAll.Checked;
                 }
                 gridViewAccount.RefreshData();
+                // An empty filter result must not leave "Select all" checked
+                UpdateSelectAllState();
             }
             catch (Exception ex)
             {
@@ -359,7 +361,8 @@ namespace HIS.Desktop.Plugins.TextLibrary.ShareAccount
             {
                 gridViewAccount.CloseEditor();
                 List<string> result = MergeSelectedLoginnames(this.inputLoginnames, this.listAccount, this.creatorLoginname);
-                int length = String.Join(",", result).Length;
+                // VARCHAR2(4000) counts bytes by default; same as characters for ASCII login names
+                int length = System.Text.Encoding.UTF8.GetByteCount(String.Join(",", result));
                 if (length > PUBLIC_LOGINNAMES_MAX_LENGTH)
                 {
                     Inventec.Common.Logging.LogSystem.Info("frmShareAccount: PUBLIC_LOGINNAMES too long, length=" + length + ", count=" + result.Count);

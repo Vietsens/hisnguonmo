@@ -191,6 +191,8 @@ namespace HIS.Desktop.Plugins.TextLibrary.ShareAccount
             this.gridViewAccount.GridControl = this.gridControlAccount;
             this.gridViewAccount.Name = "gridViewAccount";
             this.gridViewAccount.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDown;
+            this.gridViewAccount.OptionsCustomization.AllowFilter = false;
+            this.gridViewAccount.OptionsFind.AllowFindPanel = false;
             this.gridViewAccount.OptionsView.ShowGroupPanel = false;
             this.gridViewAccount.OptionsView.ShowIndicator = false;
             //
