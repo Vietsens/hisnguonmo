@@ -13424,7 +13424,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
         }
 
-        //Màn cao <= 768 (vd 1366x768): kê đơn nội trú thu DHST lên (như bấm mũi tên lên) để ô Đơn cũ bên dưới rộng ra
+        //Màn cao <= 768 (vd 1366x768): kê đơn nội trú thu DHST lên, chia đôi chỗ trống cho DS bệnh nhân và Đơn cũ
         private void CollapseDhstOnSmallScreen()
         {
             try
@@ -13437,6 +13437,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     return;
 
                 pbClose_Click(pbClose, EventArgs.Empty);
+                //Bấm mũi tên lên dồn hết chỗ của DHST cho Đơn cũ, trả một nửa về DS bệnh nhân
+                this.layoutControlItem15.Size = new Size(layoutControlItem15.Width, layoutControlItem15.Height + layoutControlItemDHSTInfo.Height / 2);
                 IsDhstAutoCollapsed = true;
             }
             catch (Exception ex)
