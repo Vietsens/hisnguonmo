@@ -39,5 +39,21 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom.Resources
                 return "";
             }
         }
+        /// <summary>Số bắt đầu phải lớn hơn hoặc bằng 1.</summary>
+        internal static string SoBatDauPhaiLonHonHoacBang1
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HisReceptionRoom_SoBatDauPhaiLonHonHoacBang1", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }
