@@ -21,6 +21,7 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.Plugins.ConnectionTest.ADO;
+using HIS.Desktop.Plugins.ConnectionTest.Config;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -62,13 +63,27 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
         /// <summary>
         /// Gán caption/tooltip nút và 2 cột người duyệt. Gọi SAU InitRestoreLayoutTreeListFromXml.
-        /// Nút luôn hiển thị như "Duyệt KQ theo lô"; 2 cột mặc định ẩn (bật qua Column Chooser) -> không set Visible.
+        /// Config HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService:
+        /// = 1 -> nút luôn hiển thị (như "Duyệt KQ theo lô"); 2 cột mặc định ẩn, bật qua Column Chooser (không set Visible).
+        /// khác 1 -> ẩn nút, ẩn 2 cột và không cho chọn trong Column Chooser: giữ nguyên nghiệp vụ cũ.
         /// </summary>
         private void InitApproveResultControls()
         {
             try
             {
+                if (!HisConfigCFG.IsApproveResultByService)
+                {
+                    this.lciApproveResult.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.colResultApprover.Visible = false;
+                    this.colResultApproveTime.Visible = false;
+                    this.colResultApprover.OptionsColumn.ShowInCustomizationForm = false;
+                    this.colResultApproveTime.OptionsColumn.ShowInCustomizationForm = false;
+                    return;
+                }
+
                 this.lciApproveResult.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                this.colResultApprover.OptionsColumn.ShowInCustomizationForm = true;
+                this.colResultApproveTime.OptionsColumn.ShowInCustomizationForm = true;
 
                 this.colResultApprover.Caption = GetLangValue("UC_ConnectionTest.colResultApprover.Caption", "Người duyệt KQ");
                 this.colResultApprover.ToolTip = GetLangValue("UC_ConnectionTest.colResultApprover.ToolTip", "Người duyệt kết quả");
@@ -95,7 +110,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             try
             {
                 this.dicSampleServiceApprove = new Dictionary<long, SampleServiceApproveADO>();
-                if (!sampleId.HasValue || sampleId.Value <= 0)
+                // Tắt duyệt theo dịch vụ: không gọi API, không khóa ô theo dịch vụ
+                if (!HisConfigCFG.IsApproveResultByService || !sampleId.HasValue || sampleId.Value <= 0)
                     return;
 
                 CommonParam param = new CommonParam();
@@ -152,6 +168,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
+                if (!HisConfigCFG.IsApproveResultByService)
+                    return;
                 var sample = lstSampleAll != null ? lstSampleAll.FirstOrDefault(o => o.ID == sampleId) : null;
                 if (sample != null && rowSample != null && rowSample.ID == sampleId)
                 {
@@ -229,6 +247,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
+                if (!HisConfigCFG.IsApproveResultByService)
+                    return;
                 this.approveTargetServices = new List<SampleServiceApproveADO>();
                 long? sampleSttId = rowSample != null ? (long?)rowSample.SAMPLE_STT_ID : null;
                 bool isSampleNotAccepted = sampleSttId == null
@@ -290,6 +310,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
+                if (!HisConfigCFG.IsApproveResultByService)
+                    return;
                 // Thao tác trên mẫu đang hiển thị kết quả (rowSample), không phụ thuộc dòng đang focus trên lưới mẫu
                 // (focus có thể bị đổi bởi bàn phím hoặc handler Duyệt KQ cấp mẫu: FocusedRowHandle - 1 / + 1).
                 var row = rowSample;
