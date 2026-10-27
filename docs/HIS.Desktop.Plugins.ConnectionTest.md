@@ -55,6 +55,7 @@ Chi tiết phân tích/thiết kế: `docs/B_KyThuat_ConnectionTest_InBarcodeCG3
 
 ### Duyệt / Hủy duyệt KQ theo từng dịch vụ (bổ sung)
 Chi tiết: `docs/A_NghiepVu_ConnectionTest_DuyetKetQua.docx`, `docs/B_KyThuat_ConnectionTest_DuyetKetQua.docx`, SQL `docs/SQL_ConnectionTest_DuyetKetQuaTheoDichVu.sql`.
+- **Bật / tắt bằng cấu hình HIS `HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService`** (`HisConfigCFG.IsApproveResultByService`, SQL `docs/SQL_ConnectionTest_DuyetKetQuaTheoDichVu_Config.sql`): `1` = bật; trống / khác 1 (**mặc định**) = tắt → ẩn nút, ẩn 2 cột (kể cả trong Column Chooser), không gọi `api/LisSampleService/Get`, không khóa ô theo dịch vụ, không đồng bộ cây sau Duyệt KQ cấp mẫu → **màn hình giữ nguyên nghiệp vụ cũ**. Các ý bên dưới áp dụng khi bật.
 - Lưu **theo từng dịch vụ**: 3 cột mới `LIS_SAMPLE_SERVICE.SERVICE_APPROVER_LOGINNAME/USERNAME/SERVICE_APPROVE_TIME` (người duyệt = token, giờ server). API LIS mới `api/LisSampleService/ApproveResult`, `UnapproveResult` (input `{ SampleId, SampleServiceIds }`), event log `LisSampleService_DuyetKetQuaDichVu` / `LisSampleService_HuyDuyetKetQuaDichVu`. Đọc qua `api/LisSampleService/Get` (SAMPLE_ID) — **không sửa view**.
 - Nút `btnApproveResult` **luôn hiển thị** (như "Duyệt KQ theo lô"), áp dụng cho **các dịch vụ được tích** (tích dòng chỉ số = tích dịch vụ của nó; bỏ dịch vụ không thực hiện):
   - Có dịch vụ đủ KQ (SAMPLE_SERVICE_STT = Đã có KQ / Đã trả KQ) chưa duyệt → "Duyệt KQ", chỉ gửi các dịch vụ đó; mờ nếu mẫu CHUA_LM/DA_LM/TU_CHOI.
@@ -67,6 +68,24 @@ Chi tiết: `docs/A_NghiepVu_ConnectionTest_DuyetKetQua.docx`, `docs/B_KyThuat_C
 - Frontend đọc/ghi qua class riêng `ADO/SampleServiceApproveADO` (JSON) → không phụ thuộc bản `LIS.EFMODEL.dll` / `LIS.SDO.dll` phía client.
 - Duyệt KQ cấp mẫu (cột "Duyệt KQ" lưới mẫu, "Duyệt KQ theo lô") **giữ nguyên, độc lập**; duyệt theo dịch vụ không đổi trạng thái mẫu. Sau duyệt cấp mẫu, `SyncApproveResultToTree` cập nhật trạng thái mẫu vào cây.
 - **Thứ tự triển khai:** SQL → backend LIS → frontend (backend mới map 3 cột; frontend mới gọi API mới).
+
+#### Không thấy nút / nút mờ — kiểm tra
+| Hiện tượng | Nguyên nhân | Xử lý |
+|---|---|---|
+| Không có nút "Duyệt KQ" | `HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService` ≠ 1, hoặc chưa đăng nhập lại sau khi đổi; hoặc máy trạm chạy DLL cũ | Đặt 1 → đăng xuất / đăng nhập lại; cập nhật plugin |
+| Mờ — "Mẫu chưa được chấp nhận…" | `SAMPLE_STT_ID` ∈ {1 Chưa LM, 2 Đã LM, 6 Từ chối} | Chấp nhận mẫu (cột "Duyệt mẫu") |
+| Mờ — "Dịch vụ được tích chưa có đủ kết quả" | Dịch vụ chưa `DA_CO_KQ` (2) / `DA_TRA_KQ` (3): máy chủ chỉ chuyển khi **mọi** `LIS_RESULT.VALUE` của dịch vụ có giá trị và đã Lưu | Nhập đủ mọi chỉ số (kể cả chỉ số ít dùng) → Lưu |
+| "Hủy duyệt KQ" mờ — "Mẫu đã trả kết quả…" | Mẫu `TRA_KQ` | Hủy trả KQ trước |
+
+**Log chẩn đoán** (khi cấu hình bật): mỗi lần tính trạng thái nút ghi 1 dòng Debug vào `Logs\LogSystem.txt`:
+`UpdateApproveResultButton: SAMPLE_ID=…; SAMPLE_STT_ID=…; loadedServices=…; checked=[ID:SERVICE_CODE/stt=…/noExecute=…/approved=…]; approvable=…; approved=…`.
+`loadedServices = 0` → `api/LisSampleService/Get` không trả dữ liệu; `checked` rỗng → dịch vụ tích không khớp `SAMPLE_SERVICE_ID`. Response API không được ghi log (chỉ có request, `SAMPLE_ID` trong `param` base64).
+
+#### Triển khai — lưu ý
+- SQL cấu hình `SQL_ConnectionTest_DuyetKetQuaTheoDichVu_Config.sql`: `CONFIG_CODE` là **mã tạm (01000)**, thay bằng mã kế tiếp chưa dùng trước khi chạy.
+- Gói backend: `E:\Release\Backend\LIS\2.98.0x64_DuyetKQTheoDichVu` (2.98.0x64 + 6 DLL: LIS.API, LIS.MANAGER, LIS.EFMODEL, LIS.SDO, LIS.LibraryMessage, LIS.LibraryEventLog + SQL + README). Bản phát hành LIS build cấu hình **Debug** (LIS.API x64).
+- Kiểm tra máy chủ LIS có API mới: `GET http://<LIS>/api/LisSampleService/ApproveResult` → 405 = có, 404 = chưa. Test: `http://192.168.1.201:98` (có từ 26/10/2026).
+- Source backend `E:\svn\IMSys\BACKEND\LIS` **chưa commit SVN** (commit bằng TortoiseSVN).
 
 ## 3. EFMODEL Sử Dụng
 
@@ -173,6 +192,8 @@ Luồng in tổng hợp: `RichEditorStore.RunPrintTemplate("Mps000517", Delegate
 | 22/10/2026 | vuongnd | Nút "Duyệt KQ / Hủy duyệt KQ" **luôn hiển thị** như nút "Duyệt KQ theo lô" (bỏ điều kiện config `MUST_APPROVE_RESULT_BEFORE_RETURN`/`IS_SHOW_BUTTON_APPROVE_SAMPLE` — môi trường không nạp được config LIS thì nút bị ẩn); 2 cột "Người duyệt KQ", "TG duyệt" mặc định ẩn, bật qua Column Chooser. Cập nhật A_NghiepVu mục 4.1/4.2/8/9/11, B_KyThuat mục 4/6.1/9/10. |
 | 22/10/2026 | vuongnd | **Duyệt KQ theo từng dịch vụ**: thêm 3 cột `LIS_SAMPLE_SERVICE.SERVICE_APPROVER_*`/`SERVICE_APPROVE_TIME` (SQL `SQL_ConnectionTest_DuyetKetQuaTheoDichVu.sql`), API LIS `api/LisSampleService/ApproveResult`/`UnapproveResult` (backend SVN); nút Duyệt/Hủy duyệt áp dụng cho dịch vụ được tích, bật khi dịch vụ đủ KQ (không chờ cả mẫu), khóa ô riêng dịch vụ đã duyệt, cột người duyệt theo dịch vụ; Mps000096/Mps000517 lấy người duyệt từng dịch vụ (dự phòng cấp mẫu). Thêm `ADO/SampleServiceApproveADO.cs`, `IS_SERVICE_APPROVED`. |
 | 23/10/2026 | vuongnd | Nút "Duyệt KQ / Hủy duyệt KQ" thao tác trên mẫu đang hiển thị kết quả (`rowSample`), không so với dòng đang focus — trước đây focus bị đổi (bàn phím / handler cấp mẫu `FocusedRowHandle - 1 / + 1`) khiến nút bấm không có tác dụng. |
+| 27/10/2026 | vuongnd | Thêm cấu hình `HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService` (mặc định tắt) để bật / tắt Duyệt KQ theo dịch vụ, không ảnh hưởng nghiệp vụ cũ: tắt thì ẩn nút + 2 cột (ShowInCustomizationForm = false), bỏ qua nạp / khóa / đồng bộ theo dịch vụ. SQL `SQL_ConnectionTest_DuyetKetQuaTheoDichVu_Config.sql`. Thêm log chẩn đoán trạng thái nút (`UpdateApproveResultButton: ...`). |
+| 27/10/2026 | vuongnd | Tài liệu: bổ sung bảng kiểm tra khi không thấy nút / nút mờ, cách đọc log chẩn đoán, lưu ý triển khai (CONFIG_CODE tạm, gói backend `2.98.0x64_DuyetKQTheoDichVu`, kiểm tra API 405/404, backend chưa commit SVN) — mục 2; A_NghiepVu mục 4.1/8, B_KyThuat mục 5.9/7. |
 
 ## 9. Test Cases
 
@@ -199,7 +220,8 @@ Luồng in tổng hợp: `RichEditorStore.RunPrintTemplate("Mps000517", Delegate
 - [ ] Hồi quy: In barcode Bartender vẫn cập nhật trạng thái lấy mẫu như trước.
 
 ### Duyệt / Hủy duyệt KQ theo dịch vụ
-- [ ] Mở màn hình → luôn có nút "Duyệt KQ"; 2 cột người duyệt mặc định ẩn, bật qua Column Chooser, mở lại vẫn giữ.
+- [ ] Cấu hình `HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService` trống / khác 1 → không có nút "Duyệt KQ" ở khu kết quả, Column Chooser không có 2 cột người duyệt, màn hình như trước.
+- [ ] Cấu hình = 1, mở màn hình → luôn có nút "Duyệt KQ"; 2 cột người duyệt mặc định ẩn, bật qua Column Chooser, mở lại vẫn giữ.
 - [ ] Mẫu đã chấp nhận, dịch vụ A đủ KQ, B chưa → tích A → Duyệt → A có người duyệt, ô A khóa; B vẫn nhập được.
 - [ ] Tích B chưa đủ KQ → nút mờ "Dịch vụ được tích chưa có đủ kết quả".
 - [ ] Mẫu Đã lấy mẫu (chưa chấp nhận) → nút mờ "Mẫu chưa được chấp nhận".
