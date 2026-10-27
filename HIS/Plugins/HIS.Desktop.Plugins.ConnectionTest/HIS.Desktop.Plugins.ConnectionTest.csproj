@@ -316,6 +316,7 @@
     <Compile Include="ADO\LisMachineAdo.cs" />
     <Compile Include="ADO\LisSampleADO.cs" />
     <Compile Include="ADO\SignConfigADO.cs" />
+    <Compile Include="ADO\SampleServiceApproveADO.cs" />
     <Compile Include="ADO\TestLisResultADO.cs" />
     <Compile Include="ComboADO.cs" />
     <Compile Include="CG300\Cg300ConnectionChecker.cs" />

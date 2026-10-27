@@ -41,5 +41,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Base
 
         public const string HIS_EXP_MEST__SALE_CREATE_LIST = "api/HisExpMest/SaleCreateList";
         public const string HIS_EXP_MEST__SALE_UPDATE_LIST = "api/HisExpMest/SaleUpdateList";
+
+        public const string HIS_SERVICE_REQ_METY__GET = "api/HisServiceReqMety/Get";
+        public const string HIS_SERVICE_REQ_MATY__GET = "api/HisServiceReqMaty/Get";
     }
 }

@@ -186,10 +186,7 @@
   <data name="VuiLongLuuTruocKhiDuyet" xml:space="preserve">
     <value>Có kết quả chưa lưu. Vui lòng lưu kết quả trước khi duyệt.</value>
   </data>
-  <data name="DuyetApDungToanBoMau" xml:space="preserve">
-    <value>Duyệt kết quả áp dụng cho toàn bộ dịch vụ của mẫu {0}. Bạn có muốn tiếp tục?</value>
-  </data>
-  <data name="BanCoMuonHuyDuyetKetQuaMau" xml:space="preserve">
-    <value>Bạn có muốn hủy duyệt kết quả mẫu {0}?</value>
+  <data name="BanCoMuonHuyDuyetKetQuaDichVu" xml:space="preserve">
+    <value>Bạn có muốn hủy duyệt kết quả dịch vụ: {0}?</value>
   </data>
 </root>

@@ -3242,7 +3242,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 // KQ từ máy: khi config IsResultLisMachine = 1 thì lấy kết quả từ máy (màn hình "Trả kết quả xét nghiệm từ máy")
                 // map sang chỉ số xét nghiệm theo mã y lệnh hiện tại; khác 1 -> để trống như hiện tại.
                 FillMachineResultValueFromLisMachine(lstLisResultADOs);
-                // Người duyệt KQ / TG duyệt: lấy từ LIS_SAMPLE.RESULT_APPROVAL_* của mẫu đang chọn
+                // Duyệt KQ theo dịch vụ: nạp người duyệt / TG duyệt (LIS_SAMPLE_SERVICE) của mẫu đang chọn, khóa ô dịch vụ đã duyệt
+                LoadSampleServiceApprove(this.rowSample != null ? (long?)this.rowSample.ID : null);
                 FillApproveResultInfo(lstLisResultADOs);
                 // treeList
                 records = new BindingList<TestLisResultADO>(lstLisResultADOs);
@@ -5256,7 +5257,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         if (testLisResultADO.IS_NO_EXECUTE == 1
                             || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ
-                             || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                             || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ
+                             || testLisResultADO.IS_SERVICE_APPROVED)
                         {
                             if (testLisResultADO.IS_PARENT == 1 && testLisResultADO.HAS_ONE_CHILD == 0)
                             {
@@ -5280,7 +5282,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         if ((testLisResultADO.IS_PARENT == 1 && testLisResultADO.HAS_ONE_CHILD == 0) || testLisResultADO.IS_NO_EXECUTE == 1
                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ
-                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ
+                             || testLisResultADO.IS_SERVICE_APPROVED)
                         {
                             e.RepositoryItem = TextEditValueRange__Disable;
                             e.Column.OptionsColumn.AllowEdit = false;
@@ -5297,7 +5300,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     if ((testLisResultADO.IS_PARENT == 1 && testLisResultADO.HAS_ONE_CHILD == 0) || testLisResultADO.IS_NO_EXECUTE == 1
                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ
-                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ
+                             || testLisResultADO.IS_SERVICE_APPROVED)
                     {
                         e.RepositoryItem = TextEditValueRange__Disable;
                     }
@@ -5337,7 +5341,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     if ((testLisResultADO.IS_PARENT == 1 && testLisResultADO.HAS_ONE_CHILD == 0) || testLisResultADO.IS_NO_EXECUTE == 1
                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ
-                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ
+                             || testLisResultADO.IS_SERVICE_APPROVED)
                     {
                         e.RepositoryItem = TextEditNote__Disable;
                     }
@@ -5351,7 +5356,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     if ((testLisResultADO.IS_PARENT == 1 && testLisResultADO.HAS_ONE_CHILD == 0) || testLisResultADO.IS_NO_EXECUTE == 1
                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ
-                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ
+                             || testLisResultADO.IS_SERVICE_APPROVED)
                     {
                         e.RepositoryItem = TextEditValueRange__Disable;
                     }
@@ -5405,7 +5411,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     if ((testLisResultADO.IS_PARENT == 1 && testLisResultADO.HAS_ONE_CHILD == 0) || testLisResultADO.IS_NO_EXECUTE == 1
                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ
-                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ)
+                         || testLisResultADO.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__DUYET_KQ
+                             || testLisResultADO.IS_SERVICE_APPROVED)
                     {
                         e.RepositoryItem = TextEditResultRange__Disable;
                     }
@@ -5694,6 +5701,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     btnPrint.Enabled = false;
                     btnInTachTheoNhom.Enabled = false;
                 }
+                UpdateApproveResultButton();
             }
             catch (Exception ex)
             {

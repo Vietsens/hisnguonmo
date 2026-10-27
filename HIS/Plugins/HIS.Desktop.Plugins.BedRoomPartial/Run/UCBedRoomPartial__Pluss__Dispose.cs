@@ -327,6 +327,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 layoutControlGroup3 = null;
                 layoutControl4 = null;
                 layoutControlItem3 = null;
+                grdColBedCode = null;
                 grdColBedName = null;
                 grdColTreatmentCode = null;
                 grdColPatientName = null;

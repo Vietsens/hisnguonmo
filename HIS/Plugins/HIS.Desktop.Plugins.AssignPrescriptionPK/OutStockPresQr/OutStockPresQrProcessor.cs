@@ -62,7 +62,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.OutStockPresQr
                 OutStockPresTransReqInput sdo = new OutStockPresTransReqInput();
                 sdo.ServiceReqId = serviceReqId;
                 sdo.DrugStoreId = drugStoreId.Value;
-                sdo.ReqRoomId = reqRoomId;
+                //Phong yeu cau la PHONG CUA KHO NHA THUOC, khong phai phong kham.
+                //HIS_TRANS_REQ.REQUEST_ROOM_ID la truong ma ca tang ngan hang dung de tra cau hinh QR:
+                //sinh ma, truy van trang thai, xac nhan thanh toan. Tro ve phong nha thuoc thi tien
+                //don thuoc mua ngoai chay ve dung diem thu cua nha thuoc, tach khoi cac giao dich
+                //khac cua phong kham - vien co hai diem thu (TID) khac nhau.
+                sdo.ReqRoomId = GetDrugStoreRoomId(drugStoreId.Value, reqRoomId);
 
                 CommonParam param = new CommonParam();
                 HIS_TRANS_REQ transReq = new BackendAdapter(param).Post<HIS_TRANS_REQ>(
@@ -89,6 +94,33 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.OutStockPresQr
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Phong cua kho nha thuoc. Khong tra duoc thi giu nguyen phong goi vao
+        /// de khong lam hong luong dang chay.
+        /// </summary>
+        private static long GetDrugStoreRoomId(long drugStoreId, long fallbackRoomId)
+        {
+            try
+            {
+                var drugStore = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>()
+                    .FirstOrDefault(o => o.ID == drugStoreId);
+                if (drugStore != null && drugStore.ROOM_ID > 0)
+                {
+                    return drugStore.ROOM_ID;
+                }
+
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "Khong xac dinh duoc phong cua kho nha thuoc. MEDI_STOCK_ID: " + drugStoreId
+                    + ". Dung tam phong goi vao: " + fallbackRoomId);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return fallbackRoomId;
         }
 
         /// <summary>
