@@ -1277,6 +1277,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.gridColumn33.Caption = "gridColumn33";
             this.gridColumn33.FieldName = "CheckStore";
+            this.gridColumn33.ImageAlignment = System.Drawing.StringAlignment.Center;
             this.gridColumn33.Name = "gridColumn33";
             this.gridColumn33.OptionsColumn.ShowCaption = false;
             this.gridColumn33.Visible = true;
