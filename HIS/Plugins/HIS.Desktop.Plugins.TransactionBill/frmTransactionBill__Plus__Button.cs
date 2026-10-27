@@ -1205,7 +1205,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                     data.Transaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmm") + "00");
-                data.Transaction.EXEMPTION = Math.Round(totalDiscount, 4);
+                // 61201: lam tron 4 so le chiet khau TRUOC khi tinh KC_AMOUNT/PayAmount, cung quy tac voi EXEMPTION gui server.
+                // Chiet khau theo ty le (ratio * tong / 100) co du so thap phan -> PayAmount lech 1e-28 so voi AMOUNT - EXEMPTION
+                // server tinh -> server coi la co ket chuyen, can thu = 0 -> bao MOS012.
+                totalDiscount = Math.Round(totalDiscount, 4);
+                data.Transaction.EXEMPTION = totalDiscount;
                 if (HisConfigCFG.EnableMultiDiscount)
                 {
                     // Giao diện MỚI (grid nhiều dòng chiết khấu)

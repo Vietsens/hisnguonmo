@@ -76,7 +76,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     return;
                 }
                 List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
-                if (serviceTypeIdRequired != null && serviceTypeIdRequired.Count > 0)
+                //Chi bat buoc chon Loai mau XN khi cot dang hien tren luoi.
+                if (grcSampleType.VisibleIndex >= 0 && serviceTypeIdRequired != null && serviceTypeIdRequired.Count > 0)
                 {
                     var serviceTypeInGrid = serviceCheckeds__Send.Select(o => new { o.TDL_SERVICE_NAME, o.SERVICE_TYPE_ID, o.TEST_SAMPLE_TYPE_ID }).ToList();
                     var lstServiceName = serviceTypeInGrid.Where(item => serviceTypeIdRequired.Exists(o => o == item.SERVICE_TYPE_ID) && item.TEST_SAMPLE_TYPE_ID <= 0).Select(o => o.TDL_SERVICE_NAME);

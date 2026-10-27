@@ -925,16 +925,16 @@
     <value>Unapprove result</value>
   </data>
   <data name="UC_ConnectionTest.btnApproveResult.ToolTip" xml:space="preserve">
-    <value>Approve the test result of the selected sample</value>
+    <value>Approve the result of the checked services</value>
   </data>
   <data name="UC_ConnectionTest.btnApproveResult.ToolTipUnapprove" xml:space="preserve">
-    <value>Unapprove the test result of the selected sample</value>
+    <value>Unapprove the result of the checked services</value>
   </data>
   <data name="UC_ConnectionTest.btnApproveResult.ToolTipReturned" xml:space="preserve">
     <value>The result has been returned; cancel the return before unapproving</value>
   </data>
   <data name="UC_ConnectionTest.btnApproveResult.ToolTipNoResult" xml:space="preserve">
-    <value>The sample has no result or cannot be approved in its current status</value>
+    <value>The checked services do not have full results</value>
   </data>
   <data name="UC_ConnectionTest.colResultApprover.Caption" xml:space="preserve">
     <value>Approver</value>
@@ -947,5 +947,8 @@
   </data>
   <data name="UC_ConnectionTest.colResultApproveTime.ToolTip" xml:space="preserve">
     <value>Result approval time</value>
+  </data>
+  <data name="UC_ConnectionTest.btnApproveResult.ToolTipNotAccepted" xml:space="preserve">
+    <value>The sample has not been accepted; results cannot be approved yet</value>
   </data>
 </root>

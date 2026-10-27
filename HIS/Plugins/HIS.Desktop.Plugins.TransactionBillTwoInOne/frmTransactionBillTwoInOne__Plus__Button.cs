@@ -1022,9 +1022,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         CalcuCanThu(false);
                     }
                 }
-                decimal recieptDiscountValue = Config.HisConfig.EnableMultiDiscount
+                // 61201: lam tron 4 so le giong EXEMPTION gui server. Chiet khau tinh tu ty le (ratio * tong / 100)
+                // co du so thap phan -> RecieptPayAmount lech 1e-28 so voi AMOUNT - EXEMPTION server tinh
+                // -> server coi la co ket chuyen, so tien can thu = 0 -> bao MOS012.
+                decimal recieptDiscountValue = Math.Round(Config.HisConfig.EnableMultiDiscount
                     ? GetTotalRecieptDiscount()
-                    : spinRecieptDiscountPrice.Value;
+                    : spinRecieptDiscountPrice.Value, 4);
                 billTwoBookSDO.RecieptTransaction = new HIS_TRANSACTION();
                 billTwoBookSDO.RecieptTransaction.TREATMENT_ID = this.treatmentId.Value;
                 billTwoBookSDO.RecieptTransaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
@@ -1218,9 +1221,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         CalcuCanThu(false);
                     }
                 }
-                decimal invoiceDiscountValue = Config.HisConfig.EnableMultiDiscount
+                // 61201: lam tron 4 so le giong EXEMPTION gui server (xem chu thich o so bien lai).
+                decimal invoiceDiscountValue = Math.Round(Config.HisConfig.EnableMultiDiscount
                     ? GetTotalInvoiceDiscount()
-                    : spinInvoiceDiscountPrice.Value;
+                    : spinInvoiceDiscountPrice.Value, 4);
                 billTwoBookSDO.InvoiceTransaction = new HIS_TRANSACTION();
                 billTwoBookSDO.InvoiceTransaction.TREATMENT_ID = this.treatmentId.Value;
                 billTwoBookSDO.InvoiceTransaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
