@@ -135,4 +135,7 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>လိုအပ်သောအကွက်များကို မထည့်ရသေးပါ။</value>
   </data>
+  <data name="DanhSachTaiKhoanChiaSeVuotQuaGioiHan" xml:space="preserve">
+    <value>The shared account list is {1} characters long, exceeding the limit of {0} characters. Please remove some accounts.</value>
+  </data>
 </root>

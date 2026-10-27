@@ -300,4 +300,49 @@
   <data name="UCPicture.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
+  <data name="FormTextLibrary.chkIsShareAccount.Properties.Caption" xml:space="preserve">
+    <value>Share by account</value>
+  </data>
+  <data name="FormTextLibrary.btnShareAccount.ToolTip" xml:space="preserve">
+    <value>Select shared accounts</value>
+  </data>
+  <data name="FormTextLibrary.lblShareAccountCount.Text" xml:space="preserve">
+    <value>({0} accounts)</value>
+  </data>
+  <data name="frmShareAccount.Text" xml:space="preserve">
+    <value>Account list</value>
+  </data>
+  <data name="frmShareAccount.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search by employee code, name, login name</value>
+  </data>
+  <data name="frmShareAccount.lciDepartment.Text" xml:space="preserve">
+    <value>Department:</value>
+  </data>
+  <data name="frmShareAccount.cboDepartment.ColumnCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmShareAccount.cboDepartment.ColumnName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmShareAccount.chkSelectAll.Properties.Caption" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="frmShareAccount.gcEmployeeCode.Caption" xml:space="preserve">
+    <value>Employee code</value>
+  </data>
+  <data name="frmShareAccount.gcUserName.Caption" xml:space="preserve">
+    <value>Full name</value>
+  </data>
+  <data name="frmShareAccount.gcLoginName.Caption" xml:space="preserve">
+    <value>Login name</value>
+  </data>
+  <data name="frmShareAccount.gcDepartmentName.Caption" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="frmShareAccount.btnOk.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="frmShareAccount.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>
