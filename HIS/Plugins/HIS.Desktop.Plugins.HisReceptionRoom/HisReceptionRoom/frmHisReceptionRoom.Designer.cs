@@ -90,6 +90,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColReceptionRoomCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColReceptionRoomName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColNumOrderRangeCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColNumOrderFrom = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Check = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -117,6 +119,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
+            this.spinNumOrderFrom = new DevExpress.XtraEditors.SpinEdit();
+            this.txtNumOrderRangeCode = new DevExpress.XtraEditors.TextEdit();
             this.cboDTPT = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboDTTT = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -173,6 +177,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciNumOrderRangeCode = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciNumOrderFrom = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -227,6 +233,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinNumOrderFrom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNumOrderRangeCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDTPT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDTTT.Properties)).BeginInit();
@@ -278,6 +286,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNumOrderRangeCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNumOrderFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -609,6 +619,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.gridColumn6,
             this.grdColReceptionRoomCode,
             this.grdColReceptionRoomName,
+            this.grdColNumOrderRangeCode,
+            this.grdColNumOrderFrom,
             this.gridColumn3,
             this.gridColumn1,
             this.gridColumn2,
@@ -625,6 +637,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.gridviewFormList.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
             this.gridviewFormList.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.True;
             this.gridviewFormList.OptionsFind.AllowFindPanel = false;
+            this.gridviewFormList.OptionsLayout.LayoutVersion = "1";
             this.gridviewFormList.OptionsView.ColumnAutoWidth = false;
             this.gridviewFormList.OptionsView.ShowGroupPanel = false;
             this.gridviewFormList.OptionsView.ShowIndicator = false;
@@ -633,6 +646,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.gridviewFormList.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridviewFormList_CustomUnboundColumnData);
             this.gridviewFormList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridviewFormList_KeyDown);
             this.gridviewFormList.Click += new System.EventHandler(this.gridControlFormList_DoubleClick);
+            this.gridviewFormList.LayoutUpgrade += new DevExpress.Utils.LayoutUpgradeEventHandler(this.gridviewFormList_LayoutUpgrade);
             // 
             // STT
             // 
@@ -727,6 +741,32 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.grdColReceptionRoomName.VisibleIndex = 5;
             this.grdColReceptionRoomName.Width = 200;
             // 
+            // grdColNumOrderRangeCode
+            // 
+            this.grdColNumOrderRangeCode.Caption = "Mã dải số";
+            this.grdColNumOrderRangeCode.FieldName = "NUM_ORDER_RANGE_CODE";
+            this.grdColNumOrderRangeCode.Name = "grdColNumOrderRangeCode";
+            this.grdColNumOrderRangeCode.OptionsColumn.AllowEdit = false;
+            this.grdColNumOrderRangeCode.ToolTip = "Các phòng tiếp đón cùng mã dải số dùng chung một dải số thứ tự tiếp đón. Để trống thì phòng dùng dải số riêng.";
+            this.grdColNumOrderRangeCode.Visible = true;
+            this.grdColNumOrderRangeCode.VisibleIndex = 6;
+            this.grdColNumOrderRangeCode.Width = 90;
+            // 
+            // grdColNumOrderFrom
+            // 
+            this.grdColNumOrderFrom.AppearanceCell.Options.UseTextOptions = true;
+            this.grdColNumOrderFrom.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.grdColNumOrderFrom.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColNumOrderFrom.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.grdColNumOrderFrom.Caption = "Số bắt đầu";
+            this.grdColNumOrderFrom.FieldName = "NUM_ORDER_FROM";
+            this.grdColNumOrderFrom.Name = "grdColNumOrderFrom";
+            this.grdColNumOrderFrom.OptionsColumn.AllowEdit = false;
+            this.grdColNumOrderFrom.ToolTip = "Số thứ tự tiếp đón đầu tiên của mỗi ngày, dùng chung cho các phòng cùng mã dải số. Để trống là 1.";
+            this.grdColNumOrderFrom.Visible = true;
+            this.grdColNumOrderFrom.VisibleIndex = 7;
+            this.grdColNumOrderFrom.Width = 80;
+            // 
             // gridColumn3
             // 
             this.gridColumn3.Caption = "Loại phòng";
@@ -745,7 +785,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.gridColumn1.OptionsColumn.AllowEdit = false;
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 6;
+            this.gridColumn1.VisibleIndex = 8;
             // 
             // Check
             // 
@@ -762,7 +802,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.gridColumn2.ToolTip = "Khoa phòng";
             this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 8;
+            this.gridColumn2.VisibleIndex = 10;
             this.gridColumn2.Width = 120;
             // 
             // gridColumn5
@@ -774,7 +814,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.gridColumn5.ToolTip = "Trạng thái";
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 10;
+            this.gridColumn5.VisibleIndex = 12;
             // 
             // grdColCreateTime
             // 
@@ -785,7 +825,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.grdColCreateTime.ToolTip = "CREATE_TIME";
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 11;
+            this.grdColCreateTime.VisibleIndex = 13;
             this.grdColCreateTime.Width = 120;
             // 
             // grdColCreator
@@ -796,7 +836,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.grdColCreator.OptionsColumn.AllowEdit = false;
             this.grdColCreator.ToolTip = "CREATOR";
             this.grdColCreator.Visible = true;
-            this.grdColCreator.VisibleIndex = 12;
+            this.grdColCreator.VisibleIndex = 14;
             this.grdColCreator.Width = 100;
             // 
             // grdColModifyTime
@@ -808,7 +848,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.grdColModifyTime.ToolTip = "MODIFY_TIME";
             this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifyTime.Visible = true;
-            this.grdColModifyTime.VisibleIndex = 13;
+            this.grdColModifyTime.VisibleIndex = 15;
             this.grdColModifyTime.Width = 120;
             // 
             // grdColModifier
@@ -819,7 +859,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.grdColModifier.OptionsColumn.AllowEdit = false;
             this.grdColModifier.ToolTip = "MODIFIER";
             this.grdColModifier.Visible = true;
-            this.grdColModifier.VisibleIndex = 14;
+            this.grdColModifier.VisibleIndex = 16;
             this.grdColModifier.Width = 100;
             // 
             // gridColumn7
@@ -831,7 +871,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.gridColumn7.ToolTip = "Khu vực";
             this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 9;
+            this.gridColumn7.VisibleIndex = 11;
             // 
             // gridColumn9
             // 
@@ -842,7 +882,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.gridColumn9.ToolTip = "Tài khoản chi trả";
             this.gridColumn9.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 15;
+            this.gridColumn9.VisibleIndex = 17;
             // 
             // gridColumn8
             // 
@@ -853,7 +893,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 7;
+            this.gridColumn8.VisibleIndex = 9;
             // 
             // KhongnhapIcd
             // 
@@ -979,6 +1019,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.spinNumOrderFrom);
+            this.lcEditorInfo.Controls.Add(this.txtNumOrderRangeCode);
             this.lcEditorInfo.Controls.Add(this.cboDTPT);
             this.lcEditorInfo.Controls.Add(this.cboDTTT);
             this.lcEditorInfo.Controls.Add(this.txtTKCT);
@@ -1009,6 +1051,45 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.lcEditorInfo.Size = new System.Drawing.Size(446, 575);
             this.lcEditorInfo.TabIndex = 4;
             this.lcEditorInfo.Text = "layoutControl5";
+            // 
+            // spinNumOrderFrom
+            // 
+            this.spinNumOrderFrom.EditValue = null;
+            this.spinNumOrderFrom.Location = new System.Drawing.Point(334, 428);
+            this.spinNumOrderFrom.MenuManager = this.barManager1;
+            this.spinNumOrderFrom.Name = "spinNumOrderFrom";
+            this.spinNumOrderFrom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.spinNumOrderFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.spinNumOrderFrom.Properties.IsFloatValue = false;
+            this.spinNumOrderFrom.Properties.Mask.EditMask = "N00";
+            this.spinNumOrderFrom.Properties.MaxValue = new decimal(new int[] {
+            999999999,
+            0,
+            0,
+            0});
+            this.spinNumOrderFrom.Properties.MinValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.spinNumOrderFrom.Size = new System.Drawing.Size(109, 22);
+            this.spinNumOrderFrom.StyleController = this.lcEditorInfo;
+            this.spinNumOrderFrom.TabIndex = 59;
+            this.spinNumOrderFrom.ToolTip = "Số thứ tự tiếp đón đầu tiên của mỗi ngày, dùng chung cho các phòng cùng mã dải số. Để trống là 1.";
+            this.spinNumOrderFrom.KeyUp += new System.Windows.Forms.KeyEventHandler(this.spinNumOrderFrom_KeyUp);
+            // 
+            // txtNumOrderRangeCode
+            // 
+            this.txtNumOrderRangeCode.Location = new System.Drawing.Point(108, 428);
+            this.txtNumOrderRangeCode.MenuManager = this.barManager1;
+            this.txtNumOrderRangeCode.Name = "txtNumOrderRangeCode";
+            this.txtNumOrderRangeCode.Properties.MaxLength = 20;
+            this.txtNumOrderRangeCode.Size = new System.Drawing.Size(125, 22);
+            this.txtNumOrderRangeCode.StyleController = this.lcEditorInfo;
+            this.txtNumOrderRangeCode.TabIndex = 58;
+            this.txtNumOrderRangeCode.ToolTip = "Các phòng tiếp đón cùng mã dải số dùng chung một dải số thứ tự tiếp đón. Để trống thì phòng dùng dải số riêng.";
+            this.txtNumOrderRangeCode.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNumOrderRangeCode_KeyUp);
             // 
             // cboDTPT
             // 
@@ -1143,7 +1224,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             // 
             // chkAllowNoIcd
             // 
-            this.chkAllowNoIcd.Location = new System.Drawing.Point(110, 454);
+            this.chkAllowNoIcd.Location = new System.Drawing.Point(110, 482);
             this.chkAllowNoIcd.Margin = new System.Windows.Forms.Padding(4);
             this.chkAllowNoIcd.MenuManager = this.barManager1;
             this.chkAllowNoIcd.Name = "chkAllowNoIcd";
@@ -1156,7 +1237,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             // 
             // chkIsRestrictExecuteRoom
             // 
-            this.chkIsRestrictExecuteRoom.Location = new System.Drawing.Point(394, 427);
+            this.chkIsRestrictExecuteRoom.Location = new System.Drawing.Point(394, 455);
             this.chkIsRestrictExecuteRoom.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsRestrictExecuteRoom.MenuManager = this.barManager1;
             this.chkIsRestrictExecuteRoom.Name = "chkIsRestrictExecuteRoom";
@@ -1169,7 +1250,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             // 
             // chkPause
             // 
-            this.chkPause.Location = new System.Drawing.Point(108, 428);
+            this.chkPause.Location = new System.Drawing.Point(108, 456);
             this.chkPause.Margin = new System.Windows.Forms.Padding(4);
             this.chkPause.MenuManager = this.barManager1;
             this.chkPause.Name = "chkPause";
@@ -1184,7 +1265,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(3, 480);
+            this.btnEdit.Location = new System.Drawing.Point(3, 508);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(4);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(210, 27);
@@ -1195,7 +1276,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(219, 480);
+            this.btnAdd.Location = new System.Drawing.Point(219, 508);
             this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(116, 27);
@@ -1206,7 +1287,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(341, 480);
+            this.btnRefresh.Location = new System.Drawing.Point(341, 508);
             this.btnRefresh.Margin = new System.Windows.Forms.Padding(4);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(102, 27);
@@ -1450,7 +1531,9 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.layoutControlItem24,
             this.layoutControlItem25,
             this.layoutControlItem26,
-            this.layoutControlItem27});
+            this.layoutControlItem27,
+            this.lciNumOrderRangeCode,
+            this.lciNumOrderFrom});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1500,15 +1583,15 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 510);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 538);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(446, 65);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(446, 37);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnRefresh;
-            this.layoutControlItem6.Location = new System.Drawing.Point(338, 477);
+            this.layoutControlItem6.Location = new System.Drawing.Point(338, 505);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(108, 33);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -1517,7 +1600,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(216, 477);
+            this.layoutControlItem7.Location = new System.Drawing.Point(216, 505);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(122, 33);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -1526,7 +1609,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnEdit;
-            this.layoutControlItem9.Location = new System.Drawing.Point(0, 477);
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 505);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(216, 33);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -1552,7 +1635,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem11.Control = this.chkPause;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 425);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 453);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(207, 26);
             this.layoutControlItem11.Text = "Tạm dừng:";
@@ -1565,7 +1648,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem12.Control = this.chkIsRestrictExecuteRoom;
-            this.layoutControlItem12.Location = new System.Drawing.Point(207, 425);
+            this.layoutControlItem12.Location = new System.Drawing.Point(207, 453);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
             this.layoutControlItem12.Size = new System.Drawing.Size(239, 26);
@@ -1592,7 +1675,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.lciAllowNoIcd.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAllowNoIcd.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAllowNoIcd.Control = this.chkAllowNoIcd;
-            this.lciAllowNoIcd.Location = new System.Drawing.Point(0, 451);
+            this.lciAllowNoIcd.Location = new System.Drawing.Point(0, 479);
             this.lciAllowNoIcd.Name = "lciAllowNoIcd";
             this.lciAllowNoIcd.Size = new System.Drawing.Size(446, 26);
             this.lciAllowNoIcd.Text = "Không nhập ICD:";
@@ -1743,6 +1826,34 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             this.layoutControlItem27.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem27.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem27.TextToControlDistance = 5;
+            // 
+            // lciNumOrderRangeCode
+            // 
+            this.lciNumOrderRangeCode.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciNumOrderRangeCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciNumOrderRangeCode.Control = this.txtNumOrderRangeCode;
+            this.lciNumOrderRangeCode.Location = new System.Drawing.Point(0, 425);
+            this.lciNumOrderRangeCode.Name = "lciNumOrderRangeCode";
+            this.lciNumOrderRangeCode.OptionsToolTip.ToolTip = "Các phòng tiếp đón cùng mã dải số dùng chung một dải số thứ tự tiếp đón. Để trống thì phòng dùng dải số riêng.";
+            this.lciNumOrderRangeCode.Size = new System.Drawing.Size(236, 28);
+            this.lciNumOrderRangeCode.Text = "Mã dải số:";
+            this.lciNumOrderRangeCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciNumOrderRangeCode.TextSize = new System.Drawing.Size(100, 20);
+            this.lciNumOrderRangeCode.TextToControlDistance = 5;
+            // 
+            // lciNumOrderFrom
+            // 
+            this.lciNumOrderFrom.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciNumOrderFrom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciNumOrderFrom.Control = this.spinNumOrderFrom;
+            this.lciNumOrderFrom.Location = new System.Drawing.Point(236, 425);
+            this.lciNumOrderFrom.Name = "lciNumOrderFrom";
+            this.lciNumOrderFrom.OptionsToolTip.ToolTip = "Số thứ tự tiếp đón đầu tiên của mỗi ngày, dùng chung cho các phòng cùng mã dải số. Để trống là 1.";
+            this.lciNumOrderFrom.Size = new System.Drawing.Size(210, 28);
+            this.lciNumOrderFrom.Text = "Số bắt đầu:";
+            this.lciNumOrderFrom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciNumOrderFrom.TextSize = new System.Drawing.Size(90, 20);
+            this.lciNumOrderFrom.TextToControlDistance = 5;
             // 
             // layoutControlGroup3
             // 
@@ -1917,6 +2028,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).EndInit();
             this.lcEditorInfo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spinNumOrderFrom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNumOrderRangeCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDTPT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDTTT.Properties)).EndInit();
@@ -1968,6 +2081,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNumOrderRangeCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNumOrderFrom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -2128,5 +2243,11 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem26;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem27;
+        private DevExpress.XtraEditors.TextEdit txtNumOrderRangeCode;
+        private DevExpress.XtraLayout.LayoutControlItem lciNumOrderRangeCode;
+        private DevExpress.XtraEditors.SpinEdit spinNumOrderFrom;
+        private DevExpress.XtraLayout.LayoutControlItem lciNumOrderFrom;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColNumOrderRangeCode;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColNumOrderFrom;
     }
 }
