@@ -119,6 +119,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 datas = null;
                 dataNextTreatmentInstructions = null;
                 TreatmentHistorys = null;
+                treatmentCodeHasEmrDocuments = null;
+                btnEmrDocument_Disable = null;
                 SereServ8s = null;
                 ClsSereServ = null;
                 SereServsCurrentTreatment = null;
@@ -196,6 +198,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.gridViewTreatmentHistory.CustomUnboundColumnData -= new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewTreatmentHistory_CustomUnboundColumnData);
                 this.Btn_History.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_History_ButtonClick);
                 this.Btn_Bordereau.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Bordereau_ButtonClick);
+                this.gridViewTreatmentHistory.CustomRowCellEdit -= new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewTreatmentHistory_CustomRowCellEdit);
+                this.btnEmrDocument.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnEmrDocument_ButtonClick);
                 this.chkTreatmentFinish.CheckedChanged -= new System.EventHandler(this.chkTreatmentFinish_CheckedChanged);
                 this.chkExamFinish.CheckedChanged -= new System.EventHandler(this.chkExamFinish_CheckedChanged);
                 this.chkExamServiceAdd.CheckedChanged -= new System.EventHandler(this.chkExamServiceAdd_CheckedChanged);
@@ -634,6 +638,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 layoutControl10 = null;
                 Btn_Bordereau = null;
                 Btn_History = null;
+                btnEmrDocument = null;
+                gridColumnEmrDocument = null;
                 gridColumn9 = null;
                 gridColumn10 = null;
                 layoutControlItem19 = null;
