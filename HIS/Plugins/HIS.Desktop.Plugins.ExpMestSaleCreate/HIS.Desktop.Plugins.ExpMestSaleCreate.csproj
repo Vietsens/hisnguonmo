@@ -293,6 +293,9 @@
     <Compile Include="FormChoosePrescription\FormPrescription.Designer.cs">
       <DependentUpon>FormPrescription.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormChoosePrescription\FormPrescription__MediMate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormInStock\FormMediMateInStock.cs">
       <SubType>Form</SubType>
     </Compile>
