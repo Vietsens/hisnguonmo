@@ -486,4 +486,34 @@ Hồ sơ chưa kiểm tra được cũng bị chặn vì chưa thể khẳng đ�
   <data name="MdInsightNhanDuLieuDaDoi" xml:space="preserve">
     <value>dữ liệu đã đổi</value>
   </data>
+  <data name="Xml48hCotKetQua" xml:space="preserve">
+    <value>XML 48h</value>
+  </data>
+  <data name="Xml48hDaXuat" xml:space="preserve">
+    <value>Đã xuất</value>
+  </data>
+  <data name="Xml48hLoi" xml:space="preserve">
+    <value>Lỗi</value>
+  </data>
+  <data name="Xml48hGoiYDaXuatLuc" xml:space="preserve">
+    <value>Đã xuất lúc {0}</value>
+  </data>
+  <data name="Xml48hGoiYLoiLuc" xml:space="preserve">
+    <value>Xuất lỗi lúc {0}</value>
+  </data>
+  <data name="Xml48hLyDoKhongTruyCapThuMuc" xml:space="preserve">
+    <value>Không truy cập được thư mục lưu XML hồ sơ đủ 48 giờ: {0}</value>
+  </data>
+  <data name="Xml48hLyDoKhongNapDuLieu" xml:space="preserve">
+    <value>Không nạp được dữ liệu hồ sơ</value>
+  </data>
+  <data name="Xml48hLyDoKhongCoDichVu" xml:space="preserve">
+    <value>Hồ sơ không có dịch vụ thanh toán</value>
+  </data>
+  <data name="Xml48hLyDoKhongSinhDuocFile" xml:space="preserve">
+    <value>Không sinh được file XML</value>
+  </data>
+  <data name="Xml48hLyDoGhiFileLoi" xml:space="preserve">
+    <value>Không ghi được file XML: {0}</value>
+  </data>
 </root>

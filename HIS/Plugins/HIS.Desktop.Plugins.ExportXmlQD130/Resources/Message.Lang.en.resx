@@ -486,4 +486,34 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
   <data name="MdInsightNhanDuLieuDaDoi" xml:space="preserve">
     <value>data changed</value>
   </data>
+  <data name="Xml48hCotKetQua" xml:space="preserve">
+    <value>XML 48h</value>
+  </data>
+  <data name="Xml48hDaXuat" xml:space="preserve">
+    <value>Exported</value>
+  </data>
+  <data name="Xml48hLoi" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Xml48hGoiYDaXuatLuc" xml:space="preserve">
+    <value>Exported at {0}</value>
+  </data>
+  <data name="Xml48hGoiYLoiLuc" xml:space="preserve">
+    <value>Export failed at {0}</value>
+  </data>
+  <data name="Xml48hLyDoKhongTruyCapThuMuc" xml:space="preserve">
+    <value>Cannot access the 48-hour XML folder: {0}</value>
+  </data>
+  <data name="Xml48hLyDoKhongNapDuLieu" xml:space="preserve">
+    <value>Could not load treatment data</value>
+  </data>
+  <data name="Xml48hLyDoKhongCoDichVu" xml:space="preserve">
+    <value>Treatment has no billable service</value>
+  </data>
+  <data name="Xml48hLyDoKhongSinhDuocFile" xml:space="preserve">
+    <value>Could not generate the XML file</value>
+  </data>
+  <data name="Xml48hLyDoGhiFileLoi" xml:space="preserve">
+    <value>Could not write the XML file: {0}</value>
+  </data>
 </root>
