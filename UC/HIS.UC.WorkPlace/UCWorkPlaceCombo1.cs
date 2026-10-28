@@ -490,6 +490,8 @@ namespace HIS.UC.WorkPlace
                 columnInfos.Add(new ColumnInfo("WORK_PLACE_CODE", "", 70, 1));
                 columnInfos.Add(new ColumnInfo("WORK_PLACE_NAME", "", 180, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("WORK_PLACE_NAME", "ID", columnInfos, false, 250);
+                // Gõ trực tiếp vào combo: tự mở danh sách và lọc theo WORK_PLACE_NAME (PopupFilterMode = Contains)
+                controlEditorADO.ImmediatePopup = true;
                 ControlEditorLoader.Load(cboWorkPlace, (data != null ? data : this.worlPlaces), controlEditorADO);
                 Inventec.Common.Logging.LogSystem.Warn("Load Cbo ##############################_____________________________");
   //              SetValue(data);

@@ -3383,6 +3383,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         {
                             chkAddressBhyt.Checked = item.VALUE == "1";
                         }
+                        else if (item.KEY == chkAddressWorkPlace.Name)
+                        {
+                            chkAddressWorkPlace.Checked = item.VALUE == "1";
+                        }
                     }
                 }
 
@@ -4237,6 +4241,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 }
                 if (chkAddressBhyt.Checked)
                 {
+                    if (chkAddressWorkPlace.Checked)
+                    {
+                        chkAddressWorkPlace.Checked = false;
+                    }
                     if (resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
                     {
                         txtBuyerAddress.Text = resultPatientType.ADDRESS;
@@ -4273,6 +4281,106 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
                 WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Địa chỉ nơi làm việc của người mua (tab Cá nhân): ưu tiên đơn vị đang chọn ở combo, không có thì lấy theo nơi làm việc của bệnh nhân (danh mục HIS_WORK_PLACE)
+        /// </summary>
+        private string GetBuyerWorkPlaceAddress()
+        {
+            string result = null;
+            try
+            {
+                HIS_WORK_PLACE workPlace = null;
+                if (cboBuyerOrganzation2.EditValue != null)
+                {
+                    long workPlaceId = 0;
+                    Int64.TryParse(cboBuyerOrganzation2.EditValue.ToString(), out workPlaceId);
+                    workPlace = dtWorkPlace.FirstOrDefault(o => o.ID == workPlaceId);
+                }
+                if (workPlace == null && this.currentTreatment != null && this.currentTreatment.TDL_PATIENT_WORK_PLACE_ID.HasValue)
+                {
+                    long workPlaceId = this.currentTreatment.TDL_PATIENT_WORK_PLACE_ID.Value;
+                    workPlace = dtWorkPlace.FirstOrDefault(o => o.ID == workPlaceId)
+                        ?? BackendDataWorker.Get<HIS_WORK_PLACE>().FirstOrDefault(o => o.ID == workPlaceId);
+                }
+                if (workPlace != null)
+                {
+                    result = workPlace.ADDRESS;
+                }
+                if (String.IsNullOrWhiteSpace(result) && this.currentTreatment != null)
+                {
+                    result = this.currentTreatment.WORK_PLACE_ADDRESS;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Địa chỉ bệnh nhân hiển thị ở ô Địa chỉ khi không lấy theo nơi làm việc (ĐC BHYT nếu đang tích, không thì địa chỉ đợt điều trị)
+        /// </summary>
+        private string GetBuyerPatientAddress()
+        {
+            if (chkAddressBhyt.Checked && resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
+            {
+                return resultPatientType.ADDRESS;
+            }
+            return (this.currentTreatment != null ? this.currentTreatment.TDL_PATIENT_ADDRESS : null) ?? "";
+        }
+
+        private void chkAddressWorkPlace_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                if (chkAddressWorkPlace.Checked)
+                {
+                    string workPlaceAddress = GetBuyerWorkPlaceAddress();
+                    if (String.IsNullOrWhiteSpace(workPlaceAddress))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bệnh nhân chưa có nơi làm việc trong danh mục hoặc nơi làm việc chưa khai báo địa chỉ", "Thông báo");
+                        chkAddressWorkPlace.Checked = false;
+                        return;
+                    }
+                    if (chkAddressBhyt.Checked)
+                    {
+                        chkAddressBhyt.Checked = false;
+                    }
+                    txtBuyerAddress.Text = workPlaceAddress;
+                }
+                else
+                {
+                    txtBuyerAddress.Text = GetBuyerPatientAddress();
+                }
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkAddressWorkPlace.Name && o.MODULE_LINK == currentModule.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkAddressWorkPlace.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkAddressWorkPlace.Name;
+                    csAddOrUpdate.VALUE = (chkAddressWorkPlace.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
             }
             catch (Exception ex)
             {
@@ -4328,6 +4436,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem58.Visibility = LayoutVisibility.Always;
                 layoutControlItem60.Visibility = LayoutVisibility.Always;
                 layoutControlItem63.Visibility = LayoutVisibility.Always;
+                layoutControlItem69.Visibility = LayoutVisibility.Always;
 
                 // Ẩn của Cơ quan
                 layoutControlItem44.Visibility = LayoutVisibility.Never;
@@ -4366,6 +4475,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem61.Visibility = LayoutVisibility.Never;
                 layoutControlItem62.Visibility = LayoutVisibility.Never;
                 layoutControlItem63.Visibility = LayoutVisibility.Never;
+                layoutControlItem69.Visibility = LayoutVisibility.Never;
             }
         }
 
@@ -4391,7 +4501,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     LogSystem.Debug("CBO: " + cboBuyerOrganzation2.EditValue.ToString());
                     var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganzation2.EditValue.ToString())).First();
-                    txtBuyerAddress.Text = dt.ADDRESS;
+                    if (chkAddressWorkPlace.Checked)
+                    {
+                        txtBuyerAddress.Text = dt.ADDRESS;
+                    }
                     txtMaQH.Text = dt.BUD_REL_UNIT_CODE;
                     if (dt.TAX_CODE != null)
                     {
