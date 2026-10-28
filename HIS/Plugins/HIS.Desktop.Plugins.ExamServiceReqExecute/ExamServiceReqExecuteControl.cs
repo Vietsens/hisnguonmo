@@ -108,6 +108,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         internal List<TreatmentExamADO> TreatmentHistorys { get; set; }
         HashSet<long> treatmentIdHasTestResults = new HashSet<long>();
         DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btn_TestResults_Disable;
+        HashSet<string> treatmentCodeHasEmrDocuments = new HashSet<string>();
+        DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnEmrDocument_Disable;
         List<HIS_NEXT_TREA_INTR> dataNextTreatmentInstructions;
         List<HIS_CONTRAINDICATION> datas = new List<HIS_CONTRAINDICATION>();
         string _TextNextTreatmentInstructionName = "";
@@ -10308,15 +10310,59 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 && this.treatmentIdHasTestResults.Contains(row.ID);
         }
 
+        private void InitEmrDocumentRepositoryItem()
+        {
+            try
+            {
+                if (this.btnEmrDocument_Disable != null) return;
+
+                this.btnEmrDocument_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+                this.btnEmrDocument_Disable.AutoHeight = false;
+                this.btnEmrDocument_Disable.Name = "btnEmrDocument_Disable";
+                this.btnEmrDocument_Disable.TextEditStyle = TextEditStyles.HideTextEditor;
+                this.btnEmrDocument_Disable.Buttons.Clear();
+                this.btnEmrDocument_Disable.Buttons.Add(new EditorButton(ButtonPredefines.Glyph)
+                {
+                    Image = DevExpress.Images.ImageResourceCache.Default.GetImage("images/business%20objects/bodetails_16x16.png"),
+                    ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter,
+                    Enabled = false,
+                    ToolTip = "Đợt khám này chưa có văn bản bệnh án"
+                });
+                this.gridControlTreatmentHistory.RepositoryItems.Add(this.btnEmrDocument_Disable);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Luot kham nay da co van ban EMR hay chua.
+        /// </summary>
+        private bool HasEmrDocument(TreatmentExamADO row)
+        {
+            return row != null
+                && this.treatmentCodeHasEmrDocuments != null
+                && !string.IsNullOrEmpty(row.TREATMENT_CODE)
+                && this.treatmentCodeHasEmrDocuments.Contains(row.TREATMENT_CODE);
+        }
+
         private void gridViewTreatmentHistory_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
             try
             {
-                if (e.Column != this.gridColumn21 || this.btn_TestResults_Disable == null) return;
-
-                //Xet theo tung luot kham: luot nao khong co chi dinh XN da hoan thanh thi disable nut 
-                TreatmentExamADO row = this.gridViewTreatmentHistory.GetRow(e.RowHandle) as TreatmentExamADO;
-                e.RepositoryItem = this.HasTestResult(row) ? this.btn_TestResults : this.btn_TestResults_Disable;
+                if (e.Column == this.gridColumn21 && this.btn_TestResults_Disable != null)
+                {
+                    //Xet theo tung luot kham: luot nao khong co chi dinh XN da hoan thanh thi disable nut
+                    TreatmentExamADO row = this.gridViewTreatmentHistory.GetRow(e.RowHandle) as TreatmentExamADO;
+                    e.RepositoryItem = this.HasTestResult(row) ? this.btn_TestResults : this.btn_TestResults_Disable;
+                }
+                else if (e.Column == this.gridColumnEmrDocument && this.btnEmrDocument_Disable != null)
+                {
+                    //Luot kham nao chua co van ban EMR thi disable nut Chi tiet benh an
+                    TreatmentExamADO row = this.gridViewTreatmentHistory.GetRow(e.RowHandle) as TreatmentExamADO;
+                    e.RepositoryItem = this.HasEmrDocument(row) ? this.btnEmrDocument : this.btnEmrDocument_Disable;
+                }
             }
             catch (Exception ex)
             {
@@ -10337,6 +10383,35 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     List<object> listArgs = new List<object>();
                     listArgs.Add(row.ID);
+                    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId));
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnEmrDocument_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                TreatmentExamADO row = (TreatmentExamADO)gridViewTreatmentHistory.GetFocusedRow();
+                if (!this.HasEmrDocument(row)) return;
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.EmrDocument").FirstOrDefault();
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.EmrDocument'");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    //Truyen TREATMENT_CODE (string) chu khong truyen row.ID: tham so long cua EmrDocument la EMR_TREATMENT.ID.
+                    //KHONG truyen bool: voi TREATMENT_CODE dang string, bool cua EmrDocument la IsSigning (loc Trang thai ky = "Dang ky"),
+                    //khong truyen thi Trang thai ky = "Tat ca" -> hien toan bo van ban cua ho so.
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(row.TREATMENT_CODE);
                     listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId));
                     var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");

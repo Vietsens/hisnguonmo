@@ -48,6 +48,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.ADO
 
         public string DOCUMENT_CODE { get; set; }
 
+        /// <summary>Ma dieu tri cua ho so, dung de biet luot kham nao trong luoi lich su kham co van ban.</summary>
+        public string TREATMENT_CODE { get; set; }
+
         /// <summary>
         /// Ma nghiep vu ben HIS ma van ban gan vao, dang ghep chuoi - vi du
         /// "SERVICE_REQ_CODE:000123 SER_SERV_ID:456". Dung de biet van ban thuoc y lenh nao.
