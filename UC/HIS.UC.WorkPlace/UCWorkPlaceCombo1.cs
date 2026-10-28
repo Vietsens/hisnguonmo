@@ -464,7 +464,17 @@ namespace HIS.UC.WorkPlace
         {
             try
             {
+                // Cập nhật lại danh sách nội bộ để tìm theo mã / Enter / Closed dùng dữ liệu mới
+                if (data is List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE>)
+                {
+                    this.worlPlaces = (List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE>)data;
+                }
+                object currentValue = cboWorkPlace1.EditValue;
                 LoadDataCombo(cboWorkPlace1, data);
+                if (currentValue != null)
+                {
+                    cboWorkPlace1.EditValue = currentValue;
+                }
             }
             catch (Exception ex)
             {
