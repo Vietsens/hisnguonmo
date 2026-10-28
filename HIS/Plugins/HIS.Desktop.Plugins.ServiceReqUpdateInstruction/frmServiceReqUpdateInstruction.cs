@@ -59,6 +59,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
         private Inventec.Desktop.Common.Modules.Module module;
         private long service_req_id;
         private V_HIS_SERVICE_REQ currentServiceReq = null;
+        private bool isLockStartTime = false;
         private HIS_TREATMENT currentTreatment = null;
         //private HIS_SERVICE_REQ currentServiceReq1 = null;
         private HIS.Desktop.Common.RefeshReference refeshData;
@@ -1003,6 +1004,15 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     {
                         dtStartTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReq.START_TIME ?? 0) ?? DateTime.MinValue;
                     }
+                    //61482: y lenh xu ly o man CLS/PTTT da co thoi gian bat dau thi khong cho sua
+                    if (HisConfigCFG.IsLockSubclinicalStartTime && serviceReq.START_TIME.HasValue && serviceReq.EXE_SERVICE_MODULE_ID.HasValue)
+                    {
+                        var exeServiceModule = BackendDataWorker.Get<HIS_EXE_SERVICE_MODULE>().FirstOrDefault(o => o.ID == serviceReq.EXE_SERVICE_MODULE_ID.Value);
+                        isLockStartTime = exeServiceModule != null
+                            && (exeServiceModule.MODULE_LINK == "HIS.Desktop.Plugins.ServiceExecute" || exeServiceModule.MODULE_LINK == "HIS.Desktop.Plugins.SurgServiceReqExecute");
+                    }
+                    if (isLockStartTime)
+                        dtStartTime.Enabled = false;
                     if (serviceReq.FINISH_TIME != null)
                     {
                         dtEndTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReq.FINISH_TIME ?? 0) ?? DateTime.MinValue;
@@ -1173,7 +1183,11 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 }
 
                 currentServiceReq.INTRUCTION_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime) ?? 0;
-                if (dtStartTime.EditValue != null && dtStartTime.DateTime != DateTime.MinValue)
+                if (isLockStartTime)
+                {
+                    //61482: giu nguyen START_TIME (o tren form cat giay nen khong lay lai tu dtStartTime)
+                }
+                else if (dtStartTime.EditValue != null && dtStartTime.DateTime != DateTime.MinValue)
                     currentServiceReq.START_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtStartTime.EditValue).ToString("yyyyMMddHHmm") + "00");
                 else
