@@ -467,21 +467,38 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         else
                         {
                             Func<string, string> dataSigner = null;
+                            string concluderLogin = null;       // người kết luận cần ký thẻ (null = không ký thẻ này)
+                            bool concluderSignFailed = false;   // ký thẻ người kết luận lỗi khi dựng bản tin hồ sơ này
                             if (signer != null)
                             {
                                 EMR.EFMODEL.DataModels.EMR_SIGNER concEmr = null;
                                 string cl = SafeString(GetProp(rowList[i], "CONCLUDER_LOGINNAME"));
                                 if (concSigners != null && !string.IsNullOrEmpty(cl)) concSigners.TryGetValue(cl, out concEmr);
                                 EMR.EFMODEL.DataModels.EMR_SIGNER emrLocal = concEmr;
+                                if (emrLocal != null) concluderLogin = emrLocal.LOGINNAME;
                                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                                     "CKS_NGUOI_KET_LUAN: ho so {0} (treatment_code={1}): CONCLUDER_LOGINNAME={2};"
                                     + " chung thu HSM={3}",
-                                    i + 1, SafeString(GetProp(rowList[i], "TREATMENT_CODE")),
+                                    i + 1, SafeString(GetProp(rowList[i], "TDL_TREATMENT_CODE")),
                                     string.IsNullOrEmpty(cl) ? "(trong)" : cl,
                                     (emrLocal != null) ? "co -> se ky" : "KHONG -> bo qua the"));
-                                // Ký CKS_NGUOI_KET_LUAN (chứng thư người kết luận) TRƯỚC, rồi CKS_BENH_VIEN.
-                                dataSigner = xml => signer.SignCksBenhVien(emrLocal != null ? signer.SignXmlByConcluder(xml, emrLocal) : xml);
+                                // Ký CKS_NGUOI_KET_LUAN (ký hộ bằng phiên đã lưu của người kết luận) TRƯỚC, rồi CKS_BENH_VIEN.
+                                // Ký người kết luận lỗi -> trả null: thư viện / VLG / KDLSK không đẩy bản tin chưa ký.
+                                dataSigner = xml =>
+                                {
+                                    if (emrLocal == null) return signer.SignCksBenhVien(xml);
+                                    string concluderSigned = signer.SignXmlByConcluder(xml, emrLocal);
+                                    if (concluderSigned == null)
+                                    {
+                                        concluderSignFailed = true;
+                                        return null;
+                                    }
+                                    return signer.SignCksBenhVien(concluderSigned);
+                                };
                             }
+                            // Người kết luận đã ký lỗi trong lượt này (thường do chưa có phiên ký) -> không dựng,
+                            // không đẩy hồ sơ lên cổng nào; lượt đồng bộ sau thử lại.
+                            string concluderBlockReason = (signer != null) ? signer.GetConcluderFailReason(concluderLogin) : null;
                             // ĐẨY ĐÚNG 1 HỒ SƠ.
                             // ===== VLG PRE-GATE: sai dữ liệu bắt buộc / vượt độ dài QĐ 2062 -> CHẶN CỨNG,
                             // KHÔNG đồng bộ lên BẤT KỲ cổng nào (không đẩy BYT/HSSK/HOC/HCC/SYT). Chỉ áp
@@ -494,7 +511,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             // khác vẫn đẩy bình thường. Khác vlgBlockReason (lỗi DỮ LIỆU -> chặn mọi cổng).
                             KskVlgPushResult vlgKnownResult = null;
                             bool vlgGtinOk = KskVlgConfigParser.IsGtin13(vlgGtin);
-                            if (vlgPusher != null && !vlgGtinOk && !otherGatewaySelected)
+                            if (concluderBlockReason != null)
+                            {
+                                // Đã biết người kết luận ký lỗi trong lượt này -> không dựng/ký bản tin VLG.
+                            }
+                            else if (vlgPusher != null && !vlgGtinOk && !otherGatewaySelected)
                             {
                                 // Chỉ đẩy VLG mà thiếu mã 13 số: không dựng/ký bản tin vô ích cho từng hồ sơ.
                                 vlgKnownResult = KskVlgPushResult.Failure(vlgPusher.DescribeMissingGtin());
@@ -507,7 +528,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                     // Dựng bản tin (ký CKS_) rồi kiểm độ dài trên XML thực sự gửi đi
                                     // (kể cả giá trị thư viện tự sinh, giải mã NOIDUNGFILE base64).
                                     vlgPayload = BuildVlgPayload(vlgMacskcb, inp, dataSigner, out vlgSignFailed);
-                                    if (vlgSignFailed)
+                                    if (vlgSignFailed && concluderSignFailed)
+                                        concluderBlockReason = signer.GetConcluderFailReason(concluderLogin)
+                                            ?? KskSyncSigner.CONCLUDER_FAIL_DEFAULT_REASON;
+                                    else if (vlgSignFailed)
                                         vlgBlockReason = "VLG: ký số thất bại (CKS_BENH_VIEN/CKS_NGUOI_KET_LUAN)"
                                             + " — không đẩy bản tin chưa ký. Kiểm tra cấu hình chứng thư / HSM / USB token.";
                                     else
@@ -521,7 +545,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                         if (vlgReasons.Count > 0) vlgBlockReason = string.Join(" | ", vlgReasons.ToArray());
                                     }
                                 }
-                                if (vlgBlockReason == null)
+                                if (vlgBlockReason == null && concluderBlockReason == null)
                                 {
                                     if (!vlgGtinOk)
                                         vlgKnownResult = KskVlgPushResult.Failure(vlgPusher.DescribeMissingGtin());   // lỗi cấu hình VLG
@@ -530,7 +554,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 }
                             }
 
-                            if (vlgBlockReason != null)
+                            if (concluderBlockReason != null)
+                            {
+                                // Chưa ký được thẻ người kết luận: KHÔNG đẩy cổng nào, giữ mã đối soát cũ.
+                                ado = BuildFailedResult(rowList[i], syncTime, concluderBlockReason);
+                                if (vlgPusher != null) MarkVlgNotSent(ado, rowList[i]);
+                            }
+                            else if (vlgBlockReason != null)
                             {
                                 // Chặn cứng vì lỗi DỮ LIỆU: KHÔNG gọi push cổng nào. BuildResultAdo giữ
                                 // TRANSACTION_CODE/REGISTRATION_NO cũ (không mất mã đối soát của lần trước).
@@ -550,10 +580,24 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 r0 = (pr != null && pr.Count > 0) ? pr[0] : null;
                             }
                             // Cổng HCC (nếu chọn) — payload riêng theo data_type của cấu hình HCC.
+                            // BuildHccPayload gửi bản chưa ký khi ký lỗi, nên dựng trước rồi kiểm cờ ký người kết luận.
+                            string hccPayload = null;
+                            if (hccPusher != null && !concluderSignFailed)
+                                hccPayload = BuildHccPayload(hccMacskcb, inp, hccIsJson, signXmlForHcc ? dataSigner : null);
+
+                            if (concluderSignFailed)
+                            {
+                                // Ký thẻ người kết luận lỗi khi dựng bản tin (thư viện đã không đẩy BYT/HSSK/HOC):
+                                // không đẩy tiếp HCC/VLG/SYT/KDLSK, ghi lý do để lượt sau thử lại.
+                                ado = BuildFailedResult(rowList[i], syncTime, signer.GetConcluderFailReason(concluderLogin)
+                                    ?? KskSyncSigner.CONCLUDER_FAIL_DEFAULT_REASON);
+                                if (vlgPusher != null) MarkVlgNotSent(ado, rowList[i]);
+                            }
+                            else
+                            {
                             KskHccPushResult hccResult = null;
                             if (hccPusher != null)
-                                hccResult = hccPusher.Push(BuildHccPayload(hccMacskcb, inp, hccIsJson,
-                                    signXmlForHcc ? dataSigner : null));
+                                hccResult = hccPusher.Push(hccPayload);
 
                             // Cổng KDLYT Vĩnh Long (nếu chọn) — payload đã dựng + đã kiểm ở pre-gate trên;
                             // kết quả đã biết trước (vlgKnownResult) -> không gửi lại, dùng luôn để gộp.
@@ -576,6 +620,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 ado.SuccessNote = (string.IsNullOrEmpty(ado.SuccessNote) ? "" : (ado.SuccessNote + "; "))
                                     + "Lưu ý: đang tích cả cổng BYT/HOC và Vĩnh Long — Kho Vĩnh Long đã tự chuyển tiếp sang Bộ Y tế,"
                                     + " Bộ sẽ nhận 2 bản tin. Nên bỏ tích cổng BYT/HOC.";
+                            }
                             }
 
                         }
