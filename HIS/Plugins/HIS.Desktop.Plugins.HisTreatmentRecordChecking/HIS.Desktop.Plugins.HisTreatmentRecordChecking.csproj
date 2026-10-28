@@ -164,6 +164,7 @@
   <ItemGroup>
     <Compile Include="ADO\EmrDocumentTypeADO.cs" />
     <Compile Include="ADO\InfoRecordADO.cs" />
+    <Compile Include="ADO\RecordDraftADO.cs" />
     <Compile Include="HisTreatmentRecordCheckingProcessor.cs" />
     <Compile Include="HisTreatmentRecordChecking\HisTreatmentRecordCheckingBehavior.cs" />
     <Compile Include="HisTreatmentRecordChecking\HisTreatmentRecordCheckingFactory.cs" />
