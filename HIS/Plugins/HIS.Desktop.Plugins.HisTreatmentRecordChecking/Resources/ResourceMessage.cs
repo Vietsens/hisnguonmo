@@ -93,5 +93,33 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.Resources
         {
             get { return GetValue("KhongTimThayHoSo"); }
         }
+
+        #region Viec 57750 - Luu tam noi dung khong dat
+
+        /// <summary>Noi dung chua duoc luu, ban co muon bo qua?</summary>
+        internal static string NoiDungChuaDuocLuuBoQua
+        {
+            get { return GetValue("NoiDungChuaDuocLuuBoQua"); }
+        }
+
+        /// <summary>Xoa ban tam noi dung khong dat cua ho so nay?</summary>
+        internal static string XoaBanTamNoiDungKhongDat
+        {
+            get { return GetValue("XoaBanTamNoiDungKhongDat"); }
+        }
+
+        /// <summary>Chua nhap noi dung khong dat.</summary>
+        internal static string ChuaNhapNoiDungKhongDat
+        {
+            get { return GetValue("ChuaNhapNoiDungKhongDat"); }
+        }
+
+        /// <summary>Noi dung khong dat vuot do dai cho phep (toi da {0} byte).</summary>
+        internal static string NoiDungKhongDatVuotDoDai
+        {
+            get { return GetValue("NoiDungKhongDatVuotDoDai"); }
+        }
+
+        #endregion
     }
 }

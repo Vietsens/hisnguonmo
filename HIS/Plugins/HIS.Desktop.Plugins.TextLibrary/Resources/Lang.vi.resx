@@ -300,4 +300,49 @@
   <data name="UCPicture.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
+  <data name="FormTextLibrary.chkIsShareAccount.Properties.Caption" xml:space="preserve">
+    <value>Chia sẻ theo tài khoản</value>
+  </data>
+  <data name="FormTextLibrary.btnShareAccount.ToolTip" xml:space="preserve">
+    <value>Chọn tài khoản được chia sẻ</value>
+  </data>
+  <data name="FormTextLibrary.lblShareAccountCount.Text" xml:space="preserve">
+    <value>({0} tài khoản)</value>
+  </data>
+  <data name="frmShareAccount.Text" xml:space="preserve">
+    <value>Danh sách tài khoản</value>
+  </data>
+  <data name="frmShareAccount.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã NV, họ tên, tên đăng nhập</value>
+  </data>
+  <data name="frmShareAccount.lciDepartment.Text" xml:space="preserve">
+    <value>Khoa:</value>
+  </data>
+  <data name="frmShareAccount.cboDepartment.ColumnCode" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="frmShareAccount.cboDepartment.ColumnName" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmShareAccount.chkSelectAll.Properties.Caption" xml:space="preserve">
+    <value>Chọn tất cả</value>
+  </data>
+  <data name="frmShareAccount.gcEmployeeCode.Caption" xml:space="preserve">
+    <value>Mã NV</value>
+  </data>
+  <data name="frmShareAccount.gcUserName.Caption" xml:space="preserve">
+    <value>Họ tên</value>
+  </data>
+  <data name="frmShareAccount.gcLoginName.Caption" xml:space="preserve">
+    <value>Tên đăng nhập</value>
+  </data>
+  <data name="frmShareAccount.gcDepartmentName.Caption" xml:space="preserve">
+    <value>Khoa/phòng</value>
+  </data>
+  <data name="frmShareAccount.btnOk.Text" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="frmShareAccount.btnClose.Text" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
 </root>

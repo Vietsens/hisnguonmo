@@ -315,6 +315,8 @@ namespace HIS.Desktop.Plugins.TextLibrary
                 this.layoutControlItem14.Text = Inventec.Common.Resource.Get.Value("FormTextLibrary.layoutControlItem14.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsDepartment.Properties.Caption = Inventec.Common.Resource.Get.Value("FormTextLibrary.chkIsDepartment.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsPublic.Properties.Caption = Inventec.Common.Resource.Get.Value("FormTextLibrary.chkIsPublic.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsShareAccount.Properties.Caption = Inventec.Common.Resource.Get.Value("FormTextLibrary.chkIsShareAccount.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnShareAccount.ToolTip = Inventec.Common.Resource.Get.Value("FormTextLibrary.btnShareAccount.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTitle.Text = Inventec.Common.Resource.Get.Value("FormTextLibrary.lciTitle.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciHashTag.Text = Inventec.Common.Resource.Get.Value("FormTextLibrary.lciHashTag.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem9.Text = Inventec.Common.Resource.Get.Value("FormTextLibrary.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -439,6 +441,9 @@ namespace HIS.Desktop.Plugins.TextLibrary
                 chkIsPublic.Checked = false;
                 chkIsDepartment.Checked = false;
                 this.ActionType = GlobalVariables.ActionAdd;
+                // New item: the Save button may have been locked while viewing another user's item
+                btnSave.Enabled = true;
+                ResetShareAccount();
                 //txtContent.Appearance.Text.Font = new Font("Times New Roman", 14);
                 this.UcDocument.SetFont(new Font("Times New Roman", 14));
                 dxValidationProvider.RemoveControlError(txtTitle);
@@ -809,18 +814,20 @@ namespace HIS.Desktop.Plugins.TextLibrary
             bool success = false;
             try
             {
-                if (this.ActionType == GlobalVariables.ActionAdd)
-                    this.textLib = new MOS.EFMODEL.DataModels.HIS_TEXT_LIB();
-                SetData(textLib);
+                AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.HIS_TEXT_LIB, MOS.EFMODEL.DataModels.HIS_TEXT_LIB>();
+                // Edit a copy: textLib is the grid row object and must keep its saved values if MOS rejects the change
+                MOS.EFMODEL.DataModels.HIS_TEXT_LIB data = (this.ActionType == GlobalVariables.ActionAdd || this.textLib == null)
+                    ? new MOS.EFMODEL.DataModels.HIS_TEXT_LIB()
+                    : AutoMapper.Mapper.Map<MOS.EFMODEL.DataModels.HIS_TEXT_LIB, MOS.EFMODEL.DataModels.HIS_TEXT_LIB>(this.textLib);
+                SetData(data);
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post
                     <MOS.EFMODEL.DataModels.HIS_TEXT_LIB>
                     (this.ActionType == GlobalVariables.ActionAdd ?
                     Base.GlobalStore.HIS_TEXT_LIB_CREATE :
                     Base.GlobalStore.HIS_TEXT_LIB_UPDATE,
-                    ApiConsumer.ApiConsumers.MosConsumer, textLib, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                    ApiConsumer.ApiConsumers.MosConsumer, data, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                 if (rs != null)
                 {
-                    AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.HIS_TEXT_LIB, MOS.EFMODEL.DataModels.HIS_TEXT_LIB>();
                     result = AutoMapper.Mapper.Map<MOS.EFMODEL.DataModels.HIS_TEXT_LIB, MOS.EFMODEL.DataModels.HIS_TEXT_LIB>(rs);
                     BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>();
                     success = true;
@@ -865,6 +872,7 @@ namespace HIS.Desktop.Plugins.TextLibrary
 
                 textLib.IS_PUBLIC = chkIsPublic.Checked ? IS_TRUE : (short)0;
                 textLib.IS_PUBLIC_IN_DEPARTMENT = chkIsDepartment.Checked ? IS_TRUE : (short)0;
+                SetDataShareAccount(textLib);
                 textLib.HOT_KEY = txtHotkey.Text;
                 Inventec.Common.Logging.LogSystem.Warn(chkIsDepartment.Checked + "");
                 if (this.ActionType == GlobalVariables.ActionAdd)
@@ -939,6 +947,12 @@ namespace HIS.Desktop.Plugins.TextLibrary
                 CommonParam param = new CommonParam();
                 if (lciBtnChoose.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Never) return;
                 if (!dxValidationProvider.Validate()) return;
+                if (this.ActionType == GlobalVariables.ActionEdit && !CanEditCurrentTextLib())
+                {
+                    // Shared to me (not creator / admin): put the content into the record without updating the creator's item
+                    ChooseWithoutSave();
+                    return;
+                }
                 if (SaveProcess(ref param, ref textLib))
                 {
                     if (dataTextLib != null)
@@ -1286,6 +1300,7 @@ namespace HIS.Desktop.Plugins.TextLibrary
                     }
                     zoomFactor();
                     this.ActionType = GlobalVariables.ActionEdit;
+                    LoadShareAccountFromRow(row);
                 }
                 else
                 {

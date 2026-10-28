@@ -105,5 +105,22 @@ namespace HIS.Desktop.Plugins.TextLibrary.Resources
                 return "";
             }
         }
+
+        /// <summary>Shared account list too long: {0} = limit, {1} = current length</summary>
+        internal static string DanhSachTaiKhoanChiaSeVuotQuaGioiHan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("DanhSachTaiKhoanChiaSeVuotQuaGioiHan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

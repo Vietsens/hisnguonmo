@@ -135,4 +135,7 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Chưa nhập trường dữ liệu bắt buộc</value>
   </data>
+  <data name="DanhSachTaiKhoanChiaSeVuotQuaGioiHan" xml:space="preserve">
+    <value>Danh sách tài khoản được chia sẻ dài {1} ký tự, vượt quá giới hạn {0} ký tự. Vui lòng bỏ bớt tài khoản.</value>
+  </data>
 </root>

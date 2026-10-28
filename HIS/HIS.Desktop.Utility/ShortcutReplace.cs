@@ -60,17 +60,16 @@ namespace HIS.Desktop.Utility
         }
 
         /// <summary>
-        /// Khoa cua tai khoan dang dang nhap, lay theo danh muc nhan vien (cau hinh tai khoan).
+        /// Tai khoan nhan vien cua tai khoan dang dang nhap (danh muc nhan vien - cau hinh tai khoan).
         /// Doc tu cache BackendDataWorker de khong goi API moi lan go phim tat.
         /// </summary>
-        private static long? GetLoginDepartmentId(string loginName)
+        private static V_HIS_EMPLOYEE GetLoginEmployee(string loginName)
         {
             try
             {
                 if (String.IsNullOrWhiteSpace(loginName)) return null;
-                var employee = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>()
+                return BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>()
                     .FirstOrDefault(o => o.LOGINNAME == loginName);
-                if (employee != null) return employee.DEPARTMENT_ID;
             }
             catch (Exception ex)
             {
@@ -84,15 +83,21 @@ namespace HIS.Desktop.Utility
         /// - Mau do chinh minh tao (CREATOR)
         /// - Mau cong khai toan vien (IS_PUBLIC = 1)
         /// - Mau cong khai theo khoa (IS_PUBLIC_IN_DEPARTMENT = 1) va dung khoa cua tai khoan
+        /// - Mau chia se theo tai khoan (IS_PUBLIC_IN_ACCOUNT = 1) va ten dang nhap nam trong PUBLIC_LOGINNAMES
+        ///   (so khop ca phan tu ",a,b," chua ",ten,"), chi khi tai khoan nhan vien dang hoat dong (cung quy tac voi MOS)
         /// </summary>
         private static List<HIS_TEXT_LIB> GetUsableTextLibs(string key, string loginName)
         {
-            long? departmentId = GetLoginDepartmentId(loginName);
+            V_HIS_EMPLOYEE employee = GetLoginEmployee(loginName);
+            long? departmentId = employee != null ? employee.DEPARTMENT_ID : null;
+            bool isActiveEmployee = employee != null && employee.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+            string publicLoginName = "," + loginName + ",";
             return BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>()
                 .Where(o => o.HOT_KEY == key
                     && (o.CREATOR == loginName
                         || o.IS_PUBLIC == 1
-                        || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && departmentId.HasValue && o.DEPARTMENT_ID == departmentId)))
+                        || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && departmentId.HasValue && o.DEPARTMENT_ID == departmentId)
+                        || (isActiveEmployee && o.IS_PUBLIC_IN_ACCOUNT == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE &&o.PUBLIC_LOGINNAMES != null && ("," + o.PUBLIC_LOGINNAMES + ",").Contains(publicLoginName))))
                 .ToList();
         }
 
@@ -160,6 +165,7 @@ namespace HIS.Desktop.Utility
         ///- Là mẫu do người dùng tạo (CREATOR của HIS_TEXT_LIB)
         ///- Là mẫu do khoa người dùng làm việc tạo và có check "công khai theo khoa" (HIS_TEXT_LIB có IS_PUBLIC_IN_DEPARTMENT = 1 và DEPARTMENT_ID = khoa tương ứng với tài khoản người dùng được thiết lập trong danh mục tài khoản nhân viên)
         ///- Là mẫu được check "công khai toàn viện" (HIS_TEXT_LIB)có IS_PUBLIC = 1)
+        ///- Là mẫu được check "chia sẻ theo tài khoản" (IS_PUBLIC_IN_ACCOUNT = 1) và tên đăng nhập nằm trong PUBLIC_LOGINNAMES, khi tài khoản nhân viên đang hoạt động
         /// </summary>
         /// <param name="key"></param>
         /// <param name="rtfRepValue"></param>
