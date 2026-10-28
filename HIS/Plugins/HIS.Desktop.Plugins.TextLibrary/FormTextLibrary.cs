@@ -814,18 +814,20 @@ namespace HIS.Desktop.Plugins.TextLibrary
             bool success = false;
             try
             {
-                if (this.ActionType == GlobalVariables.ActionAdd)
-                    this.textLib = new MOS.EFMODEL.DataModels.HIS_TEXT_LIB();
-                SetData(textLib);
+                AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.HIS_TEXT_LIB, MOS.EFMODEL.DataModels.HIS_TEXT_LIB>();
+                // Edit a copy: textLib is the grid row object and must keep its saved values if MOS rejects the change
+                MOS.EFMODEL.DataModels.HIS_TEXT_LIB data = (this.ActionType == GlobalVariables.ActionAdd || this.textLib == null)
+                    ? new MOS.EFMODEL.DataModels.HIS_TEXT_LIB()
+                    : AutoMapper.Mapper.Map<MOS.EFMODEL.DataModels.HIS_TEXT_LIB, MOS.EFMODEL.DataModels.HIS_TEXT_LIB>(this.textLib);
+                SetData(data);
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post
                     <MOS.EFMODEL.DataModels.HIS_TEXT_LIB>
                     (this.ActionType == GlobalVariables.ActionAdd ?
                     Base.GlobalStore.HIS_TEXT_LIB_CREATE :
                     Base.GlobalStore.HIS_TEXT_LIB_UPDATE,
-                    ApiConsumer.ApiConsumers.MosConsumer, textLib, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                    ApiConsumer.ApiConsumers.MosConsumer, data, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                 if (rs != null)
                 {
-                    AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.HIS_TEXT_LIB, MOS.EFMODEL.DataModels.HIS_TEXT_LIB>();
                     result = AutoMapper.Mapper.Map<MOS.EFMODEL.DataModels.HIS_TEXT_LIB, MOS.EFMODEL.DataModels.HIS_TEXT_LIB>(rs);
                     BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>();
                     success = true;

@@ -17,7 +17,7 @@
 1. Mở màn: nạp khoa của tài khoản đăng nhập (`V_HIS_EMPLOYEE.DEPARTMENT_ID`) → gọi `api/HisTextLib/Get` với `CAN_VIEW = true` + `PUBLIC_DEPARTMENT_ID` (MOS lọc theo tài khoản trong token), phân trang `ucPaging`, sắp `MODIFY_TIME DESC`.
 2. Bấm 1 dòng: nạp nội dung lên vùng phải (tiêu đề, mã tắt, thẻ, Văn bản/Hình ảnh, 3 ô chia sẻ, danh sách tài khoản được chia sẻ). Chỉ người tạo (`CREATOR`) hoặc quản trị (`HIS_EMPLOYEE.IS_ADMIN`, `CheckLoginAdmin.IsAdmin`) mới được Lưu/Xóa/đổi chia sẻ theo tài khoản.
 3. **Mới** → xóa vùng phải, mở lại nút Lưu, ô Chia sẻ theo tài khoản trống, "(0 tài khoản)".
-4. **Lưu** → `api/HisTextLib/Create` (mới) hoặc `Update` (đang sửa) → reset cache `HIS_TEXT_LIB`, nạp lại lưới; nếu mở từ hồ sơ thì trả nội dung về qua `DelegateDataTextLib`.
+4. **Lưu** → `api/HisTextLib/Create` (mới) hoặc `Update` (đang sửa, gửi bản sao của dòng đang chọn) → reset cache `HIS_TEXT_LIB`, nạp lại lưới; nếu mở từ hồ sơ thì trả nội dung về qua `DelegateDataTextLib`. MOS từ chối → báo "Xử lý thất bại", dòng trên lưới giữ giá trị đã lưu, vùng phải giữ nội dung đang nhập để sửa rồi Lưu lại.
 5. **Chọn** (chỉ hiện khi mở từ hồ sơ): người tạo/quản trị → lưu rồi trả nội dung về hồ sơ; người được chia sẻ → trả bản sao nội dung đang hiện, KHÔNG gọi Update lên nội dung của người tạo. Nhấp đúp 1 dòng → trả dòng đó về hồ sơ.
 
 ### Chia sẻ theo tài khoản (việc 59771, tài liệu phân tích 3604)
@@ -121,6 +121,7 @@ Không có chức năng in.
 |------|-----------|-----------------|
 | 27/10/2026 | DANGTH | Tạo tài liệu module. Việc 59771 (tài liệu phân tích 3604): thêm **Chia sẻ theo tài khoản** — ô tích + nút "+" + nhãn "(N tài khoản)" (`FormTextLibrary__ShareAccount.cs`), popup `ShareAccount\frmShareAccount` (+ `ADO\ShareAccountADO`), lưu `IS_PUBLIC_IN_ACCOUNT`/`PUBLIC_LOGINNAMES`; khóa ô/nút khi không phải người tạo/quản trị. Sửa lỗi có sẵn: Chọn trên nội dung người khác không còn gọi Update; Mới mở lại nút Lưu. Gõ viết tắt (`HIS.Desktop.Utility.ShortcutReplace.GetUsableTextLibs`) thêm điều kiện chia sẻ theo tài khoản (nhân viên phải đang hoạt động). Resource vi/en/my, thông báo vượt 4000 ký tự. Thêm tham chiếu Inventec.Common.String, Inventec.Common.Controls.EditorLoader. Cần MOS.EFMODEL mới (2 thuộc tính) + MOS đã vá `HisTextLibFilterQuery`. |
 | 27/10/2026 | DANGTH | Việc 59771 sửa theo phản biện: popup tắt lọc tiêu đề cột/ô tìm Ctrl+F của lưới (Chọn tất cả chỉ theo dòng đang hiện); "Chọn tất cả" không còn tích khi kết quả lọc rỗng; giới hạn tính theo byte UTF-8 và hạ xuống 3998 (tránh ORA-01489 khi MOS nối dấu phẩy 2 đầu, đã tái hiện trên CSDL test MAX_STRING_SIZE=STANDARD); `ShortcutReplace` dùng hằng `IMSys.DbConfig` thay số 1 và cập nhật chú thích hàm `ProcesseShortcutReplaceWithModuleServiceExecute`. |
+| 28/10/2026 | DANGTH | Việc 59771 sửa lỗi có sẵn: `SaveProcess` lưu trên bản sao của dòng đang sửa — MOS từ chối Update thì dòng trên lưới không còn hiện giá trị chưa lưu (trước đây giữ tới khi tải lại danh sách). |
 
 ## 9. Test Cases
 
