@@ -265,6 +265,7 @@ namespace HIS.UC.PlusInfo
 
         private void SetValueInUCPlusInfo(List<UserControl> listControl, UCPlusInfoADO dataSet)
         {
+            this.isSettingValueFromData = true;
             try
             {
                 for (int i = 0; i < listControl.Count; i++)
@@ -406,6 +407,10 @@ namespace HIS.UC.PlusInfo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                this.isSettingValueFromData = false;
             }
         }
 
