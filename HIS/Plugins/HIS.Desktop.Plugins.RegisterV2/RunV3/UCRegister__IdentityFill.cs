@@ -224,6 +224,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 if (isQrCode)
                 {
                     // Dua lai dung chuoi quet goc, y het nhu nhan vien vua quet tai quay
+                    // Giong txtPatientCode_KeyDown cua UC: phai bat co nay thi UC moi boc tach chuoi QR
+                    // (tim ho so theo 12 so, khong co thi dien san ho ten - ngay sinh - dia chi).
+                    // Khong bat thi UC dem ca chuoi QR di tim theo CCCD_NUMBER__EXACT va bao "Khong tim thay".
+                    // Ham tim cua UC tu dat lai co nay = false trong finally.
+                    this.ucPatientRaw1.IsSearchCCCDByInfo = true;
                     this.ucPatientRaw1.SearchPatientByCodeOrQrCode(info.RawData);
                     return;
                 }
