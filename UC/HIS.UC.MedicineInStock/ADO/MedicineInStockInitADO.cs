@@ -33,6 +33,10 @@ namespace HIS.UC.HisMedicineInStock
         public bool? IsShowButtonAdd { get; set; }
         public bool? IsShowCheckNode { get; set; }
         public bool? IsAutoWidth { get; set; }
+        /// <summary>
+        /// true: kẻ ngang giữa các dòng (lô cùng thuốc nét đứt, còn lại nét liền), kẻ dọc giữa các cột, in đậm dòng nhóm cha
+        /// </summary>
+        public bool? IsShowSeparatorLine { get; set; }
         public HisMedicineInStock_NodeCellStyle HisMedicineInStockNodeCellStyle { get; set; }
         public HisMedicineInStockHandler HisMedicineInStockClick { get; set; }
         public HisMedicineInStockHandler HisMedicineInStockDoubleClick { get; set; }

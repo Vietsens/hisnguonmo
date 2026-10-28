@@ -493,6 +493,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
                 if (row != null)
                 {
                     ListSelectedData.Remove(row);
+                    collapsedServiceReqIds.Remove(row.ID);
                     UpdateDataGridSelect();
                 }
             }
@@ -506,13 +507,19 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
         {
             try
             {
+                isUpdatingGridSelect = true;
                 gridControlSelecteServiceReq.BeginUpdate();
                 gridControlSelecteServiceReq.DataSource = ListSelectedData;
                 gridControlSelecteServiceReq.EndUpdate();
+                ExpandMediMateRows();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                isUpdatingGridSelect = false;
             }
         }
 
@@ -538,6 +545,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
                     }
                 }
 
+                LoadMediMateByServiceReqs(ListSelectedData);
                 UpdateDataGridSelect();
             }
             catch (Exception ex)

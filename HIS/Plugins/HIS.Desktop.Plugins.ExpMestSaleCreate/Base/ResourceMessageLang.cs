@@ -237,5 +237,20 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Base
                 return "";
             }
         }
+        internal static string NgoaiDanhMuc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_ExpMestSaleCreate__NgoaiDanhMuc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

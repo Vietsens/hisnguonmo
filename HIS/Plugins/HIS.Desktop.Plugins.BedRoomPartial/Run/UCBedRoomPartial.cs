@@ -723,6 +723,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.gridColumn2.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn2.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColAddTime.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.grdColAddTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColBedCode.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.grdColBedCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColBedName.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.grdColBedName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColRoomName.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.grdColRoomName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1511,6 +1512,24 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 }
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// A grid layout saved before the bed code column existed has no layout version; restoring it puts the new column after the bed name column, so move it back next to it
+        /// </summary>
+        private void gridViewTreatmentBedRoom_LayoutUpgrade(object sender, DevExpress.Utils.LayoutUpgradeEventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(e.PreviousVersion) && grdColBedName.Visible && grdColBedCode.Visible)
+                {
+                    grdColBedCode.VisibleIndex = grdColBedName.VisibleIndex;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void gridViewTreatmentBedRoom_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)

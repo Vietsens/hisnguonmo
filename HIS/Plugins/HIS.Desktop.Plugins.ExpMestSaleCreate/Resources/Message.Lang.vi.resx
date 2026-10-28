@@ -156,4 +156,7 @@
   <data name="Plugins_ExpMestSaleCreate__XuLyThatBai" xml:space="preserve">
     <value>Xử lý thất bại.</value>
   </data>
+  <data name="Plugins_ExpMestSaleCreate__NgoaiDanhMuc" xml:space="preserve">
+    <value>ngoài danh mục</value>
+  </data>
 </root>

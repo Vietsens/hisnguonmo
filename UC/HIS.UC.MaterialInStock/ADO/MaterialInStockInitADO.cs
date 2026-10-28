@@ -32,6 +32,10 @@ namespace HIS.UC.HisMaterialInStock
         public bool? IsShowSearchPanel { get; set; }
         public bool? IsShowButtonAdd { get; set; }
         public bool? IsShowCheckNode { get; set; }
+        /// <summary>
+        /// true: kẻ ngang giữa các dòng (lô cùng vật tư nét đứt, còn lại nét liền), kẻ dọc giữa các cột, in đậm dòng nhóm cha
+        /// </summary>
+        public bool? IsShowSeparatorLine { get; set; }
         public HisMaterialInStock_NodeCellStyle HisMaterialInStockNodeCellStyle { get; set; }
         public HisMaterialInStockHandler HisMaterialInStockClick { get; set; }
         public HisMaterialInStockHandler HisMaterialInStockDoubleClick { get; set; }

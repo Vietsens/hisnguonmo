@@ -62,6 +62,10 @@ namespace HIS.UC.HisBloodTypeInStock.Run
         HisBloodTypeInStock_RefeshData HisBloodTypeInStock_RefeshData;
         bool IsShowCheckNode;
         bool isAutoWidth;
+        bool isShowSeparatorLine;
+        Font fontGroupNode;
+        Pen penSeparatorSolid;
+        Pen penSeparatorDash;
         DevExpress.Utils.ImageCollection selectImageCollection;
         DevExpress.Utils.ImageCollection stateImageCollection;
         HisBloodTypeInStockHandler updateSingleRow;
@@ -107,6 +111,10 @@ namespace HIS.UC.HisBloodTypeInStock.Run
                 if (HisBloodTypeInStockADO.IsAutoWidth.HasValue)
                 {
                     this.isAutoWidth = HisBloodTypeInStockADO.IsAutoWidth.Value;
+                }
+                if (HisBloodTypeInStockADO.IsShowSeparatorLine.HasValue)
+                {
+                    this.isShowSeparatorLine = HisBloodTypeInStockADO.IsShowSeparatorLine.Value;
                 }
             }
             catch (Exception ex)
@@ -178,6 +186,8 @@ namespace HIS.UC.HisBloodTypeInStock.Run
             {
                 this.trvService.OptionsView.ShowCheckBoxes = this.IsShowCheckNode;
                 this.trvService.OptionsView.AutoWidth = this.isAutoWidth;
+                if (this.isShowSeparatorLine)
+                    InitSeparatorLine();
                 if (HisBloodTypeInStockADO.HisBloodTypeInStockColumns != null && HisBloodTypeInStockADO.HisBloodTypeInStockColumns.Count > 0)
                 {
                     foreach (var svtr in HisBloodTypeInStockADO.HisBloodTypeInStockColumns)
@@ -419,6 +429,7 @@ namespace HIS.UC.HisBloodTypeInStock.Run
         {
             try
             {
+                DisposeSeparatorLine();
                 isCreateParentNodeWithHisBloodTypeInStockExpend = false;
                 menuItems = null;
                 updateSingleRow = null;
@@ -512,10 +523,109 @@ namespace HIS.UC.HisBloodTypeInStock.Run
         }
         #endregion
 
+        #region Separator line
+        private void InitSeparatorLine()
+        {
+            try
+            {
+                this.penSeparatorSolid = new Pen(Color.FromArgb(110, 110, 110));
+                this.penSeparatorDash = new Pen(Color.FromArgb(160, 160, 160));
+                this.penSeparatorDash.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                this.trvService.OptionsView.ShowVertLines = true;
+                this.trvService.Appearance.VertLine.BackColor = Color.FromArgb(205, 205, 205);
+                this.trvService.Appearance.VertLine.Options.UseBackColor = true;
+                this.trvService.Paint += this.trvService_Paint;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //Dòng túi máu: isTypeNode = false
+        private bool IsLotNode(TreeListNode node)
+        {
+            var data = node != null ? trvService.GetDataRecordByNode(node) as HisBloodTypeInStockADO : null;
+            return data != null && !data.isTypeNode;
+        }
+
+        //Dòng nhóm cha: dòng loại có dòng con cũng là dòng loại
+        private bool IsGroupNode(TreeListNode node)
+        {
+            if (node == null || !node.HasChildren)
+                return false;
+            var data = trvService.GetDataRecordByNode(node) as HisBloodTypeInStockADO;
+            var child = trvService.GetDataRecordByNode(node.FirstNode) as HisBloodTypeInStockADO;
+            return data != null && data.isTypeNode && child != null && child.isTypeNode;
+        }
+
+        //Kẻ ngang dưới mỗi dòng đang hiển thị: dòng này và dòng ngay dưới đều là túi máu cùng cha thì nét đứt, còn lại nét liền
+        private void trvService_Paint(object sender, PaintEventArgs e)
+        {
+            try
+            {
+                if (!this.isShowSeparatorLine || this.penSeparatorSolid == null)
+                    return;
+                ArrayList rows = trvService.ViewInfo.RowsInfo.Rows;
+                for (int i = 0; i < rows.Count; i++)
+                {
+                    var row = rows[i] as DevExpress.XtraTreeList.ViewInfo.RowInfo;
+                    if (row == null || row.Node == null)
+                        continue;
+                    var next = i + 1 < rows.Count ? rows[i + 1] as DevExpress.XtraTreeList.ViewInfo.RowInfo : null;
+                    bool isDash = next != null && next.Node != null
+                        && next.Node.ParentNode == row.Node.ParentNode
+                        && IsLotNode(row.Node) && IsLotNode(next.Node);
+                    int y = row.Bounds.Bottom - 1;
+                    e.Graphics.DrawLine(isDash ? this.penSeparatorDash : this.penSeparatorSolid, row.Bounds.Left, y, row.Bounds.Right - 1, y);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DisposeSeparatorLine()
+        {
+            try
+            {
+                this.isShowSeparatorLine = false;
+                if (this.trvService != null)
+                    this.trvService.Paint -= this.trvService_Paint;
+                if (this.penSeparatorSolid != null)
+                {
+                    this.penSeparatorSolid.Dispose();
+                    this.penSeparatorSolid = null;
+                }
+                if (this.penSeparatorDash != null)
+                {
+                    this.penSeparatorDash.Dispose();
+                    this.penSeparatorDash = null;
+                }
+                if (this.fontGroupNode != null)
+                {
+                    this.fontGroupNode.Dispose();
+                    this.fontGroupNode = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        #endregion
+
         private void trvService_NodeCellStyle(object sender, DevExpress.XtraTreeList.GetCustomNodeCellStyleEventArgs e)
         {
             try
             {
+                if (this.isShowSeparatorLine && IsGroupNode(e.Node))
+                {
+                    if (this.fontGroupNode == null)
+                        this.fontGroupNode = new Font(e.Appearance.Font, FontStyle.Bold);
+                    e.Appearance.Font = this.fontGroupNode;
+                }
                 var data = trvService.GetDataRecordByNode(e.Node);
                 if (HisBloodTypeInStockNodeCellStyle != null)
                 {

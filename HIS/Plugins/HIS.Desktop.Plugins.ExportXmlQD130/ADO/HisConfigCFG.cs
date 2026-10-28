@@ -85,6 +85,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal const string HIS_CSDL_CANTHO_3176__CONNECTION_INFO = "HIS.CSDL_CANTHO_3176.CONNECTION_INFO";
         internal static string CSDL_CANTHO_3176__CONNECTION_INFO;
 
+        //Việc 61380: "1" = tự động xuất XML 130 của hồ sơ điều trị nội trú, ngoại trú có số vào viện khi đủ 48 giờ
+        //kể từ thời gian vào điều trị, ghi ra Thư mục lưu XML hồ sơ đủ 48 giờ. Khác "1" = tắt.
+        internal const string HIS_QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H = "HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H";
+        internal static string QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H;
+
         internal static void LoadConfig()
         {
             try
@@ -108,6 +113,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 HSSK_HOC_2062__CONNECTION_INFO = GetValue(MOS_HIS_KSK_SYNC__HSSK_HOC_2062_CONNECTION_INFO);
                 //Cổng CSDL Y tế Cần Thơ — liên thông KCB theo QĐ 3176
                 CSDL_CANTHO_3176__CONNECTION_INFO = GetValue(HIS_CSDL_CANTHO_3176__CONNECTION_INFO);
+                QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H = GetValue(HIS_QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H);
             }
             catch (Exception ex)
             {
