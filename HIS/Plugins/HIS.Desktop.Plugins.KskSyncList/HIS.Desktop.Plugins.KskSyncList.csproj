@@ -196,6 +196,7 @@
     <Compile Include="KskEnvelopeBuilder.cs" />
     <Compile Include="KskPemUtil.cs" />
     <Compile Include="KskSignImageCompressor.cs" />
+    <Compile Include="KskSignImageComposer.cs" />
     <Compile Include="Preview\frmKskSyncPreview.cs">
       <SubType>Form</SubType>
     </Compile>

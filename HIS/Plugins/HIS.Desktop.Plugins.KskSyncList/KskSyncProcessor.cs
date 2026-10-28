@@ -1390,6 +1390,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             List<HIS_PATIENT> patients = null;
             List<HIS_SERE_SERV> chronicSereServs = null;
             List<EMR.EFMODEL.DataModels.EMR_SIGNER> emrSigners = null;
+            List<HIS_EMPLOYEE> signEmployees = null;
             var tasks2 = new List<System.Threading.Tasks.Task>();
             List<long> patientIds = (treatments != null) ? treatments.Select(t => t.PATIENT_ID).Distinct().ToList() : new List<long>();
             List<string> loginnames = CollectLoginnames(underSixes, under18s, over18s, generals, dhsts, clsExts);
@@ -1420,15 +1421,25 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 tasks2.Add(System.Threading.Tasks.Task.Factory.StartNew(() =>
                     chronicSereServs = GetList<HIS_SERE_SERV>("api/HisSereServ/Get", new HisSereServFilter { TREATMENT_IDs = chronicTrIds })));
             if (loginnames.Count > 0)
+            {
                 tasks2.Add(System.Threading.Tasks.Task.Factory.StartNew(() =>
                     emrSigners = GetList<EMR.EFMODEL.DataModels.EMR_SIGNER>("api/EmrSigner/Get",
                         new EMR.Filter.EmrSignerFilter { LOGINNAMEs = loginnames, IS_ACTIVE = 1 }, ApiConsumers.EmrConsumer)));
+                // Ho ten du phong cho nguoi kham KHONG co emr_signer -> anh CKDT_ chi co ho ten (HIS_EMPLOYEE.TDL_USERNAME).
+                tasks2.Add(System.Threading.Tasks.Task.Factory.StartNew(() =>
+                    signEmployees = GetList<HIS_EMPLOYEE>("api/HisEmployee/Get", new HisEmployeeFilter { LOGINNAMEs = loginnames })));
+            }
             if (tasks2.Count > 0) System.Threading.Tasks.Task.WaitAll(tasks2.ToArray());
 
-            // Chu ky: loginname -> base64(SIGN_IMAGE) — thu vien (Qd1551SignResolver) dien vao cac the CKDT_.
-            Dictionary<string, string> signImageByLogin = BuildSignMap(emrSigners);
+            // Chu ky: loginname -> base64(anh chu ky KEM HO TEN) — thu vien (Qd1551SignResolver) dien vao cac the CKDT_.
+            Dictionary<string, string> signImageByLogin = BuildSignMap(emrSigners, signEmployees);
             // CLS: dung List<Qd1551ClsRow> theo TREATMENT_ID (XN: 1 dong/chi so TEIN; CDHA/NS/SA/TDCN: 1 dong/dich vu).
-            Dictionary<long, List<Qd1551ClsRow>> clsByTr = BuildClsByTreatment(clsSereServs, clsTeins, clsSuins, clsExts);
+            // Nguoi co anh chu ky that (EMR_SIGNER.SIGN_IMAGE) — de chon nguoi ky dong CLS uu tien nguoi co chu ky.
+            var signedLogins = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (emrSigners != null)
+                foreach (var s in emrSigners)
+                    if (HasSignImage(s) && !string.IsNullOrWhiteSpace(s.LOGINNAME)) signedLogins.Add(s.LOGINNAME.Trim());
+            Dictionary<long, List<Qd1551ClsRow>> clsByTr = BuildClsByTreatment(clsSereServs, clsTeins, clsSuins, clsExts, signedLogins);
 
             List<HIS_HEALTH_EXAM_RANK> ranks = null;
             // Chi lay rank ACTIVE (giong EnterKskInfomantionVer2) — de thu tu/vi tri phan loai khop UI.
@@ -2322,21 +2333,63 @@ namespace HIS.Desktop.Plugins.KskSyncList
             return set.ToList();
         }
 
-        /// <summary>emr_signer -> map loginname -> base64(SIGN_IMAGE). Khong co chu ky -> bo qua loginname do.</summary>
-        private static Dictionary<string, string> BuildSignMap(List<EMR.EFMODEL.DataModels.EMR_SIGNER> signers)
+        /// <summary>
+        /// Map loginname -> base64 anh CKDT_ = anh chu ky KEM HO TEN (KskSignImageComposer): cong HOC chi hien
+        /// thi anh CKDT_ o cot "Ho ten va chu ky cua Bac sy", chuan QD 1551 khong co the ho ten rieng.
+        ///   - Ho ten: EMR_SIGNER.USERNAME; rong hoac khong co emr_signer -> HIS_EMPLOYEE.TDL_USERNAME.
+        ///   - Khong co SIGN_IMAGE -> anh chi co ho ten. Khong co ca anh lan ho ten -> bo qua (the CKDT_ rong).
+        ///   - Nhieu emr_signer cung LOGINNAME -> uu tien ban ghi co SIGN_IMAGE.
+        /// </summary>
+        private static Dictionary<string, string> BuildSignMap(List<EMR.EFMODEL.DataModels.EMR_SIGNER> signers, List<HIS_EMPLOYEE> employees)
         {
-            if (signers == null || signers.Count == 0) return null;
+            var employeeNameByLogin = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (employees != null)
+                foreach (var e in employees)
+                {
+                    if (e == null || string.IsNullOrWhiteSpace(e.LOGINNAME) || string.IsNullOrWhiteSpace(e.TDL_USERNAME)) continue;
+                    string lg = e.LOGINNAME.Trim();
+                    if (!employeeNameByLogin.ContainsKey(lg)) employeeNameByLogin[lg] = e.TDL_USERNAME;
+                }
+
+            var signerByLogin = new Dictionary<string, EMR.EFMODEL.DataModels.EMR_SIGNER>(StringComparer.OrdinalIgnoreCase);
+            if (signers != null)
+                foreach (var s in signers)
+                {
+                    if (s == null || string.IsNullOrWhiteSpace(s.LOGINNAME)) continue;
+                    string lg = s.LOGINNAME.Trim();
+                    EMR.EFMODEL.DataModels.EMR_SIGNER cur;
+                    if (!signerByLogin.TryGetValue(lg, out cur) || (!HasSignImage(cur) && HasSignImage(s)))
+                        signerByLogin[lg] = s;
+                }
+
             var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var s in signers)
+            foreach (var kv in signerByLogin)
             {
-                if (s == null || string.IsNullOrEmpty(s.LOGINNAME)) continue;
-                if (s.SIGN_IMAGE == null || s.SIGN_IMAGE.Length == 0) continue;
-                // Nen anh neu base64 vuot 65000 ky tu (gioi han 1 the CKDT_ cua cong tiep nhan).
-                // Nen 1 lan/bac si tai day — 1 bac si co the ky nhieu the CKDT_ (VD 8 the noi khoa).
-                if (!map.ContainsKey(s.LOGINNAME))
-                    map[s.LOGINNAME] = KskSignImageCompressor.ToBase64(s.SIGN_IMAGE, s.LOGINNAME);
+                string name = kv.Value.USERNAME;
+                if (string.IsNullOrWhiteSpace(name)) employeeNameByLogin.TryGetValue(kv.Key, out name);
+                AddSign(map, kv.Key, kv.Value.SIGN_IMAGE, name);
+            }
+            foreach (var kv in employeeNameByLogin)
+            {
+                if (!signerByLogin.ContainsKey(kv.Key)) AddSign(map, kv.Key, null, kv.Value);
             }
             return map.Count > 0 ? map : null;
+        }
+
+        private static bool HasSignImage(EMR.EFMODEL.DataModels.EMR_SIGNER s)
+        {
+            return s != null && s.SIGN_IMAGE != null && s.SIGN_IMAGE.Length > 0;
+        }
+
+        /// <summary>
+        /// Dung anh chu ky kem ho ten roi ma hoa base64 vao map. Dung 1 lan/bac si tai day — 1 bac si co the ky
+        /// nhieu the CKDT_ (VD 8 the noi khoa). Van nen neu base64 vuot 65000 ky tu (gioi han 1 the CKDT_).
+        /// </summary>
+        private static void AddSign(Dictionary<string, string> map, string loginName, byte[] signImage, string userName)
+        {
+            byte[] png = KskSignImageComposer.Compose(signImage, userName, loginName);
+            if (png == null || png.Length == 0) return;
+            map[loginName] = KskSignImageCompressor.ToBase64(png, loginName);
         }
 
         /// <summary>
@@ -2455,13 +2508,30 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>
+        /// Chon nguoi ky dong CLS theo thu tu uu tien: nguoi dau tien CO anh chu ky (signedLogins); khong ai co anh
+        /// -> nguoi dau tien khac trong (anh CKDT_ chi co ho ten); deu trong -> "".
+        /// </summary>
+        private static string PickClsSigner(HashSet<string> signedLogins, params string[] candidates)
+        {
+            string firstNotEmpty = "";
+            foreach (var c in candidates)
+            {
+                string lg = (c ?? "").Trim();
+                if (lg.Length == 0) continue;
+                if (signedLogins != null && signedLogins.Contains(lg)) return lg;
+                if (firstNotEmpty.Length == 0) firstNotEmpty = lg;
+            }
+            return firstNotEmpty;
+        }
+
+        /// <summary>
         /// Dung danh sach dong CLS (Qd1551ClsRow) theo TREATMENT_ID: dich vu XN co chi so -> 1 dong/chi so
         /// (MA_CHI_SO/GIA_TRI/DON_VI_DO tu V_HIS_SERE_SERV_TEIN); dich vu khong co chi so (CDHA/NS/SA/TDCN)
         /// -> 1 dong/dich vu. MO_TA/KET_LUAN/bac si ket qua tu HIS_SERE_SERV_EXT.
         /// </summary>
         private static Dictionary<long, List<Qd1551ClsRow>> BuildClsByTreatment(
             List<V_HIS_SERE_SERV_2> sereServs, List<V_HIS_SERE_SERV_TEIN> teins,
-            List<V_HIS_SERE_SERV_SUIN> suins, List<HIS_SERE_SERV_EXT> exts)
+            List<V_HIS_SERE_SERV_SUIN> suins, List<HIS_SERE_SERV_EXT> exts, HashSet<string> signedLogins)
         {
             var result = new Dictionary<long, List<Qd1551ClsRow>>();
             if (sereServs == null || sereServs.Count == 0) return result;
@@ -2493,8 +2563,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 // CKDT_KET_QUA_CLS = chu ky NGUOI THUC HIEN y lenh (HIS_SERVICE_REQ.EXECUTE_LOGINNAME, co san tren
                 // V_HIS_SERE_SERV_2) — giong o "Nguoi kham" muc CLS cua EnterKskInfomantionVer2 ("Lay nguoi thuc hien").
                 // Y lenh chua co nguoi thuc hien -> du phong nguoi doc ket qua (HIS_SERE_SERV_EXT.SUBCLINICAL_RESULT_LOGINNAME) nhu cu.
-                string bacSi = (ss.EXECUTE_LOGINNAME ?? "").Trim();
-                if (bacSi.Length == 0 && ext != null) bacSi = (ext.SUBCLINICAL_RESULT_LOGINNAME ?? "").Trim();
+                // Nguoi thuc hien KHONG co anh chu ky ma nguoi doc ket qua co -> lay nguoi doc ket qua (XQ qua PACS:
+                // nguoi thuc hien la bac si PACS gui ve, nguoi doc ket qua la KTV; XN qua LIS thuong trong nguoi doc ket qua).
+                string bacSi = PickClsSigner(signedLogins, ss.EXECUTE_LOGINNAME, (ext != null) ? ext.SUBCLINICAL_RESULT_LOGINNAME : null);
                 string maDichVu = ss.TDL_HEIN_SERVICE_BHYT_CODE ?? "";
                 string tenDichVu = ss.TDL_HEIN_SERVICE_BHYT_NAME ?? "";
 
