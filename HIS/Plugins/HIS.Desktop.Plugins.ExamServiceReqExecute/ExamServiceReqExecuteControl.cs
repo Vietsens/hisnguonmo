@@ -9810,10 +9810,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                 {
                     //Truyen TREATMENT_CODE (string) chu khong truyen row.ID: tham so long cua EmrDocument la EMR_TREATMENT.ID.
-                    //Tham so bool = true (isStore): chi xem, khoa xoa/sua/cau hinh ky/dinh kem van ban cua dot kham cu.
+                    //KHONG truyen bool: voi TREATMENT_CODE dang string, bool cua EmrDocument la IsSigning (loc Trang thai ky = "Dang ky"),
+                    //khong truyen thi Trang thai ky = "Tat ca" -> hien toan bo van ban cua ho so.
                     List<object> listArgs = new List<object>();
                     listArgs.Add(row.TREATMENT_CODE);
-                    listArgs.Add(true);
                     listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId));
                     var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
