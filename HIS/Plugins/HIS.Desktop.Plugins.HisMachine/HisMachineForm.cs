@@ -88,6 +88,10 @@ namespace HIS.Desktop.Plugins.HisMachine
         List<V_HIS_ROOM> listRoom;
         List<V_HIS_ROOM> listRoomSelecteds;
         string[] roomNew;
+        // Config key: 1 = insert [source name] into MA_MAY (shared by grid column and XML export)
+        const string HEIN_MACHINE_CODE_SHOW_SOURCE_NAME_OPTION = "HIS.QD_130_BYT.XML3.MA_MAY.HIEN_THI_NGUON_CU_THE";
+        // Value of the config key above, read once per grid load for the "Ma may BHYT" column
+        string showSourceNameInHeinMachineCode;
         #endregion
 
         public HisMachineForm(Inventec.Desktop.Common.Modules.Module module, DelegateSelectData delegateData)
@@ -531,6 +535,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                 SetFilterNavBar(ref filter);
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
+                this.showSourceNameInHeinMachineCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HEIN_MACHINE_CODE_SHOW_SOURCE_NAME_OPTION);
                 gridView1.BeginUpdate();
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<MOS.EFMODEL.DataModels.HIS_MACHINE>>(HIS.Desktop.Plugins.HisMachine.HisRequestUriStore.MOSHIS_HIS_MACHINE_GET, ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
@@ -1063,6 +1068,40 @@ namespace HIS.Desktop.Plugins.HisMachine
                                     e.Value = String.Join(", ", roomCodes);
                             }
                         }
+                    }
+                    else if (e.Column.FieldName == "ROOM_NAMES")
+                    {
+                        // Room names of the machine, same order as the "Phong" (room code) column
+                        if (!String.IsNullOrWhiteSpace(pData.ROOM_IDS))
+                        {
+                            List<V_HIS_ROOM> listRoomAll = BackendDataWorker.Get<V_HIS_ROOM>();
+                            string[] listRoomIds = pData.ROOM_IDS.Split(',');
+                            List<string> roomNames = new List<string>();
+                            for (int i = 0; i < listRoomIds.Length; i++)
+                            {
+                                long roomId = Inventec.Common.TypeConvert.Parse.ToInt64(listRoomIds[i]);
+                                V_HIS_ROOM room = listRoomAll.FirstOrDefault(o => o.ID == roomId);
+                                if (room != null)
+                                    roomNames.Add(room.ROOM_NAME);
+                            }
+                            if (roomNames.Count > 0)
+                                e.Value = String.Join(", ", roomNames);
+                        }
+                    }
+                    else if (e.Column.FieldName == "DEPARTMENT_NAME_STR")
+                    {
+                        // Department name from the machine's department (left blank when not set)
+                        if (pData.DEPARTMENT_ID.HasValue)
+                        {
+                            HIS_DEPARTMENT department = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(o => o.ID == pData.DEPARTMENT_ID.Value);
+                            if (department != null)
+                                e.Value = department.DEPARTMENT_NAME;
+                        }
+                    }
+                    else if (e.Column.FieldName == "HEIN_MACHINE_CODE")
+                    {
+                        // MA_MAY as exported by "Xuat Xml TT12" (no medi org code); blank when a required part is missing
+                        e.Value = BuildHeinMachineCode(pData, this.showSourceNameInHeinMachineCode, null, false, true);
                     }
                     else if (e.Column.FieldName == "IS_ACTIVE_STR")
                     {
@@ -1993,6 +2032,30 @@ namespace HIS.Desktop.Plugins.HisMachine
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// Builds the BHYT machine code (MA_MAY). Shared by the "Ma may BHYT" grid column and both XML export buttons
+        /// so the grid never shows a code different from the exported one.
+        /// Format: {MACHINE_GROUP_CODE}.{SOURCE_CODE}[{SOURCE_NAME}].{mediOrgCode}.{SERIAL_NUMBER}
+        /// - [SOURCE_NAME] is inserted only when showSourceNameConfig == "1" and the machine has a source name.
+        /// - includeMediOrgCode = false drops the {mediOrgCode} part (TT12 format, grid column).
+        /// - emptyWhenMissing = true returns "" when MACHINE_GROUP_CODE, SOURCE_CODE or SERIAL_NUMBER is missing (grid column);
+        ///   false keeps building like the XML exports always did.
+        /// </summary>
+        private string BuildHeinMachineCode(HIS_MACHINE machine, string showSourceNameConfig, string mediOrgCode, bool includeMediOrgCode, bool emptyWhenMissing)
+        {
+            if (machine == null)
+                return "";
+            if (emptyWhenMissing
+                && (String.IsNullOrEmpty(machine.MACHINE_GROUP_CODE) || String.IsNullOrEmpty(machine.SOURCE_CODE) || String.IsNullOrEmpty(machine.SERIAL_NUMBER)))
+                return "";
+            string sourceNamePart = (showSourceNameConfig == "1" && !String.IsNullOrEmpty(machine.SOURCE_NAME))
+                ? "[" + machine.SOURCE_NAME + "]"
+                : String.Empty;
+            if (includeMediOrgCode)
+                return String.Format("{0}.{1}{2}.{3}.{4}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, sourceNamePart, mediOrgCode, machine.SERIAL_NUMBER);
+            return String.Format("{0}.{1}{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, sourceNamePart, machine.SERIAL_NUMBER);
+        }
+
         private List<CLSAdo> GenerateXmlAdo(List<HIS_MACHINE> listMachines)
         {
             List<CLSAdo> result = new List<CLSAdo>();
@@ -2024,21 +2087,9 @@ namespace HIS.Desktop.Plugins.HisMachine
                     xmlCLS.NuocSX = !String.IsNullOrEmpty(machine.NATIONAL_NAME) ? machine.NATIONAL_NAME : "";
                     xmlCLS.NamSX = machine.MANUFACTURED_YEAR;
                     xmlCLS.NamSD = machine.USED_YEAR;
-                    xmlCLS.SoLuuHanh = !String.IsNullOrEmpty(machine.CIRCULATION_NUMBER) ? machine.CIRCULATION_NUMBER : ""; string maMay = "";
-                    if (key == "1")
-                    {
-                        string sourceNamePart =
-                        !string.IsNullOrEmpty(machine.SOURCE_NAME)
-                            ? "[" + machine.SOURCE_NAME + "]"
-                            : string.Empty;
-
-                        maMay = String.Format("{0}.{1}{4}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER, sourceNamePart);
-                    }
-                    else
-                    {
-                        maMay = String.Format("{0}.{1}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER);
-                    }
-                    xmlCLS.MaMay = maMay;
+                    xmlCLS.SoLuuHanh = !String.IsNullOrEmpty(machine.CIRCULATION_NUMBER) ? machine.CIRCULATION_NUMBER : "";
+                    // QD 130 format: with medi org code, keep building when a part is missing (unchanged output)
+                    xmlCLS.MaMay = BuildHeinMachineCode(machine, key, maCSKCB, true, false);
 
                     var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == machine.ID).ToList();
 
@@ -2103,21 +2154,8 @@ namespace HIS.Desktop.Plugins.HisMachine
                     xmlCLS.NamSX = machine.MANUFACTURED_YEAR;
                     xmlCLS.NamSD = machine.USED_YEAR;
                     xmlCLS.SoLuuHanh = !String.IsNullOrEmpty(machine.CIRCULATION_NUMBER) ? machine.CIRCULATION_NUMBER : "";
-                    string maMay = "";
-                    if (key == "1")
-                    {
-                        string sourceNamePart =
-                        !string.IsNullOrEmpty(machine.SOURCE_NAME)
-                            ? "[" + machine.SOURCE_NAME + "]"
-                            : string.Empty;
-
-                        maMay = !string.IsNullOrEmpty(sourceNamePart) ? String.Format("{0}.{1}{3}.{2}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, machine.SERIAL_NUMBER, sourceNamePart) : String.Format("{0}.{1}.{2}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, machine.SERIAL_NUMBER);
-                    }
-                    else
-                    {
-                        maMay = String.Format("{0}.{1}.{2}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, machine.SERIAL_NUMBER);
-                    }
-                    xmlCLS.MaMay = maMay;
+                    // TT12 format: without medi org code, keep building when a part is missing (unchanged output)
+                    xmlCLS.MaMay = BuildHeinMachineCode(machine, key, null, false, false);
 
                     var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == machine.ID).ToList();
 
