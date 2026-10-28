@@ -38,6 +38,14 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking
         internal const string MOSHIS_HIS_TREATMENT_GET_SERVICE_REQ_FOR_RECORD_CHECKING =
             "api/HisTreatment/GetServiceReqForRecordChecking";
 
+        /// <summary>
+        /// Save / delete the draft of the rejection content of one record (task 57750).
+        /// Input  : MOS.SDO.HisTreatmentRejectStoreDraftSDO { TreatmentId, Draft } - Draft empty = delete.
+        /// Output : HIS_TREATMENT after update. Does NOT change APPROVAL_STORE_STT_ID.
+        /// </summary>
+        internal const string MOSHIS_HIS_TREATMENT_SAVE_REJECT_STORE_DRAFT =
+            "api/HisTreatment/SaveRejectStoreDraft";
+
         internal const string EMR_DOCUMENT_GETVIEW = "api/EmrDocument/GetView";
         internal const string EMR_DOCUMENT_TYPE_GET = "api/EmrDocumentType/Get";
         internal const string EMR_SIGN_GETVIEW = "api/EmrSign/GetView";

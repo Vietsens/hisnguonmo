@@ -402,4 +402,22 @@
   <data name="FormHisTreatmentRecordChecking.repositoryItemButtonCreateDoc.Caption" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="FormHisTreatmentRecordChecking.lblStatus.HasDraft" xml:space="preserve">
+    <value>Has a draft of the rejection content</value>
+  </data>
+  <data name="frmContentFailed.btnSaveDraft.Text" xml:space="preserve">
+    <value>Save draft</value>
+  </data>
+  <data name="frmContentFailed.btnSaveDraft.ToolTip" xml:space="preserve">
+    <value>Save the text as a draft of this record without changing its status</value>
+  </data>
+  <data name="frmContentFailed.lblDraftInfo.NoDraft" xml:space="preserve">
+    <value>No draft</value>
+  </data>
+  <data name="frmContentFailed.lblDraftInfo.Format" xml:space="preserve">
+    <value>Draft saved at {0} by {1}</value>
+  </data>
+  <data name="frmContentFailed.lblCounter.Format" xml:space="preserve">
+    <value>{0} / {1} bytes</value>
+  </data>
 </root>

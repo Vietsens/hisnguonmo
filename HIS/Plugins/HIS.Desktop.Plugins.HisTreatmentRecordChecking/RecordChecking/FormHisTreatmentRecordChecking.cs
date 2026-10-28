@@ -143,6 +143,12 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         private bool hasSelectedTreatment = false;
         /// <summary>ACS controls granted to the current account - drives the approval buttons.</summary>
         private List<ACS_CONTROL> controlAcs;
+
+        /// <summary>Ban tam "Noi dung khong dat" cua ho so dang xem (viec 57750). Khong bao gio null.</summary>
+        private ADO.RecordDraftADO currentDraft = new ADO.RecordDraftADO();
+
+        /// <summary>Nhan trang thai chot duyet (chua kem dau hieu ban tam) de ghep lai khi ban tam thay doi.</summary>
+        private string currentStatusCaption = "";
         #endregion
 
         public FormHisTreatmentRecordChecking()
