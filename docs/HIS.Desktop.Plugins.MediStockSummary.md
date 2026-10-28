@@ -22,6 +22,14 @@
 5. Thao tác trên 1 dòng chi tiết: Khóa / Mở khóa lô (`HIS_MEDICINE`, `HIS_MATERIAL`), Trả về tồn (RETURN_AVAILABLE), Xem chi tiết, In thẻ kho theo ngày.
 6. Xuất kết quả: In báo cáo MPS (Mrs00067 / Mrs00075 / Mrs00076 / Mrs00085) hoặc Xuất Excel theo template `DanhMucThuoc.xls` / `DanhMucVatTu.xls` / xuất máu qua `hisBloodProcessor.Export`.
 
+### Đường kẻ phân cách trên lưới tồn (57700)
+
+Cả 3 lưới Thuốc / Vật tư / Máu khởi tạo với `IsShowSeparatorLine = true`:
+- Phân loại dòng theo cây trả về: dòng lô `isTypeNode = false` (lô thuốc, lô vật tư, túi máu); dòng nhóm cha = dòng loại có dòng con cũng là dòng loại; còn lại là dòng thuốc.
+- Kẻ ngang dưới mỗi dòng đang hiển thị: dòng này và dòng ngay dưới đều là lô cùng `ParentNodeId` → nét đứt; còn lại (giữa hai thuốc, giữa dòng thuốc và lô đầu, trước/sau dòng nhóm) → nét liền. Tính theo dòng đang thấy nên tự đúng khi Thu gọn theo thuốc / Thu gọn tất cả / tìm kiếm.
+- Kẻ dọc giữa các cột (`OptionsView.ShowVertLines`).
+- Dòng nhóm cha in đậm. Màu cảnh báo cũ (dưới tồn tối thiểu, ưu tiên, HSD, dòng đang chọn) giữ nguyên. Xuất Excel / In không đổi.
+
 ### Sơ đồ luồng xuất Excel
 
 ```
@@ -100,6 +108,8 @@ btnXuatExcel_Click
 | HIS.UC.HisMaterialInStock | ucMaterialInfo | TreeList tồn kho vật tư |
 | HisBloodInStock (UC máu) | ucBloodInfo | TreeList tồn kho máu |
 | HIS.UC.MediStock | gridControlMediStock | Grid kho bên trái |
+
+Ba UC TreeList (DLL `HIS.UC.MedicineInStock`, `HIS.UC.MaterialInStock`, `HIS.UC.BloodTypeInStock`) có tùy chọn `IsShowSeparatorLine` trong InitADO (mặc định tắt, chỉ màn Tồn kho bật). Các màn khác dùng chung UC (MedicineMediStockSummary, ExpMestDepaCreate, MediStockSummaryByExpireDate) không truyền nên giữ nguyên.
 
 ## 5. API Endpoints
 
@@ -184,6 +194,7 @@ Plugin này không mở plugin ngoài (chỉ mở form con `frmMediCardByDateRep
 | 20/05/2026 | dangth | [42819] Fix bug "Xuất Excel theo ĐK" — màn hình hiện N thuốc nhưng Excel chỉ ra 1 thuốc. Trước đây luồng xuất chỉ giữ detail-lot (`!isTypeNode && ID > 0`) nên loại thuốc đang hiện ở chế độ thu gọn mà không có lot hợp lệ sẽ bị mất. Sửa `UCMediStockSummary.LoadPrint`: bổ sung fallback — với mỗi type-node `IS_LEAF=1` chưa có detail-lot pass filter, xuất chính type-node làm 1 dòng (dùng AMOUNT/AvailableAmount đã aggregate). Điều chỉnh `GroupBy` để tách type-node (`TN_<NodeId>`) và detail (`DT_<ID>`); `dicData` dùng key âm `-MEDICINE_TYPE_ID` / `-MATERIAL_TYPE_ID` cho type-node để tránh collision khi ID=0; `medicineIds` / `materialIds` truyền vào `HisMedicinePaty/Get` chỉ chứa ID detail-lot dương. Áp dụng cho cả thuốc và vật tư. |
 | 05/06/2026 | tuanln | [FE] Bổ sung cột `Thời gian đóng gói` (FieldName `PackingTimeStr`) đứng ngay sau cột `Hạn sử dụng` trong cây tồn kho **Máu** (`InitHisBloodTree`). Cột unbound, fill trong `bloodType_CustomUnboundColumnData` từ `HisBloodInStockSDO.PackingTime` (long, backend đã bổ sung) định dạng bằng `TimeNumberToTimeString`. Dời `VisibleIndex` các cột sau: Ngày còn lại 9→10, Nhà cung cấp 10→11, Dung tích 11→12, Số lượng tồn 12→13. Đồng thời đổi định dạng cột `Hạn sử dụng` (`ExpiredDateStr`) từ `TimeNumberToDateString` (dd/MM/yyyy) sang `TimeNumberToTimeString` (dd/MM/yyyy HH:mm:ss), nới width 120→140. |
 | 25/08/2026 | huannh | [BV Nhi đồng 115] Thẻ kho thuốc (Mrs00067 → Mps000217): cột "Diễn giải" ghi rõ **xuất từ kho nào sang tủ trực nào** (và nhập từ kho nào vào tủ trực nào), đồng thời hiển thị **mã bệnh nhân / mã điều trị** ở nội dung xuất. Code: `Mps000217PDO.Mrs00067RDO` bổ sung `FROM_MEDI_STOCK_NAME`, `TO_MEDI_STOCK_NAME`, `TDL_PATIENT_CODE`, `TDL_TREATMENT_CODE`, `TDL_PATIENT_NAME` và property tổng hợp `CONTENT`; thông tin bệnh nhân lấy từ `V_HIS_EXP_MEST`/`V_HIS_IMP_MEST` cho MỌI loại phiếu (trước đây chỉ lấy cho phiếu bán lẻ/đơn thuốc); thêm overload constructor phiếu nhập nhận `List<HIS_MEDI_STOCK>`; fix NullReferenceException khi phiếu chuyển kho không tìm thấy kho nhập trong danh mục (lỗi này làm mất luôn tên loại phiếu của dòng chuyển kho). `CreateReport/Mrs00067.cs` (3 plugin: MediStockSummary, MediStockSummaryWithImpExp, AnticipateCreateV2) hoist `BackendDataWorker.Get<>` ra ngoài vòng lặp và copy các trường mới khi gộp nhóm theo phiếu. Template: ô "Diễn giải" dùng `<#Report.CONTENT;>` / `<#ListMedicine.CONTENT;>`; nới cột `Tồn` (I) 11.3→16.5 và thu cột `Diễn giải` (F) 32.7→27.5 để số tồn không bị hiển thị `######`. Phiếu xuất tổng hợp phòng khám (`HIS_EXP_MEST_TYPE.ID__THPK`) gom nhiều bệnh nhân: giữ 1 dòng thẻ kho, liệt kê mã BN / mã điều trị của các đơn con qua `Mrs00067RDO.JoinDistinct`, tên BN chỉ hiện khi phiếu có duy nhất 1 BN (`SingleOrEmpty`). NCC chỉ hiển thị ở dòng nhập (trước đó dòng xuất cũng hiện NCC của lô thuốc gây nhầm lẫn). Bổ sung `Mrs00067.FillTreatmentInfo` — khi phiếu xuất không lưu sẵn `TDL_TREATMENT_CODE` (gặp ở luồng tổng hợp phòng khám), tra `V_HIS_TREATMENT` theo `TDL_TREATMENT_ID` của dòng chi tiết (`HIS_TREATMENT_GETVIEW`, chunk theo `MAX_REQUEST_LENGTH_PARAM`, chỉ gọi khi thực sự thiếu) để lấy `TREATMENT_CODE` / `TDL_PATIENT_CODE` / `TDL_PATIENT_NAME`. |
+| 27/10/2026 | phuongnm | [57700] BV HAGL — Đường kẻ phân cách trên lưới tồn 3 tab Thuốc / Vật tư / Máu: nét liền giữa các thuốc, nét đứt giữa các lô cùng thuốc, kẻ dọc giữa các cột, in đậm dòng nhóm cha. UC `HIS.UC.MedicineInStock`, `HIS.UC.MaterialInStock`, `HIS.UC.BloodTypeInStock`: thêm `IsShowSeparatorLine` vào InitADO; khi bật thì `ShowVertLines = true` (màu `Appearance.VertLine`), vẽ đường ngang ở sự kiện `Paint` theo `ViewInfo.RowsInfo.Rows`, đặt font đậm ở `NodeCellStyle` trước khi gọi delegate của plugin. Plugin: `InitMedicineTree` / `InitHisMaterialInStockTree` / `InitHisBloodTree` truyền `IsShowSeparatorLine = true`. |
 
 ## 9. Test Cases
 
@@ -198,6 +209,17 @@ Plugin này không mở plugin ngoài (chỉ mở form con `frmMediCardByDateRep
 - [ ] Chọn kho → tích `chkMaterial` → tích `chkExportExcel` → Xuất Excel → cột `Nhóm cha` hiển thị đúng tên loại vật tư cha.
 - [ ] Chọn kho → tích `chkMaterial` → KHÔNG tích `chkExportExcel` → Xuất Excel → cột `Nhóm cha` được điền đầy đủ từ API.
 - [ ] Vật tư không có node cha → cột `Nhóm cha` trống, không phá vỡ format file.
+
+### Đường kẻ phân cách (57700)
+
+- [ ] Tab Thuốc, chế độ Chi tiết: thuốc có nhiều lô → các lô ngăn nét đứt; dòng thuốc với lô đầu, lô cuối với dòng kế tiếp → nét liền.
+- [ ] Dòng nhóm (vd `1.THUỐC GÂY NGHIỆN`) in đậm mọi cột; dòng thuốc, dòng lô chữ thường.
+- [ ] Có đường dọc giữa các cột; kéo đổi độ rộng / đổi thứ tự / ẩn cột → đường dọc đi theo.
+- [ ] Thu gọn theo thuốc / Thu gọn tất cả / gõ tìm kiếm → đường kẻ đúng theo dòng còn thấy.
+- [ ] Chọn nhiều kho: cùng thuốc ở 2 kho → lô 2 kho ngăn nét liền.
+- [ ] Tab Vật tư, tab Máu (túi máu cùng loại máu + ABO/Rh) → cùng quy tắc.
+- [ ] Màu cảnh báo cũ (chữ đỏ dưới tồn tối thiểu, chữ xanh ưu tiên, nền cảnh báo HSD, nền vàng dòng đang chọn) vẫn hiện.
+- [ ] Màn khác dùng chung UC (MedicineMediStockSummary, ExpMestDepaCreate, MediStockSummaryByExpireDate) không có đường kẻ, không in đậm.
 
 ### Hồi quy
 

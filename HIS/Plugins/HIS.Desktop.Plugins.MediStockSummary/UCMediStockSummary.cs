@@ -342,6 +342,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 HisMedicineInStockInitADO ado = new HisMedicineInStockInitADO();
                 ado.HisMedicineInStockColumns = new List<HisMedicineInStockColumn>();
                 ado.IsShowSearchPanel = true;
+                ado.IsShowSeparatorLine = true;
                 ado.KeyFieldName = "NodeId";
                 ado.ParentFieldName = "ParentNodeId";
                 ado.NameButtonClose = Inventec.Common.Resource.Get.Value("UCMediStockSummary.NameButtonClose", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -599,6 +600,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 HisMaterialInStockInitADO ado = new HisMaterialInStockInitADO();
                 ado.HisMaterialInStockColumns = new List<HisMaterialInStockColumn>();
                 ado.IsShowSearchPanel = true;
+                ado.IsShowSeparatorLine = true;
                 ado.KeyFieldName = "NodeId";
                 ado.ParentFieldName = "ParentNodeId";
                 ado.NameButtonClose = Inventec.Common.Resource.Get.Value("UCMediStockSummary.NameButtonClose", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -821,6 +823,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 HisBloodTypeInStockInitADO ado = new HisBloodTypeInStockInitADO();
                 ado.HisBloodTypeInStockColumns = new List<HisBloodTypeInStockColumn>();
                 ado.IsShowSearchPanel = true;
+                ado.IsShowSeparatorLine = true;
                 ado.KeyFieldName = "NodeId";
                 ado.ParentFieldName = "ParentNodeId";
                 ado.NameButtonClose = Inventec.Common.Resource.Get.Value("UCMediStockSummary.NameButtonClose", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

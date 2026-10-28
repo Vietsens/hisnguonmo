@@ -62,6 +62,10 @@ namespace HIS.UC.HisMaterialInStock.Run
         btnLock_buttonClick btnLock_buttonClick;
         btnUnLock_buttonClick btnUnLock_buttonClick;
         bool IsShowCheckNode;
+        bool isShowSeparatorLine;
+        Font fontGroupNode;
+        Pen penSeparatorSolid;
+        Pen penSeparatorDash;
         DevExpress.Utils.ImageCollection selectImageCollection;
         DevExpress.Utils.ImageCollection stateImageCollection;
         HisMaterialInStockHandler updateSingleRow;
@@ -108,6 +112,10 @@ namespace HIS.UC.HisMaterialInStock.Run
                 if (HisMaterialInStockADO.IsCreateParentNodeWithHisMaterialInStockExpend.HasValue)
                 {
                     this.isCreateParentNodeWithHisMaterialInStockExpend = HisMaterialInStockADO.IsCreateParentNodeWithHisMaterialInStockExpend.Value;
+                }
+                if (HisMaterialInStockADO.IsShowSeparatorLine.HasValue)
+                {
+                    this.isShowSeparatorLine = HisMaterialInStockADO.IsShowSeparatorLine.Value;
                 }
             }
             catch (Exception ex)
@@ -185,6 +193,8 @@ namespace HIS.UC.HisMaterialInStock.Run
             try
             {
                 this.trvService.OptionsView.ShowCheckBoxes = this.IsShowCheckNode;
+                if (this.isShowSeparatorLine)
+                    InitSeparatorLine();
                 if (HisMaterialInStockADO.HisMaterialInStockColumns != null && HisMaterialInStockADO.HisMaterialInStockColumns.Count > 0)
                 {
                     foreach (var svtr in HisMaterialInStockADO.HisMaterialInStockColumns)
@@ -417,6 +427,7 @@ namespace HIS.UC.HisMaterialInStock.Run
         {
             try
             {
+                DisposeSeparatorLine();
                 rowFocus = 0;
                 MediStockIds = null;
                 isCreateParentNodeWithHisMaterialInStockExpend = false;
@@ -490,6 +501,99 @@ namespace HIS.UC.HisMaterialInStock.Run
         }
         #endregion
 
+        #region Separator line
+        private void InitSeparatorLine()
+        {
+            try
+            {
+                this.penSeparatorSolid = new Pen(Color.FromArgb(110, 110, 110));
+                this.penSeparatorDash = new Pen(Color.FromArgb(160, 160, 160));
+                this.penSeparatorDash.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                this.trvService.OptionsView.ShowVertLines = true;
+                this.trvService.Appearance.VertLine.BackColor = Color.FromArgb(205, 205, 205);
+                this.trvService.Appearance.VertLine.Options.UseBackColor = true;
+                this.trvService.Paint += this.trvService_Paint;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //Dòng lô: isTypeNode = false
+        private bool IsLotNode(TreeListNode node)
+        {
+            var data = node != null ? trvService.GetDataRecordByNode(node) as HisMaterialInStockADO : null;
+            return data != null && !data.isTypeNode;
+        }
+
+        //Dòng nhóm cha: dòng loại có dòng con cũng là dòng loại
+        private bool IsGroupNode(TreeListNode node)
+        {
+            if (node == null || !node.HasChildren)
+                return false;
+            var data = trvService.GetDataRecordByNode(node) as HisMaterialInStockADO;
+            var child = trvService.GetDataRecordByNode(node.FirstNode) as HisMaterialInStockADO;
+            return data != null && data.isTypeNode && child != null && child.isTypeNode;
+        }
+
+        //Kẻ ngang dưới mỗi dòng đang hiển thị: dòng này và dòng ngay dưới đều là lô cùng cha thì nét đứt, còn lại nét liền
+        private void trvService_Paint(object sender, PaintEventArgs e)
+        {
+            try
+            {
+                if (!this.isShowSeparatorLine || this.penSeparatorSolid == null)
+                    return;
+                ArrayList rows = trvService.ViewInfo.RowsInfo.Rows;
+                for (int i = 0; i < rows.Count; i++)
+                {
+                    var row = rows[i] as DevExpress.XtraTreeList.ViewInfo.RowInfo;
+                    if (row == null || row.Node == null)
+                        continue;
+                    var next = i + 1 < rows.Count ? rows[i + 1] as DevExpress.XtraTreeList.ViewInfo.RowInfo : null;
+                    bool isDash = next != null && next.Node != null
+                        && next.Node.ParentNode == row.Node.ParentNode
+                        && IsLotNode(row.Node) && IsLotNode(next.Node);
+                    int y = row.Bounds.Bottom - 1;
+                    e.Graphics.DrawLine(isDash ? this.penSeparatorDash : this.penSeparatorSolid, row.Bounds.Left, y, row.Bounds.Right - 1, y);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DisposeSeparatorLine()
+        {
+            try
+            {
+                this.isShowSeparatorLine = false;
+                if (this.trvService != null)
+                    this.trvService.Paint -= this.trvService_Paint;
+                if (this.penSeparatorSolid != null)
+                {
+                    this.penSeparatorSolid.Dispose();
+                    this.penSeparatorSolid = null;
+                }
+                if (this.penSeparatorDash != null)
+                {
+                    this.penSeparatorDash.Dispose();
+                    this.penSeparatorDash = null;
+                }
+                if (this.fontGroupNode != null)
+                {
+                    this.fontGroupNode.Dispose();
+                    this.fontGroupNode = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        #endregion
+
         private void trvService_NodeCellStyle(object sender, DevExpress.XtraTreeList.GetCustomNodeCellStyleEventArgs e)
         {
             try
@@ -499,6 +603,12 @@ namespace HIS.UC.HisMaterialInStock.Run
                 //{
                 //    HisMaterialInStockNodeCellStyle(data, e.Appearance);
                 //}
+                if (this.isShowSeparatorLine && IsGroupNode(e.Node))
+                {
+                    if (this.fontGroupNode == null)
+                        this.fontGroupNode = new Font(e.Appearance.Font, FontStyle.Bold);
+                    e.Appearance.Font = this.fontGroupNode;
+                }
                 var data = trvService.GetDataRecordByNode(e.Node);
                 if (data != null && data is HisMaterialInStockADO)
                 {
