@@ -438,6 +438,18 @@ namespace HIS.UC.UCHeniInfo
         }
 
         /// <summary>
+        /// Ban ghi danh muc khong khai dieu kien nao: Tuyen, Truong hop, Dien dieu tri, Ma co so deu de trong (hoac "*") va So thu tu NULL.
+        /// </summary>
+        private bool IsHeinPatientTypeAllConditionsEmpty(HIS_HEIN_PATIENT_TYPE o)
+        {
+            return string.IsNullOrWhiteSpace(o.RIGHT_ROUTE_CODE)
+                && string.IsNullOrWhiteSpace(o.RIGHT_ROUTE_TYPE_CODE)
+                && string.IsNullOrWhiteSpace(o.TREATMENT_TYPE_IDS)
+                && !IsMediOrgCodeListSpecific(o.HEIN_MEDI_ORG_CODES)
+                && o.NUM_ORDER == null;
+        }
+
+        /// <summary>
         /// Chon ban ghi doi tuong KCB, co xet them tieu chi ma co so KCB ban dau (noi DKKCB tren the):
         /// 1. Ban ghi liet ke ma co so cu the va chua ma DKKCB cua the  -> uu tien cao nhat
         /// 2. Ban ghi de trong hoac "*" (ap dung moi co so)
@@ -557,12 +569,19 @@ namespace HIS.UC.UCHeniInfo
                     // Gop nhom "khai dung Loai dang chon" voi nhom "doi tuong bo trong" (= tat ca) roi chon chung:
                     // dong ghi dich danh ma CSKCB cua the thang -> So thu tu nho nhat (trong xep cuoi) -> ID lon nhat.
                     // Khong uu tien rieng nhom khai dung Loai nua: vien tu dieu khien thu tu bang cot So thu tu.
-                    var mergedList = heinPatientTypeDataFiltered.Union(heinPatientTypeDataNoRoute).ToList();
-                    HIS_HEIN_PATIENT_TYPE minItem = GetHeinPatientTypeByMediOrgPriority(mergedList, dkbdCode);
-                    if (minItem != null && !string.IsNullOrEmpty(minItem.HEIN_PATIENT_TYPE_CODE))
-                        cboHeinPatientType.EditValue = minItem.HEIN_PATIENT_TYPE_CODE;
-                    else
-                        cboHeinPatientType.EditValue = null;
+                    // Dong danh muc null het (Tuyen, Truong hop, Dien dieu tri, Ma co so, So thu tu) khong co dieu kien gi de xet
+                    // => khong tu dong cap nhat: neu khong con dong nao khac thi GIU NGUYEN o Ma dang co (khong xoa, khong dien),
+                    // tranh viec dong nay thang chi vi ID lon nhat.
+                    var mergedList = heinPatientTypeDataFiltered.Union(heinPatientTypeDataNoRoute)
+                        .Where(o => !IsHeinPatientTypeAllConditionsEmpty(o)).ToList();
+                    if (mergedList.Count > 0)
+                    {
+                        HIS_HEIN_PATIENT_TYPE minItem = GetHeinPatientTypeByMediOrgPriority(mergedList, dkbdCode);
+                        if (minItem != null && !string.IsNullOrEmpty(minItem.HEIN_PATIENT_TYPE_CODE))
+                            cboHeinPatientType.EditValue = minItem.HEIN_PATIENT_TYPE_CODE;
+                        else
+                            cboHeinPatientType.EditValue = null;
+                    }
                     //this._previousHeinPatientTypeCode = minItem.HEIN_PATIENT_TYPE_CODE;
                 }
                 //else
