@@ -54,6 +54,35 @@ namespace HIS.UC.PlusInfo
             }
         }
 
+        /// <summary>
+        /// Người dùng chọn nơi làm việc trong combo: tự điền Mã số thuế theo danh mục HIS_WORK_PLACE rồi chuyển tiếp cho plugin (mã QHNS...)
+        /// </summary>
+        void OnWorkPlaceSelected(MOS.EFMODEL.DataModels.HIS_WORK_PLACE data)
+        {
+            try
+            {
+                if (data != null && this.ucTaxCode != null && !this.isSettingValueFromData)
+                {
+                    this.ucTaxCode.SetValue(data.TAX_CODE ?? "");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+            try
+            {
+                if (this.dlgGetWorkPlaceId != null)
+                {
+                    this.dlgGetWorkPlaceId(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
         public void setWorkPlace(object data)
         {
             try

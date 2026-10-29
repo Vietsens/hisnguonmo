@@ -333,21 +333,11 @@ namespace HIS.Desktop.Plugins.BidRegulation.frmBidRegulation
                     if (amount < 0)
                     {
                         var vir_amount = Math.Abs(amount);
-                        if (this.dataMety != null)
+                        decimal availableAmount = GetAvailableAmount();
+                        if (availableAmount < vir_amount)
                         {
-                            if ((this.dataMety.AMOUNT + this.dataMety.ADJUST_AMOUNT ?? 0) < vir_amount)
-                            {
-                                DialogResult rs = MessageBox.Show("Số lượng điều tiết bạn nhập đang vượt quá số lượng thầu");
-                                dxErrorProvider1.SetError(txtAmount, "Số lượng điều tiết bạn nhập đang vượt quá số lượng thầu", ErrorType.Warning);
-                            }
-                        }
-                        else if (this.dataMaty != null)
-                        {
-                            if ((this.dataMaty.AMOUNT + this.dataMaty.ADJUST_AMOUNT ?? 0) < vir_amount)
-                            {
-                                DialogResult rs = MessageBox.Show("Số lượng điều tiết bạn nhập đang vượt quá số lượng thầu");
-                                dxErrorProvider1.SetError(txtAmount, "Số lượng điều tiết bạn nhập đang vượt quá số lượng thầu", ErrorType.Warning);
-                            }
+                            DialogResult rs = MessageBox.Show("Số lượng điều tiết bạn nhập đang vượt quá số lượng thầu");
+                            dxErrorProvider1.SetError(txtAmount, "Số lượng điều tiết bạn nhập đang vượt quá số lượng thầu", ErrorType.Warning);
                         }
                     }
                 }
@@ -357,6 +347,36 @@ namespace HIS.Desktop.Plugins.BidRegulation.frmBidRegulation
                 
                    Inventec.Common.Logging.LogSystem.Warn(ex);;
             }
+        }
+        /// <summary>
+        /// Số lượng còn có thể điều tiết giảm = số lượng thầu + tổng điều tiết hiện có (totalAmount, nạp lại sau mỗi lần thêm/sửa/xóa).
+        /// Khi đang sửa 1 dòng điều tiết thì trừ số lượng cũ của dòng đó ra vì nó đã nằm trong tổng.
+        /// </summary>
+        private decimal GetAvailableAmount()
+        {
+            decimal bidAmount = 0;
+            if (this.dataMety != null)
+            {
+                bidAmount = this.dataMety.AMOUNT;
+            }
+            else if (this.dataMaty != null)
+            {
+                bidAmount = this.dataMaty.AMOUNT;
+            }
+
+            decimal adjustAmount = this.totalAmount;
+            if (btnEdit.Enabled)
+            {
+                if (this.dataMety != null && this.CurrentdataMety != null && this.CurrentdataMety.ID != 0)
+                {
+                    adjustAmount -= (this.CurrentdataMety.AMOUNT ?? 0);
+                }
+                else if (this.dataMaty != null && this.CurrentdataMaty != null && this.CurrentdataMaty.ID != 0)
+                {
+                    adjustAmount -= (this.CurrentdataMaty.AMOUNT ?? 0);
+                }
+            }
+            return bidAmount + adjustAmount;
         }
         private void dxValidationProvider1_ValidationFailed(object sender, ValidationFailedEventArgs e)
         {

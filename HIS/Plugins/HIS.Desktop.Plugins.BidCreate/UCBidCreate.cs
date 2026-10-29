@@ -3096,6 +3096,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
                     {
                         row.ADJUST_AMOUNT = data as decimal?;
+                        gridViewProcess.CloseEditor();
                         gridControlProcess.RefreshDataSource();
                     }));
 
@@ -3108,6 +3109,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
                     {
                         row.ADJUST_AMOUNT = data as decimal?;
+                        gridViewProcess.CloseEditor();
                         gridControlProcess.RefreshDataSource();
                     }));
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", this.currentModuleBase.RoomId, this.currentModuleBase.RoomTypeId, listArgs);

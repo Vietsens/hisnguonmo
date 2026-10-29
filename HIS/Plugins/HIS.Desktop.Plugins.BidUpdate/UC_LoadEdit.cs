@@ -341,6 +341,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     {
                         objData.ADJUST_AMOUNT = data as decimal?;
                         row.ADJUST_AMOUNT = objData.ADJUST_AMOUNT;
+                        gridViewEdit.CloseEditor();
                         gridControlEdit.RefreshDataSource();
                     }));
 

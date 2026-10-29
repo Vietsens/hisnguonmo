@@ -437,6 +437,31 @@ namespace HIS.UC.WorkPlace
                 {
                     cboWorkPlace1.ShowPopup();
                 }
+                else if (e.KeyCode != Keys.Up && e.KeyCode != Keys.Escape && e.KeyCode != Keys.Tab && !e.Control && !e.Alt)
+                {
+                    FocusFirstRowWhenTyping();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Không auto-complete nên sau mỗi lần gõ DevExpress bỏ focus dòng (FocusedRowHandle = MinValue).
+        /// Focus lại dòng đầu của danh sách đã lọc để Enter/Tab chọn được ngay mà text đang gõ không bị thay.
+        /// </summary>
+        private void FocusFirstRowWhenTyping()
+        {
+            try
+            {
+                if (cboWorkPlace1 == null || !cboWorkPlace1.IsPopupOpen) return;
+                var view = cboWorkPlace1.Properties.View;
+                if (view != null && view.RowCount > 0 && !view.IsValidRowHandle(view.FocusedRowHandle))
+                {
+                    view.FocusedRowHandle = 0;
+                }
             }
             catch (Exception ex)
             {
@@ -490,7 +515,15 @@ namespace HIS.UC.WorkPlace
                 columnInfos.Add(new ColumnInfo("WORK_PLACE_CODE", "", 70, 1));
                 columnInfos.Add(new ColumnInfo("WORK_PLACE_NAME", "", 180, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("WORK_PLACE_NAME", "ID", columnInfos, false, 250);
-                ControlEditorLoader.Load(cboWorkPlace, (data != null ? data : this.worlPlaces), controlEditorADO);
+                // Gõ trực tiếp vào combo: tự mở danh sách; cboWorkPlace1 là WorkPlaceGridLookUpEdit (lọc LIKE trên mọi cột chuỗi của lưới: mã + tên, từng từ gõ vào đều phải khớp; không auto-complete)
+                controlEditorADO.ImmediatePopup = true;
+                // Sắp xếp theo tên nơi làm việc (so sánh theo tiếng Việt)
+                List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> source = (data as List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE>) ?? this.worlPlaces;
+                if (source != null)
+                {
+                    source = source.OrderBy(o => o.WORK_PLACE_NAME, StringComparer.Create(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"), true)).ToList();
+                }
+                ControlEditorLoader.Load(cboWorkPlace, (source != null ? (object)source : data), controlEditorADO);
                 Inventec.Common.Logging.LogSystem.Warn("Load Cbo ##############################_____________________________");
   //              SetValue(data);
             }

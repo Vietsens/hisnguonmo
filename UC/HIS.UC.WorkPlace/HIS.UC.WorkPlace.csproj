@@ -51,6 +51,9 @@
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Desktop.CustomControl">
+      <HintPath>..\..\..\lib\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader">
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
     </Reference>
@@ -159,6 +162,7 @@
     <Compile Include="ValidationCombo\ValidationComboFactory.cs" />
     <Compile Include="WorkPlaceGenerate.cs" />
     <Compile Include="WorkPlaceProcessor.cs" />
+    <Compile Include="WorkPlaceGridLookUpEdit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
