@@ -516,4 +516,37 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
   <data name="Xml48hLyDoGhiFileLoi" xml:space="preserve">
     <value>Could not write the XML file: {0}</value>
   </data>
+  <data name="Xml48hMenuXuatTay" xml:space="preserve">
+    <value>Export 48-hour XML</value>
+  </data>
+  <data name="Xml48hDangChay" xml:space="preserve">
+    <value>A 48-hour XML export is still running. Wait for it to finish, then try again.</value>
+  </data>
+  <data name="Xml48hChuaKhaiThuMuc" xml:space="preserve">
+    <value>The 48-hour XML folder is not set (Save folder button).</value>
+  </data>
+  <data name="Xml48hCanhBaoTuDongChuaKhaiThuMuc" xml:space="preserve">
+    <value>"Auto export XML of treatments 48 hours after admission" is ticked but the 48-hour XML folder is not set (Save folder button). Auto send keeps running but no 48-hour XML is exported until the folder is set.</value>
+  </data>
+  <data name="Xml48hHoiXuatLai" xml:space="preserve">
+    <value>{0} treatment(s) already have a 48-hour XML. Exporting again overwrites the old file. Continue?</value>
+  </data>
+  <data name="Xml48hKetQuaXuatTay" xml:space="preserve">
+    <value>48-hour XML export: {0} succeeded, {1} failed, {2} not eligible.</value>
+  </data>
+  <data name="Xml48hVaConLai" xml:space="preserve">
+    <value>... and {0} more (see log).</value>
+  </data>
+  <data name="Xml48hLyDoKhongPhaiDieuTri" xml:space="preserve">
+    <value>Not an outpatient/inpatient treatment with an admission number</value>
+  </data>
+  <data name="Xml48hLyDoChuaVaoKhoa" xml:space="preserve">
+    <value>No clinical admission time</value>
+  </data>
+  <data name="Xml48hLyDoChuaDu48h" xml:space="preserve">
+    <value>Less than 48 hours since clinical admission (due at {0})</value>
+  </data>
+  <data name="Xml48hLyDoRaVienTruoc48h" xml:space="preserve">
+    <value>Discharged before 48 hours after clinical admission</value>
+  </data>
 </root>
