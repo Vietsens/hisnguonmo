@@ -144,6 +144,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         {
                             txtBuyerAddress.Text = resultPatientType.ADDRESS;
                         }
+                        if (chkAddressWorkPlace.Checked)
+                        {
+                            string workPlaceAddress = GetBuyerWorkPlaceAddress();
+                            if (!String.IsNullOrWhiteSpace(workPlaceAddress))
+                            {
+                                txtBuyerAddress.Text = workPlaceAddress;
+                            }
+                        }
 
                         if (!string.IsNullOrEmpty(data.TDL_PATIENT_CCCD_NUMBER))
                         {

@@ -402,4 +402,22 @@
   <data name="FormHisTreatmentRecordChecking.repositoryItemButtonCreateDoc.Caption" xml:space="preserve">
     <value>Tạo</value>
   </data>
+  <data name="FormHisTreatmentRecordChecking.lblStatus.HasDraft" xml:space="preserve">
+    <value>Có bản tạm nội dung không đạt</value>
+  </data>
+  <data name="frmContentFailed.btnSaveDraft.Text" xml:space="preserve">
+    <value>Lưu tạm</value>
+  </data>
+  <data name="frmContentFailed.btnSaveDraft.ToolTip" xml:space="preserve">
+    <value>Lưu nội dung đang nhập làm bản tạm của hồ sơ, không đổi trạng thái hồ sơ</value>
+  </data>
+  <data name="frmContentFailed.lblDraftInfo.NoDraft" xml:space="preserve">
+    <value>Chưa có bản tạm</value>
+  </data>
+  <data name="frmContentFailed.lblDraftInfo.Format" xml:space="preserve">
+    <value>Bản tạm lưu lúc {0} bởi {1}</value>
+  </data>
+  <data name="frmContentFailed.lblCounter.Format" xml:space="preserve">
+    <value>{0} / {1} byte</value>
+  </data>
 </root>

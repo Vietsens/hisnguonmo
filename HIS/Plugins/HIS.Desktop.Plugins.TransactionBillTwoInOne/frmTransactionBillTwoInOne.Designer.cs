@@ -168,6 +168,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem72 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem73 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem74 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkAddressWorkPlace = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem85 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem6 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.navigationPage2 = new DevExpress.XtraBars.Navigation.NavigationPage();
@@ -455,6 +457,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlBuyerInfoTab1)).BeginInit();
             this.layoutControlBuyerInfoTab1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkOther.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAddressWorkPlace.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBuyerOrganization.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBuyerSocialRelationsCode.Properties)).BeginInit();
@@ -476,6 +479,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem72)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem73)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem74)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem85)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).BeginInit();
             this.navigationPage2.SuspendLayout();
@@ -1745,6 +1749,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.layoutControlBuyerInfoTab1.AutoScroll = false;
             this.layoutControlBuyerInfoTab1.Controls.Add(this.chkOther);
+            this.layoutControlBuyerInfoTab1.Controls.Add(this.chkAddressWorkPlace);
             this.layoutControlBuyerInfoTab1.Controls.Add(this.cboBuyerOrganization);
             this.layoutControlBuyerInfoTab1.Controls.Add(this.txtBuyerSocialRelationsCode);
             this.layoutControlBuyerInfoTab1.Controls.Add(this.txtCCCD);
@@ -1773,6 +1778,18 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.chkOther.StyleController = this.layoutControlBuyerInfoTab1;
             this.chkOther.TabIndex = 50;
             this.chkOther.CheckedChanged += new System.EventHandler(this.chkOther_CheckedChanged);
+            //
+            // chkAddressWorkPlace
+            //
+            this.chkAddressWorkPlace.Location = new System.Drawing.Point(550, 26);
+            this.chkAddressWorkPlace.MenuManager = this.barManager1;
+            this.chkAddressWorkPlace.Name = "chkAddressWorkPlace";
+            this.chkAddressWorkPlace.Properties.Caption = "";
+            this.chkAddressWorkPlace.Size = new System.Drawing.Size(22, 19);
+            this.chkAddressWorkPlace.StyleController = this.layoutControlBuyerInfoTab1;
+            this.chkAddressWorkPlace.TabIndex = 50;
+            this.chkAddressWorkPlace.ToolTip = "Lấy địa chỉ nơi làm việc";
+            this.chkAddressWorkPlace.CheckedChanged += new System.EventHandler(this.chkAddressWorkPlace_CheckedChanged);
             // 
             // cboBuyerOrganization
             // 
@@ -1883,6 +1900,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem61,
             this.layoutControlItem59,
             this.layoutControlItem62,
+            this.layoutControlItem85,
             this.layoutControlItem60,
             this.layoutControlItem69,
             this.layoutControlItem71,
@@ -1943,7 +1961,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem62.Control = this.txtBuyerAddress;
             this.layoutControlItem62.Location = new System.Drawing.Point(313, 24);
             this.layoutControlItem62.Name = "layoutControlItem62";
-            this.layoutControlItem62.Size = new System.Drawing.Size(261, 48);
+            this.layoutControlItem62.Size = new System.Drawing.Size(235, 48);
             this.layoutControlItem62.Text = "Địa chỉ:";
             this.layoutControlItem62.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem62.TextSize = new System.Drawing.Size(65, 20);
@@ -2024,6 +2042,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem74.Size = new System.Drawing.Size(65, 23);
             this.layoutControlItem74.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem74.TextVisible = false;
+            //
+            // layoutControlItem85
+            //
+            this.layoutControlItem85.Control = this.chkAddressWorkPlace;
+            this.layoutControlItem85.Location = new System.Drawing.Point(548, 24);
+            this.layoutControlItem85.Name = "layoutControlItem85";
+            this.layoutControlItem85.Size = new System.Drawing.Size(26, 48);
+            this.layoutControlItem85.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem85.TextVisible = false;
             // 
             // emptySpaceItem5
             // 
@@ -4961,6 +4988,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlBuyerInfoTab1)).EndInit();
             this.layoutControlBuyerInfoTab1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkOther.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAddressWorkPlace.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBuyerOrganization.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBuyerSocialRelationsCode.Properties)).EndInit();
@@ -4982,6 +5010,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem72)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem73)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem74)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem85)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).EndInit();
             this.navigationPage2.ResumeLayout(false);
@@ -5457,6 +5486,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem73;
         private DevExpress.XtraEditors.CheckEdit chkOther;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem74;
+        private DevExpress.XtraEditors.CheckEdit chkAddressWorkPlace;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem85;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem6;
         private DevExpress.XtraEditors.GridLookUpEdit cboBuyerOrganization2;

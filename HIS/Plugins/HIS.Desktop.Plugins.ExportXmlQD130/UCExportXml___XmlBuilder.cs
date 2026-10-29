@@ -273,7 +273,37 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         ListHivTreatment = new List<HIS_HIV_TREATMENT>();
                         ListTuberculosisTreat = new List<HIS_TUBERCULOSIS_TREAT>();
                         ListExpMedimateUsed = new List<HIS_EXP_MEDIMATE_USED>();
-                        CreateThreadGetData(limit);
+                        #endregion
+
+            XmlBatchDataADO holder = CurrentBatchHolder();
+            CreateThreadGetData(limit, holder);
+            XmlBuildContextADO xmlBuildContext = BuildXmlBuildContext(holder, typeXml, username, password, address, xml130Api, xmlGdykApi);
+            //Ban cu sap xep lai danh sach HIV roi gan nguoc vao truong cua man hinh - giu nguyen
+            ListHivTreatment = holder.HivTreatments;
+            return xmlBuildContext;
+        }
+
+        /// <summary>
+        /// Giong <see cref="LoadXmlBatchData"/> nhung nap vao ban giu RIENG, khong dung bo truong
+        /// du lieu cua man hinh - dung cho luong chay nen song song voi cac thao tac khac (viec 61380).
+        /// </summary>
+        /// <param name="treatments">Ho so (V_HIS_TREATMENT_12) nap duoc cua lo</param>
+        internal XmlBuildContextADO LoadXmlBatchDataIsolated(
+            List<V_HIS_TREATMENT_1> limit, string typeXml, string username, string password,
+            string address, string xml130Api, string xmlGdykApi, out List<V_HIS_TREATMENT_12> treatments)
+        {
+            XmlBatchDataADO holder = XmlBatchDataADO.CreateEmpty();
+            CreateThreadGetData(limit, holder);
+            treatments = holder.Treatments;
+            return BuildXmlBuildContext(holder, typeXml, username, password, address, xml130Api, xmlGdykApi);
+        }
+
+        /// <summary>Gom du lieu da nap cua mot lo thanh cac tu dien tra theo ma dot dieu tri</summary>
+        private XmlBuildContextADO BuildXmlBuildContext(
+            XmlBatchDataADO holder, string typeXml, string username, string password,
+            string address, string xml130Api, string xmlGdykApi)
+        {
+                        #region
                         Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> dicPatientTypeAlter = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
                         Dictionary<long, List<V_HIS_SERE_SERV_2>> dicSereServ = new Dictionary<long, List<V_HIS_SERE_SERV_2>>();
                         Dictionary<long, List<V_HIS_SERE_SERV_TEIN>> dicSereServTein = new Dictionary<long, List<V_HIS_SERE_SERV_TEIN>>();
@@ -291,9 +321,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         Dictionary<long, List<HIS_EXP_MEDIMATE_USED>> dicExpUsedByExpMestMedicineId = new Dictionary<long, List<HIS_EXP_MEDIMATE_USED>>();
                         Dictionary<long, List<HIS_EXP_MEDIMATE_USED>> dicExpUsedByExpMestMaterialId = new Dictionary<long, List<HIS_EXP_MEDIMATE_USED>>();
 
-                        if (ListExpMedimateUsed != null && ListExpMedimateUsed.Count > 0)
+                        if (holder.ExpMedimateUseds != null && holder.ExpMedimateUseds.Count > 0)
                         {
-                            foreach (var u in ListExpMedimateUsed)
+                            foreach (var u in holder.ExpMedimateUseds)
                             {
                                 if (u == null) continue;
 
@@ -315,18 +345,18 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                         }
 
-                        if (ListTuberculosisTreat != null && ListTuberculosisTreat.Count > 0)
+                        if (holder.TuberculosisTreats != null && holder.TuberculosisTreats.Count > 0)
                         {
-                            foreach (var item in ListTuberculosisTreat)
+                            foreach (var item in holder.TuberculosisTreats)
                             {
                                 if (!dicTuberculosisTreat.ContainsKey(item.TREATMENT_ID))
                                     dicTuberculosisTreat[item.TREATMENT_ID] = new HIS_TUBERCULOSIS_TREAT();
                                 dicTuberculosisTreat[item.TREATMENT_ID] = item;
                             }
                         }
-                        if (ListPatientTypeAlter != null && ListPatientTypeAlter.Count > 0)
+                        if (holder.PatientTypeAlters != null && holder.PatientTypeAlters.Count > 0)
                         {
-                            foreach (var item in ListPatientTypeAlter)
+                            foreach (var item in holder.PatientTypeAlters)
                             {
                                 if (!dicPatientTypeAlter.ContainsKey(item.TREATMENT_ID))
                                     dicPatientTypeAlter[item.TREATMENT_ID] = new List<V_HIS_PATIENT_TYPE_ALTER>();
@@ -334,9 +364,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                         }
 
-                        if (ListSereServ != null && ListSereServ.Count > 0)
+                        if (holder.SereServs != null && holder.SereServs.Count > 0)
                         {
-                            foreach (var sereServ in ListSereServ)
+                            foreach (var sereServ in holder.SereServs)
                             {
                                 if (sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
                                 {
@@ -345,9 +375,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
                                 }
 
-                                if (sereServ.EKIP_ID.HasValue && ListEkipUser != null && ListEkipUser.Count > 0 && sereServ.TDL_TREATMENT_ID.HasValue)
+                                if (sereServ.EKIP_ID.HasValue && holder.EkipUsers != null && holder.EkipUsers.Count > 0 && sereServ.TDL_TREATMENT_ID.HasValue)
                                 {
-                                    var ekips = ListEkipUser.Where(o => o.EKIP_ID == sereServ.EKIP_ID).ToList();
+                                    var ekips = holder.EkipUsers.Where(o => o.EKIP_ID == sereServ.EKIP_ID).ToList();
                                     if (ekips != null && ekips.Count > 0)
                                     {
                                         foreach (var item in ekips)
@@ -362,9 +392,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                         }
 
-                        if (HisSereServTeins != null && HisSereServTeins.Count > 0)
+                        if (holder.SereServTeins != null && holder.SereServTeins.Count > 0)
                         {
-                            foreach (var ssTein in HisSereServTeins)
+                            foreach (var ssTein in holder.SereServTeins)
                             {
                                 if (!ssTein.TDL_TREATMENT_ID.HasValue) continue;
 
@@ -374,9 +404,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 dicSereServTein[ssTein.TDL_TREATMENT_ID.Value].Add(ssTein);
                             }
                         }
-                        if (HisSereServSuin != null && HisSereServSuin.Count > 0)
+                        if (holder.SereServSuins != null && holder.SereServSuins.Count > 0)
                         {
-                            foreach (var ssSuin in HisSereServSuin)
+                            foreach (var ssSuin in holder.SereServSuins)
                             {
 
                                 if (!dicSereServSuin.ContainsKey(ssSuin.TDL_TREATMENT_ID))
@@ -385,9 +415,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 dicSereServSuin[ssSuin.TDL_TREATMENT_ID].Add(ssSuin);
                             }
                         }
-                        if (HisTrackings != null && HisTrackings.Count > 0)
+                        if (holder.Trackings != null && holder.Trackings.Count > 0)
                         {
-                            foreach (var tracking in HisTrackings)
+                            foreach (var tracking in holder.Trackings)
                             {
                                 if (!dicTracking.ContainsKey(tracking.TREATMENT_ID))
                                     dicTracking[tracking.TREATMENT_ID] = new List<HIS_TRACKING>();
@@ -395,9 +425,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 dicTracking[tracking.TREATMENT_ID].Add(tracking);
                             }
                         }
-                        if (ListBaby != null && ListBaby.Count > 0)
+                        if (holder.Babies != null && holder.Babies.Count > 0)
                         {
-                            foreach (var baby in ListBaby)
+                            foreach (var baby in holder.Babies)
                             {
                                 if (!dicBaby.ContainsKey(baby.TREATMENT_ID))
                                     dicBaby[baby.TREATMENT_ID] = new List<V_HIS_BABY>();
@@ -405,17 +435,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 dicBaby[baby.TREATMENT_ID].Add(baby);
                             }
                         }
-                        if (ListHivTreatment != null && ListHivTreatment.Count > 0)
+                        if (holder.HivTreatments != null && holder.HivTreatments.Count > 0)
                         {
-                            ListHivTreatment = ListHivTreatment.OrderBy(o => o.ID).ToList();
-                            foreach (var hivTreatment in ListHivTreatment)
+                            holder.HivTreatments = holder.HivTreatments.OrderBy(o => o.ID).ToList();
+                            foreach (var hivTreatment in holder.HivTreatments)
                             {
                                 dicHivTreatment[hivTreatment.TREATMENT_ID] = hivTreatment;
                             }
                         }
-                        if (HisSereServPttts != null && HisSereServPttts.Count > 0)
+                        if (holder.SereServPttts != null && holder.SereServPttts.Count > 0)
                         {
-                            foreach (var ssPttt in HisSereServPttts)
+                            foreach (var ssPttt in holder.SereServPttts)
                             {
                                 if (!ssPttt.TDL_TREATMENT_ID.HasValue) continue;
 
@@ -426,9 +456,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                         }
 
-                        if (ListDhst != null && ListDhst.Count > 0)
+                        if (holder.Dhsts != null && holder.Dhsts.Count > 0)
                         {
-                            foreach (var item in ListDhst)
+                            foreach (var item in holder.Dhsts)
                             {
                                 if (!dicDhstList.ContainsKey(item.TREATMENT_ID))
                                     dicDhstList[item.TREATMENT_ID] = new List<HIS_DHST>();
@@ -437,9 +467,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                         }
 
-                        if (ListBedlog != null && ListBedlog.Count > 0)
+                        if (holder.BedLogs != null && holder.BedLogs.Count > 0)
                         {
-                            foreach (var bed in ListBedlog)
+                            foreach (var bed in holder.BedLogs)
                             {
                                 if (!dicBedLog.ContainsKey(bed.TREATMENT_ID))
                                     dicBedLog[bed.TREATMENT_ID] = new List<V_HIS_BED_LOG>();
@@ -448,9 +478,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                         }
 
-                        if (ListDebates != null && ListDebates.Count > 0)
+                        if (holder.Debates != null && holder.Debates.Count > 0)
                         {
-                            foreach (var item in ListDebates)
+                            foreach (var item in holder.Debates)
                             {
                                 if (!dicDebate.ContainsKey(item.TREATMENT_ID))
                                     dicDebate[item.TREATMENT_ID] = new List<HIS_DEBATE>();
@@ -458,9 +488,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 dicDebate[item.TREATMENT_ID].Add(item);
                             }
                         }
-                        if (ListMedicalAssessment != null && ListMedicalAssessment.Count > 0)
+                        if (holder.MedicalAssessments != null && holder.MedicalAssessments.Count > 0)
                         {
-                            foreach (var item in ListMedicalAssessment)
+                            foreach (var item in holder.MedicalAssessments)
                             {
                                 if (!dicMedicalAssessment.ContainsKey(item.TREATMENT_ID))
                                     dicMedicalAssessment[item.TREATMENT_ID] = new List<V_HIS_MEDICAL_ASSESSMENT>();

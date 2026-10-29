@@ -96,6 +96,111 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 txtPathXmlGDYK.Text = this.savePathADO.pathXmlGDYK;
                 txtPathCollinearXml.Text = this.savePathADO.pathCollinearXml;
                 txtPathXmlTT12.Text = this.savePathADO.pathXmlTT12;
+                this.InitPathXml48h();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        //Viec 61380: dong Thu muc luu XML ho so du 48 gio. Tao luc chay va CHI tao khi vien bat
+        //HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H = 1 - vien khong dung thi cua so giu nguyen nhu cu.
+        private DevExpress.XtraEditors.TextEdit txtPathXml48h;
+        private DevExpress.XtraEditors.SimpleButton btnPathXml48h;
+        private DevExpress.XtraLayout.LayoutControlItem lciPathXml48h;
+
+        private void InitPathXml48h()
+        {
+            try
+            {
+                if (HisConfigCFG.QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H != "1")
+                    return;
+
+                this.txtPathXml48h = new DevExpress.XtraEditors.TextEdit();
+                this.txtPathXml48h.Name = "txtPathXml48h";
+                this.txtPathXml48h.MenuManager = this.barManager1;
+                this.txtPathXml48h.StyleController = this.layoutControl1;
+                this.txtPathXml48h.Text = this.savePathADO.pathXml48h;
+                //Cho go tay duong dan thu muc mang dung chung (\\may-chu\thu-muc). Ghi ngay khi doi gia tri vi
+                //FormBase huy control truoc su kien FormClosed, luc do khong doc lai o nhap duoc nua.
+                this.txtPathXml48h.EditValueChanged += new System.EventHandler(this.txtPathXml48h_EditValueChanged);
+
+                this.btnPathXml48h = new DevExpress.XtraEditors.SimpleButton();
+                this.btnPathXml48h.Name = "btnPathXml48h";
+                this.btnPathXml48h.Image = global::HIS.Desktop.Plugins.ExportXmlQD130.Properties.Resources.Folder;
+                this.btnPathXml48h.StyleController = this.layoutControl1;
+                this.btnPathXml48h.Click += new System.EventHandler(this.btnPathXml48h_Click);
+
+                int bottomBefore = GetLayoutBottom();
+                this.layoutControl1.BeginUpdate();
+                try
+                {
+                    this.lciPathXml48h = this.layoutControl1.AddItem(string.Empty, this.txtPathXml48h, this.lciPathXml12, DevExpress.XtraLayout.Utils.InsertType.Bottom);
+                    this.lciPathXml48h.Name = "lciPathXml48h";
+                    this.lciPathXml48h.AppearanceItemCaption.Options.UseTextOptions = true;
+                    this.lciPathXml48h.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+                    this.lciPathXml48h.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+                    this.lciPathXml48h.TextSize = new System.Drawing.Size(370, 20);
+                    this.lciPathXml48h.TextToControlDistance = 5;
+                    this.lciPathXml48h.Text = Inventec.Common.Resource.Get.Value("frmSettingSavePath.lciPathXml48h.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                    this.lciPathXml48h.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmSettingSavePath.lciPathXml48h.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                    //Nut dat duoi nut cua dong TT12 (cot nut ben phai), o nhap dat duoi o TT12 - giu dung bo cuc hai cot nhu bon dong san co
+                    DevExpress.XtraLayout.LayoutControlItem lciBtn = this.layoutControl1.AddItem(string.Empty, this.btnPathXml48h, this.layoutControlItem5, DevExpress.XtraLayout.Utils.InsertType.Bottom);
+                    lciBtn.Name = "lciBtnPathXml48h";
+                    lciBtn.TextVisible = false;
+                    lciBtn.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                    lciBtn.MinSize = new System.Drawing.Size(29, 28);
+                    lciBtn.MaxSize = new System.Drawing.Size(29, 28);
+                }
+                finally
+                {
+                    this.layoutControl1.EndUpdate();
+                }
+                //Cua so cao them dung bang phan bo cuc vua dai ra, khong de dong moi bi cat va hien thanh cuon
+                int addHeight = GetLayoutBottom() - bottomBefore;
+                this.ClientSize = new System.Drawing.Size(this.ClientSize.Width, this.ClientSize.Height + (addHeight > 0 ? addHeight : 28));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private int GetLayoutBottom()
+        {
+            int bottom = 0;
+            foreach (DevExpress.XtraLayout.BaseLayoutItem item in this.layoutControl1.Root.Items)
+            {
+                bottom = Math.Max(bottom, item.Location.Y + item.Height);
+            }
+            return bottom;
+        }
+
+        private void txtPathXml48h_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string path48h = this.txtPathXml48h.Text;
+                this.savePathADO.pathXml48h = String.IsNullOrWhiteSpace(path48h) ? null : path48h.Trim();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnPathXml48h_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    this.savePathADO.pathXml48h = fbd.SelectedPath;
+                    txtPathXml48h.Text = this.savePathADO.pathXml48h;
+                }
             }
             catch (Exception ex)
             {

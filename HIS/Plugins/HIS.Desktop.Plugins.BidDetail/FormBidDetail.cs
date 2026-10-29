@@ -919,6 +919,7 @@ namespace HIS.Desktop.Plugins.BidDetail
                 listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
                 {
                     rowMdc.ADJUST_AMOUNT = data as decimal?;
+                    gridViewMedicine.CloseEditor();
                     gridControlMedicine.RefreshDataSource();
                 }));
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", roomId, roomTypeId, listArgs);
@@ -943,6 +944,7 @@ namespace HIS.Desktop.Plugins.BidDetail
                 listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
                 {
                     rowMtr.ADJUST_AMOUNT = data as decimal?;
+                    gridViewMaterial.CloseEditor();
                     gridControlMaterial.RefreshDataSource();
                 }));
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", roomId, roomTypeId, listArgs);
@@ -1054,6 +1056,7 @@ namespace HIS.Desktop.Plugins.BidDetail
                                 listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
                                 {
                                     rowMtr.ADJUST_AMOUNT = data as decimal?;
+                                    gridViewMaterial.CloseEditor();
                                     gridControlMaterial.RefreshDataSource();
                                 }));
                             }

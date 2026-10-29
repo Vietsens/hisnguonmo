@@ -173,6 +173,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\KskSignXmlBhytSDO.cs" />
     <Compile Include="ADO\KskSyncResultADO.cs" />
     <Compile Include="ADO\KskTreatmentCodeImportADO.cs" />
     <Compile Include="UCKskSyncList___ImportFilter.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="KskEnvelopeBuilder.cs" />
     <Compile Include="KskPemUtil.cs" />
     <Compile Include="KskSignImageCompressor.cs" />
+    <Compile Include="KskSignImageComposer.cs" />
     <Compile Include="Preview\frmKskSyncPreview.cs">
       <SubType>Form</SubType>
     </Compile>

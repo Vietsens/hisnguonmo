@@ -284,6 +284,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 //vCong XXXXX - Đấu nối MDInsight soát lỗi hồ sơ XML.
                 //Chỉ tạo nút và cột khi viện đã khai đủ cấu hình; chưa khai thì màn hình giữ nguyên.
                 this.InitMdInsight();
+                //Việc 61380 - Tự động xuất XML hồ sơ đủ 48 giờ. Chỉ chạy khi bật cấu hình và đã khai thư mục.
+                this.InitXml48h();
             }
             catch (Exception ex)
             {
@@ -2288,8 +2290,52 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         #region Thread
         private void CreateThreadGetData(List<V_HIS_TREATMENT_1> listSelection)
         {
+            CreateThreadGetData(listSelection, CurrentBatchHolder());
+        }
+
+        /// <summary>
+        /// Ban giu tro thang toi bo truong du lieu cua man hinh: cac luong cu nap vao dung cac danh sach nhu truoc.
+        /// Doi tuong thanh toan loc dong dich vu chon dung nhu ban cu cua ThreadGetSereServ2.
+        /// </summary>
+        private XmlBatchDataADO CurrentBatchHolder()
+        {
+            XmlBatchDataADO holder = new XmlBatchDataADO
+            {
+                Treatments = HisTreatments,
+                PatientTypeAlters = ListPatientTypeAlter,
+                SereServs = ListSereServ,
+                EkipUsers = ListEkipUser,
+                BedLogs = ListBedlog,
+                Dhsts = ListDhst,
+                Trackings = HisTrackings,
+                SereServTeins = HisSereServTeins,
+                SereServSuins = HisSereServSuin,
+                SereServPttts = HisSereServPttts,
+                Debates = ListDebates,
+                Babies = ListBaby,
+                MedicalAssessments = ListMedicalAssessment,
+                HivTreatments = ListHivTreatment,
+                TuberculosisTreats = ListTuberculosisTreat,
+                ExpMedimateUseds = ListExpMedimateUsed
+            };
+            if (isExportXml)
+            {
+                if (this.patientTypeTTSelecteds != null && this.patientTypeTTSelecteds.Count > 0)
+                    holder.PatientTypeTtIds = this.patientTypeTTSelecteds.Select(o => o.ID).ToList();
+            }
+            else
+            {
+                if (this.configSync?.patientTypeTTIds != null && this.configSync.patientTypeTTIds.Count > 0)
+                    holder.PatientTypeTtIds = this.configSync.patientTypeTTIds.ToList();
+            }
+            return holder;
+        }
+
+        private void CreateThreadGetData(List<V_HIS_TREATMENT_1> listSelection, XmlBatchDataADO holder)
+        {
             try
             {
+                XmlBatchThreadArgADO arg = new XmlBatchThreadArgADO { Treatments = listSelection, Holder = holder };
                 System.Threading.Thread PatientTypeAlter = new System.Threading.Thread(ThreadGetPatientTypeAlter);
                 System.Threading.Thread Baby = new System.Threading.Thread(ThreadGetBaby);
                 System.Threading.Thread MedicalAssessment = new System.Threading.Thread(ThreadGetMedicalAssessment);
@@ -2301,15 +2347,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 System.Threading.Thread TuberculosisTreat = new System.Threading.Thread(ThreadTuberculosisTreat);
                 try
                 {
-                    TuberculosisTreat.Start(listSelection);
-                    PatientTypeAlter.Start(listSelection);
-                    Baby.Start(listSelection);
-                    MedicalAssessment.Start(listSelection);
-                    SereServ2.Start(listSelection);
-                    Treatment12.Start(listSelection);
-                    Dhst_Tracking.Start(listSelection);
-                    SereServTein_PTTT.Start(listSelection);
-                    SereServSuin.Start(listSelection);
+                    TuberculosisTreat.Start(arg);
+                    PatientTypeAlter.Start(arg);
+                    Baby.Start(arg);
+                    MedicalAssessment.Start(arg);
+                    SereServ2.Start(arg);
+                    Treatment12.Start(arg);
+                    Dhst_Tracking.Start(arg);
+                    SereServTein_PTTT.Start(arg);
+                    SereServSuin.Start(arg);
                     TuberculosisTreat.Join();
                     PatientTypeAlter.Join();
                     Baby.Join();
@@ -2344,7 +2390,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (obj == null) return;
-                List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                XmlBatchThreadArgADO arg = (XmlBatchThreadArgADO)obj;
+                List<V_HIS_TREATMENT_1> listSelection = arg.Treatments;
+                XmlBatchDataADO holder = arg.Holder;
 
                 var skip = 0;
                 while (listSelection.Count - skip > 0)
@@ -2359,7 +2407,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resulTein = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_TUBERCULOSIS_TREAT>>("api/HisTuberculosisTreat/Get", ApiConsumers.MosConsumer, filter, param);
                     if (resulTein != null && resulTein.Count > 0)
                     {
-                        ListTuberculosisTreat.AddRange(resulTein);
+                        holder.TuberculosisTreats.AddRange(resulTein);
                     }
 
                 }
@@ -2374,7 +2422,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (obj == null) return;
-                List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                XmlBatchThreadArgADO arg = (XmlBatchThreadArgADO)obj;
+                List<V_HIS_TREATMENT_1> listSelection = arg.Treatments;
+                XmlBatchDataADO holder = arg.Holder;
 
                 var skip = 0;
                 while (listSelection.Count - skip > 0)
@@ -2389,7 +2439,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resulTein = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_SERE_SERV_SUIN>>("api/HisSereServSuin/GetView", ApiConsumers.MosConsumer, ssTeinFilter, param);
                     if (resulTein != null && resulTein.Count > 0)
                     {
-                        HisSereServSuin.AddRange(resulTein);
+                        holder.SereServSuins.AddRange(resulTein);
                     }
 
                 }
@@ -2404,7 +2454,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (obj == null) return;
-                List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                XmlBatchThreadArgADO arg = (XmlBatchThreadArgADO)obj;
+                List<V_HIS_TREATMENT_1> listSelection = arg.Treatments;
+                XmlBatchDataADO holder = arg.Holder;
 
                 var skip = 0;
                 while (listSelection.Count - skip > 0)
@@ -2419,7 +2471,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resulTein = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN>>("api/HisSereServTein/GetView", ApiConsumers.MosConsumer, ssTeinFilter, param);
                     if (resulTein != null && resulTein.Count > 0)
                     {
-                        HisSereServTeins.AddRange(resulTein);
+                        holder.SereServTeins.AddRange(resulTein);
                     }
 
                     HisSereServPtttViewFilter ssPtttFilter = new HisSereServPtttViewFilter();
@@ -2427,7 +2479,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resultPttt = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_SERE_SERV_PTTT>>("api/HisSereServPttt/GetView", ApiConsumers.MosConsumer, ssPtttFilter, param);
                     if (resultPttt != null && resultPttt.Count > 0)
                     {
-                        HisSereServPttts.AddRange(resultPttt);
+                        holder.SereServPttts.AddRange(resultPttt);
                     }
                 }
             }
@@ -2442,7 +2494,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (obj == null) return;
-                List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                XmlBatchThreadArgADO arg = (XmlBatchThreadArgADO)obj;
+                List<V_HIS_TREATMENT_1> listSelection = arg.Treatments;
+                XmlBatchDataADO holder = arg.Holder;
 
                 var skip = 0;
                 while (listSelection.Count - skip > 0)
@@ -2457,7 +2511,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resultDhst = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter, param);
                     if (resultDhst != null && resultDhst.Count > 0)
                     {
-                        ListDhst.AddRange(resultDhst);
+                        holder.Dhsts.AddRange(resultDhst);
                     }
 
                     HisTrackingFilter trackingFilter = new HisTrackingFilter();
@@ -2465,7 +2519,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resultTracking = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_TRACKING>>("api/HisTracking/Get", ApiConsumers.MosConsumer, trackingFilter, param);
                     if (resultTracking != null && resultTracking.Count > 0)
                     {
-                        HisTrackings.AddRange(resultTracking);
+                        holder.Trackings.AddRange(resultTracking);
                     }
 
                     HisDebateFilter debateFilter = new HisDebateFilter();
@@ -2473,7 +2527,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resultDebate = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_DEBATE>>("api/HisDebate/Get", ApiConsumers.MosConsumer, debateFilter, param);
                     if (resultDebate != null && resultDebate.Count > 0)
                     {
-                        ListDebates.AddRange(resultDebate);
+                        holder.Debates.AddRange(resultDebate);
                     }
                 }
             }
@@ -2488,7 +2542,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (obj == null) return;
-                List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                XmlBatchThreadArgADO arg = (XmlBatchThreadArgADO)obj;
+                List<V_HIS_TREATMENT_1> listSelection = arg.Treatments;
+                XmlBatchDataADO holder = arg.Holder;
 
                 var skip = 0;
                 while (listSelection.Count - skip > 0)
@@ -2502,7 +2558,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resultTreatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_TREATMENT_12>>("api/HisTreatment/GetView12", ApiConsumers.MosConsumer, treatmentFilter, param);
                     if (resultTreatment != null && resultTreatment.Count > 0)
                     {
-                        HisTreatments.AddRange(resultTreatment);
+                        holder.Treatments.AddRange(resultTreatment);
                     }
                 }
             }
@@ -2517,22 +2573,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (obj == null) return;
-                //List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
-                var listSelection = (List<V_HIS_TREATMENT_1>)obj;
-                if (listSelection.Count == 0) return;
+                XmlBatchThreadArgADO arg = (XmlBatchThreadArgADO)obj;
+                var listSelection = arg.Treatments;
+                XmlBatchDataADO holder = arg.Holder;
+                if (listSelection == null || listSelection.Count == 0) return;
 
-                // patient type TT ids dùng 1 lần
-                List<long> patientTypeTtIds = null;
-                if (isExportXml)
-                {
-                    if (this.patientTypeTTSelecteds != null && this.patientTypeTTSelecteds.Count > 0)
-                        patientTypeTtIds = this.patientTypeTTSelecteds.Select(o => o.ID).ToList();
-                }
-                else
-                {
-                    if (this.configSync?.patientTypeTTIds != null && this.configSync.patientTypeTTIds.Count > 0)
-                        patientTypeTtIds = this.configSync.patientTypeTTIds.ToList();
-                }
+                // patient type TT ids dùng 1 lần (chọn sẵn ở CurrentBatchHolder theo đúng cách cũ)
+                List<long> patientTypeTtIds = holder.PatientTypeTtIds;
 
                 // cache tránh gọi used trùng
                 var loadedMedIds = new HashSet<long>();
@@ -2557,7 +2604,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                     if (resultSS != null && resultSS.Count > 0)
                     {
-                        ListSereServ.AddRange(resultSS);
+                        holder.SereServs.AddRange(resultSS);
 
                         //OverrideTransferMediOrgCodeForBlood(resultSS);
 
@@ -2639,7 +2686,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 );
 
                                 if (resultEkip != null && resultEkip.Count > 0)
-                                    ListEkipUser.AddRange(resultEkip);
+                                    holder.EkipUsers.AddRange(resultEkip);
                             }
                         }
                     }
@@ -2654,12 +2701,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     );
 
                     if (resultBed != null && resultBed.Count > 0)
-                        ListBedlog.AddRange(resultBed);
+                        holder.BedLogs.AddRange(resultBed);
                 }
 
                 // add used 1 phát cuối, đã dedupe theo used.ID
                 if (usedById.Count > 0)
-                    ListExpMedimateUsed.AddRange(usedById.Values);
+                    holder.ExpMedimateUseds.AddRange(usedById.Values);
             }
             catch (Exception ex)
             {
@@ -2740,7 +2787,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (obj == null) return;
-                List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                XmlBatchThreadArgADO arg = (XmlBatchThreadArgADO)obj;
+                List<V_HIS_TREATMENT_1> listSelection = arg.Treatments;
+                XmlBatchDataADO holder = arg.Holder;
 
                 var skip = 0;
                 while (listSelection.Count - skip > 0)
@@ -2754,7 +2803,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resultPatientTypeAlter = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, filter, param);
                     if (resultPatientTypeAlter != null && resultPatientTypeAlter.Count > 0)
                     {
-                        ListPatientTypeAlter.AddRange(resultPatientTypeAlter);
+                        holder.PatientTypeAlters.AddRange(resultPatientTypeAlter);
                     }
                 }
             }
@@ -2768,7 +2817,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (obj == null) return;
-                List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                XmlBatchThreadArgADO arg = (XmlBatchThreadArgADO)obj;
+                List<V_HIS_TREATMENT_1> listSelection = arg.Treatments;
+                XmlBatchDataADO holder = arg.Holder;
 
                 var skip = 0;
                 while (listSelection.Count - skip > 0)
@@ -2782,7 +2833,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resultBaby = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BABY>>("api/HisBaby/GetView", ApiConsumers.MosConsumer, filter, param);
                     if (resultBaby != null && resultBaby.Count > 0)
                     {
-                        ListBaby.AddRange(resultBaby);
+                        holder.Babies.AddRange(resultBaby);
                     }
                 }
             }
@@ -2796,7 +2847,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (obj == null) return;
-                List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                XmlBatchThreadArgADO arg = (XmlBatchThreadArgADO)obj;
+                List<V_HIS_TREATMENT_1> listSelection = arg.Treatments;
+                XmlBatchDataADO holder = arg.Holder;
 
                 var skip = 0;
                 while (listSelection.Count - skip > 0)
@@ -2810,7 +2863,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resultMedicalAssessment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_MEDICAL_ASSESSMENT>>("api/HisMedicalAssessment/GetView", ApiConsumers.MosConsumer, filter, param);
                     if (resultMedicalAssessment != null && resultMedicalAssessment.Count > 0)
                     {
-                        ListMedicalAssessment.AddRange(resultMedicalAssessment);
+                        holder.MedicalAssessments.AddRange(resultMedicalAssessment);
                     }
 
                     HisHivTreatmentFilter filterHivTreatment = new HisHivTreatmentFilter();
@@ -2818,7 +2871,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var resultHivTreatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_HIV_TREATMENT>>("api/HisHivTreatment/Get", ApiConsumers.MosConsumer, filterHivTreatment, param);
                     if (resultHivTreatment != null && resultHivTreatment.Count > 0)
                     {
-                        ListHivTreatment.AddRange(resultHivTreatment);
+                        holder.HivTreatments.AddRange(resultHivTreatment);
                     }
                 }
             }
@@ -6387,6 +6440,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     this.currentControlStateRDO.Add(csAddOrUpdate);
                 }
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
+                //Việc 61380 - thư mục XML 48 giờ có thể vừa đổi: chạy lại tiến trình theo thư mục mới
+                this.RestartXml48hTimer();
             }
             catch (Exception ex)
             {

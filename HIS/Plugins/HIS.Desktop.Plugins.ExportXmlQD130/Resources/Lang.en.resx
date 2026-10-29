@@ -501,4 +501,10 @@
   <data name="frmTienGiamDinhResult.export.colSeverity" xml:space="preserve">
     <value>Error severity</value>
   </data>
+  <data name="frmSettingSavePath.lciPathXml48h.Text" xml:space="preserve">
+    <value>XML folder for 48-hour records:</value>
+  </data>
+  <data name="frmSettingSavePath.lciPathXml48h.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>While the XML 130 screen is open, the XML of inpatient and outpatient treatments with an admission number is exported automatically to this folder 48 hours after the clinical admission time.</value>
+  </data>
 </root>

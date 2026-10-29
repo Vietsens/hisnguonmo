@@ -195,6 +195,7 @@
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="Validation\ValidMaxLengthTKCT.cs" />
     <Compile Include="Validation\ValidMaxlengthtxtReceptionRoomCode.cs" />
+    <Compile Include="Validation\ValidNumOrderFrom.cs" />
     <EmbeddedResource Include="HisReceptionRoom\frmHisReceptionRoom.resx">
       <DependentUpon>frmHisReceptionRoom.cs</DependentUpon>
     </EmbeddedResource>

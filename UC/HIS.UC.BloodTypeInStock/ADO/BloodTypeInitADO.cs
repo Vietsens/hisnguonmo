@@ -36,6 +36,10 @@ namespace HIS.UC.HisBloodTypeInStock
         public bool? IsShowCheckNode { get; set; }
         public bool? IsAutoWidth { get; set; }
         public bool? IsShowButtonExpand { get; set; }
+        /// <summary>
+        /// true: kẻ ngang giữa các dòng (túi máu cùng loại nét đứt, còn lại nét liền), kẻ dọc giữa các cột, in đậm dòng nhóm cha
+        /// </summary>
+        public bool? IsShowSeparatorLine { get; set; }
         public HisBloodTypeInStock_NodeCellStyle HisBloodTypeInStockNodeCellStyle { get; set; }
         public HisBloodTypeInStockHandler HisBloodTypeInStockClick { get; set; }
         public HisBloodTypeInStockHandler HisBloodTypeInStockDoubleClick { get; set; }

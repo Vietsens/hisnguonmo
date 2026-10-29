@@ -157,6 +157,9 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnHeinMachineCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnDepartmentName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnRoomNames = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grclIntegrateAddress = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnIs_Action = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -804,6 +807,9 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn7,
             this.gridColumn6,
             this.gridColumn5,
+            this.gridColumnHeinMachineCode,
+            this.gridColumnDepartmentName,
+            this.gridColumnRoomNames,
             this.grclIntegrateAddress,
             this.gridColumn4,
             this.gridColumnIs_Action,
@@ -1055,6 +1061,39 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn5.VisibleIndex = 18;
             this.gridColumn5.Width = 100;
             // 
+            // gridColumnHeinMachineCode
+            // 
+            this.gridColumnHeinMachineCode.Caption = "Mã máy BHYT";
+            this.gridColumnHeinMachineCode.FieldName = "HEIN_MACHINE_CODE";
+            this.gridColumnHeinMachineCode.Name = "gridColumnHeinMachineCode";
+            this.gridColumnHeinMachineCode.OptionsColumn.AllowEdit = false;
+            this.gridColumnHeinMachineCode.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnHeinMachineCode.Visible = true;
+            this.gridColumnHeinMachineCode.VisibleIndex = 19;
+            this.gridColumnHeinMachineCode.Width = 150;
+            // 
+            // gridColumnDepartmentName
+            // 
+            this.gridColumnDepartmentName.Caption = "Tên khoa";
+            this.gridColumnDepartmentName.FieldName = "DEPARTMENT_NAME_STR";
+            this.gridColumnDepartmentName.Name = "gridColumnDepartmentName";
+            this.gridColumnDepartmentName.OptionsColumn.AllowEdit = false;
+            this.gridColumnDepartmentName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnDepartmentName.Visible = true;
+            this.gridColumnDepartmentName.VisibleIndex = 20;
+            this.gridColumnDepartmentName.Width = 120;
+            // 
+            // gridColumnRoomNames
+            // 
+            this.gridColumnRoomNames.Caption = "Tên phòng";
+            this.gridColumnRoomNames.FieldName = "ROOM_NAMES";
+            this.gridColumnRoomNames.Name = "gridColumnRoomNames";
+            this.gridColumnRoomNames.OptionsColumn.AllowEdit = false;
+            this.gridColumnRoomNames.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnRoomNames.Visible = true;
+            this.gridColumnRoomNames.VisibleIndex = 21;
+            this.gridColumnRoomNames.Width = 150;
+            // 
             // grclIntegrateAddress
             // 
             this.grclIntegrateAddress.Caption = "Địa chỉ tích hợp";
@@ -1063,7 +1102,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.grclIntegrateAddress.OptionsColumn.AllowEdit = false;
             this.grclIntegrateAddress.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grclIntegrateAddress.Visible = true;
-            this.grclIntegrateAddress.VisibleIndex = 19;
+            this.grclIntegrateAddress.VisibleIndex = 22;
             this.grclIntegrateAddress.Width = 86;
             // 
             // gridColumn4
@@ -1074,7 +1113,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 21;
+            this.gridColumn4.VisibleIndex = 24;
             this.gridColumn4.Width = 107;
             // 
             // gridColumnIs_Action
@@ -1085,7 +1124,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnIs_Action.OptionsColumn.AllowEdit = false;
             this.gridColumnIs_Action.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnIs_Action.Visible = true;
-            this.gridColumnIs_Action.VisibleIndex = 22;
+            this.gridColumnIs_Action.VisibleIndex = 25;
             this.gridColumnIs_Action.Width = 72;
             // 
             // gridColumnCreateTime
@@ -1096,7 +1135,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnCreateTime.OptionsColumn.AllowEdit = false;
             this.gridColumnCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnCreateTime.Visible = true;
-            this.gridColumnCreateTime.VisibleIndex = 23;
+            this.gridColumnCreateTime.VisibleIndex = 26;
             this.gridColumnCreateTime.Width = 120;
             // 
             // gridColumnCreator
@@ -1106,7 +1145,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnCreator.Name = "gridColumnCreator";
             this.gridColumnCreator.OptionsColumn.AllowEdit = false;
             this.gridColumnCreator.Visible = true;
-            this.gridColumnCreator.VisibleIndex = 24;
+            this.gridColumnCreator.VisibleIndex = 27;
             this.gridColumnCreator.Width = 85;
             // 
             // gridColumnModifyTime
@@ -1117,7 +1156,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnModifyTime.OptionsColumn.AllowEdit = false;
             this.gridColumnModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnModifyTime.Visible = true;
-            this.gridColumnModifyTime.VisibleIndex = 25;
+            this.gridColumnModifyTime.VisibleIndex = 28;
             this.gridColumnModifyTime.Width = 120;
             // 
             // gridColumnModifyer
@@ -1128,7 +1167,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnModifyer.OptionsColumn.AllowEdit = false;
             this.gridColumnModifyer.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnModifyer.Visible = true;
-            this.gridColumnModifyer.VisibleIndex = 26;
+            this.gridColumnModifyer.VisibleIndex = 29;
             this.gridColumnModifyer.Width = 84;
             // 
             // gridColumnServiceOnDay
@@ -1139,7 +1178,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnServiceOnDay.OptionsColumn.AllowEdit = false;
             this.gridColumnServiceOnDay.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnServiceOnDay.Visible = true;
-            this.gridColumnServiceOnDay.VisibleIndex = 20;
+            this.gridColumnServiceOnDay.VisibleIndex = 23;
             this.gridColumnServiceOnDay.Width = 100;
             // 
             // btnDeleteEnable
@@ -2078,6 +2117,9 @@ namespace HIS.Desktop.Plugins.HisMachine
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnHeinMachineCode;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnDepartmentName;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnRoomNames;
         private DevExpress.XtraEditors.SimpleButton btnExportXml;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem27;
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;

@@ -58,6 +58,10 @@ namespace HIS.UC.PlusInfo
         DelegateFocusNextUserControl dlgFocusNextUserControl;
         DelegateReloadData dlgReloadControl;
         DelegateGetWorkPlaceId dlgGetWorkPlaceId;
+        /// <summary>
+        /// Đang gán dữ liệu bệnh nhân vào các control (SetValue/Refresh) - không tự điền mã số thuế theo nơi làm việc
+        /// </summary>
+        bool isSettingValueFromData;
         int indexOfControlEnd = 0;
         int tagIndex = 0;
         int indexUCMaHoNgheo = 0;
@@ -509,7 +513,7 @@ namespace HIS.UC.PlusInfo
                         this.listControl.Add(ucAddress1);
                         break;
                     case ChoiceControl.ucWorkPlace:
-                        ucWorkPlace1 = new Design.UCWorkPlace(HIS.UC.PlusInfo.ClassGlobal.GlobalStore.CurrentModule, FocusNext, dlgGetWorkPlaceId);
+                        ucWorkPlace1 = new Design.UCWorkPlace(HIS.UC.PlusInfo.ClassGlobal.GlobalStore.CurrentModule, FocusNext, this.OnWorkPlaceSelected);
                         ucWorkPlace1.TabIndex = tagIndex;
                         ucWorkPlace1.PreviewKeyDown += FocusNextUserControl;
                         listControl.Add(ucWorkPlace1);

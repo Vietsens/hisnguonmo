@@ -72,6 +72,9 @@ namespace HIS.Desktop.Plugins.TextLibrary
             this.txtHashtag = new DevExpress.XtraEditors.TextEdit();
             this.txtHotkey = new DevExpress.XtraEditors.TextEdit();
             this.txtTitle = new DevExpress.XtraEditors.TextEdit();
+            this.chkIsShareAccount = new DevExpress.XtraEditors.CheckEdit();
+            this.btnShareAccount = new DevExpress.XtraEditors.SimpleButton();
+            this.lblShareAccountCount = new DevExpress.XtraEditors.LabelControl();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciTitle = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciHashTag = new DevExpress.XtraLayout.LayoutControlItem();
@@ -80,6 +83,10 @@ namespace HIS.Desktop.Plugins.TextLibrary
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciChkIsShareAccount = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnShareAccount = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciLblShareAccountCount = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItemShareAccount = new DevExpress.XtraLayout.EmptySpaceItem();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
             this.btnChoose = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -146,6 +153,7 @@ namespace HIS.Desktop.Plugins.TextLibrary
             ((System.ComponentModel.ISupportInitialize)(this.txtHashtag.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHotkey.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTitle.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsShareAccount.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTitle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHashTag)).BeginInit();
@@ -154,6 +162,10 @@ namespace HIS.Desktop.Plugins.TextLibrary
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkIsShareAccount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnShareAccount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLblShareAccountCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemShareAccount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFindHashtag.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
@@ -238,6 +250,9 @@ namespace HIS.Desktop.Plugins.TextLibrary
             this.layoutControl2.Controls.Add(this.txtHashtag);
             this.layoutControl2.Controls.Add(this.txtHotkey);
             this.layoutControl2.Controls.Add(this.txtTitle);
+            this.layoutControl2.Controls.Add(this.chkIsShareAccount);
+            this.layoutControl2.Controls.Add(this.btnShareAccount);
+            this.layoutControl2.Controls.Add(this.lblShareAccountCount);
             this.layoutControl2.Location = new System.Drawing.Point(474, 2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
@@ -249,7 +264,7 @@ namespace HIS.Desktop.Plugins.TextLibrary
             // 
             this.layoutControl3.Controls.Add(this.chkPicture);
             this.layoutControl3.Controls.Add(this.chkDocument);
-            this.layoutControl3.Location = new System.Drawing.Point(2, 74);
+            this.layoutControl3.Location = new System.Drawing.Point(2, 98);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
             this.layoutControl3.Size = new System.Drawing.Size(548, 24);
@@ -323,9 +338,9 @@ namespace HIS.Desktop.Plugins.TextLibrary
             // 
             // panelControl1
             // 
-            this.panelControl1.Location = new System.Drawing.Point(2, 102);
+            this.panelControl1.Location = new System.Drawing.Point(2, 126);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(548, 446);
+            this.panelControl1.Size = new System.Drawing.Size(548, 422);
             this.panelControl1.TabIndex = 18;
             // 
             // chkIsDepartment
@@ -346,7 +361,42 @@ namespace HIS.Desktop.Plugins.TextLibrary
             this.chkIsPublic.Size = new System.Drawing.Size(108, 19);
             this.chkIsPublic.StyleController = this.layoutControl2;
             this.chkIsPublic.TabIndex = 12;
-            // 
+            this.chkIsPublic.CheckedChanged += new System.EventHandler(this.chkIsPublic_CheckedChanged);
+            //
+            // chkIsShareAccount
+            //
+            this.chkIsShareAccount.Location = new System.Drawing.Point(2, 74);
+            this.chkIsShareAccount.Name = "chkIsShareAccount";
+            this.chkIsShareAccount.Properties.Caption = "Chia sẻ theo tài khoản";
+            this.chkIsShareAccount.Size = new System.Drawing.Size(146, 19);
+            this.chkIsShareAccount.StyleController = this.layoutControl2;
+            this.chkIsShareAccount.TabIndex = 7;
+            this.chkIsShareAccount.CheckedChanged += new System.EventHandler(this.chkIsShareAccount_CheckedChanged);
+            //
+            // btnShareAccount
+            //
+            this.btnShareAccount.Enabled = false;
+            this.btnShareAccount.Location = new System.Drawing.Point(152, 74);
+            this.btnShareAccount.Name = "btnShareAccount";
+            this.btnShareAccount.Size = new System.Drawing.Size(24, 20);
+            this.btnShareAccount.StyleController = this.layoutControl2;
+            this.btnShareAccount.TabIndex = 8;
+            this.btnShareAccount.Text = "+";
+            this.btnShareAccount.ToolTip = "Chọn tài khoản được chia sẻ";
+            this.btnShareAccount.Click += new System.EventHandler(this.btnShareAccount_Click);
+            //
+            // lblShareAccountCount
+            //
+            this.lblShareAccountCount.Appearance.Options.UseTextOptions = true;
+            this.lblShareAccountCount.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.lblShareAccountCount.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblShareAccountCount.Location = new System.Drawing.Point(180, 74);
+            this.lblShareAccountCount.Name = "lblShareAccountCount";
+            this.lblShareAccountCount.Size = new System.Drawing.Size(106, 20);
+            this.lblShareAccountCount.StyleController = this.layoutControl2;
+            this.lblShareAccountCount.TabIndex = 9;
+            this.lblShareAccountCount.Text = "(0 tài khoản)";
+            //
             // txtHashtag
             // 
             this.txtHashtag.Location = new System.Drawing.Point(57, 50);
@@ -390,7 +440,11 @@ namespace HIS.Desktop.Plugins.TextLibrary
             this.lciChkIsPublic,
             this.layoutControlItem10,
             this.layoutControlItem11,
-            this.layoutControlItem12});
+            this.layoutControlItem12,
+            this.lciChkIsShareAccount,
+            this.lciBtnShareAccount,
+            this.lciLblShareAccountCount,
+            this.emptySpaceItemShareAccount});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -464,21 +518,65 @@ namespace HIS.Desktop.Plugins.TextLibrary
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.panelControl1;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 100);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 124);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(552, 450);
+            this.layoutControlItem11.Size = new System.Drawing.Size(552, 426);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.layoutControl3;
-            this.layoutControlItem12.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlItem12.Location = new System.Drawing.Point(0, 96);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Size = new System.Drawing.Size(552, 28);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
-            // 
+            //
+            // lciChkIsShareAccount
+            //
+            this.lciChkIsShareAccount.Control = this.chkIsShareAccount;
+            this.lciChkIsShareAccount.Location = new System.Drawing.Point(0, 72);
+            this.lciChkIsShareAccount.MaxSize = new System.Drawing.Size(150, 24);
+            this.lciChkIsShareAccount.MinSize = new System.Drawing.Size(150, 24);
+            this.lciChkIsShareAccount.Name = "lciChkIsShareAccount";
+            this.lciChkIsShareAccount.Size = new System.Drawing.Size(150, 24);
+            this.lciChkIsShareAccount.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciChkIsShareAccount.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChkIsShareAccount.TextVisible = false;
+            //
+            // lciBtnShareAccount
+            //
+            this.lciBtnShareAccount.Control = this.btnShareAccount;
+            this.lciBtnShareAccount.Location = new System.Drawing.Point(150, 72);
+            this.lciBtnShareAccount.MaxSize = new System.Drawing.Size(28, 24);
+            this.lciBtnShareAccount.MinSize = new System.Drawing.Size(28, 24);
+            this.lciBtnShareAccount.Name = "lciBtnShareAccount";
+            this.lciBtnShareAccount.Size = new System.Drawing.Size(28, 24);
+            this.lciBtnShareAccount.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnShareAccount.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnShareAccount.TextVisible = false;
+            //
+            // lciLblShareAccountCount
+            //
+            this.lciLblShareAccountCount.Control = this.lblShareAccountCount;
+            this.lciLblShareAccountCount.Location = new System.Drawing.Point(178, 72);
+            this.lciLblShareAccountCount.MaxSize = new System.Drawing.Size(110, 24);
+            this.lciLblShareAccountCount.MinSize = new System.Drawing.Size(110, 24);
+            this.lciLblShareAccountCount.Name = "lciLblShareAccountCount";
+            this.lciLblShareAccountCount.Size = new System.Drawing.Size(110, 24);
+            this.lciLblShareAccountCount.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciLblShareAccountCount.TextSize = new System.Drawing.Size(0, 0);
+            this.lciLblShareAccountCount.TextVisible = false;
+            //
+            // emptySpaceItemShareAccount
+            //
+            this.emptySpaceItemShareAccount.AllowHotTrack = false;
+            this.emptySpaceItemShareAccount.Location = new System.Drawing.Point(288, 72);
+            this.emptySpaceItemShareAccount.Name = "emptySpaceItemShareAccount";
+            this.emptySpaceItemShareAccount.Size = new System.Drawing.Size(264, 24);
+            this.emptySpaceItemShareAccount.TextSize = new System.Drawing.Size(0, 0);
+            //
             // ucPaging
             // 
             this.ucPaging.Location = new System.Drawing.Point(2, 556);
@@ -984,6 +1082,7 @@ namespace HIS.Desktop.Plugins.TextLibrary
             ((System.ComponentModel.ISupportInitialize)(this.txtHashtag.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHotkey.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTitle.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsShareAccount.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTitle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHashTag)).EndInit();
@@ -992,6 +1091,10 @@ namespace HIS.Desktop.Plugins.TextLibrary
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkIsShareAccount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnShareAccount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLblShareAccountCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemShareAccount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFindHashtag.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();
@@ -1093,5 +1196,12 @@ namespace HIS.Desktop.Plugins.TextLibrary
         private DevExpress.XtraLayout.LayoutControlItem lciBtnChoose;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit ButtonDisnableDelete;
+        private DevExpress.XtraEditors.CheckEdit chkIsShareAccount;
+        private DevExpress.XtraEditors.SimpleButton btnShareAccount;
+        private DevExpress.XtraEditors.LabelControl lblShareAccountCount;
+        private DevExpress.XtraLayout.LayoutControlItem lciChkIsShareAccount;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnShareAccount;
+        private DevExpress.XtraLayout.LayoutControlItem lciLblShareAccountCount;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemShareAccount;
     }
 }

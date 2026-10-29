@@ -281,6 +281,10 @@
     <Compile Include="UCExportXml___MdInsightFlow.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExportXml___Xml48h.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ADO\XmlBatchDataADO.cs" />
     <Compile Include="Base\MdInsightConfig.cs" />
     <Compile Include="Base\MdInsightDescCodec.cs" />
     <Compile Include="Base\MdInsightWorker.cs" />

@@ -532,25 +532,58 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
 
                     if (sttId == null)
                     {
-                        lblStatus.Text = GetLangValue("Status.NotClosed");
+                        currentStatusCaption = GetLangValue("Status.NotClosed");
                     }
                     else if (sttId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__CHOT)
                     {
-                        lblStatus.Text = GetLangValue("Status.Approved");
+                        currentStatusCaption = GetLangValue("Status.Approved");
                     }
                     else if (sttId == APPROVAL_STORE_STT_ID__DAT)
                     {
-                        lblStatus.Text = GetLangValue("Status.Qualified");
+                        currentStatusCaption = GetLangValue("Status.Qualified");
                     }
                     else
                     {
-                        lblStatus.Text = GetLangValue("Status.NotQualified");
+                        currentStatusCaption = GetLangValue("Status.NotQualified");
                     }
+
+                    // Ban tam "Noi dung khong dat" di kem ban ghi ho so (viec 57750)
+                    this.currentDraft = ADO.RecordDraftADO.FromTreatment(treatment);
+                    ShowDraftIndicator();
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ghi nhan trang thai chot duyet + dau hieu "Co ban tam noi dung khong dat (thoi diem - nguoi)" (viec 57750).
+        /// Dau hieu chi hien khi ho so dang co ban tam; LabelControl dung HTML string de to mau phan dau hieu.
+        /// </summary>
+        private void ShowDraftIndicator()
+        {
+            try
+            {
+                string text = currentStatusCaption ?? "";
+                if (this.currentDraft != null && this.currentDraft.HasDraft)
+                {
+                    string time = this.currentDraft.Time.HasValue
+                        ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(this.currentDraft.Time.Value)
+                        : "";
+                    string user = !String.IsNullOrEmpty(this.currentDraft.Username)
+                        ? this.currentDraft.Username
+                        : this.currentDraft.Loginname;
+                    text += "     <color=#C77800><b>●</b> " + GetLangValue("lblStatus.HasDraft")
+                        + " (" + time + " - " + user + ")</color>";
+                }
+                lblStatus.AllowHtmlString = true;
+                lblStatus.Text = text;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -605,6 +638,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                 LblNote.Text = "";
                 Gc_InfoRecord.DataSource = null;
                 Gc_EmrDocument.DataSource = null;
+                this.currentDraft = new ADO.RecordDraftADO();
                 btnKhongDat.Enabled = false;
                 btnDat.Enabled = false;
                 btnHuyDuyet.Enabled = false;

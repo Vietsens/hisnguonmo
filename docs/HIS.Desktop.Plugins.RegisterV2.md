@@ -38,6 +38,20 @@ Nhân viên check thẻ BHYT (cổng BHXH) qua Library CheckHeinGOV
 - Quyết định rẽ nhánh đặt **trước** điều kiện ghi đè địa chỉ đã có (`IsAddress || IsThongTinNguoiDungThayDoiSoVoiCong__Choose` + `CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1`). Điều kiện cũ **không đổi** → backward compatible tuyệt đối khi config = 0.
 - Không thay đổi giao diện.
 
+### Cấu hình: để trống khu vực khi kiểm tra thẻ BHYT của đợt điều trị cũ
+
+| KEY | `HIS.Desktop.Plugins.RegisterV2.IsClearLiveAreaWhenCheckHeinCardOldTreatment` |
+|-----|------------------------------------------------------------------------|
+| Loại | HisConfigs (HIS_CONFIG — toàn viện), kiểu string. SQL: `docs/SQL_RegisterV2_DeTrongKhuVucTheBHYT.sql` |
+| Đọc khi | Mỗi lần xử lý kết quả kiểm tra thẻ (`Config.HisConfigCFG.IsClearLiveAreaWhenCheckHeinCardOldTreatment()`) |
+| = 1 (BẬT) | Cổng BHXH xác nhận được thẻ (mã kết quả 000/003/004) → ô Khu vực **chỉ lấy theo `maKV` của cổng**; `maKV` rỗng → để trống, không giữ khu vực của đợt điều trị cũ. Các thông tin khác của đợt cũ vẫn lấy lại. Tuyến/mức hưởng được tính lại như khi người dùng tự xóa/chọn khu vực |
+| ≠ 1 (mặc định, kể cả chưa khởi tạo) | Giữ hành vi hiện tại |
+
+**Điều kiện nghiệp vụ:**
+- Xử lý trong `UCRegister.ProcessLiveAreaByGovResult()`, gọi cuối `CheckTTProcessResultData` (sau các lệnh nạp lại vùng BHYT) → áp dụng cho mọi luồng: gõ số thẻ, quét QR BHYT, quét CCCD, tìm BN cũ, tự chuyển đối tượng BHYT.
+- Cổng lỗi / không kết nối / mã kết quả khác 000/003/004 / đối tượng không dùng thẻ → không xử lý.
+- Thiết kế: `docs/B_KyThuat_RegisterV2_DeTrongKhuVucTheBHYT.md` (.docx).
+
 ## 3. EFMODEL / Dữ liệu liên quan
 
 | Entity / Type | Mục đích |
@@ -65,6 +79,7 @@ Nhân viên check thẻ BHYT (cổng BHXH) qua Library CheckHeinGOV
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 27/10/2026 | vuongnd | **Để trống khu vực khi kiểm tra thẻ BHYT của đợt điều trị cũ** — thêm cấu hình `HIS.Desktop.Plugins.RegisterV2.IsClearLiveAreaWhenCheckHeinCardOldTreatment` (mặc định tắt). Sửa `Config/HisConfigCFG.cs`, `RunV3/UCRegister__CheckHeinGOV.cs` (`ProcessLiveAreaByGovResult`); thêm `UCHeinInfo.SetLiveAreaCode()` (`HIS.UC.UCHeniInfo`, chỉ thêm method). Thiết kế: `docs/B_KyThuat_RegisterV2_DeTrongKhuVucTheBHYT.md` |
 | 25/08/2026 | khainq | **Cập nhật tiền cùng chi trả / miễn cùng chi trả qua cổng BHYT** (`api/TraCuuCCT/TraCuuTienMCCT`). Tự động gọi sau khi kiểm tra thẻ thành công (luôn chạy, không có cấu hình bật/tắt), kèm nút tra cứu thủ công trên ô lũy kế. Suy ra 3 trường `CO_PAID_ACCUMULATE_AMOUNT` / `PAID_6_MONTH` / `FREE_CO_PAID_TIME`. Thêm ô `txtCoPaidAccumulate` vào group `BHYT (F3)` (hàng mới `y=218`, group 239→263), `ADO/CoPaidMcctADO.cs`, `Design/UCHeinInfo__CoPaidMCCT.cs`, `GetCurrentBhytParam()`, cờ `IsAutoCheck`, 10 câu thông báo vi/en/my (`HIS.UC.UCHeniInfo`); móc `CheckTienMCCT` trong `UCRegister__CheckHeinGOV.cs` + nối delegate trong `UCRegister__SetDelegate.cs` (`RegisterV2`). **Tôn trọng cấu hình `IsNotAutoCheck5Y6M`** — khi bật thì không tự tick checkbox 6 tháng. Đường dẫn API và việc tra cứu tự động đều cố định trong code — tính năng không thêm cấu hình nào. Thiết kế: `docs/B_KyThuat_TraCuuTienMCCT_CungChiTraLuyKe.md` Phần 5 |
 | 04/08/2026 | sinhnt | Bổ sung mục **5b — Cấu hình đang áp dụng cho màn hình Tiếp đón 2**: liệt kê 18 khóa cấu hình tài khoản/máy trạm + ~75 khóa cấu hình hệ thống theo 8 nhóm, và 2 cơ chế chi phối đối tượng bệnh nhân nằm ở danh mục phòng tiếp đón (`HIS_RECEPTION_ROOM.DEFAULT_PATIENT_TYPE_ID`, `PATIENT_TYPE_IDS`) — không tra được bằng cách tìm khóa `HIS_CONFIG` |
 | 04/08/2026 | sinhnt | **Tự động chuyển đối tượng bệnh nhân sang BHYT** khi bệnh nhân tìm được có thẻ BHYT (áp dụng tất cả viện, KHÔNG có cấu hình bật/tắt). Thêm `RunV3/UCRegister__AutoPatientTypeBhyt.cs` (`ProcessAutoSetPatientTypeBhytByHeinCard` + kiểm tra hiệu lực thẻ + nạp dự phòng vùng BHYT từ dữ liệu thẻ trong SDO), gọi trong `UCRegister.FillDataAfterSearchPatientInUCPatientRaw` — đặt SAU mọi cơ chế đối tượng mặc định và TRƯỚC các hàm nạp thông tin thẻ. Loại trừ đối tượng BHYT/Quân nhân; chỉ chặn khi biết chắc thẻ đã hết hạn; không chuyển được thì giữ nguyên + ghi log. Giữ nguyên cơ chế tự chuyển khi quét QR cho bệnh nhân mới. Tham chiếu `PTTK_XXXXX_Tu_Dong_Chuyen_Doi_Tuong_BHYT_Khi_Co_The.md` |
@@ -175,6 +190,14 @@ Tra bằng cách tìm khóa `HIS_CONFIG` sẽ **không thấy** 2 cơ chế sau 
 - [ ] Config = 0 → check cổng + Đồng ý → địa chỉ ghi đè theo cổng (hành vi cũ)
 - [ ] Config = 1 → nhập địa chỉ liên hệ tay → check cổng + Đồng ý → Tỉnh/Huyện/Xã/Địa chỉ chi tiết **giữ nguyên**; họ tên/ngày sinh/giới tính/BHYT vẫn cập nhật theo cổng
 - [ ] Config = 1 → đổi giá trị config khi đang mở form → chỉ có hiệu lực sau khi mở lại màn hình (config đọc lúc mở form)
+
+### Để trống khu vực khi kiểm tra thẻ BHYT của đợt điều trị cũ
+- [ ] Config = 1, BN cũ có K1, cổng trả thẻ không có khu vực → ô Khu vực trống; địa chỉ/liên hệ/nơi ĐKBĐ vẫn lấy lại; Lưu thành công, `LIVE_AREA_CODE` rỗng
+- [ ] Config = 1, BN cũ K1, cổng trả K2 → ô Khu vực = K2
+- [ ] Config = 1, cổng lỗi / không kết nối → giữ K1 (như cũ)
+- [ ] Config = 1, BN K1 trước đúng tuyến nhờ khu vực → làm trống khu vực → tuyến tính lại theo nơi ĐKBĐ
+- [ ] Config = 1, quét QR BHYT / quét CCCD / tự chuyển đối tượng BHYT → như ca đầu
+- [ ] Config = 0 hoặc chưa khởi tạo → giữ K1 (hành vi cũ)
 
 ### In gộp dịch vụ khám
 - [ ] Config `HIS.REGISTERV2.PRINT_MERGED_EXAM_SERVICE` ≠ 1 → mở menu In ấn → KHÔNG có mục "In gộp dịch vụ khám"

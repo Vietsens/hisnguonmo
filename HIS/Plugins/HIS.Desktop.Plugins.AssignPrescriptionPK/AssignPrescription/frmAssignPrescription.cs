@@ -339,6 +339,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         long dteTreatmentFinishIntructionTime { get; set; }
         bool? IsOpen { get; set; }
         bool IsStateCase1Dhst { get; set; }
+        bool IsDhstAutoCollapsed { get; set; }
         Size sizeListPatient { get; set; }
         Size sizeExpMest { get; set; }
         Size sizeInforPatient { get; set; }
@@ -911,6 +912,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
+                //Nạp lại module: mở lại DHST đã tự thu để lấy kích thước gốc của các khối bên phải
+                if (IsDhstAutoCollapsed)
+                    pbOpen_Click(pbOpen, EventArgs.Empty);
                 pbOpen.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.arrow_down;
                 pbClose.Image = global::HIS.Desktop.Plugins.AssignPrescriptionPK.Properties.Resources.arrow_up;
                 isNotLoadWhileChangeControlStateInFirst = true;
@@ -1063,6 +1067,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         VisibleDhst();
                     }
                 }
+                CollapseDhstOnSmallScreen();
                 isNotLoadWhileChangeControlStateInFirst = false;
             }
             catch (Exception ex)
@@ -2067,22 +2072,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 lblPhatSinh.Focus();
-                if (pbClose.Image != null && pbOpen.Image != null)
+                //DHST đang tự thu do màn thấp thì không lưu, giữ trạng thái người dùng chọn cho màn lớn
+                if (!IsDhstAutoCollapsed)
                 {
-                    SaveKeyImage(pbClose.Name, true);
-                    SaveKeyImage(pbOpen.Name, true);
+                    if (pbClose.Image != null && pbOpen.Image != null)
+                    {
+                        SaveKeyImage(pbClose.Name, true);
+                        SaveKeyImage(pbOpen.Name, true);
+                    }
+                    else if (pbClose.Image == null && pbOpen.Image != null)
+                    {
+                        SaveKeyImage(pbClose.Name, true);
+                        SaveKeyImage(pbOpen.Name, false);
+                    }
+                    else
+                    {
+                        SaveKeyImage(pbClose.Name, false);
+                        SaveKeyImage(pbOpen.Name, true);
+                    }
+                    SaveKeyDHST();
                 }
-                else if (pbClose.Image == null && pbOpen.Image != null)
-                {
-                    SaveKeyImage(pbClose.Name, true);
-                    SaveKeyImage(pbOpen.Name, false);
-                }
-                else
-                {
-                    SaveKeyImage(pbClose.Name, false);
-                    SaveKeyImage(pbOpen.Name, true);
-                }
-                SaveKeyDHST();
                 if (this.actionType == GlobalVariables.ActionAdd || this.actionType == GlobalVariables.ActionEdit)
                 {
                     var mediMatyTypeNotEdits = this.mediMatyTypeADOs != null ? this.mediMatyTypeADOs.Where(o => o.IsEdit == false) : null;
@@ -13240,6 +13249,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 if (pbClose.Image == null)
                     return;
 
+                IsDhstAutoCollapsed = false;
                 IsOpen = false;
                 if (IsStateCase1Dhst)
                 {
@@ -13285,6 +13295,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 if (pbOpen.Image == null)
                     return;
+                IsDhstAutoCollapsed = false;
                 IsOpen = true;
                 if (IsStateCase1Dhst)
                 {
@@ -13406,6 +13417,29 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     this.lciUCBottomPanel.Size = sizeExpMest;// new Size(lciUCBottomPanel.Width, lciUCBottomPanel.Height - layoutControlItemDHSTInfo.Height);
                 }
                 this.layoutControlItem21.Size = sizeInforPatient;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //Màn cao <= 768 (vd 1366x768): kê đơn nội trú thu DHST lên, chia đôi chỗ trống cho DS bệnh nhân và Đơn cũ
+        private void CollapseDhstOnSmallScreen()
+        {
+            try
+            {
+                if (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
+                    return;
+                if (Screen.FromControl(this).Bounds.Height > 768)
+                    return;
+                if (this.layoutControlItemDHSTInfo.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Never || pbClose.Image == null)
+                    return;
+
+                pbClose_Click(pbClose, EventArgs.Empty);
+                //Bấm mũi tên lên dồn hết chỗ của DHST cho Đơn cũ, trả một nửa về DS bệnh nhân
+                this.layoutControlItem15.Size = new Size(layoutControlItem15.Width, layoutControlItem15.Height + layoutControlItemDHSTInfo.Height / 2);
+                IsDhstAutoCollapsed = true;
             }
             catch (Exception ex)
             {

@@ -2500,6 +2500,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 txtBuyerAccountCode.Text = patientData?.ACCOUNT_NUMBER ?? data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
                 txtBuyerAddress.Text = !string.IsNullOrWhiteSpace(patientData?.VIR_ADDRESS) ? patientData.VIR_ADDRESS : (data.TDL_PATIENT_ADDRESS ?? "");
+                if (chkAddressWorkPlace.Checked)
+                {
+                    string workPlaceAddress = GetBuyerWorkPlaceAddress();
+                    if (!String.IsNullOrWhiteSpace(workPlaceAddress))
+                    {
+                        txtBuyerAddress.Text = workPlaceAddress;
+                    }
+                }
 
                 txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
                 //txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
@@ -2798,6 +2806,90 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
+        /// <summary>
+        /// Địa chỉ nơi làm việc của người mua (tab Cá nhân): ưu tiên đơn vị đang chọn ở combo, không có thì lấy theo nơi làm việc của bệnh nhân (danh mục HIS_WORK_PLACE)
+        /// </summary>
+        private string GetBuyerWorkPlaceAddress()
+        {
+            string result = null;
+            try
+            {
+                HIS_WORK_PLACE workPlace = null;
+                if (cboBuyerOrganization.EditValue != null)
+                {
+                    long workPlaceId = 0;
+                    Int64.TryParse(cboBuyerOrganization.EditValue.ToString(), out workPlaceId);
+                    workPlace = dtWorkPlace.FirstOrDefault(o => o.ID == workPlaceId);
+                }
+                if (workPlace == null && this.treatment != null && this.treatment.TDL_PATIENT_WORK_PLACE_ID.HasValue)
+                {
+                    long workPlaceId = this.treatment.TDL_PATIENT_WORK_PLACE_ID.Value;
+                    workPlace = dtWorkPlace.FirstOrDefault(o => o.ID == workPlaceId)
+                        ?? BackendDataWorker.Get<HIS_WORK_PLACE>().FirstOrDefault(o => o.ID == workPlaceId);
+                }
+                if (workPlace != null)
+                {
+                    result = workPlace.ADDRESS;
+                }
+                if (String.IsNullOrWhiteSpace(result) && this.treatment != null)
+                {
+                    result = this.treatment.WORK_PLACE_ADDRESS;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private void chkAddressWorkPlace_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                if (chkAddressWorkPlace.Checked)
+                {
+                    string workPlaceAddress = GetBuyerWorkPlaceAddress();
+                    if (String.IsNullOrWhiteSpace(workPlaceAddress))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bệnh nhân chưa có nơi làm việc trong danh mục hoặc nơi làm việc chưa khai báo địa chỉ", "Thông báo");
+                        chkAddressWorkPlace.Checked = false;
+                        return;
+                    }
+                    txtBuyerAddress.Text = workPlaceAddress;
+                }
+                else
+                {
+                    txtBuyerAddress.Text = (this.treatment != null ? this.treatment.TDL_PATIENT_ADDRESS : null) ?? "";
+                }
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkAddressWorkPlace.Name && o.MODULE_LINK == currentModule.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkAddressWorkPlace.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkAddressWorkPlace.Name;
+                    csAddOrUpdate.VALUE = (chkAddressWorkPlace.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void chkHideHddt_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -2886,6 +2978,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         else if (item.KEY == chkPrintTHPK.Name)
                         {
                             chkPrintTHPK.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == chkAddressWorkPlace.Name)
+                        {
+                            chkAddressWorkPlace.Checked = item.VALUE == "1";
                         }
                     }
                 }
@@ -3537,6 +3633,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     {
                         txtBuyerTaxCode.Text = focus.TAX_CODE;
                         txtBuyerSocialRelationsCode.Text = focus.BUD_REL_UNIT_CODE;
+                        if (chkAddressWorkPlace.Checked)
+                        {
+                            txtBuyerAddress.Text = focus.ADDRESS;
+                        }
                     }
                 }
             }

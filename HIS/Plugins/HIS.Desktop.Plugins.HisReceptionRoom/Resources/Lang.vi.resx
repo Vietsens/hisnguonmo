@@ -285,4 +285,28 @@
   <data name="frmHisReceptionRoom.layoutControlItem16.Text" xml:space="preserve">
     <value>Sổ tạm ứng:</value>
   </data>
+  <data name="frmHisReceptionRoom.lciNumOrderRangeCode.Text" xml:space="preserve">
+    <value>Mã dải số:</value>
+  </data>
+  <data name="frmHisReceptionRoom.lciNumOrderRangeCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Các phòng tiếp đón cùng mã dải số dùng chung một dải số thứ tự tiếp đón. Để trống thì phòng dùng dải số riêng.</value>
+  </data>
+  <data name="frmHisReceptionRoom.lciNumOrderFrom.Text" xml:space="preserve">
+    <value>Số bắt đầu:</value>
+  </data>
+  <data name="frmHisReceptionRoom.lciNumOrderFrom.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số thứ tự tiếp đón đầu tiên của mỗi ngày, dùng chung cho các phòng cùng mã dải số. Để trống là 1.</value>
+  </data>
+  <data name="frmHisReceptionRoom.grdColNumOrderRangeCode.Caption" xml:space="preserve">
+    <value>Mã dải số</value>
+  </data>
+  <data name="frmHisReceptionRoom.grdColNumOrderRangeCode.ToolTip" xml:space="preserve">
+    <value>Các phòng tiếp đón cùng mã dải số dùng chung một dải số thứ tự tiếp đón. Để trống thì phòng dùng dải số riêng.</value>
+  </data>
+  <data name="frmHisReceptionRoom.grdColNumOrderFrom.Caption" xml:space="preserve">
+    <value>Số bắt đầu</value>
+  </data>
+  <data name="frmHisReceptionRoom.grdColNumOrderFrom.ToolTip" xml:space="preserve">
+    <value>Số thứ tự tiếp đón đầu tiên của mỗi ngày, dùng chung cho các phòng cùng mã dải số. Để trống là 1.</value>
+  </data>
 </root>

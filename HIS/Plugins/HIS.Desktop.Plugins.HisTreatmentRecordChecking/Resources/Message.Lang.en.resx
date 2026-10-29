@@ -141,4 +141,16 @@
   <data name="KhongTimThayHoSo" xml:space="preserve">
     <value>The corresponding treatment record could not be found.</value>
   </data>
+  <data name="NoiDungChuaDuocLuuBoQua" xml:space="preserve">
+    <value>The text has not been saved. Discard it?</value>
+  </data>
+  <data name="XoaBanTamNoiDungKhongDat" xml:space="preserve">
+    <value>Delete the saved draft of this record?</value>
+  </data>
+  <data name="ChuaNhapNoiDungKhongDat" xml:space="preserve">
+    <value>Please enter the rejection content.</value>
+  </data>
+  <data name="NoiDungKhongDatVuotDoDai" xml:space="preserve">
+    <value>The rejection content exceeds the allowed length (max {0} bytes). Please shorten it.</value>
+  </data>
 </root>
