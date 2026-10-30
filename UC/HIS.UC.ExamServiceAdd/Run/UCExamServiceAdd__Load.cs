@@ -435,6 +435,84 @@ namespace HIS.UC.ExamServiceAdd.Run
             }
         }
 
+        /// <summary>
+        /// Hien thi lai y lenh kham them da tao (mo lai y lenh da ket thuc de xem)
+        /// </summary>
+        private void LoadAddedServiceReq()
+        {
+            try
+            {
+                if (examServiceAddInitADO.AddedServiceReq == null)
+                    return;
+
+                HIS_SERVICE_REQ addedReq = examServiceAddInitADO.AddedServiceReq;
+                dtIntructionTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(addedReq.INTRUCTION_TIME) ?? DateTime.Now;
+
+                V_HIS_EXECUTE_ROOM executeRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == addedReq.EXECUTE_ROOM_ID);
+                if (executeRoom != null)
+                {
+                    List<L_HIS_ROOM_COUNTER> rooms = cboExecuteRoom.Properties.DataSource as List<L_HIS_ROOM_COUNTER>;
+                    if (rooms == null || !rooms.Any(o => o.ROOM_ID == executeRoom.ROOM_ID))
+                    {
+                        rooms = rooms != null ? new List<L_HIS_ROOM_COUNTER>(rooms) : new List<L_HIS_ROOM_COUNTER>();
+                        rooms.Add(new L_HIS_ROOM_COUNTER() { ROOM_ID = executeRoom.ROOM_ID, EXECUTE_ROOM_CODE = executeRoom.EXECUTE_ROOM_CODE, EXECUTE_ROOM_NAME = executeRoom.EXECUTE_ROOM_NAME });
+                        LoadCboExecuteRoom(rooms);
+                    }
+                    cboExecuteRoom.EditValue = executeRoom.ROOM_ID;
+                    txtExecuteRoom.Text = executeRoom.EXECUTE_ROOM_CODE;
+                    LoadDataCboExamService(executeRoom);
+                }
+
+                HIS_SERE_SERV addedSereServ = examServiceAddInitADO.AddedSereServ;
+                if (addedSereServ != null)
+                {
+                    if (serviceRooms == null)
+                        serviceRooms = new List<V_HIS_SERVICE_ROOM>();
+                    if (!serviceRooms.Any(o => o.SERVICE_ID == addedSereServ.SERVICE_ID))
+                    {
+                        V_HIS_SERVICE_ROOM serviceRoom = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>().FirstOrDefault(o => o.SERVICE_ID == addedSereServ.SERVICE_ID && o.ROOM_ID == addedReq.EXECUTE_ROOM_ID);
+                        if (serviceRoom != null)
+                        {
+                            serviceRooms.Add(serviceRoom);
+                            cboExamService.Properties.DataSource = null;
+                            cboExamService.Properties.DataSource = serviceRooms;
+                        }
+                    }
+                    cboExamService.EditValue = addedSereServ.SERVICE_ID;
+                    txtService.Text = addedSereServ.TDL_SERVICE_CODE;
+                    cboPatientType.EditValue = addedSereServ.PATIENT_TYPE_ID;
+                    cboPrimaryPatientType.EditValue = addedSereServ.PRIMARY_PATIENT_TYPE_ID;
+                }
+
+                chkIsPrimary.Checked = addedReq.IS_MAIN_EXAM == 1;
+                chkKetThucKhamHienTai.Checked = true;
+
+                if (examServiceAddInitADO.AppointmentTime != null)
+                {
+                    chkAppointment.Checked = true;
+                    dtAppointment.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(examServiceAddInitADO.AppointmentTime.Value) ?? DateTime.Now;
+                    txtAdvise.Text = examServiceAddInitADO.AppointmentDesc;
+                    if (examServiceAddInitADO.AppointmentExamRoomId.HasValue)
+                    {
+                        V_HIS_ROOM room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == examServiceAddInitADO.AppointmentExamRoomId.Value);
+                        cboRoomAppointment.EditValue = examServiceAddInitADO.AppointmentExamRoomId.Value;
+                        txtRoomAppointment.Text = room != null ? room.ROOM_CODE : null;
+                        InitComboServiceAppointment(examServiceAddInitADO.AppointmentExamRoomId.Value);
+                        if (examServiceAddInitADO.AppointmentExamServiceId.HasValue)
+                        {
+                            V_HIS_SERVICE_ROOM serviceRoom = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>().FirstOrDefault(o => o.SERVICE_ID == examServiceAddInitADO.AppointmentExamServiceId.Value && o.ROOM_ID == examServiceAddInitADO.AppointmentExamRoomId.Value);
+                            cboServiceAppointment.EditValue = examServiceAddInitADO.AppointmentExamServiceId.Value;
+                            txtServiceAppointment.Text = serviceRoom != null ? serviceRoom.SERVICE_CODE : null;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         void LoadSereServ()
         {
             try
