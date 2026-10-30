@@ -505,6 +505,6 @@
     <value>Thư mục lưu XML hồ sơ đủ 48 giờ:</value>
   </data>
   <data name="frmSettingSavePath.lciPathXml48h.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Nơi ghi XML của hồ sơ điều trị nội trú, điều trị ngoại trú có số vào viện khi đủ 48 giờ kể từ thời gian vào điều trị: tự động khi tích ô tương ứng trong Thiết lập gửi hồ sơ tự động và bật Gửi tự động, hoặc xuất tay bằng chuột phải chọn Xuất XML hồ sơ đủ 48 giờ.</value>
+    <value>Nơi ghi XML của hồ sơ điều trị nội trú, điều trị ngoại trú có số vào viện khi đủ 48 giờ kể từ thời gian nhập viện: tự động khi tích ô tương ứng trong Thiết lập gửi hồ sơ tự động và bật Gửi tự động, hoặc xuất tay bằng chuột phải chọn Xuất XML hồ sơ đủ 48 giờ.</value>
   </data>
 </root>

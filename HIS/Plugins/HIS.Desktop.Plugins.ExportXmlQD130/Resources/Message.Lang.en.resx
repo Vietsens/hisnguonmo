@@ -540,16 +540,16 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
   <data name="Xml48hLyDoKhongPhaiDieuTri" xml:space="preserve">
     <value>Not an outpatient/inpatient treatment with an admission number</value>
   </data>
-  <data name="Xml48hLyDoChuaVaoKhoa" xml:space="preserve">
-    <value>No clinical admission time</value>
+  <data name="Xml48hLyDoChuaNhapVien" xml:space="preserve">
+    <value>No hospitalization time</value>
   </data>
   <data name="Xml48hLyDoChuaDu48h" xml:space="preserve">
-    <value>Less than 48 hours since clinical admission (due at {0})</value>
+    <value>Less than 48 hours since hospitalization (due at {0})</value>
   </data>
   <data name="Xml48hLyDoRaVienTruoc48h" xml:space="preserve">
-    <value>Discharged before 48 hours after clinical admission</value>
+    <value>Discharged before 48 hours after hospitalization</value>
   </data>
-  <data name="Xml48hLocVaoKhoaDu48h" xml:space="preserve">
-    <value>In clinical department for 48 hours or more</value>
+  <data name="Xml48hLocNhapVienDu48h" xml:space="preserve">
+    <value>Hospitalized for 48 hours or more</value>
   </data>
 </root>

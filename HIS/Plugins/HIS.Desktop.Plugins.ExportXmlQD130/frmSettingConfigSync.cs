@@ -679,7 +679,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        //Việc 61380 - Lưu NGAY khi tích/bỏ tích "Tự động xuất XML hồ sơ vào khoa điều trị đủ 48 giờ" (như chkSyncKcb).
+        //Việc 61380 - Lưu NGAY khi tích/bỏ tích "Tự động xuất XML hồ sơ nhập viện đủ 48 giờ" (như chkSyncKcb).
         private void chkAutoXml48h_CheckedChanged(object sender, EventArgs e)
         {
             try

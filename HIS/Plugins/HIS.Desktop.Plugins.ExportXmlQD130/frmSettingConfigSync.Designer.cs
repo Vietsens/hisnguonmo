@@ -299,11 +299,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.chkAutoXml48h.Location = new System.Drawing.Point(2, 314);
             this.chkAutoXml48h.MenuManager = this.barManager1;
             this.chkAutoXml48h.Name = "chkAutoXml48h";
-            this.chkAutoXml48h.Properties.Caption = "Tự động xuất XML hồ sơ vào khoa điều trị đủ 48 giờ";
+            this.chkAutoXml48h.Properties.Caption = "Tự động xuất XML hồ sơ nhập viện đủ 48 giờ";
             this.chkAutoXml48h.Size = new System.Drawing.Size(385, 19);
             this.chkAutoXml48h.StyleController = this.layoutControl1;
             this.chkAutoXml48h.TabIndex = 28;
-            this.chkAutoXml48h.ToolTip = "Mỗi chu kỳ gửi tự động, xuất XML 130 của hồ sơ điều trị ngoại trú/nội trú vào khoa điều trị đủ 48 giờ (chưa xuất thành công) ra Thư mục lưu XML hồ sơ đủ 48 giờ - khai ở nút Thư mục lưu. Hồ sơ lỗi tự xuất lại ở chu kỳ sau, hoặc chuột phải chọn Xuất XML hồ sơ đủ 48 giờ để xuất tay.";
+            this.chkAutoXml48h.ToolTip = "Mỗi chu kỳ gửi tự động, xuất XML 130 của hồ sơ điều trị ngoại trú/nội trú nhập viện đủ 48 giờ (chưa xuất thành công) ra Thư mục lưu XML hồ sơ đủ 48 giờ - khai ở nút Thư mục lưu. Hồ sơ lỗi tự xuất lại ở chu kỳ sau, hoặc chuột phải chọn Xuất XML hồ sơ đủ 48 giờ để xuất tay.";
             //
             // txtFolder
             //

@@ -44,7 +44,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         public bool isSyncKcbHoc { get; set; }
         //Đồng bộ KCB theo QĐ 3176 lên Cổng CSDL Y tế Cần Thơ
         public bool isSyncKcbCt { get; set; }
-        //Việc 61380 - Tự động xuất XML hồ sơ vào khoa điều trị đủ 48 giờ (chạy theo chu kỳ gửi tự động)
+        //Việc 61380 - Tự động xuất XML hồ sơ nhập viện đủ 48 giờ (CLINICAL_IN_TIME, chạy theo chu kỳ gửi tự động)
         public bool isAutoXml48h { get; set; }
     }
 }

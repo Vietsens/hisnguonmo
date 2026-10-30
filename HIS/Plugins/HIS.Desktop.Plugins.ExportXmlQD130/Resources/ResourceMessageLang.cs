@@ -922,17 +922,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         /// <summary>Không phải hồ sơ điều trị ngoại trú/nội trú có số vào viện</summary>
         internal static string Xml48hLyDoKhongPhaiDieuTri { get { return GetMdInsightValue("Xml48hLyDoKhongPhaiDieuTri"); } }
 
-        /// <summary>Chưa có thời gian vào khoa điều trị</summary>
-        internal static string Xml48hLyDoChuaVaoKhoa { get { return GetMdInsightValue("Xml48hLyDoChuaVaoKhoa"); } }
+        /// <summary>Chưa có thời gian nhập viện</summary>
+        internal static string Xml48hLyDoChuaNhapVien { get { return GetMdInsightValue("Xml48hLyDoChuaNhapVien"); } }
 
-        /// <summary>Chưa đủ 48 giờ kể từ lúc vào khoa điều trị (đủ lúc {0})</summary>
+        /// <summary>Chưa đủ 48 giờ kể từ lúc nhập viện (đủ lúc {0})</summary>
         internal static string Xml48hLyDoChuaDu48h { get { return GetMdInsightValue("Xml48hLyDoChuaDu48h"); } }
 
-        /// <summary>Ra viện trước khi đủ 48 giờ kể từ lúc vào khoa điều trị</summary>
+        /// <summary>Ra viện trước khi đủ 48 giờ kể từ lúc nhập viện</summary>
         internal static string Xml48hLyDoRaVienTruoc48h { get { return GetMdInsightValue("Xml48hLyDoRaVienTruoc48h"); } }
 
-        /// <summary>Lựa chọn của ô Tình trạng: Vào khoa đủ 48 giờ</summary>
-        internal static string Xml48hLocVaoKhoaDu48h { get { return GetMdInsightValue("Xml48hLocVaoKhoaDu48h"); } }
+        /// <summary>Lựa chọn của ô Tình trạng: Nhập viện đủ 48 giờ</summary>
+        internal static string Xml48hLocNhapVienDu48h { get { return GetMdInsightValue("Xml48hLocNhapVienDu48h"); } }
 
         #endregion
     }

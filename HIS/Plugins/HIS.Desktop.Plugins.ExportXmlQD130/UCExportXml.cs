@@ -105,7 +105,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         internal string filterType__FeeLockTime = "Thời gian khóa viện phí từ:";
         internal string filterType__EndTreatmentTime = "Thời gian kết thúc điều trị từ:";
         internal string filterType__BeginTreatmentTime = "Thời gian vào viện từ:";
-        internal string filterType__ClinicalInTime = "Thời gian vào khoa từ:";
+        internal string filterType__ClinicalInTime = "Thời gian nhập viện từ:";
         int rowCount = 0;
         int dataTotal = 0;
         int start = 0;
@@ -544,7 +544,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 FilterTypeADO dacosovaovien = new FilterTypeADO(3, Resources.ResourceMessageLang.DaCoSoVaoVien);
                 ListStatusAll.Add(dacosovaovien);
 
-                //Việc 61380 - thêm lựa chọn "Vào khoa đủ 48 giờ" khi bật cấu hình XML 48 giờ.
+                //Việc 61380 - thêm lựa chọn "Nhập viện đủ 48 giờ" khi bật cấu hình XML 48 giờ.
                 this.AddXml48hStatusItem(ListStatusAll);
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
@@ -644,7 +644,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 itemFilterEndTreatment.Tag = "BiginTreatmentTime";
                 menu.Items.Add(itemBiginTreatmentTime);
 
-                //Việc 61380 - lọc theo thời gian vào khoa điều trị (mốc tính đủ 48 giờ của XML 48 giờ).
+                //Việc 61380 - lọc theo thời gian nhập viện (CLINICAL_IN_TIME, mốc tính đủ 48 giờ của XML 48 giờ).
                 DXMenuItem itemClinicalInTime = new DXMenuItem(filterType__ClinicalInTime, new EventHandler(btnFeeLockOrEndTreatment_Click));
                 itemClinicalInTime.Tag = "ClinicalInTime";
                 menu.Items.Add(itemClinicalInTime);
@@ -840,7 +840,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             filter.IN_TIME_TO = Convert.ToInt64(dtTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
                         }
                     }
-                    else if (cboStatusFeeLockOrEndTreatment.Text == filterType__ClinicalInTime) //Thời gian vào khoa
+                    else if (cboStatusFeeLockOrEndTreatment.Text == filterType__ClinicalInTime) //Thời gian nhập viện
                     {
                         if (dtTimeFrom.EditValue != null && dtTimeFrom.DateTime != DateTime.MinValue)
                         {
@@ -851,7 +851,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             filter.CLINICAL_IN_TIME_TO = Convert.ToInt64(dtTimeTo.DateTime.ToString("yyyyMMddHHmm") + "59");
                         }
                     }
-                    //Việc 61380 - Tình trạng "Vào khoa đủ 48 giờ": đặt sau bộ lọc thời gian để chặn mốc vào khoa không quá (hiện tại - 48 giờ).
+                    //Việc 61380 - Tình trạng "Nhập viện đủ 48 giờ": đặt sau bộ lọc thời gian để chặn mốc nhập viện không quá (hiện tại - 48 giờ).
                     this.ApplyXml48hStatusFilter(filter);
                     if (!String.IsNullOrEmpty(txtHeinCardPrefix.Text) && !String.IsNullOrEmpty(txtHeinCardPrefix.Text.Trim()))
                     {
