@@ -52,7 +52,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
     ///   (nhu cac o dong bo QD 3176) roi bat Gui tu dong. Moi chu ky Gui tu dong quet mot luot.
     /// - Xuat tay: chuot phai ho so dang chon, chon Xuat XML ho so du 48 gio. Dung cho ho so loi (luot tu dong khong
     ///   thu lai - sua du lieu roi xuat tay), ho so qua 7 ngay ma luot tu dong khong quet toi, hoac may khong bat Gui tu dong.
-    /// - Tim ho so: o Tinh trang co lua chon "Nhap vien du 48 gio", loai thoi gian co "Thoi gian nhap vien tu".
+    /// - Tim ho so: o Loai ho so co lua chon "Nhap vien du 48 gio", loai thoi gian co "Thoi gian nhap vien tu".
     ///
     /// Chi co tac dung khi vien bat HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H = 1.
     /// Ket qua ghi vao HIS_TREATMENT qua api/HisTreatment/UpdateXml48hResult; luot tu dong chi lay ho so
@@ -84,7 +84,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private const short XML48H_RESULT__SUCCESS = 1;
         private const short XML48H_RESULT__FAIL = 2;
 
-        /// <summary>Gia tri lua chon "Nhap vien du 48 gio" cua o Tinh trang (0-3 la cac lua chon co san)</summary>
+        /// <summary>Gia tri lua chon "Nhap vien du 48 gio" cua o Loai ho so (0-3 la cac lua chon co san)</summary>
         private const int XML48H_STATUS_ID = 4;
 
         private const string URI_UPDATE_XML48H_RESULT = "api/HisTreatment/UpdateXml48hResult";
@@ -467,9 +467,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
         #endregion
 
-        #region Loc Tinh trang "Nhap vien du 48 gio" tren man hinh
+        #region Loc Loai ho so "Nhap vien du 48 gio" tren man hinh (cboStatus, nhan tren man la "Loai ho so", KHONG phai o "Tinh trang" = tinh trang gui cong)
 
-        /// <summary>Goi tu InitComboStatus. Vien khong bat cau hinh thi o Tinh trang giu nguyen.</summary>
+        /// <summary>Goi tu InitComboStatus. Vien khong bat cau hinh thi o Loai ho so giu nguyen.</summary>
         private void AddXml48hStatusItem(List<FilterTypeADO> statusList)
         {
             try
@@ -551,7 +551,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         }
 
         /// <summary>
-        /// Tinh trang mang sang Thiet lap gui ho so tu dong khi chua co thiet lap. Thiet lap khong co lua chon
+        /// Loai ho so mang sang Thiet lap gui ho so tu dong khi chua co thiet lap. Thiet lap khong co lua chon
         /// "Nhap vien du 48 gio" (gui cong BHYT khong loc theo moc nay) nen doi ve Tat ca.
         /// </summary>
         private int? GetConfigSyncStatusId()

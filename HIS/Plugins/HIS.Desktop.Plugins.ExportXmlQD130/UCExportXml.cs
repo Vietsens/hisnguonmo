@@ -851,7 +851,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             filter.CLINICAL_IN_TIME_TO = Convert.ToInt64(dtTimeTo.DateTime.ToString("yyyyMMddHHmm") + "59");
                         }
                     }
-                    //Việc 61380 - Tình trạng "Nhập viện đủ 48 giờ": đặt sau bộ lọc thời gian để chặn mốc nhập viện không quá (hiện tại - 48 giờ).
+                    //Việc 61380 - Loại hồ sơ "Nhập viện đủ 48 giờ" (cboStatus): đặt sau bộ lọc thời gian để chặn mốc nhập viện không quá (hiện tại - 48 giờ).
                     this.ApplyXml48hStatusFilter(filter);
                     if (!String.IsNullOrEmpty(txtHeinCardPrefix.Text) && !String.IsNullOrEmpty(txtHeinCardPrefix.Text.Trim()))
                     {
