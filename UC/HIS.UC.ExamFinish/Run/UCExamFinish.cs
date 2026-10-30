@@ -144,6 +144,7 @@ namespace HIS.UC.ExamFinish.Run
                 }
                 memNote.Text = examFinishInitADO.Note;
                 InitCombo();
+                LoadAppointmentRoomService();
 
                 ValidateForm();
                 InitControlState();
@@ -160,6 +161,34 @@ namespace HIS.UC.ExamFinish.Run
             try
             {
                 InitComboRoomAppointment();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hien thi lai phong/dich vu hen kham da luu tren y lenh (mo lai y lenh da ket thuc)
+        /// </summary>
+        private void LoadAppointmentRoomService()
+        {
+            try
+            {
+                if (examFinishInitADO.AppointmentTime == null || !examFinishInitADO.AppointmentExamRoomId.HasValue)
+                    return;
+
+                V_HIS_ROOM room = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == examFinishInitADO.AppointmentExamRoomId.Value);
+                cboRoomAppointment.EditValue = examFinishInitADO.AppointmentExamRoomId.Value;
+                txtRoomAppointment.Text = room != null ? room.ROOM_CODE : null;
+
+                InitComboServiceAppointment(examFinishInitADO.AppointmentExamRoomId.Value);
+                if (examFinishInitADO.AppointmentExamServiceId.HasValue)
+                {
+                    V_HIS_SERVICE_ROOM serviceRoom = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_SERVICE_ROOM>().FirstOrDefault(o => o.SERVICE_ID == examFinishInitADO.AppointmentExamServiceId.Value && o.ROOM_ID == examFinishInitADO.AppointmentExamRoomId.Value);
+                    cboServiceAppointment.EditValue = examFinishInitADO.AppointmentExamServiceId.Value;
+                    txtServiceAppointment.Text = serviceRoom != null ? serviceRoom.SERVICE_CODE : null;
+                }
             }
             catch (Exception ex)
             {

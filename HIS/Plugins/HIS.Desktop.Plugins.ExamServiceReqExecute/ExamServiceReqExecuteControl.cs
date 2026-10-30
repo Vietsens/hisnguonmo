@@ -454,6 +454,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ApplyNoteKcbLanguage();
                 LoadNoteKcbFromCurrentPatient();
                 BuildBulletedInfoList();
+                InitViewFinishedExecute();
                 isLoadingSer = false;
 
             }
@@ -2293,6 +2294,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                if (this.isViewFinishedExecute)
+                {
+                    ViewFinishedExamServiceAdd();
+                    return;
+                }
                 if (chkExamServiceAdd.Checked)
                 {
                     SetCheckExecute(true, chkExamServiceAdd, chkHospitalize, chkTreatmentFinish, chkExamFinish);
@@ -2343,6 +2349,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                if (this.isViewFinishedExecute)
+                {
+                    ViewFinishedHospitalize();
+                    return;
+                }
                 GetUcIcdYHCT();
                 if (isReturnCheckboxHosTreat)
                 {
@@ -2355,72 +2366,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     SetCheckExecute(true, chkHospitalize, chkExamServiceAdd, chkTreatmentFinish, chkExamFinish);
                     ResetPrintExecuteExt();
-                    long departmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == moduleData.RoomId).DepartmentId;
-                    HIS.UC.Hospitalize.ADO.HospitalizeInitADO hospitalizeADO = new UC.Hospitalize.ADO.HospitalizeInitADO();
-                    hospitalizeADO.DepartmentId = departmentId;
-                    hospitalizeADO.dlgRefeshIcd = DlgIcdSubCode;
-                    hospitalizeADO.dlgSendIcd = GetIcdSubCode;
-                    hospitalizeADO.Treatment = treatment;
-                    // PTTK_19083: truyền flag phòng cấp cứu + giá trị phân loại lần 2 (nếu edit hồ sơ cũ)
-                    hospitalizeADO.IsEmergencyRoom = this.IsEmergencyClassifyRoom();
-                    Inventec.Common.Logging.LogSystem.Debug("IsEmergencyClassifyRoom: " + hospitalizeADO.IsEmergencyRoom);
-                    hospitalizeADO.EmergencyClassifyId2 = this.treatment != null ? this.treatment.EMERGENCY_CLASSIFY_ID_2 : null;
-                    hospitalizeADO.TreatmentId = this.HisServiceReqView.TREATMENT_ID;
-                    hospitalizeADO.FinishTime = this.HisServiceReqView.FINISH_TIME;
-                    hospitalizeADO.OutTime = this.treatment.OUT_TIME;
-                    if (isTimeServer)
-                        hospitalizeADO.InTime = loadParam().Now;
-                    else
-                        hospitalizeADO.InTime = this.treatment.IN_TIME;
-                    hospitalizeADO.StartTime = this.HisServiceReqView.START_TIME;
-                    hospitalizeADO.ModuleLink = this.moduleData.ModuleLink;
-                    hospitalizeADO.IcdCode = this.icdDefaultFinish.ICD_CODE;
-                    hospitalizeADO.IcdName = this.icdDefaultFinish.ICD_NAME;
-                    hospitalizeADO.TraditionalIcdCode = IcdCodeYHCT;
-                    hospitalizeADO.TraditionalIcdName = IcdNameYHCT;
-                    hospitalizeADO.TraditionalIcdSubCode = IcdSubCodeYHCT;
-                    hospitalizeADO.TraditionalIcdText = IcdTextYHCT;
-                    if (this.patient == null || this.patient.ID == 0)
-                    {
-                        LoadPatient();
-                    }
-                    if (patient != null)
-                    {
-                        hospitalizeADO.RelativeAddress = patient.RELATIVE_ADDRESS;
-                        hospitalizeADO.RelativeName = patient.RELATIVE_NAME;
-                        hospitalizeADO.RelativePhone = patient.RELATIVE_PHONE;
-                        hospitalizeADO.CareerId = patient.CAREER_ID;
-                        hospitalizeADO.IsCAPD = this.patient.IS_CAPD != null ? true : false;
-                    }
-                    else
-                    {
-                        hospitalizeADO.RelativeAddress = "";
-                        hospitalizeADO.RelativeName = "";
-                        hospitalizeADO.RelativePhone = "";
-                    }
-                    hospitalizeADO.isEmergency = this.treatment.IS_EMERGENCY != null ? true : false;
-
-                    hospitalizeADO.InHospitalizationReasonCode = this.treatment.HOSPITALIZE_REASON_CODE;
-                    hospitalizeADO.InHospitalizationReasonName = this.treatment.HOSPITALIZE_REASON_NAME;
-                    hospitalizeADO.isAutoCheckChkHospitalizeExam = HisConfigCFG.IsAutoCheckPrintHospitalizeExam;
-                    hospitalizeADO.Note = CurrentPatient.NOTE;
-                    hospitalizeADO.dlgOpenFormInformation = ClickOpen;
-                    hospitalizeADO.ExecutedServices = this.HisServiceReqView.EXECUTED_SERVICES;
-                    hospitalizeADO.SpecialistNote = this.HisServiceReqView.SPECIALIST_NOTE;
-                    hospitalizeADO.Treatment.EMERGENCY_CLASSIFY_ID_2 = treatment != null
-                    ? treatment.EMERGENCY_CLASSIFY_ID_2
-                    : null;
-                    hospitalizeADO.InCode = this.treatment != null ? this.treatment.IN_CODE : null;
-                    hospitalizeADO.IsVisibleGenerateNewInCode = this.treatment != null
-                        && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
-                        && !string.IsNullOrWhiteSpace(this.treatment.IN_CODE);
-                    hospitalizeADO.IsAutoCheckGenerateNewInCode = hospitalizeADO.IsVisibleGenerateNewInCode;
-                    Inventec.Common.Logging.LogSystem.Debug(
-                        "GenerateNewInCode trace - TreatmentId=" + (this.treatment != null ? this.treatment.ID.ToString() : "null")
-                        + ", TDL_TREATMENT_TYPE_ID=" + (this.treatment != null ? (this.treatment.TDL_TREATMENT_TYPE_ID.ToString()) : "null")
-                        + ", ID__KHAM=" + IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
-                        + ", IN_CODE=" + (this.treatment != null ? ("'" + (this.treatment.IN_CODE ?? "") + "'") : "null")
-                        + ", IsVisibleGenerateNewInCode=" + hospitalizeADO.IsVisibleGenerateNewInCode);
+                    HIS.UC.Hospitalize.ADO.HospitalizeInitADO hospitalizeADO = CreateHospitalizeInitADO();
                     hospitalizeProcessor = new HospitalizeProcessor();
                     this.ucHospitalize = (UserControl)hospitalizeProcessor.Run(hospitalizeADO);
                     LoadUCToPanelExecuteExt(this.ucHospitalize, chkHospitalize);
@@ -2434,6 +2380,77 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private HIS.UC.Hospitalize.ADO.HospitalizeInitADO CreateHospitalizeInitADO()
+        {
+            long departmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == moduleData.RoomId).DepartmentId;
+            HIS.UC.Hospitalize.ADO.HospitalizeInitADO hospitalizeADO = new UC.Hospitalize.ADO.HospitalizeInitADO();
+            hospitalizeADO.DepartmentId = departmentId;
+            hospitalizeADO.dlgRefeshIcd = DlgIcdSubCode;
+            hospitalizeADO.dlgSendIcd = GetIcdSubCode;
+            hospitalizeADO.Treatment = treatment;
+            // PTTK_19083: truyền flag phòng cấp cứu + giá trị phân loại lần 2 (nếu edit hồ sơ cũ)
+            hospitalizeADO.IsEmergencyRoom = this.IsEmergencyClassifyRoom();
+            Inventec.Common.Logging.LogSystem.Debug("IsEmergencyClassifyRoom: " + hospitalizeADO.IsEmergencyRoom);
+            hospitalizeADO.EmergencyClassifyId2 = this.treatment != null ? this.treatment.EMERGENCY_CLASSIFY_ID_2 : null;
+            hospitalizeADO.TreatmentId = this.HisServiceReqView.TREATMENT_ID;
+            hospitalizeADO.FinishTime = this.HisServiceReqView.FINISH_TIME;
+            hospitalizeADO.OutTime = this.treatment.OUT_TIME;
+            if (isTimeServer)
+                hospitalizeADO.InTime = loadParam().Now;
+            else
+                hospitalizeADO.InTime = this.treatment.IN_TIME;
+            hospitalizeADO.StartTime = this.HisServiceReqView.START_TIME;
+            hospitalizeADO.ModuleLink = this.moduleData.ModuleLink;
+            hospitalizeADO.IcdCode = this.icdDefaultFinish.ICD_CODE;
+            hospitalizeADO.IcdName = this.icdDefaultFinish.ICD_NAME;
+            hospitalizeADO.TraditionalIcdCode = IcdCodeYHCT;
+            hospitalizeADO.TraditionalIcdName = IcdNameYHCT;
+            hospitalizeADO.TraditionalIcdSubCode = IcdSubCodeYHCT;
+            hospitalizeADO.TraditionalIcdText = IcdTextYHCT;
+            if (this.patient == null || this.patient.ID == 0)
+            {
+                LoadPatient();
+            }
+            if (patient != null)
+            {
+                hospitalizeADO.RelativeAddress = patient.RELATIVE_ADDRESS;
+                hospitalizeADO.RelativeName = patient.RELATIVE_NAME;
+                hospitalizeADO.RelativePhone = patient.RELATIVE_PHONE;
+                hospitalizeADO.CareerId = patient.CAREER_ID;
+                hospitalizeADO.IsCAPD = this.patient.IS_CAPD != null ? true : false;
+            }
+            else
+            {
+                hospitalizeADO.RelativeAddress = "";
+                hospitalizeADO.RelativeName = "";
+                hospitalizeADO.RelativePhone = "";
+            }
+            hospitalizeADO.isEmergency = this.treatment.IS_EMERGENCY != null ? true : false;
+
+            hospitalizeADO.InHospitalizationReasonCode = this.treatment.HOSPITALIZE_REASON_CODE;
+            hospitalizeADO.InHospitalizationReasonName = this.treatment.HOSPITALIZE_REASON_NAME;
+            hospitalizeADO.isAutoCheckChkHospitalizeExam = HisConfigCFG.IsAutoCheckPrintHospitalizeExam;
+            hospitalizeADO.Note = CurrentPatient.NOTE;
+            hospitalizeADO.dlgOpenFormInformation = ClickOpen;
+            hospitalizeADO.ExecutedServices = this.HisServiceReqView.EXECUTED_SERVICES;
+            hospitalizeADO.SpecialistNote = this.HisServiceReqView.SPECIALIST_NOTE;
+            hospitalizeADO.Treatment.EMERGENCY_CLASSIFY_ID_2 = treatment != null
+            ? treatment.EMERGENCY_CLASSIFY_ID_2
+            : null;
+            hospitalizeADO.InCode = this.treatment != null ? this.treatment.IN_CODE : null;
+            hospitalizeADO.IsVisibleGenerateNewInCode = this.treatment != null
+                && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                && !string.IsNullOrWhiteSpace(this.treatment.IN_CODE);
+            hospitalizeADO.IsAutoCheckGenerateNewInCode = hospitalizeADO.IsVisibleGenerateNewInCode;
+            Inventec.Common.Logging.LogSystem.Debug(
+                "GenerateNewInCode trace - TreatmentId=" + (this.treatment != null ? this.treatment.ID.ToString() : "null")
+                + ", TDL_TREATMENT_TYPE_ID=" + (this.treatment != null ? (this.treatment.TDL_TREATMENT_TYPE_ID.ToString()) : "null")
+                + ", ID__KHAM=" + IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                + ", IN_CODE=" + (this.treatment != null ? ("'" + (this.treatment.IN_CODE ?? "") + "'") : "null")
+                + ", IsVisibleGenerateNewInCode=" + hospitalizeADO.IsVisibleGenerateNewInCode);
+            return hospitalizeADO;
         }
         List<string> dataSelectedToExecuteServices = new List<string>();
         private void ClickOpen(string contentShare)
@@ -2555,6 +2572,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                if (this.isViewFinishedExecute)
+                {
+                    ViewFinishedExamFinish();
+                    return;
+                }
                 if (isReturnCheckboxExamFinish)
                 {
                     chkExamFinish.Checked = false;
@@ -2677,7 +2699,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                GetUcIcdYHCT(); 
+                if (this.isViewFinishedExecute)
+                {
+                    ViewFinishedTreatmentFinish();
+                    return;
+                }
+                GetUcIcdYHCT();
                 if (isReturnCheckboxHosTreat)
                 {
                     chkTreatmentFinish.Checked = false;

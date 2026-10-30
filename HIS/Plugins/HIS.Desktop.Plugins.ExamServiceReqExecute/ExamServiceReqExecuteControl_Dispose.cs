@@ -38,6 +38,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 lstModuleLinkApply = null;
                 isReturnCheckboxHosTreat = false;
                 isReturnCheckboxExamFinish = false;
+                isViewFinishedExecute = false;
                 icdCodeList = null;
                 isShowSubTemp = false;
                 isShowGridIcdSub = false;

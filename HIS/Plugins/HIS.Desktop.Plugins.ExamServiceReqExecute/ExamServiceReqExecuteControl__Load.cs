@@ -1489,6 +1489,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (serviceReqSTTId != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                 {
+                    this.isViewFinishedExecute = false;
                     lblCaptionHospitalizationReason.Enabled = true;
                     lblCaptionNgayThuCuaBenh.Enabled = true;
                     lblCaptionPathologicalProcess.Enabled = true;
@@ -1538,7 +1539,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     lblSick.Enabled = false;
                     panelIcd.Enabled = false;
                     panelControlCauseIcd.Enabled = false;
-                    groupControlTreatmentFinish.Enabled = false;
+                    // Che do xem lai xu tri da ket thuc van mo nhom xu tri (chi xem)
+                    groupControlTreatmentFinish.Enabled = this.isViewFinishedExecute;
                     //drBtnOther.Enabled = false;
                     btnChooseTemplate.Enabled = false;
                     gridControlTreatmentHistory.Enabled = false;
