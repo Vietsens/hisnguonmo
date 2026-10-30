@@ -830,6 +830,7 @@ namespace HIS.Desktop.Plugins.TextLibrary
                 {
                     result = AutoMapper.Mapper.Map<MOS.EFMODEL.DataModels.HIS_TEXT_LIB, MOS.EFMODEL.DataModels.HIS_TEXT_LIB>(rs);
                     BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>();
+                    HIS.Desktop.Utility.ShortcutReplace.ResetUsableTextLibs();
                     success = true;
                 }
                 return success;
@@ -990,6 +991,7 @@ namespace HIS.Desktop.Plugins.TextLibrary
                             success = true;
                             FillDataToGrid();
                             BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>();
+                            HIS.Desktop.Utility.ShortcutReplace.ResetUsableTextLibs();
                         }
                         WaitingManager.Hide();
                         #region Show message

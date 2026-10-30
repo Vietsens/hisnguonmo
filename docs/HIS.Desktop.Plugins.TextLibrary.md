@@ -22,7 +22,8 @@
 
 ### Chia sẻ theo tài khoản (việc 59771, tài liệu phân tích 3604)
 - Hàng dưới ô Thẻ: ô tích **Chia sẻ theo tài khoản** + nút **"+"** + nhãn **"(N tài khoản)"**.
-- Nút "+" sáng khi: được sửa (bản ghi mới, hoặc người tạo/quản trị) **và** đang tích Chia sẻ theo tài khoản **và** chưa tích Chia sẻ toàn viện. Nhãn luôn hiện số tài khoản đã chọn (kể cả khi ô bỏ tích hay đang tích toàn viện — danh sách giữ nguyên).
+- Ô tích "Chia sẻ theo tài khoản" bật khi: được sửa (bản ghi mới, hoặc người tạo/quản trị) **và** chưa tích Chia sẻ toàn viện.
+- Nút "+" sáng khi: ô tích đang bật **và** đang tích (ô và nút cùng mờ khi tích toàn viện, không còn trạng thái tích được mà không chọn được tài khoản). Nhãn luôn hiện số tài khoản đã chọn (kể cả khi ô bỏ tích hay đang tích toàn viện — danh sách giữ nguyên).
 - Popup **Danh sách tài khoản** (`frmShareAccount`):
   - Nguồn: danh mục Tài khoản nhân viên trong bộ nhớ (`V_HIS_EMPLOYEE`): `IS_ACTIVE = 1`, `IS_DELETE != 1`, có `LOGINNAME`, khác người tạo nội dung (bản ghi mới = người đăng nhập, đang sửa = `CREATOR`); sắp theo họ tên. Tài khoản đã chọn được tích sẵn.
   - Ô tìm (mã NV, họ tên, tên đăng nhập — không phân biệt hoa thường, có dấu/không dấu) + combo Khoa (khoa đang hoạt động, nút xóa để bỏ lọc). Lọc chỉ ẩn dòng, trạng thái tích ngoài kết quả lọc được giữ. Lưới tắt lọc tiêu đề cột và ô tìm Ctrl+F riêng (chỉ lọc qua ô tìm + combo Khoa, để "Chọn tất cả" đúng theo dòng đang hiện).
@@ -122,6 +123,8 @@ Không có chức năng in.
 | 27/10/2026 | DANGTH | Tạo tài liệu module. Việc 59771 (tài liệu phân tích 3604): thêm **Chia sẻ theo tài khoản** — ô tích + nút "+" + nhãn "(N tài khoản)" (`FormTextLibrary__ShareAccount.cs`), popup `ShareAccount\frmShareAccount` (+ `ADO\ShareAccountADO`), lưu `IS_PUBLIC_IN_ACCOUNT`/`PUBLIC_LOGINNAMES`; khóa ô/nút khi không phải người tạo/quản trị. Sửa lỗi có sẵn: Chọn trên nội dung người khác không còn gọi Update; Mới mở lại nút Lưu. Gõ viết tắt (`HIS.Desktop.Utility.ShortcutReplace.GetUsableTextLibs`) thêm điều kiện chia sẻ theo tài khoản (nhân viên phải đang hoạt động). Resource vi/en/my, thông báo vượt 4000 ký tự. Thêm tham chiếu Inventec.Common.String, Inventec.Common.Controls.EditorLoader. Cần MOS.EFMODEL mới (2 thuộc tính) + MOS đã vá `HisTextLibFilterQuery`. |
 | 27/10/2026 | DANGTH | Việc 59771 sửa theo phản biện: popup tắt lọc tiêu đề cột/ô tìm Ctrl+F của lưới (Chọn tất cả chỉ theo dòng đang hiện); "Chọn tất cả" không còn tích khi kết quả lọc rỗng; giới hạn tính theo byte UTF-8 và hạ xuống 3998 (tránh ORA-01489 khi MOS nối dấu phẩy 2 đầu, đã tái hiện trên CSDL test MAX_STRING_SIZE=STANDARD); `ShortcutReplace` dùng hằng `IMSys.DbConfig` thay số 1 và cập nhật chú thích hàm `ProcesseShortcutReplaceWithModuleServiceExecute`. |
 | 28/10/2026 | DANGTH | Việc 59771 sửa lỗi có sẵn: `SaveProcess` lưu trên bản sao của dòng đang sửa — MOS từ chối Update thì dòng trên lưới không còn hiện giá trị chưa lưu (trước đây giữ tới khi tải lại danh sách). |
+| 30/10/2026 | DANGTH | Việc 59771 theo tester (HANBTH): tích Chia sẻ toàn viện thì khóa luôn ô "Chia sẻ theo tài khoản" cùng nút "+" (trước đây ô vẫn tích được nhưng không chọn được tài khoản). Danh sách đã chọn vẫn giữ. |
+| 30/10/2026 | DANGTH | Việc 59771 tối ưu gõ viết tắt (tester báo load lâu): `HIS.Desktop.Utility.ShortcutReplace` không còn tải cả bảng HIS_TEXT_LIB kèm CONTENT qua `BackendDataWorker`; gọi `api/HisTextLib/Get` 1 lần với `CAN_VIEW` + `HAS_HOT_KEY` + `PUBLIC_DEPARTMENT_ID` (MOS áp quy tắc chia sẻ), giữ trong RAM 10 phút, lỗi thì thử lại sau 1 phút. Màn này gọi `ShortcutReplace.ResetUsableTextLibs()` sau Lưu/Xóa. CSDL test: 825 dòng ~5 MB → 9–15 dòng ~0,7 MB mỗi tài khoản. Thanh thư viện màn Xử lý CLS vẫn tự nạp cả bảng (ngoài phạm vi). |
 
 ## 9. Test Cases
 
@@ -138,7 +141,7 @@ Không có chức năng in.
 - [ ] Người được chia sẻ: thấy nội dung; Lưu, Xóa, ô Chia sẻ theo tài khoản, "+" bị khóa; gõ mã tắt + dấu cách → thay nội dung (sau khi đăng nhập lại).
 - [ ] Người được chia sẻ bấm Chọn (mở từ hồ sơ) → nội dung vào hồ sơ, `MODIFIER`/`MODIFY_TIME` của nội dung gốc không đổi.
 - [ ] Bỏ tích A → Đồng ý → Lưu: A không còn thấy. Bỏ tích ô → Lưu: không ai trong danh sách thấy; tích lại → thấy lại (danh sách còn).
-- [ ] Tích Chia sẻ toàn viện → "+" mờ, nhãn giữ số; bỏ tích → "+" sáng lại.
+- [ ] Tích Chia sẻ toàn viện → ô "Chia sẻ theo tài khoản" và "+" cùng mờ, nhãn giữ số; bỏ tích → ô bật, "+" sáng lại.
 - [ ] Khóa tài khoản nhân viên A → A không thấy; popup không còn A, nhãn vẫn đếm A.
 - [ ] Quản trị sửa nội dung người khác → đổi được danh sách (popup không hiện người tạo).
 - [ ] Bấm Mới sau khi xem nội dung người khác → Lưu mở, ô trống, "(0 tài khoản)".
