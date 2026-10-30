@@ -447,6 +447,12 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
+                if (this.ExamTreatmentFinishInitADO.IsViewFinished)
+                {
+                    cboTreatmentEndType.EditValue = this.ExamTreatmentFinishInitADO.Treatment.TREATMENT_END_TYPE_ID;
+                    cboTreatmentResult.EditValue = this.ExamTreatmentFinishInitADO.Treatment.TREATMENT_RESULT_ID;
+                    return;
+                }
                 //if (this.ExamTreatmentFinishInitADO.Treatment.TREATMENT_END_TYPE_ID == null || this.ExamTreatmentFinishInitADO.Treatment.TREATMENT_END_TYPE_ID == 0)
                 //{
                     long treatmentEndTypeSda = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfig.TREATMENT_END___TREATMENT_END_TYPE_DEFAULT));

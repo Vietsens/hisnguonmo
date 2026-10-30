@@ -1743,8 +1743,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
+                if (this.ExamTreatmentFinishInitADO != null && this.ExamTreatmentFinishInitADO.IsViewFinished)
+                    return;
 
-                layoutControlIPanelUCExtend.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; 
+                layoutControlIPanelUCExtend.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 IsVisibleHosTransfer = false; 
                 chkPrintHosTransfer.Checked = false;
                 chkPrintHosTransfer.Enabled = false;
