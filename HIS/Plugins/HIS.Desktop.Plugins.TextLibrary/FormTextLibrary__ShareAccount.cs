@@ -77,8 +77,9 @@ namespace HIS.Desktop.Plugins.TextLibrary
             try
             {
                 bool canEdit = CanEditCurrentTextLib();
-                chkIsShareAccount.Enabled = canEdit;
-                btnShareAccount.Enabled = canEdit && chkIsShareAccount.Checked && !chkIsPublic.Checked;
+                // Hospital-wide sharing already covers everyone: lock the check box together with "+" so both read the same (the saved list is kept)
+                chkIsShareAccount.Enabled = canEdit && !chkIsPublic.Checked;
+                btnShareAccount.Enabled = chkIsShareAccount.Enabled && chkIsShareAccount.Checked;
                 string format = Inventec.Common.Resource.Get.Value("FormTextLibrary.lblShareAccountCount.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 if (String.IsNullOrEmpty(format)) format = "({0})";
                 lblShareAccountCount.Text = String.Format(format, this.shareLoginnames != null ? this.shareLoginnames.Count : 0);
