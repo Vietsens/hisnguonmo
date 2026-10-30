@@ -547,7 +547,7 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
     <value>Less than 48 hours since hospitalization (due at {0})</value>
   </data>
   <data name="Xml48hLyDoRaVienTruoc48h" xml:space="preserve">
-    <value>Discharged before 48 hours after hospitalization</value>
+    <value>Already discharged - the 48-hour XML is only for records still in treatment</value>
   </data>
   <data name="Xml48hLocNhapVienDu48h" xml:space="preserve">
     <value>Hospitalized for 48 hours or more</value>

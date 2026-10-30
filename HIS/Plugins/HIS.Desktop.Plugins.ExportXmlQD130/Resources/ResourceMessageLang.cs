@@ -928,7 +928,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         /// <summary>Chưa đủ 48 giờ kể từ lúc nhập viện (đủ lúc {0})</summary>
         internal static string Xml48hLyDoChuaDu48h { get { return GetMdInsightValue("Xml48hLyDoChuaDu48h"); } }
 
-        /// <summary>Ra viện trước khi đủ 48 giờ kể từ lúc nhập viện</summary>
+        /// <summary>Đã ra viện - XML hồ sơ đủ 48 giờ chỉ xuất cho hồ sơ đang điều trị (30/10/2026 mở rộng từ "ra viện trước 48 giờ" thành mọi hồ sơ đã ra viện, giữ tên khóa)</summary>
         internal static string Xml48hLyDoRaVienTruoc48h { get { return GetMdInsightValue("Xml48hLyDoRaVienTruoc48h"); } }
 
         /// <summary>Lựa chọn của ô Tình trạng: Nhập viện đủ 48 giờ</summary>
