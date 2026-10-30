@@ -549,7 +549,4 @@ Hồ sơ chưa kiểm tra được cũng bị chặn vì chưa thể khẳng đ�
   <data name="Xml48hLyDoRaVienTruoc48h" xml:space="preserve">
     <value>Đã ra viện - XML hồ sơ đủ 48 giờ chỉ xuất cho hồ sơ đang điều trị</value>
   </data>
-  <data name="Xml48hLocNhapVienDu48h" xml:space="preserve">
-    <value>Nhập viện đủ 48 giờ</value>
-  </data>
 </root>

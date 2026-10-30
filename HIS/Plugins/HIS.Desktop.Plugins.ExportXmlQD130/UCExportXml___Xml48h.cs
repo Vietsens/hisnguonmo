@@ -52,7 +52,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
     ///   (nhu cac o dong bo QD 3176) roi bat Gui tu dong. Moi chu ky Gui tu dong quet mot luot.
     /// - Xuat tay: chuot phai ho so dang chon, chon Xuat XML ho so du 48 gio. Dung cho ho so loi (luot tu dong khong
     ///   thu lai - sua du lieu roi xuat tay), ho so qua 7 ngay ma luot tu dong khong quet toi, hoac may khong bat Gui tu dong.
-    /// - Tim ho so: o Loai ho so co lua chon "Nhap vien du 48 gio", loai thoi gian co "Thoi gian nhap vien tu".
+    /// - Tim ho so: nut loai thoi gian co lua chon "Nhap vien du 48 gio tu:" (chi khi bat khoa) - mot lua chon la ca bo loc.
     ///
     /// Chi co tac dung khi vien bat HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H = 1.
     /// Ket qua ghi vao HIS_TREATMENT qua api/HisTreatment/UpdateXml48hResult; luot tu dong chi lay ho so
@@ -83,9 +83,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
         private const short XML48H_RESULT__SUCCESS = 1;
         private const short XML48H_RESULT__FAIL = 2;
-
-        /// <summary>Gia tri lua chon "Nhap vien du 48 gio" cua o Loai ho so (0-3 la cac lua chon co san)</summary>
-        private const int XML48H_STATUS_ID = 4;
 
         private const string URI_UPDATE_XML48H_RESULT = "api/HisTreatment/UpdateXml48hResult";
 
@@ -467,61 +464,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
         #endregion
 
-        #region Loc Loai ho so "Nhap vien du 48 gio" tren man hinh (cboStatus, nhan tren man la "Loai ho so", KHONG phai o "Tinh trang" = tinh trang gui cong)
-
-        /// <summary>Goi tu InitComboStatus. Vien khong bat cau hinh thi o Loai ho so giu nguyen.</summary>
-        private void AddXml48hStatusItem(List<FilterTypeADO> statusList)
-        {
-            try
-            {
-                if (!this.IsXml48hEnabled || statusList == null)
-                {
-                    return;
-                }
-
-                statusList.Add(new FilterTypeADO(XML48H_STATUS_ID, Resources.ResourceMessageLang.Xml48hLocNhapVienDu48h));
-                cboStatus.EditValueChanged += cboStatus_Xml48hEditValueChanged;
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-
-        private bool IsXml48hStatusSelected
-        {
-            get { return this.IsXml48hEnabled && cboStatus.EditValue != null && Convert.ToInt32(cboStatus.EditValue) == XML48H_STATUS_ID; }
-        }
+        #region Tim ho so du 48 gio tren man hinh - mot lua chon "Nhap vien du 48 gio tu:" o nut loai thoi gian
 
         /// <summary>
-        /// Chon "Nhap vien du 48 gio" thi doi loai thoi gian sang Thoi gian nhap vien de khoang Tu - Den loc dung moc nhap vien.
-        /// Giu loai mac dinh (Thoi gian khoa vien phi) thi ho so dang dieu tri chua khoa vien phi se khong ra.
-        /// </summary>
-        private void cboStatus_Xml48hEditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (this.IsXml48hStatusSelected)
-                {
-                    cboStatusFeeLockOrEndTreatment.Text = filterType__ClinicalInTime;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Goi trong FillDataToGridTreatment, sau bo loc thoi gian. Cung dieu kien voi luot tu dong, tru gioi han 7 ngay:
+        /// Goi trong FillDataToGridTreatment khi nut loai thoi gian dang la "Nhap vien du 48 gio tu:" (filterType__Xml48h),
+        /// sau khi da dat CLINICAL_IN_TIME_FROM/TO theo o Tu - Den. Cung dieu kien voi luot tu dong, tru gioi han 7 ngay:
         /// dieu tri ngoai tru/noi tru, co so vao vien, chua ra vien, nhap vien khong muon hon (hien tai - 48 gio).
-        /// Gom ca ho so chua xuat, da xuat, loi (xem cot XML 48h).
+        /// Gom ca ho so chua xuat, da xuat, loi (xem cot XML 48h). User chot 30/10/2026: mot cho tim duy nhat,
+        /// khong them lua chon o Loai ho so nua.
         /// </summary>
-        private void ApplyXml48hStatusFilter(HisTreatmentView1Filter filter)
+        private void ApplyXml48hSearchFilter(HisTreatmentView1Filter filter)
         {
             try
             {
-                if (filter == null || !this.IsXml48hStatusSelected)
+                if (filter == null)
                 {
                     return;
                 }
@@ -548,21 +504,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 LogSystem.Error(ex);
             }
-        }
-
-        /// <summary>
-        /// Loai ho so mang sang Thiet lap gui ho so tu dong khi chua co thiet lap. Thiet lap khong co lua chon
-        /// "Nhap vien du 48 gio" (gui cong BHYT khong loc theo moc nay) nen doi ve Tat ca.
-        /// </summary>
-        private int? GetConfigSyncStatusId()
-        {
-            if (cboStatus.EditValue == null)
-            {
-                return null;
-            }
-
-            int statusId = Convert.ToInt32(cboStatus.EditValue);
-            return statusId == XML48H_STATUS_ID ? 0 : statusId;
         }
 
         #endregion

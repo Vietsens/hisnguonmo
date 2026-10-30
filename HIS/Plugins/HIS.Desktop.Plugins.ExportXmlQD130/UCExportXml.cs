@@ -105,7 +105,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         internal string filterType__FeeLockTime = "Thời gian khóa viện phí từ:";
         internal string filterType__EndTreatmentTime = "Thời gian kết thúc điều trị từ:";
         internal string filterType__BeginTreatmentTime = "Thời gian vào viện từ:";
-        internal string filterType__ClinicalInTime = "Thời gian nhập viện từ:";
+        internal string filterType__Xml48h = "Nhập viện đủ 48 giờ từ:";
         int rowCount = 0;
         int dataTotal = 0;
         int start = 0;
@@ -544,9 +544,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 FilterTypeADO dacosovaovien = new FilterTypeADO(3, Resources.ResourceMessageLang.DaCoSoVaoVien);
                 ListStatusAll.Add(dacosovaovien);
 
-                //Việc 61380 - thêm lựa chọn "Nhập viện đủ 48 giờ" khi bật cấu hình XML 48 giờ.
-                this.AddXml48hStatusItem(ListStatusAll);
-
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("Name", "", 250, 1));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("Name", "id", columnInfos, false, 250);
@@ -644,10 +641,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 itemFilterEndTreatment.Tag = "BiginTreatmentTime";
                 menu.Items.Add(itemBiginTreatmentTime);
 
-                //Việc 61380 - lọc theo thời gian nhập viện (CLINICAL_IN_TIME, mốc tính đủ 48 giờ của XML 48 giờ).
-                DXMenuItem itemClinicalInTime = new DXMenuItem(filterType__ClinicalInTime, new EventHandler(btnFeeLockOrEndTreatment_Click));
-                itemClinicalInTime.Tag = "ClinicalInTime";
-                menu.Items.Add(itemClinicalInTime);
+                //Việc 61380 - một lựa chọn tìm hồ sơ đủ 48 giờ (chỉ khi bật khóa): Từ - Đến theo thời gian nhập viện (CLINICAL_IN_TIME),
+                //kèm cùng điều kiện với lượt tự động (xem ApplyXml48hSearchFilter).
+                if (this.IsXml48hEnabled)
+                {
+                    DXMenuItem itemXml48h = new DXMenuItem(filterType__Xml48h, new EventHandler(btnFeeLockOrEndTreatment_Click));
+                    itemXml48h.Tag = "Xml48h";
+                    menu.Items.Add(itemXml48h);
+                }
 
                 cboStatusFeeLockOrEndTreatment.DropDownControl = menu;
             }
@@ -840,7 +841,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             filter.IN_TIME_TO = Convert.ToInt64(dtTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
                         }
                     }
-                    else if (cboStatusFeeLockOrEndTreatment.Text == filterType__ClinicalInTime) //Thời gian nhập viện
+                    else if (cboStatusFeeLockOrEndTreatment.Text == filterType__Xml48h) //Nhập viện đủ 48 giờ (việc 61380)
                     {
                         if (dtTimeFrom.EditValue != null && dtTimeFrom.DateTime != DateTime.MinValue)
                         {
@@ -850,9 +851,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             filter.CLINICAL_IN_TIME_TO = Convert.ToInt64(dtTimeTo.DateTime.ToString("yyyyMMddHHmm") + "59");
                         }
+                        //Cùng điều kiện với lượt tự động (trừ 7 ngày): diện ĐT, số vào viện, chưa ra viện, nhập viện ≤ hiện tại - 48 giờ.
+                        this.ApplyXml48hSearchFilter(filter);
                     }
-                    //Việc 61380 - Loại hồ sơ "Nhập viện đủ 48 giờ" (cboStatus): đặt sau bộ lọc thời gian để chặn mốc nhập viện không quá (hiện tại - 48 giờ).
-                    this.ApplyXml48hStatusFilter(filter);
                     if (!String.IsNullOrEmpty(txtHeinCardPrefix.Text) && !String.IsNullOrEmpty(txtHeinCardPrefix.Text.Trim()))
                     {
                         string[] heinCardArr = txtHeinCardPrefix.Text.Trim().Split(new char[] { ',' });
@@ -3889,7 +3890,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     tempConfigSync.patientTypeIds = this.patientTypeSelecteds.Select(o => o.ID).ToList();
                     tempConfigSync.patientTypeTTIds = this.patientTypeTTSelecteds.Select(o => o.ID).ToList();
                     tempConfigSync.treatmentTypeIds = this.treatmentTypeSelecteds.Select(o => o.ID).ToList();
-                    tempConfigSync.statusId = this.GetConfigSyncStatusId();
+                    tempConfigSync.statusId = (int)cboStatus.EditValue;
                     tempConfigSync.period = 10;
 
                     tempConfigSync.isCheckOutTime = false;
@@ -4016,7 +4017,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     tempConfigSync.patientTypeIds = this.patientTypeSelecteds.Select(o => o.ID).ToList();
                     tempConfigSync.patientTypeTTIds = this.patientTypeTTSelecteds.Select(o => o.ID).ToList();
                     tempConfigSync.treatmentTypeIds = this.treatmentTypeSelecteds.Select(o => o.ID).ToList();
-                    tempConfigSync.statusId = this.GetConfigSyncStatusId();
+                    tempConfigSync.statusId = (int)cboStatus.EditValue;
                     tempConfigSync.period = 10;
                     tempConfigSync.isCheckOutTime = false;
                     tempConfigSync.isCheckCollinearXml = false;
