@@ -504,6 +504,9 @@
     <Compile Include="ExamServiceReqExecuteControl__TabInfoNote.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__ViewFinishedExecute.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Popup\frmConnectCOM.cs">
       <SubType>Form</SubType>
     </Compile>

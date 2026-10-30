@@ -728,6 +728,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         dtStart.DateTime = DateTime.Now;
                     }
                 }
+                ProcessLockStartTime(true);
 
                 if (spinExcuteTimeAdd.EditValue != null && spinExcuteTimeAdd.Value > 0 && dtStart.DateTime != DateTime.MinValue && (SereServExt == null || !SereServExt.END_TIME.HasValue))
                 {
@@ -2284,6 +2285,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     var rs = TypeRequiredEmotionlessMethodOption(this.sereServ);
                     lciVoCam.AppearanceItemCaption.ForeColor = rs.RequiredEmotionlessOption != null && this.sereServ.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT ? System.Drawing.Color.Maroon : System.Drawing.Color.Black;
                     InValid();
+                    //61482: dat sau InValid() de giu nguyen rule bat buoc nhap theo trang thai y lenh
+                    ProcessLockStartTime(false);
                 }
             }
             catch (Exception ex)

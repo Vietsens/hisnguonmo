@@ -188,6 +188,7 @@ namespace HIS.UC.ExamServiceAdd.Run
                 EnableChkExamFinish();
                 // auto tich chuyen khoa
                 chkIsBranch.Checked = true;
+                LoadAddedServiceReq();
             }
             catch (Exception ex)
             {

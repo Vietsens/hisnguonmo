@@ -461,6 +461,9 @@
     <Compile Include="SurgServiceReqExecuteControl___Process.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="SurgServiceReqExecuteControl___LockStartTime.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SurgServiceReqExecuteControl___ValidateVtytTime.cs">
       <SubType>UserControl</SubType>
     </Compile>

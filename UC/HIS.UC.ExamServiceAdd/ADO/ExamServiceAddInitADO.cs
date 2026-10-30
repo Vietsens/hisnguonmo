@@ -40,6 +40,12 @@ namespace HIS.UC.ExamServiceAdd.ADO
         public long? NumOrderBlockId { get; set; }
         public string AppointmentDesc { get; set; }
         public long? AppointmentTime { get; set; }
+        public long? AppointmentExamRoomId { get; set; }
+        public long? AppointmentExamServiceId { get; set; }
         public string Note { get; set; }
+
+        // Y lenh kham them da tao tu y lenh nay (PREVIOUS_SERVICE_REQ_ID) - dung khi xem lai y lenh da ket thuc
+        public HIS_SERVICE_REQ AddedServiceReq { get; set; }
+        public HIS_SERE_SERV AddedSereServ { get; set; }
     }
 }

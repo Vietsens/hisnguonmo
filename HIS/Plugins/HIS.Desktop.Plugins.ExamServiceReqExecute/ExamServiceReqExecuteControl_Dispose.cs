@@ -38,6 +38,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 lstModuleLinkApply = null;
                 isReturnCheckboxHosTreat = false;
                 isReturnCheckboxExamFinish = false;
+                isViewFinishedExecute = false;
                 icdCodeList = null;
                 isShowSubTemp = false;
                 isShowGridIcdSub = false;
@@ -122,6 +123,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 TreatmentHistorys = null;
                 treatmentIdHasTestResults = null;
                 btn_TestResults_Disable = null;
+                treatmentCodeHasEmrDocuments = null;
+                btnEmrDocument_Disable = null;
                 SereServ8s = null;
                 ClsSereServ = null;
                 SereServsCurrentTreatment = null;
@@ -201,6 +204,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.Btn_History.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_History_ButtonClick);
                 this.Btn_Bordereau.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Bordereau_ButtonClick);
                 this.btn_TestResults.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btn_TestResults_ButtonClick);
+                this.btnEmrDocument.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnEmrDocument_ButtonClick);
                 this.chkTreatmentFinish.CheckedChanged -= new System.EventHandler(this.chkTreatmentFinish_CheckedChanged);
                 this.chkExamFinish.CheckedChanged -= new System.EventHandler(this.chkExamFinish_CheckedChanged);
                 this.chkExamServiceAdd.CheckedChanged -= new System.EventHandler(this.chkExamServiceAdd_CheckedChanged);
@@ -653,6 +657,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Btn_Bordereau = null;
                 Btn_History = null;
                 btn_TestResults = null;
+                btnEmrDocument = null;
+                gridColumnEmrDocument = null;
                 gridColumn9 = null;
                 gridColumn10 = null;
                 gridColumn21 = null;
