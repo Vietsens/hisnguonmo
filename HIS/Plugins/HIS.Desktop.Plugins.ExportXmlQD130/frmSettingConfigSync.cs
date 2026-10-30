@@ -83,6 +83,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.chkSyncKcbVlg.CheckedChanged += new EventHandler(this.chkSyncKcbVlg_CheckedChanged);
                 this.chkSyncKcbHoc.CheckedChanged += new EventHandler(this.chkSyncKcbHoc_CheckedChanged);
                 this.chkSyncKcbCt.CheckedChanged += new EventHandler(this.chkSyncKcbCt_CheckedChanged);
+                this.chkAutoXml48h.CheckedChanged += new EventHandler(this.chkAutoXml48h_CheckedChanged);
             }
             catch (Exception ex)
             {
@@ -597,6 +598,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     chkSyncKcbVlg.Checked = configSync.isSyncKcbVlg;
                     chkSyncKcbHoc.Checked = configSync.isSyncKcbHoc;
                     chkSyncKcbCt.Checked = configSync.isSyncKcbCt;
+                    chkAutoXml48h.Checked = configSync.isAutoXml48h;
                 }
             }
             catch (Exception ex)
@@ -677,6 +679,24 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
+        //Việc 61380 - Lưu NGAY khi tích/bỏ tích "Tự động xuất XML hồ sơ vào khoa điều trị đủ 48 giờ" (như chkSyncKcb).
+        private void chkAutoXml48h_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isLoadingConfig) return;              //đang nạp giá trị lúc mở form -> bỏ qua
+                if (this.configSync == null) return;
+                this.configSync.isAutoXml48h = chkAutoXml48h.Checked;
+                if (this.actAfterSave != null)
+                    this.actAfterSave(this.configSync);   //ghi ngay vào ControlState, KHÔNG đóng form
+                Inventec.Common.Logging.LogSystem.Info("frmSettingConfigSync - Luu ngay isAutoXml48h=" + chkAutoXml48h.Checked);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         //Ẩn/hiện checkbox đồng bộ KCB theo config MOS.CSDL_4750.IS_AUTO_SYNC (Bật/tắt toàn bộ liên thông CSDL 4750)
         //+ checkbox Cổng tiếp nhận VLG theo khóa MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO.
         private void ProcessVisibleSyncKcb()
@@ -720,6 +740,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 if (!enableCt)
                 {
                     this.chkSyncKcbCt.Checked = false;
+                }
+
+                //Việc 61380 - XML hồ sơ đủ 48 giờ: gate là khóa HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H = 1.
+                bool enableXml48h = HisConfigCFG.QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H == "1";
+                this.lciAutoXml48h.Visibility = enableXml48h
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                if (!enableXml48h)
+                {
+                    this.chkAutoXml48h.Checked = false;
                 }
             }
             catch (Exception ex)
@@ -785,6 +815,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.configSync.isSyncKcbVlg = chkSyncKcbVlg.Checked;
                 this.configSync.isSyncKcbHoc = chkSyncKcbHoc.Checked;
                 this.configSync.isSyncKcbCt = chkSyncKcbCt.Checked;
+                this.configSync.isAutoXml48h = chkAutoXml48h.Checked;
                 if (this.actAfterSave != null)
                 {
                     this.actAfterSave(this.configSync);

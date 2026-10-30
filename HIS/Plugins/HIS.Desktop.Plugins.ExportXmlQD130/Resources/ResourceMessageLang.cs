@@ -898,6 +898,39 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         /// <summary>Không ghi được file XML: {0}</summary>
         internal static string Xml48hLyDoGhiFileLoi { get { return GetMdInsightValue("Xml48hLyDoGhiFileLoi"); } }
 
+        /// <summary>Xuất XML hồ sơ đủ 48 giờ</summary>
+        internal static string Xml48hMenuXuatTay { get { return GetMdInsightValue("Xml48hMenuXuatTay"); } }
+
+        /// <summary>Đang có lượt xuất XML hồ sơ đủ 48 giờ chưa xong...</summary>
+        internal static string Xml48hDangChay { get { return GetMdInsightValue("Xml48hDangChay"); } }
+
+        /// <summary>Chưa khai Thư mục lưu XML hồ sơ đủ 48 giờ (nút Thư mục lưu).</summary>
+        internal static string Xml48hChuaKhaiThuMuc { get { return GetMdInsightValue("Xml48hChuaKhaiThuMuc"); } }
+
+        /// <summary>Đã tích tự động xuất XML 48 giờ nhưng chưa khai thư mục...</summary>
+        internal static string Xml48hCanhBaoTuDongChuaKhaiThuMuc { get { return GetMdInsightValue("Xml48hCanhBaoTuDongChuaKhaiThuMuc"); } }
+
+        /// <summary>Có {0} hồ sơ đã xuất XML 48 giờ thành công. Xuất lại sẽ ghi đè file cũ...</summary>
+        internal static string Xml48hHoiXuatLai { get { return GetMdInsightValue("Xml48hHoiXuatLai"); } }
+
+        /// <summary>Xuất XML hồ sơ đủ 48 giờ: {0} thành công, {1} lỗi, {2} không đủ điều kiện.</summary>
+        internal static string Xml48hKetQuaXuatTay { get { return GetMdInsightValue("Xml48hKetQuaXuatTay"); } }
+
+        /// <summary>... và {0} hồ sơ khác (xem log).</summary>
+        internal static string Xml48hVaConLai { get { return GetMdInsightValue("Xml48hVaConLai"); } }
+
+        /// <summary>Không phải hồ sơ điều trị ngoại trú/nội trú có số vào viện</summary>
+        internal static string Xml48hLyDoKhongPhaiDieuTri { get { return GetMdInsightValue("Xml48hLyDoKhongPhaiDieuTri"); } }
+
+        /// <summary>Chưa có thời gian vào khoa điều trị</summary>
+        internal static string Xml48hLyDoChuaVaoKhoa { get { return GetMdInsightValue("Xml48hLyDoChuaVaoKhoa"); } }
+
+        /// <summary>Chưa đủ 48 giờ kể từ lúc vào khoa điều trị (đủ lúc {0})</summary>
+        internal static string Xml48hLyDoChuaDu48h { get { return GetMdInsightValue("Xml48hLyDoChuaDu48h"); } }
+
+        /// <summary>Ra viện trước khi đủ 48 giờ kể từ lúc vào khoa điều trị</summary>
+        internal static string Xml48hLyDoRaVienTruoc48h { get { return GetMdInsightValue("Xml48hLyDoRaVienTruoc48h"); } }
+
         #endregion
     }
 }

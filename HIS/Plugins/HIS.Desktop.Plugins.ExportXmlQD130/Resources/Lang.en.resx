@@ -505,6 +505,6 @@
     <value>XML folder for 48-hour records:</value>
   </data>
   <data name="frmSettingSavePath.lciPathXml48h.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>While the XML 130 screen is open, the XML of inpatient and outpatient treatments with an admission number is exported automatically to this folder 48 hours after the clinical admission time.</value>
+    <value>Folder for the XML of inpatient and outpatient treatments with an admission number 48 hours after the clinical admission time: exported automatically when the matching box in the auto send settings is ticked and Auto send is on, or manually via right-click, Export 48-hour XML.</value>
   </data>
 </root>

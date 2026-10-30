@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Utils;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
@@ -27,6 +28,7 @@ using HIS.Desktop.Plugins.ExportXmlQD130.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
+using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
@@ -35,43 +37,54 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.ExportXmlQD130
 {
     /// <summary>
-    /// Viec 61380 - Tu dong xuat XML 130 cua ho so dieu tri noi tru, ngoai tru co so vao vien khi benh nhan
-    /// vao khoa dieu tri du 48 gio (tinh tu CLINICAL_IN_TIME), ghi ra Thu muc luu XML ho so du 48 gio.
+    /// Viec 61380 - Xuat XML 130 cua ho so dieu tri ngoai tru, noi tru co so vao vien khi benh nhan
+    /// vao khoa dieu tri du 48 gio (tinh tu CLINICAL_IN_TIME), ghi ra Thu muc luu XML ho so du 48 gio (nut Thu muc luu).
     ///
-    /// Chi chay khi vien bat HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H = 1, man hinh dang mo va da khai thu muc.
-    /// Moi ho so chi xuat thanh cong mot lan: ket qua ghi vao HIS_TREATMENT qua api/HisTreatment/UpdateXml48hResult,
-    /// lan quet sau chi lay ho so chua co ket qua thanh cong (ho so loi tu xuat lai).
+    /// Hai cach chay, dung chung bo ham xuat:
+    /// - Tu dong: tich "Tu dong xuat XML ho so vao khoa dieu tri du 48 gio" trong Thiet lap gui ho so tu dong
+    ///   (nhu cac o dong bo QD 3176) roi bat Gui tu dong. Moi chu ky Gui tu dong quet mot luot.
+    /// - Xuat tay: chuot phai ho so dang chon, chon Xuat XML ho so du 48 gio. Dung khi ho so loi khong xuat duoc tu dong,
+    ///   ho so qua 7 ngay ma luot tu dong khong quet toi, hoac may khong bat Gui tu dong.
     ///
-    /// Chay nen, nap du lieu vao ban giu RIENG (LoadXmlBatchDataIsolated) nen khong dung cham cac luong
+    /// Chi co tac dung khi vien bat HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H = 1.
+    /// Ket qua ghi vao HIS_TREATMENT qua api/HisTreatment/UpdateXml48hResult; luot tu dong chi lay ho so
+    /// chua co ket qua thanh cong (ho so loi tu xuat lai).
+    ///
+    /// Nap du lieu vao ban giu RIENG (LoadXmlBatchDataIsolated) nen khong dung cham cac luong
     /// Xuat Xml, Gui tu dong, Kiem tra ho so dang dung bo truong du lieu cua man hinh.
     /// </summary>
     public partial class UCExportXml : HIS.Desktop.Utility.UserControlBase
     {
         #region Khai bao
 
-        /// <summary>Chu ky quet, tinh bang phut</summary>
-        private const int XML48H_INTERVAL_MINUTE = 10;
-
         /// <summary>So gio ke tu thoi gian vao dieu tri thi ho so du dieu kien xuat</summary>
         private const int XML48H_HOURS = 48;
 
-        /// <summary>Chi quet ho so du 48 gio trong bay nhieu ngay gan nhat - khong xuat bu ho so cu hon</summary>
+        /// <summary>Luot tu dong chi quet ho so du 48 gio trong bay nhieu ngay gan nhat - ho so cu hon thi xuat tay</summary>
         private const int XML48H_SCAN_DAYS = 7;
 
-        /// <summary>So ho so toi da moi luot, phan con lai de luot sau</summary>
+        /// <summary>So ho so toi da moi luot tu dong, cung la co lo nap du lieu khi xuat tay</summary>
         private const int XML48H_MAX_PER_ROUND = 50;
+
+        /// <summary>So ket qua toi da moi lan goi UpdateXml48hResult (gioi han cua may chu)</summary>
+        private const int XML48H_MAX_RESULT_PER_CALL = 200;
+
+        /// <summary>So dong chi tiet toi da trong thong bao ket qua xuat tay, phan con lai xem log</summary>
+        private const int XML48H_MAX_MESSAGE_LINES = 30;
 
         private const short XML48H_RESULT__SUCCESS = 1;
         private const short XML48H_RESULT__FAIL = 2;
 
         private const string URI_UPDATE_XML48H_RESULT = "api/HisTreatment/UpdateXml48hResult";
 
-        private System.Windows.Forms.Timer timerXml48h;
+        /// <summary>Dang co luot xuat (tu dong hoac xuat tay) - khong chay chong de khong ghi trung file</summary>
         private volatile bool xml48hRunning = false;
         private GridColumn gridColXml48h;
         private ToolTipController toolTipXml48h;
@@ -81,13 +94,24 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             get { return HisConfigCFG.QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H == "1"; }
         }
 
+        /// <summary>Thu muc luu XML ho so du 48 gio dang khai, null khi chua khai</summary>
+        private string Xml48hFolder
+        {
+            get
+            {
+                return this.savePathADO != null && !String.IsNullOrWhiteSpace(this.savePathADO.pathXml48h)
+                    ? this.savePathADO.pathXml48h.Trim()
+                    : null;
+            }
+        }
+
         #endregion
 
         #region Khoi tao
 
         /// <summary>
-        /// Goi cuoi su kien Load (sau khi da doc thu muc luu tu trang thai dieu khien).
-        /// Vien khong bat cau hinh thi khong tao cot, khong chay tien trinh - man hinh giu nguyen.
+        /// Goi cuoi su kien Load. Vien khong bat cau hinh thi khong tao cot - man hinh giu nguyen.
+        /// Tien trinh tu dong khong khoi dong o day: chay theo chu ky Gui tu dong (DispatchXml48hAutoRound).
         /// </summary>
         internal void InitXml48h()
         {
@@ -100,51 +124,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 CreateXml48hColumn();
                 this.Disposed += UCExportXml_Xml48hDisposed;
-                RestartXml48hTimer();
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-
-        /// <summary>
-        /// Chay lai tien trinh theo thu muc dang khai: goi khi mo man va moi lan luu thu muc.
-        /// Chua khai thu muc (hoac xoa trang) thi dung tien trinh.
-        /// </summary>
-        internal void RestartXml48hTimer()
-        {
-            try
-            {
-                if (!this.IsXml48hEnabled)
-                {
-                    return;
-                }
-
-                string folder = this.savePathADO != null ? this.savePathADO.pathXml48h : null;
-                if (String.IsNullOrWhiteSpace(folder))
-                {
-                    if (this.timerXml48h != null)
-                    {
-                        this.timerXml48h.Stop();
-                    }
-                    LogSystem.Info("Xml48h - Chua khai Thu muc luu XML ho so du 48 gio, khong chay tien trinh tu dong xuat.");
-                    return;
-                }
-
-                if (this.timerXml48h == null)
-                {
-                    this.timerXml48h = new System.Windows.Forms.Timer();
-                    this.timerXml48h.Interval = XML48H_INTERVAL_MINUTE * 60000;
-                    this.timerXml48h.Tick += TimerXml48h_Tick;
-                }
-
-                this.timerXml48h.Stop();
-                this.timerXml48h.Start();
-                LogSystem.Info("Xml48h - Bat tien trinh tu dong xuat XML ho so du 48 gio, chu ky " + XML48H_INTERVAL_MINUTE + " phut.");
-
-                //Luot dau chay ngay, khong doi het chu ky dau tien
-                TimerXml48h_Tick(null, null);
             }
             catch (Exception ex)
             {
@@ -154,20 +133,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
         private void UCExportXml_Xml48hDisposed(object sender, EventArgs e)
         {
-            try
-            {
-                if (this.timerXml48h != null)
-                {
-                    this.timerXml48h.Stop();
-                    this.timerXml48h.Dispose();
-                    this.timerXml48h = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
-            }
-
             try
             {
                 if (this.toolTipXml48h != null)
@@ -184,37 +149,48 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
         #endregion
 
-        #region Tien trinh tu dong xuat
+        #region Tu dong - chay theo chu ky Gui tu dong
 
         /// <summary>
-        /// Chay tren luong giao dien (Timer cua WinForms): chi chot tham so roi day viec nang sang luong nen.
-        /// Luot truoc chua xong thi bo qua luot den han.
+        /// Goi tu autoSync_Tick (luong giao dien) moi chu ky Gui tu dong, doc lap voi luong gui cong BHYT:
+        /// chu ky khong co ho so can gui cong van quet XML 48 gio.
+        /// Chi chot tham so roi day viec nang sang luong nen. Luot truoc chua xong thi bo qua luot den han.
         /// </summary>
-        private void TimerXml48h_Tick(object sender, EventArgs e)
+        internal void DispatchXml48hAutoRound()
         {
             try
             {
+                if (!this.IsXml48hEnabled || this.configSync == null || !this.configSync.isAutoXml48h || this.cancelAutoSyncRequested)
+                {
+                    return;
+                }
+
+                string folder = this.Xml48hFolder;
+                if (folder == null)
+                {
+                    LogSystem.Info("Xml48h - Chua khai Thu muc luu XML ho so du 48 gio, bo qua luot tu dong.");
+                    return;
+                }
+
                 if (this.xml48hRunning)
                 {
                     LogSystem.Info("Xml48h - Luot truoc chua xong, bo qua luot nay.");
                     return;
                 }
 
-                string folder = this.savePathADO != null ? this.savePathADO.pathXml48h : null;
-                if (!this.IsXml48hEnabled || String.IsNullOrWhiteSpace(folder))
-                {
-                    return;
-                }
-
-                long branchId = WorkPlace.GetBranchId();
-                bool isXml3176 = chkXML3176.Checked;
+                //Chi nhanh theo Thiet lap gui ho so tu dong; de trong thi lay chi nhanh cua phong dang lam viec
+                List<long> branchIds = this.configSync.branchIds != null && this.configSync.branchIds.Count > 0
+                    ? new List<long>(this.configSync.branchIds)
+                    : new List<long> { WorkPlace.GetBranchId() };
+                //Theo o XML 3176 cua Thiet lap gui ho so tu dong, giong luong gui cong
+                bool isXml3176 = this.configSync.isXML3176;
 
                 this.xml48hRunning = true;
                 Task.Run(() =>
                 {
                     try
                     {
-                        RunXml48hRound(folder, branchId, isXml3176);
+                        RunXml48hAutoRound(folder, branchIds, isXml3176);
                     }
                     catch (Exception ex)
                     {
@@ -233,56 +209,46 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        /// <summary>Mot luot quet: lay ho so du dieu kien, xuat tung ho so, ghi ket qua mot lan cuoi luot</summary>
-        private void RunXml48hRound(string folder, long branchId, bool isXml3176)
+        /// <summary>
+        /// Goi luc bat Gui tu dong: da tich xuat XML 48 gio ma chua khai thu muc thi nhac mot lan, khong chan Gui tu dong.
+        /// </summary>
+        internal void WarnXml48hFolderMissingOnAutoStart()
         {
-            List<V_HIS_TREATMENT_1> treatments = GetXml48hTreatments(branchId);
+            try
+            {
+                if (this.IsXml48hEnabled && this.configSync != null && this.configSync.isAutoXml48h && this.Xml48hFolder == null)
+                {
+                    XtraMessageBox.Show(Resources.ResourceMessageLang.Xml48hCanhBaoTuDongChuaKhaiThuMuc, Resources.ResourceMessageLang.ThongBao);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Mot luot tu dong: lay ho so du dieu kien, xuat va ghi ket qua</summary>
+        private void RunXml48hAutoRound(string folder, List<long> branchIds, bool isXml3176)
+        {
+            List<V_HIS_TREATMENT_1> treatments = GetXml48hTreatments(branchIds);
             if (treatments == null || treatments.Count == 0)
             {
                 LogSystem.Info("Xml48h - Khong co ho so nao du 48 gio can xuat.");
                 return;
             }
 
-            LogSystem.Info("Xml48h - Luot nay xuat " + treatments.Count + " ho so vao thu muc " + folder);
-
-            List<HisTreatmentXml48hResultSDO> results = new List<HisTreatmentXml48hResultSDO>();
-            string folderError = CheckXml48hFolder(folder);
-            if (!String.IsNullOrEmpty(folderError))
-            {
-                foreach (V_HIS_TREATMENT_1 treatment in treatments)
-                {
-                    results.Add(Xml48hFail(treatment.ID, folderError));
-                }
-            }
-            else
-            {
-                results = ExportXml48hFiles(treatments, folder, isXml3176);
-            }
-
-            foreach (HisTreatmentXml48hResultSDO result in results)
-            {
-                V_HIS_TREATMENT_1 treatment = treatments.FirstOrDefault(o => o.ID == result.TreatmentId);
-                string code = treatment != null ? treatment.TREATMENT_CODE : result.TreatmentId.ToString();
-                if (result.IsSuccess)
-                {
-                    LogSystem.Info("Xml48h - Ho so " + code + ": xuat thanh cong " + result.FilePath);
-                }
-                else
-                {
-                    LogSystem.Warn("Xml48h - Ho so " + code + ": xuat loi. " + result.Description);
-                }
-            }
-
-            SaveXml48hResults(results);
-            ApplyXml48hResultsToGrid(results);
+            LogSystem.Info("Xml48h - Luot tu dong xuat " + treatments.Count + " ho so vao thu muc " + folder);
+            ExportAndSaveXml48h(treatments, folder, isXml3176);
         }
 
         /// <summary>
-        /// Ho so dieu tri ngoai tru (2), noi tru (3) co so vao vien, thuoc chi nhanh cua phong dang lam viec,
+        /// Ho so dieu tri ngoai tru (2), noi tru (3) co so vao vien, thuoc cac chi nhanh truyen vao,
         /// vao dieu tri du 48 gio trong 7 ngay gan nhat va chua xuat thanh cong.
-        /// Bo ho so ra vien truoc khi du 48 gio. Xep vao dieu tri som truoc, lay toi da 50 ho so.
+        /// Bo ho so ra vien truoc khi du 48 gio. Lay toi da 50 ho so: ho so chua xuat lan nao truoc,
+        /// roi toi ho so loi co lan xuat cu nhat - de ho so loi mai (thieu dia chi, thieu ICD...) khong chiem
+        /// het cho cua moi luot lam ho so moi khong bao gio duoc xuat.
         /// </summary>
-        private List<V_HIS_TREATMENT_1> GetXml48hTreatments(long branchId)
+        private List<V_HIS_TREATMENT_1> GetXml48hTreatments(List<long> branchIds)
         {
             List<V_HIS_TREATMENT_1> result = null;
             try
@@ -290,9 +256,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 DateTime dueTime = DateTime.Now.AddHours(-XML48H_HOURS);
 
                 HisTreatmentView1Filter filter = new HisTreatmentView1Filter();
-                if (branchId > 0)
+                List<long> validBranchIds = branchIds != null ? branchIds.Where(o => o > 0).ToList() : null;
+                if (validBranchIds != null && validBranchIds.Count > 0)
                 {
-                    filter.BRANCH_IDs = new List<long> { branchId };
+                    filter.BRANCH_IDs = validBranchIds;
                 }
                 filter.TDL_TREATMENT_TYPE_IDs = new List<long>
                 {
@@ -315,7 +282,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     .Where(o => o.CLINICAL_IN_TIME.HasValue && !IsOutBeforeXml48h(o))
                     .GroupBy(o => o.ID)
                     .Select(g => g.First())
-                    .OrderBy(o => o.CLINICAL_IN_TIME.Value)
+                    .OrderBy(o => o.XML_48H_RESULT.HasValue ? 1 : 0)
+                    .ThenBy(o => o.XML_48H_TIME ?? 0)
+                    .ThenBy(o => o.CLINICAL_IN_TIME.Value)
                     .ThenBy(o => o.ID)
                     .Take(XML48H_MAX_PER_ROUND)
                     .ToList();
@@ -327,6 +296,166 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
             return result;
         }
+
+        #endregion
+
+        #region Xuat tay - chuot phai tren luoi
+
+        /// <summary>
+        /// Xuat XML 48 gio cho cac ho so dang chon, khong can bat Gui tu dong.
+        /// Ho so chua du dieu kien thi bo qua kem ly do; ho so da xuat thanh cong thi hoi truoc khi xuat lai (ghi de file).
+        /// </summary>
+        private async void MenuItemClick_XuatXml48h(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!this.IsXml48hEnabled || this.listSelection == null || this.listSelection.Count == 0)
+                {
+                    return;
+                }
+
+                if (this.xml48hRunning)
+                {
+                    XtraMessageBox.Show(Resources.ResourceMessageLang.Xml48hDangChay, Resources.ResourceMessageLang.ThongBao);
+                    return;
+                }
+
+                //Chua khai thu muc thi mo Thu muc luu nhu nut Xuat Xml
+                if (this.Xml48hFolder == null)
+                {
+                    btnSavePath_Click(null, null);
+                }
+                string folder = this.Xml48hFolder;
+                if (folder == null)
+                {
+                    XtraMessageBox.Show(Resources.ResourceMessageLang.Xml48hChuaKhaiThuMuc, Resources.ResourceMessageLang.ThongBao);
+                    return;
+                }
+
+                DateTime now = DateTime.Now;
+                List<V_HIS_TREATMENT_1> eligible = new List<V_HIS_TREATMENT_1>();
+                List<string> skipLines = new List<string>();
+                foreach (V_HIS_TREATMENT_1 treatment in this.listSelection.GroupBy(o => o.ID).Select(g => g.First()))
+                {
+                    string reason = GetXml48hIneligibleReason(treatment, now);
+                    if (reason == null)
+                    {
+                        eligible.Add(treatment);
+                    }
+                    else
+                    {
+                        skipLines.Add(treatment.TREATMENT_CODE + ": " + reason);
+                        LogSystem.Info("Xml48h - Xuat tay bo qua ho so " + treatment.TREATMENT_CODE + ": " + reason);
+                    }
+                }
+
+                int exportedCount = eligible.Count(o => o.XML_48H_RESULT == XML48H_RESULT__SUCCESS);
+                if (exportedCount > 0
+                    && XtraMessageBox.Show(String.Format(Resources.ResourceMessageLang.Xml48hHoiXuatLai, exportedCount),
+                        Resources.ResourceMessageLang.ThongBao, MessageBoxButtons.YesNo) != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                List<HisTreatmentXml48hResultSDO> results = new List<HisTreatmentXml48hResultSDO>();
+                if (eligible.Count > 0)
+                {
+                    bool isXml3176 = chkXML3176.Checked;
+                    this.xml48hRunning = true;
+                    WaitingManager.Show();
+                    try
+                    {
+                        LogSystem.Info("Xml48h - Xuat tay " + eligible.Count + " ho so vao thu muc " + folder);
+                        results = await Task.Run(() => ExportAndSaveXml48h(eligible, folder, isXml3176));
+                    }
+                    finally
+                    {
+                        this.xml48hRunning = false;
+                        WaitingManager.Hide();
+                    }
+                }
+
+                ShowXml48hManualResult(eligible, results, skipLines);
+            }
+            catch (Exception ex)
+            {
+                this.xml48hRunning = false;
+                WaitingManager.Hide();
+                LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Ly do ho so chua du dieu kien xuat XML 48 gio (cung dieu kien luot tu dong), null khi du dieu kien</summary>
+        private static string GetXml48hIneligibleReason(V_HIS_TREATMENT_1 treatment, DateTime now)
+        {
+            bool isTreatment = treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                || treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
+            if (!isTreatment || String.IsNullOrWhiteSpace(treatment.IN_CODE))
+            {
+                return Resources.ResourceMessageLang.Xml48hLyDoKhongPhaiDieuTri;
+            }
+
+            DateTime? inTime = treatment.CLINICAL_IN_TIME.HasValue
+                ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatment.CLINICAL_IN_TIME.Value)
+                : null;
+            if (!inTime.HasValue)
+            {
+                return Resources.ResourceMessageLang.Xml48hLyDoChuaVaoKhoa;
+            }
+
+            DateTime dueTime = inTime.Value.AddHours(XML48H_HOURS);
+            if (now < dueTime)
+            {
+                return String.Format(Resources.ResourceMessageLang.Xml48hLyDoChuaDu48h,
+                    Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Convert.ToInt64(dueTime.ToString("yyyyMMddHHmmss"))));
+            }
+
+            if (IsOutBeforeXml48h(treatment))
+            {
+                return Resources.ResourceMessageLang.Xml48hLyDoRaVienTruoc48h;
+            }
+
+            return null;
+        }
+
+        /// <summary>Thong bao ket qua xuat tay: dong tong, roi tung ho so (loi, khong du dieu kien, thanh cong)</summary>
+        private void ShowXml48hManualResult(List<V_HIS_TREATMENT_1> eligible, List<HisTreatmentXml48hResultSDO> results, List<string> skipLines)
+        {
+            List<string> failLines = new List<string>();
+            List<string> okLines = new List<string>();
+            foreach (HisTreatmentXml48hResultSDO result in results)
+            {
+                V_HIS_TREATMENT_1 treatment = eligible.FirstOrDefault(o => o.ID == result.TreatmentId);
+                string code = treatment != null ? treatment.TREATMENT_CODE : result.TreatmentId.ToString();
+                if (result.IsSuccess)
+                {
+                    okLines.Add(code + ": " + result.FilePath);
+                }
+                else
+                {
+                    failLines.Add(code + ": " + result.Description);
+                }
+            }
+
+            List<string> lines = failLines.Concat(skipLines).Concat(okLines).ToList();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(String.Format(Resources.ResourceMessageLang.Xml48hKetQuaXuatTay, okLines.Count, failLines.Count, skipLines.Count));
+            sb.AppendLine();
+            foreach (string line in lines.Take(XML48H_MAX_MESSAGE_LINES))
+            {
+                sb.AppendLine(line);
+            }
+            if (lines.Count > XML48H_MAX_MESSAGE_LINES)
+            {
+                sb.AppendLine(String.Format(Resources.ResourceMessageLang.Xml48hVaConLai, lines.Count - XML48H_MAX_MESSAGE_LINES));
+            }
+
+            XtraMessageBox.Show(sb.ToString().Trim(), Resources.ResourceMessageLang.ThongBao);
+        }
+
+        #endregion
+
+        #region Xuat file va ghi ket qua - dung chung tu dong va xuat tay
 
         /// <summary>Ho so da ra vien truoc khi du 48 gio ke tu thoi gian vao dieu tri</summary>
         private static bool IsOutBeforeXml48h(V_HIS_TREATMENT_1 treatment)
@@ -344,6 +473,48 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
 
             return outTime.Value < inTime.Value.AddHours(XML48H_HOURS);
+        }
+
+        /// <summary>
+        /// Chay tren luong nen: kiem thu muc, xuat theo lo 50 ho so, ghi log tung ho so,
+        /// ghi ket qua len may chu va cap nhat cot XML 48h tren luoi.
+        /// </summary>
+        private List<HisTreatmentXml48hResultSDO> ExportAndSaveXml48h(List<V_HIS_TREATMENT_1> treatments, string folder, bool isXml3176)
+        {
+            List<HisTreatmentXml48hResultSDO> results = new List<HisTreatmentXml48hResultSDO>();
+            string folderError = CheckXml48hFolder(folder);
+            if (!String.IsNullOrEmpty(folderError))
+            {
+                foreach (V_HIS_TREATMENT_1 treatment in treatments)
+                {
+                    results.Add(Xml48hFail(treatment.ID, folderError));
+                }
+            }
+            else
+            {
+                for (int skip = 0; skip < treatments.Count; skip += XML48H_MAX_PER_ROUND)
+                {
+                    results.AddRange(ExportXml48hFiles(treatments.Skip(skip).Take(XML48H_MAX_PER_ROUND).ToList(), folder, isXml3176));
+                }
+            }
+
+            foreach (HisTreatmentXml48hResultSDO result in results)
+            {
+                V_HIS_TREATMENT_1 treatment = treatments.FirstOrDefault(o => o.ID == result.TreatmentId);
+                string code = treatment != null ? treatment.TREATMENT_CODE : result.TreatmentId.ToString();
+                if (result.IsSuccess)
+                {
+                    LogSystem.Info("Xml48h - Ho so " + code + ": xuat thanh cong " + result.FilePath);
+                }
+                else
+                {
+                    LogSystem.Warn("Xml48h - Ho so " + code + ": xuat loi. " + result.Description);
+                }
+            }
+
+            SaveXml48hResults(results);
+            ApplyXml48hResultsToGrid(results);
+            return results;
         }
 
         /// <summary>
@@ -422,7 +593,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         continue;
                     }
 
-                    //Theo o XML 3176 tai thoi diem bat dau luot, khong doc lai control tu luong nen
+                    //Chot tu luong giao dien truoc khi chay nen, khong doc lai control tu luong nen
                     ado.IS_3176 = isXml3176;
 
                     CreateXmlProcessor processor = new CreateXmlProcessor(ado);
@@ -476,8 +647,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         }
 
         /// <summary>
-        /// Ghi ket qua ca luot mot lan. Goi loi thi chi ghi log: ho so chua co ket qua thanh cong
-        /// nen luot sau tu xuat lai.
+        /// Ghi ket qua theo lo 200 (gioi han cua may chu). Goi loi thi chi ghi log: ho so chua co ket qua
+        /// thanh cong nen luot tu dong sau tu xuat lai.
         /// </summary>
         private void SaveXml48hResults(List<HisTreatmentXml48hResultSDO> results)
         {
@@ -488,12 +659,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     return;
                 }
 
-                CommonParam param = new CommonParam();
-                bool success = new BackendAdapter(param).Post<bool>(URI_UPDATE_XML48H_RESULT, ApiConsumers.MosConsumer, results, param);
-                if (!success)
+                for (int skip = 0; skip < results.Count; skip += XML48H_MAX_RESULT_PER_CALL)
                 {
-                    LogSystem.Warn("Xml48h - Ghi ket qua " + results.Count + " ho so that bai. "
-                        + (param.Messages != null ? String.Join("; ", param.Messages) : ""));
+                    List<HisTreatmentXml48hResultSDO> batch = results.Skip(skip).Take(XML48H_MAX_RESULT_PER_CALL).ToList();
+                    CommonParam param = new CommonParam();
+                    bool success = new BackendAdapter(param).Post<bool>(URI_UPDATE_XML48H_RESULT, ApiConsumers.MosConsumer, batch, param);
+                    if (!success)
+                    {
+                        LogSystem.Warn("Xml48h - Ghi ket qua " + batch.Count + " ho so that bai. "
+                            + (param.Messages != null ? String.Join("; ", param.Messages) : ""));
+                    }
                 }
             }
             catch (Exception ex)

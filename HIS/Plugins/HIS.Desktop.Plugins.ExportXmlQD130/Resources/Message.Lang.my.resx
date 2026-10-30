@@ -516,4 +516,37 @@ Hồ sơ chưa kiểm tra được cũng bị chặn vì chưa thể khẳng đ�
   <data name="Xml48hLyDoGhiFileLoi" xml:space="preserve">
     <value>Không ghi được file XML: {0}</value>
   </data>
+  <data name="Xml48hMenuXuatTay" xml:space="preserve">
+    <value>Xuất XML hồ sơ đủ 48 giờ</value>
+  </data>
+  <data name="Xml48hDangChay" xml:space="preserve">
+    <value>Đang có lượt xuất XML hồ sơ đủ 48 giờ chưa xong. Chờ lượt này xong rồi bấm lại.</value>
+  </data>
+  <data name="Xml48hChuaKhaiThuMuc" xml:space="preserve">
+    <value>Chưa khai Thư mục lưu XML hồ sơ đủ 48 giờ (nút Thư mục lưu).</value>
+  </data>
+  <data name="Xml48hCanhBaoTuDongChuaKhaiThuMuc" xml:space="preserve">
+    <value>Đã tích "Tự động xuất XML hồ sơ vào khoa điều trị đủ 48 giờ" nhưng chưa khai Thư mục lưu XML hồ sơ đủ 48 giờ (nút Thư mục lưu). Gửi tự động vẫn chạy nhưng chưa xuất XML 48 giờ cho đến khi khai thư mục.</value>
+  </data>
+  <data name="Xml48hHoiXuatLai" xml:space="preserve">
+    <value>Có {0} hồ sơ đã xuất XML 48 giờ thành công. Xuất lại sẽ ghi đè file cũ. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="Xml48hKetQuaXuatTay" xml:space="preserve">
+    <value>Xuất XML hồ sơ đủ 48 giờ: {0} hồ sơ thành công, {1} hồ sơ lỗi, {2} hồ sơ không đủ điều kiện.</value>
+  </data>
+  <data name="Xml48hVaConLai" xml:space="preserve">
+    <value>... và {0} hồ sơ khác (xem log).</value>
+  </data>
+  <data name="Xml48hLyDoKhongPhaiDieuTri" xml:space="preserve">
+    <value>Không phải hồ sơ điều trị ngoại trú/nội trú có số vào viện</value>
+  </data>
+  <data name="Xml48hLyDoChuaVaoKhoa" xml:space="preserve">
+    <value>Chưa có thời gian vào khoa điều trị</value>
+  </data>
+  <data name="Xml48hLyDoChuaDu48h" xml:space="preserve">
+    <value>Chưa đủ 48 giờ kể từ lúc vào khoa điều trị (đủ lúc {0})</value>
+  </data>
+  <data name="Xml48hLyDoRaVienTruoc48h" xml:space="preserve">
+    <value>Ra viện trước khi đủ 48 giờ kể từ lúc vào khoa điều trị</value>
+  </data>
 </root>
