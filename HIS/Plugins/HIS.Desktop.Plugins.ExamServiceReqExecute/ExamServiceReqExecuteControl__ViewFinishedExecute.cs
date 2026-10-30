@@ -195,6 +195,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 HIS.UC.ExamTreatmentFinish.ADO.TreatmentFinishInitADO treatmentFinishInitADO = new HIS.UC.ExamTreatmentFinish.ADO.TreatmentFinishInitADO();
                 treatmentFinishInitADO.Treatment = treatmentView;
+                treatmentFinishInitADO.IsViewFinished = true;
                 treatmentFinishInitADO.IsEmergencyRoom = this.IsEmergencyClassifyRoom();
                 treatmentFinishInitADO.EmergencyClassifyId2 = treatmentView.EMERGENCY_CLASSIFY_ID_2;
                 treatmentFinishInitADO.BranchName = BranchDataWorker.Branch.BRANCH_NAME;
