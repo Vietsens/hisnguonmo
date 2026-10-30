@@ -549,4 +549,7 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
   <data name="Xml48hLyDoRaVienTruoc48h" xml:space="preserve">
     <value>Discharged before 48 hours after clinical admission</value>
   </data>
+  <data name="Xml48hLocVaoKhoaDu48h" xml:space="preserve">
+    <value>In clinical department for 48 hours or more</value>
+  </data>
 </root>

@@ -931,6 +931,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         /// <summary>Ra viện trước khi đủ 48 giờ kể từ lúc vào khoa điều trị</summary>
         internal static string Xml48hLyDoRaVienTruoc48h { get { return GetMdInsightValue("Xml48hLyDoRaVienTruoc48h"); } }
 
+        /// <summary>Lựa chọn của ô Tình trạng: Vào khoa đủ 48 giờ</summary>
+        internal static string Xml48hLocVaoKhoaDu48h { get { return GetMdInsightValue("Xml48hLocVaoKhoaDu48h"); } }
+
         #endregion
     }
 }

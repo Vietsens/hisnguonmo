@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
     ///   (nhu cac o dong bo QD 3176) roi bat Gui tu dong. Moi chu ky Gui tu dong quet mot luot.
     /// - Xuat tay: chuot phai ho so dang chon, chon Xuat XML ho so du 48 gio. Dung khi ho so loi khong xuat duoc tu dong,
     ///   ho so qua 7 ngay ma luot tu dong khong quet toi, hoac may khong bat Gui tu dong.
+    /// - Tim ho so: o Tinh trang co lua chon "Vao khoa du 48 gio", loai thoi gian co "Thoi gian vao khoa tu".
     ///
     /// Chi co tac dung khi vien bat HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H = 1.
     /// Ket qua ghi vao HIS_TREATMENT qua api/HisTreatment/UpdateXml48hResult; luot tu dong chi lay ho so
@@ -81,6 +82,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
         private const short XML48H_RESULT__SUCCESS = 1;
         private const short XML48H_RESULT__FAIL = 2;
+
+        /// <summary>Gia tri lua chon "Vao khoa du 48 gio" cua o Tinh trang (0-3 la cac lua chon co san)</summary>
+        private const int XML48H_STATUS_ID = 4;
 
         private const string URI_UPDATE_XML48H_RESULT = "api/HisTreatment/UpdateXml48hResult";
 
@@ -451,6 +455,105 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
 
             XtraMessageBox.Show(sb.ToString().Trim(), Resources.ResourceMessageLang.ThongBao);
+        }
+
+        #endregion
+
+        #region Loc Tinh trang "Vao khoa du 48 gio" tren man hinh
+
+        /// <summary>Goi tu InitComboStatus. Vien khong bat cau hinh thi o Tinh trang giu nguyen.</summary>
+        private void AddXml48hStatusItem(List<FilterTypeADO> statusList)
+        {
+            try
+            {
+                if (!this.IsXml48hEnabled || statusList == null)
+                {
+                    return;
+                }
+
+                statusList.Add(new FilterTypeADO(XML48H_STATUS_ID, Resources.ResourceMessageLang.Xml48hLocVaoKhoaDu48h));
+                cboStatus.EditValueChanged += cboStatus_Xml48hEditValueChanged;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private bool IsXml48hStatusSelected
+        {
+            get { return this.IsXml48hEnabled && cboStatus.EditValue != null && Convert.ToInt32(cboStatus.EditValue) == XML48H_STATUS_ID; }
+        }
+
+        /// <summary>
+        /// Chon "Vao khoa du 48 gio" thi doi loai thoi gian sang Thoi gian vao khoa de khoang Tu - Den loc dung moc vao khoa.
+        /// Giu loai mac dinh (Thoi gian khoa vien phi) thi ho so dang dieu tri chua khoa vien phi se khong ra.
+        /// </summary>
+        private void cboStatus_Xml48hEditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.IsXml48hStatusSelected)
+                {
+                    cboStatusFeeLockOrEndTreatment.Text = filterType__ClinicalInTime;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Goi trong FillDataToGridTreatment, sau bo loc thoi gian. Cung dieu kien voi luot tu dong, tru gioi han 7 ngay:
+        /// dieu tri ngoai tru/noi tru, co so vao vien, vao khoa khong muon hon (hien tai - 48 gio).
+        /// Ho so ra vien truoc khi du 48 gio van hien (may chu khong loc duoc dieu kien nay), xuat tay se bo qua kem ly do.
+        /// </summary>
+        private void ApplyXml48hStatusFilter(HisTreatmentView1Filter filter)
+        {
+            try
+            {
+                if (filter == null || !this.IsXml48hStatusSelected)
+                {
+                    return;
+                }
+
+                List<long> xml48hTypeIds = new List<long>
+                {
+                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU,
+                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
+                };
+                //Da chon Dien dieu tri thi chi giu ngoai tru/noi tru trong so da chon; khong con loai nao thi danh sach rong.
+                filter.TDL_TREATMENT_TYPE_IDs = filter.TDL_TREATMENT_TYPE_IDs != null && filter.TDL_TREATMENT_TYPE_IDs.Count > 0
+                    ? filter.TDL_TREATMENT_TYPE_IDs.Where(o => xml48hTypeIds.Contains(o)).ToList()
+                    : xml48hTypeIds;
+                filter.HAS_IN_CODE = true;
+
+                long dueTo = Convert.ToInt64(DateTime.Now.AddHours(-XML48H_HOURS).ToString("yyyyMMddHHmmss"));
+                if (!filter.CLINICAL_IN_TIME_TO.HasValue || filter.CLINICAL_IN_TIME_TO.Value > dueTo)
+                {
+                    filter.CLINICAL_IN_TIME_TO = dueTo;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tinh trang mang sang Thiet lap gui ho so tu dong khi chua co thiet lap. Thiet lap khong co lua chon
+        /// "Vao khoa du 48 gio" (gui cong BHYT khong loc theo moc nay) nen doi ve Tat ca.
+        /// </summary>
+        private int? GetConfigSyncStatusId()
+        {
+            if (cboStatus.EditValue == null)
+            {
+                return null;
+            }
+
+            int statusId = Convert.ToInt32(cboStatus.EditValue);
+            return statusId == XML48H_STATUS_ID ? 0 : statusId;
         }
 
         #endregion
