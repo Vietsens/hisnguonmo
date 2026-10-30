@@ -129,7 +129,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.TestIndexMap
                         + ((cfg != null) ? cfg.DescribeMissing() : "không đọc được cấu hình")
                         + "\r\n\r\nThứ tự các trường, cách nhau bằng dấu |:\r\n"
                         + "mã cơ sở | tài khoản | mật khẩu | địa chỉ xác thực | địa chỉ nghiệp vụ "
-                        + "| mã đơn vị gọi | khóa riêng để ký",
+                        + "| mã đơn vị gọi | khóa riêng để ký (không bắt buộc)",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
