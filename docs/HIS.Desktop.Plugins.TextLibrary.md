@@ -124,6 +124,7 @@ Không có chức năng in.
 | 27/10/2026 | DANGTH | Việc 59771 sửa theo phản biện: popup tắt lọc tiêu đề cột/ô tìm Ctrl+F của lưới (Chọn tất cả chỉ theo dòng đang hiện); "Chọn tất cả" không còn tích khi kết quả lọc rỗng; giới hạn tính theo byte UTF-8 và hạ xuống 3998 (tránh ORA-01489 khi MOS nối dấu phẩy 2 đầu, đã tái hiện trên CSDL test MAX_STRING_SIZE=STANDARD); `ShortcutReplace` dùng hằng `IMSys.DbConfig` thay số 1 và cập nhật chú thích hàm `ProcesseShortcutReplaceWithModuleServiceExecute`. |
 | 28/10/2026 | DANGTH | Việc 59771 sửa lỗi có sẵn: `SaveProcess` lưu trên bản sao của dòng đang sửa — MOS từ chối Update thì dòng trên lưới không còn hiện giá trị chưa lưu (trước đây giữ tới khi tải lại danh sách). |
 | 30/10/2026 | DANGTH | Việc 59771 theo tester (HANBTH): tích Chia sẻ toàn viện thì khóa luôn ô "Chia sẻ theo tài khoản" cùng nút "+" (trước đây ô vẫn tích được nhưng không chọn được tài khoản). Danh sách đã chọn vẫn giữ. |
+| 30/10/2026 | DANGTH | Việc 59771 tối ưu gõ viết tắt (tester báo load lâu): `HIS.Desktop.Utility.ShortcutReplace` không còn tải cả bảng HIS_TEXT_LIB kèm CONTENT qua `BackendDataWorker`; gọi `api/HisTextLib/Get` 1 lần với `CAN_VIEW` + `HAS_HOT_KEY` + `PUBLIC_DEPARTMENT_ID` (MOS áp quy tắc chia sẻ), giữ trong RAM 10 phút, lỗi thì thử lại sau 1 phút. Màn này gọi `ShortcutReplace.ResetUsableTextLibs()` sau Lưu/Xóa. CSDL test: 825 dòng ~5 MB → 9–15 dòng ~0,7 MB mỗi tài khoản. Thanh thư viện màn Xử lý CLS vẫn tự nạp cả bảng (ngoài phạm vi). |
 
 ## 9. Test Cases
 
