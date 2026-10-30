@@ -1011,8 +1011,6 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                         isLockStartTime = exeServiceModule != null
                             && (exeServiceModule.MODULE_LINK == "HIS.Desktop.Plugins.ServiceExecute" || exeServiceModule.MODULE_LINK == "HIS.Desktop.Plugins.SurgServiceReqExecute");
                     }
-                    if (isLockStartTime)
-                        dtStartTime.Enabled = false;
                     if (serviceReq.FINISH_TIME != null)
                     {
                         dtEndTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReq.FINISH_TIME ?? 0) ?? DateTime.MinValue;
