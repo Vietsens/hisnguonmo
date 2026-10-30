@@ -244,7 +244,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         /// <summary>
         /// Ho so dieu tri ngoai tru (2), noi tru (3) co so vao vien, thuoc cac chi nhanh truyen vao,
         /// vao dieu tri du 48 gio trong 7 ngay gan nhat va chua xuat thanh cong.
-        /// Bo ho so ra vien truoc khi du 48 gio. Xep vao dieu tri som truoc, lay toi da 50 ho so.
+        /// Bo ho so ra vien truoc khi du 48 gio. Lay toi da 50 ho so: ho so chua xuat lan nao truoc,
+        /// roi toi ho so loi co lan xuat cu nhat - de ho so loi mai (thieu dia chi, thieu ICD...) khong chiem
+        /// het cho cua moi luot lam ho so moi khong bao gio duoc xuat.
         /// </summary>
         private List<V_HIS_TREATMENT_1> GetXml48hTreatments(List<long> branchIds)
         {
@@ -280,7 +282,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     .Where(o => o.CLINICAL_IN_TIME.HasValue && !IsOutBeforeXml48h(o))
                     .GroupBy(o => o.ID)
                     .Select(g => g.First())
-                    .OrderBy(o => o.CLINICAL_IN_TIME.Value)
+                    .OrderBy(o => o.XML_48H_RESULT.HasValue ? 1 : 0)
+                    .ThenBy(o => o.XML_48H_TIME ?? 0)
+                    .ThenBy(o => o.CLINICAL_IN_TIME.Value)
                     .ThenBy(o => o.ID)
                     .Take(XML48H_MAX_PER_ROUND)
                     .ToList();
