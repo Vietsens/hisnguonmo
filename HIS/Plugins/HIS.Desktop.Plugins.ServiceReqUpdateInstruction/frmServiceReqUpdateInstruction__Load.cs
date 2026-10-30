@@ -95,6 +95,11 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     lciEndTime.Enabled = false;
                     btnSave.Enabled = true;
                 }
+                //61482: dat sau cac khoi bat lciStartTime o tren, neu khong se bi bat lai
+                if (isLockStartTime)
+                {
+                    lciStartTime.Enabled = false;
+                }
                 if (currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
                     || currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM
                     || currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
