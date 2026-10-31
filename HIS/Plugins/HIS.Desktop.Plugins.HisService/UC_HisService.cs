@@ -4376,22 +4376,43 @@ namespace HIS.Desktop.Plugins.HisService
                 if (currentDataStore != null && currentDataStore.Count > 0)
                 {
                     currentDataStore = currentDataStore.Where(o => o.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU && o.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && o.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC).ToList();
-                    listParentService = currentDataStore.Where(o => o.PARENT_ID == null || currentDataStore.Exists(p => p.PARENT_ID == o.ID)).ToList();
-                    InitComboParentID();
                 }
-                listVServiceExport = new List<V_HIS_SERVICE>();
-                listVServiceExport.AddRange(currentDataStore);
 
-                // Tim cha ra cha, tim con ra con — node mo coi (PARENT_ID khong co trong ket qua)
-                // se duoc DevExpress TreeList hien thi o root level (flat)
-                if (!string.IsNullOrWhiteSpace(txtKeyword.Text) && currentDataStore.Count > 0)
+                // Combo Dich vu cha: luon lay danh sach day du tu cache, khong loc theo ket qua search
+                listParentService = null;
+                InitComboParentID();
+
+                listVServiceExport = new List<V_HIS_SERVICE>();
+                if (currentDataStore != null)
+                    listVServiceExport.AddRange(currentDataStore);
+
+                // Bo sung dich vu cha (to tien) vao DataSource de TreeList hien thi dung cay
+                // KHONG sua PARENT_ID tren object goc (tranh pha cache BackendDataWorker)
+                if (!string.IsNullOrWhiteSpace(txtKeyword.Text) && currentDataStore != null && currentDataStore.Count > 0)
                 {
-                    var existingIds = new HashSet<long>(currentDataStore.Select(o => o.ID));
-                    foreach (var svc in currentDataStore)
+                    var allServices = BackendDataWorker.Get<V_HIS_SERVICE>();
+                    if (allServices != null)
                     {
-                        if (svc.PARENT_ID.HasValue && !existingIds.Contains(svc.PARENT_ID.Value))
+                        var existingIds = new HashSet<long>(currentDataStore.Select(o => o.ID));
+                        var parentIdsToFind = new HashSet<long>();
+                        foreach (var svc in currentDataStore)
                         {
-                            svc.PARENT_ID = null;
+                            if (svc.PARENT_ID.HasValue && !existingIds.Contains(svc.PARENT_ID.Value))
+                                parentIdsToFind.Add(svc.PARENT_ID.Value);
+                        }
+                        // De quy lay het to tien (cha nhieu cap)
+                        while (parentIdsToFind.Count > 0)
+                        {
+                            var parents = allServices.Where(o => parentIdsToFind.Contains(o.ID) && !existingIds.Contains(o.ID)).ToList();
+                            if (parents.Count == 0) break;
+                            parentIdsToFind.Clear();
+                            foreach (var p in parents)
+                            {
+                                currentDataStore.Add(p);
+                                existingIds.Add(p.ID);
+                                if (p.PARENT_ID.HasValue && !existingIds.Contains(p.PARENT_ID.Value))
+                                    parentIdsToFind.Add(p.PARENT_ID.Value);
+                            }
                         }
                     }
                 }
