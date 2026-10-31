@@ -92,6 +92,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.chkSignFileCertUtil = new DevExpress.XtraEditors.CheckEdit();
             this.btnDongBo = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGuiKhoSyt = new DevExpress.XtraEditors.SimpleButton();
             this.txtPatientCode = new DevExpress.XtraEditors.TextEdit();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
@@ -135,6 +136,8 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -203,6 +206,8 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -614,6 +619,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             // 
             this.layoutControl2.Controls.Add(this.chkSignFileCertUtil);
             this.layoutControl2.Controls.Add(this.btnDongBo);
+            this.layoutControl2.Controls.Add(this.btnGuiKhoSyt);
             this.layoutControl2.Controls.Add(this.txtPatientCode);
             this.layoutControl2.Controls.Add(this.btnRefresh);
             this.layoutControl2.Controls.Add(this.btnSearch);
@@ -630,7 +636,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             // 
             // chkSignFileCertUtil
             // 
-            this.chkSignFileCertUtil.Location = new System.Drawing.Point(122, 645);
+            this.chkSignFileCertUtil.Location = new System.Drawing.Point(122, 612);
             this.chkSignFileCertUtil.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chkSignFileCertUtil.MenuManager = this.barManager1;
             this.chkSignFileCertUtil.Name = "chkSignFileCertUtil";
@@ -643,7 +649,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             // btnDongBo
             // 
             this.btnDongBo.Enabled = false;
-            this.btnDongBo.Location = new System.Drawing.Point(3, 645);
+            this.btnDongBo.Location = new System.Drawing.Point(3, 612);
             this.btnDongBo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDongBo.Name = "btnDongBo";
             this.btnDongBo.Size = new System.Drawing.Size(113, 27);
@@ -652,7 +658,20 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             this.btnDongBo.Text = "Đồng bộ dữ liệu";
             this.btnDongBo.ToolTip = "Đồng bộ dữ liệu lên cổng bộ y tế";
             this.btnDongBo.Click += new System.EventHandler(this.btnDongBo_Click);
-            // 
+            //
+            // btnGuiKhoSyt
+            //
+            this.btnGuiKhoSyt.Enabled = false;
+            this.btnGuiKhoSyt.Location = new System.Drawing.Point(3, 645);
+            this.btnGuiKhoSyt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGuiKhoSyt.Name = "btnGuiKhoSyt";
+            this.btnGuiKhoSyt.Size = new System.Drawing.Size(113, 27);
+            this.btnGuiKhoSyt.StyleController = this.layoutControl2;
+            this.btnGuiKhoSyt.TabIndex = 14;
+            this.btnGuiKhoSyt.Text = "Gửi Kho DL SYT";
+            this.btnGuiKhoSyt.ToolTip = "Gửi giấy chứng sinh lên Kho dữ liệu ngành Y tế (Sở Y tế)";
+            this.btnGuiKhoSyt.Click += new System.EventHandler(this.btnGuiKhoSyt_Click);
+            //
             // txtPatientCode
             // 
             this.txtPatientCode.Location = new System.Drawing.Point(3, 31);
@@ -706,7 +725,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             this.navBarControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.navBarControl1.Name = "navBarControl1";
             this.navBarControl1.OptionsNavPane.ExpandedWidth = 287;
-            this.navBarControl1.Size = new System.Drawing.Size(287, 552);
+            this.navBarControl1.Size = new System.Drawing.Size(287, 519);
             this.navBarControl1.TabIndex = 8;
             this.navBarControl1.Text = "navBarControl1";
             // 
@@ -1103,7 +1122,9 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             this.layoutControlItem13,
             this.layoutControlItem11,
             this.layoutControlItem10,
-            this.layoutControlItem18});
+            this.layoutControlItem18,
+            this.layoutControlItem19,
+            this.emptySpaceItem1});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Size = new System.Drawing.Size(293, 708);
@@ -1132,7 +1153,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             this.layoutControlItem7.Control = this.navBarControl1;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 84);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(293, 558);
+            this.layoutControlItem7.Size = new System.Drawing.Size(293, 525);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -1166,7 +1187,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnDongBo;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 642);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 609);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(119, 33);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -1175,11 +1196,28 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.chkSignFileCertUtil;
-            this.layoutControlItem18.Location = new System.Drawing.Point(119, 642);
+            this.layoutControlItem18.Location = new System.Drawing.Point(119, 609);
             this.layoutControlItem18.Name = "layoutControlItem18";
             this.layoutControlItem18.Size = new System.Drawing.Size(174, 33);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
+            //
+            // layoutControlItem19
+            //
+            this.layoutControlItem19.Control = this.btnGuiKhoSyt;
+            this.layoutControlItem19.Location = new System.Drawing.Point(0, 642);
+            this.layoutControlItem19.Name = "layoutControlItem19";
+            this.layoutControlItem19.Size = new System.Drawing.Size(119, 33);
+            this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem19.TextVisible = false;
+            //
+            // emptySpaceItem1
+            //
+            this.emptySpaceItem1.AllowHotTrack = false;
+            this.emptySpaceItem1.Location = new System.Drawing.Point(119, 642);
+            this.emptySpaceItem1.Name = "emptySpaceItem1";
+            this.emptySpaceItem1.Size = new System.Drawing.Size(174, 33);
+            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup1
             // 
@@ -1318,6 +1356,8 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
@@ -1403,6 +1443,9 @@ namespace HIS.Desktop.Plugins.InfantInformationList
         private DevExpress.XtraEditors.CheckEdit chkSignFileCertUtil;
         private DevExpress.XtraEditors.SimpleButton btnDongBo;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
+        private DevExpress.XtraEditors.SimpleButton btnGuiKhoSyt;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private System.Windows.Forms.Timer timer1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;

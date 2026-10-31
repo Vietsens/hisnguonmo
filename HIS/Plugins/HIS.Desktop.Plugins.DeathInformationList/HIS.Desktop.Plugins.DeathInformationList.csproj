@@ -55,6 +55,9 @@
     <Reference Include="EMR.WCF.DCO">
       <HintPath>..\..\..\..\LIB\WCF\EMR.WCF\EMR.WCF.DCO\EMR.WCF.DCO.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.KhoDuLieuYTe">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.KhoDuLieuYTe\HIS.Desktop.Plugins.Library.KhoDuLieuYTe.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Bhyt.Hssk">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Bhyt.Hssk\HIS.Bhyt.Hssk.dll</HintPath>
     </Reference>
