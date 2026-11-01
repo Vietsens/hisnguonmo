@@ -103,6 +103,13 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         long? workPlaceId = patientData?.WORK_PLACE_ID ?? data.TDL_PATIENT_WORK_PLACE_ID;
                         string workPlaceName = patientData?.WORK_PLACE ?? data.TDL_PATIENT_WORK_PLACE;
                         Inventec.Common.Logging.LogSystem.Debug("TransactionBill.FillInfoPatient >>> workPlaceId=" + workPlaceId + " | workPlaceName=[" + workPlaceName + "]");
+                        if (workPlaceId.HasValue && EnsureWorkPlaceInCombo(workPlaceId.Value) == null)
+                        {
+                            // Đơn vị không lấy được từ danh mục (đã xóa/không tồn tại) -> coi như không có ID, dùng tên đơn vị đã lưu trên hồ sơ để không in trống
+                            workPlaceName = !String.IsNullOrWhiteSpace(data.TDL_PATIENT_WORK_PLACE_NAME) ? data.TDL_PATIENT_WORK_PLACE_NAME : workPlaceName;
+                            Inventec.Common.Logging.LogSystem.Debug("TransactionBill.FillInfoPatient >>> workPlaceId=" + workPlaceId + " khong lay duoc tu danh muc -> dung text=[" + workPlaceName + "]");
+                            workPlaceId = null;
+                        }
                         if (workPlaceId.HasValue)
                         {
                             Inventec.Common.Logging.LogSystem.Debug("TransactionBill.FillInfoPatient >>> BRANCH: co workPlaceId");
