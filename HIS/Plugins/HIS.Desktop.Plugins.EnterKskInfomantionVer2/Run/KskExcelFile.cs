@@ -7,10 +7,12 @@
  * Luồng: "Xuất mẫu" -> file Excel đã điền sẵn "Bình thường" / "Loại I" -> người dùng sửa ->
  * "Nhập mẫu" -> điền trở lại lên form.
  *
- * Cấu trúc file: 1 dòng tiêu đề + mỗi mục khám 1 dòng, 5 cột
- *      A Mục khám   B Kết quả   C Phân loại   D Mã ô   E Mã ô phân loại
- * Hai cột D và E là KHÓA ĐỐI CHIẾU khi nhập lại, được ẩn đi vì người dùng không cần nhìn.
+ * Cấu trúc file: 1 dòng tiêu đề + mỗi mục khám 1 dòng, 7 cột
+ *      A Mục khám   B Kết quả   C Phân loại   D Mã ô   E Mã ô phân loại   F Người khám   G Mã ô người khám
+ * Ba cột D, E, G là KHÓA ĐỐI CHIẾU khi nhập lại, được ẩn đi vì người dùng không cần nhìn.
  * KHÔNG khớp theo cột A: nhãn mục có thể đổi giữa các bản phát hành, tên control thì không.
+ * File xuất từ bản cũ (chỉ 5 cột A–E) vẫn nhập được: cột F, G đọc ra rỗng = không đổi người khám.
+ * Cột F được đọc ở MỌI dòng; dòng không có khóa G thì lúc nhập tra chuyên khoa theo cột D/E.
  *
  * Dùng thẳng DevExpress.Spreadsheet (đã có sẵn trong bộ cài) thay vì thư viện
  * Inventec.Common.ExcelImport: thư viện đó đọc theo thẻ {%IMPORT%} và ánh xạ vào thuộc tính lớp
@@ -37,6 +39,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private const int COL_PHAN_LOAI = 2;
         private const int COL_MA_O = 3;
         private const int COL_MA_O_PL = 4;
+        private const int COL_NGUOI_KHAM = 5;
+        private const int COL_MA_O_NK = 6;
+
+        /// <summary>Ghi chú ở dòng nhãn, nhắc quy ước ô để trống.</summary>
+        private const string NOTE_BLANK = "Để trống Lý do khám, Đối tượng, Nguồn chi trả, Người khám = giữ nguyên trên màn hình. "
+            + "Người khám ghi tên đăng nhập hoặc họ tên vào ô tô vàng của từng chuyên khoa.";
+
+        /// <summary>Màu ô người khám — đánh dấu ô được đọc khi nhập lại.</summary>
+        private static readonly System.Drawing.Color DOCTOR_CELL_COLOR = System.Drawing.Color.FromArgb(255, 242, 204);
 
         /// <summary>Dòng 0 là nhãn nhận dạng, dòng 1 là tiêu đề, dữ liệu bắt đầu từ dòng 2.</summary>
         private const int ROW_TAG = 0;
@@ -67,13 +78,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         // cho người dùng biết file thuộc mẫu nào.
                         ws.Cells[ROW_TAG, COL_MUC].SetValue(FILE_TAG);
                         ws.Cells[ROW_TAG, COL_KET_QUA].SetValue(tabName ?? "");
+                        ws.Cells[ROW_TAG, COL_PHAN_LOAI].SetValue(NOTE_BLANK);
 
                         ws.Cells[ROW_HEADER, COL_MUC].SetValue("Mục khám");
                         ws.Cells[ROW_HEADER, COL_KET_QUA].SetValue("Kết quả");
                         ws.Cells[ROW_HEADER, COL_PHAN_LOAI].SetValue("Phân loại");
                         ws.Cells[ROW_HEADER, COL_MA_O].SetValue("Mã ô");
                         ws.Cells[ROW_HEADER, COL_MA_O_PL].SetValue("Mã ô phân loại");
-                        ws.Range.FromLTRB(COL_MUC, ROW_HEADER, COL_MA_O_PL, ROW_HEADER).Font.Bold = true;
+                        ws.Cells[ROW_HEADER, COL_NGUOI_KHAM].SetValue("Người khám");
+                        ws.Cells[ROW_HEADER, COL_MA_O_NK].SetValue("Mã ô người khám");
+                        ws.Range.FromLTRB(COL_MUC, ROW_HEADER, COL_MA_O_NK, ROW_HEADER).Font.Bold = true;
 
                         int r = ROW_FIRST_DATA;
                         foreach (var row in rows)
@@ -84,16 +98,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             ws.Cells[r, COL_PHAN_LOAI].SetValue(row.PHAN_LOAI ?? "");
                             ws.Cells[r, COL_MA_O].SetValue(row.MA_O ?? "");
                             ws.Cells[r, COL_MA_O_PL].SetValue(row.MA_O_PHAN_LOAI ?? "");
+                            // Chỉ dòng mang ô người khám mới ghi cột F, dòng khác để trống hẳn cho đỡ rối mắt.
+                            if (!string.IsNullOrEmpty(row.MA_O_NGUOI_KHAM))
+                            {
+                                ws.Cells[r, COL_NGUOI_KHAM].SetValue(row.NGUOI_KHAM ?? "");
+                                ws.Cells[r, COL_NGUOI_KHAM].Fill.BackgroundColor = DOCTOR_CELL_COLOR;
+                                ws.Cells[r, COL_MA_O_NK].SetValue(row.MA_O_NGUOI_KHAM);
+                            }
                             r++;
                         }
 
                         ws.Columns[COL_MUC].WidthInCharacters = 34;
                         ws.Columns[COL_KET_QUA].WidthInCharacters = 34;
                         ws.Columns[COL_PHAN_LOAI].WidthInCharacters = 16;
-                        // Ẩn 2 cột khóa: người dùng chỉ sửa cột Kết quả và Phân loại. Ẩn chứ KHÔNG bỏ,
-                        // vì thiếu 2 cột này thì không nhập lại được.
+                        ws.Columns[COL_NGUOI_KHAM].WidthInCharacters = 24;
+                        // Ẩn 3 cột khóa: người dùng chỉ sửa cột Kết quả, Phân loại, Người khám. Ẩn chứ KHÔNG bỏ,
+                        // vì thiếu các cột này thì không nhập lại được.
                         ws.Columns[COL_MA_O].Visible = false;
                         ws.Columns[COL_MA_O_PL].Visible = false;
+                        ws.Columns[COL_MA_O_NK].Visible = false;
 
                         ws.FreezeRows(ROW_HEADER);
                     }
@@ -149,8 +172,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     {
                         string maO = GetText(ws, r, COL_MA_O);
                         string maOPl = GetText(ws, r, COL_MA_O_PL);
+                        string maONk = GetText(ws, r, COL_MA_O_NK);
                         // Dòng không có khóa nào thì không đối chiếu được -> bỏ (VD người dùng tự thêm dòng).
-                        if (string.IsNullOrEmpty(maO) && string.IsNullOrEmpty(maOPl)) continue;
+                        if (string.IsNullOrEmpty(maO) && string.IsNullOrEmpty(maOPl) && string.IsNullOrEmpty(maONk)) continue;
 
                         rows.Add(new KskExcelRowADO()
                         {
@@ -158,7 +182,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             KET_QUA = GetText(ws, r, COL_KET_QUA),
                             PHAN_LOAI = GetText(ws, r, COL_PHAN_LOAI),
                             MA_O = maO,
-                            MA_O_PHAN_LOAI = maOPl
+                            MA_O_PHAN_LOAI = maOPl,
+                            // Đọc cả dòng không mang khóa người khám: người dùng có thể ghi người khám
+                            // sang dòng khác cùng chuyên khoa, lúc nhập sẽ tra ra chuyên khoa theo Mã ô.
+                            NGUOI_KHAM = GetText(ws, r, COL_NGUOI_KHAM),
+                            MA_O_NGUOI_KHAM = maONk
                         });
                     }
                 }
