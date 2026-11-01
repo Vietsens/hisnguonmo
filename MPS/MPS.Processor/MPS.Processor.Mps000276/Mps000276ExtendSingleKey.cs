@@ -28,5 +28,10 @@ namespace MPS.Processor.Mps000276
         internal const string INTRUCTION_DATE_DAY_OF_WEEK = "INTRUCTION_DATE_DAY_OF_WEEK";
         internal const string IS_ONLY_CDHA = "IS_ONLY_CDHA";
         internal const string PAYMENT_AMOUNT = "PAYMENT_AMOUNT";
+        //Doi tuong uu tien cua y lenh (HIS_SERVICE_REQ.PRIORITY_TYPE_ID -> HIS_PRIORITY_TYPE)
+        internal const string PRIORITY_TYPE_CODE = "PRIORITY_TYPE_CODE";
+        internal const string PRIORITY_TYPE_NAME = "PRIORITY_TYPE_NAME";
+        //1 = y lenh co danh dau uu tien (HIS_SERVICE_REQ.PRIORITY), 0 = khong
+        internal const string IS_PRIORITY = "IS_PRIORITY";
     }
 }
