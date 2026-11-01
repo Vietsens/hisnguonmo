@@ -248,8 +248,11 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.labelControl136 = new DevExpress.XtraEditors.LabelControl();
             this.cboExamCirculationLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView38 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamCirculationRank = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewExamCirculationRank = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup19 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem570 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExamCirculationRank = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem571 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem572 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem573 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -1163,8 +1166,11 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             ((System.ComponentModel.ISupportInitialize)(this.txtHeartRhythm.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamCirculationLoginName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView38)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamCirculationRank.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewExamCirculationRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem570)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExamCirculationRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem571)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem572)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem573)).BeginInit();
@@ -3939,6 +3945,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControl15.Controls.Add(this.txtHeartRhythm);
             this.layoutControl15.Controls.Add(this.labelControl136);
             this.layoutControl15.Controls.Add(this.cboExamCirculationLoginName);
+            this.layoutControl15.Controls.Add(this.cboExamCirculationRank);
             this.layoutControl15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl15.Location = new System.Drawing.Point(2, 2);
             this.layoutControl15.Margin = new System.Windows.Forms.Padding(2);
@@ -4143,7 +4150,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.labelControl136.Location = new System.Drawing.Point(5, 5);
             this.labelControl136.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl136.Name = "labelControl136";
-            this.labelControl136.Size = new System.Drawing.Size(159, 18);
+            this.labelControl136.Size = new System.Drawing.Size(66, 18);
             this.labelControl136.StyleController = this.layoutControl15;
             this.labelControl136.TabIndex = 4;
             this.labelControl136.Text = "3. Tim mạch";
@@ -4171,13 +4178,40 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.gridView38.Name = "gridView38";
             this.gridView38.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView38.OptionsView.ShowGroupPanel = false;
-            // 
+            //
+            // cboExamCirculationRank
+            //
+            this.cboExamCirculationRank.Location = new System.Drawing.Point(96, 5);
+            this.cboExamCirculationRank.Margin = new System.Windows.Forms.Padding(2);
+            this.cboExamCirculationRank.MenuManager = this.barManager1;
+            this.cboExamCirculationRank.Name = "cboExamCirculationRank";
+            this.cboExamCirculationRank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboExamCirculationRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboExamCirculationRank.Properties.NullText = "";
+            this.cboExamCirculationRank.Properties.PopupSizeable = false;
+            this.cboExamCirculationRank.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamCirculationRank.Properties.View = this.gridViewExamCirculationRank;
+            this.cboExamCirculationRank.Size = new System.Drawing.Size(68, 20);
+            this.cboExamCirculationRank.StyleController = this.layoutControl15;
+            this.cboExamCirculationRank.TabIndex = 25;
+            this.cboExamCirculationRank.ToolTip = "Phân Loại";
+            this.cboExamCirculationRank.TextChanged += new System.EventHandler(this.cboExamCirculationRank_TextChanged);
+            //
+            // gridViewExamCirculationRank
+            //
+            this.gridViewExamCirculationRank.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewExamCirculationRank.Name = "gridViewExamCirculationRank";
+            this.gridViewExamCirculationRank.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewExamCirculationRank.OptionsView.ShowGroupPanel = false;
+            //
             // layoutControlGroup19
             // 
             this.layoutControlGroup19.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup19.GroupBordersVisible = false;
             this.layoutControlGroup19.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem570,
+            this.lciExamCirculationRank,
             this.layoutControlItem571,
             this.layoutControlItem572,
             this.layoutControlItem573,
@@ -4210,13 +4244,28 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             this.layoutControlItem570.Control = this.labelControl136;
             this.layoutControlItem570.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem570.MaxSize = new System.Drawing.Size(1000, 22);
-            this.layoutControlItem570.MinSize = new System.Drawing.Size(78, 22);
+            this.layoutControlItem570.MinSize = new System.Drawing.Size(60, 22);
             this.layoutControlItem570.Name = "layoutControlItem570";
-            this.layoutControlItem570.Size = new System.Drawing.Size(163, 28);
+            this.layoutControlItem570.Size = new System.Drawing.Size(70, 28);
             this.layoutControlItem570.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem570.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem570.TextVisible = false;
-            // 
+            //
+            // lciExamCirculationRank
+            //
+            this.lciExamCirculationRank.Control = this.cboExamCirculationRank;
+            this.lciExamCirculationRank.Location = new System.Drawing.Point(70, 0);
+            this.lciExamCirculationRank.MaxSize = new System.Drawing.Size(93, 28);
+            this.lciExamCirculationRank.MinSize = new System.Drawing.Size(93, 28);
+            this.lciExamCirculationRank.Name = "lciExamCirculationRank";
+            this.lciExamCirculationRank.OptionsToolTip.ToolTip = "Phân Loại";
+            this.lciExamCirculationRank.Size = new System.Drawing.Size(93, 28);
+            this.lciExamCirculationRank.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciExamCirculationRank.Text = "PL:";
+            this.lciExamCirculationRank.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciExamCirculationRank.TextSize = new System.Drawing.Size(18, 20);
+            this.lciExamCirculationRank.TextToControlDistance = 3;
+            //
             // layoutControlItem571
             // 
             this.layoutControlItem571.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -13257,8 +13306,11 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             ((System.ComponentModel.ISupportInitialize)(this.txtHeartRhythm.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamCirculationLoginName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView38)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamCirculationRank.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewExamCirculationRank)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem570)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExamCirculationRank)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem571)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem572)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem573)).EndInit();
@@ -14692,6 +14744,9 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         private DevExpress.XtraEditors.TextEdit txtHeartRhythm;
         private DevExpress.XtraEditors.GridLookUpEdit cboExamCirculationLoginName;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView38;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamCirculationRank;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewExamCirculationRank;
+        private DevExpress.XtraLayout.LayoutControlItem lciExamCirculationRank;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem571;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem572;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem573;

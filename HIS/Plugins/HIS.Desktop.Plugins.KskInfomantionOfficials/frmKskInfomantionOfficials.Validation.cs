@@ -116,6 +116,47 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             }
         }
 
+        /// <summary>
+        /// Nguoi kham noi khoa (EXAM_CIRCULATION_LOGINNAME) bi backend xoa khi EXAM_CIRCULATION ("Cac trieu chung khac")
+        /// rong va khong co EXAM_CIRCULATION_RANK → co nguoi kham thi phai co PL; co PL ma khong co nguoi kham
+        /// thi backend tu gan nguoi bam Luu → bat chon nguoi kham.
+        /// </summary>
+        private bool ValidateCirculationExaminerRank()
+        {
+            try
+            {
+                bool hasExaminer = cboExamCirculationLoginName.EditValue != null && !string.IsNullOrWhiteSpace(cboExamCirculationLoginName.EditValue.ToString());
+                bool hasRank = cboExamCirculationRank.EditValue != null;
+                bool hasOtherSymptom = !string.IsNullOrWhiteSpace(txtOtherExamCirculation.Text);
+
+                string message = null;
+                BaseEdit focusControl = null;
+                if (hasExaminer && !hasRank && !hasOtherSymptom)
+                {
+                    message = "Khám nội khoa: đã chọn Người khám nhưng chưa chọn PL (Phân loại).";
+                    focusControl = cboExamCirculationRank;
+                }
+                else if (hasRank && !hasExaminer)
+                {
+                    message = "Khám nội khoa: đã chọn PL (Phân loại) nhưng chưa chọn Người khám.";
+                    focusControl = cboExamCirculationLoginName;
+                }
+
+                if (message == null)
+                    return true;
+
+                Inventec.Common.Logging.LogSystem.Debug("KskOfficials.ValidateCirculationExaminerRank: " + message);
+                XtraMessageBox.Show(message, "Thông báo", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                focusControl.Focus();
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
+            }
+        }
+
         private void ValidationSingleControl(BaseEdit control)
         {
             try
