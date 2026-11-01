@@ -159,6 +159,7 @@ namespace MPS.Processor.Mps000512
                 DataInputProcess();
                 GroupDisplayProcess();
                 ExeRoomProcess();
+                LogPackageMaterialPrice();
                 ProcessSingleKey();
                 SetQrCode();
                 SetBarcodeKey();
