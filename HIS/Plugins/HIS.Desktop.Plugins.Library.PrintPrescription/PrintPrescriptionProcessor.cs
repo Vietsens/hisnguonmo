@@ -437,17 +437,28 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                       .Get<List<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filterTransReq, paramTransReq);
                 }
 
-                long configRoomId = this.currentModule != null ? this.currentModule.RoomId : 0;
+                //Uu tien phong cua yeu cau thanh toan, nhung CHI khi phong do co khai cau hinh rieng.
+                //Phong do khong khai thi giu nguyen phong dang mo man hinh nhu truoc - de 16 man hinh
+                //khac dang dung chung thu vien nay (phieu chi dinh, xuat ban, tam ung...) khong doi hanh vi.
+                V_HIS_ROOM currentRoom = null;
                 if (lstTransReq != null && lstTransReq.Count > 0)
                 {
-                    var transReqHasRoom = lstTransReq.FirstOrDefault(o => o.REQUEST_ROOM_ID.HasValue && o.REQUEST_ROOM_ID.Value > 0);
-                    if (transReqHasRoom != null)
+                    List<long> reqRoomIds = lstTransReq
+                        .Where(o => o.REQUEST_ROOM_ID.HasValue && o.REQUEST_ROOM_ID.Value > 0)
+                        .Select(o => o.REQUEST_ROOM_ID.Value).Distinct().ToList();
+                    if (reqRoomIds.Count > 0)
                     {
-                        configRoomId = transReqHasRoom.REQUEST_ROOM_ID.Value;
+                        currentRoom = BackendDataWorker.Get<V_HIS_ROOM>()
+                            .FirstOrDefault(s => reqRoomIds.Contains(s.ID) && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
                     }
                 }
 
-                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == configRoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON)).FirstOrDefault();
+                if (currentRoom == null)
+                {
+                    long moduleRoomId = this.currentModule != null ? this.currentModule.RoomId : 0;
+                    currentRoom = BackendDataWorker.Get<V_HIS_ROOM>()
+                        .FirstOrDefault(s => s.ID == moduleRoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+                }
                 if (currentRoom != null)
                 {
                     if (this.lstConfig == null)
@@ -458,7 +469,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     {
                         //Thieu ten ngan hang thi khong the suy ra khoa cau hinh. Dung lai o day,
                         //neu di tiep se nem NullReference va mat ma QR ma khong ro nguyen nhan.
-                        Inventec.Common.Logging.LogSystem.Warn("Cau hinh thieu thong tin ngan hang.roomID: (" + configRoomId + "). Cau hinh: " + currentRoom.QR_CONFIG_JSON);
+                        Inventec.Common.Logging.LogSystem.Warn("Cau hinh thieu thong tin ngan hang.roomID: (" + currentRoom.ID + "). Cau hinh: " + currentRoom.QR_CONFIG_JSON);
                         return;
                     }
                     HIS_CONFIG _cf = new HIS_CONFIG();
