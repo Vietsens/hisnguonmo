@@ -343,9 +343,6 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                             else
                                 ado.YCD_AMOUNT = (int)ado.YCD_AMOUNT;
 
-                            // Kho xuất hết khả dụng thì không tích sẵn, tránh báo "Số lượng thuốc phải lớn hơn 0" khi Duyệt
-                            if (ado.YCD_AMOUNT <= 0)
-                                ado.IsCheck = false;
                         }
                         else if (medicineType != null)
                         {
@@ -506,9 +503,6 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                             else
                                 ado.YCD_AMOUNT = (int)ado.YCD_AMOUNT;
 
-                            // Kho xuất hết khả dụng thì không tích sẵn, tránh báo "Số lượng vật tư phải lớn hơn 0" khi Duyệt
-                            if (ado.YCD_AMOUNT <= 0)
-                                ado.IsCheck = false;
                         }
                         else if (materialType != null)
                         {
@@ -660,8 +654,13 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                                 {
                                     replaceMedicine.YCD_AMOUNT = vailable;
                                 }
+                                var replaceMedicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == inStock.Id);
+                                replaceMedicine.IS_ALLOW_EXPORT_ODD = replaceMedicineType != null && replaceMedicineType.IS_ALLOW_EXPORT_ODD == 1;
                                 if (!replaceMedicine.IS_ALLOW_EXPORT_ODD)
                                     replaceMedicine.YCD_AMOUNT = (int)replaceMedicine.YCD_AMOUNT;
+                                // Bật key tự bỏ tích: SL thay thế = 0 (yêu cầu lẻ mà không cho xuất lẻ) thì không sinh dòng thay thế
+                                if (HisConfig.IsAutoUncheckOutOfStock && replaceMedicine.YCD_AMOUNT <= 0)
+                                    continue;
 
                                 // Khi split: copy thông tin BN sang row thay thế + Requests lọc theo BN
                                 if (isSplitByPatient)
@@ -724,8 +723,13 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                                 {
                                     replaceMaterial.YCD_AMOUNT = vailable;
                                 }
+                                var replaceMaterialType = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.ID == inStock.Id);
+                                replaceMaterial.IS_ALLOW_EXPORT_ODD = replaceMaterialType != null && replaceMaterialType.IS_ALLOW_EXPORT_ODD == 1;
                                 if (!replaceMaterial.IS_ALLOW_EXPORT_ODD)
                                     replaceMaterial.YCD_AMOUNT = (int)replaceMaterial.YCD_AMOUNT;
+                                // Bật key tự bỏ tích: SL thay thế = 0 (yêu cầu lẻ mà không cho xuất lẻ) thì không sinh dòng thay thế
+                                if (HisConfig.IsAutoUncheckOutOfStock && replaceMaterial.YCD_AMOUNT <= 0)
+                                    continue;
 
                                 if (isSplitByPatient)
                                 {
@@ -755,6 +759,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                         }
                     }
                 }
+                this.AutoUncheckOutOfStock();
                 gridControlMedicine.BeginUpdate();
                 gridControlMedicine.DataSource = medicineAdos;
                 gridControlMedicine.EndUpdate();
@@ -766,6 +771,24 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Key HIS.HIS_EXP_MEST.BCS.APPROVE.IS_AUTO_UNCHECK_OUT_OF_STOCK = 1: bỏ tích dòng có SL duyệt &lt;= 0
+        /// (kho xuất hết khả dụng, hoặc yêu cầu lẻ mà không cho xuất lẻ). Tắt key thì giữ nguyên như cũ.
+        /// </summary>
+        private void AutoUncheckOutOfStock()
+        {
+            if (!HisConfig.IsAutoUncheckOutOfStock)
+                return;
+            foreach (var ado in medicineAdos.Where(o => o.IsCheck && !o.IsApproved && o.YCD_AMOUNT <= 0))
+            {
+                ado.IsCheck = false;
+            }
+            foreach (var ado in materialAdos.Where(o => o.IsCheck && !o.IsApproved && o.YCD_AMOUNT <= 0))
+            {
+                ado.IsCheck = false;
             }
         }
 
@@ -1741,6 +1764,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                     SetSplitColumnsVisible(false);
                 }
 
+                this.AutoUncheckOutOfStock();
                 gridControlMedicine.BeginUpdate();
                 gridControlMedicine.DataSource = medicineAdos;
                 gridControlMedicine.EndUpdate();
@@ -1778,11 +1802,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                 data.Materials = new List<ExpMaterialTypeSDO>();
                 data.Medicines = new List<ExpMedicineTypeSDO>();
 
-                if (!this.RecheckAvailAmountBeforeApprove())
-                {
-                    WaitingManager.Hide();
-                    return;
-                }
+                this.RecheckAvailAmountBeforeApprove();
 
                 if (!this.MakeMaterial(ref data))
                 {
@@ -1850,23 +1870,17 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
         }
 
         /// <summary>
-        /// Lấy lại khả dụng kho xuất đúng lúc bấm Duyệt (lưới chỉ có số lúc mở form).
+        /// Bật key tự bỏ tích: lấy lại khả dụng kho xuất đúng lúc bấm Duyệt (lưới chỉ có số lúc mở form), không thông báo.
         /// Mỗi loại thuốc/vật tư dùng chung một số khả dụng cho mọi dòng đang tích (tách BN, dòng thay thế), chia cho dòng duyệt ít trước.
-        /// - Hết khả dụng: bỏ tích. - Thiếu: hạ SL duyệt bằng khả dụng còn lại.
-        /// - Dòng đã chọn lô tay mà thiếu: bỏ tích để người dùng chọn lại lô.
-        /// Có thay đổi thì báo trước, người dùng bấm OK mới gửi duyệt.
+        /// - SL duyệt tính lại &lt;= 0: bỏ tích. - Thiếu: hạ SL duyệt bằng khả dụng còn lại.
+        /// - Dòng đã chọn lô tay mà thiếu: bỏ tích.
         /// </summary>
-        private bool RecheckAvailAmountBeforeApprove()
+        private void RecheckAvailAmountBeforeApprove()
         {
-            int checkedBefore = medicineAdos.Count(o => o.IsCheck && !o.IsApproved) + materialAdos.Count(o => o.IsCheck && !o.IsApproved);
-            if (checkedBefore == 0)
-                return true;
+            if (!HisConfig.IsAutoUncheckOutOfStock)
+                return;
 
             this.LoadDataInStock();
-
-            List<string> removedLines = new List<string>();
-            List<string> reducedLines = new List<string>();
-            List<string> beanLines = new List<string>();
 
             if (listMediTypeInStock != null)
             {
@@ -1878,34 +1892,20 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                     foreach (var ado in group.OrderBy(o => o.YCD_AMOUNT))
                     {
                         if (remainingAvail < 0) remainingAvail = 0;
-                        decimal oldYcd = ado.YCD_AMOUNT;
-                        decimal newYcd = Math.Min(oldYcd, remainingAvail);
+                        ado.AVAIL_AMOUNT = remainingAvail;
+                        decimal newYcd = Math.Min(ado.YCD_AMOUNT, remainingAvail);
                         if (!ado.IS_ALLOW_EXPORT_ODD)
                             newYcd = Math.Floor(newYcd);
-                        ado.AVAIL_AMOUNT = remainingAvail;
-                        if (newYcd >= oldYcd)
+                        if (newYcd < ado.YCD_AMOUNT)
                         {
-                            remainingAvail -= oldYcd;
-                            continue;
-                        }
-
-                        string name = String.Format("{0} – {1}{2}", ado.MEDICINE_TYPE_CODE, ado.MEDICINE_TYPE_NAME, String.IsNullOrEmpty(ado.TREATMENT_CODE) ? "" : " (Mã ĐT " + ado.TREATMENT_CODE + ")");
-                        if (ado.SelectedBeans != null && ado.SelectedBeans.Count > 0)
-                        {
-                            ado.IsCheck = false;
-                            beanLines.Add(String.Format("{0} – SL duyệt {1}, khả dụng còn {2}", name, oldYcd, remainingAvail));
-                        }
-                        else if (newYcd <= 0)
-                        {
-                            ado.IsCheck = false;
-                            removedLines.Add(String.Format("{0} – SL duyệt {1}", name, oldYcd));
-                        }
-                        else
-                        {
+                            if (newYcd <= 0 || (ado.SelectedBeans != null && ado.SelectedBeans.Count > 0))
+                            {
+                                ado.IsCheck = false;
+                                continue;
+                            }
                             ado.YCD_AMOUNT = newYcd;
-                            reducedLines.Add(String.Format("{0}: {1} → {2}", name, oldYcd, newYcd));
-                            remainingAvail -= newYcd;
                         }
+                        remainingAvail -= ado.YCD_AMOUNT;
                     }
                 }
             }
@@ -1920,78 +1920,28 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                     foreach (var ado in group.OrderBy(o => o.YCD_AMOUNT))
                     {
                         if (remainingAvail < 0) remainingAvail = 0;
-                        decimal oldYcd = ado.YCD_AMOUNT;
-                        decimal newYcd = Math.Min(oldYcd, remainingAvail);
+                        ado.AVAIL_AMOUNT = remainingAvail;
+                        decimal newYcd = Math.Min(ado.YCD_AMOUNT, remainingAvail);
                         if (!ado.IS_ALLOW_EXPORT_ODD)
                             newYcd = Math.Floor(newYcd);
-                        ado.AVAIL_AMOUNT = remainingAvail;
-                        if (newYcd >= oldYcd)
+                        if (newYcd < ado.YCD_AMOUNT)
                         {
-                            remainingAvail -= oldYcd;
-                            continue;
-                        }
-
-                        string name = String.Format("{0} – {1}{2}", ado.MATERIAL_TYPE_CODE, ado.MATERIAL_TYPE_NAME, String.IsNullOrEmpty(ado.TREATMENT_CODE) ? "" : " (Mã ĐT " + ado.TREATMENT_CODE + ")");
-                        if (ado.SelectedBeans != null && ado.SelectedBeans.Count > 0)
-                        {
-                            ado.IsCheck = false;
-                            beanLines.Add(String.Format("{0} – SL duyệt {1}, khả dụng còn {2}", name, oldYcd, remainingAvail));
-                        }
-                        else if (newYcd <= 0)
-                        {
-                            ado.IsCheck = false;
-                            removedLines.Add(String.Format("{0} – SL duyệt {1}", name, oldYcd));
-                        }
-                        else
-                        {
+                            if (newYcd <= 0 || (ado.SelectedBeans != null && ado.SelectedBeans.Count > 0))
+                            {
+                                ado.IsCheck = false;
+                                continue;
+                            }
                             ado.YCD_AMOUNT = newYcd;
-                            reducedLines.Add(String.Format("{0}: {1} → {2}", name, oldYcd, newYcd));
-                            remainingAvail -= newYcd;
                         }
+                        remainingAvail -= ado.YCD_AMOUNT;
                     }
                 }
             }
 
-            if (removedLines.Count == 0 && reducedLines.Count == 0 && beanLines.Count == 0)
-                return true;
-
+            // Dòng còn tích mà SL duyệt <= 0 (yêu cầu lẻ mà không cho xuất lẻ, người dùng nhập 0)
+            this.AutoUncheckOutOfStock();
             gridControlMedicine.RefreshDataSource();
             gridControlMaterial.RefreshDataSource();
-
-            StringBuilder message = new StringBuilder();
-            if (removedLines.Count > 0)
-            {
-                message.AppendLine(String.Format("Đã tự động bỏ {0} thuốc/vật tư do kho xuất hết khả dụng:", removedLines.Count));
-                removedLines.ForEach(o => message.AppendLine("- " + o));
-            }
-            if (reducedLines.Count > 0)
-            {
-                message.AppendLine(String.Format("Đã giảm số lượng duyệt {0} thuốc/vật tư do kho xuất không đủ khả dụng:", reducedLines.Count));
-                reducedLines.ForEach(o => message.AppendLine("- " + o));
-            }
-            if (beanLines.Count > 0)
-            {
-                message.AppendLine(String.Format("Đã bỏ {0} thuốc/vật tư đã chọn lô do kho xuất không đủ khả dụng, cần chọn lại lô:", beanLines.Count));
-                beanLines.ForEach(o => message.AppendLine("- " + o));
-            }
-
-            WaitingManager.Hide();
-            int checkedAfter = medicineAdos.Count(o => o.IsCheck && !o.IsApproved) + materialAdos.Count(o => o.IsCheck && !o.IsApproved);
-            if (checkedAfter == 0)
-            {
-                message.AppendLine();
-                message.Append("Không có thuốc/vật tư nào đủ khả dụng để duyệt.");
-                DevExpress.XtraEditors.XtraMessageBox.Show(message.ToString(), "Thông báo");
-                return false;
-            }
-
-            message.AppendLine();
-            message.Append("Bấm OK để duyệt các thuốc/vật tư còn lại.");
-            if (DevExpress.XtraEditors.XtraMessageBox.Show(message.ToString(), "Thông báo", MessageBoxButtons.OKCancel) != DialogResult.OK)
-                return false;
-
-            WaitingManager.Show();
-            return true;
         }
 
         private bool MakeMedicine(ref HisExpMestApproveSDO data)

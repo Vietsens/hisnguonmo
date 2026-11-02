@@ -2767,7 +2767,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
-                if (e.Button.Kind == ButtonPredefines.Delete)
+                if (btnGetStartTime != null && e.Button == btnGetStartTime)
+                {
+                    if (!isStartTimeSaved)
+                        dtStart.DateTime = DateTime.Now;
+                }
+                else if (e.Button.Kind == ButtonPredefines.Delete && !HisConfigCFG.IsLockSubclinicalStartTime)
                 {
                     dtStart.Properties.Buttons[1].Visible = false;
                     dtStart.EditValue = null;
@@ -5709,6 +5714,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         dtStart.DateTime = DateTime.Now;
                     }
                 }
+                ProcessLockStartTime(true);
 
                 if (spinExcuteTimeAdd.EditValue != null && spinExcuteTimeAdd.Value > 0 && dtStart.DateTime != DateTime.MinValue && (SereServExt == null || !SereServExt.END_TIME.HasValue))
                 {

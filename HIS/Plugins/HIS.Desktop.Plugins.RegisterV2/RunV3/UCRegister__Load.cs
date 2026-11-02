@@ -978,6 +978,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 3");
                 }
 
+                // Luong doc the KCB: xu ly khu vuc theo ket qua cong BHXH (ca truong hop cong loi).
+                this.ProcessLiveAreaByGovResult(this.ResultDataADO);
+
                 this.ucPatientRaw1.SetValue(patient);
             }
             catch (Exception ex)

@@ -29,10 +29,12 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS.Config
         private static string BCS_APPROVE_OTHER_TYPE_IS_ALLOW = "MOS.HIS_EXP_MEST.BCS.APPROVE_OTHER_TYPE.IS_ALLOW";
         private static string BCS_APPROVE_IS_AUTO_REPLACE = "HIS.HIS_EXP_MEST.BCS.APPROVE.IS_AUTO_REPLACE";
         private static string BCS_DONT_PRES_EXPIRED_ITEM = "MOS.HIS_MEDI_STOCK.DONT_PRES_EXPIRED_ITEM";
+        private static string BCS_APPROVE_IS_AUTO_UNCHECK_OUT_OF_STOCK = "HIS.HIS_EXP_MEST.BCS.APPROVE.IS_AUTO_UNCHECK_OUT_OF_STOCK";
 
         internal static string IS_ALLOW_REPLACE;
         internal static string IS_AUTO_REPLACE;
         internal static bool IsDontPresExpiredItem { get; set; }
+        internal static bool IsAutoUncheckOutOfStock { get; set; }
 
         internal static void LoadConfig()
         {
@@ -41,6 +43,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS.Config
                 IS_ALLOW_REPLACE = HisConfigs.Get<string>(BCS_APPROVE_OTHER_TYPE_IS_ALLOW);
                 IS_AUTO_REPLACE = HisConfigs.Get<string>(BCS_APPROVE_IS_AUTO_REPLACE);
                 IsDontPresExpiredItem = HisConfigs.Get<string>(BCS_DONT_PRES_EXPIRED_ITEM) == "1";
+                IsAutoUncheckOutOfStock = HisConfigs.Get<string>(BCS_APPROVE_IS_AUTO_UNCHECK_OUT_OF_STOCK) == "1";
             }
             catch (Exception ex)
             {

@@ -518,12 +518,55 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                     {
                         appearanceObject.ForeColor = System.Drawing.Color.Maroon;
                     }
+                    else
+                    {
+                        System.Drawing.Color color = GetHeinServiceTypeColor(material.HEIN_SERVICE_TYPE_ID);
+                        if (color != System.Drawing.Color.Empty)
+                        {
+                            appearanceObject.ForeColor = color;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        System.Drawing.Color[] heinServiceTypeColors;
+
+        /// <summary>
+        /// Màu chữ theo nhóm BHYT, lấy từ key HIS.Desktop.Plugins.MedicineMaterialTypeList.HeinServiceTypeColor
+        /// (định dạng: màu trong danh mục|màu thanh toán theo tỷ lệ|màu vật tư thay thế). Bỏ trống thì không tô màu.
+        /// </summary>
+        private System.Drawing.Color GetHeinServiceTypeColor(long? heinServiceTypeId)
+        {
+            if (heinServiceTypeColors == null)
+            {
+                string[] values = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.MedicineMaterialTypeList.HeinServiceTypeColor") ?? "").Split('|');
+                heinServiceTypeColors = new System.Drawing.Color[3];
+                for (int i = 0; i < 3 && i < values.Length; i++)
+                {
+                    try
+                    {
+                        if (!String.IsNullOrWhiteSpace(values[i]))
+                            heinServiceTypeColors[i] = System.Drawing.ColorTranslator.FromHtml(values[i].Trim());
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }
+            }
+
+            if (heinServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM)
+                return heinServiceTypeColors[0];
+            if (heinServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TL)
+                return heinServiceTypeColors[1];
+            if (heinServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT)
+                return heinServiceTypeColors[2];
+            return System.Drawing.Color.Empty;
         }
         private void MaterialTypeStateImageClick(MaterialTypeADO data)
         {
@@ -771,7 +814,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 "NATIONAL_NAME", "MANUFACTURER_NAME", "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO","LAST_EXP_PRICE","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME", "LAST_EXP_VAT_RATIO",
                 "IS_LEAF", "PARENT_ID", "IS_ACTIVE", "REGISTER_NUMBER","IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE",
                 "LOCKING_REASON", "IS_STOP_IMP", "IS_REUSABLE", "MODEL_CODE", "CREATE_TIME", "CREATOR", 
-                "HEIN_LIMIT_RATIO", "HEIN_LIMIT_PRICE"};
+                "HEIN_LIMIT_RATIO", "HEIN_LIMIT_PRICE", "HEIN_SERVICE_TYPE_ID"};
 
                 filter.ColumnParams = ColnParams;
                 this.materialTypes = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUri.HIS_MATERIAL_TYPE_GETVIEWDynamic, ApiConsumers.MosConsumer, filter, param);

@@ -40,6 +40,14 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction.Config
             }
         }
 
+        internal static bool IsLockSubclinicalStartTime
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.IsLockSubclinicalStartTime") == "1";
+            }
+        }
+
         internal static string StartTimeMustBeGreaterThanInstructionTime
         {
             get

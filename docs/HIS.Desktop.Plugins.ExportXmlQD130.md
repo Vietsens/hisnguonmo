@@ -1,4 +1,4 @@
-# Xuất XML QĐ130 — Tài Liệu Module
+﻿# Xuất XML QĐ130 — Tài Liệu Module
 
 ## 1. Tổng Quan
 
@@ -18,20 +18,28 @@
 
 Ghi chú `VlgKcbHoanTatWorker`: cùng file XML với luồng 4750 (NOIDUNGFILE Base64 sẵn trong batch); giới hạn 10 MiB; retry 401 một lần; fail-fast cả lô khi login lỗi; không log mật khẩu. **Trạng thái finish (UpdateCsdl4750FinishInfo): khi bật CẢ 2 đích lấy theo 4750 (VLG chỉ ghi dòng kết quả + log); khi CHỈ bật VLG lấy theo VLG** để chu kỳ tự động không chọn lại hồ sơ đã đẩy. Kết quả xử lý thật phía cổng tra ở màn "Tra cứu Cổng KDLYT Vĩnh Long" — loại hồ sơ KCB (theo MA_LK = mã điều trị).
 
-## 2b. Tự động xuất XML hồ sơ đủ 48 giờ (việc 61380, TTYT Phù Ninh)
+## 2b. Xuất XML hồ sơ đủ 48 giờ (việc 61380, TTYT Phù Ninh)
+
+Code ở `UCExportXml___Xml48h.cs`. Hai cách chạy dùng chung bộ hàm xuất (`ExportAndSaveXml48h`).
 
 | Thông tin | Giá trị |
 |-----------|---------|
-| Gate | `HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H=1` + đã khai "Thư mục lưu XML hồ sơ đủ 48 giờ" (cửa sổ Thư mục lưu, dòng chỉ hiện khi bật khóa; lưu trong `SavePathADO.pathXml48h`) |
-| Chạy | Bộ đếm giờ riêng 10 phút, lượt đầu chạy ngay khi mở màn/lưu thư mục; chạy nền, nạp dữ liệu vào ban giữ riêng (`LoadXmlBatchDataIsolated`) nên không đụng các luồng Xuất Xml / Gửi tự động |
-| Hồ sơ | `api/HisTreatment/GetView1`: chi nhánh phòng làm việc, diện ĐT ngoại trú (2)/nội trú (3), `HAS_IN_CODE`, `CLINICAL_IN_TIME` trong [hiện tại − 48 giờ − 7 ngày, hiện tại − 48 giờ], `HAS_XML_48H_SUCCESS=false`; bỏ hồ sơ ra viện trước khi đủ 48 giờ; tối đa 50/lượt |
-| Sinh file | `BuildInputAdoForXml` + `CreateXmlProcessor.RunInTreatment` (chế độ hồ sơ đang điều trị), tên file `GetFileName()`, không XML12, không ký, không gửi cổng |
-| Kết quả | `api/HisTreatment/UpdateXml48hResult` (HIS_TREATMENT.XML_48H_RESULT 1/2, _TIME, _FILE_PATH, _DESC); lỗi thì lượt sau tự xuất lại; cột "XML 48h" trên lưới, rê chuột xem thời điểm + đường dẫn/lý do |
+| Gate chung | `HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H=1` (tắt khóa: không có cột, ô tích, mục chuột phải). Thư mục khai ở cửa sổ **Thư mục lưu**, dòng "Thư mục lưu XML hồ sơ đủ 48 giờ" (chỉ hiện khi bật khóa; lưu trong `SavePathADO.pathXml48h`) |
+| Tự động | Giống các ô đồng bộ QĐ 3176: tích ô **"Tự động xuất XML hồ sơ nhập viện đủ 48 giờ"** trong form Thiết lập gửi hồ sơ tự động (`chkAutoXml48h`, cờ `ConfigSyncADO.isAutoXml48h`, lưu ngay khi tích, ẩn khi tắt khóa) rồi bật **Gửi tự động**. Mỗi chu kỳ (ô Chu kỳ phút) `autoSync_Tick` gọi `DispatchXml48hAutoRound`, độc lập với việc chu kỳ đó có hồ sơ gửi cổng BHYT hay không; tắt Gửi tự động là dừng. Bật Gửi tự động mà chưa khai thư mục thì nhắc một lần, không chặn. Không còn bộ đếm 10 phút riêng |
+| Xuất tay | Chuột phải hồ sơ đang chọn → **"Xuất XML hồ sơ đủ 48 giờ"** (`MenuItemClick_XuatXml48h`), không cần bật Gửi tự động; chưa khai thư mục thì mở Thư mục lưu. Dùng cho hồ sơ lỗi (lượt tự động không thử lại; sửa dữ liệu rồi xuất tay), hồ sơ quá 7 ngày lượt tự động không quét tới, máy không bật Gửi tự động. Bỏ qua kèm lý do hồ sơ không đủ điều kiện (không phải ngoại trú/nội trú có số vào viện, chưa có thời gian nhập viện, chưa đủ 48 giờ, đã ra viện); hồ sơ đã xuất thành công thì hỏi trước khi xuất lại (ghi đè file). Thư mục khai rồi nhưng không truy cập được: báo lý do, không ghi kết quả cho hồ sơ nào. Xong hiện bảng kết quả (tối đa 30 dòng, còn lại xem log). XML 3176 theo ô XML 3176 trên màn |
+| Tìm hồ sơ trên màn | Nút loại thời gian có thêm lựa chọn **"Nhập viện đủ 48 giờ từ:"** (`filterType__Xml48h`, chỉ thêm khi bật khóa) — một lựa chọn là cả bộ lọc: Từ–Đến lọc `CLINICAL_IN_TIME_FROM/TO` theo phút, rồi `ApplyXml48hSearchFilter` thêm diện ĐT ngoại trú/nội trú (giao với ô Diện điều trị nếu đã chọn), `HAS_IN_CODE`, `IS_OUT=false` (chưa ra viện), chặn `CLINICAL_IN_TIME_TO` ≤ hiện tại − 48 giờ; không giới hạn 7 ngày, gồm mọi trạng thái XML 48h (xem cột XML 48h). Các ô lọc khác (Chi nhánh, Đối tượng, Loại hồ sơ...) kết hợp như bình thường; ô Loại hồ sơ giữ nguyên 4 lựa chọn cũ. Các loại thời gian khác không áp điều kiện này |
+| Hồ sơ (tự động) | `api/HisTreatment/GetView1`: chi nhánh theo ô Chi nhánh của form Thiết lập (trống = chi nhánh phòng làm việc), diện ĐT ngoại trú (2)/nội trú (3), `HAS_IN_CODE`, `IS_OUT=false` (chưa ra viện — hồ sơ đã ra viện đi theo nút Xuất Xml thường), `CLINICAL_IN_TIME` trong [hiện tại − 48 giờ − 7 ngày, hiện tại − 48 giờ], `HAS_XML_48H_SUCCESS=false`, rồi FE giữ lại **chỉ hồ sơ chưa xuất lần nào** (`XML_48H_RESULT` trống — máy chủ không có cờ lọc này; hồ sơ lỗi không tự xuất lại); tối đa 50/lượt theo `CLINICAL_IN_TIME` tăng dần, còn lại để lượt sau. XML 3176 theo ô XML 3176 của form Thiết lập. Các bộ lọc khác của form (đối tượng, diện, loại hồ sơ, loại thời gian) không áp |
+| Sinh file | Nạp dữ liệu vào ban giữ riêng (`LoadXmlBatchDataIsolated`, lô 50 hồ sơ) nên không đụng các luồng Xuất Xml / Gửi tự động; `BuildInputAdoForXml` + `CreateXmlProcessor.RunInTreatment` (chế độ hồ sơ đang điều trị), tên file `GetFileName()`, không XML12, không ký, không gửi cổng. Thư mục không tồn tại/không ghi được (`CheckXml48hFolder`): bỏ qua cả lượt, chỉ ghi log, KHÔNG ghi "Lỗi" cho hồ sơ (lỗi thư mục không phải lỗi hồ sơ; hồ sơ Lỗi phải xuất tay) — thư mục trở lại thì lượt sau xuất bình thường. Cờ `xml48hRunning` chặn chạy chồng lượt tự động và xuất tay |
+| Kết quả | `api/HisTreatment/UpdateXml48hResult` (gửi theo lô 200; HIS_TREATMENT.XML_48H_RESULT 1/2, _TIME, _FILE_PATH, _DESC; lỗi không đè thành công, thành công đè thành công); hồ sơ lỗi không tự xuất lại, chỉ xuất tay; cột "XML 48h" trên lưới, rê chuột xem thời điểm + đường dẫn/lý do |
 
 ## 3. Changelog
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 30/10/2026 | phuongnm | Việc 61380: (1) lượt tự động XML 48 giờ không thử lại hồ sơ lỗi nữa, chỉ lấy hồ sơ `XML_48H_RESULT` trống (user chốt: hồ sơ lỗi sửa dữ liệu rồi xuất tay). Trước đó hồ sơ lỗi dữ liệu bị thử lại mỗi chu kỳ suốt 7 ngày (chu kỳ 10 phút ≈ 1.000 lần/hồ sơ) mà không bao giờ qua, chỉ tốn tải API. (2) Thêm điều kiện **chưa ra viện** (`IS_OUT=false`) cho lượt tự động, xuất tay và lọc Loại hồ sơ; thay "ra viện trước 48 giờ" bằng "đã ra viện" (giữ khóa resource `Xml48hLyDoRaVienTruoc48h`, đổi chữ), bỏ `IsOutBeforeXml48h`. (3) Thư mục không truy cập được: bỏ qua lượt, không ghi Lỗi cho hồ sơ (trước đây ghi Lỗi cả 50 hồ sơ — nay sẽ bắt xuất tay 50 hồ sơ chỉ vì mất mạng). Sửa tooltip ô tích cho khớp. |
+| 30/10/2026 | phuongnm | Việc 61380: thêm bộ lọc tìm hồ sơ đủ 48 giờ trên màn: lựa chọn Loại hồ sơ "Nhập viện đủ 48 giờ" và loại thời gian "Thời gian nhập viện từ:" (mục 2b). Chỉ sửa FE, API GetView1 đã có sẵn trường lọc. **Cuối ngày gom về một chỗ** (user: "muốn 1 cái tìm kiếm cho 48h"): bỏ lựa chọn thêm ở ô Loại hồ sơ và loại thời gian chung "Thời gian nhập viện từ:", thay bằng một lựa chọn "Nhập viện đủ 48 giờ từ:" ở nút loại thời gian; bỏ resource `Xml48hLocNhapVienDu48h`. Cùng ngày đổi chữ "vào khoa điều trị" thành "nhập viện" ở mọi nhãn/thông báo 48 giờ (ô tích, lý do bỏ qua, tooltip) cho đúng tên cột `CLINICAL_IN_TIME` = "Thời gian nhập viện" như các màn khác của HIS; khóa resource `Xml48hLyDoChuaVaoKhoa` → `Xml48hLyDoChuaNhapVien`, `Xml48hLocVaoKhoaDu48h` → `Xml48hLocNhapVienDu48h`. |
+| 30/10/2026 | phuongnm | Việc 61380: lượt tự động XML 48 giờ lấy hồ sơ chưa xuất trước, rồi hồ sơ lỗi có lần xuất cũ nhất. Trước đây xếp theo giờ nhập viện, khi có từ 50 hồ sơ lỗi mãi (dev: thiếu địa chỉ) thì mỗi lượt lấy lại đúng 50 hồ sơ đó, hồ sơ mới không bao giờ tới lượt. |
+| 29/10/2026 | phuongnm | Việc 61380: xuất XML 48 giờ tự động chuyển sang chạy theo Gửi tự động như QĐ 3176 (ô tích mới trong form Thiết lập gửi hồ sơ tự động, bỏ bộ đếm 10 phút riêng); thêm xuất tay bằng chuột phải "Xuất XML hồ sơ đủ 48 giờ" (mục 2b). Form Thiết lập cao thêm 24px. |
 | 27/10/2026 | phuongnm | Việc 61380: tự động xuất XML hồ sơ đủ 48 giờ (mục 2b). Tách nơi chứa dữ liệu lô ra `XmlBatchDataADO`: `CreateThreadGetData`/`ThreadGet*` ghi vào ban giữ; các luồng cũ dùng ban giữ trỏ thẳng vào bộ trường của màn nên hành vi không đổi. |
 | 14/08/2026 | khainq | Fix review vòng 2 (build 00:52): gửi tay qua menu khi chế độ auto đang bật không còn fire-and-forget (dialog từng đọc 0 kết quả → bấm lại gây đẩy trùng) — dùng cờ `manualSyncKcb4750` (trước đây khai báo nhưng không bao giờ đọc), lượt gửi tay cũng không bị hủy khi tắt auto giữa chừng; `kcb4750ResultLines` capture local trong task (task lượt trước không Add vào list lượt sau); chặn menu khi `backgroundWorker1.IsBusy` (flags `isNotFileSign` dùng chung — chạy chồng làm lô BHYT tự động gửi KHÔNG ký); VLG-only không còn bị chặn khi IS_AUTO_SYNC=1 mà thiếu key 4750; header dialog đếm theo "lượt gửi"; cast `j["data"] as JObject` trong VlgKcbHoanTatWorker. |
 | 13/08/2026 | khainq | Thêm đích đẩy KCB thứ 2 "Cổng tiếp nhận KDLYT Vĩnh Long": `Base/VlgKcbHoanTatWorker.cs` mới; checkbox mới trong frmSettingConfigSync (`isSyncKcbVlg` — lưu ngay khi tick, ẩn khi viện không có khóa); menu "Đồng bộ Khám chữa bệnh" hiện thêm khi có khóa VLG; luồng đẩy nền chung Task với 4750 (lỗi 2 đích cô lập nhau); điều kiện dispatch tự động + hủy giữa lô tính cả isSyncKcbVlg. Sửa build máy backup: 3 chỗ `ado.TotalHeinPatientTypeData` (property chưa có trong DLL His.Bhyt.ExportXml.XML130 bản máy này) → gán reflection `SetAdoPropIfExists` để build cả DLL cũ lẫn mới; tạo `Properties/licenses.licx` rỗng. |
@@ -41,7 +49,16 @@ Ghi chú `VlgKcbHoanTatWorker`: cùng file XML với luồng 4750 (NOIDUNGFILE B
 - [ ] Viện chỉ VLG: tick checkbox → menu gửi tay đẩy hoan-tat, dialog kết quả kèm tracking; hồ sơ đã đẩy không bị chọn lại ở chu kỳ tự động.
 - [ ] Viện cả 2: mỗi hồ sơ 2 dòng kết quả (4750 + VLG); lỗi VLG không làm hỏng kết quả 4750 và ngược lại.
 - [ ] ConfigSync cũ (JSON không có isSyncKcbVlg) → mặc định bỏ tick, không lỗi.
-- [ ] Khóa 48 giờ tắt: cửa sổ Thư mục lưu 4 dòng như cũ, lưới không có cột XML 48h, không có tiến trình.
-- [ ] Khóa bật + khai thư mục: hồ sơ nội trú có số vào viện vào điều trị quá 48 giờ được xuất 1 file, cột XML 48h "Đã xuất"; lượt sau không xuất lại.
-- [ ] Thư mục mạng mất kết nối: hồ sơ ghi "Lỗi" kèm lý do, kết nối lại thì lượt sau xuất được.
-- [ ] Đang Xuất Xml / Gửi tự động trong lúc tiến trình 48 giờ chạy: kết quả hai luồng không lẫn dữ liệu.
+- [ ] Khóa 48 giờ tắt: cửa sổ Thư mục lưu 4 dòng như cũ, form Thiết lập gửi tự động không có ô 48 giờ, chuột phải không có mục "Xuất XML hồ sơ đủ 48 giờ", lưới không có cột XML 48h.
+- [ ] Khóa bật, chưa tích ô 48 giờ, bật Gửi tự động: không xuất XML 48 giờ (gửi cổng BHYT chạy như cũ).
+- [ ] Khóa bật + khai thư mục + tích ô + bật Gửi tự động: hồ sơ nội trú có số vào viện nhập viện quá 48 giờ được xuất 1 file, cột XML 48h "Đã xuất"; chu kỳ sau không xuất lại. Chu kỳ không có hồ sơ gửi BHYT vẫn xuất 48 giờ.
+- [ ] Tích ô nhưng chưa khai thư mục, bật Gửi tự động: hiện nhắc một lần, Gửi tự động vẫn chạy.
+- [ ] Tắt Gửi tự động: không còn lượt 48 giờ mới.
+- [ ] Xuất tay hồ sơ lỗi / hồ sơ quá 7 ngày: xuất được, cột chuyển "Đã xuất". Hồ sơ chưa đủ 48 giờ, đã ra viện, khám ngoại trú: bỏ qua kèm lý do. Hồ sơ đã xuất: hỏi trước, đồng ý thì ghi đè file.
+- [ ] Bấm xuất tay khi lượt tự động đang chạy: báo chờ lượt xong.
+- [ ] Loại thời gian "Nhập viện đủ 48 giờ từ:" (chỉ có khi bật khóa): danh sách chỉ có ngoại trú/nội trú có số vào viện, chưa ra viện, nhập viện trong khoảng Từ - Đến và trước hiện tại 48 giờ (dev 30/10: 20/10 - 30/10 ra 96 hồ sơ, khớp đếm DB). Kết hợp Loại hồ sơ "Đã có số vào viện" vẫn ra như vậy. Khóa tắt: nút loại thời gian không có lựa chọn này.
+- [ ] Loại thời gian khác (khóa viện phí, kết thúc điều trị, vào viện): không áp điều kiện 48 giờ, hồ sơ đã ra viện vẫn hiện như cũ.
+- [ ] Thư mục mạng mất kết nối: lượt tự động bỏ qua, chỉ ghi log, không hồ sơ nào bị ghi "Lỗi"; kết nối lại thì lượt sau xuất bình thường. Xuất tay lúc đó: báo không truy cập được thư mục, không ghi kết quả.
+- [ ] Hồ sơ đã ra viện (kể cả ra viện sau 48 giờ): lượt tự động không lấy, xuất tay bỏ qua với lý do "Đã ra viện", lọc "Nhập viện đủ 48 giờ" không hiện.
+- [ ] Hồ sơ "Lỗi": các chu kỳ sau không đụng tới (cột vẫn "Lỗi", `XML_48H_TIME` không đổi); sửa dữ liệu rồi chuột phải xuất tay mới chuyển "Đã xuất".
+- [ ] Đang Xuất Xml / Gửi tự động trong lúc lượt 48 giờ chạy: kết quả hai luồng không lẫn dữ liệu.

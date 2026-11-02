@@ -53,6 +53,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         private const string GOV_RESULT_CODE__CARD_EXPIRED_HAS_NEW_CARD = "003";
         /// <summary>Ma ket qua cong BHXH: the cu con gia tri su dung, duoc cap the moi</summary>
         private const string GOV_RESULT_CODE__CARD_VALID_HAS_NEW_CARD = "004";
+        /// <summary>Ma ket qua noi bo (HeinGOVManager): the thuoc danh muc khong kiem tra tren cong BHYT (HIS_BHYT_WHITELIST.IS_NOT_CHECK_BHYT = 1)</summary>
+        private const string GOV_RESULT_CODE__NOT_CHECK_ON_GOV = "9999";
 
         private async void CheckTTFull(HeinCardData heinCard, Action focusNextControl)
         {
@@ -267,9 +269,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                     }
 
-                    // Dat SAU cac lenh FillDataByHeinCardData o tren de khu vuc cua dot dieu tri cu khong nap de lai.
-                    this.ProcessLiveAreaByGovResult();
-
                     CheckRRCodeTTFee(false);
                     if (HisConfigCFG.IsCheckExamHistory
                         && this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO != null)
@@ -290,6 +289,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     Inventec.Common.Logging.LogSystem.Debug("CheckTTProcessResultData 3");
                     Inventec.Common.Logging.LogSystem.Debug("CheckHanSDTheBHYT => 3");
                 }
+
+                // Dat SAU cac lenh FillDataByHeinCardData o tren de khu vuc cua dot dieu tri cu khong nap de lai.
+                // Nam ngoai khoi ResultHistoryLDO != null de xu ly ca truong hop cong BHXH loi (ResultHistoryLDO = null).
+                this.ProcessLiveAreaByGovResult(this.ucPatientRaw1.ResultDataADO);
             }
             catch (Exception ex)
             {
@@ -298,39 +301,55 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         }
 
         /// <summary>
-        /// Khoa IsClearLiveAreaWhenCheckHeinCardOldTreatment = 1: khi cong BHXH da xac nhan duoc the,
-        /// khu vuc CHI lay theo ket qua cong (maKV rong => de trong o Khu vuc), khong giu khu vuc cua dot dieu tri cu.
-        /// Khoa tat / cong loi / ket qua cong khong xac nhan duoc the => khong lam gi (giu nguyen luong cu).
+        /// Khoa IsClearLiveAreaWhenCheckHeinCardOldTreatment = 1: khu vuc CHI lay theo ket qua cong BHXH,
+        /// khong giu khu vuc cua dot dieu tri cu.
+        /// - Cong xac nhan duoc the (000/003/004): khu vuc = maKV (rong => de trong).
+        /// - Cong loi / mat ket noi (ResultHistoryLDO = null) hoac cong bao the khong hop le: de trong khu vuc.
+        /// - The thuoc danh muc khong kiem tra tren cong (9999) hoac khong goi cong (resultDataADO = null): giu nguyen.
+        /// Khoa tat => khong lam gi (giu nguyen luong cu).
         /// Tham chieu: docs/B_KyThuat_RegisterV2_DeTrongKhuVucTheBHYT.md
         /// </summary>
-        private void ProcessLiveAreaByGovResult()
+        private void ProcessLiveAreaByGovResult(ResultDataADO resultDataADO)
         {
             try
             {
-                if (!Config.HisConfigCFG.IsClearLiveAreaWhenCheckHeinCardOldTreatment()) return;
-                if (this.ucHeinInfo1 == null || this.ucPatientRaw1 == null || !IsPatientTypeUsingHeinInfo()) return;
-
-                var resultDataADO = this.ucPatientRaw1.ResultDataADO;
-                if (resultDataADO == null || resultDataADO.ResultHistoryLDO == null) return;
-
-                string resultCode = resultDataADO.ResultHistoryLDO.maKetQua;
-                if (resultCode != GOV_RESULT_CODE__CARD_VALID
-                    && resultCode != GOV_RESULT_CODE__CARD_EXPIRED_HAS_NEW_CARD
-                    && resultCode != GOV_RESULT_CODE__CARD_VALID_HAS_NEW_CARD)
+                bool isEnabled = Config.HisConfigCFG.IsClearLiveAreaWhenCheckHeinCardOldTreatment();
+                bool isUsingHeinInfo = IsPatientTypeUsingHeinInfo();
+                if (!isEnabled || this.ucHeinInfo1 == null || !isUsingHeinInfo)
                 {
-                    Inventec.Common.Logging.LogSystem.Debug("ProcessLiveAreaByGovResult: cong BHXH chua xac nhan duoc the => giu nguyen khu vuc."
-                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultCode), resultCode));
+                    Inventec.Common.Logging.LogSystem.Info("ProcessLiveAreaByGovResult: bo qua."
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isEnabled), isEnabled)
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isUsingHeinInfo), isUsingHeinInfo));
                     return;
                 }
 
-                string liveAreaCode = String.IsNullOrWhiteSpace(resultDataADO.ResultHistoryLDO.maKV)
-                    ? null : resultDataADO.ResultHistoryLDO.maKV.Trim();
+                if (resultDataADO == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("ProcessLiveAreaByGovResult: khong goi cong BHXH => giu nguyen khu vuc.");
+                    return;
+                }
+
+                string resultCode = (resultDataADO.ResultHistoryLDO != null ? resultDataADO.ResultHistoryLDO.maKetQua : null);
+                if (resultCode == GOV_RESULT_CODE__NOT_CHECK_ON_GOV)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("ProcessLiveAreaByGovResult: the khong kiem tra tren cong BHXH => giu nguyen khu vuc.");
+                    return;
+                }
+
+                string liveAreaCode = null;
+                if (resultCode == GOV_RESULT_CODE__CARD_VALID
+                    || resultCode == GOV_RESULT_CODE__CARD_EXPIRED_HAS_NEW_CARD
+                    || resultCode == GOV_RESULT_CODE__CARD_VALID_HAS_NEW_CARD)
+                {
+                    liveAreaCode = String.IsNullOrWhiteSpace(resultDataADO.ResultHistoryLDO.maKV)
+                        ? null : resultDataADO.ResultHistoryLDO.maKV.Trim();
+                }
 
                 this.ucHeinInfo1.SetLiveAreaCode(liveAreaCode);
                 if (resultDataADO.HeinCardData != null)
                     resultDataADO.HeinCardData.LiveAreaCode = liveAreaCode;
 
-                Inventec.Common.Logging.LogSystem.Info("ProcessLiveAreaByGovResult: khu vuc lay theo ket qua cong BHXH."
+                Inventec.Common.Logging.LogSystem.Info("ProcessLiveAreaByGovResult: khu vuc lay theo ket qua cong BHXH (cong loi / the khong hop le => de trong)."
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultCode), resultCode)
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => liveAreaCode), liveAreaCode));
             }

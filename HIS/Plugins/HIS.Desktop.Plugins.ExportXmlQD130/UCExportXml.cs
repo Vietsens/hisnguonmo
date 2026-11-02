@@ -105,6 +105,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         internal string filterType__FeeLockTime = "Thời gian khóa viện phí từ:";
         internal string filterType__EndTreatmentTime = "Thời gian kết thúc điều trị từ:";
         internal string filterType__BeginTreatmentTime = "Thời gian vào viện từ:";
+        internal string filterType__Xml48h = "Nhập viện đủ 48 giờ từ:";
         int rowCount = 0;
         int dataTotal = 0;
         int start = 0;
@@ -284,7 +285,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 //vCong XXXXX - Đấu nối MDInsight soát lỗi hồ sơ XML.
                 //Chỉ tạo nút và cột khi viện đã khai đủ cấu hình; chưa khai thì màn hình giữ nguyên.
                 this.InitMdInsight();
-                //Việc 61380 - Tự động xuất XML hồ sơ đủ 48 giờ. Chỉ chạy khi bật cấu hình và đã khai thư mục.
+                //Việc 61380 - Xuất XML hồ sơ đủ 48 giờ: tạo cột khi bật cấu hình; tự động chạy theo Gửi tự động, xuất tay ở menu chuột phải.
                 this.InitXml48h();
             }
             catch (Exception ex)
@@ -640,6 +641,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 itemFilterEndTreatment.Tag = "BiginTreatmentTime";
                 menu.Items.Add(itemBiginTreatmentTime);
 
+                //Việc 61380 - một lựa chọn tìm hồ sơ đủ 48 giờ (chỉ khi bật khóa): Từ - Đến theo thời gian nhập viện (CLINICAL_IN_TIME),
+                //kèm cùng điều kiện với lượt tự động (xem ApplyXml48hSearchFilter).
+                if (this.IsXml48hEnabled)
+                {
+                    DXMenuItem itemXml48h = new DXMenuItem(filterType__Xml48h, new EventHandler(btnFeeLockOrEndTreatment_Click));
+                    itemXml48h.Tag = "Xml48h";
+                    menu.Items.Add(itemXml48h);
+                }
+
                 cboStatusFeeLockOrEndTreatment.DropDownControl = menu;
             }
             catch (Exception ex)
@@ -830,6 +840,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             filter.IN_TIME_TO = Convert.ToInt64(dtTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
                         }
+                    }
+                    else if (cboStatusFeeLockOrEndTreatment.Text == filterType__Xml48h) //Nhập viện đủ 48 giờ (việc 61380)
+                    {
+                        if (dtTimeFrom.EditValue != null && dtTimeFrom.DateTime != DateTime.MinValue)
+                        {
+                            filter.CLINICAL_IN_TIME_FROM = Convert.ToInt64(dtTimeFrom.DateTime.ToString("yyyyMMddHHmm") + "00");
+                        }
+                        if (dtTimeTo.EditValue != null && dtTimeTo.DateTime != DateTime.MinValue)
+                        {
+                            filter.CLINICAL_IN_TIME_TO = Convert.ToInt64(dtTimeTo.DateTime.ToString("yyyyMMddHHmm") + "59");
+                        }
+                        //Cùng điều kiện với lượt tự động (trừ 7 ngày): diện ĐT, số vào viện, chưa ra viện, nhập viện ≤ hiện tại - 48 giờ.
+                        this.ApplyXml48hSearchFilter(filter);
                     }
                     if (!String.IsNullOrEmpty(txtHeinCardPrefix.Text) && !String.IsNullOrEmpty(txtHeinCardPrefix.Text.Trim()))
                     {
@@ -3938,6 +3961,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 this.cancelAutoSyncRequested = false;   //bắt đầu lại tiến trình auto -> xoá cờ hủy
+                //Việc 61380 - tích xuất XML 48 giờ mà chưa khai thư mục thì nhắc một lần, không chặn
+                this.WarnXml48hFolderMissingOnAutoStart();
                 autoSync.Interval = (int)(configSync.period * 60000);
                 autoSync.Enabled = true;
                 this.autoSync_Tick(null, null);
@@ -4067,6 +4092,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            //Việc 61380 - XML hồ sơ đủ 48 giờ chạy theo chu kỳ gửi tự động (như đồng bộ QĐ 3176), độc lập với
+            //việc chu kỳ này có hồ sơ gửi cổng BHYT hay không; tự chạy ở luồng nền và tự bỏ qua khi chưa tích.
+            this.DispatchXml48hAutoRound();
             timerTickIsRunning = false;
         }
         private List<V_HIS_TREATMENT_1> GetTreatment()
@@ -6149,6 +6177,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     DXMenuItem menuItemXuatXmlTT = new DXMenuItem("Xuất XML thông tuyến", new EventHandler(this.btnExportCollinearXml_Click));
                     e.Menu.Items.Add(menuItemXuatXmlTT);
 
+                    //Việc 61380 - xuất tay XML hồ sơ đủ 48 giờ (hồ sơ lỗi / không được gửi tự động)
+                    if (this.IsXml48hEnabled)
+                    {
+                        DXMenuItem menuItemXuatXml48h = new DXMenuItem(Resources.ResourceMessageLang.Xml48hMenuXuatTay, new EventHandler(this.MenuItemClick_XuatXml48h));
+                        e.Menu.Items.Add(menuItemXuatXml48h);
+                    }
+
                     DXMenuItem menuItemXuatXml130Excel = new DXMenuItem("Xuất XML 130 dưới dạng excel", new EventHandler(this.btnExportXmlToExcel_Click));
                     e.Menu.Items.Add(menuItemXuatXml130Excel);
 
@@ -6440,8 +6475,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     this.currentControlStateRDO.Add(csAddOrUpdate);
                 }
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
-                //Việc 61380 - thư mục XML 48 giờ có thể vừa đổi: chạy lại tiến trình theo thư mục mới
-                this.RestartXml48hTimer();
             }
             catch (Exception ex)
             {

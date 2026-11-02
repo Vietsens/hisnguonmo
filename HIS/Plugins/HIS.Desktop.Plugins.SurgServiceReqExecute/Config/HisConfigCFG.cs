@@ -48,6 +48,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Config
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.SurgServiceReqExecute.TakeIntrucionTimeByServiceReq");
             }
         }
+
+        internal static bool IsLockSubclinicalStartTime
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.IsLockSubclinicalStartTime") == "1";
+            }
+        }
         internal static string PrescriptionTypeOption
         {
             get

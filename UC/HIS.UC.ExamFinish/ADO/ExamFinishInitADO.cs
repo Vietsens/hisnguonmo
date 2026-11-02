@@ -35,6 +35,8 @@ namespace HIS.UC.ExamFinish.ADO
         public bool IsMainExam { get; set; }
         public string AppointmentDesc { get; set; }
         public long? AppointmentTime { get; set; }
+        public long? AppointmentExamRoomId { get; set; }
+        public long? AppointmentExamServiceId { get; set; }
         public string Note { get; set; }
     }
 }

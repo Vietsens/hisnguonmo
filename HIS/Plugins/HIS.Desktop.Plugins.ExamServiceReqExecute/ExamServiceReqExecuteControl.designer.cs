@@ -110,6 +110,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject58 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject59 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject60 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject61 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject62 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject63 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject64 = new DevExpress.Utils.SerializableAppearanceObject();
             this.dxValidationProviderForLeftPanel = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProviderForSpinVat = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
@@ -253,6 +257,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btn_TestResults = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumnEmrDocument = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.btnEmrDocument = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.xtraTabPageExamExecute = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControlTabExamExecute = new DevExpress.XtraLayout.LayoutControl();
             this.groupControlTreatmentFinish = new DevExpress.XtraEditors.GroupControl();
@@ -796,6 +802,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Bordereau)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnCopy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_TestResults)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnEmrDocument)).BeginInit();
             this.xtraTabPageExamExecute.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlTabExamExecute)).BeginInit();
             this.layoutControlTabExamExecute.SuspendLayout();
@@ -2874,7 +2881,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.Btn_History,
             this.Btn_Bordereau,
             this.btnCopy,
-            this.btn_TestResults});
+            this.btn_TestResults,
+            this.btnEmrDocument});
             this.gridControlTreatmentHistory.Size = new System.Drawing.Size(496, 585);
             this.gridControlTreatmentHistory.TabIndex = 26;
             this.gridControlTreatmentHistory.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -2889,7 +2897,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn1,
             this.gridColumn2,
             this.gridColumn3,
-            this.gridColumn21});
+            this.gridColumn21,
+            this.gridColumnEmrDocument});
             this.gridViewTreatmentHistory.GridControl = this.gridControlTreatmentHistory;
             this.gridViewTreatmentHistory.GroupPanelText = "Lịch sử khám";
             this.gridViewTreatmentHistory.Name = "gridViewTreatmentHistory";
@@ -2926,7 +2935,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.ShowCaption = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 2;
+            this.gridColumn9.VisibleIndex = 3;
             this.gridColumn9.Width = 21;
             // 
             // Btn_Bordereau
@@ -2946,7 +2955,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn20.OptionsColumn.ShowCaption = false;
             this.gridColumn20.ToolTip = "Sao chép nội dung xử lý";
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 3;
+            this.gridColumn20.VisibleIndex = 4;
             this.gridColumn20.Width = 21;
             // 
             // btnCopy
@@ -2966,7 +2975,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn1.OptionsColumn.AllowEdit = false;
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 4;
+            this.gridColumn1.VisibleIndex = 5;
             this.gridColumn1.Width = 104;
             // 
             // gridColumn2
@@ -2976,7 +2985,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 5;
+            this.gridColumn2.VisibleIndex = 6;
             this.gridColumn2.Width = 135;
             // 
             // gridColumn3
@@ -2986,7 +2995,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 6;
+            this.gridColumn3.VisibleIndex = 7;
             this.gridColumn3.Width = 173;
             // 
             // gridColumn21
@@ -3009,6 +3018,27 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.btn_TestResults.Name = "btn_TestResults";
             this.btn_TestResults.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btn_TestResults.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btn_TestResults_ButtonClick);
+            //
+            // gridColumnEmrDocument
+            //
+            this.gridColumnEmrDocument.Caption = "gridColumnEmrDocument";
+            this.gridColumnEmrDocument.ColumnEdit = this.btnEmrDocument;
+            this.gridColumnEmrDocument.FieldName = "btnEmrDocument";
+            this.gridColumnEmrDocument.Name = "gridColumnEmrDocument";
+            this.gridColumnEmrDocument.OptionsColumn.ShowCaption = false;
+            this.gridColumnEmrDocument.ToolTip = "Chi tiết bệnh án";
+            this.gridColumnEmrDocument.Visible = true;
+            this.gridColumnEmrDocument.VisibleIndex = 2;
+            this.gridColumnEmrDocument.Width = 20;
+            //
+            // btnEmrDocument
+            //
+            this.btnEmrDocument.AutoHeight = false;
+            this.btnEmrDocument.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, DevExpress.Images.ImageResourceCache.Default.GetImage("images/business%20objects/bodetails_16x16.png"), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "Chi tiết bệnh án", null, null, true)});
+            this.btnEmrDocument.Name = "btnEmrDocument";
+            this.btnEmrDocument.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.btnEmrDocument.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnEmrDocument_ButtonClick);
             // 
             // xtraTabPageExamExecute
             // 
@@ -8487,6 +8517,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Bordereau)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnCopy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_TestResults)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnEmrDocument)).EndInit();
             this.xtraTabPageExamExecute.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlTabExamExecute)).EndInit();
             this.layoutControlTabExamExecute.ResumeLayout(false);
@@ -9520,5 +9551,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem162;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn21;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btn_TestResults;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnEmrDocument;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnEmrDocument;
     }
 }

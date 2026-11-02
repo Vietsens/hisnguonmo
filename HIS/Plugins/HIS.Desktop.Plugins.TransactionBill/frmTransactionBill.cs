@@ -1276,6 +1276,85 @@ namespace HIS.Desktop.Plugins.TransactionBill
             }
         }
 
+        /// <summary>
+        /// Đảm bảo đơn vị có trong dtWorkPlace/combo Đơn vị. dtWorkPlace lấy từ cache RAM nạp lúc mở app nên thiếu đơn vị
+        /// vừa tạo ở Tiếp đón sau đó -> combo hiện trống, biên lai in thiếu tên đơn vị dù vẫn có mã số thuế.
+        /// Thiếu thì gọi API lấy theo ID, bổ sung vào cache RAM + dtWorkPlace rồi nạp lại combo. Trả về null nếu không lấy được.
+        /// </summary>
+        private HIS_WORK_PLACE EnsureWorkPlaceInCombo(long workPlaceId)
+        {
+            HIS_WORK_PLACE result = null;
+            try
+            {
+                result = dtWorkPlace.FirstOrDefault(o => o.ID == workPlaceId);
+                if (result != null)
+                {
+                    return result;
+                }
+
+                HisWorkPlaceFilter filter = new HisWorkPlaceFilter();
+                filter.ID = workPlaceId;
+                List<HIS_WORK_PLACE> apiResult = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, filter, null);
+                result = (apiResult != null) ? apiResult.FirstOrDefault(o => o.ID == workPlaceId) : null;
+                Inventec.Common.Logging.LogSystem.Debug("TransactionBill.EnsureWorkPlaceInCombo >>> workPlaceId=" + workPlaceId + " khong co trong dtWorkPlace (" + dtWorkPlace.Count + " don vi), goi API => " + (result == null ? "null" : ("[" + result.WORK_PLACE_NAME + "] IS_ACTIVE=" + result.IS_ACTIVE)));
+                if (result == null)
+                {
+                    return null;
+                }
+
+                List<HIS_WORK_PLACE> ramWorkPlaces = BackendDataWorker.Get<HIS_WORK_PLACE>();
+                if (ramWorkPlaces != null && !ramWorkPlaces.Exists(o => o.ID == workPlaceId))
+                {
+                    List<HIS_WORK_PLACE> newRamWorkPlaces = new List<HIS_WORK_PLACE>(ramWorkPlaces);
+                    newRamWorkPlaces.Add(result);
+                    BackendDataWorker.UpdateToRam(typeof(HIS_WORK_PLACE), newRamWorkPlaces, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+
+                List<HIS_WORK_PLACE> newWorkPlaces = new List<HIS_WORK_PLACE>(dtWorkPlace);
+                newWorkPlaces.Add(result);
+                dtWorkPlace = newWorkPlaces;
+                this.InitComboCommon(this.cboBuyerOrganization, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
+                this.InitComboCommon(this.cboBuyerOrganzation2, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gán đơn vị người mua (BUYER_WORK_PLACE_ID + BUYER_ORGANIZATION) theo giá trị combo Đơn vị. Không lấy được đơn vị từ danh mục
+        /// thì dùng tên đơn vị đã lưu trên hồ sơ điều trị để biên lai không trống tên đơn vị.
+        /// </summary>
+        private void SetBuyerOrganizationFromCombo(HIS_TRANSACTION transaction, object comboEditValue)
+        {
+            try
+            {
+                long workPlaceId = 0;
+                if (transaction == null || comboEditValue == null || !Int64.TryParse(comboEditValue.ToString(), out workPlaceId))
+                {
+                    return;
+                }
+                HIS_WORK_PLACE workPlace = EnsureWorkPlaceInCombo(workPlaceId);
+                if (workPlace != null)
+                {
+                    transaction.BUYER_WORK_PLACE_ID = workPlaceId;
+                    transaction.BUYER_ORGANIZATION = workPlace.WORK_PLACE_NAME;
+                }
+                else if (this.currentTreatment != null && this.currentTreatment.TDL_PATIENT_WORK_PLACE_ID == workPlaceId
+                    && !String.IsNullOrWhiteSpace(this.currentTreatment.TDL_PATIENT_WORK_PLACE_NAME))
+                {
+                    transaction.BUYER_ORGANIZATION = this.currentTreatment.TDL_PATIENT_WORK_PLACE_NAME;
+                }
+                Inventec.Common.Logging.LogSystem.Debug("TransactionBill.SetBuyerOrganizationFromCombo >>> workPlaceId=" + workPlaceId + " | BUYER_WORK_PLACE_ID=" + transaction.BUYER_WORK_PLACE_ID + " | BUYER_ORGANIZATION=[" + transaction.BUYER_ORGANIZATION + "]");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
 
         private void InitComboCommon(Control cboEditor, object data, string valueMember, string displayMember, string displayMemberCode)
         {
@@ -3843,7 +3922,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                 if (cboBuyerOrganization.EditValue != null)
                 {
-                    var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganization.EditValue.ToString())).First();
+                    var dt = EnsureWorkPlaceInCombo(Int64.Parse(cboBuyerOrganization.EditValue.ToString()));
+                    if (dt == null)
+                    {
+                        return;
+                    }
                     txtBuyerAddress.Text = dt.ADDRESS;
                     txtMaQH.Text = dt.BUD_REL_UNIT_CODE;
                     if (dt.TAX_CODE != null)
@@ -4500,7 +4583,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (cboBuyerOrganzation2.EditValue != null)
                 {
                     LogSystem.Debug("CBO: " + cboBuyerOrganzation2.EditValue.ToString());
-                    var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganzation2.EditValue.ToString())).First();
+                    var dt = EnsureWorkPlaceInCombo(Int64.Parse(cboBuyerOrganzation2.EditValue.ToString()));
+                    if (dt == null)
+                    {
+                        return;
+                    }
                     if (chkAddressWorkPlace.Checked)
                     {
                         txtBuyerAddress.Text = dt.ADDRESS;

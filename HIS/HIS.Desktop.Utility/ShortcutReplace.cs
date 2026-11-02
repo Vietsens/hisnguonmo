@@ -78,27 +78,92 @@ namespace HIS.Desktop.Utility
             return null;
         }
 
+        static readonly object usableTextLibLock = new object();
+        static List<HIS_TEXT_LIB> usableTextLibs;
+        static string usableTextLibLoginName;
+        static DateTime usableTextLibExpire;
+        // Items shared by others show up without restarting HIS after at most this long
+        const int USABLE_TEXT_LIB_CACHE_MINUTES = 10;
+        // A failed load is retried after this long instead of calling MOS on every Space key
+        const int USABLE_TEXT_LIB_RETRY_MINUTES = 1;
+
         /// <summary>
-        /// Cac mau tai khoan duoc phep su dung theo phim tat:
+        /// Xoa danh sach mau co phim tat da nap (goi sau khi Luu/Xoa o man Thu vien noi dung) de lan go tiep theo nap lai.
+        /// </summary>
+        public static void ResetUsableTextLibs()
+        {
+            try
+            {
+                lock (usableTextLibLock)
+                {
+                    usableTextLibs = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Cac mau co phim tat ma tai khoan dang nhap duoc phep su dung. MOS loc theo CAN_VIEW:
         /// - Mau do chinh minh tao (CREATOR)
         /// - Mau cong khai toan vien (IS_PUBLIC = 1)
-        /// - Mau cong khai theo khoa (IS_PUBLIC_IN_DEPARTMENT = 1) va dung khoa cua tai khoan
-        /// - Mau chia se theo tai khoan (IS_PUBLIC_IN_ACCOUNT = 1) va ten dang nhap nam trong PUBLIC_LOGINNAMES
-        ///   (so khop ca phan tu ",a,b," chua ",ten,"), chi khi tai khoan nhan vien dang hoat dong (cung quy tac voi MOS)
+        /// - Mau cong khai theo khoa (IS_PUBLIC_IN_DEPARTMENT = 1) va dung khoa cua tai khoan (PUBLIC_DEPARTMENT_ID)
+        /// - Mau chia se theo tai khoan (IS_PUBLIC_IN_ACCOUNT = 1, ten dang nhap trong PUBLIC_LOGINNAMES, nhan vien dang hoat dong)
+        /// Nap 1 lan roi giu trong RAM thay vi tai ca bang HIS_TEXT_LIB (kem CONTENT cua moi nguoi) qua BackendDataWorker.
         /// </summary>
+        private static List<HIS_TEXT_LIB> GetUsableTextLibsWithHotKey(string loginName)
+        {
+            try
+            {
+                lock (usableTextLibLock)
+                {
+                    if (usableTextLibs != null && usableTextLibLoginName == loginName && DateTime.Now < usableTextLibExpire)
+                        return usableTextLibs;
+
+                    CommonParam param = new CommonParam();
+                    HisTextLibFilter filter = new HisTextLibFilter();
+                    filter.CAN_VIEW = true;
+                    filter.HAS_HOT_KEY = true;
+                    V_HIS_EMPLOYEE employee = GetLoginEmployee(loginName);
+                    if (employee != null) filter.PUBLIC_DEPARTMENT_ID = employee.DEPARTMENT_ID;
+                    var data = new BackendAdapter(param).Get<List<HIS_TEXT_LIB>>("api/HisTextLib/Get", ApiConsumers.MosConsumer, filter, param);
+
+                    usableTextLibLoginName = loginName;
+                    if (data != null)
+                    {
+                        usableTextLibs = data;
+                        usableTextLibExpire = DateTime.Now.AddMinutes(USABLE_TEXT_LIB_CACHE_MINUTES);
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("ShortcutReplace: api/HisTextLib/Get tra ve null" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
+                        usableTextLibs = new List<HIS_TEXT_LIB>();
+                        usableTextLibExpire = DateTime.Now.AddMinutes(USABLE_TEXT_LIB_RETRY_MINUTES);
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug("ShortcutReplace: nap " + usableTextLibs.Count + " mau co phim tat cho " + loginName);
+                    return usableTextLibs;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return new List<HIS_TEXT_LIB>();
+        }
+
         private static List<HIS_TEXT_LIB> GetUsableTextLibs(string key, string loginName)
         {
-            V_HIS_EMPLOYEE employee = GetLoginEmployee(loginName);
-            long? departmentId = employee != null ? employee.DEPARTMENT_ID : null;
-            bool isActiveEmployee = employee != null && employee.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-            string publicLoginName = "," + loginName + ",";
-            return BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>()
-                .Where(o => o.HOT_KEY == key
-                    && (o.CREATOR == loginName
-                        || o.IS_PUBLIC == 1
-                        || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && departmentId.HasValue && o.DEPARTMENT_ID == departmentId)
-                        || (isActiveEmployee && o.IS_PUBLIC_IN_ACCOUNT == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE &&o.PUBLIC_LOGINNAMES != null && ("," + o.PUBLIC_LOGINNAMES + ",").Contains(publicLoginName))))
-                .ToList();
+            return GetUsableTextLibsWithHotKey(loginName).Where(o => o.HOT_KEY == key).ToList();
+        }
+
+        /// <summary>
+        /// Cau hinh "2": chi mau do chinh minh tao.
+        /// </summary>
+        private static List<HIS_TEXT_LIB> GetOwnTextLibs(string key, string loginName)
+        {
+            return GetUsableTextLibsWithHotKey(loginName).Where(o => o.HOT_KEY == key && o.CREATOR == loginName).ToList();
         }
 
         public static string ProcesseShortcutReplace(string key, ref string rtfRepValue)
@@ -141,7 +206,7 @@ namespace HIS.Desktop.Utility
                 else if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "2")
                 {
                     string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                    var textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && o.CREATOR == loginName).ToList();
+                    var textLibs = GetOwnTextLibs(key, loginName);
                     if (textLibs != null && textLibs.Count > 0)
                     {
                         replaceKey = HIS.Desktop.Utility.TextLibHelper.BytesToStringGeneral(textLibs[0].CONTENT, libType);
@@ -186,7 +251,7 @@ namespace HIS.Desktop.Utility
                 }
                 else if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "2")
                 {
-                    textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && o.CREATOR == loginName).ToList();
+                    textLibs = GetOwnTextLibs(key, loginName);
                 }
 
                 if (textLibs != null && textLibs.Count > 0)

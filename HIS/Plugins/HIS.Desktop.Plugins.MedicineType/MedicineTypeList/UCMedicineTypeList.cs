@@ -134,7 +134,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 List<string> ColnParams = new List<string> { "ID", "MEDICINE_TYPE_CODE", "MEDICINE_TYPE_NAME", "SERVICE_UNIT_NAME", "ACTIVE_INGR_BHYT_NAME",
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
-                    "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO",
+                    "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_ID", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO",
                     "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON", "ALERT_EXPIRED_DATE", "ALERT_MIN_IN_STOCK", "PACKING_TYPE_NAME", "MEDICINE_LINE_NAME", "DOSAGE_FORM", "DESCRIPTION", "IS_STOP_IMP", "IS_NUTRITION_FOOD", "CREATE_TIME", "CREATOR"};
                 filter.ColumnParams = ColnParams;
 
@@ -182,7 +182,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 List<string> colunmParam = new List<string> { "ID", "MEDICINE_TYPE_CODE", "MEDICINE_TYPE_NAME", "SERVICE_UNIT_NAME", "ACTIVE_INGR_BHYT_NAME",
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
-                    "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO","IS_BUSINESS", "IS_DRUG_STORE", "DOSAGE_FORM", "DESCRIPTION",
+                    "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_ID", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO","IS_BUSINESS", "IS_DRUG_STORE", "DOSAGE_FORM", "DESCRIPTION",
                     "IS_LEAF", "IS_ACTIVE", "IS_STOP_IMP", "IS_NUTRITION_FOOD", "CREATE_TIME", "CREATOR" };
                 filter.ColumnParams = colunmParam;
                 var medicineTypes = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GetViewDynamic, ApiConsumers.MosConsumer, filter, param);
@@ -689,12 +689,53 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                     {
                         appearanceObject.ForeColor = Color.Red;
                     }
+                    else
+                    {
+                        Color color = GetHeinServiceTypeColor(((HIS.UC.MedicineType.ADO.MedicineTypeADO)data).HEIN_SERVICE_TYPE_ID);
+                        if (color != Color.Empty)
+                        {
+                            appearanceObject.ForeColor = color;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        Color[] heinServiceTypeColors;
+
+        /// <summary>
+        /// Màu chữ theo nhóm BHYT, lấy từ key HIS.Desktop.Plugins.MedicineMaterialTypeList.HeinServiceTypeColor
+        /// (định dạng: màu trong danh mục|màu thanh toán theo tỷ lệ|màu vật tư thay thế). Bỏ trống thì không tô màu.
+        /// </summary>
+        private Color GetHeinServiceTypeColor(long? heinServiceTypeId)
+        {
+            if (heinServiceTypeColors == null)
+            {
+                string[] values = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.MedicineMaterialTypeList.HeinServiceTypeColor") ?? "").Split('|');
+                heinServiceTypeColors = new Color[3];
+                for (int i = 0; i < 3 && i < values.Length; i++)
+                {
+                    try
+                    {
+                        if (!String.IsNullOrWhiteSpace(values[i]))
+                            heinServiceTypeColors[i] = ColorTranslator.FromHtml(values[i].Trim());
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }
+            }
+
+            if (heinServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM)
+                return heinServiceTypeColors[0];
+            if (heinServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL)
+                return heinServiceTypeColors[1];
+            return Color.Empty;
         }
 
         private void MedicineTypeDoubleClick(UC.MedicineType.ADO.MedicineTypeADO _data)

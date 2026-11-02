@@ -938,7 +938,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     SereServExt.CONCLUDE = txtConclude.Text.Trim();
                     SereServExt.DESCRIPTION = txtDescription.Text.Trim();
                     SereServExt.SERE_SERV_ID = this.sereServ.ID;
-                    if (dtStart.EditValue != null)
+                    if (Config.HisConfigCFG.IsLockSubclinicalStartTime && isStartTimeSaved)
+                    {
+                        //61482: da luu thoi gian bat dau thi giu nguyen (o tren form da cat giay nen khong lay lai tu dtStart)
+                    }
+                    else if (dtStart.EditValue != null)
                         SereServExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStart.DateTime);
                     else
                         SereServExt.BEGIN_TIME = null;

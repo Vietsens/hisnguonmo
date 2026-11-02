@@ -15,6 +15,16 @@
  *  2. Ô Phân loại lưu ID danh mục chứ không lưu chuỗi "Loại I" -> phải tra ngược theo TÊN.
  *  3. Ô chỉ tồn tại trên form khi tab đã dựng; tra control theo tên trong vùng tab, không theo
  *     tên toàn form (nhiều tab có ô trùng tên, chỉ khác hậu tố).
+ *
+ * Bổ sung: Lý do khám, Đối tượng, Nguồn chi trả và Người khám từng chuyên khoa.
+ *  - Lý do khám là ô chung của form, nằm NGOÀI vùng tab -> tra thẳng, không qua bảng tra theo tab.
+ *  - Đối tượng là ô chọn nhiều bằng dấu tích -> phải tích lại qua hàm sẵn có, không gán EditValue.
+ *  - Người khám: chỉ nhận người có trong danh sách combo đang cho chọn, tức ĐÚNG BẰNG quyền chọn tay
+ *    (cấu hình khóa theo người khám thu hẹp danh sách thì nhập file cũng bị thu hẹp như vậy).
+ *    Điền người khám SAU kết quả để không bị phần điền kết quả ghi đè.
+ *    Ghi người khám ở dòng nào của chuyên khoa cũng nhận (tra chuyên khoa theo Mã ô); mục nào không
+ *    điền được thì thông báo ghi đích danh mục đó và lý do.
+ *  - 4 loại ô này để trống trong file = giữ nguyên giá trị trên màn hình.
  */
 using System;
 using System.Collections.Generic;
@@ -37,6 +47,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             /// <summary>Số ô đã điền.</summary>
             public int Applied;
 
+            /// <summary>Trong số ô đã điền, bao nhiêu ô là Người khám.</summary>
+            public int AppliedDoctor;
+
             /// <summary>Số ô bỏ qua vì đang khóa theo người khám.</summary>
             public int SkippedLocked;
 
@@ -45,6 +58,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
             /// <summary>Số ô trong file không còn trên màn hình.</summary>
             public int SkippedMissing;
+
+            /// <summary>Số ô Người khám không điền được (khóa, không còn ô, không có trong danh sách, trùng họ tên).</summary>
+            public int SkippedDoctor;
+
+            /// <summary>Từng mục không điền được người khám kèm lý do — báo đích danh cho người dùng.</summary>
+            public List<string> DoctorProblems = new List<string>();
+
+            /// <summary>Số giá trị Đối tượng / Nguồn chi trả bỏ qua vì không có trong danh mục.</summary>
+            public int SkippedCatalog;
         }
 
         #region ===== Tra control theo tên trong vùng tab =====
@@ -119,12 +141,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Điền sẵn giá trị mặc định vào file: đây chính là mục đích của tính năng.
                 // Mục có giá trị riêng (thị lực "10", thính lực "5" và "0,5") thì lấy giá trị đó;
                 // còn lại lấy giá trị chung "Bình thường".
+                // Lý do khám, Đối tượng, Nguồn chi trả, Người khám thì lấy giá trị đang có trên màn hình.
                 string rankName = GetDefaultRankName();
+                var editors = GetExcelEditors(tabIndex);
                 foreach (var row in rows)
                 {
+                    if (KskExcelMap.IsAdminKey(row.MA_O))
+                    {
+                        row.KET_QUA = GetAdminExportValue(ResolveExcelEditor(editors, row.MA_O));
+                        continue;
+                    }
                     if (!string.IsNullOrEmpty(row.MA_O))
                         row.KET_QUA = (row.GIA_TRI_RIENG == null) ? KskExcelMap.DEFAULT_RESULT : row.GIA_TRI_RIENG;
                     if (!string.IsNullOrEmpty(row.MA_O_PHAN_LOAI)) row.PHAN_LOAI = rankName;
+                    if (!string.IsNullOrEmpty(row.MA_O_NGUOI_KHAM))
+                    {
+                        BaseEdit doctor = ResolveExcelEditor(editors, row.MA_O_NGUOI_KHAM);
+                        row.NGUOI_KHAM = (doctor == null || doctor.EditValue == null) ? "" : doctor.EditValue.ToString();
+                    }
                 }
 
                 using (SaveFileDialog sfd = new SaveFileDialog())
@@ -299,6 +333,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     if (row == null) continue;
 
+                    // Lý do khám, Đối tượng, Nguồn chi trả
+                    if (KskExcelMap.IsAdminKey(row.MA_O))
+                    {
+                        ApplyAdminRow(ResolveExcelEditor(editors, row.MA_O), row.KET_QUA, result);
+                        continue;
+                    }
+
                     // Ô Kết quả
                     if (!string.IsNullOrEmpty(row.MA_O))
                     {
@@ -336,14 +377,85 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     }
                 }
 
+                // Người khám điền SAU CÙNG, khi mọi ô kết quả của chuyên khoa đã điền xong.
+                ApplyExcelDoctors(tabIndex, rows, editors, result);
+
                 LogSystem.Debug("ApplyExcelRows__tab=" + tabIndex
+                    + "__dongFile=" + rows.Count
                     + "__applied=" + result.Applied
+                    + "__nguoiKhamDaDien=" + result.AppliedDoctor
                     + "__khoa=" + result.SkippedLocked
                     + "__phanLoai=" + result.SkippedRank
+                    + "__nguoiKham=" + result.SkippedDoctor
+                    + "__danhMuc=" + result.SkippedCatalog
                     + "__khongCon=" + result.SkippedMissing);
             }
             catch (Exception ex) { LogSystem.Error(ex); }
             return result;
+        }
+
+        /// <summary>
+        /// Điền người khám từng chuyên khoa. Mỗi chuyên khoa lấy MỘT giá trị: ưu tiên dòng mang khóa người khám
+        /// (ô tô vàng); không có thì lấy dòng đầu tiên cùng chuyên khoa có ghi người khám — file xuất từ bản cũ
+        /// hoặc người dùng ghi sang dòng khác (VD ghi cạnh "Răng hàm mặt - Phân loại" thay vì "Hàm trên").
+        /// </summary>
+        private void ApplyExcelDoctors(int tabIndex, List<KskExcelRowADO> rows, Dictionary<string, BaseEdit> editors, ExcelApplyResult result)
+        {
+            try
+            {
+                var groups = KskExcelMap.GetDoctorGroups(tabIndex);
+                var picked = new Dictionary<string, KskExcelRowADO>(StringComparer.OrdinalIgnoreCase);
+                var order = new List<string>();
+                foreach (var row in rows)
+                {
+                    if (row == null || string.IsNullOrWhiteSpace(row.NGUOI_KHAM)) continue;   // để trống = giữ nguyên
+                    bool keyed = !string.IsNullOrEmpty(row.MA_O_NGUOI_KHAM);
+                    string doctorCtl = keyed ? row.MA_O_NGUOI_KHAM : FindDoctorGroup(groups, row);
+                    if (string.IsNullOrEmpty(doctorCtl)) continue;
+
+                    KskExcelRowADO cur;
+                    if (!picked.TryGetValue(doctorCtl, out cur)) { picked[doctorCtl] = row; order.Add(doctorCtl); }
+                    else if (keyed && string.IsNullOrEmpty(cur.MA_O_NGUOI_KHAM)) picked[doctorCtl] = row;
+                }
+
+                // Ghi lại ô nào nhận ai — chỉ có tên control và loginname nhân viên, không có dữ liệu bệnh nhân.
+                var trace = new List<string>();
+                foreach (string doctorCtl in order)
+                {
+                    var row = picked[doctorCtl];
+                    string reason = null;
+                    var cbo = ResolveExcelEditor(editors, doctorCtl) as GridLookUpEdit;
+                    if (cbo == null) reason = "không còn ô người khám trên màn hình";
+                    else if (!IsEditable(cbo)) reason = "đang khóa theo người khám";
+                    else
+                    {
+                        var emp = FindExaminerInCombo(cbo, row.NGUOI_KHAM);
+                        if (emp == null) reason = "\"" + row.NGUOI_KHAM + "\" không có trong danh sách được chọn hoặc trùng họ tên";
+                        else
+                        {
+                            cbo.EditValue = emp.LOGINNAME;
+                            result.Applied++;
+                            result.AppliedDoctor++;
+                            trace.Add(doctorCtl + "=" + emp.LOGINNAME);
+                        }
+                    }
+                    if (reason == null) continue;
+                    result.SkippedDoctor++;
+                    result.DoctorProblems.Add(row.MUC_KHAM + ": " + reason);
+                    trace.Add(doctorCtl + "=!" + reason);
+                }
+                LogSystem.Debug("ApplyExcelDoctors__" + (trace.Count == 0 ? "file khong co nguoi kham" : string.Join("__", trace.ToArray())));
+            }
+            catch (Exception ex) { LogSystem.Error(ex); }
+        }
+
+        /// <summary>Chuyên khoa (ô người khám) của một dòng không mang khóa người khám, tra theo Mã ô.</summary>
+        private static string FindDoctorGroup(Dictionary<string, string> groups, KskExcelRowADO row)
+        {
+            string doctorCtl;
+            if (!string.IsNullOrEmpty(row.MA_O) && groups.TryGetValue(row.MA_O, out doctorCtl)) return doctorCtl;
+            if (!string.IsNullOrEmpty(row.MA_O_PHAN_LOAI) && groups.TryGetValue(row.MA_O_PHAN_LOAI, out doctorCtl)) return doctorCtl;
+            return null;
         }
 
         /// <summary>Ô có đang cho sửa không — kiểm ngay trước từng lần gán.</summary>
@@ -378,15 +490,166 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private string BuildExcelApplyMessage(ExcelApplyResult rs)
         {
             var sb = new System.Text.StringBuilder();
-            sb.Append("Đã điền ").Append(rs.Applied).Append(" ô.");
+            sb.Append("Đã điền ").Append(rs.Applied).Append(" ô");
+            if (rs.AppliedDoctor > 0) sb.Append(" (có ").Append(rs.AppliedDoctor).Append(" ô Người khám)");
+            sb.Append(".");
             if (rs.SkippedLocked > 0)
                 sb.Append(" Bỏ qua ").Append(rs.SkippedLocked).Append(" ô đang khóa theo người khám.");
             if (rs.SkippedRank > 0)
                 sb.Append(" Bỏ qua ").Append(rs.SkippedRank)
                   .Append(" ô Phân loại không có trong danh mục của bệnh viện.");
+            if (rs.SkippedCatalog > 0)
+                sb.Append(" Bỏ qua ").Append(rs.SkippedCatalog)
+                  .Append(" giá trị Đối tượng / Nguồn chi trả không có trong danh mục.");
             if (rs.SkippedMissing > 0)
                 sb.Append(" Bỏ qua ").Append(rs.SkippedMissing).Append(" ô không còn trên màn hình.");
+            if (rs.DoctorProblems.Count > 0)
+            {
+                sb.Append(Environment.NewLine).Append(Environment.NewLine).Append("Chưa điền được Người khám:");
+                foreach (string p in rs.DoctorProblems) sb.Append(Environment.NewLine).Append("- ").Append(p);
+            }
             return sb.ToString();
+        }
+
+        #endregion
+
+        #region ===== Lý do khám, Đối tượng, Nguồn chi trả, Người khám =====
+
+        /// <summary>Tra ô theo tên: Lý do khám nằm ngoài vùng tab nên lấy thẳng, còn lại tra trong tab.</summary>
+        private BaseEdit ResolveExcelEditor(Dictionary<string, BaseEdit> editors, string name)
+        {
+            if (string.IsNullOrEmpty(name)) return null;
+            if (name == KskExcelMap.KEY_REASON) return this.txtLyDoKham;
+            BaseEdit edit;
+            return (editors != null && editors.TryGetValue(name, out edit)) ? edit : null;
+        }
+
+        private bool IsObjectCombo(BaseEdit edit)
+        {
+            return edit != null && (edit == this.cboObject || edit == this.cboObject3 || edit == this.cboObject8);
+        }
+
+        private bool IsPaySourceCombo(BaseEdit edit)
+        {
+            return edit != null && (edit == this.cboPaymentSource || edit == this.cboPaymentSource3 || edit == this.cboPaymentSource8);
+        }
+
+        /// <summary>Giá trị đang có trên màn hình của 1 ô hành chính, ghi ra file dạng chữ người đọc được.</summary>
+        private string GetAdminExportValue(BaseEdit edit)
+        {
+            try
+            {
+                if (edit == null) return "";
+                if (IsObjectCombo(edit))
+                {
+                    var cbo = (GridLookUpEdit)edit;
+                    string codes = (cbo == this.cboObject) ? GetKskObjectValue() : GetObjectValueExt(cbo);
+                    var ds = cbo.Properties.DataSource as List<KskCodeNameADO>;
+                    if (string.IsNullOrEmpty(codes) || ds == null) return "";
+                    var names = new List<string>();
+                    foreach (string c in codes.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        var item = ds.FirstOrDefault(o => o.ID.ToString() == c.Trim());
+                        if (item != null) names.Add(item.NAME);
+                    }
+                    return string.Join(KskExcelMap.OBJECT_SEPARATOR + " ", names.ToArray());
+                }
+                if (IsPaySourceCombo(edit))
+                {
+                    var ds = ((GridLookUpEdit)edit).Properties.DataSource as List<KskCodeNameADO>;
+                    if (edit.EditValue == null || ds == null) return "";
+                    var item = ds.FirstOrDefault(o => o.ID.ToString() == edit.EditValue.ToString());
+                    return item == null ? "" : item.NAME;
+                }
+                return edit.Text ?? "";
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); return ""; }
+        }
+
+        /// <summary>Điền 1 dòng hành chính. Ô trong file để trống thì giữ nguyên.</summary>
+        private void ApplyAdminRow(BaseEdit edit, string value, ExcelApplyResult result)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(value)) return;
+                if (edit == null) { result.SkippedMissing++; return; }
+                if (!IsEditable(edit)) { result.SkippedLocked++; return; }
+
+                if (IsObjectCombo(edit))
+                {
+                    var cbo = (GridLookUpEdit)edit;
+                    var ds = cbo.Properties.DataSource as List<KskCodeNameADO>;
+                    var ids = new List<string>();
+                    foreach (string token in value.Split(new[] { KskExcelMap.OBJECT_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (string.IsNullOrWhiteSpace(token)) continue;
+                        var item = FindCodeName(ds, token);
+                        if (item == null) { result.SkippedCatalog++; continue; }
+                        if (!ids.Contains(item.ID.ToString())) ids.Add(item.ID.ToString());
+                    }
+                    // Không khớp được đối tượng nào thì giữ nguyên, không xóa trắng những gì đang tích.
+                    if (ids.Count == 0) return;
+                    string codes = string.Join(";", ids.ToArray());
+                    if (cbo == this.cboObject) SetKskObjectValue(codes);
+                    else SetObjectValueExt(cbo, codes);
+                    result.Applied++;
+                    return;
+                }
+
+                if (IsPaySourceCombo(edit))
+                {
+                    var item = FindCodeName(((GridLookUpEdit)edit).Properties.DataSource as List<KskCodeNameADO>, value);
+                    if (item == null) { result.SkippedCatalog++; return; }
+                    edit.EditValue = item.ID;
+                    result.Applied++;
+                    return;
+                }
+
+                edit.Text = value;
+                result.Applied++;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Tra mục danh mục Đối tượng / Nguồn chi trả theo TÊN hoặc MÃ người dùng ghi trong file.</summary>
+        private static KskCodeNameADO FindCodeName(List<KskCodeNameADO> ds, string text)
+        {
+            if (ds == null) return null;
+            string key = NormalizeExcelKey(text);
+            if (key.Length == 0) return null;
+            var byName = ds.FirstOrDefault(o => o != null
+                && string.Equals(NormalizeExcelKey(o.NAME), key, StringComparison.OrdinalIgnoreCase));
+            if (byName != null) return byName;
+            return ds.FirstOrDefault(o => o != null && o.ID.ToString() == key);
+        }
+
+        /// <summary>
+        /// Tra người khám trong danh sách combo ĐANG cho chọn (đúng bằng quyền chọn tay): theo tên đăng nhập,
+        /// không có thì theo họ tên. Họ tên trùng nhiều người thì không đoán, trả null.
+        /// </summary>
+        private static V_HIS_EMPLOYEE FindExaminerInCombo(GridLookUpEdit cbo, string text)
+        {
+            if (cbo == null) return null;
+            var ds = cbo.Properties.DataSource as IEnumerable<V_HIS_EMPLOYEE>;
+            if (ds == null) return null;
+            string key = NormalizeExcelKey(text);
+            if (key.Length == 0) return null;
+
+            var byLogin = ds.FirstOrDefault(o => o != null
+                && string.Equals((o.LOGINNAME ?? "").Trim(), key, StringComparison.OrdinalIgnoreCase));
+            if (byLogin != null) return byLogin;
+
+            var byName = ds.Where(o => o != null
+                && string.Equals(NormalizeExcelKey(o.TDL_USERNAME), key, StringComparison.OrdinalIgnoreCase)).ToList();
+            return byName.Count == 1 ? byName[0] : null;
+        }
+
+        /// <summary>Chuẩn hóa chuỗi để so khớp: dựng sẵn dấu (NFC — chữ gõ/dán từ nguồn khác có thể tách dấu), bỏ khoảng trắng thừa.</summary>
+        private static string NormalizeExcelKey(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return "";
+            string s = text.Normalize(System.Text.NormalizationForm.FormC).Trim();
+            return System.Text.RegularExpressions.Regex.Replace(s, @"\s+", " ");
         }
 
         #endregion

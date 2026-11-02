@@ -13,6 +13,7 @@
 | Cấu hình mới | `HIS.Desktop.Plugins.RegisterV2.IsClearLiveAreaWhenCheckHeinCardOldTreatment` (mặc định tắt) |
 | SQL | `SQL_RegisterV2_DeTrongKhuVucTheBHYT.sql` |
 | Ngày lập | 27/10/2026 |
+| Cập nhật | 30/10/2026: cổng lỗi / thẻ không hợp lệ → để trống; thêm luồng đọc thẻ KCB; log mọi nhánh |
 
 ---
 
@@ -66,10 +67,11 @@ Lưu
 | 2 | Cổng trả thẻ **có** mã khu vực (K1/K2/K3) | Điền đúng khu vực theo kết quả cổng (kể cả khi khác khu vực đợt cũ) |
 | 3 | Khu vực trống | Vẫn lưu tiếp đón, đăng ký khám bình thường; không phát sinh thêm thao tác |
 | 4 | Thông tin khác của đợt cũ (hành chính, địa chỉ, liên hệ, nơi ĐKBĐ…) | Giữ nguyên như hiện tại |
-| 5 | Cổng lỗi / không kết nối / không bật kiểm tra thẻ (`IsCheckExamHistory` tắt) | Không có căn cứ từ cổng → **giữ nguyên như hiện tại** (không làm trống) |
+| 5 | Cổng lỗi / không kết nối (`ResultHistoryLDO = null`), hoặc cổng báo thẻ không hợp lệ (mã khác 000/003/004) | Không có căn cứ từ cổng → **để trống** khu vực (chốt 30/10/2026) |
+| 5a | Không gọi cổng: `IsCheckExamHistory` tắt, thiếu dữ liệu thẻ, chưa cấu hình tài khoản cổng (`ResultDataADO = null`), thẻ thuộc whitelist không kiểm tra trên cổng (mã nội bộ `9999`) | **Giữ nguyên như hiện tại** |
 | 6 | Hồ sơ đã tiếp đón trước thời điểm áp dụng | Không ảnh hưởng |
 
-> **Nguyên tắc:** khi cấu hình bật và cổng đã trả thông tin thẻ → khu vực = `maKV` của cổng (rỗng thì để trống). Khu vực **chỉ** lấy theo kết quả cổng, không lấy theo đợt khám trước.
+> **Nguyên tắc:** khi cấu hình bật và phần mềm đã gọi cổng → khu vực = `maKV` của cổng nếu cổng xác nhận được thẻ (rỗng thì để trống); cổng lỗi hoặc thẻ không hợp lệ → để trống. Khu vực **chỉ** lấy theo kết quả cổng, không lấy theo đợt khám trước.
 
 ### 2.2. Khi TẮT cấu hình (= 0 / rỗng / chưa khai báo)
 
@@ -78,20 +80,26 @@ Phần mềm hoạt động **giống hệt hiện tại** — không có dòng 
 ### 2.3. Luồng code sau khi sửa
 
 ```
-CheckTTFull → HeinGOVManager.Check (không đổi)
-  └─ CheckTTProcessResultData
-       └─ [MỚI] ProcessLiveAreaByGovResult()
-            IF   cấu hình = 1
-             AND đối tượng đang chọn dùng thẻ BHYT (BHYT / Quân nhân)
-             AND ResultHistoryLDO != null
-             AND maKetQua ∈ {000, 003, 004}     // cổng xác nhận được thẻ
-            THEN liveArea = maKV (rỗng → null)
-                 ucHeinInfo1.SetLiveAreaCode(liveArea)   // gán ô + tính lại tuyến
-                 ResultDataADO.HeinCardData.LiveAreaCode = liveArea
+CheckTTFull / tìm BN cũ (UCPatientRaw) → HeinGOVManager.Check (không đổi)
+  └─ CheckTTProcessResultData(heinCard, focus, ischeckChange)     [UCRegister__CheckHeinGOV.cs]
+       └─ [MỚI] ProcessLiveAreaByGovResult(ucPatientRaw1.ResultDataADO)   // NGOÀI khối ResultHistoryLDO != null
+Đọc thẻ KCB (ProcessPatientCodeKeydown) → HeinGOVManager.Check
+  └─ CheckTTProcessResultData(heinCard)                           [UCRegister__Load.cs]
+       └─ [MỚI] ProcessLiveAreaByGovResult(this.ResultDataADO)
+
+ProcessLiveAreaByGovResult(rs):
+  IF cấu hình ≠ 1 OR đối tượng không dùng thẻ     → log, bỏ qua
+  IF rs == null                                   → log, giữ nguyên   // không gọi cổng
+  IF rs.ResultHistoryLDO.maKetQua == "9999"       → log, giữ nguyên   // whitelist không kiểm tra cổng
+  liveArea = maKetQua ∈ {000, 003, 004} ? maKV (rỗng → null) : null   // cổng lỗi (LDO null) / thẻ không hợp lệ → null
+  ucHeinInfo1.SetLiveAreaCode(liveArea)          // gán ô + tính lại tuyến
+  rs.HeinCardData.LiveAreaCode = liveArea
+  log Info resultCode, liveAreaCode
 ```
 
 - Đặt sau các lệnh `FillDataByHeinCardData` trong `CheckTTProcessResultData` để không bị nạp đè lại khu vực cũ.
-- Áp dụng cho mọi luồng kiểm tra thẻ của RegisterV2 (gõ số thẻ, quét QR BHYT, quét CCCD, tự chuyển đối tượng BHYT) vì tất cả đều đi qua `CheckTTFull`.
+- Áp dụng cho mọi luồng kiểm tra thẻ của RegisterV2: gõ số thẻ, quét QR BHYT, quét CCCD, tìm BN cũ, tự chuyển đối tượng BHYT (overload 3 tham số) và đọc thẻ KCB (overload 1 tham số).
+- Phân biệt cổng lỗi với không gọi cổng: khi gọi cổng bị exception, `HeinGOVManager.Check` vẫn trả `ResultDataADO` nhưng `ResultHistoryLDO = null`; khi không gọi cổng thì trả `null`.
 - **Không sửa** thư viện `CheckHeinGOV` (dùng chung nhiều plugin).
 
 ---
@@ -115,7 +123,7 @@ CheckTTFull → HeinGOVManager.Check (không đổi)
      Các thông tin khác của đợt khám chữa bệnh trước vẫn được lấy lại như hiện tại.
 - Khác 1 hoặc để trống: Giữ nguyên hành vi hiện tại (lấy lại khu vực của đợt khám chữa bệnh trước).
 
-Chỉ áp dụng khi cổng BHXH trả về thông tin thẻ. Cổng lỗi hoặc không kết nối được thì giữ nguyên như hiện tại.
+Không áp dụng khi phần mềm không tra cứu cổng (tắt kiểm tra thẻ qua cổng, đầu thẻ thuộc danh mục không kiểm tra trên cổng). Cổng lỗi / không kết nối được / báo thẻ không hợp lệ thì để trống khu vực.
 ```
 
 **Đọc cấu hình** (`RegisterV2/Config/HisConfigCFG.cs`, theo mẫu `IsAutoSetPatientTypeBhytByHeinCard`):
@@ -147,36 +155,65 @@ internal static bool IsClearLiveAreaWhenCheckHeinCardOldTreatment()
 |---|---|---|
 | 1 | `HIS/Plugins/HIS.Desktop.Plugins.RegisterV2/Config/HisConfigCFG.cs` | Thêm const key + hàm `IsClearLiveAreaWhenCheckHeinCardOldTreatment()` |
 | 2 | `HIS/Plugins/HIS.Desktop.Plugins.RegisterV2/RunV3/UCRegister__CheckHeinGOV.cs` | Thêm `ProcessLiveAreaByGovResult()`; gọi cuối khối xử lý `ResultHistoryLDO` trong `CheckTTProcessResultData` |
+| 2a | `HIS/Plugins/HIS.Desktop.Plugins.RegisterV2/RunV3/UCRegister__Load.cs` | (30/10) Gọi `ProcessLiveAreaByGovResult(this.ResultDataADO)` cuối overload `CheckTTProcessResultData(HeinCardData)` — luồng đọc thẻ KCB |
 | 3 | `UC/HIS.UC.UCHeniInfo/Design/UCHeinInfo__Process.cs` | Thêm method public `SetLiveAreaCode(string liveAreaCode)`: gán `cboNoiSong.EditValue`, gọi lại `ProcessCaseWrongRoute(mã nơi ĐKBĐ đang chọn, liveAreaCode)` |
 | 4 | `docs/HIS.Desktop.Plugins.RegisterV2.md` | Changelog + mục 2 (Quy trình) + mục 9 (Test) |
 | 5 | `docs/SQL_RegisterV2_DeTrongKhuVucTheBHYT.sql` | INSERT `HIS_CONFIG` |
 
-**Phác thảo** (`UCRegister__CheckHeinGOV.cs`):
+**Code hiện tại** (`UCRegister__CheckHeinGOV.cs`):
 
 ```csharp
 /// <summary>
-/// Live area is taken only from BHXH gateway result when config
-/// IsClearLiveAreaWhenCheckHeinCardOldTreatment = 1 (empty maKV => clear area copied from previous treatment).
+/// Khoa IsClearLiveAreaWhenCheckHeinCardOldTreatment = 1: khu vuc CHI lay theo ket qua cong BHXH,
+/// khong giu khu vuc cua dot dieu tri cu.
+/// - Cong xac nhan duoc the (000/003/004): khu vuc = maKV (rong => de trong).
+/// - Cong loi / mat ket noi (ResultHistoryLDO = null) hoac cong bao the khong hop le: de trong khu vuc.
+/// - The thuoc danh muc khong kiem tra tren cong (9999) hoac khong goi cong (resultDataADO = null): giu nguyen.
+/// Khoa tat => khong lam gi (giu nguyen luong cu).
+/// Tham chieu: docs/B_KyThuat_RegisterV2_DeTrongKhuVucTheBHYT.md
 /// </summary>
-private void ProcessLiveAreaByGovResult()
+private void ProcessLiveAreaByGovResult(ResultDataADO resultDataADO)
 {
     try
     {
-        if (!HisConfigCFG.IsClearLiveAreaWhenCheckHeinCardOldTreatment()) return;
-        if (!IsPatientTypeUsingHeinInfo() || this.ucHeinInfo1 == null) return;
+        bool isEnabled = Config.HisConfigCFG.IsClearLiveAreaWhenCheckHeinCardOldTreatment();
+        bool isUsingHeinInfo = IsPatientTypeUsingHeinInfo();
+        if (!isEnabled || this.ucHeinInfo1 == null || !isUsingHeinInfo)
+        {
+            Inventec.Common.Logging.LogSystem.Info("ProcessLiveAreaByGovResult: bo qua."
+                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isEnabled), isEnabled)
+                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isUsingHeinInfo), isUsingHeinInfo));
+            return;
+        }
 
-        var resultDataADO = this.ucPatientRaw1.ResultDataADO;
-        if (resultDataADO == null || resultDataADO.ResultHistoryLDO == null) return;
-        if (!IsGovResultHasCardInfo(resultDataADO.ResultHistoryLDO.maKetQua)) return;
+        if (resultDataADO == null)
+        {
+            Inventec.Common.Logging.LogSystem.Info("ProcessLiveAreaByGovResult: khong goi cong BHXH => giu nguyen khu vuc.");
+            return;
+        }
 
-        string liveAreaCode = String.IsNullOrWhiteSpace(resultDataADO.ResultHistoryLDO.maKV)
-            ? null : resultDataADO.ResultHistoryLDO.maKV.Trim();
+        string resultCode = (resultDataADO.ResultHistoryLDO != null ? resultDataADO.ResultHistoryLDO.maKetQua : null);
+        if (resultCode == GOV_RESULT_CODE__NOT_CHECK_ON_GOV)
+        {
+            Inventec.Common.Logging.LogSystem.Info("ProcessLiveAreaByGovResult: the khong kiem tra tren cong BHXH => giu nguyen khu vuc.");
+            return;
+        }
+
+        string liveAreaCode = null;
+        if (resultCode == GOV_RESULT_CODE__CARD_VALID
+            || resultCode == GOV_RESULT_CODE__CARD_EXPIRED_HAS_NEW_CARD
+            || resultCode == GOV_RESULT_CODE__CARD_VALID_HAS_NEW_CARD)
+        {
+            liveAreaCode = String.IsNullOrWhiteSpace(resultDataADO.ResultHistoryLDO.maKV)
+                ? null : resultDataADO.ResultHistoryLDO.maKV.Trim();
+        }
 
         this.ucHeinInfo1.SetLiveAreaCode(liveAreaCode);
         if (resultDataADO.HeinCardData != null)
             resultDataADO.HeinCardData.LiveAreaCode = liveAreaCode;
 
-        Inventec.Common.Logging.LogSystem.Info("ProcessLiveAreaByGovResult: khu vuc lay theo ket qua cong BHXH."
+        Inventec.Common.Logging.LogSystem.Info("ProcessLiveAreaByGovResult: khu vuc lay theo ket qua cong BHXH (cong loi / the khong hop le => de trong)."
+            + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultCode), resultCode)
             + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => liveAreaCode), liveAreaCode));
     }
     catch (Exception ex)
@@ -207,7 +244,7 @@ private void ProcessLiveAreaByGovResult()
 | # | Câu hỏi | Đề xuất trong tài liệu |
 |---|---|---|
 | Q1 | Mã kết quả cổng nào được coi là "cổng đã xác nhận thẻ"? | `000`, `003`, `004` |
-| Q2 | Cổng lỗi / mất kết nối thì xử lý thế nào? | Giữ nguyên khu vực như hiện tại |
+| Q2 | Cổng lỗi / mất kết nối thì xử lý thế nào? | **Đã chốt 30/10/2026:** để trống khu vực; thẻ không hợp lệ cũng để trống |
 | Q3 | Thẻ có khu vực khác đợt cũ (cũ K1, cổng K2) có ghi đè không? | Có — ghi đè theo cổng |
 | Q4 | Làm trống khu vực khiến BN đổi tuyến có chấp nhận không? | Chấp nhận, tính lại tuyến tự động |
 | Q5 | Phạm vi: chỉ RegisterV2 hay cả `Register` (v1) và các màn tiếp đón khác? | Chỉ RegisterV2 |
@@ -222,7 +259,10 @@ private void ProcessLiveAreaByGovResult()
 | 2 | 1 | Như TC1 | Lưu tiếp đón | Lưu thành công, `LIVE_AREA_CODE` rỗng; không hiện cảnh báo khu vực |
 | 3 | 1 | BN cũ K1, cổng trả K2 | Kiểm tra thẻ | Ô Khu vực = K2 |
 | 4 | 1 | BN mới, cổng trả K3 | Kiểm tra thẻ | Ô Khu vực = K3 |
-| 5 | 1 | BN cũ K1, cổng lỗi / không kết nối | Kiểm tra thẻ | Ô Khu vực giữ K1 (như hiện tại) |
+| 5 | 1 | BN cũ K1, cổng lỗi / không kết nối (VD BN 0026003151 trên môi trường test, log `Dang nhap That Bai`) | Kiểm tra thẻ | Ô Khu vực trống; log `ProcessLiveAreaByGovResult ... resultCode: null` |
+| 5a | 1 | BN cũ K1, cổng báo thẻ không tồn tại / sai thông tin | Kiểm tra thẻ | Ô Khu vực trống |
+| 5b | 1 | BN cũ K1, đầu thẻ thuộc whitelist không kiểm tra trên cổng | Kiểm tra thẻ | Giữ K1 |
+| 5c | 1 | BN cũ K1, thẻ không có khu vực | Đọc thẻ KCB | Ô Khu vực trống |
 | 6 | 1 | BN cũ K1 trước đây đúng tuyến nhờ khu vực | Kiểm tra thẻ (không có maKV) | Tuyến được tính lại theo nơi ĐKBĐ; kiểm tra mức hưởng |
 | 7 | 1 | BN cũ K1 | Quét QR thẻ BHYT / quét CCCD / tự chuyển đối tượng BHYT | Như TC1 |
 | 8 | 1 | Đối tượng Viện phí (không dùng thẻ) | Tìm BN | Không xử lý khu vực |

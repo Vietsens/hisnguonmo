@@ -51,6 +51,8 @@ namespace MPS.Processor.Mps000276
         private Dictionary<long, long> _TotalNumOrderByRoom = null;
         //Cau hinh co san cua he thong: vien co sinh STT rieng cho cac chi dinh "uu tien" hay khong
         private const string CONFIG_KEY__IS_USING_OTHER_NUM_ORDER_FOR_PRIORITIZED = "MOS.HIS_SERVICE_REQ.IS_USING_OTHER_NUM_ORDER_FOR_PRIORITIZED";
+        //Danh muc doi tuong uu tien (cache RAM), nap 1 lan khi in
+        private List<HIS_PRIORITY_TYPE> _ListPriorityType = null;
         public Mps000276Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -267,6 +269,7 @@ namespace MPS.Processor.Mps000276
                     return;
                 }
                 this.GetTotalNumOrderInRoom();
+                this.LoadPriorityTypes();
                 var Groups = rdo._vServiceReqs.GroupBy(g => g.CASHIER_ROOM_ID ?? 0).ToList();
                 var ServiceTypeS = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_TYPE>();
                 long maxStt = (rdo._ServiceNumOrder != null && rdo._ServiceNumOrder.Count > 0) ? rdo._ServiceNumOrder.Max(m => m.NUM_ORDER) : 0;
@@ -343,6 +346,15 @@ namespace MPS.Processor.Mps000276
                         ado.SampleRoomName = sr.SAMPLE_ROOM_NAME;
                         ado.ASSIGN_TURN_CODE = sr.ASSIGN_TURN_CODE;
                         ado.Note = !string.IsNullOrWhiteSpace(ext?.INSTRUCTION_NOTE) ? ext.INSTRUCTION_NOTE : "";
+
+                        //Doi tuong uu tien cua y lenh chua dong nay
+                        ado.IsPriority = ((sr.PRIORITY ?? 0) != 0) ? 1 : 0;
+                        HIS_PRIORITY_TYPE rowPriorityType = this.GetPriorityType(sr.PRIORITY_TYPE_ID);
+                        if (rowPriorityType != null)
+                        {
+                            ado.PriorityTypeCode = rowPriorityType.PRIORITY_TYPE_CODE;
+                            ado.PriorityTypeName = rowPriorityType.PRIORITY_TYPE_NAME;
+                        }
 
                         var serviceType = ServiceTypeS.FirstOrDefault(o => o.ID == ss.TDL_SERVICE_TYPE_ID);
                         if (serviceType != null)
@@ -747,6 +759,8 @@ namespace MPS.Processor.Mps000276
 
                     int isOnlyCdha = (rdo._vServiceReqs.Any(a => a.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA) && !rdo._vServiceReqs.Any(a => a.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA)) ? 1 : 0;
                     this.SetSingleKey(new KeyValue(Mps000276ExtendSingleKey.IS_ONLY_CDHA, isOnlyCdha));
+
+                    this.SetSingleKeyPriorityType();
                 }
                 if (rdo.transReq != null)
                     SetSingleKey(new KeyValue(Mps000276ExtendSingleKey.PAYMENT_AMOUNT, rdo.transReq.AMOUNT));
@@ -762,6 +776,68 @@ namespace MPS.Processor.Mps000276
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Key doi tuong uu tien cua phieu: lay theo y lenh dau tien co PRIORITY_TYPE_ID
+        /// (phieu in theo 1 benh nhan nen cac y lenh thuong cung doi tuong uu tien).
+        /// Khong co thi key = rong, IS_PRIORITY = 1 neu bat ky y lenh nao danh dau uu tien.
+        /// </summary>
+        void SetSingleKeyPriorityType()
+        {
+            try
+            {
+                string priorityTypeCode = "";
+                string priorityTypeName = "";
+                int isPriority = 0;
+                if (rdo._vServiceReqs != null && rdo._vServiceReqs.Count > 0)
+                {
+                    this.LoadPriorityTypes();
+                    isPriority = rdo._vServiceReqs.Any(o => (o.PRIORITY ?? 0) != 0) ? 1 : 0;
+                    V_HIS_SERVICE_REQ reqHasPriorityType = rdo._vServiceReqs.OrderBy(o => o.ID).FirstOrDefault(o => o.PRIORITY_TYPE_ID.HasValue);
+                    HIS_PRIORITY_TYPE priorityType = (reqHasPriorityType != null) ? this.GetPriorityType(reqHasPriorityType.PRIORITY_TYPE_ID) : null;
+                    if (priorityType != null)
+                    {
+                        priorityTypeCode = priorityType.PRIORITY_TYPE_CODE;
+                        priorityTypeName = priorityType.PRIORITY_TYPE_NAME;
+                    }
+                }
+                this.SetSingleKey(new KeyValue(Mps000276ExtendSingleKey.PRIORITY_TYPE_CODE, priorityTypeCode));
+                this.SetSingleKey(new KeyValue(Mps000276ExtendSingleKey.PRIORITY_TYPE_NAME, priorityTypeName));
+                this.SetSingleKey(new KeyValue(Mps000276ExtendSingleKey.IS_PRIORITY, isPriority));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nap danh muc doi tuong uu tien tu cache RAM (1 lan). Loi thi bo qua, van in phieu.
+        /// </summary>
+        void LoadPriorityTypes()
+        {
+            try
+            {
+                if (this._ListPriorityType == null)
+                {
+                    this._ListPriorityType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PRIORITY_TYPE>() ?? new List<HIS_PRIORITY_TYPE>();
+                }
+            }
+            catch (Exception ex)
+            {
+                this._ListPriorityType = new List<HIS_PRIORITY_TYPE>();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        HIS_PRIORITY_TYPE GetPriorityType(long? priorityTypeId)
+        {
+            if (!priorityTypeId.HasValue || this._ListPriorityType == null)
+            {
+                return null;
+            }
+            return this._ListPriorityType.FirstOrDefault(o => o.ID == priorityTypeId.Value);
         }
 
         class TFlexCelUFPerviousRowNum : TFlexCelUserFunction

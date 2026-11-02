@@ -2523,6 +2523,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     //Don vi
                     long? workPlaceId = patientData?.WORK_PLACE_ID ?? data.TDL_PATIENT_WORK_PLACE_ID;
+                    if (workPlaceId.HasValue && EnsureWorkPlaceInCombo(workPlaceId.Value) == null)
+                    {
+                        // Đơn vị không lấy được từ danh mục (đã xóa/không tồn tại) -> coi như không có ID, dùng tên đơn vị đã lưu trên hồ sơ để không in trống
+                        Inventec.Common.Logging.LogSystem.Debug("TransactionBillTwoInOne.FillInfoPatient >>> workPlaceId=" + workPlaceId + " khong lay duoc tu danh muc -> dung TDL_PATIENT_WORK_PLACE_NAME=[" + data.TDL_PATIENT_WORK_PLACE_NAME + "]");
+                        workPlaceId = null;
+                    }
                     if (workPlaceId.HasValue)
                     {
                         cboBuyerOrganization.EditValue = workPlaceId;
@@ -3542,6 +3548,86 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Đảm bảo đơn vị có trong dtWorkPlace/combo Đơn vị. dtWorkPlace lấy từ cache RAM nạp lúc mở app nên thiếu đơn vị
+        /// vừa tạo ở Tiếp đón sau đó -> combo hiện trống, biên lai in thiếu tên đơn vị dù vẫn có mã số thuế.
+        /// Thiếu thì gọi API lấy theo ID, bổ sung vào cache RAM + dtWorkPlace rồi nạp lại combo. Trả về null nếu không lấy được.
+        /// </summary>
+        private HIS_WORK_PLACE EnsureWorkPlaceInCombo(long workPlaceId)
+        {
+            HIS_WORK_PLACE result = null;
+            try
+            {
+                result = dtWorkPlace.FirstOrDefault(o => o.ID == workPlaceId);
+                if (result != null)
+                {
+                    return result;
+                }
+
+                HisWorkPlaceFilter filter = new HisWorkPlaceFilter();
+                filter.ID = workPlaceId;
+                List<HIS_WORK_PLACE> apiResult = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, filter, null);
+                result = (apiResult != null) ? apiResult.FirstOrDefault(o => o.ID == workPlaceId) : null;
+                Inventec.Common.Logging.LogSystem.Debug("TransactionBillTwoInOne.EnsureWorkPlaceInCombo >>> workPlaceId=" + workPlaceId + " khong co trong dtWorkPlace (" + dtWorkPlace.Count + " don vi), goi API => " + (result == null ? "null" : ("[" + result.WORK_PLACE_NAME + "] IS_ACTIVE=" + result.IS_ACTIVE)));
+                if (result == null)
+                {
+                    return null;
+                }
+
+                List<HIS_WORK_PLACE> ramWorkPlaces = BackendDataWorker.Get<HIS_WORK_PLACE>();
+                if (ramWorkPlaces != null && !ramWorkPlaces.Exists(o => o.ID == workPlaceId))
+                {
+                    List<HIS_WORK_PLACE> newRamWorkPlaces = new List<HIS_WORK_PLACE>(ramWorkPlaces);
+                    newRamWorkPlaces.Add(result);
+                    BackendDataWorker.UpdateToRam(typeof(HIS_WORK_PLACE), newRamWorkPlaces, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+
+                List<HIS_WORK_PLACE> newWorkPlaces = new List<HIS_WORK_PLACE>(dtWorkPlace);
+                newWorkPlaces.Add(result);
+                dtWorkPlace = newWorkPlaces;
+                this.InitComboCommon(this.cboBuyerOrganization, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
+                this.InitComboCommon(this.cboBuyerOrganization2, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Tên đơn vị người mua theo combo Đơn vị. Combo có thể giữ ID đơn vị chưa có trong dtWorkPlace (đơn vị vừa tạo ở Tiếp đón sau khi mở app)
+        /// nên Text trống -> lấy lại từ danh mục qua API; vẫn không có thì dùng tên đơn vị đã lưu trên hồ sơ điều trị để biên lai không trống tên đơn vị.
+        /// </summary>
+        private string GetBuyerOrganizationFromCombo(DevExpress.XtraEditors.GridLookUpEdit cbo)
+        {
+            string result = (cbo != null) ? cbo.Text : null;
+            try
+            {
+                long workPlaceId = 0;
+                if (cbo != null && cbo.EditValue != null && Int64.TryParse(cbo.EditValue.ToString(), out workPlaceId)
+                    && !dtWorkPlace.Exists(o => o.ID == workPlaceId))
+                {
+                    HIS_WORK_PLACE workPlace = EnsureWorkPlaceInCombo(workPlaceId);
+                    if (workPlace != null)
+                    {
+                        result = workPlace.WORK_PLACE_NAME;
+                    }
+                    else if (this.treatment != null && this.treatment.TDL_PATIENT_WORK_PLACE_ID == workPlaceId
+                        && !String.IsNullOrWhiteSpace(this.treatment.TDL_PATIENT_WORK_PLACE_NAME))
+                    {
+                        result = this.treatment.TDL_PATIENT_WORK_PLACE_NAME;
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug("TransactionBillTwoInOne.GetBuyerOrganizationFromCombo >>> workPlaceId=" + workPlaceId + " | result=[" + result + "]");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
         private void InitComboCommon(Control cboEditor, object data, string valueMember, string displayMember, string displayMemberCode)
         {

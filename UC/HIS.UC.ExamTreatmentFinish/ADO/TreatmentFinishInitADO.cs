@@ -67,5 +67,8 @@ namespace HIS.UC.ExamTreatmentFinish.ADO
         public bool IsEmergencyRoom { get; set; }
         /// <summary>Giá trị phân loại cấp cứu 2 khi edit hồ sơ cũ (HIS_TREATMENT.EMERGENCY_CLASSIFY_ID_2)</summary>
         public long? EmergencyClassifyId2 { get; set; }
+
+        /// <summary>Xem lai xu tri ho so da ket thuc: hien loai ra vien da luu, khong lay mac dinh, khong mo popup</summary>
+        public bool IsViewFinished { get; set; }
     }
 }

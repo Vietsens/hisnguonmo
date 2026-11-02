@@ -2597,6 +2597,83 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     ControlEditorLoader.Load(cboHeinServiceType, source.Where(o => new List<long>() { IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_NDM, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_UT, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL }.Contains(o.ID)).ToList(), controlEditorADO);
                 }
+                if (!String.IsNullOrWhiteSpace(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.MedicineMaterialTypeList.HeinServiceTypeColor")))
+                {
+                    cboHeinServiceType.Properties.View.RowCellStyle -= cboHeinServiceType_View_RowCellStyle;
+                    cboHeinServiceType.Properties.View.RowCellStyle += cboHeinServiceType_View_RowCellStyle;
+                    cboHeinServiceType.EditValueChanged -= cboHeinServiceType_EditValueChanged;
+                    cboHeinServiceType.EditValueChanged += cboHeinServiceType_EditValueChanged;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        Color[] heinServiceTypeColors;
+
+        /// <summary>
+        /// Màu chữ theo nhóm BHYT, lấy từ key HIS.Desktop.Plugins.MedicineMaterialTypeList.HeinServiceTypeColor
+        /// (định dạng: màu trong danh mục|màu thanh toán theo tỷ lệ|màu vật tư thay thế). Bỏ trống thì không tô màu.
+        /// </summary>
+        private Color GetHeinServiceTypeColor(long? heinServiceTypeId)
+        {
+            if (heinServiceTypeColors == null)
+            {
+                string[] values = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.MedicineMaterialTypeList.HeinServiceTypeColor") ?? "").Split('|');
+                heinServiceTypeColors = new Color[3];
+                for (int i = 0; i < 3 && i < values.Length; i++)
+                {
+                    try
+                    {
+                        if (!String.IsNullOrWhiteSpace(values[i]))
+                            heinServiceTypeColors[i] = ColorTranslator.FromHtml(values[i].Trim());
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }
+            }
+
+            if (heinServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM)
+                return heinServiceTypeColors[0];
+            if (heinServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL)
+                return heinServiceTypeColors[1];
+            return Color.Empty;
+        }
+
+        private void cboHeinServiceType_View_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
+        {
+            try
+            {
+                var row = ((DevExpress.XtraGrid.Views.Grid.GridView)sender).GetRow(e.RowHandle) as MOS.EFMODEL.DataModels.HIS_HEIN_SERVICE_TYPE;
+                if (row != null)
+                {
+                    Color color = GetHeinServiceTypeColor(row.ID);
+                    if (color != Color.Empty)
+                    {
+                        e.Appearance.ForeColor = color;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboHeinServiceType_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                long? heinServiceTypeId = null;
+                if (cboHeinServiceType.EditValue != null)
+                {
+                    heinServiceTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboHeinServiceType.EditValue.ToString());
+                }
+                cboHeinServiceType.Properties.Appearance.ForeColor = GetHeinServiceTypeColor(heinServiceTypeId);
             }
             catch (Exception ex)
             {

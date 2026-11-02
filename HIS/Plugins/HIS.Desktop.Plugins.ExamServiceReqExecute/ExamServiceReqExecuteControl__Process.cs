@@ -81,6 +81,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("onClickSaveFormAsyncForOtherButtonClick.1");
+                // Dang xem lai xu tri cua y lenh da ket thuc: radio xu tri dang tich chi de xem, khong gui kem len BE
+                if (this.isViewFinishedExecute)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("onClickSaveFormAsyncForOtherButtonClick: y lenh da ket thuc (che do xem xu tri), khong luu");
+                    return;
+                }
                 HisServiceReqExamUpdateSDO hisServiceReqSDO = new HisServiceReqExamUpdateSDO();
                 GetUcIcdYHCT();
                 ProcessExamServiceReqDTO(ref hisServiceReqSDO);
@@ -3015,6 +3021,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             bool success = false;
             try
             {
+                // Dang xem lai xu tri cua y lenh da ket thuc: UC xu tri chi de xem, khong gui len BE
+                if (this.isViewFinishedExecute)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("SaveExamServiceReq: y lenh da ket thuc (che do xem xu tri), khong luu");
+                    return;
+                }
                 // Tick "Phụ nữ mang thai" thì bắt buộc nhập số tháng (1-9)
                 if (!ValidWomanClassify()) return;
                 WaitingManager.Show();

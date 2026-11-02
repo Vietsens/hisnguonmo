@@ -432,9 +432,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 await LoadTreatmentHistory(); 
                 await LoadHistoryHasTestResult();
+                await LoadHistoryHasEmrDocument();
                 if (this.TreatmentHistorys != null && this.TreatmentHistorys.Count > 0)
                 {
                     InitTestResultsRepositoryItem();
+                    InitEmrDocumentRepositoryItem();
                     gridControlTreatmentHistory.DataSource = this.TreatmentHistorys;
                 }
 
@@ -537,6 +539,45 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 foreach (var treatmentId in serviceReqs.Select(o => o.TREATMENT_ID).Distinct())
                 {
                     this.treatmentIdHasTestResults.Add(treatmentId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lay danh sach ma dieu tri (trong luoi lich su kham) da co van ban EMR.
+        /// Luot kham nao khong nam trong danh sach nay thi disable nut Chi tiet benh an tren dong do.
+        /// Filter di qua query string nen chia lo 100 ma; IS_DELETE loc tai client theo "khac 1"
+        /// (van ban binh thuong de NULL, truyen filter IS_DELETE = false se mat luon).
+        /// </summary>
+        private async Task LoadHistoryHasEmrDocument()
+        {
+            try
+            {
+                this.treatmentCodeHasEmrDocuments = new HashSet<string>();
+                if (this.TreatmentHistorys == null || this.TreatmentHistorys.Count == 0) return;
+
+                List<string> treatmentCodes = this.TreatmentHistorys
+                    .Where(o => !string.IsNullOrEmpty(o.TREATMENT_CODE))
+                    .Select(o => o.TREATMENT_CODE).Distinct().ToList();
+
+                for (int skip = 0; skip < treatmentCodes.Count; skip += 100)
+                {
+                    CommonParam param = new CommonParam();
+                    EMR.Filter.EmrDocumentViewFilter filter = new EMR.Filter.EmrDocumentViewFilter();
+                    filter.TREATMENT_CODEs = treatmentCodes.Skip(skip).Take(100).ToList();
+
+                    var documents = await new BackendAdapter(param)
+                        .GetAsync<List<MediRecordCheckingDocumentADO>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, filter, param);
+                    if (documents == null || documents.Count == 0) continue;
+
+                    foreach (var treatmentCode in documents.Where(o => o.IS_DELETE != 1 && !string.IsNullOrEmpty(o.TREATMENT_CODE)).Select(o => o.TREATMENT_CODE).Distinct())
+                    {
+                        this.treatmentCodeHasEmrDocuments.Add(treatmentCode);
+                    }
                 }
             }
             catch (Exception ex)
@@ -1448,6 +1489,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (serviceReqSTTId != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                 {
+                    this.isViewFinishedExecute = false;
                     lblCaptionHospitalizationReason.Enabled = true;
                     lblCaptionNgayThuCuaBenh.Enabled = true;
                     lblCaptionPathologicalProcess.Enabled = true;
@@ -1497,7 +1539,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     lblSick.Enabled = false;
                     panelIcd.Enabled = false;
                     panelControlCauseIcd.Enabled = false;
-                    groupControlTreatmentFinish.Enabled = false;
+                    // Che do xem lai xu tri da ket thuc van mo nhom xu tri (chi xem)
+                    groupControlTreatmentFinish.Enabled = this.isViewFinishedExecute;
                     //drBtnOther.Enabled = false;
                     btnChooseTemplate.Enabled = false;
                     gridControlTreatmentHistory.Enabled = false;
