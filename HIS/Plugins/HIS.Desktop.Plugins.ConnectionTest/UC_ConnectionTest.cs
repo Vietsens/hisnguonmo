@@ -2596,12 +2596,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
-                if (e.KeyCode == Keys.Enter)
+                // CG300 mode handles Enter on KeyDown (txtSearchKey_KeyDownCG300): barcode scanners send keys too fast for KeyUp
+                if (e.KeyCode == Keys.Enter && !IsCG300Mode())
                 {
-                    if (IsCG300Mode())
-                        ProcessScanCG300(txtSearchKey.Text);
-                    else
-                        FillDataToGridControl();
+                    FillDataToGridControl();
                 }
             }
             catch (Exception ex)

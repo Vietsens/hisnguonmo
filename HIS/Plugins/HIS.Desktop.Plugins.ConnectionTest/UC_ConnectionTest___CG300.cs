@@ -126,6 +126,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     chkPrintBarcodeCG300.StyleController = layoutControl1;
                     chkPrintBarcodeCG300.CheckedChanged += chkPrintBarcodeCG300_CheckedChanged;
                     layoutControl1.Controls.Add(chkPrintBarcodeCG300);
+                    txtSearchKey.KeyDown += txtSearchKey_KeyDownCG300;
 
                     // Put the checkbox right of the search box (layoutControlItem7 = txtSearchKey)
                     lciPrintBarcodeCG300 = layoutControlGroup1.AddItem();
@@ -266,6 +267,22 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         /// Scan handler in CG300 mode: same code as the last search and grid has data -> print; otherwise -> search.
         /// The cursor always goes back to the search box with its content selected.
         /// </summary>
+        /// <summary>Enter from the barcode scanner in CG300 mode. KeyUp is unreliable with scanners, so handle it on KeyDown.</summary>
+        private void txtSearchKey_KeyDownCG300(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode != Keys.Enter || !IsCG300Mode()) return;
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                ProcessScanCG300(txtSearchKey.Text);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void ProcessScanCG300(string code)
         {
             if (isProcessingCG300) return;
@@ -273,6 +290,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             try
             {
                 code = code != null ? code.Trim() : "";
+                Inventec.Common.Logging.LogSystem.Debug("CG300 nhan Enter"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => code), code)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lastScanCodeCG300), lastScanCodeCG300));
                 var data = gridControlSample.DataSource as List<LisSampleADO>;
                 bool isPrint = !String.IsNullOrEmpty(code)
                     && String.Equals(code, lastScanCodeCG300, StringComparison.OrdinalIgnoreCase)
@@ -296,8 +316,24 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             finally
             {
                 isProcessingCG300 = false;
+                FocusScanBoxCG300();
+                // Grid row click / layout may move focus after this handler returns -> select again once the queue is idle
+                if (txtSearchKey.IsHandleCreated)
+                    txtSearchKey.BeginInvoke(new Action(FocusScanBoxCG300));
+            }
+        }
+
+        /// <summary>Cursor back to the scan box with its content selected, so the next scan replaces it.</summary>
+        private void FocusScanBoxCG300()
+        {
+            try
+            {
                 txtSearchKey.Focus();
                 txtSearchKey.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
