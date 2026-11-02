@@ -1936,6 +1936,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     ClearDocument();
                     this.ActionType = GlobalVariables.ActionAdd;
                 }
+                ProcessLockBeginTime(sereServExt);
 
                 //TODO
                 if (sereServ.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA)
@@ -4825,6 +4826,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     MessageManager.Show("Chưa chọn hồ sơ nào");
                     return;
                 }
+                if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsLockSubclinicalStartTime && dtBeginTime.EditValue == null)
+                {
+                    MessageManager.Show("Chưa có thời gian bắt đầu, vui lòng bấm nút \"Lấy thời gian hiện tại\" cạnh ô Thời gian bắt đầu");
+                    return;
+                }
                 if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsRequiredConclude)
                 {
                     ValidateRequireMemoEdit(txtConclude);
@@ -5141,7 +5147,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                     if (sereServExt != null)
                     {
-                        sereServExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
+                        if (!(Config.AppConfigKeys.IsLockSubclinicalStartTime && sereServExt.BEGIN_TIME.HasValue))
+                            sereServExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
                         sereServExt.END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
                         sereServExt.RESULT_READ_TIME = GetResultReadTimeForSave();
                         surgUpdate.SereServExt = sereServExt;
@@ -5740,7 +5747,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 this.MachineNamesChoose = machineNamesForPrint;//phai gan sau MachineIdChoose vi setter cua no xoa chuoi ten may
 
                 ProcessDescriptionContent();
-                if (dtBeginTime.EditValue != null)
+                if (Config.AppConfigKeys.IsLockSubclinicalStartTime && this.sereServExt.BEGIN_TIME.HasValue)
+                {
+                    //61482: da luu thoi gian bat dau thi giu nguyen
+                }
+                else if (dtBeginTime.EditValue != null)
                     this.sereServExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
                 else
                     this.sereServExt.BEGIN_TIME = null;
@@ -6139,7 +6150,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     sereServExt.NOTE = sereServ.note;
                     sereServExt.NUMBER_OF_FILM = sereServ.NUMBER_OF_FILM;
                     sereServExt.FILM_SIZE_ID = cboSizeOfFilm.EditValue != null ? (long?)cboSizeOfFilm.EditValue : null;
-                    if (dtBeginTime.EditValue != null)
+                    if (Config.AppConfigKeys.IsLockSubclinicalStartTime && sereServExt.BEGIN_TIME.HasValue)
+                    {
+                        //61482: "Luu tat ca" khong ghi de thoi gian bat dau cua dich vu da luu
+                    }
+                    else if (dtBeginTime.EditValue != null)
                         sereServExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
                     else
                         sereServExt.BEGIN_TIME = null;

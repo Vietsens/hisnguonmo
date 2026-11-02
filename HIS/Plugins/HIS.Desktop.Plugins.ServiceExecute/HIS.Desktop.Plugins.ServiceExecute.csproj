@@ -476,6 +476,9 @@
     <Compile Include="UCServiceExecute_PlusPrint.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCServiceExecute_PlusLockBeginTime.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCServiceExecute_PlusValidation.cs">
       <SubType>UserControl</SubType>
     </Compile>

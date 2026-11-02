@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
         internal const string CONFIG_KEY__IsRequiredConclude = "HIS.Desktop.Plugins.ServiceExecute.IsRequiredConclude";
 
         internal const string CONFIG_KEY__StartTimeOption = "HIS.Desktop.Plugins.ServiceExecute.StartTimeOption";
+        internal const string CONFIG_KEY__IsLockSubclinicalStartTime = "HIS.Desktop.Plugins.IsLockSubclinicalStartTime";
         internal const string CONFIG_KEY__StartTimeMustBeGreaterThanInstructionTime = "HIS.Desktop.Plugins.StartTimeMustBeGreaterThanInstructionTime";
         internal const string CONFIG_KEY__ResultTimeMustBeGreaterThanEndTime = "HIS.Desktop.Plugins.ResultTimeMustBeGreaterThanEndTime";
         internal const string CONFIG_KEY__ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR = "MOS.HIS_SERVICE_REQ.ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR";
@@ -190,6 +191,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
             get
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__StartTimeOption);
+            }
+        }
+
+        internal static bool IsLockSubclinicalStartTime
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IsLockSubclinicalStartTime) == "1";
             }
         }
 
