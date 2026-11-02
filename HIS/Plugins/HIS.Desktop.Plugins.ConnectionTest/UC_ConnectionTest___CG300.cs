@@ -56,6 +56,23 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         /// <summary>Blocks overlapping scans while a scan is being processed.</summary>
         private bool isProcessingCG300 = false;
 
+        /// <summary>Scanner burst ends when no key arrives for this long -> process the scan without waiting for Enter.</summary>
+        private const int CG300_SCAN_IDLE_MS = 250;
+
+        /// <summary>Max average gap between keys of a scanner burst; human typing is slower and waits for Enter.</summary>
+        private const int CG300_SCAN_MAX_KEY_GAP_MS = 60;
+
+        /// <summary>A burst with fewer keys is not treated as a scan.</summary>
+        private const int CG300_SCAN_MIN_LENGTH = 3;
+
+        private System.Windows.Forms.Timer timerScanCG300;
+        private DateTime firstKeyTimeCG300;
+        private DateTime lastKeyTimeCG300;
+        private int keyCountCG300;
+
+        /// <summary>The current burst was already processed by the idle timer -> ignore the scanner's trailing Enter.</summary>
+        private bool isScanAutoProcessedCG300;
+
         /// <summary>Barcodes already sent to CG300 in this session (RePrint flag + reprint confirm).</summary>
         private HashSet<string> printedBarcodesCG300 = new HashSet<string>();
 
@@ -127,6 +144,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     chkPrintBarcodeCG300.CheckedChanged += chkPrintBarcodeCG300_CheckedChanged;
                     layoutControl1.Controls.Add(chkPrintBarcodeCG300);
                     txtSearchKey.KeyDown += txtSearchKey_KeyDownCG300;
+                    txtSearchKey.KeyPress += txtSearchKey_KeyPressCG300;
+
+                    timerScanCG300 = new System.Windows.Forms.Timer();
+                    timerScanCG300.Interval = CG300_SCAN_IDLE_MS;
+                    timerScanCG300.Tick += timerScanCG300_Tick;
+                    this.Disposed += (s, ev) => timerScanCG300.Dispose();
 
                     // Put the checkbox right of the search box (layoutControlItem7 = txtSearchKey)
                     lciPrintBarcodeCG300 = layoutControlGroup1.AddItem();
@@ -275,6 +298,62 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 if (e.KeyCode != Keys.Enter || !IsCG300Mode()) return;
                 e.Handled = true;
                 e.SuppressKeyPress = true;
+                timerScanCG300.Stop();
+                keyCountCG300 = 0;
+                if (isScanAutoProcessedCG300)
+                {
+                    // Trailing Enter of a scan already handled by the idle timer
+                    isScanAutoProcessedCG300 = false;
+                    return;
+                }
+                ProcessScanCG300(txtSearchKey.Text);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Track the key rhythm: a fast burst = barcode scanner.</summary>
+        private void txtSearchKey_KeyPressCG300(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                if (!IsCG300Mode() || Char.IsControl(e.KeyChar)) return;
+
+                DateTime now = DateTime.Now;
+                if (keyCountCG300 == 0 || (now - lastKeyTimeCG300).TotalMilliseconds > CG300_SCAN_IDLE_MS)
+                {
+                    firstKeyTimeCG300 = now;
+                    keyCountCG300 = 0;
+                }
+                keyCountCG300++;
+                lastKeyTimeCG300 = now;
+                isScanAutoProcessedCG300 = false;
+
+                timerScanCG300.Stop();
+                timerScanCG300.Start();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Scanner stopped sending keys: search / print right away, no Enter needed.</summary>
+        private void timerScanCG300_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                timerScanCG300.Stop();
+                int count = keyCountCG300;
+                keyCountCG300 = 0;
+                if (!IsCG300Mode() || count < CG300_SCAN_MIN_LENGTH) return;
+
+                double avgGap = (lastKeyTimeCG300 - firstKeyTimeCG300).TotalMilliseconds / (count - 1);
+                if (avgGap > CG300_SCAN_MAX_KEY_GAP_MS) return; // typed by hand -> wait for Enter
+
+                isScanAutoProcessedCG300 = true;
                 ProcessScanCG300(txtSearchKey.Text);
             }
             catch (Exception ex)
