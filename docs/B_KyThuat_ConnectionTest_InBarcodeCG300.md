@@ -233,8 +233,8 @@ Không fallback qua loại mẫu của y lệnh (`HisServiceReqFilter` không l�
 
 | Key | Loại | Giá trị | Ý nghĩa |
 |-----|------|---------|---------|
-| `CONFIG_KEY__HIS_DESKTOP__PLUGINS__CONNECTIONTEST__CG300_FOLDER` | ConfigApplication (per máy trạm) | Đường dẫn thư mục | Thư mục `ALL` mà CG đọc. **Rỗng ⇒ máy trạm không dùng CG300** (checkbox luôn ẩn) |
-| `CONFIG_KEY__HIS_DESKTOP__PLUGINS__CONNECTIONTEST__CG300_PROCESS_NAME` | ConfigApplication (per máy trạm) | Tên tiến trình (không `.exe`) | Phần mềm điều khiển CG. Rỗng ⇒ không kiểm tra tiến trình |
+| `CONFIG_KEY__HIS_DESKTOP__PLUGINS__CONNECTIONTEST__CG300_FOLDER` | ConfigApplication (**theo tài khoản**, SDA_CONFIG_APP_USER) | Đường dẫn thư mục | Thư mục `ALL` mà CG đọc. **Rỗng ⇒ máy trạm không dùng CG300** (checkbox luôn ẩn) |
+| `CONFIG_KEY__HIS_DESKTOP__PLUGINS__CONNECTIONTEST__CG300_PROCESS_NAME` | ConfigApplication (**theo tài khoản**) | Tên tiến trình (không `.exe`) | Tên file chạy ở Task Manager tab Details (FOYEN CG300: `Intelligent Workstation`; KHÔNG phải tên hiển thị `BloodSystemV2.0`). `Process.GetProcessesByName` so theo tên file. Rỗng ⇒ không kiểm tra tiến trình |
 | `chkPrintBarcodeCG300` ("In tem qua CG300") | Checkbox trên UI + **ControlStateWorker** | 1/0 | **Chỉ hiển thị khi kết nối CG300 OK** (T.6). Khi hiện, khôi phục trạng thái tích lần trước |
 
 Không dùng HisConfig toàn viện vì chỉ một số máy trạm có thiết bị.
@@ -268,7 +268,10 @@ HIS.Desktop.Plugins.ConnectionTest/
 | Vị trí | Thay đổi |
 |--------|----------|
 | Load UC (sau `InitControlState`) | Gọi `RefreshConnectCG300()` → set `lciPrintBarcodeCG300.Visibility` |
-| `UC_ConnectionTest.cs:2587` `txtSearchKey_KeyUp` | Khi `Enter`, checkbox **đang hiển thị** và `chkPrintBarcodeCG300.Checked` ⇒ gọi `ProcessScanCG300(code)` thay cho `FillDataToGridControl()` trực tiếp |
+| `txtSearchKey_KeyUp` (Designer) | Chỉ còn xử lý Enter khi **không** ở chế độ CG300 (tìm theo KEY_WORD như cũ) |
+| `txtSearchKey.KeyDown += txtSearchKey_KeyDownCG300` (gắn trong `CreateCG300Control`) | Chế độ CG300: Enter ⇒ `ProcessScanCG300`. Bắt ở **KeyDown** vì với máy quét KeyUp không tới (kiểm thử 02/11/2026: không tìm, mã nối đôi) |
+| `txtSearchKey.KeyPress += txtSearchKey_KeyPressCG300` + `timerScanCG300` (250ms) | Nhận diện máy quét theo nhịp gõ (≥ 3 ký tự, trung bình ≤ 60ms/ký tự); hết 250ms không có phím ⇒ tự `ProcessScanCG300`, **không cần Enter**. Enter đuôi sau khi đã tự xử lý bị bỏ qua (`isScanAutoProcessedCG300`) |
+| `FillDataToGridSample` | Sau khối `KEY_WORD` gọi `ApplyScanFilterCG300(filter)`: chế độ CG300 và ô quét còn đúng chuỗi đã nhận diện ⇒ bỏ `KEY_WORD`, đặt điều kiện chính xác theo loại mã |
 | `UC_ConnectionTest.cs:1567` `FillDataToGridControl` | Đã có `txtSearchKey.Focus(); SelectAll()` ⇒ đáp ứng bước 3, giữ nguyên |
 | `UC_ConnectionTest_PlusPrint.cs:406` `PrintBarcodeByBartender` | Tách đoạn cập nhật "Đã lấy mẫu" (dòng 436–466) thành hàm dùng chung `UpdateSampleTakenAfterPrint(LisSampleADO)` để CG300 tái sử dụng, không nhân bản code |
 | `UC_ConnectionTest___NhomXN.cs:79` | Đã gọi `api/LisSampleService/GetView` theo `SAMPLE_IDs` ⇒ cân nhắc tái dùng dữ liệu đã nạp nếu còn hợp lệ, tránh gọi API lặp |
@@ -315,7 +318,16 @@ private void ProcessScanCG300(string code)
 4. `Cg300FileWriter.Write(folder, labels)` → thành công thì `UpdateSampleTakenAfterPrint` cho từng mẫu Chưa LM/Từ chối, cập nhật dòng tại chỗ + `gridViewSample.RefreshData()`.
 5. `WaitingManager.Hide()` → nếu có cảnh báo ⇒ hiện 1 thông báo tổng hợp (không chặn việc in các ống hợp lệ).
 
-Trong chế độ CG300, `txtSearchKey_KeyUp` **chỉ tìm theo ô tìm kiếm**; các ô khác (mã điều trị, mã y lệnh…) giữ nguyên hành vi.
+**Nhận diện mã quét — `ResolveScanCodeCG300(code)`** (gọi ở nhánh tìm của `ProcessScanCG300`):
+
+1. Xóa trắng `txtTreatmentCode`, `txtSERVICE_REQ_CODE__EXACT`, `txtPatientCode` để mã quét là điều kiện duy nhất.
+2. Dò `api/LisSample/GetView` với `CommonParam(0, 1)`, `EXECUTE_ROOM_CODE__EXACT` = phòng hiện tại, lần lượt: `BARCODE__EXACT` → `SERVICE_REQ_CODE__EXACT` (bù 0 đủ 12) → `TREATMENT_CODE__EXACT` (đủ 12) → `PATIENT_CODE__EXACT` (đủ 10). Tối đa 4 lần gọi, mỗi lần 1 dòng.
+3. Khớp ⇒ lưu `scanCodeTypeCG300` (`EnumCg300ScanCodeType`), `scanCodeCG300`, `scanTextCG300`; `ApplyScanFilterCG300` dùng khi nạp lưới và khi phân trang. Không khớp ⇒ `None`, tìm theo `KEY_WORD` như cũ.
+4. Log Debug `CG300 quet ma` (mã, loại, mã sau bù 0); mỗi lần nhận mã log `CG300 nhan Enter`.
+
+Sau mỗi lần quét: `FocusScanBoxCG300()` ngay và thêm 1 lần qua `BeginInvoke` (RowClick của lưới có thể lấy focus sau khi handler trả về).
+
+Các ô Mã điều trị / Mã y lệnh / Mã bệnh nhân giữ nguyên hành vi cũ (ô Mã điều trị không bôi đen sau Enter vì còn chuyển focus sang lưới để nhập barcode) — KTV phải quét vào ô quét.
 
 ### B.6 Giao diện
 
@@ -329,7 +341,7 @@ Không kết nối:  [Ô tìm kiếm ..........................] [Tìm (Ctrl F)]
 - **Không dùng nút ⟳ riêng** (hàng tìm kiếm không đủ chỗ): kiểm tra lại kết nối khi **load UC**, khi bấm **Tìm (Ctrl F)**, và **trước mỗi lần ghi file**.
 - `Cg300ConnectionChecker.Check()` trả `EnumCg300ConnectState`; lý do không đạt ghi log Warn và hiện trong thông báo "Mất kết nối" khi quét in.
 - Caption/ToolTip khai báo trong `Lang.vi/en/my.resx`: `UC_ConnectionTest.chkPrintBarcodeCG300.Properties.Caption`, `.ToolTip` ("Quét lại cùng mã để in tem và nhả ống trên máy CG300").
-- Khi bật: `txtSearchKey.Properties.NullValuePrompt` = "Quét barcode…" để KTV biết đang ở chế độ CG300.
+- Khi bật: `txtSearchKey.Properties.NullValuePrompt` = "Quét mã..." (key `UC_ConnectionTest.txtSearchKey.NullValuePromptCG300`) để KTV biết đang ở chế độ CG300.
 
 ### B.7 Thông báo mới (Message.Lang.vi/en/my)
 
@@ -346,7 +358,8 @@ Không kết nối:  [Ô tìm kiếm ..........................] [Tìm (Ctrl F)]
 
 | Mục đích | URI | Consumer | Filter |
 |----------|-----|----------|--------|
-| Tìm mẫu (có sẵn) | `api/LisSample/GetView` | LisConsumer | `LisSampleViewFilter.KEY_WORD` |
+| Tìm mẫu (có sẵn) | `api/LisSample/GetView` | LisConsumer | `LisSampleViewFilter.KEY_WORD`, hoặc `BARCODE__EXACT` / `SERVICE_REQ_CODE__EXACT` / `TREATMENT_CODE__EXACT` / `PATIENT_CODE__EXACT` theo mã quét |
+| Nhận diện mã quét | `api/LisSample/GetView` | LisConsumer | `CommonParam(0,1)` + phòng + 1 điều kiện chính xác, tối đa 4 lần/lần quét mới |
 | Dịch vụ của mẫu | `api/LisSampleService/GetView` | LisConsumer | `LisSampleServiceViewFilter { SAMPLE_IDs }` |
 | Dịch vụ ↔ loại mẫu | `api/HisServiceTesa/Get` | MosConsumer | `HisServiceTesaFilter { IS_ACTIVE = 1 }` — nạp 1 lần |
 | Loại mẫu bệnh phẩm | `api/HisTestSampleType/Get` | MosConsumer | `HisTestSampleTypeFilter { IS_ACTIVE = 1 }` — nạp 1 lần |
@@ -375,9 +388,9 @@ Không cần thay đổi backend / EFMODEL.
 | Q3 | Một dịch vụ gán nhiều loại mẫu bệnh phẩm thì chọn ống nào? | Sinh bản ghi cho **tất cả** loại mẫu được gán (mỗi loại một ống) |
 | Q4 | Mẫu chưa có barcode (chưa sinh): tự sinh barcode trước khi gửi CG? | Không tự sinh, cảnh báo — vì barcode do LIS sinh theo cấu hình `IS_AUTO_CREATE_BARCODE` |
 | Q5 | Encoding / đuôi file / tên file mà phần mềm CG yêu cầu (UTF-8 có BOM? `.txt`?) | UTF-8 không BOM, `.txt` — cần xác nhận với hãng/kỹ sư lắp đặt |
-| Q6 | Mã quét ở bước 1 là **barcode mẫu** hay **mã y lệnh / phiếu chỉ định**? | Hỗ trợ cả hai (KEY_WORD); bước 2 so khớp chuỗi đã quét nên không phụ thuộc loại mã |
+| Q6 | Mã quét ở bước 1 là **barcode mẫu** hay **mã y lệnh / phiếu chỉ định**? | **Đã chốt 02/11/2026**: KTV quét mã điều trị; hỗ trợ cả barcode, mã y lệnh, mã điều trị, mã bệnh nhân (`ResolveScanCodeCG300`) |
 | Q7 | `HospNum` in mã BN hay mã điều trị? (tem thực tế BV in "260513.1161") | Mã BN (`PATIENT_CODE`) theo định nghĩa của hãng |
-| Q8 | **Tên tiến trình** (file .exe) của phần mềm điều khiển CG300 trên máy trạm? | Cần lấy tại viện (Task Manager) — dùng cho điều kiện kết nối T.6 #3 |
+| Q8 | **Tên tiến trình** (file .exe) của phần mềm điều khiển CG300 trên máy trạm? | **Đã chốt**: `Intelligent Workstation.exe` (x86) ⇒ khai `Intelligent Workstation` |
 | Q9 | Đường dẫn thư mục `ALL` thực tế mà phần mềm CG đang đọc? | Cấu hình theo máy trạm; tài liệu hãng ghi "dưới thư mục chương trình HIS/LIS" |
 | Q10 | Ống mã `002` (Green) trên ảnh thực tế không có trong bảng `LisDG.docx` | Đối chiếu lại bảng khay trên máy CG |
 
@@ -401,3 +414,18 @@ Không cần thay đổi backend / EFMODEL.
 - [ ] Ký tự đặc biệt trong tên BN (dấu nháy, `&`) ⇒ JSON hợp lệ.
 - [ ] Hồi quy: In barcode Bartender và MPS000077 vẫn cập nhật trạng thái lấy mẫu như trước.
 - [ ] Trạng thái checkbox CG300 được nhớ sau khi đóng/mở lại chức năng.
+- [ ] Quét mã điều trị `1165256` ⇒ lọc `TREATMENT_CODE__EXACT = 000001165256`, 3 ô mã trống; quét lại ⇒ in tất cả mẫu đang hiển thị.
+- [ ] Quét mã y lệnh / mã bệnh nhân ⇒ lọc đúng điều kiện; chuỗi không phải mã ⇒ `KEY_WORD`.
+- [ ] Máy quét không gửi Enter ⇒ tự xử lý sau 250ms; có gửi Enter ⇒ không xử lý 2 lần.
+- [ ] Gõ tay ⇒ chờ Enter; quét 2 lần cùng mã ⇒ ô không bị nối đôi.
+
+---
+
+## E. LỊCH SỬ CẬP NHẬT
+
+| Ngày | Commit | Nội dung |
+|---|---|---|
+| 13/10/2026 | `fea2a8c8a` | Triển khai lần đầu |
+| 02/11/2026 | `ea064ac54` | Ô quét nhận barcode / mã y lệnh / mã điều trị / mã bệnh nhân (`ResolveScanCodeCG300`, `ApplyScanFilterCG300`, `EnumCg300ScanCodeType`) |
+| 02/11/2026 | `c991d32a2` | Bắt Enter ở KeyDown; focus + SelectAll lại qua BeginInvoke; log mỗi lần quét |
+| 02/11/2026 | `fd34bc392` | Quét xong tự xử lý không cần Enter (KeyPress + `timerScanCG300`) |
