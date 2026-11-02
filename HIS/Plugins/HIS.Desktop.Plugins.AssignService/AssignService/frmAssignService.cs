@@ -6257,7 +6257,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     lstSubIcd.Add(item);
                             }
                         }
-                        isValid = isValid && checkContraindicated(lstIcd, lstSubIcd, icdServicePhacDos, serviceCheckeds__Send);
+                        //12072: key HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT = 1 thi chong chi dinh chi ap dung voi doi tuong BHYT (cung dieu kien voi phac do); key khac 1 thi giu nguyen nhu hien tai
+                        if (isValidICD)
+                            isValid = isValid && checkContraindicated(lstIcd, lstSubIcd, icdServicePhacDos, serviceCheckeds__Send);
                         isValid = isValid && ValidSereServWithOtherPaySource(serviceCheckeds__Send);
                         IsTreatmentInBedRoom = true;
                         isValid = isValid && ValidSereServWithBed(serviceCheckeds__Send);
