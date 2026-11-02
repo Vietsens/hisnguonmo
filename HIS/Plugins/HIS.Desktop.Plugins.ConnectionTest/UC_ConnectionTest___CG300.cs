@@ -68,6 +68,19 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         private EnumCg300ConnectState cg300State = EnumCg300ConnectState.NotConfigured;
         private string defaultSearchNullPrompt;
 
+        private const int CG300_SERVICE_REQ_CODE_LENGTH = 12;
+        private const int CG300_TREATMENT_CODE_LENGTH = 12;
+        private const int CG300_PATIENT_CODE_LENGTH = 10;
+
+        /// <summary>Kind of the last scanned code; drives the exact filter of the grid search.</summary>
+        private EnumCg300ScanCodeType scanCodeTypeCG300 = EnumCg300ScanCodeType.None;
+
+        /// <summary>Scanned text the resolved type belongs to (raw, as typed in the scan box).</summary>
+        private string scanTextCG300;
+
+        /// <summary>Resolved code value (padded) used in the exact filter.</summary>
+        private string scanCodeCG300;
+
         #endregion
 
         #region CG300 - Init + connection
@@ -109,7 +122,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     chkPrintBarcodeCG300 = new CheckEdit();
                     chkPrintBarcodeCG300.Name = "chkPrintBarcodeCG300";
                     chkPrintBarcodeCG300.Properties.Caption = GetLangValue("UC_ConnectionTest.chkPrintBarcodeCG300.Properties.Caption", "In tem CG300");
-                    chkPrintBarcodeCG300.ToolTip = GetLangValue("UC_ConnectionTest.chkPrintBarcodeCG300.ToolTip", "In tem qua máy CG300: quét mã để tìm, quét lại cùng mã để in tem và nhả ống");
+                    chkPrintBarcodeCG300.ToolTip = GetLangValue("UC_ConnectionTest.chkPrintBarcodeCG300.ToolTip", "In tem qua máy CG300: quét mã (barcode, mã y lệnh, mã điều trị hoặc mã bệnh nhân) để tìm, quét lại cùng mã để in tem và nhả ống");
                     chkPrintBarcodeCG300.StyleController = layoutControl1;
                     chkPrintBarcodeCG300.CheckedChanged += chkPrintBarcodeCG300_CheckedChanged;
                     layoutControl1.Controls.Add(chkPrintBarcodeCG300);
@@ -197,7 +210,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             try
             {
                 txtSearchKey.Properties.NullValuePrompt = IsCG300Mode()
-                    ? GetLangValue("UC_ConnectionTest.txtSearchKey.NullValuePromptCG300", "Quét barcode...")
+                    ? GetLangValue("UC_ConnectionTest.txtSearchKey.NullValuePromptCG300", "Quét mã...")
                     : defaultSearchNullPrompt;
             }
             catch (Exception ex)
@@ -212,6 +225,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             {
                 UpdateSearchPromptCG300();
                 lastScanCodeCG300 = null;
+                ClearScanCodeCG300();
                 if (isNotLoadWhileChangeControlStateInFirst) return;
 
                 var item = currentControlStateRDO != null
@@ -271,6 +285,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 else
                 {
                     lastScanCodeCG300 = code;
+                    ResolveScanCodeCG300(code);
                     FillDataToGridControl();
                 }
             }
@@ -284,6 +299,132 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 txtSearchKey.Focus();
                 txtSearchKey.SelectAll();
             }
+        }
+
+        /// <summary>
+        /// Find out what the scanned code is (like typing it into the matching box and pressing Search):
+        /// barcode -> service request code -> treatment code -> patient code, first match in the room wins.
+        /// The other code boxes are cleared so the scan alone drives the search.
+        /// </summary>
+        private void ResolveScanCodeCG300(string code)
+        {
+            try
+            {
+                ClearScanCodeCG300();
+                txtTreatmentCode.Text = "";
+                txtSERVICE_REQ_CODE__EXACT.Text = "";
+                txtPatientCode.Text = "";
+                if (String.IsNullOrEmpty(code)) return;
+
+                string serviceReqCode = PadCodeCG300(code, CG300_SERVICE_REQ_CODE_LENGTH);
+                string treatmentCode = PadCodeCG300(code, CG300_TREATMENT_CODE_LENGTH);
+                string patientCode = PadCodeCG300(code, CG300_PATIENT_CODE_LENGTH);
+
+                if (ExistsSampleCG300(f => f.BARCODE__EXACT = code))
+                    SetScanCodeCG300(code, EnumCg300ScanCodeType.Barcode, code);
+                else if (ExistsSampleCG300(f => f.SERVICE_REQ_CODE__EXACT = serviceReqCode))
+                    SetScanCodeCG300(code, EnumCg300ScanCodeType.ServiceReqCode, serviceReqCode);
+                else if (ExistsSampleCG300(f => f.TREATMENT_CODE__EXACT = treatmentCode))
+                    SetScanCodeCG300(code, EnumCg300ScanCodeType.TreatmentCode, treatmentCode);
+                else if (ExistsSampleCG300(f => f.PATIENT_CODE__EXACT = patientCode))
+                    SetScanCodeCG300(code, EnumCg300ScanCodeType.PatientCode, patientCode);
+
+                Inventec.Common.Logging.LogSystem.Debug("CG300 quet ma"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => code), code)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => scanCodeTypeCG300), scanCodeTypeCG300.ToString())
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => scanCodeCG300), scanCodeCG300));
+            }
+            catch (Exception ex)
+            {
+                ClearScanCodeCG300();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Probe 1 sample of the current room matching the given exact filter.</summary>
+        private bool ExistsSampleCG300(Action<LisSampleViewFilter> setFilter)
+        {
+            try
+            {
+                LisSampleViewFilter filter = new LisSampleViewFilter();
+                if (room == null)
+                    room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentModule.RoomId);
+                if (room != null)
+                    filter.EXECUTE_ROOM_CODE__EXACT = room.ROOM_CODE;
+                setFilter(filter);
+
+                CommonParam param = new CommonParam(0, 1);
+                var samples = new BackendAdapter(param).Get<List<V_LIS_SAMPLE>>(
+                    "api/LisSample/GetView", ApiConsumers.LisConsumer, filter, param);
+                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+                return samples != null && samples.Any();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Called from FillDataToGridSample: while in CG300 mode and the scan box still holds the resolved scan,
+        /// search by the exact code instead of KEY_WORD.
+        /// </summary>
+        private void ApplyScanFilterCG300(LisSampleViewFilter filter)
+        {
+            try
+            {
+                if (filter == null || !IsCG300Mode() || scanCodeTypeCG300 == EnumCg300ScanCodeType.None) return;
+                if (!String.Equals(txtSearchKey.Text.Trim(), scanTextCG300, StringComparison.OrdinalIgnoreCase)) return;
+
+                filter.KEY_WORD = null;
+                switch (scanCodeTypeCG300)
+                {
+                    case EnumCg300ScanCodeType.Barcode:
+                        filter.BARCODE__EXACT = scanCodeCG300;
+                        break;
+                    case EnumCg300ScanCodeType.ServiceReqCode:
+                        filter.SERVICE_REQ_CODE__EXACT = scanCodeCG300;
+                        break;
+                    case EnumCg300ScanCodeType.TreatmentCode:
+                        filter.TREATMENT_CODE__EXACT = scanCodeCG300;
+                        break;
+                    case EnumCg300ScanCodeType.PatientCode:
+                        filter.PATIENT_CODE__EXACT = scanCodeCG300;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetScanCodeCG300(string text, EnumCg300ScanCodeType type, string code)
+        {
+            scanTextCG300 = text;
+            scanCodeTypeCG300 = type;
+            scanCodeCG300 = code;
+        }
+
+        private void ClearScanCodeCG300()
+        {
+            SetScanCodeCG300(null, EnumCg300ScanCodeType.None, null);
+        }
+
+        /// <summary>Left-pad a numeric code with zeros (same rule as the code boxes); non-numeric codes are kept.</summary>
+        private string PadCodeCG300(string code, int length)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(code) || code.Length >= length || !code.All(Char.IsDigit)) return code;
+                return code.PadLeft(length, '0');
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return code;
         }
 
         #endregion

@@ -1692,6 +1692,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     lisSampleFilter.KEY_WORD = txtSearchKey.Text.Trim();
                 }
+                ApplyScanFilterCG300(lisSampleFilter);
 
                 if (!String.IsNullOrEmpty(txtTreatmentCode.Text))
                 {

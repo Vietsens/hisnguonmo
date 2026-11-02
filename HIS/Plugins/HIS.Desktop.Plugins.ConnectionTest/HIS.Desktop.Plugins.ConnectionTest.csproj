@@ -320,6 +320,7 @@
     <Compile Include="ADO\TestLisResultADO.cs" />
     <Compile Include="ComboADO.cs" />
     <Compile Include="CG300\Cg300ConnectionChecker.cs" />
+    <Compile Include="CG300\EnumCg300ScanCodeType.cs" />
     <Compile Include="CG300\Cg300FileWriter.cs" />
     <Compile Include="CG300\Cg300LabelADO.cs" />
     <Compile Include="CG300\Cg300LabelBuilder.cs" />
