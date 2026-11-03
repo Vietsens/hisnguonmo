@@ -913,10 +913,10 @@
     <value>CG300 label</value>
   </data>
   <data name="UC_ConnectionTest.chkPrintBarcodeCG300.ToolTip" xml:space="preserve">
-    <value>Print labels via CG300: scan to search, scan the same code again to print the label and release the tube</value>
+    <value>Print labels via CG300: scan a code (barcode, service request, treatment or patient code) to search, scan the same code again to print the label and release the tube</value>
   </data>
   <data name="UC_ConnectionTest.txtSearchKey.NullValuePromptCG300" xml:space="preserve">
-    <value>Scan barcode...</value>
+    <value>Scan code...</value>
   </data>
   <data name="UC_ConnectionTest.btnApproveResult.Text" xml:space="preserve">
     <value>Approve result</value>

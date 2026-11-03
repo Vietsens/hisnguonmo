@@ -274,17 +274,20 @@ namespace HIS.Desktop.Modules.Main
                 if(lstMes != null && lstMes.Count > 0)
                 {
                     MessageLicense = string.Join(". ", lstMes);
+                    //61963: thanh trang thai chi hien noi dung rut gon de khong che ten dang nhap, IP...; noi dung day du xem o tooltip
+                    List<string> lstShort = new List<string>();
+                    if (licenseExpires != null && licenseExpires.Count > 0)
+                        lstShort.Add(string.Format("{0} tính năng đã hết hạn", licenseExpires.Count));
+                    if (licenseAlExpired != null && licenseAlExpired.Count > 0)
+                        lstShort.Add(string.Format("{0} tính năng sắp hết hạn", licenseAlExpired.Count));
+                    DevExpress.Utils.SuperToolTip superToolTip = new DevExpress.Utils.SuperToolTip();
+                    DevExpress.Utils.ToolTipItem toolTipItem = new DevExpress.Utils.ToolTipItem();
+                    toolTipItem.Text = MessageLicense;
+                    superToolTip.Items.Add(toolTipItem);
+                    lblLicense.SuperTip = superToolTip;
+                    lblLicense.AutoSize = BarStaticItemSize.Content;
+                    lblLicense.Caption = string.Format("License: {0}", string.Join(", ", lstShort));
                     lblLicense.Visibility = BarItemVisibility.Always;
-                    lblLicense.Caption = MessageLicense;
-                    var w = Convert.ToDecimal(lblLicense.Font.Size);
-                    if ((Convert.ToDecimal(this.MessageLicense.Length) * (decimal)0.7 * w) > lblLicense.Size.Width)
-                    {
-                        MessageLicense += "            ";
-                        timerEffectText.Start();
-                    }else
-                    {
-                        lblLicense.Size = new Size((int)(Convert.ToDecimal(this.MessageLicense.Length) * (decimal)0.7 * w) + 30, lblLicense.Size.Height);
-                    }    
                 }
             }
             catch (Exception ex)

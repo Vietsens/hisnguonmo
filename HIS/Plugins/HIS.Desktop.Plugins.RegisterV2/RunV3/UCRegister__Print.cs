@@ -850,7 +850,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     }
 
                     MOS.Filter.HisDepartmentTranViewFilter defilter = new HisDepartmentTranViewFilter();
-                    defilter.ID = this.resultHisPatientProfileSDO.HisTreatment.ID;
+                    defilter.TREATMENT_ID = this.resultHisPatientProfileSDO.HisTreatment.ID;
                     var departmentTrans = new BackendAdapter(new CommonParam()).Get<List<V_HIS_DEPARTMENT_TRAN>>("api/HisDepartmentTran/GetView", ApiConsumer.ApiConsumers.MosConsumer, defilter, null);
                     if (departmentTrans != null && departmentTrans.Count > 0)
                     {

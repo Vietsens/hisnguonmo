@@ -196,7 +196,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Debug("Valid7__ValidSereServWithCondition:" + isValid);
                 isValid = isValid && CheckMaxPatientbyDayOption(serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug("Valid8__ValidSereServWithCondition:" + isValid);
-                if (lstIcd.Count > 0 || lstSubIcd.Count > 0)
+                //12072: key HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT = 1 thi chong chi dinh chi ap dung voi doi tuong BHYT (cung dieu kien voi phac do); key khac 1 thi giu nguyen nhu hien tai
+                if ((lstIcd.Count > 0 || lstSubIcd.Count > 0) && isValidICD)
                     isValid = isValid && checkContraindicated(lstIcd, lstSubIcd, icdServicePhacDos, serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug("Valid9__ValidSereServWithCondition:" + isValid);
                 isValid = isValid && CheckServiceExclusive(serviceCheckeds__Send);

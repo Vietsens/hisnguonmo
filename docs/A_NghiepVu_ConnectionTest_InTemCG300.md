@@ -10,6 +10,7 @@
 | Danh mục liên quan | Loại mẫu bệnh phẩm; Dịch vụ – Loại mẫu bệnh phẩm (HIS.Desktop.Plugins.HisServiceTestSample) |
 | Tài liệu đi kèm | B_KyThuat_ConnectionTest_InBarcodeCG300.md (kỹ thuật); SQL_ConnectionTest_CG300_SdaConfigApp.sql (khai báo cấu hình) |
 | Trạng thái | **Đã triển khai**; còn 7 điểm chờ chốt tại viện — xem PHẦN 6 |
+| Cập nhật | 02/11/2026 — ô quét nhận mọi loại mã (barcode, mã y lệnh, mã điều trị, mã bệnh nhân); quét xong tự tìm / tự in, không cần phím Enter. Xem PHẦN 7 |
 
 Dành cho khách hàng, người phân tích nghiệp vụ, kiểm thử viên. Phần lập trình nằm ở tài liệu B.
 
@@ -35,10 +36,12 @@ Kỹ thuật viên **chỉ dùng máy quét barcode**, không cần chuột hay 
 
 | Lần quét | Hệ thống làm gì |
 |---|---|
-| Lần 1 — quét mã của người bệnh A | Tự tìm và hiển thị các mẫu xét nghiệm của A |
-| Lần 2 — quét **lại** mã A | Gửi dữ liệu sang CG300 → máy dán tem lên đúng các ống cần dùng và nhả ống |
+| Lần 1 — quét mã của người bệnh A (barcode mẫu, mã y lệnh, mã điều trị hoặc mã bệnh nhân) | Tự tìm và hiển thị các mẫu xét nghiệm của A |
+| Lần 2 — quét **lại** mã A | **In luôn**: gửi dữ liệu sang CG300 → máy dán tem lên đúng các ống cần dùng và nhả ống |
 | Lần 3 — quét mã người bệnh B | Tự xóa mã cũ, tìm và hiển thị các mẫu của B |
 | Lần 4 — quét **lại** mã B | Máy dán tem và nhả ống cho B. Tiếp tục lặp lại với người bệnh kế tiếp |
+
+Không cần bấm nút Tìm hay phím Enter: quét xong là hệ thống tự xử lý.
 
 Chỉ những máy trạm **có kết nối CG300** mới thấy và dùng được tính năng này; các máy trạm khác không có thay đổi gì.
 
@@ -58,7 +61,7 @@ Chỉ những máy trạm **có kết nối CG300** mới thấy và dùng đư�
 Hãng cung cấp hai phương thức kết nối; dự án dùng **phương thức 2 — trao đổi qua file**:
 
 - Phần mềm điều khiển CG300 và HIS cài **trên cùng một máy trạm** tại phòng lấy mẫu.
-- Khi kỹ thuật viên quét lại mã, HIS ghi một file dữ liệu vào **một thư mục dùng chung** (thư mục `ALL`).
+- Khi kỹ thuật viên quét lại mã, HIS ghi file dữ liệu vào **một thư mục dùng chung** (thư mục `ALL`) — **mỗi bệnh nhân một file (bản tin)**, chứa toàn bộ chỉ định và ống cần lấy của bệnh nhân đó (QT-15).
 - Phần mềm CG300 đọc file, dán tem, nhả ống, rồi **tự xóa file**.
 - Dữ liệu chỉ đi **một chiều** từ HIS sang máy. HIS chỉ biết đã gửi thành công, **không biết** máy đã nhả ống hay chưa. Nếu phần mềm CG300 đang tắt, file sẽ nằm chờ trong thư mục.
 
@@ -72,7 +75,7 @@ Chỉ có **một thay đổi** trên màn Kết nối xét nghiệm: ô tích *
 
 ```
 Máy trạm có kết nối CG300:
-[ Ô tìm kiếm ............ ] [☑ In tem CG300] [ Tìm (Ctrl F) ]
+[ Quét mã... ............. ] [☑ In tem CG300] [ Tìm (Ctrl F) ]
 
 Máy trạm không có / mất kết nối CG300:
 [ Ô tìm kiếm ................................ ] [ Tìm (Ctrl F) ]
@@ -85,15 +88,18 @@ Máy trạm không có / mất kết nối CG300:
 | Máy trạm chưa được khai báo dùng CG300 | Không có ô tích (giống hiện tại) |
 | Đã khai báo nhưng chưa kết nối được (QT-02) | Ô tích bị ẩn |
 | Kết nối được | Ô tích hiện. Trạng thái tích/bỏ tích **được nhớ** cho lần mở sau trên máy đó |
-| Đang tích | Ô tìm kiếm hiển thị chữ gợi ý **"Quét barcode..."** |
+| Đang tích | Ô tìm kiếm hiển thị chữ gợi ý **"Quét mã..."** — đây là **ô quét** |
 
-Di chuột lên ô tích hiện hướng dẫn: *"In tem qua máy CG300: quét mã để tìm, quét lại cùng mã để in tem và nhả ống"*.
+Di chuột lên ô tích hiện hướng dẫn: *"In tem qua máy CG300: quét mã (barcode, mã y lệnh, mã điều trị hoặc mã bệnh nhân) để tìm, quét lại cùng mã để in tem và nhả ống"*.
 
 ## 2.2 Ô tìm kiếm khi đang tích "In tem CG300"
 
-- Máy quét gửi mã kèm phím Enter, hệ thống tự xử lý — không cần bấm nút Tìm.
-- Sau mỗi lần quét (tìm hay in, kể cả khi có lỗi), con trỏ **luôn quay về ô tìm kiếm** và nội dung cũ được **bôi đen**. Lần quét tiếp theo sẽ ghi đè mã cũ.
-- Các ô lọc khác (mã điều trị, mã y lệnh, mã bệnh nhân, khoảng thời gian…) giữ nguyên cách hoạt động.
+- **Luôn quét vào ô "Quét mã..."**. Ô này nhận **barcode mẫu, mã y lệnh, mã điều trị hoặc mã bệnh nhân** (QT-13); mã ngắn được tự bù số 0 giống các ô mã.
+- Quét xong hệ thống **tự xử lý ngay** — không cần bấm nút Tìm, **không cần máy quét gửi phím Enter** (QT-14). Gõ tay bằng bàn phím thì bấm Enter.
+- Khi tìm theo mã quét, 3 ô **Mã điều trị / Mã y lệnh / Mã bệnh nhân** được xóa trắng để chỉ lọc theo mã vừa quét.
+- Sau mỗi lần quét (tìm hay in, kể cả khi có lỗi), con trỏ **luôn quay về ô quét** và nội dung cũ được **bôi đen**. Lần quét tiếp theo ghi đè mã cũ, không bị nối đôi.
+- **Không** quét vào ô Mã điều trị: ô đó giữ cách hoạt động cũ (không bôi đen sau khi tìm), quét 2 lần sẽ bị nối mã và không in.
+- Các ô lọc khác (khoảng thời gian, trạng thái mẫu…) giữ nguyên cách hoạt động.
 
 ## 2.3 Thông báo mới
 
@@ -116,12 +122,15 @@ Tài liệu kỹ thuật tham chiếu lại các mã QT-xx dưới đây.
 
 ## QT-01 — Khai báo máy trạm dùng CG300
 
-Hai cấu hình phần mềm, đặt **theo tài khoản đăng nhập** tại "Thiết lập cấu hình phần mềm":
+Hai cấu hình phần mềm, đặt **theo tài khoản đăng nhập**:
+
+- Thêm key (một lần cho cả viện): chạy file SQL, hoặc menu **Hệ thống → Cấu hình tài khoản (code)** → Thêm.
+- Nhập giá trị: kỹ thuật viên tự vào **Hệ thống → Cấu hình tài khoản**; hoặc quản trị vào **Hệ thống → Cấu hình tài khoản (admin)**, chọn tài khoản cần đặt.
 
 | Cấu hình | Ý nghĩa | Để trống |
 |---|---|---|
 | `CONFIG_KEY__HIS_DESKTOP__PLUGINS__CONNECTIONTEST__CG300_FOLDER` | Đường dẫn thư mục `ALL` mà phần mềm CG300 đọc (VD `D:\CG300\ALL`) | Không dùng CG300 — không có ô tích |
-| `CONFIG_KEY__HIS_DESKTOP__PLUGINS__CONNECTIONTEST__CG300_PROCESS_NAME` | Tên chương trình điều khiển CG300 (không có `.exe`) | Không kiểm tra chương trình có đang chạy hay không |
+| `CONFIG_KEY__HIS_DESKTOP__PLUGINS__CONNECTIONTEST__CG300_PROCESS_NAME` | Tên **file chạy** của chương trình điều khiển CG300: Task Manager → tab **Details** → cột **Name**, bỏ `.exe`. Máy FOYEN CG300: `Intelligent Workstation`. **Không** dùng tên hiển thị ở tab Processes (`BloodSystemV2.0`) | Không kiểm tra chương trình có đang chạy hay không |
 
 Vì cấu hình đi theo tài khoản, **nên khai báo cả tên chương trình** để máy trạm khác (không có CG300) không hiện nhầm ô tích khi tài khoản đó đăng nhập ở nơi khác.
 
@@ -148,7 +157,7 @@ Chỉ áp dụng khi ô tích **đang hiện và đang được tích**.
 
 Không dùng kiểu "lần lẻ tìm, lần chẵn in": nếu kỹ thuật viên lỡ quét nhầm sang người bệnh khác ở lần thứ hai, kiểu lẻ/chẵn sẽ in tem của người bệnh cũ lên ống của người mới. So khớp mã đảm bảo **chỉ in khi đúng người bệnh đang hiển thị**.
 
-Mã quét có thể là barcode mẫu, mã y lệnh, mã bệnh nhân… — bất kỳ mã nào ô tìm kiếm đang hỗ trợ.
+Mã quét có thể là barcode mẫu, mã y lệnh, mã điều trị hoặc mã bệnh nhân — cách nhận diện xem QT-13. Quét lại mã điều trị / mã bệnh nhân thì in tem cho **tất cả mẫu đang hiển thị** của hồ sơ / người bệnh đó.
 
 ## QT-04 — Xác định ống cần dùng (mã ống)
 
@@ -211,7 +220,43 @@ Một lần quét có thể có cả phần hợp lệ lẫn phần không hợp
 
 ## QT-12 — Khi không dùng CG300
 
-Máy trạm chưa khai báo (QT-01), chưa kết nối được (QT-02), hoặc kỹ thuật viên **bỏ tích** "In tem CG300": màn hình hoạt động **y hệt hiện tại** — Enter ở ô tìm kiếm chỉ để tìm, các nút in barcode cũ giữ nguyên.
+Máy trạm chưa khai báo (QT-01), chưa kết nối được (QT-02), hoặc kỹ thuật viên **bỏ tích** "In tem CG300": màn hình hoạt động **y hệt hiện tại** — Enter ở ô tìm kiếm chỉ để tìm theo từ khóa, các nút in barcode cũ giữ nguyên.
+
+## QT-13 — Nhận diện mã quét
+
+Khi tìm, hệ thống thử lần lượt trong **phòng đang làm việc**, gặp loại nào có mẫu thì dừng:
+
+| Thứ tự | Loại mã | Bù số 0 | Ví dụ quét `1165256` |
+|---|---|---|---|
+| 1 | Barcode mẫu | Không | `1165256` |
+| 2 | Mã y lệnh | Đủ 12 số | `000001165256` |
+| 3 | Mã điều trị | Đủ 12 số | `000001165256` |
+| 4 | Mã bệnh nhân | Đủ 10 số | `0001165256` |
+
+- Chỉ bù số 0 khi mã toàn chữ số và ngắn hơn độ dài chuẩn — giống cách các ô Mã điều trị, Mã y lệnh, Mã bệnh nhân đang làm.
+- Khớp loại nào thì lưới lọc **chính xác theo loại đó**, giống như nhập mã vào ô tương ứng rồi bấm Tìm.
+- Không khớp loại nào → tìm theo **từ khóa** như ô tìm kiếm thông thường.
+- Barcode được ưu tiên trước vì là mã in trên ống / phiếu lấy mẫu.
+- Khớp **barcode** hoặc **mã y lệnh** → hệ thống lấy **mã điều trị** của mẫu đó để lọc, nên lưới hiện **tất cả chỉ định** của lượt khám (QT-15). Quét bất kỳ phiếu chỉ định nào của bệnh nhân đều ra cùng một danh sách.
+
+## QT-14 — Tự xử lý khi quét, không cần phím Enter
+
+- Hệ thống phân biệt **máy quét** và **gõ tay** theo tốc độ: máy quét gửi các ký tự rất nhanh (trung bình ≤ 60 mili giây/ký tự, tối thiểu 3 ký tự).
+- Máy quét ngừng gửi khoảng **0,25 giây** → hệ thống tự xử lý lần quét đó (tìm hoặc in theo QT-03).
+- Nếu máy quét có gửi kèm phím Enter sau mã, phím Enter đó **bị bỏ qua** để không tính thành lần quét thứ hai (tránh in nhầm).
+- Gõ tay bằng bàn phím: hệ thống chờ phím **Enter** như ô tìm kiếm thông thường.
+- Máy quét không cần cấu hình thêm hậu tố Enter.
+
+## QT-15 — Mỗi bệnh nhân một bản tin
+
+Bệnh nhân qua nhiều phòng khám lâm sàng sẽ có nhiều chỉ định xét nghiệm (nhiều mã y lệnh) trong cùng một lượt điều trị, rồi mang tất cả sang phòng lấy ống.
+
+- Quét **một** phiếu chỉ định bất kỳ (barcode hoặc mã y lệnh) → lưới hiện **mọi chỉ định** của lượt điều trị đó trong phòng (QT-13).
+- Quét lại → HIS gửi sang CG300 **một bản tin (một file) cho mỗi bệnh nhân**, chứa đủ các chỉ định cần làm và ống tương ứng (mỗi dòng = 1 barcode × 1 loại ống, QT-04).
+- Lưới đang hiện nhiều bệnh nhân (tìm theo từ khóa) → mỗi bệnh nhân một file riêng, không trộn.
+- Gom theo **mã bệnh nhân**; mẫu thiếu mã bệnh nhân thì gom theo mã điều trị.
+- Tên file: `<mã bệnh nhân>_<thời gian>.txt`.
+- Ghi file của một bệnh nhân lỗi → báo lỗi; các bệnh nhân đã ghi được vẫn nhả ống và cập nhật trạng thái (QT-11).
 
 ---
 
@@ -233,6 +278,14 @@ Máy trạm chưa khai báo (QT-01), chưa kết nối được (QT-02), hoặc 
 | 11 | Kỹ thuật viên bỏ tích "In tem CG300" | Quét mã chỉ để tìm như cũ (QT-12) |
 | 12 | Tài khoản có khai báo CG300 đăng nhập ở máy trạm khác không có CG300 | Không hiện ô tích, vì thư mục/chương trình không có trên máy đó (QT-01, QT-02) |
 | 13 | Mẫu cấp cứu | Bản ghi gửi sang máy có mức ưu tiên Cấp cứu (QT-06) |
+| 14 | Quét **mã điều trị** `1165256` (in trên phiếu / vòng tay) | Tự tìm ngay, lưới hiện các mẫu của hồ sơ `000001165256`; 3 ô mã khác để trống (QT-13) |
+| 15 | Quét lại mã điều trị đó | In tem cho **tất cả** mẫu đang hiển thị của hồ sơ (QT-03) |
+| 16 | Máy quét không gửi phím Enter sau mã | Vẫn tự tìm / tự in sau khi quét (QT-14) |
+| 17 | Kỹ thuật viên gõ tay mã vào ô quét | Hệ thống chờ bấm Enter mới xử lý (QT-14) |
+| 18 | Quét chuỗi không phải mã nào | Tìm theo từ khóa như cũ (QT-13) |
+| 19 | Bệnh nhân có 3 phiếu chỉ định từ 3 phòng khám; quét **1 phiếu** | Lưới hiện đủ các mẫu của cả 3 phiếu (cùng mã điều trị) (QT-15) |
+| 20 | Quét lại phiếu đó | Thư mục `ALL` có **đúng 1 file** của bệnh nhân, chứa ống của cả 3 phiếu (QT-15) |
+| 21 | Tìm từ khóa ra mẫu của 2 bệnh nhân, quét lại để in | Sinh **2 file**, mỗi bệnh nhân một file (QT-15) |
 
 ---
 
@@ -262,7 +315,14 @@ Máy trạm chưa khai báo (QT-01), chưa kết nối được (QT-02), hoặc 
 - [ ] C4 — Quét A rồi quét C (khác): tìm C, không gửi
 - [ ] C5 — Quét lại mã khi lưới không có mẫu: tìm lại, không gửi
 - [ ] C6 — Quét bằng mã y lệnh thay cho barcode: luồng tìm/in vẫn đúng
+- [ ] C6a — Quét mã điều trị dạng ngắn (`1165256`): tìm đúng hồ sơ `000001165256`; quét lại → in tất cả mẫu đang hiển thị
+- [ ] C6b — Quét mã bệnh nhân: tìm đúng các mẫu của người bệnh trong phòng
+- [ ] C6c — Barcode trùng số với một mã điều trị: ưu tiên tìm theo barcode (QT-13)
 - [ ] C7 — Quét liên tục rất nhanh: không gửi trùng, không treo màn hình
+- [ ] C8 — Máy quét **không** gửi Enter: quét lần 1 tự tìm, lần 2 tự in (QT-14)
+- [ ] C9 — Máy quét **có** gửi Enter: mỗi lần quét chỉ xử lý 1 lần (không in nhầm ngay ở lần 1)
+- [ ] C10 — Gõ tay mã vào ô quét: chưa xử lý cho tới khi bấm Enter
+- [ ] C11 — Quét 2 lần liên tiếp cùng mã: nội dung ô không bị nối đôi
 
 ## Nhóm D — Dữ liệu gửi sang máy (QT-04, QT-05, QT-06)
 
@@ -287,7 +347,7 @@ Máy trạm chưa khai báo (QT-01), chưa kết nối được (QT-02), hoặc 
 ## Nhóm F — Giao diện
 
 - [ ] F1 — Ô tích không làm vỡ bố cục hàng tìm kiếm ở độ phân giải 1366×768
-- [ ] F2 — Chữ gợi ý "Quét barcode..." hiện khi tích, trả về chữ cũ khi bỏ tích
+- [ ] F2 — Chữ gợi ý "Quét mã..." hiện khi tích, trả về chữ cũ khi bỏ tích
 - [ ] F3 — Nội dung thông báo hiển thị đúng tiếng Việt có dấu; giao diện tiếng Anh hiển thị đúng bản dịch
 
 ---
@@ -306,6 +366,17 @@ Bảy điểm dưới đây đã được triển khai theo đề xuất mặc �
 | 6 | Mã in ở dòng "mã bệnh nhân" trên tem | Mã bệnh nhân. Ảnh tem thực tế tại viện đang in dạng `260513.1161` — cần xác nhận đó là mã gì | **Chờ chốt** |
 | 7 | Bảng mã ống trên máy | Ảnh thực tế có ống xanh lá mã `002`, chưa có trong bảng mã ống bệnh viện gửi — cần đối chiếu cấu hình máy | **Chờ chốt** |
 
-Ngoài ra cần lấy tại viện: **tên chương trình điều khiển CG300** và **đường dẫn thư mục ALL** để khai báo cấu hình (QT-01).
+Đã lấy tại viện: **tên chương trình điều khiển CG300** = `Intelligent Workstation` (tab Details của Task Manager). Còn cần: **đường dẫn thư mục ALL** của từng máy trạm để khai báo cấu hình (QT-01).
 
 Vì tính năng chỉ bật trên máy trạm được khai báo và kết nối được CG300, các máy trạm và bệnh viện khác không bị ảnh hưởng.
+
+---
+
+# PHẦN 7. LỊCH SỬ CẬP NHẬT
+
+| Ngày | Nội dung |
+|---|---|
+| 13/10/2026 | Triển khai lần đầu: ô tích "In tem CG300", quét để tìm, quét lại để in (QT-01 → QT-12) |
+| 22/10/2026 | Tài liệu nghiệp vụ; bản vá cho HIS 2.418.0 |
+| 02/11/2026 | Mỗi bệnh nhân một bản tin: quét barcode / mã y lệnh mở rộng ra cả lượt điều trị; ghi 1 file / bệnh nhân (QT-15) |
+| 02/11/2026 | Kiểm thử tại viện: quét mã điều trị vào ô Mã điều trị bị nối đôi, không in; tên chương trình khai theo tên hiển thị nên không nhận kết nối. Sửa: ô quét nhận mọi loại mã (QT-13); quét xong tự tìm / tự in, không cần Enter (QT-14); hướng dẫn lấy tên chương trình ở tab Details (QT-01) |

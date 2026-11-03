@@ -59,6 +59,9 @@ using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using HIS.Desktop.ADO;
 using HIS.UC.SettingSignInfo;
+using HIS.Desktop.Plugins.Library.KhoDuLieuYTe;
+using HIS.Desktop.Plugins.Library.KhoDuLieuYTe.ADO;
+using HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Config;
 
 namespace HIS.Desktop.Plugins.InfantInformationList
 {
@@ -340,6 +343,11 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                 txtPatientName.Text = "";
                 cboSYNC_RESULT_TYPE.SelectedIndex = 0;
                 btnDongBo.Enabled = false;
+                btnGuiKhoSyt.Enabled = false;
+                // Viện chưa khai báo kết nối Kho dữ liệu SYT thì ẩn nút
+                var kdlVisibility = KdlConfig.IsConfigured() ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem19.Visibility = kdlVisibility;
+                emptySpaceItem1.Visibility = kdlVisibility;
                 GridCheckMarksSelection gridCheckMark = cboDepartmentName.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
@@ -897,10 +905,12 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                 if (gridView1.GetSelectedRows().Count() > 0)
                 {
                     btnDongBo.Enabled = true;
+                    btnGuiKhoSyt.Enabled = true;
                 }
                 else
                 {
                     btnDongBo.Enabled = false;
+                    btnGuiKhoSyt.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -1233,6 +1243,68 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 WaitingManager.Hide();
             }
+        }
+
+        private void btnGuiKhoSyt_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<V_HIS_BABY> selectedRows = new List<V_HIS_BABY>();
+                foreach (var i in gridView1.GetSelectedRows())
+                {
+                    var row = (V_HIS_BABY)gridView1.GetRow(i);
+                    if (row != null)
+                        selectedRows.Add(row);
+                }
+                if (selectedRows.Count == 0)
+                    return;
+
+                WaitingManager.Show();
+                List<V_HIS_TREATMENT> treatments = GetTreatment_ByIDs(selectedRows.Select(o => o.TREATMENT_ID).Distinct().ToList());
+                List<KdlBirthInputADO> inputs = new List<KdlBirthInputADO>();
+                foreach (var row in selectedRows)
+                {
+                    KdlBirthInputADO input = new KdlBirthInputADO();
+                    input.Baby = row;
+                    input.Branch = listBranchs != null ? listBranchs.FirstOrDefault(o => o.ID == row.BRANCH_ID) : null;
+                    input.Treatment = treatments.FirstOrDefault(o => o.ID == row.TREATMENT_ID);
+                    inputs.Add(input);
+                }
+                List<KdlResultADO> results = KdlProcessor.PushBirth01(inputs);
+                WaitingManager.Hide();
+
+                frmKdlResult frm = new frmKdlResult(results, "Mã giấy chứng sinh");
+                frm.ShowDialog(this.ParentForm);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private List<V_HIS_TREATMENT> GetTreatment_ByIDs(List<long> treatmentIds)
+        {
+            List<V_HIS_TREATMENT> result = new List<V_HIS_TREATMENT>();
+            try
+            {
+                // Lấy theo lô 100 ID để URL GET không vượt giới hạn
+                for (int start = 0; start < treatmentIds.Count; start += 100)
+                {
+                    CommonParam param = new CommonParam();
+                    HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                    filter.IDs = treatmentIds.Skip(start).Take(100).ToList();
+                    var data = new BackendAdapter(param)
+                        .Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param);
+                    if (data != null)
+                        result.AddRange(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private bool CanSyncBabyRecord(V_HIS_BABY row)

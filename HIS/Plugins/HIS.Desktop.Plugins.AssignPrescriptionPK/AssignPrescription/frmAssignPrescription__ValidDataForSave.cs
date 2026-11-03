@@ -476,6 +476,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             bool result = true;
             try
             {
+                //12072: key HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT = 1 thi chong chi dinh chi ap dung voi doi tuong BHYT (cung dieu kien voi phac do); key khac 1 thi giu nguyen nhu hien tai
+                if (HisConfigCFG.HisIcdServiceHasRequirePatientBhyt == "1"
+                    && this.currentTreatment != null
+                    && this.currentTreatment.TDL_PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT)
+                {
+                    return true;
+                }
                 if (HisConfigCFG.ContraindicaterWarningOption == "2")
                 {
                     List<HIS_ICD> icdFromUc = GetIcdCodeListFromUcIcd();
