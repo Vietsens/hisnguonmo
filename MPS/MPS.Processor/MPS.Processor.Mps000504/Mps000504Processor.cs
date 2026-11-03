@@ -44,8 +44,6 @@ namespace MPS.Processor.Mps000504
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 ProcessPrintLogData();
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
-                SetSingleKey();
-                singleTag.ProcessData(store, singleValueDictionary);
                 //Inventec.Common.Mapper.DataObjectMapper.Map<Mps000504PDO>(listSereServ, rdo.HisSereServ);
                 objectTag.AddObjectData(store, "SereServs", rdo.HisSereServ.Where(o=>o.TDL_INTRUCTION_TIME > rdo.fromDateReq && o.TDL_INTRUCTION_TIME < rdo.toDateReq).ToList());
                 objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656 - mục 4.2.8
@@ -80,6 +78,10 @@ namespace MPS.Processor.Mps000504
                 if (ServiceGroupByDepa == null) ServiceGroupByDepa = new List<GroupDepartmentADO>();
                 if (ServiceGroupByRoom == null) ServiceGroupByRoom = new List<GroupDepartmentADO>();
                 if (sereServADOs_ExeRoomByDepa == null) sereServADOs_ExeRoomByDepa = new List<SereServADO>();
+
+                // 56810: single keys need sereServADOs/patientADO, so they run after the pipeline above
+                SetSingleKey();
+                singleTag.ProcessData(store, singleValueDictionary);
 
                 // Bo key nen (nhu Mps000508)
                 objectTag.AddObjectData(store, "HeinServiceType", heinServiceTypeADOs);
@@ -257,6 +259,10 @@ namespace MPS.Processor.Mps000504
                 SetSingleKey(new KeyValue("TOTAL_SURCHARGE_TEXT", Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(totalSurcharge).ToString())));
                 SetSingleKey(new KeyValue("SURCHARGE_COUNT", surchargeCount));
                 SetSingleKey(new KeyValue("SURCHARGE_SECTION_LABEL", surchargeCount > 0 ? "Phụ phí" : ""));
+
+                // 56810: same single keys as Mps000512, totals from the filtered services. Must run before
+                // the V_HIS_TREATMENT_FEE keys below (first value wins) so TOTAL_PRICE... are the filtered sums.
+                SetSingleKeyAsMps000512(totalSurcharge);
 
                 if (this.rdo.Treatment != null)
                 {
