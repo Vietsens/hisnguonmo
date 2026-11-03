@@ -1032,6 +1032,56 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             return ProcessValidMedicineTypeAge(false);
         }
 
+        /// <summary>
+        /// Viec 59043 - Mo sua don cu: kiem tra gioi han tuoi cac thuoc da co trong don.
+        /// Che do Chan (mac dinh): thong bao danh sach thuoc vi pham; giu nguyen dong, Luu van bi chan nhu cu.
+        /// Che do Canh bao: hoi Co/Khong; Co -> ghi nho thuoc da xac nhan de luc Luu khong hoi lai.
+        /// </summary>
+        private void ProcessNotifyMedicineTypeAgeOnEdit()
+        {
+            try
+            {
+                if (this.mediMatyTypeADOs == null || this.mediMatyTypeADOs.Count == 0)
+                    return;
+                bool isAgeWarningMode = MedicineAgeWorker.IsWarningMode();
+                string messageErr = "";
+                List<long> serviceIdErrs = new List<long>();
+                foreach (var item in this.mediMatyTypeADOs)
+                {
+                    if (item.SERVICE_ID <= 0 || serviceIdErrs.Contains(item.SERVICE_ID))
+                        continue;
+                    string messageDetail = "";
+                    if (!MedicineAgeWorker.ValidThuocCoGioiHanTuoi(item.SERVICE_ID, this.patientDob, ref messageDetail, false)
+                        && !String.IsNullOrEmpty(messageDetail))
+                    {
+                        messageErr += messageDetail + "\r\n";
+                        serviceIdErrs.Add(item.SERVICE_ID);
+                    }
+                }
+                if (String.IsNullOrEmpty(messageErr))
+                    return;
+                if (isAgeWarningMode)
+                {
+                    if (MedicineAgeWorker.ConfirmContinue(messageErr))
+                    {
+                        foreach (var serviceIdErr in serviceIdErrs)
+                        {
+                            this.medicineAgeConfirmedServiceIds.Add(serviceIdErr);
+                        }
+                    }
+                }
+                else
+                {
+                    MessageManager.Show(messageErr);
+                }
+                Inventec.Common.Logging.LogSystem.Debug("ProcessNotifyMedicineTypeAgeOnEdit____" + messageErr + "____PatientAge:" + this.patientDob);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private bool ProcessValidMedicineTypeAge(bool isRemoveRowError)
         {
             bool valid = true;
@@ -1039,6 +1089,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 string messageErr = "";
                 List<MediMatyTypeADO> mediMatyTypeADOTemps = new List<MediMatyTypeADO>();
+                // Việc 59043: chế độ Cảnh báo theo cấu hình; thuốc đã xác nhận trong phiên thì bỏ qua kiểm tra
+                bool isAgeWarningMode = MedicineAgeWorker.IsWarningMode();
+                List<long> serviceIdErrs = new List<long>();
                 foreach (var item in this.mediMatyTypeADOs)
                 {
                     if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
@@ -1050,12 +1103,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         string messageDetail = "";
                         if ((item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
                             || item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM)
+                            && !(isAgeWarningMode && !isRemoveRowError && this.medicineAgeConfirmedServiceIds.Contains(item.SERVICE_ID))
                             && !MedicineAgeWorker.ValidThuocCoGioiHanTuoi(item.SERVICE_ID, this.patientDob, ref messageDetail, false))
                         {
                             if (!String.IsNullOrEmpty(messageDetail))
                             {
                                 messageErr += messageDetail + "\r\n";
                             }
+                            serviceIdErrs.Add(item.SERVICE_ID);
                         }
                         else
                             mediMatyTypeADOTemps.Add(item);
@@ -1063,14 +1118,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 }
                 if (!String.IsNullOrEmpty(messageErr))
                 {
-                    if (isRemoveRowError)
+                    // Việc 59043: chế độ Cảnh báo → hỏi xác nhận gộp một lần; Có → giữ nguyên danh sách, ghi nhớ các thuốc đã xác nhận
+                    if (isAgeWarningMode && MedicineAgeWorker.ConfirmContinue(messageErr))
                     {
-                        this.mediMatyTypeADOs = new List<MediMatyTypeADO>();
-                        this.mediMatyTypeADOs.AddRange(mediMatyTypeADOTemps);
+                        foreach (var serviceIdErr in serviceIdErrs)
+                        {
+                            this.medicineAgeConfirmedServiceIds.Add(serviceIdErr);
+                        }
                     }
                     else
-                        valid = false;
-                    MessageManager.Show(messageErr);
+                    {
+                        if (isRemoveRowError)
+                        {
+                            this.mediMatyTypeADOs = new List<MediMatyTypeADO>();
+                            this.mediMatyTypeADOs.AddRange(mediMatyTypeADOTemps);
+                        }
+                        else
+                            valid = false;
+                        if (!isAgeWarningMode)
+                            MessageManager.Show(messageErr);
+                    }
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => messageErr), messageErr) + "____PatientAge:" + this.patientDob);
                 }
             }

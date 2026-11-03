@@ -81,6 +81,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                //Phan bo bao hiem bao lanh dang chan thanh toan (ca khi goi tu phim tat)
+                if (this.CheckFundAllocationLocked())
+                    return;
                 if (!CheckValidTienCkQt())
                 {
                     return;
@@ -128,6 +131,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                if (this.CheckFundAllocationLocked())
+                    return;
                 if (!btnSavePrint.Enabled)
                     return;
                 SetEnableButtonSave(false);
@@ -174,9 +179,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                btnSave.Enabled = enable;
-                btnSavePrint.Enabled = enable;
-                BtnSaveAndSign.Enabled = enable;
+                //Phan bo bao hiem bao lanh dang chan thanh toan thi khong bat lai nut luu
+                bool value = enable && !this.IsFundAllocationLocked();
+                btnSave.Enabled = value;
+                btnSavePrint.Enabled = value;
+                BtnSaveAndSign.Enabled = value;
             }
             catch (Exception ex)
             {
@@ -264,6 +271,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                //Moi loi vao luu deu qua day: phan bo bao hiem bao lanh dang chan thi khong goi CreateBillTwoBook
+                if (this.IsFundAllocationLocked())
+                {
+                    param.Messages.Add(this.GetFundAllocationLockMessage());
+                    success = false;
+                    return;
+                }
                 // Chặn Lưu khi Lý do chiết khấu (bất kỳ dòng nào) quá 250 ký tự
                 string discountReasonError;
                 if (!ValidateDiscountReasonLength(out discountReasonError))
@@ -1008,9 +1022,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         CalcuCanThu(false);
                     }
                 }
-                decimal recieptDiscountValue = Config.HisConfig.EnableMultiDiscount
+                // 61201: lam tron 4 so le giong EXEMPTION gui server. Chiet khau tinh tu ty le (ratio * tong / 100)
+                // co du so thap phan -> RecieptPayAmount lech 1e-28 so voi AMOUNT - EXEMPTION server tinh
+                // -> server coi la co ket chuyen, so tien can thu = 0 -> bao MOS012.
+                decimal recieptDiscountValue = Math.Round(Config.HisConfig.EnableMultiDiscount
                     ? GetTotalRecieptDiscount()
-                    : spinRecieptDiscountPrice.Value;
+                    : spinRecieptDiscountPrice.Value, 4);
                 billTwoBookSDO.RecieptTransaction = new HIS_TRANSACTION();
                 billTwoBookSDO.RecieptTransaction.TREATMENT_ID = this.treatmentId.Value;
                 billTwoBookSDO.RecieptTransaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
@@ -1092,7 +1109,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.RecieptTransaction.BUYER_ADDRESS = txtBuyerAddress.Text;
                     billTwoBookSDO.RecieptTransaction.BUYER_NAME = txtBuyerName.Text;
-                    billTwoBookSDO.RecieptTransaction.BUYER_ORGANIZATION = chkOther.Checked ? txtBuyerOrganization.Text : cboBuyerOrganization.Text;
+                    billTwoBookSDO.RecieptTransaction.BUYER_ORGANIZATION = chkOther.Checked ? txtBuyerOrganization.Text : GetBuyerOrganizationFromCombo(cboBuyerOrganization);
                     billTwoBookSDO.RecieptTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
                     //qtcode
                     billTwoBookSDO.RecieptTransaction.BUYER_EMAIL = txtBuyerEmail.Text;
@@ -1107,7 +1124,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.RecieptTransaction.BUYER_ADDRESS = txtBuyerAddress2.Text;
                     billTwoBookSDO.RecieptTransaction.BUYER_NAME = txtBuyerName2.Text;
-                    billTwoBookSDO.RecieptTransaction.BUYER_ORGANIZATION = chkOther2.Checked ? txtBuyerOrganization2.Text : cboBuyerOrganization2.Text;
+                    billTwoBookSDO.RecieptTransaction.BUYER_ORGANIZATION = chkOther2.Checked ? txtBuyerOrganization2.Text : GetBuyerOrganizationFromCombo(cboBuyerOrganization2);
                     billTwoBookSDO.RecieptTransaction.BUYER_TAX_CODE = txtBuyerTaxCode2.Text;
 
                     billTwoBookSDO.RecieptTransaction.BUYER_TYPE = 2;
@@ -1128,7 +1145,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     billTwoBookSDO.RecieptTransaction.HIS_BILL_FUND = new List<HIS_BILL_FUND>();
                     foreach (var item in listRecieptFund)
                     {
-                        if (item.AMOUNT > 0 && item.FUND_ID > 0)
+                        //Dong quy phan bo bao hiem bao lanh: so vien phi chi nhan phan tien quy cua so nay
+                        if (item == this.fundAllocationRow)
+                        {
+                            this.AddFundAllocationBillFund(billTwoBookSDO.RecieptTransaction, true);
+                        }
+                        else if (item.AMOUNT > 0 && item.FUND_ID > 0)
                         {
                             HIS_BILL_FUND billFund = new HIS_BILL_FUND();
                             Inventec.Common.Mapper.DataObjectMapper.Map<HIS_BILL_FUND>(billFund, item);
@@ -1199,9 +1221,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         CalcuCanThu(false);
                     }
                 }
-                decimal invoiceDiscountValue = Config.HisConfig.EnableMultiDiscount
+                // 61201: lam tron 4 so le giong EXEMPTION gui server (xem chu thich o so bien lai).
+                decimal invoiceDiscountValue = Math.Round(Config.HisConfig.EnableMultiDiscount
                     ? GetTotalInvoiceDiscount()
-                    : spinInvoiceDiscountPrice.Value;
+                    : spinInvoiceDiscountPrice.Value, 4);
                 billTwoBookSDO.InvoiceTransaction = new HIS_TRANSACTION();
                 billTwoBookSDO.InvoiceTransaction.TREATMENT_ID = this.treatmentId.Value;
                 billTwoBookSDO.InvoiceTransaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
@@ -1277,7 +1300,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.InvoiceTransaction.BUYER_NAME = txtBuyerName.Text;
                     billTwoBookSDO.InvoiceTransaction.BUYER_ADDRESS = txtBuyerAddress.Text;
-                    billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = chkOther.Checked ? txtBuyerOrganization.Text : cboBuyerOrganization.Text;
+                    billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = chkOther.Checked ? txtBuyerOrganization.Text : GetBuyerOrganizationFromCombo(cboBuyerOrganization);
                     billTwoBookSDO.InvoiceTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
                     // Dong bo voi so bien lai (RecieptTransaction): email nguoi mua truoc day khong duoc gan
                     // cho so hoa don -> hoa don dien tu khong co email de gui cho khach.
@@ -1292,7 +1315,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.InvoiceTransaction.BUYER_NAME = txtBuyerName2.Text;
                     billTwoBookSDO.InvoiceTransaction.BUYER_ADDRESS = txtBuyerAddress2.Text;
-                    billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = chkOther2.Checked ? txtBuyerOrganization2.Text : cboBuyerOrganization2.Text;
+                    billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = chkOther2.Checked ? txtBuyerOrganization2.Text : GetBuyerOrganizationFromCombo(cboBuyerOrganization2);
                     billTwoBookSDO.InvoiceTransaction.BUYER_TAX_CODE = txtBuyerTaxCode2.Text;
 
                     billTwoBookSDO.InvoiceTransaction.BUYER_TYPE = 2;
@@ -1305,28 +1328,30 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     ssBill.SERE_SERV_ID = item.ID;
                     billTwoBookSDO.InvoiceSereServBills.Add(ssBill);
                 }
+                //Phan tien quy phan bo bao hiem bao lanh vuot so vien phi thi chuyen sang so dich vu
+                decimal totalInvoiceFund = this.AddFundAllocationBillFund(billTwoBookSDO.InvoiceTransaction, false);
                 if (checkIsKC.CheckState == CheckState.Checked)
                 {
-                    if (totalHienDu >= (totalInvoicePrice - invoiceDiscountValue))
+                    if (totalHienDu >= (totalInvoicePrice - invoiceDiscountValue - totalInvoiceFund))
                     {
-                        billTwoBookSDO.InvoiceTransaction.KC_AMOUNT = (totalInvoicePrice - invoiceDiscountValue);
+                        billTwoBookSDO.InvoiceTransaction.KC_AMOUNT = (totalInvoicePrice - invoiceDiscountValue - totalInvoiceFund);
                         billTwoBookSDO.InvoicePayAmount = 0;
                     }
                     else
                     {
                         billTwoBookSDO.InvoiceTransaction.KC_AMOUNT = totalHienDu;
-                        billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - invoiceDiscountValue - totalHienDu);
+                        billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - invoiceDiscountValue - totalInvoiceFund - totalHienDu);
                     }
                     if (totalHienDu == 0)
                     {
                         billTwoBookSDO.InvoiceTransaction.KC_AMOUNT = null;
-                        billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - invoiceDiscountValue);
+                        billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - invoiceDiscountValue - totalInvoiceFund);
                     }
                 }
                 else
                 {
                     billTwoBookSDO.InvoiceTransaction.KC_AMOUNT = null;
-                    billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - invoiceDiscountValue);
+                    billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - invoiceDiscountValue - totalInvoiceFund);
                 }
                 totalHienDu -= (billTwoBookSDO.InvoiceTransaction.KC_AMOUNT ?? 0);
                 billTwoBookSDO.RequestRoomId = this.currentModuleBase.RoomId;
@@ -2201,6 +2226,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                if (this.CheckFundAllocationLocked())
+                    return;
                 if (!BtnSaveAndSign.Enabled)
                     return;
                 //if ((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show(this,"Thanh toán QR chưa thể tự động tạo hóa đơn điện tử, bạn có muốn tiếp tục?","Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)

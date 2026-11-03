@@ -316,9 +316,11 @@
     <Compile Include="ADO\LisMachineAdo.cs" />
     <Compile Include="ADO\LisSampleADO.cs" />
     <Compile Include="ADO\SignConfigADO.cs" />
+    <Compile Include="ADO\SampleServiceApproveADO.cs" />
     <Compile Include="ADO\TestLisResultADO.cs" />
     <Compile Include="ComboADO.cs" />
     <Compile Include="CG300\Cg300ConnectionChecker.cs" />
+    <Compile Include="CG300\EnumCg300ScanCodeType.cs" />
     <Compile Include="CG300\Cg300FileWriter.cs" />
     <Compile Include="CG300\Cg300LabelADO.cs" />
     <Compile Include="CG300\Cg300LabelBuilder.cs" />

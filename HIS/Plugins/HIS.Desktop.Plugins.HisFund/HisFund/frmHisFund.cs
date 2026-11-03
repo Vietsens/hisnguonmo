@@ -126,6 +126,8 @@ namespace HIS.Desktop.Plugins.HisFund
                 this.grdColBedTypeCode.ToolTip = Inventec.Common.Resource.Get.Value("frmHisFund.grdColBedTypeCode.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColBedTypeName.Caption = Inventec.Common.Resource.Get.Value("frmHisFund.grdColBedTypeName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColBedTypeName.ToolTip = Inventec.Common.Resource.Get.Value("frmHisFund.grdColBedTypeName.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColSurchargeRatio.Caption = Inventec.Common.Resource.Get.Value("frmHisFund.grdColSurchargeRatio.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColSurchargeRatio.ToolTip = Inventec.Common.Resource.Get.Value("frmHisFund.grdColSurchargeRatio.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmHisFund.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColCreateTime.Caption = Inventec.Common.Resource.Get.Value("frmHisFund.grdColCreateTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColCreateTime.ToolTip = Inventec.Common.Resource.Get.Value("frmHisFund.grdColCreateTime.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -143,6 +145,9 @@ namespace HIS.Desktop.Plugins.HisFund
                 this.dnNavigation.Text = Inventec.Common.Resource.Get.Value("frmHisFund.dnNavigation.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciBedTypeCode.Text = Inventec.Common.Resource.Get.Value("frmHisFund.lciBedTypeCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciBedTypeName.Text = Inventec.Common.Resource.Get.Value("frmHisFund.lciBedTypeName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciSurchargeRatio.Text = Inventec.Common.Resource.Get.Value("frmHisFund.lciSurchargeRatio.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.spSurchargeRatio.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisFund.spSurchargeRatio.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.spSurchargeRatio.ToolTip = Inventec.Common.Resource.Get.Value("frmHisFund.spSurchargeRatio.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmHisFund.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmHisFund.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmHisFund.bbtnEdit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -198,6 +203,7 @@ namespace HIS.Desktop.Plugins.HisFund
             {
                 dicOrderTabIndexControl.Add("txtFundCode", 0);
                 dicOrderTabIndexControl.Add("txtFundName", 1);
+                dicOrderTabIndexControl.Add("spSurchargeRatio", 2);
                 //dicOrderTabIndexControl.Add("spMaxCapacity", 2);
 
 
@@ -556,6 +562,8 @@ namespace HIS.Desktop.Plugins.HisFund
                 {
                     txtFundCode.Text = data.FUND_CODE;
                     txtFundName.Text = data.FUND_NAME;
+                    //Null = no surcharge -> keep the editor empty
+                    spSurchargeRatio.EditValue = data.SURCHARGE_RATIO;
                     //spMaxCapacity.EditValue = data.MAX_CAPACITY;
 
                 }
@@ -863,6 +871,7 @@ namespace HIS.Desktop.Plugins.HisFund
             {
                 currentDTO.FUND_CODE = txtFundCode.Text.Trim();
                 currentDTO.FUND_NAME = txtFundName.Text.Trim();
+                currentDTO.SURCHARGE_RATIO = GetSurchargeRatioValue();
                 //currentDTO.MAX_CAPACITY = (long)spMaxCapacity.Value;
 
             }
@@ -870,6 +879,26 @@ namespace HIS.Desktop.Plugins.HisFund
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Surcharge ratio (%) entered on the form. Empty editor = no surcharge (null).
+        /// </summary>
+        private decimal? GetSurchargeRatioValue()
+        {
+            decimal? result = null;
+            try
+            {
+                if (spSurchargeRatio.EditValue != null && !String.IsNullOrWhiteSpace(spSurchargeRatio.Text))
+                {
+                    result = spSurchargeRatio.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         #endregion
@@ -881,8 +910,25 @@ namespace HIS.Desktop.Plugins.HisFund
             {
                 ValidationSingleControl(txtFundCode);
                 ValidationSingleControl(txtFundName);
+                ValidationSurchargeRatio();
                 //ValidationSingleControl1();
 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidationSurchargeRatio()
+        {
+            try
+            {
+                ValidateSurchargeRatio validate = new ValidateSurchargeRatio();
+                validate.spSurchargeRatio = spSurchargeRatio;
+                validate.ErrorText = HIS.Desktop.Plugins.HisFund.Resources.ResourceMessage.TyLePhuThuPhaiTu0Den100;
+                validate.ErrorType = ErrorType.Warning;
+                this.dxValidationProviderEditorInfo.SetValidationRule(spSurchargeRatio, validate);
             }
             catch (Exception ex)
             {
@@ -1178,6 +1224,29 @@ namespace HIS.Desktop.Plugins.HisFund
                         btnEdit.Focus();
                 }
                 e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spSurchargeRatio_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (this.ActionType == GlobalVariables.ActionAdd)
+                    {
+                        btnAdd.Focus();
+                    }
+                    else
+                    {
+                        btnEdit.Focus();
+                    }
+                    e.Handled = true;
+                }
             }
             catch (Exception ex)
             {

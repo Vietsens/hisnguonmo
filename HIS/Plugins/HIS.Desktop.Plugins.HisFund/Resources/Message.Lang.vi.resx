@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="HisFund_TyLePhuThuPhaiTu0Den100" xml:space="preserve">
+    <value>Tỷ lệ phụ thu phải từ 0 đến 100.</value>
+  </data>
   <data name="InvoiceBook_GiaTriLonHonKhong" xml:space="preserve">
     <value>Giá trị phải lớn hơn 0</value>
   </data>

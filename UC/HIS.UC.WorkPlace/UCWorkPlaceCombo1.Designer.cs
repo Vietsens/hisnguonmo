@@ -51,8 +51,8 @@ namespace HIS.UC.WorkPlace
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtWorkPlaceCode1 = new DevExpress.XtraEditors.TextEdit();
-            this.cboWorkPlace1 = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboWorkPlace1 = new HIS.UC.WorkPlace.WorkPlaceGridLookUpEdit();
+            this.gridLookUpEdit1View = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lblNoiLamViec = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -193,9 +193,9 @@ namespace HIS.UC.WorkPlace
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraLayout.LayoutControlItem lblNoiLamViec;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus gridLookUpEdit1View;
         internal DevExpress.XtraEditors.TextEdit txtWorkPlaceCode1;
-        internal DevExpress.XtraEditors.GridLookUpEdit cboWorkPlace1;
+        internal HIS.UC.WorkPlace.WorkPlaceGridLookUpEdit cboWorkPlace1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
     }

@@ -76,7 +76,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     return;
                 }
                 List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
-                if (serviceTypeIdRequired != null && serviceTypeIdRequired.Count > 0)
+                //Chi bat buoc chon Loai mau XN khi cot dang hien tren luoi.
+                if (grcSampleType.VisibleIndex >= 0 && serviceTypeIdRequired != null && serviceTypeIdRequired.Count > 0)
                 {
                     var serviceTypeInGrid = serviceCheckeds__Send.Select(o => new { o.TDL_SERVICE_NAME, o.SERVICE_TYPE_ID, o.TEST_SAMPLE_TYPE_ID }).ToList();
                     var lstServiceName = serviceTypeInGrid.Where(item => serviceTypeIdRequired.Exists(o => o == item.SERVICE_TYPE_ID) && item.TEST_SAMPLE_TYPE_ID <= 0).Select(o => o.TDL_SERVICE_NAME);
@@ -195,7 +196,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Debug("Valid7__ValidSereServWithCondition:" + isValid);
                 isValid = isValid && CheckMaxPatientbyDayOption(serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug("Valid8__ValidSereServWithCondition:" + isValid);
-                if (lstIcd.Count > 0 || lstSubIcd.Count > 0)
+                //12072: key HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT = 1 thi chong chi dinh chi ap dung voi doi tuong BHYT (cung dieu kien voi phac do); key khac 1 thi giu nguyen nhu hien tai
+                if ((lstIcd.Count > 0 || lstSubIcd.Count > 0) && isValidICD)
                     isValid = isValid && checkContraindicated(lstIcd, lstSubIcd, icdServicePhacDos, serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug("Valid9__ValidSereServWithCondition:" + isValid);
                 isValid = isValid && CheckServiceExclusive(serviceCheckeds__Send);

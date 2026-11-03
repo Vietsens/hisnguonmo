@@ -141,10 +141,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         .OrderBy(o => o.SERVICE_NAME).ToList();
             var cdha = all.Where(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA && o.IS_ACTIVE == 1)
                         .OrderBy(o => o.SERVICE_NAME).ToList();
-            // "KQ khám CLS khác" + "KSK định kỳ" có thể là bất kỳ loại CLS nào → gộp XN + CĐHA + TDCN.
+            // "KQ khám CLS khác" + "KSK định kỳ" có thể là bất kỳ loại CLS nào → gộp XN + CĐHA + TDCN + Nội soi + Siêu âm
+            // (ContentSubclinical headless đã nạp đủ các loại này; trước đây datasource combo thiếu NS/SA nên không chọn được).
             var allCls = all.Where(o => (o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
                                       || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA
-                                      || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN)
+                                      || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN
+                                      || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS
+                                      || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA)
                                      && o.IS_ACTIVE == 1)
                         .OrderBy(o => o.SERVICE_NAME).ToList();
 

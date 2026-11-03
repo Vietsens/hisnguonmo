@@ -140,6 +140,7 @@ namespace HIS.UC.UCHeniInfo
         {
             Inventec.Common.Logging.LogSystem.Debug("UCHeinInfo .1");
             InitializeComponent();
+            this.txtSoThe.Properties.BeforeShowMenu += this.txtSoThe_Properties_BeforeShowMenu;
             //qtcode
             InitializeComboHeinPatientType();
             SetColorForHeinPatientType();
@@ -504,6 +505,8 @@ namespace HIS.UC.UCHeniInfo
             try
             {
                 List<HIS_HEIN_PATIENT_TYPE> heinPatientTypeDataFiltered = new List<HIS_HEIN_PATIENT_TYPE>();
+                // Du phong khi Loai = Dung tuyen/Trai tuyen: ban ghi danh muc bo ca Dung tuyen va Trai tuyen => khong xet tuyen
+                List<HIS_HEIN_PATIENT_TYPE> heinPatientTypeDataNoRoute = new List<HIS_HEIN_PATIENT_TYPE>();
                 heinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
                 .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.NUM_ORDER)
                 .ToList();
@@ -526,22 +529,36 @@ namespace HIS.UC.UCHeniInfo
                             break;
                         case MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.FALSE:
                             heinPatientTypeDataFiltered = heinPatientTypeData.Where(o => o.RIGHT_ROUTE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.FALSE && o.RIGHT_ROUTE_TYPE_CODE == null).ToList();
+                            heinPatientTypeDataNoRoute = heinPatientTypeData.Where(o => string.IsNullOrEmpty(o.RIGHT_ROUTE_CODE) && string.IsNullOrEmpty(o.RIGHT_ROUTE_TYPE_CODE)).ToList();
                             break;
                         case MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE:
                             heinPatientTypeDataFiltered = heinPatientTypeData.Where(o => o.RIGHT_ROUTE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE && o.RIGHT_ROUTE_TYPE_CODE == null).ToList();
+                            heinPatientTypeDataNoRoute = heinPatientTypeData.Where(o => string.IsNullOrEmpty(o.RIGHT_ROUTE_CODE) && string.IsNullOrEmpty(o.RIGHT_ROUTE_TYPE_CODE)).ToList();
                             break;
                         default:
                             break;
                     }
                 }
+                else
+                {
+                    // Chua chon Loai (khong tuyen, khong truong hop) => coi nhu "tat ca": chi xet ban ghi danh muc
+                    // cung bo trong ca Tuyen va Truong hop (doi tuong = tat ca). Truoc day khong tra gi, giu nguyen ma cu.
+                    heinPatientTypeDataNoRoute = heinPatientTypeData.Where(o => string.IsNullOrEmpty(o.RIGHT_ROUTE_CODE) && string.IsNullOrEmpty(o.RIGHT_ROUTE_TYPE_CODE)).ToList();
+                }
                 if (this.TreatmentTypeIdPicked != null)
                 {
                     heinPatientTypeDataFiltered = heinPatientTypeDataFiltered.Where(o => ("," + o.TREATMENT_TYPE_IDS + ",").Contains("," + this.TreatmentTypeIdPicked + ",") || o.TREATMENT_TYPE_IDS == null).ToList();
+                    heinPatientTypeDataNoRoute = heinPatientTypeDataNoRoute.Where(o => ("," + o.TREATMENT_TYPE_IDS + ",").Contains("," + this.TreatmentTypeIdPicked + ",") || o.TREATMENT_TYPE_IDS == null).ToList();
                 }
-                if (heinPatientTypeDataFiltered.Count > 0)
+                if (heinPatientTypeDataFiltered.Count > 0 || heinPatientTypeDataNoRoute.Count > 0)
                 {
                     // Xet them tieu chi "Ma co so KCB ban dau" tren tung ban ghi danh muc
-                    var minItem = GetHeinPatientTypeByMediOrgPriority(heinPatientTypeDataFiltered, (txtMaDKKCBBD.Text ?? "").Trim());
+                    string dkbdCode = (txtMaDKKCBBD.Text ?? "").Trim();
+                    // Gop nhom "khai dung Loai dang chon" voi nhom "doi tuong bo trong" (= tat ca) roi chon chung:
+                    // dong ghi dich danh ma CSKCB cua the thang -> So thu tu nho nhat (trong xep cuoi) -> ID lon nhat.
+                    // Khong uu tien rieng nhom khai dung Loai nua: vien tu dieu khien thu tu bang cot So thu tu.
+                    var mergedList = heinPatientTypeDataFiltered.Union(heinPatientTypeDataNoRoute).ToList();
+                    HIS_HEIN_PATIENT_TYPE minItem = GetHeinPatientTypeByMediOrgPriority(mergedList, dkbdCode);
                     if (minItem != null && !string.IsNullOrEmpty(minItem.HEIN_PATIENT_TYPE_CODE))
                         cboHeinPatientType.EditValue = minItem.HEIN_PATIENT_TYPE_CODE;
                     else
@@ -585,10 +602,57 @@ namespace HIS.UC.UCHeniInfo
 
         }
 
+        private void CopyHeinCardNumberWithoutDash()
+        {
+            try
+            {
+                string text = this.txtSoThe.SelectionLength > 0 ? this.txtSoThe.SelectedText : this.txtSoThe.Text;
+                string heinCardNumber = HeinUtils.TrimHeinCardNumber(text ?? "");
+                if (!String.IsNullOrEmpty(heinCardNumber))
+                    Clipboard.SetText(heinCardNumber);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtSoThe_Properties_BeforeShowMenu(object sender, BeforeShowMenuEventArgs e)
+        {
+            try
+            {
+                foreach (DevExpress.Utils.Menu.DXMenuItem item in e.Menu.Items)
+                {
+                    if (Equals(item.Tag, StringId.TextEditMenuCopy))
+                    {
+                        item.Click -= this.txtSoThe_MenuCopy_Click;
+                        item.Click += this.txtSoThe_MenuCopy_Click;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        // Chay sau lenh Copy mac dinh cua DevExpress (ban co dau "-") nen ghi de lai clipboard
+        private void txtSoThe_MenuCopy_Click(object sender, EventArgs e)
+        {
+            this.CopyHeinCardNumberWithoutDash();
+        }
+
         private void txtSoThe_KeyDown(object sender, KeyEventArgs e)
         {
             try
             {
+                if (e.Control && e.KeyCode == Keys.C)
+                {
+                    this.CopyHeinCardNumberWithoutDash();
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+                    return;
+                }
                 if (e.KeyCode == Keys.Enter)
                 {
                     string heinCardNumber = this.txtSoThe.Text;

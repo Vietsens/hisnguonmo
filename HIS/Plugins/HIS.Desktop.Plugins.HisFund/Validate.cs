@@ -55,4 +55,38 @@ namespace HIS.Desktop.Plugins.HisFund
         }
 
     }
+
+    /// <summary>
+    /// Surcharge ratio (%) is optional (empty = no surcharge) but, when entered, must be within 0..100.
+    /// </summary>
+    class ValidateSurchargeRatio : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
+    {
+        internal DevExpress.XtraEditors.SpinEdit spSurchargeRatio;
+
+        public override bool Validate(System.Windows.Forms.Control control, object value)
+        {
+            bool valid = false;
+            try
+            {
+                if (spSurchargeRatio == null) return valid;
+                if (spSurchargeRatio.EditValue == null || String.IsNullOrWhiteSpace(spSurchargeRatio.Text))
+                {
+                    return true;
+                }
+                decimal ratio = spSurchargeRatio.Value;
+                if (ratio < 0 || ratio > 100)
+                {
+                    this.ErrorText = HIS.Desktop.Plugins.HisFund.Resources.ResourceMessage.TyLePhuThuPhaiTu0Den100;
+                    return valid;
+                }
+                valid = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return valid;
+        }
+    }
 }

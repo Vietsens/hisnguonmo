@@ -28,6 +28,8 @@ namespace HIS.Desktop.Plugins.TransactionBillDetail
         UcPayform.UCTransactionPayformGridProcessor payformProcessor;
         UserControl ucPayform;
         DevExpress.XtraEditors.SimpleButton btnSavePayform;
+        // Empty space left of the save button; the "Hoan ung DV" button (KSK refund by service) is inserted right of it
+        EmptySpaceItem emptyLeftOfSavePayform;
         #endregion
 
         /// <summary>Tạo UC lưới hình thức thanh toán + nút Lưu, nhúng vào layout. Gọi trong constructor sau InitSereServTree().</summary>
@@ -104,6 +106,7 @@ namespace HIS.Desktop.Plugins.TransactionBillDetail
                     var emptyLeft = new EmptySpaceItem();
                     emptyLeft.Name = "emptyLeftOfSavePayform";
                     this.layoutControlGroup1.AddItem(emptyLeft, lciBtn, InsertType.Left);
+                    this.emptyLeftOfSavePayform = emptyLeft;
                 }
                 finally
                 {

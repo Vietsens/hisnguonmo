@@ -213,7 +213,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Edit.MediStockD1SDO
                 if (this.ServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                 {
                     valid = valid && HIS.Desktop.Plugins.AssignPrescriptionYHCT.ValidAcinInteractiveWorker.Valid(this.DataRow, MediMatyTypeADOs, this.LstExpMestMedicine);
-                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob);
+                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds);
                 }
 
                 valid = valid && this.ValidKhaDungThuocTrongKho();

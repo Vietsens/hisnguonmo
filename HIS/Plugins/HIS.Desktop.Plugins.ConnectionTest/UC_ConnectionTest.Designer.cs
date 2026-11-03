@@ -2494,7 +2494,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.btnApproveResult.StyleController = this.layoutControl1;
             this.btnApproveResult.TabIndex = 120;
             this.btnApproveResult.Text = "Duyệt KQ";
-            this.btnApproveResult.ToolTip = "Duyệt kết quả xét nghiệm của mẫu đang chọn";
+            this.btnApproveResult.ToolTip = "Duyệt kết quả các dịch vụ được tích";
             this.btnApproveResult.Click += new System.EventHandler(this.btnApproveResult_Click);
             // 
             // btnSave

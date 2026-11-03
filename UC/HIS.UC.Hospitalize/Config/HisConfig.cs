@@ -36,11 +36,12 @@ namespace HIS.UC.Hospitalize.Config
         private const string HEIN_PATIENT_TYPE_CODE_LOOKUP_OPTION = "HIS.Desktop.Plugins.Hospitalize.HeinPatientTypeCodeLookupOption";
         internal static string CheckIcdWhenSave;
         /// <summary>
-        /// Key = 1 hoac 2: ma doi tuong KCB tren form nhap vien tra danh muc CHI theo o Cap cuu + Dien dieu tri
-        /// + ma CSKCB ban dau (bo qua Tuyen va Truong hop cua ho so). Khac: tra nhu cu (tuyen + truong hop ho so trung khit).
+        /// Key = 1 hoac 2: ma doi tuong KCB tren form nhap vien tra danh muc CHI theo Cap cuu (Truong hop = Cap cuu tren dong doi tuong
+        /// moi nhat trong database, khong xet o Cap cuu tren man hinh) + Dien dieu tri + ma CSKCB ban dau (bo qua Tuyen).
+        /// Khac: tra nhu cu (tuyen + truong hop ho so trung khit).
         /// </summary>
         internal static bool IsHeinPatientTypeCodeLookup;
-        /// <summary>Key = 1: khi Luu, ma tren form khac ma ho so thi hoi xac nhan. Key = 2 hoac khac: khong hoi.</summary>
+        /// <summary>Key = 1: luc tu dien, ma moi khac ma hien tai thi hoi xac nhan ngay. Key = 2 hoac khac: khong hoi.</summary>
         internal static bool IsConfirmChangeHeinPatientTypeCode;
         public static bool IsUsingServerTime;
         public static string RelativesInforOption;

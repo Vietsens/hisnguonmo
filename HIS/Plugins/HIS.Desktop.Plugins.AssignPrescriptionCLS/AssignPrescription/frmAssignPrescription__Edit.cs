@@ -337,6 +337,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         }
 
                         WaitingManager.Hide();
+                        this.ProcessNotifyMedicineTypeAgeOnEdit();
                     }
                     catch (Exception ex)
                     {

@@ -2232,6 +2232,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                     gridControlMediRecord.DataSource = null;
                 }
                 gridControlMediRecord.EndUpdate();
+                SetCheckAllImageMediRecord();
                 WaitingManager.Hide();
 
                 #region Process has exception
@@ -2333,11 +2334,42 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                             {
                                 checkEdit.Checked = !checkEdit.Checked;
                                 view.CloseEditor();
+                                if (hi.Column.FieldName == "CheckStore")
+                                    SetCheckAllImageMediRecord();
                             }
                             (e as DevExpress.Utils.DXMouseEventArgs).Handled = true;
                         }
                     }
+                    else if (hi.HitTest == GridHitTest.Column && hi.Column.FieldName == "CheckStore")
+                    {
+                        // Chỉ tích được hồ sơ chưa lưu (IS_NOT_STORED = 1), các dòng khác ô tích bị khóa
+                        var mediRecordList = gridControlMediRecord.DataSource as List<MediRecordADO>;
+                        var mediRecordNotStored = mediRecordList != null ? mediRecordList.Where(o => o.IS_NOT_STORED == 1).ToList() : null;
+                        if (mediRecordNotStored != null && mediRecordNotStored.Count > 0)
+                        {
+                            bool isCheckAll = mediRecordNotStored.Exists(o => !o.CheckStore);
+                            mediRecordNotStored.ForEach(o => o.CheckStore = isCheckAll);
+                            gridControlMediRecord.RefreshDataSource();
+                        }
+                        SetCheckAllImageMediRecord();
+                        (e as DevExpress.Utils.DXMouseEventArgs).Handled = true;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetCheckAllImageMediRecord()
+        {
+            try
+            {
+                var mediRecordList = gridControlMediRecord.DataSource as List<MediRecordADO>;
+                var mediRecordNotStored = mediRecordList != null ? mediRecordList.Where(o => o.IS_NOT_STORED == 1).ToList() : null;
+                bool isAllChecked = mediRecordNotStored != null && mediRecordNotStored.Count > 0 && mediRecordNotStored.All(o => o.CheckStore);
+                gridColumn33.Image = imageCollectionCheck.Images[isAllChecked ? 1 : 0];
             }
             catch (Exception ex)
             {

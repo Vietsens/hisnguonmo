@@ -582,6 +582,17 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                 {
                     if (HisConfigCFG.TransactionBill__Select == "1")
                     {
+                        // KSK - Hoan ung dich vu thanh toan: giao dich thanh toan con giao dich hoan ung dich vu chua huy
+                        // thi dung lai TRUOC khi huy tren may POS (BE se chan huy => tranh lech doi soat voi ngan hang)
+                        string billServiceRepayCodes;
+                        if (this.HasBillServiceRepay(out billServiceRepayCodes))
+                        {
+                            WaitingManager.Hide();
+                            MessageManager.Show(String.Format(ResourceMessageLang.GiaoDichDaCoHoanUngVuiLongHuyTruoc, billServiceRepayCodes));
+                            success = false;
+                            return;
+                        }
+
                         // Hang POS dang cau hinh co huy duoc giao dich da thanh toan qua ECR hay khong.
                         if (!PosDeviceConfigReader.IsVoidSupported())
                         {
@@ -974,6 +985,59 @@ namespace HIS.Desktop.Plugins.TransactionCancel
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// KSK - Hoan ung dich vu thanh toan: giao dich thanh toan (va cac phieu thu huy kem) con giao dich hoan ung dich vu chua huy.
+        /// Chi goi API khi cau hinh MOS.HIS_TRANSACTION.REPAY_BY_BILL_SERVICE.PATIENT_TYPE_CODES co gia tri.
+        /// </summary>
+        /// <param name="repayCodes">Ma cac giao dich hoan ung chua huy, cach nhau dau phay.</param>
+        /// <returns>true khi con giao dich hoan ung dich vu chua huy.</returns>
+        private bool HasBillServiceRepay(out string repayCodes)
+        {
+            bool result = false;
+            repayCodes = "";
+            try
+            {
+                if (String.IsNullOrWhiteSpace(HisConfigCFG.RepayByBillServicePatientTypeCodes)
+                    || this.transaction == null
+                    || this.transaction.TRANSACTION_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+                {
+                    return false;
+                }
+
+                List<long> billIds = new List<long>() { this.transaction.ID };
+                if (this.lstTransSession != null)
+                {
+                    billIds.AddRange(this.lstTransSession.Where(o => o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT).Select(o => o.ID));
+                }
+                billIds = billIds.Distinct().ToList();
+
+                HisSeseBillRepayFilter filter = new HisSeseBillRepayFilter();
+                filter.TDL_BILL_IDs = billIds;
+                filter.IS_CANCEL = false;
+                List<HIS_SESE_BILL_REPAY> seseBillRepays = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SESE_BILL_REPAY>>("api/HisSeseBillRepay/Get", ApiConsumers.MosConsumer, filter, null);
+                if (seseBillRepays == null || seseBillRepays.Count == 0)
+                {
+                    return false;
+                }
+
+                result = true;
+
+                HisSeseBillRepayViewFilter viewFilter = new HisSeseBillRepayViewFilter();
+                viewFilter.TDL_BILL_IDs = billIds;
+                viewFilter.IS_CANCEL = false;
+                List<V_HIS_SESE_BILL_REPAY> seseBillRepayViews = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SESE_BILL_REPAY>>("api/HisSeseBillRepay/GetView", ApiConsumers.MosConsumer, viewFilter, null);
+                if (seseBillRepayViews != null && seseBillRepayViews.Count > 0)
+                {
+                    repayCodes = String.Join(", ", seseBillRepayViews.Where(o => !String.IsNullOrEmpty(o.REPAY_CODE)).Select(o => o.REPAY_CODE).Distinct());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         /// <summary>

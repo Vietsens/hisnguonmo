@@ -166,6 +166,14 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
         {
             try
             {
+                string denyReason = null;
+                if (!CheckAllowRefundByTransfer(ref denyReason))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(denyReason, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+
                 InitComboBankPayer();
 
                 CommonParam param = new CommonParam();
@@ -221,6 +229,122 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Chốt chặn hoàn tiền ngân hàng trùng cho 1 giao dịch hoàn ứng (vCong 60555, 62084 - Bạch Mai).
+        /// Backend khi ngân hàng báo thành công sẽ mở khóa giao dịch và xóa TRANS_REQ_ID,
+        /// nên không thể chỉ dựa vào TRANS_REQ_ID. Thứ tự kiểm tra:
+        /// 1. Giao dịch còn gắn yêu cầu hoàn tiền: chỉ cho khi yêu cầu đó FAILED/CANCEL.
+        /// 2. Giao dịch đã mở khóa sang hình thức CK và có BANK_TRANSACTION_TIME: đã hoàn thành công, chặn.
+        /// 3. Trong đợt điều trị còn yêu cầu hoàn tiền đã gửi ngân hàng (có BANK_REF_NO), chưa FAILED/CANCEL,
+        ///    không gắn với giao dịch hoàn ứng nào khác, cùng số tiền: coi là của giao dịch này, chặn.
+        /// Không gọi được API thì chặn (fail-closed) để không lọt lệnh chi trùng.
+        /// </summary>
+        private bool CheckAllowRefundByTransfer(ref string reason)
+        {
+            bool result = false;
+            reason = "Đã có yêu cầu hoàn tiền chưa hoàn thành hoặc yêu cầu hoàn tiền đã được phê duyệt xin vui lòng kiểm tra lại";
+            try
+            {
+                if (this.transaction == null) return true;
+
+                // Lấy lại giao dịch từ server, tránh dữ liệu cũ do màn hình gọi truyền vào
+                CommonParam param = new CommonParam();
+                HisTransactionFilter tranFilter = new HisTransactionFilter();
+                tranFilter.ID = this.transaction.ID;
+                var transactions = new BackendAdapter(param).Get<List<HIS_TRANSACTION>>("api/HisTransaction/Get", ApiConsumers.MosConsumer, tranFilter, param);
+                HIS_TRANSACTION tran = (transactions != null && transactions.Count > 0) ? transactions.First() : null;
+                if (tran == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("CheckAllowRefundByTransfer: khong lay duoc giao dich tu server, chan hoan tien. TRANSACTION_ID=" + this.transaction.ID);
+                    reason = "Không lấy được thông tin giao dịch từ máy chủ, không thể hoàn tiền ngân hàng. Vui lòng thử lại.";
+                    return false;
+                }
+
+                // 1. Giao dịch còn gắn yêu cầu hoàn tiền
+                if (tran.TRANS_REQ_ID.HasValue)
+                {
+                    HisTransReqFilter transReqFilter = new HisTransReqFilter();
+                    transReqFilter.ID = tran.TRANS_REQ_ID.Value;
+                    var transReqs = new BackendAdapter(param).Get<List<HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumers.MosConsumer, transReqFilter, param);
+                    var transReq = transReqs != null ? transReqs.FirstOrDefault() : null;
+                    result = transReq != null && IsFailedOrCancel(transReq);
+                    Inventec.Common.Logging.LogSystem.Debug("CheckAllowRefundByTransfer[1]: TRANSACTION_ID=" + tran.ID + ", TRANS_REQ_ID=" + tran.TRANS_REQ_ID + ", TRANS_REQ_STT_ID=" + (transReq != null ? transReq.TRANS_REQ_STT_ID + "" : "NULL") + ", result=" + result);
+                    return result;
+                }
+
+                // 2. Đã mở khóa sau khi ngân hàng báo thành công (backend chuyển CK + ghi thời gian ngân hàng)
+                if (tran.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK && tran.BANK_TRANSACTION_TIME.HasValue && tran.BANK_TRANSACTION_TIME.Value > 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("CheckAllowRefundByTransfer[2]: TRANSACTION_ID=" + tran.ID + " da hoan tien ngan hang thanh cong, BANK_TRANSACTION_TIME=" + tran.BANK_TRANSACTION_TIME);
+                    reason = "Giao dịch này đã được hoàn tiền qua ngân hàng thành công, không được tạo lệnh chi lần nữa.";
+                    return false;
+                }
+
+                // 3. Dò yêu cầu hoàn tiền của đợt điều trị chưa gắn với giao dịch nào khác
+                long? treatmentId = tran.TREATMENT_ID.HasValue ? tran.TREATMENT_ID : (this.treatment != null ? (long?)this.treatment.ID : null);
+                if (!treatmentId.HasValue)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("CheckAllowRefundByTransfer: giao dich khong co TREATMENT_ID, chan hoan tien. TRANSACTION_ID=" + tran.ID);
+                    reason = "Giao dịch không có thông tin đợt điều trị, không thể kiểm tra hoàn tiền ngân hàng.";
+                    return false;
+                }
+
+                HisTransReqFilter reqByTreatFilter = new HisTransReqFilter();
+                reqByTreatFilter.TREATMENT_ID = treatmentId.Value;
+                var reqsOfTreatment = new BackendAdapter(param).Get<List<HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumers.MosConsumer, reqByTreatFilter, param);
+
+                HisTransactionFilter tranByTreatFilter = new HisTransactionFilter();
+                tranByTreatFilter.TREATMENT_ID = treatmentId.Value;
+                var transOfTreatment = new BackendAdapter(param).Get<List<HIS_TRANSACTION>>("api/HisTransaction/Get", ApiConsumers.MosConsumer, tranByTreatFilter, param);
+
+                if (reqsOfTreatment == null || transOfTreatment == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("CheckAllowRefundByTransfer: khong lay duoc HIS_TRANS_REQ/HIS_TRANSACTION theo TREATMENT_ID=" + treatmentId + ", chan hoan tien.");
+                    reason = "Không kiểm tra được lịch sử hoàn tiền ngân hàng của đợt điều trị, không thể hoàn tiền. Vui lòng thử lại.";
+                    return false;
+                }
+
+                List<long> linkedReqIds = transOfTreatment
+                    .Where(o => o.ID != tran.ID && o.TRANS_REQ_ID.HasValue)
+                    .Select(o => o.TRANS_REQ_ID.Value).Distinct().ToList();
+
+                var pendingReq = reqsOfTreatment.FirstOrDefault(r =>
+                    r.IS_DELETE != 1
+                    && (r.TRANS_REQ_TYPE == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_REPAY_BY_TRANSACTION
+                        || r.TRANS_REQ_TYPE == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_REPAY_REQ)
+                    && !IsFailedOrCancel(r)
+                    && !String.IsNullOrWhiteSpace(r.BANK_REF_NO)
+                    && !linkedReqIds.Contains(r.ID)
+                    && Math.Abs(r.AMOUNT - tran.AMOUNT) < 1);
+
+                if (pendingReq != null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("CheckAllowRefundByTransfer[3]: TRANSACTION_ID=" + tran.ID + " bi chan boi HIS_TRANS_REQ.ID=" + pendingReq.ID + ", TRANS_REQ_STT_ID=" + pendingReq.TRANS_REQ_STT_ID + ", BANK_REF_NO=" + pendingReq.BANK_REF_NO + ", AMOUNT=" + pendingReq.AMOUNT);
+                    if (pendingReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FINISHED)
+                        reason = "Giao dịch này đã được hoàn tiền qua ngân hàng thành công (mã tham chiếu " + pendingReq.BANK_REF_NO + "), không được tạo lệnh chi lần nữa.";
+                    else
+                        reason = "Đã có lệnh chi hoàn tiền gửi sang ngân hàng (mã tham chiếu " + pendingReq.BANK_REF_NO + ") đang chờ xử lý. Vui lòng kiểm tra trạng thái hoàn tiền ngân hàng trước.";
+                    return false;
+                }
+
+                result = true;
+                Inventec.Common.Logging.LogSystem.Debug("CheckAllowRefundByTransfer[3]: TRANSACTION_ID=" + tran.ID + ", TREATMENT_ID=" + treatmentId + ", reqs=" + reqsOfTreatment.Count + ", linked=" + linkedReqIds.Count + ", result=true");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                reason = "Lỗi khi kiểm tra lịch sử hoàn tiền ngân hàng, không thể hoàn tiền. Vui lòng thử lại.";
+                result = false;
+            }
+            return result;
+        }
+
+        private static bool IsFailedOrCancel(HIS_TRANS_REQ transReq)
+        {
+            return transReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FAILED
+                || transReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__CANCEL;
         }
 
         private async Task FillInfoPatient(V_HIS_TREATMENT_FEE data)
@@ -414,6 +538,15 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 positionHandle = -1;
                 if (!dxValidationProvider1.Validate())
                     return;
+
+                // Kiểm tra lại ngay trước khi gửi lệnh chi: form có thể mở lâu, trạng thái đã đổi ở máy khác
+                string denyReason = null;
+                if (!CheckAllowRefundByTransfer(ref denyReason))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(denyReason, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
 
                 string data = BankHubProcess.GetAccessToken(this.bankCode);
                 if (string.IsNullOrEmpty(data))

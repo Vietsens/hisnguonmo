@@ -27,5 +27,6 @@ namespace HIS.Desktop.Plugins.TransactionRepay.Config
     {
         public const string HIS_TRANSACTION_CREATE_REPAY = "/api/HisTransaction/CreateRepay";
         public const string HIS_TRANSACTION_CHECK_REPAY = "/api/HisTransaction/CheckRepay";
+        public const string HIS_SESE_BILL_REPAY_GET = "api/HisSeseBillRepay/Get";
     }
 }

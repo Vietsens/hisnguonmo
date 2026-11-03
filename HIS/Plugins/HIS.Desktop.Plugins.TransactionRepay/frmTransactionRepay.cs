@@ -78,6 +78,18 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         // Chieu cao hang thong tin goi (1 row layout) - dung de thu nho form khi khong co goi
         const int PATIENT_PACKAGE_ROW_HEIGHT = 24;
 
+        // KSK - Hoan ung dich vu cua giao dich thanh toan (mo tu Chi tiet thanh toan)
+        // Co SereServBillIds => so tien = AutoAmount (khong cho sua), gui SereServBillIds len CheckRepay/CreateRepay
+        long? billId = null;
+        List<long> sereServBillIds = null;
+
+        // Truyen qua tham so mo plugin (KeyValuePair<BillId, SereServBillIds>), goi truoc khi form Load
+        internal void SetRepayBillService(long billId, List<long> sereServBillIds)
+        {
+            this.billId = billId > 0 ? (long?)billId : null;
+            this.sereServBillIds = sereServBillIds;
+        }
+
         public frmTransactionRepay(Inventec.Desktop.Common.Modules.Module module, TransactionRepayADO data)
             : base(module)
         {
@@ -169,6 +181,9 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 // Try/catch nội bộ trong LoadPatientPackageInfo KHÔNG bắt được lỗi JIT-phase này.
                 try { this.LoadPatientPackageInfo(); }
                 catch (Exception exP) { Inventec.Common.Logging.LogSystem.Warn(exP); }
+
+                // KSK - Hoan ung dich vu thanh toan: khoa so tien, an "Den bu", khoa nut Moi
+                this.InitRepayBillServiceMode();
 
                 // 42727 - treatmentId > 0 thì load đầy đủ; nếu = 0 (luồng "Nhập lại xuất bán" type KHAC/BTL không có treatment) thì skip
                 bool hasValidTreatment = this.treatmentId.HasValue && this.treatmentId.Value > 0;
@@ -304,7 +319,9 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             {
                 bool isEnableCompensation = false;
 
+                // KSK - Hoan ung dich vu thanh toan: khong hien "Den bu"
                 if (HisConfigCFG.CompensationRefundEnable == "1"
+                    && !this.IsRepayBillService()
                     && this.treatmentId.HasValue && this.treatmentId.Value > 0)
                 {
                     CommonParam param = new CommonParam();
@@ -332,6 +349,77 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// KSK - Hoan ung dich vu cua giao dich thanh toan: mo tu Chi tiet thanh toan voi danh sach SERE_SERV_BILL_ID
+        /// </summary>
+        private bool IsRepayBillService()
+        {
+            return this.sereServBillIds != null && this.sereServBillIds.Count > 0;
+        }
+
+        /// <summary>
+        /// KSK - Hoan ung dich vu thanh toan: so tien = AutoAmount (khong cho sua), an va khong gui "Den bu",
+        /// khoa nut Moi (Ctrl N) vi form chi phuc vu dung cac dich vu da chon
+        /// </summary>
+        private void InitRepayBillServiceMode()
+        {
+            try
+            {
+                if (!this.IsRepayBillService())
+                    return;
+
+                this.txtTotalAmount.Properties.ReadOnly = true;
+                this.btnNew.Enabled = false;
+                if (this.bbtnNew != null)
+                    this.bbtnNew.Enabled = false;
+                this.chkCompensation.Checked = false;
+                this.lciCompensation.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// KSK - Hoan ung dich vu thanh toan: phieu Mps000113 chi truyen giao dich thanh toan goc.
+        /// Uu tien BillId truyen vao; neu khong co thi lay TDL_BILL_ID cua HIS_SESE_BILL_REPAY theo giao dich hoan ung vua tao.
+        /// </summary>
+        private List<V_HIS_TRANSACTION> GetOriginalBillForPrint()
+        {
+            List<V_HIS_TRANSACTION> result = new List<V_HIS_TRANSACTION>();
+            try
+            {
+                long originalBillId = this.billId ?? 0;
+                if (originalBillId <= 0 && this.resultTransaction != null)
+                {
+                    HisSeseBillRepayFilter seseBillRepayFilter = new HisSeseBillRepayFilter();
+                    seseBillRepayFilter.REPAY_ID = this.resultTransaction.ID;
+                    var seseBillRepays = new BackendAdapter(new CommonParam()).Get<List<HIS_SESE_BILL_REPAY>>(UriStores.HIS_SESE_BILL_REPAY_GET, ApiConsumers.MosConsumer, seseBillRepayFilter, null);
+                    if (seseBillRepays != null && seseBillRepays.Count > 0)
+                    {
+                        originalBillId = seseBillRepays.First().TDL_BILL_ID;
+                    }
+                }
+
+                if (originalBillId > 0)
+                {
+                    HisTransactionViewFilter billFilter = new HisTransactionViewFilter();
+                    billFilter.ID = originalBillId;
+                    var bills = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, billFilter, null);
+                    if (bills != null && bills.Count > 0)
+                    {
+                        result = bills;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private void ValidControl()
@@ -676,6 +764,13 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                         }
                         this.Treatment = treatmentFees.First();
                     }
+                }
+
+                // KSK - Hoan ung dich vu thanh toan: so tien = tong tien cac dich vu da chon (AutoAmount), khong tinh theo cong no ho so
+                if (this.IsRepayBillService())
+                {
+                    txtTotalAmount.Value = this.autoAmount ?? 0;
+                    return;
                 }
 
                 if (this.Treatment != null)
@@ -1517,9 +1612,17 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                     data.IMP_MEST_ID = this.impMestId.Value;
                 }
 
+                // KSK - Hoan ung dich vu thanh toan: gui danh sach SERE_SERV_BILL_ID (dung cho ca CheckRepay qua the va CreateRepay)
+                if (this.IsRepayBillService())
+                {
+                    data.SereServBillIds = this.sereServBillIds;
+                }
+
                 // 2669 - Neu checkbox "Den bu" dang hien thi va duoc tich -> danh dau giao dich hoan ung la hoan den bu
+                // KSK - Hoan ung dich vu thanh toan: khong bao gio gui IS_COMPENSATION
                 if (this.lciCompensation.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
-                    && this.chkCompensation.Checked)
+                    && this.chkCompensation.Checked
+                    && !this.IsRepayBillService())
                 {
                     data.Transaction.IS_COMPENSATION = 1;
                 }
@@ -1723,7 +1826,10 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 filterTran.TREATMENT_ID = resultTransaction.TREATMENT_ID;
                 //filterTran.TRANSACTION_TYPE_IDs = new List<long>() { IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT };
                 filterTran.IS_CANCEL = false;
-                List<V_HIS_TRANSACTION> transa = new BackendAdapter(paramtreatment).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filterTran, paramtreatment);
+                // KSK - Hoan ung dich vu thanh toan: danh sach giao dich truyen vao phieu chi gom giao dich thanh toan goc
+                List<V_HIS_TRANSACTION> transa = this.IsRepayBillService()
+                    ? this.GetOriginalBillForPrint()
+                    : new BackendAdapter(paramtreatment).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filterTran, paramtreatment);
                 if (transa == null) transa = new List<V_HIS_TRANSACTION>();
 
                 MPS.Processor.Mps000113.PDO.Mps000113PDO rdo = new MPS.Processor.Mps000113.PDO.Mps000113PDO(this.resultTransaction, null, ratio, PatyAlterBhyt, departmentTran, TreatmentFee.First(), transa);
@@ -1799,7 +1905,10 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 filterTran.TREATMENT_ID = resultTransaction.TREATMENT_ID;
                 filterTran.TRANSACTION_TYPE_IDs = new List<long>() { IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT };
                 filterTran.IS_CANCEL = false;
-                List<V_HIS_TRANSACTION> transa = new BackendAdapter(paramtreatment).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filterTran, paramtreatment);
+                // KSK - Hoan ung dich vu thanh toan: danh sach giao dich truyen vao phieu chi gom giao dich thanh toan goc
+                List<V_HIS_TRANSACTION> transa = this.IsRepayBillService()
+                    ? this.GetOriginalBillForPrint()
+                    : new BackendAdapter(paramtreatment).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filterTran, paramtreatment);
                 if (transa == null) transa = new List<V_HIS_TRANSACTION>();
 
                 MPS.Processor.Mps000113.PDO.Mps000113PDO rdo = new MPS.Processor.Mps000113.PDO.Mps000113PDO(this.resultTransaction, null, ratio, PatyAlterBhyt, departmentTran, TreatmentFee.First(), transa);

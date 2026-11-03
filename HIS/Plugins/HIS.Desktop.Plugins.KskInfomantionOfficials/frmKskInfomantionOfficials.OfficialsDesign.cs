@@ -130,6 +130,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
                 // Health exam rank
                 InitHealthExamRankCombo(cboHealthExamRank);
+                // PL noi khoa (EXAM_CIRCULATION_RANK): co gia tri thi backend khong xoa nguoi kham noi khoa
+                InitHealthExamRankCombo(cboExamCirculationRank);
 
                 // Conclusion time
                 InitConclusionTimeCombo();
@@ -259,6 +261,19 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                     if (editor != null)
                         editor.EditValue = null;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboExamCirculationRank_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboExamCirculationRank.Text.Trim() == "")
+                    cboExamCirculationRank.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -586,6 +601,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
                 // Internal medicine - Cardiovascular
                 cboExamCirculationLoginName.EditValue = ReadString(general, "EXAM_CIRCULATION_LOGINNAME");
+                cboExamCirculationRank.EditValue = ReadNullableLong(general, "EXAM_CIRCULATION_RANK");
                 txtHeartRhythm.Text = ReadString(dhst, "HEART_RHYTHM");
                 txtHeartRate.Text = ReadString(dhst, "HEART_RATE");
                 txtHeartBeat.Text = ReadString(dhst, "HEART_BEAT");
@@ -775,6 +791,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
                 // Internal medicine
                 cboExamCirculationLoginName.EditValue = null;
+                cboExamCirculationRank.EditValue = null;
                 txtHeartRhythm.Text = string.Empty;
                 txtHeartRate.Text = string.Empty;
                 txtHeartBeat.Text = string.Empty;
@@ -889,6 +906,10 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 // Internal medicine
                 kskGeneral.EXAM_CIRCULATION = ReadText(txtOtherExamCirculation);
                 kskGeneral.EXAM_CIRCULATION_LOGINNAME = ReadLookUpValue(cboExamCirculationLoginName);
+                if (cboExamCirculationRank.EditValue != null)
+                    kskGeneral.EXAM_CIRCULATION_RANK = Convert.ToInt64(cboExamCirculationRank.EditValue);
+                else
+                    kskGeneral.EXAM_CIRCULATION_RANK = null;
                 kskGeneral.ARTERY = ReadText(txtArtery);
                 kskGeneral.VEIN = ReadText(txtVein);
                 kskGeneral.CHEST = ReadText(txtChest);

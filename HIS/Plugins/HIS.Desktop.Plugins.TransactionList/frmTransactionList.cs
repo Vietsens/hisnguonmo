@@ -1968,6 +1968,13 @@ namespace HIS.Desktop.Plugins.TransactionList
                         }
 
                         ((Form)extenceInstance).ShowDialog();
+
+                        // KSK - Hoan ung dich vu thanh toan: man Chi tiet thanh toan co the tao giao dich hoan ung
+                        // => nap lai danh sach nhu sau khi huy (giu trang hien tai). Tat cau hinh thi giu nguyen nhu cu.
+                        if (!String.IsNullOrWhiteSpace(HisConfigCFG.RepayByBillServicePatientTypeCodes))
+                        {
+                            this.ReloadAfterBillDetail(data);
+                        }
                     }
                     else
                     {
@@ -2002,6 +2009,32 @@ namespace HIS.Desktop.Plugins.TransactionList
                         MessageManager.Show(Base.ResourceMessageLang.ChucNangNayChuaDuocHoTroTrongPhienBanNay);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// KSK - Hoan ung dich vu thanh toan: nap lai danh sach sau khi dong man Chi tiet thanh toan,
+        /// cung cach nap lai sau khi huy giao dich (giu trang hien tai)
+        /// </summary>
+        private void ReloadAfterBillDetail(V_HIS_TRANSACTION data)
+        {
+            try
+            {
+                if (isOpenFromHisTransaction)
+                {
+                    txtTreatmentCodeFind.Text = data.TDL_TREATMENT_CODE;
+                    FillDataToGridTransactionForOneCode(new CommonParam(start, limit));
+                }
+                else
+                {
+                    FillDataToGridTransaction(new CommonParam(start, limit));
+                }
+
+                this.RefreshSessionInfo();
             }
             catch (Exception ex)
             {

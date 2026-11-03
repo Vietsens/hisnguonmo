@@ -44,7 +44,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest.CG300
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
                 Inventec.Common.Logging.LogSystem.Debug("CG300 data____" + json);
 
-                string fileName = (labels[0].LabNum ?? "CG300") + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                // 1 file = 1 patient -> name by patient code (fallback: first barcode)
+                string prefix = !String.IsNullOrWhiteSpace(labels[0].HospNum) ? labels[0].HospNum : labels[0].LabNum;
+                string fileName = (String.IsNullOrWhiteSpace(prefix) ? "CG300" : prefix.Trim()) + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
                 tempPath = Path.Combine(folder, fileName + TEMP_EXTENSION);
                 string dataPath = Path.Combine(folder, fileName + DATA_EXTENSION);
 

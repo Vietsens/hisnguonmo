@@ -68,7 +68,7 @@
 |   ┌── ICD phụ ───────────────────────────────┐         |
 |   │ [HIS.UC.SecondaryIcd]                    │         |
 |   └────────────────────────────────────────┘          |
-| Khám tại giường: [☐]                                   |
+| Khám tại giường: [☐]      Thường [☐]   Khẩn [☐]        | ← 2 ô tích Mức độ, chỉ hiện khi config bật
 | Nội dung mời:                                          |
 | ┌──────────────────────────────────────────┐           |
 | │ [MemoEdit]                               │           |
@@ -89,6 +89,7 @@
 | dteNgayMoi | DateEdit (date + time) | `dd/MM/yyyy HH:mm`, mask + CalendarTimeProperties |
 | cboPhongKham | CustomGridLookUpEditWithFilterMultiColumnNoFocus | Multi-select khoa qua GridCheckMarksSelection. **Filter UI bị suppress** trên popup (xem `SuppressFilterUI`) |
 | cboBacSiKham | CustomGridLookUpEditWithFilterMultiColumnNoFocus | Multi-select bác sĩ, GroupIndex theo `DEPARTMENT_NAME`. **Filter UI bị suppress** |
+| chkUrgencyNormal / chkUrgencyEmergency | CheckEdit | Mức độ Thường / Khẩn — loại trừ nhau, không bắt buộc, bỏ tích được về trạng thái chưa chọn. Chỉ hiện khi config `HIS.Desktop.Plugins.SpecialistExam.IsUseUrgency = 1` (`InitUrgencyControls`) |
 
 ## 5. API Endpoints
 
@@ -110,6 +111,7 @@
 | `ucSecondaryIcd` | `ICD_SUB_CODE`, `ICD_TEXT` | |
 | `memContent` | `INVITE_CONTENT` | Nội dung mời |
 | `chkExamInBed` | `IS__EXAM_BED` (1 / null) | Khám tại giường |
+| `chkUrgencyNormal` / `chkUrgencyEmergency` | `URGENCY_LEVEL` (1 = Thường / 2 = Khẩn / null = chưa chọn) | `GetUrgencyLevel()`; enum `EnumUrgencyLevel` |
 | — | `INVITE_TYPE = 2` | Cố định = hội chẩn (1 = khám chuyên khoa) |
 | `bedRoom`/`serviceReq`/`specialistExam` | `TREATMENT_ID`, `TREATMENT_CODE`, `PATIENT_CODE`, `TDL_PATIENT_*` | Context bệnh nhân |
 
@@ -131,6 +133,7 @@ Không in tại module này.
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 2026-09-08 | sinhnt | PTTK_54493 — Bổ sung **Mức độ Thường/Khẩn** cho phiếu mời hội chẩn. Thêm 2 `CheckEdit` (`chkUrgencyNormal`, `chkUrgencyEmergency`) cùng hàng với "Khám tại giường" (`layoutControlItem7` co từ 597 → 347, 2 layout item mới `lciUrgencyNormal`/`lciUrgencyEmergency` mỗi cái 125, `TextVisible=false`, caption nằm trên chính CheckEdit). Hai ô **loại trừ nhau** qua 2 handler `CheckedChanged` + cờ `isProcessUrgencyChanged` (chống fire chéo); bỏ tích ô đang chọn → về trạng thái chưa chọn. `FillSpecialistExamFields` gán `URGENCY_LEVEL = GetUrgencyLevel()` (1 = Thường, 2 = Khẩn, null = chưa chọn — không bắt buộc); `LoadData` nhánh sửa gọi `SetUrgencyLevel(specialistExam.URGENCY_LEVEL)`; `btnLamLai_Click` reset về chưa chọn. Toàn bộ gate bởi config `HIS.Desktop.Plugins.SpecialistExam.IsUseUrgency` (`InitUrgencyControls`, mặc định TẮT → 2 layout item `Visibility=Never`, hàng giữ nguyên bố cục cũ). Thêm `EnumUrgencyLevel.cs` (root plugin). Phụ thuộc backend gencode `HIS_SPECIALIST_EXAM`/`V_HIS_SPECIALIST_EXAM` có cột `URGENCY_LEVEL` (đã có trong `FE/lib/MOS/MOS.EFMODEL.dll`). |
 | 11/08/2026 | nampp | **Mời hội chẩn tại phòng khám cấp cứu — sửa lỗi "Xử lý thất bại".** Form dùng chung 2 màn, nhưng combo "Khoa phòng điều trị" (`cboDepartment` → `INVITE_DEPARMENT_ID`) chỉ được gán khi có giường (`LoadData:205`) và bị khóa (`LoadcboDepartment:549`) nên nhánh mở từ `V_HIS_SERVICE_REQ` luôn để trống → backend `HisSpecialistExamCreate.ProcessTracking` lọc danh mục khoa ra rỗng, `return false`, hỏng cả phiếu mời lẫn tờ điều trị. Sửa: (1) `LoadData` nhánh `serviceReq != null` gán `cboDepartment.EditValue = serviceReq.EXECUTE_DEPARTMENT_ID` (kiểu `long`, không nullable); (2) `btnLamLai_Click` đồng bộ theo 3 nhánh bedRoom / serviceReq / còn lại; (3) `SaveProcess` chặn sớm khi `cboDepartment.EditValue == null` kèm log chẩn đoán, thay vì để backend báo lỗi chung chung. Giữ combo khóa như buồng bệnh để bác sĩ không chọn nhầm khoa. Luồng buồng bệnh không đổi. |
 | 2026-05-22 | phuongnm | **Frontend tự tạo HIS_TRACKING (tờ điều trị A)** sau khi save Mời hội chẩn thành công, vì backend chưa hỗ trợ auto-create. Sau khi bản ghi đầu (i=0) save xong, gọi `POST api/HisTracking/Create` với: `TREATMENT_ID`, `TRACKING_TIME=INVITE_TIME`, `CONTENT=INVITE_CONTENT` (Diễn biến), `MEDICAL_INSTRUCTION=chuỗi tổng hợp` (Y lệnh), `LOGINNAME/USERNAME=current user`, `DEPARTMENT_ID=INVITE_DEPARMENT_ID`, ICD copy. Sau đó update lại HIS_SPECIALIST_EXAM với `TRACKING_ID` để link 2 record. Method: `CreateTrackingForFirstExam()`. Phương pháp xử lý trong "Tờ điều trị" giờ hiển thị đúng chuỗi sau Mời hội chẩn. |
 | 2026-05-21 | phuongnm | Sửa đổi UI + nghiệp vụ theo PTTK_38078 B.4.1: (1) `dteNgayMoi` hỗ trợ `dd/MM/yyyy HH:mm`; (2) `cboPhongKham` chuyển multi-select khoa; (3) `cboBacSiKham` nhóm bác sĩ theo khoa, chỉ hiển thị BS thuộc các khoa đã chọn; (4) Save tạo N bản ghi: i=0 có `IsAutoCreateTracking=1` + `MedicalInstruction` tổng hợp, các bản còn lại `IsAutoCreateTracking=0`. Thêm SDO wrapper `HisSpecialistExamCreateAutoTrackingFeSDO`. |

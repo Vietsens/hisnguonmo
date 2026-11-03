@@ -63,6 +63,10 @@ namespace HIS.UC.HisMedicineInStock.Run
         btnUnLock_buttonClick btnUnLock_buttonClick;
         bool IsShowCheckNode;
         bool isAutoWidth;
+        bool isShowSeparatorLine;
+        Font fontGroupNode;
+        Pen penSeparatorSolid;
+        Pen penSeparatorDash;
         DevExpress.Utils.ImageCollection selectImageCollection;
         DevExpress.Utils.ImageCollection stateImageCollection;
         HisMedicineInStockHandler updateSingleRow;
@@ -113,6 +117,10 @@ namespace HIS.UC.HisMedicineInStock.Run
                 if (HisMedicineInStockADO.IsAutoWidth.HasValue)
                 {
                     this.isAutoWidth = HisMedicineInStockADO.IsAutoWidth.Value;
+                }
+                if (HisMedicineInStockADO.IsShowSeparatorLine.HasValue)
+                {
+                    this.isShowSeparatorLine = HisMedicineInStockADO.IsShowSeparatorLine.Value;
                 }
             }
             catch (Exception ex)
@@ -204,6 +212,8 @@ namespace HIS.UC.HisMedicineInStock.Run
             {
                 this.trvService.OptionsView.ShowCheckBoxes = this.IsShowCheckNode;
                 this.trvService.OptionsView.AutoWidth = this.isAutoWidth;
+                if (this.isShowSeparatorLine)
+                    InitSeparatorLine();
                 if (HisMedicineInStockADO.HisMedicineInStockColumns != null && HisMedicineInStockADO.HisMedicineInStockColumns.Count > 0)
                 {
                     foreach (var svtr in HisMedicineInStockADO.HisMedicineInStockColumns)
@@ -474,6 +484,7 @@ namespace HIS.UC.HisMedicineInStock.Run
         {
             try
             {
+                DisposeSeparatorLine();
                 rowFocus = 0;
                 MediStockIds = null;
                 isCreateParentNodeWithHisMedicineInStockExpend = false;
@@ -548,6 +559,99 @@ namespace HIS.UC.HisMedicineInStock.Run
         }
         #endregion
 
+        #region Separator line
+        private void InitSeparatorLine()
+        {
+            try
+            {
+                this.penSeparatorSolid = new Pen(Color.FromArgb(110, 110, 110));
+                this.penSeparatorDash = new Pen(Color.FromArgb(160, 160, 160));
+                this.penSeparatorDash.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                this.trvService.OptionsView.ShowVertLines = true;
+                this.trvService.Appearance.VertLine.BackColor = Color.FromArgb(205, 205, 205);
+                this.trvService.Appearance.VertLine.Options.UseBackColor = true;
+                this.trvService.Paint += this.trvService_Paint;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //Dòng lô: isTypeNode = false
+        private bool IsLotNode(TreeListNode node)
+        {
+            var data = node != null ? trvService.GetDataRecordByNode(node) as HisMedicineInStockADO : null;
+            return data != null && !data.isTypeNode;
+        }
+
+        //Dòng nhóm cha: dòng loại có dòng con cũng là dòng loại
+        private bool IsGroupNode(TreeListNode node)
+        {
+            if (node == null || !node.HasChildren)
+                return false;
+            var data = trvService.GetDataRecordByNode(node) as HisMedicineInStockADO;
+            var child = trvService.GetDataRecordByNode(node.FirstNode) as HisMedicineInStockADO;
+            return data != null && data.isTypeNode && child != null && child.isTypeNode;
+        }
+
+        //Kẻ ngang dưới mỗi dòng đang hiển thị: dòng này và dòng ngay dưới đều là lô cùng cha thì nét đứt, còn lại nét liền
+        private void trvService_Paint(object sender, PaintEventArgs e)
+        {
+            try
+            {
+                if (!this.isShowSeparatorLine || this.penSeparatorSolid == null)
+                    return;
+                ArrayList rows = trvService.ViewInfo.RowsInfo.Rows;
+                for (int i = 0; i < rows.Count; i++)
+                {
+                    var row = rows[i] as DevExpress.XtraTreeList.ViewInfo.RowInfo;
+                    if (row == null || row.Node == null)
+                        continue;
+                    var next = i + 1 < rows.Count ? rows[i + 1] as DevExpress.XtraTreeList.ViewInfo.RowInfo : null;
+                    bool isDash = next != null && next.Node != null
+                        && next.Node.ParentNode == row.Node.ParentNode
+                        && IsLotNode(row.Node) && IsLotNode(next.Node);
+                    int y = row.Bounds.Bottom - 1;
+                    e.Graphics.DrawLine(isDash ? this.penSeparatorDash : this.penSeparatorSolid, row.Bounds.Left, y, row.Bounds.Right - 1, y);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DisposeSeparatorLine()
+        {
+            try
+            {
+                this.isShowSeparatorLine = false;
+                if (this.trvService != null)
+                    this.trvService.Paint -= this.trvService_Paint;
+                if (this.penSeparatorSolid != null)
+                {
+                    this.penSeparatorSolid.Dispose();
+                    this.penSeparatorSolid = null;
+                }
+                if (this.penSeparatorDash != null)
+                {
+                    this.penSeparatorDash.Dispose();
+                    this.penSeparatorDash = null;
+                }
+                if (this.fontGroupNode != null)
+                {
+                    this.fontGroupNode.Dispose();
+                    this.fontGroupNode = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        #endregion
+
         private void trvService_NodeCellStyle(object sender, DevExpress.XtraTreeList.GetCustomNodeCellStyleEventArgs e)
         {
             try
@@ -557,6 +661,12 @@ namespace HIS.UC.HisMedicineInStock.Run
                 //{
                 //    HisMedicineInStockNodeCellStyle(data, e.Appearance);
                 //}
+                if (this.isShowSeparatorLine && IsGroupNode(e.Node))
+                {
+                    if (this.fontGroupNode == null)
+                        this.fontGroupNode = new Font(e.Appearance.Font, FontStyle.Bold);
+                    e.Appearance.Font = this.fontGroupNode;
+                }
                 var data = trvService.GetDataRecordByNode(e.Node);
                 if (data != null && data is HisMedicineInStockADO)
                 {

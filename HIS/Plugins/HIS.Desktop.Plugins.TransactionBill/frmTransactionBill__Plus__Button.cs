@@ -954,6 +954,13 @@ namespace HIS.Desktop.Plugins.TransactionBill
             bool? success = false;
             try
             {
+                //Moi loi vao luu (nut, Ctrl+S/I/A, Luu ky Emr) deu qua day: phan bo bao hiem bao lanh dang chan thi khong goi CreateBill
+                if (this.IsFundAllocationLocked())
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show(this, this.GetFundAllocationLockMessage(), ResourceMessageLang.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
                 decimal currentVal = 0;
                 string cleanTienBaoLanh = (this.tienBaoLanh ?? "").Replace(".", "").Replace(",", "");
                 decimal.TryParse(cleanTienBaoLanh, out currentVal);
@@ -1103,11 +1110,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                     else
                     {
-                        if (cboBuyerOrganzation2.EditValue != null && dtWorkPlace.Exists(o => o.ID == Int64.Parse(cboBuyerOrganzation2.EditValue.ToString())))
-                        {
-                            data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganzation2.EditValue.ToString());
-                            data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
-                        }
+                        SetBuyerOrganizationFromCombo(data.Transaction, cboBuyerOrganzation2.EditValue);
                     }
                     data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode2.Text!=null ? txtBuyerTaxCode2.Text.Trim() : null;
                     data.Transaction.BUYER_PHONE = txtSDT.Text.Trim();
@@ -1126,11 +1129,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                     else
                     {
-                        if (cboBuyerOrganization.EditValue != null && dtWorkPlace.Exists(o=>o.ID == Int64.Parse(cboBuyerOrganization.EditValue.ToString())))
-                        {
-                            data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganization.EditValue.ToString());
-                            data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
-                        }
+                        SetBuyerOrganizationFromCombo(data.Transaction, cboBuyerOrganization.EditValue);
                     }
                     data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text.Trim();
                     data.Transaction.BUYER_PHONE = txtSDT.Text.Trim();
@@ -1198,7 +1197,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                     data.Transaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmm") + "00");
-                data.Transaction.EXEMPTION = Math.Round(totalDiscount, 4);
+                // 61201: lam tron 4 so le chiet khau TRUOC khi tinh KC_AMOUNT/PayAmount, cung quy tac voi EXEMPTION gui server.
+                // Chiet khau theo ty le (ratio * tong / 100) co du so thap phan -> PayAmount lech 1e-28 so voi AMOUNT - EXEMPTION
+                // server tinh -> server coi la co ket chuyen, can thu = 0 -> bao MOS012.
+                totalDiscount = Math.Round(totalDiscount, 4);
+                data.Transaction.EXEMPTION = totalDiscount;
                 if (HisConfigCFG.EnableMultiDiscount)
                 {
                     // Giao diện MỚI (grid nhiều dòng chiết khấu)
@@ -4050,10 +4053,12 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
-                btnSave.Enabled = enable ?? true;
-                btnSaveAndSign.Enabled = enable ?? true;
-                btnSavePrint.Enabled = enable ?? true;
-                btnAddSignEmr.Enabled = enable ?? true;
+                //Phan bo bao hiem bao lanh dang chan thanh toan thi khong bat lai nut luu
+                bool value = (enable ?? true) && !this.IsFundAllocationLocked();
+                btnSave.Enabled = value;
+                btnSaveAndSign.Enabled = value;
+                btnSavePrint.Enabled = value;
+                btnAddSignEmr.Enabled = value;
             }
             catch (Exception ex)
             {

@@ -356,6 +356,45 @@ namespace HIS.UC.UCHeniInfo
             }
         }
 
+        /// <summary>
+        /// Gan lai o Khu vuc theo ma khu vuc truyen vao (null/rong => de trong) va tinh lai tuyen,
+        /// muc huong giong thao tac tay cua nguoi dung (nut xoa / Enter tren o Khu vuc).
+        /// Khong focus, khong mo popup.
+        /// </summary>
+        /// <param name="liveAreaCode">Ma khu vuc K1/K2/K3, null hoac rong => de trong</param>
+        public void SetLiveAreaCode(string liveAreaCode)
+        {
+            try
+            {
+                MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaData liveAreaData = String.IsNullOrWhiteSpace(liveAreaCode)
+                    ? null : MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaStore.GetByCode(liveAreaCode.Trim());
+                this.cboNoiSong.EditValue = (liveAreaData != null ? liveAreaData.HeinLiveCode : null);
+                this.cboNoiSong.Properties.Buttons[1].Visible = (this.cboNoiSong.EditValue != null);
+
+                string liveArea = (this.cboNoiSong.EditValue ?? "").ToString();
+                if (HisConfigCFG.IsNotRequiredRightTypeInCaseOfHavingAreaCode)
+                {
+                    HIS.Desktop.LocalStorage.BackendData.ADO.MediOrgADO mediorg = MediOrgDataWorker.MediOrgADOs.SingleOrDefault(o => o.MEDI_ORG_CODE == (this.cboDKKCBBD.EditValue ?? "").ToString());
+                    if (mediorg != null)
+                        this.ProcessCaseWrongRoute(mediorg.MEDI_ORG_CODE, liveArea);
+
+                    if (liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K1
+                        || liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K2
+                        || liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K3)
+                    {
+                        this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE;
+                        this.dxValidationProviderControl.RemoveControlError(this.cboHeinRightRoute);
+                    }
+                }
+
+                this.ChangeDefaultHeinRatio();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         #endregion
 
         #region Private Method

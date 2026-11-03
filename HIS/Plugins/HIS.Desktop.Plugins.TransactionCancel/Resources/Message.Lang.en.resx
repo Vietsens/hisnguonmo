@@ -162,4 +162,7 @@
   <data name="Plugins_TransactionDepositCancel__HuyKemPhieuHoanUngCungLanThanhToan" xml:space="preserve">
     <value>Cancelling transaction {0} will also cancel repayment {1} from the same payment. Do you want to continue?</value>
   </data>
+  <data name="Plugins_TransactionDepositCancel__GiaoDichDaCoHoanUngVuiLongHuyTruoc" xml:space="preserve">
+    <value>The transaction already has repayment {0}. Please cancel the repayment first.</value>
+  </data>
 </root>

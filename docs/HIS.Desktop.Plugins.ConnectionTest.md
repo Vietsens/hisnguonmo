@@ -49,23 +49,45 @@ Cột `colMachineResult` ("KQ từ máy", tooltip "Kết quả từ máy xét ng
 Chi tiết phân tích/thiết kế: `docs/B_KyThuat_ConnectionTest_InBarcodeCG300.md`.
 - Chỉ áp dụng cho máy trạm khai báo config `CONFIG_KEY__HIS_DESKTOP__PLUGINS__CONNECTIONTEST__CG300_FOLDER` (thư mục `ALL` mà phần mềm CG đọc). Checkbox **"In tem CG300"** (tạo bằng code, cạnh ô tìm kiếm) **chỉ hiện khi kết nối được**: thư mục tồn tại + ghi được + tiến trình CG đang chạy (nếu khai báo `..._CG300_PROCESS_NAME`). Kiểm tra lúc load, khi bấm Tìm và trước mỗi lần ghi file.
 - Khi checkbox hiện **và** được tích: Enter ở ô tìm kiếm (máy quét gửi Enter) → mã **khác** lần quét trước ⇒ tìm; mã **trùng** lần quét trước và lưới có dữ liệu ⇒ in. Con trỏ luôn về ô tìm kiếm, nội dung bôi đen.
+- Quét xong **tự xử lý ngay**, không cần máy quét gửi Enter (nhận diện theo nhịp gõ nhanh, chờ 250ms sau ký tự cuối); gõ tay thì bấm Enter.
+- Ô quét (ô tìm kiếm, gợi ý "Quét mã...") nhận **barcode, mã y lệnh, mã điều trị hoặc mã bệnh nhân** — tìm như nhập vào ô tương ứng rồi bấm Tìm. Nhận diện bằng cách dò `api/LisSample/GetView` (phòng hiện tại, Limit 1) lần lượt `BARCODE__EXACT` → `SERVICE_REQ_CODE__EXACT` (bù 0 đủ 12) → `TREATMENT_CODE__EXACT` (đủ 12) → `PATIENT_CODE__EXACT` (đủ 10); khớp loại nào thì tìm lưới theo đúng điều kiện đó (bỏ `KEY_WORD`) và xóa trắng 3 ô Mã điều trị / Mã y lệnh / Mã bệnh nhân. Không khớp loại nào → tìm theo từ khóa như cũ. Quét lại cùng mã ⇒ in tem cho các mẫu đang hiển thị (cả lần điều trị / bệnh nhân / y lệnh).
 - In: lấy dịch vụ của các mẫu đang hiển thị → loại mẫu bệnh phẩm gán cho dịch vụ (`HIS_SERVICE_TESA`, cấu hình ở HisServiceTestSample) → `ContainerCode = TEST_SAMPLE_TYPE_CODE`. Mỗi (barcode × ống) = 1 bản ghi JSON `FyLabelResponseModel`; ghi `{barcode}_{time}.tmp` rồi đổi sang `.txt` trong thư mục `ALL`. Tên loại mẫu dạng `"Màu - Nguồn"` (VD `Purple - EDTA`) được tách thành `Container`/`Source`.
 - Sau khi ghi file: mẫu Chưa LM/Từ chối → gọi `api/LisSample/Sample` (hàm dùng chung `UpdateSampleTakenAfterPrint`, tôn trọng `LIS.LIS_SAMPLE.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE`), cập nhật dòng tại chỗ, **không reload lưới**.
 - Cảnh báo (không chặn các ống hợp lệ): mẫu chưa có barcode, dịch vụ chưa gán loại mẫu. Barcode đã gửi trong phiên → hỏi xác nhận in lại.
 
-### Duyệt / Hủy duyệt KQ ở khu kết quả + key Người duyệt KQ (bổ sung)
-Chi tiết: `docs/A_NghiepVu_ConnectionTest_DuyetKetQua.docx`, `docs/B_KyThuat_ConnectionTest_DuyetKetQua.docx`.
-- **Dùng lại nguyên luồng Duyệt KQ cấp mẫu** (cột "Duyệt KQ" trên lưới mẫu, "Duyệt KQ theo lô"): `api/LisSample/ApproveResult` / `api/LisSample/UnapproveResult`, dữ liệu `LIS_SAMPLE.RESULT_APPROVAL_LOGINNAME/USERNAME/TIME` (người duyệt = tài khoản đăng nhập, giờ server; lịch sử = event log LIS `LisSample_DuyetKetQua` / `LisSample_HuyDuyetKetQua`). **Không đổi DB, không phân quyền nút.**
-- Nút `btnApproveResult` đổi trạng thái theo mẫu đang chọn: CHAP_NHAN/CO_KQ → "Duyệt KQ"; DUYET_KQ → "Hủy duyệt KQ"; TRA_KQ → "Hủy duyệt KQ" (disable, cần hủy trả KQ trước); khác → disable. Bấm nút gọi lại đúng handler của cột lưới mẫu (`repositoryDuyetKetQuaE_ButtonClick` / `repositoryHuyDuyetKetQuaE_ButtonClick`) nên giữ mọi kiểm tra cũ (chấp nhận mẫu, chỉ số trống theo `IS_ALLOW_SAVE_WHEN_NOT_FULL_RESULT`, form chọn giờ khi `ALLOW_TO_EDIT_APPROVE_RESULT_TIME = 1`, in khi duyệt).
-- Bổ sung riêng cho nút: còn giá trị/ghi chú chỉ số sửa chưa lưu (`Item_Edit_Value = 1`) → yêu cầu lưu trước; chỉ tích một phần dịch vụ → xác nhận "duyệt áp dụng cho toàn bộ mẫu"; Hủy duyệt → hỏi xác nhận.
-- Khóa sửa kết quả khi đã duyệt: **giữ nguyên hành vi luồng cũ** (trạng thái DUYET_KQ khóa ô giá trị, chọn giá trị, ghi chú, giá trị cũ, mô tả); không khóa thêm nút.
-- Sau Duyệt/Hủy duyệt (từ nút mới hoặc cột lưới mẫu): `SyncApproveResultToTree` cập nhật ngay trạng thái mẫu vào cây chỉ số (khóa/mở ô) và 2 cột người duyệt, không load lại kết quả. Hủy duyệt từ cột lưới mẫu nay cập nhật lại `RESULT_APPROVAL_*` trên dòng mẫu.
-- **Điều kiện hiển thị** (22/10/2026 — theo nút "Duyệt KQ theo lô"):
-  - Nút `btnApproveResult` **luôn hiển thị**, không phụ thuộc config (giống `btnApproveListResult`). Mẫu đang chọn không ở CHAP_NHAN/CO_KQ/DUYET_KQ → nút **mờ**.
-  - 2 cột "Người duyệt KQ", "TG duyệt" **mặc định ẩn** như các cột ẩn khác của cây chỉ số; người dùng bật qua chuột phải tiêu đề cột → Column Chooser. Ẩn/hiện được lưu bởi `InitRestoreLayoutTreeListFromXml` (config `HIS.Desktop.ApplyRestoreLayout.ModuleLinks`).
-  - Lý do bỏ điều kiện config: config `LIS.*` chỉ nạp khi HIS cấu hình LIS nội bộ (`MOS.LIS.INTEGRATION_VERSION`/`INTEGRATE_OPTION`/`INTEGRATION_TYPE`); môi trường không nạp được thì nút bị ẩn dù `IS_SHOW_BUTTON_APPROVE_SAMPLE = 1`.
-  - Không thấy nút → máy trạm chưa nhận DLL `HIS.Desktop.Plugins.ConnectionTest.dll` mới.
-- Giới hạn: duyệt theo **mẫu (barcode)** → mọi dịch vụ của 1 mẫu cùng 1 người duyệt.
+### Duyệt / Hủy duyệt KQ theo từng dịch vụ (bổ sung)
+Chi tiết: `docs/A_NghiepVu_ConnectionTest_DuyetKetQua.docx`, `docs/B_KyThuat_ConnectionTest_DuyetKetQua.docx`, SQL `docs/SQL_ConnectionTest_DuyetKetQuaTheoDichVu.sql`.
+- **Bật / tắt bằng cấu hình HIS `HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService`** (`HisConfigCFG.IsApproveResultByService`, SQL `docs/SQL_ConnectionTest_DuyetKetQuaTheoDichVu_Config.sql`): `1` = bật; trống / khác 1 (**mặc định**) = tắt → ẩn nút, ẩn 2 cột (kể cả trong Column Chooser), không gọi `api/LisSampleService/Get`, không khóa ô theo dịch vụ, không đồng bộ cây sau Duyệt KQ cấp mẫu → **màn hình giữ nguyên nghiệp vụ cũ**. Các ý bên dưới áp dụng khi bật.
+- Lưu **theo từng dịch vụ**: 3 cột mới `LIS_SAMPLE_SERVICE.SERVICE_APPROVER_LOGINNAME/USERNAME/SERVICE_APPROVE_TIME` (người duyệt = token, giờ server). API LIS mới `api/LisSampleService/ApproveResult`, `UnapproveResult` (input `{ SampleId, SampleServiceIds }`), event log `LisSampleService_DuyetKetQuaDichVu` / `LisSampleService_HuyDuyetKetQuaDichVu`. Đọc qua `api/LisSampleService/Get` (SAMPLE_ID) — **không sửa view**.
+- Nút `btnApproveResult` **luôn hiển thị** (như "Duyệt KQ theo lô"), áp dụng cho **các dịch vụ được tích** (tích dòng chỉ số = tích dịch vụ của nó; bỏ dịch vụ không thực hiện):
+  - Có dịch vụ đủ KQ (SAMPLE_SERVICE_STT = Đã có KQ / Đã trả KQ) chưa duyệt → "Duyệt KQ", chỉ gửi các dịch vụ đó; mờ nếu mẫu CHUA_LM/DA_LM/TU_CHOI.
+  - Không có dịch vụ chờ duyệt, có dịch vụ đã duyệt → "Hủy duyệt KQ" (xác nhận); mờ nếu mẫu TRA_KQ.
+  - Còn lại → "Duyệt KQ" mờ ("Dịch vụ được tích chưa có đủ kết quả").
+  - Tính lại khi chọn mẫu, tích/bỏ tích (`treeList1_AfterCheckNode`), sau Duyệt/Hủy duyệt.
+- Duyệt: chỉ số của dịch vụ đích sửa chưa lưu (`Item_Edit_Value = 1`) → yêu cầu lưu trước.
+- Khóa sửa: dịch vụ đã duyệt (`TestLisResultADO.IS_SERVICE_APPROVED`) khóa ô giá trị / chọn giá trị / ghi chú / giá trị cũ / mô tả như DUYET_KQ; dịch vụ khác vẫn sửa được.
+- 2 cột "Người duyệt KQ", "TG duyệt" (theo dịch vụ) **mặc định ẩn**, bật qua Column Chooser (lưu bởi `InitRestoreLayoutTreeListFromXml`).
+- Frontend đọc/ghi qua class riêng `ADO/SampleServiceApproveADO` (JSON) → không phụ thuộc bản `LIS.EFMODEL.dll` / `LIS.SDO.dll` phía client.
+- Duyệt KQ cấp mẫu (cột "Duyệt KQ" lưới mẫu, "Duyệt KQ theo lô") **giữ nguyên, độc lập**; duyệt theo dịch vụ không đổi trạng thái mẫu. Sau duyệt cấp mẫu, `SyncApproveResultToTree` cập nhật trạng thái mẫu vào cây.
+- **Thứ tự triển khai:** SQL → backend LIS → frontend (backend mới map 3 cột; frontend mới gọi API mới).
+
+#### Không thấy nút / nút mờ — kiểm tra
+| Hiện tượng | Nguyên nhân | Xử lý |
+|---|---|---|
+| Không có nút "Duyệt KQ" | `HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService` ≠ 1, hoặc chưa đăng nhập lại sau khi đổi; hoặc máy trạm chạy DLL cũ | Đặt 1 → đăng xuất / đăng nhập lại; cập nhật plugin |
+| Mờ — "Mẫu chưa được chấp nhận…" | `SAMPLE_STT_ID` ∈ {1 Chưa LM, 2 Đã LM, 6 Từ chối} | Chấp nhận mẫu (cột "Duyệt mẫu") |
+| Mờ — "Dịch vụ được tích chưa có đủ kết quả" | Dịch vụ chưa `DA_CO_KQ` (2) / `DA_TRA_KQ` (3): máy chủ chỉ chuyển khi **mọi** `LIS_RESULT.VALUE` của dịch vụ có giá trị và đã Lưu | Nhập đủ mọi chỉ số (kể cả chỉ số ít dùng) → Lưu |
+| "Hủy duyệt KQ" mờ — "Mẫu đã trả kết quả…" | Mẫu `TRA_KQ` | Hủy trả KQ trước |
+
+**Log chẩn đoán** (khi cấu hình bật): mỗi lần tính trạng thái nút ghi 1 dòng Debug vào `Logs\LogSystem.txt`:
+`UpdateApproveResultButton: SAMPLE_ID=…; SAMPLE_STT_ID=…; loadedServices=…; checked=[ID:SERVICE_CODE/stt=…/noExecute=…/approved=…]; approvable=…; approved=…`.
+`loadedServices = 0` → `api/LisSampleService/Get` không trả dữ liệu; `checked` rỗng → dịch vụ tích không khớp `SAMPLE_SERVICE_ID`. Response API không được ghi log (chỉ có request, `SAMPLE_ID` trong `param` base64).
+
+#### Triển khai — lưu ý
+- SQL cấu hình `SQL_ConnectionTest_DuyetKetQuaTheoDichVu_Config.sql`: `CONFIG_CODE` là **mã tạm (01000)**, thay bằng mã kế tiếp chưa dùng trước khi chạy.
+- Gói backend: `E:\Release\Backend\LIS\2.98.0x64_DuyetKQTheoDichVu` (2.98.0x64 + 6 DLL: LIS.API, LIS.MANAGER, LIS.EFMODEL, LIS.SDO, LIS.LibraryMessage, LIS.LibraryEventLog + SQL + README). Bản phát hành LIS build cấu hình **Debug** (LIS.API x64).
+- Kiểm tra máy chủ LIS có API mới: `GET http://<LIS>/api/LisSampleService/ApproveResult` → 405 = có, 404 = chưa. Test: `http://192.168.1.201:98` (có từ 26/10/2026).
+- Source backend `E:\svn\IMSys\BACKEND\LIS` **chưa commit SVN** (commit bằng TortoiseSVN).
 
 ## 3. EFMODEL Sử Dụng
 
@@ -73,6 +95,7 @@ Chi tiết: `docs/A_NghiepVu_ConnectionTest_DuyetKetQua.docx`, `docs/B_KyThuat_C
 |--------|------|----------|
 | V_LIS_SAMPLE | View (LIS) | Dòng mẫu trên grid (ADO `LisSampleADO`); có `ID`, `SERVICE_REQ_CODE`, `PATIENT_CODE`, `BARCODE`, `SAMPLE_STT_ID` |
 | V_LIS_SAMPLE_SERVICE | View (LIS) | Dịch vụ của từng mẫu (`SAMPLE_ID`, `SERVICE_CODE`) — dùng cho bộ lọc Nhóm XN |
+| LIS_SAMPLE_SERVICE | Table (LIS) | Duyệt KQ theo dịch vụ: `SERVICE_APPROVER_LOGINNAME`, `SERVICE_APPROVER_USERNAME`, `SERVICE_APPROVE_TIME` (cột mới 22/10/2026), `SAMPLE_SERVICE_STT_ID`, `IS_NO_EXECUTE` — đọc qua api/LisSampleService/Get |
 | V_LIS_RESULT | View (LIS) | Kết quả từng chỉ số của mẫu (`SAMPLE_ID`, `SERVICE_CODE`) — kiểm tra "đã có KQ" + dữ liệu in |
 | V_LIS_MACHINE_RESULT | View (LIS) | Phiếu kết quả từ máy (`ID`, `SERVICE_REQ_CODE`, `BARCODE`, `CREATE_TIME`) — cột "KQ từ máy" |
 | V_LIS_MACHINE_INDEX_RESULT | View (LIS) | Giá trị chỉ số máy (`MACHINE_RESULT_ID`, `MACHINE_INDEX_CODE`, `VALUE`) — cột "KQ từ máy" |
@@ -94,17 +117,24 @@ Chi tiết: `docs/A_NghiepVu_ConnectionTest_DuyetKetQua.docx`, `docs/B_KyThuat_C
 | `cboServiceGroup` ("Nhóm XN:") | CheckedComboBoxEdit | Khu filter, cạnh "Phòng" (`lciServiceGroup`) | Multi-select; `SeparatorChar=';'`, `SelectAllItemVisible=true` ("(Tất cả)") |
 | `btnInKetQuaTongHop` ("In KQ tổng hợp") | SimpleButton | Nhóm nút dưới-trái, cạnh "Duyệt KQ theo lô" (`lciInKetQuaTongHop`) | — |
 | `chkPrintBarcodeCG300` ("In tem CG300") | CheckEdit (tạo runtime) | Bên phải ô tìm kiếm (`lciPrintBarcodeCG300`) | Chỉ hiện khi kết nối CG300; nhớ trạng thái qua ControlState `chkPrintBarcodeCG300` |
-| `btnApproveResult` ("Duyệt KQ" / "Hủy duyệt KQ") | SimpleButton | Hàng nút dưới, trước "Thêm người ký" (`lciApproveResult`) | Luôn hiển thị (như "Duyệt KQ theo lô") |
-| `colResultApprover` ("Người duyệt KQ"), `colResultApproveTime` ("TG duyệt") | TreeListColumn chỉ đọc, **mặc định ẩn** (bật qua Column Chooser) | Cuối cây chỉ số (`treeListSereServTein`) | FieldName `RESULT_APPROVER_USERNAME`, `RESULT_APPROVE_TIME_STR` (ADO `TestLisResultADO`), chỉ có giá trị ở dòng dịch vụ |
+| `btnApproveResult` ("Duyệt KQ" / "Hủy duyệt KQ") | SimpleButton | Hàng nút dưới, trước "Thêm người ký" (`lciApproveResult`) | Luôn hiển thị; áp dụng cho dịch vụ được tích |
+| `colResultApprover` ("Người duyệt KQ"), `colResultApproveTime` ("TG duyệt") | TreeListColumn chỉ đọc, **mặc định ẩn** (bật qua Column Chooser) | Cuối cây chỉ số | Người duyệt / TG duyệt **của từng dịch vụ**, chỉ ở dòng dịch vụ |
 
 Cả hai hiển thị mặc định, **không cần config bật/tắt**.
+
+### Ghi nhớ ẩn/hiện cột (cấu hình lưu bố cục)
+Bảng chỉ số (`treeListSereServTein`) chỉ lưu và khôi phục độ rộng, vị trí, ẩn/hiện cột khi key cấu hình HIS `HIS.Desktop.ApplyRestoreLayout.ModuleLinks` **có `HIS.Desktop.Plugins.ConnectionTest`** (kiểm tra trong `CustomizaButtonAndRestoreLayoutInControlProcess.IsAllowRestoreLayout`).
+- Chưa có trong key → log `isRestoreLayout:false`, không có thư mục `ModuleDesign\HIS.Desktop.Plugins.ConnectionTest` → bật cột (VD "KQ từ máy", "Người duyệt KQ", "TG duyệt") rồi mở lại là mất.
+- **Cách xử lý:** thêm `HIS.Desktop.Plugins.ConnectionTest` vào giá trị key (phân cách `,` hoặc `;`) → đăng nhập lại HIS → bật cột qua chuột phải tiêu đề cột → Column Chooser **một lần**; phần mềm ghi file `ModuleDesign\HIS.Desktop.Plugins.ConnectionTest\*.xml` (khi đổi độ rộng / vị trí / bộ lọc / ẩn-hiện cột) và tự khôi phục ở lần mở sau.
+- Lưu ý: bật key thì **mọi** lưới / cây của ConnectionTest đều lưu và khôi phục bố cục **theo từng máy trạm** (file nằm trong thư mục cài HIS của máy đó).
+- Key là cấu hình HIS (HisConfig) → không phụ thuộc việc nạp cấu hình LIS.
 
 ### Đa ngôn ngữ
 Khai báo trong `Resources/Lang.vi|en|my.resx`:
 `UC_ConnectionTest.btnInKetQuaTongHop.Text/.ToolTip`, `UC_ConnectionTest.lciServiceGroup.Text` — set trong `SetCaptionByLanguageKey()`.
 Thông báo riêng trong `Resources/Message.Lang.*` + accessor `ResourceMessage.cs`:
 `ChuaChonMauXetNghiem`, `MauKhongCungMotBenhNhan`, `CoMauChuaCoKetQua` ({0}=barcode), `NhomXNKhac`.
-Duyệt KQ: Lang `UC_ConnectionTest.btnApproveResult.Text/.TextUnapprove/.ToolTip/.ToolTipUnapprove/.ToolTipReturned/.ToolTipNoResult`, `UC_ConnectionTest.colResultApprover.Caption/.ToolTip`, `UC_ConnectionTest.colResultApproveTime.Caption/.ToolTip` (set trong `InitApproveResultControls()` sau restore layout); Message `VuiLongLuuTruocKhiDuyet`, `DuyetApDungToanBoMau` ({0}=barcode), `BanCoMuonHuyDuyetKetQuaMau` ({0}=barcode).
+Duyệt KQ: Lang `UC_ConnectionTest.btnApproveResult.Text/.TextUnapprove/.ToolTip/.ToolTipUnapprove/.ToolTipReturned/.ToolTipNoResult/.ToolTipNotAccepted`, `UC_ConnectionTest.colResultApprover.Caption/.ToolTip`, `UC_ConnectionTest.colResultApproveTime.Caption/.ToolTip`; Message `VuiLongLuuTruocKhiDuyet`, `BanCoMuonHuyDuyetKetQuaDichVu` ({0}=tên dịch vụ).
 
 ## 5. API Endpoints
 
@@ -122,8 +152,9 @@ Duyệt KQ: Lang `UC_ConnectionTest.btnApproveResult.Text/.TextUnapprove/.ToolTi
 | **Loại mẫu bệnh phẩm (CG300)** | api/HisTestSampleType/Get | MosConsumer | `HisTestSampleTypeFilter { IS_ACTIVE = 1 }` — nạp 1 lần |
 | **Dịch vụ ↔ loại mẫu (CG300)** | api/HisServiceTesa/Get | MosConsumer | `HisServiceTesaFilter { IS_ACTIVE = 1 }` — nạp 1 lần |
 | **Cập nhật đã lấy mẫu sau in tem (CG300/Bartender)** | api/LisSample/Sample | LisConsumer | `LisSampleSampleSDO` |
-| Duyệt KQ (sẵn có, dùng cho nút mới) | api/LisSample/ApproveResult | LisConsumer | `LisSampleApproveResultSDO { SampleId, ApproveTime }` |
-| Hủy duyệt KQ (sẵn có, dùng cho nút mới) | api/LisSample/UnapproveResult | LisConsumer | sampleId |
+| **Duyệt KQ theo dịch vụ** | api/LisSampleService/ApproveResult | LisConsumer | `{ SampleId, SampleServiceIds }` (API mới) |
+| **Hủy duyệt KQ theo dịch vụ** | api/LisSampleService/UnapproveResult | LisConsumer | `{ SampleId, SampleServiceIds }` (API mới) |
+| Thông tin duyệt theo dịch vụ | api/LisSampleService/Get | LisConsumer | `LisSampleServiceFilter { SAMPLE_ID }` (plugin), `{ SAMPLE_IDs }` (MPS) |
 
 Danh mục dùng cache RAM `BackendDataWorker.Get<V_HIS_SERVICE>()`, `<V_HIS_TEST_INDEX>`, `<V_HIS_TEST_INDEX_RANGE>`, `<V_LIS_TEST_INDEX_MAP>` (ánh xạ chỉ số máy ↔ chỉ số XN).
 
@@ -143,7 +174,7 @@ Danh mục dùng cache RAM `BackendDataWorker.Get<V_HIS_SERVICE>()`, `<V_HIS_TES
 
 Luồng in tổng hợp: `RichEditorStore.RunPrintTemplate("Mps000517", DelegateRunPrinterTongHop)` → `MpsPrinter.Run(PrintData)` (PreviewType `PrintNow`/`ShowDialog`).
 
-**Key người duyệt KQ (Mps000096 + Mps000517)** — dựng trong processor (`ServiceApproverBuilder`), không đổi PDO:
+**Key người duyệt KQ (Mps000096 + Mps000517)** — dựng trong processor (`ServiceApproverBuilder`), không đổi PDO. Nguồn: người duyệt **từng dịch vụ** (`api/LisSampleService/Get` theo SAMPLE_IDs); không có dịch vụ nào duyệt theo dịch vụ → dùng duyệt cấp mẫu `RESULT_APPROVAL_*`:
 - Object `ServiceApprover`: `APPROVER_LOGINNAME`, `APPROVER_USERNAME`, `PARENT_SERVICE_CODE`, `PARENT_SERVICE_NAME`, `APPROVE_TIME`, `APPROVE_TIME_STR` (dd/MM/yyyy HH:mm), `SERVICE_NAMES`. 1 dòng = 1 cặp (nhóm cha, người duyệt); trùng → 1 dòng, thời gian muộn nhất; DV không có nhóm cha → "Khác".
 - Single key `SERVICE_APPROVER_STR` = "Việt - XNSH - 12/10/2026 10:00, Duy - XNHH - 12/10/2026 10:10".
 - Mps000096 thêm `RESULT_APPROVAL_TIME_STR`; `RESULT_APPROVAL_USERNAME/LOGINNAME/TIME` có sẵn từ `V_LIS_SAMPLE`.
@@ -157,10 +188,18 @@ Luồng in tổng hợp: `RichEditorStore.RunPrintTemplate("Mps000517", Delegate
 | 15/07/2026 | phuongnm | Thêm cột **"KQ từ máy"** (`colMachineResult`, FieldName `MACHINE_RESULT_VALUE`) trên treeList chỉ số, đặt giữa "Máy trả KQ" và "ĐVT". Lưu ẩn/hiện cột qua `InitRestoreLayoutTreeListFromXml` (key `HIS.Desktop.ApplyRestoreLayout.ModuleLinks`). Khi config `HIS.Desktop.Plugins.ConnectionTest.IsResultLisMachine=1`: lấy KQ từ máy (`V_LIS_MACHINE_INDEX_RESULT.VALUE`) map sang chỉ số XN theo `V_LIS_TEST_INDEX_MAP` theo mã y lệnh (`FillMachineResultValueFromLisMachine`); ≠1: để trống. Thêm field ADO `MACHINE_RESULT_VALUE`, config `HisConfigCFG.IsResultLisMachine`, resource caption/tooltip vi/en/my. |
 
 | 13/10/2026 | vuongnd | **In tem barcode qua máy CG300 (Method 2)**: checkbox "In tem CG300" chỉ hiện khi máy trạm kết nối được CG300 (config `..._CG300_FOLDER` / `..._CG300_PROCESS_NAME`); quét mã để tìm, quét lại cùng mã để ghi file JSON `FyLabelResponseModel` vào thư mục `ALL` (ContainerCode = mã loại mẫu bệnh phẩm gán cho dịch vụ). Thêm partial `UC_ConnectionTest___CG300.cs`, thư mục `CG300/` (ADO, builder, file writer, connection checker), `Config/Cg300CFG.cs`; tách hàm dùng chung `UpdateSampleTakenAfterPrint` từ nhánh in Bartender; resource vi/en/my. |
+| 02/11/2026 | vuongnd | **CG300 – quét mã bất kỳ**: ô quét nhận barcode / mã y lệnh / mã điều trị / mã bệnh nhân (tự nhận diện theo thứ tự đó, bù số 0 như các ô mã), tìm như nút Tìm; quét lại cùng mã ⇒ in tem các mẫu đang hiển thị. Trước đây chỉ tìm theo từ khóa, kỹ thuật viên phải quét vào ô Mã điều trị (không bôi đen ⇒ mã bị nối đôi, không in). Thêm `CG300/EnumCg300ScanCodeType.cs`, `ResolveScanCodeCG300`/`ApplyScanFilterCG300`; gợi ý ô đổi thành "Quét mã...". |
+| 02/11/2026 | vuongnd | CG300: bắt Enter của máy quét ở **KeyDown** (`txtSearchKey_KeyDownCG300`, gắn bằng code) thay vì KeyUp — với máy quét KeyUp không tới nên không tìm/in, mã bị nối đôi trong ô. Sau mỗi lần quét chọn lại nội dung ô thêm 1 lần qua `BeginInvoke`; log `CG300 nhan Enter` mỗi lần quét. |
+| 02/11/2026 | vuongnd | CG300: **mỗi bệnh nhân 1 bản tin** — quét barcode / mã y lệnh được mở rộng ra cả mã điều trị của mẫu đó (lưới hiện đủ các chỉ định BN mang từ các phòng khám); khi in, mẫu được gom theo mã bệnh nhân (thiếu thì mã điều trị), ghi **1 file / bệnh nhân**, tên file `<mã BN>_<thời gian>.txt`. `ExistsSampleCG300` → `FindSampleCG300`, thêm `GetPatientKeyCG300`. |
+| 02/11/2026 | vuongnd | CG300: **quét xong tự tìm / tự in, không cần Enter** — nhận diện máy quét theo nhịp gõ (≥ 3 ký tự, trung bình ≤ 60ms/ký tự), xử lý sau 250ms không có phím mới (`timerScanCG300`); Enter đuôi của máy quét sau khi đã tự xử lý bị bỏ qua; gõ tay vẫn cần Enter. |
 
 | 17/10/2026 | vuongnd | **Duyệt / Hủy duyệt KQ ở khu kết quả + key Người duyệt KQ** (dùng lại luồng Duyệt KQ cấp mẫu, không đổi DB, không phân quyền): nút `btnApproveResult` đổi trạng thái theo mẫu, 2 cột chỉ đọc "Người duyệt KQ", "TG duyệt" cuối cây chỉ số; đồng bộ trạng thái duyệt vào cây sau Duyệt/Hủy duyệt; Hủy duyệt từ cột lưới mẫu cập nhật lại `RESULT_APPROVAL_*`. Partial mới `UC_ConnectionTest___DuyetKetQua.cs`, resource vi/en/my. Mps000096/Mps000517: object `ServiceApprover` + key `SERVICE_APPROVER_STR` (Mps000096 thêm `RESULT_APPROVAL_TIME_STR`). |
 | 22/10/2026 | vuongnd | Tài liệu: bổ sung điều kiện hiển thị nút Duyệt KQ / 2 cột người duyệt (`MUST_APPROVE_RESULT_BEFORE_RETURN = 1` hoặc `IS_SHOW_BUTTON_APPROVE_SAMPLE = 1`) và bảng kiểm tra khi không thấy nút (mục 2; A_NghiepVu mục 4.1; B_KyThuat mục 6.1). |
 | 22/10/2026 | vuongnd | Nút "Duyệt KQ / Hủy duyệt KQ" **luôn hiển thị** như nút "Duyệt KQ theo lô" (bỏ điều kiện config `MUST_APPROVE_RESULT_BEFORE_RETURN`/`IS_SHOW_BUTTON_APPROVE_SAMPLE` — môi trường không nạp được config LIS thì nút bị ẩn); 2 cột "Người duyệt KQ", "TG duyệt" mặc định ẩn, bật qua Column Chooser. Cập nhật A_NghiepVu mục 4.1/4.2/8/9/11, B_KyThuat mục 4/6.1/9/10. |
+| 22/10/2026 | vuongnd | **Duyệt KQ theo từng dịch vụ**: thêm 3 cột `LIS_SAMPLE_SERVICE.SERVICE_APPROVER_*`/`SERVICE_APPROVE_TIME` (SQL `SQL_ConnectionTest_DuyetKetQuaTheoDichVu.sql`), API LIS `api/LisSampleService/ApproveResult`/`UnapproveResult` (backend SVN); nút Duyệt/Hủy duyệt áp dụng cho dịch vụ được tích, bật khi dịch vụ đủ KQ (không chờ cả mẫu), khóa ô riêng dịch vụ đã duyệt, cột người duyệt theo dịch vụ; Mps000096/Mps000517 lấy người duyệt từng dịch vụ (dự phòng cấp mẫu). Thêm `ADO/SampleServiceApproveADO.cs`, `IS_SERVICE_APPROVED`. |
+| 23/10/2026 | vuongnd | Nút "Duyệt KQ / Hủy duyệt KQ" thao tác trên mẫu đang hiển thị kết quả (`rowSample`), không so với dòng đang focus — trước đây focus bị đổi (bàn phím / handler cấp mẫu `FocusedRowHandle - 1 / + 1`) khiến nút bấm không có tác dụng. |
+| 27/10/2026 | vuongnd | Thêm cấu hình `HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService` (mặc định tắt) để bật / tắt Duyệt KQ theo dịch vụ, không ảnh hưởng nghiệp vụ cũ: tắt thì ẩn nút + 2 cột (ShowInCustomizationForm = false), bỏ qua nạp / khóa / đồng bộ theo dịch vụ. SQL `SQL_ConnectionTest_DuyetKetQuaTheoDichVu_Config.sql`. Thêm log chẩn đoán trạng thái nút (`UpdateApproveResultButton: ...`). |
+| 27/10/2026 | vuongnd | Tài liệu: bổ sung bảng kiểm tra khi không thấy nút / nút mờ, cách đọc log chẩn đoán, lưu ý triển khai (CONFIG_CODE tạm, gói backend `2.98.0x64_DuyetKQTheoDichVu`, kiểm tra API 405/404, backend chưa commit SVN) — mục 2; A_NghiepVu mục 4.1/8, B_KyThuat mục 5.9/7. |
 
 ## 9. Test Cases
 
@@ -182,16 +221,21 @@ Luồng in tổng hợp: `RichEditorStore.RunPrintTemplate("Mps000517", Delegate
 - [ ] Thư mục không tồn tại / không ghi được / phần mềm CG chưa chạy → checkbox ẩn; bật CG rồi bấm Tìm → checkbox hiện, giữ trạng thái tích.
 - [ ] Quét mã A → tìm; quét lại A → sinh 1 file `.txt` trong `ALL`, số bản ghi = số ống; lưới không reload; mẫu Chưa LM → Đã LM.
 - [ ] Quét mã B ngay sau → tìm B (không in A).
+- [ ] Quét mã điều trị (VD `1165256`) → lưới hiện các mẫu của lần điều trị `000001165256`, 3 ô mã bị xóa trắng; quét lại → in tem tất cả mẫu đang hiển thị.
+- [ ] Quét mã y lệnh / mã bệnh nhân → tìm đúng; quét chuỗi không phải mã → tìm theo từ khóa như cũ.
 - [ ] Dịch vụ chưa gán loại mẫu / mẫu chưa có barcode → cảnh báo, các ống hợp lệ vẫn gửi.
 - [ ] Quét lại A lần 3 → hỏi xác nhận in lại, bản ghi `RePrint = Yes`.
 - [ ] Hồi quy: In barcode Bartender vẫn cập nhật trạng thái lấy mẫu như trước.
 
-### Duyệt / Hủy duyệt KQ ở khu kết quả
-- [ ] Mở màn hình với mọi cấu hình → luôn có nút "Duyệt KQ"; 2 cột người duyệt mặc định ẩn, bật qua Column Chooser, mở lại màn hình vẫn giữ.
-- [ ] Mẫu Có KQ → bấm "Duyệt KQ" → mẫu Duyệt KQ, cột Người duyệt = tài khoản đăng nhập, TG duyệt = giờ bấm, ô kết quả bị khóa, nút đổi "Hủy duyệt KQ".
-- [ ] Sửa giá trị chỉ số chưa lưu rồi bấm Duyệt → yêu cầu lưu trước.
-- [ ] Bỏ tích một số dịch vụ rồi bấm Duyệt → hỏi xác nhận duyệt toàn bộ mẫu.
-- [ ] Bấm "Hủy duyệt KQ" → xác nhận → cột trắng, ô kết quả mở lại.
-- [ ] Mẫu đã Trả KQ → nút "Hủy duyệt KQ" disable, tooltip cần hủy trả KQ trước.
-- [ ] Duyệt / Hủy duyệt từ cột "Duyệt KQ" trên lưới mẫu → nút và 2 cột cập nhật ngay.
-- [ ] In Mps000096 / Mps000517 → `SERVICE_APPROVER_STR` đúng định dạng "Người - Mã nhóm cha - dd/MM/yyyy HH:mm"; template cũ in bình thường.
+### Duyệt / Hủy duyệt KQ theo dịch vụ
+- [ ] Cấu hình `HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService` trống / khác 1 → không có nút "Duyệt KQ" ở khu kết quả, Column Chooser không có 2 cột người duyệt, màn hình như trước.
+- [ ] Cấu hình = 1, mở màn hình → luôn có nút "Duyệt KQ"; 2 cột người duyệt mặc định ẩn, bật qua Column Chooser, mở lại vẫn giữ.
+- [ ] Mẫu đã chấp nhận, dịch vụ A đủ KQ, B chưa → tích A → Duyệt → A có người duyệt, ô A khóa; B vẫn nhập được.
+- [ ] Tích B chưa đủ KQ → nút mờ "Dịch vụ được tích chưa có đủ kết quả".
+- [ ] Mẫu Đã lấy mẫu (chưa chấp nhận) → nút mờ "Mẫu chưa được chấp nhận".
+- [ ] User 2 duyệt B → A, B hiển thị đúng người duyệt riêng.
+- [ ] Sửa giá trị A chưa lưu → Duyệt → yêu cầu lưu trước.
+- [ ] Tích A đã duyệt → Hủy duyệt → xác nhận → cột trắng, ô mở lại.
+- [ ] Mẫu Đã trả KQ → "Hủy duyệt KQ" mờ.
+- [ ] In Mps000096 / Mps000517 → `SERVICE_APPROVER_STR` theo người duyệt từng dịch vụ; mẫu cũ dùng người duyệt cấp mẫu; template cũ in bình thường.
+- [ ] Duyệt KQ cấp mẫu (cột lưới mẫu / theo lô) hoạt động như cũ.

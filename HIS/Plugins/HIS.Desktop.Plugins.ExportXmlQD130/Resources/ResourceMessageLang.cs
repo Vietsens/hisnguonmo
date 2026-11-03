@@ -865,5 +865,72 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         }
 
         #endregion
+
+        #region Việc 61380 - Tự động xuất XML hồ sơ đủ 48 giờ
+
+        /// <summary>XML 48h</summary>
+        internal static string Xml48hCotKetQua { get { return GetMdInsightValue("Xml48hCotKetQua"); } }
+
+        /// <summary>Đã xuất</summary>
+        internal static string Xml48hDaXuat { get { return GetMdInsightValue("Xml48hDaXuat"); } }
+
+        /// <summary>Lỗi</summary>
+        internal static string Xml48hLoi { get { return GetMdInsightValue("Xml48hLoi"); } }
+
+        /// <summary>Đã xuất lúc {0}</summary>
+        internal static string Xml48hGoiYDaXuatLuc { get { return GetMdInsightValue("Xml48hGoiYDaXuatLuc"); } }
+
+        /// <summary>Xuất lỗi lúc {0}</summary>
+        internal static string Xml48hGoiYLoiLuc { get { return GetMdInsightValue("Xml48hGoiYLoiLuc"); } }
+
+        /// <summary>Không truy cập được thư mục lưu XML hồ sơ đủ 48 giờ: {0}</summary>
+        internal static string Xml48hLyDoKhongTruyCapThuMuc { get { return GetMdInsightValue("Xml48hLyDoKhongTruyCapThuMuc"); } }
+
+        /// <summary>Không nạp được dữ liệu hồ sơ</summary>
+        internal static string Xml48hLyDoKhongNapDuLieu { get { return GetMdInsightValue("Xml48hLyDoKhongNapDuLieu"); } }
+
+        /// <summary>Hồ sơ không có dịch vụ thanh toán</summary>
+        internal static string Xml48hLyDoKhongCoDichVu { get { return GetMdInsightValue("Xml48hLyDoKhongCoDichVu"); } }
+
+        /// <summary>Không sinh được file XML</summary>
+        internal static string Xml48hLyDoKhongSinhDuocFile { get { return GetMdInsightValue("Xml48hLyDoKhongSinhDuocFile"); } }
+
+        /// <summary>Không ghi được file XML: {0}</summary>
+        internal static string Xml48hLyDoGhiFileLoi { get { return GetMdInsightValue("Xml48hLyDoGhiFileLoi"); } }
+
+        /// <summary>Xuất XML hồ sơ đủ 48 giờ</summary>
+        internal static string Xml48hMenuXuatTay { get { return GetMdInsightValue("Xml48hMenuXuatTay"); } }
+
+        /// <summary>Đang có lượt xuất XML hồ sơ đủ 48 giờ chưa xong...</summary>
+        internal static string Xml48hDangChay { get { return GetMdInsightValue("Xml48hDangChay"); } }
+
+        /// <summary>Chưa khai Thư mục lưu XML hồ sơ đủ 48 giờ (nút Thư mục lưu).</summary>
+        internal static string Xml48hChuaKhaiThuMuc { get { return GetMdInsightValue("Xml48hChuaKhaiThuMuc"); } }
+
+        /// <summary>Đã tích tự động xuất XML 48 giờ nhưng chưa khai thư mục...</summary>
+        internal static string Xml48hCanhBaoTuDongChuaKhaiThuMuc { get { return GetMdInsightValue("Xml48hCanhBaoTuDongChuaKhaiThuMuc"); } }
+
+        /// <summary>Có {0} hồ sơ đã xuất XML 48 giờ thành công. Xuất lại sẽ ghi đè file cũ...</summary>
+        internal static string Xml48hHoiXuatLai { get { return GetMdInsightValue("Xml48hHoiXuatLai"); } }
+
+        /// <summary>Xuất XML hồ sơ đủ 48 giờ: {0} thành công, {1} lỗi, {2} không đủ điều kiện.</summary>
+        internal static string Xml48hKetQuaXuatTay { get { return GetMdInsightValue("Xml48hKetQuaXuatTay"); } }
+
+        /// <summary>... và {0} hồ sơ khác (xem log).</summary>
+        internal static string Xml48hVaConLai { get { return GetMdInsightValue("Xml48hVaConLai"); } }
+
+        /// <summary>Không phải hồ sơ điều trị ngoại trú/nội trú có số vào viện</summary>
+        internal static string Xml48hLyDoKhongPhaiDieuTri { get { return GetMdInsightValue("Xml48hLyDoKhongPhaiDieuTri"); } }
+
+        /// <summary>Chưa có thời gian nhập viện</summary>
+        internal static string Xml48hLyDoChuaNhapVien { get { return GetMdInsightValue("Xml48hLyDoChuaNhapVien"); } }
+
+        /// <summary>Chưa đủ 48 giờ kể từ lúc nhập viện (đủ lúc {0})</summary>
+        internal static string Xml48hLyDoChuaDu48h { get { return GetMdInsightValue("Xml48hLyDoChuaDu48h"); } }
+
+        /// <summary>Đã ra viện - XML hồ sơ đủ 48 giờ chỉ xuất cho hồ sơ đang điều trị (30/10/2026 mở rộng từ "ra viện trước 48 giờ" thành mọi hồ sơ đã ra viện, giữ tên khóa)</summary>
+        internal static string Xml48hLyDoRaVienTruoc48h { get { return GetMdInsightValue("Xml48hLyDoRaVienTruoc48h"); } }
+
+        #endregion
     }
 }

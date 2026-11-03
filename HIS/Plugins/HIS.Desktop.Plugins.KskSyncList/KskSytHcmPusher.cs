@@ -47,7 +47,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
         public string AuthBaseUrl { get; set; }     // 4 - địa chỉ dịch vụ xác thực
         public string ApiBaseUrl { get; set; }      // 5 - địa chỉ dịch vụ nghiệp vụ
         public string ClientId { get; set; }        // 6 - mã đơn vị gọi (X-Client-Id)
-        public string PrivateKeyPem { get; set; }   // 7 - khóa riêng để ký
+        public string PrivateKeyPem { get; set; }   // 7 - khóa riêng để ký (KHÔNG bắt buộc)
+
+        /// <summary>
+        /// Có khai khóa riêng để ký hay không. Việc 61297 (BV Nguyễn Tri Phương): viện gửi qua Sở,
+        /// Sở chuyển tiếp lên Bộ, viện không được cấp khóa riêng -> bỏ trống thì gửi KHÔNG kèm chữ ký.
+        /// </summary>
+        public bool HasSigningKey
+        {
+            get { return !string.IsNullOrWhiteSpace(PrivateKeyPem); }
+        }
 
         /// <summary>Đủ thông tin để LẤY PHIẾU TRUY CẬP (chưa cần khóa ký).</summary>
         public bool CanAuthenticate
@@ -60,15 +69,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
             }
         }
 
-        /// <summary>Đủ thông tin để GỬI bản tin — phải có thêm mã đơn vị và khóa ký.</summary>
+        /// <summary>Đủ thông tin để GỬI bản tin — phải có thêm mã đơn vị. Khóa ký không bắt buộc.</summary>
         public bool CanPush
         {
             get
             {
                 return CanAuthenticate
                     && !string.IsNullOrWhiteSpace(ApiBaseUrl)
-                    && !string.IsNullOrWhiteSpace(ClientId)
-                    && !string.IsNullOrWhiteSpace(PrivateKeyPem);
+                    && !string.IsNullOrWhiteSpace(ClientId);
             }
         }
 
@@ -81,7 +89,6 @@ namespace HIS.Desktop.Plugins.KskSyncList
             if (string.IsNullOrWhiteSpace(AuthBaseUrl)) m.Add("dia chi dich vu xac thuc (truong 4)");
             if (string.IsNullOrWhiteSpace(ApiBaseUrl)) m.Add("dia chi dich vu nghiep vu (truong 5)");
             if (string.IsNullOrWhiteSpace(ClientId)) m.Add("ma don vi goi (truong 6)");
-            if (string.IsNullOrWhiteSpace(PrivateKeyPem)) m.Add("khoa rieng de ky (truong 7)");
             return string.Join(", ", m.ToArray());
         }
 
@@ -269,6 +276,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 // Dựng chuỗi JSON MỘT LẦN rồi dùng cho cả băm lẫn gửi.
                 string json = JsonConvert.SerializeObject(body, Formatting.None);
+
+                // Quy dinh cua So: truong so KHONG duoc co duoi 0 thua (15 chu khong phai
+                // 15.0; 2.7 chu khong phai 2.70). Cong dung lai JSON roi moi bam, thu vien
+                // JSON cua cong tu rut gon "2.70" thanh 2.7 -> lech ma bam -> 401.
+                // Chuan hoa NGAY SAU khi dung chuoi, truoc khi bam va truoc khi gui, de
+                // chuoi dem bam va chuoi gui di luon la MOT.
+                json = KskSytHcmBodyBuilder.ChuanHoaSoTrongJson(json);
                 string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 string nonce = Guid.NewGuid().ToString("N").Substring(0, 12);
 
@@ -327,6 +341,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 bool bamMacDinh = !string.IsNullOrWhiteSpace(cfg.AuthBaseUrl)
                     && string.Equals(baseUrl, cfg.AuthBaseUrl, StringComparison.OrdinalIgnoreCase);
 
+                // Việc 61297: không khai khóa riêng -> gửi KHÔNG kèm X-API-Signature, không ký lại lượt 2.
+                bool coKhoaKy = cfg.HasSigningKey;
+                if (!coKhoaKy)
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm: chua khai khoa rieng (truong 7)"
+                        + " -> gui ban tin KHONG kem chu ky X-API-Signature");
+
                 bool bamBoKhoangTrang = bamMacDinh;
                 string hashB = null;
                 string signature = null;
@@ -349,8 +369,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                     string bodyForHash = bamBoKhoangTrang ? StripWhitespace(json) : json;
                     hashB = KskPemUtil.Sha256HexUpperForSyt(bodyForHash);
-                    signature = KskPemUtil.SignRsaSha256HexUpper(hashA + "." + hashB, cfg.PrivateKeyPem);
-                    if (string.IsNullOrEmpty(signature))
+                    signature = coKhoaKy
+                        ? KskPemUtil.SignRsaSha256HexUpper(hashA + "." + hashB, cfg.PrivateKeyPem) : "";
+                    if (coKhoaKy && string.IsNullOrEmpty(signature))
                     {
                         r.Message = "Khong ky duoc ban tin — kiem tra khoa rieng trong cau hinh";
                         Inventec.Common.Logging.LogSystem.Warn("SytHcm: " + r.Message);
@@ -379,7 +400,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     headers["X-Client-Id"] = NoWhitespace(cfg.ClientId, "X-Client-Id");
                     headers["X-Timestamp"] = NoWhitespace(timestamp, "X-Timestamp");
                     headers["X-Nonce"] = NoWhitespace(nonce, "X-Nonce");
-                    headers["X-API-Signature"] = NoWhitespace(signature, "X-API-Signature");
+                    if (coKhoaKy) headers["X-API-Signature"] = NoWhitespace(signature, "X-API-Signature");
 
                     res = HttpSend(baseUrl + uri, "POST", json, token, headers, out status);
                     r.HttpStatus = status;
@@ -401,6 +422,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     ParseResult(res, r);
 
                     if (!CongCheChuKy(r)) break;
+                    if (!coKhoaKy)
+                    {
+                        // Không có khóa thì ký lại cũng vô ích -> dừng, báo rõ để viện/Sở biết.
+                        Inventec.Common.Logging.LogSystem.Warn("SytHcm: cong yeu cau chu ky ("
+                            + r.ToString() + ") nhung chua khai khoa rieng (truong 7)"
+                            + " -> can So tat kiem chu ky cho don vi, hoac khai khoa rieng");
+                        break;
+                    }
 
                     if (lan == 0)
                     {

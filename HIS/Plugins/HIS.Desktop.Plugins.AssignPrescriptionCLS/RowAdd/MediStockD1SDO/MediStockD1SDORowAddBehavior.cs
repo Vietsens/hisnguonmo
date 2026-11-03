@@ -285,7 +285,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add.MediStockD1SDO
                     valid = valid && this.ValidTutorialAndUseForm();
                     valid = valid && HIS.Desktop.Plugins.AssignPrescriptionCLS.ValidAcinInteractiveWorker.ValidGrade(this.DataRow, MediMatyTypeADOs);
                     valid = valid && this.ValidThuocDaKeTrongNgay();
-                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob);
+                    valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds);
                     valid = valid && WarningOddConvertWorker.CheckWarningOddConvertAmount(frmAssignPrescription.currentMedicineTypeADOForEdit, this.Amount, frmAssignPrescription.ResetFocusMediMaty);
                 }
                 valid = valid && this.ValidKhaDungThuocTrongKho();

@@ -47,12 +47,15 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPrescription));
+            DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnChoose = new DevExpress.XtraEditors.SimpleButton();
+            this.btnCollapseAll = new DevExpress.XtraEditors.SimpleButton();
+            this.btnExpandAll = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlServiceReqSearch = new DevExpress.XtraGrid.GridControl();
             this.gridViewServiceReqSearch = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gvS_Gc_Stt = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -84,6 +87,13 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvSvs_gc_PatientDob = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gvSvs_gc_PatientGender = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gvSvs_gc_IntructinonTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridViewSelectMediMate = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gvSmm_gc_Name = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gvSmm_gc_Code = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gvSmm_gc_Concentra = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gvSmm_gc_ActiveIngr = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gvSmm_gc_Amount = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gvSmm_gc_Unit = new DevExpress.XtraGrid.Columns.GridColumn();
             this.dtIntructionDateTo = new DevExpress.XtraEditors.DateEdit();
             this.dtIntructionDatefrom = new DevExpress.XtraEditors.DateEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -95,7 +105,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciCollapseAll = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciExpandAll = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciServiceReqCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTreatmentCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPatientCode = new DevExpress.XtraLayout.LayoutControlItem();
@@ -123,6 +134,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             ((System.ComponentModel.ISupportInitialize)(this.gridControlSelecteServiceReq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSelecteServiceReq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnDelete)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewSelectMediMate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtIntructionDateTo.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtIntructionDateTo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtIntructionDatefrom.Properties.CalendarTimeProperties)).BeginInit();
@@ -136,7 +148,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCollapseAll)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExpandAll)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceReqCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).BeginInit();
@@ -148,6 +161,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             // layoutControl1
             // 
             this.layoutControl1.Controls.Add(this.btnChoose);
+            this.layoutControl1.Controls.Add(this.btnCollapseAll);
+            this.layoutControl1.Controls.Add(this.btnExpandAll);
             this.layoutControl1.Controls.Add(this.gridControlServiceReqSearch);
             this.layoutControl1.Controls.Add(this.ucPaging1);
             this.layoutControl1.Controls.Add(this.btnSearch);
@@ -176,7 +191,29 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.btnChoose.TabIndex = 15;
             this.btnChoose.Text = "Đồng ý (Ctrl A)";
             this.btnChoose.Click += new System.EventHandler(this.btnChoose_Click);
-            // 
+            //
+            // btnCollapseAll
+            //
+            this.btnCollapseAll.Location = new System.Drawing.Point(772, 508);
+            this.btnCollapseAll.Name = "btnCollapseAll";
+            this.btnCollapseAll.Size = new System.Drawing.Size(106, 22);
+            this.btnCollapseAll.StyleController = this.layoutControl1;
+            this.btnCollapseAll.TabIndex = 16;
+            this.btnCollapseAll.Text = "Thu gọn tất cả";
+            this.btnCollapseAll.ToolTip = "Ẩn thuốc/vật tư của tất cả bệnh nhân, chỉ còn dòng bệnh nhân";
+            this.btnCollapseAll.Click += new System.EventHandler(this.btnCollapseAll_Click);
+            //
+            // btnExpandAll
+            //
+            this.btnExpandAll.Location = new System.Drawing.Point(882, 508);
+            this.btnExpandAll.Name = "btnExpandAll";
+            this.btnExpandAll.Size = new System.Drawing.Size(106, 22);
+            this.btnExpandAll.StyleController = this.layoutControl1;
+            this.btnExpandAll.TabIndex = 17;
+            this.btnExpandAll.Text = "Mở rộng tất cả";
+            this.btnExpandAll.ToolTip = "Hiện thuốc/vật tư của tất cả bệnh nhân";
+            this.btnExpandAll.Click += new System.EventHandler(this.btnExpandAll_Click);
+            //
             // gridControlServiceReqSearch
             // 
             this.gridControlServiceReqSearch.Location = new System.Drawing.Point(2, 52);
@@ -413,7 +450,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.txtServiceReqCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtServiceReqCode_PreviewKeyDown);
             // 
             // gridControlSelecteServiceReq
-            // 
+            //
+            gridLevelNode1.LevelTemplate = this.gridViewSelectMediMate;
+            gridLevelNode1.RelationName = "MediMates";
+            this.gridControlSelecteServiceReq.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
+            gridLevelNode1});
             this.gridControlSelecteServiceReq.Location = new System.Drawing.Point(772, 2);
             this.gridControlSelecteServiceReq.MainView = this.gridViewSelecteServiceReq;
             this.gridControlSelecteServiceReq.Name = "gridControlSelecteServiceReq";
@@ -422,6 +463,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gridControlSelecteServiceReq.Size = new System.Drawing.Size(326, 502);
             this.gridControlSelecteServiceReq.TabIndex = 6;
             this.gridControlSelecteServiceReq.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewSelectMediMate,
             this.gridViewSelecteServiceReq});
             // 
             // gridViewSelecteServiceReq
@@ -436,9 +478,20 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvSvs_gc_IntructinonTime});
             this.gridViewSelecteServiceReq.GridControl = this.gridControlSelecteServiceReq;
             this.gridViewSelecteServiceReq.Name = "gridViewSelecteServiceReq";
+            this.gridViewSelecteServiceReq.OptionsDetail.ShowDetailTabs = false;
+            this.gridViewSelecteServiceReq.OptionsDetail.SmartDetailExpandButtonMode = DevExpress.XtraGrid.Views.Grid.DetailExpandButtonMode.CheckAllDetails;
             this.gridViewSelecteServiceReq.OptionsView.ColumnAutoWidth = false;
             this.gridViewSelecteServiceReq.OptionsView.ShowGroupPanel = false;
             this.gridViewSelecteServiceReq.OptionsView.ShowIndicator = false;
+            this.gridViewSelecteServiceReq.LevelIndent = 45;
+            this.gridViewSelecteServiceReq.LeftCoordChanged += new System.EventHandler(this.gridViewSelecteServiceReq_LeftCoordChanged);
+            this.gridViewSelecteServiceReq.TopRowChanged += new System.EventHandler(this.gridViewSelecteServiceReq_LeftCoordChanged);
+            this.gridViewSelecteServiceReq.MasterRowEmpty += new DevExpress.XtraGrid.Views.Grid.MasterRowEmptyEventHandler(this.gridViewSelecteServiceReq_MasterRowEmpty);
+            this.gridViewSelecteServiceReq.MasterRowExpanded += new DevExpress.XtraGrid.Views.Grid.CustomMasterRowEventHandler(this.gridViewSelecteServiceReq_MasterRowExpanded);
+            this.gridViewSelecteServiceReq.MasterRowCollapsed += new DevExpress.XtraGrid.Views.Grid.CustomMasterRowEventHandler(this.gridViewSelecteServiceReq_MasterRowCollapsed);
+            this.gridViewSelecteServiceReq.MasterRowGetChildList += new DevExpress.XtraGrid.Views.Grid.MasterRowGetChildListEventHandler(this.gridViewSelecteServiceReq_MasterRowGetChildList);
+            this.gridViewSelecteServiceReq.MasterRowGetRelationName += new DevExpress.XtraGrid.Views.Grid.MasterRowGetRelationNameEventHandler(this.gridViewSelecteServiceReq_MasterRowGetRelationName);
+            this.gridViewSelecteServiceReq.MasterRowGetRelationCount += new DevExpress.XtraGrid.Views.Grid.MasterRowGetRelationCountEventHandler(this.gridViewSelecteServiceReq_MasterRowGetRelationCount);
             this.gridViewSelecteServiceReq.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewSelecteServiceReq_CustomUnboundColumnData);
             // 
             // gvSvs_gc_STT
@@ -450,7 +503,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvSvs_gc_STT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gvSvs_gc_STT.Visible = true;
             this.gvSvs_gc_STT.VisibleIndex = 0;
-            this.gvSvs_gc_STT.Width = 30;
+            this.gvSvs_gc_STT.Width = 45;
             // 
             // gvSvs_gc_Delete
             // 
@@ -522,7 +575,88 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvSvs_gc_IntructinonTime.Visible = true;
             this.gvSvs_gc_IntructinonTime.VisibleIndex = 6;
             this.gvSvs_gc_IntructinonTime.Width = 120;
-            // 
+            //
+            // gridViewSelectMediMate
+            //
+            this.gridViewSelectMediMate.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gvSmm_gc_Name,
+            this.gvSmm_gc_Code,
+            this.gvSmm_gc_Concentra,
+            this.gvSmm_gc_ActiveIngr,
+            this.gvSmm_gc_Amount,
+            this.gvSmm_gc_Unit});
+            this.gridViewSelectMediMate.GridControl = this.gridControlSelecteServiceReq;
+            this.gridViewSelectMediMate.Name = "gridViewSelectMediMate";
+            this.gridViewSelectMediMate.OptionsBehavior.Editable = false;
+            this.gridViewSelectMediMate.OptionsCustomization.AllowFilter = false;
+            this.gridViewSelectMediMate.OptionsCustomization.AllowSort = false;
+            this.gridViewSelectMediMate.OptionsDetail.EnableMasterViewMode = false;
+            this.gridViewSelectMediMate.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
+            this.gridViewSelectMediMate.LeftCoordChanged += new System.EventHandler(this.gridViewSelectMediMate_LeftCoordChanged);
+            this.gridViewSelectMediMate.OptionsView.ColumnAutoWidth = false;
+            this.gridViewSelectMediMate.OptionsView.ShowGroupPanel = false;
+            this.gridViewSelectMediMate.OptionsView.ShowIndicator = false;
+            this.gridViewSelectMediMate.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewSelectMediMate_CustomUnboundColumnData);
+            //
+            // gvSmm_gc_Name
+            //
+            this.gvSmm_gc_Name.Caption = "Tên";
+            this.gvSmm_gc_Name.FieldName = "MEDI_MATE_TYPE_NAME_STR";
+            this.gvSmm_gc_Name.Name = "gvSmm_gc_Name";
+            this.gvSmm_gc_Name.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gvSmm_gc_Name.Visible = true;
+            this.gvSmm_gc_Name.VisibleIndex = 0;
+            this.gvSmm_gc_Name.Width = 150;
+            //
+            // gvSmm_gc_Code
+            //
+            this.gvSmm_gc_Code.Caption = "Mã thuốc";
+            this.gvSmm_gc_Code.FieldName = "MEDI_MATE_TYPE_CODE";
+            this.gvSmm_gc_Code.Name = "gvSmm_gc_Code";
+            this.gvSmm_gc_Code.Visible = true;
+            this.gvSmm_gc_Code.VisibleIndex = 1;
+            this.gvSmm_gc_Code.Width = 70;
+            //
+            // gvSmm_gc_Concentra
+            //
+            this.gvSmm_gc_Concentra.Caption = "Hàm lượng";
+            this.gvSmm_gc_Concentra.FieldName = "CONCENTRA";
+            this.gvSmm_gc_Concentra.Name = "gvSmm_gc_Concentra";
+            this.gvSmm_gc_Concentra.Visible = true;
+            this.gvSmm_gc_Concentra.VisibleIndex = 2;
+            this.gvSmm_gc_Concentra.Width = 70;
+            //
+            // gvSmm_gc_ActiveIngr
+            //
+            this.gvSmm_gc_ActiveIngr.Caption = "Hoạt chất";
+            this.gvSmm_gc_ActiveIngr.FieldName = "ACTIVE_INGR_BHYT_NAME";
+            this.gvSmm_gc_ActiveIngr.Name = "gvSmm_gc_ActiveIngr";
+            this.gvSmm_gc_ActiveIngr.Visible = true;
+            this.gvSmm_gc_ActiveIngr.VisibleIndex = 3;
+            this.gvSmm_gc_ActiveIngr.Width = 100;
+            //
+            // gvSmm_gc_Amount
+            //
+            this.gvSmm_gc_Amount.AppearanceCell.Options.UseTextOptions = true;
+            this.gvSmm_gc_Amount.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gvSmm_gc_Amount.Caption = "Số lượng";
+            this.gvSmm_gc_Amount.DisplayFormat.FormatString = "#,##0.####";
+            this.gvSmm_gc_Amount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gvSmm_gc_Amount.FieldName = "EXP_AMOUNT";
+            this.gvSmm_gc_Amount.Name = "gvSmm_gc_Amount";
+            this.gvSmm_gc_Amount.Visible = true;
+            this.gvSmm_gc_Amount.VisibleIndex = 4;
+            this.gvSmm_gc_Amount.Width = 55;
+            //
+            // gvSmm_gc_Unit
+            //
+            this.gvSmm_gc_Unit.Caption = "ĐVT";
+            this.gvSmm_gc_Unit.FieldName = "SERVICE_UNIT_NAME";
+            this.gvSmm_gc_Unit.Name = "gvSmm_gc_Unit";
+            this.gvSmm_gc_Unit.Visible = true;
+            this.gvSmm_gc_Unit.VisibleIndex = 5;
+            this.gvSmm_gc_Unit.Width = 60;
+            //
             // dtIntructionDateTo
             // 
             this.dtIntructionDateTo.EditValue = null;
@@ -574,7 +708,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.layoutControlItem3,
             this.layoutControlItem10,
             this.layoutControlItem12,
-            this.emptySpaceItem2,
+            this.lciCollapseAll,
+            this.lciExpandAll,
             this.lciServiceReqCode,
             this.lciTreatmentCode,
             this.lciPatientCode,
@@ -666,13 +801,23 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
-            // emptySpaceItem2
-            // 
-            this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(770, 506);
-            this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(220, 26);
-            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            // lciCollapseAll
+            //
+            this.lciCollapseAll.Control = this.btnCollapseAll;
+            this.lciCollapseAll.Location = new System.Drawing.Point(770, 506);
+            this.lciCollapseAll.Name = "lciCollapseAll";
+            this.lciCollapseAll.Size = new System.Drawing.Size(110, 26);
+            this.lciCollapseAll.TextSize = new System.Drawing.Size(0, 0);
+            this.lciCollapseAll.TextVisible = false;
+            //
+            // lciExpandAll
+            //
+            this.lciExpandAll.Control = this.btnExpandAll;
+            this.lciExpandAll.Location = new System.Drawing.Point(880, 506);
+            this.lciExpandAll.Name = "lciExpandAll";
+            this.lciExpandAll.Size = new System.Drawing.Size(110, 26);
+            this.lciExpandAll.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExpandAll.TextVisible = false;
             // 
             // lciServiceReqCode
             // 
@@ -824,6 +969,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             ((System.ComponentModel.ISupportInitialize)(this.gridControlSelecteServiceReq)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSelecteServiceReq)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnDelete)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewSelectMediMate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtIntructionDateTo.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtIntructionDateTo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtIntructionDatefrom.Properties.CalendarTimeProperties)).EndInit();
@@ -837,7 +983,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCollapseAll)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExpandAll)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceReqCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).EndInit();
@@ -880,7 +1027,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraEditors.SimpleButton btnCollapseAll;
+        private DevExpress.XtraEditors.SimpleButton btnExpandAll;
+        private DevExpress.XtraLayout.LayoutControlItem lciCollapseAll;
+        private DevExpress.XtraLayout.LayoutControlItem lciExpandAll;
         private DevExpress.XtraGrid.Columns.GridColumn gvS_Gc_Stt;
         private DevExpress.XtraGrid.Columns.GridColumn gvS_Gc_ServiceReqCode;
         private DevExpress.XtraGrid.Columns.GridColumn gvS_Gc_TreatmentCode;
@@ -900,6 +1050,13 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
         private DevExpress.XtraGrid.Columns.GridColumn gvSvs_gc_PatientGender;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnDelete;
         private DevExpress.XtraGrid.Columns.GridColumn gvSvs_gc_IntructinonTime;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewSelectMediMate;
+        private DevExpress.XtraGrid.Columns.GridColumn gvSmm_gc_Name;
+        private DevExpress.XtraGrid.Columns.GridColumn gvSmm_gc_Code;
+        private DevExpress.XtraGrid.Columns.GridColumn gvSmm_gc_Concentra;
+        private DevExpress.XtraGrid.Columns.GridColumn gvSmm_gc_ActiveIngr;
+        private DevExpress.XtraGrid.Columns.GridColumn gvSmm_gc_Amount;
+        private DevExpress.XtraGrid.Columns.GridColumn gvSmm_gc_Unit;
         private DevExpress.XtraBars.BarManager barManagerShorcut;
         private DevExpress.XtraBars.Bar bar1;
         private DevExpress.XtraBars.BarDockControl barDockControl1;

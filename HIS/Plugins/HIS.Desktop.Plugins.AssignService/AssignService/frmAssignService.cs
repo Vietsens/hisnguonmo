@@ -2595,7 +2595,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
                     else if (e.Column.FieldName == "TEST_SAMPLE_TYPE_ID")
                     {
-                        if ((!((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1"))) && data.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == data.SERVICE_TYPE_ID))
+                        if (data.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == data.SERVICE_TYPE_ID))
                         {
                             e.RepositoryItem = this.repSampleType;
                         }
@@ -2764,7 +2764,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             }
                             ValidOnlyShowNoticeService(sereServADO);
                             // qtcode2
-                            if ((!((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1"))) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
+                            if (sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
                             {
                                 if (this.testSampleTypeId > 0)
                                 {
@@ -2852,7 +2852,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         if (sereServADO.IsChecked)
                         {
                             //Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;
-                            if ((!((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1"))) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
+                            if (sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
                             {
                                 if (dataListTestSampleType != null && dataListTestSampleType.Count > 0 && sereServADO.TEST_SAMPLE_TYPE_ID == 0 && !string.IsNullOrEmpty(sereServADO.TEST_SAMPLE_TYPE_CODE_DEFAULT))
                                 {
@@ -3666,7 +3666,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         if (sereServADO.IsChecked)
                         {
                             //Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;
-                            if ((!((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1"))) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
+                            if (sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
                             {
                                 UpdateTestSampleTypeCombo(sereServADO, ref testSampleTypeId);
                                 if (testSampleTypeId > 0)
@@ -4462,7 +4462,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                         continue;
                                     }
                                     //Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;
-                                    if ((!((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1"))) && service.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == service.SERVICE_TYPE_ID))
+                                    if (service.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == service.SERVICE_TYPE_ID))
                                     {
                                         if (dataListTestSampleType != null && dataListTestSampleType.Count > 0 && service.TEST_SAMPLE_TYPE_ID == 0 && !string.IsNullOrEmpty(service.TEST_SAMPLE_TYPE_CODE_DEFAULT))
                                         {
@@ -6257,7 +6257,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     lstSubIcd.Add(item);
                             }
                         }
-                        isValid = isValid && checkContraindicated(lstIcd, lstSubIcd, icdServicePhacDos, serviceCheckeds__Send);
+                        //12072: key HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT = 1 thi chong chi dinh chi ap dung voi doi tuong BHYT (cung dieu kien voi phac do); key khac 1 thi giu nguyen nhu hien tai
+                        if (isValidICD)
+                            isValid = isValid && checkContraindicated(lstIcd, lstSubIcd, icdServicePhacDos, serviceCheckeds__Send);
                         isValid = isValid && ValidSereServWithOtherPaySource(serviceCheckeds__Send);
                         IsTreatmentInBedRoom = true;
                         isValid = isValid && ValidSereServWithBed(serviceCheckeds__Send);
@@ -11295,7 +11297,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 {
 
                                     //Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;
-                                    if ((!((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1"))) && service.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == service.SERVICE_TYPE_ID))
+                                    if (service.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == service.SERVICE_TYPE_ID))
                                     {
                                         if (dataListTestSampleType != null && dataListTestSampleType.Count > 0 && service.TEST_SAMPLE_TYPE_ID == 0 && !string.IsNullOrEmpty(service.TEST_SAMPLE_TYPE_CODE_DEFAULT))
                                         {

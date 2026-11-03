@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTreatmentList));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject85 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject86 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -131,6 +132,10 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject166 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject167 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject168 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject169 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject170 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject171 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject172 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.btnBillDone = new DevExpress.XtraEditors.SimpleButton();
@@ -213,6 +218,12 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.repositoryItembtnFunPay = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItembtnFundUnPay = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.grFundAllocation = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItembtnFundAllocation = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.grFundAllocationStatus = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grFundAllocationFinishUser = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grFundAllocationFinishTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grFundAllocationTotalPrice = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutView1 = new DevExpress.XtraGrid.Views.Layout.LayoutView();
             this.layoutViewColumn1 = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
             this.layoutViewField_ORDER = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
@@ -321,6 +332,7 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnFunPay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnFundUnPay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnFundAllocation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_ORDER)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_STATUST)).BeginInit();
@@ -411,12 +423,17 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.btnBillDone.TabIndex = 14;
             this.btnBillDone.Text = "Quỹ đã thanh toán (Ctrl D)";
             this.btnBillDone.Click += new System.EventHandler(this.btnBillDone_Click);
-            // 
+            //
+            // toolTipController1
+            //
+            this.toolTipController1.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController1_GetActiveObjectInfo);
+            //
             // gridControlTreatmentList
-            // 
+            //
             this.gridControlTreatmentList.Location = new System.Drawing.Point(2, 52);
             this.gridControlTreatmentList.MainView = this.gridViewtreatmentList;
             this.gridControlTreatmentList.Name = "gridControlTreatmentList";
+            this.gridControlTreatmentList.ToolTipController = this.toolTipController1;
             this.gridControlTreatmentList.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItembtnTimeLine,
             this.repositoryItembtnEditTreatment,
@@ -440,7 +457,8 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.repositoryItembtnEdit_Print,
             this.repositoryItembtnFunPay,
             this.repositoryItembtnFundUnPay,
-            this.repositoryItemCheckEdit1});
+            this.repositoryItemCheckEdit1,
+            this.repositoryItembtnFundAllocation});
             this.gridControlTreatmentList.ShowOnlyPredefinedDetails = true;
             this.gridControlTreatmentList.Size = new System.Drawing.Size(1014, 483);
             this.gridControlTreatmentList.TabIndex = 13;
@@ -504,7 +522,12 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grFundStatus,
             this.grFundIssueTime,
             this.grFundPayTime,
-            this.grVirTotalPatientPrice});
+            this.grVirTotalPatientPrice,
+            this.grFundAllocation,
+            this.grFundAllocationStatus,
+            this.grFundAllocationFinishUser,
+            this.grFundAllocationFinishTime,
+            this.grFundAllocationTotalPrice});
             this.gridViewtreatmentList.GridControl = this.gridControlTreatmentList;
             this.gridViewtreatmentList.Name = "gridViewtreatmentList";
             this.gridViewtreatmentList.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
@@ -760,6 +783,7 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grIsFundPay.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.grIsFundPay.Name = "grIsFundPay";
             this.grIsFundPay.OptionsColumn.ShowCaption = false;
+            this.grIsFundPay.ToolTip = "Đánh dấu Quỹ đã thanh toán";
             this.grIsFundPay.Visible = true;
             this.grIsFundPay.VisibleIndex = 1;
             this.grIsFundPay.Width = 20;
@@ -899,8 +923,8 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grTreatmentCode.OptionsColumn.AllowEdit = false;
             this.grTreatmentCode.ToolTip = "Mã điều trị";
             this.grTreatmentCode.Visible = true;
-            this.grTreatmentCode.VisibleIndex = 2;
-            this.grTreatmentCode.Width = 86;
+            this.grTreatmentCode.VisibleIndex = 3;
+            this.grTreatmentCode.Width = 100;
             // 
             // grPatientCode
             // 
@@ -911,7 +935,7 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grPatientCode.OptionsColumn.AllowEdit = false;
             this.grPatientCode.ToolTip = "Mã bệnh nhân";
             this.grPatientCode.Visible = true;
-            this.grPatientCode.VisibleIndex = 3;
+            this.grPatientCode.VisibleIndex = 4;
             this.grPatientCode.Width = 87;
             // 
             // grVirPatientName
@@ -923,7 +947,7 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grVirPatientName.OptionsColumn.AllowEdit = false;
             this.grVirPatientName.ToolTip = "Tên bệnh nhân";
             this.grVirPatientName.Visible = true;
-            this.grVirPatientName.VisibleIndex = 4;
+            this.grVirPatientName.VisibleIndex = 5;
             this.grVirPatientName.Width = 141;
             // 
             // gridColumn2
@@ -955,7 +979,7 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grDobSt.ToolTip = "Ngày sinh";
             this.grDobSt.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grDobSt.Visible = true;
-            this.grDobSt.VisibleIndex = 5;
+            this.grDobSt.VisibleIndex = 6;
             this.grDobSt.Width = 80;
             // 
             // grGenderName
@@ -966,8 +990,8 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grGenderName.OptionsColumn.AllowEdit = false;
             this.grGenderName.ToolTip = "Giới tính";
             this.grGenderName.Visible = true;
-            this.grGenderName.VisibleIndex = 6;
-            this.grGenderName.Width = 50;
+            this.grGenderName.VisibleIndex = 7;
+            this.grGenderName.Width = 70;
             // 
             // grVirAddress
             // 
@@ -998,8 +1022,8 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grInTimeStr.ToolTip = "Ngày vào viện";
             this.grInTimeStr.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grInTimeStr.Visible = true;
-            this.grInTimeStr.VisibleIndex = 7;
-            this.grInTimeStr.Width = 80;
+            this.grInTimeStr.VisibleIndex = 8;
+            this.grInTimeStr.Width = 100;
             // 
             // grInOrder
             // 
@@ -1189,7 +1213,8 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grFundName.OptionsColumn.AllowEdit = false;
             this.grFundName.ToolTip = "Tên Quỹ";
             this.grFundName.Visible = true;
-            this.grFundName.VisibleIndex = 8;
+            this.grFundName.VisibleIndex = 9;
+            this.grFundName.Width = 150;
             // 
             // grFundStatus
             // 
@@ -1200,7 +1225,8 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grFundStatus.ToolTip = "Trạng thái nộp Quỹ";
             this.grFundStatus.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grFundStatus.Visible = true;
-            this.grFundStatus.VisibleIndex = 9;
+            this.grFundStatus.VisibleIndex = 10;
+            this.grFundStatus.Width = 130;
             // 
             // grFundIssueTime
             // 
@@ -1211,8 +1237,8 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grFundIssueTime.ToolTip = "Ngày Gửi hồ sơ";
             this.grFundIssueTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grFundIssueTime.Visible = true;
-            this.grFundIssueTime.VisibleIndex = 10;
-            this.grFundIssueTime.Width = 80;
+            this.grFundIssueTime.VisibleIndex = 11;
+            this.grFundIssueTime.Width = 110;
             // 
             // grFundPayTime
             // 
@@ -1223,8 +1249,8 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grFundPayTime.ToolTip = "Ngày Quỹ thanh toán";
             this.grFundPayTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grFundPayTime.Visible = true;
-            this.grFundPayTime.VisibleIndex = 11;
-            this.grFundPayTime.Width = 80;
+            this.grFundPayTime.VisibleIndex = 12;
+            this.grFundPayTime.Width = 140;
             // 
             // grVirTotalPatientPrice
             // 
@@ -1235,8 +1261,81 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             this.grVirTotalPatientPrice.ToolTip = "Số tiền bệnh nhân phải trả";
             this.grVirTotalPatientPrice.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grVirTotalPatientPrice.Visible = true;
-            this.grVirTotalPatientPrice.VisibleIndex = 12;
-            this.grVirTotalPatientPrice.Width = 98;
+            this.grVirTotalPatientPrice.VisibleIndex = 13;
+            this.grVirTotalPatientPrice.Width = 170;
+            // 
+            // grFundAllocation
+            // 
+            this.grFundAllocation.Caption = "Phân bổ";
+            this.grFundAllocation.ColumnEdit = this.repositoryItembtnFundAllocation;
+            this.grFundAllocation.FieldName = "FUND_ALLOCATION_BTN";
+            this.grFundAllocation.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.grFundAllocation.Name = "grFundAllocation";
+            this.grFundAllocation.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.grFundAllocation.OptionsColumn.ShowCaption = false;
+            this.grFundAllocation.OptionsFilter.AllowFilter = false;
+            this.grFundAllocation.ToolTip = "Phân bổ quỹ";
+            this.grFundAllocation.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grFundAllocation.Visible = true;
+            this.grFundAllocation.VisibleIndex = 2;
+            this.grFundAllocation.Width = 60;
+            // 
+            // repositoryItembtnFundAllocation
+            // 
+            this.repositoryItembtnFundAllocation.AutoHeight = false;
+            this.repositoryItembtnFundAllocation.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Phân bổ", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(null)), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject169, serializableAppearanceObject170, serializableAppearanceObject171, serializableAppearanceObject172, "Phân bổ quỹ", null, null, true)});
+            this.repositoryItembtnFundAllocation.Name = "repositoryItembtnFundAllocation";
+            this.repositoryItembtnFundAllocation.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItembtnFundAllocation.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItembtnFundAllocation_ButtonClick);
+            // 
+            // grFundAllocationStatus
+            // 
+            this.grFundAllocationStatus.Caption = "Trạng thái phân bổ";
+            this.grFundAllocationStatus.FieldName = "FUND_ALLOCATION_STATUS";
+            this.grFundAllocationStatus.Name = "grFundAllocationStatus";
+            this.grFundAllocationStatus.OptionsColumn.AllowEdit = false;
+            this.grFundAllocationStatus.ToolTip = "Trạng thái phân bổ";
+            this.grFundAllocationStatus.Visible = true;
+            this.grFundAllocationStatus.VisibleIndex = 14;
+            this.grFundAllocationStatus.Width = 160;
+            // 
+            // grFundAllocationFinishUser
+            // 
+            this.grFundAllocationFinishUser.Caption = "Người chốt";
+            this.grFundAllocationFinishUser.FieldName = "FUND_ALLOCATION_FINISH_USERNAME";
+            this.grFundAllocationFinishUser.Name = "grFundAllocationFinishUser";
+            this.grFundAllocationFinishUser.OptionsColumn.AllowEdit = false;
+            this.grFundAllocationFinishUser.ToolTip = "Người chốt";
+            this.grFundAllocationFinishUser.Visible = true;
+            this.grFundAllocationFinishUser.VisibleIndex = 15;
+            this.grFundAllocationFinishUser.Width = 120;
+            // 
+            // grFundAllocationFinishTime
+            // 
+            this.grFundAllocationFinishTime.Caption = "Thời gian chốt";
+            this.grFundAllocationFinishTime.FieldName = "FUND_ALLOCATION_FINISH_TIME_STR";
+            this.grFundAllocationFinishTime.Name = "grFundAllocationFinishTime";
+            this.grFundAllocationFinishTime.OptionsColumn.AllowEdit = false;
+            this.grFundAllocationFinishTime.ToolTip = "Thời gian chốt";
+            this.grFundAllocationFinishTime.Visible = true;
+            this.grFundAllocationFinishTime.VisibleIndex = 16;
+            this.grFundAllocationFinishTime.Width = 120;
+            // 
+            // grFundAllocationTotalPrice
+            // 
+            this.grFundAllocationTotalPrice.AppearanceCell.Options.UseTextOptions = true;
+            this.grFundAllocationTotalPrice.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.grFundAllocationTotalPrice.Caption = "Tiền BH phân bổ";
+            this.grFundAllocationTotalPrice.DisplayFormat.FormatString = "#,##0.####";
+            this.grFundAllocationTotalPrice.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.grFundAllocationTotalPrice.FieldName = "FUND_ALLOCATION_TOTAL_FUND_PRICE";
+            this.grFundAllocationTotalPrice.Name = "grFundAllocationTotalPrice";
+            this.grFundAllocationTotalPrice.OptionsColumn.AllowEdit = false;
+            this.grFundAllocationTotalPrice.ToolTip = "Tiền BH phân bổ";
+            this.grFundAllocationTotalPrice.Visible = true;
+            this.grFundAllocationTotalPrice.VisibleIndex = 17;
+            this.grFundAllocationTotalPrice.Width = 110;
             // 
             // repositoryItemButtonEdit3
             // 
@@ -2111,6 +2210,7 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnFunPay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnFundUnPay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnFundAllocation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_ORDER)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_STATUST)).EndInit();
@@ -2327,5 +2427,12 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit1;
         private DevExpress.Utils.ImageCollection imageCollectionCheck;
+        private DevExpress.XtraGrid.Columns.GridColumn grFundAllocation;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItembtnFundAllocation;
+        private DevExpress.XtraGrid.Columns.GridColumn grFundAllocationStatus;
+        private DevExpress.XtraGrid.Columns.GridColumn grFundAllocationFinishUser;
+        private DevExpress.XtraGrid.Columns.GridColumn grFundAllocationFinishTime;
+        private DevExpress.XtraGrid.Columns.GridColumn grFundAllocationTotalPrice;
+        private DevExpress.Utils.ToolTipController toolTipController1;
     }
 }

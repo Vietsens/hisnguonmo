@@ -324,6 +324,7 @@ namespace HIS.Desktop.Plugins.GenerateRegisterOrder.Popup
             this.btnNoPaper.Click += new System.EventHandler(this.btnNoPaper_Click);
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
+            this.txtInput.EditValueChanged += new System.EventHandler(this.txtInput_EditValueChanged);
             this.txtInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtInput_KeyDown);
             //
             // frmChooseIdentity

@@ -280,5 +280,37 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Base
             }
         }
 
+        internal static string DangPhanBoBaoLanhChuaChot
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionBillTwoInOne__DangPhanBoBaoLanhChuaChot", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string ChiPhiBaoHiemThayDoiSauChot
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionBillTwoInOne__ChiPhiBaoHiemThayDoiSauChot", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
     }
 }

@@ -186,10 +186,7 @@
   <data name="VuiLongLuuTruocKhiDuyet" xml:space="preserve">
     <value>There are unsaved results. Please save before approving.</value>
   </data>
-  <data name="DuyetApDungToanBoMau" xml:space="preserve">
-    <value>Approval applies to all services of sample {0}. Do you want to continue?</value>
-  </data>
-  <data name="BanCoMuonHuyDuyetKetQuaMau" xml:space="preserve">
-    <value>Do you want to unapprove the result of sample {0}?</value>
+  <data name="BanCoMuonHuyDuyetKetQuaDichVu" xml:space="preserve">
+    <value>Do you want to unapprove the result of service(s): {0}?</value>
   </data>
 </root>

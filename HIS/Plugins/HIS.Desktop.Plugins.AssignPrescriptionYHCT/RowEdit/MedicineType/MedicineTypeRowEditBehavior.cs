@@ -72,7 +72,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Edit.MedicineType
             try
             {
                 if (this.CheckValidPre()
-                    && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob)
+                    && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds)
                     && HIS.Desktop.Plugins.AssignPrescriptionYHCT.ValidAcinInteractiveWorker.Valid(this.DataRow, MediMatyTypeADOs, LstExpMestMedicine)
                     && this.ValidKhaDungThuocTrongNhaThuoc())
                 {

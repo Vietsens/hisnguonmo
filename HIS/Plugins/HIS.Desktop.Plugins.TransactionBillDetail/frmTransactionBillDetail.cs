@@ -58,8 +58,11 @@ namespace HIS.Desktop.Plugins.TransactionBillDetail
                 {
                     this.Text = this.currentModule.text;
                 }
+                // KSK refund by service: decided before the tree UC is created (check boxes + extra columns)
+                CheckRepayByServiceApplicable();
                 InitSereServTree();
                 InitPayformGrid();
+                InitRepayByServiceButton();
             }
             catch (Exception ex)
             {
@@ -86,10 +89,18 @@ namespace HIS.Desktop.Plugins.TransactionBillDetail
             {
                 ssTreeProcessor = new UC.SereServTree.SereServTreeProcessor();
                 SereServTreeADO ado = new SereServTreeADO();
-                ado.IsShowCheckNode = false;
+                ado.IsShowCheckNode = this.isRepayByService;
                 ado.IsShowSearchPanel = false;
                 ado.SereServTreeColumns = new List<SereServTreeColumn>();
                 ado.SereServTree_CustomDrawNodeCell = treeSereServ_CustomDrawNodeCell;
+                if (this.isRepayByService)
+                {
+                    ado.SereServTreeForBill_BeforeCheck = treeSereServ_RepayByService_BeforeCheck;
+                    ado.SereServTree_CustomDrawNodeCheckBox = treeSereServ_RepayByService_CustomDrawNodeCheckBox;
+                    ado.SereServTree_CustomUnboundColumnData = treeSereServ_RepayByService_CustomUnboundColumnData;
+                }
+                // 2 extra columns (execute status, refunded amount) are inserted after "Benh nhan tra" when applicable
+                int repayByServiceColumnShift = this.isRepayByService ? 2 : 0;
                 ado.LayoutSereServExpend = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__LAYOUT_SERE_SERV_EXPEND", Base.ResourceLangManager.LanguageFrmTransactionBillDetail, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 //Column tên dịch vụ
                 SereServTreeColumn serviceNameCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_SERVICE_NAME", Base.ResourceLangManager.LanguageFrmTransactionBillDetail, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_NAME", 200, false);
@@ -136,9 +147,15 @@ namespace HIS.Desktop.Plugins.TransactionBillDetail
                 virTotalPatientPriceCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.SereServTreeColumns.Add(virTotalPatientPriceCol);
 
+                //Column trạng thái thực hiện + tiền đã hoàn (KSK refund by service only)
+                if (this.isRepayByService)
+                {
+                    AddRepayByServiceColumns(ado.SereServTreeColumns, virTotalPatientPriceCol.VisibleIndex + 1);
+                }
+
                 //Column chiết khấu
                 SereServTreeColumn virDiscountCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_DISCOUNT", Base.ResourceLangManager.LanguageFrmTransactionBillDetail, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "DISCOUNT", 110, false);
-                virDiscountCol.VisibleIndex = 6;
+                virDiscountCol.VisibleIndex = 6 + repayByServiceColumnShift;
                 virDiscountCol.Format = new DevExpress.Utils.FormatInfo();
                 virDiscountCol.Format.FormatString = "#,##0.0000";
                 virDiscountCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
@@ -147,12 +164,12 @@ namespace HIS.Desktop.Plugins.TransactionBillDetail
                 //Column hao phí
                 SereServTreeColumn virIsExpendCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_IS_EXPEND", Base.ResourceLangManager.LanguageFrmTransactionBillDetail, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "IsExpend", 60, false);
                 //virIsExpendCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
-                virIsExpendCol.VisibleIndex = 7;
+                virIsExpendCol.VisibleIndex = 7 + repayByServiceColumnShift;
                 ado.SereServTreeColumns.Add(virIsExpendCol);
 
                 //Column vat (%)
                 SereServTreeColumn virVatRatioCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_VAT_RATIO", Base.ResourceLangManager.LanguageFrmTransactionBillDetail, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "VAT", 100, false);
-                virVatRatioCol.VisibleIndex = 8;
+                virVatRatioCol.VisibleIndex = 8 + repayByServiceColumnShift;
                 virVatRatioCol.Format = new DevExpress.Utils.FormatInfo();
                 virVatRatioCol.Format.FormatString = "#,##0.00";
                 virVatRatioCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
@@ -160,17 +177,17 @@ namespace HIS.Desktop.Plugins.TransactionBillDetail
 
                 //Column mã dịch vụ
                 SereServTreeColumn serviceCodeCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_SERVICE_CODE", Base.ResourceLangManager.LanguageFrmTransactionBillDetail, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SERVICE_CODE", 100, false);
-                serviceCodeCol.VisibleIndex = 9;
+                serviceCodeCol.VisibleIndex = 9 + repayByServiceColumnShift;
                 ado.SereServTreeColumns.Add(serviceCodeCol);
 
                 //Column Mã yêu cầu
                 SereServTreeColumn serviceReqCodeCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE", Base.ResourceLangManager.LanguageFrmTransactionBillDetail, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SERVICE_REQ_CODE", 100, false);
-                serviceReqCodeCol.VisibleIndex = 10;
+                serviceReqCodeCol.VisibleIndex = 10 + repayByServiceColumnShift;
                 ado.SereServTreeColumns.Add(serviceReqCodeCol);
 
                 //Column mã giao dịch
                 SereServTreeColumn INSURANCE_EXPERTISECodeCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_TRANSACTION_CODE", Base.ResourceLangManager.LanguageFrmTransactionBillDetail, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TRANSACTION_CODE", 100, false);
-                INSURANCE_EXPERTISECodeCol.VisibleIndex = 11;
+                INSURANCE_EXPERTISECodeCol.VisibleIndex = 11 + repayByServiceColumnShift;
                 ado.SereServTreeColumns.Add(INSURANCE_EXPERTISECodeCol);
 
                 this.ucSereServTree = (UserControl)ssTreeProcessor.Run(ado);
@@ -219,6 +236,7 @@ namespace HIS.Desktop.Plugins.TransactionBillDetail
                     throw new Exception("Khong lay duoc HIS_BILL the billId: " + this.billId);
                 }
                 var hisBill = listBill;
+                this.currentBill = hisBill.FirstOrDefault();
 
                 HisSereServBillFilter ssBillFilter = new HisSereServBillFilter();
                 ssBillFilter.BILL_ID = this.billId;
@@ -242,6 +260,11 @@ namespace HIS.Desktop.Plugins.TransactionBillDetail
                 {
                     if (dicSereServBill.ContainsKey(item.ID))
                         listSereServ.Add(item);
+                }
+                if (this.isRepayByService)
+                {
+                    // Refund rows must be ready before the tree draws its unbound columns
+                    LoadSeseBillRepays();
                 }
                 ssTreeProcessor.Reload(ucSereServTree, listSereServ);
             }

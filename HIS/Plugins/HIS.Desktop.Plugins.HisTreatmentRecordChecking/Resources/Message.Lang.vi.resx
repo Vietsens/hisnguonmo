@@ -141,4 +141,16 @@
   <data name="KhongTimThayHoSo" xml:space="preserve">
     <value>Không tìm thấy hồ sơ điều trị tương ứng.</value>
   </data>
+  <data name="NoiDungChuaDuocLuuBoQua" xml:space="preserve">
+    <value>Nội dung chưa được lưu, bạn có muốn bỏ qua?</value>
+  </data>
+  <data name="XoaBanTamNoiDungKhongDat" xml:space="preserve">
+    <value>Xóa bản tạm nội dung không đạt của hồ sơ này?</value>
+  </data>
+  <data name="ChuaNhapNoiDungKhongDat" xml:space="preserve">
+    <value>Chưa nhập nội dung không đạt.</value>
+  </data>
+  <data name="NoiDungKhongDatVuotDoDai" xml:space="preserve">
+    <value>Nội dung không đạt vượt độ dài cho phép (tối đa {0} byte). Vui lòng rút gọn.</value>
+  </data>
 </root>

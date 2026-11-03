@@ -60,6 +60,9 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
         // Dinh kem bang ke HDDT (VNPT): co gia tri (= ma PrintTypeCode bang ke) -> bat tinh nang; rong/null -> an het
         private const string CFG__AUTO_ATTACH_BORDEREAU_HDDT__VNPT = "MOS.HIS_TRANSACTION.AUTO_ATTACH_BORDEREAU_HDDT__VNPT";
 
+        // KSK - Hoan ung dich vu cua giao dich thanh toan: danh sach ma doi tuong BN (cach nhau dau phay); rong = tat tinh nang
+        private const string CFG__REPAY_BY_BILL_SERVICE__PATIENT_TYPE_CODES = "MOS.HIS_TRANSACTION.REPAY_BY_BILL_SERVICE.PATIENT_TYPE_CODES";
+
 
         /// <summary>
         /// Cấu hình chế độ tạo hóa đơn điện tử, chữ ký điện tử
@@ -109,6 +112,9 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
         /// <summary>Ma PrintTypeCode bang ke de render + dinh kem vao HDDT (VNPT). Rong/null = tat tinh nang dinh kem bang ke.</summary>
         internal static string AutoAttachBordereauHddtVnpt;
 
+        /// <summary>Ma doi tuong BN duoc hoan ung theo dich vu cua giao dich thanh toan (KSK). Rong/null = tat tinh nang.</summary>
+        internal static string RepayByBillServicePatientTypeCodes;
+
         internal static void LoadConfig()
         {
             try
@@ -134,6 +140,7 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
                 TransactionQrPaymentStatusOption = GetValue(CFG__TRANSACTION_QR_PAYMENT_STATUS_OPTION);
                 ElectronicBillExportOption = GetValue(ELECTRONIC_BILL__EXPORT_OPTION);
                 AutoAttachBordereauHddtVnpt = GetValue(CFG__AUTO_ATTACH_BORDEREAU_HDDT__VNPT);
+                RepayByBillServicePatientTypeCodes = GetValue(CFG__REPAY_BY_BILL_SERVICE__PATIENT_TYPE_CODES);
 
                 RefundConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.RefundByTransfer") && !string.IsNullOrEmpty(o.VALUE)).ToList();
                 LogSystem.Debug("LoadConfig => 2");

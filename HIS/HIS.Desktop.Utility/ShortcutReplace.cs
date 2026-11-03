@@ -60,17 +60,16 @@ namespace HIS.Desktop.Utility
         }
 
         /// <summary>
-        /// Khoa cua tai khoan dang dang nhap, lay theo danh muc nhan vien (cau hinh tai khoan).
+        /// Tai khoan nhan vien cua tai khoan dang dang nhap (danh muc nhan vien - cau hinh tai khoan).
         /// Doc tu cache BackendDataWorker de khong goi API moi lan go phim tat.
         /// </summary>
-        private static long? GetLoginDepartmentId(string loginName)
+        private static V_HIS_EMPLOYEE GetLoginEmployee(string loginName)
         {
             try
             {
                 if (String.IsNullOrWhiteSpace(loginName)) return null;
-                var employee = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>()
+                return BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>()
                     .FirstOrDefault(o => o.LOGINNAME == loginName);
-                if (employee != null) return employee.DEPARTMENT_ID;
             }
             catch (Exception ex)
             {
@@ -79,21 +78,92 @@ namespace HIS.Desktop.Utility
             return null;
         }
 
+        static readonly object usableTextLibLock = new object();
+        static List<HIS_TEXT_LIB> usableTextLibs;
+        static string usableTextLibLoginName;
+        static DateTime usableTextLibExpire;
+        // Items shared by others show up without restarting HIS after at most this long
+        const int USABLE_TEXT_LIB_CACHE_MINUTES = 10;
+        // A failed load is retried after this long instead of calling MOS on every Space key
+        const int USABLE_TEXT_LIB_RETRY_MINUTES = 1;
+
         /// <summary>
-        /// Cac mau tai khoan duoc phep su dung theo phim tat:
+        /// Xoa danh sach mau co phim tat da nap (goi sau khi Luu/Xoa o man Thu vien noi dung) de lan go tiep theo nap lai.
+        /// </summary>
+        public static void ResetUsableTextLibs()
+        {
+            try
+            {
+                lock (usableTextLibLock)
+                {
+                    usableTextLibs = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Cac mau co phim tat ma tai khoan dang nhap duoc phep su dung. MOS loc theo CAN_VIEW:
         /// - Mau do chinh minh tao (CREATOR)
         /// - Mau cong khai toan vien (IS_PUBLIC = 1)
-        /// - Mau cong khai theo khoa (IS_PUBLIC_IN_DEPARTMENT = 1) va dung khoa cua tai khoan
+        /// - Mau cong khai theo khoa (IS_PUBLIC_IN_DEPARTMENT = 1) va dung khoa cua tai khoan (PUBLIC_DEPARTMENT_ID)
+        /// - Mau chia se theo tai khoan (IS_PUBLIC_IN_ACCOUNT = 1, ten dang nhap trong PUBLIC_LOGINNAMES, nhan vien dang hoat dong)
+        /// Nap 1 lan roi giu trong RAM thay vi tai ca bang HIS_TEXT_LIB (kem CONTENT cua moi nguoi) qua BackendDataWorker.
         /// </summary>
+        private static List<HIS_TEXT_LIB> GetUsableTextLibsWithHotKey(string loginName)
+        {
+            try
+            {
+                lock (usableTextLibLock)
+                {
+                    if (usableTextLibs != null && usableTextLibLoginName == loginName && DateTime.Now < usableTextLibExpire)
+                        return usableTextLibs;
+
+                    CommonParam param = new CommonParam();
+                    HisTextLibFilter filter = new HisTextLibFilter();
+                    filter.CAN_VIEW = true;
+                    filter.HAS_HOT_KEY = true;
+                    V_HIS_EMPLOYEE employee = GetLoginEmployee(loginName);
+                    if (employee != null) filter.PUBLIC_DEPARTMENT_ID = employee.DEPARTMENT_ID;
+                    var data = new BackendAdapter(param).Get<List<HIS_TEXT_LIB>>("api/HisTextLib/Get", ApiConsumers.MosConsumer, filter, param);
+
+                    usableTextLibLoginName = loginName;
+                    if (data != null)
+                    {
+                        usableTextLibs = data;
+                        usableTextLibExpire = DateTime.Now.AddMinutes(USABLE_TEXT_LIB_CACHE_MINUTES);
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("ShortcutReplace: api/HisTextLib/Get tra ve null" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
+                        usableTextLibs = new List<HIS_TEXT_LIB>();
+                        usableTextLibExpire = DateTime.Now.AddMinutes(USABLE_TEXT_LIB_RETRY_MINUTES);
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug("ShortcutReplace: nap " + usableTextLibs.Count + " mau co phim tat cho " + loginName);
+                    return usableTextLibs;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return new List<HIS_TEXT_LIB>();
+        }
+
         private static List<HIS_TEXT_LIB> GetUsableTextLibs(string key, string loginName)
         {
-            long? departmentId = GetLoginDepartmentId(loginName);
-            return BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>()
-                .Where(o => o.HOT_KEY == key
-                    && (o.CREATOR == loginName
-                        || o.IS_PUBLIC == 1
-                        || (o.IS_PUBLIC_IN_DEPARTMENT == 1 && departmentId.HasValue && o.DEPARTMENT_ID == departmentId)))
-                .ToList();
+            return GetUsableTextLibsWithHotKey(loginName).Where(o => o.HOT_KEY == key).ToList();
+        }
+
+        /// <summary>
+        /// Cau hinh "2": chi mau do chinh minh tao.
+        /// </summary>
+        private static List<HIS_TEXT_LIB> GetOwnTextLibs(string key, string loginName)
+        {
+            return GetUsableTextLibsWithHotKey(loginName).Where(o => o.HOT_KEY == key && o.CREATOR == loginName).ToList();
         }
 
         public static string ProcesseShortcutReplace(string key, ref string rtfRepValue)
@@ -136,7 +206,7 @@ namespace HIS.Desktop.Utility
                 else if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "2")
                 {
                     string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                    var textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && o.CREATOR == loginName).ToList();
+                    var textLibs = GetOwnTextLibs(key, loginName);
                     if (textLibs != null && textLibs.Count > 0)
                     {
                         replaceKey = HIS.Desktop.Utility.TextLibHelper.BytesToStringGeneral(textLibs[0].CONTENT, libType);
@@ -160,6 +230,7 @@ namespace HIS.Desktop.Utility
         ///- Là mẫu do người dùng tạo (CREATOR của HIS_TEXT_LIB)
         ///- Là mẫu do khoa người dùng làm việc tạo và có check "công khai theo khoa" (HIS_TEXT_LIB có IS_PUBLIC_IN_DEPARTMENT = 1 và DEPARTMENT_ID = khoa tương ứng với tài khoản người dùng được thiết lập trong danh mục tài khoản nhân viên)
         ///- Là mẫu được check "công khai toàn viện" (HIS_TEXT_LIB)có IS_PUBLIC = 1)
+        ///- Là mẫu được check "chia sẻ theo tài khoản" (IS_PUBLIC_IN_ACCOUNT = 1) và tên đăng nhập nằm trong PUBLIC_LOGINNAMES, khi tài khoản nhân viên đang hoạt động
         /// </summary>
         /// <param name="key"></param>
         /// <param name="rtfRepValue"></param>
@@ -180,7 +251,7 @@ namespace HIS.Desktop.Utility
                 }
                 else if ((HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<string>(CONFIG_KEY__HIS_IS_USE_SHORTCUT_REPLACE_KEY)) == "2")
                 {
-                    textLibs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TEXT_LIB>().Where(o => o.HOT_KEY == key && o.CREATOR == loginName).ToList();
+                    textLibs = GetOwnTextLibs(key, loginName);
                 }
 
                 if (textLibs != null && textLibs.Count > 0)

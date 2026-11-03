@@ -64,6 +64,8 @@ namespace HIS.Desktop.Plugins.Bordereau
                 DepartmentPremissionEdits = null;
                 currentModule = null;
                 SereServBills = null;
+                SeseBillRepays = null;
+                RefundedSereServIds = null;
                 SereServADOs = null;
                 statusTreatmentOut = null;
                 userNameReturnResult = null;

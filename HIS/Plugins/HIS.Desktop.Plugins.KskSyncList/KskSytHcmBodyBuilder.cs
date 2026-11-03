@@ -1452,6 +1452,20 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Sinh hóa: ví dụ body của đặc tả gửi chuỗi dù giá trị là số.
         /// Tầm soát nữ: kết quả là lời mô tả ("Không thấy bất thường").
         /// </summary>
+        /// <summary>
+        /// Bảy chỉ tiêu nước tiểu mà đặc tả ghi "Nhập Negative (âm tính) hoặc kết quả xét nghiệm".
+        ///
+        /// CHÚNG GỬI CHỮ, KHÔNG GỬI Id DANH MỤC. Chỉ xnnt_nitrit mới ghi "Danh mục Âm tính hoặc
+        /// Dương tính" — và mẫu thân bản tin của đặc tả cũng chỉ có nitrit mang số Id (5119).
+        /// Trước đây bảy chỉ tiêu này cũng bị quy sang Id, tức gửi "5120" vào ô đáng lẽ là
+        /// "Negative".
+        /// </summary>
+        private static readonly HashSet<string> CLS_AM_TINH_HOAC_GIA_TRI = new HashSet<string>
+        {
+            "xnnt_glucose", "xnnt_protein", "xnnt_bachcau", "xnnt_hongcau",
+            "xnnt_cetonic", "xnnt_bilirubin", "xnnt_urobilinogen"
+        };
+
         private static readonly HashSet<string> CLS_TEXT_FIELDS = new HashSet<string>
         {
             "shm_duongmau", "shm_ure", "shm_creatinin", "shm_asat_got", "shm_alat_gpt",
@@ -1483,14 +1497,25 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     return null;
                 }
 
-                // 9 chỉ tiêu nước tiểu còn lại. Hai mục của đặc tả ghi khác nhau (ví dụ body là SỐ,
-                // bảng chi tiết là chuỗi 20 ký tự) nên nhận cả hai dạng, theo thứ tự:
-                //   1. đọc được thành số            -> gửi SỐ
-                //   2. mang nghĩa âm tính/bình thường (hoặc dương tính) -> gửi Id danh mục
-                //   3. còn lại (ví dụ "vết")        -> gửi nguyên chữ
+                // Bảy chỉ tiêu "Negative hoặc giá trị" — đặc tả yêu cầu CHỮ, không phải Id.
+                //   1. đọc được thành số                  -> gửi SỐ (chính là "kết quả xét nghiệm")
+                //   2. mang nghĩa âm tính / bình thường   -> gửi "Negative"
+                //   3. mang nghĩa dương tính              -> gửi "Positive"
+                //   4. còn lại (ví dụ "vết")              -> gửi nguyên chữ
+                if (CLS_AM_TINH_HOAC_GIA_TRI.Contains(fieldCode))
+                {
+                    decimal? g = ParseClsNumber(raw);
+                    if (g.HasValue) return Num(g.Value);
+                    string w = Norm(raw);
+                    if (AM_TINH_WORDS.Contains(w)) return "Negative";
+                    if (DUONG_TINH_WORDS.Contains(w)) return "Positive";
+                    return raw;
+                }
+
+                // Còn lại: xnnt_titrong, xnnt_ph — đặc tả ghi "Nhập giá trị số lượng", KHÔNG có
+                // chuyện âm/dương tính nên cũng không quy sang Id danh mục.
                 decimal? u = ParseClsNumber(raw);
                 if (u.HasValue) return Num(u.Value);
-                if (IsAmDuongTinhWord(raw)) return MapAmDuongTinh(raw);
                 return raw;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
@@ -2142,6 +2167,65 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Kiểu decimal bị ghi ra JSON kèm phần thập phân ("120.0"). Chỗ nào đặc tả để kiểu số
         /// nguyên mà nhận "120.0" thì có thể đọc không ra và coi như không có giá trị.
         /// </summary>
+        /// <summary>
+        /// Chuẩn hoá MỌI giá trị số trong thân bản tin theo quy định của Sở:
+        /// số tròn gửi dạng nguyên (15 chứ không phải 15.0), số lẻ bỏ số 0 thừa ở đuôi
+        /// (2.7 chứ không phải 2.70).
+        ///
+        /// VÌ SAO PHẢI LÀM: cổng dựng lại JSON rồi mới băm, mà thư viện JSON tự rút gọn "2.70"
+        /// thành 2.7. Ta gửi "2.70" thì mã băm hai bên khác nhau, cổng báo "Xác thực chữ ký số
+        /// không thành công hoặc dữ liệu đã bị thay đổi" — đúng lỗi 401 ngày 12/10, chỉ tiêu
+        /// xnm_slbc_lympho = 2.70.
+        ///
+        /// Kiểu decimal của .NET GIỮ NGUYÊN số 0 ở đuôi khi đọc từ chuỗi ("2.70" -> 2.70m), nên
+        /// Num() ở dưới không đủ: nó chỉ lo số tròn, không lo số 0 thừa của số lẻ.
+        ///
+        /// Làm trên CHUỖI ĐÃ DỰNG XONG chứ không làm ở từng chỗ sinh số, để không sót đường nào.
+        /// </summary>
+        internal static string ChuanHoaSoTrongJson(string json)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(json)) return json;
+                using (var sr = new System.IO.StringReader(json))
+                using (var jr = new Newtonsoft.Json.JsonTextReader(sr))
+                {
+                    // Đọc số lẻ thành decimal, KHÔNG thành double: double làm tròn nhị phân,
+                    // 83.1 có thể thành 83.099999999999994.
+                    jr.FloatParseHandling = Newtonsoft.Json.FloatParseHandling.Decimal;
+                    JToken t = JToken.ReadFrom(jr);
+                    ChuanHoaSo(t);
+                    return t.ToString(Newtonsoft.Json.Formatting.None);
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return json; }
+        }
+
+        private static void ChuanHoaSo(JToken t)
+        {
+            if (t == null) return;
+
+            JContainer c = t as JContainer;
+            if (c != null)
+            {
+                foreach (JToken con in c.Children()) ChuanHoaSo(con);
+                return;
+            }
+
+            JValue v = t as JValue;
+            if (v == null || v.Type != JTokenType.Float) return;
+            try
+            {
+                decimal d = Convert.ToDecimal(v.Value, CultureInfo.InvariantCulture);
+                if (d == decimal.Truncate(d)) { v.Value = (long)d; return; }
+
+                string s = d.ToString(CultureInfo.InvariantCulture);
+                if (s.IndexOf('.') >= 0) s = s.TrimEnd('0').TrimEnd('.');
+                v.Value = decimal.Parse(s, CultureInfo.InvariantCulture);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
         private static object Num(decimal? v)
         {
             if (!v.HasValue) return null;

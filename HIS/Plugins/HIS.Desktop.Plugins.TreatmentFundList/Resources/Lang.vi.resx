@@ -264,6 +264,63 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__TXT_KEY_WORD_NULL_VALUE" xml:space="preserve">
     <value>Từ khóa tìm kiếm</value>
   </data>
+  <data name="frmTreatmentList.grFundAllocation.Caption" xml:space="preserve">
+    <value>Phân bổ</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocation.ToolTip" xml:space="preserve">
+    <value>Phân bổ chi phí bảo hiểm bảo lãnh</value>
+  </data>
+  <data name="frmTreatmentList.repositoryItembtnFundAllocation.Caption" xml:space="preserve">
+    <value>Phân bổ</value>
+  </data>
+  <data name="frmTreatmentList.repositoryItembtnFundAllocation.ToolTip" xml:space="preserve">
+    <value>Phân bổ chi phí bảo hiểm bảo lãnh</value>
+  </data>
+  <data name="frmTreatmentList.grIsFundPay.ToolTip" xml:space="preserve">
+    <value>Đánh dấu Quỹ đã thanh toán</value>
+  </data>
+  <data name="frmTreatmentList.ToolTip.FundPay" xml:space="preserve">
+    <value>Đánh dấu Quỹ đã thanh toán</value>
+  </data>
+  <data name="frmTreatmentList.ToolTip.FundUnPay" xml:space="preserve">
+    <value>Hủy đánh dấu Quỹ đã thanh toán</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationStatus.Caption" xml:space="preserve">
+    <value>Trạng thái phân bổ</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationStatus.ToolTip" xml:space="preserve">
+    <value>Trạng thái phân bổ</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationFinishUser.Caption" xml:space="preserve">
+    <value>Người chốt</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationFinishUser.ToolTip" xml:space="preserve">
+    <value>Người chốt</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationFinishTime.Caption" xml:space="preserve">
+    <value>Thời gian chốt</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationFinishTime.ToolTip" xml:space="preserve">
+    <value>Thời gian chốt</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationTotalPrice.Caption" xml:space="preserve">
+    <value>Tiền BH phân bổ</value>
+  </data>
+  <data name="frmTreatmentList.grFundAllocationTotalPrice.ToolTip" xml:space="preserve">
+    <value>Tiền BH phân bổ</value>
+  </data>
+  <data name="frmTreatmentList.FundAllocationStatus.NotAllocated" xml:space="preserve">
+    <value>Chưa phân bổ</value>
+  </data>
+  <data name="frmTreatmentList.FundAllocationStatus.Saved" xml:space="preserve">
+    <value>Đã lưu</value>
+  </data>
+  <data name="frmTreatmentList.FundAllocationStatus.Finished" xml:space="preserve">
+    <value>Đã chốt</value>
+  </data>
+  <data name="frmTreatmentList.FundAllocationStatus.CostChanged" xml:space="preserve">
+    <value> - Có thay đổi chi phí</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_LIST__TXT_TREATMENT_CODE_NULL_VALUE" xml:space="preserve">
     <value>Mã điều trị (F1)</value>
   </data>

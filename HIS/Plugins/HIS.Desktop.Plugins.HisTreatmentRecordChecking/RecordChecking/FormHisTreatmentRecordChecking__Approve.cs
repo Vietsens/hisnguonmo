@@ -70,8 +70,26 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             try
             {
 
-                frmContentFailed ContentFailed = new frmContentFailed(moduleData, this.treatmentId, DgSeccess);
+                // Truyen ban tam hien co + callback de hop thoai bao lai khi Luu tam (viec 57750)
+                frmContentFailed ContentFailed = new frmContentFailed(moduleData, this.treatmentId, DgSeccess, this.currentDraft, OnDraftChanged);
                 ContentFailed.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hop thoai vua luu / xoa ban tam: chi cap nhat dau hieu "co ban tam" o man chinh.
+        /// KHONG nap lai ho so, KHONG khoa nut - trang thai chot duyet khong doi.
+        /// </summary>
+        private void OnDraftChanged(ADO.RecordDraftADO draft)
+        {
+            try
+            {
+                this.currentDraft = draft ?? new ADO.RecordDraftADO();
+                ShowDraftIndicator();
             }
             catch (Exception ex)
             {

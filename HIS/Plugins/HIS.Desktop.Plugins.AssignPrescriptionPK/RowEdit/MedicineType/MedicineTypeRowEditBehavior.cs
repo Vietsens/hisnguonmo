@@ -79,7 +79,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit.MedicineType
             try
             {
                 if (this.CheckValidPre()
-                    && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob)
+                    && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds)
                     // Chỉ cảnh báo tương tác thuốc khi THÊM thuốc, không cảnh báo khi SỬA thuốc (tránh hiển thị cảnh báo lần 2)
                     //&& HIS.Desktop.Plugins.AssignPrescriptionPK.ValidAcinInteractiveWorker.ValidGrade(this.DataRow, MediMatyTypeADOs, ref frmAssignPrescription.txtInteractionReason, frmAssignPrescription)
                     //&& this.CheckWarningOddConvertAmount()

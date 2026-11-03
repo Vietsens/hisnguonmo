@@ -119,19 +119,15 @@ namespace HIS.Desktop.Plugins.TestConnectDeviceSample
         }
 
         /// <summary>
-        /// Any dialog shown with ShowDialog, or a native message box (it disables the main window).
+        /// A dialog (ShowDialog or a message box) is open over the window hosting this control: Windows disables that window until it closes.
+        /// Form.Modal is not checked because HIS shows frmMain itself with ShowDialog, so frmMain is always modal.
         /// </summary>
         private bool IsModalWindowOpen()
         {
             try
             {
-                foreach (Form form in Application.OpenForms)
-                {
-                    if (form.Visible && form.Modal)
-                        return true;
-                }
-                Form main = this.ParentForm;
-                return main != null && main.IsHandleCreated && !IsWindowEnabled(main.Handle);
+                Form host = this.TopLevelControl as Form;
+                return host != null && host.IsHandleCreated && !IsWindowEnabled(host.Handle);
             }
             catch (Exception ex)
             {

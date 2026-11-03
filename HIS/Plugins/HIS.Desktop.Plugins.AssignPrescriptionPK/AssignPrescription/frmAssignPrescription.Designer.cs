@@ -7503,7 +7503,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.lcibtnSaveTemplate.Control = this.btnSaveTemplate;
             this.lcibtnSaveTemplate.Location = new System.Drawing.Point(88, 643);
-            this.lcibtnSaveTemplate.MaxSize = new System.Drawing.Size(110, 40);
+            this.lcibtnSaveTemplate.MaxSize = new System.Drawing.Size(110, 60);
             this.lcibtnSaveTemplate.MinSize = new System.Drawing.Size(70, 35);
             this.lcibtnSaveTemplate.Name = "lcibtnSaveTemplate";
             this.lcibtnSaveTemplate.Size = new System.Drawing.Size(70, 40);
@@ -8029,6 +8029,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciForlblChiPhiBNPhaiTra.Name = "lciForlblChiPhiBNPhaiTra";
             this.lciForlblChiPhiBNPhaiTra.Padding = new DevExpress.XtraLayout.Utils.Padding(3, 3, 5, 3);
             this.lciForlblChiPhiBNPhaiTra.Size = new System.Drawing.Size(454, 30);
+            this.lciForlblChiPhiBNPhaiTra.MaxSize = new System.Drawing.Size(0, 30);
+            this.lciForlblChiPhiBNPhaiTra.MinSize = new System.Drawing.Size(100, 30);
+            this.lciForlblChiPhiBNPhaiTra.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciForlblChiPhiBNPhaiTra.Text = "Chi phí BN phải trả:";
             this.lciForlblChiPhiBNPhaiTra.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciForlblChiPhiBNPhaiTra.TextSize = new System.Drawing.Size(140, 13);
@@ -8095,7 +8098,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.layoutControlItem33.Control = this.btnTestResult;
             this.layoutControlItem33.Location = new System.Drawing.Point(11, 643);
-            this.layoutControlItem33.MaxSize = new System.Drawing.Size(0, 40);
+            this.layoutControlItem33.MaxSize = new System.Drawing.Size(0, 60);
             this.layoutControlItem33.MinSize = new System.Drawing.Size(60, 35);
             this.layoutControlItem33.Name = "layoutControlItem33";
             this.layoutControlItem33.Size = new System.Drawing.Size(77, 40);
@@ -8184,7 +8187,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.layoutControlItem36.Control = this.btnConfig;
             this.layoutControlItem36.Location = new System.Drawing.Point(821, 643);
-            this.layoutControlItem36.MaxSize = new System.Drawing.Size(30, 40);
+            this.layoutControlItem36.MaxSize = new System.Drawing.Size(30, 60);
             this.layoutControlItem36.MinSize = new System.Drawing.Size(30, 40);
             this.layoutControlItem36.Name = "layoutControlItem36";
             this.layoutControlItem36.Size = new System.Drawing.Size(30, 40);
@@ -8321,7 +8324,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControlItem59.Control = this.btnQR;
             this.layoutControlItem59.Enabled = false;
             this.layoutControlItem59.Location = new System.Drawing.Point(851, 643);
-            this.layoutControlItem59.MaxSize = new System.Drawing.Size(100, 40);
+            this.layoutControlItem59.MaxSize = new System.Drawing.Size(100, 60);
             this.layoutControlItem59.MinSize = new System.Drawing.Size(60, 40);
             this.layoutControlItem59.Name = "layoutControlItem59";
             this.layoutControlItem59.Size = new System.Drawing.Size(69, 40);

@@ -397,33 +397,87 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 ihcmApplyingRule = true;
 
-                for (int k = 0; k < lstIhcmRule.Count; k++)
+                // LUẬT CHA ĐƯỢC ĐĂNG KÝ SAU LUẬT CON, nên KHÔNG duyệt một lượt được.
+                //
+                // IhcmSince gom ô sau khi dựng xong cả nhóm, nên luật "macbenh" (cha) vào danh
+                // sách SAU luật "benh_tanghuyetap" (con). Duyệt một lượt theo thứ tự danh sách
+                // thì luật con chạy lúc ô điều kiện của nó CÒN ĐANG KHOÁ -> coi như chưa trả
+                // lời -> xoá trắng đúng giá trị vừa nạp từ hồ sơ. Triệu chứng: mở lại hồ sơ
+                // thấy ô bệnh có tích mà ô "CS KBCB đang điều trị" bên cạnh trống trơn, dù
+                // INTERVIEW_JSON vẫn còn giá trị.
+                //
+                // Vì vậy tách làm hai việc: chốt trạng thái khoá/mở trước (lặp tới khi đứng
+                // yên, bao nhiêu tầng lồng nhau cũng đúng), chốt xong mới xoá.
+                for (int vong = 0; vong < 5; vong++)
                 {
-                    IhcmRule r = lstIhcmRule[k];
-
-                    Control src;
-                    if (!dicInterviewHcm.TryGetValue(r.Source, out src)) continue;
-                    CheckEdit chk = src as CheckEdit;
-                    if (chk == null) continue;
-
-                    // Ô điều kiện đang bị khoá thì coi như CHƯA trả lời — nhờ vậy luật lồng nhau
-                    // (D1.14 -> D8.5.1 -> D8.5.2) chỉ cần một lượt duyệt.
-                    bool ticked = chk.Enabled && chk.Checked;
-                    bool enable = r.EnableWhenTicked ? ticked : !ticked;
-
-                    for (int i = 0; i < r.Targets.Length; i++)
+                    // 1. Chốt khoá/mở — CHƯA xoá gì.
+                    for (int luot = 0; luot <= lstIhcmRule.Count; luot++)
                     {
-                        Control c = r.Targets[i];
-                        if (c == null) continue;
-                        c.Enabled = enable;
+                        bool doi = false;
+                        for (int k = 0; k < lstIhcmRule.Count; k++)
+                        {
+                            IhcmRule r = lstIhcmRule[k];
 
-                        // Mục bị "bỏ qua" theo mẫu thì không được giữ câu trả lời cũ.
-                        if (!enable) IhcmClearValue(c);
+                            Control src;
+                            if (!dicInterviewHcm.TryGetValue(r.Source, out src)) continue;
+                            CheckEdit chk = src as CheckEdit;
+                            if (chk == null) continue;
+
+                            // Ô điều kiện đang bị khoá thì coi như CHƯA trả lời.
+                            bool ticked = chk.Enabled && chk.Checked;
+                            bool enable = r.EnableWhenTicked ? ticked : !ticked;
+
+                            for (int i = 0; i < r.Targets.Length; i++)
+                            {
+                                Control c = r.Targets[i];
+                                if (c == null) continue;
+                                if (c.Enabled != enable) { c.Enabled = enable; doi = true; }
+                            }
+                        }
+                        if (!doi) break;
                     }
+
+                    // 2. Chốt xong mới xoá: mục bị "bỏ qua" theo mẫu thì không giữ câu trả lời cũ.
+                    //    Xoá một ô tích có thể làm đổi luật khác -> quay lại bước 1 một vòng nữa.
+                    bool daXoa = false;
+                    for (int k = 0; k < lstIhcmRule.Count; k++)
+                    {
+                        IhcmRule r = lstIhcmRule[k];
+                        for (int i = 0; i < r.Targets.Length; i++)
+                        {
+                            Control c = r.Targets[i];
+                            if (c == null || c.Enabled) continue;
+                            if (!IhcmHasValue(c)) continue;
+                            IhcmClearValue(c);
+                            daXoa = true;
+                        }
+                    }
+                    if (!daXoa) break;
                 }
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
             finally { ihcmApplyingRule = false; }
+        }
+
+        /// <summary>Ô đang có câu trả lời hay không — để khỏi xoá đi xoá lại ô vốn đã trống.</summary>
+        private static bool IhcmHasValue(Control c)
+        {
+            try
+            {
+                CheckEdit chk = c as CheckEdit;
+                if (chk != null) return chk.Checked;
+
+                GridLookUpEdit cbo = c as GridLookUpEdit;
+                if (cbo != null) return cbo.EditValue != null;
+
+                MemoEdit txt = c as MemoEdit;
+                if (txt != null) return !string.IsNullOrEmpty(txt.Text);
+
+                SpinEdit spin = c as SpinEdit;
+                if (spin != null) return spin.EditValue != null;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+            return false;
         }
 
         private static void IhcmClearValue(Control c)
@@ -647,6 +701,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// Ô chọn đổ từ danh mục của cổng. Danh mục chưa tải về thì ô vẫn dựng nhưng rỗng —
         /// tab hiện đủ hình hài, đổ danh mục là việc của lượt sau.
         /// </summary>
+        /// <summary>
+        /// Mã danh mục của từng ô chọn trong tab — để GẮN LẠI NGUỒN khi danh mục về muộn.
+        /// </summary>
+        private readonly Dictionary<string, string> dicIhcmComboCat =
+            new Dictionary<string, string>();
+
         private GridLookUpEdit BuildIhcmCombo(string field, string catalogCode)
         {
             GridLookUpEdit cbo = new GridLookUpEdit();
@@ -654,33 +714,94 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             cbo.Tag = field;
             cbo.MenuManager = this.barManager1;
             cbo.Properties.NullText = "";
-            try
-            {
-                List<KskCodeNameADO> data = ToCodeNameList(catalogCode);
-                if (data.Count > 0)
-                {
-                    DevExpress.XtraGrid.Views.Grid.GridView view = cbo.Properties.View;
 
-                    // Tat tu sinh cot TRUOC khi gan nguon, neu khong DevExpress dung luon ten
-                    // thuoc tinh (ID, NAME) lam tieu de cot.
-                    view.OptionsBehavior.AutoPopulateColumns = false;
-                    view.OptionsView.ShowGroupPanel = false;
-                    view.OptionsView.ShowAutoFilterRow = true;
+            dicIhcmComboCat[field] = catalogCode;
+            BindIhcmCombo(cbo, catalogCode);
 
-                    cbo.Properties.DataSource = data;
-                    cbo.Properties.DisplayMember = "NAME";
-                    cbo.Properties.ValueMember = "ID";
-
-                    view.Columns.Clear();
-                    DevExpress.XtraGrid.Columns.GridColumn colId = view.Columns.AddVisible("ID", "Mã");
-                    DevExpress.XtraGrid.Columns.GridColumn colName = view.Columns.AddVisible("NAME", "Tên");
-                    colId.Width = 70;
-                    colName.Width = 400;
-                }
-            }
-            catch (Exception ex) { LogSystem.Warn(ex); }
             dicInterviewHcm[field] = cbo;
             return cbo;
+        }
+
+        /// <summary>
+        /// Gắn danh mục vào ô chọn. Tách riêng khỏi hàm dựng ô vì danh mục tải ở luồng nền, còn
+        /// tab thì dựng ngay lúc mở màn hình: máy chưa có tệp danh mục thì ô dựng ra KHÔNG CÓ
+        /// NGUỒN, và trước đây không có gì gắn lại — hồ sơ có sẵn mã nơi điều trị vẫn hiện trắng.
+        ///
+        /// Trả false khi danh mục chưa có, để ApplySytToInterviewHcmCombos còn gọi lại sau.
+        /// </summary>
+        private bool BindIhcmCombo(GridLookUpEdit cbo, string catalogCode)
+        {
+            try
+            {
+                if (cbo == null) return false;
+                List<KskCodeNameADO> data = ToCodeNameList(catalogCode);
+                if (data.Count == 0) return false;
+
+                // Giữ giá trị đang có: gán nguồn làm DevExpress bỏ giá trị không dò ra dòng nào.
+                object giuLai = cbo.EditValue;
+
+                DevExpress.XtraGrid.Views.Grid.GridView view = cbo.Properties.View;
+
+                // Tat tu sinh cot TRUOC khi gan nguon, neu khong DevExpress dung luon ten
+                // thuoc tinh (ID, NAME) lam tieu de cot.
+                view.OptionsBehavior.AutoPopulateColumns = false;
+                view.OptionsView.ShowGroupPanel = false;
+                view.OptionsView.ShowAutoFilterRow = true;
+
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = "NAME";
+                cbo.Properties.ValueMember = "ID";
+
+                view.Columns.Clear();
+                DevExpress.XtraGrid.Columns.GridColumn colId = view.Columns.AddVisible("ID", "Mã");
+                DevExpress.XtraGrid.Columns.GridColumn colName = view.Columns.AddVisible("NAME", "Tên");
+                colId.Width = 70;
+                colName.Width = 400;
+
+                // Mã cũ còn trong danh mục mới thì trả lại, không còn thì để trống cho đúng.
+                if (giuLai != null)
+                {
+                    string ma = giuLai.ToString();
+                    bool con = false;
+                    for (int i = 0; i < data.Count; i++)
+                        if (data[i].ID.ToString() == ma) { con = true; break; }
+                    cbo.EditValue = con ? giuLai : null;
+                }
+                return true;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); return false; }
+        }
+
+        /// <summary>
+        /// Gắn lại nguồn cho MỌI ô chọn của tab Hỏi bệnh sau khi danh mục của Sở tải xong.
+        /// Gọi từ ApplySytCatalogToControls, trước lượt nạp lại giá trị của hồ sơ.
+        /// </summary>
+        private bool ApplySytToInterviewHcmCombos()
+        {
+            try
+            {
+                if (dicIhcmComboCat.Count == 0) return false;
+
+                int xong = 0, chua = 0;
+                foreach (KeyValuePair<string, string> kv in dicIhcmComboCat)
+                {
+                    Control c;
+                    if (!dicInterviewHcm.TryGetValue(kv.Key, out c)) continue;
+                    GridLookUpEdit cbo = c as GridLookUpEdit;
+                    if (cbo == null) continue;
+
+                    // Đã có nguồn rồi thì thôi, khỏi dựng lại cột.
+                    var cu = cbo.Properties.DataSource as List<KskCodeNameADO>;
+                    if (cu != null && cu.Count > 0) { xong++; continue; }
+
+                    if (BindIhcmCombo(cbo, kv.Value)) xong++; else chua++;
+                }
+
+                LogSystem.Warn("SytHcm/HoiBenh: gan lai nguon o chon — xong " + xong
+                    + ", chua co danh muc " + chua);
+                return chua == 0;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); return false; }
         }
 
         #endregion

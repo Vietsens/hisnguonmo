@@ -572,11 +572,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
             return result ?? new MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE();
         }
 
+        /// <summary>
+        /// Việc 59043 — Tuỳ chọn khi kê thuốc cho bệnh nhân ngoài khoảng "Tuổi từ - Tuổi đến" của thuốc:
+        /// 1 = Cảnh báo (hộp thoại xác nhận, cho phép tiếp tục kê); 0 / trống / khác = Chặn (mặc định, như hiện nay)
+        /// </summary>
+        private const string CONFIG_KEY__MedicineAgeLimitOption = "HIS.Desktop.Plugins.AssignPrescription.MedicineAgeLimitOption";
+        internal static string MedicineAgeLimitOption;
+
         internal static void LoadConfig()
         {
             try
             {
                 IsCheckPharmacology = GetValue(CONFIG_KEY__IS_CHECK_PHARMACOLOGY);
+                MedicineAgeLimitOption = GetValue(CONFIG_KEY__MedicineAgeLimitOption);
                 GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
                 AllowOverMaxExpendService = GetValue(KEY_AllowOverMaxExpendService);
                 CheckPreviousPrescriptionDetail = GetValue(CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION_DETAIL);

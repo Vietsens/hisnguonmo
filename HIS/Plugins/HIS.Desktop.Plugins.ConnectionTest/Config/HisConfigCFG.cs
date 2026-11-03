@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Config
 
         // Có lấy thông tin kết quả từ màn hình "Trả kết quả xét nghiệm từ máy" sang cột "KQ từ máy" hay không (1 = có)
         private const string CONFIG_KEY__IS_RESULT_LIS_MACHINE = "HIS.Desktop.Plugins.ConnectionTest.IsResultLisMachine";
+        private const string CONFIG_KEY__IS_APPROVE_RESULT_BY_SERVICE = "HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService";
 
         internal static string ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE;
 
@@ -84,6 +85,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Config
         /// </summary>
         internal static bool IsResultLisMachine;
 
+        /// <summary>
+        /// = true khi config HIS.Desktop.Plugins.ConnectionTest.IsApproveResultByService = 1:
+        /// bật Duyệt / Hủy duyệt kết quả theo từng dịch vụ (nút Duyệt KQ ở khu kết quả, cột Người duyệt KQ / TG duyệt,
+        /// khóa ô dịch vụ đã duyệt). Khác 1 (mặc định): ẩn toàn bộ, màn hình giữ nguyên nghiệp vụ cũ.
+        /// </summary>
+        internal static bool IsApproveResultByService;
+
         internal static void LoadConfig()
         {
             try
@@ -106,6 +114,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Config
                 IsRequiredSampled = GetValue(CONFIG_KEY__IS_REQUIRED_SAMPLED) == "1";
                 StartTimeMustBeGreaterThanInstructionTime = GetValue(CONFIG_KEY__START_TIME_MUST_BE_GREATER_THAN_INSTRUCTION_TIME);
                 IsResultLisMachine = GetValue(CONFIG_KEY__IS_RESULT_LIS_MACHINE) == "1";
+                IsApproveResultByService = GetValue(CONFIG_KEY__IS_APPROVE_RESULT_BY_SERVICE) == "1";
             }
             catch (Exception ex)
             {

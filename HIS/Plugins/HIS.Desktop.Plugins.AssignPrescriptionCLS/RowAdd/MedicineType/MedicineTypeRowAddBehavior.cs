@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add.MedicineType
             {
                 if (this.CheckValidPre()
                     && this.ValidThuocDaKeTrongNgay()
-                    && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob)
+                    && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob, frmAssignPrescription.medicineAgeConfirmedServiceIds)
                     && ValidAcinInteractiveWorker.ValidGrade(this.DataRow, MediMatyTypeADOs)
                     && WarningOddConvertWorker.CheckWarningOddConvertAmount(frmAssignPrescription.currentMedicineTypeADOForEdit, this.Amount, frmAssignPrescription.ResetFocusMediMaty)
                     && ValidKidneyShift()

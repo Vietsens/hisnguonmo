@@ -146,8 +146,47 @@ namespace HIS.UC.PlusInfo.Design
 
                 ((Form)extenceInstance).ShowDialog();
 
-                BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_WORK_PLACE>();
-                this.workPlaceProcessor.Reload(WorkPlaceProcessor.Template.Combo1, BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_WORK_PLACE>().Where(p => p.IS_ACTIVE == 1).ToList());
+                this.ReloadWorkPlaceDataSource();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy lại danh mục nơi làm việc từ API (bỏ qua cache) sau khi đóng form danh mục,
+        /// cập nhật RAM cache và nạp lại DataSource cho combo
+        /// </summary>
+        internal void ReloadWorkPlaceDataSource()
+        {
+            try
+            {
+                List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> datas = null;
+                try
+                {
+                    Inventec.Core.CommonParam paramCommon = new Inventec.Core.CommonParam();
+                    dynamic filter = new System.Dynamic.ExpandoObject();
+                    filter.IS_ACTIVE = 1;
+                    datas = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE>>("api/HisWorkPlace/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
+                }
+                catch (Exception exApi)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(exApi);
+                }
+
+                if (datas != null)
+                {
+                    BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_WORK_PLACE), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+                else
+                {
+                    BackendDataWorker.Reset<MOS.EFMODEL.DataModels.HIS_WORK_PLACE>();
+                    datas = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_WORK_PLACE>();
+                }
+
+                if (datas == null) datas = new List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE>();
+                this.workPlaceProcessor.Reload(this.workPlaceTemplate, datas.Where(p => p.IS_ACTIVE == 1).ToList());
             }
             catch (Exception ex)
             {

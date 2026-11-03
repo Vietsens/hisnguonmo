@@ -24,6 +24,22 @@ namespace HIS.Desktop.Plugins.HisFund.Resources
                 return "";
             }
         }
+        /// <summary>Tỷ lệ phụ thu phải từ 0 đến 100.</summary>
+        internal static string TyLePhuThuPhaiTu0Den100
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HisFund_TyLePhuThuPhaiTu0Den100", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
         internal static string InvoiceBook_GiaTriLonHonKhong
         {
             get

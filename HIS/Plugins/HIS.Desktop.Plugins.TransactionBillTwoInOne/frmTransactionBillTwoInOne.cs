@@ -565,6 +565,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 FormatControl(ConfigApplications.NumberSeperator, spinRecieptDiscountPrice);
                 FormatControl(ConfigApplications.NumberSeperator, spinInvoiceDiscountPrice);
                 FormatControl(ConfigApplications.NumberSeperator, repositoryItemSpinFundAmount);
+                //Dong quy khong sua (dong quy phan bo bao hiem bao lanh) hien so tien cung dinh dang, khong de 4 so le
+                FormatControl(ConfigApplications.NumberSeperator, repositoryItemSpinFundAmountDisable);
             }
             catch (Exception ex)
             {
@@ -1696,6 +1698,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 listBillFundReciept = new List<VHisBillFundADO>();
+                //Ho so co phan bo bao hiem bao lanh da chot: dong quy lay theo tien bao hiem phan bo
+                if (this.ProcessFundAllocation())
+                {
+                    return;
+                }
                 if (this.treatment == null) return;
                 if (listRecieptData == null || listRecieptData.Count <= 0)
                 {
@@ -1817,6 +1824,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                this.RefreshFundAllocationRow();
                 var listRecieptFund = bindingSource1.DataSource as List<VHisBillFundADO>;
                 decimal totalFund = 0;
                 decimal discount = 0;
@@ -1829,6 +1837,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     discount += HisConfig.EnableMultiDiscount
                         ? GetTotalRecieptDiscount()
                         : spinRecieptDiscountPrice.Value;
+                }
+                else if (this.fundAllocationRow != null)
+                {
+                    //Khong thu so vien phi: tien quy phan bo bao hiem bao lanh con lai nam o so dich vu
+                    totalFund += this.fundAllocationRow.AMOUNT;
                 }
                 if (!checkNotInvoice.Checked)
                 {
@@ -1857,7 +1870,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     if (HisConfig.SelectPayForm == "1")
                     {
                         // Trừ chiết khấu (discount đã gồm cả 2 sổ, đã bỏ qua sổ "Không TT", hỗ trợ cả multi-discount lẫn spin cũ).
-                        lblCanThu.Text = (totalInvoice + totalReciept - discount - tongTienDaNhap).ToString();
+                        // Ho so co phan bo bao hiem bao lanh: tru them tien quy
+                        decimal fundAllocationAmount = this.fundAllocationRow != null ? totalFund : 0;
+                        lblCanThu.Text = (totalInvoice + totalReciept - discount - tongTienDaNhap - fundAllocationAmount).ToString();
                     }
                     else // <--- ĐÂY LÀ NHÁNH CHẠY CHO CẤU HÌNH == 2 CỦA BẠN
                     {
@@ -2485,6 +2500,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 txtBuyerAccountCode.Text = patientData?.ACCOUNT_NUMBER ?? data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
                 txtBuyerAddress.Text = !string.IsNullOrWhiteSpace(patientData?.VIR_ADDRESS) ? patientData.VIR_ADDRESS : (data.TDL_PATIENT_ADDRESS ?? "");
+                if (chkAddressWorkPlace.Checked)
+                {
+                    string workPlaceAddress = GetBuyerWorkPlaceAddress();
+                    if (!String.IsNullOrWhiteSpace(workPlaceAddress))
+                    {
+                        txtBuyerAddress.Text = workPlaceAddress;
+                    }
+                }
 
                 txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
                 //txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
@@ -2500,6 +2523,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     //Don vi
                     long? workPlaceId = patientData?.WORK_PLACE_ID ?? data.TDL_PATIENT_WORK_PLACE_ID;
+                    if (workPlaceId.HasValue && EnsureWorkPlaceInCombo(workPlaceId.Value) == null)
+                    {
+                        // Đơn vị không lấy được từ danh mục (đã xóa/không tồn tại) -> coi như không có ID, dùng tên đơn vị đã lưu trên hồ sơ để không in trống
+                        Inventec.Common.Logging.LogSystem.Debug("TransactionBillTwoInOne.FillInfoPatient >>> workPlaceId=" + workPlaceId + " khong lay duoc tu danh muc -> dung TDL_PATIENT_WORK_PLACE_NAME=[" + data.TDL_PATIENT_WORK_PLACE_NAME + "]");
+                        workPlaceId = null;
+                    }
                     if (workPlaceId.HasValue)
                     {
                         cboBuyerOrganization.EditValue = workPlaceId;
@@ -2783,6 +2812,90 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
+        /// <summary>
+        /// Địa chỉ nơi làm việc của người mua (tab Cá nhân): ưu tiên đơn vị đang chọn ở combo, không có thì lấy theo nơi làm việc của bệnh nhân (danh mục HIS_WORK_PLACE)
+        /// </summary>
+        private string GetBuyerWorkPlaceAddress()
+        {
+            string result = null;
+            try
+            {
+                HIS_WORK_PLACE workPlace = null;
+                if (cboBuyerOrganization.EditValue != null)
+                {
+                    long workPlaceId = 0;
+                    Int64.TryParse(cboBuyerOrganization.EditValue.ToString(), out workPlaceId);
+                    workPlace = dtWorkPlace.FirstOrDefault(o => o.ID == workPlaceId);
+                }
+                if (workPlace == null && this.treatment != null && this.treatment.TDL_PATIENT_WORK_PLACE_ID.HasValue)
+                {
+                    long workPlaceId = this.treatment.TDL_PATIENT_WORK_PLACE_ID.Value;
+                    workPlace = dtWorkPlace.FirstOrDefault(o => o.ID == workPlaceId)
+                        ?? BackendDataWorker.Get<HIS_WORK_PLACE>().FirstOrDefault(o => o.ID == workPlaceId);
+                }
+                if (workPlace != null)
+                {
+                    result = workPlace.ADDRESS;
+                }
+                if (String.IsNullOrWhiteSpace(result) && this.treatment != null)
+                {
+                    result = this.treatment.WORK_PLACE_ADDRESS;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private void chkAddressWorkPlace_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                if (chkAddressWorkPlace.Checked)
+                {
+                    string workPlaceAddress = GetBuyerWorkPlaceAddress();
+                    if (String.IsNullOrWhiteSpace(workPlaceAddress))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bệnh nhân chưa có nơi làm việc trong danh mục hoặc nơi làm việc chưa khai báo địa chỉ", "Thông báo");
+                        chkAddressWorkPlace.Checked = false;
+                        return;
+                    }
+                    txtBuyerAddress.Text = workPlaceAddress;
+                }
+                else
+                {
+                    txtBuyerAddress.Text = (this.treatment != null ? this.treatment.TDL_PATIENT_ADDRESS : null) ?? "";
+                }
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkAddressWorkPlace.Name && o.MODULE_LINK == currentModule.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkAddressWorkPlace.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkAddressWorkPlace.Name;
+                    csAddOrUpdate.VALUE = (chkAddressWorkPlace.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void chkHideHddt_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -2871,6 +2984,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         else if (item.KEY == chkPrintTHPK.Name)
                         {
                             chkPrintTHPK.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == chkAddressWorkPlace.Name)
+                        {
+                            chkAddressWorkPlace.Checked = item.VALUE == "1";
                         }
                     }
                 }
@@ -3173,7 +3290,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 string repay = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TransactionBill.Repay");
                 if (repay == "1")
                 {
-                    if (btnSave.Enabled == false || layoutControlItem10.Enabled == false)
+                    //Nut luu dang khoa do phan bo bao hiem bao lanh (chua thanh toan) thi khong hoi hoan ung
+                    if ((btnSave.Enabled == false || layoutControlItem10.Enabled == false) && !this.IsFundAllocationLocked())
                     {
                         LoadSearch();
                         resultRecieptBill = null;
@@ -3431,6 +3549,86 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        /// <summary>
+        /// Đảm bảo đơn vị có trong dtWorkPlace/combo Đơn vị. dtWorkPlace lấy từ cache RAM nạp lúc mở app nên thiếu đơn vị
+        /// vừa tạo ở Tiếp đón sau đó -> combo hiện trống, biên lai in thiếu tên đơn vị dù vẫn có mã số thuế.
+        /// Thiếu thì gọi API lấy theo ID, bổ sung vào cache RAM + dtWorkPlace rồi nạp lại combo. Trả về null nếu không lấy được.
+        /// </summary>
+        private HIS_WORK_PLACE EnsureWorkPlaceInCombo(long workPlaceId)
+        {
+            HIS_WORK_PLACE result = null;
+            try
+            {
+                result = dtWorkPlace.FirstOrDefault(o => o.ID == workPlaceId);
+                if (result != null)
+                {
+                    return result;
+                }
+
+                HisWorkPlaceFilter filter = new HisWorkPlaceFilter();
+                filter.ID = workPlaceId;
+                List<HIS_WORK_PLACE> apiResult = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, filter, null);
+                result = (apiResult != null) ? apiResult.FirstOrDefault(o => o.ID == workPlaceId) : null;
+                Inventec.Common.Logging.LogSystem.Debug("TransactionBillTwoInOne.EnsureWorkPlaceInCombo >>> workPlaceId=" + workPlaceId + " khong co trong dtWorkPlace (" + dtWorkPlace.Count + " don vi), goi API => " + (result == null ? "null" : ("[" + result.WORK_PLACE_NAME + "] IS_ACTIVE=" + result.IS_ACTIVE)));
+                if (result == null)
+                {
+                    return null;
+                }
+
+                List<HIS_WORK_PLACE> ramWorkPlaces = BackendDataWorker.Get<HIS_WORK_PLACE>();
+                if (ramWorkPlaces != null && !ramWorkPlaces.Exists(o => o.ID == workPlaceId))
+                {
+                    List<HIS_WORK_PLACE> newRamWorkPlaces = new List<HIS_WORK_PLACE>(ramWorkPlaces);
+                    newRamWorkPlaces.Add(result);
+                    BackendDataWorker.UpdateToRam(typeof(HIS_WORK_PLACE), newRamWorkPlaces, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+
+                List<HIS_WORK_PLACE> newWorkPlaces = new List<HIS_WORK_PLACE>(dtWorkPlace);
+                newWorkPlaces.Add(result);
+                dtWorkPlace = newWorkPlaces;
+                this.InitComboCommon(this.cboBuyerOrganization, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
+                this.InitComboCommon(this.cboBuyerOrganization2, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Tên đơn vị người mua theo combo Đơn vị. Combo có thể giữ ID đơn vị chưa có trong dtWorkPlace (đơn vị vừa tạo ở Tiếp đón sau khi mở app)
+        /// nên Text trống -> lấy lại từ danh mục qua API; vẫn không có thì dùng tên đơn vị đã lưu trên hồ sơ điều trị để biên lai không trống tên đơn vị.
+        /// </summary>
+        private string GetBuyerOrganizationFromCombo(DevExpress.XtraEditors.GridLookUpEdit cbo)
+        {
+            string result = (cbo != null) ? cbo.Text : null;
+            try
+            {
+                long workPlaceId = 0;
+                if (cbo != null && cbo.EditValue != null && Int64.TryParse(cbo.EditValue.ToString(), out workPlaceId)
+                    && !dtWorkPlace.Exists(o => o.ID == workPlaceId))
+                {
+                    HIS_WORK_PLACE workPlace = EnsureWorkPlaceInCombo(workPlaceId);
+                    if (workPlace != null)
+                    {
+                        result = workPlace.WORK_PLACE_NAME;
+                    }
+                    else if (this.treatment != null && this.treatment.TDL_PATIENT_WORK_PLACE_ID == workPlaceId
+                        && !String.IsNullOrWhiteSpace(this.treatment.TDL_PATIENT_WORK_PLACE_NAME))
+                    {
+                        result = this.treatment.TDL_PATIENT_WORK_PLACE_NAME;
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug("TransactionBillTwoInOne.GetBuyerOrganizationFromCombo >>> workPlaceId=" + workPlaceId + " | result=[" + result + "]");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
         private void InitComboCommon(Control cboEditor, object data, string valueMember, string displayMember, string displayMemberCode)
         {
             try
@@ -3521,6 +3719,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     {
                         txtBuyerTaxCode.Text = focus.TAX_CODE;
                         txtBuyerSocialRelationsCode.Text = focus.BUD_REL_UNIT_CODE;
+                        if (chkAddressWorkPlace.Checked)
+                        {
+                            txtBuyerAddress.Text = focus.ADDRESS;
+                        }
                     }
                 }
             }

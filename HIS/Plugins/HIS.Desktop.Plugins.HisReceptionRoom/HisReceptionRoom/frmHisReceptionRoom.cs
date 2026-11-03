@@ -139,6 +139,10 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
                 this.grdColReceptionRoomCode.ToolTip = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.grdColReceptionRoomCode.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColReceptionRoomName.Caption = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.grdColReceptionRoomName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColReceptionRoomName.ToolTip = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.grdColReceptionRoomName.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColNumOrderRangeCode.Caption = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.grdColNumOrderRangeCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColNumOrderRangeCode.ToolTip = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.grdColNumOrderRangeCode.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColNumOrderFrom.Caption = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.grdColNumOrderFrom.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColNumOrderFrom.ToolTip = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.grdColNumOrderFrom.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn3.ToolTip = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.gridColumn3.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -186,6 +190,12 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
                 this.layoutControlItem15.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.layoutControlItem15.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem16.Text = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.layoutControlItem16.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem16.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.layoutControlItem16.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciNumOrderRangeCode.Text = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.lciNumOrderRangeCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciNumOrderRangeCode.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.lciNumOrderRangeCode.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtNumOrderRangeCode.ToolTip = this.lciNumOrderRangeCode.OptionsToolTip.ToolTip;
+                this.lciNumOrderFrom.Text = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.lciNumOrderFrom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciNumOrderFrom.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.lciNumOrderFrom.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.spinNumOrderFrom.ToolTip = this.lciNumOrderFrom.OptionsToolTip.ToolTip;
                 this.Text = Inventec.Common.Resource.Get.Value("frmHisReceptionRoom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 if (this.moduleData != null && !String.IsNullOrEmpty(this.moduleData.text))
                 {
@@ -216,6 +226,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
                 cboDTTT.EditValue = null;
                 cboDTPT.EditValue = null;
                 txtTKCT.Text = "";
+                txtNumOrderRangeCode.Text = "";
+                spinNumOrderFrom.EditValue = null;
 
                 //cboPatientType.Properties.Buttons[1].Visible = false;
 
@@ -1031,6 +1043,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
                     cboDepartment.EditValue = data.DEPARTMENT_ID;
                     cboDTTT.EditValue = data.DEFAULT_PATIENT_TYPE_ID;
                     cboDTPT.EditValue = data.BILL_PATIENT_TYPE_ID;
+                    txtNumOrderRangeCode.Text = data.NUM_ORDER_RANGE_CODE;
+                    spinNumOrderFrom.EditValue = data.NUM_ORDER_FROM;
                     GridCheckMarksSelection gridCheckMarkPatientType = cboPatientType.Properties.Tag as GridCheckMarksSelection;
                     gridCheckMarkPatientType.ClearSelection(cboPatientType.Properties.View);
 
@@ -1373,6 +1387,7 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
                     if (resultData != null)
                     {
                         success = true;
+                        //Tai lai ca luoi: luu ma dai so co the doi so bat dau cua cac phong cung ma
                         FillDataToGridControl();
                         ResetFormData();
                     }
@@ -1380,12 +1395,19 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
                 else
                 {
                     sdo.HisRoom.ID = currentData.ROOM_ID;
+                    //API Update tra ve HisReceptionRoomSDO nen resultData (HIS_RECEPTION_ROOM) luon co ID = 0: giu ID phong dang sua
+                    long editedReceptionRoomId = currentData.ID;
                     var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_RECEPTION_ROOM>(HisRequestUriStore.MOSHIS_RECEPTION_ROOM_UPDATE, ApiConsumers.MosConsumer, sdo, param);
                     if (resultData != null)
                     {
                         success = true;
                         //UpdateRowDataAfterEdit(resultData);
+                        //Tai lai ca luoi: luu ma dai so co the doi so bat dau cua cac phong cung ma
+                        object listBeforeReload = gridControlFormList.DataSource;
                         FillDataToGridControl();
+                        //Tai lai luoi that bai (luoi van giu danh sach cu) thi giu nguyen khung nhap, khong nap lai tu danh sach cu
+                        if (!Object.ReferenceEquals(listBeforeReload, gridControlFormList.DataSource))
+                            FocusRowAfterReload(editedReceptionRoomId);
                     }
                 }
 
@@ -1430,12 +1452,50 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             }
         }
 
+        /// <summary>
+        /// Sau khi tai lai luoi, chon lai dong cua phong tiep don vua luu va hien len khung nhap,
+        /// de dong dang chon, currentData va khung nhap cung la mot phong.
+        /// Khong lam gi khi phong khong co tren trang vua tai (vd bi loc theo tu khoa).
+        /// </summary>
+        private void FocusRowAfterReload(long receptionRoomId)
+        {
+            try
+            {
+                List<V_HIS_RECEPTION_ROOM> data = gridControlFormList.DataSource as List<V_HIS_RECEPTION_ROOM>;
+                if (data == null || data.Count == 0)
+                    return;
+
+                int index = data.FindIndex(o => o.ID == receptionRoomId);
+                if (index < 0)
+                    return;
+
+                gridviewFormList.FocusedRowHandle = gridviewFormList.GetRowHandle(index);
+                //Doi dong chon thi su kien doi vi tri da nap dong nay; cung dong chon thi su kien khong chay, phai tu nap
+                if (!Object.ReferenceEquals(this.currentData, data[index]))
+                {
+                    this.currentData = data[index];
+                    ChangedDataRow(this.currentData);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void UpdateDTOFromDataForm(ref MOS.EFMODEL.DataModels.HIS_RECEPTION_ROOM currentDTO)
         {
             try
             {
                 currentDTO.RECEPTION_ROOM_CODE = txtReceptionRoomCode.Text.Trim();
                 currentDTO.RECEPTION_ROOM_NAME = txtReceptionRoomName.Text.Trim();
+                //Dai so thu tu tiep don: ma de trong = phong dung dai rieng, so bat dau de trong = 1 (MOS)
+                string numOrderRangeCode = txtNumOrderRangeCode.Text.Trim();
+                currentDTO.NUM_ORDER_RANGE_CODE = String.IsNullOrEmpty(numOrderRangeCode) ? null : numOrderRangeCode;
+                if (spinNumOrderFrom.EditValue != null)
+                    currentDTO.NUM_ORDER_FROM = (long)spinNumOrderFrom.Value;
+                else
+                    currentDTO.NUM_ORDER_FROM = null;
                 //if (lkRoomTypeId.EditValue != null) currentDTO.ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64((lkRoomTypeId.EditValue ?? "0").ToString());
                 if (!string.IsNullOrEmpty(cboPatientType.Text.ToString()))
                 {
@@ -1476,6 +1536,8 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
                 //ValidationSingleControl(lkRoomTypeId);
                 ValidationSingleControl(cboDepartment);
                 //ValidationSingleControl(cboArea);
+                ValidationTxtNumOrderRangeCode();
+                ValidationSpinNumOrderFrom();
             }
             catch (Exception ex)
             {
@@ -1549,6 +1611,44 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             validRule.txtTKCT = this.txtTKCT;
             validRule.ErrorType = ErrorType.Warning;
             dxValidationProviderEditorInfo.SetValidationRule(txtTKCT, validRule);
+        }
+
+        /// <summary>
+        /// Ma dai so (NUM_ORDER_RANGE_CODE, VARCHAR2(20)): khong bat buoc, toi da 20 byte
+        /// </summary>
+        private void ValidationTxtNumOrderRangeCode()
+        {
+            try
+            {
+                HIS.Desktop.Utility.ValidateRule.CommonValidateMaxLength validRule = new HIS.Desktop.Utility.ValidateRule.CommonValidateMaxLength();
+                validRule.textEdit = this.txtNumOrderRangeCode;
+                validRule.maxLength = 20;
+                validRule.isValidNull = false;
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(txtNumOrderRangeCode, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// So bat dau (NUM_ORDER_FROM): khong bat buoc, neu nhap thi phai >= 1
+        /// </summary>
+        private void ValidationSpinNumOrderFrom()
+        {
+            try
+            {
+                ValidNumOrderFrom validRule = new ValidNumOrderFrom();
+                validRule.spinNumOrderFrom = this.spinNumOrderFrom;
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(spinNumOrderFrom, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
 
@@ -1796,6 +1896,62 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// FormBase khoi phuc file layout luoi da luu (module co trong HIS.Desktop.ApplyRestoreLayout.ModuleLinks).
+        /// File luu truoc khi tang OptionsLayout.LayoutVersion (Designer) khong co cac cot moi,
+        /// nen DevExpress ban su kien nay ngay sau khi khoi phuc: dua cac cot moi ve dung cho.
+        /// Moi lan them cot vao luoi nay thi tang tiep OptionsLayout.LayoutVersion.
+        /// </summary>
+        private void gridviewFormList_LayoutUpgrade(object sender, DevExpress.Utils.LayoutUpgradeEventArgs e)
+        {
+            try
+            {
+                EnsureNumOrderColumnsOrder();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dua 2 cot "Ma dai so" / "So bat dau" ve ngay sau cot "Ten".
+        /// Khoi phuc file layout cu thi cac cot cu ve lai vi tri da luu, con cot moi giu VisibleIndex cua Designer,
+        /// nen cot moi bi xen giua cac cot cu.
+        /// Chi doi VisibleIndex khi sai thu tu; cot nguoi dung da an thi van an;
+        /// cac cot khac giu thu tu da luu.
+        /// </summary>
+        private void EnsureNumOrderColumnsOrder()
+        {
+            try
+            {
+                if (grdColReceptionRoomName == null || !grdColReceptionRoomName.Visible)
+                    return;
+
+                List<DevExpress.XtraGrid.Columns.GridColumn> numOrderCols = new List<DevExpress.XtraGrid.Columns.GridColumn> { grdColNumOrderRangeCode, grdColNumOrderFrom }
+                    .Where(o => o != null && o.Visible)
+                    .ToList();
+                if (numOrderCols.Count == 0)
+                    return;
+
+                List<DevExpress.XtraGrid.Columns.GridColumn> visibleCols = gridviewFormList.VisibleColumns.Cast<DevExpress.XtraGrid.Columns.GridColumn>().OrderBy(o => o.VisibleIndex).ToList();
+                List<int> slots = visibleCols.Select(o => o.VisibleIndex).ToList();
+                List<DevExpress.XtraGrid.Columns.GridColumn> desired = visibleCols.Where(o => !numOrderCols.Contains(o)).ToList();
+                desired.InsertRange(desired.IndexOf(grdColReceptionRoomName) + 1, numOrderCols);
+
+                //Gan tu trai sang phai: cot thu i vao o thu i, cac cot ben trai da dung cho
+                for (int i = 0; i < desired.Count; i++)
+                {
+                    if (desired[i].VisibleIndex != slots[i])
+                        desired[i].VisibleIndex = slots[i];
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -2604,6 +2760,37 @@ namespace HIS.Desktop.Plugins.HisReceptionRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtNumOrderRangeCode_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    spinNumOrderFrom.Focus();
+                    spinNumOrderFrom.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinNumOrderFrom_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkPause.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

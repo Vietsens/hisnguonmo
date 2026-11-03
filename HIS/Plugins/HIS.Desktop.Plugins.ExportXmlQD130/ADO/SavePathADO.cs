@@ -31,5 +31,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         public string pathToSaveXml { get; set; }
 
         public string pathXmlTT12 { get; set; }
+
+        //Việc 61380: thư mục ghi file XML của hồ sơ đủ 48 giờ (tự động xuất)
+        public string pathXml48h { get; set; }
     }
 }

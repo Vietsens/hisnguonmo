@@ -253,5 +253,22 @@ namespace HIS.Desktop.Plugins.TransactionCancel.Base
                 return "";
             }
         }
+
+        /// <summary>Giao dịch thanh toán đã có giao dịch hoàn ứng dịch vụ chưa hủy. {0}: mã các giao dịch hoàn ứng.</summary>
+        internal static string GiaoDichDaCoHoanUngVuiLongHuyTruoc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionDepositCancel__GiaoDichDaCoHoanUngVuiLongHuyTruoc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

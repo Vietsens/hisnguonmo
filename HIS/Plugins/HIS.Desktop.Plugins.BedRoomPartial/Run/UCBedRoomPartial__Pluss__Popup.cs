@@ -177,6 +177,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         case BedRoomPopupMenuProcessor.ModuleType.PublicMedicineByDate:
                             btnPublicMedicineByDateClick();
                             break;
+                        case BedRoomPopupMenuProcessor.ModuleType.PublicMedicineMultiPatient:
+                            btnPublicMedicineMultiPatientClick();
+                            break;
                         case BedRoomPopupMenuProcessor.ModuleType.MedicalAssessment:
                             btnMedicalAssessmentClick();
                             break;
@@ -1826,6 +1829,47 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 
                         ((Form)extenceInstance).ShowDialog();
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Cong khai thuoc nhieu BN: truyen dong BN dang chon (tich san) va dieu kien loc dang dung de nap luoi buong benh,
+        /// khong kem phan trang, de chuc nang moi tu nap du danh sach BN
+        /// </summary>
+        private void btnPublicMedicineMultiPatientClick()
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.PublicMedicineMultiPatient").FirstOrDefault();
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.PublicMedicineMultiPatient");
+                    return;
+                }
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    // Cung dieu kien loc nhu FillDataToGridTreatment
+                    MOS.Filter.HisTreatmentBedRoomLViewFilter treatFilter = new MOS.Filter.HisTreatmentBedRoomLViewFilter();
+                    SetTreatmentBedRoomFilter(ref treatFilter, this.isUseAddedTime);
+                    if (chkKhongHienThiKTT.Checked)
+                    {
+                        treatFilter.HAS_OUT_TIME = false;
+                    }
+
+                    List<object> listArgs = new List<object>();
+                    if (treatmentBedRoomRow != null)
+                        listArgs.Add(treatmentBedRoomRow);
+                    listArgs.Add(treatFilter);
+                    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
+                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                    ((Form)extenceInstance).ShowDialog();
                 }
             }
             catch (Exception ex)

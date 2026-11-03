@@ -27,5 +27,6 @@ namespace HIS.Desktop.Plugins.TreatmentFundList
     {
         public const string TreatmentTypeCode__Deposit = "DBCODE.HIS_RS.V_HIS_TREATMENT_FEE_2D_TYPE.TREATMENT_TYPE_CODE.DEPOSIT";
         public const string HIS_SESE_DEPO_REPAY_GET = "/api/HisSeseDepoRepay/Get";
+        public const string HIS_FUND_ALLOCATION_GETVIEW = "api/HisFundAllocation/GetView";
     }
 }

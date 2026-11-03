@@ -17,6 +17,7 @@ using EMR.WCF.DCO;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.Plugins.KskSyncList.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.SignLibrary.ServiceSign;
 using Inventec.Core;
@@ -34,6 +35,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
     {
         private const string SIGN_TAG = "CKS_BENH_VIEN";
         private readonly SettingSignADO setting;
+
+        // Người kết luận đã ký lỗi trong lượt này (loginname -> lý do). Hồ sơ còn lại của người đó bỏ qua luôn,
+        // lượt đồng bộ sau thử lại. Tránh gọi server hàng loạt khi bác sĩ chưa có phiên ký.
+        private readonly System.Collections.Generic.Dictionary<string, string> concluderFailures =
+            new System.Collections.Generic.Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         internal KskSyncSigner(SettingSignADO setting)
         {
@@ -102,11 +108,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// HsmType theo cấu hình ký số của viện (setting.Id). Gọi api/EmrSign/SignXmlBhyt.
         /// LUÔN ký bằng HSM, KHÔNG phụ thuộc cấu hình USB token/HSM của thẻ CKS_BENH_VIEN (USB token của máy
         /// trạm không thể ký hộ người kết luận) — chỉ cần đã chọn hệ thống HSM (setting.Id > 0).
-        /// Trả chuỗi XML đã chèn chữ ký; nếu thiếu thông tin/ký thất bại -> trả nguyên chuỗi XML gốc (không chặn).
+        /// Gửi kèm SignerLoginname = người kết luận: server EMR ký hộ bằng PHIÊN ĐÃ LƯU của người kết luận,
+        /// không mở phiên mới (mở phiên mới làm bác sĩ mất phiên đang dùng).
+        /// Trả về:
+        /// - XML đã chèn chữ ký khi ký được;
+        /// - nguyên XML gốc khi KHÔNG cấu hình ký (chưa chọn HSM / người kết luận không có chứng thư) — như cũ;
+        /// - null khi ký THẤT BẠI (chưa có phiên, lỗi HSM, chữ ký rỗng) -> người gọi KHÔNG đẩy hồ sơ.
         /// GỌI TRƯỚC khi ký CKS_BENH_VIEN (để chữ ký viện bao trùm cả chữ ký người kết luận).
         /// </summary>
         internal string SignXmlByConcluder(string xml, EMR.EFMODEL.DataModels.EMR_SIGNER signer)
         {
+            string concluderLoginname = (signer != null) ? signer.LOGINNAME : null;
             try
             {
                 if (string.IsNullOrEmpty(xml) || this.setting == null)
@@ -130,10 +142,18 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         + ((signer != null) ? signer.LOGINNAME : "(null)") + " khong co EMR_SIGNER.PCA_SERIAL.");
                     return xml;   // khong co chung thu HSM
                 }
+                string knownFailure = GetConcluderFailReason(concluderLoginname);
+                if (knownFailure != null)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("CKS_NGUOI_KET_LUAN: BO QUA — nguoi ket luan " + concluderLoginname
+                        + " da ky loi trong luot nay, cho luot dong bo sau.");
+                    return null;
+                }
                 CommonParam param = new CommonParam();
-                EMR.SDO.SignXmlBhytSDO sdo = new EMR.SDO.SignXmlBhytSDO();
+                KskSignXmlBhytSDO sdo = new KskSignXmlBhytSDO();
                 sdo.XmlBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(xml));
                 sdo.TagStoreSignatureValue = CONCLUDER_SIGN_TAG;
+                sdo.SignerLoginname = concluderLoginname;     // ký hộ bằng phiên đã lưu của người kết luận
                 sdo.ConfigData = new EMR.SDO.XmlConfigDataSDO()
                 {
                     HsmSerialNumber = signer.PCA_SERIAL,       // serialNumber
@@ -144,27 +164,99 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     IdentityNumber = signer.CMND_NUMBER        // cccd
                 };
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
-                    "CKS_NGUOI_KET_LUAN: goi api/EmrSign/SignXmlBhyt bang HSM cua nguoi ket luan {0}"
-                    + " (HsmType={1}; the CKS_BENH_VIEN ky bang {2}).",
-                    signer.LOGINNAME, setting.Id, setting.IsHsm ? "HSM" : "USB token"));
+                    "CKS_NGUOI_KET_LUAN: goi api/EmrSign/SignXmlBhyt ky ho bang phien cua nguoi ket luan {0}"
+                    + " (HsmType={1}; the CKS_BENH_VIEN ky bang {2}; xmlSha256={3}).",
+                    concluderLoginname, setting.Id, setting.IsHsm ? "HSM" : "USB token", ShortSha256(sdo.XmlBase64)));
                 string signedBase64 = new BackendAdapter(param).Post<string>(
                     "api/EmrSign/SignXmlBhyt", ApiConsumers.EmrConsumer, sdo, SessionManager.ActionLostToken, param);
                 SessionManager.ProcessTokenLost(param);
-                if (param != null && param.Messages != null && param.Messages.Count > 0)
-                    Inventec.Common.Logging.LogSystem.Warn(string.Join(Environment.NewLine, param.Messages));
+                string serverMessage = (param != null && param.Messages != null && param.Messages.Count > 0)
+                    ? string.Join("; ", param.Messages) : null;
+                if (serverMessage != null)
+                    Inventec.Common.Logging.LogSystem.Warn("CKS_NGUOI_KET_LUAN: " + serverMessage);
                 if (string.IsNullOrEmpty(signedBase64))
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("CKS_NGUOI_KET_LUAN: api/EmrSign/SignXmlBhyt tra ve RONG"
-                        + " cho nguoi ket luan " + signer.LOGINNAME + " (HsmType=" + setting.Id + ") -> the DE TRONG.");
-                    return xml;
+                    MarkConcluderFailed(concluderLoginname, serverMessage ?? "Ký số thất bại");
+                    return null;
                 }
                 string signedXml = Encoding.UTF8.GetString(Convert.FromBase64String(signedBase64));
+                if (!HasSignatureValue(signedXml, CONCLUDER_SIGN_TAG))
+                {
+                    // Server cũ có thể trả XML có khối chữ ký nhưng SignatureValue rỗng (HSM lỗi) -> không dùng.
+                    MarkConcluderFailed(concluderLoginname, "Chữ ký trả về không có giá trị ký (SignatureValue rỗng)");
+                    return null;
+                }
                 Inventec.Common.Logging.LogSystem.Info("CKS_NGUOI_KET_LUAN: DA KY cho nguoi ket luan "
-                    + signer.LOGINNAME + "; do dai chu ky trong the = " + TagValueLength(signedXml, CONCLUDER_SIGN_TAG)
+                    + concluderLoginname + "; do dai chu ky trong the = " + TagValueLength(signedXml, CONCLUDER_SIGN_TAG)
                     + " ky tu.");
                 return signedXml;
             }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); return xml; }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                MarkConcluderFailed(concluderLoginname, ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>Lý do người kết luận đã ký lỗi trong lượt này (null nếu chưa lỗi).</summary>
+        internal string GetConcluderFailReason(string concluderLoginname)
+        {
+            if (string.IsNullOrEmpty(concluderLoginname)) return null;
+            string reason;
+            return this.concluderFailures.TryGetValue(concluderLoginname, out reason) ? reason : null;
+        }
+
+        /// <summary>Lý do mặc định khi ký thẻ người kết luận lỗi mà không có thông báo chi tiết.</summary>
+        internal const string CONCLUDER_FAIL_DEFAULT_REASON = "Chưa ký được chữ ký người kết luận. Hồ sơ chưa được đẩy cổng nào."
+            + " Bác sĩ kết luận cần ký một văn bản trên EMR, xác nhận trên app điện thoại rồi đồng bộ lại.";
+
+        private void MarkConcluderFailed(string concluderLoginname, string message)
+        {
+            string detail = string.IsNullOrWhiteSpace(message) ? "Ký số thất bại" : message.Trim().TrimEnd('.');
+            string reason = "Chưa ký được chữ ký người kết luận " + concluderLoginname + ": " + detail
+                + ". Hồ sơ chưa được đẩy cổng nào, đồng bộ lại sau khi bác sĩ đã có phiên ký.";
+            Inventec.Common.Logging.LogSystem.Warn("CKS_NGUOI_KET_LUAN: KY LOI -> KHONG DAY ho so. " + reason);
+            if (!string.IsNullOrEmpty(concluderLoginname))
+                this.concluderFailures[concluderLoginname] = reason;
+        }
+
+        /// <summary>
+        /// Thẻ chữ ký có SignatureValue khác rỗng không. Chặn trường hợp HSM lỗi nhưng vẫn chèn khối
+        /// Signature với SignatureValue rỗng (chữ ký không hợp lệ).
+        /// </summary>
+        private static bool HasSignatureValue(string xml, string tag)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(xml) || string.IsNullOrEmpty(tag)) return false;
+                int open = xml.IndexOf("<" + tag + ">", StringComparison.OrdinalIgnoreCase);
+                if (open < 0) return false;
+                open += tag.Length + 2;
+                int close = xml.IndexOf("</" + tag + ">", open, StringComparison.OrdinalIgnoreCase);
+                if (close < 0) return false;
+                string inner = xml.Substring(open, close - open);
+                var match = System.Text.RegularExpressions.Regex.Match(inner,
+                    @"<(?:\w+:)?SignatureValue[^>]*>([^<]*)</(?:\w+:)?SignatureValue>",
+                    System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                return match.Success && !string.IsNullOrWhiteSpace(match.Groups[1].Value);
+            }
+            catch { return false; }
+        }
+
+        /// <summary>16 ký tự đầu SHA256 của chuỗi, khớp với log server EMR để đối soát mà không ghi nội dung hồ sơ.</summary>
+        private static string ShortSha256(string value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(value)) return "";
+                using (var sha = System.Security.Cryptography.SHA256.Create())
+                {
+                    byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(value));
+                    return BitConverter.ToString(hash).Replace("-", "").Substring(0, 16).ToLower();
+                }
+            }
+            catch { return ""; }
         }
 
         /// <summary>Do dai gia tri cua 1 the XML (0 = the trong / khong thay the) — chi dung de ghi log doi soat.</summary>

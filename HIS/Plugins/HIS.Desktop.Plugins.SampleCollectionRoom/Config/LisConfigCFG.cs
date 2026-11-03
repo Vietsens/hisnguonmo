@@ -35,6 +35,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom.Config
         private const string CONFIG_KEY__SHOW_FROM_SAMPLE_INFO = "LIS.LIS_SAMPLE.TAKE_SAMPLE.IS_SHOW_FORM_SAMPLE_INFO";
         private const string CONFIG_KEY__AUTO_SAMPLE_AFTER_ENTER_BARCODE = "LIS.DESKTOP.AUTO_SAMPLE_AFTER_ENTER_BARCODE";
         private const string CONFIG_KEY__ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE = "LIS.LIS_SAMPLE.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE";
+        private const string CONFIG_KEY__DEFAULT_FOCUS_FIELD = "LIS.LIS_SAMPLE.TAKE_SAMPLE.DEFAULT_FOCUS_FIELD"; // vCong59787: 1 = Ma y lenh, 2 = Ma dieu tri, 3 = Barcode, 4 = Tu khoa; trong/khac = Ma dieu tri
 
         internal static string IS_AUTO_CREATE_BARCODE;
         //internal static string MUST_APPROVE_SAMPLE;
@@ -42,6 +43,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom.Config
         //internal static string SHOW_BUTTON_APPROVE;
         internal static string SHOW_FORM_SAMPLE_INFO;
         internal static string ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE;
+        internal static string DEFAULT_FOCUS_FIELD;
 
         internal static bool IsAutoSampleAfterEnterBarcode;
 
@@ -55,6 +57,10 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom.Config
                 //SHOW_BUTTON_APPROVE = GetValue(CONFIG_KEY__SHOW_BUTTON_APPROVE);
                 SHOW_FORM_SAMPLE_INFO = GetValue(CONFIG_KEY__SHOW_FROM_SAMPLE_INFO);
                 ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE = GetValue(CONFIG_KEY__ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE);
+                DEFAULT_FOCUS_FIELD = GetValue(CONFIG_KEY__DEFAULT_FOCUS_FIELD);
+                // vCong59787: may tram chi nap LIS_CONFIG khi HIS_CONFIG khai LIS noi bo (MOS.LIS.*) -> khong co trong bo nho thi hoi thang API
+                if (DEFAULT_FOCUS_FIELD == null)
+                    DEFAULT_FOCUS_FIELD = GetValueFromApi(CONFIG_KEY__DEFAULT_FOCUS_FIELD);
                 IsAutoSampleAfterEnterBarcode = GetValue(CONFIG_KEY__AUTO_SAMPLE_AFTER_ENTER_BARCODE) == "1";
 
             }
@@ -62,6 +68,29 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom.Config
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private static string GetValueFromApi(string code)
+        {
+            string result = null;
+            try
+            {
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                LIS.Filter.LisConfigFilter filter = new LIS.Filter.LisConfigFilter();
+                filter.IS_ACTIVE = 1;
+                var configs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<LIS.EFMODEL.DataModels.LIS_CONFIG>>("api/LisConfig/Get", HIS.Desktop.ApiConsumer.ApiConsumers.LisConsumer, filter, param);
+                var config = configs != null ? configs.FirstOrDefault(o => o.KEY == code) : null;
+                if (config != null)
+                {
+                    result = !String.IsNullOrEmpty(config.VALUE) ? config.VALUE : (config.DEFAULT_VALUE ?? "");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                result = null;
+            }
+            return result;
         }
 
         private static string GetValue(string code)

@@ -133,7 +133,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
         internal int idRow = 1;
         internal long InstructionTime { get; set; }
         internal bool limitHeinMedicinePrice = false;
-        internal long patientDob;
+        private long _patientDob;
+        /// <summary>
+        /// Ngày sinh bệnh nhân đang kê. Việc 59043: đổi bệnh nhân → xoá ghi nhớ các thuốc đã xác nhận vượt giới hạn tuổi.
+        /// </summary>
+        internal long patientDob
+        {
+            get { return _patientDob; }
+            set
+            {
+                if (_patientDob != value && this.medicineAgeConfirmedServiceIds != null)
+                    this.medicineAgeConfirmedServiceIds.Clear();
+                _patientDob = value;
+            }
+        }
+        /// <summary>
+        /// Việc 59043 — các thuốc (SERVICE_ID) người dùng đã xác nhận tiếp tục kê dù ngoài khoảng tuổi (chỉ trong phiên của màn, chế độ Cảnh báo).
+        /// </summary>
+        internal HashSet<long> medicineAgeConfirmedServiceIds = new HashSet<long>();
         HIS.Desktop.ADO.AssignPrescriptionKidneyADO.DelegateProcessDataResult processDataResult;
 
         internal bool isAutoCheckExpend = false;

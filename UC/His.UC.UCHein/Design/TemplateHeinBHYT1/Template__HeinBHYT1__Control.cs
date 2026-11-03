@@ -578,10 +578,57 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 }
             }
         }
+        private void CopyHeinCardNumberWithoutDash()
+        {
+            try
+            {
+                string text = this.txtSoThe.SelectionLength > 0 ? this.txtSoThe.SelectedText : this.txtSoThe.Text;
+                string heinCardNumber = Utils.HeinUtils.TrimHeinCardNumber(text ?? "");
+                if (!String.IsNullOrEmpty(heinCardNumber))
+                    Clipboard.SetText(heinCardNumber);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtSoThe_Properties_BeforeShowMenu(object sender, BeforeShowMenuEventArgs e)
+        {
+            try
+            {
+                foreach (DevExpress.Utils.Menu.DXMenuItem item in e.Menu.Items)
+                {
+                    if (Equals(item.Tag, StringId.TextEditMenuCopy))
+                    {
+                        item.Click -= this.txtSoThe_MenuCopy_Click;
+                        item.Click += this.txtSoThe_MenuCopy_Click;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        // Chay sau lenh Copy mac dinh cua DevExpress (ban co dau "-") nen ghi de lai clipboard
+        private void txtSoThe_MenuCopy_Click(object sender, EventArgs e)
+        {
+            this.CopyHeinCardNumberWithoutDash();
+        }
+
         private void txtSoThe_KeyDown(object sender, KeyEventArgs e)
         {
             try
             {
+                if (e.Control && e.KeyCode == Keys.C)
+                {
+                    this.CopyHeinCardNumberWithoutDash();
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+                    return;
+                }
                 if (e.KeyCode == Keys.Enter)
                 {
                     string heinCardNumber = this.txtSoThe.Text;
