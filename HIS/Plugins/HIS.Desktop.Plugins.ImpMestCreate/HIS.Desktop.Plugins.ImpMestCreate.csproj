@@ -316,6 +316,7 @@
     <Compile Include="Validation\ImpPriceValidationRule.cs" />
     <Compile Include="Validation\ImpVatRatioValidationRule.cs" />
     <Compile Include="Validation\MediStockValidationRule.cs" />
+    <Compile Include="Validation\ReceiverValidationRule.cs" />
     <Compile Include="Validation\SupplierValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>

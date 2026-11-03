@@ -239,6 +239,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 ValidControlImpMestType();
                 ValidControlMediStock();
                 ValidControlSupplier();
+                ValidControlReceiver();
                 ValidControlDocumentDate();
                 ValidControlImpAmount();
                 ValidControlImPrice();
@@ -292,6 +293,50 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 supplierRule.cboImpMestType = cboImpMestType;
                 supplierRule.cboSupplier = txtNhaCC;
                 dxValidationProvider1.SetValidationRule(txtNhaCC, supplierRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlReceiver()
+        {
+            try
+            {
+                if (!HisConfig.MustEnterReceiver) return;
+                ReceiverValidationRule receiverRule = new ReceiverValidationRule();
+                receiverRule.cboImpMestType = cboImpMestType;
+                receiverRule.cboRecieve = cboRecieve;
+                dxValidationProvider1.SetValidationRule(cboRecieve, receiverRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Key MustEnterReceiver = 1: nhap tu nha cung cap thi nhan Nguoi nhan to do, bo gia tri tu dien (nguoi dang nhap) de nguoi dung tu chon;
+        /// loai nhap khac giu cach tu dien nhu cu. Phieu dang sua giu nguyen nguoi nhan cua phieu.
+        /// </summary>
+        private void SetReceiverByImpMestType()
+        {
+            try
+            {
+                if (!HisConfig.MustEnterReceiver) return;
+                bool isNcc = this.currentImpMestType != null && this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC;
+                layoutControlItem31.AppearanceItemCaption.ForeColor = isNcc ? Color.Maroon : Color.Black;
+                if (this._currentImpMestUp != null || this.isReceiverChosenByUser || !this.defaultReceiverId.HasValue) return;
+                if (isNcc)
+                {
+                    if (cboRecieve.EditValue != null && Convert.ToInt64(cboRecieve.EditValue) == this.defaultReceiverId.Value)
+                        cboRecieve.EditValue = null;
+                }
+                else if (cboRecieve.EditValue == null)
+                {
+                    cboRecieve.EditValue = this.defaultReceiverId.Value;
+                }
             }
             catch (Exception ex)
             {
@@ -1083,6 +1128,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     txtImpMestCode.Enabled = false;
                     txtImpMestCode.Text = "";
                 }
+                SetReceiverByImpMestType();
             }
             catch (Exception ex)
             {

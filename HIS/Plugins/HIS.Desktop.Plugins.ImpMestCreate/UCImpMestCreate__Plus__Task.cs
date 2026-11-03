@@ -365,7 +365,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 				if (defaultLogginNames != null && defaultLogginNames.Count > 0)
 				{
 					var defaultLogginName = defaultLogginNames.FirstOrDefault();
-					cboRecieve.EditValue = defaultLogginName.ID;
+					this.defaultReceiverId = defaultLogginName.ID;
+					if (HIS.Desktop.Plugins.ImpMestCreate.Config.HisConfig.MustEnterReceiver)
+						SetReceiverByImpMestType();
+					else
+						cboRecieve.EditValue = defaultLogginName.ID;
 				}
 			}
 			catch (Exception ex)

@@ -132,6 +132,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         decimal VatConfig = 0;
         int positionHandleControl = -1;
+        long? defaultReceiverId = null;
+        bool isReceiverChosenByUser = false;
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
@@ -1951,6 +1953,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboRecieve.EditValue = null;
+                    this.isReceiverChosenByUser = true;
                 }
             }
             catch (Exception ex)
@@ -1988,6 +1991,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
+                    this.isReceiverChosenByUser = true;
                     if (this.cboRecieve.EditValue != null)
                     {
                         ACS.EFMODEL.DataModels.ACS_USER data = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.LOGINNAME == ((this.cboRecieve.EditValue ?? "").ToString()));
@@ -3315,6 +3319,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 dxValidationProvider1.RemoveControlError(dtDocumentDate);
                 dxValidationProvider1.RemoveControlError(txtDocumentDate);
                 dxValidationProvider1.RemoveControlError(txtDocumentNumber);
+                dxValidationProvider1.RemoveControlError(cboRecieve);
                 dxValidationProvider2.RemoveControlError(txtPackageNumber);
                 dxValidationProvider2.RemoveControlError(txtHeinServiceBidMateType);
 
