@@ -315,7 +315,7 @@ private void ProcessScanCG300(string code)
 1. Lọc mẫu có `BARCODE` (mẫu thiếu ⇒ gom vào danh sách cảnh báo).
 2. `WaitingManager.Show()` → nạp `LisSampleService` theo `SAMPLE_IDs` (1 lần gọi) → nạp cache TESA/TestSampleType nếu chưa có.
 3. `Cg300LabelBuilder.Build(...)` → danh sách bản ghi + danh sách dịch vụ thiếu loại mẫu.
-4. `Cg300FileWriter.Write(folder, labels)` → thành công thì `UpdateSampleTakenAfterPrint` cho từng mẫu Chưa LM/Từ chối, cập nhật dòng tại chỗ + `gridViewSample.RefreshData()`.
+4. Gom `build.SentSamples` theo `GetPatientKeyCG300` (PATIENT_CODE, thiếu thì TREATMENT_CODE); mỗi nhóm lấy nhãn qua `ToLookup(LabNum)` và gọi `Cg300FileWriter.Write(folder, labels)` riêng ⇒ **1 file / bệnh nhân**, tên `<HospNum>_<yyyyMMddHHmmssfff>.txt`. Nhóm nào ghi thành công thì `UpdateSampleTakenAfterPrint` cho từng mẫu Chưa LM/Từ chối, cập nhật dòng tại chỗ + `gridViewSample.RefreshData()`.
 5. `WaitingManager.Hide()` → nếu có cảnh báo ⇒ hiện 1 thông báo tổng hợp (không chặn việc in các ống hợp lệ).
 
 **Nhận diện mã quét — `ResolveScanCodeCG300(code)`** (gọi ở nhánh tìm của `ProcessScanCG300`):
@@ -404,7 +404,9 @@ Không cần thay đổi backend / EFMODEL.
 - [ ] Đang dùng thì tắt phần mềm CG, quét in ⇒ báo "Mất kết nối", checkbox ẩn, mẫu không đổi trạng thái.
 - [ ] Bỏ tích chế độ CG300 ⇒ Enter ở ô tìm kiếm hoạt động như cũ, không sinh file.
 - [ ] Bật CG300, quét mã A ⇒ lưới hiện mẫu A, con trỏ ở ô tìm kiếm, nội dung bôi đen.
-- [ ] Quét lại A ⇒ sinh 1 file trong `ALL`, số bản ghi = số ống khác nhau của các mẫu; lưới không reload; mẫu Chưa LM chuyển Đã LM.
+- [ ] Quét 1 mã y lệnh của BN có 3 y lệnh ⇒ log `CG300 quet ma` loại `TreatmentCode`, lưới đủ mẫu 3 y lệnh; quét lại ⇒ đúng 1 file.
+- [ ] Lưới có mẫu của 2 BN ⇒ in sinh 2 file, mỗi file 1 `HospNum`.
+- [ ] Quét lại A ⇒ sinh 1 file / bệnh nhân trong `ALL`, số bản ghi = số ống khác nhau của các mẫu; lưới không reload; mẫu Chưa LM chuyển Đã LM.
 - [ ] Quét mã B ngay sau đó ⇒ ghi đè ô tìm kiếm và tìm B (không in A).
 - [ ] Mẫu có 3 dịch vụ thuộc 2 loại mẫu (001, 006) ⇒ 2 bản ghi, `TestItemDesc` gộp đúng dịch vụ theo ống.
 - [ ] Dịch vụ chưa gán loại mẫu ⇒ cảnh báo tên dịch vụ, các ống hợp lệ vẫn được gửi.
@@ -429,3 +431,4 @@ Không cần thay đổi backend / EFMODEL.
 | 02/11/2026 | `ea064ac54` | Ô quét nhận barcode / mã y lệnh / mã điều trị / mã bệnh nhân (`ResolveScanCodeCG300`, `ApplyScanFilterCG300`, `EnumCg300ScanCodeType`) |
 | 02/11/2026 | `c991d32a2` | Bắt Enter ở KeyDown; focus + SelectAll lại qua BeginInvoke; log mỗi lần quét |
 | 02/11/2026 | `fd34bc392` | Quét xong tự xử lý không cần Enter (KeyPress + `timerScanCG300`) |
+| 02/11/2026 | (commit này) | 1 bệnh nhân = 1 bản tin: barcode / mã y lệnh mở rộng sang TREATMENT_CODE (`FindSampleCG300`); in gom theo `GetPatientKeyCG300`, 1 file / BN |

@@ -419,6 +419,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         /// <summary>
         /// Find out what the scanned code is (like typing it into the matching box and pressing Search):
         /// barcode -> service request code -> treatment code -> patient code, first match in the room wins.
+        /// A barcode / service request match is widened to its treatment so the patient's orders print as 1 message.
         /// The other code boxes are cleared so the scan alone drives the search.
         /// </summary>
         private void ResolveScanCodeCG300(string code)
@@ -435,13 +436,23 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 string treatmentCode = PadCodeCG300(code, CG300_TREATMENT_CODE_LENGTH);
                 string patientCode = PadCodeCG300(code, CG300_PATIENT_CODE_LENGTH);
 
-                if (ExistsSampleCG300(f => f.BARCODE__EXACT = code))
-                    SetScanCodeCG300(code, EnumCg300ScanCodeType.Barcode, code);
-                else if (ExistsSampleCG300(f => f.SERVICE_REQ_CODE__EXACT = serviceReqCode))
-                    SetScanCodeCG300(code, EnumCg300ScanCodeType.ServiceReqCode, serviceReqCode);
-                else if (ExistsSampleCG300(f => f.TREATMENT_CODE__EXACT = treatmentCode))
+                // 1 patient = 1 CG300 message: a barcode / service request scan is widened to the whole treatment,
+                // so every order the patient brings from the clinics is listed together
+                V_LIS_SAMPLE matched = FindSampleCG300(f => f.BARCODE__EXACT = code);
+                EnumCg300ScanCodeType matchedType = EnumCg300ScanCodeType.Barcode;
+                if (matched == null)
+                {
+                    matched = FindSampleCG300(f => f.SERVICE_REQ_CODE__EXACT = serviceReqCode);
+                    matchedType = EnumCg300ScanCodeType.ServiceReqCode;
+                }
+
+                if (matched != null && !String.IsNullOrEmpty(matched.TREATMENT_CODE))
+                    SetScanCodeCG300(code, EnumCg300ScanCodeType.TreatmentCode, matched.TREATMENT_CODE);
+                else if (matched != null)
+                    SetScanCodeCG300(code, matchedType, matchedType == EnumCg300ScanCodeType.Barcode ? code : serviceReqCode);
+                else if (FindSampleCG300(f => f.TREATMENT_CODE__EXACT = treatmentCode) != null)
                     SetScanCodeCG300(code, EnumCg300ScanCodeType.TreatmentCode, treatmentCode);
-                else if (ExistsSampleCG300(f => f.PATIENT_CODE__EXACT = patientCode))
+                else if (FindSampleCG300(f => f.PATIENT_CODE__EXACT = patientCode) != null)
                     SetScanCodeCG300(code, EnumCg300ScanCodeType.PatientCode, patientCode);
 
                 Inventec.Common.Logging.LogSystem.Debug("CG300 quet ma"
@@ -457,7 +468,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         }
 
         /// <summary>Probe 1 sample of the current room matching the given exact filter.</summary>
-        private bool ExistsSampleCG300(Action<LisSampleViewFilter> setFilter)
+        private V_LIS_SAMPLE FindSampleCG300(Action<LisSampleViewFilter> setFilter)
         {
             try
             {
@@ -472,13 +483,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 var samples = new BackendAdapter(param).Get<List<V_LIS_SAMPLE>>(
                     "api/LisSample/GetView", ApiConsumers.LisConsumer, filter, param);
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
-                return samples != null && samples.Any();
+                return samples != null ? samples.FirstOrDefault() : null;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-            return false;
+            return null;
         }
 
         /// <summary>
@@ -599,23 +610,39 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     return;
                 }
 
-                string filePath = Cg300FileWriter.Write(Cg300CFG.FolderPath, build.Labels);
-                if (String.IsNullOrEmpty(filePath))
+                // 1 patient = 1 file (message) holding every order / tube of that patient
+                var labelsByBarcode = build.Labels.ToLookup(o => o.LabNum);
+                bool isAnyWritten = false, isAnyFailed = false;
+                foreach (var patientSamples in build.SentSamples.GroupBy(GetPatientKeyCG300))
                 {
-                    WaitingManager.Hide();
+                    List<Cg300LabelADO> patientLabels = patientSamples
+                        .SelectMany(o => labelsByBarcode[o.BARCODE])
+                        .ToList();
+                    string filePath = Cg300FileWriter.Write(Cg300CFG.FolderPath, patientLabels);
+                    if (String.IsNullOrEmpty(filePath))
+                    {
+                        isAnyFailed = true;
+                        continue;
+                    }
+
+                    isAnyWritten = true;
+                    foreach (var sample in patientSamples)
+                    {
+                        printedBarcodesCG300.Add(sample.BARCODE);
+                        UpdateSampleTakenAfterPrint(sample);
+                    }
+                }
+                if (isAnyWritten)
+                    gridViewSample.RefreshData();
+                WaitingManager.Hide();
+
+                if (isAnyFailed)
+                {
                     XtraMessageBox.Show(
                         String.Format(Resources.ResourceMessage.CG300KhongGhiDuocFile, Cg300CFG.FolderPath),
                         MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaLoi));
-                    return;
+                    if (!isAnyWritten) return;
                 }
-
-                foreach (var sample in build.SentSamples)
-                {
-                    printedBarcodesCG300.Add(sample.BARCODE);
-                    UpdateSampleTakenAfterPrint(sample);
-                }
-                gridViewSample.RefreshData();
-                WaitingManager.Hide();
 
                 Inventec.Common.Logging.LogUtil.LogActionSuccess("UC_ConnectionTest", "PrintBarcodeCG300",
                     Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
@@ -626,6 +653,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>Message grouping key: patient code, falling back to treatment code when the sample has no patient code.</summary>
+        private string GetPatientKeyCG300(LisSampleADO sample)
+        {
+            if (!String.IsNullOrWhiteSpace(sample.PATIENT_CODE)) return sample.PATIENT_CODE.Trim();
+            return sample.TREATMENT_CODE ?? "";
         }
 
         private Cg300BuildResult BuildCG300Labels(List<LisSampleADO> samples)

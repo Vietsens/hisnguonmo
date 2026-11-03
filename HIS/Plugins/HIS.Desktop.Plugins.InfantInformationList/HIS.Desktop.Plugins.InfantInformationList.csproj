@@ -81,6 +81,9 @@
     <Reference Include="HIS.Desktop.DelegateRegister">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.DelegateRegister.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.KhoDuLieuYTe">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.KhoDuLieuYTe\HIS.Desktop.Plugins.Library.KhoDuLieuYTe.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Library.CacheClient">
       <HintPath>..\HIS.Desktop.Library.CacheClient\bin\Debug\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
