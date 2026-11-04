@@ -211,7 +211,10 @@ Danh sách mẫu **không tải lại** sau khi in, chỉ cập nhật trạng t
 
 ## QT-10 — In lại tem
 
-Quét lại một mã **đã gửi sang CG300 trong lúc đang mở màn hình** → hỏi xác nhận, vì máy sẽ **nhả thêm ống**. Đồng ý thì gửi lại và đánh dấu là in lại.
+Khi in, HIS **chỉ gửi các mẫu chưa gửi sang CG300** trong lúc đang mở màn hình; mẫu đã gửi bị bỏ qua, không hỏi.
+- Bệnh nhân nhiều phiếu chỉ định: quét phiếu 1 (tìm + in) là đã nhả đủ ống của mọi phiếu. Quét tiếp phiếu 2, phiếu 3 **không nhả thêm ống**.
+- Có chỉ định mới thêm sau khi đã in → lần in sau chỉ nhả ống của chỉ định mới.
+- **Mọi** mẫu đang hiện đều đã gửi → hỏi "đã in tem, có muốn in lại", vì máy sẽ **nhả thêm ống**. Nút mặc định là **Không**: phím Enter của máy quét khi hộp đang mở không tự đồng ý. Chọn Có thì gửi lại và đánh dấu là in lại.
 Đóng và mở lại màn hình thì danh sách "đã gửi" bắt đầu lại từ đầu.
 
 ## QT-11 — Không chặn toàn bộ vì một phần lỗi
@@ -272,7 +275,7 @@ Bệnh nhân qua nhiều phòng khám lâm sàng sẽ có nhiều chỉ định 
 | 5 | Mẫu của A có 3 xét nghiệm thuộc 2 loại ống | Nhả 2 ống, mỗi tem ghi đúng xét nghiệm của ống đó (QT-04) |
 | 6 | Một xét nghiệm của A chưa gán loại mẫu | Vẫn nhả các ống còn lại; thông báo tên xét nghiệm chưa gán (QT-08, QT-11) |
 | 7 | Mẫu của A chưa có barcode | Không gửi mẫu đó, thông báo kèm mã y lệnh (QT-07) |
-| 8 | Quét mã A lần thứ ba sau khi đã in | Hỏi "đã in tem, có muốn in lại" — Không thì dừng; Có thì nhả thêm ống (QT-10) |
+| 8 | Quét mã A lần thứ ba sau khi đã in | Hỏi "đã in tem, có muốn in lại" (mặc định Không) — Không thì dừng; Có thì nhả thêm ống (QT-10) |
 | 9 | Phần mềm CG300 bị tắt giữa ca, quét lại để in | Báo "Mất kết nối… Phần mềm điều khiển CG300 chưa chạy", ô tích ẩn, mẫu giữ trạng thái cũ (QT-02, QT-09) |
 | 10 | Bật lại phần mềm CG300, bấm Tìm | Ô tích hiện lại, trạng thái tích như trước (QT-02) |
 | 11 | Kỹ thuật viên bỏ tích "In tem CG300" | Quét mã chỉ để tìm như cũ (QT-12) |
@@ -286,6 +289,8 @@ Bệnh nhân qua nhiều phòng khám lâm sàng sẽ có nhiều chỉ định 
 | 19 | Bệnh nhân có 3 phiếu chỉ định từ 3 phòng khám; quét **1 phiếu** | Lưới hiện đủ các mẫu của cả 3 phiếu (cùng mã điều trị) (QT-15) |
 | 20 | Quét lại phiếu đó | Thư mục `ALL` có **đúng 1 file** của bệnh nhân, chứa ống của cả 3 phiếu (QT-15) |
 | 21 | Tìm từ khóa ra mẫu của 2 bệnh nhân, quét lại để in | Sinh **2 file**, mỗi bệnh nhân một file (QT-15) |
+| 22 | Bệnh nhân 3 phiếu: đã quét phiếu 1 hai lần (nhả đủ ống), tiếp tục quét phiếu 2 hai lần, phiếu 3 hai lần | **Không** nhả thêm ống; lần quét thứ hai của phiếu 2 / phiếu 3 hiện hỏi in lại, mặc định Không (QT-10) |
+| 23 | Hộp hỏi in lại đang mở, kỹ thuật viên quét tiếp | Phím Enter của máy quét chọn **Không**, không nhả ống (QT-10) |
 
 ---
 
@@ -378,5 +383,6 @@ Vì tính năng chỉ bật trên máy trạm được khai báo và kết nối
 |---|---|
 | 13/10/2026 | Triển khai lần đầu: ô tích "In tem CG300", quét để tìm, quét lại để in (QT-01 → QT-12) |
 | 22/10/2026 | Tài liệu nghiệp vụ; bản vá cho HIS 2.418.0 |
+| 04/11/2026 | Kiểm thử tại viện: bệnh nhân ≥ 2 chỉ định bị nhả ống lần 2, lần 3 khi quét tiếp các phiếu còn lại. Sửa: chỉ gửi mẫu chưa gửi; hỏi in lại khi tất cả đã gửi, mặc định Không (QT-10) |
 | 02/11/2026 | Mỗi bệnh nhân một bản tin: quét barcode / mã y lệnh mở rộng ra cả lượt điều trị; ghi 1 file / bệnh nhân (QT-15) |
 | 02/11/2026 | Kiểm thử tại viện: quét mã điều trị vào ô Mã điều trị bị nối đôi, không in; tên chương trình khai theo tên hiển thị nên không nhận kết nối. Sửa: ô quét nhận mọi loại mã (QT-13); quét xong tự tìm / tự in, không cần Enter (QT-14); hướng dẫn lấy tên chương trình ở tab Details (QT-01) |
