@@ -43,9 +43,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
     /// Viec 60261 (BV Da khoa tinh Dien Bien) - canh bao ho so thieu/sai thong tin the, ho so chinh cua XML1
     /// (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD, GT_THE_TU, GT_THE_DEN) de sua truoc, khong phai doi cong BHYT bao loi.
     ///
-    /// - Hoi xac nhan truoc cac thao tac xuat/gui XML 130 bang tay: kiem moi the cua dot dieu tri (nhu XML1 noi the bang ';').
-    ///   Co = xuat/gui nhu cu; Khong = mo danh sach canh bao theo ho so roi dung. Chi canh bao, khong chan.
-    /// - Hoi truoc menu "Xuat lai file XML check-in server": kiem theo the tren dong ho so (check-in lay the cuoi).
+    /// - Hoi xac nhan truoc cac thao tac xuat/gui XML 130 bang tay: nap lai ho so luc bam, kiem moi the cua dot dieu tri
+    ///   (nhu XML1 noi the bang ';'). Co = xuat/gui nhu cu; Khong = mo danh sach canh bao theo ho so roi dung. Chi canh bao, khong chan.
+    /// - Hoi truoc menu "Xuat lai file XML check-in server": nap lai ho so, kiem the hien tai (check-in lay the cuoi).
     /// - Cot "Canh bao the, ho so" tren luoi (the hien tai cua ho so): cho thay ho so check-in / gui tu dong can sua,
     ///   vi hai luong do chay tren may chu hoac tien trinh tu dong, khong co ai de hoi.
     ///
@@ -74,12 +74,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         #region Hoi truoc khi xuat/gui
 
         /// <summary>
-        /// Hoi truoc khi xuat/gui XML 130 bang tay. Tra ve true = tiep tuc.
-        /// Kiem moi the cua dot dieu tri (nap qua api/HisPatientTypeAlter/GetView theo lo) dung nhu XML1;
-        /// lo nao nap loi thi ho so cua lo do kiem theo the tren dong. Loi phia kiem tra khong chan xuat/gui.
+        /// Hoi truoc thao tac xuat/gui bang tay. Tra ve true = tiep tuc.
+        /// - Nap lai ho so (api/HisTreatment/GetView1) theo lo de kiem dung du lieu luc bam: sua xong khong can Tim kiem lai.
+        /// - XML 130: nap them dien dieu tri (api/HisPatientTypeAlter/GetView) de kiem moi the cua dot dieu tri nhu XML1 noi bang ';'.
+        /// - Check-in: kiem the hien tai cua ho so (check-in lay the cuoi), khong nap dien dieu tri.
+        /// Lo nao nap loi thi ho so cua lo do kiem theo dong luoi. Loi phia kiem tra khong chan xuat/gui.
+        /// shortcut: check-in kiem SO_CCCD theo CCCD; check-in that lui sang ho chieu khi khong co CCCD - nguoi nuoc ngoai chi co
+        /// ho chieu se bi canh bao thua. Nang cap khi vien bao.
         /// </summary>
         /// <param name="is3176">Che do XML 3176 cua luong xuat/gui (SO_CCCD lui sang CMND, ho chieu)</param>
-        private async Task<bool> ConfirmCardInfoBeforeXmlAsync(List<V_HIS_TREATMENT_1> treatments, bool is3176)
+        /// <param name="isCheckIn">Xuat lai file XML check-in</param>
+        private async Task<bool> ConfirmCardInfoAsync(List<V_HIS_TREATMENT_1> treatments, bool is3176, bool isCheckIn)
         {
             try
             {
@@ -88,14 +93,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     return true;
                 }
 
-                List<V_HIS_TREATMENT_1> distinctTreatments = treatments.Where(o => o != null).GroupBy(o => o.ID).Select(g => g.First()).ToList();
-                List<long> treatmentIds = distinctTreatments.Select(o => o.ID).ToList();
+                List<V_HIS_TREATMENT_1> gridRows = treatments.Where(o => o != null).GroupBy(o => o.ID).Select(g => g.First()).ToList();
+                List<long> treatmentIds = gridRows.Select(o => o.ID).ToList();
+                Dictionary<long, V_HIS_TREATMENT_1> freshTreatments = new Dictionary<long, V_HIS_TREATMENT_1>();
+                Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> patientTypeAlters = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
 
                 WaitingManager.Show();
-                Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> patientTypeAlters;
                 try
                 {
-                    patientTypeAlters = await Task.Run(() => LoadPatientTypeAltersForCardCheck(treatmentIds));
+                    await Task.Run(() => LoadCardCheckData(treatmentIds, !isCheckIn, freshTreatments, patientTypeAlters));
                 }
                 finally
                 {
@@ -103,16 +109,22 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
 
                 List<TienGiamDinhResultADO> warned = new List<TienGiamDinhResultADO>();
-                foreach (V_HIS_TREATMENT_1 treatment in distinctTreatments)
+                foreach (V_HIS_TREATMENT_1 gridRow in gridRows)
                 {
+                    V_HIS_TREATMENT_1 treatment;
+                    if (!freshTreatments.TryGetValue(gridRow.ID, out treatment))
+                    {
+                        treatment = gridRow;
+                    }
+
                     List<V_HIS_PATIENT_TYPE_ALTER> treatmentPatientTypeAlters;
-                    List<V_HIS_PATIENT_TYPE_ALTER> cards = patientTypeAlters.TryGetValue(treatment.ID, out treatmentPatientTypeAlters)
+                    List<V_HIS_PATIENT_TYPE_ALTER> cards = !isCheckIn && patientTypeAlters.TryGetValue(treatment.ID, out treatmentPatientTypeAlters)
                         ? CardInfoChecker.GetXml1Cards(treatmentPatientTypeAlters)
                         : CardInfoChecker.GetCurrentCard(treatment);
-                    AddCardInfoResult(warned, treatment, CardInfoChecker.Check(treatment, cards, is3176, HisConfigCFG.PATIENT_TYPE_ID__BHYT));
+                    AddCardInfoResult(warned, treatment, CardInfoChecker.Check(treatment, cards, is3176 && !isCheckIn, HisConfigCFG.PATIENT_TYPE_ID__BHYT));
                 }
 
-                return ConfirmCardInfoWarnings(warned, distinctTreatments.Count);
+                return ConfirmCardInfoWarnings(warned, gridRows.Count);
             }
             catch (Exception ex)
             {
@@ -124,39 +136,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         }
 
         /// <summary>
-        /// Hoi truoc khi xuat lai file check-in. Check-in lay the cuoi cua ho so nen kiem theo the tren dong ho so (khong goi API).
-        /// shortcut: SO_CCCD kiem theo CCCD; check-in that lui sang ho chieu khi khong co CCCD - nguoi nuoc ngoai chi co ho chieu
-        /// se bi canh bao thua. Nang cap khi vien bao.
+        /// Nap lai ho so (va dien dieu tri khi can) theo lo vao 2 tu dien theo ID ho so.
+        /// Lo nao loi thi bo qua - ho so cua lo do kiem theo dong luoi.
         /// </summary>
-        private bool ConfirmCardInfoBeforeCheckIn(List<V_HIS_TREATMENT_1> treatments)
+        private void LoadCardCheckData(List<long> treatmentIds, bool loadPatientTypeAlters, Dictionary<long, V_HIS_TREATMENT_1> freshTreatments, Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> patientTypeAlters)
         {
-            try
-            {
-                if (!this.IsCardInfoWarningEnabled || treatments == null || treatments.Count == 0)
-                {
-                    return true;
-                }
-
-                List<V_HIS_TREATMENT_1> distinctTreatments = treatments.Where(o => o != null).GroupBy(o => o.ID).Select(g => g.First()).ToList();
-                List<TienGiamDinhResultADO> warned = new List<TienGiamDinhResultADO>();
-                foreach (V_HIS_TREATMENT_1 treatment in distinctTreatments)
-                {
-                    AddCardInfoResult(warned, treatment, CardInfoChecker.Check(treatment, CardInfoChecker.GetCurrentCard(treatment), false, HisConfigCFG.PATIENT_TYPE_ID__BHYT));
-                }
-
-                return ConfirmCardInfoWarnings(warned, distinctTreatments.Count);
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-                return true;
-            }
-        }
-
-        /// <summary>Nap dien dieu tri cua cac ho so theo lo, gom theo ID ho so. Lo loi thi bo qua (ho so cua lo do kiem theo the tren dong).</summary>
-        private Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> LoadPatientTypeAltersForCardCheck(List<long> treatmentIds)
-        {
-            Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> result = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
             try
             {
                 int skip = 0;
@@ -165,19 +149,40 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     List<long> limit = treatmentIds.Skip(skip).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
                     skip = skip + GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
 
-                    CommonParam param = new CommonParam();
-                    HisPatientTypeAlterViewFilter filter = new HisPatientTypeAlterViewFilter();
-                    filter.TREATMENT_IDs = limit;
-                    List<V_HIS_PATIENT_TYPE_ALTER> patientTypeAlters = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, filter, param);
-                    if (patientTypeAlters == null)
+                    CommonParam paramTreatment = new CommonParam();
+                    HisTreatmentView1Filter treatmentFilter = new HisTreatmentView1Filter();
+                    treatmentFilter.IDs = limit;
+                    List<V_HIS_TREATMENT_1> treatments = new Inventec.Common.Adapter.BackendAdapter(paramTreatment).Get<List<V_HIS_TREATMENT_1>>("api/HisTreatment/GetView1", ApiConsumers.MosConsumer, treatmentFilter, paramTreatment);
+                    if (treatments == null)
+                    {
+                        LogSystem.Warn("CardInfoWarning - Khong nap lai duoc " + limit.Count + " ho so, kiem theo dong luoi.");
+                    }
+                    else
+                    {
+                        foreach (V_HIS_TREATMENT_1 treatment in treatments.Where(o => o != null))
+                        {
+                            freshTreatments[treatment.ID] = treatment;
+                        }
+                    }
+
+                    if (!loadPatientTypeAlters)
+                    {
+                        continue;
+                    }
+
+                    CommonParam paramPatientTypeAlter = new CommonParam();
+                    HisPatientTypeAlterViewFilter patientTypeAlterFilter = new HisPatientTypeAlterViewFilter();
+                    patientTypeAlterFilter.TREATMENT_IDs = limit;
+                    List<V_HIS_PATIENT_TYPE_ALTER> list = new Inventec.Common.Adapter.BackendAdapter(paramPatientTypeAlter).Get<List<V_HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, patientTypeAlterFilter, paramPatientTypeAlter);
+                    if (list == null)
                     {
                         LogSystem.Warn("CardInfoWarning - Khong nap duoc dien dieu tri cua " + limit.Count + " ho so, kiem theo the tren dong ho so.");
                         continue;
                     }
 
-                    foreach (IGrouping<long, V_HIS_PATIENT_TYPE_ALTER> group in patientTypeAlters.GroupBy(o => o.TREATMENT_ID))
+                    foreach (IGrouping<long, V_HIS_PATIENT_TYPE_ALTER> group in list.GroupBy(o => o.TREATMENT_ID))
                     {
-                        result[group.Key] = group.ToList();
+                        patientTypeAlters[group.Key] = group.ToList();
                     }
                 }
             }
@@ -185,7 +190,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 LogSystem.Error(ex);
             }
-            return result;
         }
 
         private static void AddCardInfoResult(List<TienGiamDinhResultADO> warned, V_HIS_TREATMENT_1 treatment, List<TienGiamDinhErrorADO> warnings)
@@ -288,7 +292,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.gridColCardInfoWarning.OptionsColumn.AllowEdit = false;
                 this.gridColCardInfoWarning.Width = 120;
                 this.gridColCardInfoWarning.Visible = true;
-                //Dat ngay sau cot XML 48h (neu co), khong thi sau hai cot Check-in
+                //Xin dat sau cot XML 48h (neu co), khong thi sau hai cot Check-in. Hai cot Check-in la cot co dinh trai nen thuc te
+                //cot moi (khong co dinh) dung ngay sau khoi cot co dinh - cot cuon dau tien, khong can keo ngang moi thay
                 int afterIndex = this.gridColXml48h != null && this.gridColXml48h.VisibleIndex >= 0
                     ? this.gridColXml48h.VisibleIndex
                     : Math.Max(this.gridColumn2.VisibleIndex, this.gridColumn1.VisibleIndex);

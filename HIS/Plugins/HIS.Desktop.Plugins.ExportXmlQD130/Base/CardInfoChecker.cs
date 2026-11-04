@@ -186,6 +186,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 Add(result, MA_THE_BHYT, true, String.Format(ResourceMessageLang.CardInfoMaTheSaiDoDai, cardNumber, cardNumber.Length));
             }
+            else if (!cardNumber.All(Char.IsLetterOrDigit))
+            {
+                //Du do dai nhung co dau cach, dau gach... = go thua mot ky tu va thieu mot ky tu that
+                Add(result, MA_THE_BHYT, true, String.Format(ResourceMessageLang.CardInfoMaTheKyTuLa, cardNumber));
+            }
 
             if (String.IsNullOrEmpty(card.HEIN_MEDI_ORG_CODE))
             {

@@ -606,4 +606,7 @@ Hồ sơ chưa kiểm tra được cũng bị chặn vì chưa thể khẳng đ�
   <data name="CardInfoThieuGtTheDen" xml:space="preserve">
     <value>Thẻ {0}: thiếu ngày thẻ có giá trị đến</value>
   </data>
+  <data name="CardInfoMaTheKyTuLa" xml:space="preserve">
+    <value>Mã thẻ BHYT &quot;{0}&quot; có dấu cách hoặc ký tự không phải chữ, số</value>
+  </data>
 </root>

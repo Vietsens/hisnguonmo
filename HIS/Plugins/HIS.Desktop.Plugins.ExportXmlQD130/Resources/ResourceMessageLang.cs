@@ -980,6 +980,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         /// <summary>Mã thẻ BHYT "{0}" có {1} ký tự, đúng là 15 ký tự (thẻ mẫu mới 17 ký tự)</summary>
         internal static string CardInfoMaTheSaiDoDai { get { return GetMdInsightValue("CardInfoMaTheSaiDoDai"); } }
 
+        /// <summary>Mã thẻ BHYT "{0}" có dấu cách hoặc ký tự không phải chữ, số</summary>
+        internal static string CardInfoMaTheKyTuLa { get { return GetMdInsightValue("CardInfoMaTheKyTuLa"); } }
+
         /// <summary>Thẻ {0}: thiếu mã nơi đăng ký KCB ban đầu</summary>
         internal static string CardInfoThieuNoiDkbd { get { return GetMdInsightValue("CardInfoThieuNoiDkbd"); } }
 

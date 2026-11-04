@@ -606,4 +606,7 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
   <data name="CardInfoThieuGtTheDen" xml:space="preserve">
     <value>Card {0}: missing valid-to date</value>
   </data>
+  <data name="CardInfoMaTheKyTuLa" xml:space="preserve">
+    <value>Card number &quot;{0}&quot; contains spaces or characters other than letters and digits</value>
+  </data>
 </root>
