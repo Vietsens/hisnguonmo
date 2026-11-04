@@ -559,7 +559,7 @@ Hồ sơ chưa kiểm tra được cũng bị chặn vì chưa thể khẳng đ�
     <value>Cảnh báo thiếu/sai thông tin thẻ, thông tin hồ sơ chính (XML1)</value>
   </data>
   <data name="CardInfoTongKet" xml:space="preserve">
-    <value>Đã kiểm {0} hồ sơ: {1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính. Đây là cảnh báo, không chặn xuất/gửi XML.</value>
+    <value>Đã kiểm {0} hồ sơ: {1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính.</value>
   </data>
   <data name="CardInfoTenTepMacDinh" xml:space="preserve">
     <value>DanhSachCanhBaoTheHoSo_{0}.xlsx</value>

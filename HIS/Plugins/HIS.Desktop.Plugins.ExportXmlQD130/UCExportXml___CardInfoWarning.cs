@@ -106,6 +106,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Dictionary<long, V_HIS_TREATMENT_1> freshTreatments = new Dictionary<long, V_HIS_TREATMENT_1>();
                 Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> patientTypeAlters = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
 
+                //Khoa man hinh trong luc nap lai: neu nguoi dung doi dong chon, o XML 3176 hay bam Tim kiem giua chung thi thao tac
+                //sau cong se xuat/gui danh sach chua kiem (khoa = 2 bi lach). Hop hoi va cua so danh sach sau do da la modal.
+                bool enabledBefore = this.Enabled;
+                this.Enabled = false;
                 WaitingManager.Show();
                 try
                 {
@@ -114,6 +118,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 finally
                 {
                     WaitingManager.Hide();
+                    this.Enabled = enabledBefore;
                 }
 
                 List<TienGiamDinhResultADO> warned = new List<TienGiamDinhResultADO>();

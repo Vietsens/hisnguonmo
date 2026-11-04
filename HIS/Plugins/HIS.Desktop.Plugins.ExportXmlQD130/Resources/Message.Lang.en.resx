@@ -559,7 +559,7 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
     <value>Missing/invalid card and main record information (XML1)</value>
   </data>
   <data name="CardInfoTongKet" xml:space="preserve">
-    <value>Checked {0} records: {1} records have missing or invalid card or main record information. This is a warning only, it does not block exporting/sending XML.</value>
+    <value>Checked {0} records: {1} records have missing or invalid card or main record information.</value>
   </data>
   <data name="CardInfoTenTepMacDinh" xml:space="preserve">
     <value>DanhSachCanhBaoTheHoSo_{0}.xlsx</value>
