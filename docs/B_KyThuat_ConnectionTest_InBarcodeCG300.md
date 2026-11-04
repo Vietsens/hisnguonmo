@@ -81,7 +81,7 @@ Chi tiết đầy đủ ở **phần T — Thông tin tích hợp CG300** bên d
 | Thuộc tính | Giá trị |
 |------------|---------|
 | Nội dung | **Mảng JSON** `[ {...}, {...} ]` — mỗi phần tử là một `FyLabelResponseModel` |
-| Đơn vị bản ghi | 1 bản ghi = 1 ống = (1 barcode × 1 ContainerCode). Một barcode nhiều ống ⇒ nhiều bản ghi cùng `LabNum`, khác `ContainerCode` |
+| Đơn vị bản ghi | 1 bản ghi = 1 ống = (1 barcode × 1 ContainerCode). Một barcode nhiều ống ⇒ nhiều bản ghi cùng `LabNum`, khác `ContainerCode`. Nhiều mẫu LIS cùng barcode (nhiều chỉ định) ⇒ **gộp** vào cùng bản ghi theo (barcode × ContainerCode) |
 | Ràng buộc hãng | Trong một file, mỗi barcode/ống chỉ xuất hiện một lần ⇒ LIS phải gom toàn bộ dịch vụ theo barcode trước khi ghi |
 | Kiểu dữ liệu | Tất cả trường là **chuỗi** (kể cả `BloodConfirmState`, `AgeDesc`) |
 | Định dạng thời gian | `yyyy-MM-ddTHH:mm:ss` (theo mẫu hãng và `LisDG.docx`) |
@@ -205,9 +205,9 @@ Tem in ra hiển thị: **LabNum, HospNum, CnName, Sex, AgeDesc, Source, DeptDes
 | `ContainerCode` | **`HIS_TEST_SAMPLE_TYPE.TEST_SAMPLE_TYPE_CODE`** | `001`, `004`, `006`… (khớp bảng khay của máy) |
 | `Container` | Màu ống — xem câu hỏi **Q2** | `Purple` |
 | `RePrint` | `PRINT_COUNT > 0` hoặc mã đã in trong phiên ? `Yes` : `No` | |
-| `TestItemDesc` | Tên các dịch vụ của mẫu thuộc ống này, nối `"; "` | |
+| `TestItemDesc` | Tên các dịch vụ thuộc ống này của **mọi mẫu cùng barcode**, nối `"; "`, bỏ trùng | |
 | `DeptDesc` | `V_LIS_SAMPLE.REQUEST_DEPARTMENT_NAME` (tem thực tế BV in "KKB") | |
-| `ExamineRequestID` | `V_LIS_SAMPLE.SERVICE_REQ_CODE` | |
+| `ExamineRequestID` | `V_LIS_SAMPLE.SERVICE_REQ_CODE` của các mẫu dùng ống này, bỏ trùng, nối `","` | |
 | `PrintTime` | Thời điểm ghi file | `yyyy-MM-ddTHH:mm:ss` |
 | `PrintIP` / `PrintUser` | IP máy trạm / loginname hiện tại | |
 | `TestType` | `V_LIS_SAMPLE.SAMPLE_TYPE_NAME` (loại bệnh phẩm LIS) | |
@@ -409,6 +409,7 @@ Không cần thay đổi backend / EFMODEL.
 - [ ] Quét lại A ⇒ sinh 1 file / bệnh nhân trong `ALL`, số bản ghi = số ống khác nhau của các mẫu; lưới không reload; mẫu Chưa LM chuyển Đã LM.
 - [ ] Quét mã B ngay sau đó ⇒ ghi đè ô tìm kiếm và tìm B (không in A).
 - [ ] Mẫu có 3 dịch vụ thuộc 2 loại mẫu (001, 006) ⇒ 2 bản ghi, `TestItemDesc` gộp đúng dịch vụ theo ống.
+- [ ] 2 mẫu cùng barcode (TPT Blue + AST Black; CRP Black) ⇒ đúng 2 bản ghi, Black `TestItemDesc` = "AST; CRP", `ExamineRequestID` = 2 mã y lệnh nối `,`.
 - [ ] Dịch vụ chưa gán loại mẫu ⇒ cảnh báo tên dịch vụ, các ống hợp lệ vẫn được gửi.
 - [ ] Mẫu chưa có barcode ⇒ cảnh báo, không sinh bản ghi.
 - [ ] Thư mục `ALL` không ghi được ⇒ thông báo lỗi, trạng thái mẫu không đổi.
@@ -433,3 +434,4 @@ Không cần thay đổi backend / EFMODEL.
 | 02/11/2026 | `fd34bc392` | Quét xong tự xử lý không cần Enter (KeyPress + `timerScanCG300`) |
 | 02/11/2026 | (commit này) | 1 bệnh nhân = 1 bản tin: barcode / mã y lệnh mở rộng sang TREATMENT_CODE (`FindSampleCG300`); in gom theo `GetPatientKeyCG300`, 1 file / BN |
 | 04/11/2026 | (commit này) | Fix nhả ống lặp với BN ≥ 2 chỉ định: chỉ gửi mẫu chưa gửi; hỏi in lại mặc định Không |
+| 04/11/2026 | (commit này) | Fix lặp phiếu khi nhiều mẫu chung barcode: gộp barcode × ContainerCode (`Cg300TubeGroup`), dựng 1 kết quả / BN |

@@ -165,8 +165,11 @@ Mã quét có thể là barcode mẫu, mã y lệnh, mã điều trị hoặc m�
 - Mỗi dịch vụ xét nghiệm được gán loại mẫu tại chức năng **"Dịch vụ – Loại mẫu bệnh phẩm"**.
 - Một mẫu (một barcode) có thể cần **nhiều ống**: các dịch vụ dùng chung một loại ống được **gộp vào một ống**; mỗi loại ống khác nhau là một ống riêng.
 - Dịch vụ được gán **nhiều loại mẫu** → gửi đủ các ống tương ứng.
+- **Nhiều chỉ định dùng chung một barcode** (bệnh nhân khám nhiều phòng, LIS cấp cùng mã): gộp theo **barcode × loại ống** cho **tất cả** chỉ định — mỗi ống chỉ nhả **một lần**, tem ghi đủ các xét nghiệm của mọi chỉ định dùng ống đó; mã y lệnh của các chỉ định nối bằng dấu phẩy.
 
 Ví dụ: barcode 1121034 có Tổng phân tích tế bào máu (ống tím 001), Glucose và Creatinin (ống đen 006) → máy nhả **2 ống**: ống tím dán tem ghi "Tổng phân tích tế bào máu", ống đen ghi "Glucose; Creatinin".
+
+Ví dụ 2: bệnh nhân có 2 chỉ định cùng barcode 67469 — chỉ định 1: Tổng phân tích (ống Blue) + AST (ống Black); chỉ định 2: CRP (ống Black) → máy nhả **2 ống**: Blue "Tổng phân tích…", Black "AST; CRP".
 
 ## QT-05 — Màu ống và nguồn bệnh phẩm
 
@@ -291,6 +294,7 @@ Bệnh nhân qua nhiều phòng khám lâm sàng sẽ có nhiều chỉ định 
 | 21 | Tìm từ khóa ra mẫu của 2 bệnh nhân, quét lại để in | Sinh **2 file**, mỗi bệnh nhân một file (QT-15) |
 | 22 | Bệnh nhân 3 phiếu: đã quét phiếu 1 hai lần (nhả đủ ống), tiếp tục quét phiếu 2 hai lần, phiếu 3 hai lần | **Không** nhả thêm ống; lần quét thứ hai của phiếu 2 / phiếu 3 hiện hỏi in lại, mặc định Không (QT-10) |
 | 23 | Hộp hỏi in lại đang mở, kỹ thuật viên quét tiếp | Phím Enter của máy quét chọn **Không**, không nhả ống (QT-10) |
+| 24 | 2 chỉ định cùng barcode 67469: Tổng phân tích (Blue) + AST (Black); CRP (Black) | Bản tin có **2 dòng**: Blue "Tổng phân tích…", Black "AST; CRP" — không lặp dòng, không 2 ống Black (QT-04) |
 
 ---
 
@@ -383,6 +387,7 @@ Vì tính năng chỉ bật trên máy trạm được khai báo và kết nối
 |---|---|
 | 13/10/2026 | Triển khai lần đầu: ô tích "In tem CG300", quét để tìm, quét lại để in (QT-01 → QT-12) |
 | 22/10/2026 | Tài liệu nghiệp vụ; bản vá cho HIS 2.418.0 |
+| 04/11/2026 | Kiểm thử tại viện: các chỉ định dùng chung barcode bị lặp phiếu trong bản tin (3 dòng thành 6) và tách 2 ống cùng loại. Sửa: gộp theo barcode × loại ống cho cả bệnh nhân (QT-04) |
 | 04/11/2026 | Kiểm thử tại viện: bệnh nhân ≥ 2 chỉ định bị nhả ống lần 2, lần 3 khi quét tiếp các phiếu còn lại. Sửa: chỉ gửi mẫu chưa gửi; hỏi in lại khi tất cả đã gửi, mặc định Không (QT-10) |
 | 02/11/2026 | Mỗi bệnh nhân một bản tin: quét barcode / mã y lệnh mở rộng ra cả lượt điều trị; ghi 1 file / bệnh nhân (QT-15) |
 | 02/11/2026 | Kiểm thử tại viện: quét mã điều trị vào ô Mã điều trị bị nối đôi, không in; tên chương trình khai theo tên hiển thị nên không nhận kết nối. Sửa: ô quét nhận mọi loại mã (QT-13); quét xong tự tìm / tự in, không cần Enter (QT-14); hướng dẫn lấy tên chương trình ở tab Details (QT-01) |

@@ -7,7 +7,7 @@
 | Chức năng | Kết nối xét nghiệm (`HIS.Desktop.Plugins.ConnectionTest`) |
 | Phiên bản áp dụng | **HIS 2.418.0** (phát hành 10/10/2026). Không cài lên phiên bản khác |
 | Người thực hiện | Cán bộ triển khai / IT bệnh viện, phối hợp kỹ sư hãng FOYEN |
-| Cập nhật | 02/11/2026 — ô quét nhận mọi loại mã, quét xong tự tìm / tự in (không cần Enter); cách lấy tên chương trình CG300; **mỗi bệnh nhân 1 bản tin** (1 file / bệnh nhân); 04/11/2026 — không nhả ống lặp khi quét tiếp các phiếu của cùng bệnh nhân |
+| Cập nhật | 02/11/2026 — ô quét nhận mọi loại mã, quét xong tự tìm / tự in (không cần Enter); cách lấy tên chương trình CG300; **mỗi bệnh nhân 1 bản tin** (1 file / bệnh nhân); 04/11/2026 — không nhả ống lặp khi quét tiếp các phiếu của cùng bệnh nhân; không lặp phiếu khi nhiều chỉ định chung barcode |
 | Thời gian dự kiến | 30–45 phút cho một máy trạm lấy mẫu (chưa tính khai báo danh mục) |
 | Ảnh hưởng | Chỉ máy trạm được khai báo dùng CG300 mới thấy thay đổi; các máy khác hoạt động như cũ |
 
@@ -166,6 +166,7 @@ Quyền thư mục: tài khoản Windows chạy HIS phải có quyền **ghi và
 | 12 | Bệnh nhân có nhiều phiếu chỉ định (nhiều phòng khám): quét **1 phiếu** | Lưới hiện đủ mẫu của tất cả phiếu cùng lượt điều trị |
 | 13 | Quét lại phiếu đó | Thư mục `ALL` có **đúng 1 file** `<mã BN>_<thời gian>.txt`, máy nhả ống của tất cả phiếu |
 | 14 | Quét tiếp phiếu thứ 2 của bệnh nhân đó hai lần | Lưới hiện lại các mẫu; **không** nhả thêm ống, hiện hỏi in lại với nút mặc định **Không** |
+| 15 | Bệnh nhân 2 chỉ định **cùng barcode**, có 2 xét nghiệm cùng loại ống | Phần mềm CG300 (tab Label Print) hiện mỗi loại ống **1 dòng**, tên xét nghiệm gộp; không có dòng lặp |
 
 ---
 
@@ -196,7 +197,7 @@ Máy trạm đã cài bản vá CG300 trước ngày 02/11/2026:
 2. Chép đè DLL chính và 3 thư mục `vi`, `en`, `my`.
 3. **Không** cần chạy lại SQL; cấu hình theo tài khoản giữ nguyên.
 4. Kiểm tra giá trị `..._CG300_PROCESS_NAME`: nếu đang là `BloodSystemV2.0` (tên hiển thị) thì sửa thành `Intelligent Workstation` (mục 2.2).
-5. Đăng nhập lại, chạy kiểm tra số 4b, 10, 11, 12, 13, 14 ở mục 4.
+5. Đăng nhập lại, chạy kiểm tra số 4b, 10, 11, 12, 13, 14, 15 ở mục 4.
 
 ---
 

@@ -592,7 +592,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         Inventec.Common.Logging.LogSystem.Debug("CG300 bo qua mau da in"
                             + Inventec.Common.Logging.LogUtil.TraceData("skippedBarcodes",
-                                samples.Where(o => printedBarcodesCG300.Contains(o.BARCODE)).Select(o => o.BARCODE).ToList()));
+                                samples.Where(o => printedBarcodesCG300.Contains(o.BARCODE)).Select(o => o.BARCODE).Distinct().ToList()));
                     }
                     samples = notPrinted;
                 }
@@ -600,7 +600,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 // arriving while the box is open does not confirm it
                 else if (XtraMessageBox.Show(
                     String.Format(Resources.ResourceMessage.CG300MauDaInTemInLai,
-                        String.Join(", ", samples.Select(o => o.BARCODE))),
+                        String.Join(", ", samples.Select(o => o.BARCODE).Distinct())),
                     MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
                 {
@@ -608,28 +608,25 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 }
 
                 WaitingManager.Show();
-                Cg300BuildResult build = BuildCG300Labels(samples);
-                if (build.UnmappedServiceNames.Any())
+                // 1 patient = 1 file (message) holding every order / tube of that patient
+                List<Cg300BuildResult> builds = BuildCG300Labels(samples);
+                List<string> unmappedNames = builds.SelectMany(o => o.UnmappedServiceNames).Distinct().ToList();
+                if (unmappedNames.Any())
                 {
                     warnings.Add(String.Format(Resources.ResourceMessage.CG300DichVuChuaGanLoaiMau,
-                        String.Join("; ", build.UnmappedServiceNames)));
+                        String.Join("; ", unmappedNames)));
                 }
-                if (!build.Labels.Any())
+                if (!builds.Any(o => o.Labels.Any()))
                 {
                     WaitingManager.Hide();
                     ShowCG300Warnings(warnings, true);
                     return;
                 }
 
-                // 1 patient = 1 file (message) holding every order / tube of that patient
-                var labelsByBarcode = build.Labels.ToLookup(o => o.LabNum);
                 bool isAnyWritten = false, isAnyFailed = false;
-                foreach (var patientSamples in build.SentSamples.GroupBy(GetPatientKeyCG300))
+                foreach (var build in builds.Where(o => o.Labels.Any()))
                 {
-                    List<Cg300LabelADO> patientLabels = patientSamples
-                        .SelectMany(o => labelsByBarcode[o.BARCODE])
-                        .ToList();
-                    string filePath = Cg300FileWriter.Write(Cg300CFG.FolderPath, patientLabels);
+                    string filePath = Cg300FileWriter.Write(Cg300CFG.FolderPath, build.Labels);
                     if (String.IsNullOrEmpty(filePath))
                     {
                         isAnyFailed = true;
@@ -637,7 +634,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
 
                     isAnyWritten = true;
-                    foreach (var sample in patientSamples)
+                    foreach (var sample in build.SentSamples)
                     {
                         printedBarcodesCG300.Add(sample.BARCODE);
                         UpdateSampleTakenAfterPrint(sample);
@@ -673,9 +670,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             return sample.TREATMENT_CODE ?? "";
         }
 
-        private Cg300BuildResult BuildCG300Labels(List<LisSampleADO> samples)
+        /// <summary>Load sample services / catalogs once, then build 1 result (message) per patient.</summary>
+        private List<Cg300BuildResult> BuildCG300Labels(List<LisSampleADO> samples)
         {
-            Cg300BuildResult result = new Cg300BuildResult();
+            List<Cg300BuildResult> result = new List<Cg300BuildResult>();
             try
             {
                 LoadCG300Catalogs();
@@ -696,15 +694,20 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         serviceByCode.Add(sv.SERVICE_CODE, sv);
                 }
 
-                result = Cg300LabelBuilder.Build(
-                    samples,
-                    sampleServices,
-                    serviceByCode,
-                    testSampleTypeIdsByServiceIdCG300,
-                    testSampleTypeByIdCG300,
-                    printedBarcodesCG300,
-                    Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(),
-                    GetLocalIpCG300());
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                string localIp = GetLocalIpCG300();
+                foreach (var patientSamples in samples.GroupBy(GetPatientKeyCG300))
+                {
+                    result.Add(Cg300LabelBuilder.Build(
+                        patientSamples.ToList(),
+                        sampleServices,
+                        serviceByCode,
+                        testSampleTypeIdsByServiceIdCG300,
+                        testSampleTypeByIdCG300,
+                        printedBarcodesCG300,
+                        loginName,
+                        localIp));
+                }
             }
             catch (Exception ex)
             {
