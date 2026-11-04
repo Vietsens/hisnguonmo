@@ -362,6 +362,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 if (eligible.Count > 0)
                 {
                     bool isXml3176 = chkXML3176.Checked;
+                    //Viec 60261 - Canh bao thieu/sai thong tin the, ho so chinh. Chi canh bao: chon Co thi van xuat.
+                    if (!await ConfirmCardInfoBeforeXmlAsync(eligible, isXml3176))
+                    {
+                        return;
+                    }
                     this.xml48hRunning = true;
                     WaitingManager.Show();
                     try

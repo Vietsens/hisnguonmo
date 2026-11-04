@@ -287,6 +287,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.InitMdInsight();
                 //Việc 61380 - Xuất XML hồ sơ đủ 48 giờ: tạo cột khi bật cấu hình; tự động chạy theo Gửi tự động, xuất tay ở menu chuột phải.
                 this.InitXml48h();
+                //Việc 60261 - Cột cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính: chỉ tạo khi bật HIS.QD_130_BYT.XML1.CARD_INFO_WARNING.
+                this.InitCardInfoWarning();
             }
             catch (Exception ex)
             {
@@ -1147,6 +1149,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnExportXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Chỉ cảnh báo: chọn Có thì vẫn xuất.
+                if (!await ConfirmCardInfoBeforeXmlAsync(listSelection, chkXML3176.Checked)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;
@@ -4371,6 +4376,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi gửi cổng. Chỉ cảnh báo: chọn Có thì vẫn gửi.
+                //Gửi tay chạy trên luồng giao diện; lượt gửi tự động (backgroundWorker1) không đi qua đây.
+                if (!await ConfirmCardInfoBeforeXmlAsync(listSelection, chkXML3176.Checked)) return;
                 isXML130 = true;
                 isXML3176 = false;
                 await XML130();
@@ -4486,6 +4494,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     XtraMessageBox.Show(Resources.ResourceMessageLang.BanChuaChonHoSoDeDongBo, Resources.ResourceMessageLang.ThongBao);
                     return;
                 }
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi gửi cổng. Chỉ cảnh báo: chọn Có thì vẫn gửi.
+                if (!await ConfirmCardInfoBeforeXmlAsync(listSelection, chkXML3176.Checked)) return;
 
                 isNotFileSign = false;
                 //qtcode
@@ -6215,6 +6225,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi tạo lại file check-in. Chỉ cảnh báo.
+                if (!ConfirmCardInfoBeforeCheckIn(listSelection)) return;
                 CommonParam param = new CommonParam();
                 bool success = false;
                 WaitingManager.Show();
@@ -6392,13 +6404,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void MenuItemClick_XuatXMLKhongBaoGomGDYK(object sender, EventArgs e)
+        private async void MenuItemClick_XuatXMLKhongBaoGomGDYK(object sender, EventArgs e)
         {
             try
             {
                 try
                 {
                     if (listSelection == null || listSelection.Count == 0) return;
+                    //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Chỉ cảnh báo: chọn Có thì vẫn xuất.
+                    if (!await ConfirmCardInfoBeforeXmlAsync(listSelection, chkXML3176.Checked)) return;
                     CommonParam param = new CommonParam();
                     MemoryStream memoryStream = new MemoryStream();
                     bool success = false;
@@ -6546,6 +6560,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnExportCollinearXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Chỉ cảnh báo: chọn Có thì vẫn xuất.
+                if (!await ConfirmCardInfoBeforeXmlAsync(listSelection, chkXML3176.Checked)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;
@@ -6723,6 +6740,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnExportGroupXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Chỉ cảnh báo: chọn Có thì vẫn xuất.
+                if (!await ConfirmCardInfoBeforeXmlAsync(listSelection, chkXML3176.Checked)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;
@@ -6945,6 +6965,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 if (!btnXML3176.Enabled || listSelection == null || listSelection.Count == 0) return;
 
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Nút XML 3176 luôn sinh XML theo QĐ 3176.
+                if (!await ConfirmCardInfoBeforeXmlAsync(listSelection, true)) return;
+
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;
                 CommonParam param = new CommonParam();
@@ -6999,6 +7022,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi gửi cổng. Luồng gửi dựng XML theo ô XML 3176 (ReadXml3176CheckedSafe).
+                if (!await ConfirmCardInfoBeforeXmlAsync(listSelection, chkXML3176.Checked)) return;
                 btnAutoSyncClick = false;
                 isXML130 = false;
                 showMessSusscess = false;

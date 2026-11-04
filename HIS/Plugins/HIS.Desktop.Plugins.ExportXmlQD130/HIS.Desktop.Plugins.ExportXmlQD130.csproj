@@ -284,6 +284,10 @@
     <Compile Include="UCExportXml___Xml48h.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExportXml___CardInfoWarning.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Base\CardInfoChecker.cs" />
     <Compile Include="ADO\XmlBatchDataADO.cs" />
     <Compile Include="Base\MdInsightConfig.cs" />
     <Compile Include="Base\MdInsightDescCodec.cs" />

@@ -52,12 +52,25 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private const int EXPORT_COL_DESCRIPTION = 7;
 
         private readonly List<TienGiamDinhResultADO> results;
+        //Viec 60261: dung lai cua so cho danh sach canh bao thong tin the - de trong thi giu chu cua tien giam dinh
+        private readonly string formTitle;
+        private readonly string summaryText;
+        private readonly string exportFileNameFormat;
 
         public frmTienGiamDinhResult(List<TienGiamDinhResultADO> results)
         {
             InitializeComponent();
             this.results = results ?? new List<TienGiamDinhResultADO>();
             this.SetIcon();
+        }
+
+        /// <summary>Viec 60261: mo cua so voi tieu de, dong tong ket va mau ten tep xuat ({0} = thoi diem) rieng</summary>
+        public frmTienGiamDinhResult(List<TienGiamDinhResultADO> results, string formTitle, string summaryText, string exportFileNameFormat)
+            : this(results)
+        {
+            this.formTitle = formTitle;
+            this.summaryText = summaryText;
+            this.exportFileNameFormat = exportFileNameFormat;
         }
 
         private void SetIcon()
@@ -80,6 +93,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 SetCaptionByLanguageKey();
+                if (!String.IsNullOrEmpty(this.formTitle))
+                {
+                    this.Text = this.formTitle;
+                }
                 FillDataToGrid();
                 this.gridViewSummary.FocusedRowChanged += gridViewSummary_FocusedRowChanged;
                 //Hien chi tiet cua dong dau tien ngay khi mo
@@ -158,7 +175,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     this.gridViewSummary.EndUpdate();
                 }
 
-                this.lblSummary.Text = BuildSummaryText();
+                this.lblSummary.Text = String.IsNullOrEmpty(this.summaryText) ? BuildSummaryText() : this.summaryText;
             }
             catch (Exception ex)
             {
@@ -310,7 +327,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     dialog.AddExtension = true;
                     dialog.OverwritePrompt = true;
                     dialog.FileName = string.Format(
-                        Resources.ResourceMessageLang.TienGiamDinhXuatTenTepMacDinh,
+                        String.IsNullOrEmpty(this.exportFileNameFormat) ? Resources.ResourceMessageLang.TienGiamDinhXuatTenTepMacDinh : this.exportFileNameFormat,
                         DateTime.Now.ToString("yyyyMMddHHmmss"));
 
                     if (dialog.ShowDialog(this) == DialogResult.OK)
