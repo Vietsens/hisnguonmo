@@ -383,7 +383,7 @@ Không cần thay đổi backend / EFMODEL.
 
 | # | Câu hỏi | Đề xuất mặc định |
 |---|---------|------------------|
-| Q1 | Quét cùng mã **lần thứ 3** (sau khi đã in): in lại hay bỏ qua/cảnh báo? | In lại có cảnh báo xác nhận "Mẫu đã in tem, in lại?" — tránh nhả thừa ống |
+| Q1 | Quét cùng mã **lần thứ 3** (sau khi đã in): in lại hay bỏ qua/cảnh báo? | Chỉ gửi mẫu chưa có trong `printedBarcodesCG300`; mẫu đã gửi bỏ qua (log `CG300 bo qua mau da in`). Tất cả đã gửi ⇒ hỏi "Mẫu đã in tem, in lại?", mặc định **Không** (04/11/2026) |
 | Q2 | Trường `Container` (màu ống) lấy từ đâu? `HIS_TEST_SAMPLE_TYPE` chỉ có Mã + Tên | Đặt **tên loại mẫu** theo dạng "Tím - EDTA" và lấy phần trước dấu `-` làm `Container`; hoặc để trống nếu máy chỉ dựa `ContainerCode` (cần hỏi hãng) |
 | Q3 | Một dịch vụ gán nhiều loại mẫu bệnh phẩm thì chọn ống nào? | Sinh bản ghi cho **tất cả** loại mẫu được gán (mỗi loại một ống) |
 | Q4 | Mẫu chưa có barcode (chưa sinh): tự sinh barcode trước khi gửi CG? | Không tự sinh, cảnh báo — vì barcode do LIS sinh theo cấu hình `IS_AUTO_CREATE_BARCODE` |
@@ -432,3 +432,4 @@ Không cần thay đổi backend / EFMODEL.
 | 02/11/2026 | `c991d32a2` | Bắt Enter ở KeyDown; focus + SelectAll lại qua BeginInvoke; log mỗi lần quét |
 | 02/11/2026 | `fd34bc392` | Quét xong tự xử lý không cần Enter (KeyPress + `timerScanCG300`) |
 | 02/11/2026 | (commit này) | 1 bệnh nhân = 1 bản tin: barcode / mã y lệnh mở rộng sang TREATMENT_CODE (`FindSampleCG300`); in gom theo `GetPatientKeyCG300`, 1 file / BN |
+| 04/11/2026 | (commit này) | Fix nhả ống lặp với BN ≥ 2 chỉ định: chỉ gửi mẫu chưa gửi; hỏi in lại mặc định Không |

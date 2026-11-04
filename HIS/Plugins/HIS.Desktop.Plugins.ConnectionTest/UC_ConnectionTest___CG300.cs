@@ -583,17 +583,28 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     return;
                 }
 
-                // Reprint confirmation: barcode already sent to CG300 in this session
-                if (samples.Any(o => printedBarcodesCG300.Contains(o.BARCODE)))
+                // A patient with several orders shows all of them on every order scan -> scanning the next order sheet
+                // must not release the tubes already sent: send only barcodes not sent to CG300 in this session
+                List<LisSampleADO> notPrinted = samples.Where(o => !printedBarcodesCG300.Contains(o.BARCODE)).ToList();
+                if (notPrinted.Any())
                 {
-                    if (XtraMessageBox.Show(
-                        String.Format(Resources.ResourceMessage.CG300MauDaInTemInLai,
-                            String.Join(", ", samples.Where(o => printedBarcodesCG300.Contains(o.BARCODE)).Select(o => o.BARCODE))),
-                        MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    if (notPrinted.Count < samples.Count)
                     {
-                        return;
+                        Inventec.Common.Logging.LogSystem.Debug("CG300 bo qua mau da in"
+                            + Inventec.Common.Logging.LogUtil.TraceData("skippedBarcodes",
+                                samples.Where(o => printedBarcodesCG300.Contains(o.BARCODE)).Select(o => o.BARCODE).ToList()));
                     }
+                    samples = notPrinted;
+                }
+                // Everything already sent -> reprint only on explicit confirmation. Default = No so a scanner Enter
+                // arriving while the box is open does not confirm it
+                else if (XtraMessageBox.Show(
+                    String.Format(Resources.ResourceMessage.CG300MauDaInTemInLai,
+                        String.Join(", ", samples.Select(o => o.BARCODE))),
+                    MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                {
+                    return;
                 }
 
                 WaitingManager.Show();

@@ -857,7 +857,10 @@ namespace EMR.Desktop.Plugins.EmrDocumentList
                     }
                     if (e.Column.FieldName == "PATIENT_SIGH")
                     {
-                        if (!String.IsNullOrWhiteSpace(nextSigner) && HasSpecialChars(nextSigner) && (data.IS_DELETE != 1 && data.COUNT_RESIGN_FAILED == null || data.COUNT_RESIGN_FAILED <= 0))
+                        //Parallel signing: NEXT_SIGNER may be a staff while the patient is still waiting/signing (multi sign) -> check UN_SIGNERS too
+                        bool isPatientWaiting = (!String.IsNullOrWhiteSpace(nextSigner) && HasSpecialChars(nextSigner))
+                            || (data.IS_SIGN_PARALLEL == 1 && ("," + (data.UN_SIGNERS ?? "") + ",").Contains(",#@!@#"));
+                        if (isPatientWaiting && (data.IS_DELETE != 1 && data.COUNT_RESIGN_FAILED == null || data.COUNT_RESIGN_FAILED <= 0))
                         {
                             e.RepositoryItem = ButtonEdit_BNKy;
                         }
