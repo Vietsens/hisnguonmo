@@ -28,7 +28,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
     /// <summary>
     /// Viec 60261 (BV Da khoa tinh Dien Bien): kiem 6 truong the, ho so chinh cua XML1
     /// (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD, GT_THE_TU, GT_THE_DEN) truoc khi xuat/gui.
-    /// Chi canh bao - cot trong, the thua/thieu ky tu - khong chan. Khong goi API, khong co giao dien.
+    /// Chi kiem cot trong, the thua/thieu ky tu (khong kiem lech nhau, han the); hoi hay chan do UC quyet theo khoa.
+    /// Khong goi API, khong co giao dien.
     /// Gia tri dem kiem lay dung nhu Xml1Processor cua thu vien His.Bhyt.ExportXml.XML130.XML1.
     /// </summary>
     internal static class CardInfoChecker

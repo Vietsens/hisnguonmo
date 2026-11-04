@@ -941,6 +941,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         /// <summary>Có {0}/{1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính (...). Bạn có muốn tiếp tục không?...</summary>
         internal static string CardInfoHoiTiepTuc { get { return GetMdInsightValue("CardInfoHoiTiepTuc"); } }
 
+        /// <summary>Có {0}/{1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính (...). Theo cấu hình không cho phép xuất/gửi XML...</summary>
+        internal static string CardInfoChanXuatGui { get { return GetMdInsightValue("CardInfoChanXuatGui"); } }
+
         /// <summary>Cảnh báo thiếu/sai thông tin thẻ, thông tin hồ sơ chính (XML1)</summary>
         internal static string CardInfoTieuDeCuaSo { get { return GetMdInsightValue("CardInfoTieuDeCuaSo"); } }
 

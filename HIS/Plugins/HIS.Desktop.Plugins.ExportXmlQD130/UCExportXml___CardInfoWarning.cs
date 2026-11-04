@@ -43,13 +43,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
     /// Viec 60261 (BV Da khoa tinh Dien Bien) - canh bao ho so thieu/sai thong tin the, ho so chinh cua XML1
     /// (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD, GT_THE_TU, GT_THE_DEN) de sua truoc, khong phai doi cong BHYT bao loi.
     ///
-    /// - Hoi xac nhan truoc cac thao tac xuat/gui XML 130 bang tay: nap lai ho so luc bam, kiem moi the cua dot dieu tri
-    ///   (nhu XML1 noi the bang ';'). Co = xuat/gui nhu cu; Khong = mo danh sach canh bao theo ho so roi dung. Chi canh bao, khong chan.
-    /// - Hoi truoc menu "Xuat lai file XML check-in server": nap lai ho so, kiem the hien tai (check-in lay the cuoi).
+    /// - Kiem truoc cac thao tac xuat/gui XML 130 bang tay: nap lai ho so luc bam, kiem moi the cua dot dieu tri
+    ///   (nhu XML1 noi the bang ';'). Khoa = 1 (canh bao): hoi, Co = xuat/gui nhu cu, Khong = mo danh sach canh bao roi dung.
+    ///   Khoa = 2 (chan): bao khong cho xuat/gui, mo danh sach canh bao roi dung.
+    /// - Kiem truoc menu "Xuat lai file XML check-in server": nap lai ho so, kiem the hien tai (check-in lay the cuoi).
     /// - Cot "Canh bao the, ho so" tren luoi (the hien tai cua ho so): cho thay ho so check-in / gui tu dong can sua,
     ///   vi hai luong do chay tren may chu hoac tien trinh tu dong, khong co ai de hoi.
     ///
-    /// Chi co tac dung khi vien bat HIS.QD_130_BYT.XML1.CARD_INFO_WARNING = 1. Quy tac kiem o Base/CardInfoChecker.
+    /// Chi co tac dung khi vien dat HIS.QD_130_BYT.XML1.CARD_INFO_WARNING = 1 hoac 2. Quy tac kiem o Base/CardInfoChecker.
+    /// shortcut: khoa = 2 chi chan thao tac bang tay tren man hinh; gui tu dong (backgroundWorker1) va check-in may chu van gui
+    /// ho so loi. Lam them (loc ho so loi o luong tu dong, phia MOS cho check-in) khi vien that su yeu cau chan.
     /// </summary>
     public partial class UCExportXml
     {
@@ -66,7 +69,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
         private bool IsCardInfoWarningEnabled
         {
-            get { return HisConfigCFG.QD_130_BYT__XML1_CARD_INFO_WARNING == "1"; }
+            get { return HisConfigCFG.QD_130_BYT__XML1_CARD_INFO_WARNING == HisConfigCFG.XML1_CARD_INFO_WARNING__WARNING || this.IsCardInfoBlocking; }
+        }
+
+        private bool IsCardInfoBlocking
+        {
+            get { return HisConfigCFG.QD_130_BYT__XML1_CARD_INFO_WARNING == HisConfigCFG.XML1_CARD_INFO_WARNING__BLOCK; }
         }
 
         #endregion
@@ -215,7 +223,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        /// <summary>Co ho so canh bao thi hoi: Co = tiep tuc; Khong = mo danh sach canh bao theo ho so roi dung</summary>
+        /// <summary>
+        /// Co ho so canh bao: khoa = 1 thi hoi (Co = tiep tuc; Khong = mo danh sach canh bao theo ho so roi dung);
+        /// khoa = 2 thi bao khong cho xuat/gui, mo danh sach roi dung
+        /// </summary>
         private bool ConfirmCardInfoWarnings(List<TienGiamDinhResultADO> warned, int totalCount)
         {
             try
@@ -229,6 +240,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 LogSystem.Info("CardInfoWarning - " + warned.Count + "/" + totalCount + " ho so thieu/sai thong tin the, ho so: "
                     + String.Join("; ", warned.Take(20).Select(o => o.TreatmentCode + ":" + String.Join(",", o.Errors.Select(p => p.Code).Distinct())))
                     + (warned.Count > 20 ? "; ..." : ""));
+
+                if (this.IsCardInfoBlocking)
+                {
+                    LogSystem.Info("CardInfoWarning - Che do chan: khong cho xuat/gui.");
+                    XtraMessageBox.Show(String.Format(Resources.ResourceMessageLang.CardInfoChanXuatGui, warned.Count, totalCount),
+                        Resources.ResourceMessageLang.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    ShowCardInfoWarnings(warned, totalCount);
+                    return false;
+                }
 
                 if (XtraMessageBox.Show(String.Format(Resources.ResourceMessageLang.CardInfoHoiTiepTuc, warned.Count, totalCount),
                     Resources.ResourceMessageLang.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)

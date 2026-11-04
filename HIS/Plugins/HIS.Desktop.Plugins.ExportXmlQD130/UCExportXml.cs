@@ -1150,7 +1150,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 if (!btnExportXml.Enabled || listSelection == null || listSelection.Count == 0) return;
 
-                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Chỉ cảnh báo: chọn Có thì vẫn xuất.
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
                 if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
@@ -4404,7 +4404,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
                 //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi gửi cổng (Gửi XML 130, Gửi XML 3176). Đặt sau khối
                 //thay danh sách ở trên để cảnh báo đúng các hồ sơ sẽ gửi; luồng gửi dựng XML theo ô XML 3176 (ReadXml3176CheckedSafe).
-                //Chỉ hỏi trên luồng giao diện: lượt gửi tự động (backgroundWorker1) chạy ở luồng nền nên bỏ qua. Chỉ cảnh báo: chọn Có thì vẫn gửi.
+                //Chỉ hỏi trên luồng giao diện: lượt gửi tự động (backgroundWorker1) chạy ở luồng nền nên bỏ qua. Khóa = 1: chọn Có thì vẫn gửi; khóa = 2: chặn.
                 if (this.IsHandleCreated && !this.InvokeRequired && !await ConfirmCardInfoAsync(listSelection, ReadXml3176CheckedSafe(), false)) return;
                 var listTreatmentSynced = listSelection.Where(o => o.XML130_RESULT == 2).ToList();
                 if (listTreatmentSynced != null && listTreatmentSynced.Count > 0 && showMessSusscess == true)
@@ -4495,7 +4495,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     XtraMessageBox.Show(Resources.ResourceMessageLang.BanChuaChonHoSoDeDongBo, Resources.ResourceMessageLang.ThongBao);
                     return;
                 }
-                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi gửi cổng. Chỉ cảnh báo: chọn Có thì vẫn gửi.
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi gửi cổng. Khóa = 1: chọn Có thì vẫn gửi; khóa = 2: chặn.
                 if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 isNotFileSign = false;
@@ -6226,7 +6226,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
-                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi tạo lại file check-in. Chỉ cảnh báo.
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi tạo lại file check-in (khóa = 1 hỏi, khóa = 2 chặn).
                 if (!await ConfirmCardInfoAsync(listSelection, false, true)) return;
                 CommonParam param = new CommonParam();
                 bool success = false;
@@ -6412,7 +6412,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 try
                 {
                     if (listSelection == null || listSelection.Count == 0) return;
-                    //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Chỉ cảnh báo: chọn Có thì vẫn xuất.
+                    //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
                     if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
                     CommonParam param = new CommonParam();
                     MemoryStream memoryStream = new MemoryStream();
@@ -6562,7 +6562,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 if (!btnExportCollinearXml.Enabled || listSelection == null || listSelection.Count == 0) return;
 
-                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Chỉ cảnh báo: chọn Có thì vẫn xuất.
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
                 if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
@@ -6742,7 +6742,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 if (!btnExportGroupXml.Enabled || listSelection == null || listSelection.Count == 0) return;
 
-                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Chỉ cảnh báo: chọn Có thì vẫn xuất.
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
                 if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.

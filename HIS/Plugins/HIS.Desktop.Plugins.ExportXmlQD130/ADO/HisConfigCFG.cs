@@ -92,9 +92,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal const string HIS_QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H = "HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H";
         internal static string QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H;
 
-        //Việc 60261: "1" = cảnh báo hồ sơ thiếu/sai thông tin thẻ, hồ sơ chính của XML1 (SO_CCCD, NGAY_SINH, MA_THE_BHYT,
-        //MA_DKBD, GT_THE_TU, GT_THE_DEN): cột trên lưới + hỏi xác nhận trước khi xuất/gửi bằng tay. Khác "1" = tắt.
+        //Việc 60261: kiểm hồ sơ thiếu/sai thông tin thẻ, hồ sơ chính của XML1 (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD,
+        //GT_THE_TU, GT_THE_DEN): cột trên lưới + kiểm trước khi xuất/gửi bằng tay.
+        //"1" = cảnh báo, hỏi có tiếp tục không (vẫn cho xuất/gửi); "2" = chặn, không cho xuất/gửi khi còn hồ sơ thiếu/sai; khác = tắt.
         internal const string HIS_QD_130_BYT__XML1_CARD_INFO_WARNING = "HIS.QD_130_BYT.XML1.CARD_INFO_WARNING";
+        internal const string XML1_CARD_INFO_WARNING__WARNING = "1";
+        internal const string XML1_CARD_INFO_WARNING__BLOCK = "2";
         internal static string QD_130_BYT__XML1_CARD_INFO_WARNING;
         //Việc 60261: đối tượng BHYT - chỉ kiểm thông tin thẻ của hồ sơ BHYT
         private const string MOS_HIS_PATIENT_TYPE__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";

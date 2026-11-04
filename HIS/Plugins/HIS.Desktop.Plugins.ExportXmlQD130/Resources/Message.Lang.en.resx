@@ -609,4 +609,7 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
   <data name="CardInfoMaTheKyTuLa" xml:space="preserve">
     <value>Card number &quot;{0}&quot; contains spaces or characters other than letters and digits</value>
   </data>
+  <data name="CardInfoChanXuatGui" xml:space="preserve">
+    <value>{0}/{1} records have missing or invalid card or main record information (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD, GT_THE_TU, GT_THE_DEN). By hospital configuration, exporting/sending XML is not allowed while such records remain. Please fix the information or deselect these records and try again.</value>
+  </data>
 </root>
