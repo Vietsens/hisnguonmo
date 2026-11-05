@@ -119,6 +119,7 @@
     <Compile Include="Mps000512ExtendSingleKey.cs" />
     <Compile Include="Mps000512Processor.cs" />
     <Compile Include="Mps000512Processor.ExeRoom.cs" />
+    <Compile Include="Mps000512Processor.LogGoi.cs" />
     <Compile Include="Mps000512ProcessorPlus.cs" />
     <Compile Include="PatientTypeAlterProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -61,6 +61,9 @@ using HIS.Bhyt.Hssk;
 using Newtonsoft.Json;
 using MOS.KskSignData;
 using HIS.UC.SettingSignInfo;
+using HIS.Desktop.Plugins.Library.KhoDuLieuYTe;
+using HIS.Desktop.Plugins.Library.KhoDuLieuYTe.ADO;
+using HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Config;
 namespace HIS.Desktop.Plugins.DeathInformationList
 {
     public partial class UcDeathInformationList : UserControlBase
@@ -534,6 +537,9 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 cboDeath_Case_Sync_Result.SelectedIndex = 0;
                 btnDongBo.Enabled = false;
                 btnDongBoCTV.Enabled = false;
+                btnGuiKhoSyt.Enabled = false;
+                // Viện chưa khai báo kết nối Kho dữ liệu SYT thì ẩn nút
+                layoutControlItem25.Visibility = KdlConfig.IsConfigured() ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 GridCheckMarksSelection gridCheckMark = cboDepartment.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
@@ -1128,12 +1134,14 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 if (gridView1.GetSelectedRows().Count() > 0)
                 {
                     btnDongBo.Enabled = true;
-                    btnDongBoCTV.Enabled = true; 
+                    btnDongBoCTV.Enabled = true;
+                    btnGuiKhoSyt.Enabled = true;
                 }
                 else
                 {
                     btnDongBo.Enabled = false;
-                    btnDongBoCTV.Enabled = false; 
+                    btnDongBoCTV.Enabled = false;
+                    btnGuiKhoSyt.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -1620,6 +1628,94 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void btnGuiKhoSyt_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<V_HIS_TREATMENT> selectedRows = new List<V_HIS_TREATMENT>();
+                foreach (var i in gridView1.GetSelectedRows())
+                {
+                    var row11 = (V_HIS_TREATMENT_11)gridView1.GetRow(i);
+                    if (row11 == null)
+                        continue;
+                    V_HIS_TREATMENT row = new V_HIS_TREATMENT();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_TREATMENT>(row, row11);
+                    selectedRows.Add(row);
+                }
+                if (selectedRows.Count == 0)
+                    return;
+
+                WaitingManager.Show();
+                List<HIS_PATIENT> patients = GetPatients(selectedRows.Select(o => o.PATIENT_ID).Distinct().ToList());
+                List<HIS_SEVERE_ILLNESS_INFO> illnessInfos = GetIllnessInfos(selectedRows.Select(o => o.ID).ToList());
+                List<KdlDeathInputADO> inputs = new List<KdlDeathInputADO>();
+                foreach (var row in selectedRows)
+                {
+                    KdlDeathInputADO input = new KdlDeathInputADO();
+                    input.Treatment = row;
+                    input.Branch = lstBranch != null ? lstBranch.FirstOrDefault(o => o.ID == row.BRANCH_ID) : null;
+                    input.Patient = patients.FirstOrDefault(o => o.ID == row.PATIENT_ID);
+                    input.DeathData = illnessInfos.FirstOrDefault(o => o.TREATMENT_ID == row.ID);
+                    inputs.Add(input);
+                }
+                List<KdlResultADO> results = KdlProcessor.PushDeath(inputs);
+                WaitingManager.Hide();
+
+                frmKdlResult frm = new frmKdlResult(results, "Mã giấy báo tử");
+                frm.ShowDialog(this.ParentForm);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private List<HIS_PATIENT> GetPatients(List<long> patientIds)
+        {
+            List<HIS_PATIENT> result = new List<HIS_PATIENT>();
+            try
+            {
+                // Lấy theo lô 100 ID để URL GET không vượt giới hạn
+                for (int start = 0; start < patientIds.Count; start += 100)
+                {
+                    CommonParam param = new CommonParam();
+                    HisPatientFilter filter = new HisPatientFilter();
+                    filter.IDs = patientIds.Skip(start).Take(100).ToList();
+                    var data = new BackendAdapter(param).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (data != null)
+                        result.AddRange(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private List<HIS_SEVERE_ILLNESS_INFO> GetIllnessInfos(List<long> treatmentIds)
+        {
+            List<HIS_SEVERE_ILLNESS_INFO> result = new List<HIS_SEVERE_ILLNESS_INFO>();
+            try
+            {
+                for (int start = 0; start < treatmentIds.Count; start += 100)
+                {
+                    CommonParam param = new CommonParam();
+                    HisSevereIllnessInfoFilter filter = new HisSevereIllnessInfoFilter();
+                    filter.TREATMENT_IDs = treatmentIds.Skip(start).Take(100).ToList();
+                    var data = new BackendAdapter(param).Get<List<HIS_SEVERE_ILLNESS_INFO>>("api/HisSevereIllnessInfo/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (data != null)
+                        result.AddRange(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private void navBarGroupControlContainer6_Click(object sender, EventArgs e)

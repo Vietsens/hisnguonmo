@@ -222,6 +222,60 @@ namespace HIS.Desktop.Modules.Main
         }
         int w;
         string MessageLicense = null;
+        string MessageLicenseFull = null;
+
+        //61963: do rong thong bao license = phan con trong tren thanh trang thai sau khi tru cac muc khac (ten dang nhap, IP, phong, phien ban, phim tat...)
+        //thay vi co dinh 500px de khong che cac muc do; con trong it hon 150px thi an dong huong dan phim tat de nhuong cho; noi dung dai hon do rong thi chay chu nhu cu
+        private void SetLicenseWidth()
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(MessageLicenseFull) || this.WindowState == FormWindowState.Minimized || ribbonStatusBar.Width <= 0)
+                    return;
+                int otherWidth = 0;
+                foreach (BarItemLink link in ribbonStatusBar.ItemLinks)
+                {
+                    if (link.Item == lblLicense || link.Item == blblHelp || !link.Visible || link.Item.Visibility == BarItemVisibility.Never)
+                        continue;
+                    otherWidth += link.Bounds.Width;
+                }
+                int freeWidth = ribbonStatusBar.Width - otherWidth - 60;
+                int helpWidth = TextRenderer.MeasureText(blblHelp.Caption ?? "", blblHelp.ItemAppearance.Normal.Font).Width + 20;
+                bool showHelp = freeWidth - helpWidth >= 150;
+                blblHelp.Visibility = showHelp ? BarItemVisibility.Always : BarItemVisibility.Never;
+                int maxWidth = Math.Max(0, showHelp ? freeWidth - helpWidth : freeWidth);
+                //man qua hep khong con cho thi an thong bao (da co popup luc dang nhap) de khong de len ten dang nhap
+                lblLicense.Visibility = maxWidth >= 50 ? BarItemVisibility.Always : BarItemVisibility.Never;
+                if (maxWidth < 50)
+                {
+                    timerEffectText.Stop();
+                    return;
+                }
+                int textWidth = TextRenderer.MeasureText(MessageLicenseFull, lblLicense.ItemAppearance.Normal.Font).Width + 20;
+                lblLicense.AutoSize = BarStaticItemSize.None;
+                if (textWidth > maxWidth)
+                {
+                    lblLicense.Width = maxWidth;
+                    if (!timerEffectText.Enabled)
+                    {
+                        MessageLicense = MessageLicenseFull + "            ";
+                        lblLicense.Caption = MessageLicense;
+                        timerEffectText.Start();
+                    }
+                }
+                else
+                {
+                    timerEffectText.Stop();
+                    MessageLicense = MessageLicenseFull;
+                    lblLicense.Caption = MessageLicense;
+                    lblLicense.Width = textWidth;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         Dictionary<string, string> dicAppCode = new Dictionary<string, string>();
         private async void GetSdaLicense()
         {
@@ -243,6 +297,11 @@ namespace HIS.Desktop.Modules.Main
                     var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<SDA_LICENSE>>("api/SdaLicense/Get", ApiConsumers.SdaConsumer, filter, paramCommon);
                     if (result != null && result.Count > 0)
                     {
+                        //61963: chi xet license cua cac tinh nang co trong dicAppCode; ma khac (MCH, QRPay_..., MRS) truoc day lam loi KeyNotFound -> khong hien thong bao nao
+                        //va chi canh bao license cua chi nhanh dang dang nhap (CLIENT_CODE = ma KCBBD cua chi nhanh, xem man SdaLicense)
+                        string heinMediOrgCode = BranchDataWorker.Branch != null ? BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE : null;
+                        result = result.Where(o => o.APP_CODE != null && dicAppCode.ContainsKey(o.APP_CODE)
+                            && !String.IsNullOrEmpty(heinMediOrgCode) && o.CLIENT_CODE == heinMediOrgCode).ToList();
                         licenseExpires = result.Where(o => o.EXPIRED_DATE != null && o.EXPIRED_DATE <= Int64.Parse(DateTime.Now.ToString("yyyyMMdd"))).ToList();
                         licenseAlExpired = result.Where(o => o.EXPIRED_DATE != null && Int64.Parse(DateTime.Now.ToString("yyyyMMdd")) < o.EXPIRED_DATE && o.EXPIRED_DATE <= Int64.Parse(DateTime.Now.AddDays(15).ToString("yyyyMMdd"))).ToList();
                     }
@@ -273,18 +332,12 @@ namespace HIS.Desktop.Modules.Main
                 }
                 if(lstMes != null && lstMes.Count > 0)
                 {
-                    MessageLicense = string.Join(". ", lstMes);
+                    MessageLicenseFull = string.Join(". ", lstMes);
                     lblLicense.Visibility = BarItemVisibility.Always;
-                    lblLicense.Caption = MessageLicense;
-                    var w = Convert.ToDecimal(lblLicense.Font.Size);
-                    if ((Convert.ToDecimal(this.MessageLicense.Length) * (decimal)0.7 * w) > lblLicense.Size.Width)
-                    {
-                        MessageLicense += "            ";
-                        timerEffectText.Start();
-                    }else
-                    {
-                        lblLicense.Size = new Size((int)(Convert.ToDecimal(this.MessageLicense.Length) * (decimal)0.7 * w) + 30, lblLicense.Size.Height);
-                    }    
+                    SetLicenseWidth();
+                    //do lai sau khi thanh trang thai sap xep xong (Bounds cac muc moi dung)
+                    this.BeginInvoke(new Action(SetLicenseWidth));
+                    ribbonStatusBar.SizeChanged += (s, e) => SetLicenseWidth();
                 }
             }
             catch (Exception ex)
@@ -1384,6 +1437,9 @@ namespace HIS.Desktop.Modules.Main
                 this.bbtnVersionInfo.ItemAppearance.Normal.ForeColor = IsAutoUpgrateState() ? System.Drawing.Color.Black : System.Drawing.Color.Red;
 
                 lblTokenTimeout.Caption = String.Format(ResourceCommon.PhienLamViecConHieuLucDen, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData().ExpireTime.ToString("dd/MM/yyyy HH:mm"));
+                //61963: cac muc tren doi do rong -> tinh lai do rong thong bao license sau khi thanh trang thai sap xep lai
+                if (!String.IsNullOrEmpty(MessageLicenseFull) && this.IsHandleCreated)
+                    this.BeginInvoke(new Action(SetLicenseWidth));
             }
             catch (Exception ex)
             {

@@ -68,6 +68,7 @@ namespace Inventec.Common.FlexCellExport
         public static EmployeeInfoDelegate EmployeeInfoHandler { get; set; }
         private MemoryStream ResultStream { get; set; }
         private System.Drawing.Printing.PaperSize PaperSizeDefault { get; set; }
+        private HashSet<string> lineTableAddeds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         public Store()
         {
@@ -272,6 +273,76 @@ namespace Inventec.Common.FlexCellExport
             }
         }
 
+        /// <summary>
+        /// Ghi gia tri key vao sheet an Template_Key. Chuoi vuot gioi han 1 o Excel thi chia tiep sang cac cot 3, 4...
+        /// (cot 2 van la doan dau) de giu du du lieu ma khong lam loi Save.
+        /// </summary>
+        private void SetTemplateKeyValue(FlexCel.XlsAdapter.XlsFile xls, int sheet, int row, object value)
+        {
+            string str = value as string;
+            if (str != null && str.Length > ExcelCellText.MAX_LENGTH)
+            {
+                int col = 2;
+                foreach (string part in ExcelCellText.SplitByLength(str, ExcelCellText.MAX_LENGTH))
+                {
+                    xls.SetCellValue(sheet, row, col, part, -1);
+                    col++;
+                }
+            }
+            else
+            {
+                xls.SetCellValue(sheet, row, 2, value, -1);
+            }
+        }
+
+        /// <summary>
+        /// Mau co vung ten __{KEY}_LINES__ thi them bang {KEY}_LINES (truong NUM_ORDER, LINE) tach tu gia tri key {KEY},
+        /// de in van ban dai (vd SUBCLINICAL_RESULT) tren nhieu dong, tu tran trang thay vi bi cat trong 1 o.
+        /// Chi them khi mau co dung va processor chua tu them bang cung ten -> mau cu khong bi anh huong.
+        /// </summary>
+        private void PrepareLineTables()
+        {
+            try
+            {
+                if (flexCel == null || TemplateStream == null || TemplateStream.Length == 0)
+                    return;
+
+                FlexCel.XlsAdapter.XlsFile xls = new FlexCel.XlsAdapter.XlsFile(true);
+                TemplateStream.Position = 0;
+                xls.Open(TemplateStream);
+                TemplateStream.Position = 0;
+
+                const string prefix = "__";
+                const string suffix = "_LINES__";
+                for (int i = 1; i <= xls.NamedRangeCount; i++)
+                {
+                    string rangeName = xls.GetNamedRange(i).Name;
+                    if (System.String.IsNullOrEmpty(rangeName) || rangeName.Length <= prefix.Length + suffix.Length
+                        || !rangeName.StartsWith(prefix) || !rangeName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    string tableName = rangeName.Substring(prefix.Length, rangeName.Length - prefix.Length - 2);
+                    if (lineTableAddeds.Contains(tableName) || (DictionaryListData != null && DictionaryListData.ContainsKey(tableName)))
+                        continue;
+
+                    string keyName = tableName.Substring(0, tableName.Length - "_LINES".Length);
+                    object value = null;
+                    if (DictionaryTemplateKey != null && !DictionaryTemplateKey.TryGetValue(keyName, out value))
+                    {
+                        var pair = DictionaryTemplateKey.FirstOrDefault(o => System.String.Equals(o.Key, keyName, StringComparison.OrdinalIgnoreCase));
+                        value = pair.Value;
+                    }
+
+                    flexCel.AddTable(tableName, ExcelCellText.SplitToLines(value != null ? value.ToString() : null));
+                    lineTableAddeds.Add(tableName);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
         public System.Drawing.Printing.PaperSize GetPaperSizeDefault()
         {
             return PaperSizeDefault;
@@ -286,6 +357,7 @@ namespace Inventec.Common.FlexCellExport
                 if (flexCel != null && !System.String.IsNullOrWhiteSpace(path))
                 {
                     SavePath = path;
+                    PrepareLineTables();
                     flexCel.Run(TemplatePath, SavePath);
 
                     FlexCel.XlsAdapter.XlsFile xls = new FlexCel.XlsAdapter.XlsFile(true);
@@ -320,7 +392,7 @@ namespace Inventec.Common.FlexCellExport
                         for (int i = 1; i < count + 1; i++)
                         {
                             xls.SetCellValue(SheetCount, i + 1, 1, keys[i - 1], -1);
-                            xls.SetCellValue(SheetCount, i + 1, 2, values[i - 1], -1);
+                            SetTemplateKeyValue(xls, SheetCount, i + 1, values[i - 1]);
                         }
                         xls.ActiveSheet = SheetCount;
                         xls.SheetName = "Template_Key";
@@ -367,6 +439,7 @@ namespace Inventec.Common.FlexCellExport
                 if (flexCel != null && !System.String.IsNullOrWhiteSpace(path))
                 {
                     SavePath = path;
+                    PrepareLineTables();
                     flexCel.Run(TemplatePath, SavePath);
 
                     FlexCel.XlsAdapter.XlsFile xls = new FlexCel.XlsAdapter.XlsFile(true);
@@ -402,7 +475,7 @@ namespace Inventec.Common.FlexCellExport
                         for (int i = 1; i < count + 1; i++)
                         {
                             xls.SetCellValue(SheetCount, i + 1, 1, keys[i - 1], -1);
-                            xls.SetCellValue(SheetCount, i + 1, 2, values[i - 1], -1);
+                            SetTemplateKeyValue(xls, SheetCount, i + 1, values[i - 1]);
                         }
                         xls.ActiveSheet = SheetCount;
                         xls.SheetName = "Template_Key";
@@ -592,6 +665,7 @@ namespace Inventec.Common.FlexCellExport
             {
                 if (flexCel != null)
                 {
+                    PrepareLineTables();
                     TemplateStream.Position = 0;
                     flexCel.Run(TemplateStream, result);
                     if (result != null)
@@ -631,7 +705,7 @@ namespace Inventec.Common.FlexCellExport
                         for (int i = 1; i < count + 1; i++)
                         {
                             xls.SetCellValue(SheetCount, i + 1, 1, keys[i - 1], -1);
-                            xls.SetCellValue(SheetCount, i + 1, 2, values[i - 1], -1);
+                            SetTemplateKeyValue(xls, SheetCount, i + 1, values[i - 1]);
                         }
                         xls.ActiveSheet = SheetCount;
                         xls.SheetName = "Template_Key";
@@ -667,6 +741,7 @@ namespace Inventec.Common.FlexCellExport
                 {
                     Inventec.Common.Logging.LogSystem.Debug("OutStreamPDF.1");
                     var tmpStream = new MemoryStream();
+                    PrepareLineTables();
                     TemplateStream.Position = 0;
                     flexCel.Run(TemplateStream, tmpStream);
                     Inventec.Common.Logging.LogSystem.Debug("OutStreamPDF.2");

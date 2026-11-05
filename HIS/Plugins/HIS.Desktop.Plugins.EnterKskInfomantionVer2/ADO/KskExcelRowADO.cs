@@ -36,6 +36,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO
         public string MA_O_PHAN_LOAI { get; set; }
 
         /// <summary>
+        /// Người khám: tên đăng nhập hoặc họ tên. Để trống = giữ nguyên người khám trên màn hình.
+        /// Chỉ dòng đầu của mỗi chuyên khoa mang ô này (nhiều dòng dùng chung 1 ô người khám).
+        /// </summary>
+        public string NGUOI_KHAM { get; set; }
+
+        /// <summary>Tên control ô Người khám — khóa đối chiếu. Rỗng nếu dòng này không mang người khám.</summary>
+        public string MA_O_NGUOI_KHAM { get; set; }
+
+        /// <summary>
+        /// Ô Người khám của chuyên khoa chứa dòng này (mọi dòng của chuyên khoa, không riêng dòng mang ô).
+        /// Để nhận cả người khám ghi nhầm sang dòng khác cùng chuyên khoa, hoặc file xuất từ bản cũ.
+        /// CHỈ có trong bản đồ, không ghi vào file.
+        /// </summary>
+        public string NHOM_NGUOI_KHAM { get; set; }
+
+        /// <summary>
         /// Giá trị mặc định RIÊNG của ô Kết quả khi xuất file, dùng cho mục không phải
         /// "Bình thường": thị lực ("10"), thính lực ("5", "0,5").
         /// null = lấy giá trị chung "Bình thường"; chuỗi rỗng = xuất ra ô trống.

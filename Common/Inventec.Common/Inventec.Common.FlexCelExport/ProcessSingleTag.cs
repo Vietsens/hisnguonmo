@@ -35,9 +35,9 @@ namespace Inventec.Common.FlexCellExport
                 if (System.String.IsNullOrEmpty(keyName)) throw new ArgumentNullException("key");
                 if (store.DictionaryTemplateKey == null)
                     store.DictionaryTemplateKey = new Dictionary<string, object>();
-                
-                store.flexCel.SetValue(keyName, value);
-                //ghi de du lieu trung
+
+                store.flexCel.SetValue(keyName, ExcelCellText.LimitCellValue(keyName, value));
+                //ghi de du lieu trung - giu nguyen gia tri day du (sheet Template_Key, bang {KEY}_LINES, JSON)
                 store.DictionaryTemplateKey[keyName] = value;
                 result = true;
             }
@@ -102,7 +102,7 @@ namespace Inventec.Common.FlexCellExport
                 {
                     foreach (KeyValuePair<string, object> pair in dicData)
                     {
-                        store.flexCel.SetValue(pair.Key, pair.Value);
+                        store.flexCel.SetValue(pair.Key, ExcelCellText.LimitCellValue(pair.Key, pair.Value));
 
                         //ghi de du lieu trung
                         store.DictionaryTemplateKey[pair.Key] = pair.Value;

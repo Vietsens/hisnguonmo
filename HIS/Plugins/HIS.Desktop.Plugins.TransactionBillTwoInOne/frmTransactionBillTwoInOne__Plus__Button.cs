@@ -1109,7 +1109,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.RecieptTransaction.BUYER_ADDRESS = txtBuyerAddress.Text;
                     billTwoBookSDO.RecieptTransaction.BUYER_NAME = txtBuyerName.Text;
-                    billTwoBookSDO.RecieptTransaction.BUYER_ORGANIZATION = chkOther.Checked ? txtBuyerOrganization.Text : cboBuyerOrganization.Text;
+                    billTwoBookSDO.RecieptTransaction.BUYER_ORGANIZATION = chkOther.Checked ? txtBuyerOrganization.Text : GetBuyerOrganizationFromCombo(cboBuyerOrganization);
                     billTwoBookSDO.RecieptTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
                     //qtcode
                     billTwoBookSDO.RecieptTransaction.BUYER_EMAIL = txtBuyerEmail.Text;
@@ -1124,7 +1124,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.RecieptTransaction.BUYER_ADDRESS = txtBuyerAddress2.Text;
                     billTwoBookSDO.RecieptTransaction.BUYER_NAME = txtBuyerName2.Text;
-                    billTwoBookSDO.RecieptTransaction.BUYER_ORGANIZATION = chkOther2.Checked ? txtBuyerOrganization2.Text : cboBuyerOrganization2.Text;
+                    billTwoBookSDO.RecieptTransaction.BUYER_ORGANIZATION = chkOther2.Checked ? txtBuyerOrganization2.Text : GetBuyerOrganizationFromCombo(cboBuyerOrganization2);
                     billTwoBookSDO.RecieptTransaction.BUYER_TAX_CODE = txtBuyerTaxCode2.Text;
 
                     billTwoBookSDO.RecieptTransaction.BUYER_TYPE = 2;
@@ -1300,7 +1300,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.InvoiceTransaction.BUYER_NAME = txtBuyerName.Text;
                     billTwoBookSDO.InvoiceTransaction.BUYER_ADDRESS = txtBuyerAddress.Text;
-                    billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = chkOther.Checked ? txtBuyerOrganization.Text : cboBuyerOrganization.Text;
+                    billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = chkOther.Checked ? txtBuyerOrganization.Text : GetBuyerOrganizationFromCombo(cboBuyerOrganization);
                     billTwoBookSDO.InvoiceTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
                     // Dong bo voi so bien lai (RecieptTransaction): email nguoi mua truoc day khong duoc gan
                     // cho so hoa don -> hoa don dien tu khong co email de gui cho khach.
@@ -1315,7 +1315,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.InvoiceTransaction.BUYER_NAME = txtBuyerName2.Text;
                     billTwoBookSDO.InvoiceTransaction.BUYER_ADDRESS = txtBuyerAddress2.Text;
-                    billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = chkOther2.Checked ? txtBuyerOrganization2.Text : cboBuyerOrganization2.Text;
+                    billTwoBookSDO.InvoiceTransaction.BUYER_ORGANIZATION = chkOther2.Checked ? txtBuyerOrganization2.Text : GetBuyerOrganizationFromCombo(cboBuyerOrganization2);
                     billTwoBookSDO.InvoiceTransaction.BUYER_TAX_CODE = txtBuyerTaxCode2.Text;
 
                     billTwoBookSDO.InvoiceTransaction.BUYER_TYPE = 2;

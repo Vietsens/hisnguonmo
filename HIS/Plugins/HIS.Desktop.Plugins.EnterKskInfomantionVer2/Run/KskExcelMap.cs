@@ -22,11 +22,18 @@
  *   Hai ô thị lực CÓ KÍNH để trống, vì trên giấy cũng trống (chỉ người đeo kính mới điền).
  *
  * KHÔNG có trong danh sách (cố ý): số đo thể lực (chiều cao, cân nặng, mạch, huyết áp…),
- * ô "Các bệnh về…", toàn bộ cận lâm sàng, người khám, thông tin hành chính, ngày tháng,
- * và các ô đang bị ẩn (10 ô Phân loại của mẫu khám dưới 18 tuổi viện đã ẩn).
+ * ô "Các bệnh về…", toàn bộ cận lâm sàng, thông tin hành chính khác, ngày tháng,
+ * và các ô đang bị ẩn (10 ô Phân loại của mẫu khám dưới 18 tuổi, 10 ô BS khám của trẻ dưới 6 tuổi).
+ *
+ * CÓ thêm (việc nâng cấp sau 57621):
+ *  - 3 dòng đầu file: Lý do khám (mọi mẫu), Đối tượng + Nguồn chi trả (mẫu trên 18, dưới 18, dưới 6 tuổi).
+ *  - Người khám từng chuyên khoa: gắn vào DÒNG ĐẦU của chuyên khoa (nhiều dòng dùng chung 1 ô người khám,
+ *    VD Mắt có 5 dòng). Ô người khám nào không có trên mẫu khám thì không gắn.
+ *    Riêng Răng hàm mặt gắn vào dòng Phân loại (dòng mang tên chuyên khoa, giống Mắt/TMH).
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO;
 using Inventec.Common.Logging;
 
@@ -40,6 +47,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         /// <summary>Mức phân loại điền sẵn khi xuất file (1 = Loại I).</summary>
         public const int DEFAULT_RANK_LEVEL = 1;
+
+        /// <summary>Ô Lý do khám — ô chung của form, nằm NGOÀI vùng tab.</summary>
+        public const string KEY_REASON = "txtLyDoKham";
+
+        /// <summary>Dấu ngăn cách nhiều Đối tượng trong 1 ô (không dùng dấu phẩy vì tên đối tượng có dấu phẩy).</summary>
+        public const char OBJECT_SEPARATOR = ';';
 
         /// <summary>
         /// Các mục khám của một mẫu khám, theo thứ tự hiện trên form.
@@ -67,8 +80,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "Kết quả: (Ngoại khoa)", "txtExamSurgery", "cboExamSurgeryRank");
                     Add(rows, "Kết quả: (Da liễu)", "txtExamDernatology", "cboExamDernatologyRank");
                     Add(rows, "Kết quả: (Sản phụ khoa)", "txtExamObstetric", "cboExamObstetricRank");
-                    Add(rows, "Hàm trên", "txtExamStomatologyUpper", null);
-                    Add(rows, "Hàm dưới", "txtExamStomatologyLower", null);
+                    Add(rows, "Răng hàm mặt - Hàm trên", "txtExamStomatologyUpper", null);
+                    Add(rows, "Răng hàm mặt - Hàm dưới", "txtExamStomatologyLower", null);
                     Add(rows, "Phân loại (Mắt)", null, "cboExamEyeRank");
                     Add(rows, "Phân loại (Tai mũi họng)", null, "cboExamEntDiseaseRank");
                     Add(rows, "Phân loại (Răng hàm mặt)", null, "cboExamStomatologyRank");
@@ -80,6 +93,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "Tai mũi họng - Tai trái, nói thầm", "txtExamEntLeftWhisper", null, "0,5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thường", "txtExamEntRightNomal", null, "5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thầm", "txtExamEntRightWhisper", null, "0,5");
+                    DocStd(rows, "Circulation", "");
+                    DocStd(rows, "Respiratory", "");
+                    DocStd(rows, "Digestion", "");
+                    DocStd(rows, "KidneyUrology", "");
+                    DocStd(rows, "Oend", "");
+                    DocStd(rows, "MuscleBone", "");
+                    DocStd(rows, "Neurological", "");
+                    DocStd(rows, "Mental", "");
+                    DocStd(rows, "Surgery", "");
+                    DocStd(rows, "Obstetric", "");
+                    Doc(rows, "cboExamDermatologyLoginName", "txtExamDernatology", "cboExamDernatologyRank");
+                    DocStomatology(rows, "");
+                    DocEye(rows, "");
+                    DocEnt(rows, "");
                     break;
                 case 1:   // Ksk trên 18 tuổi (13 ô kết quả, 14 ô phân loại)
                     Add(rows, "Tuần hoàn", "txtExamCirculation2", "cboExamCirculationRank2");
@@ -93,8 +120,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "Ngoại khoa", "txtExamSurgery2", "cboExamSurgeryRank2");
                     Add(rows, "Da liễu", "txtExamDernatology2", "cboExamDernatologyRank2");
                     Add(rows, "Sản phụ khoa", "txtExamObstetric2", "cboExamObstetricRank2");
-                    Add(rows, "Hàm trên", "txtExamStomatologyUpper2", null);
-                    Add(rows, "Hàm dưới", "txtExamStomatologyLower2", null);
+                    Add(rows, "Răng hàm mặt - Hàm trên", "txtExamStomatologyUpper2", null);
+                    Add(rows, "Răng hàm mặt - Hàm dưới", "txtExamStomatologyLower2", null);
                     Add(rows, "Mắt - Phân loại", null, "cboExamEyeRank2");
                     Add(rows, "Tai mũi họng - Phân loại", null, "cboExamEntDiseaseRank2");
                     Add(rows, "Răng hàm mặt - Phân loại", null, "cboExamStomatologyRank2");
@@ -106,6 +133,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "Tai mũi họng - Tai trái, nói thầm", "txtExamEntLeftWhisper2", null, "0,5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thường", "txtExamEntRightNomal2", null, "5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thầm", "txtExamEntRightWhisper2", null, "0,5");
+                    DocStd(rows, "Circulation", "2");
+                    DocStd(rows, "Respiratory", "2");
+                    DocStd(rows, "Digestion", "2");
+                    DocStd(rows, "KidneyUrology", "2");
+                    Doc(rows, "cboExamOendLoginName2", "txtExamOend2", "cboExamOend2");
+                    DocStd(rows, "MuscleBone", "2");
+                    DocStd(rows, "Neurological", "2");
+                    DocStd(rows, "Mental", "2");
+                    DocStd(rows, "Surgery", "2");
+                    DocStd(rows, "Obstetric", "2");
+                    Doc(rows, "cboExamDermatologyLoginName2", "txtExamDernatology2", "cboExamDernatologyRank2");
+                    DocStomatology(rows, "2");
+                    DocEye(rows, "2");
+                    DocEnt(rows, "2");
                     break;
                 case 2:   // Ksk dưới 18 tuổi (9 ô kết quả, 0 ô phân loại)
                     Add(rows, "a. Tuần hoàn", "txtExamCirculation3", null);
@@ -115,8 +156,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "đ. Thần kinh", "txtExamNeuroMental3", null);
                     Add(rows, "e. Tâm thần", "txtExamMental3", null);
                     Add(rows, "g. LS khác", "txtExamClinicalOther3", null);
-                    Add(rows, "Hàm trên", "txtExamStomatologyUpper3", null);
-                    Add(rows, "Hàm dưới", "txtExamStomatologyLower3", null);
+                    Add(rows, "Răng hàm mặt - Hàm trên", "txtExamStomatologyUpper3", null);
+                    Add(rows, "Răng hàm mặt - Hàm dưới", "txtExamStomatologyLower3", null);
                     Add(rows, "Mắt - Thị lực không kính, mắt phải", "txtExamEyeSightRight3", null, "10");
                     Add(rows, "Mắt - Thị lực không kính, mắt trái", "txtExamEyeSightLeft3", null, "10");
                     Add(rows, "Mắt - Thị lực có kính, mắt phải", "txtExamEyeSightGlassRight3", null, "");
@@ -125,6 +166,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "Tai mũi họng - Tai trái, nói thầm", "txtExamEntLeftWhisper3", null, "0,5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thường", "txtExamEntRightNomal3", null, "5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thầm", "txtExamEntRightWhisper3", null, "0,5");
+                    DocStd(rows, "Circulation", "3");
+                    DocStd(rows, "Respiratory", "3");
+                    DocStd(rows, "Digestion", "3");
+                    DocStd(rows, "KidneyUrology", "3");
+                    DocStd(rows, "NeuroMental", "3");
+                    DocStd(rows, "Mental", "3");
+                    DocStd(rows, "ClinicalOther", "3");
+                    DocStomatology(rows, "3");
+                    DocEye(rows, "3");
+                    DocEnt(rows, "3");
                     break;
                 case 3:   // Ksk lái xe (16 ô kết quả, 9 ô phân loại)
                     Add(rows, "1. Tâm thần", "txtExamMental4", "txtExamMentalConclude4");
@@ -153,6 +204,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "Tai mũi họng - Tai trái, nói thầm", "txtExamEntLeftWhisper4", null, "0,5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thường", "txtExamEntRightNomal4", null, "5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thầm", "txtExamEntRightWhisper4", null, "0,5");
+                    DocStd(rows, "Mental", "4");
+                    DocStd(rows, "Neurological", "4");
+                    DocEye(rows, "4");
+                    DocEnt(rows, "4");
+                    DocStd(rows, "Cardiovascular", "4");
+                    DocStd(rows, "Respiratory", "4");
+                    DocStd(rows, "MuscleBone", "4");
+                    DocStd(rows, "Oend", "4");
+                    DocStd(rows, "Maternity", "4");
                     break;
                 case 4:   // Ksk lái xe ô tô (7 ô kết quả, 9 ô phân loại)
                     Add(rows, "1. Tâm thần", "txtExamMental5", null);
@@ -179,6 +239,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "Tai mũi họng - Tai trái, nói thầm", "txtExamEntLeftWhisper5", null, "0,5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thường", "txtExamEntRightNomal5", null, "5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thầm", "txtExamEntRightWhisper5", null, "0,5");
+                    // Mẫu lái xe ô tô chỉ có ô người khám cho Tim mạch, Mắt, Tai mũi họng.
+                    DocStd(rows, "Cardiovascular", "5");
+                    DocEye(rows, "5");
+                    DocEnt(rows, "5");
                     break;
                 case 5:   // KSK khác (0 ô kết quả, 0 ô phân loại)
                     break;
@@ -194,8 +258,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "3. Ngoại khoa — Kết quả", "txtExamSurgery7", "cboExamSurgeryRank7");
                     Add(rows, "7. Da liễu (ô kết quả, layoutControlItem547 TextVisible=false)", "txtExamDernatology7", "cboExamDernatologyRank7");
                     Add(rows, "8. Sản phụ khoa — Kết quả", "txtExamObstetric7", "cboExamObstetricRank7");
-                    Add(rows, "Hàm trên", "txtExamStomatologyUpper7", null);
-                    Add(rows, "Hàm dưới", "txtExamStomatologyLower7", null);
+                    Add(rows, "Răng hàm mặt - Hàm trên", "txtExamStomatologyUpper7", null);
+                    Add(rows, "Răng hàm mặt - Hàm dưới", "txtExamStomatologyLower7", null);
                     Add(rows, "Phân loại: (4. Mắt)", null, "cboExamEyeRank7");
                     Add(rows, "Phân loại: (5. Tai - Mũi - Họng)", null, "cboExamEntDiseaseRank7");
                     Add(rows, "Phân loại: (6. Răng - Hàm - Mặt)", null, "cboExamStomatologyRank7");
@@ -207,6 +271,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "Tai mũi họng - Tai trái, nói thầm", "txtExamEntLeftWhisper7", null, "0,5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thường", "txtExamEntRightNomal7", null, "5");
                     Add(rows, "Tai mũi họng - Tai phải, nói thầm", "txtExamEntRightWhisper7", null, "0,5");
+                    DocStd(rows, "Circulation", "7");
+                    DocStd(rows, "Respiratory", "7");
+                    DocStd(rows, "Digestion", "7");
+                    DocStd(rows, "KidneyUrology", "7");
+                    DocStd(rows, "Oend", "7");
+                    DocStd(rows, "MuscleBone", "7");
+                    DocStd(rows, "Neurological", "7");
+                    DocStd(rows, "Mental", "7");
+                    DocStd(rows, "Surgery", "7");
+                    DocStd(rows, "Obstetric", "7");
+                    Doc(rows, "cboExamDermatologyLoginName7", "txtExamDernatology7", "cboExamDermatologyRank7");
+                    // Ô người khám RHM của mẫu này tên "Loginname" (n thường), khác các mẫu khác.
+                    DocStomatology(rows, "7", "cboExamStomatologyLoginname7");
+                    DocEye(rows, "7");
+                    DocEnt(rows, "7");
                     break;
                 case 7:   // Trẻ em dưới 6 tuổi (25 ô kết quả, 1 ô phân loại)
                     Add(rows, "Lòng bàn tay", "rdoPalmEval8", null);
@@ -237,6 +316,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Add(rows, "Phân loại sức khỏe", null, "cboHealthExamRank8");
                     break;
             }
+                // Mẫu khám không có mục nào (KSK khác) thì cũng không xuất 3 dòng hành chính, để nút vẫn mờ.
+                if (rows.Count > 0) rows.InsertRange(0, GetAdminRows(tabIndex));
                 // Mục Thai sản chỉ có nghĩa với bệnh nhân nữ.
                 if (!isFemale) rows.RemoveAll(o => IsMaternity(o));
             }
@@ -261,6 +342,114 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 MA_O_PHAN_LOAI = rankControl,
                 GIA_TRI_RIENG = fixedResult
             });
+        }
+
+        /// <summary>
+        /// 3 dòng hành chính đầu file. Lý do khám là ô chung mọi mẫu khám; Đối tượng + Nguồn chi trả chỉ có
+        /// ở mẫu trên 18, dưới 18 và trẻ dưới 6 tuổi.
+        /// </summary>
+        private static List<KskExcelRowADO> GetAdminRows(int tabIndex)
+        {
+            var head = new List<KskExcelRowADO>();
+            Add(head, "Lý do khám", KEY_REASON, null);
+            string suffix = null;
+            switch (tabIndex)
+            {
+                case 1: suffix = ""; break;
+                case 2: suffix = "3"; break;
+                case 7: suffix = "8"; break;
+            }
+            if (suffix != null)
+            {
+                Add(head, "Đối tượng (nhiều đối tượng cách nhau bằng dấu ;)", "cboObject" + suffix, null);
+                Add(head, "Nguồn chi trả", "cboPaymentSource" + suffix, null);
+            }
+            return head;
+        }
+
+        /// <summary>Ô thuộc 3 dòng hành chính (Lý do khám, Đối tượng, Nguồn chi trả).</summary>
+        public static bool IsAdminKey(string controlName)
+        {
+            if (string.IsNullOrEmpty(controlName)) return false;
+            return controlName == KEY_REASON
+                || controlName.StartsWith("cboObject", StringComparison.Ordinal)
+                || controlName.StartsWith("cboPaymentSource", StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        /// Gắn ô người khám vào DÒNG ĐẦU (theo thứ tự trên file) có ô Kết quả hoặc Phân loại thuộc
+        /// <paramref name="members"/>, nếu ô người khám này chưa gắn vào dòng nào. Mọi dòng khớp đều được
+        /// ghi nhóm người khám. Không có dòng nào khớp (VD mục Thai sản của bệnh nhân nam) thì bỏ qua.
+        /// </summary>
+        private static bool Doc(List<KskExcelRowADO> rows, string doctorControl, params string[] members)
+        {
+            if (rows == null || members == null) return false;
+            bool tagged = rows.Any(o => o != null && o.MA_O_NGUOI_KHAM == doctorControl);
+            bool matched = false;
+            foreach (var row in rows)
+            {
+                if (row == null) continue;
+                if (!members.Contains(row.MA_O) && !members.Contains(row.MA_O_PHAN_LOAI)) continue;
+                matched = true;
+                if (string.IsNullOrEmpty(row.NHOM_NGUOI_KHAM)) row.NHOM_NGUOI_KHAM = doctorControl;
+                if (!tagged && string.IsNullOrEmpty(row.MA_O_NGUOI_KHAM))
+                {
+                    row.MA_O_NGUOI_KHAM = doctorControl;
+                    tagged = true;
+                }
+            }
+            return matched;
+        }
+
+        /// <summary>
+        /// Tra ô Kết quả / Phân loại -> ô Người khám của chuyên khoa, theo bản đồ của mẫu khám.
+        /// Dùng khi nhập: dòng trong file không mang khóa người khám nhưng vẫn ghi người khám.
+        /// </summary>
+        public static Dictionary<string, string> GetDoctorGroups(int tabIndex)
+        {
+            var groups = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var row in GetRows(tabIndex, true))
+            {
+                if (row == null || string.IsNullOrEmpty(row.NHOM_NGUOI_KHAM)) continue;
+                if (!string.IsNullOrEmpty(row.MA_O) && !groups.ContainsKey(row.MA_O)) groups.Add(row.MA_O, row.NHOM_NGUOI_KHAM);
+                if (!string.IsNullOrEmpty(row.MA_O_PHAN_LOAI) && !groups.ContainsKey(row.MA_O_PHAN_LOAI)) groups.Add(row.MA_O_PHAN_LOAI, row.NHOM_NGUOI_KHAM);
+            }
+            return groups;
+        }
+
+        /// <summary>Chuyên khoa đặt tên chuẩn: cboExam{X}LoginName{s} cho txtExam{X}{s} + cboExam{X}Rank{s}.</summary>
+        private static void DocStd(List<KskExcelRowADO> rows, string part, string suffix)
+        {
+            Doc(rows, "cboExam" + part + "LoginName" + suffix, "txtExam" + part + suffix, "cboExam" + part + "Rank" + suffix);
+        }
+
+        /// <summary>
+        /// Răng hàm mặt: gắn vào dòng Phân loại vì đó là dòng mang tên chuyên khoa (2 dòng Hàm trên/Hàm dưới
+        /// đứng trước, người dùng không nhận ra là của RHM). Mẫu không có dòng phân loại RHM (dưới 18) thì
+        /// gắn vào dòng Hàm trên.
+        /// </summary>
+        private static void DocStomatology(List<KskExcelRowADO> rows, string s, string doctorControl = null)
+        {
+            string doctor = doctorControl ?? ("cboExamStomatologyLoginName" + s);
+            // Gọi riêng dòng Phân loại trước để ô người khám rơi vào dòng đó; lượt sau chỉ ghi nhóm.
+            Doc(rows, doctor, "cboExamStomatologyRank" + s);
+            Doc(rows, doctor, "txtExamStomatologyUpper" + s, "txtExamStomatologyLower" + s);
+        }
+
+        private static void DocEye(List<KskExcelRowADO> rows, string s)
+        {
+            Doc(rows, "cboExamEyeLoginName" + s,
+                "cboExamEyeRank" + s, "txtExamEyeConclude" + s,
+                "txtExamEyeSightRight" + s, "txtExamEyeSightLeft" + s,
+                "txtExamEyeSightGlassRight" + s, "txtExamEyeSightGlassLeft" + s);
+        }
+
+        private static void DocEnt(List<KskExcelRowADO> rows, string s)
+        {
+            Doc(rows, "cboExamEntLoginName" + s,
+                "cboExamEntDiseaseRank" + s, "txtExamEntConclude" + s,
+                "txtExamEntLeftNormal" + s, "txtExamEntLeftWhisper" + s,
+                "txtExamEntRightNomal" + s, "txtExamEntRightWhisper" + s);
         }
 
         /// <summary>Mục Thai sản, nhận theo tên ô (2 mẫu khám lái xe dùng tên Maternity).</summary>

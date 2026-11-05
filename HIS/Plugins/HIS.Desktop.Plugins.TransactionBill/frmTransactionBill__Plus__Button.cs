@@ -1110,11 +1110,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                     else
                     {
-                        if (cboBuyerOrganzation2.EditValue != null && dtWorkPlace.Exists(o => o.ID == Int64.Parse(cboBuyerOrganzation2.EditValue.ToString())))
-                        {
-                            data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganzation2.EditValue.ToString());
-                            data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
-                        }
+                        SetBuyerOrganizationFromCombo(data.Transaction, cboBuyerOrganzation2.EditValue);
                     }
                     data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode2.Text!=null ? txtBuyerTaxCode2.Text.Trim() : null;
                     data.Transaction.BUYER_PHONE = txtSDT.Text.Trim();
@@ -1133,11 +1129,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                     else
                     {
-                        if (cboBuyerOrganization.EditValue != null && dtWorkPlace.Exists(o=>o.ID == Int64.Parse(cboBuyerOrganization.EditValue.ToString())))
-                        {
-                            data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganization.EditValue.ToString());
-                            data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
-                        }
+                        SetBuyerOrganizationFromCombo(data.Transaction, cboBuyerOrganization.EditValue);
                     }
                     data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text.Trim();
                     data.Transaction.BUYER_PHONE = txtSDT.Text.Trim();

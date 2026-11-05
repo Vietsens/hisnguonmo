@@ -93,6 +93,16 @@ namespace MPS.Processor.Mps000276
         public string SampleRoomName { get; set; }
         public string ASSIGN_TURN_CODE { get; set; }
         public string Note { get; set; }
+
+        /// <summary>
+        /// Doi tuong uu tien cua y lenh chua dong dich vu nay (HIS_PRIORITY_TYPE)
+        /// </summary>
+        public string PriorityTypeCode { get; set; }
+        public string PriorityTypeName { get; set; }
+        /// <summary>
+        /// 1 = y lenh co danh dau uu tien, 0 = khong
+        /// </summary>
+        public int IsPriority { get; set; }
         public Mps000276ADO() { }
     }
 

@@ -109,6 +109,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnDongBoCTV = new DevExpress.XtraEditors.SimpleButton();
+            this.btnGuiKhoSyt = new DevExpress.XtraEditors.SimpleButton();
             this.chkSignFileCertUtil = new DevExpress.XtraEditors.CheckEdit();
             this.btnDongBo = new DevExpress.XtraEditors.SimpleButton();
             this.txtPatientCode = new DevExpress.XtraEditors.TextEdit();
@@ -174,7 +175,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -261,7 +262,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
@@ -754,6 +755,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.btnDongBoCTV);
+            this.layoutControl2.Controls.Add(this.btnGuiKhoSyt);
             this.layoutControl2.Controls.Add(this.chkSignFileCertUtil);
             this.layoutControl2.Controls.Add(this.btnDongBo);
             this.layoutControl2.Controls.Add(this.txtPatientCode);
@@ -781,6 +783,19 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.btnDongBoCTV.Text = "Đồng bộ ca tử vong";
             this.btnDongBoCTV.ToolTip = "Đồng bộ dữ liệu lên hệ thống quản lý khám chữa bệnh";
             this.btnDongBoCTV.Click += new System.EventHandler(this.btnDongBoCTV_Click);
+            //
+            // btnGuiKhoSyt
+            //
+            this.btnGuiKhoSyt.Enabled = false;
+            this.btnGuiKhoSyt.Location = new System.Drawing.Point(169, 734);
+            this.btnGuiKhoSyt.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGuiKhoSyt.Name = "btnGuiKhoSyt";
+            this.btnGuiKhoSyt.Size = new System.Drawing.Size(133, 27);
+            this.btnGuiKhoSyt.StyleController = this.layoutControl2;
+            this.btnGuiKhoSyt.TabIndex = 15;
+            this.btnGuiKhoSyt.Text = "Gửi Kho DL SYT";
+            this.btnGuiKhoSyt.ToolTip = "Gửi giấy báo tử lên Kho dữ liệu ngành Y tế (Sở Y tế)";
+            this.btnGuiKhoSyt.Click += new System.EventHandler(this.btnGuiKhoSyt_Click);
             // 
             // chkSignFileCertUtil
             // 
@@ -1455,7 +1470,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlItem10,
             this.layoutControlItem18,
             this.layoutControlItem23,
-            this.emptySpaceItem1});
+            this.layoutControlItem25});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Size = new System.Drawing.Size(305, 797);
@@ -1542,13 +1557,14 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlItem23.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem23.TextVisible = false;
             // 
-            // emptySpaceItem1
-            // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(166, 731);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(139, 33);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // layoutControlItem25
+            //
+            this.layoutControlItem25.Control = this.btnGuiKhoSyt;
+            this.layoutControlItem25.Location = new System.Drawing.Point(166, 731);
+            this.layoutControlItem25.Name = "layoutControlItem25";
+            this.layoutControlItem25.Size = new System.Drawing.Size(139, 33);
+            this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem25.TextVisible = false;
             // 
             // layoutControlGroup1
             // 
@@ -1681,7 +1697,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
@@ -1802,7 +1818,8 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
         private DevExpress.XtraEditors.SimpleButton btnDongBoCTV;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+        private DevExpress.XtraEditors.SimpleButton btnGuiKhoSyt;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;
         private System.Windows.Forms.BindingSource bindingSource1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn23;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn25;

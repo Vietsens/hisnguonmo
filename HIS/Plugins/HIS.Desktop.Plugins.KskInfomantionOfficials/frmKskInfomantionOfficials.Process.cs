@@ -50,6 +50,9 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 if (this.currentData == null || this.currentData.ID <= 0)
                     return;
 
+                if (!ValidateCirculationExaminerRank())
+                    return;
+
                 WaitingManager.Show();
                 MOS.SDO.HisServiceReqKskOfficialsSDO updateDTO = new MOS.SDO.HisServiceReqKskOfficialsSDO();
                 LoadCurrent(this.currentData, ref updateDTO);
