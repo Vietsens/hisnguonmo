@@ -28,13 +28,17 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
     /// <summary>
     /// Tính năng "Mở phiếu, Vỏ bệnh án (VBA)":
     /// - Checkbox ChkMoPhieuVoBenhAn do người dùng tự tích, trạng thái lưu qua ControlState.
-    /// - Sau khi lưu kết thúc điều trị thành công → mở các mẫu phiếu được khai báo
-    ///   "Mở khi kết thúc điều trị" trong danh mục Phiếu vỏ bệnh án
-    ///   (HIS_EMR_FORM.IS_OPEN_WHEN_TREATMENT_FINISH = 1).
+    /// - Sau khi lưu kết thúc điều trị thành công:
+    ///   + Hồ sơ đã có vỏ bệnh án (EMR_COVER_TYPE_ID) → mở vỏ bệnh án đã lưu của người bệnh.
+    ///   + Mở các mẫu phiếu được khai báo "Mở khi kết thúc điều trị" trong danh mục
+    ///     Phiếu vỏ bệnh án (HIS_EMR_FORM.IS_OPEN_WHEN_TREATMENT_FINISH = 1).
     /// - Phần mềm EMR tự tách chuỗi mã phiếu theo dấu phẩy và mở lần lượt từng phiếu.
-    /// - Hồ sơ chưa có vỏ bệnh án (EMR_COVER_TYPE_ID null) vẫn mở phiếu bình thường: không
-    ///   cảnh báo, không hiển thị danh mục vỏ và không tự tạo vỏ.
-    /// - Không có mẫu phiếu nào được tích thì không mở gì.
+    /// - EMR_MAIN (XemBenhAn.Show) chỉ làm MỘT trong hai việc cho mỗi lần gọi: chuỗi mã phiếu
+    ///   rỗng thì hiện vỏ bệnh án, có mã phiếu thì mở các phiếu rồi thoát, không hiện vỏ.
+    ///   Vì vậy phải gọi 2 lần: lần 1 mở vỏ, lần 2 mở phiếu (phiếu mở sau nên nằm trên vỏ).
+    /// - Hồ sơ chưa có vỏ bệnh án (EMR_COVER_TYPE_ID null) chỉ mở phiếu: không cảnh báo,
+    ///   không hiển thị danh mục vỏ và không tự tạo vỏ.
+    /// - Chưa có vỏ và không có mẫu phiếu nào được tích thì không mở gì.
     /// </summary>
     public partial class FormTreatmentFinish
     {
@@ -113,8 +117,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         }
 
         /// <summary>
-        /// Mo vo benh an da luu cua nguoi benh, kem chuoi ma mau phieu duoc tich
-        /// "Mo khi ket thuc dieu tri". Chuoi rong thi EMR chi mo vo benh an.
+        /// Mo vo benh an da luu cua nguoi benh (neu co), sau do mo cac mau phieu duoc tich
+        /// "Mo khi ket thuc dieu tri".
         /// </summary>
         private void OpenEmrCoverWithForms(HIS_TREATMENT treatment)
         {
@@ -123,12 +127,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (treatment == null)
                     return;
 
+                //Ho so chua co vo benh an thi truyen 0: thu vien tu goi LoadDataEmr voi loai vo = 0,
+                //van mo duoc cac mau phieu theo chuoi ma truyen vao.
+                long emrCoverTypeId = treatment.EMR_COVER_TYPE_ID ?? 0;
+                var emrCoverTypes = BackendDataWorker.Get<HIS_EMR_COVER_TYPE>();
+                bool hasCover = emrCoverTypeId > 0
+                    && emrCoverTypes != null
+                    && emrCoverTypes.Any(o => o.ID == emrCoverTypeId);
+
                 string emrFormCodes = GetEmrFormCodesOpenWhenTreatmentFinish();
-                if (String.IsNullOrWhiteSpace(emrFormCodes))
-                {
-                    LogSystem.Debug("OpenEmrCoverWithForms: khong co mau phieu nao duoc tich Mo khi ket thuc dieu tri.");
+                bool hasForms = !String.IsNullOrWhiteSpace(emrFormCodes);
+
+                LogSystem.Debug("OpenEmrCoverWithForms. TreatmentId: " + treatment.ID
+                    + ", EmrCoverTypeId: " + emrCoverTypeId + ", hasCover: " + hasCover
+                    + ", MaPhieu: " + emrFormCodes);
+
+                if (!hasCover && !hasForms)
                     return;
-                }
 
                 HIS.Desktop.Plugins.Library.FormMedicalRecord.Base.EmrInputADO emrInputAdo
                     = new HIS.Desktop.Plugins.Library.FormMedicalRecord.Base.EmrInputADO();
@@ -138,16 +153,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 emrInputAdo.TreatmentTypeId = treatment.TDL_TREATMENT_TYPE_ID;
                 emrInputAdo.roomId = this.module != null ? (long?)this.module.RoomId : null;
 
-                //Ho so chua co vo benh an thi truyen 0: thu vien tu goi LoadDataEmr voi loai vo = 0,
-                //van mo duoc cac mau phieu theo chuoi ma truyen vao.
-                long emrCoverTypeId = treatment.EMR_COVER_TYPE_ID ?? 0;
-
-                LogSystem.Debug("OpenEmrCoverWithForms. EmrCoverTypeId: "
-                    + emrCoverTypeId + ", MaPhieu: " + emrFormCodes);
-
                 HIS.Desktop.Plugins.Library.FormMedicalRecord.MediRecordMenuPopupProcessor processor
                     = new HIS.Desktop.Plugins.Library.FormMedicalRecord.MediRecordMenuPopupProcessor();
-                processor.FormOpenEmr(emrCoverTypeId, emrInputAdo, emrFormCodes);
+
+                //EMR_MAIN: MaPhieu rong -> chi hien vo benh an; co MaPhieu -> chi mo phieu, khong hien vo.
+                //Nen mo vo va mo phieu la 2 lan goi rieng.
+                if (hasCover)
+                    processor.FormOpenEmr(emrCoverTypeId, emrInputAdo, "");
+
+                if (hasForms)
+                    processor.FormOpenEmr(emrCoverTypeId, emrInputAdo, emrFormCodes);
             }
             catch (Exception ex)
             {
