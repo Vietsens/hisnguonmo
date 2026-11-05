@@ -9,13 +9,20 @@
 | Thành phần phải sửa | Backend EMR (`E:\svn\IMSys\BACKEND\EMR`) · Thư viện ký `common\SHAREUTIL\Inventec.Common\Inventec.Common.SignLibrary` · Cấu hình hệ thống (SDA) |
 | Không phải sửa | Plugin EmrDocumentType (cờ "Ký nhiều lần" đã có, giữ nguyên); EFMODEL (không thêm cột) |
 | Trạng thái | **Đã lập trình** (04/11/2026). Đã chốt: **KHÔNG thêm cấu hình** — chữ ký BN tuân theo "Ký nhiều lần" của loại văn bản cho toàn viện. Các mục 3.2, khóa cấu hình ở 3.1/3.3/3.4 và câu C1 **không còn áp dụng**. Tài liệu nghiệp vụ: `A_NghiepVu_EmrSign_BenhNhanKyNhieuLan.docx` |
-| Ngày | 04/11/2026 |
+| Ngày | 04/11/2026 (cập nhật 05/11/2026: sửa EMR012) |
 
 > **Cập nhật 04/11/2026 — thiết kế đã thực hiện**
 > - Quy tắc: `IS_SIGNING` của dòng BN = `IsSigning` client gửi; không gửi thì theo `EMR_DOCUMENT.IS_MULTI_SIGN` (giống nhân viên). Áp dụng cho cả 3 nhánh A/B/C. Tiện ích chung: `EMR.BusinessManager\DocumentBO\EmrSign\PatientSign\PatientSignUtil.cs`.
-> - Phát hiện thêm khi lập trình: chữ ký điện tử của BN (bảng ký, máy tính bảng, vân tay) **không nhúng vào PDF**, chỉ lưu `SIGN_IMAGE` + một toạ độ trên dòng `EMR_SIGN` và vẽ lúc xem → ký lại sẽ ghi đè chữ ký cũ. Giải pháp: trước khi ghi đè, backend **lưu chữ ký cũ thành dòng `EMR_SIGN` lịch sử** (cùng `PATIENT_CODE`, cùng `NUM_ORDER`, `IS_SIGNING = null`); `EmrSignCheckVerifyDuplicate` bỏ qua trùng `NUM_ORDER` khi các dòng cùng một BN; chọn dòng ký BN ưu tiên dòng đang ký.
+> - Phát hiện thêm khi lập trình: chữ ký điện tử của BN (bảng ký, máy tính bảng, vân tay) **không nhúng vào PDF**, chỉ lưu `SIGN_IMAGE` + một toạ độ trên dòng `EMR_SIGN` và vẽ lúc xem → ký lại sẽ ghi đè chữ ký cũ. Giải pháp: trước khi ghi đè, backend **lưu chữ ký cũ thành dòng `EMR_SIGN` lịch sử** (cùng `PATIENT_CODE`, `IS_SIGNING = null`, `NUM_ORDER` = lớn nhất của văn bản + 1 vì `EMR_SIGN_UK1` unique trên (`DOCUMENT_ID`, `NUM_ORDER`) và `EmrSignCheckVerifyValidData` chặn số âm); `EmrSignCheckVerifyDuplicate` bỏ qua trùng `NUM_ORDER` khi các dòng cùng một BN; chọn dòng ký BN ưu tiên dòng đang ký.
 > - Thư viện ký: thông báo `VanBanDaDuocBenhNhanKy`; lần ký sau chỉ ký vào mốc chưa có chữ ký BN (`GetPatientAutoPositionsToSign`), áp dụng cả "Người nhà ký".
 > - Nghi vấn 4.3 được xử lý luôn (backend nhánh A tôn trọng `IsSigning` client gửi cho các mốc trung gian).
+
+> **Cập nhật 05/11/2026 — sửa lỗi EMR012 khi BN ký lần 2**
+> - Triệu chứng: BN ký lần 2 trên văn bản ký nhiều lần → HIS báo `EMR012`. Log backend: `ORA-00001: unique constraint (EMR_RS.EMR_SIGN_UK1) violated` tại `PatientSignUtil.CreateHistorySign` (văn bản 123127, 04/11/2026 19:22).
+> - Nguyên nhân: dòng lịch sử copy nguyên `NUM_ORDER` của dòng BN gốc, trong khi `EMR_SIGN_UK1` unique trên (`DOCUMENT_ID`, `NUM_ORDER`) *(suy ra từ lỗi, chưa đối chiếu DB — kiểm bằng `SELECT column_name FROM all_cons_columns WHERE owner='EMR_RS' AND constraint_name='EMR_SIGN_UK1'`)*. Lỗi xảy ra trước khi ghi chữ ký mới, toàn bộ được rollback, không hỏng dữ liệu.
+> - Lần sửa 1 (số âm `-1, -2…`, deploy 04/11 21:49): **không dùng được** — `CreateBehavior<EMR_SIGN>` chạy [EmrSignCheckVerifyValidData.cs:22](E:/svn/IMSys/BACKEND/EMR/EMR.CheckBusiness/EmrSign/EmrSignCheckVerifyValidData.cs#L22) chặn `NUM_ORDER < 0` → "Thiếu thông tin bắt buộc".
+> - **Thiết kế chốt** (deploy 05/11 07:57): dòng lịch sử lấy `NUM_ORDER = max(NUM_ORDER của văn bản) + 1` — `PatientSignUtil.GetHistoryNumOrder` ([PatientSignUtil.cs:114-121](E:/svn/IMSys/BACKEND/EMR/EMR.BusinessManager/DocumentBO/EmrSign/PatientSign/PatientSignUtil.cs#L114-L121)), cùng quy tắc với dòng BN mới ([EmrSignByPatientBehaviorSDO.cs:189](E:/svn/IMSys/BACKEND/EMR/EMR.BusinessManager/DocumentBO/EmrSign/PatientSign/EmrSignByPatientBehaviorSDO.cs#L189)). Dòng lịch sử đã ký, `IS_SIGNING = null` → `EmrSignCheckVerifyNumOrderSign` (chỉ xét các dòng đứng trước) không bị chặn. Ảnh hưởng còn lại: mục 4.2.
+> - Đối chiếu: DLL tham khảo `E:\Thuy\EMR.BusinessManager.dll` (sửa IL trực tiếp, hàm `NextHistoryNumOrder(EMR_SIGN)`) cho cùng kết quả `max + 1`; các hàm khác giống hệt bản build từ source. Bản chính thức là bản build từ SVN.
 
 ---
 
@@ -153,6 +160,11 @@ Ví dụ phiếu công khai thuốc hàng ngày, thứ tự: Điều dưỡng (1
 | Trạng thái "đã ký xong" của văn bản, duyệt/lưu trữ hồ sơ | **Có** | Văn bản còn dòng BN mở thì chưa hoàn thành ký → cần **Kết thúc ký** trước khi duyệt hồ sơ, lưu trữ (`EmrTreatmentCheckVerifyApprovalSign`) |
 | Thông báo / email | Không | `SendNotification` đã bỏ qua khi `IS_SIGNING = 1` |
 | Thao tác bác sĩ, điều dưỡng | Không | Mọi thay đổi có điều kiện `PATIENT_CODE` |
+| Dòng lịch sử chữ ký BN (`NUM_ORDER` = max + 1) — danh sách người ký | Thấp | Dòng lịch sử nằm cuối danh sách (sắp theo `NUM_ORDER`) |
+| Dòng lịch sử — sửa luồng ký | Trung bình | [EmrSignUpdateBehaviorSDO.cs:113, 147](E:/svn/IMSys/BACKEND/EMR/EMR.BusinessManager/DocumentBO/EmrSign/Update/EmrSignUpdateBehaviorSDO.cs#L147): "người ký gần nhất" = dòng lịch sử → người ký mới chỉ thêm được sau nó, không chèn giữa (`EmrSign__ThuTuKyKhongNhoHonNguoiDaKy`). Văn bản tuần tự (dòng 133): không sửa được người chưa ký có thứ tự nhỏ hơn |
+| Dòng lịch sử — kiểm tra dữ liệu ký | Trung bình | [EmrDocumentVerifySignDataBehaviorTDO.cs:93](E:/svn/IMSys/BACKEND/EMR/EMR.BusinessManager/DocumentBO/EmrDocument/VerifySignData/EmrDocumentVerifySignDataBehaviorTDO.cs#L93) lấy dòng đã ký có `NUM_ORDER` lớn nhất → bác sĩ ký sau BN thì chọn nhầm dòng lịch sử của BN |
+| Dòng lịch sử — "người ký trước" khi ký tuần tự | Thấp | `oldSigned`/`previousSign` (nhánh BN, HSM, SimCA, `EmrDocumentUpdatePatientSignBehavior`, `EmrDocumentCreateHashDataBehaviorTDO:420`) có thể là dòng lịch sử; file ký vẫn lấy version mới nhất theo ID nên không ký đè bản cũ. Chữ ký điện tử BN không ở trạng thái chờ ký ngoại tuyến |
+| Dòng lịch sử — mốc `$<thứ tự>` | Thấp, chưa kiểm chứng | `EmrSignGetPositionByDocumentBehavior.cs:349` tìm vị trí theo `"$" + NUM_ORDER`; dòng lịch sử đã có toạ độ riêng |
 | Triển khai | Phải triển khai đồng thời | Backend EMR + `Inventec.Common.SignLibrary.dll` (nhiều plugin tham chiếu) + khai báo cấu hình. Thư viện mới với backend cũ: chỉ thông báo F3 thay đổi, không lỗi |
 
 ## 4.3 Nghi vấn lỗi sẵn có (cần kiểm chứng trước khi làm)
@@ -175,6 +187,8 @@ Văn bản **không** ký nhiều lần nhưng có **≥ 2 mốc** `#@!@#PATIENT
 | 8 | 1 | Ký nhiều lần | — | Văn bản BN đã ký **trước** ngày áp dụng | Vẫn chặn, không mở lại |
 | 9 | 1 | Ký nhiều lần | Bác sĩ, điều dưỡng ký | Ký nhiều lần, kết thúc ký | Không đổi so với hiện tại |
 | 10 | 1 | Không tích, 2 mốc BN | Bảng ký | BN bấm ký 1 lần | Ký đủ cả 2 mốc (kiểm chứng 4.3) |
+| 11 | — | Ký nhiều lần + song song | Bảng ký | BN ký 2 lần cùng văn bản (hồi quy EMR012) | Không lỗi EMR012 / "Thiếu thông tin bắt buộc"; `EMR_SIGN` có thêm 1 dòng BN đã ký, `NUM_ORDER` = max + 1, `IS_SIGNING` null; chữ ký lần 1 vẫn hiển thị |
+| 12 | — | Ký nhiều lần + song song | — | Sau #11, thêm người ký mới vào cuối / chèn vào giữa | Cuối: được. Giữa: báo "Thứ tự ký không nhỏ hơn người đã ký" (mục 4.2) |
 
 ---
 
