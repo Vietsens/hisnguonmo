@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.Transaction.Config
         private const string CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT = "HIS.Desktop.Plugins.Transaction.ShowBtnTransactionDebt";
         private const string CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT_COLLECT = "HIS.Desktop.Plugins.Transaction.ShowBtnTransactionDebtCollect";
         private const string CONFIG_KEY__AMOUNT_DECIMAL_NUMBER = "HIS.Desktop.AmountDecimalNumber";
+        private const string CONFIG_KEY__PAY_BEFORE_FINISH_OPTION = "MOS.HIS_TREATMENT.PAY_BEFORE_FINISH_OPTION";
 
         internal static string CallPatientFormat;
         internal static string ShowBtnTransactionDebt;
@@ -63,6 +64,12 @@ namespace HIS.Desktop.Plugins.Transaction.Config
 
         internal static bool IsAllowAfterLocking;
         internal static string MustFinishedForBilling;
+
+        /// <summary>
+        /// Thanh toan vien phi truoc khi ket thuc dieu tri. Bat khi khoa
+        /// MOS.HIS_TREATMENT.PAY_BEFORE_FINISH_OPTION = 1, khong khai bao thi tat.
+        /// </summary>
+        internal static bool IsPayBeforeFinish;
 
         internal static string IsketChuyenCFG;
 
@@ -127,6 +134,7 @@ namespace HIS.Desktop.Plugins.Transaction.Config
                 PatientTypeId__VP = GetPatientTypeByCode(PatientTypeCode__VP).ID;
                 IsketChuyenCFG = GetValue(His_Desktop_plugins_transactionBill_IsKetChuyen);
                 MustFinishedForBilling = GetValue(CONFIG_KEY__MUST_FINISHED_FOR_BILLING);
+                IsPayBeforeFinish = GetValue(CONFIG_KEY__PAY_BEFORE_FINISH_OPTION) == "1";
                 UNLOCK_FEE_OPTION = GetValue(CONFIG_KEY__UNLOCK_FEE_OPTION);
                 LogSystem.Debug("LoadConfig => 2");
             }

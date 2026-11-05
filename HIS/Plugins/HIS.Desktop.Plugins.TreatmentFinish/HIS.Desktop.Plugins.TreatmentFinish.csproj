@@ -393,6 +393,7 @@
     <Compile Include="FormTreatmentFinish__TienGiamDinh.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="PayBeforeFinishConfirm.cs" />
     <Compile Include="FormTreatmentFinish_Warning.cs">
       <SubType>Form</SubType>
     </Compile>
