@@ -34,13 +34,11 @@ namespace MPS.Processor.Mps000504
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOTemps), sereServADOTemps));
 
+                // 56810: same service set as Mps000512 (all patient types, expend included) - only the time filter differs
                 sereServADOTemps = sereServADOTemps
                     .Where(o =>
                         o.AMOUNT > 0
-                        && o.PATIENT_TYPE_ID == rdo.PatientTypeCFG.PATIENT_TYPE__BHYT
-                        && o.PRICE_BHYT > 0
-                        && o.IS_NO_EXECUTE != 1
-                        && o.IS_EXPEND != 1)
+                        && o.IS_NO_EXECUTE != 1)
                     .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999).ThenBy(o => o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER ?? 99999).ToList();
 
                 var sereServBHYTGroups = sereServADOTemps

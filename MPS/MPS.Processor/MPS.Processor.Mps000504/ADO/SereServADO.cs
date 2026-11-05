@@ -256,7 +256,8 @@ namespace MPS.Processor.Mps000504.ADO
                 string keyPaty = "";
                 this.PatientTypeAlter = PatientTypeAlterProcessor.GetPatientTypeAlter(data, patientTypeCFG, treatment.TDL_TREATMENT_TYPE_ID ?? 0, ref keyPaty);
                 this.KEY_PATY_ALTER = keyPaty;
-                if (hisConfigValue != null && hisConfigValue.IsGroupHeinServiceByUseTime)
+                // 56810: non-BHYT rows are now printed too; never move them under a BHYT card group by use time
+                if (hisConfigValue != null && hisConfigValue.IsGroupHeinServiceByUseTime && patientTypeCFG != null && data.PATIENT_TYPE_ID == patientTypeCFG.PATIENT_TYPE__BHYT)
                 {
                     if (this.SERVICE_REQ_ID.HasValue && serviceReqs != null && serviceReqs.Count > 0 && ListPta != null && ListPta.Count > 0)
                     {
