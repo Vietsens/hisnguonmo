@@ -932,5 +932,72 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         internal static string Xml48hLyDoRaVienTruoc48h { get { return GetMdInsightValue("Xml48hLyDoRaVienTruoc48h"); } }
 
         #endregion
+
+        #region Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính (XML1)
+
+        /// <summary>Cảnh báo thẻ, hồ sơ</summary>
+        internal static string CardInfoCotCanhBao { get { return GetMdInsightValue("CardInfoCotCanhBao"); } }
+
+        /// <summary>Có {0}/{1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính (...). Bạn có muốn tiếp tục không?...</summary>
+        internal static string CardInfoHoiTiepTuc { get { return GetMdInsightValue("CardInfoHoiTiepTuc"); } }
+
+        /// <summary>Có {0}/{1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính (...). Theo cấu hình không cho phép xuất/gửi XML...</summary>
+        internal static string CardInfoChanXuatGui { get { return GetMdInsightValue("CardInfoChanXuatGui"); } }
+
+        /// <summary>Cảnh báo thiếu/sai thông tin thẻ, thông tin hồ sơ chính (XML1)</summary>
+        internal static string CardInfoTieuDeCuaSo { get { return GetMdInsightValue("CardInfoTieuDeCuaSo"); } }
+
+        /// <summary>Đã kiểm {0} hồ sơ: {1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính...</summary>
+        internal static string CardInfoTongKet { get { return GetMdInsightValue("CardInfoTongKet"); } }
+
+        /// <summary>DanhSachCanhBaoTheHoSo_{0}.xlsx</summary>
+        internal static string CardInfoTenTepMacDinh { get { return GetMdInsightValue("CardInfoTenTepMacDinh"); } }
+
+        /// <summary>Cảnh báo (trạng thái hồ sơ trong danh sách)</summary>
+        internal static string CardInfoTrangThai { get { return GetMdInsightValue("CardInfoTrangThai"); } }
+
+        /// <summary>Cảnh báo (mức độ từng dòng)</summary>
+        internal static string CardInfoMucDo { get { return GetMdInsightValue("CardInfoMucDo"); } }
+
+        /// <summary>Thông tin thẻ BHYT</summary>
+        internal static string CardInfoNhomThe { get { return GetMdInsightValue("CardInfoNhomThe"); } }
+
+        /// <summary>Thông tin hồ sơ</summary>
+        internal static string CardInfoNhomHoSo { get { return GetMdInsightValue("CardInfoNhomHoSo"); } }
+
+        /// <summary>Thiếu số CCCD/số định danh cá nhân</summary>
+        internal static string CardInfoThieuCccd { get { return GetMdInsightValue("CardInfoThieuCccd"); } }
+
+        /// <summary>Số CCCD/định danh "{0}" có {1} chữ số, đúng là 12 chữ số (CMND cũ 9 chữ số)</summary>
+        internal static string CardInfoCccdSaiDoDai { get { return GetMdInsightValue("CardInfoCccdSaiDoDai"); } }
+
+        /// <summary>Số CCCD/định danh "{0}" có dấu cách hoặc ký tự không phải chữ, số</summary>
+        internal static string CardInfoCccdKyTuLa { get { return GetMdInsightValue("CardInfoCccdKyTuLa"); } }
+
+        /// <summary>Thiếu hoặc sai ngày sinh</summary>
+        internal static string CardInfoNgaySinhKhongHopLe { get { return GetMdInsightValue("CardInfoNgaySinhKhongHopLe"); } }
+
+        /// <summary>Hồ sơ BHYT chưa có mã thẻ BHYT</summary>
+        internal static string CardInfoThieuMaThe { get { return GetMdInsightValue("CardInfoThieuMaThe"); } }
+
+        /// <summary>Mã thẻ BHYT "{0}" có {1} ký tự, đúng là 15 ký tự (thẻ mẫu mới 17 ký tự)</summary>
+        internal static string CardInfoMaTheSaiDoDai { get { return GetMdInsightValue("CardInfoMaTheSaiDoDai"); } }
+
+        /// <summary>Mã thẻ BHYT "{0}" có dấu cách hoặc ký tự không phải chữ, số</summary>
+        internal static string CardInfoMaTheKyTuLa { get { return GetMdInsightValue("CardInfoMaTheKyTuLa"); } }
+
+        /// <summary>Thẻ {0}: thiếu mã nơi đăng ký KCB ban đầu</summary>
+        internal static string CardInfoThieuNoiDkbd { get { return GetMdInsightValue("CardInfoThieuNoiDkbd"); } }
+
+        /// <summary>Thẻ {0}: mã nơi đăng ký KCB ban đầu "{1}" có {2} ký tự, đúng là 5 ký tự</summary>
+        internal static string CardInfoNoiDkbdSaiDoDai { get { return GetMdInsightValue("CardInfoNoiDkbdSaiDoDai"); } }
+
+        /// <summary>Thẻ {0}: thiếu ngày thẻ có giá trị từ</summary>
+        internal static string CardInfoThieuGtTheTu { get { return GetMdInsightValue("CardInfoThieuGtTheTu"); } }
+
+        /// <summary>Thẻ {0}: thiếu ngày thẻ có giá trị đến</summary>
+        internal static string CardInfoThieuGtTheDen { get { return GetMdInsightValue("CardInfoThieuGtTheDen"); } }
+
+        #endregion
     }
 }
