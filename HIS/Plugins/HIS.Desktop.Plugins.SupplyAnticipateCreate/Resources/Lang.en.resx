@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="Status.New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Status.Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="Status.WaitPharmacy" xml:space="preserve">
+    <value>Waiting for pharmacy</value>
+  </data>
+  <data name="Status.WaitAccountant" xml:space="preserve">
+    <value>Waiting for accountant</value>
+  </data>
+  <data name="Status.Returned" xml:space="preserve">
+    <value>Returned</value>
+  </data>
+  <data name="Status.Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Kind.Medicine" xml:space="preserve">
+    <value>Medicine</value>
+  </data>
+  <data name="Kind.Material" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="Kind.Chemical" xml:space="preserve">
+    <value>Chemical</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Text" xml:space="preserve">
+    <value>Supply anticipate</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.lblCode.Text" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.lblStock.Text" xml:space="preserve">
+    <value>Medi stock:</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.lblPeriod.Text" xml:space="preserve">
+    <value>Period:</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.lblStatus.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.lblCreator.Text" xml:space="preserve">
+    <value>Created by:</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.lblDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.lblReturnReason.Text" xml:space="preserve">
+    <value>Return reason:</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.lblItem.Text" xml:space="preserve">
+    <value>Add item:</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.lblItemHint.Text" xml:space="preserve">
+    <value>Type code or name. Requested amount is entered manually, never calculated.</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.btnReload.Text" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.btnReload.ToolTip" xml:space="preserve">
+    <value>Reload the latest version from server</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.btnSave.Text" xml:space="preserve">
+    <value>Save draft (Ctrl S)</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.btnSave.ToolTip" xml:space="preserve">
+    <value>Save as draft, not submitted</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.btnSubmit.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.btnSubmit.ToolTip" xml:space="preserve">
+    <value>Save and submit. The anticipate can no longer be edited after submitting</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.btnPharmacyConfirm.Text" xml:space="preserve">
+    <value>Pharmacy confirm</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.btnApprove.Text" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.btnReturn.Text" xml:space="preserve">
+    <value>Return</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.Stt" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.TypeCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.TypeName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.ServiceUnit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.Packing" xml:space="preserve">
+    <value>Packing</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.Kind" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.Supplier" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.TotalInStock" xml:space="preserve">
+    <value>Hospital stock</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.TotalInStock.ToolTip" xml:space="preserve">
+    <value>Stock of supply + dispensing medi stocks, see time in the last column</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.ExpMonth" xml:space="preserve">
+    <value>Exp {0}</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.LastApproved" xml:space="preserve">
+    <value>Last approved</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.LastApproved.ToolTip" xml:space="preserve">
+    <value>Approved amount of the latest approved period</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.LastUnapproved" xml:space="preserve">
+    <value>Unapproved part</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.Amount" xml:space="preserve">
+    <value>Requested</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.Amount.ToolTip" xml:space="preserve">
+    <value>Requested amount (unit), entered manually</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.ApprovalAmount" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.ApprovalAmount.ToolTip" xml:space="preserve">
+    <value>Defaults to the requested amount; can be raised, lowered or set to 0</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.ImpPrice" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.VatPercent" xml:space="preserve">
+    <value>VAT %</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.TotalPrice" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.VatPrice" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.TotalPriceWithVat" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="frmSupplyAnticipateCreate.Column.StockTime" xml:space="preserve">
+    <value>Stock time</value>
+  </data>
+  <data name="frmReturnReason.Text" xml:space="preserve">
+    <value>Return anticipate</value>
+  </data>
+  <data name="frmReturnReason.lblReason.Text" xml:space="preserve">
+    <value>Return reason (required):</value>
+  </data>
+  <data name="frmReturnReason.btnOk.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="frmReturnReason.btnCancel.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmReturnReason.Message.InputReason" xml:space="preserve">
+    <value>Please enter the return reason</value>
+  </data>
+  <data name="Message.Title" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Message.NotConfig" xml:space="preserve">
+    <value>Supply medi stocks are not configured (MOS.HIS_ANTICIPATE.SUPPLY.MEDI_STOCK_CODES).</value>
+  </data>
+  <data name="Message.ItemExisted" xml:space="preserve">
+    <value>Item {0} - {1} is already in the anticipate</value>
+  </data>
+  <data name="Message.StockRequired" xml:space="preserve">
+    <value>Please select the medi stock</value>
+  </data>
+  <data name="Message.PeriodRequired" xml:space="preserve">
+    <value>Please select the period</value>
+  </data>
+  <data name="Message.NoLine" xml:space="preserve">
+    <value>The anticipate has no item</value>
+  </data>
+  <data name="Message.AmountRequired" xml:space="preserve">
+    <value>Requested amount must be greater than 0: {0}</value>
+  </data>
+  <data name="Message.ApprovalAmountRequired" xml:space="preserve">
+    <value>Approved amount is missing or negative: {0}</value>
+  </data>
+  <data name="Message.ConfirmSubmit" xml:space="preserve">
+    <value>Submit the anticipate? It can no longer be edited after submitting.</value>
+  </data>
+  <data name="Message.ConfirmPharmacy" xml:space="preserve">
+    <value>Confirm and send to the accountant?</value>
+  </data>
+  <data name="Message.ConfirmApprove" xml:space="preserve">
+    <value>Approve? Approved amounts are locked afterwards.</value>
+  </data>
+  <data name="Message.ConfirmApproveWithZero" xml:space="preserve">
+    <value>{0} line(s) approved with 0. Approve anyway? Approved amounts are locked afterwards.</value>
+  </data>
+  <data name="Message.ConfirmReload" xml:space="preserve">
+    <value>Discard unsaved changes and reload?</value>
+  </data>
+  <data name="Message.CloseWithoutSave" xml:space="preserve">
+    <value>There are unsaved changes. Close anyway?</value>
+  </data>
+</root>

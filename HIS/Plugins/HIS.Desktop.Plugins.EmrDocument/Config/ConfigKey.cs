@@ -33,6 +33,8 @@ namespace HIS.Desktop.Plugins.EmrDocument.Config
         private const string PRINT_USING_WATERMARK = "EMR.DOCUMENT.PRINT_USING_WARTERMARK.OPTION";
         private const string DOWNLOAD_FILE_OPTION = "EMR.DOWNLOAD_FILE_OPTION";
         private const string IS_WARNING_DUPLICATE_SIGNED_DOCUMENT = "EMR.EMR_DOCUMENT.IS_WARNING_DUPLICATE_SIGNED_DOCUMENT";
+        /// <summary>vCong57201: 1 = hỏi ghi chú khi bệnh nhân / người nhà ký (nút ký hàng loạt dưới lưới hỏi một lần cho cả lô). Khác 1: như cũ.</summary>
+        private const string PATIENT_SIGN_DESCRIPTION_INFO_OPTION = "EMR.EMR_SIGN.PATIENT_SIGN_DESCRIPTION_INFO.OPTION";
 
         internal static bool IsStoredMustReqToView;
         internal static bool IsHasConnectionEmr;
@@ -42,11 +44,13 @@ namespace HIS.Desktop.Plugins.EmrDocument.Config
         internal static string PrintUsingWatermark;
         internal static string DownloadFileOption;
         internal static bool IsWarningDuplicateSignedDocument;
+        internal static bool IsPatientSignDescriptionInfo;
 
         internal static void GetConfigKey()
         {
             try
             {
+                IsPatientSignDescriptionInfo = (GetValue(PATIENT_SIGN_DESCRIPTION_INFO_OPTION) ?? "").Trim() == "1";
                 IsStoredMustReqToView = GetValue(IS_STORED_MUST_REQ_TO_VIEW) == "1";
                 IsHasConnectionEmr = GetValueHis(IS_HAS_CONNECTION_EMR) == "1";
                 patientSignOption = GetValue(CONFIG_KEY__EMR_PATIENT_SIGN_OPTION);

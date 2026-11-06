@@ -281,6 +281,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
                 //Gan ngon ngu
                 LoadKeysFromlanguage();
+                InitSupplyOrderColumns();
                 //Load Combo
                 InitCheck(cboStatus, SelectionGrid__Status);
                 InitCombo(cboStatus, BackendDataWorker.Get<HIS_IMP_MEST_STT>(), "IMP_MEST_STT_NAME", "ID");

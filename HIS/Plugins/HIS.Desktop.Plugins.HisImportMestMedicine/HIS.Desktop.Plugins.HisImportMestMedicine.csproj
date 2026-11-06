@@ -257,6 +257,9 @@
     <Compile Include="UCHisImportMestMedicine_Event.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCHisImportMestMedicine__SupplyOrder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCHisImportMestMedicine__PrintRepay.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -540,7 +540,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
 		private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			this.medicineProcessor.Reload(this.ucMedicineTypeTree, listMedicineType);
+			this.medicineProcessor.Reload(this.ucMedicineTypeTree, this.FilterMedicineTypeBySupplyOrder(listMedicineType));
 			Inventec.Common.Logging.LogSystem.Warn("INIT XONG DỮ LIỆU THUỐC");
 		}
 
@@ -552,7 +552,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
 		private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			this.materialProcessor.Reload(this.ucMaterialTypeTree, listMaterialType);
+			this.materialProcessor.Reload(this.ucMaterialTypeTree, this.FilterMaterialTypeBySupplyOrder(listMaterialType));
 			Inventec.Common.Logging.LogSystem.Warn("INIT XONG DỮ LIỆU VẬT TƯ");
 		}
 

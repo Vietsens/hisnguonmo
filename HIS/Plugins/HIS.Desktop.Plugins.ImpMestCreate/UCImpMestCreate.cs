@@ -330,6 +330,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 WaitingManager.Hide();
                 TaskAll();
                 VisibleColumn();
+                InitSupplyOrder();
             }
             catch (Exception ex)
             {
@@ -3063,6 +3064,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     DevExpress.XtraEditors.XtraMessageBox.Show(message, "Cảnh báo");
                 }
 
+                if (!CheckSupplyOrderOverAmount())
+                {
+                    return;
+                }
+
                 bool success = false;
                 CommonParam param = new CommonParam();
                 WaitingManager.Show();
@@ -3324,6 +3330,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 ResetValueControlDetail();
                 ResetValueControlCommon();
                 SetEnableControlCommon();
+                ResetSupplyOrder();
                 SetDefaultImpMestType();
                 SetControlEnableImMestTypeManu();
                 LoadDataToComboSupplier(listSupplier);
