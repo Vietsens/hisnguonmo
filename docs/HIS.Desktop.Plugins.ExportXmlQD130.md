@@ -85,7 +85,7 @@ Code ở `UCExportXml___InTreatment.cs` + một chỗ trong `ProcessExportXmlDet
 - [ ] (60262) Khóa = 1, chọn lẫn hồ sơ đã khóa viện phí: hồ sơ đó ra tệp thường (không đuôi), nội dung như khi khóa trống.
 - [ ] (60262) Khóa = 1, hồ sơ đang điều trị có y lệnh thiếu mã bệnh / thiếu ICD / không có dịch vụ: báo đúng lỗi dữ liệu đó, không sinh tệp.
 - [ ] (60262) Khóa = 1, cột Xem XML hồ sơ đang điều trị: mở màn xem XML 130 (XML1 trống ngày ra); nút XML 3176 ra tệp có đuôi theo QĐ 3176; có thư mục GĐYK thì hồ sơ đang điều trị không sinh tệp XML12.
-- [ ] (60262) Khóa = 1, Gửi XML 130 / thông tuyến / gộp / Excel / Kiểm tra hồ sơ với hồ sơ đang điều trị: như cũ (báo chưa khóa viện phí).
+- [ ] (60262) Khóa = 1, Gửi XML 130 / thông tuyến / gộp / Excel / Kiểm tra hồ sơ với hồ sơ đang điều trị: như trước khi sửa, không có chế độ hồ sơ đang điều trị, không sinh tệp `_DANG_DIEU_TRI` (thông tuyến: chưa có giờ ra báo "Hồ sơ chưa có thời gian kết thúc điều trị", lưu tạm/mở lại còn giờ ra ra tệp thông tuyến như cũ; gửi: hồ sơ chưa khóa viện phí bị báo lỗi hoặc bỏ qua tùy nhánh gửi).
 - [ ] (60262) Khóa = 1 trên máy trạm còn thư viện His.Bhyt.ExportXml.XML130 trước 28/10/2026: hồ sơ đang điều trị báo "Thư viện ... chưa hỗ trợ xuất XML hồ sơ đang điều trị", hồ sơ đã khóa viện phí vẫn xuất bình thường.
 - [ ] (60262) Khóa = 1, tích Ký file (chứng thư/HSM): tệp `_DANG_DIEU_TRI` không ký; hồ sơ đã khóa viện phí trong cùng lượt vẫn ký như cũ.
 - [ ] (60262) Viện có đấu nối tiền giám định: chọn hồ sơ đang điều trị bấm Xuất XML - cổng tiền giám định chạy như mọi hồ sơ; ghi lại kết quả hệ ngoài trả về cho hồ sơ chưa kết thúc.
