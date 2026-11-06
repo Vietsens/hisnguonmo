@@ -253,6 +253,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private int pathologicalProcessOption = 0;
         bool isLoadedMLCT;
         private const int MAX_CLINICAL_LENGTH = 4000;
+        private const int MIN_BLOOD_PRESSURE_WIDTH = 27;
+        private bool isBalancingBloodPressure = false;
 
         Library.ConnectWhoCnd.ConnectWhoCndProcessor whoCndProcessor;
         #endregion
@@ -266,6 +268,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 InitializeComponent();
                 //this.InitLanguage();
                 SetCaptionByLanguageKey();
+                this.layoutControl3.SizeChanged += new System.EventHandler(this.layoutControl3_SizeChanged);
 
 
 
@@ -296,6 +299,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.reLoadServiceReq = reLoadServiceReq;
                 SetCaptionByLanguageKey();
                 //this.InitLanguage();
+                this.layoutControl3.SizeChanged += new System.EventHandler(this.layoutControl3_SizeChanged);
                 Inventec.Common.Logging.LogSystem.Info("ExamServiceReqExecuteControl. Init .2");
             }
             catch (Exception ex)
@@ -333,6 +337,66 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
             lblCaptionConclude.MinSize = new Size(0, 24);
             lblCaptionConclude.MaxSize = new Size(0, 24);
+        }
+
+        private void layoutControl3_SizeChanged(object sender, EventArgs e)
+        {
+            BalanceBloodPressureWidth();
+        }
+
+        /// <summary>
+        /// Chia deu khoang trong cua cot Mach cho hai o huyet ap (tam thu/tam truong)
+        /// de o tam thu du cho 3 chu so o moi do phan giai.
+        /// </summary>
+        private void BalanceBloodPressureWidth()
+        {
+            try
+            {
+                if (spinBloodPressureMax == null || spinBloodPressureMin == null || spinPulse == null) return;
+                if (layoutControlItem51 == null || lciBloodPressure == null || spinPulse.Width <= 0) return;
+                if (isBalancingBloodPressure) return;
+                isBalancingBloodPressure = true;
+                try
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        bool changed = false;
+                        // giu me phai cua o tam truong thang voi o Mach de nhan don vi khong lech cot
+                        int over = (spinBloodPressureMin.Location.X + spinBloodPressureMin.Width)
+                            - (spinPulse.Location.X + spinPulse.Width);
+                        if (Math.Abs(over) > 1 && lciBloodPressure.Width - over > 0)
+                        {
+                            lciBloodPressure.MinSize = new Size(lciBloodPressure.Width - over, lciBloodPressure.MinSize.Height);
+                            lciBloodPressure.MaxSize = new Size(lciBloodPressure.Width - over, lciBloodPressure.MaxSize.Height);
+                            changed = true;
+                        }
+                        // chia deu phan con lai cho hai o
+                        int diff = spinBloodPressureMax.Width - spinBloodPressureMin.Width;
+                        if (Math.Abs(diff) > 1)
+                        {
+                            int itemWidth = layoutControlItem51.Width + diff / 2;
+                            int minItemWidth = MIN_BLOOD_PRESSURE_WIDTH
+                                + layoutControlItem51.Padding.Left + layoutControlItem51.Padding.Right;
+                            if (itemWidth < minItemWidth) itemWidth = minItemWidth;
+                            if (itemWidth != layoutControlItem51.MinSize.Width)
+                            {
+                                layoutControlItem51.MinSize = new Size(itemWidth, layoutControlItem51.MinSize.Height);
+                                layoutControlItem51.MaxSize = new Size(itemWidth, layoutControlItem51.MaxSize.Height);
+                                changed = true;
+                            }
+                        }
+                        if (!changed) break;
+                    }
+                }
+                finally
+                {
+                    isBalancingBloodPressure = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
         private void ExamServiceReqExecuteControl_Load(object sender, EventArgs e)
         {

@@ -260,6 +260,7 @@
     <Compile Include="Transaction\ITransaction.cs" />
     <Compile Include="Transaction\TransactionBehavior.cs" />
     <Compile Include="Transaction\TransactionFactory.cs" />
+    <Compile Include="UCTransaction___PayBeforeFinish.cs" />
     <Compile Include="UCTransaction.cs">
       <SubType>UserControl</SubType>
     </Compile>

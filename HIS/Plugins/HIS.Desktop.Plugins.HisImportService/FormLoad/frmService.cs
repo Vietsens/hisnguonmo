@@ -49,7 +49,8 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
         RefeshReference delegateRefresh;
         bool checkClick;
         Inventec.Desktop.Common.Modules.Module currentModule;
-        Dictionary<string, V_HIS_SERVICE> DicService;
+        // Ma dich vu -> danh sach dich vu mang ma do (vien co the dung 1 ma cho nhieu loai / nhieu cha)
+        Dictionary<string, List<V_HIS_SERVICE>> DicService;
         string serviceCodeConfig;
         // TT12 - MAU_05: thuoc hao phi (DS_THUOCPX) doc tu sheet thu 3 cua file mau
         List<ServiceMetyImportADO> serviceMetyAdos;
@@ -212,10 +213,12 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             try
             {
                 _serviceRef = new List<ServiceImportADO>();
+                if (DicService == null)
+                    this.LoadDicService();
+
                 long i = 0;
                 foreach (var item in _service)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("_serviceRef: " + _serviceRef.Count);
                     i++;
                     string error = "";
                     var serAdo = new ServiceImportADO();
@@ -223,6 +226,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                     if (!string.IsNullOrEmpty(item.PTTT_GROUP_CODE))
                         item.PTTT_GROUP_CODE = item.PTTT_GROUP_CODE.Trim();
 
+                    V_HIS_SERVICE parentService = null;
                     if (!string.IsNullOrEmpty(item.PARENT_CODE))
                     {
                         if (item.PARENT_CODE.Length > 25)
@@ -230,13 +234,37 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                             error += string.Format(Message.MessageImport.Maxlength, "Cha");
                         }
                         //var getData = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.SERVICE_CODE == item.PARENT_CODE);
-                        if (DicService.ContainsKey(item.PARENT_CODE))
+                        // Cha va con phai cung loai dich vu -> tra cha theo (ma cha + loai dich vu cua dong)
+                        long? rowServiceTypeId = null;
+                        if (!string.IsNullOrEmpty(item.SERVICE_TYPE_CODE))
                         {
-                            serAdo.PARENT_ID = DicService[item.PARENT_CODE].ID;
+                            var rowServiceType = BackendDataWorker.Get<HIS_SERVICE_TYPE>().FirstOrDefault(o => o.SERVICE_TYPE_CODE == item.SERVICE_TYPE_CODE);
+                            if (rowServiceType != null)
+                                rowServiceTypeId = rowServiceType.ID;
+                        }
+                        var parentCandidates = this.GetServicesByCode(item.PARENT_CODE);
+                        if (parentCandidates.Count == 0)
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Cha");
                         }
                         else
                         {
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Cha");
+                            var sameTypeParents = rowServiceTypeId.HasValue
+                                ? parentCandidates.Where(o => o.SERVICE_TYPE_ID == rowServiceTypeId.Value).ToList()
+                                : parentCandidates;
+                            if (sameTypeParents.Count == 1)
+                            {
+                                parentService = sameTypeParents[0];
+                                serAdo.PARENT_ID = parentService.ID;
+                            }
+                            else if (sameTypeParents.Count == 0)
+                            {
+                                error += string.Format(Message.MessageImport.ChaVaConTrungNhau, "Loại dịch vụ");
+                            }
+                            else
+                            {
+                                error += string.Format("Mã cha {0} có {1} dịch vụ cùng mã và cùng loại trên hệ thống, không xác định được cha|", item.PARENT_CODE, sameTypeParents.Count);
+                            }
                         }
                     }
 
@@ -291,13 +319,9 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                         var getData = BackendDataWorker.Get<HIS_SERVICE_TYPE>().FirstOrDefault(o => o.SERVICE_TYPE_CODE == item.SERVICE_TYPE_CODE);
                         if (getData != null)
                         {
-                            if (serAdo.PARENT_ID != null)
+                            if (parentService != null && parentService.SERVICE_TYPE_ID != getData.ID)
                             {
-                                var dataRam = DicService[item.PARENT_CODE];
-                                if (dataRam != null && dataRam.SERVICE_TYPE_ID != getData.ID)
-                                {
-                                    error += string.Format(Message.MessageImport.ChaVaConTrungNhau, "Loại dịch vụ");
-                                }
+                                error += string.Format(Message.MessageImport.ChaVaConTrungNhau, "Loại dịch vụ");
                             }
                             serAdo.SERVICE_TYPE_ID = getData.ID;
                             serAdo.SERVICE_TYPE_NAME = getData.SERVICE_TYPE_NAME;
@@ -558,7 +582,14 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                             error += string.Format(Message.MessageImport.Maxlength, "Mã dịch vụ");
                         }
 
-                        var check = DicService.ContainsKey(item.SERVICE_CODE);
+                        // Trung = cung ma + cung loai dich vu + cung dich vu cha
+                        var sameCodeServices = this.GetServicesByCode(item.SERVICE_CODE);
+                        bool check = sameCodeServices.Count > 0;
+                        if (check && serAdo.SERVICE_TYPE_ID > 0)
+                        {
+                            check = sameCodeServices.Any(o => o.SERVICE_TYPE_ID == serAdo.SERVICE_TYPE_ID
+                                && (o.PARENT_ID ?? 0) == (serAdo.PARENT_ID ?? 0));
+                        }
                         if (check)
                         {
                             if (serviceCodeConfig == "1")
@@ -1259,13 +1290,85 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                 }
                 btnSave.Enabled = false;
                 btnShowLineError.Enabled = false;
-                DicService = BackendDataWorker.Get<V_HIS_SERVICE>().ToDictionary(o => o.SERVICE_CODE, o => o);
+                this.LoadDicService();
                 serviceCodeConfig = HisConfigs.Get<string>("MOS.HIS_SERVICE.SERVICE_CODE_OPTION");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Nap tu dien ma dich vu -> danh sach dich vu mang ma do. Khong dung ToDictionary(SERVICE_CODE)
+        /// vi vien co the dung 1 ma cho nhieu loai dich vu / nhieu cha -> nem exception, DicService = null,
+        /// toan bo chuc nang import vo (NullReferenceException o addServiceToProcessList).
+        /// Chi coi la trung (va canh bao) khi trung ca 3: ma + loai dich vu + dich vu cha.
+        /// </summary>
+        private void LoadDicService()
+        {
+            DicService = new Dictionary<string, List<V_HIS_SERVICE>>();
+            try
+            {
+                var services = BackendDataWorker.Get<V_HIS_SERVICE>();
+                if (services == null)
+                    return;
+
+                foreach (var service in services)
+                {
+                    if (string.IsNullOrEmpty(service.SERVICE_CODE))
+                        continue;
+
+                    List<V_HIS_SERVICE> list;
+                    if (!DicService.TryGetValue(service.SERVICE_CODE, out list))
+                    {
+                        list = new List<V_HIS_SERVICE>();
+                        DicService.Add(service.SERVICE_CODE, list);
+                    }
+                    list.Add(service);
+                }
+
+                var duplicates = DicService.Values
+                    .Where(o => o.Count > 1)
+                    .SelectMany(o => o.GroupBy(x => new { x.SERVICE_CODE, x.SERVICE_TYPE_ID, PARENT_ID = x.PARENT_ID ?? 0 }))
+                    .Where(g => g.Count() > 1)
+                    .Select(g => string.Format("{0} (loại {1}{2}, {3} dịch vụ)", g.Key.SERVICE_CODE,
+                        g.First().SERVICE_TYPE_CODE,
+                        g.Key.PARENT_ID > 0 ? ", cha " + this.GetParentCode(services, g.Key.PARENT_ID) : "",
+                        g.Count()))
+                    .ToList();
+
+                if (duplicates.Count > 0)
+                {
+                    string codes = string.Join("; ", duplicates.Take(20));
+                    if (duplicates.Count > 20)
+                        codes += "; ...";
+                    Inventec.Common.Logging.LogSystem.Warn("HisImportService: danh muc dich vu co "
+                        + duplicates.Count + " ma trung ca ma + loai + cha: " + string.Join("; ", duplicates));
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        string.Format("Danh mục dịch vụ trên hệ thống có {0} mã dịch vụ trùng cả mã, loại dịch vụ và dịch vụ cha: {1}.\nDòng nhập khẩu dùng các mã này sẽ bị báo lỗi, vui lòng xử lý trong danh mục trước.",
+                            duplicates.Count, codes),
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private string GetParentCode(List<V_HIS_SERVICE> services, long parentId)
+        {
+            var parent = services.FirstOrDefault(o => o.ID == parentId);
+            return parent != null && !string.IsNullOrEmpty(parent.SERVICE_CODE) ? parent.SERVICE_CODE : parentId.ToString();
+        }
+
+        private List<V_HIS_SERVICE> GetServicesByCode(string serviceCode)
+        {
+            List<V_HIS_SERVICE> list;
+            if (DicService != null && !string.IsNullOrEmpty(serviceCode) && DicService.TryGetValue(serviceCode.Trim(), out list))
+                return list;
+            return new List<V_HIS_SERVICE>();
         }
 
         private void btnDownload_Click(object sender, EventArgs e)
@@ -1324,7 +1427,17 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                     return;
                 }
 
-                var metyImport = metyReader.GetWithCheck<ServiceMetyImportADO>(2);
+                List<ServiceMetyImportADO> metyImport = null;
+                try
+                {
+                    metyImport = metyReader.GetWithCheck<ServiceMetyImportADO>(2);
+                }
+                catch (Exception exSheet)
+                {
+                    // File cu chi co 2 sheet: Import.GetWithCheck kiem tra index <= Count nen nem
+                    // ArgumentOutOfRangeException thay vi tra ve rong -> coi nhu khong co sheet thuoc hao phi.
+                    Inventec.Common.Logging.LogSystem.Debug("HisImportService: file khong co sheet thuoc hao phi (sheet 3). " + exSheet.Message);
+                }
                 if (metyImport == null || metyImport.Count == 0)
                 {
                     gridControlMety.DataSource = null;
@@ -1359,8 +1472,11 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                     {
                         string serviceCode = item.SERVICE_CODE.Trim();
                         V_HIS_SERVICE service = null;
-                        if (DicService != null && DicService.ContainsKey(serviceCode))
-                            service = DicService[serviceCode];
+                        var sameCodeServices = this.GetServicesByCode(serviceCode);
+                        if (sameCodeServices.Count == 1)
+                            service = sameCodeServices[0];
+                        else if (sameCodeServices.Count > 1)
+                            error += string.Format("Mã dịch vụ {0} có {1} dịch vụ cùng mã trên hệ thống, không xác định được|", serviceCode, sameCodeServices.Count);
 
                         if (service != null)
                         {

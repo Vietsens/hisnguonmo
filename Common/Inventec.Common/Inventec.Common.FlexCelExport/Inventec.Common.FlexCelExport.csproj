@@ -51,7 +51,9 @@
   <ItemGroup>
     <Compile Include="Common.cs" />
     <Compile Include="ProcessWatermarkTag.cs" />
+    <Compile Include="ExcelCellText.cs" />
     <Compile Include="Store.cs" />
+    <Compile Include="TemplateKeyLine.cs" />
     <Compile Include="TFlexCelUFMergeData.cs" />
     <Compile Include="TFlexCelUFEmployeeInfo.cs" />
     <Compile Include="TFlexCelUFFormatIcd.cs" />

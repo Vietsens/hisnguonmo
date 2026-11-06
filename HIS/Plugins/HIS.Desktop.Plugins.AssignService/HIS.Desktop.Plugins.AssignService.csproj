@@ -320,6 +320,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PayBeforeFinishWarning.cs" />
     <Compile Include="ADO\AcsUserADO.cs" />
     <Compile Include="ADO\ExecuteRoomConfirmADO.cs" />
     <Compile Include="ADO\PatientPackageDtADO.cs" />
