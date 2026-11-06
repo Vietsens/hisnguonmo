@@ -1387,6 +1387,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 ApplyConclusionTimeToKskGeneralSdo(sdo);
                 // Độ dài theo QĐ 2062 đo trên CHÍNH dữ liệu sắp gửi (bắt cả giá trị đổ bằng code: nhập Excel,
                 // thư viện văn bản, lấy sẵn từ y lệnh khám; mã ICD / Đối tượng ghép ";").
+                // BN Nam: không được có thông tin khám sản phụ khoa -> xóa trắng trên dữ liệu sắp gửi.
+                ClearObstetricDataForMale(sdo);
                 if (!ValidateQd2062LengthBeforePost(sdo)) return;
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
