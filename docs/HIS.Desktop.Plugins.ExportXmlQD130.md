@@ -81,7 +81,7 @@ Code ở `UCExportXml___InTreatment.cs` + một chỗ trong `ProcessExportXmlDet
 ## 4. Test Cases
 - [ ] (60262) Khóa `HIS.QD_130_BYT.EXPORT_XML_IN_TREATMENT` trống: chọn hồ sơ đang điều trị, bấm Xuất XML / XML 3176 / Xem XML: báo "Hồ sơ chưa có thời gian khóa viện phí" như cũ, không sinh tệp.
 - [ ] (60262) Khóa = 1, hồ sơ nội trú/ngoại trú/khám đang điều trị (chưa có giờ ra): Xuất XML ra tệp `<ngày giờ>_<mã điều trị>_<mã BN>_DANG_DIEU_TRI.xml`; XML1 trống NGAY_RA, KET_QUA_DTRI, MA_LOAI_RV, NGAY_TTOAN, NAM_QT, THANG_QT; không có XML7; có XML2/3/5... theo dữ liệu tới lúc xuất.
-- [ ] (60262) Khóa = 1, hồ sơ kết thúc lưu tạm / mở lại còn giờ ra: tệp có đuôi, XML1 có NGAY_RA theo dữ liệu, có XML7.
+- [ ] (60262) Khóa = 1, hồ sơ kết thúc lưu tạm / mở lại còn giờ ra: tệp có đuôi, XML1 có NGAY_RA theo dữ liệu, XML7 như hồ sơ đã ra viện cùng loại (hồ sơ khám không có XML7).
 - [ ] (60262) Khóa = 1, chọn lẫn hồ sơ đã khóa viện phí: hồ sơ đó ra tệp thường (không đuôi), nội dung như khi khóa trống.
 - [ ] (60262) Khóa = 1, hồ sơ đang điều trị có y lệnh thiếu mã bệnh / thiếu ICD / không có dịch vụ: báo đúng lỗi dữ liệu đó, không sinh tệp.
 - [ ] (60262) Khóa = 1, cột Xem XML hồ sơ đang điều trị: mở màn xem XML 130 (XML1 trống ngày ra); nút XML 3176 ra tệp có đuôi theo QĐ 3176; có thư mục GĐYK thì hồ sơ đang điều trị không sinh tệp XML12.
