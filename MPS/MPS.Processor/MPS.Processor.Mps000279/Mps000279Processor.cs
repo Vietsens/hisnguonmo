@@ -626,6 +626,13 @@ namespace MPS.Processor.Mps000279
                     tongTienBenhNhan = sereServADOs.Sum(o => o.TOTAL_PRICE_PATIENT_NO_PAY_RATE ?? 0);
                 }
 
+                if (rdo.HisConfigValue != null && rdo.HisConfigValue.PriceCalculationOption == 1)
+                {
+                    // Đặt trước V_HIS_TREATMENT_FEE (AddObjectKeyIntoListkey không ghi đè) để mẫu đang dùng 2 key này ra đúng số đã tính theo dòng
+                    SetSingleKey(new KeyValue("TOTAL_HEIN_PRICE", bhytthanhtoan_tong));
+                    SetSingleKey(new KeyValue("TOTAL_PATIENT_PRICE_BHYT", bnthanhtoan_tong));
+                }
+
                 SetSingleKey(new KeyValue(Mps000279ExtendSingleKey.EXECUTE_ROOM_EXAM, executeRoomExam));
                 SetSingleKey(new KeyValue(Mps000279ExtendSingleKey.FIRST_EXAM_ROOM_NAME, executeRoomExamFirst));
                 SetSingleKey(new KeyValue(Mps000279ExtendSingleKey.LAST_EXAM_ROOM_NAME, executeRoomExamLast));
