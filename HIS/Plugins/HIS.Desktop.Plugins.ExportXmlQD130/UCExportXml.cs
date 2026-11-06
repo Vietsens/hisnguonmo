@@ -1789,14 +1789,25 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     else
                     {
+                        //Việc 60262 - hồ sơ chưa kết thúc điều trị (viện bật HIS.QD_130_BYT.EXPORT_XML_IN_TREATMENT = 1): sinh ở chế độ
+                        //hồ sơ đang điều trị để kiểm tra, tên tệp thêm đuôi _DANG_DIEU_TRI, không sinh XML12 (mục UCExportXml___InTreatment).
+                        bool isInTreatment = IsExportXmlInTreatment(treatment);
+                        if (isInTreatment)
+                        {
+                            Inventec.Common.Logging.LogSystem.Info("60262 - Xuat XML ho so dang dieu tri (RunInTreatment): " + treatment.TREATMENT_CODE);
+                        }
                         if (!viewXml)
                         {
                             fullFileName = xmlProcessor.GetFileName();
+                            if (isInTreatment)
+                            {
+                                fullFileName = GetInTreatmentFileName(fullFileName);
+                            }
                             saveFilePath = String.Format("{0}/{1}", this.savePathADO.pathXml, fullFileName);
                             saveFilePathXml12 = String.Format("{0}/{1}{2}", this.savePathADO.pathXmlGDYK, "XML12_", fullFileName);
                         }
-                        var rs = xmlProcessor.Run(ref errorMess);
-                        var rsXml12 = XuatXml12 ? xmlProcessor.RunXml12(ref errorMessXml12) : null;
+                        var rs = isInTreatment ? RunXmlInTreatmentSafe(xmlProcessor, ref errorMess) : xmlProcessor.Run(ref errorMess);
+                        var rsXml12 = XuatXml12 && !isInTreatment ? xmlProcessor.RunXml12(ref errorMessXml12) : null;
                         if (!String.IsNullOrWhiteSpace(errorMess))
                         {
                             Inventec.Common.Logging.LogSystem.Error("Run130: " + errorMess);

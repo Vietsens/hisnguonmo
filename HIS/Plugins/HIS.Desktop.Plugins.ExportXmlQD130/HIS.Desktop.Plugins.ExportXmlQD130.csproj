@@ -287,6 +287,9 @@
     <Compile Include="UCExportXml___CardInfoWarning.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExportXml___InTreatment.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Base\CardInfoChecker.cs" />
     <Compile Include="ADO\XmlBatchDataADO.cs" />
     <Compile Include="Base\MdInsightConfig.cs" />
