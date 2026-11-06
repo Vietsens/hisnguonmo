@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="Mps000481ExtendSingleKey.cs" />
     <Compile Include="Mps000481Processor.cs" />
+    <Compile Include="Mps000481Processor__HoSoSucKhoe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
