@@ -6290,6 +6290,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 var relationDatas = new BackendAdapter(new CommonParam()).Get<List<EMR_RELATION>>("api/EmrRelation/Get", ApiConsumer.ApiConsumers.EmrConsumer, filter, null);
                 string RelationPeopleName = null;
                 EMR_RELATION Relation = null;
+                // vCong57201: ghi chú của bệnh nhân / người nhà (khóa EMR.EMR_SIGN.PATIENT_SIGN_DESCRIPTION_INFO.OPTION = 1) - hỏi MỘT lần cho cả lô
+                bool isAskPatientSignNote = Config.ConfigKey.IsPatientSignDescriptionInfo;
+                string patientSignNote = "";
                 int index = 0;
                 bool IsReloadSuccess = false;
                 foreach (var item in listDataTrue)
@@ -6303,6 +6306,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     }
                     if (IsBreak)
                         break;
+                    if (isAskPatientSignNote && index == 1)
+                    {
+                        // Hủy hộp thoại ghi chú => không ký văn bản nào
+                        if (!Inventec.Common.SignLibrary.PatientSignNoteProcess.TryAskNote(IsHomeRelativeSign, "", out patientSignNote))
+                            break;
+                    }
 
                     int opt = 0; int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
                     bool showWatermark = (opt == 1 || opt == 2);
@@ -6338,6 +6347,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     inputADO.DocumentCode = item.DOCUMENT_CODE;
                     inputADO.DocumentName = item.DOCUMENT_NAME;
                     inputADO.IsRemoveSignPadBefore = index == listDataTrue.Count;
+                    if (isAskPatientSignNote)
+                    {
+                        inputADO.SignReason = patientSignNote;// vCong57201: ghi chú chung cho mọi văn bản trong lô
+                    }
                     var dto = libraryProcessor.SignNow(file[0].Base64Data, FileType.Pdf, inputADO);
                     if (dto != null && dto.Success)
                     {
