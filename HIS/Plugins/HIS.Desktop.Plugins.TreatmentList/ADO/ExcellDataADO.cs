@@ -53,6 +53,23 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
         public string EXAM_KIDNEY_UROLOGY { get; set; }
         public string EXAM_DIGESTION { get; set; }
         public string EXAM_CIRCULATION { get; set; }
+
+        // Phân loại từng phần khám (tên HIS_HEALTH_EXAM_RANK) — cột EXAM_*_RANK ở EnterKskInfomantionVer2
+        public string DHST_RANK_NAME { get; set; }
+        public string EXAM_CIRCULATION_RANK_NAME { get; set; }
+        public string EXAM_RESPIRATORY_RANK_NAME { get; set; }
+        public string EXAM_DIGESTION_RANK_NAME { get; set; }
+        public string EXAM_OEND_RANK_NAME { get; set; }
+        public string EXAM_MUSCLE_BONE_RANK_NAME { get; set; }
+        public string EXAM_NEUROLOGICAL_RANK_NAME { get; set; }
+        public string EXAM_MENTAL_RANK_NAME { get; set; }
+        public string EXAM_DERMATOLOGY_RANK_NAME { get; set; }
+        public string EXAM_KIDNEY_UROLOGY_RANK_NAME { get; set; }
+        public string EXAM_SURGERY_RANK_NAME { get; set; }
+        public string EXAM_OBSTETRIC_RANK_NAME { get; set; }
+        public string EXAM_EYE_RANK_NAME { get; set; }
+        public string EXAM_ENT_RANK_NAME { get; set; }
+        public string EXAM_STOMATOLOGY_RANK_NAME { get; set; }
         public string TDL_PATIENT_DOB_MEN { get; set; }
         public string TDL_PATIENT_DOB_WOM { get; set; }
         public string HEIGH_RANK_NAME { get; set; }
@@ -203,6 +220,9 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                     NOTE_PROSTASE = Pick(examRecord, currentGenaral, "NOTE_PROSTASE");
                     NOTE_SUPERSONIC = Pick(examRecord, currentGenaral, "NOTE_SUPERSONIC");
                     NOTE_XRAY = Pick(examRecord, currentGenaral, "NOTE_XRAY");
+
+                    // Phân loại (HIS_HEALTH_EXAM_RANK) của từng phần khám — các combo "Phân loại" ở EnterKskInfomantionVer2.
+                    FillSectionRankNames(examRecord, currentGenaral);
 
                     long? healthRankId = GetLong(examRecord, "HEALTH_EXAM_RANK_ID") ?? GetLong(currentGenaral, "HEALTH_EXAM_RANK_ID");
                     if (healthRankId != null)
@@ -504,6 +524,55 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
         }
 
         #endregion
+
+        /// <summary>
+        /// Điền tên phân loại (HIS_HEALTH_EXAM_RANK_NAME) cho từng phần khám — lấy cột EXAM_*_RANK của bản ghi khám
+        /// theo loại KSK (trên-18 / dưới-18 / nghề nghiệp...), thiếu thì rơi về HIS_KSK_GENERAL. Giống các combo
+        /// "Phân loại" của EnterKskInfomantionVer2. Dưới-18 gộp Thần kinh – Tâm thần vào EXAM_NEURO_MENTAL_RANK.
+        /// </summary>
+        private void FillSectionRankNames(object examRecord, object general)
+        {
+            try
+            {
+                var rankDict = new Dictionary<long, string>();
+                var ranks = BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>();
+                if (ranks != null)
+                {
+                    foreach (var r in ranks)
+                    {
+                        if (r != null && !rankDict.ContainsKey(r.ID)) rankDict[r.ID] = r.HEALTH_EXAM_RANK_NAME;
+                    }
+                }
+
+                DHST_RANK_NAME = PickRankName(rankDict, examRecord, general, "DHST_RANK");
+                EXAM_CIRCULATION_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_CIRCULATION_RANK", "EXAM_CARDIOVASCULAR_RANK");
+                EXAM_RESPIRATORY_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_RESPIRATORY_RANK");
+                EXAM_DIGESTION_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_DIGESTION_RANK");
+                EXAM_OEND_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_OEND_RANK");
+                EXAM_MUSCLE_BONE_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_MUSCLE_BONE_RANK");
+                EXAM_NEUROLOGICAL_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_NEUROLOGICAL_RANK", "EXAM_NEURO_MENTAL_RANK");
+                EXAM_MENTAL_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_MENTAL_RANK", "EXAM_NEURO_MENTAL_RANK");
+                EXAM_DERMATOLOGY_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_DERMATOLOGY_RANK");
+                EXAM_KIDNEY_UROLOGY_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_KIDNEY_UROLOGY_RANK");
+                EXAM_SURGERY_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_SURGERY_RANK", "EXAM_CLINICAL_OTHER_RANK");
+                EXAM_OBSTETRIC_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_OBSTETRIC_RANK", "EXAM_MATERNITY_RANK");
+                EXAM_EYE_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_EYE_RANK");
+                EXAM_ENT_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_ENT_RANK");
+                EXAM_STOMATOLOGY_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_STOMATOLOGY_RANK");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Lấy ID phân loại ở bản ghi chính (thiếu thì ở general) rồi tra tên trong danh mục.</summary>
+        private static string PickRankName(Dictionary<long, string> rankDict, object primary, object fallback, params string[] names)
+        {
+            long? rankId = GetLong(primary, names) ?? GetLong(fallback, names);
+            string name;
+            return (rankId != null && rankDict != null && rankDict.TryGetValue(rankId.Value, out name)) ? name : null;
+        }
 
         /// <summary>Đọc property string đầu tiên có giá trị (theo danh sách tên field ứng viên) — an toàn kiểu qua reflection.</summary>
         private static string GetStr(object o, params string[] names)

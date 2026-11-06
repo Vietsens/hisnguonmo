@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Mps000481PDO.cs" />
     <Compile Include="Mps000481PDO__PublicKey.cs" />
+    <Compile Include="Mps000481PDO__HoSoSucKhoe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

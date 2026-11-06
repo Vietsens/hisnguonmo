@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace MPS.Processor.Mps000481
 {
-    public class Mps000481Processor : AbstractProcessor
+    public partial class Mps000481Processor : AbstractProcessor
     {
         Mps000481PDO rdo;
         List<SereServADO> SereServADOs;
@@ -163,6 +163,9 @@ namespace MPS.Processor.Mps000481
                 objectTag.AddRelationship(store, "listTreatment", "SereServ_CTC", "ID", "TDL_TREATMENT_ID");
                 objectTag.AddRelationship(store, "listTreatment", "SereServ_GPB", "ID", "TDL_TREATMENT_ID");
 
+                // Band của mẫu "Hồ sơ sức khỏe" (bảng XN có khoảng tham chiếu, CĐHA & TDCN, PTTT).
+                AddHoSoSucKhoeObjectData(objectTag);
+
                 result = true;
             }
             catch (Exception ex)
@@ -295,6 +298,8 @@ namespace MPS.Processor.Mps000481
                 {
                     TreatmentlADOs = (from r in rdo.Treatments select new TreatmentlADO(r, rdo.HisPositions, kskGeneralADOs)).ToList();
                 }
+
+                BuildHoSoSucKhoeData();
 
                 Inventec.Common.Logging.LogSystem.Info("rdo.SereServs: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdo.SereServs), rdo.SereServs));
                 Inventec.Common.Logging.LogSystem.Info("rdo.HisServices: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdo.HisServices), rdo.HisServices));

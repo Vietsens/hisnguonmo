@@ -191,6 +191,36 @@ namespace MPS.Processor.Mps000481.PDO
         public string HEALTH_EXAM_RANK_NAME { get; set; }
         public string HEALTH_EXAM_RANK_CODE { get; set; }
 
+        #region Mẫu "Hồ sơ sức khỏe" — processor điền sau khi khởi tạo
+        /// <summary>Tuổi hiển thị, vd "48 tuổi" (tính tại ngày khám).</summary>
+        public string AGE_STR { get; set; }
+        /// <summary>SĐT bệnh nhân (di động, thiếu thì cố định).</summary>
+        public string PATIENT_PHONE_STR { get; set; }
+        /// <summary>Tên cơ quan: nơi làm việc của BN, thiếu thì đơn vị hợp đồng KSK.</summary>
+        public string WORK_PLACE_DISPLAY { get; set; }
+        /// <summary>Ngày khám dd/MM/yyyy (IN_TIME).</summary>
+        public string EXAM_DATE_STR { get; set; }
+        public string HEIGHT_STR { get; set; }
+        public string WEIGHT_STR { get; set; }
+        public string BMI_STR { get; set; }
+        /// <summary>Huyết áp "tâm thu/tâm trương".</summary>
+        public string BLOOD_PRESSURE_STR { get; set; }
+        public string PULSE_STR { get; set; }
+        public string TEMPERATURE_STR { get; set; }
+        public string BREATH_RATE_STR { get; set; }
+        /// <summary>Tiền sử bản thân.</summary>
+        public string PATHOLOGICAL_HISTORY { get; set; }
+        /// <summary>Tiền sử gia đình.</summary>
+        public string PATHOLOGICAL_HISTORY_FAMILY { get; set; }
+        /// <summary>Bác sĩ kết luận (CONCLUDER_USERNAME, thiếu thì bác sĩ khám).</summary>
+        public string CONCLUDER_USERNAME { get; set; }
+        public string CONCLUDER_LOGINNAME { get; set; }
+        public long? CONCLUSION_TIME { get; set; }
+        public string CONCLUSION_DAY { get; set; }
+        public string CONCLUSION_MONTH { get; set; }
+        public string CONCLUSION_YEAR { get; set; }
+        #endregion
+
         public TreatmentlADO() { }
         public TreatmentlADO(V_HIS_TREATMENT_4 data, List<HIS_POSITION> HisPositions, List<kskGeneralADO> kskGeneralADOs)
         {
