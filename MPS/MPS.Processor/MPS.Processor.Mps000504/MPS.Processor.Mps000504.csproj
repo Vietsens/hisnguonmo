@@ -63,6 +63,12 @@
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\MPS.Processor.Mps000504.PDO\bin\Debug\MOS.EFMODEL.dll</HintPath>
     </Reference>
@@ -98,6 +104,7 @@
     <Compile Include="Mps000504Processor.cs" />
     <Compile Include="Mps000504ProcessorPlus.cs" />
     <Compile Include="Mps000504Processor.ExeRoom.cs" />
+    <Compile Include="Mps000504Processor.SingleKey.cs" />
     <Compile Include="PatientTypeAlterProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

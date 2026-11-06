@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
         {
             try
             {
+                InitIHanoiControls();
                 SetDefaultControl();
 
                 FillDataToGrid();
@@ -317,6 +318,7 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
                         filter.STATUS = 1;
                     else if(chkProcessedCancel.Checked)
                         filter.STATUS = 2;
+                    SetFilterIHanoi(filter);
 
                 }
             }
@@ -334,6 +336,7 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
                 dtAppointmentTo.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((Inventec.Common.DateTime.Get.EndDay() ?? 0));
                 txtKeyWord.Text = "";
                 txtAppointmentCode.Text = "";
+                ResetIHanoiControls();
                 chkUnProcess.Checked = true;
                 txtKeyWord.Focus();
             }
@@ -352,6 +355,7 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
                 HIS_APPOINTMENT data = (HIS_APPOINTMENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
+                    object value = null;
                     if (e.Column.FieldName == "STT")
                     {
                         e.Value = e.ListSourceRowIndex + 1 + (ucPaging.pagingGrid.CurrentPage - 1) * (ucPaging.pagingGrid.PageSize);
@@ -421,7 +425,12 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
                         {
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay tao MODIFY_TIME", ex);
                         }
-                    }else if(e.Column.FieldName == "GENDER_str")
+                    }
+                    else if (GetIHanoiUnboundValue(e.Column.FieldName, data, ref value))
+                    {
+                        e.Value = value;
+                    }
+                    else if(e.Column.FieldName == "GENDER_str")
                     {
 
                         try
@@ -635,6 +644,10 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
         {
             try
             {
+                if (IsBlockUndo(gridView1.GetFocusedRow() as HIS_APPOINTMENT))
+                {
+                    return;
+                }
                 if (XtraMessageBox.Show("Bạn có chắc muốn thực hiện hủy thông tin xử lý trước đó không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     CommonParam param = new CommonParam();
@@ -679,6 +692,10 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
                         {
                             e.RepositoryItem = repositoryItemButtonEdit_Dis;
                         }
+                    }
+                    else if (e.Column.FieldName == "Approve")
+                    {
+                        e.RepositoryItem = GetApproveRepositoryItem(data);
                     }
                 }
             }

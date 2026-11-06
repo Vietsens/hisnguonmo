@@ -287,6 +287,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.InitMdInsight();
                 //Việc 61380 - Xuất XML hồ sơ đủ 48 giờ: tạo cột khi bật cấu hình; tự động chạy theo Gửi tự động, xuất tay ở menu chuột phải.
                 this.InitXml48h();
+                //Việc 60261 - Cột cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính: chỉ tạo khi bật HIS.QD_130_BYT.XML1.CARD_INFO_WARNING.
+                this.InitCardInfoWarning();
             }
             catch (Exception ex)
             {
@@ -1147,6 +1149,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnExportXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
+                if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;
@@ -4397,6 +4402,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     XtraMessageBox.Show(Resources.ResourceMessageLang.BanChuaChonHoSoDeDongBo, Resources.ResourceMessageLang.ThongBao);
                     return;
                 }
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi gửi cổng (Gửi XML 130, Gửi XML 3176). Đặt sau khối
+                //thay danh sách ở trên để cảnh báo đúng các hồ sơ sẽ gửi; luồng gửi dựng XML theo ô XML 3176 (ReadXml3176CheckedSafe).
+                //Chỉ hỏi trên luồng giao diện: lượt gửi tự động (backgroundWorker1) chạy ở luồng nền nên bỏ qua. Khóa = 1: chọn Có thì vẫn gửi; khóa = 2: chặn.
+                if (this.IsHandleCreated && !this.InvokeRequired && !await ConfirmCardInfoAsync(listSelection, ReadXml3176CheckedSafe(), false)) return;
                 var listTreatmentSynced = listSelection.Where(o => o.XML130_RESULT == 2).ToList();
                 if (listTreatmentSynced != null && listTreatmentSynced.Count > 0 && showMessSusscess == true)
                 {
@@ -4486,6 +4495,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     XtraMessageBox.Show(Resources.ResourceMessageLang.BanChuaChonHoSoDeDongBo, Resources.ResourceMessageLang.ThongBao);
                     return;
                 }
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi gửi cổng. Khóa = 1: chọn Có thì vẫn gửi; khóa = 2: chặn.
+                if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 isNotFileSign = false;
                 //qtcode
@@ -6211,10 +6222,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ProcessDataExcelTT12();
         }
 
-        private void MenuItemClick_XuatXmlCheckIn(object sender, EventArgs e)
+        private async void MenuItemClick_XuatXmlCheckIn(object sender, EventArgs e)
         {
             try
             {
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi tạo lại file check-in (khóa = 1 hỏi, khóa = 2 chặn).
+                if (!await ConfirmCardInfoAsync(listSelection, false, true)) return;
                 CommonParam param = new CommonParam();
                 bool success = false;
                 WaitingManager.Show();
@@ -6392,13 +6405,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void MenuItemClick_XuatXMLKhongBaoGomGDYK(object sender, EventArgs e)
+        private async void MenuItemClick_XuatXMLKhongBaoGomGDYK(object sender, EventArgs e)
         {
             try
             {
                 try
                 {
                     if (listSelection == null || listSelection.Count == 0) return;
+                    //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
+                    if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
                     CommonParam param = new CommonParam();
                     MemoryStream memoryStream = new MemoryStream();
                     bool success = false;
@@ -6546,6 +6561,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnExportCollinearXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
+                if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;
@@ -6723,6 +6741,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnExportGroupXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
+                if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;
@@ -6944,6 +6965,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnXML3176.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Nút XML 3176 luôn sinh XML theo QĐ 3176.
+                if (!await ConfirmCardInfoAsync(listSelection, true, false)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;

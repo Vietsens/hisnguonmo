@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="UCSupplyOrderList.lblStock.Text" xml:space="preserve">
+    <value>Kho:</value>
+  </data>
+  <data name="UCSupplyOrderList.lblSupplier.Text" xml:space="preserve">
+    <value>Nhà cung cấp:</value>
+  </data>
+  <data name="UCSupplyOrderList.lblStatus.Text" xml:space="preserve">
+    <value>Trạng thái:</value>
+  </data>
+  <data name="UCSupplyOrderList.lblMailStatus.Text" xml:space="preserve">
+    <value>Thư:</value>
+  </data>
+  <data name="UCSupplyOrderList.lblFrom.Text" xml:space="preserve">
+    <value>Ngày đặt từ:</value>
+  </data>
+  <data name="UCSupplyOrderList.lblTo.Text" xml:space="preserve">
+    <value>đến</value>
+  </data>
+  <data name="UCSupplyOrderList.lblCode.Text" xml:space="preserve">
+    <value>Số đơn:</value>
+  </data>
+  <data name="UCSupplyOrderList.lblNotConfig.Text" xml:space="preserve">
+    <value>Chưa cấu hình kho cung ứng (MOS.HIS_ANTICIPATE.SUPPLY.MEDI_STOCK_CODES)</value>
+  </data>
+  <data name="UCSupplyOrderList.btnSearch.Text" xml:space="preserve">
+    <value>Tìm kiếm</value>
+  </data>
+  <data name="UCSupplyOrderList.btnCreate.Text" xml:space="preserve">
+    <value>Tạo đơn mới</value>
+  </data>
+  <data name="UCSupplyOrderList.btnView.Text" xml:space="preserve">
+    <value>Xem đơn</value>
+  </data>
+  <data name="UCSupplyOrderList.btnSendMail.Text" xml:space="preserve">
+    <value>Gửi email</value>
+  </data>
+  <data name="UCSupplyOrderList.btnSendMail.Resend" xml:space="preserve">
+    <value>Gửi lại</value>
+  </data>
+  <data name="UCSupplyOrderList.btnCancelOrder.Text" xml:space="preserve">
+    <value>Hủy đơn</value>
+  </data>
+  <data name="UCSupplyOrderList.btnCancelOrder.HasImport" xml:space="preserve">
+    <value>Đơn đã có phiếu nhập đối chiếu - chờ chính sách hủy khi đã có hàng về</value>
+  </data>
+  <data name="UCSupplyOrderList.btnDeleteDraft.Text" xml:space="preserve">
+    <value>Xóa nháp</value>
+  </data>
+  <data name="UCSupplyOrderList.cboStock.NullText" xml:space="preserve">
+    <value>Tất cả kho cung ứng</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.Stt" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.OrderCode" xml:space="preserve">
+    <value>Số đơn</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.MediStock" xml:space="preserve">
+    <value>Kho</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.Supplier" xml:space="preserve">
+    <value>Nhà cung cấp</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.OrderTime" xml:space="preserve">
+    <value>Ngày đặt</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.OrderUser" xml:space="preserve">
+    <value>Người đặt</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.Status" xml:space="preserve">
+    <value>Trạng thái đơn</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.MailStatus" xml:space="preserve">
+    <value>Trạng thái thư</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.TotalPrice" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.VatPrice" xml:space="preserve">
+    <value>Tiền thuế</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.TotalWithVat" xml:space="preserve">
+    <value>Tổng tiền</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.SumAmount" xml:space="preserve">
+    <value>Lượng đặt</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.SumArrived" xml:space="preserve">
+    <value>Đã về</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.SumImported" xml:space="preserve">
+    <value>Đã nhập</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.ImpMestCount" xml:space="preserve">
+    <value>Số phiếu nhập</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.LastMailTime" xml:space="preserve">
+    <value>Gửi thư lần cuối</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.LastMailTo" xml:space="preserve">
+    <value>Gửi tới</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.LastMailError" xml:space="preserve">
+    <value>Lỗi gửi thư</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.CancelReason" xml:space="preserve">
+    <value>Lý do hủy</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.Description" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.TypeCode" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.TypeName" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.ServiceUnit" xml:space="preserve">
+    <value>ĐVT</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.Packing" xml:space="preserve">
+    <value>Quy cách</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.ImpUnitAmount" xml:space="preserve">
+    <value>SL</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.ImpUnit" xml:space="preserve">
+    <value>ĐV nhập</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.Amount" xml:space="preserve">
+    <value>SL lẻ</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.ImpPrice" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.VatPercent" xml:space="preserve">
+    <value>Thuế (%)</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.Arrived" xml:space="preserve">
+    <value>Đã về</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.Imported" xml:space="preserve">
+    <value>Đã nhập</value>
+  </data>
+  <data name="UCSupplyOrderList.Column.Wait" xml:space="preserve">
+    <value>Còn chờ giao</value>
+  </data>
+  <data name="OrderStatus.Draft" xml:space="preserve">
+    <value>Nháp</value>
+  </data>
+  <data name="OrderStatus.Confirmed" xml:space="preserve">
+    <value>Đã xác nhận đặt</value>
+  </data>
+  <data name="OrderStatus.Canceled" xml:space="preserve">
+    <value>Đã hủy</value>
+  </data>
+  <data name="MailStatus.NotSent" xml:space="preserve">
+    <value>Chưa gửi</value>
+  </data>
+  <data name="MailStatus.Sending" xml:space="preserve">
+    <value>Đang gửi</value>
+  </data>
+  <data name="MailStatus.Success" xml:space="preserve">
+    <value>Thành công</value>
+  </data>
+  <data name="MailStatus.Error" xml:space="preserve">
+    <value>Lỗi</value>
+  </data>
+  <data name="Message.Title" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="UCSupplyOrderList.Message.ConfirmCancel" xml:space="preserve">
+    <value>Hủy đơn {0}? Lượng đặt của đơn được hoàn vào số lượng còn lại</value>
+  </data>
+  <data name="UCSupplyOrderList.Message.ConfirmDelete" xml:space="preserve">
+    <value>Xóa đơn nháp {0}?</value>
+  </data>
+  <data name="UCSupplyOrderList.Message.MailError" xml:space="preserve">
+    <value>Gửi thư không thành công: {0}</value>
+  </data>
+  <data name="frmCancelReason.Text" xml:space="preserve">
+    <value>Hủy đơn đặt hàng</value>
+  </data>
+  <data name="frmCancelReason.lblReason.Text" xml:space="preserve">
+    <value>Lý do hủy đơn:</value>
+  </data>
+  <data name="frmCancelReason.btnOk.Text" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="frmCancelReason.btnCancel.Text" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="frmCancelReason.Message.InputReason" xml:space="preserve">
+    <value>Chưa nhập lý do hủy</value>
+  </data>
+  <data name="frmSendMail.Text" xml:space="preserve">
+    <value>Gửi email đơn đặt hàng</value>
+  </data>
+  <data name="frmSendMail.lblTo.Text" xml:space="preserve">
+    <value>Gửi đến:</value>
+  </data>
+  <data name="frmSendMail.lblCc.Text" xml:space="preserve">
+    <value>CC:</value>
+  </data>
+  <data name="frmSendMail.lblSubject.Text" xml:space="preserve">
+    <value>Tiêu đề:</value>
+  </data>
+  <data name="frmSendMail.lblBody.Text" xml:space="preserve">
+    <value>Nội dung:</value>
+  </data>
+  <data name="frmSendMail.lblHint.Text" xml:space="preserve">
+    <value>Nhiều địa chỉ cách nhau bởi dấu ; hoặc dấu ,</value>
+  </data>
+  <data name="frmSendMail.btnSend.Text" xml:space="preserve">
+    <value>Gửi</value>
+  </data>
+  <data name="frmSendMail.btnCancel.Text" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="frmSendMail.Subject" xml:space="preserve">
+    <value>Đơn đặt hàng {0} - {1}</value>
+  </data>
+  <data name="frmSendMail.Body" xml:space="preserve">
+    <value>Kính gửi {0},\n\nBệnh viện đặt hàng theo đơn số {1} (kho nhận: {2}) gồm các mặt hàng sau:\n{3}\nTổng tiền (gồm thuế): {4} đồng.\n\nĐề nghị Quý công ty xác nhận và giao hàng.\nTrân trọng.</value>
+  </data>
+  <data name="frmSendMail.BodyLine" xml:space="preserve">
+    <value>{0}. {1} - {2}: {3}</value>
+  </data>
+  <data name="frmSendMail.Message.ToRequired" xml:space="preserve">
+    <value>Chưa nhập địa chỉ nhận thư</value>
+  </data>
+  <data name="frmSendMail.Message.InvalidEmail" xml:space="preserve">
+    <value>Địa chỉ thư không hợp lệ: {0}</value>
+  </data>
+  <data name="frmSendMail.Message.SubjectRequired" xml:space="preserve">
+    <value>Chưa nhập tiêu đề</value>
+  </data>
+</root>

@@ -189,6 +189,9 @@
     <Compile Include="frmManuImpMestUpdate__Plus_Validate.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmManuImpMestUpdate__Plus_SupplyOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmManuImpMestUpdate__Plus_Print.cs">
       <SubType>Form</SubType>
     </Compile>

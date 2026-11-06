@@ -183,6 +183,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 room.IS_ALLOW_NO_ICD = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsAllowNoICD);
                 room.IS_BLOCK_NUM_ORDER = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsBlockNumOrder);
                 room.IS_SPLIT_BY_PRIORITY = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsSplitByPriority);
+                room.IS_ALLOW_ONLINE_BOOKING = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsAllowOnlineBooking);
                 if (spHoldOrder.EditValue != null)
                 {
                     room.HOLD_ORDER = (long)spHoldOrder.Value;
