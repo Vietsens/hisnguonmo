@@ -238,6 +238,9 @@
     <Compile Include="UCImpMestCreate__Plus__Task.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCImpMestCreate__Plus__SupplyOrder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCImpMestCreate__Plus__Load.cs">
       <SubType>UserControl</SubType>
     </Compile>

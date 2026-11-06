@@ -159,6 +159,7 @@ namespace HIS.Desktop.Plugins.ManuImpMestUpdate
 
 
                 ValidControls();
+                InitSupplyOrder();
 
                 //LoadCurrentData();
                 WaitingManager.Hide();
@@ -1536,6 +1537,7 @@ namespace HIS.Desktop.Plugins.ManuImpMestUpdate
                     {
                         hisManuImpMestSDO.ImpMest.SUPPLIER_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboSupplier.EditValue.ToString());
                     }
+                    SetSupplyOrderToImpMest(hisManuImpMestSDO.ImpMest);
                     hisManuImpMestSDO.ImpMest.DOCUMENT_NUMBER = txtDocumentNumber.Text;
                     if (dtDocumentDate.EditValue != null && dtDocumentDate.DateTime != DateTime.MinValue)
                     {
@@ -1965,6 +1967,10 @@ namespace HIS.Desktop.Plugins.ManuImpMestUpdate
                     return;
 
                 if (CheckDocumentNumberV2(txtDocumentNumber.Text))
+                {
+                    return;
+                }
+                if (!CheckSupplyOrderOverAmount())
                 {
                     return;
                 }

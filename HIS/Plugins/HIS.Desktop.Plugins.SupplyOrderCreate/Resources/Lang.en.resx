@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="frmSupplyOrderCreate.Text" xml:space="preserve">
+    <value>Create supply order</value>
+  </data>
+  <data name="frmSupplyOrderCreate.lblStock.Text" xml:space="preserve">
+    <value>Medi stock:</value>
+  </data>
+  <data name="frmSupplyOrderCreate.lblItem.Text" xml:space="preserve">
+    <value>Item:</value>
+  </data>
+  <data name="frmSupplyOrderCreate.lblItemHint.Text" xml:space="preserve">
+    <value>Type code or name to add an item</value>
+  </data>
+  <data name="frmSupplyOrderCreate.btnLoadRemain.Text" xml:space="preserve">
+    <value>Load remaining items</value>
+  </data>
+  <data name="frmSupplyOrderCreate.btnLoadRemain.ToolTip" xml:space="preserve">
+    <value>Add items of the stock with approved amount not yet ordered (remain &gt; 0), amount left empty</value>
+  </data>
+  <data name="frmSupplyOrderCreate.chkPreview.Text" xml:space="preserve">
+    <value>Preview by supplier</value>
+  </data>
+  <data name="frmSupplyOrderCreate.btnReload.Text" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="frmSupplyOrderCreate.btnSave.Text" xml:space="preserve">
+    <value>Save draft (Ctrl S)</value>
+  </data>
+  <data name="frmSupplyOrderCreate.btnSave.ToolTip" xml:space="preserve">
+    <value>Save and split: one draft order per supplier. Remain amount not changed</value>
+  </data>
+  <data name="frmSupplyOrderCreate.btnConfirm.Text" xml:space="preserve">
+    <value>Confirm order</value>
+  </data>
+  <data name="frmSupplyOrderCreate.btnConfirm.NoPermission" xml:space="preserve">
+    <value>You have no permission to confirm orders</value>
+  </data>
+  <data name="frmSupplyOrderCreate.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmSupplyOrderCreate.NoSupplier" xml:space="preserve">
+    <value>(No supplier)</value>
+  </data>
+  <data name="frmSupplyOrderCreate.lblDraft.None" xml:space="preserve">
+    <value>No draft order in this stock</value>
+  </data>
+  <data name="frmSupplyOrderCreate.lblDraft.Text" xml:space="preserve">
+    <value>Draft orders of the stock ({0}): {1}</value>
+  </data>
+  <data name="frmSupplyOrderCreate.lblOrderInfo.Text" xml:space="preserve">
+    <value>Order {0} - {1} - {2} - Ordered: {3} - By: {4}</value>
+  </data>
+  <data name="frmSupplyOrderCreate.lblOrderInfo.Cancel" xml:space="preserve">
+    <value>Cancel reason: {0}</value>
+  </data>
+  <data name="frmSupplyOrderCreate.GroupCount" xml:space="preserve">
+    <value>{0} items</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Stt" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.TypeCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.TypeName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.ServiceUnit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Packing" xml:space="preserve">
+    <value>Packing</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Kind" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Supplier" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Approved" xml:space="preserve">
+    <value>Approved (F)</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Approved.ToolTip" xml:space="preserve">
+    <value>Approved amount of the stock anticipates (service unit)</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Ordered" xml:space="preserve">
+    <value>Ordered (O)</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Ordered.ToolTip" xml:space="preserve">
+    <value>Amount of confirmed orders, canceled orders excluded</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.New" xml:space="preserve">
+    <value>New (N)</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.New.ToolTip" xml:space="preserve">
+    <value>Arrived with import slip, not yet imported - not waiting for delivery</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Remain" xml:space="preserve">
+    <value>Remain (R)</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Remain.ToolTip" xml:space="preserve">
+    <value>Remain = Approved - Ordered. Negative = over ordered</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.ImpUnitAmount" xml:space="preserve">
+    <value>Qty</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.ImpUnitAmount.ToolTip" xml:space="preserve">
+    <value>Amount in import unit. Unit qty = Qty x ratio. Locked when the item has no ratio</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.ImpUnit" xml:space="preserve">
+    <value>Imp. unit</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Amount" xml:space="preserve">
+    <value>Unit qty</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Amount.ToolTip" xml:space="preserve">
+    <value>Amount in service unit - the standard amount. Qty = Unit qty / ratio, not rounded</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.ImpPrice" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.VatPercent" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.TotalPrice" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.VatPrice" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.TotalPriceWithVat" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Arrived" xml:space="preserve">
+    <value>Arrived</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Imported" xml:space="preserve">
+    <value>Imported</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.Wait" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="frmSupplyOrderCreate.Column.OrderCode" xml:space="preserve">
+    <value>Order code</value>
+  </data>
+  <data name="OrderStatus.Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="OrderStatus.Confirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="OrderStatus.Canceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
+  <data name="Kind.Medicine" xml:space="preserve">
+    <value>Medicine</value>
+  </data>
+  <data name="Kind.Material" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="Kind.Chemical" xml:space="preserve">
+    <value>Chemical</value>
+  </data>
+  <data name="Message.Title" xml:space="preserve">
+    <value>Notice</value>
+  </data>
+  <data name="Message.NotConfig" xml:space="preserve">
+    <value>Supply medi stocks are not configured (MOS.HIS_ANTICIPATE.SUPPLY.MEDI_STOCK_CODES)</value>
+  </data>
+  <data name="Message.ChangeStockWithoutSave" xml:space="preserve">
+    <value>Unsaved data will be lost when changing stock. Continue?</value>
+  </data>
+  <data name="Message.CloseWithoutSave" xml:space="preserve">
+    <value>Data is not saved. Close anyway?</value>
+  </data>
+  <data name="Message.ItemExisted" xml:space="preserve">
+    <value>Item {0} - {1} is already in the list</value>
+  </data>
+  <data name="Message.NoRemain" xml:space="preserve">
+    <value>No item with remaining approved amount (or already in the list)</value>
+  </data>
+  <data name="Message.StockRequired" xml:space="preserve">
+    <value>Please select a medi stock</value>
+  </data>
+  <data name="Message.NoLine" xml:space="preserve">
+    <value>No item</value>
+  </data>
+  <data name="Message.AmountRequired" xml:space="preserve">
+    <value>Amount (greater than 0) is required for: {0}</value>
+  </data>
+  <data name="Message.SupplierRequired" xml:space="preserve">
+    <value>Supplier is required for: {0}</value>
+  </data>
+  <data name="Message.PriceMissing" xml:space="preserve">
+    <value>No import price in catalog for: {0}. Please ask the accountant to update the catalog</value>
+  </data>
+  <data name="Message.ConfirmOrder" xml:space="preserve">
+    <value>Confirm {0} orders: {1}? Confirmed orders are read-only, cancel and create new to change</value>
+  </data>
+  <data name="Message.OrderConfirmed" xml:space="preserve">
+    <value>{0} orders confirmed: {1}. Send email to suppliers from the supply order list</value>
+  </data>
+  <data name="Message.ConfirmReload" xml:space="preserve">
+    <value>Unsaved changes will be lost. Reload?</value>
+  </data>
+  <data name="frmOverWarning.Text" xml:space="preserve">
+    <value>Over order warning</value>
+  </data>
+  <data name="frmOverWarning.lblMessage.Text" xml:space="preserve">
+    <value>Items below are ordered over the remaining approved amount. Allowed, but you must confirm you have read the warning</value>
+  </data>
+  <data name="frmOverWarning.chkRead.Text" xml:space="preserve">
+    <value>I have read the warning</value>
+  </data>
+  <data name="frmOverWarning.btnOk.Text" xml:space="preserve">
+    <value>Confirm order</value>
+  </data>
+  <data name="frmOverWarning.btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="frmOverWarning.Column.OrderCode" xml:space="preserve">
+    <value>Order code</value>
+  </data>
+  <data name="frmOverWarning.Column.Remain" xml:space="preserve">
+    <value>Remain</value>
+  </data>
+  <data name="frmOverWarning.Column.Order" xml:space="preserve">
+    <value>Ordered</value>
+  </data>
+  <data name="frmOverWarning.Column.Over" xml:space="preserve">
+    <value>Over</value>
+  </data>
+</root>
