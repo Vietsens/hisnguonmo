@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -82,6 +82,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
 
                 LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listInput), listInput));
                 result = new Inventec.Common.Adapter.BackendAdapter(Param).Post<OutPatientPresResultSDO>(RequestUriStore.HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE_LIST, ApiConsumers.MosConsumer, listInput, Param);
+                
+                //QT16: ho so da co hoa don thi Backend giu lai y lenh va tra canh bao.
+                //Hoi nguoi dung, dong y thi gui lai dung y lenh do kem co xac nhan.
+                if (result == null && PayBeforeFinishWarning.IsNeedConfirm(Param))
+                {
+                    Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                    bool isConfirmAddAfterBill = PayBeforeFinishWarning.Confirm(Param);
+                    Inventec.Desktop.Common.Message.WaitingManager.Show();
+                    if (isConfirmAddAfterBill)
+                    {
+                        foreach (OutPatientPresSDO presDataConfirm in listInput)
+                        {
+                            presDataConfirm.IsConfirmAddAfterBill = true;
+                        }
+                        
+                        //Dung lai param da duoc xoa cau canh bao, de thong bao cua lan gui lai van hien duoc
+                        result = new Inventec.Common.Adapter.BackendAdapter(Param).Post<OutPatientPresResultSDO>(RequestUriStore.HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE_LIST, ApiConsumers.MosConsumer, listInput, Param);
+                    }
+                }
                 if (result == null
                     || result.ServiceReqs == null || result.ServiceReqs.Count == 0
                     || ((result.ServiceReqMaties == null || result.ServiceReqMaties.Count == 0)

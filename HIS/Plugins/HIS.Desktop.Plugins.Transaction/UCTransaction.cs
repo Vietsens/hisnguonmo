@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -400,6 +400,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 lciDebtClose.Visibility = HisConfigCFG.ShowBtnTransactionDebt == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciDebtCollection.Visibility = HisConfigCFG.ShowBtnTransactionDebtCollect == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never; 
                 lciEbill.Visibility = HisConfigCFG.ShowElectronicNumorderCFG == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.InitPayBeforeFinish();
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.Load => 8");
                 InitCheck(cboTreatmentType, SelectionGrid__Status);
                 InitCheck(cboEndDepartment, SelectionGrid__EndDepartment);
@@ -973,6 +974,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             {
                 treatFilter.BRANCH_ID = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.ID;
             }
+            this.SetApproveFinishFilter(ref treatFilter);
             if (!String.IsNullOrEmpty(txtFindTreatmentCode.Text))
             {
                 string code = txtFindTreatmentCode.Text.Trim();

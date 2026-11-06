@@ -430,6 +430,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PayBeforeFinishWarning.cs" />
     <Compile Include="ADO\AdviseFormADO.cs" />
     <Compile Include="ADO\AISuggestionData.cs" />
     <Compile Include="ADO\AlertLogADO.cs" />

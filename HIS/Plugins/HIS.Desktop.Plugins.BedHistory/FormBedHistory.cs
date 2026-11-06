@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -4970,6 +4970,21 @@ namespace HIS.Desktop.Plugins.BedHistory
                     ProcessBedServiceReqSDO(hisBedServiceReqSDO, dataBedServiceTypeForSave);
                     Inventec.Common.Logging.LogSystem.Debug("hisBedServiceReqSDO gui len" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisBedServiceReqSDO), hisBedServiceReqSDO));
                     var currentBedServiceReq = new Inventec.Common.Adapter.BackendAdapter(param).Post<HisServiceReqListResultSDO>("api/HisServiceReq/CreateByBedLog", ApiConsumer.ApiConsumers.MosConsumer, hisBedServiceReqSDO, param);
+                    
+                    //QT16: ho so da co hoa don thi Backend giu lai y lenh va tra canh bao.
+                    //Hoi nguoi dung, dong y thi gui lai dung y lenh do kem co xac nhan.
+                    if (currentBedServiceReq == null && PayBeforeFinishWarning.IsNeedConfirm(param))
+                    {
+                        WaitingManager.Hide();
+                        bool isConfirmAddAfterBill = PayBeforeFinishWarning.Confirm(param);
+                        WaitingManager.Show();
+                        if (isConfirmAddAfterBill)
+                        {
+                            hisBedServiceReqSDO.IsConfirmAddAfterBill = true;
+                            //Dung lai param da duoc xoa cau canh bao, de thong bao cua lan gui lai van hien duoc
+                            currentBedServiceReq = new Inventec.Common.Adapter.BackendAdapter(param).Post<HisServiceReqListResultSDO>("api/HisServiceReq/CreateByBedLog", ApiConsumer.ApiConsumers.MosConsumer, hisBedServiceReqSDO, param);
+                        }
+                    }
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
                     if (currentBedServiceReq != null)
                     {

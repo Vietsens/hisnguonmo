@@ -2123,6 +2123,21 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Debug("Luu chi dinh____Du lieu dau vao____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqSDO), serviceReqSDO));
                 //Gọi api chỉ định dv
                 var rs = new BackendAdapter(param).Post<HisServiceReqListResultSDO>(RequestUriStore.HIS_SERVICE_REQ__ASSIGN_SERVICE, ApiConsumers.MosConsumer, serviceReqSDO, ProcessLostToken, param);
+                
+                //QT16: ho so da co hoa don thi Backend giu lai y lenh va tra canh bao.
+                //Hoi nguoi dung, dong y thi gui lai dung y lenh do kem co xac nhan.
+                if (rs == null && PayBeforeFinishWarning.IsNeedConfirm(param))
+                {
+                    WaitingManager.Hide();
+                    bool isConfirmAddAfterBill = PayBeforeFinishWarning.Confirm(param);
+                    WaitingManager.Show();
+                    if (isConfirmAddAfterBill)
+                    {
+                        serviceReqSDO.IsConfirmAddAfterBill = true;
+                        //Dung lai param da duoc xoa cau canh bao, de thong bao cua lan gui lai van hien duoc
+                        rs = new BackendAdapter(param).Post<HisServiceReqListResultSDO>(RequestUriStore.HIS_SERVICE_REQ__ASSIGN_SERVICE, ApiConsumers.MosConsumer, serviceReqSDO, ProcessLostToken, param);
+                    }
+                }
                 Inventec.Common.Logging.LogSystem.Info("this.serviceReqComboResultSDO: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
 
                 if (rs != null)
