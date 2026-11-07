@@ -944,6 +944,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
         /// <summary>Có {0}/{1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính (...). Theo cấu hình không cho phép xuất/gửi XML...</summary>
         internal static string CardInfoChanXuatGui { get { return GetMdInsightValue("CardInfoChanXuatGui"); } }
 
+        /// <summary>Việc 60262 - Thư viện His.Bhyt.ExportXml.XML130 trên máy chưa hỗ trợ xuất XML hồ sơ đang điều trị (cần bản từ 28/10/2026)</summary>
+        internal static string XmlDangDieuTriThuVienChuaHoTro { get { return GetMdInsightValue("XmlDangDieuTriThuVienChuaHoTro"); } }
+
         /// <summary>Cảnh báo thiếu/sai thông tin thẻ, thông tin hồ sơ chính (XML1)</summary>
         internal static string CardInfoTieuDeCuaSo { get { return GetMdInsightValue("CardInfoTieuDeCuaSo"); } }
 

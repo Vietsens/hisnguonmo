@@ -612,4 +612,7 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
   <data name="CardInfoChanXuatGui" xml:space="preserve">
     <value>{0}/{1} records have missing or invalid card or main record information (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD, GT_THE_TU, GT_THE_DEN). By hospital configuration, exporting/sending XML is not allowed while such records remain. Please fix the information or deselect these records and try again.</value>
   </data>
+  <data name="XmlDangDieuTriThuVienChuaHoTro" xml:space="preserve">
+    <value>The His.Bhyt.ExportXml.XML130 library on this computer does not support exporting XML for records still in treatment (update the library to the 28/10/2026 build or later)</value>
+  </data>
 </root>

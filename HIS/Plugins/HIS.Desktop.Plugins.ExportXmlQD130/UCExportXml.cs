@@ -1756,7 +1756,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     string saveFilePathXml12 = "";
                     string fullFileNameCollinearXml = "";
                     string saveFilePathCollinearXml = "";
-
+                    //Việc 60262 - hồ sơ chưa kết thúc điều trị (viện bật HIS.QD_130_BYT.EXPORT_XML_IN_TREATMENT = 1): sinh ở chế độ hồ sơ
+                    //đang điều trị để kiểm tra, tên tệp đuôi _DANG_DIEU_TRI, không XML12, không ký số (mục UCExportXml___InTreatment).
+                    //Xuất thông tuyến (XuatXmlTT) giữ nguyên như cũ.
+                    bool isInTreatment = !XuatXmlTT && IsExportXmlInTreatment(treatment);
 
                     if (XuatXmlTT)
                     {
@@ -1789,14 +1792,22 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     else
                     {
+                        if (isInTreatment)
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("60262 - Xuat XML ho so dang dieu tri (RunInTreatment): " + treatment.TREATMENT_CODE);
+                        }
                         if (!viewXml)
                         {
                             fullFileName = xmlProcessor.GetFileName();
+                            if (isInTreatment)
+                            {
+                                fullFileName = GetInTreatmentFileName(fullFileName);
+                            }
                             saveFilePath = String.Format("{0}/{1}", this.savePathADO.pathXml, fullFileName);
                             saveFilePathXml12 = String.Format("{0}/{1}{2}", this.savePathADO.pathXmlGDYK, "XML12_", fullFileName);
                         }
-                        var rs = xmlProcessor.Run(ref errorMess);
-                        var rsXml12 = XuatXml12 ? xmlProcessor.RunXml12(ref errorMessXml12) : null;
+                        var rs = isInTreatment ? RunXmlInTreatmentSafe(xmlProcessor, ref errorMess) : xmlProcessor.Run(ref errorMess);
+                        var rsXml12 = XuatXml12 && !isInTreatment ? xmlProcessor.RunXml12(ref errorMessXml12) : null;
                         if (!String.IsNullOrWhiteSpace(errorMess))
                         {
                             Inventec.Common.Logging.LogSystem.Error("Run130: " + errorMess);
@@ -1841,7 +1852,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                     }
 
-                    if (isNotFileSign == false && SettingSignADO != null)
+                    //Việc 60262: tệp hồ sơ đang điều trị chỉ để kiểm tra - không ký chữ ký đơn vị (CHUKYDONVI), tránh ra tệp trông như nộp cổng được
+                    if (isNotFileSign == false && SettingSignADO != null && !isInTreatment)
                     {
                         string currentDirectory = Directory.GetCurrentDirectory();
 
