@@ -1,4 +1,4 @@
-using DevExpress.XtraEditors.Repository;
+﻿using DevExpress.XtraEditors.Repository;
 using HIS.Desktop.ApiConsumer;
 using Inventec.Common.Adapter;
 using Inventec.Core;
@@ -75,6 +75,7 @@ namespace HIS.Desktop.Plugins.Pharmacology
                 this.simpleButton2.Click += new EventHandler(btnEdit_Click);
                 this.simpleButton4.Click += new EventHandler(btnReload_Click);
                 this.gridView1.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(gridView1_FocusedRowChanged);
+                this.gridView1.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(gridView1_RowClick);
                 this.repositoryItemButtonDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(repositoryItemButtonDelete_ButtonClick);
                 this.repositoryItemButtonLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(repositoryItemButtonLock_ButtonClick);
                 this.repositoryItemButtonUnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(repositoryItemButtonUnLock_ButtonClick);
@@ -423,6 +424,25 @@ namespace HIS.Desktop.Plugins.Pharmacology
                     return;
 
                 ChangedDataRow(gridView1.GetRow(e.FocusedRowHandle) as HIS_PHARMACOLOGY);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bam vao dong dang duoc chon san (vi du luoi chi co 1 dong, hoac dong luoi tu chon sau khi load)
+        /// thi FocusedRowChanged khong ban ra, nen bat them RowClick de van do ma / ten vao o nhap
+        /// </summary>
+        private void gridView1_RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowClickEventArgs e)
+        {
+            try
+            {
+                if (isLoadingGrid || e.RowHandle < 0)
+                    return;
+
+                ChangedDataRow(gridView1.GetRow(e.RowHandle) as HIS_PHARMACOLOGY);
             }
             catch (Exception ex)
             {

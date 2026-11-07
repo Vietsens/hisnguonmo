@@ -31,6 +31,11 @@ namespace HIS.Desktop.Plugins.Pharmacology
         /// </summary>
         private readonly List<ActiveIngredientADO> listActiveIngredientChecked = new List<ActiveIngredientADO>();
 
+        /// <summary>
+        /// Cac hoat chat da thuoc duoc ly nay luc mo man hinh, de biet dong nao bi bo tich ma go duoc ly khi luu
+        /// </summary>
+        private readonly List<ActiveIngredientADO> listActiveIngredientOrigin = new List<ActiveIngredientADO>();
+
         #endregion
 
         #region Constructor
@@ -74,6 +79,7 @@ namespace HIS.Desktop.Plugins.Pharmacology
             try
             {
                 this.listActiveIngredientChecked.Clear();
+                this.listActiveIngredientOrigin.Clear();
                 if (this.pharmacologyId <= 0)
                 {
                     return;
@@ -98,6 +104,7 @@ namespace HIS.Desktop.Plugins.Pharmacology
                         ActiveIngredientADO activeIngredientADO = new ActiveIngredientADO(item);
                         activeIngredientADO.check2 = true;
                         this.listActiveIngredientChecked.Add(activeIngredientADO);
+                        this.listActiveIngredientOrigin.Add(activeIngredientADO);
                     }
                 }
 
@@ -276,7 +283,8 @@ namespace HIS.Desktop.Plugins.Pharmacology
         }
 
         /// <summary>
-        /// Gan duoc ly dang mo cho cac hoat chat da tich chon  
+        /// Gan duoc ly dang mo cho cac hoat chat da tich chon,
+        /// va go duoc ly khoi cac hoat chat truoc do da gan nhung nay bi bo tich
         /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -291,13 +299,6 @@ namespace HIS.Desktop.Plugins.Pharmacology
                     return;
                 }
 
-                if (this.listActiveIngredientChecked.Count == 0)
-                {
-                    MessageBox.Show("Hãy tích chọn hoạt chất cần gán vào dược lý.",
-                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 //Gui lai ca dong, chi thay PHARMACOLOGY_ID de khong lam mat cac truong khac
                 List<HIS_ACTIVE_INGREDIENT> listUpdate = new List<HIS_ACTIVE_INGREDIENT>();
                 foreach (var activeIngredient in this.listActiveIngredientChecked)
@@ -307,8 +308,26 @@ namespace HIS.Desktop.Plugins.Pharmacology
                     listUpdate.Add(data);
                 }
 
+                //Dong da gan luc mo man hinh ma nay bo tich thi go duoc ly (PHARMACOLOGY_ID = null)
+                List<ActiveIngredientADO> listUnchecked = this.listActiveIngredientOrigin
+                    .Where(o => !this.listActiveIngredientChecked.Any(c => c.ID == o.ID)).ToList();
+                foreach (var activeIngredient in listUnchecked)
+                {
+                    HIS_ACTIVE_INGREDIENT data = activeIngredient.ToActiveIngredient();
+                    data.PHARMACOLOGY_ID = null;
+                    listUpdate.Add(data);
+                }
+
+                if (listUpdate.Count == 0)
+                {
+                    MessageBox.Show("Hãy tích chọn hoạt chất cần gán vào dược lý.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 Inventec.Common.Logging.LogSystem.Debug("btnSave_Click: pharmacologyId = " + this.pharmacologyId
-                    + ", so hoat chat gan = " + listUpdate.Count);
+                    + ", so hoat chat gan = " + this.listActiveIngredientChecked.Count
+                    + ", so hoat chat go = " + listUnchecked.Count);
 
                 WaitingManager.Show();
                 var result = new BackendAdapter(param).Post<List<HIS_ACTIVE_INGREDIENT>>(
