@@ -85,7 +85,10 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.RoomConfigOption
             [ToolTipOption("Chỉ chọn được khi đã chọn <b>Là phòng mổ<b>")]
             MustBeApprovedSurgery,      // Phải duyệt mổ. chỉ enable nếu chọn "Là phòng mổ". Lưu thông tin vào MUST_BE_APPROVED_SURGERY
             [Description("Tách dãy ưu tiên")]
-            IsSplitByPriority           // Tách dãy ưu tiên. Lưu thông tin vào IS_SPLIT_BY_PRIORITY
+            IsSplitByPriority,          // Tách dãy ưu tiên. Lưu thông tin vào IS_SPLIT_BY_PRIORITY
+            [ToolTipOption("Phòng hiện trên app iHanoi cho người dân đặt lịch khám. Cần chọn thêm <b>Là phòng khám<b>, <b>Cấp số thứ tự theo khung giờ khám<b> và có lịch làm việc của phòng")]
+            [Description("Cho phép đặt lịch online (iHanoi)")]
+            IsAllowOnlineBooking        // Đặt lịch khám qua iHanoi (vCong 62017). Lưu thông tin vào IS_ALLOW_ONLINE_BOOKING
         }
         private static string Description(this Enum value)
         {

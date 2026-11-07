@@ -15,8 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using Inventec.Common.Logging;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,6 +92,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal const string HIS_QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H = "HIS.QD_130_BYT.AUTO_EXPORT_XML_AFTER_48H";
         internal static string QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H;
 
+        //Việc 60261: kiểm hồ sơ thiếu/sai thông tin thẻ, hồ sơ chính của XML1 (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD,
+        //GT_THE_TU, GT_THE_DEN): cột trên lưới + kiểm trước khi xuất/gửi bằng tay.
+        //"1" = cảnh báo, hỏi có tiếp tục không (vẫn cho xuất/gửi); "2" = chặn, không cho xuất/gửi khi còn hồ sơ thiếu/sai; khác = tắt.
+        internal const string HIS_QD_130_BYT__XML1_CARD_INFO_WARNING = "HIS.QD_130_BYT.XML1.CARD_INFO_WARNING";
+        internal const string XML1_CARD_INFO_WARNING__WARNING = "1";
+        internal const string XML1_CARD_INFO_WARNING__BLOCK = "2";
+        internal static string QD_130_BYT__XML1_CARD_INFO_WARNING;
+        //Việc 60261: đối tượng BHYT - chỉ kiểm thông tin thẻ của hồ sơ BHYT
+        private const string MOS_HIS_PATIENT_TYPE__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
+        internal static long PATIENT_TYPE_ID__BHYT;
+
         internal static void LoadConfig()
         {
             try
@@ -114,11 +127,32 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 //Cổng CSDL Y tế Cần Thơ — liên thông KCB theo QĐ 3176
                 CSDL_CANTHO_3176__CONNECTION_INFO = GetValue(HIS_CSDL_CANTHO_3176__CONNECTION_INFO);
                 QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H = GetValue(HIS_QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H);
+                QD_130_BYT__XML1_CARD_INFO_WARNING = GetValue(HIS_QD_130_BYT__XML1_CARD_INFO_WARNING);
+                PATIENT_TYPE_ID__BHYT = GetPatientTypeId(GetValue(MOS_HIS_PATIENT_TYPE__PATIENT_TYPE_CODE__BHYT));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private static long GetPatientTypeId(string code)
+        {
+            long result = 0;
+            try
+            {
+                HIS_PATIENT_TYPE data = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == code);
+                if (data != null)
+                {
+                    result = data.ID;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                result = 0;
+            }
+            return result;
         }
 
         private static string GetValue(string code)

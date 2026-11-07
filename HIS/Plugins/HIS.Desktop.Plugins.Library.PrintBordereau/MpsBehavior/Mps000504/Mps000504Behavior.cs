@@ -119,6 +119,23 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000504
 
                 rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656 - mục 4.2.8
 
+                // 56810: input for the single keys copied from Mps000512 (same sources as Mps000512Behavior)
+                rdo.SingleKeyValue = new SingleKeyValue();
+                rdo.SingleKeyValue.departmentName = this.DepartmentName;
+                rdo.SingleKeyValue.roomName = this.RoomName;
+                rdo.SingleKeyValue.TOTAL_DAY = this.TotalDayTreatment;
+                rdo.SingleKeyValue.STATUS_TREATMENT_OUT = this.StatusTreatmentOut;
+                rdo.SingleKeyValue.USERNAME_RETURN_RESULT = this.UserNameReturnResult;
+                rdo.DepartmentTrans = this.DepartmentTrans;
+                rdo.TreatmentFees = this.TreatmentFees;
+                rdo.ListSereServDeposits = this.SereServDeposits;
+                rdo.ListMediOrg = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDI_ORG>();
+                HisTransactionFilter tranFilter = new HisTransactionFilter();
+                tranFilter.TREATMENT_ID = this.Treatment.ID;
+                tranFilter.TRANSACTION_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT;
+                rdo.ListTransactionBill = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Get<List<HIS_TRANSACTION>>("api/HisTransaction/Get", ApiConsumer.ApiConsumers.MosConsumer, tranFilter, param);
+
                 // PTTK 2883 - muc 2: nap input cho pipeline gom nhom theo khoa/phong xu ly
                 // (bo key 697 nhu Mps000508 — thay the 6556 vien khong dung nua):
                 // ServiceGroupByDepa/ServiceGroupByRoom/HeinServiceTypeExeRoom/HeinServiceTypeByDepa/
@@ -200,20 +217,19 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000504
                 long isShowMedicineLine = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.IS_SHOW_MEDICINE_LINE));
                 List<HIS_MEDICINE_TYPE> medicineTypes = null;
                 List<HIS_MEDICINE_LINE> medicineLines = null;
-                List<HIS_SERVICE_REQ> serviceReqs = null;
                 if (isShowMedicineLine == 1)
                 {
                     medicineTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_TYPE>();
                     medicineLines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_LINE>();
                 }
-                if (isShowMedicineLine == 1 || hisConfigValue.IsGroupHeinServiceByUseTime)
-                {
-                    HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
-                    serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
-                    serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };
-                    serviceReqs = new Inventec.Common.Adapter.BackendAdapter(param)
-                        .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumer.ApiConsumers.MosConsumer, serviceReqFilter, param);
-                }
+                // 56810: all active service reqs like Mps000512Behavior (exam START_TIME key needs the exam reqs too)
+                HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
+                serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
+                serviceReqFilter.IS_ACTIVE = 1;
+                List<HIS_SERVICE_REQ> serviceReqs = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumer.ApiConsumers.MosConsumer, serviceReqFilter, param);
+                if (serviceReqs != null)
+                    serviceReqs = serviceReqs.Where(o => o.IS_DELETE != 1).ToList();
 
                 rdo.TreatmentView = this.Treatment;
                 rdo.SereServs = sereServFilters;

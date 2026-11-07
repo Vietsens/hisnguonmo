@@ -1770,10 +1770,11 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 if (current.ID > 0)
                 {
                     CommonParam param = new CommonParam();
-                    var deleteResult = new BackendAdapter(param)
-                        .Post<HIS_EXP_MEDIMATE_USED>("api/HisExpMedimateUsed/Delete", ApiConsumers.MosConsumer, current.ID, param);
+                    // API Delete trả về bool (ApiResultObject<bool>), không trả về HIS_EXP_MEDIMATE_USED
+                    bool deleteResult = new BackendAdapter(param)
+                        .Post<bool>("api/HisExpMedimateUsed/Delete", ApiConsumers.MosConsumer, current.ID, param);
 
-                    if (deleteResult == null)
+                    if (!deleteResult)
                     {
                         MessageManager.Show(this, param, false);
                         return;

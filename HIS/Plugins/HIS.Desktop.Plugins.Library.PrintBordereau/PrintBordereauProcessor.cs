@@ -630,7 +630,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                                 this.IsActionButtonPrintBill,
                                 fromDateReq,
                                 toDateReq
-                            );
+                            ) { SereServDeposits = this.SereServDeposits }; // 56810: deposit keys like Mps000512
                             break;
                         }
 

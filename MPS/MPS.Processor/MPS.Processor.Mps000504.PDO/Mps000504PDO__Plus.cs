@@ -54,5 +54,11 @@ namespace MPS.Processor.Mps000504.PDO
         public List<HIS_SERVICE_UNIT> HisServiceUnit { get; set; }
         public List<HIS_OTHER_PAY_SOURCE> ListOtherPaySource { get; set; }
         public List<HIS_DIIM_TYPE> DiimTypesList { get; set; }
+
+        // 56810: input for the single keys copied from Mps000512
+        public SingleKeyValue SingleKeyValue { get; set; }
+        public List<HIS_TRANSACTION> ListTransactionBill { get; set; }
+        public List<HIS_MEDI_ORG> ListMediOrg { get; set; }
+        public List<HIS_SERE_SERV_DEPOSIT> ListSereServDeposits { get; set; }
     }
 }

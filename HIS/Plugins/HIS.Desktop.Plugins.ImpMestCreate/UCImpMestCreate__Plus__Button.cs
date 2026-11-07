@@ -77,8 +77,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             {
                 medicineProcessor.ResetKeyword(this.ucMedicineTypeTree);
                 materialProcessor.ResetKeyword(this.ucMaterialTypeTree);
-                this.medicineProcessor.Reload(this.ucMedicineTypeTree, listMedicineType);
-                this.materialProcessor.Reload(this.ucMaterialTypeTree, listMaterialType);
+                this.medicineProcessor.Reload(this.ucMedicineTypeTree, this.FilterMedicineTypeBySupplyOrder(listMedicineType));
+                this.materialProcessor.Reload(this.ucMaterialTypeTree, this.FilterMaterialTypeBySupplyOrder(listMaterialType));
 
             }
             catch (Exception ex)
@@ -334,6 +334,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     //    manuSdo.ImpMest.BID_ID = this.currentBid.ID;
                     //}
                     manuSdo.ImpMest.SUPPLIER_ID = supplierId.HasValue ? supplierId.Value : 0;
+                    SetSupplyOrderToImpMest(manuSdo.ImpMest);
                     manuSdo.ManuMaterials = hisMaterialSdos;
                     manuSdo.ManuMedicines = hisMedicineSdos;
                     return manuSdo;

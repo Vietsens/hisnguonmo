@@ -1133,6 +1133,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     selectedOptions.Add(Option.AllowNotChooseService, data.ALLOW_NOT_CHOOSE_SERVICE);
                     selectedOptions.Add(Option.IsSurgery, data.IS_SURGERY);
                     selectedOptions.Add(Option.MustBeApprovedSurgery, data.MUST_BE_APPROVED_SURGERY);
+                    selectedOptions.Add(Option.IsAllowOnlineBooking, data.IS_ALLOW_ONLINE_BOOKING);
                     var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == data.ROOM_ID);
                     if (room != null)
                     {

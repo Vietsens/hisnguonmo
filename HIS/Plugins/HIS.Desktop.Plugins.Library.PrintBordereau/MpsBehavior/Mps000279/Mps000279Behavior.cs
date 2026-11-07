@@ -97,6 +97,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000279
                 hisConfigValue.IsNotSameDepartment = IsNotSameDepartment;
                 hisConfigValue.IsSurgPriceOption_1 = surgPriceOption;
                 hisConfigValue.IsGroupHeinServiceByUseTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(SdaConfigKey.ConfigKey_IsGroupHeinServiceByUseTime) == 1;
+                hisConfigValue.PriceCalculationOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(SdaConfigKey.ConfigKey_PriceCalculationOption);
 
                 HIS_BRANCH branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
                 List<HIS_TREATMENT_TYPE> treatmentTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_TREATMENT_TYPE>();
