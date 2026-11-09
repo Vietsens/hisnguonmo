@@ -612,4 +612,7 @@ Hồ sơ chưa kiểm tra được cũng bị chặn vì chưa thể khẳng đ�
   <data name="CardInfoChanXuatGui" xml:space="preserve">
     <value>Có {0}/{1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD, GT_THE_TU, GT_THE_DEN). Theo cấu hình của viện, không cho phép xuất/gửi XML khi còn hồ sơ thiếu/sai. Vui lòng sửa thông tin hoặc bỏ chọn các hồ sơ này rồi thực hiện lại.</value>
   </data>
+  <data name="XmlDangDieuTriThuVienChuaHoTro" xml:space="preserve">
+    <value>Thư viện His.Bhyt.ExportXml.XML130 trên máy chưa hỗ trợ xuất XML hồ sơ đang điều trị (cần cập nhật thư viện bản từ ngày 28/10/2026)</value>
+  </data>
 </root>

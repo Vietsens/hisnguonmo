@@ -103,6 +103,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         private const string MOS_HIS_PATIENT_TYPE__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
         internal static long PATIENT_TYPE_ID__BHYT;
 
+        //Việc 60262: "1" = hồ sơ CHƯA KẾT THÚC ĐIỀU TRỊ vẫn xuất được XML 130 để kiểm tra (nút Xuất XML, XML 3176,
+        //menu "Xuất XML (không bao gồm giám định y khoa)", cột Xem XML) - thư viện sinh ở chế độ hồ sơ đang điều trị
+        //(RunInTreatment), tên tệp thêm đuôi _DANG_DIEU_TRI. Khác "1" = như cũ (báo "Hồ sơ chưa có thời gian khóa viện phí").
+        internal const string HIS_QD_130_BYT__EXPORT_XML_IN_TREATMENT = "HIS.QD_130_BYT.EXPORT_XML_IN_TREATMENT";
+        internal const string EXPORT_XML_IN_TREATMENT__ON = "1";
+        internal static string QD_130_BYT__EXPORT_XML_IN_TREATMENT;
+
         internal static void LoadConfig()
         {
             try
@@ -129,6 +136,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H = GetValue(HIS_QD_130_BYT__AUTO_EXPORT_XML_AFTER_48H);
                 QD_130_BYT__XML1_CARD_INFO_WARNING = GetValue(HIS_QD_130_BYT__XML1_CARD_INFO_WARNING);
                 PATIENT_TYPE_ID__BHYT = GetPatientTypeId(GetValue(MOS_HIS_PATIENT_TYPE__PATIENT_TYPE_CODE__BHYT));
+                QD_130_BYT__EXPORT_XML_IN_TREATMENT = GetValue(HIS_QD_130_BYT__EXPORT_XML_IN_TREATMENT);
             }
             catch (Exception ex)
             {
